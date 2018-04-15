@@ -857,23 +857,17 @@ z80_byte menu_debug_get_mapped_byte(int direccion)
 //Escribe byte mapeado de ram normal o de zona de menu mapeada
 void menu_debug_write_mapped_byte(int direccion,z80_byte valor)
 {
-
-
-
 	//Mostrar memoria normal
 	if (menu_debug_show_memory_zones==0) {
-		return poke_byte_z80_moto(direccion,valor);
+		poke_byte_z80_moto(direccion,valor);
+		return;
 	}
-
 
 	//Mostrar zonas mapeadas
 	menu_debug_set_memory_zone_attr();
 
 	direccion=direccion % menu_debug_memory_zone_size;
 	*(machine_get_memory_zone_pointer(menu_debug_memory_zone,direccion))=valor;
-
-
-
 }
 
 
@@ -4924,6 +4918,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				if (m->es_menu_tabulado==0) break;
 
 				//Si es tabulado, seguira hasta la opcion '6'
+				/* fall-through */
 			case '6':
 				linea_seleccionada=menu_dibuja_menu_cursor_abajo(linea_seleccionada,max_opciones,m);
 
@@ -4937,6 +4932,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                                 if (m->es_menu_tabulado==0) break;
 
                                 //Si es tabulado, seguira hasta la opcion '7'
+                                /* fall-through */
 			case '7':
 				linea_seleccionada=menu_dibuja_menu_cursor_arriba(linea_seleccionada,max_opciones,m);
 
@@ -10792,13 +10788,13 @@ char textoplayer[40];
 				
 
 
-				int valor_contador_segundo_anterior;
+				int UNUSED(valor_contador_segundo_anterior);
 
 				valor_contador_segundo_anterior=contador_segundo;
 
-int mostrar_player;
+int UNUSED(mostrar_player);
 
-int mostrar_antes_player=-1;
+int UNUSED(mostrar_antes_player) = -1;
 
 	mostrar_player=menu_audio_new_ayplayer_si_mostrar();
 
@@ -18056,7 +18052,7 @@ void menu_file_mmc_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
 
 		
 			origen++;
-			if (caracter<32 || caracter>127) {
+			if (caracter<32) {
 				//Si detectamos final de texto y siempre que no este en primer caracter
 				if (i) salir=1;
 				else caracter='?';
@@ -31584,7 +31580,7 @@ void menu_print_dir(int inicial)
 	//escribir en ventana directorio de archivos
 
 	//Para speech
-	char texto_opcion_activa[100];
+	char texto_opcion_activa[PATH_MAX + 32];
 	//Asumimos por si acaso que no hay ninguna activa
 	texto_opcion_activa[0]=0;
 

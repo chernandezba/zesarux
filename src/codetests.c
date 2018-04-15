@@ -36,7 +36,7 @@
 #include "ula.h"
 #include "mem128.h"
 #include "screen.h"
-
+#include "tbblue.h"
 
 void codetests_repetitions(void)
 {

@@ -531,7 +531,7 @@ char *buffer_playback_alsa;
 //int pthread_enviar_sonido_alsa=0;
 int frames_sonido_enviados_alsa=0;
 
-void *new_audioalsa_enviar_audio(void *nada)
+void *new_audioalsa_enviar_audio(void * UNUSED(nada))
 {
 
 
@@ -552,12 +552,6 @@ void *new_audioalsa_enviar_audio(void *nada)
 
 
 	}
-
-	//para que no se queje el compilador de variable no usada
-	nada=0;
-	nada++;
-
-
 }
 
 
@@ -658,5 +652,5 @@ void *audioalsa_enviar_audio(void *nada)
 
 void audioalsa_send_frame(char *buffer)
 {
-        return new_audioalsa_send_frame(buffer);
+        new_audioalsa_send_frame(buffer);
 }

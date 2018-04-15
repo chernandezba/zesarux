@@ -229,7 +229,7 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 	0x1A, 0x1A, 0x00, 0x0A, 0x01, 0x29, 0x11};
 	char *vocbuf;			/* Buffer for .VOC block */
 	int vocbuflen = 0xFFFF;		/* Length of .VOC block (and buffer) */
-	char vocstart[4] = {0x02, 0xFF, 0xFF, 0x00};
+	unsigned char vocstart[4] = {0x02, 0xFF, 0xFF, 0x00};
 	int vocpos;			/* Length of current .VOC block */
 	
 	int nfreq = 0;			/* Did we choose new frequency with /freq switch ? */
@@ -1697,8 +1697,8 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 										if (!sb_pulse)
 											sb_pulse = 1;		/* In case sample frequency > 44100 */
 											
-											tzx_pause = Get2(&data[2]);	/* (Should work for frequencies upto 48000) */
-											lastbyte = (int) data[4];
+										tzx_pause = Get2(&data[2]);	/* (Should work for frequencies upto 48000) */
+										lastbyte = (int) data[4];
 										datalen = Get3(&data[5]);
 										
 										if (tzx_info!= 1) {
@@ -1707,7 +1707,7 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 												(VERBOSE_INFO,"    Direct Recording      Length:%6d  Original Freq.: %5d Hz",
 												 datalen, (int) (0.5 + (3500000.0 / (double) Get2(&data[0]))));
 												
-												if (tzx_info!= 2) {
+											if (tzx_info!= 2) {
 													data = &data[8];
 													datapos = 0;
 													
@@ -1920,10 +1920,10 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 																debug_printf(VERBOSE_INFO,"    Pause                 Length: %2.3fs",
 																	     ((float) tzx_pause) / 1000.0);
 																
-																if (tzx_info!= 2) {
-																	PauseSB(amp, tzx_pause);
-																	amp = LOAMP;
-																}
+															if (tzx_info!= 2) {
+																PauseSB(amp, tzx_pause);
+																amp = LOAMP;
+															}
 														} else {
 															sprintf(tstr, "Block %3d (%5X):  20 - Pause (Silence)", curr + 1,
 																block[curr] + 10);
@@ -2087,7 +2087,7 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 																						debug_printf(VERBOSE_INFO,"    Call Sequence, Number of Calls : %d, First: %d (To Block %d)",
 																							     call_num, jump, curr + jump + 1);
 																						
-																						curr += jump;
+																					curr += jump;
 																					curr--;
 																				}
 																			}
@@ -2122,7 +2122,7 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 																								(VERBOSE_INFO,"    Return from Call, Calls Left: %d, Next: %d (To Block %d)",
 																								 call_num - call_cur, jump, curr + jump + 1);
 																								
-																								curr += jump;
+																							curr += jump;
 																							curr--;
 																						}
 																					}
@@ -2714,9 +2714,9 @@ char vochead[0x20] = {'C', 'r', 'e', 'a', 't', 'i', 'v', 'e', ' ', 'V', 'o', 'i'
 					}			/* Play PILOT TONE */
 					if (sb_sync1)
 						PlayC64SB(sb_sync1);	/* Play SYNC PULSES */
-						if (sb_sync2)
-							PlayC64SB(sb_sync2);
-						datapos = 0;
+					if (sb_sync2)
+						PlayC64SB(sb_sync2);
+					datapos = 0;
 					while (datalen) {	/* Play actual DATA */
 						if (datalen != 1) {
 							bitcount = 8;

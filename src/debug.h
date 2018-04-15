@@ -175,7 +175,10 @@ struct s_debug_nested_function_element {
 
 	//funcion asignada
 	//z80_byte (*funcion)(z80_int dir, z80_byte value);
-	debug_nested_function funcion;
+	union {
+		void *funcptr;
+		debug_nested_function funcion;
+	};
 
 	//puntero a siguiente elemento en la lista. NULL si no hay mas
 	struct s_debug_nested_function_element *next;

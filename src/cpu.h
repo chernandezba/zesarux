@@ -23,6 +23,7 @@
 #define CPU_H
 
 #include "compileoptions.h"
+#include "compiler.h"
 
 /*
 Emulator version format:

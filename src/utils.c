@@ -4600,8 +4600,8 @@ int get_file_date_from_stat(struct stat *buf_stat,int *hora,int *minuto,int *seg
           d=&buf_stat->st_mtimespec;
           foo = gmtime((const time_t *)d);
 #else
-          struct time_t *d;
-          d=&buf_stat->st_mtime;
+          struct timespec *d;
+          d=&buf_stat->st_mtim;
           foo = gmtime((const time_t *)d);
 #endif
 
@@ -5842,7 +5842,7 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
 
 	switch (tecla) {
                         case UTIL_KEY_SPACE:
-                       	case 32:
+                       	case UTIL_KEY_ASCII_SPACE:
                                 if (pressrelease) {
                                         puerto_32766 &=255-1;
                                         blink_kbd_a13 &= (255-64);
@@ -6223,7 +6223,7 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
                         break;
 
                         case UTIL_KEY_COMMA:
-                        case ',':
+                        case UTIL_KEY_ASCII_COMMA:
 				if (MACHINE_IS_ZX8081) {
 					if (pressrelease) {
 						puerto_32766 &=255-2;
@@ -6262,7 +6262,7 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
 
                         //Punto
                         case UTIL_KEY_PERIOD:
-                        case '.':
+                        case UTIL_KEY_ASCII_PERIOD:
 
                                 if (MACHINE_IS_ZX8081) {
                                         //para zx80/81

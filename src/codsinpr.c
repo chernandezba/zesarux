@@ -462,15 +462,15 @@ Extraido del documento z80-documented, segun una tabla
 	low_a=reg_a & 0xF;
 	high_a=(reg_a>>4) & 0xF;
 
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x0 && high_a<=0x9) && (Z80_FLAGS & FLAG_H)==0 && (low_a>=0x0 && low_a<=0x9)) diff=0x00;
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x0 && high_a<=0x9) && (Z80_FLAGS & FLAG_H) && (low_a>=0x0 && low_a<=0x9)) diff=0x06;
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x0 && high_a<=0x8) &&                (low_a>=0xa && low_a<=0xf)) diff=0x06;
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && (Z80_FLAGS & FLAG_H)==0 && (low_a>=0x0 && low_a<=0x9)) diff=0x60;
-	if ((Z80_FLAGS & FLAG_C) &&                                 (Z80_FLAGS & FLAG_H)==0 && (low_a>=0x0 && low_a<=0x9)) diff=0x60;
-	if ((Z80_FLAGS & FLAG_C) &&                                 (Z80_FLAGS & FLAG_H) && (low_a>=0x0 && low_a<=0x9)) diff=0x66;
-	if ((Z80_FLAGS & FLAG_C) &&                                                (low_a>=0xa && low_a<=0xf)) diff=0x66;
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x9 && high_a<=0xf) &&                (low_a>=0xa && low_a<=0xf)) diff=0x66;
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && (Z80_FLAGS & FLAG_H) && (low_a>=0x0 && low_a<=0x9)) diff=0x66;
+	if ((Z80_FLAGS & FLAG_C)==0 && high_a<=0x9 &&                  (Z80_FLAGS & FLAG_H)==0 && low_a<=0x9) diff=0x00;
+	if ((Z80_FLAGS & FLAG_C)==0 && high_a<=0x9 &&                  (Z80_FLAGS & FLAG_H)    && low_a<=0x9) diff=0x06;
+	if ((Z80_FLAGS & FLAG_C)==0 && high_a<=0x8 &&                                             (low_a>=0xa && low_a<=0xf)) diff=0x06;
+	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && (Z80_FLAGS & FLAG_H)==0 && low_a<=0x9) diff=0x60;
+	if ((Z80_FLAGS & FLAG_C) &&                                    (Z80_FLAGS & FLAG_H)==0 && low_a<=0x9) diff=0x60;
+	if ((Z80_FLAGS & FLAG_C) &&                                    (Z80_FLAGS & FLAG_H)    && low_a<=0x9) diff=0x66;
+	if ((Z80_FLAGS & FLAG_C) &&                                                               (low_a>=0xa && low_a<=0xf)) diff=0x66;
+	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x9 && high_a<=0xf) &&                            (low_a>=0xa && low_a<=0xf)) diff=0x66;
+	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && (Z80_FLAGS & FLAG_H)    && low_a<=0x9) diff=0x66;
 
 
 	if ((Z80_FLAGS & FLAG_N)==0) reg_a +=diff;
@@ -479,13 +479,13 @@ Extraido del documento z80-documented, segun una tabla
 	//Calculo de flags
 
 	//Calculo flag C
-	//if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x0 && high_a<=0x9) && (low_a>=0x0 && low_a<=0x9)) flag_C_final=0;
+	//if ((Z80_FLAGS & FLAG_C)==0 && high_a<=0x9 && low_a<=0x9) flag_C_final=0;
 
-	//if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x0 && high_a<=0x8) && (low_a>=0xa && low_a<=0xf)) flag_C_final=0;
+	//if ((Z80_FLAGS & FLAG_C)==0 && high_a<=0x8 && (low_a>=0xa && low_a<=0xf)) flag_C_final=0;
 
 	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0x9 && high_a<=0xf) && (low_a>=0xa && low_a<=0xf)) flag_C_final=FLAG_C;
 
-	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && (low_a>=0x0 && low_a<=0x9)) flag_C_final=FLAG_C;
+	if ((Z80_FLAGS & FLAG_C)==0 && (high_a>=0xa && high_a<=0xf) && low_a<=0x9) flag_C_final=FLAG_C;
 
 	if ((Z80_FLAGS & FLAG_C))                                                               flag_C_final=FLAG_C;
 
@@ -502,7 +502,7 @@ Extraido del documento z80-documented, segun una tabla
 
 	//if ((Z80_FLAGS & FLAG_N) && (Z80_FLAGS & FLAG_H) && (low_a>=0x6 && low_a<=0xf)) flag_H_final=0;
 
-	if ((Z80_FLAGS & FLAG_N) && (Z80_FLAGS & FLAG_H) && (low_a>=0x0 && low_a<=0x5)) flag_H_final=FLAG_H;
+	if ((Z80_FLAGS & FLAG_N) && (Z80_FLAGS & FLAG_H) && low_a<=0x5) flag_H_final=FLAG_H;
 
 	//flag_H.v=flag_H_final.v;
 	Z80_FLAGS=(Z80_FLAGS & (255-FLAG_H-FLAG_S-FLAG_Z-FLAG_3-FLAG_5-FLAG_PV)) | flag_H_final | sz53p_table[reg_a];

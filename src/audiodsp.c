@@ -197,7 +197,7 @@ char *buffer_playback_dsp;
 //int pthread_enviar_sonido_dsp=0;
 int frames_sonido_enviados_dsp=0;
 
-void *audiodsp_enviar_audio(void *nada)
+void *audiodsp_enviar_audio(void * UNUSED(nada))
 {
 	long tiempo_pasado;
 	//printf ("Antes escrito buffer=%p\n",buffer_playback_dsp);
@@ -267,12 +267,6 @@ void *audiodsp_enviar_audio(void *nada)
                 }
 
 	}
-
-
-	//Para evitar warnings al compilar de unused parameter ‘nada’ [-Wunused-parameter]
-	nada=0;
-	nada++;
-
 
 	return NULL;
 } 

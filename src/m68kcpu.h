@@ -1229,7 +1229,7 @@ INLINE uint m68ki_get_ea_ix(uint An)
 
 	/* Check if base displacement is present */
 	if(BIT_5(extension))                /* BD SIZE */
-		bd = BIT_4(extension) ? m68ki_read_imm_32() : MAKE_INT_16(m68ki_read_imm_16());
+		bd = BIT_4(extension) ? m68ki_read_imm_32() : (uint)MAKE_INT_16(m68ki_read_imm_16());
 
 	/* If no indirect action, we are done */
 	if(!(extension&7))                  /* No Memory Indirect */
@@ -1237,7 +1237,7 @@ INLINE uint m68ki_get_ea_ix(uint An)
 
 	/* Check if outer displacement is present */
 	if(BIT_1(extension))                /* I/IS:  od */
-		od = BIT_0(extension) ? m68ki_read_imm_32() : MAKE_INT_16(m68ki_read_imm_16());
+		od = BIT_0(extension) ? m68ki_read_imm_32() : (uint)MAKE_INT_16(m68ki_read_imm_16());
 
 	/* Postindex */
 	if(BIT_2(extension))                /* I/IS:  0 = preindex, 1 = postindex */

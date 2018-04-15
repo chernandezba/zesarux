@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
 #if defined(__APPLE__)
         #include <sys/syslimits.h>

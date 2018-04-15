@@ -429,9 +429,8 @@ void tape_block_tzx_begin_save(void)
 
 	//Escribir id 10	
 	//pausa de 1000 ms
-	char buffer[]={0x10,232,3};
+	unsigned char buffer[]={0x10,0xe8,0x03};
 	fwrite(buffer, 1, sizeof(buffer), ptr_mycinta_tzx_out);
-	
 }
 
 

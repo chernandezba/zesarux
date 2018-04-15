@@ -237,6 +237,15 @@ enum util_teclas
 {
 	UTIL_KEY_NONE=0,  //None se usa en teclado chloe
 
+	/*
+	 * These keys are checked in a switch() statement
+	 * in util_set_reset_key_continue() and the compiler
+	 * may warn about a value not in the enumerated type.
+	 */
+	UTIL_KEY_ASCII_SPACE = 32,    /* ASCII ' ' */
+	UTIL_KEY_ASCII_COMMA = 44,    /* ASCII ',' */
+	UTIL_KEY_ASCII_PERIOD = 46,   /* ASCII '.' */
+
 	UTIL_KEY_SPACE=128,  //128 en adelante para no entrar en conflicto con teclas ascii <128
 	UTIL_KEY_ENTER,
 	UTIL_KEY_SHIFT_L,

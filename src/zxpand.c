@@ -90,7 +90,7 @@ z80_byte zxpand_portd;
 z80_byte zxpand_porta;
 
 z80_byte zxpand_globalindex;
-z80_byte zxpand_globaldata[256];
+z80_byte zxpand_globaldata[260];
 
 //usado en lectura de archivos
 z80_int zxpand_globalAmount;

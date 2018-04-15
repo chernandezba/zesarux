@@ -592,6 +592,8 @@ z80_bit set_machine_empties_audio_buffer={1};
 //Si se muestra por verbose debug los opcodes incorrectos
 z80_bit debug_shows_invalid_opcode={0};
 
+#define DEBUG 0
+
 void cpu_set_turbo_speed(void)
 {
 
@@ -600,9 +602,11 @@ void cpu_set_turbo_speed(void)
 	//Ajustes previos de t_estados. En estos ajustes, solo las variables t_estados, antes_t_estados se usan. Las t_estados_en_linea, t_estados_percx son para debug
 	//printf ("Turbo was %d, setting turbo %d\n",cpu_turbo_speed_antes,cpu_turbo_speed);
 
+#if DEBUG
 	int t_estados_en_linea=t_estados % screen_testados_linea;
 
 	int t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
+#endif
 
 	//printf ("Before changing turbo, t-scanline: %d, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_scanline,t_estados,t_estados_en_linea,t_estados_percx);
 
@@ -650,13 +654,14 @@ void cpu_set_turbo_speed(void)
 	t_estados=antes_t_estados * cpu_turbo_speed;
 
 
+#if DEBUG
 	t_estados_en_linea=t_estados % screen_testados_linea;
 
 	t_estados_percx=(t_estados_en_linea*100)/screen_testados_linea;
 
-	//printf ("After changing turbo, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_estados,t_estados_en_linea,t_estados_percx);
-	//printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
-
+	printf ("After changing turbo, t-states: %d, t-states in line: %d, percentaje column: %d%%\n",t_estados,t_estados_en_linea,t_estados_percx);
+	printf ("Calculated t-scanline according to t-states: %d\n",t_estados / screen_testados_linea);
+#endif
 
 
         init_rainbow();
@@ -1110,676 +1115,487 @@ char *string_machines_list_description=
 
 void cpu_help(void)
 {
-	printf ("Usage:\n"
-		"[--tape] file      Insert input standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
-		"[--realtape] file  Insert input real tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
-		"[--snap] file      Load snapshot file. Supported formats: Spectrum: .Z80, .ZX, .SP, .SNA -- ZX80: .ZX, .O, .80 -- ZX81: .ZX, .P, .81, .Z81\n"
-		"[--slotcard] file  Insert Z88 EPROM/Flash file. Supported formats: .EPR, .63, .EPROM, .FLASH\n"
-		"Note: if you write a tape/snapshot/card file name without --tape, --realtape, --snap or --slotcard parameters, the emulator will try to guess file type (it's the same as SmartLoad on the menu)\n"
-		"\n"
+	printf("Usage:\n");
+	printf("[--tape] file      Insert input standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n");
+	printf("[--realtape] file  Insert input real tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n");
+	printf("[--snap] file      Load snapshot file. Supported formats: Spectrum: .Z80, .ZX, .SP, .SNA -- ZX80: .ZX, .O, .80 -- ZX81: .ZX, .P, .81, .Z81\n");
+	printf("[--slotcard] file  Insert Z88 EPROM/Flash file. Supported formats: .EPR, .63, .EPROM, .FLASH\n");
+	printf("Note: if you write a tape/snapshot/card file name without --tape, --realtape, --snap or --slotcard parameters, the emulator will try to guess file type (it's the same as SmartLoad on the menu)\n\n");
 
-		"--outtape file     Insert output standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O -- ZX81: .P\n"
+	printf("--outtape file     Insert output standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O -- ZX81: .P\n");
 
-		"--zoom n           Total Zoom Factor\n"
-		"--vo driver        Video output driver. Valid drivers: ");
-
+	printf("--zoom n           Total Zoom Factor\n");
+	printf("--vo driver        Video output driver. Valid drivers:");
 #ifdef USE_COCOA
-	printf ("cocoa ");
+	printf(" cocoa");
 #endif
-
 #ifdef COMPILE_XWINDOWS
-	printf ("xwindows ");
+	printf(" xwindows");
 #endif
-
 #ifdef COMPILE_SDL
-        printf ("sdl ");
+	printf(" sdl");
 #endif
-
-
 #ifdef COMPILE_FBDEV
-	printf ("fbdev ");
+	printf(" fbdev");
 #endif
-
-
 #ifdef COMPILE_CACA
-        printf ("caca ");
+	printf(" caca");
 #endif
-
 #ifdef COMPILE_AA
-        printf ("aa ");
+	printf(" aa");
 #endif
-
 #ifdef COMPILE_CURSES
-	printf ("curses ");
+	printf(" curses");
 #endif
-
-
 #ifdef COMPILE_STDOUT
-	printf ("stdout ");
+	printf(" stdout");
 #endif
-
 #ifdef COMPILE_SIMPLETEXT
-        printf ("simpletext ");
+	printf(" simpletext");
 #endif
+	printf(" null\n");
 
+	printf("--vofile file      Also output video to raw file\n");
+	printf("--vofilefps n      FPS of the output video [1|2|5|10|25|50] (default:5)\n");
 
-	printf ("null\n");
-
-
-	printf ("--vofile file      Also output video to raw file\n");
-	printf ("--vofilefps n      FPS of the output video [1|2|5|10|25|50] (default:5)\n");
-
-
-
-	printf ("--ao driver        Audio output driver. Valid drivers: ");
-
+	printf("--ao driver        Audio output driver. Valid drivers:");
 #ifdef COMPILE_PULSE
-        printf ("pulse ");
+	printf(" pulse");
 #endif
-
 #ifdef COMPILE_ALSA
-        printf ("alsa ");
+	printf(" alsa");
 #endif
-
 #ifdef COMPILE_SDL
-        printf ("sdl ");
+	printf(" sdl");
 #endif
-
 #ifdef COMPILE_DSP
-        printf ("dsp ");
+	printf(" dsp");
 #endif
-
 #ifdef COMPILE_COREAUDIO
-        printf ("coreaudio ");
+	printf(" coreaudio");
 #endif
-
-
-        printf ("null\n");
-
-
-
+	printf(" null\n");
 
 #ifdef USE_SNDFILE
-	printf ("--aofile file      Also output sound to wav or raw file\n");
+	printf("--aofile file      Also output sound to wav or raw file\n");
 #else
-	printf ("--aofile file      Also output sound to raw file\n");
+	printf("--aofile file      Also output sound to raw file\n");
 #endif
 
-	printf ("--version          Get emulator version and exit. Must be the first command line setting\n");
+	printf("--version          Get emulator version and exit. Must be the first command line setting\n\n");
 
-	printf ("\n");
+	printf("--machine          Machine type: \n");
+	printf("%s",string_machines_list_description);
+	printf("\n");
 
-	printf ("--machine          Machine type: \n");
+	printf("--noconfigfile     Do not load configuration file. This parameter must be the first and it's ignored if written on config file\n");
+	printf("--experthelp       Show expert options\n\n");
 
-	printf ("%s",string_machines_list_description);
-
-
-
-		printf ("\n"
-		"--noconfigfile     Do not load configuration file. This parameter must be the first and it's ignored if written on config file\n"
-		"--experthelp       Show expert options\n"
-		"\n"
-		"Any command line setting shown here or on experthelp can be written on a configuration file,\n"
-		"this configuration file is on your home directory with name: " ZESARUX_CONFIG_FILE "\n"
-
-		"\n"
+	printf("Any command line setting shown here or on expert help can be written on a configuration file,\n");
+	printf("this configuration file is on your home directory with name: " ZESARUX_CONFIG_FILE "\n\n");
 
 #ifdef MINGW
-		"Note: On Windows command prompt, all emulator messages are supressed (except the initial copyright message).\n"
-		"To avoid this, you must specify at least one parameter on command line.\n\n"
+	printf("Note: On Windows command prompt, all emulator messages are supressed (except the initial copyright message).\n");
+	printf("To avoid this, you must specify at least one parameter on command line.\n\n");
 #endif
-
-              );
-
 }
 
 void cpu_help_expert(void)
 {
+	printf("Expert options, in sections: \n");
 
-	printf ("Expert options, in sections: \n"
-		"\n"
-		"\n"
-		"Debugging\n"
-		"---------\n"
-		"\n"
-		"--verbose n                Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
-		"--debugregisters           Debug CPU Registers on text console\n"
-	        "--showcompileinfo          Show compilation information\n"
-		"--debugconfigfile          Debug parsing of configuration file (and .config files). This parameter must be the first and it's ignored if written on config file\n"
-		"--testconfig               Test configuration and exit without starting emulator\n"
+	printf("\n\nDebugging\n---------\n\n");
 
+	printf("--verbose n                Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n");
+	printf("--debugregisters           Debug CPU Registers on text console\n");
+	printf("--showcompileinfo          Show compilation information\n");
+	printf("--debugconfigfile          Debug parsing of configuration file (and .config files). This parameter must be the first and it's ignored if written on config file\n");
+	printf("--testconfig               Test configuration and exit without starting emulator\n");
 
-
-
-
-
-
-		"--romfile file             Select custom ROM file\n"
-		"--loadbinary file addr len Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n"
-		"--loadbinarypath path      Select initial Load Binary path\n"
-		"--savebinarypath path      Select initial Save Binary path\n"
-		"--keyboardspoolfile file   Insert spool file for keyboard presses\n"
+	printf("--romfile file             Select custom ROM file\n");
+	printf("--loadbinary file addr len Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n");
+	printf("--loadbinarypath path      Select initial Load Binary path\n");
+	printf("--savebinarypath path      Select initial Save Binary path\n");
+	printf("--keyboardspoolfile file   Insert spool file for keyboard presses\n");
 #ifdef USE_PTHREADS
-		"--enable-remoteprotocol    Enable remote protocol\n"
-		"--remoteprotocol-port n    Set remote protocol port (default: 10000)\n"
+	printf("--enable-remoteprotocol    Enable remote protocol\n");
+	printf("--remoteprotocol-port n    Set remote protocol port (default: 10000)\n");
 #endif
 
 #ifdef MINGW
-		"--nodisableconsole         Do not disable text output on this console. On Windows, text output is disabled unless you specify "
-		"at least one parameter on command line, or this parameter on command line or on configuration file. \n"
+	printf("--nodisableconsole         Do not disable text output on this console. On Windows, text output is disabled unless you specify ");
+	printf("at least one parameter on command line, or this parameter on command line or on configuration file. \n");
 #endif
 
-	  "--enable-breakpoints       Enable breakpoints handling.\n"
+	printf("--enable-breakpoints       Enable breakpoints handling.\n");
 
-);
+	printf("--set-breakpoint n s       Set breakpoint with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n", MAX_BREAKPOINTS_CONDITIONS);
 
-printf(
-		"--set-breakpoint n s       Set breakpoint with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
-);
+	printf("--set-breakpointaction n s Set breakpoint action with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n", MAX_BREAKPOINTS_CONDITIONS);
 
-printf(
-		"--set-breakpointaction n s Set breakpoint action with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
-);
+	printf("--hardware-debug-ports     Enables hardware debug ports to be able to show on console numbers or ascii characters\n");
+	printf("-—dump-ram-to-file f       Dump memory from 4000h to ffffh to a file, when exiting emulator\n");
 
-printf (
-	  "--hardware-debug-ports     Enables hardware debug ports to be able to show on console numbers or ascii characters\n"
-	  "-—dump-ram-to-file f       Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
-		"\n"
-		"\n"
-		"CPU Core\n"
-		"--------\n"
-		"\n"
+	printf("\n\nCPU Core\n--------\n\n");
 
+	printf("--cpuspeed n               Set CPU speed in percentage\n");
+	printf("--denyturbozxunoboot       Deny setting turbo mode on ZX-Uno boot\n");
+	printf("--tbblue-fast-boot-mode    Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n");
+	//no uso esto de momento printf("--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n");
 
-		"--cpuspeed n               Set CPU speed in percentage\n"
-		"--denyturbozxunoboot       Deny setting turbo mode on ZX-Uno boot\n"
-		"--tbblue-fast-boot-mode    Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n"
-		//no uso esto de momento "--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n"
+	printf("\n\nTapes, Snapshots\n----------------\n\n");
 
-		"\n"
-		"\n"
-		"Tapes, Snapshots\n"
-		"----------------\n"
-		"\n"
-		"--noautoload               No autoload tape file on Spectrum, ZX80 or ZX81\n"
-		"--noautoselectfileopt      Do not autoselect emulation options for known snap and tape files\n"
-		"--simulaterealload         Simulate real tape loading\n"
-		"--simulaterealloadfast     Enable fast real tape loading\n"
-		"--smartloadpath path       Select initial smartload path\n"
-		"--quicksavepath path       Select path for quicksave\n"
-		"--autoloadsnap             Load last snapshot on start\n"
-		"--autosavesnap             Save snapshot on exit\n"
-		"--autosnappath path        Folder to save/load automatic snapshots\n"
-		"--tempdir path             Folder to save temporary files. Folder must exist and have read and write permissions\n"
-		"--sna-no-change-machine    Do not change machine when loading sna snapshots. Just load it on memory\n"
-		
+	printf("--noautoload               No autoload tape file on Spectrum, ZX80 or ZX81\n");
+	printf("--noautoselectfileopt      Do not autoselect emulation options for known snap and tape files\n");
+	printf("--simulaterealload         Simulate real tape loading\n");
+	printf("--simulaterealloadfast     Enable fast real tape loading\n");
+	printf("--smartloadpath path       Select initial smartload path\n");
+	printf("--quicksavepath path       Select path for quicksave\n");
+	printf("--autoloadsnap             Load last snapshot on start\n");
+	printf("--autosavesnap             Save snapshot on exit\n");
+	printf("--autosnappath path        Folder to save/load automatic snapshots\n");
+	printf("--tempdir path             Folder to save temporary files. Folder must exist and have read and write permissions\n");
+	printf("--sna-no-change-machine    Do not change machine when loading sna snapshots. Just load it on memory\n");
 
-		"\n"
-		"\n"
-		"Audio Features\n"
-		"--------------\n"
-		"\n"
+	printf("\n\nAudio Features\n--------------\n\n");
 
-		"--disableayspeech          Disable AY Speech sounds\n"
-		"--disableenvelopes         Disable AY Envelopes\n"
-		"--disablebeeper            Disable Beeper\n"
-    "--disablerealbeeper        Disable real Beeper sound\n"
-		"--totalaychips  n          Number of ay chips. Default 1\n"
-		"--enableaudiodac           Enable DAC emulation. By default Specdrum\n"
-		"--audiodactype type        Select one of audiodac types: "
-);
-		audiodac_print_types();
+	printf("--disableayspeech          Disable AY Speech sounds\n");
+	printf("--disableenvelopes         Disable AY Envelopes\n");
+	printf("--disablebeeper            Disable Beeper\n");
+	printf("--disablerealbeeper        Disable real Beeper sound\n");
+	printf("--totalaychips  n          Number of ay chips. Default 1\n");
+	printf("--enableaudiodac           Enable DAC emulation. By default Specdrum\n");
+	printf("--audiodactype type        Select one of audiodac types: ");
+	audiodac_print_types();
+	printf("\n");
 
-printf (
-		"\n"
-		"--audiovolume n            Sets the audio output volume to percentage n\n"
-		"--zx8081vsyncsound         Enable vsync/tape sound on ZX80/81\n"
+	printf("--audiovolume n            Sets the audio output volume to percentage n\n");
+	printf("--zx8081vsyncsound         Enable vsync/tape sound on ZX80/81\n");
 
-		"--ayplayer-end-exit        Exit emulator when end playing current ay file\n"
-		"--ayplayer-end-no-repeat   Do not repeat playing from the beginning when end playing current ay file\n"
-		"--ayplayer-inf-length n    Limit to n seconds to ay tracks with infinite lenght\n"
-		"--ayplayer-any-length n    Limit to n seconds to all ay tracks\n"
-		"--ayplayer-cpc             Set AY Player to CPC mode (default: Spectrum)\n"
+	printf("--ayplayer-end-exit        Exit emulator when end playing current ay file\n");
+	printf("--ayplayer-end-no-repeat   Do not repeat playing from the beginning when end playing current ay file\n");
+	printf("--ayplayer-inf-length n    Limit to n seconds to ay tracks with infinite lenght\n");
+	printf("--ayplayer-any-length n    Limit to n seconds to all ay tracks\n");
+	printf("--ayplayer-cpc             Set AY Player to CPC mode (default: Spectrum)\n");
 
+	printf("\n\nAudio Driver Settings\n---------------------\n\n");
 
-		"\n"
-		"\n"
-		"Audio Driver Settings\n"
-		"---------------------\n"
-		"\n"
-
-		"--noreset-audiobuffer-full Do not reset audio buffer when it's full. By default it does reset the buffer when full, it helps reducing latency\n"
+	printf("--noreset-audiobuffer-full Do not reset audio buffer when it's full. By default it does reset the buffer when full, it helps reducing latency\n");
 
 /*
 #ifdef USE_PTHREADS
-		"--enable-silencedetector   Enable silence detector. Silence detector is disabled by default as this is a pthreads version\n"
-		"--disable-silencedetector  Disable silence detector. Silence detector is disabled by default as this is a pthreads version\n"
+	printf("--enable-silencedetector   Enable silence detector. Silence detector is disabled by default as this is a pthreads version\n");
+	printf("--disable-silencedetector  Disable silence detector. Silence detector is disabled by default as this is a pthreads version\n");
 #else 
-		"--enable-silencedetector   Enable silence detector. Silence detector is enabled by default as this is a no-pthreads version\n"
-		"--disable-silencedetector  Disable silence detector. Silence detector is enabled by default as this is a no-pthreads version\n"		
+	printf("--enable-silencedetector   Enable silence detector. Silence detector is enabled by default as this is a no-pthreads version\n");
+	printf("--disable-silencedetector  Disable silence detector. Silence detector is enabled by default as this is a no-pthreads version\n");
 #endif
 */
 
-		"--enable-silencedetector   Enable silence detector. Silence detector is enabled by default\n"
-		"--disable-silencedetector  Disable silence detector. Silence detector is enabled by default\n"
-
-
+	printf("--enable-silencedetector   Enable silence detector. Silence detector is enabled by default\n");
+	printf("--disable-silencedetector  Disable silence detector. Silence detector is enabled by default\n");
 
 #ifdef COMPILE_ALSA
-		"--alsaperiodsize n         Alsa audio periodsize multiplier (2 or 4). Default 2. Lower values reduce latency but can increase cpu usage\n"
-
-
+	printf("--alsaperiodsize n         Alsa audio periodsize multiplier (2 or 4). Default 2. Lower values reduce latency but can increase cpu usage\n");
 #ifdef USE_PTHREADS
-
-		"--fifoalsabuffersize n     Alsa fifo buffer size multiplier (4 to 10). Default 4. Lower values reduce latency but can increase cpu usage\n"
-
+	printf("--fifoalsabuffersize n     Alsa fifo buffer size multiplier (4 to 10). Default 4. Lower values reduce latency but can increase cpu usage\n");
 #endif
 #endif
-
-
 
 #ifdef COMPILE_PULSE
 #ifdef USE_PTHREADS
-                "--pulseperiodsize n        Pulse audio periodsize multiplier (1 to 4). Default 1. Lower values reduce latency but can increase cpu usage\n"
-                "--fifopulsebuffersize n    Pulse fifo buffer size multiplier (4 to 10). Default 10. Lower values reduce latency but can increase cpu usage\n"
+	printf("--pulseperiodsize n        Pulse audio periodsize multiplier (1 to 4). Default 1. Lower values reduce latency but can increase cpu usage\n");
+	printf("--fifopulsebuffersize n    Pulse fifo buffer size multiplier (4 to 10). Default 10. Lower values reduce latency but can increase cpu usage\n");
 #endif
 #endif
 
 #ifdef COMPILE_COREAUDIO
-								"--fifocorebuffersize n     Coreaudio fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
+	printf("--fifocorebuffersize n     Coreaudio fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n");
 #endif
 
 #ifdef COMPILE_SDL
-		);
-
-
-		//Cerramos el printf para que quede mas claro que hacemos un printf con un parametro
-		printf (
-		"--sdlsamplesize n          SDL audio sample size (128 to 2048). Default %d. Lower values reduce latency but can increase cpu usage\n",DEFAULT_AUDIOSDL_SAMPLES);
-		printf (
-		"--fifosdlbuffersize n      SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
-		"--sdlrawkeyboard           SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
-
-
-		printf (
+	//Cerramos el printf para que quede mas claro que hacemos un printf con un parametro
+	printf("--sdlsamplesize n          SDL audio sample size (128 to 2048). Default %d. Lower values reduce latency but can increase cpu usage\n", DEFAULT_AUDIOSDL_SAMPLES);
+	printf("--fifosdlbuffersize n      SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n");
+	printf("--sdlrawkeyboard           SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
 #endif
 
+	printf("\n\nVideo Features\n--------------\n\n");
 
+	printf("--realvideo                Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n");
+	printf("--no-detect-realvideo      Disable real video autodetection\n");
 
-		"\n"
-		"\n"
-		"Video Features\n"
-		"--------------\n"
-		"\n"
+	printf("--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n");
 
-		"--realvideo                Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
-		"--no-detect-realvideo      Disable real video autodetection\n"
+	printf("--snoweffect               Enable snow effect support for Spectrum\n");
+	printf("--enablegigascreen         Enable Gigascreen video support\n");
+	printf("--enableinterlaced         Enable Interlaced video support\n");
 
-		"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
+	printf("--enableulaplus            Enable ULAplus video modes\n");
+	printf("--enablespectra            Enable Spectra video modes\n");
+	printf("--enabletimexvideo         Enable Timex video modes\n");
+	printf("--disablerealtimex512      Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n");
+	printf("--enablezgx                Enable ZGX Sprite chip\n");
+	printf("--autodetectwrx            Enable WRX autodetect setting on ZX80/ZX81\n");
+	printf("--wrx                      Enable WRX mode on ZX80/ZX81\n");
+	printf("--vsync-minimum-length n   Set ZX80/81 Vsync minimum lenght in t-states (minimum 100, maximum 999)\n");
+	printf("--chroma81                 Enable Chroma81 support on ZX80/ZX81\n");
+	printf("--videozx8081 n            Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n");
+	printf("--videofastblack           Emulate black screen on fast mode on ZX80/ZX81\n");
+	printf("--scr file                 Load Screen File at startup\n");
 
-		"--snoweffect               Enable snow effect support for Spectrum\n"
-		"--enablegigascreen         Enable Gigascreen video support\n"
-		"--enableinterlaced         Enable Interlaced video support\n"
-
-		"--enableulaplus            Enable ULAplus video modes\n"
-		"--enablespectra            Enable Spectra video modes\n"
-		"--enabletimexvideo         Enable Timex video modes\n"
-		"--disablerealtimex512      Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n"
-		"--enablezgx                Enable ZGX Sprite chip\n"
-		"--autodetectwrx            Enable WRX autodetect setting on ZX80/ZX81\n"
-		"--wrx                      Enable WRX mode on ZX80/ZX81\n"
-		"--vsync-minimum-length n   Set ZX80/81 Vsync minimum lenght in t-states (minimum 100, maximum 999)\n"
-		"--chroma81                 Enable Chroma81 support on ZX80/ZX81\n"
-		"--videozx8081 n            Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
-		"--videofastblack           Emulate black screen on fast mode on ZX80/ZX81\n"
-		"--scr file                 Load Screen File at startup\n"
-
-
-
-		"\n"
-		"\n"
-		"Video Driver Settings\n"
-		"---------------------\n"
-		"\n"
-
+	printf("\n\nVideo Driver Settings\n---------------------\n\n");
 
 #ifdef USE_XEXT
-	        "--disableshm               Disable X11 Shared Memory\n"
+	printf("--disableshm               Disable X11 Shared Memory\n");
 #endif
 
-		"--nochangeslowparameters   Do not change any performance parameters (frameskip, realvideo, etc) "
-		"on slow machines like raspberry, etc\n"
+	printf("--nochangeslowparameters   Do not change any performance parameters (frameskip, realvideo, etc) ");
+	printf("on slow machines like raspberry, etc\n");
 
 #ifdef COMPILE_AA
-                "--aaslow                   Use slow rendering on aalib\n"
+	printf("--aaslow                   Use slow rendering on aalib\n");
 #endif
 
-	    "--arttextthresold n        Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
-	    "--disablearttext           Disable artistic emulation for curses & stdout & simpletext\n"
-		"--autoredrawstdout         Enable automatic display redraw for stdout & simpletext drivers\n"
-		"--sendansi                 Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
+	printf("--arttextthresold n        Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n");
+	printf("--disablearttext           Disable artistic emulation for curses & stdout & simpletext\n");
+	printf("--autoredrawstdout         Enable automatic display redraw for stdout & simpletext drivers\n");
+	printf("--sendansi                 Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n");
 
-		"--textfps n                Sets FPS for stdout and simpletext text drivers\n"
+	printf("--textfps n                Sets FPS for stdout and simpletext text drivers\n");
 
 #ifdef COMPILE_FBDEV
-                "--no-use-ttyfbdev          Do not use a tty on fbdev driver. It disables keyboard\n"
-                "--no-use-ttyrawfbdev       Do not use keyboard on raw mode for fbdev driver\n"
-                "--use-all-res-fbdev        Use all virtual resolution on fbdev driver. Experimental feature\n"
-                "--decimal-full-scale-fbdev Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
+	printf("--no-use-ttyfbdev          Do not use a tty on fbdev driver. It disables keyboard\n");
+	printf("--no-use-ttyrawfbdev       Do not use keyboard on raw mode for fbdev driver\n");
+	printf("--use-all-res-fbdev        Use all virtual resolution on fbdev driver. Experimental feature\n");
+	printf("--decimal-full-scale-fbdev Use non integer zoom to fill the display with full screen mode on fbdev driver\n");
 #ifdef EMULATE_RASPBERRY
-                "--fbdev-margin-width n     Increment fbdev width size on n pixels on Raspberry full screen\n"
-                "--fbdev-margin-height n    Increment fbdev width height on n pixels on Raspberry full screen\n"
+	printf("--fbdev-margin-width n     Increment fbdev width size on n pixels on Raspberry full screen\n");
+	printf("--fbdev-margin-height n    Increment fbdev width height on n pixels on Raspberry full screen\n");
 #endif
 
 #endif
 
+	printf("\n\nGUI Settings\n---------------------\n\n");
 
-		"\n"
-		"\n"
-		"GUI Settings\n"
-		"---------------------\n"
-		"\n"
+	//printf("--invespokerom n           Inves rom poke value\n");
 
-
-		//"--invespokerom n           Inves rom poke value\n"
-
-		"--zoomx n                  Horizontal Zoom Factor\n"
-		"--zoomy n                  Vertical Zoom Factor\n"
+	printf("--zoomx n                  Horizontal Zoom Factor\n");
+	printf("--zoomy n                  Vertical Zoom Factor\n");
 		
-		"--reduce-075               Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-		"--reduce-075-offset-x n    Destination offset x on reduced display\n"
-		"--reduce-075-offset-y n    Destination offset y on reduced display\n"
+	printf("--reduce-075               Reduce display size 4/3 (divide by 4, multiply by 3)\n");
+	printf("--reduce-075-offset-x n    Destination offset x on reduced display\n");
+	printf("--reduce-075-offset-y n    Destination offset y on reduced display\n");
 
-		"--enable-watermark         Adds a watermark to the display. Needs realvideo\n"
-		"--watermark-position n     Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n"
+	printf("--enable-watermark         Adds a watermark to the display. Needs realvideo\n");
+	printf("--watermark-position n     Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n");
 
-		"--menucharwidth n          Character size width for menus valid values: 8,7,6 or 5\n"
-		"--frameskip n              Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-		"--disable-autoframeskip    Disable autoframeskip\n"
+	printf("--menucharwidth n          Character size width for menus valid values: 8,7,6 or 5\n");
+	printf("--frameskip n              Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n");
+	printf("--disable-autoframeskip    Disable autoframeskip\n");
 
+	printf("--fullscreen               Enable full screen\n");
+	printf("--disableborder            Disable Border\n");
+	printf("--hidemousepointer         Hide Mouse Pointer. Not all video drivers support this\n");
+	printf("--disablemenumouse         Disable mouse on emulator menu\n");
 
-		"--fullscreen               Enable full screen\n"
-		"--disableborder            Disable Border\n"
-		"--hidemousepointer         Hide Mouse Pointer. Not all video drivers support this\n"
-		"--disablemenumouse         Disable mouse on emulator menu\n"
+	//printf("--overlayinfo              Overlay on screen some machine info, like when loading tape\n");
 
-		//"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
-
-		"--disablefooter            Disable window footer\n"
-		"--disablemultitaskmenu     Disable multitasking menu\n"
-		"--nosplash                 Disable all splash texts\n"
+	printf("--disablefooter            Disable window footer\n");
+	printf("--disablemultitaskmenu     Disable multitasking menu\n");
+	printf("--nosplash                 Disable all splash texts\n");
 #ifndef MINGW
-		"--cpu-usage                Show host CPU usage on footer\n"
+	printf("--cpu-usage                Show host CPU usage on footer\n");
 #endif
-		"--nowelcomemessage         Disable welcome message\n"
-		"--red                      Force display mode with red colour\n"
-		"--green                    Force display mode with green colour\n"
-		"--blue                     Force display mode with blue colour\n"
-		"  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
-		"--inversevideo             Inverse display colours\n"
-		"--realpalette              Use real Spectrum colour palette according to info by Richard Atkinson\n"
-		"--disabletooltips          Disable tooltips on menu\n"
-		"--forcevisiblehotkeys      Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed\n"
-		"--forceconfirmyes          Force confirmation dialogs yes/no always to yes\n"
-		"--gui-style s              Set GUI style. Available: ");
+	printf("--nowelcomemessage         Disable welcome message\n");
+	printf("--red                      Force display mode with red colour\n");
+	printf("--green                    Force display mode with green colour\n");
+	printf("--blue                     Force display mode with blue colour\n");
+	printf("  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n");
+	printf("--inversevideo             Inverse display colours\n");
+	printf("--realpalette              Use real Spectrum colour palette according to info by Richard Atkinson\n");
+	printf("--disabletooltips          Disable tooltips on menu\n");
+	printf("--forcevisiblehotkeys      Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed\n");
+	printf("--forceconfirmyes          Force confirmation dialogs yes/no always to yes\n");
+	printf("--gui-style s              Set GUI style. Available: ");
+	estilo_gui_retorna_nombres();
+	printf("\n");
 
-		estilo_gui_retorna_nombres();
+	printf("--hide-dirs                Do not show directories on file selector menus\n");
+	printf("--limitopenmenu            Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n");
+	printf("--disablemenu              Disable menu. Any event that opens the menu will exit the emulator\n");
 
+	printf("\n\nHardware Settings\n-----------------\n\n");
 
-printf (
-		"\n"
-		"--hide-dirs                Do not show directories on file selector menus\n"
-		"--limitopenmenu            Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
-		"--disablemenu              Disable menu. Any event that opens the menu will exit the emulator\n"
-		"\n"
-		"\n"
-		"Hardware Settings\n"
-		"-----------------\n"
-		"\n"
+	printf("--printerbitmapfile f      Sends printer output to image file. Supported formats: pbm, txt\n");
+	printf("--printertextfile f        Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n");
+	printf("--redefinekey src dest     Redefine key scr to be key dest. You can write maximum 10 redefined keys\n");
+	printf("                           Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n");
+	printf("                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n");
 
-		"--printerbitmapfile f      Sends printer output to image file. Supported formats: pbm, txt\n"
-		"--printertextfile f        Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
-		"--redefinekey src dest     Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
-                "                           Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
-                "                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+	printf("--recreatedzx              Enable support for Recreated ZX Spectrum Keyboard\n");
 
-                "--recreatedzx              Enable support for Recreated ZX Spectrum Keyboard\n"
+	printf("--def-f-function key action  Define F key to do an action. action can be: ");
+	int i;
+	for (i = 0; i < MAX_F_FUNCTIONS; i++)
+		printf("%s ",defined_f_functions_array[i].texto_funcion);
+	printf("\n");
 
+	printf("--enablekempstonmouse      Enable kempston mouse emulation\n");
+	printf("--spectrum-reduced-core    Use Spectrum reduced core. It uses less cpu, ideal for slow devices like Raspberry Pi One and Zero\n");
+	printf("                           The following features will NOT be available or will NOT be properly emulated when using this core:\n");
+	printf("                           Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file\n");
+	printf("--no-spectrum-reduced-core Do not use Spectrum reduced core\n");
 
-		);
+	printf("\n\nMemory Settings\n-----------------\n\n");
 
+	printf("--zx8081mem n              Emulate 1,2,...16 kb of memory on ZX80/ZX81\n");
+	printf("--zx8081ram8K2000          Emulate 8K RAM in 2000H for ZX80/ZX81\n");
+	printf("--zx8081ram16K8000         Emulate 16K RAM in 8000H for ZX80/ZX81\n");
+	printf("--zx8081ram16KC000         Emulate 16K RAM in C000H for ZX80/ZX81\n");
+	printf("--acemem n                 Emulate 3, 19 or 35 kb of memory on Jupiter Ace\n");
 
-		printf (
-	  "--def-f-function key action  Define F key to do an action. action can be: ");
+	printf("--128kmem n                Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512\n");
 
-		int i;
-			for (i=0;i<MAX_F_FUNCTIONS;i++) {
-				printf ("%s ",defined_f_functions_array[i].texto_funcion);
-			}
+	printf("\n\nPrint char traps & Text to Speech\n---------------------------------\n\n");
 
+	printf("--enableprintchartrap      Enable traps for standard ROM print char calls and non standard second & third traps. On Spectrum, ZX80, ZX81 machines, standard ROM calls are those using RST10H. On Z88, are those using OS_OUT and some other functions. Note: it is enabled by default on stdout & simpletext drivers\n");
+	printf("--disableprintchartrap     Disable traps for ROM print char calls and second & third traps.\n");
 
+	printf("--linewidth n              Print char line width\n");
 
-		printf (
-		"\n"
-		"--enablekempstonmouse      Enable kempston mouse emulation\n"
-		"--spectrum-reduced-core    Use Spectrum reduced core. It uses less cpu, ideal for slow devices like Raspberry Pi One and Zero\n"
-		"                           The following features will NOT be available or will NOT be properly emulated when using this core:\n"
-		"                           Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file\n"
-		"--no-spectrum-reduced-core Do not use Spectrum reduced core\n"
-                "\n"
-                "Memory Settings\n"
-                "-----------------\n"
-                "\n"
+	printf("--automaticdetectchar      Enable automatic detection & try all method to find print character routines, for games not using RST 10H\n");
+	printf("--secondtrapchar n         Print Char second trap address\n");
+	printf("--secondtrapsum32          Print Char second trap sum 32 to character\n");
+	printf("--thirdtrapchar n          Print Char third trap address\n");
+	printf("--linewidthwaitspace       Print Char wait for a space, or a comma, or a dot, or a semicolon, to end a line\n");
+	printf("--textspeechprogram p      Specify a path to a program or script to be sent the emulator text shown. For example, for text to speech: speech_filters/festival_filter.sh or speech_filters/macos_say_filter.sh\n");
+	printf("--textspeechstopprogram p  Specify a path to a program or script in charge of stopping the running speech program. For example, speech_filters/stop_festival_filter.sh\n");
+	printf("--textspeechwait           Wait and pause the emulator until the Speech program returns\n");
+	printf("--textspeechmenu           Also send text menu entries to Speech program\n");
+	printf("--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n");
 
-                "--zx8081mem n              Emulate 1,2,...16 kb of memory on ZX80/ZX81\n"
-                "--zx8081ram8K2000          Emulate 8K RAM in 2000H for ZX80/ZX81\n"
-                "--zx8081ram16K8000         Emulate 16K RAM in 8000H for ZX80/ZX81\n"
-                "--zx8081ram16KC000         Emulate 16K RAM in C000H for ZX80/ZX81\n"
-		"--acemem n                 Emulate 3, 19 or 35 kb of memory on Jupiter Ace\n"
+	printf("\n\nStorage Settings\n----------------\n\n");
 
-		"--128kmem n                Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512"
+	printf("--mmc-file f               Set mmc image file\n");
+	printf("--enable-mmc               Enable MMC emulation. Usually requires --mmc-file\n");
+	printf("--mmc-write-protection     Enable MMC write protection\n");
+	printf("--mmc-no-persistent-writes Disable MMC persistent writes\n");
 
+	printf("--enable-divmmc-ports      Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n");
+	printf("--enable-divmmc-paging     Enable DIVMMC paging only\n");
+	printf("--enable-divmmc            Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n");
+	printf("--divmmc-rom f             Sets divmmc firmware rom. If not set, uses default file\n");
 
+	printf("--enable-zxmmc             Enable ZXMMC emulation. Usually requires --enable-mmc\n");
 
-		"\n"
-		"\n"
-		"Print char traps & Text to Speech\n"
-		"---------------------------------\n"
-		"\n"
+	printf("--ide-file f               Set ide image file\n");
+	printf("--enable-ide               Enable IDE emulation. Usually requires --ide-file\n");
+	printf("--ide-write-protection     Enable IDE write protection\n");
+	printf("--ide-no-persistent-writes Disable IDE persistent writes\n");
 
+	printf("--enable-divide-ports      Enable DIVIDE emulation ports only, but not paging. Usually requires --enable-ide\n");
+	printf("--enable-divide-paging     Enable DIVIDE paging only\n");
+	printf("--enable-divide            Enable DIVIDE emulation. Usually requires --enable-ide\n");
+	printf("--divide-rom f             Sets divide firmware rom. If not set, uses default file\n");
 
-		"--enableprintchartrap      Enable traps for standard ROM print char calls and non standard second & third traps. On Spectrum, ZX80, ZX81 machines, standard ROM calls are those using RST10H. On Z88, are those using OS_OUT and some other functions. Note: it is enabled by default on stdout & simpletext drivers\n"
-		"--disableprintchartrap     Disable traps for ROM print char calls and second & third traps.\n"
+	printf("--enable-8bit-ide          Enable 8-bit simple IDE emulation. Requires --enable-ide\n");
 
-		"--linewidth n              Print char line width\n"
+	printf("--enable-esxdos-handler    Enable ESXDOS traps handler. Requires divmmc or divide paging emulation\n");
+	printf("--esxdos-root-dir p        Set ESXDOS root directory for traps handler. Uses current directory by default.\n");
 
-		"--automaticdetectchar      Enable automatic detection & try all method to find print character routines, for games not using RST 10H\n"
-		"--secondtrapchar n         Print Char second trap address\n"
-		"--secondtrapsum32          Print Char second trap sum 32 to character\n"
-		"--thirdtrapchar n          Print Char third trap address\n"
-		"--linewidthwaitspace       Print Char wait for a space, or a comma, or a dot, or a semicolon, to end a line\n"
-		"--textspeechprogram p      Specify a path to a program or script to be sent the emulator text shown. For example, for text to speech: speech_filters/festival_filter.sh or speech_filters/macos_say_filter.sh\n"
-		"--textspeechstopprogram p  Specify a path to a program or script in charge of stopping the running speech program. For example, speech_filters/stop_festival_filter.sh\n"
-		"--textspeechwait           Wait and pause the emulator until the Speech program returns\n"
-		"--textspeechmenu           Also send text menu entries to Speech program\n"
-		"--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n"
+	printf("--enable-zxpand            Enable ZXpand emulation\n");
+	printf("--zxpand-root-dir p        Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n");
+	printf("                           Note: ZXpand does not use --mmc-file setting\n");
 
+	printf("--zxunospifile path          File to use on ZX-Uno as SPI Flash. Default: zxuno.flash\n");
+	printf("--zxunospi-write-protection  Enable ZX-Uno SPI Flash write protection\n");
+	printf("--zxunospi-persistent-writes Enable ZX-Uno SPI Flash persistent writes\n");
 
+	printf("--dandanator-rom f         Set ZX Dandanator rom file\n");
+	printf("--enable-dandanator        Enable ZX Dandanator emulation. Requires --dandanator-rom\n");
+	printf("--dandanator-press-button  Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n");
+	printf("--superupgrade-flash f     Set Superupgrade flash file\n");
+	printf("--enable-superupgrade      Enable Superupgrade emulation. Requires --superupgrade-flash\n");
+	printf("--kartusho-rom f           Set Kartusho rom file\n");
+	printf("--enable-kartusho          Enable Kartusho emulation. Requires --kartusho-rom\n");
+	printf("--dsk-file f               Set +3 DSK image file\n");
+	printf("--enable-dsk               Enable +3 DSK emulation. Usually requires --dsk-file\n");
+	printf("--dsk-write-protection     Enable +3 DSK write protection\n");
+	printf("--dsk-no-persistent-writes Disable +3 DSK persistent writes\n");
+	printf("--enable-betadisk          Enable Betadisk emulation\n");
+	printf("--trd-file f               Set trd image file\n");
+	printf("--enable-trd               Enable TRD emulation. Usually requires --trd-file\n");
+	printf("--trd-write-protection     Enable TRD write protection\n");
+	printf("--trd-no-persistent-writes Disable TRD persistent writes\n");
 
+	printf("--enable-ql-mdv-flp        Enable QL Microdrive & Floppy emulation\n");
+	printf("--ql-mdv1-root-dir p       Set QL mdv1 root directory\n");
+	printf("--ql-mdv2-root-dir p       Set QL mdv2 root directory\n");
+	printf("--ql-flp1-root-dir p       Set QL flp1 root directory\n");
 
-		"\n"
-		"\n"
-		"Storage Settings\n"
-		"----------------\n"
-		"\n"
+	printf("\n\nExternal Tools\n--------------\n\n");
 
+	printf("--tool-sox-path p          Set external tool sox path. Path can not include spaces\n");
+	printf("--tool-unzip-path p        Set external tool unzip path. Path can not include spaces\n");
+	printf("--tool-gunzip-path p       Set external tool gunzip path. Path can not include spaces\n");
+	printf("--tool-tar-path p          Set external tool tar path. Path can not include spaces\n");
+	printf("--tool-unrar-path p        Set external tool unrar path. Path can not include spaces\n");
 
-		"--mmc-file f               Set mmc image file\n"
-		"--enable-mmc               Enable MMC emulation. Usually requires --mmc-file\n"
-		"--mmc-write-protection     Enable MMC write protection\n"
-		"--mmc-no-persistent-writes Disable MMC persistent writes\n"
+	printf("\n\nJoystick\n--------\n\n");
 
-		"--enable-divmmc-ports      Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
-		"--enable-divmmc-paging     Enable DIVMMC paging only\n"
-		"--enable-divmmc            Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
-		"--divmmc-rom f             Sets divmmc firmware rom. If not set, uses default file\n"
-
-		"--enable-zxmmc             Enable ZXMMC emulation. Usually requires --enable-mmc\n"
-
-		"--ide-file f               Set ide image file\n"
-		"--enable-ide               Enable IDE emulation. Usually requires --ide-file\n"
-		"--ide-write-protection     Enable IDE write protection\n"
-		"--ide-no-persistent-writes Disable IDE persistent writes\n"		
-
-		"--enable-divide-ports      Enable DIVIDE emulation ports only, but not paging. Usually requires --enable-ide\n"
-		"--enable-divide-paging     Enable DIVIDE paging only\n"
-		"--enable-divide            Enable DIVIDE emulation. Usually requires --enable-ide\n"
-		"--divide-rom f             Sets divide firmware rom. If not set, uses default file\n"
-
-		"--enable-8bit-ide          Enable 8-bit simple IDE emulation. Requires --enable-ide\n"
-
-
-		"--enable-esxdos-handler    Enable ESXDOS traps handler. Requires divmmc or divide paging emulation\n"
-		"--esxdos-root-dir p        Set ESXDOS root directory for traps handler. Uses current directory by default.\n"
-
-
-		"--enable-zxpand            Enable ZXpand emulation\n"
-		"--zxpand-root-dir p        Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
-		"                           Note: ZXpand does not use --mmc-file setting\n"
-
-
-
-
-
-
-		"--zxunospifile path          File to use on ZX-Uno as SPI Flash. Default: zxuno.flash\n"
-		"--zxunospi-write-protection  Enable ZX-Uno SPI Flash write protection\n"
-		"--zxunospi-persistent-writes Enable ZX-Uno SPI Flash persistent writes\n"
-
-
-                "--dandanator-rom f         Set ZX Dandanator rom file\n"
-                "--enable-dandanator        Enable ZX Dandanator emulation. Requires --dandanator-rom\n"
-                "--dandanator-press-button  Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n"
-		"--superupgrade-flash f     Set Superupgrade flash file\n"
-		"--enable-superupgrade      Enable Superupgrade emulation. Requires --superupgrade-flash\n"
-                "--kartusho-rom f           Set Kartusho rom file\n"
-                "--enable-kartusho          Enable Kartusho emulation. Requires --kartusho-rom\n"
-
-                
-
-                "--dsk-file f               Set +3 DSK image file\n"
-                "--enable-dsk               Enable +3 DSK emulation. Usually requires --dsk-file\n"
-                "--dsk-write-protection     Enable +3 DSK write protection\n"
-		"--dsk-no-persistent-writes Disable +3 DSK persistent writes\n"
-
-                "--enable-betadisk          Enable Betadisk emulation\n"
-                "--trd-file f               Set trd image file\n"
-                "--enable-trd               Enable TRD emulation. Usually requires --trd-file\n"
-                "--trd-write-protection     Enable TRD write protection\n"
-		"--trd-no-persistent-writes Disable TRD persistent writes\n"
-
-		"--enable-ql-mdv-flp        Enable QL Microdrive & Floppy emulation\n"
-		"--ql-mdv1-root-dir p       Set QL mdv1 root directory\n"
-		"--ql-mdv2-root-dir p       Set QL mdv2 root directory\n"
-		"--ql-flp1-root-dir p       Set QL flp1 root directory\n"
-
-
-
-
-		"\n"
-                "\n"
-                "External Tools\n"
-                "--------------\n"
-                "\n"
-
-
-                "--tool-sox-path p          Set external tool sox path. Path can not include spaces\n"
-                "--tool-unzip-path p        Set external tool unzip path. Path can not include spaces\n"
-                "--tool-gunzip-path p       Set external tool gunzip path. Path can not include spaces\n"
-                "--tool-tar-path p          Set external tool tar path. Path can not include spaces\n"
-                "--tool-unrar-path p        Set external tool unrar path. Path can not include spaces\n"
-
-
-		"\n"
-		"\n"
-		"Joystick\n"
-		"--------\n"
-		"\n"
-
-
-		"--joystickemulated type    Type of joystick emulated. Type can be one of: ");
-
+	printf("--joystickemulated type    Type of joystick emulated. Type can be one of: ");
 	joystick_print_types();
-		printf (" (default: %s).\n",joystick_texto[joystick_emulation]);
-		printf ("  Note: if a joystick type has spaces in its name, you must write it between \"\"\n");
+	printf(" (default: %s).\n",joystick_texto[joystick_emulation]);
+	printf("  Note: if a joystick type has spaces in its name, you must write it between \"\"\n");
 
+	printf("--disablerealjoystick      Disable real joystick emulation\n");
 
-	printf(""
-		"--disablerealjoystick      Disable real joystick emulation\n"
+	printf("--joystickevent but evt    Set a joystick button or axis to an event (changes joystick to event table)\n");
+	printf("                           If it's a button (not axis), must be specified with its number, without sign, for example: 2\n");
+	printf("                           If it's axis, must be specified with its number and sign, for example: +2 or -2\n");
+	printf("                           Event must be one of: ");
+	realjoystick_print_event_keys();
+	printf("\n");
 
-                "--joystickevent but evt    Set a joystick button or axis to an event (changes joystick to event table)\n"
-                "                           If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-                "                           If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-                "                           Event must be one of: ");
+	printf("--joystickkeybt but key    Define a key pressed when a joystick button pressed (changes joystick to key table)\n");
+	printf("                           If it's a button (not axis), must be specified with its number, without sign, for example: 2\n");
+	printf("                           If it's axis, must be specified with its number and sign, for example: +2 or -2\n");
+	printf("                           Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n");
+	printf("                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n");
+	printf("                           Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n");
 
-                realjoystick_print_event_keys();
+	printf("--joystickkeyev evt key    Define a key pressed when a joystick event is generated (changes joystick to key table)\n");
+	printf("                           Event must be one of: ");
+	realjoystick_print_event_keys();
+	printf("\n");
 
-	printf ("\n"
-		"--joystickkeybt but key    Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
-		"                           If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-        "                           If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-        "                           Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n"
-		"                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                           Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
+	printf("                           Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n");
+	printf("                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n");
+	printf("                           Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n\n");
 
+	printf("  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, ");
+	printf("and --joystickkeybt and --joystickevent are dependent on the real joystick type, because they set a button/axis number to ");
+	printf("an event or key, and button/axis number changes depending on the joystick (the exception here is the axis up/down/left/right ");
+	printf("which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n");
 
+	printf("\n");
+	printf("--clearkeylistonsmart      Clear all joystick (events and buttons) to keys table every smart loading.\n");
+	printf("                           Joystick to events table is never cleared using this setting\n");
+	printf("--cleareventlist           Clears joystick to events table\n");
+	printf("--enablejoysticksimulator  Enable real joystick simulator. Only useful on development\n");
 
-                "--joystickkeyev evt key    Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
-                "                           Event must be one of: ");
+	printf("\n\nMiscellaneous\n-------------\n\n");
 
-                realjoystick_print_event_keys();
+	printf("--saveconf-on-exit         Always save configuration when exiting emulator\n");
+	printf("--helpcustomconfig         Show help for autoconfig files\n");
+	printf("--quickexit                Exit emulator quickly: no yes/no confirmation and no fadeout\n");
+	printf("--exit-after n             Exit emulator after n seconds\n");
+	printf("--last-version s           String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n");
+	printf("--no-show-changelog        Do not show changelog when updating version\n");
+	printf("--codetests                Run develoment code tests\n");
 
-
-	printf ("\n"
-		"                           Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n"
-		"                           (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                           Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
-
-        	"\n"
-		"  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, "
-		"and --joystickkeybt and --joystickevent are dependent on the real joystick type, because they set a button/axis number to "
-		"an event or key, and button/axis number changes depending on the joystick (the exception here is the axis up/down/left/right "
-		"which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n"
-
-		"\n"
-		"--clearkeylistonsmart      Clear all joystick (events and buttons) to keys table every smart loading.\n"
-		"                           Joystick to events table is never cleared using this setting\n"
-		"--cleareventlist           Clears joystick to events table\n"
-		"--enablejoysticksimulator  Enable real joystick simulator. Only useful on development\n"
-
-
-
-		"\n"
-		"\n"
-		"Miscellaneous\n"
-		"-------------\n"
-		"\n"
-
-
-
-		"--saveconf-on-exit         Always save configuration when exiting emulator\n"
-		"--helpcustomconfig         Show help for autoconfig files\n"
-		"--quickexit                Exit emulator quickly: no yes/no confirmation and no fadeout\n"
-		"--exit-after n             Exit emulator after n seconds\n"
-		"--last-version s           String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
-		"--no-show-changelog        Do not show changelog when updating version\n"
-		"--codetests                Run develoment code tests\n"
-
-
-		"\n\n"
-
-	);
-
+	printf("\n\n");
 }
 
 #ifdef USE_COCOA
@@ -6296,13 +6112,10 @@ void emulator_main_loop(void)
 }
 
 #ifdef USE_PTHREADS
-void *thread_main_loop_function(void *nada)
+void *thread_main_loop_function(void * UNUSED(nada))
 {
         emulator_main_loop();
 
-	//aqui no llega nunca, lo hacemos solo para que no se queje el compilador
-        nada=0;
-        nada++;
 	return NULL;
 }
 #endif

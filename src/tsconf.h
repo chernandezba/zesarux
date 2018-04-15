@@ -122,6 +122,7 @@ extern int tsconf_if_tiles_zero_enabled(void);
 extern int tsconf_if_tiles_one_enabled(void);
 extern void tsconf_get_current_video_mode(char *s);
 extern int tsconf_return_tilegraphicspage(z80_byte layer);
+extern void scr_tsconf_putsprite_comun(z80_byte *puntero,int alto,int x,int y,z80_bit inverse,z80_byte tinta,z80_byte papel,z80_int *puntero_layer);
 extern int tsconf_return_spritesgraphicspage(void);
 extern int tsconf_return_tilemappage(void);
 

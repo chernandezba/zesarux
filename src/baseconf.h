@@ -57,6 +57,8 @@ extern z80_byte *baseconf_ram_mem_table[];
 
 //extern int temp_baseconf_in_system_rom_flag;
 
+extern int baseconf_shadow_ports_available(void);
+
 extern void baseconf_reset_cpu(void);
 extern void baseconf_hard_reset(void);
 

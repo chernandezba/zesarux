@@ -1456,7 +1456,7 @@ void tsconf_store_scanline_border_supinf_izqder(int tipo)
 
   if (visible_scanline<0) return;
 
-	int ancho_linea,alto;
+	int ancho_linea, UNUSED(alto);
 
         ancho_linea=get_total_ancho_rainbow();
         alto=get_total_alto_rainbow();

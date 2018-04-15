@@ -388,7 +388,7 @@ char *buffer_playback_pulse;
 //int pthread_enviar_sonido_pulse=0;
 int frames_sonido_enviados_pulse=0;
 
-void *audiopulse_enviar_audio(void *nada)
+void *audiopulse_enviar_audio(void * UNUSED(nada))
 {
 
 
@@ -422,12 +422,6 @@ void *audiopulse_enviar_audio(void *nada)
 
 
 	}
-
-	//para que no se queje el compilador de variable no usada
-	nada=0;
-	nada++;
-
-
 }
 
 

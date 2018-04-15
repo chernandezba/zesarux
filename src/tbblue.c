@@ -49,6 +49,9 @@ z80_byte *tbblue_ram_memory_pages[TBBLUE_MAX_SRAM_8KB_BLOCKS];
 
 z80_byte tbblue_extra_512kb_blocks=3;
 
+static int tbblue_copper_wait_cond_fired(void);
+static int tbblue_get_current_raster_position(void);
+
 z80_byte tbblue_return_max_extra_blocks(void)
 {
 	return 32+tbblue_extra_512kb_blocks*64;
@@ -226,7 +229,7 @@ void tbblue_copper_run_opcodes(void)
 		else {
 			//Es un wait
 			//Si se cumple, saltar siguiente posicion
-			z80_int linea, horiz;
+			z80_int UNUSED(linea), UNUSED(horiz);
 			//tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
 			if (tbblue_copper_wait_cond_fired () ) {
                                                         //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
@@ -264,7 +267,7 @@ z80_byte tbblue_copper_get_control_bits(void)
 }*/
 
 //Si scanline y posicion actual corresponde con instruccion wait
-int tbblue_copper_wait_cond_fired(void)
+static int tbblue_copper_wait_cond_fired(void)
 {
 	//int scanline_actual=t_scanline;
 
@@ -444,7 +447,7 @@ zona inferior: screen_indice_fin_pant .. screen_indice_fin_pant+screen_total_bor
 
 */
 
-int tbblue_get_current_raster_position(void)
+static int tbblue_get_current_raster_position(void)
 {
 	int raster;
 

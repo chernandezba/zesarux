@@ -142,14 +142,14 @@ struct DEVS {
 };
 
 struct DEVS devs_default = {
-    fb0:   "/dev/fb0",
-    fbnr:  "/dev/fb%d",
-    ttynr: "/dev/tty%d",
+    .fb0	= "/dev/fb0",
+    .fbnr	= "/dev/fb%d",
+    .ttynr	= "/dev/tty%d",
 };
 struct DEVS devs_devfs = {
-    fb0:   "/dev/fb/0",
-    fbnr:  "/dev/fb/%d",
-    ttynr: "/dev/vc/%d",
+    .fb0	= "/dev/fb/0",
+    .fbnr	= "/dev/fb/%d",
+    .ttynr	= "/dev/vc/%d",
 };
 struct DEVS *devices;
 
@@ -1046,7 +1046,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				//printf (" parseada: %u '%c' \n",tecla, ( tecla>31 && tecla<128 ? tecla : '.' ) );
 
 				//convert_numeros_letras_puerto_teclado(tecla,pressrelease);
-				if (tecla<256) util_set_reset_key(tecla,pressrelease);
+				util_set_reset_key(tecla,pressrelease);
 				break;
 
 		}
@@ -1989,13 +1989,13 @@ int scrfbdev_init (void){
 
 
 
-	fbdev_pointer = (char*)mmap(0,
+	fbdev_pointer = (z80_byte *)mmap(0,
 				    fbdev_screensize,
 			     PROT_READ | PROT_WRITE,
 			     MAP_SHARED,
 			     fbdev_filedescriptor, 0);
 
-	if (fbdev_pointer == -1) {
+	if (fbdev_pointer == (z80_byte *)-1) {
 		debug_printf(VERBOSE_ERR,"Failed to mmap.\n");
 		return 1;
 	}

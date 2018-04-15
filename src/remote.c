@@ -4603,7 +4603,7 @@ int remote_initialize_port(void)
   return 0;
 }
 
-void *thread_remote_protocol_function(void *nada)
+void *thread_remote_protocol_function(void *UNUSED(nada))
 {
         /*while (1) {
                 sleep(1);
@@ -4746,13 +4746,6 @@ void *thread_remote_protocol_function(void *nada)
 				}
 
 				//printf ("despues de bucle aqui no se llega nunca\n");
-
-
-
-        //para que no se queje el compilador de variable no usada
-        nada=0;
-        nada++;
-
 
         return NULL;
 }

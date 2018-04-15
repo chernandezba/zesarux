@@ -2394,7 +2394,7 @@ char buffer[1024];
 	//printf ("Recorriendo list adelante\n");
         int contador=0;
         do {
-                sprintf (buffer,"Element: %p (%d) id: %d name: %s pointer function: %p previous: %p next: %p\n",e,contador,e->id,e->function_name,e->funcion, e->previous,e->next);
+                sprintf (buffer,"Element: %p (%d) id: %d name: %s pointer function: %p previous: %p next: %p\n", (void *)e, contador, e->id, e->function_name, e->funcptr, (void *)e->previous, (void *)e->next);
                 debug_dump_nested_print(result,buffer);
 
                 contador++;
@@ -2411,8 +2411,7 @@ void debug_test_needed_atras(debug_nested_function_element *e,int contador)
         e=debug_nested_find_last(e);
 
         do {
-                printf ("elemento: %p (%d) id: %d nombre: %s puntero_funcion: %p previous: %p next: %p\n",e,contador,e->id,e->function_name,e->funcion,
-                        e->previous,e->next);
+                printf ("elemento: %p (%d) id: %d nombre: %s puntero_funcion: %p previous: %p next: %p\n", (void *)e, contador, e->id, e->function_name, e->funcptr, (void *)e->previous, (void *)e->next);
                 contador--;
                 e=e->previous;
         } while (e!=NULL);

@@ -333,7 +333,7 @@ echo Initial LDFLAGS=$INITIALLDFLAGS >>$LOGFILE
 
 #en raspberry, char por defecto es unsigned, no signed
 
-CFLAGS="$CFLAGS -Wall -Wextra -fsigned-char"
+CFLAGS="$CFLAGS -Wall -Wextra -fsigned-char -D_GNU_SOURCE"
 #CFLAGS="$CFLAGS -Wunused-but-set-parameter -Wunused-but-set-variable -Wundef -Wuninitialized -Wunknown-pragmas -Wno-pragmas -Wunreachable-code -Wunused -Wunused-function -Wunused-label -Wunused-parameter -Wunused-value -Wunused-variable -Wunused-but-set-parameter -Wunused-but-set-variable"
 #CFLAGS="$CFLAGS -Wall -Wunused -Wunused-parameter "
 

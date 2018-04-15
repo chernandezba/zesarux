@@ -160,7 +160,7 @@ void timer_usleep(int usec)
 }
 
 
-void *thread_timer_function(void *nada)
+void *thread_timer_function(void UNUSED(*nada))
 {
 	while (1) {
 		timer_usleep(timer_sleep_machine);
@@ -168,11 +168,6 @@ void *thread_timer_function(void *nada)
 		//printf ("tick timer\n");
 		timer_pthread_generada=1;
 	}
-
-	//para que no se queje el compilador de variable no usada
-	nada=0;
-	nada++;
-
 
 	return NULL;
 }

@@ -1683,7 +1683,7 @@ void load_zx_snapshot(char *archivo)
 				//se graban 16 kb pero internamente el array es de 8 kb. Por tanto se cargan bloques 0,2,4,6. Bloque 0 por ejemplo
 				//se carga 16 kb pero al ser memoria consecutiva, la pagina 0 tendra los primeros 8 kb y la pagina 1 los siguientes 8 kb
 
-				if (bloque>=0 && bloque<=7) load_zx_snapshot_bytes_generic_16kb(buffer_lectura,longitud,chloe_ex_ram_mem_table[bloque]);
+				if (bloque<=7) load_zx_snapshot_bytes_generic_16kb(buffer_lectura,longitud,chloe_ex_ram_mem_table[bloque]);
 				else if (bloque>=8 && bloque<=15) load_zx_snapshot_bytes_generic_16kb(buffer_lectura,longitud,chloe_dock_ram_mem_table[bloque-8]);
 				else if (bloque>=16) load_zx_snapshot_bytes_generic_16kb(buffer_lectura,longitud,chloe_home_ram_mem_table[bloque-16]);
                         }
