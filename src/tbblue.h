@@ -176,6 +176,9 @@ extern void tbsprite_pattern_put_value_index(z80_byte sprite,z80_byte index_in_s
 extern z80_byte clip_window_layer2[];
 extern z80_byte clip_window_sprites[];
 extern z80_byte clip_window_ula[];
+extern z80_byte tbblue_get_clip_window_layer2_index(void);
+extern z80_byte tbblue_get_clip_window_sprites_index(void);
+extern z80_byte tbblue_get_clip_window_ula_index(void);
 
 extern z80_bit tbblue_fast_boot_mode;
 

@@ -2547,17 +2547,33 @@ z80_byte clip_window_ula[4];
 					sprintf (texto_buffer,"Layer2:  X=%3d-%3d Y=%3d-%3d",
 					clip_window_layer2[0],clip_window_layer2[1],clip_window_layer2[2],clip_window_layer2[3]);
 					//menu_escribe_linea_opcion(linea++,-1,1,texto_buffer);
-					zxvision_print_string_defaults(&ventana,1,linea++,texto_buffer);
+					zxvision_print_string_defaults(&ventana,1,linea,texto_buffer);
+                    //overwrite currently selected clip-window index value by "selection" graphics
+                    const static int clip_index_string_pos_x[4] = { 11, 15, 21, 25};
+                    int clip_select_x = clip_index_string_pos_x[tbblue_get_clip_window_layer2_index()];
+                    texto_buffer[clip_select_x+3] = 0;      // display only three digits in new colour
+					zxvision_print_string(&ventana,1+clip_select_x,linea++,
+                                          ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_SELECCIONADO,0,texto_buffer+clip_select_x);
 
 					sprintf (texto_buffer,"Sprites: X=%3d-%3d Y=%3d-%3d",
 					clip_window_sprites[0],clip_window_sprites[1],clip_window_sprites[2],clip_window_sprites[3]);
 					//menu_escribe_linea_opcion(linea++,-1,1,texto_buffer);
-					zxvision_print_string_defaults(&ventana,1,linea++,texto_buffer);
+					zxvision_print_string_defaults(&ventana,1,linea,texto_buffer);
+                    //overwrite currently selected clip-window index value by "selection" graphics
+                    clip_select_x = clip_index_string_pos_x[tbblue_get_clip_window_sprites_index()];
+                    texto_buffer[clip_select_x+3] = 0;      // display only three digits in new colour
+					zxvision_print_string(&ventana,1+clip_select_x,linea++,
+                                          ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_SELECCIONADO,0,texto_buffer+clip_select_x);
 
 					sprintf (texto_buffer,"ULA:     X=%3d-%3d Y=%3d-%3d",
 					clip_window_ula[0],clip_window_ula[1],clip_window_ula[2],clip_window_ula[3]);
 					//menu_escribe_linea_opcion(linea++,-1,1,texto_buffer);
-					zxvision_print_string_defaults(&ventana,1,linea++,texto_buffer);
+					zxvision_print_string_defaults(&ventana,1,linea,texto_buffer);
+                    //overwrite currently selected clip-window index value by "selection" graphics
+                    clip_select_x = clip_index_string_pos_x[tbblue_get_clip_window_ula_index()];
+                    texto_buffer[clip_select_x+3] = 0;      // display only three digits in new colour
+					zxvision_print_string(&ventana,1+clip_select_x,linea++,
+                                          ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_SELECCIONADO,0,texto_buffer+clip_select_x);
 
 					linea++;
 					sprintf (texto_buffer,"Offset Windows:");
