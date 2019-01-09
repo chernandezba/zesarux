@@ -619,17 +619,66 @@ Clip window registers
   bit 1 - reset the sprite clip index.
   bit 0 - reset the Layer 2 clip index.
 
+(R) 0x1C (28) => Clip Window control
+  bits 7-6 = Reserved
+  bit 5-4 - Layer 2 clip index.
+  bit 3-2 - sprite clip index.
+  bit 1-0 - ULA/LoRes clip index.
 */
 
 z80_byte clip_window_layer2[4];
-z80_byte clip_window_layer2_index;
+#define TBBLUE_CLIP_WINDOW_LAYER2_INDEX_SHIFT   4
+#define TBBLUE_CLIP_WINDOW_LAYER2_INDEX_MASK    (3<<TBBLUE_CLIP_WINDOW_LAYER2_INDEX_SHIFT)
+
+z80_byte tbblue_get_clip_window_layer2_index(void) {
+    return (tbblue_registers[28] & TBBLUE_CLIP_WINDOW_LAYER2_INDEX_MASK)>>TBBLUE_CLIP_WINDOW_LAYER2_INDEX_SHIFT;
+}
+
+void tbblue_inc_clip_window_layer2_index(void) {
+    z80_byte inc_index = tbblue_registers[28] + (1<<TBBLUE_CLIP_WINDOW_LAYER2_INDEX_SHIFT);
+    tbblue_registers[28] &= ~TBBLUE_CLIP_WINDOW_LAYER2_INDEX_MASK;
+    tbblue_registers[28] |= inc_index & TBBLUE_CLIP_WINDOW_LAYER2_INDEX_MASK;
+}
+
+void tbblue_reset_clip_window_layer2_index(void) {
+    tbblue_registers[28] &= ~TBBLUE_CLIP_WINDOW_LAYER2_INDEX_MASK;
+}
 
 z80_byte clip_window_sprites[4];
-z80_byte clip_window_sprites_index;
+#define TBBLUE_CLIP_WINDOW_SPRITES_INDEX_SHIFT   2
+#define TBBLUE_CLIP_WINDOW_SPRITES_INDEX_MASK    (3<<TBBLUE_CLIP_WINDOW_SPRITES_INDEX_SHIFT)
+
+z80_byte tbblue_get_clip_window_sprites_index(void) {
+    return (tbblue_registers[28] & TBBLUE_CLIP_WINDOW_SPRITES_INDEX_MASK)>>TBBLUE_CLIP_WINDOW_SPRITES_INDEX_SHIFT;
+}
+
+void tbblue_inc_clip_window_sprites_index(void) {
+    z80_byte inc_index = tbblue_registers[28] + (1<<TBBLUE_CLIP_WINDOW_SPRITES_INDEX_SHIFT);
+    tbblue_registers[28] &= ~TBBLUE_CLIP_WINDOW_SPRITES_INDEX_MASK;
+    tbblue_registers[28] |= inc_index & TBBLUE_CLIP_WINDOW_SPRITES_INDEX_MASK;
+}
+
+void tbblue_reset_clip_window_sprites_index(void) {
+    tbblue_registers[28] &= ~(TBBLUE_CLIP_WINDOW_SPRITES_INDEX_MASK);
+}
 
 z80_byte clip_window_ula[4];
-z80_byte clip_window_ula_index;
+#define TBBLUE_CLIP_WINDOW_ULA_INDEX_SHIFT   0
+#define TBBLUE_CLIP_WINDOW_ULA_INDEX_MASK    (3<<TBBLUE_CLIP_WINDOW_ULA_INDEX_SHIFT)
 
+z80_byte tbblue_get_clip_window_ula_index(void) {
+    return (tbblue_registers[28] & TBBLUE_CLIP_WINDOW_ULA_INDEX_MASK)>>TBBLUE_CLIP_WINDOW_ULA_INDEX_SHIFT;
+}
+
+void tbblue_inc_clip_window_ula_index(void) {
+    z80_byte inc_index = tbblue_registers[28] + (1<<TBBLUE_CLIP_WINDOW_ULA_INDEX_SHIFT);
+    tbblue_registers[28] &= ~TBBLUE_CLIP_WINDOW_ULA_INDEX_MASK;
+    tbblue_registers[28] |= inc_index & TBBLUE_CLIP_WINDOW_ULA_INDEX_MASK;
+}
+
+void tbblue_reset_clip_window_ula_index(void) {
+    tbblue_registers[28] &= ~(TBBLUE_CLIP_WINDOW_ULA_INDEX_MASK);
+}
 
 //Forzar desde menu a desactivar capas 
 z80_bit tbblue_force_disable_layer_ula={0};
@@ -2564,9 +2613,6 @@ void tbblue_reset_common(void)
 	tbblue_registers[22]=0;
 	tbblue_registers[23]=0;
 
-	tbblue_registers[24]=191;
-	tbblue_registers[25]=191;
-	tbblue_registers[26]=191;
 	tbblue_registers[28]=0;
 
 	tbblue_registers[30]=0;
@@ -2597,9 +2643,6 @@ void tbblue_reset_common(void)
 	clip_window_ula[1]=255;
 	clip_window_ula[2]=0;
 	clip_window_ula[3]=191;	
-
-
-	clip_window_layer2_index=clip_window_sprites_index=clip_window_ula_index=0;
 
 
 
@@ -2951,18 +2994,65 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	z80_byte last_register_67=tbblue_registers[67];
 	
 
-	if (index_position==3) {
-		//Controlar caso especial
-		//(W) 0x03 (03) => Set machine type, only in IPL or config mode
-		//   		bits 2-0 = Machine type:
-		//      		000 = Config mode
-		z80_byte machine_type=tbblue_registers[3]&7;
+    switch(index_position) {
+        case 3:
+        {
+            //Controlar caso especial
+            //(W) 0x03 (03) => Set machine type, only in IPL or config mode
+            //   		bits 2-0 = Machine type:
+            //      		000 = Config mode
+            z80_byte machine_type=tbblue_registers[3]&7;
 
-		if (!(machine_type==0 || tbblue_bootrom.v)) {
-			debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
-			return;
-		}
-	}
+            if (!(machine_type==0 || tbblue_bootrom.v)) {
+                debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
+                return;
+            }
+        }
+        break;
+
+        case 28:
+        /*
+        (W) 0x1C (28) => Clip Window control
+            bits 7-3 = Reserved, must be 0
+            bit 2 - reset the ULA/LoRes clip index.
+            bit 1 - reset the sprite clip index.
+            bit 0 - reset the Layer 2 clip index.
+        */
+
+			if (value&1) tbblue_reset_clip_window_layer2_index();
+			if (value&2) tbblue_reset_clip_window_sprites_index();
+			if (value&4) tbblue_reset_clip_window_ula_index();
+
+        return; // the tbblue_registers[28] is already updated here (do NOT write "value" directly into it)
+
+		case 24:
+			//(W) 0x18 (24) => Clip Window Layer 2
+			clip_window_layer2[tbblue_get_clip_window_layer2_index()]=value;
+            tbblue_inc_clip_window_layer2_index();
+
+			//debug
+			//printf ("layer2 %d %d %d %d\n",clip_window_layer2[0],clip_window_layer2[1],clip_window_layer2[2],clip_window_layer2[3]);
+		return; // the tbblue_registers[24] itself is not used (clip_window_layer2 array contains values)
+
+		case 25:
+			//((W) 0x19 (25) => Clip Window Sprites
+			clip_window_sprites[tbblue_get_clip_window_sprites_index()]=value;
+            tbblue_inc_clip_window_sprites_index();
+
+			//debug
+			//printf ("sprites %d %d %d %d\n",clip_window_sprites[0],clip_window_sprites[1],clip_window_sprites[2],clip_window_sprites[3]);
+		return; // the tbblue_registers[25] itself is not used (clip_window_sprites array contains values)
+
+		case 26:
+			//(W) 0x1A (26) => Clip Window ULA/LoRes
+			clip_window_ula[tbblue_get_clip_window_ula_index()]=value;
+            tbblue_inc_clip_window_ula_index();
+
+			//debug
+			//printf ("ula %d %d %d %d\n",clip_window_ula[0],clip_window_ula[1],clip_window_ula[2],clip_window_ula[3]);
+		return; // the tbblue_registers[26] itself is not used (clip_window_ula array contains values)
+
+    } // switch(index_position)
 
 	tbblue_registers[index_position]=value;
 
@@ -3117,49 +3207,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 				if (value&128) screen_print_splash_text(10,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Enabling lores video mode. 128x96 256 colours");
 				else screen_print_splash_text(10,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling lores video mode");
 			}
-		break;
-
-
-		case 24:
-			//(W) 0x18 (24) => Clip Window Layer 2
-			clip_window_layer2[clip_window_layer2_index&3]=value;
-			clip_window_layer2_index++;
-
-			//debug
-			//printf ("layer2 %d %d %d %d\n",clip_window_layer2[0],clip_window_layer2[1],clip_window_layer2[2],clip_window_layer2[3]);
-		break;
-
-		case 25:
-			//((W) 0x19 (25) => Clip Window Sprites
-			clip_window_sprites[clip_window_sprites_index&3]=value;
-			clip_window_sprites_index++;
-
-			//debug
-			//printf ("sprites %d %d %d %d\n",clip_window_sprites[0],clip_window_sprites[1],clip_window_sprites[2],clip_window_sprites[3]);
-		break;	
-
-		case 26:
-			//(W) 0x1A (26) => Clip Window ULA/LoRes
-			clip_window_ula[clip_window_ula_index&3]=value;
-			clip_window_ula_index++;
-
-			//debug
-			//printf ("ula %d %d %d %d\n",clip_window_ula[0],clip_window_ula[1],clip_window_ula[2],clip_window_ula[3]);
-		break;				
-
-		case 28:
-		/*
-		(W) 0x1C (28) => Clip Window control
-  bits 7-3 = Reserved, must be 0
-  bit 2 - reset the ULA/LoRes clip index.
-  bit 1 - reset the sprite clip index.
-  bit 0 - reset the Layer 2 clip index.
-  	*/
-
-			if (value&1) clip_window_layer2_index=0;
-			if (value&2) clip_window_sprites_index=0;
-			if (value&4) clip_window_ula_index=0;
-
 		break;
 
 /*
@@ -3338,11 +3385,19 @@ z80_byte tbblue_get_value_port_register(z80_byte registro)
 			return TBBLUE_CORE_VERSION_SUBMINOR;
 		break;		
 
+		case 24:
+			//(W) 0x18 (24) => Clip Window Layer 2
+            return clip_window_layer2[tbblue_get_clip_window_layer2_index()];
+
+		case 25:
+			//((W) 0x19 (25) => Clip Window Sprites
+            return clip_window_sprites[tbblue_get_clip_window_sprites_index()];
+
+		case 26:
+			//(W) 0x1A (26) => Clip Window ULA/LoRes
+			return clip_window_ula[tbblue_get_clip_window_ula_index()];
+
 		/*
-
-
-
-
 		(R) 0x1E (30) => Active video line (MSB)
   bits 7-1 = Reserved, always 0
   bit 0 = Active line MSB (Reset to 0 after a reset)
@@ -3828,7 +3883,6 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 	/* modo lores
 	(R/W) 0x15 (21) => Sprite and Layers system
   bit 7 - LoRes mode, 128 x 96 x 256 colours (1 = enabled)
-  bits 6-5 = Reserved, must be 0
   	*/
 
 	  	int tbblue_lores=tbblue_registers[0x15] & 128;

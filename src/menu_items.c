@@ -2535,11 +2535,7 @@ void menu_debug_tsconf_tbblue_videoregisters(MENU_ITEM_PARAMETERS)
 
 					/*
 					z80_byte clip_window_layer2[4];
-z80_byte clip_window_layer2_index;
-
 z80_byte clip_window_sprites[4];
-z80_byte clip_window_sprites_index;
-
 z80_byte clip_window_ula[4];
 					*/
 
