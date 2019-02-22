@@ -4952,6 +4952,7 @@ bits D3-D5: Selection of ink and paper color in extended screen resolution mode 
 				if (posx>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][0] && posx<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][1] && scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_ULA][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_ULA][3]) {
 					if (!tbblue_force_disable_layer_ula.v) {
 						z80_int color_final=tbblue_get_palette_active_ula(color);
+						if (tbblue_si_transparent(color_final)) color_final = TBBLUE_SPRITE_TRANS_FICT;
 						tbblue_layer_ula[posicion_array_layer]=color_final;
 						if (si_timex_hires.v==0) tbblue_layer_ula[posicion_array_layer+1]=color_final; //doble de ancho
 
