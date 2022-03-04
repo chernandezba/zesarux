@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-URLIMAGES_BASE="https://raw.githubusercontent.com/chernandezba/zesarux/main"
+URLIMAGES_BASE="https://github.com/chernandezba/zesarux/raw/main"
 
 cat README
 echo
