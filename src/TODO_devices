@@ -1,0 +1,223 @@
+
+-datagear dma: timing (puesto tiempos arbitrarios), demos que hacen out no se ven bien, modo turbo next afecta a timing?
+Y montones de flags y parámetros de dma que de momento no gestiono
+
+
+--- Sprite Chip ZGX ---
+
+-Scroll circular sin relleno de nada?
+-Sprites que empiezan en coordenadas x -7 o más deben aparecer en pantalla. Ver vídeo 5
+-Limitar tabla de sprites a máximo 65536/40=1638 sprites
+-Limite de sprites por scanline? Tener en cuenta que sean sprites activos
+-Desactivar chip sprites si reset y máquina no spectrum. Pero en set_machine si se hace ahi, fuerza a desactivar aunque en el .config se haya habilitado
+-Sprites de 16x16?
+
+-----------------------
+
+
+--- +3 ---
+-+3: funcionan :
+
+3d kit disco 1
+
+zigurat software:
+autocrash
+carlos sainz
+gp f1
+jungle warrior
+senda salvaje
+sito pons
+
+Mirar porque fallan muchos dsk
+
+al cambiar funcion de busqueda sectores: ahora busca sector id de cada sector:
+emilio sanchez vicario: usa sectores consecutivos
+paris dakar: NO va, pero veo que usa sectores consecutivos tambien (a partir de pista 1)
+drazen petrovic basket
+night hunter. aunque luego no carga la cara b
+
+-autoload en +3 de cinta no va, seguramente porque al tener un dsk insertado, la rutina salta diferente (o le envia el enter antes)
+
+
+-------------
+
+--- Betadisk ---
+
+-betadisk: nmi no parece guardar el snapshot, aunque lo intenta
+
+-para siguiente version: revisar betadisk. quiza demos de generalsound en scl/trd fallan por eso:
+* revisar puertos de estado: FF, 1F, etc...
+* rutinas de salto a la rom de betadisk desde Chase HQ, quiza un trap para esa rutina?
+
+-------------
+
+
+------------------
+
+--- MMC y DIVMMC ---
+
+-Mmap para acceso a mmc/ide. Pero solo cuando se activa "persistent writes".
+mmap tiene flags para decir que es solo lectura pero supongo que fallaria con segfault si escribimos en una zona de solo lectura
+Sin persistent writes deberia hacerlo como siempre: escribiendo en memoria, sin mmap
+Con mmap, se deja de hacer flush, ya que lo hará automáticamente (??) el sistema operativo, al activar mmap 
+
+-En Mac parece que siempre falla al escribir en imagenes de 2 GB (y superiores)
+retorna:
+ptr_mmcfile: 2017595472
+escritos: -2147483648
+
+
+-Revisar protección de escritura en páginas divmmc
+
+-quizá accesos a mmc se deberían hacer directamente a disco, combinando fseek, en vez de memoria. hacer flush de por ejemplo imagen de 512MB en mac tarda unos 4 segundos. Fseek en Windows que limitaciones hay?
+
+-Divmmc en teoría esto está mal:
+It's also mapped instantly (100ns after /MREQ of that fetch is falling down) after executing opcode from area 3d00..3dffh.
+->Debería paginar después de ejecutar opcode y en cambio lo está haciendo antes
+->Pero realmente si lo cambio no funciona
+
+
+-MMC (y tambien para IDE)
+Mejorar mmc flush etc. Al escribir a disco, debería dejar las operaciones de escritura en espera, esto 
+cuando se lanza desde otro thread desde timer Es critico. 
+Si no hay threads, no hay problema, hay un solo hilo y los dos eventos no se dan nunca a la misma vez
+Ejemplo:
+Inicia escritura de byte en memoria mmc. Mete variable flush a 1. Pero aún no ha escrito
+Inicia flush. Mete variable flush a 0. Aún no graba a disco
+Sigue escritura de byte en memoria mmc. 
+Sigue el thread de grabado a disco pero puede ser que el byte modificado no entre esta vez
+
+Aunque entrará en el siguiente flush, si lo hay. 
+
+En este caso esto puede quedar corregido simplemente si al expulsar mmc file siempre hacemos flush. 
+Pero esto NO es recomendable pues entonces haríamos siempre flush de toda imagen, se haya escrito o no. 
+Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay que grabarlo o no 
+
+-Idea: en vez de tener la imagen Mmc, que tenga los archivos que contiene y cree el Mmc copiándolos 
+
+
+
+------------------
+
+--- IDE y DIVIDE ---
+
+-No funciona IDE 8 bit
+
+-residos necesita "battery backed RAM on the DivIDE Plus"
+O sea, es la misma ram pero usa puerto 17h
+https://www.rwapsoftware.co.uk/spectrum/spectrum_divide_notes.html
+
+Implementation of greater ROM/RAM space on DiviDE Plus
+
+DivIDE Plus provides a total of 512K ROM and 512K RAM on the DivIDE Plus in order to enable much improved firmware to be written (this compares to the 8K ROM and 32K RAM available on the original DivIDE Hard Disk Interface). 
+
+We decided on 512K as this would allow ramdisk storage and the following additional firmware to be used (as well as the original divIDE firmware):
+
+ResiDOS
+CPM22QED MBD (CP/M compatible)
+ZXVGS MBD
+
+The DivIDE Plus interface is equipped with 512K SRAM (628512 SMD soldered) and 512K ROM (29F040 PLCC in a socket) with address and data lines corrected, so no dedicated .RAW files are needed to program firmware on another system. The RAM is battery backed.
+
+The scheme chosen mixes MB-02 paging using the Port &17 with DivIDE paging using the &E3 Port. It is compatible with the original 8K firmware without amendment.  You will however, need to obtain the ROM reprogramming software from ourselves, rather than use that provided for the original DivIDE, due to different procedures for programming the 29F040 chip than on the 28C64 used by the original DivIDE.
+
+The &E3 Port is untouched. The &17 Port is 8bit, outputs are called Q0..Q7, as follows:
+
+- Q6 and Q7 select the mode (DivIDE, RAM, ROM, reset). 
+- Q5 bit must be set (1) to enable writing in RAM and ROM modes.  If this is set to 0, it disables the ability to write to RAM or ROM.
+- Q0..Q4 select the memory banks.
+
+------------------
+
+
+--- Interface 1 ---
+
+Hacer un CAT se queda en bucle
+Ahora de momento solo lee microdrive de prueba prueba.mdr
+No hace ni read, ni write, ni format...
+rom quitada de la distribucion. tiene nombre if1-v2.rom.demomento_desactivada
+
+-------------------
+
+
+--- SPECTRA ---
+
+-no hace correctamente modos rainbow, ya que lee los atributos de pantalla tal cual de la memoria, y no como un modo normal
+rainbow en que se coje del buffer buffer_atributos que se va escribiendo desde el core. Esto quiza es casi imposible de hacer,
+aparte que no creo que en spectra se contemple esto, pues ademas el timing de la pantalla es diferente
+Por tanto, solo tener en cuenta que con spectra activado, demos como la overscan no se ven bien
+
+-no funciona scroll de sprite chip. Dado que spectra actualiza la pantalla segun su memoria interna, que se replica en cada operacion de poke_byte.
+Pero el scroll del sprite chip no se realiza con poke_byte, sino con escritura directa a puntero de memoria
+
+------------------
+
+--- ZXPAND ---
+
+-en CMDR, al mover archivos, mete el current dir apuntando al directorio de la derecha. Por tanto esto falla. Se puede corregir yendo a la izquierda y volviendo a seleccionar el directorio actual (si es el directorio raiz, seleccionar ".."). Pero esto parece un fallo de CMDR y no del emulador
+-ordenacion de archivos en listado CAT
+
+-operaciones de archivos son case insensitive (da igual si esta en mayusculas o minusculas). Pero subcarpetas dentro del zxpand filesystem debe
+ser siempre en mayusculas. Carpetas siempre se muestran pero no se podran acceder las que no sean todo mayusculas
+
+
+-zxpand en zx80 se ven caracteres de config por ejemplo mal. pero la rom tambien muestra caracteres mal, dado que usa una overlay rom de zx81, no de zx80
+
+-lecturas que se producen al cargar CMDR pero despues de hacer fclose y sin hacer fopen. revisar:
+debido a funcion setjoy. los valores de joystick deben volver incorrectos y hacen que puerto BC (registro B) se corrompa
+(ver docs/zxpand_cmdr.txt)
+
+-sound tracker de andy rea se cuelga. porque? stcplay , gasman y sound_demo usan el mismo player
+requiere ramtop en 24999 y CONFIG "M=H"
+carpeta aux_zesarux/zx81/sound_demo  tambien
+
+-Zxpand+ nuevo firmware?
+https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
+
+
+
+------------------
+
+--- Texas Instruments SN76489AN ---
+
+-emulacion ruido chip SN mejorar
+
+
+------------------
+
+--- vdp 9918 ---
+
+-corregir info de bits que puede estar al reves: en el datasheet original numeran los bits al reves: el bit 7 es el 1, el 6 el 2, etc
+
+------------------
+
+--- Hilow ---
+
+
+-hilow: cargar ok. 
+quiza el punto de entrada a READ_SECTOR no es exactamente ese o bien volver con algo distinto de un RET
+
+grabar no ok, error fuera rango, quiza por error en el sector 0 simulado. aunque pongo un sector 0 bueno y siempre da fuera de rango. por que?
+quiza el salto a write sector es otro
+
+formatear da error despues de escribir pista 1. quiza algun registro de retorno?
+
+parece que la grabacion peta con break debido a:
+L08F7:          IN      A,(HLWPORT)
+                BIT     3,A
+                JP      Z,BREAKCONT
+
+------------------            
+
+
+-emulación impresion seikosha gp-100a
+
+
+-Dandanator nueva versión
+
+-soporte para más de 1 joystick 
+
+-puerto kempston y puerto 223. Juego El cid
+
+https://foro.speccy.org/viewtopic.php?t=1502
+

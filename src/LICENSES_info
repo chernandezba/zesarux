@@ -1,0 +1,65 @@
+ZEsarUX includes external modules. Licenses are:
+
+-Atomlite emulation. Extracted from Sim Coupe emulator
+Copyright Simon Owen. Distributed under GNU GENERAL PUBLIC LICENSE v2, you may read it on the LICENSE_simcoupe file
+http://www.simcoupe.org
+
+-DOS font, used on some GUI styles.
+Copyright Neil Roy. Distributed under CC BY-SA 3.0 license, you may read it on the LICENSE_DOS_font file
+https://opengameart.org/content/dos-8x8-font
+
+-FatFS
+Copyright (C) 20xx, ChaN, all right reserved
+http://elm-chan.org/fsw/ff/00index_e.html
+
+-Fuse disassembler
+Copyright Philip Kendall and other authors. Distributed under GNU GENERAL PUBLIC LICENSE v2, you may read it on the LICENSE_fuse file
+http://fuse-emulator.sourceforge.net
+
+-Hilow
+Copyright 1985 Juan J. Arias, Carlos Galucci, Roberto Eimer, Ramiro Arias, Alfredo Mussio
+
+-mdvtool
+Copyright 2005 Till Harbaum. Distributed under GNU GENERAL PUBLIC LICENSE v3, you may read it on the LICENSE_mdvtool file
+https://github.com/mist-devel/mist-binaries/tree/master/cores/ql/tools/mdvtool
+
+-Musashi 3.4 - A portable Motorola M680x0 processor emulation engine.
+Copyright 1998-2002 Karl Stenerud. All rights reserved. Distributed under MIT License, you may read it on the LICENSE_MOTOROLA_CORE file
+https://github.com/kstenerud/Musashi
+
+-scl2trd
+Copyright 2019 Alexander Sharikhin. Distributed under MIT License, you may read it on the LICENSE_scl2trd file
+https://github.com/nihirash/esxdos-scl2trd
+
+-National Semiconductor SC/MP CPU Emulator
+Copyright 2017 Miodrag Milanovic. Distributed under BSD-3 License, you may read it on the LICENSE_SCMP_CORE
+https://github.com/mamedev/mame/tree/master/src/mame/drivers/mk14.cpp
+
+-Qemu Mac OS video driver
+Copyright Fabrice Bellard and the QEMU team. Distributed under the GNU General Public License version 2.
+https://github.com/aliguori/qemu
+
+-spg loader. Extracted from UnrealSpeccy emulator
+Copyright various authors. Distributed under freeware, you may read it on the LICENSE_unrealspeccy file
+https://github.com/tslabs/zx-evo/tree/master/pentevo/unreal
+
+-undaad
+Copyright Morgul and Uto. Distributed under GNU GENERAL PUBLIC LICENSE v3, you may read it on the LICENSE_undaad file
+https://github.com/Utodev/undaad
+
+-grackle - Dumper and reader for Graphic Adventure Creator games
+Copyright 2014 David Lodge. Distributed under BSD 3-Clause "New" or "Revised" License, you may read it on the LICENSE_grackle file
+https://github.com/tautology0/grackle
+
+-ungac
+Copyright 2006, 2020 by John Elliott. Distributed under the GNU General Public License version 2, you may read it on the LICENSE_ungac file
+https://www.seasip.info/Unix/UnQuill/
+
+-unpaws/unquill
+Copyright various authors. Distributed under MIT License, you may read it on the LICENSE_unpaws file
+https://github.com/Utodev/unPAWs
+
+-zip
+Copyright Kuba Podgorski. Distributed under The Unlicense License, you may read it on the LICENSE_zip file
+https://github.com/kuba--/zip 
+

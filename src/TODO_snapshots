@@ -1,0 +1,102 @@
+--- ZSF ---
+
+-parece que ZSF no guarda estado ulaplus o timex. probar con view8x1.tap
+
+-Incluir campo para numero de versión?
+ZSF: con zxuno y divmmc, al cargar snapshot, esxdos no está presente. Si activo y desactivo setting de divmmc paging, ya aparece:
+porque no habilita el nested_function de divmmc. Sera tan facil como guardar el setting de diviface-paged-enabled y si es asi, 
+activar ese nested (por defecto tenerlo desactivado). En caso de zxuno, divmmc en zsf no debe guardar/grabar su memoria ram ya que es 
+la propia memoria de zxuno quien lo tiene, lo mismo para tbblue, y prism
+-seguir formato zsf:
+-Opción para poder cargar snapshot pero sin cambiar la rom actual... útil por si grabamos un snapshot por ejemplo en máquina 128kb pero la rom era la del opense
+->esto ya esta para .sna, hacer para zsf
+-Opcion para forzar siempre snap grabar zsf de 48k
+
+-quiza en set_machine, cuando hace:
+  //Si estaba divmmc o divide activo, desactivarlos
+  //if (divmmc_enabled.v) divmmc_disable();
+  //if (divide_enabled.v) divide_disable();
+  if (diviface_enabled.v) diviface_disable();
+Igual deberia desactivar tambien setting divmmc_enabled y divide_enabled.v, porque sino, desactiva el setting diviface pero los otros 
+pueden quedarse activos. Esto en load snapshot zsf de zxuno lo hace aparte
+
+-Formato zsf: completar para mas maquinas
+
+*MK14: falta incluso funcion de grabar registros de la cpu      
+
+*TS2068   
+*Sam      
+*Chloe140 
+*Chloe280 
+*Chrome   
+*Prism    
+
+
+
+-al cargar un .zsf de zx8081 que contiene un .zsf.config,con parametros de wrx, se resetean despues:
+Info: Parsing custom configuration file /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/pruebahero.zsf.config
+Info: Enabling RealVideo
+Info: Enabling WRX video mode
+Info: Block id: 1 (ZSF_MACHINEID) Lenght: 1
+Info: Setting timer_sleep_machine to 20000 us
+Info: Setting ZX80/81 CPU core
+Info: Disabling WRX video mode
+Info: Loading keymap
+Info: Emulating ZX81 with 16 KB (ramtop=32767)
+->pasa casi lo mismo con un .zx pero en estos, hay parametro de si esta wrx activo (y aunque se pierda desde el config se lee desde el .zx),
+pero con el --vsync-minimum-length se pierde y no esta en el .zx ...
+->el config se carga primero. Luego el snapshot, y al meter core de zx80/81 se desactiva wrx y otros settings.
+Quiza habria que parsear algunos parametros del .config tambien despues de cargar el snapshot. Cuales? por ejemplo --realvideo, --wrx, --vsync-minimum-length
+
+
+-formato zsf debe guardar iff1 y iff2 por separado
+
+-parece que en los zsf se genera al final un ZSF_NOOP. -> lo estoy metiendo yo por codigo:
+
+  //test meter un NOOP
+  zsf_write_block(ptr_zsf_file, NULL,0, 0);
+
+
+
+---------------
+
+
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+-Opción para formato de grabación de autosave snap
+
+-RZX: mejorar. Falla carlos sainz. Pero por otra parte, abadia del crimen funciona en ZEsarUX y no en fuse
+Quiza los de speculator no van bien del todo?
+Los de SPIN parece que si que van. No siempre: abu simbel falla
+Quiza el fallo no es al leer el RZX sino en la emulacion del spectrum... quiza hay algun momento en que se genera una interrupcion de mas? o de menos?
+algo que descuadra la lectura de puertos (alguna de mas o de menos) y ya por eso deja de funcionar bien la secuencia de INs del archivo RZX
+
+
+-soporte de carga szx? Y quizá grabación también? Problema con compresion de datos, hay que usar libreria externa
+
+-comentar que formato esta pensado para little endian. Valores de 16/24/32 bits como se guardan? Tal cual? O los fuerzo a grabar de 8 en 8 bits y por tanto siempre little endian?
+
+-Incorporar bittransfe como manera de generar snapshot en .tap. Agregar parámetro de estado interrupciones, registro i. Otros registros que falten? R?
+
+-Si en 48k modo del 128 acaba grabando snap .zx de 48... Quizá no hacerlo así
+
+ok-formato .sna
+-48k ok
+-128k . parece que snapshots grabados con fuse luego no van bien, ni desde el mismo fuse - probar abadia del crimen por ejemplo
+
+-incluir en snapshot nombre de ultimo juego cargado, para saber de que snapshot se trata?
+->rutinas ssl deben establecer nombre para juegos conocidos. quiza tambien una informacion del juego, teclas, descripcion del juego, etc?
+
+-autoload snapshot: al cargar un autosnapshot, hay parametros que se desactivan, por ejemplo dsk enabled.
+En ese caso, si por ejemplo estabamos con una maquina +3, con dsk activo, se guarda bien la config y el snapshot
+Pero el "--enable-dsk", al iniciar el emulador, se parsea antes de cargar el snapshot. Al cargar el snapshot, en set_machine, se pone
+dskplusthree_emulation.v=0 , con lo que arranca con dsk desactivado. Hay varios parametros como ese
+
+
+-En snapshot poder guardar notas. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
+Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot? 
+Quizá desde menú y con un first aid que lo explique
+
+--ZSF tbblue: * estado dma (esto no solo afecta a tbblue sino a todos. tener en cuenta grabar tambien valor datagear_dma_tbblue_prescaler)
+
+-Problema con el almacenamiento de los t-estados en snapshot .zsf: no se guarda. Aunque siempre se guardan los snapshots justo despues de una interrupcion

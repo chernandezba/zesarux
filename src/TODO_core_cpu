@@ -1,0 +1,85 @@
+
+
+-Poner sondas de tiempo para saber que funciones tardan más en ejecutarse para poderlas optimizar 
+Que sea un tiempo que se acumule. Para hacer cálculos con más tiempo de muestreo
+Parecido a core statistics pero con más sondas 
+Quizá algunos que sólo se habiliten mediante variable de debug puesta a mano en compileoptions.h
+
+-128ke parecido a +2B
+http://scratchpad.wikia.com/wiki/ZX_Spectrum_128Ke
+Rom derby
+https://zx.itch.io/derbyplus
+
+-UnoDOS text mode sale de ram últimas direcciones . util para drivers solo texto
+es decir, la pantalla en ascii esta ubicada hacia el final de la ram. obtener de ahi los caracteres en modos de video curses, stdout, etc
+
+-Implementar cp/m mediante emulación 
+
+-overscan, con ula im2 slow a yes, se ven bien del todo
+
+-Visualmem pero que notifique mediante ZRCP de cada operacion de escritura que se realice. Quiza solo se puede hacer cuando este en modo "run" desde ZRCP
+
+-Trap door. rutina de carga propia, aunque uses un tap. Se confunde los traps a rom y no carga bien. Poniendo como real tape si que carga
+
+-Desensamblado mediante ejecución de código. Que desensamble solo lo que ejecute y lógicamente evite repetidos:
+quiza se podria hacer mediante una tabla de 65536 posiciones, que indique si el registro PC ha pasado por una de esas posiciones.
+Luego cuando se detenga el proceso, reseguir la tabla y desensamblar las posiciones indicadas solamente.
+Esto solo sirve para programas de 48k: en 128k o mas, al paginar otra memoria, habrian confusiones: quiza en este
+caso se podrian tener varias tablas de esas 65536 posiciones...
+Cual es la finalidad de esta función: saber en un juego por ejemplo, donde hay código y donde hay gráficos o datos. En este caso
+el problema reside en que si hay una zona de código que no llegamos a ejecutar (por ejemplo una pantalla a la que no llegamos) , no se 
+desensamblará el código. Por lo que su uso va a ser muy minoritario....
+Si al final es saber por donde se ha estado ejecutando un programa, se puede usar el transaction log.
+
+-poder configurar lightgun por linea de comandos
+
+-It would be interesting if an emulator could provide FIFOs or shared memory that the host operating system could
+ read/write to that were made available to the emulated machine.
+
+-Multiface 128 falla en algunos juegos, como abadia del crimen. En eightyone tambien falla en este caso
+
+-Borrar enterrom y exitrom como debug breakpoint, que ya no tienen sentido
+ 
+-simulacion de carga spectrum hace un efecto raro en primera columna de pixeles. quiza se "contagia" el color del border?
+
+-Establecer turbo desde línea comandos  
+
+-Puerto debug ascii hace salto de línea con código 10 o 13
+
+-Próxima canción AY en remote port protocol
+
+-remote command info: ultimo uso cpu, últimos fps, velocidad relativa cpu
+
+-Enabling RAM refresh lo hace mediante cambio de funcion peek. Deberia hacerlo mediante funciones nested
+
+-top speed para Z88
+
+-top speed spectrum con threads es el doble mas rapido que sin threads
+
+-quiza tambien poder poner breakpoint y que vuelva a rutina que ha llamado (es decir, buscar en la pila la direccion de retorno y esperar a que vuelva ahi)
+
+-Nuevas variables para breakpoint:
+Modo de vídeo timex /Spectra/etc
+
+-mejorar valor que se retorna cuando se lee bus idle port. Revisar rutina
+
+-Al expulsar cinta real o insertar, meter speed a 100. Esto para cuando hay autoacelerar rutinas de carga
+
+-warnings con daa comparaciones >0?
+
+-instruccion o puerto para cargar stream de bytes externos
+
+-timer con SDL
+
+-temporizador con tarjeta de sonido?
+
+probado - Variable traps que se activa por si hay load o save- hará que vaya más rápido
+
+-Lec-80 rom y Soporte 80 kb
+
+-Que algunas tareas como store scanline se hagan en thread aparte. Problema: que la mayoria de datos de ese scanline
+pueden variar mientras se está ejecutando el thread con el loop del siguiente scanline
+
+-Quizá cuando se ha pulsado rewind (en snapshots to RAM) y hasta que no hay el timeout, no generar nuevos snapshots. 
+Si no, cuando pasa el timeout y se hace rewind, aparecen unos snapshot “temporales” que quizá el usuario 
+no quiere ver. O siempre así o igual personalizable. Probarlo

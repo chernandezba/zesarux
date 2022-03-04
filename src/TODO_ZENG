@@ -1,0 +1,48 @@
+-ZENG "ZEsarUX Network Gaming"
+
+
+-ZENG: Desde Mac (Master) a Windows (slave). Parece que tiene mas tendencia a desincronizarse (y por tanto cuando entra un snapshot se nota mas)
+-ZENG: Desde Windows (Master) a Mac (slave). No parece desincronizarse mucho
+
+
+*en remote.c, bufferes de longitud MAX_LENGTH_PROTOCOL_COMMAND deberian ser con malloc
+Ademas habria que hacer que MAX_LENGTH_PROTOCOL_COMMAND sea un poco mayor que ZRCP_GET_PUT_SNAPSHOT_MEM
+
+*Quizá en sigpipe puede averiguar que socket ha fallado?
+Quizá sigpipe se puede gestionar diferente para cada thread?
+*funciones de envio snapshot, teclas y mensajes, deberian ver si reciben remote prompt? al llamar a zsock_read_all_until_command
+
+
+Ampliar buffer de recepción y el de copia. Y asignarlos por malloc 
+
+*parar thread zeng y cerrar socket zeng al salir emulador
+*asegurarse que cuando conecte zeng contra remoto al principio, retorna el prompt esperado. Ya lee version pero quiza 
+habria que hacer que leyera el primer prompt correcto
+
+
+-pruebas iniciales:
+con 2: international match day se puede jugar bien
+target renegade se desfasa muy seguido
+
+
+-pruebas iniciales con gente remota:
+cliente remoto con Mac en Nueva Zelanda NZ, 200 Mbit/100 fibra, conectado por wifi, actuando como master
+cliente remoto con Linux en Spain (SP), 100 MBit simétrico fibra, conectado por ethernet, actuando como master
+mi imac Local, actuando como slave
+*international match day: SP va fina. NZ a veces fina y otras no (del estilo de no tener snapshot hasta al cabo de 20 segundos o mas)
+*target renegade: desfase en NZ, dificil jugar. En SP peta al enviar snapshot. Quiza problema buffer snapshot?
+*bubble bobble: algo de desfase en SP pero se puede jugar
+*double dragon: desfase en SP, difícil de jugar
+*ping pong: algo de desfase en SP pero se puede jugar
+
+
+* ZRCP: habría que protegerlo con user y password, por si alguien abre ese puerto en remoto en el router 
+*que pregunte confirmacion en destino si quiere aceptar, mostrando la ip de origen
+*asegurarse que el nodo master, el remoto no sea master. detectar si no hay ningun master, o si los dos son master? como?
+
+-ZENG en CPC: no soporta teclas como [] etc
+-ZENG para el resto de maquinas y cores. Va ligado a poder generar snapshot ZSF
+
+-Probar ZENG con aventura conversacional y speech a ver si se corta el speech o no 
+-Mensajes enviados entre usuarios por ZENG que vayan a speech también 
+

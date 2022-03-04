@@ -1,0 +1,61 @@
+Just some notes and information about sped52. I suppose you have already found some documentation about sped52 in the file zesarux.odt.
+
+A bit of history:
+
+
+-I started the sped on 1995. At that time, I had the GENS4/MONS4, and also an editor/assembler which came in the microhobby magazine:
+
+http://www.worldofspectrum.org/infoseekid.cgi?id=0017013
+
+The last one was powerful, it was designed to work on a +3/+2a (mine was a +2a), but I wanted to make something better, specially an editor that could use more ram than 40kb, and also a debugger with "debug information", where you could show the source code while debugging, like the Turbo Debugger for msdos did.
+
+So I started my sped52 using that microhobby editor/assembler.
+
+
+On June 1995, my family and me went to live to Mexico, and the development of sped was stopped. I remember at that time the editor was fully working but probably the assembler and the debugger weren't. In Mexico I started my fist emulator, the ZXSpectr.
+
+We came back to spain in the late 1996, and then I continued working on sped. When the compiler was fully functional, I converted the source code from the microhobby editor to the sped format. It was really easy, so I only had to convert tab spaces to my format. I remember deleting temporarily the help page, which I already had written: I was going out of memory and the compiler on sped was not fully working, so I had to delete the help page to complete the compiler!
+
+Then, I continued working on sped just compiling with the same sped.
+
+When I finished sped (the 52th version), I really only made two programs using the sped52 (a program to write characters in the border area and another to play raw audio samples using the AY chip), apart from the same sped and converting some of my own utilities (cursor draw, real debug, etc) that were made mostly with GENS4.
+
+
+-some technical details:
+
+
+* The debugger used on sped52 is mainly based on my real debug, and the assembler was also based on real debug (real debug 128kb version had a simple compiler). So if there are some bugs (if any) they could probably exist on real debug and also on sped ;) But I think there are not many (or none) because the sped compiles with the same sped... (although logically I don't use all the Z80 opcodes in the source code of sped). It should be written a source code test program with all the Z80 opcodes and see if they all compile as expected
+
+
+* the symbol table uses some kind of binary tree. In fact, before writing it, I read something about a binary table on the gens4 manual, but I didn't know exactly how it worked. So, I started writing my own algorithm to sort the symbols in memory, and at the end, I wrote a binary tree without knowing it was a binary tree ;) I'm not sure but maybe my sort algorithm only sorted the symbols by reading the fist letter of every symbol, but I'm not sure now
+
+
+* about the usr0 mode by default: I wanted to use all the ram (even ram7) so this is why I just go to the 48kb rom with paging enabled. At that time my machine was a +2a, so no +3 disk to use... Ram7 is used by the debug information and also by the third block of source code (if present, then the debug information is not available). It will be easy to use another Ram page (for example, on ZXUno or Next extended pages, or even more, using 256kb/512kb of extended bits of port 7ffd to allocate all this)
+
+
+* about the "go to basic" function: It just runs a NEW rom call, lowering the RAMTOP value. You can go back to sped by setting ram 1 (out 32765,17) and doing a randomize usr (the exact usr value is shown in the screen when you run the "go to basic" function). This is the only entry point where you can test your compiled code (apart from, of course, saving the compiled data to tape and load it after a reset)
+
+
+* about source code comments: there are no comments (or only a few) due to memory limitations on the first editor I used. When I moved to sped source code I could have added some comments, but all the information was in my head and also in a bunch of papers (that I haven't found yet). But if you have doubts with function calls, I can probably remember the meaning of each one. I haven't looked at the source code now, but as I remember, most of the symbols are written in spanish
+
+
+* there are some auxiliary function calls at the 23296-23551 region. Mainly functions to copy data between ram pages. I'm not sure if they can trigger some problems with +3dos or esxdos
+
+
+* conversion tool: I did a conversion tool to convert from GENS or Microhobby editor to Microhobby editor or Sped
+
+https://github.com/chernandezba/zesarux/blob/master/src/my_soft/spectrum/vintage/converso.tap. 
+
+The conversions are easy:
+
+-- gens use line numbers at the beginning of each line and use a character for tabulators (chr$ 9 if I remember well)
+
+-- microhobby editor doesn't use line numbers but it does use same character for tabulators
+
+-- sped doesn't use line numbers and it doesn't use chr$ 9 for tabulators either: it just sets bit 7 of the first character that is tabulated. This is very simple and it uses less ram than the other two: for a 1000 line source code program, my sped uses at least 1000 bytes less (suposing only 1 tabulator for every line, which in fact, they could be more)
+
+
+* license: all the programs I made for the spectrum are covered by the GNU GPL license, so sped52 is also covered by it. All the future changes to sped must include the source code.
+
+
+

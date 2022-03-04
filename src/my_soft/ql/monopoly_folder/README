@@ -1,0 +1,4 @@
+monopoly.orig: original dump of the file
+monopoly_spa: same as original dump but fixing lines 17670-17700. "Spanish" version
+monopoly: same as previous but fixing variables which used spanish accents
+

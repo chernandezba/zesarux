@@ -1,0 +1,253 @@
+10 REMark BIT SOFT 14/04/95
+20 WHEN ERRor 
+30 REPORT #0
+40 IF ERR_NF OR ERR_FF THEN 
+50 PRINT #0;"´(R)EINTENTAR (I)GNORAR O (S)TOP?";
+60 opcion$=INKEY$(-1)
+70 BEEP 1000,10,5,10,21
+80 IF opcion$=="R" THEN PRINT #0;opcion$:RETRY
+90 IF opcion$=="S" THEN PRINT #0;opcion$:STOP
+100 IF opcion$=="I" THEN PRINT #0;opcion$:GO TO 140
+110 GO TO 60
+120 END IF 
+130 ELSE STOP
+140 END WHEN 
+150 MODO=1
+160 MODE 4:WINDOW 512,256,0,0:PAPER 0:CLS:FLASH 0:OVER 0:WINDOW#0;420,30,45,225:FOR N=1TO 2:WINDOW #N;435,210,45,15:END FOR N:INK 7
+170 DIM limitexy(2),limitexy2(2):limitexy(1)=0:limitexy(2)=0:limitexy2(1)=100:limitexy2(2)=100:limites%=0:DIM limvis(3):limvis(2)=0:limvis(3)=0:limvis(1)=100:capaactual$="0":puntero%=1:lonas%=0:radioempalme=0:b$="0"&CHR$(0)&CHR$(7)&CHR$(1)&CHR$(0):a$="":X=0:Y=0:factor=1:REMark VARIABLES DE INICIALIZACION
+180 FOR N=0 TO 2:BORDER#N;0,0:PAPER#N;0:INK#N;7
+190 SIDIBUJANDO%=0:anchopant%=1:altopant%=1:sienmenuderecha%=0:punterorel%=1:ymenu%=0:CSIZE 2,0:AT 0,10:PRINT "AUTOCAD PARA QL":CSIZE 0,0:AT 6,0:CLS 2:AT 6,0:CLS 3
+200 AT 6,20:PRINT "MENU PRINCIPAL":AT 8,20:PRINT "1 - DIBUJO NUEVO"\TO 20;"2 - EDITAR DIBUJO CREADO"\TO 20;"3 - UTILIDAD DE FICHEROS"\TO 20;"4 - CONFIGURACION"\TO 20;"0 - SALIR"
+210 opcion%=dial$(20,14,CODE("0"),CODE("4"),1,1)
+220 IF NOT opcion% THEN STOP
+230 CF%=0:ON opcion% GO SUB 430,250,270,360
+240 GO TO 160
+250 nombrefich$="mdv"&PIDEUNIDAD(20,15)&"_"&PIDENOMBRE$(20,16)
+251 OPEN_IN#5;nombrefich$
+252 INPUT#5;buffer$:IF buffer$<>"ACADQL 1.1" THEN CLOSE#5:PRINT "FORMATO DE FICHERO INCORRECTO"\"PULSE TECLA":buffer$=INKEY$(-1):BEEP 500,40::RETurn :ELSE PRINT "CARGANDO "&nombrefich$
+253 FOR N=1 TO 2:INPUT #5;limitexy(N)
+254 FOR N=1 TO 2:INPUT #5;limitexy2(N)
+255 INPUT #5;limites%:FOR N=1 TO 3:INPUT #5;limvis(N)
+256 INPUT #5;capaactual$:INPUT #5;radioempalme:INPUT #5;b$:INPUT #5;a$:CLOSE #5:CF%=1:GO TO 440
+260 REMark UTILIDAD DE FICHEROS
+270 AT 6,0:CLS 2:AT 6,20:CLS 3
+280 AT 6,20:PRINT "UTILIDAD DE FICHEROS":AT 8,20:PRINT "1 - LISTA DE FICHEROS"\TO 20;"2 - BORRAR FICHERO"\TO 20;"3 - COPIAR FICHERO"\TO 20;"0 - MENU"
+290 OPCI2=dial$(20,13,CODE("0"),CODE("3"),1,1)
+300 IF OPCI2=1 THEN OPEN #3,SCR_435X210a45X45:INK#3;7:UNI%=PIDEUNIDAD(20,14):CLS#3:DIR#3;"MDV"&UNI%&"_":PRINT #3;"PULSE TECLA":TECLA$=INKEY$(-1):CLS#3:CLOSE#3
+310 IF OPCI2=2 THEN DELETE "MDV"&PIDEUNIDAD(20,14)&"_"&PIDENOMBRE$(20,15)
+320 IF OPCI2=3 THEN UNI%=PIDEUNIDAD2(20,14,"DESDE UNIDAD:"):FICH$=PIDENOMBRE$(20,15):UNI2%=PIDEUNIDAD2(20,16,"HASTA UNIDAD:"):COPY "MDV"&UNI%&"_"&FICH$ TO "MDV"&UNI2%&"_"&FICH$
+330 IF OPCI2 THEN GO TO 270
+340 RETurn 
+350 REMark CONFIGURACION
+360 AT 6,0:CLS 2:AT 6,20:CLS 3
+370 AT 6,20:PRINT "CONFIGURACION":AT 8,20:PRINT "1 - CAMBIAR RESOLUCION"\TO 20;"0 - MENU"
+380 OPCI2=dial$(20,11,CODE("0"),CODE("1"),1,1)
+390 IF OPCI2=1 THEN AT 12,0:PRINT "RESOLUCION , 0 256X256 Y 8 COLORES , 1 512X256 Y 4 COLORES (ACTUAL:";MODO;"):":MODO=dial$(70,12,CODE("0"),CODE("1"),1,1)
+400 IF OPCI2 THEN GO TO 360
+410 RETurn 
+420 REMark DIBUJO NUEVO
+430 nombrefich$="mdv"&PIDEUNIDAD(20,15)&"_"&PIDENOMBRE$(20,16)
+440 IF NOT MODO THEN MODE 8:ELSE MODE 4
+450 IF MODO THEN 
+460 altopant%=192:anchopant%=365:WINDOW anchopant%,altopant%,45,29:OPEN#3,SCR_58X206a410X15:OPEN#4,scr_365X14a45X15
+470 ELSE altopant%=182:anchopant%=314:WINDOW anchopant%,altopant%,45,39:OPEN#3,SCR_109X181a359X40:OPEN#4,scr_423X24a45X15
+480 END IF 
+490 FLASH 0:OVER 0:PAPER#3;0:CLS#3:INK#3;7:BORDER#3;2,4:BORDER 2,2:INK#4;7:PAPER#4;0:BORDER#4;2,6:CLS#4:SCALE limvis(1),limvis(2),limvis(3)
+500 inicializapantalla
+510 ycanal0%=-1:SIDIBUJANDO%=1:IF CF% THEN PRINT #0;"REDIBUJANDO ...":redibuja:incrementaycanal0
+511 ultimocomando$="AYUDA"
+520 comandobusca$="":comandobusca$=introducecomando$
+521 IF comandobusca$=" " THEN comandobusca$=ultimocomando$:PRINT #0;comandobusca$:ELSE ultimocomando$=comandobusca$
+530 IF comandobusca$=="quita" THEN 
+540 IF advertencia=1 THEN CLOSE#3:CLOSE#4:RETurn 
+541 END IF 
+550 IF comandobusca$<>CHR$(27) THEN 
+560 RESTORE 11000:PUNTERO=0
+570 REPeat buscacomando
+580 IF EOF THEN EXIT buscacomando
+590 PUNTERO=PUNTERO+1
+600 READ comando$
+610 IF comando$==comandobusca$ THEN EXIT buscacomando
+620 END REPeat buscacomando
+630 IF comando$==comandobusca$ THEN 
+640 ON PUNTERO GO SUB 15960,22000,22020:REMark rutinas de comandos
+650 ELSE 
+660 PRINT#0;"Comando no reconocido":BEEP 500,10:incrementaycanal0
+670 END IF 
+680 END IF 
+690 GO TO 520
+700 STOP
+10000 DATA "AUTOCAD ","********","","","","PANTALLA"&CHR$(0)&"9","DIBUJO",CHR$(0),"PANTALLA"&CHR$(0)&"1","********",CHR$(0)
+11000 DATA "PUNTO","REDIBUJA","SALVA"
+15000 DEFine PROCedure inicializapantalla
+15010 poncapaactual:poncoordenadas:ponmenu(1)
+15020 END DEFine 
+15030 DEFine PROCedure poncapaactual
+15040 AT#4;0,0:PRINT #4;"CAPA ACTUAL:";capaactual$
+15050 END DEFine poncapaactual
+15060 DEFine PROCedure poncoordenadas:LOCal TEMP$,xsuma%,temp2$,ycoord%
+15070 xsuma%=0:ycoord%=1:IF MODO THEN xsuma%=23:ycoord%=0
+15080 AT #4;ycoord%,xsuma%:TEMP$=X:temp2$=Y:PRINT #4;"X:";TEMP$;FILL$(" ",13-LEN(TEMP$)+1);"Y:";Y;FILL$(" ",13-LEN(temp2$)+1);
+15090 PONEJES
+15100 END DEFine poncoordenadas
+15110 DEFine PROCedure PONEJES:LOCal ANCH
+15120 ANCH=limvis(1)*(anchopant%/altopant%):OVER -1:POINT X,limvis(3):LINE_R TO 0,limvis(1):POINT limvis(2),Y:LINE_R TO ANCH,0:OVER 0
+15130 END DEFine PONEJES
+15140 DEFine PROCedure ponmenu(puntt):LOCal PUNT2,MENU$
+15150 RESTORE 10000
+15160 AT#3;0,0:PUNT2=1
+15170 REPeat buscapuntero
+15180 IF EOF THEN EXIT buscapuntero
+15190 IF puntt=PUNT2 THEN EXIT buscapuntero
+15200 READ MENU$
+15210 PUNT2=PUNT2+1
+15220 END REPeat buscapuntero
+15230 IF NOT EOF THEN 
+15240 REPeat MENUS
+15250 IF EOF THEN EXIT MENUS
+15260 READ MENU$
+15270 IF MENU$=CHR$(0) THEN EXIT MENUS
+15280 IF LEN(MENU$) THEN PRINT #3;MENU$(1 TO 8):ELSE PRINT #3;FILL$(" ",8)
+15290 END REPeat MENUS
+15300 END IF 
+15310 END DEFine ponmenu
+15320 DEFine FuNction advertencia:LOCal elegido$
+15330 IF NOT MODO THEN 
+15340 PRINT#0;"Todas las modificaciones se perde  ran´Esta seguro (S/N)?":elegido$=dial$(22,2,32,255,1,0):incrementaycanal0
+15350 ELSE 
+15360 incrementaycanal0:PRINT#0;"Todas las modificaciones se perderan´Esta seguro (S/N)?":elegido$=dial$(54,ycanal0%,32,190,1,0):incrementaycanal0
+15370 END IF 
+15380 IF elegido$=="s" THEN RETurn 1:ELSE RETurn 0
+15390 END DEFine advertencia
+15400 DEFine FuNction PIDENOMBRE$(X,Y)
+15410 AT Y,X:PRINT "NOMBRE:":RETurn dial$(X+7,Y,32,190,30,1)
+15420 END DEFine PIDENOMBRE$
+15430 DEFine FuNction PIDEUNIDAD(X,Y)
+15440 AT Y,X:PRINT "UNIDAD:":RETurn dial$(X+7,Y,CODE("0"),CODE("8"),1,1)
+15450 END DEFine PIDEUNIDAD
+15460 DEFine FuNction PIDEUNIDAD2(X,Y,MENSAJE$)
+15470 AT Y,X:PRINT MENSAJE$:RETurn dial$(X+LEN(MENSAJE$),Y,CODE("0"),CODE("8"),1,1)
+15480 END DEFine PIDEUNIDAD2
+15490 DEFine FuNction dial$(x1,y1,minimo,maximo,longitud,can):LOCal sali$,tec$,contador%,cursor$,ANC,codtec%
+15491 cancelado%=0
+15500 cursor$="¹":ANC=(limvis(1)*(anchopant%/altopant%))+limvis(2)
+15510 AT #can;y1,x1:PRINT #can;cursor$:sali$=""
+15520 contador%=0:cursorleido%=0:REPeat leetecla
+15530 tec$=INKEY$(-1):codtec%=CODE(tec$)
+15540 IF codtec%=194 AND contador% THEN x1=x1-1:contador%=contador%-1:AT #can;y1,x1:PRINT #can;cursor$;" ":sali$=sali$(1 TO (LEN(sali$)-1)):BEEP 900,50:NEXT leetecla
+15550 IF codtec%=194 AND NOT contador% THEN BEEP 900,10:NEXT leetecla
+15560 IF SIDIBUJANDO% THEN 
+15561 IF codtec%=27 THEN AT#0;y1,x1:PRINT #0;"*Cancelado*";:x1=x1+11:sali$=CHR$(27):cancelado%=1:EXIT leetecla
+15570 IF NOT sienmenuderecha% THEN 
+15580 IF codtec%=248 THEN AT#0;y1,x1:cursor$=X&","&Y:PRINT #0;cursor$;:sali$=sali$&X&","&Y:x1=x1+LEN(cursor$):EXIT leetecla
+15590 IF codtec%=192 THEN PONEJES:X=X-(ANC*factor/limvis(1)):poncoordenadas:NEXT leetecla
+15600 IF codtec%=200 THEN PONEJES:X=X+(ANC*factor/limvis(1)):poncoordenadas:NEXT leetecla
+15610 IF codtec%=208 THEN PONEJES:Y=Y+(altopant%*factor/limvis(1)):poncoordenadas:NEXT leetecla
+15620 IF codtec%=216 THEN PONEJES:Y=Y-(altopant%*factor/limvis(1)):poncoordenadas:NEXT leetecla
+15630 IF codtec%=9 THEN factor=factor*2:NEXT leetecla
+15640 IF codtec%=253 THEN factor=factor/2:NEXT leetecla
+15650 IF codtec%=236 THEN sienmenuderecha%=1:PONEJES:iluminamenu(ymenu%):NEXT leetecla
+15660 ELSE 
+15670 IF codtec%=236 THEN sienmenuderecha%=0:quitailuminacionmenu(ymenu%):PONEJES:NEXT leetecla
+15680 IF codtec%=216 AND ymenu%<19 AND MODO THEN quitailuminacionmenu(ymenu%):ymenu%=ymenu%+1:iluminamenu(ymenu%):NEXT leetecla
+15690 IF codtec%=216 AND ymenu%<16 AND NOT MODO THEN quitailuminacionmenu(ymenu%):ymenu%=ymenu%+1:iluminamenu(ymenu%):NEXT leetecla
+15700 IF codtec%=208 AND ymenu% THEN quitailuminacionmenu(ymenu%):ymenu%=ymenu%-1:iluminamenu(ymenu%):NEXT leetecla
+15710 IF codtec%=10 THEN 
+15720 RESTORE 10000:punteroac%=1
+15730 REPeat busca_puntero
+15740 READ dato$
+15750 IF EOF OR punteroac%=punterorel%+ymenu% THEN EXIT busca_puntero
+15760 punteroac%=punteroac%+1
+15770 END REPeat busca_puntero
+15780 IF LEN(dato$)>8 THEN punterorel%=dato$(10 TO):quitailuminacionmenu(ymenu%):ponmenu(punterorel%):iluminamenu(ymenu%):NEXT leetecla
+15790 NEXT leetecla
+15800 END IF 
+15810 END IF 
+15820 END IF 
+15830 IF (codtec%=10 OR codtec%=32) AND contador% THEN EXIT leetecla
+15840 IF (codtec%=10 OR codtec%=32) AND NOT contador% THEN sali$=CHR$(minimo):EXIT leetecla
+15850 IF codtec%<minimo OR codtec%>maximo THEN BEEP 900,30:NEXT leetecla
+15860 IF contador%<>longitud THEN AT #can;y1,x1:PRINT #can;tec$;cursor$:BEEP 900,200:contador%=contador%+1:sali$=sali$&tec$:x1=x1+1:ELSE BEEP 900,10
+15870 END REPeat leetecla
+15880 AT #can;y1,x1:PRINT #can;" ":RETurn sali$
+15890 END DEFine dial$
+15900 DEFine FuNction introducecomando$
+15910 incrementaycanal0:PRINT#0;"Comando:":RETurn dial$(8,ycanal0%,32,191,26,0)
+15920 END DEFine introducecomando$
+15930 DEFine PROCedure incrementaycanal0
+15940 ycanal0%=ycanal0%+1:IF ycanal0%>2 THEN ycanal0%=2
+15950 END DEFine incrementaycanal0
+15960 REMark RUTINA DEL COMANDO PUNTO
+15970 incrementaycanal0
+15980 PRINT #0;"Punto:";:buffer$=dial$(6,ycanal0%,32,186,30,0)
+15981 IF cancelado%=1 THEN RETurn 
+15990 IF scanfcor%(buffer$) THEN PONEJES:X=arg0:Y=arg1:a$=a$&"1"&CHR$(0)&arg0&CHR$(0)&arg1&CHR$(0)&capaactual$&CHR$(0):redibuja:poncoordenadas:ELSE :BEEP 400,30:GO TO 15980
+16000 incrementaycanal0:GO TO 15980
+16010 DEFine PROCedure SALVAR:DELETE MDV1_AUTOCADQL:SAVE MDV1_AUTOCADQL:END DEFine 
+16020 DEFine PROCedure iluminamenu(yrell%)
+16030 OVER #3;-1:IF MODO THEN BLOCK #3;6*8,10,0,yrell%*10,7:ELSE BLOCK #3;12*8,10,0,yrell%*10,7
+16040 OVER #3;0
+16050 END DEFine iluminamenu
+16060 DEFine PROCedure quitailuminacionmenu(yrell%)
+16070 iluminamenu(yrell%)
+16080 END DEFine quitailuminacionmenu
+16090 DEFine FuNction sifcocorr%(cadena$):LOCal N
+16100 IF NOT ("," INSTR cadena$) THEN RETurn 0
+16110 FOR N=1 TO LEN(cadena$):IF cadena$(N)<>"," AND cadena$(N)<>"-" AND cadena$(N)<>"." AND cadena$(N)<>"E" THEN IF cadena$(N)>"9" OR cadena$(N)<"0" THEN RETurn 0
+16120 RETurn 1
+16130 END DEFine sifcocorr%
+16140 DEFine FuNction scanfcor%(cadena$):LOCal pun%
+16150 IF NOT (sifcocorr%(cadena$)) THEN PRINT #0;"Formato incorrecto":BEEP 600,20:incrementaycanal0:RETurn 0
+16160 pun%="," INSTR cadena$:arg0=cadena$(1 TO pun%-1)
+16170 arg1=cadena$(pun%+1 TO LEN(cadena$))
+16180 IF limites% AND (arg0<limitexy(1) OR arg0>limitexy2(1) OR arg1<limitexy(2) OR arg1>limitexy2(2)) THEN PRINT #0;"Fuera de limites":incrementaycanal0:BEEP 500,20:RETurn 0:ELSE RETurn 1
+16190 END DEFine scanfcor%
+16200 DEFine FuNction scanfvare:LOCal longitud%,oldpunt%
+16210 oldpunt%=puntero%:longitud%=long%(puntero%):puntero%=puntero%+longitud%+1:RETurn a$(oldpunt% TO puntero%-2)
+16220 END DEFine scanfvare
+16230 DEFine FuNction scanfvar$:LOCal longitud%,oldpunt%
+16240 oldpunt%=puntero%:longitud%=long%(puntero%):puntero%=puntero%+longitud%+1:RETurn a$(oldpunt% TO puntero%-2)
+16250 END DEFine scanfvar$
+16260 DEFine FuNction long%(pun%):LOCal p%
+16270 p%=0
+16280 REPeat buscafin
+16290 IF NOT CODE(a$(pun%+p%)) THEN EXIT buscafin
+16300 p%=p%+1
+16310 END REPeat buscafin
+16320 RETurn p%
+16330 END DEFine long%
+16340 DEFine FuNction lon2%(pun%):LOCal p%
+16350 p%=0
+16360 REPeat buscafin2
+16370 IF NOT CODE(b$(pun%+p%)) THEN EXIT buscafin2
+16380 p%=p%+1
+16390 END REPeat buscafin2
+16400 RETurn p%
+16410 END DEFine lon2%
+16420 DEFine PROCedure redibuja:LOCal entidad,longitud%,ar0,ar1,cap$,pu%,lonas%
+16430 lonas%=LEN(a$)
+16440 REPeat redibujando
+16450 IF puntero%>lonas% THEN EXIT redibujando
+16460 entidad=scanfvare
+16470 SELect ON entidad
+16480 =1
+16490 ar0=scanfvare:ar1=scanfvare:cap$=scanfvar$:pu%=cap$ INSTR b$:longitud%=lon2%(pu%):IF CODE(b$(pu%+longitud%+2)) THEN INK CODE(b$(pu%+longitud%+1)):POINT ar0,ar1
+16500 END SELect 
+16510 END REPeat redibujando
+16520 END DEFine redibuja
+22000 REMark COMANDO REDIBUJA
+22010 CLS:puntero%=1:redibuja:PONEJES:RETurn 
+22020 REMark RUTINA DEL COMANDO SALVA
+22030 PRINT #0;"SALVANDO "&nombrefich$
+22040 OPEN_NEW#5;nombrefich$
+22050 PRINT #5;"ACADQL 1.1"
+22060 FOR N=1 TO 2:PRINT #5;limitexy(N)
+22065 FOR N=1 TO 2:PRINT #5;limitexy2(N)
+22070 PRINT #5;limites%
+22080 FOR N=1 TO 3:PRINT #5;limvis(N)
+22090 PRINT #5;capaactual$
+22100 PRINT #5;radioempalme
+22110 PRINT #5;b$
+22120 PRINT #5;a$
+22130 CLOSE#5
+22140 incrementaycanal0:RETurn 

@@ -1,0 +1,107 @@
+Para esta version:
+
+ 
+-Cinta de juegos y programas zx81 pasar a digital
+
+-algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
+
+
+-ejemplos para spool, como:
+./txt_to_basic_lines.sh FAQ 3 si si no > pruebaspool2.txt
+
+
+-ZENG soporte para QL. ok aunque no envia teclas extendidas
+-ZENG para msx se leen los cursores en destino
+-ZENG colecovision no va bien
+
+
+
+-Info ZENG en FAQ: ya está en ayuda. Quizá extender mas?
+
+-paws Dump toda tabla procesos 
+-confirmar parametros de Freehand en quill. crear grafico en illustrator y hacer las 8 posibles combinaciones
+-Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)
+
+
+-Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking)
+-Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
+
+-ZSF: soporte para TS2068, Sam coupe, Chloe, Prism, Chrome, MK14
+
+-Consola ZRCP desde menú. Cómo gestionar comandos de cpu step que bloquean el menú?
+
+-Error: Abrir menú debug cpu con tecla F
+Luego pulsar botón salir emulador
+Y cierra menus pero no sale
+
+
+-Error: Abrir menú debug cpu con tecla F
+No habilita boton de cerrar todas las ventanas
+
+
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+-conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
+
+-mejoras accesibilidad: 
+* https://www.w3.org/TR/low-vision-needs/
+* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
+
+
+-unificar eventos joystick con eventos F-
+
+-select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
+
+-spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
+
+
+-reordenar secciones en experthelp, quiza por settings igual de menu
+
+-desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
+
+
+-Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
+
+-Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
+
+-ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-quiza distinguir en la decoracion de ventana lo que es un menu propiamente y lo que es una ventana (ay registers, waveform, etc)
+
+-organizar ventanas en cascada
+
+
+
+-opcion disable real joystick desde menu
+
+
+-expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
+
+-kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
+
+-funcion menu_generic_message que pueda ocupar mas de 32 caracteres de ancho
+ok?->pendiente controlar que ancho linea texto no exceda en total ancho pantalla/char_width -2
+Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longitud de la constante MAX_….?
+
+
+-probar speech ahora con nuevas funciones de generic message
+
+-Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
+
+-Probar generic message en stdout
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+
+
+-en daad/paws/quill debug, "mapa" de las localizaciones 
+*botones rapidos para navegar norte/sur/etc?
+
+
+-fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
+
+-Desactivar border hace desaparecer el joystick. Solo en cocoa?
+

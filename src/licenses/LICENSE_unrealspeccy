@@ -1,0 +1,10 @@
+license
+
+        UnrealSpeccy is completely freeware. You may use this emulator
+        and its sources without any restrictions. You may use the
+        sources in your own emul or to release bugfixed/new versions.
+        in this case you do not have to release updated source code,
+        (unlike GNU Public License requires, for example). You may port
+        emulator to any other platform (but there are many
+        MSVC-specific language constructions, so it's doubtful that
+        you can compile it with another compiler)

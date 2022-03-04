@@ -1,0 +1,32 @@
+Texto informativo de las roms conteniendo mantransfer, creado por zup, extraido de un hilo de foro.speccy.org http://foro.speccy.org/viewtopic.php?f=11&t=5225
+
+------
+
+Al hilo de una discusión con chernandezba, me ha picado la curiosidad de ver cómo de fácil sería adaptar su mantransfer a la ROM del Spectrum. La respuesta es que ha sido bastante fácil, y he creado tres ROMs experimentales que pueden servir para dotar a un Spectrum cualquiera de transfer. No estoy seguro de que me funcionen correctamente el 100% de las ocasiones, pero ahí van:
+
+Las ROMs son las siguientes:
+
+    mantransfer_v3 - La versión "casi" original. Conserva todas la peculiaridades de mantransfer (como que solo sirve para juegos que usen IM 1, uso de pila y de pantalla, esas cosas).
+    mantransfer_v3i - Esta versión permite transferir juegos independientemente del IM en el que estén y corrige algún bug.
+    mantransfer_v3z - La versión "zuperior". Aquí he mangoneado a mi gusto en la rutina para reducir el uso de la pila y de la pantalla, y creo haber corregido los posibles bugs. Esta es la versión que recomiendo.
+
+
+Requerimientos de hardware:
+- Estas ROMs deberían funcionar en cualquier Spectrum de 48k (incluído el Harlequin).
+- El pulsador que dispare la NMI deberá tener algún tipo de antirrebotes.
+
+Instrucciones:
+Lo que dice al iniciar el Spectrum: Pulsa NMI y se grabará un snapshot.
+
+Posibles incompatibilidades:
+- La rutina está graba a partir de la dirección $3900 de la ROM. Los programas que usen I=$39 para las interrupciones no funcionarán bien (es el mismo problema que dan algunos juegos no compatibles con +2A y +3).
+- Al haber modificado la ROM, aquellos juegos que la usen para desencriptar o hagan algún tipo de checksum que incluya la ROM no funcionarán (Ghost'n'goblins o 3 weeks in Paradise 128k lo hacen, pero no he comprobado si fallan).
+- En los modelos de 128k no existe el "hueco" que se aprovecha para meter nuestro transfer. Quizás pueda aplicarse el parche (quitando el mensaje de copyright) en las del +2A o +3, pero no estoy seguro.
+
+Cómo conseguir las ROMs:
+Puedes descargarlas de este enlace a mediafire (http://www.mediafire.com/file/kn9bfsw8bfay28d/mantransfer.7z)
+En el paquete se incluyen las tres rutinas en ensamblador para ZX Spin y las tres ROMs ya ensambladas.
+
+-------
+
+Nota: el contenido de dicho archivo comprimido es el que se encuentra en este directorio

@@ -1,0 +1,100 @@
+
+--- audio - fallos ---
+
+-en alsa falla al cambiar velocidad cpu (tanto con pthreads con sin pthreads)
+->no falla con todas las velocidades. por ejemplo con 200% falla pero no con 300%
+
+-alsa no va stereo. dejamos de momento driver en mono
+
+-pulse: sin pthreads:  chasquidos, pero igual que antes de tener stereo, quiza un poco mas de chasquidos. OK
+
+-en dsp, con debian 8, mala calidad sonido dsp (eso cuando lo puede activar)
+parece que emula dsp con osspd que da muy mal resultado
+para poner oss por defecto (y NO usar alsa):
+->http://forums.debian.net/viewtopic.php?f=16&t=52919
+Ver alternativa con emulacion de oss por parte de alsa sin tener que sustituir todo alsa por oss
+otras alternativas: padsp, osspd (los dos se oye mal el sonido)
+
+-en pulse a veces falla al reiniciar driver audio. sucede incluso con sonido activo (audio_playing.v=1 y sin silencio) y cuando va a finalizar
+caso 1) el thread lo finaliza correctamente, y luego da error al iniciar driver sonido
+caso 2) error al finalizar pthread: Debug: Ending audiopulse thread
+zesarux: pthread_mutex_lock.c:321: __pthread_mutex_lock_full: Assertion `robust || (oldval & 0x40000000) == 0' failed.
+Aborted
+caso 1 esta gestionado por el emulador y hace fallback a audionull. caso 2 provoca la salida directa del programa
+probado agregando pausas al finalizar pero falla igualmente
+
+
+- En Mac, parece que timer mediante pthreads no va bien, se oye "lento". En cambio sin pthreads SI que va bien
+->pasa porque usleep tarda mas de lo que se dice: Ejemplo: usleep (500) deberia tardar medio milisegundo y tarda mas. Si se hace
+en bucle para que tarde 10 segundos , tarda unos 14 segundos:
+	int i;
+	for (i=0;i<20*1000;i++) {
+		usleep(500);
+	}
+en cambio un usleep de 10000000 tarda 10 segundos exactos. Parece que tiene problemas con valores pequeños en tiempo
+en developer apple dice:
+ "The actual time slept may be longer, due to
+     system latencies and possible limitations in the timer resolution of the
+     hardware."
+
+
+- En Mac, snap_tests/test3200z88.zx se oye entrecortado. En Linux por ejemplo con pulse se oye continuo (con algun cortecito de vez en cuando)
+
+
+--- audio - mejoras ---
+
+-dsp en cygwin distorsiona. se ha probado con buffer unsigned pero sigue distorsionando
+
+-quizá envelopes no se están gestionando bien….
+
+
+-general sound: gs_mix_dac_channels quiza que coja los ultimos 2-3 valores ultimos y haga media
+
+-ay speech parece en algunas musicas de turbosound que se oye peor habilitando (ver ts-music-dihalt2006)
+
+-------------
+
+
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+*** Audio ***
+
+
+-comandos reset midi no hace nada?? Solo van en windows. Quiza enviar mejor un noteoff
+
+-revisar mezclado ay+beeper . posiblemente set_value_beeper acaba sacando algun valor beeper 50*2 y se sale todo de rango?
+o bien el mezclado de chip ay. Con que juegos se observa esto? O quiza con el test de 6/9 canales turbosound?
+
+-Generador archivos .ay según lo enviado a chip de sonido. Soporte turbosound
+
+-leer audio casette
+
+-detector de silencio en sdl2, en 48k, genera zumbido en Linux
+ver de momento workaround audio_using_sdl2
+
+-Salida 16 bits sonido?
+
+-con vo stdout y speech habilitado, parece que cambiar entre maquinas zx81 y spectrum, vuelve a decir texto de bienvenida. normal??
+
+-Quizá inicializacion de ruido de cada chip debe ser diferente 
+
+-agregar otro detector silencio, en este caso para specdrum. tiene sentido? total no altera mucho la onda de salida cuando lo activo y no se envia sonido 
+
+-Futuro filtro conversor de real audio a Puerto fe, que sea capaz de saber cuando es 1 (onda arriba) y cuando 0 (onda abajo):
+utilizar mismo método que el resample a 1 bit: si valor es menor que anterior, es 0. Si es mayor, es 1
+
+-pulse audio sin pthreads se oye chasquido a cada envio. esto creo que es dificil de evitar
+
+-efecto reverberacion para sonido:
+*mezclar el sonido con el mismo sonido pero unas decimas de segundo anterior
+
+-aumentar frecuencia 15600 para mejor sonido
+
+-lectura de sonido desde line-in, para poder cargar directo desde casette
+
+-reducir fifo por defecto de pulse? de 10 a 2?
+-reducir fifo por defecto de alsa? de 4 a 2?
+-probar a reducir buffer sonido en otros drivers: dsp, alsa, pulse
+
+
+*************

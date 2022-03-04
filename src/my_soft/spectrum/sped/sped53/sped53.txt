@@ -1,0 +1,2 @@
+sped52 tenia un bug al salvar codigo objeto: siempre guardaba empezando en la 49152. Esta version sped53 lo corrige
+Esta version sigue siendo en español

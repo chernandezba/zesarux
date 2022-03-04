@@ -1,0 +1,125 @@
+de foro zxuno
+http://www.zxuno.com/forum/viewtopic.php?f=39&t=611
+
+modo anaglífico
+control de juegos por microfono
+control por webcam.
+Control tactil gestual por tablet externa.
+Un modo en el que el emulador haga mods aleatorios de cualquier juego a partir de recursos de diferentes taps tomando sprites y sonidos de aqui y de alla.
+Playlist de musicas encontradas en taps dentro de una carpeta. Exportar a mp3.
+En juegos de dos o mas jugadores, simular jugadores con inteligencia artificial.
+Musica y sonidos algoritmicos en juegos sin dichos recursos.
+Multicoloreado automatico de juegos clasicos.
+Radastanizamiento de juegos 3d pesados o con scroll lento. Aligeración radastaní.
+
+Lo de la emulación de Spectranet no se puede volver a pedir, no?
+
+Leo en otros foros que han pedido emulación hardward de monitores y altavoces.
+Aqui hay una detallada explicación para el C64 : http://hitmen.c02.at/temp/palstuff/
+Supongo que aplicar filtros requiere mucha ram. No se podría clonar estos periféricos con fpga o alguna plaquita? Oshea César vendería una plaquita para usarla junto con Zesaurux, de esa forma no habrían problemas de ram y "simplemente" le pasarias un filtro hardware al emulador antes de volcar la imagen al monitor. Esta plaquita se conectaria al pc en forma de pichucha usb
+
+Según he leído en http://bogost.com/games/a_television_simulator/
+El emulador Stella (http://stella.sourceforge.net) tiene código que simula crt. Ver en los creditos del proyecto otro codigo parecido para ntsc
+
+
+
+
+
+-------------
+
+
+de foro speccy
+
+http://foro.speccy.org/viewtopic.php?f=11&t=4917&sid=4060f7c685aed19678d640cd81cb2489
+
+Emulación de un televisor CRT en plan "pixel perfect":
+
+1) Usando el patrón real de un televisor CRT: https://upload.wikimedia.org/wikipedia/commons/9/9f/CRT_screen._closeup.jpg
+2) Simulando como el haz de rayos catódicos va recorriendo la pantalla (es decir, por líneas, iluminando por donde pasa y brevemente iluminando las de alrededor. No es scanlines y ya.)
+3) Simulando el retrazo, y el tiempo que se tarda en pasar por la pantalla, no a base de dibujar la pantalla cuando se produce el retrazo y ya está.
+
+Emulación del sonido: porque un Spectrum no se escucha con absoluta nitidez, ni conectando un amplificador directamente al puerto EAR. Tiene más graves, más profundidad. Si tienes un Spectrum haz la prueba y comprobarás lo que digo.
+
+Cuando lo consigas, tendrás el mejor emulador del Mundo, incluso no siendo perfecto a nivel de emulación en si.
+
+
+
+
+sd1:
+Es el cacharrito antipiratería que sacaron para la primera edición en estuche del Camelot warriors. Conmuta a masa uno de los pins del bus de expansión... yo mismo siguiendo el artículo de Robert Perelegre (por cierto, gracias!) me hice uno en plan cutre.. y funciona!!
+
+http://www.robertp.net/sd1.htm
+
+Si te animas a implementarlo sería el primer emulador en soportarlo ;)
+
+Saludos!
+
+
+-----------
+
+de zonadepruebas
+
+http://www.zonadepruebas.com/viewtopic.php?f=13&t=7513&hilit=nuevas+caracteristicas
+
+
+Yo siempre digo lo mismo: emulación compleja de TV. Y siempre me responden lo mismo (con mucha razón): se emula a un sistema, la tele es un dispositivo aparte. Pero creo que gran parte de la experiencia de utilización de un sistema clásico está en cómo se percibe.
+
+Ahora mismo hay emulaciones CRT a bajo nivel que producen una imagen muy parecida a la que llega a las TVs de este estándar, y luego sólo hay que aplicar un pequeño post proceso para simular la pantalla. ¿Hay algo parecido para PAL? El ghosting y el dot crawl de la conexión RF son integrales, para mí, a la experiencia de jugar a mis clásicos favoritos de Spectrum, por poner un ejemplo.
+
+
+Si se incluyen consolas, detección de joypads y aplicación automática de configuración de teclas.
+Me explico: A veces no tengo ningún mando a mano y quiero usar el teclado, otras veces tengo un mando Logitech la mar de mono, otras veces aprovecho los de PSX con un adaptador y para según que juegos uso un Thrustmaster con gatillos analógicos. Pues bien, cada vez que uso uno u otro tengo que volver a cambiar la asignación de botones.
+Recuerdo haber usado un emulador de N64 que permitía guardar plantillas con distintas configuraciones, pero no las aplicaba automáticamente.
+
+
+La ampliacion con Rom Lec memory para cargar CPM tambien
+
+Specdrum, sintetizadores de voz tipo al sweet talk, Interface Midi, interfaces de reles para controlar cosas, interfaces de raton, lector/grabador eprom y todo periferico raruno que se nos ocurra...
+
+Luego hay muchos emus que no tiene lectura o emulacion de perifericos tipo Wafadrive, Microdrive, ,Opus Discovery, disciple, +D Betadisk ecy....cuando tienen uno pues le falta a veces otro... el mas completo que he visto en ese sentido es RealSpectrum
+
+A mi como me gustan los Didaktik puestos a emular me gustaría poder grabar leer el formato de diskete de los didaktik M (D40/D80 con MDOS) y kompackt que solo se emulan en el RealSpectrum y Yase.
+
+Los microdrives que yo recuerde se emulan en Warajevo y fuse, también creo que había uno español que emulaba la LEC memory y leia ficheros mdr
+
+
+
+----------------
+
+de retrowiki
+
+http://rw30.retrowiki.es/viewtopic.php?f=86&t=533
+
+
+No es que no lo implemente ninguno; pero es muy raro.
+
+Que el refresco de pantalla esté sincronizado lo más fielmente posible con la ejecución de los comandos en un depurador (que se supone que también debe incorporar)
+
+
+Pues a mi lo que se me viene primeramente a la cabeza es la opción de poder tratar ficheros en el almacenamiento, ya sea cinta de cassette, floppies, imágenes de HD, con un editor de ficheros que me permita moverlos de un device a otro, poder generar audio para la carga y poder pasar de audio a DSK y viceversa, poder crear devices y meterles cosas desde el PC, en fin, todo eso.....
+
+Ya me gustaría que algunos emuladores incluyeran la opción de crear una imagen de disco y meterle y sacarle todo lo que se quiera, sería la panacea.  -drinks
+
+Luego esas imágenes de disco o esos audios se pueden llevar a las maquinas originales y zas !!! a funcionar, y el emulador no ser un mero emulador sino hacer de puente entre el PC y la máquina original.
+
+
+
+
+-----
+
+de WOS forum
+
+https://www.worldofspectrum.org/forums/discussion/comment/881490/#Comment_881490
+
+
+An option that let choose a random game file from a certain directory.
+
+
+
+The ability to have a config file with the same name as a TZX you are loading, which specifies memory ranges where the CPU is accelerated to a certain percentage. So for some 3D games (like Freescape ones) the frame rate can be increased without affecting the rest of the playability.
+
+
+
+
+Not a new feature but a requirement. Let the user select if they want a perfect 4:3 ratio screen or if they want nasty stretching the image when going full screen. Let the user select if the full screen mode is scaled properly (x2, x3, x4) of if they want it to be nasty smoothed.
+When going full screen have the option for border size - full, thick, medium, thin and none - remembering to keep the pixel ratio square and looking good.

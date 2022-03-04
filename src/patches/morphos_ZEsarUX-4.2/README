@@ -1,0 +1,10 @@
+This patch enables ZEsarUX 4.2 to compile on MorphOS operating system. 
+It disables text-to-speech functions because MorphOS doesn have fork function and I haven't found a substitute yet.
+It has been created by Javier R. Santurde (tolkien)
+
+To apply it:
+
+cd (where the ZEsarUX 4.2 source code is)
+patch -p2 < route_to_patch.txt
+
+Then follow the usual compilation process

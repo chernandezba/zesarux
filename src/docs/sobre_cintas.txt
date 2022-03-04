@@ -1,0 +1,42 @@
+Hola
+
+Una descripción rápida de los formatos de archivos de Spectrum, para los que no tengáis práctica con esto.
+Os encontraréis dos tipos de archivos: snapshots y cintas.
+-Los snapshots son una copia exacta del estado del Spectrum: memoria, registros, etc en un momento concreto. Cargar
+un snapshot es instantáneo. Los formatos mas habituales son el .z80 y el .sna. Mi emulador puede leer estos formatos mas
+comunes y también tiene su propio formato, el .zx
+
+-Las cintas son lo más parecido a una cinta de cassette de Spectrum. Se podrían dividir en dos tipos de cintas: las binarias, 
+que contienen bytes con el contenido de una cinta tal cual, o las de audio, que contienen el sonido de carga de un Spectrum.
+En cuanto a formatos de archivos de cintas, podréis encontraros el TAP, que es una cinta de tipo binaria. Este formato
+está soportado por todos los emuladores, y la carga de una cinta TAP suele tardar unos pocos segundos.
+El otro formato de cinta común es el TZX, que puede contener tanto datos binarios como datos de audio. Los datos de audio
+permiten tener cargas de Spectrum turbo (mas rápidas de lo normal) por ejemplo.
+
+En cuanto a las rutinas de carga, un juego de Spectrum puede cargar usando la rutina de la ROM (cosa que en mi emulador se mete
+en la opción de Standard Tape) o puede tener su propia rutina de carga (y en ese caso hay que meterlo en la opción de Real Tape).
+Las cintas estándard en mi emulador se cargan en unos pocos segundos, pero las cintas reales tardan la velocidad real del Spectrum 
+(aunque se puede tocar la opción de CPU Speed para acelerarlo).
+
+Dichas rutinas propias de carga pueden ser cargas a velocidad normal, pero que hagan efectos "especiales", como el efecto
+curioso del Drácula, o cambiar los colores del border, etc. Esas cargas a velocidad normal pueden venir en archivos TAP o TZX.
+En cuanto a cargas turbo, vendrán seguramente en archivos TZX.
+
+Hay otro tipo de formato de cinta real que es el WAV, o sea, un archivo de sonido tal cual grabado desde una cinta de Spectrum. 
+Aunque es poco común, hay algunos juegos que podéis encontrar en este formato.
+
+
+En cuanto a lo que hace mi emulador con todo esto:
+-Cargas binarias estándard se pueden poner como Standard Tape.
+-Cargas no estándard, se deben poner como Real Tape.
+
+Si se selecciona el archivo desde el menú Smart Load, el emulador intenta detectar qué tipo de cinta es y lo pone como Standard Tape
+o Real Tape. Si es una carga turbo, lo detectará correctamente como Real Tape. Si es una carga binaria estándard, lo 
+detectará correctamente como Standard Tape. Pero si es una carga a velocidad normal pero que usa rutina propia (como Drácula), el emulador
+no es capaz de detectar esto y lo mete erróneamente como Standard Tape. En ese caso debéis seleccionarla manualmente como Real Tape.
+
+
+Creo que con esto ya os quedará mas claro ;)
+
+Saludos
+César

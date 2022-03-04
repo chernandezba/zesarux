@@ -1,0 +1,138 @@
+	//estas 4 con: disableborder, zoom 1, overlayinfo, ao alsa, frameskip 3
+	//Pruebas 16 Sep 2014
+	//en raspberry
+	//con rainbow, ao alsa
+        //sin memptr
+        //con contended memory
+	//sin border
+	//over128, vo fbdev, zoom 1, con putpixel cache. 70 % cpu
+
+        //Pruebas 16 Sep 2014
+        //en raspberry
+        //con rainbow, ao alsa
+        //sin memptr
+        //con contended memory
+	//sin border
+        //over128, vo fbdev, zoom 1, sin putpixel cache. 69 % cpu
+
+        //Pruebas 16 Sep 2014
+        //en raspberry
+        //sin rainbow, ao alsa
+        //sin memptr
+        //con contended memory
+	//sin border
+        //over128, vo fbdev, zoom 1, con putpixel cache. 65 % cpu
+
+        //Pruebas 16 Sep 2014
+        //en raspberry
+        //sin rainbow, ao alsa
+        //sin memptr
+        //con contended memory
+	//sin border
+        //over128, vo fbdev, zoom 1, sin putpixel cache. 60 % cpu
+
+
+	//disableborder, en 48k sin nada, no rainbow, frameskip 3, ao null, zoom 1, sin putpixel cache: 87% cpu-> por el tema del dynamic overclock
+
+	//force turbo y 800 mhz, ao alsa, frameskip 3: 53% cpu
+	//force turbo y 900 mhz, ao alsa, frameskip 3: 77% cpu??? parece que no ha pillado los 900 mhz
+
+	//800 mhz, bpp 16:
+	//overscan 128k necesita frameskip 3
+	//overscan 48k con frameskip 2 se oye bien
+	//shock megademo, 48k, frameskip 0 se oye bien
+	//chase hq necesita frameskip 3 con rainbow. sin rainbow, frameskip 1
+
+
+	//Pruebas 16 Sep 2014
+        //en raspberry
+        //sin rainbow, ao alsa
+        //sin memptr
+        //con contended memory
+        //sin border
+	//sin actividad
+	
+        //vo fbdev, zoom 1,frameskip 3, con putpixel cache. 63 % cpu
+	//sin putpixel cache: 74% cpu
+
+
+	//lo mismo con over128, con putpixel cache, frameskip 3: 76 % cpu.. pero se oye mejor
+	//sin putpuxel cache: 70 %cpu... pero se oye un poco lento y con cortes de sonido
+
+
+
+
+
+	//Pruebas 12 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 56% cpu 
+
+        //Pruebas 12 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo fbdev, zoom 1, frameskip 1,  72% cpu
+
+        //Pruebas 12 Mayo 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo fbdev, zoom 1, frameskip 3, over128.z80, 78% cpu 
+
+	//Raspberry a 800 MHz
+	//28 julio. Compilado con O3. Rainbow islands 128k. 12 FPS. 80% cpu. frameskip 3. Musica lenta
+	//28 julio. Compilado con O2. Rainbow islands 128k. 12 FPS. 80% cpu. frameskip 3. Musica lenta
+
+	//A partir de aqui todas las pruebas ya son con raspberry en 900MHz
+
+
+	//Pruebas 5 Diciembre 2016
+	//Raspberry 1 con maximo overclock
+	//sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 54% cpu
+
+	//sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo fbdev, zoom 1, frameskip 1,  64% cpu
+
+	//con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo fbdev, zoom 1, frameskip 3, over128.z80, 88% cpu
+
+
+        //Pruebas 25 Noviembre 2017
+        //Raspberry 1 con maximo overclock
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 57% cpu
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo fbdev, zoom 1, frameskip 1,  74% cpu
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo fbdev, zoom 1, frameskip 3, over128.z80, 88% cpu
+
+
+	//16 Marzo 2018
+	//zesarux 5 --ao null --vo null --noconfigfile 64 % cpu raspiboy
+	//zesarux 6.1 SN --ao null --vo null --noconfigfile 81 % cpu raspiboy
+	//zesarux 6.1 SN con fast core --ao null --vo null --noconfigfile 58 % cpu raspiboy
+
+	//si solo quitase los ifs sin perder casi funcionalidad (chardetect, +3, raster interrupt, frame interrupt tsconf, audiodac) consume 68%. Por lo que raspberry NO tiene speculative execution
+
+	//mismo pero en raspberry 1:
+	//zesarux 6.1 SN --ao null --vo null --noconfigfile 53% cpu con el core normal
+	//zesarux 6.1 SN --ao null --vo null --noconfigfile 48% cpu con el core rapido
+	

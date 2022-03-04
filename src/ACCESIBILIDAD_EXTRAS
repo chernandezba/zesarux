@@ -1,0 +1,23 @@
+Explicacion de como funciona los menus, a nivel de Accesibilidad, extracto de un mensaje publicado en el foro del CAAD. Este texto es WIP (work in progress) todavía:
+
+Os doy mas explicaciones de como funciona la lectura de menús y selector de archivos:
+-al abrir un menú se lee entero. Si se pulsa una tecla mientras se lee, se cancela dicha lectura
+-siempre dice en que opción esta seleccionando el cursor, mediante el texto: 'active item...' Creo que esto es importante que lo diga, pues al moverse con los cursores debe decir que opción esta seleccionada
+-luego la mayoría de opciones de cada menú tienen atajos mediante letras. Por ejemplo la opción Smart Load del menú principal se puede seleccionar también con la tecla 's'. Estos atajos aparecen dibujados en el propio menú, con la tecla en cuestión en color inverso cuando pasan unos segundos. Esto no se como indicarlo para que sea accesible también. Se os ocurre como?
+En cuanto a las ventanas de texto, por ejemplo, la ayuda con F1, o en el menú Help, cada opción de ahí, por ejemplo README, o LICENSE funciona así:
+-al aparecer la ventana se lee todo el texto visible en la ventana. Cuando el texto es mas grande que la ventana, aparece al final de la ventana dos puntos suspensivos indicando que hay mas texto. Con los cursores o teclas de página arriba o abajo se va desplazando el texto
+-cada vez que se desplaza el texto, el lector lee la ventana completa visible (esto tengo que acabar de probarlo pero si no recuerdo mal es así). Es decir, si cuando aparece la ventana el lector lee desde la línea 1 hasta la línea 20 del archivo README, la pulsar cursor abajo el lector leerá desde la línea 2 hasta la 21
+En cuanto al selector de archivos:
+-tiene 3 zonas, a las que se puede ir conmutando mediante la tecla tab
+-las 3 zonas son:
+1-línea superior para escribir un nombre de archivo, o directorio (este campo se llama file) . Si se escribe un directorio y pulsamos enter, ira a dicho directorio. Si se escribe un nombre de archivo y pulsamos enter, se cerrara la ventana y se escogerá dicho archivo. Este es un campo editable, por tanto haré lo que me comenta Fernando, que se lea entero al entrar, y diga la letra que se pulsa o diga cuando se borre una letra. Por cierto que en emulador hay otros campos editables que debería modificar de la misma manera que este.
+2-zona central, de unas 15 líneas, donde aparece el contenido del directorio activo, teniendo en cuenta el filtro activo (zona numero 3 que comento en el párrafo siguiente). Esta zona se llama directory contents. Ahí nos podemos mover mediante cursores, tecla página arriba o abajo, enter para seleccionar, ya sea archivo o directorio para cambiar a dicho directorio, o pulsando una tecla alfanumérica, el cursor se desplazará hasta aquel archivo o carpeta que empiece con dicha tecla pulsada.
+3-línea inferior, donde aparece el filtro de archivo. Este campo de filtro no es editable, pero tiene dos posibles valores: por defecto tiene los filtros de archivos comunes para la acción a realizar. Quiero decir, si vamos a seleccionar una cinta, los filtros por defecto serán las extensiones TAP y TZX. Si pulsamos enter en el campo de filtros, conmutara entre los filtros por defecto o el filtro que incluye todo ('*')
+Aparte de estos 3 campos seleccionables, la primera línea de la ventana indica el directorio activo
+No hay un campo aparte para directorios. Los directorios y archivos aparecen en la zona central, ordenados alfabéticamente.
+Este selector de archivos es el mismo ya sea para una operación de carga o de grabación. Es decir, si vamos a cargar un snapshot o cinta mediante el menú smarload, podemos seleccionar un archivo existente. Pero si vamos a grabar un snapshot, habrá que escribir el nombre del archivo manualmente en la sección 1 file, dado que lo mas seguro es que sea un archivo que aun no existe y lógicamente no podemos seleccionar.
+Este selector de archivos ahora mismo no es accesible del todo, tengo que arreglarlo. Ahora mismo lo que hace es leer la ventana entera la primera vez que se abre y luego no se vuelve a leer aunque se pulse tecla. Creo que lo mejor seria:
+-la primera vez, leer cual es el directorio activo y su contenido
+-indicar siempre que archivo o carpeta esta apuntando el cursor. De la misma manera que en los menús se lee: active item...
+-al cambiar a otra carpeta, volver a decir cual es el directorio activo y su contenido
+-al conmutar a otras zonas mediante tab, leer el contenido de dichas zonas

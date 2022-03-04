@@ -1,0 +1,51 @@
+ZEsarUX - ZX Second-Emulator And Released for UniX 
+
+Created by Cesar Hernandez Bano
+
+https://github.com/chernandezba/zesarux
+
+
+It's a ZX Machines Emulator for UNIX based operating systems (and Windows), including all the Sinclair computers:
+
+* MK14
+* ZX80
+* ZX81
+* ZX Spectrum
+* QL
+* Z88
+
+And also:
+
+* Timex TS 2068
+* Sam Coupe
+* Pentagon 
+* Chloe 140 SE, 280 SE
+* Chrome
+* Prism
+* ZX-Uno
+* ZX-Evolution BaseConf
+* ZX-Evolution TS-Conf
+* ZX Spectrum Next
+* Jupiter Ace
+* Amstrad CPC 464, CPC 4128
+* MSX1 
+* Spectravideo 318/328
+* Colecovision
+* Sega SG1000
+* Sega Master System
+
+ZEsarUX source code and binaries are distributed under GNU GPL license. 
+ZEsarUX also includes a folder, "my_soft", which has some programs and data made by me. The entire folder is also covered by the GNU GPL license.
+
+ZEsarUX also includes third-party roms, media, programs and games NOT covered by this license.
+
+This is my second ZX Spectrum emulator after ZXSpectr
+https://github.com/chernandezba/zxspectr
+
+I recommend you to read FEATURES, INSTALL and HISTORY files, as well as other documents in this emulator.
+You can open them from the help menu or from an external viewer.
+
+
+ZEsarUX distributed under GNU GENERAL PUBLIC LICENSE v3. You may read it on the LICENSE file.
+
+Please read the other licenses used in ZEsarUX, from the menu Help->Licenses or just open files from folder licenses/

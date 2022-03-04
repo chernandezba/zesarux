@@ -1,0 +1,42 @@
+Instrucciones de uso de ZEsarUX
+
+ZEsarUX es un emulador de ZX Spectrum gratuito y de código abierto. El Spectrum fue un ordenador personal muy popular en los años 80 y 90 en Europa. Los que piensen que no tenía lector de pantalla no se equivocan, pero este emulador es capaz, gracias a unas rutinas de detección de caracteres, de detectar el texto en pantalla y enviarlo a un motor tts.
+Para esta plataforma se hicieron bastantes aventuras conversacionales, y este es el primer emulador (al menos que el autor del mismo y yo sepamos) que soporta salida de texto. Cierto es que para esta familia de ordenadores no solo se hicieron conversacionales, pero en la página dedicada a almacenar todo lo relacionado con esta máquina (World of Spectrum) están bien clasificados. Así pues, vamos al lío.
+
+Este emulador está disponible para sistemas Unix (GNU/Linux, Mac y Raspberry Pi) y Windows. Si os descargáis el código fuente, hay que seguir las instrucciones de instalación. Si os lo bajáis compilado, lo extraéis en una carpeta vacía. En Windows, la ruta completa a dicha carpeta no puede tener espacios.
+Una vez instalado, echadle un ojo a la carpeta speech_filters del emulador. Estos son los filtros que utiliza el emulador para redireccionar el texto a un programa texto a voz. En Windows, podemos usar >Jampal, eSpeak o la versión de consola de Balabolka; en Mac se usa el comando Say; y en GNU/Linux, se puede usar eSpeak y Festival. Por supuesto, se pueden crear más filtros basados en los anteriores. Pero eso sí, al crear filtros, no seáis manazas y utilizad incluso lo que no entendéis (me refiero a la operación de borrar un archivo al final de los scripts para Windows).
+El emulador se ejecuta desde consola, y recomiendo usar  los siguientes parámetros:
+--textspeechprogram <programa>: Archivo bat o shell script a utilizar para la síntesis de voz.
+--textspeechmenu: Enviar también el menú (que se abre con F5) al programa de síntesis de voz.
+--textspeechstopprogram <programa>: Si lo hay, especificar un shell script o bat que pare el programa de texto a voz. Incluidos para eSpeak en Windows y Festival en GNU/Linux.
+--enableprintchartrap: activar la rutina de detección de caracteres estándar.
+--automaticdetectchar: activar más rutinas de detección de caracteres.
+
+Hay, por supuesto más opciones, pero estos os sirven para empezar a jugar (escribid --help y --experthelp para una lista completa). Por ejemplo, si queréis podéis ajustar el ancho de línea a enviar al programa de síntesis para que la lectura sea más fluida.
+
+Acerca de los menus, cada vez que se abre uno, ZEsarUX nos leerá el listado de opciones (cada línea del menú). Al leer cada línea se pueden dar varias circunstancias:
+1) Que la opción no esté disponible. Se escucha el texto "Unavailable option" y la linea de menu.
+Esto sucede por ejemplo con la opcíon de Tape Browser, cuando no hay cinta insertada. En ese caso se lee como:
+Unavailable option. Tape Browser
+2) Que la opción tenga un setting para activar/desactivar opciones. Se escucha la linea de menu y a continuación el texto "Enabled" o "Disabled"
+Por ejemplo con la opción de "Trap print" que se puede activar o no. En este caso se lee como:
+Trap print. Enabled
+(en el caso que esté activada la opción)
+ó
+Trap print. Disabled
+(en el caso que esté desactivada la opción)
+
+No confundir opciones que se pueden activar/desactivar, con opciones no disponibles (caso 1)
+
+3) Opción que está seleccionando el cursor. Cuando se entra en un menu, se leen todas las opciones y al final se indica qué linea está seleccionada. 
+Se escucha el texto "Selected item" y la linea seleccionada.
+Por ejemplo si seleccionamos el ítem de menu "Print char traps" se lee como:
+Selected item: Print char traps
+
+Las circunstancias 1,2 y 3 se pueden dar por separado o simultáneamente varias de ellas, por ejemplo, se podria seleccionar un item con una opción activa, o un item no disponible, etc
+
+Y ya para acabar, espero que se me disculpe hacer algo de publicidad hacia mi persona. En http://github.com/sukiletxe/zesarux-ao2 tenéis un filtro que funciona con lectores de pantalla y SAPI 5 en Windows y VoiceOver en Mac, aunque en esta última plataforma está sin testear. Esto, si se utiliza con lectores de pantalla en Windows, no requiere de scripts de paro para que se detenga al pulsar una tecla (probado con JAWS y NVDA). Con SAPI 5 y VoiceOver sí que lo requiere.
+
+Con esto me despido. Juegos para esta plataforma los podéis conseguir en World of Spectrum (http://www.worldofspectrum.org/textadv/index.html) y en wiki.caad.es .
+
+Sukil Etxenike 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>CFBundleName</key>
+<string>zesarux</string>
+<key>CFBundleDisplayName</key>
+<string>ZEsarUX</string>
+<key>CFBundleVersion</key>
+<string>10.1</string>
+<key>CFBundleIdentifier</key>
+<string>com.cesarhernandez.zesarux</string>
+<key>CFBundlePackageType</key>
+<string>APPL</string>
+<key>CFBundleSignature</key>
+<string>zeux</string>
+<key>CFBundleExecutable</key>
+<string>zesarux</string>
+<key>CFBundleIconFile</key>
+<string>zesarux.icns</string>
+<key>NSDesktopFolderUsageDescription</key>
+<string>To be able to load user files from Desktop folder</string>
+<key>NSDocumentsFolderUsageDescription</key>
+<string>To be able to load user files from Documents folder but also load and save configuration</string>
+<key>NSDownloadsFolderUsageDescription</key>
+<string>To be able to load user files from Downloads folder</string>
+</dict>
+</plist>
+

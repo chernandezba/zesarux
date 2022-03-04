@@ -1,0 +1,165 @@
+
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+*** Video ***
+
+-nombre ultimo juego cargado en titulo ventana
+
+-Joystick SDL: Soporte joystick SDL2
+
+-Modo sin colores que ya hay ahora pero cogiendo 4 o 16 colores del pixel tal cual
+
+-setting para desactivar realvideo cuando se haga reset
+
+-poder hacer 50 FPS en carga top speed: problema, que al hacer top speed, ya no llevamos la cuenta de cuanto son 50 fps, pues no hay sleep de 
+final de frame. Y al no haberlo , si metemos un refresco de pantalla al final de cada supuesto frame, se estara lanzando muchos mas de 50 veces por segundo
+el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos a velocidad normal en vez de top speed
+
+
+-watermark sin realvideo no hace zoom. importante???
+
+Opcion desactivar colores que solo va en realvideo off:
+-Quitar atributos que se pueda aunque esté modo rainbow 
+-Quizá simplemente una paleta grayscale y cuando haga render final, que convierta valores rgb a gris
+
+
+-sdl2 peta con easter-egg en linux
+
+
+-Contador fps cuando speed es 200% debería mostrar 100 fps
+
+-Soportar azerty en Sdl, en Cocoa, fbdev
+
+-OCR con colores y codigos ansi? para F4 y ZRCP 
+
+-Clashbasher
+
+http://www.worldofspectrum.org/forums/discussion/44669/clashbasher-a-new-interface-to-reduce-colour-clash/p3
+
+-Mejorar frameskip con tiempo acumulativo
+
+
+-Drag -  Drop en X11. En SDL2 y Cocoa si que funciona
+
+-sin multitask, con filtro color azul por ejemplo, en menu, la pantalla de spectrum no aplica filtro color
+
+-Splash en drivers caca?
+->ya lo muestra dado que el splash es texto!
+
+-Splash en drivers stdout? -> no tiene sentido
+
+-Pantalla completa con resolución menor de lo habitual en sdl peta con seg fault
+
+-lightgun no se deberian leer cuando menu abierto:
+upara lightgun la mayoria de puertos son teclado o kempston, en que ya se controla menu abierto. en puerto DF seria la excepcion
+
+-Poder activar dos drivers de video a la vez, en especial un grafico (sdl, x11) y otro de texto (stdout o simpletext).
+
+-Posibilidad de tener dos drivers video a la vez, como xwindows y stdout, y que stdout muestre texto y lea de teclado
+
+-Para acelerar fbdev, al refrescar pantalla, no calcular cada vez el offset en pantalla multiplicando sino que ir incrementando
+
+-eliminar parpadeos en fbdev usando doble buffer?
+
+-scr_lee_puerto en cada driver de video creo que ya no se usa para nada. borrar
+
+
+-Si modo interlaced activo, al redimensionar ventana con raton y hacerla zoom=1, se deberia desactivar opcion interlaced (y scanlines)
+
+-interlaced y scanlines en maquinas no spectrum no lo hace bien
+
+-Quizá función putpixel z88 debería estar inicializada desde el principio con algo, por si acaso
+
+-cacalib, en X windows pero haciendo export DISPLAY=, colores normales tienen parpadeo
+
+-Fallback de X11 a cacalib no va bien. El menú lo abre como si fuera pixel
+
+-funcion screen_print_splash_text que se pueda mostrar texto con menu abierto. Ideal por ejemplo para open flap del z88
+
+-Posibilidad de desactivar puntero raton para el resto de drivers: curses, 
+
+-Salida de texto en simpletext y otros drivers texto: carácter 127 no es imprimible
+
+-Imagen estereoscopica. Tanto anaglifo (azul + rojo) como imagen separada en dos ventanas para dos ojos
+
+-En video init debe establecer a 1 o 0 cualquier variable de parámetro de video, como tiene-colores
+
+-hilo interlaced http://foro.speccy.org/viewtopic.php?f=8&t=1508
+
+-ventana o zona aparte del texto de juegos conversacionales.
+ahora sale por consola del sistema operativo, quiza se podria tener una ventana aparte que guarde las X lineas ultimas
+
+
+-salida vofile que soporte zoom>1, para soportar scanlines
+
+-salida a html
+
+-salida a gif animado (con video out)
+
+
+-archivo de video de salida en formato alternativo a raw, alguno mas compatible: mpg, mov, ogg, mkv, etc
+
+-variables y estructuras comunes en xwindows y aalib, unificar. hay algunas hechas
+
+-Auto detección de real video en spectrum cuando se hacen muchos accesos a la pantalla y/o cambios de colores??
+->de momento cuando hay mucho cambio de border o lectura de puerto idle
+
+
+-fullscreen para otros drivers: caca, aa. Si pueden hacer full screen y sino aumentar la ventana al maximo. Tener en cuenta modos consola texto tambien
+
+-fullscreen en x11:
+* no centra la ventana
+
+- implementar para curses, stdout, simpletext, fbdev, simbolos especiales que necesitan extended mode:  { } [ ]  (funcion ascii_to_keyboard_port)
+
+-Cambiar resolución salida de video en raspbery al activar border, para simulación de carga
+
+-stdout como servidor web. quiza no hace falta, se puede hacer con pasarela telnet, netcat, etc...
+
+-Rutina común en screen.c de refresco, que usen el X11 y Fbdev. X11 solo tiene añadido el xflush al final
+
+-con zoom1 y fbdev quiza es mejor no usar putpixelcache??
+
+-drivers alternativos de video... por ejemplo uno xwindows pero con zoom reducido... que se vea la pantalla mas pequeña que en spectrum
+
+-Explicar cuando se usa escalado especial en fbdev
+
+-hacer zoom a traves de xwindows con extensiones de... xvideo? opengl? libxv-dev?. Esto serviria para todo excepto para modo scanlines
+
+-proponer formato .scr animado... un archivo con frames de 6912 bytes
+Ver http://www.atc.us.es/svn/zxuno/software/modo_radastan/videos_radastanianos/ para videos formato ulaplus radastan (rdm files)
+
+-en drivers que muestran debug_printf en ventana, como aa, caca, curses, hacer que si hay mas de un mensaje, aparezcan con pausa entre ellos
+
+-Rst16 para stdout que permita número... Esto es para list de basic
+
+-una vez al pasar de stdout a sdl luego sdl no leia teclas
+
+-Impresión caracteres en consola texto nunca debe mostrar el 127. Es Delete
+Quizá mostrar C en caso de 127
+->Hecho de momento en chardetect y speech
+
+*************
+
+Por drivers:
+
+--curses--
+
+
+-En overscan con curses salen colores con ??? a la derecha fuera de pantalla 
+
+-Con ventana ay piano en background, al ir a Smartload se mezcla texto de ventana ay piano en Smartload
+
+-En menú no aparece carácter “.” (Punto)
+
+-Permitir ZX desktop en curses? Cuidado porque igual intenta usar putpixel para dibujar las franjas de colores por defecto del fondo de ZX desktop
+
+-Utf blocky : A veces salen interrogantes. Probado en linux y no sale. Quiza es el cliente ssh contra remoto el que falla con esto a veces
+
+-zx80/81: permitir caracteres utf blocky tambien cuando no se usa rainbow. actualmente solo usa uft block con rainbow activo
+Ver funcion prueba_scrcurses_putchar_zx8081
+
+--stdout--
+
+-stdout algunos menus que no van bien. Como display->view colour palette
+

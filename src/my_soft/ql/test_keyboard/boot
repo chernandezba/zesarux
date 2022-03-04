@@ -1,0 +1,2 @@
+10 REPeat loop: PRINT CODE(INKEY$(-1))
+11 STOP

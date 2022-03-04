@@ -1,0 +1,248 @@
+ZEsarUX Installation Instructions
+---------------------------------
+
+This file explains how to install ZEsarUX on Unix systems: GNU/Linux, FreeBSD, Mac OS X, Raspberry.
+Note that most of the information that applies to Linux also applies to FreeBSD.
+
+For Windows specific instructions please see the INSTALLWINDOWS file.
+
+
+# Other versions provided by 3rd parties:
+
+Arch Linux:
+https://aur.archlinux.org/packages/zesarux/
+
+Slackware:
+https://slackware.pkgs.org/14.2/slackonly-x86_64/ZEsarUX-6.0-x86_64-1_slonly.txz.html
+
+Retropie/EmulationStation:
+http://emulationstation.org/
+
+Open Pandora:
+https://repo.openpandora.org/?page=detail&app=zesarux
+
+PocketCHIP:
+https://bbs.nextthing.co/t/tutorial-zesarux-8-bit-computer-emulator/8532
+
+MorhpOS: can be compiled using the provided patch.
+
+
+
+Core Requirements
+-----------------
+
+- gcc compiler.
+- unix compatible operating system.
+
+
+The following is a list of recommended minimum features for each operating system.
+
+
+# GNU/Linux and other Unix systems (except Raspberry-raspbian)
+
+- x11
+- libpthreads
+- alsa
+- pulse
+- no specific distribution nor kernel version is required, so it should run in all GNU/Linux machines
+
+
+# macOS
+
+- Mac OS X 10.5 or higher
+- gcc, which can be installed with XCode. libpthreads is also included with XCode.
+- Video support is provided by Cocoa driver, but you can also try to compile using X11 or another video driver.
+
+
+# Raspberry Pi (Raspbian)
+
+A Raspberry Pi 2 is recommended a minimum. The Raspberry Pi 1 is a bit too slow for ZEsarUX, but you can run at normal Spectrum speed by setting overclock on the Pi, having Real Video setting disabled and using the Spectrum reduced core
+
+- libpthreads
+- alsa
+- SDL
+- fbdev
+
+Video support is provided by Framebuffer driver (fbdev), but you can also try to compile using X11, SDL or another video driver.
+
+SDL 1.2 is recommended, to use SDL audio. SDL audio works better than alsa. You can install SDL libraries with:
+
+    $ apt-get install libsdl1.2-dev
+
+
+NOTE: SDL2 support is experimental.
+
+
+
+Options Features
+----------------
+
+The following is a list of complete features, all of which are optional.
+
+
+# Video Drivers
+
+- x11 (on GNU/Linux, other Unix and Raspberry): needs x11libs, x11extlibs, xf86vidmode, xxf86vm. Probably with the command "apt-get install xorg-dev" will be enough
+- x11 (on Mac OS X): needs XQuartz
+- cocoa (on Mac OS X): Compiling supported using XCode.
+- SDL 1.2 (on GNU/Linux, other Unix and Raspberry): needs sdllib-1.2. SDL2 is experimental
+- caca: cacalib
+- aa: aalib
+- curses: curses-dev. You can also install cursesw to have 64x48 text resolution
+- stdout: termios includes
+
+
+# Audio Drivers
+
+- OSS (dsp) (on GNU/Linux, other Unix and Raspberry): needs soundcard includes. Usually included on GNU/Linux systems.
+- alsa (on GNU/Linux, other Unix and Raspberry): needs alsalibs. Also needed if you want midi output
+- pulse (on GNU/Linux, other Unix and Raspberry): needs pulselibs.
+- SDL 1.2 (on GNU/Linux, other Unix and Raspberry): needs sdllib. SDL2 is experimental.
+- coreaudio (on Mac OS X): Compiling supported using XCode.
+
+
+# Audio Output to a File
+
+- libsndfile to output audio to wav files.
+- Raw audio is always supported.
+
+
+# Other Enhancements
+
+- pthreads: pthread includes. Usually included on all Unix systems.
+- ssl library: to have the speccy online browser. Add "--enable-ssl" setting to the configure script.
+ssl library is not included on Mac anymore; you can easily install it using https://brew.sh, after that, do a "brew install openssl"
+
+
+
+Compiling ZEsarUX
+-----------------
+
+The quick way to compile and run ZEsarUX is:
+
+
+    $ cd src
+    $ ./configure
+    $ make clean
+    $ make
+    $ ./zesarux
+
+
+However, you can tune the compilation process a bit, depending on your operating system:
+
+
+* macOS
+
+    $ ./configure --enable-memptr --enable-visualmem --enable-cpustats
+    $ make clean
+    $ make
+    $ ./zesarux
+
+
+* GNU/Linux and other Unix systems (except Raspberry-raspbian)
+
+    $ ./configure --enable-memptr --enable-visualmem --enable-cpustats
+    $ make clean
+    $ make
+    $ ./zesarux
+
+
+* Raspberry-raspbian
+
+    $ export CFLAGS=-O3
+    $ export LDFLAGS=-O3
+
+    $ ./configure --enable-raspberry
+    $ make clean
+    $ make
+    $ ./zesarux
+
+Even more, if you have a slow device like the Raspberry Pi 1 or Zero, I recommend you:
+
+    $ ./configure --enable-raspberry --spectrum-reduced-core
+
+This will also ensure that the "reduced core" is on by default, which uses less cpu, although you can also switch it from command line, or at runtime.
+
+
+NOTE: by using the reduced core some features will NOT be available. See the FAQ file, where it talks about the Spectrum reduced core
+
+
+
+Install and Run ZEsarUX
+-----------------------
+
+As I said, it is possible to run the emulator from the current directory without installing, just by running:
+    $ ./zesarux
+
+
+If you want to install it, the following are the instructions for the different operating systems:
+
+
+# macOS
+
+    $ make macapp
+
+This will create a "macos" folder, which contains the "ZEsarUX.app" along with a compressed ".dmg" file.
+
+You may wish to move this to your "Applications" folder.
+
+
+
+# GNU/Linux and other Unix systems
+
+If installing from source code:
+
+    $ su root
+    $ make install
+
+
+If installing from binary:
+
+    $ su root
+    $ ./install.sh
+
+
+
+Note for Raspberry Pi
+
+The recommended way to start the emulator is using the following settings:
+
+--disableborder --zoom 1 --fullscreen --vo fbdev --ao sdl --no-detect-realvideo
+
+
+Note for Haiku
+--------------
+
+You should not use the default gcc (2.97) as it should not compile.
+
+Before running configure script, please set:
+
+export CFLAGS=-DHAIKU_OS
+
+You need to run configure with setting (at least): --disable-networking
+(because it doesn't find some network functions)
+
+If you want to compile ZEsarUX on Haiku with SDL support:
+
+Install SDL lib with:
+
+pkgman install libsdl_devel
+
+Before running configure, set:
+
+export LDFLAGS=-L/boot/system/develop/lib/
+
+When running ZEsarUX with SDL, you probably need to set before:
+
+export LIBRARY_PATH=/boot/system/lib/:$LIBRARY_PATH
+
+
+Please don't ask me about Haiku help, I'm not an expert on this OS ;)
+
+
+Utilities
+---------
+
+These can be compiled with:
+
+    $ make utilities

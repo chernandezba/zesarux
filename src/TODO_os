@@ -1,0 +1,125 @@
+--- Mac OS X ---
+
+-Poder asignar extensiones para abrir con zesarux en Mac OS X. Y de paso eliminar warnings de línea de comandos
+-cocoa: En Mac, si se pone en .zesaruxrc: --vo curses Inicializa la ventana en blanco de Cocoa y luego abre ventana de curses donde transcurre todo...
+Es poder saber antes las opciones de configuracion dado que la comprobacion del driver video (--vo) se hace en el main del scrcocoa.m
+
+
+-script de speech say falla cuando texto empieza con "-", como en README
+-con app de "loopback audio", ejecutando ZEsarUX como app de Mac se oye diferente. ->  Desinstalando "loopback audio" no pasa
+
+
+Comentar los cambios de cocoa con llamadas al main thread, que son debidos a:
+
+"
+Info: resizeContentToWidth 352 X 328
+2018-09-28 20:53:10.714 zesarux[514:9037] *** Terminating app due to uncaught exception 'NSInternalInconsistencyException', reason: 'NSWindow drag regions should only be invalidated on the Main Thread!'
+*** First throw call stack:
+
+https://discourse.libsdl.org/t/crash-on-macos-10-14-mojave-with-sdl-showmessagebox/25100/2
+
+Apple only allows native UI functionality to be used on the main thread in macOS and iOS. It sounds like they have more robust runtime checks for that in 10.14, which is probably a good thing if the alternative is hard-to-diagnose glitches and crashes due to memory corruption etc.
+
+See also: https://developer.apple.com/documentation/code_diagnostics/main_thread_checker 2
+
+Ouch, thank you for the response – this will require some hard studying to figure out how to pull this off properly. Unfortunately most of the code I’m playing with is dimensions beyond me, but fingers crossed that I’ll be able to get it functioning.  :stuck_out_tongue:
+
+"
+
+-cocoa: visibilidad raton en pantalla completa. Se puede corregir eliminando funciones grabMouse/ungrabMouse pero luego
+la posición del ratón no la lee correctamente, seguramente por culpa del factor de zoom
+
+-Joystick en Mac: decir nombre de joystick y total botones/axis
+
+
+
+-Fin Joystick en Mac
+
+
+----Mac SSL
+
+
+-como incluir libreria ssl en mac? hace falta /usr/local/opt/openssl/lib/libssl.1.0.0.dylib
+-quiza otro binario y que el usuario pueda copiarlo a mano, incluido la libssl?
+
+-el compilado final de mac hay que hacerlo sin ssl? O ver si enlaza con la ssl del sistema operativo. Si no, igual se puede incluir la de homebrew de manera estática
+Parece que depende del de brew:
+~iMac-de-Cesar:src cesarhernandez$ ./zesarux --noconfigfile --ao null
+dyld: Library not loaded: /usr/local/opt/openssl/lib/libssl.1.0.0.dylib
+  Referenced from: /Users/cesarhernandez/Documents/ZEsarUX/zesarux/src/./zesarux
+  Reason: image not found
+Abort trap: 6
+
+-quiza meter la libreria ssl y el binario compilado en carpeta extras
+
+
+otool -L zesarux|grep ssl
+
+Es mas complicado pues luego va a buscar librerias de /usr/local/Cellar/openssl
+
+
+----Fin Mac SSL
+
+
+------------------
+
+--- windows - mingw - fallos ---
+
+
+-footer en fullscreen no lo ubica bien. En SDL de Linux va bien
+
+-Revisar al expulsar cinta si Windows lo libera 
+
+-probar con sdl audio y video simpletext . parece que no se oye el sonido. En Linux va bien
+
+
+-Utilidades aparte que vengan compiladas en Windows . quiza tambien para linux y mac?
+
+-latencia sonido sdl
+
+-rutas a utilidades externas no funcionan a no ser que esté en path actual, probado con gunzip (usado en rzx)
+
+-rzx: eliminar dependencia de comando "cat"-> necesita ejecutarse en consola bash de mingw para que lo encuentre
+
+
+-quiza version threads de windows no va bien porque usleep en windows está deprecated....
+
+
+-detector de silencio solo activo por defecto para algunos como alsa y dsp sin threads
+-Quizá clicks de sonido en Windows se debe a reseteo de buffer que hago para compensar delay? Creo que no
+Poner dichas opciones en menú para poderlas editar. Y que permita grabarlas en config
+Y si no las reconoce como command line, que las ignore (en casos de cambio de driver etc)
+Fifosdlbuffersize 4 y sdlsamplesize 2048
+
+-audio clicking en windows.pruebas
+*esto con version sin pthreads. Con pthreads parece que lo hace mas
+
+*con 3.1 antigua. mismos clicks
+*con pthreads o sin pthreads: mismos clicks
+*cambiando sdl_mixaudio por copia a mano: mismos clicks
+*si dejo que arranque sin mas: acaba generando clicks al cabo de unos segundos
+*si meto en buffer de audio todo 0: no hay clicks
+*si meto en buffer de audio todo 1: hay clicks
+*si meto en buffer de audio todo con valor 48: hay clicks
+*si meto en buffer de audio todo con valor 30: hay clicks
+*si meto en buffer de audio todo con valor 24: hay clicks
+*si meto en buffer de audio todo con valor 12: hay clicks
+
+*pongo solo sdl_pauseaudio(0) al inicio: hay clicks
+*sin multitask en menu: hay clicks 
+*suele aparecer despues de 5-10 segundos de iniciar el emulador, pero no antes de esos 5
+*si desde el menu se cambia driver a null, y luego de nuevo a sdl, el click aparece despues de esos 5-10 segundos de habilitar driver
+
+*clicking con tarjeta audio intel hd de virtualbox
+*con virtualbox drivers: mismo efecto: clicking con tarjeta audio intel hd de virtualbox
+
+*cambio a driver ich ac97: con 44hz, 16 bits: no hay click. con 8 bits: no hay click.  con frecuencia 15600: no hay click
+*con este driver ich ac97: no hay clicking normalmente (solo quiza al cambiar de ventana o perder fps). BIEN
+
+*con driver audio intel hd (el que tenia antes): hay clicking normalmente . MAL
+
+
+-Windows no es capaz de usar imagen mmc de 2 GB. Quiza porque es un compilado para 32 bits?
+
+
+------------------

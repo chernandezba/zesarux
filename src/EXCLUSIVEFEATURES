@@ -1,0 +1,39 @@
+The following are features exclusive to ZEsarUX and not found on any emulator of its kind:
+
+* Is the only emulator for machines: Chloe 140/280, Prism and Chrome
+
+* Supports perfect ZX Spectrum 16k/48k colour palette
+
+* Uses Video drivers: ncurses, aalib, cacalib, stdout(console), simpletext(console)
+
+* Emulates Speccy Superupgrade
+
+* Emulates Kartusho, iFrom interfaces
+
+* Emulates DataDrive HiLow (beta)
+
+* Real time playback from emulated sound chips AY, SN76489AN, i8049 to external MIDI device 
+
+* On Screen keyboard with words, useful for playing Text Adventures. Also a tool to extract words from text adventures (Daad, Paws, Quill and Gac) and configure this on screen text keyboard
+
+* Text Adventure Map
+
+* DAAD/PAWS/Quill Debugger
+
+* Emulates Spectrum keyboard ghosting error feature
+
+* AY Player
+
+* Sound Chip Tools: Sheet, Piano, export chip music to midi (.mid) files
+
+* Supports ZEsarUX remote command protocol (ZRCP). You can do enhanced debugging and remote control on ZEsarUX by using a telnet client.
+
+* Supports ZEsarUX Network Gaming protocol (ZENG) which allows you to play to any emulated game, using two ZEsarUX instances
+
+* Can use a reduced Spectrum core, with some features disabled, useful on slow devices, like Raspberry Pi 1/Zero
+
+* Accessibility support: Print char traps allows to capture generated text from almost any program or game, using standard ROM calls (RST 10H) or even non standard print character routines. Can send generated text from a game to a text-to-speech program. It's ready for text to speech support for blind or visually impaired people. Menu emulator can also be read by a text-to-speech program.
+
+* Translation support: Can translate text from almost any program or game using external scripts
+
+* Simulates upper RAM memory refresh on Spectrum 48Kb, losing its contents when changing R register very quickly

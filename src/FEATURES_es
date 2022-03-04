@@ -1,0 +1,207 @@
+* Se ejecuta en cualquier sistema Unix y Windows: testeado en GNU/Linux x86, GNU/Linux x86_64, GNU/Linux Raspbian, GNU/Linux RetroPie, FreeBSD x86_64, Haiku, Mac OS X, Windows nativo, Windows + Cygwin
+
+* Emula:
+    * Science of Cambridge MK14
+    * Sinclair ZX80
+    * Sinclair ZX81
+    * Spectrum models: 16k, 48k (English y Spanish), Inves Spectrum +, Spectrum 128k (English y Spanish), Spectrum +2 (English, Spanish y French), Spectrum +2A (English y Spanish), Spectrum +3 (English y Spanish), Microdigital TK90X (Portuguese y Spanish), TK95 
+    * Sinclair QL
+    * Cambridge Z88
+    * Timex TS 2068 
+    * Sam Coupe
+    * Pentagon 
+    * Chloe 140 SE, 280 SE
+    * Chrome
+    * Prism
+    * ZX-Uno
+    * ZX-Evolution BaseConf (beta)
+    * ZX-Evolution TS-Conf
+    * ZX Spectrum Next
+    * Jupiter Ace
+    * Amstrad CPC 464, CPC 4128
+    * MSX1 
+    * Spectravideo 318/328
+    * Colecovision
+    * Sega SG1000
+    * Sega Master System
+
+* Es el único emulador de las máquinas: Chloe 140/280, Prism y Chrome
+
+* Emulación casi perfecta de los tiempos de todas las máquinas Spectrum
+
+* Emula flags y características no documentadas del Z80 y registro MEMPTR
+
+* Emula bus idle, memoria contenida y tiempos de ULA early/late 
+
+* Emula Motorola CPU 68008 (Sinclair QL)
+
+* Emula SC/MP CPU - INS8060 (MK14)
+
+* Emula paleta de colores perfecta de ZX Spectrum 16k/48k
+
+* Emula ULAplus: Estándar paleta de 64 colores, modos lineales con 16 colores por pixel: Modo Radastan: 128x96, modos ZEsarUX: 256x96, 128x192, 256x192
+
+* Emula Modo de Color Chroma81
+
+* Emula Modos de Video Spectra
+
+* Emula modos Video Timex (Modo 0 estándar, 1 dual screen, 2 hires color 8x1, 6 512x192 monocromo)
+
+* Emula modo Pentagon 16C
+
+* Emula Todos los modos de Video de máquina Prism
+
+* Emula ZGX Sprite Chip
+
+* Emula snow effect en todos los modelos Spectrum
+
+* Emula efectos entrelazado, scanlines y Gigascreen
+
+* Emula modos hi-res en ZX Spectrum (efectos rainbow y otros) y ZX80/ZX81 (UDG, CHR$128, WRX, HRG y otros modos hi-res)
+
+* Soporta reducir la pantalla a 192x144 (escala 0.75)
+
+* Usa su propio potente entorno de ventanas (ZX Vision) dentro de la ventana de la aplicación, teniendo el mismo estilo del GUI en todas las plataformas. Permite tener una vista extendida para ubicar menus y ventanas multitarea dentro del GUI (ZX Desktop)
+
+* Soporte parcial de menús en Español
+
+* Se puede usar con joystick y entornos sin teclados, como Raspiboy / Retropie
+
+* Emula todas las particularidades del Inves Spectrum +: 64 KB RAM, inicialización de RAM con patrón FF00H, OUT ula AND RAM, EAR y MIC XOR, no memoria contenida, nieve en border, colour ula delay, interrupción empieza al final del borde superior (no al principio del border), corrupción de memoria en cada interrupción, no bus idle
+
+* Soporta drivers de Video: X-Windows, SDL, Cocoa (Mac OS X), Framebuffer, ncurses, aalib, cacalib, stdout(console), simpletext(console)
+
+* Soporta drivers de Audio: PulseAudio, Alsa, SDL, DSP(OSS), PC Speaker, CoreAudio (Mac OS X). 
+
+* Soporta volcar audio & video a archivo
+
+* Soporta carga de cinta real mediante formatos de archivos: RWA, SMP, WAV, TZX, PZX, CDT, TAP, P, O. Soporta carga turbo de cintas o cualquier otro tipo de carga de cintas para rutinas de carga estándar/no estándar
+
+* Soporta archivos de cinta de formato binario (TAP, TZX, O, P, CDT, CAS) en rutinas de ROM estándar para ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace, MSX, Spectravideo
+
+* Soporta carga de cinta real mediante archivos de formatos (RWA, SMP, WAV) en rutinas ROM estándar para ZX Spectrum, ZX80, ZX81, Amstrad CPC, Jupiter Ace
+
+* Simula carga de cinta real en rutinas ROM estándar para ZX Spectrum, ZX80, ZX81
+
+* Soporta formatos de snapshot: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, O, Z81, ACE
+
+* Soporta formatos de cartucho: DCK, ROM, COL, SG
+
+* Soporta reproducción RZX
+
+* Emula Multiface One, 128 y Three
+
+* Emula Datagear/MB02 DMA, ZX-Uno DMA
+
+* Emula Disco +3
+
+* Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
+
+* Emula ZX Spectrum MMC Interfaces: ZXMMC, DivMMC. Soporte para raw (.mmc) archivos y hdf
+
+* Emula ZX Spectrum IDE Interface: DivIDE, 8-bit simple
+
+* Emula ZX Spectrum ESXDOS acceso de archivos usando archivos de tu ordenador
+
+* Emula Sam Coupe IDE Interface: Atom Lite
+
+* Emula ZXPand MMC Interface en ZX80 y ZX81
+
+* Emula ZX Dandanator! Mini, CPC Dandanator! Mini
+
+* Emula Speccy Superupgrade
+
+* Emula Kartusho, iFrom interfaces de Antonio Villena
+
+* Emula SamRam interface de Gerton Lunter (autor del famoso Z80 emulator)
+
+* Emula DataDrive HiLow (beta)
+
+* Soporta tarjetas RAM, EPROM, Intel Flash y Hybrid (RAM+EPROM) en Z88
+
+* Soporta QL microdrive/floppy acceso de archivos usando archivos de tu ordenador. Permite leer cabeceras tipo Q-emuLator. Permite EXECutar archivos sin cabeceras
+
+* Soporta formatos comprimidos zip (con decompresor interno), y tar, rar, gz a través de utilidades externas
+
+* Emula AY Audio Chip, Turbosound (2 canales AY), 3 Canales AY, canales MIDI, diferentes DAC: Specdrum, Covox, ACB/ABC/BAC/CBA Stereo 
+
+* Emula General Sound
+
+* Emula SN76489AN Audio Chip
+
+* Emula Quicksilva, ZON-X81, y sonido basado en VSYNC en ZX80/81
+
+* Emula Speaker y sonido Soundbox en Jupiter Ace
+
+* Simulación experimental del Chip de Audio del Sam Coupe
+
+* Emula sonido i8049 del QL
+
+* Soporta tamaño RAM hasta 1024 KB en Spectrum y Pentagon
+
+* Soporta RAM packs en ZX80/81 hasta 56 KB
+
+* Soporta RAM packs en Jupiter Ace hasta 51 KB
+
+* Emulación Joystick con joystick real (en GNU/Linux y Windows) y cursores de teclado: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors. Función autodisparo también
+
+* Teclado en pantalla útil para jugar con joystick, dos tipos: uno con letras de teclado, y otras con palabras, útil para jugar a Aventuras Conversacionales. También una utilidad para extraer palabras de aventuras conversacionales (Daad, Paws, Quill y Gac)
+
+* Emula característica de teclado de Spectrum "ghosting error"
+
+* Soporta teclado ZX Spectrum Recreated
+
+* Emula modos nativos turbo en ZX-Uno, Chloe, Prism y ZX Spectrum Next, y manual para otras máquinas
+
+* Emulación de ZX Printer
+
+* Emulación de Lightgun: Casi perfecta emulación de Gunstick de MHT Ingenieros S.L y emulación experimental de Magnum Light Phaser
+
+* Emulación Kempston mouse
+
+* Soporta juego en Red mediante su propio protocolo (ZEsarUX Network Gaming protocol - ZENG), que te permite jugar a cualquier juego emulado, mediante dos instancias de ZEsarUX, localizadas cada una en cualquier parte del mundo o en una red local. Los juegos no necesitan ser modificados, puedes jugar a cualquier juego existente
+
+* Emulación Uart en modo puente: permite usar un dispositivo real uart-wifi conectado a tu ordenador, sólo para GNU/Linux (Windows, Mac pueden simularlo)
+
+* Puede buscar online juegos de ZX81
+
+* Puede buscar online juegos de Spectrum
+
+* Soporta archivo de texto de entrada ("Input spool text file") para simular pulsaciones de teclado
+
+* Soporta leer Pokes de archivos .POK
+
+* Utilidades de Chip de Audio Chip: Para los 3 chips emulados (AY-3-8912, SN76489AN, QL i8049): Partitura, Piano, Registros, exportar música a archivos midi (.mid)
+
+* Reproducción en Tiempo Real del Sonido del Chip de Audio (AY-3-8912, SN76489AN, QL i8049) a un dispositivo externo MIDI
+
+* AY Player: permite reproducir música de archivos .AY
+
+* AY Mixer
+
+* Visual Real Tape: tienes una vista del audio de tu cinta, ver bloques de cinta y rebobinar o avanzar el reproductor de cintas
+
+* Soporta ZEsarUX remote command protocol (ZRCP). Este es un potente protocolo de comunicaciones entre un cliente y ZEsarUX, utilizando un simple cliente telnet. Una de las cosas que puedes hacer es debugging mejorado en ZEsarUX desde Visual Studio Code (ver https://github.com/maziac/DeZog)
+
+* Puede usar un core de Spectrum reducido, con algunas características desactivadas, útil en dispositivos lentos como Raspberry Pi 1/Zero
+
+* Puede generar Snapshots Automáticos en RAM y también realizar operación de Rebobinado
+
+* Potentes características de debug: Debugging hacia atrás, Historial de CPU, Ensamblador, Registros, Desensamblador, Breakpoints Condicionales usando expresiones de texto, Watches, Paso-a-paso, Paso-por-encima, EjecutarHasta, Ver posición del electrón de TV, Cargar código fuente, Editor Hexadecimal, Ver Sprites, Ver Tiles, Buscar bytes, Buscador de vidas infinitas, registro de transacciones de CPU, Ver BASIC, Ver variables BASIC, mensajes de debug en consola
+
+* Debugger de Aventuras Conversacionales: En un aventura conversacional de Quill/Paws/Daad puedes ejecutar un condacto Paso a Paso, ver flags/objetos, listar mensajes (objetos, mensajes usuario/sistema, localizaciones, tokens de compresión, vocabulario), conexiones, mapa localizaciones. Puedes también ver gráficos de aventuras hechas con Quill, Paws, Daad or Gac.
+
+* Menú de utilidades de Archivos: Permite ver, expandir y convertir diferentes formatos de archivos comunes: tap, tzx, trd, dsk, mdv, hdf, etc. También puede navegar dentro de imágenes de sistemas de archivos (.mmc, .img, etc)
+
+* Accesibilidad: Print char traps permite capturar texto generado desde casi cualquier programa o juego, que usen llamadas estándar a la ROM (RST 10H) o incluso rutinas de impresión de caracteres no estándar. Puede enviar texto generado desde un juego a un programa de texto-a-voz (text to speech). Está preparado para soporte de texto a voz para personas ciegas o con problemas de visión. El menú del emulador también se puede leer por un programa de texto-a-voz.
+
+* Soporta Traducción: Puede traducir texto de prácticamente cualquier programa o juego utilizando scripts externos
+
+* Simula refresco de memoria RAM alta en Spectrum 48Kb, perdiendo su contenido cuando se cambia el registro R muy rápidamente
+
+* Soporta opciones en línea de comandos, opciones en archivo de configuración, y opciones personalizadas para cada juego
+
+* Otras características: Visualmem menu, CPU Statistics
+
+* Incluye cinco huevos de pascua. Puedes encontrarlos? :)
+

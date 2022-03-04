@@ -1,0 +1,174 @@
+ZEsarUX supports both native Windows execution (using mingw) or Cygwin.
+Minimum Windows version to run ZEsarUX is Windows XP
+Mingw is a minimal GNU environment system for Windows, and Cygwin is a more complete GNU system, including X-Windows.
+I recommend you to use mingw. I will describe both:
+
+
+
+-- Native Windows (with mingw)
+
+If you have downloaded the Windows binary version, you don't need to install ZEsarUX. It can be run with the executable file:
+
+zesarux.exe
+
+
+If you are using the source code and want to compile it:
+
+-First install mingw:
+
+On mingw installation program, go to Basic Setup and select:
+mingw-developer-toolkit
+mingw32-base
+mingw32-gcc-g++
+msys-base
+mingw-pthreads (all packages that apply)
+msys-bash
+
+-Download SDL 1.2 library, from https://www.libsdl.org/download-1.2.php,
+and get SDL-devel-1.2.15-mingw32.tar.gz (Mingw32). 
+
+SDL2 is supported, but doesn't work well, so I recommend to use SDL 1.2
+
+Unzip and copy all contents to c:\mingw\sdl\
+(or c:\mingw\sdl2\)
+
+So on c:\mingw\sdl\lib you have some libSDL.dll* files, and
+on c:\mingw\sdl\include\ you have subfolder SDL and inside some .h files
+
+
+(
+-Optional:
+You can install SSL library, to have a full speccy download browser (without ssl you'll have partial browser):
+Install prebuilds from
+https://wiki.openssl.org/index.php/Binaries
+https://bintray.com/vszakats/generic/openssl
+https://bintray.com/vszakats/generic/download_file?file_path=openssl-1.1.1d-win32-mingw.zip
+
+
+
+Uncompress it and copy to the include and lib folders of Mingw, in my example:
+c:\openssl-1.1.1d-win32-mingw\include
+c:\openssl-1.1.1d-win32-mingw\lib
+
+And copy libcrypto-1_1.dll y libssl-1_1.dll to the folder you downloaded ZEsarUX
+
+You will have to set the following environment variables before run configure command:
+
+export CFLAGS "-I/c/openssl-1.1.1d-win32-mingw/include"
+export LDFLAGS "-L/c/openssl-1.1.1d-win32-mingw/lib"
+
+and add setting --enable-ssl to the configure command
+)
+
+
+
+-Run Windows Command Prompt (cmd.exe):
+
+#set PATH to the gcc and make mingw binaries:
+set PATH=%PATH%;c:\mingw\bin;c:\mingw\msys\1.0\bin
+
+#go to the ZEsarUX downloaded source code
+cd <where it is located>
+
+
+run bash
+
+./configure --enable-memptr --enable-visualmem --enable-cpustats
+
+Or using sdl2:
+
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-sdl2
+
+
+Note: sometimes the configure script on Windows stops with an error like:
+"./configure.compile.c.o: No such file or directory"
+or
+"rm: cannot lstat './configure.compile.c.o': Permission denied"
+
+Seems to be some kind of issue with Windows and bash.... don't worry, just run the command again and it will now finish without errors
+
+
+
+Then:
+make
+
+
+
+#copy SDL.dll to the current directory
+copy c:\mingw\sdl\bin\SDL.dll .
+or for sdl2:
+copy c:\mingw\sdl2\bin\SDL2.dll .
+
+
+#And run ZEsarUX
+
+zesarux.exe
+
+
+It doesn't need to be installed anywhere, it can be run from here, or move the whole directory to wherever you want
+
+-----------------------------------------------
+
+-- Cygwin
+
+Cygwin version must be configured by yourself, as you have to install cygwin and use an xterminal:
+Install cygwin with developer tools
+Open All programs/Cygwin X/X Win Server. This will launch the X server with an xterminal
+cd /cygdrive/c/... where the ZEsarUX source code is located
+./configure 
+make
+
+You will have a compiled zesarux.exe
+
+Now you can run it inside this xterminal with:
+
+./zesarux.exe
+
+Note: if the xwindows driver does not work with cygwin, try instead the sdl driver:
+
+./zesarux.exe --vo sdl
+
+
+Every time you want to launch the emulator you must launch the X server and run the emulator inside the xterminal
+
+If you run the emulator inside a "Cygwin Terminal", you must remember to have the X server running and export DISPLAY inside the terminal:
+
+export DISPLAY=:0.0
+
+
+
+About audio support... in my pc the sdl audio driver does not work, but the dsp driver does, so, run it with:
+
+./zesarux.exe --vo sdl --ao dsp
+
+
+* Running on a normal windows command line console (cmd.exe):
+
+Note: I do not know how to run the emulator with xwindows or sdl driver inside a normal windows command line console (cmd.exe).
+It needs a lot of cyg*.dll in the same path of the emulator (that you can copy from c:\cygwin\bin) but it does not find the Xserver.
+But you can run the emulator with another video driver, like stdout:
+
+zesarux.exe --vo stdout
+
+* Additional notes
+
+For some reason my old Cygwin installation stopped working properly, so some things must be started by hand:
+
+- Cygwin Terminal shortcut can not find "mintty" executable: Then start it by running C:\cygwin\bin\mintty.exe
+
+- The XServer (XWin.exe) does not refresh the display, and I see on console lots of errors like: 
+
+IDirectDrawSurface4_Blt() failed
+
+So, start it, from cygwin terminal, this way:
+
+Xwin.exe -engine 1 &
+
+The engine 1 uses shadow GDI; the default engine is 4 (Shadow directdraw4 non-locking) which seems to fail in some cases
+
+Remember to set DISPLAY variable before running zesarux:
+
+export DISPLAY=:0.0
+
+
+------------------------

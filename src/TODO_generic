@@ -1,0 +1,188 @@
+
+--- Genericos - fallos ---
+
+-breakpoint pc=0 no salta si debug->reset. Pero si que salta si se hace randomize usr 0
+
+-uso de cpu aumenta con el tiempo, dejando maquina spectrum 48k recien arrancada
+Al cabo de una hora pasa a consumir 60% cuando lo normal seria 17%
+**Haciendo reset no recupera. Cambiando de driver de video tampoco.
+**Parece que en Mac os X no sucede
+**pruebas: ao null vo null no sucede
+**ao null vo xwindows si que sucede. haciendo CTRL-Z y volviendo no se corrige
+**ao null vo xwindows sin pthreads tambien sucede.
+**parece que con SDL no sucede
+**con xwindows, al arrancar, sin rainbow, sin memptr, sin visualmem, sin cpustats, con contended memory, 48k, ao null, vo x11, zoom 1
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 5519 chernan+  20   0  208860   5692   3708 S  17,6  0,1   0:02.95 zesarux
+
+-cuando lleva un rato:
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 5519 chernan+  20   0  208860  46160   3708 S  65,7  0,6  26:10.33 zesarux
+
+-con disableshm:
+al arrancar:
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 6288 chernan+  20   0  208864   5564   3288 S  16,6  0,1   0:02.71 zesarux
+cuando lleva un rato:
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+ 6288 chernan+  20   0  208864   5568   3288 S  16,2  0,1   7:29.56 zesarux
+
+-Parece que es culpa de la shm!!
+-ni XSync ni XFlush poniendolos detiene el uso de cpu aumentativo... debe ser algo que falte de la SHM.. o algo que falte ejecutar...
+quiza solo falla en el portatil?
+-quiza hay que "FIXME: should wait for an ShmCompletion event here" tal y como dice en el codigo?
+
+
+-cintas de entrada (y de salida?) no realiza operacion fclose. Por tanto al abrir un archivo tap, tzx etc lo deja abierto. En
+sistemas Unix no pasa nada, pero en Windows significa que una cinta que se haya usado, se quedara abierta y si se quiere borrar dicho archivo
+tap, por ejemplo desde el windows explorer, dira que el archivo esta bloqueado, hasta que se cierre el emulador
+Hacer que las funciones eject (y de cambio de cinta) realizen fclose...
+
+-En lectura de tap, usar tal cual como ahora fread etc para poder leer archivos tap muy grandes y no tener que cargarlos en memoria
+
+-a veces al salir con CTRL-C no se cierra. la ventana se queda en negro
+Dice llamando a aofile_close y vofile_close pero nada mas
+Parece que se cuelga en el refresca pantalla inicial de fadeout, con menu abierto
+quiza es que pilla en medio de otra operacion de refresca_pantalla
+Falla con drivers: sdl
+
+-en pruebas: timer audio en raspberry, quiza pausa deberia ser menor en el caso de pthreads
+
+-simulacion de carga: en zx80 no se deben ver las franjas
+
+-con fbdev, full screen y zoom 1, en raspberry (con 16 pixeles de mas de margen) hace zoom escalado. sin fullscreen, no hace escalado. normal??
+
+
+--- Genericos - mejoras ---
+
+-Lock sdl al refrescar hace printf?
+
+-fallback de video y/o audio no lo hace si se especifica --vo .... o --ao ...... cosa que normalmente ya estara en el .zesaruxrc y por tanto no se hara fallback
+
+-Parámetro change slow en rpi que no venga por defecto
+Y lo haga la gente manualmente y/ o se detecte si es rpi1
+
+-Quizá componentes threads que se pueda decidir cuál se activa como threads y cual no 
+Como variable de ejecucion
+
+-remote command: Hexdump internal y de mapped memory debería ser misma función
+Luego flags para ver ascii o ver hexa o quitar espacios en hexa, etc 
+
+-remote command: poder hacer dump de codigo fuente de lineas concretas
+
+-funciones ram refresh se deberian implementar con nested core:
+void set_peek_byte_function_ram_refresh(void)
+{
+
+        debug_printf(VERBOSE_INFO,"Enabling RAM refresh on peek_byte");
+
+        peek_byte_no_ram_refresh=peek_byte;
+        peek_byte=peek_byte_spectrum_48k_refresh_memory;
+
+}
+
+void reset_peek_byte_function_ram_refresh(void)
+{
+        debug_printf(VERBOSE_INFO,"Setting normal peek_byte");
+        peek_byte=peek_byte_no_ram_refresh;
+}
+
+
+-SDL2 mejor usar scancodes en vez de keycodes, al menos para teclas extendidas
+
+-asumir opciones --enable-memptr --enable-visualmem --enable-cpustats por defecto activas
+Opciones en cambio para desactivarlas en script configure
+
+-en configure, al activar joystick, activa tambien pthread. porque???
+LDFLAGS="$LDFLAGS -lpthread"
+
+-Opción compilación para máquinas 'lentas':
+Activo para rpi1 pero no para 2
+
+-Comprobar si con rpi1, con el aumento de borde, sigue llenando la pantalla
+rpi2 no? quizá es porque no he usado parámetro fullscreen y por tanto no ha redimensionado ventana
+
+-Make utils al construir binario
+Incluir bmp a sprite y bmp a prism en utils
+
+
+-Mas archivos auto config pues versión Windows no tiene ssl
+
+-en fbdev, con --no-use-ttyrawfbdev, enviar F6 y F7 en Z88 tal y como se hace en curses, por ejemplo (diamond, square).
+he intentado meterlo en :
+                                //Para Home
+        case 49:
+                if (scrfbdev_kbhit() ) {
+                unsigned char tecla4;
+                tecla4=scrfbdev_getch();
+                printf (" tecla4 %u \n",tecla4);
+
+                switch (tecla4) {
+
+                        case 126:
+                                util_set_reset_key(UTIL_KEY_HOME,1);
+                                break;
+
+                        case 55:
+                                printf ("F6 ");
+                                //F6 es Ctrl /diamond
+                                util_set_reset_key(UTIL_KEY_CONTROL_L,1);
+                                break
+
+pero parece que envia otra tecla diferente
+
+
+-en raspberry, al salir de fbdev, dejar la resolucion tal y como estaba
+
+-Añadir a docs techs specs de zx81
+
+-features zx80, zx81, zx88 y spectrum por separado
+
+-teclado numerico para spectrum y otras maquinas. Para CPC si que esta.
+
+-acabar de probar putpixel cache con zoom 1, en raspberry, con o si putpixel cache. que es mas rapido?
+probar con over128
+
+-Documento de cómo se usa la putpixel cache:
+Ampliar el que ya hay
+Tanto para realvideo como sin
+Con realvideo, cada vez que se refresca pantalla se lee de rainbow buffer. Se ahí, los putpixel que se hacen, si que pasan por la putpixel cache para ver si se envían a pantalla gráfica o no
+Sin realvideo, similar, pero no hay rainbow buffer sino que se hace putpixel a cada refresco y se mira si está en la cache putpizel 
+
+
+-detectar para cualquier tipo de carga si va mas alla de la ramtop
+
+-footer para cacalib, aalib
+
+-fadeout en aalib muy lento. de momento desactivamos
+
+-al cambiar de cpc a z88 en aa, peta
+
+-cambiar en aa, caca de cpc464 a timex peta el emulador
+
+**para speech ,  rutinas deteccion de caracteres:
+
+crear tambien metodos de deteccion de tercer trap? Aunque esto quiza solo sirve para el hobbit...
+
+
+-al parsear configuración, si hay un parámetro incorrecto en el ~/.zesaruxrc, por ejemplo:
+
+--vo desconocido
+
+Al Ejecutar zesarux dará error y no inicia, logicamente:
+
+Video Driver desconocido not supported
+
+Pero si indicamos por linea de comandos (sin editar archivo de config) lo siguiente:
+
+./zesarux --vo xwindows
+
+Aunque el driver xwindows sea válido dará error antes de parsear esa opción, pues primero parsea el archivo de config y luego linea de comandos. 
+En el caso de drivers de video y audio se podría corregir evaluando drivervook y driveraook al final de parsear todo, pero en casos como valores con rango, como:
+
+--allpixeltotext-scale
+
+Esto se parsea antes y por tanto no se puede quitar el error
+Por tanto, es difícil de corregir esto. En estos casos, lo mejor es que el usuario edite el .zesaruxrc o bien lo borre para que se recree desde cero,
+pues indicando por linea de comandos no servirá de nada
+

@@ -1,0 +1,342 @@
+--- ZX Desktop
+
+--Posibles efectos para fondo ZX Desktop:
+---Imagen. BMP?
+---Miniatura de pantalla spectrum
+---Anaglifo usando segunda pantalla o extensión Desktop. Requeriria update continuo de zxdesktop... o no? que solo redibuje al abrir menu?
+
+
+--Fbdev debe permitir ZX Desktop?
+--sdl2: si se pone width de ZX desktop que no cabe en pantalla, se queda reabriendo continuamente la ventana
+
+
+- En ZX desktop a veces al iniciar o activar sale primero en negro. Al redimensionar ventana tambien por ejemplo
+
+-redraws de zxdesktop en determinados cambios (redimensionado/cierre ventana?) donde se queda a veces en negro
+
+-botones/iconos en zx desktop que puedan abrir las diferentes ventanas: waveform, debug cpu, etc. 
+iconos que se puedan mover con raton por el zx desktop
+
+
+--- FIN ZX Desktop
+
+
+
+--- ZX Vision
+
+-en ventanas con can_use_all_width=1, no se habilita la barra de scroll vertical cuando hace falta
+
+
+-hay algun limite de array o memoria etc en ventanas zxvision alto y alto 32x24? Creo que no
+
+-ordenar directorios arriba en filesel? Pero entonces al pulsar una letra y buscar... a donde ira?
+
+-Si se mueve ratón a zona redimensionado ventana, que la ventana cambie la esquina inferior derecha 
+
+-zxvision_get_char_at_position (usado al pulsar con raton en hotkeys) deberia tener en cuenta si hay offset de pantalla
+util en el mapa de aventura de texto cuando la leyenda siempre se ve arriba aunque haya scroll, para poder habilitar hotkeys pulsando el raton
+
+
+
+-que en menu de opciones si raton pulsa en ventana pero en zona que no hay opciones, no envie enter
+
+
+
+-Quizá versión en un futuro en que al pulsar escape cierra todos los menús. 
+Aunque lo que son ventanas no de menú debería cerrar la actual y no todas? Además tendria que haber una tecla para solo cerrar la ventana en curso.
+
+-cuando una tecla F no esta como default, no la envia a maquina emulada: ejemplo MSX F2, QL F5
+
+-First aid de f keys. Cuando se pulse una f por primera vez
+
+
+-Cuando se hace resize de ventana y desaparecen barras desplazamientos, habría que mover offset a 0?
+O esta considerando mal el mostrar barras desplazamiento: quizá deberían salir siempre que offset sea mayor que 0, Y que quepa en pantalla
+
+-Ventana scanf con texto descriptivo dentro
+
+
+-Visualmem mmc read/write en Windows no muestra bien posicion (siempre a 0). Probablemente porque es 32 bits y no gestiona bien
+valores long int
+
+-Tema gui configurable todos sus elementos: fuentes, colores etc 
+
+-Idea de animación para logo: ZEsarUX con letras de colores rojo amarillo verde azul. Se comprime el texto y la Z va pillando los colores de las letras 
+
+-Función que usando misma rutina de imprimir Unicode diga la longitud en bytes que ocupa el carácter. 
+Así sabremos la longitud de aquellos caracteres que si que imprimimos. Los que no, será 1 y interrogante 
+
+-Osd keyboard sin multitarea en ZX81 no va fino
+ 
+-Sin multitarea, pulsaciones sobre la zona de scroll, hace efectivo el scroll cuando se mueve el raton o se pulsa boton o tecla
+
+-menu: cuando habilita scroll vertical porque no caben opciones, aparece tambien scroll horizontal
+
+-Rueda ratón sin multitarea no se mueve muy fino: parece que actualiza tarde la ventana
+
+-botones/wheel left y right de X11??
+
+-quiza que al crear ventana, si ancho visible no permite caber titulo, hacer mas ancho visible para que quepa
+
+-Puntero en zxvision window a función que actualice ventana o quizá función de entrada a esa ventana?
+Para poder hacer que funciones futuras puedan gestionar pulsaciones de ratón en ventana:
+La ventana tendrá una función de callback donde se llamara cuando se pulse en zonas que no son barras de scroll
+Además de llamar a ese callback, se debe salir de la función de espera tecla zxvision, para poder gestionar eventos que haya avisado dicho callback. Creo que ahora mismo no se sale de función de espera tecla en esos casos
+->No se si es necesario pues en filesel lo hacemos de otra  manera
+Este callback se le pasara el puntero a ventana y quizá eventos de ratón: que botón se ha pulsado, donde, etc
+
+-Quizá zxvision generic message ya no debería tener el límite de array de líneas o ancho...
+-quiza zxvision_print_string_defaults_fillspc deba ser la habitual zxvision_print_string_defaults
+
+
+-menus zxvision:
+--porque menus tabulados no rellenan con espacios? ah porque antes siempre se borraba texto con espacios al dibujar menu?
+
+-ventanas zxvision que puedan salir parcialmente fuera de pantalla.  seria tenerlas por debajo del limite de la ventana
+
+-zxvision_putpixel deja escribir pixeles mas alla de total_width o height. Esto no es un error en si
+Lo hace realmente con visible_width y visible_height
+
+
+-Mejora para first aid:
+Un tercer botón que diga "take me there" para cuando sugiere menús, que te lleve al menú en cuestión 
+(por ejemplo cuando detecta joystick y dice que vayas al menú de real joystick para configurarlo)
+
+
+--- FIN ZX Vision
+
+
+
+
+--- menu - fallos ---
+
+-a veces al cambiar numero chips en settings-audio-ay chips se cuelga
+
+-Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
+
+-Smartload de un tap en +3 deja activado top speed (abadía del crimen)
+
+
+-al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien, 
+pero al subir para arriba desplaza desde scroll sin mover
+cursor hasta que esta arriba. O sea, deberia mover siempre cursor y no empezar a hacer scroll hasta que no esta arriba
+
+
+-Con carga top speed salen dos footer ? El nuevo de rojo también...  
+Quizá el Rojo debería ser el Tspeed que ya sale en la carga...
+Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el footer
+
+-parece que si hay joystick conectado, el splash de Z logo no aparece toda la animacion, se cierra a la primera barra de color
+
+
+-Parece que color de aviso no puede ser mayor que 0-15, pues al usar los $$ de caracter, no permite otros valores. Ver test style Warning text
+
+-------------
+
+--- menu - mejoras ---
+
+-poder extender texto de ventanas de simple message, están fijados siempre a 32
+
+-sprite disabling window tambien para tsconf y maquinas con chip vdp (msx, etc)
+
+-al salir de filesel, debe cambiar unidad activa a la local, y no a mmc.
+Esto podria provocar que otros sitios que usan ZVFS (por ejemplo esxdos handler) accedieran a la mmc si lo ultimo que se ha accedido
+desde filesel era la mmc
+Quiza solo el menu (y no esxdos handler , zxpand u otros) debe usar ZVFS. El resto, rutinas de sistema? -> esxdos, zxpand etc ya NO usan ZVFS
+
+-En debug cpu, quizá al mover rueda de ratón tiene que volver de menú espera tecla. Si no, 
+es lo que hace que al moverse con la rueda por vista debug cpu, haya que hacer movimiento de raton para que funcione
+El problema es que mouse_wheel_vertical se lee y luego siempre se debe poner a 0
+Si la ponemos a 0 en bucle de leer tecla, luego no se lee realmente del menu debug cpu
+
+
+-agregar sensor temperatura cpu linux
+
+
+-ay player en modo "jukebox" que permita agregar canciones ay a la lista, o bien una carpeta entera
+
+-frecuencias chips audio como sensores? no sé si vale la pena pues los valores de frecuencias son exponenciales y por ejemplo
+las ultimas dos notas, una es el doble de la otra. Por tanto si usamos un widget de speedometer, estaria casi al 0 siempre excepto para 
+frecuencias muy altas.
+
+-quiza linea cursor en debug cpu ubicar en el centro
+
+- realtape browser que pille el setting de improved algorithm yes/no
+
+- Improved algorithm quizá renombrar a “alternate” algorithm 
+
+- Al salir cualquier mensaje splash luego no deberían desaparecer las ventanas: parece que desaparece la decoracion de ventanas 
+momentaneamente pero al irse el splash, se recargan
+
+
+
+-ula settings visible en otras maquinas no-spectrum?
+
+-setting autorebobinado de cintas standard y real tape?
+
+
+-Opción no marcar registros en rojo que se van  a modificar en debug cpu
+
+-teclado en pantalla que se pueda pulsar en teclas
+
+
+-Ventana ayuda teclado:
+* que se pudiera hacer sin multiplicar por zoom_gui? asi en next, cpc, ql etc no se verian el doble de grande
+* al iniciar emulador, si la ventana se ha guardado en background, siempre arranca por defecto inicialmente como spectrum48, y al pulsar
+en la ventana del teclado ya se actualiza con la máquina actual
+
+
+-Mostrar info en menu network de descargas, commits etc. Solo si hay ssl (porque github solo esta con https)
+
+-Info video mode Pentagon 16c ventana. Que diga modo activo en ventana vídeo info. Problema: en maquina no tsconf o tbblue no hay ventana de video info
+
+-AY partitura:
+*para el beeper tambien -> no hasta que se mejore la rutina de deteccion de nota
+*ideal para probar duraciones: golden axe
+
+
+-temperatura cpu en mac
+https://github.com/lavoiesl/osx-cpu-temp
+
+
+-En info file de file utils, decir tipo de archivo. Usar alguna llamada común para tipo archivo y visor archivo 
+
+-hex editor: muestra pagina entera cuando una zona de memoria por ejemplo solo es de 2 bytes. Probar por ejemplo con debug memory zone
+
+
+-Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
+
+-Gestor de menús que permita agregar función para cambio overlay texto 
+
+-Quitar menu custom machine y meterlo dentro de machine selection, de tal manera que pida la ROM al seleccionar máquina
+
+-Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'
+
+-Al insertar mmc o ide debe ir primero a rutas shared, tal y como hace smartload por ejemplo. y tambien ir a ultima ruta al abrir selector archivos
+
+-alguna vez al abrir ay piano, pulsar boton derecho fuera de la ventana, desaparece la ventana y no vuelve a menu anterior
+y no vuelve a abrir el menu, y parece que tampoco envia teclado a maquina emulada
+
+-filtro AY se sigue escuchando cosas aun desactivando los 3 canales->tienen que ver envolventes y speech
+
+-file browser no muestra dispositivos. importante para uart
+Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
+o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
+arriba)
+-no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
+
+
+-para comprobar coordenada y footer, calcular desde abajo de alto ventana. Y usar funcion comun en screen.c
+-quiza funcion footer a scr_putchar_footer_comun_zoom se tiene que hacer con coordenadas 0,1 o 2 simplemente
+
+-------------
+
+
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+
+
+*** Menu  ***
+
+-poder usar kempston mouse desde menu si ventana de menu no tiene el foco (al igual que sucede con el teclado)
+
+-Snapshots automáticos de nombre que depende del archivo cargado. Para tener siempre uno cuando se cambia de juego 
+
+-Opcional cargar snapshot y no cerrar menú. Mismo para Smartload pero solo con snapshots?
+
+-Algunos items de menu, por ejemplo dentro del buscador de vidas, son lineas no seleccionables,
+aunque se definen de tipo normal. Tendrian que ser de tipo separador. Pero en ese caso, habria que hacer que cuando se abra el menu,
+si el cursor esta en un separador, que haga bajar el cursor -> esto parece que ya se intento, buscar comentario que dice:
+//Nota: el separador no puede ser final de menu
+
+
+-Waveform que vaya haciendo fade out (sin scroll) de píxeles anteriores. Para esto require tener varios niveles de color de un pixel
+
+
+-Buscar bytes en memory zone -> problema: ahora las direcciones en memory zone pueden ser > 65535
+En ql llega a buscar?
+
+-Algo para poder generar mapas de todas pantallas
+Tipo:
+https://simonowen.com/spectrum/tilemap/
+
+Pero para cualquier juego
+
+Del estilo:
+Hacer captura. Luego hacer captura de la derecha, etc
+
+-Modo solo recreated en menú / Movimiento menus con 56780
+
+-no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
+
+
+-Quizá algunas operaciones de archivos que se cancelen con esc que avise con ventana temporal de dicha cancelación 
+
+-Convertir automático de cinta a wav, mediante uso de mantransfe
+
+-stdout file selector. Poder hacer ls, cd etc.
+
+-Alternativa en los menús tabulares tipo como el de sprites o colores, que usan cursores y pgup y down
+-usar otras acciones / hotkeys para eso
+-agregar un handler especial para esas teclas. Pero entonces como se mueve uno por los ítems? Con tecla tab?
+Que uso se le da a tab? En file utils, si se tabula, cambia de sección. En menú tabular, el tab sale?
+
+-ventana debug cpu: si se estaba en vista 8, y luego cargamos un juego que no sea de paws/daad/quill,
+la vista 1 sera ventana grande pero con alto total reducido. Parecido a lo que sucedia al cambiar de vista
+
+
+-menus tabulados:
+TAB conmutar a zona de acciones? Quiza nueva funcion para seleccion acciones, que permita:
+
+**mover con cursor abajo/arriba e izquierda/derecha. TAB o ESC permite salir
+**en file utils, por su parte, tambien permito acciones directas como ahora con shift+tecla. o no?
+
+-eventos joystick para simular pgup, pgdn
+
+-Estadísticas de diferentes componentes del core, ya sea cpu u otra cosa, como memoria usada para el rainbow buffer,  y cosas así
+Info de tamaño ventana. Y tamaño ventana sin zoom
+
+-estadisticas memoria etc con getrusage: aunque esto solo vale para Linux
+
+
+-mejorar deteccion frecuencia sonido en audio wave form
+
+
+-Mostrar juego cargado en titulo ventana. Desaparece al hacer reset 
+
+-poder hacer hotswap de una maquina a zx-uno
+
+-insistir en el tema de hotswap entre zx80-zx81
+
+-joystick derecha para tab. solo en menu
+
+-menu_ventana_scanf deberia retornar un codigo de retorno en caso de pulsado ESC
+
+-visualmem podria tener en cuenta toda la ram de una maquina: 128kb en +2, Z88 etc.... aunque dificil para +2 y Z88.... y necesario?
+-visualmem que siga memory zone 
+
+-lectura de nombre de archivo en fileselector para stdout no admite espacios
+
+-al llamar a filesel, se resetea funcion overlay y se deja normal, perdiendose overlay que hubiera en la ventana (como en Visual Real Tape)
+
+-sin multitask, no va repeticion de teclas. esto es porque no se ejecuta timer_check_interrupt
+quiza estas funciones de contadores deberian venir con el thread del timer? aunque luego en version
+no-thread no funcionara tampoco
+->esto ya queda solventado con el setting de stop emulation on menu->multitarea sigue funcionando aunque la cpu esta pausada, y funciona repetición de teclas
+
+-Mostrar consumo de cpu solo del proceso del emulador?
+
+-Browser cintas standard que permita alterar la posición de la cinta
+
+
+-descomprimir rar,gz, etc con espacio en nombres a veces falla. el comando system le envia las "" pero el propio comando
+no gestiona bien nombres con espacios
+
+
+-tecla ',' en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB para el menu
+
+-en menu cambio z88 memory slots, que el apply changes salga justo en la ventana anterior, para poder cambiar varios slots a la vez y que se aplique solo una vez
+(como abrir tapa, insertar 2 slots, y cerrar tapa)
+
+
+*************

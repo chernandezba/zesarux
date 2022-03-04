@@ -1,0 +1,61 @@
+Fixed very-old bug when loading Rocman game. 
+This bug existed even on ZXSpectr. It fixes return flags when using tape traps.
+Rocman loading screen was shown wrong (having the "any flag loading setting" disabled), but loaded. Enabling that setting crashed the game
+
+Tests:
+
+
+-copion method:
+
+cp a
+scf
+ex af,af'
+di
+call 0562
+
+f' al entrar:
+0100 1001
+-Z-- P--C
+
+SZ5H3PNC
+
+sera Z y Carry?
+
+-carga normal
+F':
+0000 0001
+---- ---C
+
+-rocman atributos:
+F': 69
+
+01101001
+SZ5H3PNC
+ Z     C
+
+IX=57FF
+DE=0301
+
+-al volver de la carga:
+AF=8f82
+AF'=FF69
+
+F=82
+1000 0010
+S      N
+
+F'=69
+0110 1001
+ Z5  3  C
+
+Z probablemente deba ser 0
+Rocman encadena la carga con ese flag Z, y luego falla con mi codigo de trap
+
+
+-rocman bloque siguiente atributos:
+A9
+
+1010 1001
+        C
+
+

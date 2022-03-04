@@ -1,0 +1,171 @@
+1 CLEAR:MODE 4:OPEN#1;scr_512X256a0X0:PAPER 0:CLS:CSIZE 3,1:AT 3,10:PAPER 2,0,1:INK 7:PRINT"MICRO BYT":CSIZE 1,1:INK 2,4,3:PAPER 0:CURSOR 192,85:PRINT"Presenta":CSIZE 3,1:PAPER 2,4,1:INK 0:CURSOR 206,110:PRINT"EL":CURSOR 190,140:PRINT"MAGO":CSIZE 1,1:INK 4,2,2:PAPER 0:CURSOR 208,169:PRINT"Por":INK 7,4,3:CURSOR 150,195:PRINT"Oscar Hernåndez Baâñ":LINE 35,85TO 100,85TO 100,10TO 35,10TO 35,85:CSIZE 0,0:WINDOW 450,226,32,10:MERGE mdv1_Mago2
+2 gra=RESPR(64):LBYTES mdv1_Udg,gra:MERGE mdv1_Ruidos:udg=RESPR(200):LBYTES mdv1_mago_udg,udg+2
+3 MISTake  RANDOMISE:Ruido 4:Presentaciñn:PON_MANe
+4 REPeat Partida
+5 DIM pu(jg):ju=0:pa=0:REPeat Juegos
+6 DIM p$(100):d=RND(99):ma=99:mi=0:REPeat pp
+7 IF JUEgg THEN EXIT pp
+8 END REPeat pp
+9 IF GANar=jn THEN EXIT Juegos
+10 Pantalla:END REPeat Juegos
+11 IF FIN$=="N"THEN EXIT Partida
+12 Pantalla:Cero:END REPeat Partida
+13 FOR n=3TO 4+jg:CLOSE#n
+14 OPEN#1;scr_512X256a0X0:OPEN#2;scr_512X256a0X0:FOR n=0TO 2:PAPER#n;0:CLS#n
+15 LRUN mdv1_BOOT
+16 MISTake  DEFine PROCedure Presentaciñn:PAPER 0:CLS
+17 OPEN#3;scr_450X20a32X236:PAPER#3;0:INK#3;7,4,3:CSIZE#3;1,1:PRINT#3;"  Oscar Hernåndez Baâñ  ";:PAPER#3;4,0,1:INK#3;7:PRINT#3;"Micro Byt Solftware";:PAPER#3;0:PRINT#3;"  ";:UNDER#3;1:PRINT#3;"26-05-88":CLOSE#3:Pantalla
+18 OPEN#3;scr_164X191a32X45:PAPER#3;0:INK#3;7:CLS#3:BORDER#3;3,2,4,1:CALL gra,3,udg,128,22:AT#3;15,13:PRINT#3;"êë":CURSOR#3;72,159:OVER#3;1:PRINT#3;"îíìï";:OVER#3;0:AT#3;17,1:PRINT#3;"INSTRUCCIONES (S/N) ?"
+19 REPeat Tecla:a$=INKEY$(-1):Ruido 2:IF a$=="S" OR a$=="N"THEN EXIT Tecla
+20 AT#3;17,0:PRINT#3;FILL$(" ",24):Ruido 5:IF a$=="S"
+21 Pausa:OPEN_IN#5;mdv1_Mago_dat:FOR n=1TO 28:INPUT#5;a$:AT#3;17,1:PRINT#3;a$:FOR m=1TO 2:Ruido 5:END FOR m:SCROLL#3;-10:END FOR n:CLOSE#5
+22 SCROLL#3;-10:Ruido 5:FOR n=1TO 12:AT#3;16,1:PRINT#3;"* * *  ÄÅ  êë  ÄÅ  * * *":CURSOR#3;42,169:OVER#3;1:PRINT#3;"ÑÇÉÖîíìïÑÇÉÖ":OVER#3;0:Ruido 5:SCROLL#3;-20
+23 FOR n=0TO 100:LINE#3;n,0TO 0,100:BEEP 1000,50/(n+1)
+24 FOR n=0TO 100:LINE#3;100,100TO 0,n:BEEP 500,n,n/2,1,2,4
+25 END IF 
+26 FOR n=0TO 4:Ruido 5
+27 BORDER#3;0,0:CLS#3
+28 END DEFine 
+29 DEFine PROCedure Pantalla:LOCal n
+30 OPEN#4;scr_252X220a200X14:PAPER#4;7:INK#4;0:CLS#4:CALL gra,4,udg,128,22
+31 PAPER#4;2,0,1:INK#4;7:FOR n=0TO 9:AT#4;0,4*n+1:PRINT#4;" ";n;"  ":BEEP 1000,RND(56),RND(222),RND(15),RND(12),RND(15):AT#4;21,4*n+1:PRINT#4;" ";n;"  ":BEEP 1000,n/50
+32 AT#4;0,0:PRINT#4;" ":Ruido 2:AT#4;0,41:PRINT#4;" ":Ruido 1:AT#4;21,0:PRINT#4;" ":Ruido 5:AT#4;21,41:PRINT#4;" ":Ruido 1
+33 FOR n=0TO 9:AT#4;2*n+1,0:PRINT#4;" ":BEEP 1000,n/50:AT#4;2*n+2,0:PRINT#4;n:BEEP 5000,RND(50),RND(15),RND(15),RND(12),RND(12):AT#4;2*n+1,41:PRINT#4;" ":AT#4;2*n+2,41:PRINT#4;n:BEEP 1000,50/(n+1)
+34 PAPER#4;7:INK#4;0:FOR n=0TO 9:AT#4;2*n+1,1:PRINT#4;" äã  äã  äã  äã  äã  äã  äã  äã  äã  äã":CURSOR#4;6,10*(2*n+2)-1:OVER#4;1:PRINT#4;"éåçèéåçèéåçèéåçèéåçèéåçèéåçèéåçèéåçèéåçè":Ruido 2
+35 CSIZE 3,1:CURSOR 20,15:PAPER 0:INK 2,7,3:PRINT"EL MAGO"
+36 OVER#4;0:END DEFine 
+37 DEFine PROCedure PON_MANe:LOCal a,b
+38 AT#3;9,2:PRINT#3;"CUANTOS JUGADORES (1-4)"
+39 REPeat Tecla:a$=INKEY$(-1):Ruido 2:IF a$>"0"AND a$<"5"THEN EXIT Tecla
+40 jg=a$-1:AT#3;9,2:PRINT#3;"A CUANTAS PARTIDAS (1-9)"
+41 REPeat Tecla:a$=INKEY$(-1):Ruido 2:IF a$>"0"AND a$<="9"THEN EXIT Tecla
+42 jn=a$:DIM ju$(4,10):CLS#3:FOR n=0TO jg+(jg<3):ca=n+5:OPEN#ca;"scr_164X40a32X"&(45*n+45):BORDER#ca;3,4,2,1:PAPER#ca;0:INK#ca;7:AT#ca;0,8:PRINT#ca;FILL$("-",10)\!"Puntos : 00   partidas:"\TO 11;"--   00 000 %"
+43 FOR m=0TO jg
+44 ca=m+5:b$=""
+45 FOR n=1TO 10
+46 AT#ca;0,7+n:PRINT#ca;"?"
+47 REPeat Tecla:a$=INKEY$(-1):Ruido 5:IF (CODE(a$)>31AND CODE(a$)<123)OR CODE(a$)=10OR(CODE(a$)=9AND b$<>"")THEN EXIT Tecla
+48 IF CODE(a$)=10THEN EXIT n
+49 IF CODE(a$)=9
+50 b$=b$(1TO LEN(b$)-1):AT#ca;0,7+n:PRINT#ca;"-":n=n-2
+51 ELSE 
+52 b$=b$&a$:AT#ca;0,7+n:PRINT#ca;a$
+53 END IF 
+54 END FOR n
+55 ju$(m)=b$:AT#ca;0,8:PRINT#ca;FILL$("-",10):a=MIDe_a(b$):IF a THEN b=MIDe(b$):AT#ca;0,8+(10-b-a)DIV 2:PRINT#ca;b$(b TO a):ju$(m,1TO)=ju$(m,b TO a)
+56 END FOR m
+57 IF jg<3THEN jg=jg+1:ca=ca+1:ju$(jg)="QL":AT#ca;0,8+4:PRINT#ca;"QL"
+58 END DEFine 
+59 DEFine FuNction NUMero$(e$,es):RETurn FILL$("0",es-LEN(e$))&e$:END DEFine 
+60 DEFine FuNction JUEgg:LOCal a
+61 REPeat fe2
+62 IF ju$(ju)=="QL"
+63 ca=ju+5:n=RND(mi TO ma):AT#ca;2,11:PRINT#ca;NUMero$(n,2)
+64 ELSE 
+65 n=JUGador
+66 END IF 
+67 IF p$(n+1)<>"#"THEN EXIT fe2
+68 END REPeat fe2
+69 x=n MOD 10:y=n DIV 10:xx=6+24*x:yy=10+20*y:r3=RND(3):a=(n=d):IF a AND r3=2THEN r3=3
+70 b$="ÑÇÉÖ":s=0:z=0:r=2:SELect ON r3
+71 =1:s=4:z=4:r=1:a$=" äã ":b$="éåçè":a=0
+72 =2:IF NOT(a)THEN a$=" êë ":s=2:p$(n+1)="#"
+73 =REMAINDER 
+74 p$(n+1)="#":IF a THEN a$=" êë ":b$="îíìï":s=2:z=4:r=5
+75 IF n<d AND NOT(a)THEN a$=" Äáâ":IF mi<n THEN mi=n+1
+76 IF n>d AND NOT(a)THEN a$="àÜÅ ":IF ma>n THEN ma=n-1
+77 END SELect 
+78 IF NOT(a)THEN Imprimir "ÑÇÉÖ",a$,s,z:BEEP 3000,r*50,r*2,r*8,r*9,r:Imprimir a$,b$,s,z:ju=ju+1:IF ju>jg THEN ju=0
+79 RETurn a:END DEFine 
+80 DEFine PROCedure Borrar
+81 CURSOR#4;xx,yy:PRINT#4;"    ":CURSOR#4;xx,yy+9:PRINT#4;"    ":END DEFine 
+82 DEFine PROCedure Imprimir(a2$,b2$,s2,z2)
+83 Borrar:INK#4;s2:CURSOR#4;xx,yy:PRINT#4;a2$:OVER#4;1:INK#4;z2:CURSOR#4;xx,yy+9:PRINT#4;b2$:OVER#4;0:INK#4;0
+84 END DEFine 
+85 DEFine FuNction JUGador
+86 ca=ju+5:b$="":AT#ca;2,11:PRINT#ca;"--"
+87 FOR n=1TO 2
+88 AT#ca;2,11:PRINT#ca;b$;"?":REPeat fe
+89 a$=INKEY$(-1):Ruido 5:IF (CODE(a$)=9AND b$<>"")OR(a$>="0"AND a$<="9")THEN EXIT fe
+90 END REPeat fe
+91 IF CODE(a$)=9
+92 b$="":n=0:AT#ca;2,11:PRINT#ca;b$;"?-"
+93 ELSE 
+94 b$=b$&a$
+95 END IF 
+96 END FOR n
+97 AT#ca;2,11:PRINT#ca;b$
+98 RETurn b$:END DEFine 
+99 DEFine FuNction MIDe(x$):LOCal a,n
+100 a=0:FOR n=1TO LEN(x$):IF x$(n)<>" "AND NOT(a)THEN a=n
+101 IF NOT(a)THEN a=LEN(x$)
+102 RETurn a:END DEFine 
+103 DEFine FuNction MIDe_a(x$):LOCal a,n
+104 a=0:FOR n=LEN(x$)TO 1STEP -1:IF NOT(a)AND x$(n)<>" "THEN a=n
+105 RETurn a:END DEFine 
+106 DEFine FuNction GANar:LOCal c$,d$
+107 FOR n=0TO 255STEP 8:Imprimir a$,b$,n,n:BEEP 2000,-n
+108 a2=(jg=1AND NOT(ju))+2*(jg=1AND ju)+4*(jg>1AND ju$(ju,1TO 3)<>"QL ")+3*(jg>1AND ju$(ju,1TO 3)="QL "):SELect ON a2
+109 =1:c$="LO HAS":d$="ENCONTRADO"
+110 =2TO 3:c$="LO":d$=" ENCONTRE"
+111 =4:c$="LO":d$="ENCONTRASTE"
+112 END SELect 
+113 INK#4;4,2,1:PAPER#4;7,2,3:CLS#4:CSIZE#4;3,1:INK#4;2,4,1:CURSOR#4;68,56:PRINT#4;c$:CURSOR#4;36,78:PRINT#4;d$:CURSOR#4;10,128:INK#4;7,0,1:PRINT#4;"PULSE UNA TECLA":CSIZE#4;2,1:INK#4;0:CURSOR#4;112,0:PRINT#4;"êë":OVER#4;1:CURSOR#4;100,18:PRINT#4;"îíìï":OVER#4;0:CURSOR#4;0,0:INK#4;7:PRINT#4;" ÄáâàÜáâ":CURSOR#4;154,0:PRINT#4;"àÜáâàÜÅ":OVER#4;1:CURSOR#4;0,18:PRINT#4;"ÑÇÉÖÑÇÉÖ":CURSOR#4;154,18:PRINT#4;"ÑÇÉÖÑÇÉÖ":OVER#4;0:CURSOR#4;0,161:PRINT#4;" ÄáâàÜáâ";:INK#4;0:PRINT#4;" äã  ";:INK#4;7:PRINT#4;"àÜáâàÜÅ":OVER#4;1:INK#4;0:CURSOR#4;0,179:PRINT#4;"éåçèéåçèéåçè éåçèéåçè";:OVER#4;0
+114 IF a2=1OR a2=4
+115 CSIZE#4;3,1:CURSOR#4;36+16*(10-MIDe_a(ju$(ju,1TO)))DIV 2,106:INK#4;0,4,1:PRINT#4;ju$(ju,1TO)
+116 CSIZE#4;2,1:n=0:REPeat espera
+117 CURSOR#4;10,34:INK#4;n:PRINT#4;"!!! ENHORABUENA !!!"
+118 BEEP 100,n:n=n+2:IF n=6THEN n=0
+119 IF INKEY$<>""THEN EXIT espera
+120 END REPeat espera
+121 ELSE 
+122 REPeat espera
+123 FOR n=0TO 6STEP 2:BEEP 100,n:PAUSE 2:a$=INKEY$(4):IF a$<>""THEN EXIT n
+124 IF a$<>""THEN EXIT espera
+125 END REPeat espera
+126 END IF 
+127 pu(ju)=pu(ju)+1:pa=pa+1:FOR n=0TO jg:ca=n+5:AT#ca;1,9:PRINT#ca;NUMero$(pu(n),2):AT#ca;2,11:PRINT#ca;"--"!!!NUMero$(pa,2)!NUMero$(pu(n)*100DIV pa,3)
+128 RETurn pu(ju):END DEFine 
+129 DEFine FuNction FIN$:LOCal a$
+130 OPEN#10;con_96X20a268X70:OPEN#11;con_176X20a238X92:FOR n=10TO 11:PAPER#n;7,2,3:CSIZE#n;3,1
+131 INK#10;2,4,1:INK#11;4,2,1:FOR n=1TO 6:PAN#10;-16:BEEP 500,n,n+100,200,100,100,2+n:PAUSE 4
+132 FOR n=1TO 11:PAN#11;-16:BEEP 1000,n+100,100,200,200,4+n:PAUSE 4
+133 SELect ON a2
+134 =1:a$="HAS GANADO "&ju$(ju,1TO MIDe_a(ju$(ju,1TO)))&" ....... TE RETO A OTRA PARTIDA ."
+135 =2:a$="LO SIENTO, HAS PERDIDO ............ ¥ QUIERES JUGAR OTRA VEZ ? ."
+136 =4:a$="GANASTE "&ju$(ju,1TO MIDe_a(ju$(ju,1TO)))&" ....... ¥ QUIERES JUGAR OTRA VEZ ? ."
+137 =3:a$="OS HE GANADO A TODOS ...... ¥ QUEREIS PERDER OTRA VEZ ? ."
+138 END SELect 
+139 MISTake  n=1:m=-5:REPeat Tìtulo
+140 PAN#10;16:IF n<=LEN(a$)THEN AT#10;0,0:PRINT#10;a$(n)
+141 IF m>=1THEN PAN#11;-16:AT#11;0,9:PRINT#11;a$(m)
+142 MISTake  BEEP 1000,CODE(a$):IF m=LEN(a$)THEN EXIT Tìtulo
+143 MISTake  PAUSE 7:n=n+1:m=m+1:END REPeat Tìtulo
+144 REPeat Tecla:a$=INKEY$(-1):Ruido 2:IF a$=="S"OR a$=="N"THEN EXIT Tecla
+145 CLOSE#10:CLOSE#11
+146 RETurn a$:END DEFine 
+147 DEFine PROCedure Cero
+148 FOR n=0TO jg:ca=n+5:AT#ca;1,9:PRINT#ca;"00":AT#ca;2,11:PRINT#ca;"--   00 000 %"
+149 END DEFine 
+30000 DEFine PROCedure Ruido(x)
+30010 LOCal n,m,a,b
+30020 SELect ON x
+30030 =1:FOR n=0 TO 130STEP 2:BEEP 100,n
+30040 =2:FOR n=125TO 0 STEP -5:BEEP 100,n
+30050 =3:FOR n=1TO 3
+30060 FOR m=85TO 20 STEP -.5:BEEP 5000,225-m:PAUSE .3
+30070 END FOR n
+30080 =4:FOR n=1TO 241STEP 4:BEEP 3000,n:PAUSE 29/n
+30090 =5:FOR m=4TO 24STEP 2:BEEP 3000,m:BEEP 3000,m+3:BEEP 3000,m-3
+30100 =6:FOR n=1TO 12:a=RND(1TO 10):b=RND(1TO 10):BEEP 10000,a,b,1,2,-9,0,0:PAUSE (16+a)
+30110 =7:FOR n=1TO 9:a=RND(1TO 15):b=15-a:BEEP 20000,a,b,1,2,-9,1,1:Pausa
+30120 =8:FOR n=1TO 11
+30130 a=RND(1TO 5):b=105-a:BEEP 9000,a,b,1,2,-9,RND(10TO 15),1:Pausa
+30140 FOR m=1TO 24:END FOR m
+30150 END FOR n
+30160 =9:BEEP 32767,2,44,7,1,15,11:Pausa
+30170 =10:BEEP 32767,188,16,7,5,13,0:Pausa
+30180 END SELect :END DEFine 
+30190 DEFine PROCedure Pausa
+30200 REPeat espera:IF BEEPING<>1 THEN EXIT espera
+30210 END DEFine 

@@ -1,0 +1,80 @@
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+
+
+*** Tape ***
+
+-random crash al lanzar ./zesarux prueba.tzx con prueba.tzx siendo archivo random
+En este caso, sale error de tzx en menu, y al ir a cerrar mensaje de error, hay que cerrarlo dos veces, y la segunda vez, el 50% de las veces
+da segmentation fault-> quiza el problema viene del lector tzx
+
+-En real tape, iniciar carga a velocidad normal y poner carga acelerada en el momento que haya cargado la pantalla
+
+-quiza quitar el "simulate real load", no tiene sentido, pues se puede hacer mediante carga real tape
+
+-TZX. Segun tags detectar:
+*si es juego 48 o 128
+
+-Con auto load off. Si estamos dentro de rutina de la ROM, esperando a un load, si metemos standard tape, hará fallback a real tape pues detecta que estamos dentro de una rutina de carga. Esto es normal
+
+-Que cuando haga fallback de standard a real tape, entre en real tape no toda la cinta sino desde donde se ha parado como standard (y ademas que no resetee la cpu ni escriba LOAD"") para asi poder continuar tal cual como real tape
+
+-standard tape sea capaz de leer cintas grabadas a mas baudios (2100 por ejemplo)
+
+-soporte de wav en entrada sin tener que usar sox
+
+-Carga interna de bloque en spectrum es capaz de interpretar rwa generado. Carga interna de zx81 no carga un rwa generado
+
+-Carga por line in
+
+-Smpatap y leezx81 que soporten también rwa 15600 hz. comparar valores constantes de esos smpatap.c y leezx81.c con los que lleva el emulador
+
+-tape_smp:
+*carga de smp en zx80 no va
+*carga de smp en zx81 no siempre va
+
+-realtape load:
+*carga de smp (convertidos desde rwa) no siempre cargan bien, ni carga binaria ni real tape
+
+-Paso de cinta audio a spectrum en memoria que avise por ventana de lo que ha convertido
+
+-Borrar archivo temporal al expulsar. Casos tmp smp y tmp wav
+
+-hacer traps de carga, save en instrucciones determinadas (quiza cuando hay un DI), no continuamente en el bucle principal
+
+-en simulacion de carga, con cintas tap, en pulseaudio, pausa entre cabecera y siguiente bloque es muy pequeño y casi no se oye los 17 bytes
+
+-hacer un SAVE desde zx81, pasarlo a wav, luego intentar cargarlo en emulador, como smp, y no es capaz de cargar mas alla de los bytes del nombre del programa
+->se debe poner t_states offset a 1 al grabar, seguramente porque despues de meter el nombre del programa en la grabacion, ejecuta algun opcode que no
+esta haciendo bien el timing
+->aun con la correccion de zesarux 1.4 y la eliminacion de t_states offset, esto sigue fallando, al cargar no lee mas alla del nombre del programa
+->para reproducir: en zesarux->audio out to wav. leer en audacity. cambiar frecuencia proyecto a 11111. exportar datos en crudo 11111hz, 8 bit, mono, unsigned
+
+-misma prueba de SAVE y load audio desde spectrum no funciona... parece que es porque el audio se graba la onda "en negativo" y la rutina de carga smp no reconoce ni un solo byte
+
+
+-cinta smp en zx80/81 que permita mas de un bloque dentro del archivo de sonido
+
+-Tzx de varias partes en zx81? De web de Kelly murta
+
+- Cabecera tzx que incluya versión emulador
+
+
+
+-tzx:
+*funciona way exploding fist, por ejemplo. lord of chaos tambien, este ademas tiene tags id 32
+*quiza en tap antes de leer longitud habria que llamar a una funcion de "inicio de carga",
+de tal manera que en tzx buscaria el siguiente id, y en tap no haria nada
+
+-rutinas de carga en general: quiza:
+* leer siempre cada bloque de bytes entero en un buffer
+* retornar a funcion que llama el numero de bytes leido, y teniendo en cuenta si es any flag loading
+* esto evitaria tener que ir haciendo seeks y similar y seria todo mas "limpio"
+
+-poder cargar un .config sin mas, sin que cargue snapshot ni cinta ni nada, solo parseando el config. raro? en smartload estaran los dos, el juego y la config
+
+-meter real tape en linea comandos siempre acelera la carga, aunque este desactivado
+ ejemplo: ./zesarux --realtape tetris2.pzx
+
+***********
+

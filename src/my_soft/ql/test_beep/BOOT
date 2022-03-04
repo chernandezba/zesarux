@@ -1,0 +1,6 @@
+10 for n=0 to 255 step 0.5
+15 rem por alguna razon si el step es 1, hace beeping cada 2
+20 print n
+30 beep 10000,n
+40 if beeping then goto 40
+100 next n

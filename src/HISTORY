@@ -1,0 +1,27 @@
+A brief description about how this started...
+
+In 1996 I started my first Spectrum emulator, the ZXSpectr (https://github.com/chernandezba/zxspectr)
+It was written entirely on Assembler for PC x86.
+
+While I was working on ZXSpectr, I thought many times on porting ZXSpectr to GNU/Linux. 
+I was (and I am still) a big fan of GNU/Linux and I wanted my emulator to run on it. 
+But I didn't have the knowledge of some developing facts on Unix, like XWindows.
+
+One day, on September 2013, I uploaded a new version of ZXSpectr; it was not a big release, only some minor fixes. 
+I thought then on some kind of conversion routine to dump the text that can be found on a Spectrum screen file (SCR).
+It started as a filter to my file converter: http://sourceforge.net/projects/fconverter/
+With this filter, you could read a SCR file and if it had normal ASCII Spectrum texts it would dump them to the output file.
+
+Then I thought that filter could be the routine to refresh the Spectrum screen on an emulator...
+
+From that moment, I started to make this new emulator, ZEsarUX, starting from scratch. 
+I ported the filter to use a ncurses driver on Unix, and began emulating the whole Z80 CPU.
+
+ZEsarUX is not a port of ZXSpectr; ZEsarUX is a new emulator. Obviously, I used all my knowledge I got from ZXSpectr to this new emulator.
+
+And the rest is history....
+
+---
+
+Cesar Hernandez
+chernandezba -at- hotmail.com

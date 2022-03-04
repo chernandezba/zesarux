@@ -1,0 +1,6 @@
+This is the source code of the mantransfer option found on emulator menu
+It must be loaded the last source code contained in this tape on sped program
+Compile, go to basic
+OUT 32765,20 (to access the compiled binary)
+And then save binary block (mantransfev3.bin) from emulator, address 49152, length (lenght indicated when compiling)
+

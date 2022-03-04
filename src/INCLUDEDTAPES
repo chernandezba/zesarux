@@ -1,0 +1,24 @@
+In my_soft/ folder you can find some software for the emulated machines.
+
+They are programs and games made by myself or my family. Many of them are simple programs written in basic, that I made when I was a child, and some other are more complex programs, like the SPED compiler, RealDebug debugger, or Cursor Draw drawing program. Some of these programs have documentation found on file my_soft/info_my_soft.odt. 
+
+Some of these programs made by me are published as brand "Man Software". 
+Software made by my father and my oldest brother are published as "Micro bit" or "Micro Byt". 
+Software made by my middle brother are published as "Bit Soft"
+
+Note: some of my simple games, made in basic, have kempston joystick support. They were programmed on Inves Spectrum + and kempston joystick reading only works on Inves and not on other Spectrum machines.
+
+You can also download the extras package, from the repository:
+
+https://github.com/chernandezba/zesarux-extras
+
+Also included in the ZEsarUX-extras package of the last distribution. 
+
+There you can find some tapes, snapshots, cartridges and EPROM cards for the emulated machines.
+I included them for different reasons:
+
+- They are important programs or games for a machine, like Mazogs on ZX81
+
+- They make some hi-res and special effects, like Overscan on Spectrum or Manic miner on ZX81
+
+- They are programs to test the behaviour on the emulator

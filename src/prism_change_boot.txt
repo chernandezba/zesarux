@@ -1,0 +1,7 @@
+to change first 32kb of prism.rom with testing prism boot rom:
+
+dd if=prism.rom of=prism_nuevo.rom bs=1k skip=32
+cat PrismBootRom.bin > prism.rom 
+cat PrismBootRom.bin >> prism.rom
+cat prism_nuevo.rom >> prism.rom
+rm prism_nuevo.rom

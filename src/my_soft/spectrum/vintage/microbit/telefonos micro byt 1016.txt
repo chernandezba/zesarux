@@ -1,0 +1,3 @@
+El nombre del programa viene porque admite un maximo de 1016 caracteres
+
+En la pantalla principal, pulsando con el cursor hacia arriba, se va al menu principal

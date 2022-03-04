@@ -1,0 +1,105 @@
+
+alternaterom_aszmice07.rom - ASZMIC E07 ROM - ZX80/ZX81 Replacement ROM which includes assembler & debugger
+This rom is actually 4K long, but it starts at 4000H. So it is copied twice to be 8k length to work on ZX81
+
+alternaterom_ace.rom: patch by "Dutra.Lacerda"(https://t.me/JupiterACE)
+3 words Restored, CODE word added (Sieve*10=5m W=16.4x) GPL3 DISTRO
+
+alternaterom_opense.rom  OpenSE BASIC Version 3.1.2, For Spectrum 48K
+http://sourceforge.net/projects/sebasic/
+
+
+alternaterom_sebasic4_rom1.rom SEBASIC standalone ROM 1 supporting the normal 32x24 mode, Version 4.1.0, For Spectrum 48K
+https://github.com/cheveron/sebasic4/wiki
+
+alternaterom_derby_p_32K.rom, alternaterom_derby_pp_64K.rom: Derby+ and Derby++ roms, for Spectrums with 128KB of RAM
+and 32K or 64 KB of ROM
+https://zx.itch.io/derbypro
+
+
+alternaterom_plus3e_mmcen3eE.rom  alternaterom_plus3e_mmces3eE.rom
++3e ROMs v1.38. For Spectrum +2A/+3 models
+http://www.worldofspectrum.org/zxplus3e/p3eroms.html
+The first on English, the second on Spanish
+Both for mmc interface, you can enable MMC and ZXMMC emulation on ZEsarUX. 
+
+alternaterom_plus3e_sm8en3eE.rom alternaterom_plus3e_sm8es3eE.rom
++3e ROMs v1.38. For Spectrum +2A/+3 models
+http://www.worldofspectrum.org/zxplus3e/p3eroms.html
+The first on English, the second on Spanish
+Both for ide 8-bit simple
+
+
+
+alternaterom_plus2c.rom ZX Spectrum Plus 2C, For Spectrum 128k/+2
+Unofficial ROM by Andrew Owen
+
+
+--
+
+alternaterom_plus2b.rom: +2B ROM Set. For Spectrum +2A/+3 models
+
+The +2B ROM set includes the following:
+
+ROM 0 - debugged UK 128 editor 
+ROM 1 - original 16K BASIC ROM
+ROM 2 - RT Russell's BBC BASIC (Z80) ported by JG Harston:
+
+        http://mdfs.net/Software/BBCBasic/Spectrum/
+
+ROM 3 - OpenSE BASIC 3.1.1:
+
+        http://sourceforge.net/projects/sebasic/
+
+The menu options are as follows:
+
+* SE BASIC
+  fully debugged, optimized, and enhanced version of Sinclair BASIC
+
+* BBC BASIC
+  arguably the best version of classic BASIC with inline Z80 assembler
+
+* 128 BASIC
+  fully debugged, new menu system, and virtual numeric keypad support
+
+* 48 BASIC
+  the original 1982 ROM, memory paging switched off
+
+* USR 0
+  the original 1982 ROM, memory paging enabled
+
+
+
+
+--
+
+
+Z88UK220.rom  
+Z88UK300.rom 
+Z88UK400.rom
+Z88OZ431.rom  
+Z88OZ441.rom  
+Z88OZ45.rom
+Z88OZ46.rom
+Z88OZ47.rom
+
+Different Z88 ROM versions. The default is Z88OZ47.rom.
+
+
+-----
+
+tk90x_v1br.rom: Brasilian 
+tk90x_v2es.rom: Fixed tk90x rom
+
+
+tk95es.rom:  Microdigital TK95 Spanish ROM
+
+tk95es_modif.rom: Microdigital TK95 Spanish ROM with modifications by Rodolfo Edison Guerra:
+* Fixed messages:
+"Variable inexiste" to "Variable incierta"
+"Ok" to "OK"
+"TK Color Computer" to "TK 95 - Color Computer"
+* Changed symbols Sigma to pound, and Delta to (c) 
+
+
+

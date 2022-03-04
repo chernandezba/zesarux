@@ -1,0 +1,11 @@
+This is sped54en, with the save object code bug from sped52 fixed, and with the English translation made by Tim Gilberts
+
+The sources are in just plain text files, not on sped file format, so you can compile with your favorite cross assembler
+Also, 8-bit registers from IX have the sped syntax (LX, HX) which are compatible with sjasmplus syntax.
+On Pasmo, they are called IXL, IXY
+
+You may compile with pasmo with:
+
+sjasmplus sped54en.asm sped54en_paging.asm
+
+The binary output file will be: sped.bin

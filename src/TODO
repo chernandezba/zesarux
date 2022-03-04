@@ -1,0 +1,500 @@
+   
+--- expression parser
+
+
+*codetests_expression_parser_expect(" 2*3 - 4*5 + 6/3 ",-12);
+->da -16. acaba haciendo 2*3 - 4*5 - 6/3
+en cambio: (2*3 - 4*5) + 6/3 da bien
+
+es porque acaba desglosando:
+2*3 -     4*5 + 6/3
+6   -     20 +2
+6   -     22   -> -16
+
+el 20+2 deberia tener en consideracion quiza el signo de delante:
+6 -      20 - 2 
+6 - 18 -> -12 
+
+O esto lo apunto como un bug que el usuario le ponga parentesis y listo
+
+tambien:
+10-1-1 -> no da 8
+hace:
+
+10   -    1-1
+10   -    0  -> 10
+
+
+*si imprime valor de 32 bits con bit ultimo alzado, sale negativo. Habria que imprimir siempre como positivo?
+*case de registros y valores, meter switch en vez de if....
+
+*pwa,pwv,mra,mwv etc requieren que breakpoints esten activos
+
+*parece que a veces mra o pra por ejemplo no siempre se dispara. probar tambien pra. Quiza falla en los que se esta cambiando el cpu turbo continuamente?
+Pero probado en next y funciona
+
+*permite doble resta como a--b -> que eso al final es : a- (-b) -> a+b
+
+-comparacion breakpoint parser. uso cpu:
+no breakpoints: 10% cpu
+
+--set-breakpoint 1 "A=3 AND IX=32768"
+--set-breakpoint 2 "BC>32768 AND A=4 AND IX=20000"
+new:  18% cpu. old: 37% cpu
+
+
+--set-breakpoint 1 "A=3 AND IX=32768"
+--set-breakpoint 2 "BC>32768 AND A=4 AND IX=20000"
+--set-breakpoint 3 "IY>32768 OR IX=10000 OR I>200"
+new: 21% cpu old: 52% cpu
+
+
+--set-breakpoint 1 "A=3 AND IX=32768"
+--set-breakpoint 2 "BC>32768 AND A=4 AND IX=20000"
+--set-breakpoint 3 "IY>32768 OR IX=10000 OR I>200"
+--set-breakpoint 4 "IY>32768 OR IX=10000 OR I>200 OR SP>65535"
+new: 24% cpu old: 73% cpu
+
+Incremento cpu nuevo algoritmo: 3%
+Incremento cpu viejo algoritmo: 15-20%
+Mejora: (15/3)=5 -> 5 veces mas rápido
+ (20/3)=7 -> 7 veces mas rápido
+
+
+
+----------
+
+
+
+-------------
+
+
+
+
+
+--- Programas mios de Spectrum ---
+
+
+Sped:
+
+-En sped poder agregar texto changelog en cada fuente al grabar. Quizá bloque adicional de bytes para ello
+
+-Idea de compresión de texto en sped:
+Si línea empieza con comentario, los espacios de indican cómo el bit 7 del siguiente carácter alzado
+Entiendo que esto no se hace así ya, solo se hace para los dos tabuladores de una línea con opcodes 
+Aunque esto comprime muy poco, solo se ahorra 1 byte por cada espacio, pero algo es algo...
+
+-Licencia gpl para toda mi carpeta de software propio de spectrum: sped, realdebug etc 
+-----------------------
+
+
+
+-----------------------
+
+--- ESXDOS handler ---
+
+-chdir en esxdos handler acaba cambiando directorio realmente para emulador??
+
+-soporte LFN para esxdos handler. quiza acortar archivos al listar con "dir" y similares. que hacer si hacen fopen de archivo largo?
+acortar archivo... pero habra que acortar tambien ruta subdirectorios....
+complicado. quiza ver mejor como gestiona los nombres largos desde nextos
+
+-"overlay" esxdos handler: sobreponer una segunda carpeta sobre la principal
+Asi se puede tener una raiz por ejemplo para divmmc comun, y luego mapear carpetas adicionales para pruebas
+O quiza, en vez de overlay, una segunda unidad de disco
+
+-Esxdos. Decidir hl o ix según si está paginada la memoria divmmc?
+
+Unhandled ESXDOS_RST8: B3H !!
+
+al abrir, que pruebe con mayusculas y luego minusculas
+quiza habra problemas con rutas como : /BIN/paco
+
+si subo todo a mayusculas->no ira
+si subo todo a minusculas->no ira
+quiza aqui entonces mejor que el usuario tenga su ruta bien creada en disco todo minusculas o todo mayusculas
+ver que hace zxpand aqui....
+
+*recomendar que o bien usen todo mayusculas o todo minusculas... en mac o windows no hay problemas, en linux si
+-FAQ esxdos handler. Comentar mayúsculas etc
+
+-Evitar el uso de ../../ etc en esxdos handler para evitar que puedan salir del root de esxdos. Esto también está planteado para zxpand 
+
+-------------
+
+
+
+
+------------------
+
+--- FAQ ---
+
+-Documentar un poco modo paginación zx uno
+
+
+------------------
+
+
+
+
+
+
+-------------
+-------------
+-------------
+
+Otros TODO menos prioritarios, de aqui hasta el final del archivo:
+
+
+-Probar malloc en 32 bit de 2 gb
+
+
+-utils.c: In function ‘util_extract_hdf’:
+utils.c:11099:18: warning: this decimal constant is unsigned only in ISO C90
+                  2147483648L, //8. 2 GB
+                  ^
+utils.c: In function ‘util_ascii_to_binary’:
+utils.c:11248:9: warning: this decimal constant is unsigned only in ISO C90
+         const unsigned int mascara=(unsigned int)2147483648;
+
+Puede dar problemas?
+
+-codetests falla si no hay pthreads con:
+
+
+Running zsock http tests
+Paranoid: Found free socket at index 0
+Error: Pthreads unavailable but trying to use TCP/IP sockets
+Segmentation fault: 11
+
+Al parecer en alguna parte no se gestiona correctamente que se haya retornado -1 en la función de red
+
+
+-quiza archivos de updates deban tener algo asi como major version, minor version
+Esto podria corregir el problema de que avise de updates que realmente son versiones anteriores.
+Ejemplo:
+*uso version snapshot 8.1-SN
+*me actualizo a la estable 8.2
+*al arrancar la primera 8.2-SN, verá que hay 8.2-SN ok no pasa nada
+
+*pero:
+*uso version snapshot 8.1-SN
+*paso a usar 8.0. Ultima estable leida: 8.0
+*paso a usar snapshot 8.1-SN, verá que hay 8.2-SN ok no pasa nada
+
+En que casos puede dar problema? Si cambio a mano version snapshot a estable en cpu.h
+Pero esto no deberia suceder: pues al hacer ese cambio se supone que habrá ya un update,
+entonces en el servidor, en el archivo de update de la estable, ya habré actualizado el archivo y dirá la nueva versión
+
+
+- meter en extras de docs Benchmark legacy tbblue: de momento está en el código, en el menú como comentarios
+
+-punteros en diskio, de read y write, soportaran imagenes de mas de 2 gB en sistemas 32 bits?
+
+
+-quiza un "code estatistics": total lines, total comments, total todos (en codigo y en archivos TODO_*, etc)
+
+-quizá imagenes zxuno.mmc y tbblue.mmc que se generen:
+-- de una carpeta del proyecto, que se cree un archivo mmc mediante herramientas de acceso chan fat fs y luego una copia recursiva. y la partición como crearla?
+
+
+
+-Programa de descompresión zip para esxdos. Luego browser wos/zx info/spec computing para esxdos: ya hay un unzip para Next
+
+-cpuid ("zxid") según especificación de mcleod
+
+-Joystick simulation que se pueda lanzar por ZRCP también (y sin tener que activar —realjoystick-simulator).
+ O quizá sí que necesita el setting, dado que necesita que real Joystick este activado 
+
+
+-página man de ZEsarUX. que no diga opciones, que haga referencia a --help y --experthelp
+
+
+*** Proceso compilacion ***
+
+-Acceso telnet a servidor público para usar ZEsarUX. Con menú de borrado limitado. U otro usuario con permisos restringidos
+
+* probar en html ->emscripten
+http://kripken.github.io/emscripten-site/
+
+sin pthreads
+sin *WORLD* constantes en sdl
+cambiar gcc por emcc
+
+copiar roms y archivos necesarios a carpeta "roms"
+parchear codigo para que busque roms en roms/
+eliminar warnings de funciones sin definir como extern
+
+-s TOTAL_MEMORY=167772160 -o zesarux.html  --embed-file roms
+
+
+-Alguna especie de "top" de partes del emulador 
+
+-Efecto de encefalograma... para..?
+
+
+* -Agregar todas desensamblado roms en txt
+  http://www.fruitcake.plus.com/Sinclair/Spectrum128/ROMDisassembly/Spectrum128ROMDisassembly4.htm
+*************
+
+-Revisar qué roms de +3e conviene incluir: la de ide no se como va. E igual se puede incluir la de divide (aunque parece no ir tampoco)
+
+
+
+*** ULAPlus  ***
+
+-ULAplus mode 256x192 adicional (modo 11?), linear, igual que modo standard (256x192, flash, brillo, papel, tinta, 6144 longitud) pero lineal ?
+
+-ULAplus agregar modos adicionales parecidos a los del sam coupe
+
+-multicolor demo y otros modos ham (que usan interrupciones para cambiar paleta) no funcionan perfectos, seguramente a que:
+en multicolor demo cambia la paleta al finalizar un scanline. Cuando finaliza cada scanline, yo meto en rainbow buffer ese scanline, junto
+con el color de la paleta... pero esa paleta que yo leo es ya la siguiente paleta, de la siguiente linea, y no de la actual. Por eso
+hay un desfase de lineas de color en el border en la multicolor
+
+-Quizá mis modos lineales deberían usar vram en vez de direcciones lineales en prism?
+No:
+All modes except 9 uses RAM 5 or 7 depending on the bit 3 of port 7FFDh on Spectrum 128k models, or address 4000H on 48k/16k models.
+Mode 9 start always at address 4000H, even on 128k models
+
+Realmente lo que pasa es que estos modos usan más de 8kb y deberían saltar a la siguiente vram (0,1) cuando pasan del offset 8192. Esto para modos 3,5,7
+
+Lo que pasa es que cuando asigno memoria vram hago los 32 k de golpe, por eso cuando se pasa del offset 8192 de vram0 automáticamente se salta a vram1
+
+-ULAplus y timex 512x192. Solo va en modo real 512x192. No va color ulaplus en:
+*escalado a 256x192
+*maquina prism
+
+
+
+
+*** Misc ***
+
+-pzx: falla con speedlock: wtss.pzx (where time stool still), myth.pzx
+
+-permitir que las direcciones de breakpoints se pongan con 0xNNNN ademas de NNNNh y decimal
+incluso con $NNNN
+
+
+-sumas md5 que ya no se usan de autoselect. Ver si hay archivos .config alternativos para todo esto
+
+-porque en algunos cores nested, debug_nested_core_call_previous se llama al principio y otros al final?
+
+-Convertir cintas paws
+-Otros componentes mas extraños, como "descubrir" puntuaciones actuales en un juego u otros parámetros,
+como descubrir rutinas de pintado de sprites
+*rutinas de pintado de sprites: quiza detectar cambios en pantalla al pulsar teclas. y ver desde donde se realizan esos cambios en pantalla
+* de momento hay algo preliminar: ver spritefinder
+
+-Extractor palabras paws gac etc que clasifique por verbos, nombres etc
+-Extractor dibujos paws?
+
+-unpaws , unquill para cpc
+
+-mapa localidades daad/paws/quill
+
+-De extractor paws o similar:
+TODO: si puntero tokens es 0, no hay tokens
+TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con acentos?
+
+-unpaws con quill:
+*compression tokens existen?
+
+-unpaws: 
+*compression tokens no siempre estan hasta el 255
+
+
+-Text keyboard editable desde menu?
+
+-Joystick en Mac
+-quiza redibujar archivo logo tal cual con el boot logo
+-Posible ocr con traducción de cirílico?
+
+
+
+-reorganizar capturas de pantalla del readme.md para que esten todas las maquinas
+-en github, Screenshot sir Fred pixel y ascii todo junto. el de ascii, esta cortado
+-Revisar archivo install. En caso de Linux y otros binarios ya compilados, enseñarlo más fácilmente. Otro documento quizá que diga cómo compilarlo  
+
+
+
+
+
+***********
+
+
+** Algunos fallos que se han visto una sola vez, o no consigo reproducir, o no recuerdo que son...
+
+-cuando hay error en custom config no lo muestra hasta que no se abre el menu: ??
+
+-Porque al mapear teclas de zx81 a joystick el menú sigue funcionando bien moviéndose con joystick? No debería pulsarse en el menú las letras correspondientes a cada menu?
+Seguramente porque al leer teclas de menu, hay prioridad de lectura de eventos cursor
+Si mapeamos un botón a una letra (botón que no este usado ya en eventos) en menu se puede escribir esa letra
+Si es botón está también mapeado a un evento, entonces esa letra no se ve
+
+
+
+-Nueva característica: adivinar temperatura de la cpu o del disipador del spectrum según que esté ejecutando y después de x horas de estar encendido
+
+-emulacion keypad spectrum 128
+
+-Código konami para Easter egg
+
+-Meter roms alternativas para divide
+
+-sped52 que use 256 y 512 mb ram
+
+-hotswap de 48k a 48k spanish
+
+-Spectra: dos ventanas, una muestra pantalla principal (salida normal de spectrum) y la otra muestra la pantalla que genera la salida del spectra
+quizá modo dual de spectra se puede hacer en misma ventana pero haciéndola el doble de ancho para que se vean las dos pantallas
+->quiza no tiene mucho sentido porque se puede abrir ventana de sprites con visor de pantalla
+
+* Nuevos componentes o hardware *
+
+-Spectranet
+
+-currah microspeech
+
+-Scorpion emulation
+
+-TRS-80 emulation
+
+-Simular fallo de memoria (golpe) en zx81 ("wobble")
+
+**
+
+
+
+
+
+* sslfunctions *
+
+-asignacion de botones a eventos en sslfunctions solo hacerlo para el tipo de joystick conocido.
+la asignacion de direcciones, como los ejes 0 y 1 funcionan siempre para cualquier joystick, SI que se pueden hacer siempre,
+pero evitar cualquier otro boton diferente de los ejes
+
+
+
+-Emular chips de memoria con fallos
+
+-Grabar pantalla bmp no funciona bien con modo gigascreen y interlace. Probablemente tampoco bien video formato rwv
+Esto seguramente es porque leo de rainbow buffer
+
+-Grabar pantalla requiere de real video y por tanto maquinas sin esto no funcionaran: QL, ...?
+
+-Inves. Ver que juegos se corrompe la memoria debido a interrupción. Quizá ver aquellos que no usan tabla entera de 257
+
+-Mejorar emulación teclado issue 2,3. Etc. Inves
+
+-Subir fotos pruebas inves reales al repo, comprimiendo imagenes?
+
+-Probar dispositivo depuración puerto ffh mad mix game
+
+-Emular mejor issue 2 y 3 y bit tape cuando cinta cargando o no cargando
+
+-Método para crear hardware nuevo definible por el usuario
+
+-Pasar cintas David a mac
+
+-incluir foto cinta beep inves
+
+-Incluir foto de cinta orquesta zx81
+
+-input spool file: hacerlo mas fiable para entrada de teclado desde basic. hay el problema de la gestion de repeticion, pausa entre teclas, etc
+es facil en cambio enviar teclas a la funcion INKEY$ (0x2634) pero no a la introduccion de texto desde basic (0x028e - key-scan). A key-scan
+al final se reduce a enviar la tecla cada 20 ms por ejemplo, por tanto, es practicamente lo mismo que se hace ahora (mediante timer)
+
+-spool: Sustituir tokens en input spool como opción seleccionable
+-spool: Cambio variables sistema repetición al insertar y quitar cuando acabe
+-spool: Ver si se puede hacer turbo en Ace, z88, zx80 y zx81
+-spool: poder enviar sentencia especial, tipo \s para enviar shift, o \y para enviar symbol, etc
+
+- Rasp en carcasa de spectrum
+
+
+- lightgun. magnum light phaser no va bien
+-magnum, con sinclair pack 2 (el primero) hay que dejar pulsado boton para que funcione
+->en rookie, no va si seleccionamos realvideo
+duracion del pulso de deteccion del electron?
+
+
+-Línea de comandos, parámetros que son de activar/desactivar, soportar:
+--enable-parametro y
+--disable-parametro
+E indicar valor por defecto
+
+-Reset parámetros por defecto en quickload también para spectrum
+
+
+-Juegos fallan
+-powerup. al cargar. hay que reinsertar cinta, y hay que cargarlo en modo usr0 . no me preocupa mucho porque es una demo de pentagon...
+comparacion con zxspectr. 
+powerup: ok
+
+
+-en sped52, si se hace poke
+49912,0
+49913,0
+se desactivan los caracteres "bold" y se generan caracteres normales que curses puede interpretar
+
+
+-para probar envolventes:
+cancione.tap, bubble.tap, binarylove, envelopes.tap
+
+-memoedit codigo fuente formato GEN... convertir. hay que truncar muchas lineas largas  de DEFB
+
+-snow effect se deberia parecer a:
+https://www.youtube.com/watch?v=Ix9Wy2jhDwI
+
+Ahora mismo se parece a eso pero con el threshold por defecto, no se parece a como se deberia ver en robocop3 por ejemplo,
+hay que subirle el threshold
+Robocop3 en real:
+https://www.youtube.com/watch?v=ouWwhyutkiI
+
+-Continuar programa cac10
+
+
+------------
+
+
+Otras máquinas:
+
+https://en.wikipedia.org/wiki/Enterprise_(computer)
+
+http://gafz.enterpriseforever.com/Dokumentacio/Konyvek/EXOS_2.1_technikal_information/index.html
+
+Muchos modos de video diferentes. En un mismo frame se permiten varios modos
+
+
+
+
+https://en.m.wikipedia.org/wiki/Exidy_Sorcerer
+
+
+https://en.m.wikipedia.org/wiki/Grundy_NewBrain
+
+https://en.m.wikipedia.org/wiki/ABC_80
+
+https://en.m.wikipedia.org/wiki/Memotech_MTX
+
+
+https://en.m.wikipedia.org/wiki/TRS-80
+Mucha información. Video sencillo
+
+
+Alguna calculadora de texas instruments
+
+
+https://en.m.wikipedia.org/wiki/Philips_P2000
+
+
+Master system
+
+
+
+
+
+https://en.m.wikipedia.org/wiki/ATM_(computer)
+
+

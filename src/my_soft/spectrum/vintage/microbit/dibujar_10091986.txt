@@ -1,0 +1,43 @@
+Teclas validas
+
+L
+
+T
+
+G
+
+S
+
+D
+
+B: Borrar
+
+R
+
+O
+
+C: Circulo
+
+I
+
+M
+
+P
+
+J
+
+W
+
+E: Escribir
+
+H
+
+N
+
+U
+
+X
+
+V: Desplazar x pixeles. Volver con tecla D
+
+5678: mover cursor

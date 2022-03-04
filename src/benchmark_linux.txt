@@ -1,0 +1,417 @@
+	//sin rainbow
+	//Con pausa siempre de 1 ms, 48k, zoom1, audio null, cpu=30% aprox en portatil. con cache y sin actividad en pantalla, 25% cpu
+	//Con pausa siempre de 1 ms, 48k, zoom2, audio null, cpu=55% aprox en portatil. con cache y sin actividad en pantalla, 25% cpu
+	//Con pausa siempre de 1 ms, 48k, zoom2, audio null, video null, cpu=14% aprox en portatil
+
+	//con rainbow
+	//Con pausa siempre de 1 ms, 48k, zoom1, audio null, cpu=50% aprox en portatil. Con cache y sin actividad en pantalla, 40% cpu
+	//Con pausa siempre de 1 ms, 48k, zoom2, audio null, video null, cpu=25% aprox en portatil. con cache y sin actividad en pantalla, 40% cpu
+
+	//Pruebas 21 Apr 2014
+	//sin rainbow
+	//sin memptr,sin visualmem, sin cpustats
+	//48k, ao null, vo null, cpu=10% aprox en portatil
+
+	//Pruebas 7 May 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+	//con contended memory
+	//48k, ao null, vo null, cpu=11% aprox en portatil
+
+	//Pruebas 24 Jun 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo null, cpu=11% aprox en portatil
+
+        //Pruebas 24 Jun 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //sin contended memory
+        //48k, ao null, vo null, cpu=11% aprox en portatil
+
+	//Pruebas 25 Jul 2014
+	//sin rainbow
+	//con contended memory
+	//con memptr
+	//con visualmem
+	//sin cpustats
+	//48k, ao null, vo null, cpu=11% aprox en portatil
+
+        //Pruebas 25 Jul 2014
+        //sin rainbow
+        //con contended memory
+        //con memptr
+        //con visualmem
+        //con cpustats
+        //48k, ao null, vo null, cpu=11% aprox en portatil
+	//->con vo xwindows, sin rainbow, zoom 1, cpu=23% aprox en portatil
+	//->con vo xwindows, con rainbow, zoom 1, cpu=40% aprox en portatil
+	//->con zoom2, mismo uso de cpu. esto es gracias al putpixel cache
+
+
+
+	//Pruebas 15 Sep 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo null, cpu=10% aprox en portatil
+
+	//Pruebas 15 Sep 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo xwindows, zoom 1, cpu=20% aprox en portatil
+
+	//mismo pero sin putpixel cache: cpu=28%
+
+
+
+        //Pruebas 15 Sep 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	//32 bpp
+        //48k, ao null, vo fbdev, zoom 1, cpu=21% aprox en portatil
+
+        //mismo pero sin putpixel cache: cpu=35%
+
+	//24 bpp con putpixel cache: cpu=20%
+	//24 bpp sin putpixel cache: cpu=34%
+
+	//Con -O3:
+        //24 bpp con putpixel cache: cpu=12%
+        //24 bpp sin putpixel cache: cpu=14%
+
+
+        //Pruebas 16 Sep 2014. optimizado putpixel fbdev
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //32 bpp
+        //48k, ao null, vo fbdev, zoom 1, cpu=20% aprox en portatil
+
+        //mismo pero sin putpixel cache: cpu=34%
+
+        //24 bpp con putpixel cache: cpu=20%
+        //24 bpp sin putpixel cache: cpu=34%
+
+        //Con -O3:
+        //24 bpp con putpixel cache: cpu=11%
+        //24 bpp sin putpixel cache: cpu=13%
+
+
+	//Pruebas 16 Sep 2014. optimizado funcion zoom 1
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //32 bpp
+        //48k, ao null, vo fbdev, zoom 1, cpu=20% aprox en portatil
+        //mismo pero sin putpixel cache: cpu=32%
+
+        //24 bpp con putpixel cache: cpu=20%
+        //24 bpp sin putpixel cache: cpu=33%
+
+        //Con -O3:
+        //24 bpp con putpixel cache: cpu=11%
+        //24 bpp sin putpixel cache: cpu=12%
+
+
+
+        //Pruebas 16 Sep 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo xwindows, zoom 1, cpu=20% aprox en portatil
+
+        //mismo pero sin putpixel cache: cpu=26%
+
+        //Pruebas 16 Sep 2014
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats, ni visualmem, ni cpustats
+        //con contended memory
+        //48k, ao null, vo xwindows, zoom 1, over128.z80, cpu=45% aprox en portatil
+	//mismo pero con zesarux version anterior: cpu=50% aprox en portatil
+
+	//Pruebas 26 Sep 2014
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	//funciones get_total_ancho_rainbow y get_total_alto_rainbow optimizadas
+        //48k, ao null, vo xwindows, zoom 1, over128.z80, cpu=43% aprox en portatil
+
+
+        //Pruebas 9 Oct 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo null, cpu=8% aprox en portatil
+
+
+        //Pruebas 14 Oct 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo null, cpu=7% aprox en portatil
+
+
+        //Pruebas 14 Oct 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo x11, zoom 1, cpu=16% aprox en portatil
+
+
+        //Pruebas 14 Oct 2014
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo x11, zoom 1, over128.z80, cpu=43% aprox en portatil
+
+
+	//Pruebas 3 Diciembre 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	//--disablerealbeeper
+        //48k, ao null, vo null, cpu=7% aprox en portatil
+
+        //Pruebas 3 Diciembre 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con realbeeper activo y sin que salte el detector de silencio del beeper
+        //48k, ao null, vo null, cpu=12% aprox en portatil
+
+        //Pruebas 3 Diciembre 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con realbeeper activo y dejando que salte el detector de silencio del beeper
+        //48k, ao null, vo null, cpu=7% aprox en portatil -> mismo consumo que con --disablerealbeeper como cabia esperar
+
+        //Pruebas 3 Diciembre 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con realbeeper activo y dejando que salte el detector de silencio del beeper
+        //48k, ao null, vo x11, zoom 1, cpu=16% aprox en portatil 
+
+        //Pruebas 3 Diciembre 2014
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con realbeeper activo y escribiendo con teclado, de tal manera que no salta el detector de silencio del beeper
+        //48k, ao null, vo x11, zoom 1, cpu=21% aprox en portatil
+
+
+
+
+        //Pruebas 16 Ene 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo null, cpu=7% aprox en portatil
+
+
+        //Pruebas 16 Ene 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo x11, zoom 1, cpu=16% aprox en portatil
+
+
+        //Pruebas 5 Feb 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	//con pthreads
+        //48k, ao null, vo null, cpu=7% aprox en portatil
+
+
+
+        //Pruebas 4 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo sdl, zoom 1, 17% cpu aprox en portatil
+
+        //Pruebas 4 Mayo 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo sdl, zoom 1, over128.z80, 47% cpu aprox en portatil
+
+
+
+	//Pruebas 4 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 8% cpu aprox en portatil
+
+        //Pruebas 4 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo x11, zoom 1, 17% cpu aprox en portatil
+
+        //Pruebas 4 Mayo 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo x11, zoom 1, over128.z80, 47% cpu aprox en portatil
+
+
+
+
+        //Pruebas 2 Julio 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 8% cpu aprox en portatil
+
+        //Pruebas 2 Julio 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo x11, zoom 1, 17% cpu aprox en portatil
+
+        //Pruebas 2 Julio 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo x11, zoom 1, over128.z80, 47% cpu aprox en portatil
+
+
+
+	-Cambio a equipo pc. Uso cpu en este pc mismo uso en version actual (4.0) que en anterior (3.1)
+
+	//Pruebas 29 Febrero 2016
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 6% cpu aprox en pc
+
+        //Pruebas 29 Febrero 2016
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo x11, zoom 1, 17% cpu aprox en pc
+
+        //Pruebas 29 Febrero 2016
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo x11, zoom 1, over128.z80, 41% cpu aprox en pc
+
+
+
+	//Pruebas 16 Noviembre 2017
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+	./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 8% cpu aprox en pc
+
+        //Pruebas 16 Noviembre 2017
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	./zesarux --noconfigfile --ao null --vo xwindows --zoom 1
+        //48k, ao null, vo x11, zoom 1, 20% cpu aprox en pc
+
+        //Pruebas 16 Noviembre 2017
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo x11, zoom 1, over128.z80, 47% cpu aprox en pc
+
+
+
+	//
+        //Pruebas 22 Mayo 2018
+	//
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 9% cpu aprox en pc
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1
+        //48k, ao null, vo x11, zoom 1, 22% cpu aprox en pc
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo x11, zoom 1, over128.z80, 49% cpu aprox en pc
+
+	//
+        //Fin pruebas 22 Mayo 2018
+	//
+
+
+	//
+        //Pruebas 17 Agosto 2020
+	//
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 10% cpu aprox en pc
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1
+        //48k, ao null, vo x11, zoom 1, 21% cpu aprox en pc
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo x11, zoom 1, over128.z80, 48% cpu aprox en pc
+
+	//
+        //Fin pruebas 17 Agosto 2020
+	//        
+
+
+
+
+        //
+        //Pruebas 7 Septiembre 2020. NUEVO PC
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 9% cpu aprox en pc
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1
+        //48k, ao null, vo x11, zoom 1, 18% cpu aprox en pc
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo x11, zoom 1, over128.z80, 43% cpu aprox en pc
+
+        //
+        //Fin pruebas 7 Septiembre 2020
+        //

@@ -1,0 +1,317 @@
+10 WINDOW#0;430,20,45,225:FOR N=1TO 2:WINDOW #N;450,210,40,15:END FOR N
+20 MODE 8:CLS:CLS#2
+30 CLS:CLS#0:CLEAR:AT#0;0,0:INPUT #0;"¥Quieres ver el reloj (S/N)?";a$
+40 IF a$=="N" THEN GO TO 70
+50 IF a$=="S" THEN EXEC mdv1_reloj:reloj:SDATE anyo,mes,dia,hora,minuto,segundo:GO TO 70
+60 GO TO 30
+70 CLEAR:PAPER #0;4:INK #0;7:CLS:CLS#0:AT #0;0,0:PRINT#0;"AUTOR:DAVID HERNANDEZ 1989,1992"
+80 inicializar:PAPER 2:CLS
+90 CLS:PRINT \\\
+100 mapa
+110 REPeat ciclo_juego
+120 q=RND(0 TO 6)
+130 IF q=0 AND e<>55 THEN mapa
+140 INK 6:PAPER 2
+150 CLS:PRINT \\\\
+160 PRINT " MarquÉs ";nombre$;", estås en la cueva ";e
+170 IF g>0 THEN PRINT "Llevas ";:INK 0:PAPER 7:FLASH 1:PRINT g;"$";:INK 6:PAPER 2:FLASH 0:PRINT " de oro"
+180 amuleto
+190 PRINT \"  Te quedan ";:PAPER 6:INK 2:PRINT 25-h;:PAPER 2:INK 6:PRINT " unidades de carisma"
+200 FLASH 1
+210 PRINT \"  ¥Que deseas hacer?"
+220 FLASH 0
+230 IF INKEY$<>"" THEN GO TO 230
+240 PRINT \"N - ir al norte    S - ir al sur"
+250 PRINT "E - ir al este     O - ir al oeste"
+260 PRINT "L - luchar         Q - abandonar"
+270 j$=INKEY$:BEEP 100,RND(3 TO 13)
+280 IF j$<>"n" AND j$<>"N" AND j$<>"s" AND j$<>"S" AND j$<>"e" AND j$<>"E" AND j$<>"o" AND j$<>"O" AND j$<>"l" AND j$<>"L" AND j$<>"l" AND j$<>"q" AND j$<>"Q" THEN GO TO 270
+290 u=0
+300 IF (j$="n" AND j$="N") AND a(e-10)=88 OR (j$="s" OR j$="S") AND a(e+10)=88 OR (j$="e" OR j$="E") AND a(e+1)=88 OR (j$="o" OR j$="O") AND a(e-1)=88 THEN 
+310 PRINT "≥No te puedes mover en esa direcciñn!"
+320 GO TO 270
+330 END IF 
+340 IF j$="q" OR j$="Q" THEN 
+350 q=9
+360 fin_del_juego
+370 volver_a_jugar
+380 END IF 
+390 a(e)=46
+400 IF j$="n" OR j$="N" THEN e=e-10
+410 IF j$="s" OR j$="S" THEN e=e+10
+420 IF j$="e" OR j$="E" THEN e=e+1
+430 IF j$="o" OR j$="O" THEN e=e-1
+440 IF j$="l" OR j$="L" THEN lucha_dragon
+450 IF a(e)=63 THEN magico
+460 IF a(e)=68 THEN dragon
+470 IF a(e)=81 THEN arenas
+480 IF a(e)=36 THEN oro
+490 h=h+1
+500 IF h=25 THEN 
+510 q=9
+520 fin_del_juego
+530 volver_a_jugar
+540 END IF 
+550 espera
+560 END REPeat ciclo_juego
+570 DEFine PROCedure magico
+580 INK 7:FLASH 1
+590 PRINT \" Marques ";nombre$;", has caido "
+600 PRINT " en una cueva mågica,y ahora serås"
+610 PRINT " arrastrado a otra cueva..."
+620 INK 6:FLASH 0
+630 FOR cambridge=1 TO 6
+640 FOR busqueda=1 TO 6
+650 BEEP 10900,busqueda,199,1,1
+660 PAUSE 10/busqueda:BEEP 1000,cambridge
+670 BEEP 10090,10-cambridge,224,15,1,11,7
+680 PAUSE 15/cambridge
+690 END FOR busqueda
+700 END FOR cambridge
+710 a(e)=46
+720 REPeat arrastre
+730 e=RND(12 TO 87)
+740 IF a(e)<>88 THEN EXIT arrastre
+750 END REPeat arrastre
+760 END DEFine magico
+770 DEFine PROCedure dragon
+780 PRINT \\"Estås en la guarida del dragñn..."
+790 PRINT "      Comienza a rezar tus oraciones"
+800 espera
+810  INK 5:PRINT\"----------------------------------":INK 6
+820 m=RND(1 TO 5)
+830 IF m=1 THEN 
+840 PRINT "El dragñn ha huido"
+850 espera
+860 END DEFine dragon
+870 END IF 
+880 PRINT "≥Se ha despertado...y te ha visto!"
+890 espera
+900 IF m=5 THEN 
+910 PRINT "Hace poco que ha comido"
+920 PRINT "y se vuelve a dormir"
+930 espera
+940 END DEFine dragon
+950 END IF 
+960 PRINT \"Ahora te va a atacar"
+970 espera
+980 m=RND(1 TO 10)
+990 IF m>8 THEN 
+1000 PRINT "pero tu luchas valientemente..."
+1010 espera
+1020 PRINT "       ...y le ganas"
+1030 END DEFine dragon
+1040 END IF 
+1050 PRINT "Adiñs MarquÉs, ";nombre$
+1060 espera
+1070 q=9
+1080 fin_del_juego
+1090 volver_a_jugar
+1100 END DEFine dragon
+1110 DEFine PROCedure arenas
+1120 FOR flap=1 TO 10
+1130 MODE 4:PAUSE 2:MODE 8:PAUSE 2:BEEP 1000,flap*flap
+1140 END FOR flap
+1150 FOR suck=1 TO 12
+1160 FOR fango=1 TO suck
+1170 PRINT " ";
+1180 BEEP 9600,suck*fango
+1190 END FOR fango
+1200 tinta=RND(0 TO 7):papel=7-tinta
+1210 STRIP papel:PRINT "Horror....arenas movedizas"
+1220 BEEP 19700,27,95,14,suck,10,8,20770:PAUSE 5
+1230 END FOR suck
+1240 espera:espera
+1250 PAPER 2:INK 6
+1260 PRINT "                                                                         "
+1270 q=9:h=0
+1280 fin_del_juego
+1290 volver_a_jugar
+1300 END DEFine arenas
+1310 DEFine PROCedure oro
+1320 k=RND(100 TO 199)
+1330 PRINT
+1340 FOR gemas=1 TO 12
+1350 PRINT "  ";
+1360 FOR brillo=1 TO  gemas
+1370 PRINT "$";
+1380 BEEP 9950,brillo*gemas:PAUSE 4:BEEP 9950,(brillo+1)/gemas
+1390 END FOR brillo
+1400 INK RND(4 TO 7)
+1410 PRINT " El tesoro..."
+1420 PRINT
+1430 BEEP RND(3200 TO 23200),gemas/brillo,1,11,-6,11,7,871
+1440 PAUSE gemas
+1450 END FOR gemas
+1460 espera
+1470 INK 7
+1480 PRINT "Has encontrado el tesoro del dragñn"
+1490 PRINT "     oro  valorado en ";k;"$"
+1500 g=g+k
+1510 espera
+1520 END DEFine oro
+1530 DEFine PROCedure amuleto
+1540 y=1
+1550 REPeat busca
+1560 l=a(e+p(y))
+1570 IF l<>46 OR y=8 THEN EXIT busca
+1580 y=y+1
+1590 END REPeat busca
+1600 IF l=46 THEN END DEFine amuleto
+1610 PRINT \"  Tu amuleto seâala que"
+1620 PRINT "hay ";
+1630 SELect ON l
+1640 ON l=88
+1650 PRINT "una pared sñlida ";
+1660 ON l=63
+1670 PRINT "una cueva mågica ";
+1680 ON l=68
+1690 PRINT "un dragñn ";
+1700 ON l=81
+1710 PRINT "arenas movedizas ";
+1720 ON l=36
+1730 PRINT "oro ";
+1740 END SELect 
+1750 PRINT "muy cerca"
+1760 espera
+1770 END DEFine amuleto
+1780 DEFine PROCedure lucha_dragon
+1790 INK 7:PAPER 1
+1800 ar=ar-1
+1810 IF ar=0 THEN 
+1820 PRINT "Has usado todas tus flechas"
+1830 espera
+1840 END DEFine lucha_dragon
+1850 END IF 
+1860 PRINT \\"Te quedan ";ar;" flechas"
+1870 ss=0
+1880 PRINT "¥En que direcciñn quieres disparar    (N, S, E, u O), ";nombre$;"?"
+1890 REPeat disparo
+1900 s$=INKEY$
+1910 IF (s$="n" OR s$="N") AND a(e-10)=68 THEN ss=1:yt=e-10
+1920 IF (s$="s" OR s$="S") AND a(e+10)=68 THEN ss=1:yt=e+10
+1930 IF (s$="e" OR s$="E") AND a(e+1)=68 THEN ss=1:yt=e+1
+1940 IF (s$="o" OR s$="O") AND a(e-1)=68 THEN ss=1:yt=e-1
+1950 IF s$="n" OR s$="N" OR s$="s" OR s$="S" OR s$="e" OR s$="E" OR s$="o" OR s$="O" THEN EXIT disparo
+1960 END REPeat disparo
+1970 PRINT
+1980 IF ss=0 THEN 
+1990 PRINT "No estå el dragñn ahì..."
+2000 espera
+2010 PRINT "Has malgastado una flecha"
+2020 espera
+2030 END DEFine lucha_dragon
+2040 END IF 
+2050 PRINT \"Muy bien, MarquÉs ";nombre$
+2060 PRINT \"Has acertado al feroz dragñn"
+2070 espera
+2080 IF RND(1 TO 3)=2 THEN 
+2090 PRINT "≥Lo has matado!"
+2100 a(yt)=46:k=RND(100 TO  200)
+2110 PRINT \"Serås recompensado con ";k;"$"
+2120 g=g+k
+2130 ELSE 
+2140 PRINT "Pero solo estå herido..."
+2150 END IF 
+2160 espera
+2170 END DEFine lucha_dragon
+2180 DEFine PROCedure fin_del_juego
+2190 PAPER 2:INK 6
+2200 IF h<1 THEN 
+2210 PRINT "Se te ha acabado todo tu carisma..."
+2220 ELSE 
+2230 PRINT "Te quedan ";25-h;" unidades de carisma"
+2240 END IF 
+2250 espera
+2260 IF g>0 THEN 
+2270 PRINT "Has conseguido ";g;"$ en oro"
+2280 END IF 
+2290 mapa
+2300 END DEFine fin_del_juego
+2310 CSIZE 3,0
+2320 DEFine PROCedure mapa
+2330 PRINT \\
+2340 CSIZE 1,0
+2350 a(e)=72
+2360 PRINT "  ";
+2370 FOR j=1 TO 100
+2380 PAPER 2:INK 6
+2390 m=a(j)
+2400 IF a(j)=88 THEN INK 1:PAPER 7
+2410 IF a(j)=63 THEN INK 7:PAPER 3:FLASH 1
+2420 IF a(j)=68 THEN INK 6:PAPER 2
+2430 IF a(j)=81 THEN INK 7:PAPER 1
+2440 IF a(j)=36 THEN INK 2:PAPER 7
+2450 IF a(j)=72 THEN INK 0:PAPER 5
+2460 PRINT CHR$(m);
+2470 PAPER 2:INK 6:FLASH 0
+2480 PRINT " ";
+2490 IF 10*INT(j/10)=j THEN PRINT:PRINT "  ";
+2500 END FOR j
+2510 espera
+2520 CSIZE 0,0
+2530 END DEFine mapa
+2540 DEFine PROCedure inicializar
+2550 BORDER 3,1
+2560 PAPER 2:INK 6
+2570 CLS
+2580 PRINT \\"  Bienvenido al mundo de Kwue-El"
+2590 espera:espera
+2600 PRINT \" Tu misiñn es explorar las"
+2610 PRINT " cuevas de este mundo, en busca del"
+2620 PRINT " tesoro, e intentar capturar a los"
+2630 PRINT "malÉficos dragñnes que vive en ellas"
+2640 PRINT "¥Cuål es tu nombre?"
+2650 PRINT \\\"           ";
+2660 INPUT nombre$
+2670 nombre$=nombre$(1 TO 7)
+2680 PAPER 6:INK 0
+2690 CLS
+2700 PRINT \\\\"    Saludos, MarquÉs ";nombre$
+2710 espera
+2720 PRINT \\" Empiezas la exploraciñn con"
+2730 PRINT "   25 unidades de carisma, y debes"
+2740 PRINT "   terminar tu tarea antes que tu"
+2750 PRINT "   carisma se haya agotado."
+2760 PRINT "   consumirås una unidad por cada"
+2770 PRINT "   movimiento que hagas.."
+2780 DIM a(100):DIM p(8)
+2790 h=0:q=0:l=0:g=0:ar=6
+2800 FOR B=1 TO 100
+2810 a(B)=46
+2820 BEEP 900,B
+2830 IF B<12 OR B>90 OR 10*INT(B/10)=B OR 10*INT(B/10)=B-1 THEN a(B)=88
+2840 END FOR B
+2850 FOR B=1 TO 5
+2860 RESTORE 
+2870  FOR D=1 TO 5
+2880 Z=RND(12 TO 87)
+2890 IF a(Z)=88 THEN GO TO 2880
+2900 READ a(Z)
+2910 BEEP 1000,D*B
+2920 END FOR D
+2930 END FOR B
+2940 FOR B=1 TO 8
+2950 READ p(B)
+2960 END FOR B
+2970 e=55
+2980 PAPER 2:INK 6:CLS
+2990 END DEFine inicializar
+3000 REMark ------------
+3010 DEFine PROCedure espera
+3020 FOR paciencia=1 TO 10
+3030 BEEP 1000,RND(1 TO 100),RND(100 TO 200),RND(1 TO 8),RND(1 TO 8),RND(1 TO 32000)
+3040 PAUSE 4
+3050 END FOR paciencia
+3060 END DEFine espera
+3070 REMark ---------------
+3080 DATA 88,63,68,81,36
+3090 DATA -11,-10,-9,-1,1,9,10,11
+3100 DEFine PROCedure salvar:DELETE mdv1_EL_MARQUES_KWUE:SAVE mdv1_EL_MARQUES_KWUE:END DEFine salvar
+18000 DEFine PROCedure volver_a_jugar:LOCal OPCION$
+18010 CLS#0:INPUT#0;"¥QUIERES VOLVER A JUGAR(S/N)?"!OPCION$
+18020 IF OPCION$=="S" THEN RUN
+18030 IF OPCION$=="N" THEN NEW
+18040 GO TO 18010
+18050 END DEFine volver_a_jugar
+19500 DEFine PROCedure reloj:INPUT#0;"Aâo:";anyo:INPUT#0;"mes:";mes:INPUT#0;"dia:";dia:INPUT#0;"hora:";hora:INPUT#0;"minutos:";minuto:INPUT#0;"segundos:";segundo:END DEFine reloj

@@ -1,0 +1,3 @@
+http://stackoverflow.com/questions/1596945/building-osx-app-bundle
+
+https://developer.apple.com/library/mac/documentation/corefoundation/conceptual/cfbundles/BundleTypes/BundleTypes.html

@@ -1,0 +1,612 @@
+* en cpu.h, actualizar numero de version, comentar SNAPSHOT_VERSION, borrar -SN o -RC sufijo de EMULATOR_VERSION
+* cambiar fechas en EMULATOR_DATE, EMULATOR_SHORT_DATE
+* cambiar nombre edicion en EMULATOR_EDITION_NAME 
+* en Changelog cambiar nombre edicion y fechas
+* activar capture segmentation fault en cpu.c
+* activar capture floating point exception en cpu.c
+* ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
+* Cambiar EMULATOR_VERSION en archivo configure 
+* Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
+* Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx
+* Ajustar EMULATOR_GAME_EDITION
+* En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
+* sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:
+cat esxdos_handler.c |grep ESXDOS_RST8_|grep -v ESXDOS_RST8_FA_|grep case|grep -v "/"|sed 's/.*case //'|sed 's/:/,/'|sed 's/ESXDOS_RST8_//'|sort|tr '\n' ' '
+tener en cuenta de sacar de esta lista los casos que retornan hacia rst8 (con funcion esxdos_handler_run_normal_rst8), como DISK_READ
+
+* desactivar simulador joystick: realjoystick.c: int simulador_joystick=0;
+* Actualizar features, segun lo agregado a Changelog
+* vigilar funciones F de pruebas en xwindows, desactivar las que sean de pruebas
+
+* generar README.md mediante ./generate_readme_md.sh > ../README.md
+
+*cuando hay nueva versión hay que actualizar archivo txt del servidor
+Si es estable, actualizar ambos archivos
+Si es beta, actualizar solo el archivo de snapshot 
+
+
+nombres ediciones:
+bubble bobble, Star raiders 2, sabre wulf, target renegade, Night Shift, Saint Dragon, silent service, 
+dynamite Dan 2, rygar, frank n stein, match day, Hysteria, Bruce lee, Zorro , Exploding fist, Three weeks in Paradise, 
+Exolon, Koronis Rift, Fox Fights back, Gauntlet, Pheenix, Death Wish 3
+
+
+*rainbow islands, *jetpac, *hard drivin', *lemmings, *sir fred, *rick, *agent dan, *id, *rainbow, *rainbow+, *saint george, 
+*chase hq, *Rescue on Fractalus, *gunfright, *xeno, *Neula, *world destruction, *the great escape, *turbo esprit, *toi acid,
+*cliff hanger, *clive sinclair, *carrier command
+
+*: usado
+
+--------------
+
+Establecer username y mail en repo descargado:
+git config --global user.name "chernandezba" ; git config --global user.email chernandezba@hotmail.com
+
+
+--------------
+
+Notas: para ver las descargas de github:
+https://api.github.com/repos/chernandezba/zesarux/releases
+
+buscar "download_count"
+
+curl -s https://api.github.com/repos/chernandezba/zesarux/releases | egrep '"name"|"download_count"'
+
+--------------
+
+Para que el cpu_panic muestre backtrace si hay un error, compilar con -g -rdynamic (en Linux) o -g (en Mac)
+
+
+Para mostrar todos los iconos lower meter en compileoptions.h:
+
+#define FORCE_VISIBLE_ALL_LOWER_ICONS
+
+
+Para poner como disabled en todos los iconos lower meter en compileoptions.h:
+
+#define FORCE_DISABLED_ALL_LOWER_ICONS
+
+Para poner como enabled en todos los iconos lower meter en compileoptions.h:
+
+#define FORCE_ENABLED_ALL_LOWER_ICONS
+
+
+Para forzar ver todos los iconos posibles de botones upper meter en compileoptions.h:
+
+#define FORCE_VISIBLE_ALL_UPPER_ICONS
+
+--------------
+
+Icono para windows:
+
+Tener los diferentes tamanyos en png
+
+Luego convertir a ico con:
+
+convert zesarux_16.png zesarux_32.png zesarux_48.png zesarux_256.png -colors 256 zesarux.ico
+
+Y agregar al exe con:
+
+#rcexit zesarux.exe --set-icon zesarux.ico
+
+
+vim zesarux.rc
+id ICON "zesarux.ico"
+
+---
+
+Luego
+windres zesarux.rc -O coff zesarux.res
+
+Y en el linkado incluir zesarux.res
+
+
+http://stackoverflow.com/questions/708238/how-do-i-add-an-icon-to-a-mingw-gcc-compiled-executable
+
+---------------------
+
+
+
+Diferencias en el uso del menu de:
+menu_generic_message
+y
+menu_generic_message_splash
+
+en el caso de mostrar un OK de alguna operación realizada
+
+
+* menu_generic_message_splash: suele mostrar un OK de alguna operación realizada, en que no es muy importante que el usuario 
+lea detenidamente el mensaje. Ejemplo:
+
+menu_generic_message_splash("Clear CPU statistics","OK. Statistics cleared");
+menu_generic_message_splash("Reload MMC","OK. MMC file reloaded");
+
+
+* menu_generic_message: en el caso de mensajes con OK, interesa que el usuario pueda leer detenidamente el mensaje. Ejemplo:
+
+menu_generic_message("Change DIVMMC ROM","OK. Remember to enable DIVMMC paging to load the firmware");
+menu_generic_message("Rename file","OK. File renamed");
+
+
+--------------
+
+
+* source a generar
+
+ZEsarUX-version-src.tar.gz
+
+con comandos:
+make sourcetargz
+
+Nota: no hacerlo desde Mac pues agrega todos esos archivos ._*
+
+#antes de subir los archivos a sourceforge, generar los MD5SUMS de todos
+
+
+----
+
+
+* Binarios a generar. Generarlos partiendo del codigo fuente generado antes
+
+De todos los archivos generados y subidos a github, crear suma MD5SUM en local de cada archivo y luego subirlo en archivo MD5SUM
+con todos los archivos subidos comprimidos y README (y excluyendo este mismo MD5SUM)
+
+Generar en servidor ZEsarUX, en ruta
+STATS_URL_UPDATE_STABLE_VERSION
+con contenido numero de version, ejemplo:
+"8.1"
+
+
+
+
+** Linux 
+Generar estos dos binarios de Linux:
+ZEsarUX-version-linux-debian10-x32.tar.gz 
+ZEsarUX-version-linux-debian10-x64.tar.gz 
+con comandos:
+export CFLAGS=-O3
+export LDFLAGS=-O3
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+(Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. )
+make clean
+make
+make bintargz
+
+
+** FreeBSD 
+Generar este binarios de FreeBSD:
+ZEsarUX-version-freebsd-12.1-x64.tar.gz 
+con comandos:
+export CFLAGS=-O3
+export LDFLAGS=-O3
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr
+(Habilita drivers video: xwindows, sdl, fbdev, curses, stdout, simpletext y drivers audio: pulse, alsa, sdl, dsp, pcspeaker. )
+make clean
+make
+make bintargz
+
+
+** Raspbian
+Generar este binario de Raspbian:
+ZEsarUX-version-raspbian9.tar.gz 
+(Habilita extensiones raspberry, drivers video: fbdev, curses, y drivers audio: alsa, sdl, dsp. )
+con comandos:
+export CFLAGS=-O3
+export LDFLAGS=-O3
+./configure --enable-raspberry --spectrum-reduced-core --enable-ssl --disable-xwindows --disable-caca --disable-aa --disable-pulse --disable-pcspeaker --disable-simpletext --disable-stdout --disable-cursesw --prefix /usr
+
+La salida debe ser similar a:
+ Enabled Video output drivers: curses sdl fbdev null
+ Disabled Video output drivers: stdout simpletext cursesw aa caca cocoa xwindows 
+ Enabled Audio output drivers: dsp alsa sdl null
+ Disabled Audio output drivers: pcspeaker pulse coreaudio 
+ Enabled Audio File output drivers: raw 
+ Disabled Audio File output drivers: wav 
+ Pthreads support: yes
+ SSL support: yes
+ Networking support: yes
+ Remote command protocol support: yes 
+ Linux real joystick support: yes
+ MEMPTR emulation: no
+ Visual memory option: no
+ CPU statistics option: no
+ Raspberry extensions: yes
+ Contended memory emulation: yes
+ Putpixel cache: yes
+ Spectrum default core: Reduced
+
+Install prefix: /usr
+
+
+Luego:
+
+make clean
+make
+make bintargz
+(Con O3, tarda 08:40 en compilar con 800MHz)
+(Con O2, tarda 06:30 en compilar con 800MHz)
+
+** Mac
+
+Generar dos binarios de Mac:
+(-Quizá versión legacy de Mac ya no tiene sentido. Requiere Mac OS reciente y los cflags O2 estarán soportados en todos los recientes )
+ZEsarUX-version-macos-legacy.dmg.gz 
+con comandos:
+Versión sin optimizaciones, sin SSL:
+
+export CFLAGS="-mmacosx-version-min=10.13"
+export LDFLAGS="-mmacosx-version-min=10.13"
+
+./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
+(Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. )
+make clean
+make
+make macapp
+
+Y
+
+ZEsarUX-version-macos.dmg.gz 
+con comandos:
+Versión con optimizaciones, sin SSL:
+
+
+
+
+export CFLAGS="-O3"
+export LDFLAGS="-O3"
+
+Al menos poner un 10.x dos versiones inferior al que yo tenga, suponiendo que funcione bien...
+-Use otool -l /path/to/binary and inspect the LC_VERSION_MIN_MACOSX load command; 
+
+./configure --enable-memptr --enable-visualmem --enable-cpustats --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
+(Habilita drivers video: cocoa, stdout, simpletext y drivers audio: coreaudio. )
+make clean
+make
+make macapp
+
+
+
+## NO Versión con optimizaciones, CON SSL:
+#
+#export CFLAGS=-O3
+#export LDFLAGS=-O3
+#
+#./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-xwindows --disable-sdl --disable-fbdev --disable-caca --disable-aa --disable-curses --disable-sndfile 
+#(Habilita SSL, drivers video: cocoa(GL), stdout, simpletext y drivers audio: coreaudio. )
+#make clean
+#make
+#
+#cp -f /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib extras/macos_ssl/
+#cp zesarux extras/macos_ssl/zesarux.ssl
+
+
+
+
+** Extra files
+
+#make extra_files
+desde carpeta de zesarux-extras
+zip -r ZEsarUX-\$(EMULATOR_VERSION)-extras.zip extras/
+Y subir el zip a github, al repo de zesarux, en releases
+#Nota: Los extra_files generarlos despues de las versiones de Mac pues se incluyen los extras para zesarux con SSL
+#Nota2: Tener en cuenta que la carpeta extras este visible, sea como enlace o como submodulo
+
+
+
+**Windows
+Generar este binario de Windows, mingw:
+ZEsarUX-version-windows.zip  
+
+
+Ver documento INSTALLWINDOWS, Native Windows (with mingw)
+
+Generar binario con:
+
+#sin optimizar
+export CFLAGS="-I/c/openssl-1.1.1d-win32-mingw/include"
+export LDFLAGS="-L/c/openssl-1.1.1d-win32-mingw/lib"
+
+#optimizado
+export CFLAGS="-O3 -I/c/openssl-1.1.1d-win32-mingw/include"
+export LDFLAGS="-O3 -L/c/openssl-1.1.1d-win32-mingw/lib"
+
+
+./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl
+
+
+Esto compilara con SDL1
+
+La salida debe ser:
+ Enabled Video output drivers: simpletext sdl null
+ Disabled Video output drivers: stdout curses aa caca cocoa xwindows fbdev 
+ Enabled Audio output drivers: sdl null
+ Disabled Audio output drivers: dsp alsa pulse coreaudio 
+ ...
+ Pthreads support: yes
+ SSL support: yes
+
+make clean
+make 
+
+copiar SDL.dll aqui:
+copy c:\mingw\sdl\bin\SDL.dll .
+
+o SDL2
+copy c:\mingw\sdl2\bin\SDL2.dll .
+
+tambien copiar:
+pthreadGC2.dll libgcc_s_dw2-1.dll
+
+y probar a ejecutar:
+
+desde consola:
+zesarux.exe
+
+y con doble-click desde explorer
+
+Luego enviar zesarux.exe y SDL.dll a maquina linux/unix y generar el binario con:
+-ejecutar misma sentencia configure que en windows y luego
+
+make clean
+make windows
+El make clean es importante para que borre la carpeta temporal ZEsarUX_win-XX, sino, puede pasar que al hacer primero la version de pthreads,
+la siguiente, que no usa threads, tendra dlls adicionales en esa carpeta y se copiarian (cosa que no pasaria nada, pero es innecesario)
+
+Nota: se podria compilar en 64 bits, pero SDL 1.2 solo tiene version 32 bits
+Nota: pasar antes antivirus al exe y al dll por si acaso
+
+—————
+
+Sobre menu y overlay:
+
+menu_overlay_activo indica que hay un overlay sobre el render normal de la máquina emulada. 
+Esto puede ser el menú pero también mensajes de splash, logo de bienvenida, botón joystick numselect etc
+
+Para mostrar ese overlay es muy simple: cada driver de vídeo tiene esta parte de código, 
+después de haber hecho refresco de la máquina emulada:
+
+if (menu_overlay_activo) {
+                menu_overlay_function();
+                }
+
+La función de overlay que dibuja texto es : normal_overlay_texto_menu
+Las ventanas que hacen dibujado de pixel, como waveform, cambian este overlay para llamar a sus funciones internas 
+
+En normal_overlay_texto_menu se dibuja el texto de las ventanas, y también se llama a las funciones de overlay
+de las ventanas en background (si es que está habilitado el background de ventanas)
+
+Con la F-funcion F_FUNCION_OVERLAY_WINDOWS, se activa el dibujado de ventanas en background con el menu cerrado
+
+--------------
+
+
+Para soportar background en una ventana:
+(ver como ejemplo menu_about_core_statistics)
+
+Para poder enviar una ventana a background:
+
+-ventanas en funcion de overlay hacen al principio
+if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+de tal manera que solo llame a normal_overlay de texto cuando no estan en background
+
+//si ventana minimizada, no ejecutar todo el codigo de overlay
+if (xxxx_overlay_window->is_minimized) return; //sustituir xxxx_overlay_window por lo que convenga
+
+
+-tienen que referenciar a la ventana activa teniendo la estructura fuera de la funcion,
+al estilo por ejemplo de: "zxvision_window zxvision_window_view_sprites;". Luego usar variable "ventana" como puntero a ahí, ejemplo:
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_view_sprites;
+
+-justo despues de asignar ventana a la estructura, ver si ventana ya existe con:
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    zxvision_delete_window_if_exists(ventana);
+
+-pueden o no usar salvado de geometria. Si lo usan, hacerlo justo despues de zxvision_delete_window_if_exists
+
+
+-Activar para poder usar boton de background "!":  ventana->can_be_backgrounded=1;
+
+-menu ventanas finalizan con:
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+	//(siempre que esta funcion tenga overlay realmente)
+	zxvision_set_window_overlay_from_current(ventana);
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+	.....
+
+	if (tecla==3) {
+		//zxvision_ay_registers_overlay
+		zxvision_message_put_window_background();
+	}
+
+	else {
+		zxvision_destroy_window(ventana);		
+ 	}
+
+	 O alternativa para menus:
+	 if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+
+
+-Si se quiere que una ventana pueda enviarse a background:
+
+Despues de crear overlay e inicializar variables necesarias para overlay:
++       //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
++       //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
++       if (zxvision_currently_restoring_windows_on_start) {
++               //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
++               return;
++       }
+
+Y definirla en zxvision_known_window_names_array
+
+-para poder restaurar al inicio, despues de activar can_be_backgrounded, agregar:
++	//indicar nombre del grabado de geometria
++	strcpy(ventana->geometry_name,"displaypalettes");
+Esto permite tambien que cuando se haga rearrange/reduce, su geometria se guarde
+
+---Fin Para poder enviar una ventana a background
+
+-desde menu al pulsar background se retorna MENU_RETORNO_BACKGROUND
+
+-Se llaman a todas las funciones de overlay de las ventanas en background desde la función de overlay de menú normal_overlay_texto_menu
+
+
+-Otras cosas a considerar: una ventana cuando escribe texto comprueba si tiene ventanas encima, para escribir o no el caracter.
+Mismo se hace para putpixel
+
+
+Ejemplo de cambios realizados en una ventana para soportar background. En este caso se sale mediante lectura de teclas, no hay menus:
+
+
+
+diff --git a/src/menu_items.c b/src/menu_items.c
+index 9e32a67e..16a8f772 100644
+--- a/src/menu_items.c
++++ b/src/menu_items.c
+@@ -7560,7 +7560,7 @@ void menu_display_total_palette_draw_barras(void)
+
+ 				//Esto tiene que estar despues de escribir la lista de colores, para que se refresque y se vea
+ 				//Si estuviese antes, al mover el cursor hacia abajo dejándolo pulsado, el texto no se vería hasta que no se soltase la tecla
+-				normal_overlay_texto_menu();
++				if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
++               menu_speech_tecla_pulsada=1; //Habitualmente esto, cuando hay texto. Si no, envia continuamente todo ese texto a speech   
++               //si ventana minimizada, no ejecutar todo el codigo de overlay
++               if (xxxx_overlay_window->is_minimized) return; //Sustituir xxxx_overlay_window por lo que convenga
+
+
+ 				if (si_complete_video_driver()) {
+ 					//Mostrar colores
+@@ -7586,16 +7586,42 @@ void menu_display_total_palette_cursor_abajo(void)
+
+ }
+
++
++zxvision_window zxvision_window_display_palettes;
++
++
+ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
+ {
+ 	menu_espera_no_tecla();
+ 	menu_reset_counters_tecla_repeticion();
+
+-	zxvision_window ventana;
++	//zxvision_window ventana;
+
+-	zxvision_new_window(&ventana,TOTAL_PALETTE_WINDOW_X,TOTAL_PALETTE_WINDOW_Y,TOTAL_PALETTE_WINDOW_ANCHO,TOTAL_PALETTE_WINDOW_ALTO,
+-							TOTAL_PALETTE_WINDOW_ANCHO-1,TOTAL_PALETTE_WINDOW_ALTO-2,"Colour palettes");
+-	zxvision_draw_window(&ventana);
++    zxvision_window *ventana;
++    ventana=&zxvision_window_display_palettes;
++
++	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
++	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
++	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
++	zxvision_delete_window_if_exists(ventana);
++
++
++	int x,y,ancho,alto,is_minimized;
++
++
++	if (!util_find_window_geometry("displaypalettes",&x,&y,&ancho,&alto,&is_minimized)) {
++		x=TOTAL_PALETTE_WINDOW_X;
++		y=TOTAL_PALETTE_WINDOW_Y;
++		ancho=TOTAL_PALETTE_WINDOW_ANCHO;
++		alto=TOTAL_PALETTE_WINDOW_ALTO;
++	}
++
++	//zxvision_new_window(&ventana,TOTAL_PALETTE_WINDOW_X,TOTAL_PALETTE_WINDOW_Y,TOTAL_PALETTE_WINDOW_ANCHO,TOTAL_PALETTE_WINDOW_ALTO,
++	//						TOTAL_PALETTE_WINDOW_ANCHO-1,TOTAL_PALETTE_WINDOW_ALTO-2,"Colour palettes");
++
++    zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"Colour palettes");
++	ventana->can_be_backgrounded=1;
++	//indicar nombre del grabado de geometria
++	strcpy(ventana->geometry_name,"displaypalettes");
++   //restaurar estado minimizado de ventana
++   ventana->is_minimized=is_minimized;
++
++	zxvision_draw_window(ventana);
+
+
+
+	int salir=0;
+
+
+	set_menu_overlay_function(menu_display_total_palette_draw_barras);
+	menu_display_total_palette_draw_barras_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
++       //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
++       //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
++       if (zxvision_currently_restoring_windows_on_start) {
++               //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
++               return;
++       }
+
+ 	z80_byte tecla;
+
+@@ -7604,7 +7630,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
+
+
+ 	set_menu_overlay_function(menu_display_total_palette_draw_barras);
+-	menu_display_total_palette_draw_barras_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
++	menu_display_total_palette_draw_barras_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+     do {
+
+@@ -7764,17 +7790,33 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
+ 					case 2:
+ 						salir=1;
+ 					break;
++
++					//O tecla background
++					case 3:
++						salir=1;
++					break;
+ 				}
+
+
+         } while (salir==0);
+
+ 				
+-        set_menu_overlay_function(normal_overlay_texto_menu);
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
++	zxvision_set_window_overlay_from_current(ventana);
+
+	//restauramos modo normal de texto de menu
++    set_menu_overlay_function(normal_overlay_texto_menu);
+
+
+ 	cls_menu_overlay();
+-	zxvision_destroy_window(&ventana);
++	util_add_window_geometry_compact("displaypalettes",ventana);
++
++        if (tecla==3) {
++                zxvision_message_put_window_background();
++        }
++
++        else {
++
++		zxvision_destroy_window(ventana);
++	}
+
+
+ }
+
+
+--------
+
+Mas notas devel: TODO: apuntarlas en otro sitio
+
+-activar background windows + even with menu closed, implica que incluso con menu cerrado, las funciones de putpixel están haciendo siempre
+mix de la maquina emulada con los pixeles del menu (llamando a screen_putpixel_mix_layers). 
+No implica mucho mas uso de cpu (si hay poca ventana abierta) pero hay que tener en cuenta que por el hecho de tener esa opcion activada, incluso con todas las ventanas cerradas, ya consume algo mas de cpu
+
+----  

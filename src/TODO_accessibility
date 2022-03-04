@@ -1,0 +1,55 @@
+
+
+--- Accesibilidad ---
+
+
+-Speech:
+-enter le envia siempre speech pending. normal?
+-en speech de mac, en english, al enviar opcion "yes/no", la "No" dice: "No. N"->eso lo traduce como "Number N"
+
+-Al releer ventana con F4, en menu con opciones, no hace traducción de opciones entre corchetes ni dice los corchetes al final de linea,
+como hace cuando está abriendo un menú y leyendo sus opciones.
+
+Ejemplo: 
+[X] AY Envelopes
+
+En vez de "AY Envelopes. Enabled"
+dice:
+"Ex AY Envelopes"
+
+-Tecla escape debería hacer break cuando se está escuchando speech
+O quizá setting configurable 
+
+-relee item menu cuando estas sobre item que no tiene tooltip. Ver codigo:
+-				//TODO: esto no tiene efecto, sigue releyendo cuando estas sobre item que no tiene tooltip
+				//menu_speech_tecla_pulsada=1;	
+
+
+-script de mac say no reproduce lineas que empiezan por "--", como algunas lineas del FAQ
+
+-al leer lineas con varios hotkeys, solo lee el ultimo hotkey
+
+
+-Misma tecla F definida como ocr que en ZX Vision haga ocr+speech también. Así se pueden leer siempre los menus
+
+-Speech al moverse por líneas de menú se escucha antes de que se mueva el cursor. Por que?
+-speech: sin multitask, a veces se descuadra la linea de menu que lee. ejemplo: ir a accessibility settings, y cuando este leyendo "active item..." pulsar tecla. Creo que esto pasa desde siempre
+
+
+
+-pulsar ESC en item que se esta escuchando en el menu, cierra el menu? 
+En parte es correcto, queremos volver a menu anterior.
+Si no se quiere esto, hay alternativas:
+
+Al final de menu_escribe_opciones_zxvision:
+
+	//Si hay tecla pulsada con speech de menu activo, probablemente ha sido ESC. Esperar liberar tecla
+	if (textspeech_filter_program!=NULL && textspeech_also_send_menu.v) {
+		printf ("Esperar liberar tecla\n");
+		menu_espera_no_tecla();
+	}
+
+Esto espera cualquier tecla pulsada al acabar de leer el menu, pero esto ralentiza el movimiento del cursor.
+También se podria hacer que solo espere a liberar tecla si la tecla pulsada es ESC, pero estariamos en lo mismo,
+pulsando ESC no volveria a menu anterior si esta leyendo el menu, aunque el movimiento del cursor seria rapido
+Entonces no es un fallo de por si, sino un comportamiento (como diria Jobs, no es un bug sino un feature ;)  )

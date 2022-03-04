@@ -1,0 +1,275 @@
+	//En iMac (21,5 pulgadas, finales de 2009)
+	//CPU 3.0 GHz Intel Xeon
+
+        //Pruebas 13 Feb 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, cpu=3% aprox 
+
+        //Pruebas 13 Feb 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo cocoa, cpu=16% aprox -> 14% con init_draw_rect forzado cada vez. quiza ahorra 2 % de cpu porque las variables no se liberan cada vez
+
+       //Pruebas 13 Feb 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo xwindows, cpu=6% aprox
+
+
+
+
+        //Pruebas 13 Feb 2015
+	//con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads. no gestiona bien el tiempo (va mas lento)
+        //over128.z80, 128k, ao coreaudio, vo cocoa, zoom 1, cpu=30% aprox 
+
+        //Pruebas 13 Feb 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads. no gestiona bien el tiempo (va mas lento)
+        //over128.z80, 128k, ao coreaudio, vo xwindows, zoom 1, cpu=17% aprox
+
+        //Pruebas 20 Feb 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads. gestion correcta de phtreads (timer no va con phtreads)
+        //over128.z80, 128k, ao coreaudio, vo cocoa, zoom 1, cpu=35% aprox -> le falta potencia . se oye mal
+
+        //Pruebas 20 Feb 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads. gestion correcta de phtreads (timer no va con phtreads)
+        //over128.z80, 128k, ao coreaudio, vo xwindows, zoom 1, cpu=20% aprox -> se oye bien
+
+        //Pruebas 25 Feb 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads. gestion correcta de phtreads (timer no va con phtreads)
+        //over128.z80, 128k, ao coreaudio, vo cocoa, zoom 1, cpu=34% aprox -> se oye bien
+
+
+
+
+	//En iMac (21,5 pulgadas, finales de 2013)
+	//CPU 2,9 GHz Intel Core i5
+
+	//Pruebas 4 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 5% cpu 
+
+        //Pruebas 4 Mayo 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo cocoa, zoom 1, 12% cpu
+
+        //Pruebas 4 Mayo 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 21% cpu 
+	//128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 16% cpu
+
+
+        //En iMac (21,5 pulgadas, finales de 2013)
+        //CPU 2,9 GHz Intel Core i5
+
+        //Pruebas 1 Julio 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 5% cpu
+
+        //Pruebas 1 Julio 2015
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo cocoa, zoom 1, 13% cpu
+
+        //Pruebas 1 Julio 2015
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 22% cpu
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 16% cpu
+
+
+
+        //Pruebas 16 Julio 2016
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 5% cpu
+
+        //Pruebas 16 Julio 2016
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo cocoa, zoom 1, 16% cpu
+	//->con cocoa-gl: igual
+
+        //Pruebas 16 Julio 2016
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 24% cpu. con cocoa-gl:igual
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 16% cpu
+
+
+
+        //Pruebas 18 Noviembre 2017
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        //48k, ao null, vo null, 5% cpu
+
+        //Pruebas 18 Noviembre 2017
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //48k, ao null, vo cocoa, zoom 1, 18% cpu
+        //->con cocoa-gl: 10%
+
+        //Pruebas 18 Noviembre 2017
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 26% cpu. con cocoa-gl: 18%
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 17% cpu
+
+
+        //
+        //Pruebas 22 Mayo 2018
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+	./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 6% cpu
+	
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
+        //48k, ao null, vo cocoa, zoom 1, 19% cpu
+        //->con cocoa-gl: 10%
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+	./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 26% cpu. con cocoa: 27%
+        //128k, ao null, vo cocoa, zoom 1, frameskip 0, over128.z80, 26% cpu. con cocoa-gl: 18%
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 17% cpu
+
+        //
+        //Fin pruebas 22 Mayo 2018
+        //
+
+
+
+
+        //
+        //Pruebas 18 Marzo 2019. Compilando sin optimizaciones
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 6% cpu
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
+        //->con cocoa-gl: 14%
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo cocoagl, zoom 1, frameskip 0, over128.z80, 23% cpu
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 17% cpu
+
+        //
+        //Fin pruebas 18 Marzo 2019
+        //
+
+
+
+
+        //
+        //Pruebas 10 Febrero 2020. Compilando sin optimizaciones ni opciones (./configure)
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 6% cpu
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
+        //con cocoa-gl: 12%
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo cocoagl, zoom 1, frameskip 0, over128.z80, 21% cpu
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 19% cpu
+
+        //
+        //Fin pruebas 10 Febrero 2020
+        //
+
+
+        //
+        //Pruebas 17 Agosto 2020. Compilando sin optimizaciones ni opciones (./configure)
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 6% cpu
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1
+        //con cocoa-gl: 12%
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo cocoa --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo cocoagl, zoom 1, frameskip 0, over128.z80, 20% cpu
+        //128k, ao null, vo xwindows, zoom 1, frameskip 0, over128.z80, 18% cpu
+
+        //
+        //Fin pruebas 17 Agosto 2020
+        //

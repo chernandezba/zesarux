@@ -1,0 +1,17 @@
+-MacOs Catalina viene con permisos extendidos: se requiere intervencion del usuario para acceder a carpetas Documents, Downloads, Desktop, etc
+
+En el Info.plist le agregué:
+
+<key>NSDesktopFolderUsageDescription</key>
+<string>To be able to load user files from Desktop folder</string>
+<key>NSDocumentsFolderUsageDescription</key>
+<string>To be able to load user files from Documents folder but also load and save configuration</string>
+<key>NSDownloadsFolderUsageDescription</key>
+<string>To be able to load user files from Downloads folder</string>
+
+
+
+-para probar reset permisos carpetas mac, para que los vuelva a pedir al usuario:
+tccutil reset SystemPolicyDocumentsFolder com.cesarhernandez.zesarux
+tccutil reset SystemPolicyDownloadsFolder com.cesarhernandez.zesarux
+tccutil reset SystemPolicyDesktopFolder com.cesarhernandez.zesarux

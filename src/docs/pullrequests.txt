@@ -1,0 +1,13 @@
+Hi. 
+I’ve decided I’m not accepting pull requests to ZEsarUX anymore.
+I’ve been thinking it a lot and I can’t handle it. You have to think I’m the only maintainer of this software, I spend a lot of time working on ZEsarUX and I can’t spend more time reviewing pull requests and accepting them.
+
+Of course I will accept requests and suggestions to add, and ZEsarUX will always be open source and free (gratis).
+
+I hope you understand it, if I were a company mantaining a software or a team of coders, that situation would be different. But that’s not the case. Maybe in the future, if I had more spare time, I could change my mind.
+
+
+Regards,
+Cesar 
+
+July 2019
