@@ -281,7 +281,7 @@ __FEATURES__
 
 * Powerful debug features: Reverse Debugging, CPU History, Assembler, Registers, Dissassemble, Conditional Breakpoints using text expressions, Watches, Step-to-step, Step-over, Runto, Show TV electron position, Load source code, Hexadecimal Editor, View Sprites, View Tiles, Find bytes, Infinite lives finder, CPU Transaction log, View BASIC, View BASIC variables, verbose messages on console
 
-* Text adventure debugger: On a Quill/Paws/Daad text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, locations map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
+* Text adventure debugger: On a Quill/Paws/Daad text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, Text Adventure Map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
 
 * File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, trd, dsk, mdv, hdf, etc. Can also browse inside file system images (.mmc, .img, etc)
 
