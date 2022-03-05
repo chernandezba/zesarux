@@ -73,10 +73,7 @@ No habilita boton de cerrar todas las ventanas
 
 -organizar ventanas en cascada
 
-
-
 -opcion disable real joystick desde menu
-
 
 -expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
 
@@ -96,7 +93,6 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
 
-
 -en daad/paws/quill debug, "mapa" de las localizaciones 
 *botones rapidos para navegar norte/sur/etc?
 
@@ -104,5 +100,3 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
 
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
-
- 
