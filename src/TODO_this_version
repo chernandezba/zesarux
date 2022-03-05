@@ -100,3 +100,7 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
 
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
+
+-Text adventure map no preserva maximized state en cuanto se cambia nivel zoom
+
+-Al redimensionar ventana tambien quitar autoframeskip si setting lo permite
