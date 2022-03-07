@@ -400,7 +400,7 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
     if (fbdev_double_buffer_enabled.v) {
         //Hacer flush del doble buffer a la pantalla
         int total_lineas=100; //temp
-        int i;
+        int y;
 
 
         z80_byte *origen;
