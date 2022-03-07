@@ -127,7 +127,9 @@ z80_byte *double_buffer_pointer;
 
 z80_byte *fbdev_pointer = 0;
 
-  long int fbdev_screensize = 0;
+long int fbdev_screensize = 0;
+long int offset_centrado=0;
+
   int fbdev_filedescriptor = 0;
 int fbdev_line_length;
 int fbdev_ancho,fbdev_alto;
@@ -383,7 +385,14 @@ void scrfbdev_refresca_pantalla_zx81(void)
 void scrfbdev_refresca_pantalla_solo_driver(void)
 {
 	//Hacer flush del doble buffer a la pantalla
-    memcpy(fbdev_pointer,double_buffer_pointer,fbdev_screensize);
+    z80_byte *origen;
+    z80_byte *destino;
+
+    origen=double_buffer_pointer;
+    destino=fbdev_pointer;
+
+
+    memcpy(destino,origen,fbdev_screensize);
 }
 
 
@@ -1441,7 +1450,7 @@ void putpixel_fbdev_lowlevel_32bpp_rgb(int x,int y,z80_byte r,z80_byte g,z80_byt
 	//offset=((fbdev_ancho*y)+x)*4;
 	offset=y*fbdev_line_length + x*4;
 
-	puntero=double_buffer_pointer+offset;
+	puntero=double_buffer_pointer+offset+offset_centrado;
 
 
 	//red
@@ -1467,7 +1476,7 @@ void putpixel_fbdev_lowlevel_32bpp_bgr(int x,int y,z80_byte r,z80_byte g,z80_byt
 	//offset=((fbdev_ancho*y)+x)*4;
 	offset=y*fbdev_line_length + x*4;
 
-	puntero=double_buffer_pointer+offset;
+	puntero=double_buffer_pointer+offset+offset_centrado;
 
 	//blue
 	*puntero++=b;
@@ -1490,7 +1499,7 @@ void putpixel_fbdev_lowlevel_24bpp_rgb(int x,int y,z80_byte r,z80_byte g,z80_byt
 
 	//offset=((fbdev_ancho*y)+x)*3;
 	offset=y*fbdev_line_length + x*3;
-	puntero=double_buffer_pointer+offset;
+	puntero=double_buffer_pointer+offset+offset_centrado;
 
 	//red
 	*puntero++=r;
@@ -1512,7 +1521,7 @@ void putpixel_fbdev_lowlevel_24bpp_bgr(int x,int y,z80_byte r,z80_byte g,z80_byt
 
 	//offset=((fbdev_ancho*y)+x)*3;
 	offset=y*fbdev_line_length + x*3;
-	puntero=double_buffer_pointer+offset;
+	puntero=double_buffer_pointer+offset+offset_centrado;
 
 	//blue
 	*puntero++=b;
@@ -1534,7 +1543,7 @@ void putpixel_fbdev_lowlevel_16bpp(int x,int y,z80_byte r,z80_byte g,z80_byte b)
 
 	//offset=((fbdev_ancho*y)+x)*2;
 	offset=y*fbdev_line_length + x*2;
-	puntero=double_buffer_pointer+offset;
+	puntero=double_buffer_pointer+offset+offset_centrado;
 
 	//r5g6b5: A 16bpp format.
 	//6 bits: entre 0 y 63
@@ -2129,9 +2138,13 @@ int scrfbdev_init (void){
 
 			offset=offsety*fbdev_line_length + offsetx*bpp/8;
 
-			double_buffer_pointer +=offset;
+			offset_centrado=offset;
 
 		}
+
+        else {
+            offset_centrado=0;
+        }
 
 
 
