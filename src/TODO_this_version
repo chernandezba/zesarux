@@ -117,3 +117,5 @@ pendiente corregir todas legacy_zxvision_new_window_gn_cim a zxvision_new_window
 https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
 
 DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0
+
+-fbdev con double buffer y zoom decimal no lo hace bien
