@@ -128,9 +128,9 @@ Pruebas en pc virtual linux 32 bits. zoom 1
 Sin doble buffer: 24% cpu
 Con doble buffer: 30% cpu
 
-En raspberry. 
-Sin doble buffer: 82% cpu. 12 FPS
-Con doble buffer: 73% cpu. 12 FPS
+En raspberry. frameskip 5.
+Sin doble buffer: 65% cpu
+Con doble buffer: 65% cpu. 12 FPS
 */
 z80_byte *double_buffer_pointer;
 
