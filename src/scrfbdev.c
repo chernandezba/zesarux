@@ -135,6 +135,7 @@ Con doble buffer: 65% cpu. 12 FPS
 z80_byte *double_buffer_pointer;
 
 
+z80_bit fbdev_double_buffer_enabled={0};
 
 
 z80_byte *fbdev_pointer = 0;
