@@ -2114,7 +2114,7 @@ int scrfbdev_init (void){
 
 
         //asignar la memoria del doble buffer
-        if (fbdev_double_buffer_enabled.v)
+        if (fbdev_double_buffer_enabled.v) {
             double_buffer_pointer=malloc(fbdev_screensize);
 
             if (double_buffer_pointer==NULL) {
