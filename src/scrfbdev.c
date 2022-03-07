@@ -399,14 +399,15 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
 
     if (fbdev_double_buffer_enabled.v) {
         //Hacer flush del doble buffer a la pantalla
-        int total_lineas=100; //temp
+        //int total_lineas=100; //temp
+        int totalspectrumalto=screen_get_window_size_height_zoom_border_en();
         int y;
 
 
         z80_byte *origen;
         z80_byte *destino;        
 
-        for (y=0;y<100;y++) {
+        for (y=0;y<totalspectrumalto;y++) {
 
 
             origen=double_buffer_pointer+offset_centrado+fbdev_line_length*y;
