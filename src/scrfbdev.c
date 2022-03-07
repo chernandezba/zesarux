@@ -668,7 +668,7 @@ if (tcsetattr(fbdev_tty, TCSANOW, &termios_valores)==-1) {
 	munmap(fbdev_pointer, fbdev_screensize);
 	close(fbdev_filedescriptor);
 
-    if (fbdev_double_buffer_enabled.v)
+    if (fbdev_double_buffer_enabled.v) {
         free(double_buffer_pointer);
     }
 
