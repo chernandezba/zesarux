@@ -122,7 +122,10 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "sms.h"
 #include "svi.h"
 
-z80_byte *fbdev_pointer = 0;
+//donde apunta el puntero de doble buffer
+z80_byte *double_buffer_pointer = 0;
+
+
   long int fbdev_screensize = 0;
   int fbdev_filedescriptor = 0;
 int fbdev_line_length;
@@ -643,7 +646,7 @@ if (tcsetattr(fbdev_tty, TCSANOW, &termios_valores)==-1) {
 */
 	fbdev_cls();
 
-	munmap(fbdev_pointer, fbdev_screensize);
+	munmap(double_buffer_pointer, fbdev_screensize);
 	close(fbdev_filedescriptor);
 
 
@@ -1434,7 +1437,7 @@ void putpixel_fbdev_lowlevel_32bpp_rgb(int x,int y,z80_byte r,z80_byte g,z80_byt
 	//offset=((fbdev_ancho*y)+x)*4;
 	offset=y*fbdev_line_length + x*4;
 
-	puntero=fbdev_pointer+offset;
+	puntero=double_buffer_pointer+offset;
 
 
 	//red
@@ -1460,7 +1463,7 @@ void putpixel_fbdev_lowlevel_32bpp_bgr(int x,int y,z80_byte r,z80_byte g,z80_byt
 	//offset=((fbdev_ancho*y)+x)*4;
 	offset=y*fbdev_line_length + x*4;
 
-	puntero=fbdev_pointer+offset;
+	puntero=double_buffer_pointer+offset;
 
 	//blue
 	*puntero++=b;
@@ -1483,7 +1486,7 @@ void putpixel_fbdev_lowlevel_24bpp_rgb(int x,int y,z80_byte r,z80_byte g,z80_byt
 
 	//offset=((fbdev_ancho*y)+x)*3;
 	offset=y*fbdev_line_length + x*3;
-	puntero=fbdev_pointer+offset;
+	puntero=double_buffer_pointer+offset;
 
 	//red
 	*puntero++=r;
@@ -1505,7 +1508,7 @@ void putpixel_fbdev_lowlevel_24bpp_bgr(int x,int y,z80_byte r,z80_byte g,z80_byt
 
 	//offset=((fbdev_ancho*y)+x)*3;
 	offset=y*fbdev_line_length + x*3;
-	puntero=fbdev_pointer+offset;
+	puntero=double_buffer_pointer+offset;
 
 	//blue
 	*puntero++=b;
@@ -1527,7 +1530,7 @@ void putpixel_fbdev_lowlevel_16bpp(int x,int y,z80_byte r,z80_byte g,z80_byte b)
 
 	//offset=((fbdev_ancho*y)+x)*2;
 	offset=y*fbdev_line_length + x*2;
-	puntero=fbdev_pointer+offset;
+	puntero=double_buffer_pointer+offset;
 
 	//r5g6b5: A 16bpp format.
 	//6 bits: entre 0 y 63
@@ -2073,18 +2076,21 @@ int scrfbdev_init (void){
 
 
 
-	fbdev_pointer = (char*)mmap(0,
+	double_buffer_pointer = (char*)mmap(0,
 				    fbdev_screensize,
 			     PROT_READ | PROT_WRITE,
 			     MAP_SHARED,
 			     fbdev_filedescriptor, 0);
 
-	if (fbdev_pointer == -1) {
+	if (double_buffer_pointer == -1) {
 		debug_printf(VERBOSE_ERR,"fbdev: Failed to mmap.\n");
 		return 1;
 	}
 
 	else {
+
+
+        //asignar la memoria del doble buffer
 
 
 		//Borrar pantalla
@@ -2113,7 +2119,7 @@ int scrfbdev_init (void){
 
 			offset=offsety*fbdev_line_length + offsetx*bpp/8;
 
-			fbdev_pointer +=offset;
+			double_buffer_pointer +=offset;
 
 		}
 
