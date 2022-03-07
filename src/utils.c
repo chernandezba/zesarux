@@ -3778,9 +3778,6 @@ int util_write_configfile(void)
   if (debug_dump_zsf_on_cpu_panic.v)          ADD_STRING_CONFIG,"--dump-snapshot-panic");
 
   if (autoselect_snaptape_options.v==0)       ADD_STRING_CONFIG,"--noautoselectfileopt");
-
-
-
   if (screen_show_splash_texts.v==0)          ADD_STRING_CONFIG,"--nosplash");
   if (screen_show_cpu_usage.v==0)             ADD_STRING_CONFIG,"--no-cpu-usage");
   if (screen_show_cpu_temp.v==0)              ADD_STRING_CONFIG,"--no-cpu-temp");
