@@ -77,6 +77,7 @@ Fixed ejecting Spectravideo cartridge
 Fixed bug on OSD Adventure Keyboard when words of 5 characters lenght and setting sending final space enabled
 Fixed crash when saving configuration file larger than 20kb
 Fixed showing character 127 on curses, stdout and simpletext video drivers
+Fixed flickering on fbdev video driver
 
 Fixed ZX Vision:
 -fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)

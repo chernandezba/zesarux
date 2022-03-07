@@ -123,8 +123,9 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "svi.h"
 
 //donde apunta el puntero de doble buffer
-z80_byte *double_buffer_pointer = 0;
+z80_byte *double_buffer_pointer;
 
+z80_byte *fbdev_pointer = 0;
 
   long int fbdev_screensize = 0;
   int fbdev_filedescriptor = 0;
@@ -381,7 +382,8 @@ void scrfbdev_refresca_pantalla_zx81(void)
 
 void scrfbdev_refresca_pantalla_solo_driver(void)
 {
-	//No hace nada dado que no hay que hacer flush de nada, siempre se escribe directamente en pantalla
+	//Hacer flush del doble buffer a la pantalla
+    memcpy(fbdev_pointer,double_buffer_pointer,fbdev_screensize);
 }
 
 
@@ -494,6 +496,8 @@ void scrfbdev_refresca_pantalla(void)
 
         //Escribir footer
         draw_middle_footer();
+
+    scrfbdev_refresca_pantalla_solo_driver();
 
 
 	sem_screen_refresh_reallocate_layers=0;
@@ -646,7 +650,7 @@ if (tcsetattr(fbdev_tty, TCSANOW, &termios_valores)==-1) {
 */
 	fbdev_cls();
 
-	munmap(double_buffer_pointer, fbdev_screensize);
+	munmap(fbdev_pointer, fbdev_screensize);
 	close(fbdev_filedescriptor);
 
 
@@ -2076,13 +2080,13 @@ int scrfbdev_init (void){
 
 
 
-	double_buffer_pointer = (char*)mmap(0,
+	fbdev_pointer = (char*)mmap(0,
 				    fbdev_screensize,
 			     PROT_READ | PROT_WRITE,
 			     MAP_SHARED,
 			     fbdev_filedescriptor, 0);
 
-	if (double_buffer_pointer == -1) {
+	if (fbdev_pointer == -1) {
 		debug_printf(VERBOSE_ERR,"fbdev: Failed to mmap.\n");
 		return 1;
 	}
@@ -2091,6 +2095,12 @@ int scrfbdev_init (void){
 
 
         //asignar la memoria del doble buffer
+        double_buffer_pointer=malloc(fbdev_screensize);
+
+        if (double_buffer_pointer==NULL) {
+            debug_printf(VERBOSE_ERR,"fbdev: Can not allocate double buffer\n");
+            return 1;
+        }
 
 
 		//Borrar pantalla
