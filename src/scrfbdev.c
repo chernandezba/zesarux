@@ -126,7 +126,7 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 z80_byte *double_buffer_pointer;
 
 
-z80_bit fbdev_double_buffer_enabled={0};
+
 
 z80_byte *fbdev_pointer = 0;
 

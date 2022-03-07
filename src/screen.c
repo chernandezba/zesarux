@@ -106,6 +106,8 @@ z80_bit screen_reduce_075_antialias={1};
 int screen_reduce_offset_x=0;
 int screen_reduce_offset_y=0;
 
+//esto aunque es un setting solo de driver de fbdev lo indicamos aqui para facilitar referenciarlo desde otras partes del codigo
+z80_bit fbdev_double_buffer_enabled={0};
 
 z80_bit ocr_settings_not_look_23606={0};
 

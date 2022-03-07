@@ -272,6 +272,8 @@ extern void screen_scale_075_function(int ancho,int alto);
 
 extern z80_bit screen_reduce_075_antialias;
 
+extern z80_bit fbdev_double_buffer_enabled;
+
 //normalmente a 8
 extern int screen_invisible_borde_superior;
 //normalmente a 56.
