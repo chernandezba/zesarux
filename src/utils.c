@@ -3779,10 +3779,6 @@ int util_write_configfile(void)
 
   if (autoselect_snaptape_options.v==0)       ADD_STRING_CONFIG,"--noautoselectfileopt");
 
-#ifdef COMPILE_FBDEV
-  if (fbdev_double_buffer_enabled.v)          ADD_STRING_CONFIG,"--fbdev-double-buffer");
-#endif
-                    
 
 
   if (screen_show_splash_texts.v==0)          ADD_STRING_CONFIG,"--nosplash");
