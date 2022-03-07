@@ -60,7 +60,8 @@ Improved OSD Adventure Keyboard: allow to send space, enter and quotation marks
 Improved OSD Keyboard: allow to use mouse, preserve window geometry
 Improved handling of individual colour palettes modifications (Red, Green, Blue)
 Improved portability of shell scripts
-Improved fbdev driver: added setting for double buffer to avoid flickering on menu
+Improved fbdev driver: added setting for double buffer to avoid flickering on menu (--fbdev-double-buffer)
+Improved fbdev driver: added setting to avoid resolution change on Raspberry Pi full screen mode (--fbdev-no-res-change)
 
 
 Fixed Z80 halt behavior and PC location
