@@ -123,6 +123,15 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "svi.h"
 
 //donde apunta el puntero de doble buffer. O si no hay doble buffer, apunta directamente a memoria de pantalla
+/*
+Pruebas en pc virtual linux 32 bits. zoom 1
+Sin doble buffer: 24% cpu
+Con doble buffer: 76% cpu
+
+En raspberry. 
+Sin doble buffer: 82% cpu. 12 FPS
+Con doble buffer: 74% cpu. 12 FPS
+*/
 z80_byte *double_buffer_pointer;
 
 
@@ -390,14 +399,20 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
 
     if (fbdev_double_buffer_enabled.v) {
         //Hacer flush del doble buffer a la pantalla
+        int total_lineas=100; //temp
+        int i;
+
+
         z80_byte *origen;
-        z80_byte *destino;
+        z80_byte *destino;        
 
-        origen=double_buffer_pointer;
-        destino=fbdev_pointer;
+        for (y=0;y<100;y++)
 
 
-        memcpy(destino,origen,fbdev_screensize);
+            origen=double_buffer_pointer+offset_centrado+fbdev_line_length*y;
+            destino=fbdev_pointer+offset_centrado+fbdev_line_length*y;
+
+        memcpy(destino,origen,fbdev_line_length);
     }
 }
 
