@@ -406,13 +406,15 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
         z80_byte *origen;
         z80_byte *destino;        
 
-        for (y=0;y<100;y++)
+        for (y=0;y<100;y++) {
 
 
             origen=double_buffer_pointer+offset_centrado+fbdev_line_length*y;
             destino=fbdev_pointer+offset_centrado+fbdev_line_length*y;
 
-        memcpy(destino,origen,fbdev_line_length);
+            memcpy(destino,origen,fbdev_line_length);
+
+        }
     }
 }
 
