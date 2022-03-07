@@ -1784,6 +1784,7 @@ printf (
         "--decimal-full-scale-fbdev  Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
         "--fbdev-double-buffer       Use double buffer to avoid flickering on menu but uses more cpu\n"
 #ifdef EMULATE_RASPBERRY
+        "--fbdev-no-res-change       Avoid resolution change on full screen mode\n"
         "--fbdev-margin-width n      Increment fbdev width size on n pixels on Raspberry full screen\n"
         "--fbdev-margin-height n     Increment fbdev width height on n pixels on Raspberry full screen\n"
 #endif
@@ -7232,6 +7233,11 @@ int parse_cmdline_options(void) {
 			}
 
 #ifdef EMULATE_RASPBERRY
+
+            else if (!strcmp(argv[puntero_parametro],"--fbdev-no-res-change")) {
+                fbdev_no_res_change.v=1;
+            }
+
 			else if (!strcmp(argv[puntero_parametro],"--fbdev-margin-height")) {
 				siguiente_parametro_argumento();
 				int valor=atoi(argv[puntero_parametro]);

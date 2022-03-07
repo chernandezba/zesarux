@@ -137,6 +137,9 @@ z80_byte *double_buffer_pointer;
 
 z80_bit fbdev_double_buffer_enabled={0};
 
+//si no cambia la resolucion en raspberry con modo fullscreen
+z80_bit fbdev_no_res_change={0};
+
 
 z80_byte *fbdev_pointer = 0;
 
@@ -1929,7 +1932,7 @@ int scrfbdev_init (void){
 
 	//Si estamos en fullscreen, en raspberry, cambiar resolucion de fbdev. Zoom 1 y ancho y alto segun si hay border o no
 	#ifdef EMULATE_RASPBERRY
-	if (ventana_fullscreen) {
+	if (ventana_fullscreen && fbdev_no_res_change.v==0) {
 		zoom_x=zoom_y=1;
 
 		//Con unos pixeles de mas de margen. Importante esto en minipantalla

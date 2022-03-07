@@ -41,5 +41,6 @@ extern int fbdev_margin_width;
 extern int fbdev_margin_height;
 
 extern z80_bit fbdev_double_buffer_enabled;
+extern z80_bit fbdev_no_res_change;
 
 #endif
