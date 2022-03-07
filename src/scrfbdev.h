@@ -39,7 +39,7 @@ extern int fbdev_use_all_virtual_res;
 extern int fbdev_decimal_full_scale_fbdev;
 extern int fbdev_margin_width;
 extern int fbdev_margin_height;
-
+extern z80_bit fbdev_double_buffer_enabled;
 
 
 #endif

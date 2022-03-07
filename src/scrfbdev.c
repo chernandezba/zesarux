@@ -122,8 +122,11 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "sms.h"
 #include "svi.h"
 
-//donde apunta el puntero de doble buffer
+//donde apunta el puntero de doble buffer. O si no hay doble buffer, apunta directamente a memoria de pantalla
 z80_byte *double_buffer_pointer;
+
+
+z80_bit fbdev_double_buffer_enabled={0};
 
 z80_byte *fbdev_pointer = 0;
 
@@ -384,15 +387,18 @@ void scrfbdev_refresca_pantalla_zx81(void)
 
 void scrfbdev_refresca_pantalla_solo_driver(void)
 {
-	//Hacer flush del doble buffer a la pantalla
-    z80_byte *origen;
-    z80_byte *destino;
 
-    origen=double_buffer_pointer;
-    destino=fbdev_pointer;
+    if (fbdev_double_buffer_enabled.v) {
+        //Hacer flush del doble buffer a la pantalla
+        z80_byte *origen;
+        z80_byte *destino;
+
+        origen=double_buffer_pointer;
+        destino=fbdev_pointer;
 
 
-    memcpy(destino,origen,fbdev_screensize);
+        memcpy(destino,origen,fbdev_screensize);
+    }
 }
 
 
@@ -661,6 +667,10 @@ if (tcsetattr(fbdev_tty, TCSANOW, &termios_valores)==-1) {
 
 	munmap(fbdev_pointer, fbdev_screensize);
 	close(fbdev_filedescriptor);
+
+    if (fbdev_double_buffer_enabled.v)
+        free(double_buffer_pointer);
+    }
 
 
 }
@@ -2104,12 +2114,19 @@ int scrfbdev_init (void){
 
 
         //asignar la memoria del doble buffer
-        double_buffer_pointer=malloc(fbdev_screensize);
+        if (fbdev_double_buffer_enabled.v)
+            double_buffer_pointer=malloc(fbdev_screensize);
 
-        if (double_buffer_pointer==NULL) {
-            debug_printf(VERBOSE_ERR,"fbdev: Can not allocate double buffer\n");
-            return 1;
+            if (double_buffer_pointer==NULL) {
+                debug_printf(VERBOSE_ERR,"fbdev: Can not allocate double buffer\n");
+                return 1;
+            }
         }
+
+        else {
+            double_buffer_pointer=fbdev_pointer;
+        }
+
 
 
 		//Borrar pantalla

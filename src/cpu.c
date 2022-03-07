@@ -1782,6 +1782,7 @@ printf (
         "--no-use-ttyrawfbdev        Do not use keyboard on raw mode for fbdev driver\n"
         "--use-all-res-fbdev         Use all virtual resolution on fbdev driver. Experimental feature\n"
         "--decimal-full-scale-fbdev  Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
+        "--fbdev-double-buffer       Use double buffer to avoid flickering on menu but uses more cpu\n"
 #ifdef EMULATE_RASPBERRY
         "--fbdev-margin-width n      Increment fbdev width size on n pixels on Raspberry full screen\n"
         "--fbdev-margin-height n     Increment fbdev width height on n pixels on Raspberry full screen\n"
@@ -7220,6 +7221,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--use-all-res-fbdev")) {
                                 fbdev_use_all_virtual_res=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--fbdev-double-buffer")) {
+                    fbdev_double_buffer_enabled.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--decimal-full-scale-fbdev")) {
 				ventana_fullscreen=1;
