@@ -12780,7 +12780,7 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 	zxvision_delete_window_if_exists(ventana);
 
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 
 
@@ -12790,7 +12790,7 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
     char *titulo_ventana="Au. Chip Sheet (60 BPM)";
 
 
-    if (!legacy_util_find_window_geometry("aysheet",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("aysheet",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
                     
         xventana=PIANO_PARTITURA_GRAPHIC_BASE_X;
         yventana=PIANO_PARTITURA_GRAPHIC_BASE_Y;
@@ -12815,8 +12815,8 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
     //printf ("ancho %d\n",ancho_ventana);
 
-    legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
-        "aysheet",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
+        "aysheet",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     //zxvision_new_window_nocheck_staticsize(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
 
