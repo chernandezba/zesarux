@@ -23,7 +23,7 @@ Para esta version:
 -Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)
 
 
--Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking)
+-Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
 -ZSF: soporte para TS2068, Sam coupe, Chloe, Prism, Chrome, MK14
@@ -59,6 +59,7 @@ No habilita boton de cerrar todas las ventanas
 -reordenar secciones en experthelp, quiza por settings igual de menu
 
 -desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
+
 
 
 -Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
@@ -101,6 +102,18 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
--Text adventure map no preserva maximized state en cuanto se cambia nivel zoom
+
+-Estado maximizado al restaurar ventanas
+pendiente nuevo setting --windowgeometry-full diferente que restaure estado maximizado
+pendiente corregir todas legacy_util_find_window_geometry a util_find_window_geometry usando nuevo parametro is_maximized
+pendiente corregir todas legacy_zxvision_new_window_gn_cim a zxvision_new_window_gn_cim usando nuevo parametro is_maximized
+
 
 -Al redimensionar ventana tambien quitar autoframeskip si setting lo permite
+
+
+-Carga de archivos .p desde ZRCP
+
+https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
+
+DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0

@@ -1990,8 +1990,9 @@ printf (
 
 		//"--windowgeometry s x y w h Set window geometry. Parameters: window name (s), x coord, y coord, width (w), height (h)\n"
         //"--windowgeometry-ext s x y w h m Set window geometry, extended version (old version only kept for compatibility). Parameters: window name (s), x coord, y coord, width (w), height (h), is minimized (m)\n"
-        "--windowgeometry-full s x y w h wb hb m  Set window geometry, full version (old versions only kept for compatibility). "
-        " Parameters: window name (s), x coord, y coord, width (w), height (h), width before minimize (wb), height before minimize (hb), is minimized (m)\n"
+        //"--windowgeometry-full s x y w h wb hb m  Set window geometry, full version (old versions only kept for compatibility). "
+        "--window-geometry s x y w h wb hb mn mx  Set window geometry. "
+        " Parameters: window name (s), x coord, y coord, width (w), height (h), width before minimize/maximize (wb), height before minimize/maximize (hb), is minimized (mn), is maximized (mx)\n"
 		"--enable-restore-windows                 Allow restore windows on start\n"
         "--restorewindow s                        Restore window s on start\n"
 		"--clear-all-windowgeometry               Clear all windows geometry thay may be loaded from the configuration file\n"
@@ -8330,7 +8331,7 @@ int parse_cmdline_options(void) {
 					exit(1);
 				}
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,0,ancho,alto);  //mantenido por compatibilidad minimizado=0, ancho alto antes de minimizado
+				util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
 
 			}	
 
@@ -8362,7 +8363,7 @@ int parse_cmdline_options(void) {
 				siguiente_parametro_argumento();
 				is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,ancho,alto); //mantenido por compatibilidad ancho y alto antes de minimizado
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho,alto); //mantenido por compatibilidad ancho y alto antes de minimizado
 
 			}
 
@@ -8399,9 +8400,50 @@ int parse_cmdline_options(void) {
 				siguiente_parametro_argumento();
 				is_minimized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,ancho_antes_minimized,alto_antes_minimized);
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized); //mantenido por compatibilidad
 
 			}            
+
+
+			else if (!strcmp(argv[puntero_parametro],"--window-geometry")) {
+				siguiente_parametro_argumento();
+				char *nombre;
+				int x,y,ancho,alto,ancho_antes_minimized,alto_antes_minimized,is_minimized,is_maximized;
+
+				nombre=argv[puntero_parametro];
+
+				siguiente_parametro_argumento();
+				x=parse_string_to_number(argv[puntero_parametro]);
+
+				siguiente_parametro_argumento();
+				y=parse_string_to_number(argv[puntero_parametro]);
+
+				siguiente_parametro_argumento();
+				ancho=parse_string_to_number(argv[puntero_parametro]);
+
+				siguiente_parametro_argumento();
+				alto=parse_string_to_number(argv[puntero_parametro]);
+
+				siguiente_parametro_argumento();
+				ancho_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
+
+				siguiente_parametro_argumento();
+				alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);                
+
+				if (x<0 || y<0 || ancho<0 || alto<0) {
+					printf ("Invalid window geometry\n");
+					exit(1);
+				}
+
+				siguiente_parametro_argumento();
+				is_minimized=parse_string_to_number(argv[puntero_parametro]);
+                
+                siguiente_parametro_argumento();
+                is_maximized=parse_string_to_number(argv[puntero_parametro]);
+
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized); 
+
+			}              
 
 
 			else if (!strcmp(argv[puntero_parametro],"--clear-all-windowgeometry")) {

@@ -8815,7 +8815,7 @@ void zxvision_new_window_nocheck_staticsize(zxvision_window *w,int x,int y,int v
 
 //Si la ventana se crea minimizada, se asigna total width y height a valores grandes -> ESTO YA NO, PUES AL REDIMENSIONAR SE RECREA
 void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,
-    char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize)
+    char *title,char *geometry_name,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize)
 {
 
     //Si ventana se crea minimizada, establecemos total_width y total_height a un valor grande,
@@ -8841,21 +8841,30 @@ void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width
 
     zxvision_new_window(w,x,y,visible_width,visible_height,total_width,total_height,title);
 
-    if (is_minimized) {
-        //printf("--zxvision_new_window_gn_cim. setting before min: %d X %d\n",width_before_max_min_imize,height_before_max_min_imize);
+    if (is_minimized || is_maximized) {
+        //printf("--legacy_zxvision_new_window_gn_cim. setting before min: %d X %d\n",width_before_max_min_imize,height_before_max_min_imize);
         w->width_before_max_min_imize=width_before_max_min_imize;
         w->height_before_max_min_imize=height_before_max_min_imize;
-        //printf("zxvision_new_window_gn_cim. window is minimized\n");  
+        //printf("legacy_zxvision_new_window_gn_cim. window is minimized\n");  
     }
 
-    //printf("zxvision_new_window_gn_cim. before minimize ancho %d alto %d\n",width_before_max_min_imize,height_before_max_min_imize);  
+    //printf("legacy_zxvision_new_window_gn_cim. before minimize ancho %d alto %d\n",width_before_max_min_imize,height_before_max_min_imize);  
   
 
     //indicar nombre del grabado de geometria
     strcpy(w->geometry_name,geometry_name);
     //restaurar estado minimizado de ventana
     w->is_minimized=is_minimized;
+    w->is_maximized=is_maximized;
 
+
+}
+
+void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,
+    char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize)
+{
+    zxvision_new_window_gn_cim(w,x,y,visible_width,visible_height,total_width,total_height,title,geometry_name,
+        is_minimized,0,width_before_max_min_imize,height_before_max_min_imize);
 
 }
 

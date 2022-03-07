@@ -3981,11 +3981,11 @@ int util_write_configfile(void)
   if (parameter_disablebetawarning[0])        ADD_STRING_CONFIG,"--disablebetawarning \"%s\"",parameter_disablebetawarning);
 
   for (i=0;i<total_config_window_geometry;i++) {
-       ADD_STRING_CONFIG,"--windowgeometry-full %s %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
+       ADD_STRING_CONFIG,"--window-geometry %s %d %d %d %d %d %d %d %d", saved_config_window_geometry_array[i].nombre,
        saved_config_window_geometry_array[i].x,saved_config_window_geometry_array[i].y,
         saved_config_window_geometry_array[i].ancho,saved_config_window_geometry_array[i].alto,
         saved_config_window_geometry_array[i].width_before_max_min_imize,saved_config_window_geometry_array[i].height_before_max_min_imize,
-        saved_config_window_geometry_array[i].is_minimized
+        saved_config_window_geometry_array[i].is_minimized,saved_config_window_geometry_array[i].is_maximized
         );
   }
 
@@ -17387,7 +17387,8 @@ int get_cpu_frequency(void)
 
 
 //Retorna 0 si no encontrado
-int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized)
+int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *is_maximized,
+    int *width_before_max_min_imize,int *height_before_max_min_imize)
 {
         int i;
 
@@ -17398,8 +17399,11 @@ int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *
                         *ancho=saved_config_window_geometry_array[i].ancho;
                         *alto=saved_config_window_geometry_array[i].alto;
                         *is_minimized=saved_config_window_geometry_array[i].is_minimized;
-                        debug_printf (VERBOSE_DEBUG,"Returning window geometry %s from index %d, %d,%d %dX%d",
-                        nombre,i,*y,*y,*ancho,*alto);
+                        *is_maximized=saved_config_window_geometry_array[i].is_maximized;
+                        *width_before_max_min_imize=saved_config_window_geometry_array[i].width_before_max_min_imize;
+                        *height_before_max_min_imize=saved_config_window_geometry_array[i].height_before_max_min_imize;
+                        debug_printf (VERBOSE_DEBUG,"Returning window geometry %s from index %d, %d,%d %dX%d (%dX%d) min %d",
+                        nombre,i,*y,*y,*ancho,*alto,*width_before_max_min_imize,*height_before_max_min_imize,*is_minimized);
                         return 1;
                 }
         }
@@ -17409,13 +17413,18 @@ int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *
         *y=0;
         *ancho=ZXVISION_MAX_ANCHO_VENTANA;
         *alto=ZXVISION_MAX_ALTO_VENTANA;
+        *width_before_max_min_imize=*ancho;
+        *height_before_max_min_imize=*alto;
         *is_minimized=0;
+        *is_maximized=0;
         debug_printf (VERBOSE_DEBUG,"Returning default window geometry for %s",nombre);
         return 0;
 }
 
+
+
 //Retorna 0 si no encontrado
-int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,
+int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,
     int *width_before_max_min_imize,int *height_before_max_min_imize)
 {
         int i;
@@ -17453,7 +17462,7 @@ Hay que tener en cuenta que puede agregar cualquier nombre, exista o no dicha ve
 Esto permite que si en el futuro se borra alguna ventana por código, pero el usuario la estaba guardando por configuración,
 con --windowgeometry, no dará error si es de una ventana que ya no existe
 */
-int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize)
+int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize)
 {
 
         int destino=total_config_window_geometry;
@@ -17486,6 +17495,7 @@ int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_
         saved_config_window_geometry_array[destino].ancho=ancho;
         saved_config_window_geometry_array[destino].alto=alto;
         saved_config_window_geometry_array[destino].is_minimized=is_minimized;
+        saved_config_window_geometry_array[destino].is_maximized=is_maximized;
         saved_config_window_geometry_array[destino].width_before_max_min_imize=width_before_max_min_imize;
         saved_config_window_geometry_array[destino].height_before_max_min_imize=height_before_max_min_imize;
         
@@ -17510,7 +17520,7 @@ void util_add_window_geometry_compact(zxvision_window *ventana)
         }
 
         util_add_window_geometry(nombre,ventana->x,ventana->y,ventana->visible_width,ventana->visible_height,
-                ventana->is_minimized,ventana->width_before_max_min_imize,ventana->height_before_max_min_imize);
+                ventana->is_minimized,ventana->is_maximized, ventana->width_before_max_min_imize,ventana->height_before_max_min_imize);
 }
 
 void util_clear_all_windows_geometry(void)
