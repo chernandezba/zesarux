@@ -530,6 +530,7 @@ void menu_espera_tecla_timeout_tooltip(void);
 z80_byte menu_da_todas_teclas(void);
 
 void zxvision_helper_menu_shortcut_print(int tecla);
+void zxvision_helper_menu_shortcut_delete_last(void);
 void zxvision_helper_menu_shortcut_init(void);
 
 
@@ -16573,7 +16574,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	//printf ("tecla: %d\n",tecla);
 
-	if (tecla==MENU_RETORNO_ESC) return MENU_RETORNO_ESC;
+	if (tecla==MENU_RETORNO_ESC) {
+        zxvision_helper_menu_shortcut_delete_last();
+        return MENU_RETORNO_ESC;
+    }
 	else if (tecla==MENU_RETORNO_F1) return MENU_RETORNO_F1;
 	else if (tecla==MENU_RETORNO_F2) return MENU_RETORNO_F2;
 	else if (tecla==MENU_RETORNO_F10) return MENU_RETORNO_F10;
@@ -21164,6 +21168,7 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 
 
 char zxvision_helper_shorcuts_accumulated[MAX_ZXVISION_HELPER_SHORTCUTS_LENGTH]="";
+const char *shortcut_helper_initial_text="Menu ";
 
 //Funcion para guardar la tecla de shortcut pulsada para mostrarla en otra ventana al usuario
 void zxvision_helper_menu_shortcut_print(int tecla)
@@ -21177,10 +21182,27 @@ void zxvision_helper_menu_shortcut_print(int tecla)
     }
 }
 
+void zxvision_helper_menu_shortcut_delete_last(void)
+{
+    
+
+    //primero borramos ultimo caracter
+    int minima_cadena=strlen(shortcut_helper_initial_text);
+    int longitud_texto=strlen(zxvision_helper_shorcuts_accumulated);
+
+    if (longitud_texto>minima_cadena) {
+        //printf("borrar\n");
+        longitud_texto--;
+        zxvision_helper_shorcuts_accumulated[longitud_texto]=0;
+    }
+
+    
+}
+
 //Inicializar el buffer al abrir el menu
 void zxvision_helper_menu_shortcut_init(void)
 {
-    strcpy(zxvision_helper_shorcuts_accumulated,"Menu ");
+    strcpy(zxvision_helper_shorcuts_accumulated,shortcut_helper_initial_text);
 }
 
 //Ajusta estilo del driver de video si este no es driver completo y el seleccionado necesita un driver completo

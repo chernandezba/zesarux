@@ -94,7 +94,7 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
 
--en daad/paws/quill debug, "mapa" de las localizaciones 
+-Text Adventure Map
 *botones rapidos para navegar norte/sur/etc?
 
 
@@ -109,8 +109,6 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
 
 DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0
-
--fbdev con double buffer y zoom decimal no lo hace bien
 
 
 -botones extender zx desktop no parece ir bien con zoom 1 y tbblue
