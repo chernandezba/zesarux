@@ -902,8 +902,8 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 "[%c]  Also when moving windows",        
 				(auto_frameskip_even_when_movin_windows.v ? 'X' : ' ')
             );
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving windows");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving windows. Enabling it uses less cpu when moving windows but "
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving or resizing windows");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving or resizing windows. Enabling it uses less cpu when moving or resizing windows but "
                 "can make windows disappear or not refresh quickly. Disabling it enhances refreshing windows when moving but uses more cpu and may slow down emulation");
         }        
 

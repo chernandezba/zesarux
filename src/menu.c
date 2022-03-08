@@ -13599,7 +13599,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             if (auto_frameskip_even_when_movin_windows.v==0) {
                 autoframeskip_setting_before_moving_windows.v=autoframeskip.v;
-                debug_printf(VERBOSE_DEBUG,"Disabling autoframeskip while moving window");
+                debug_printf(VERBOSE_DEBUG,"Disabling autoframeskip while moving or resizing window");
                 autoframeskip.v=0;
             }
             

@@ -109,8 +109,6 @@ pendiente corregir todas legacy_util_find_window_geometry a util_find_window_geo
 pendiente corregir todas legacy_zxvision_new_window_gn_cim a zxvision_new_window_gn_cim usando nuevo parametro is_maximized
 
 
--Al redimensionar ventana tambien quitar autoframeskip si setting lo permite
-
 
 -Carga de archivos .p desde ZRCP
 
