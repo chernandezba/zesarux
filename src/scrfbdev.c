@@ -405,7 +405,7 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
         //Hacer flush del doble buffer a la pantalla
 
         //En este caso se vuelca siempre toda la pantalla
-        if (ventana_fullscreen && fbdev_decimal_full_scale_fbdev)
+        if (ventana_fullscreen && fbdev_decimal_full_scale_fbdev) {
             memcpy(fbdev_pointer,double_buffer_pointer,fbdev_screensize);
         }
 
