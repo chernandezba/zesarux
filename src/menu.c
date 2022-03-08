@@ -8842,13 +8842,13 @@ void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width
     zxvision_new_window(w,x,y,visible_width,visible_height,total_width,total_height,title);
 
     if (is_minimized || is_maximized) {
-        //printf("--legacy_zxvision_new_window_gn_cim. setting before min: %d X %d\n",width_before_max_min_imize,height_before_max_min_imize);
+        //printf("--zxvision_new_window_gn_cim. setting before min: %d X %d\n",width_before_max_min_imize,height_before_max_min_imize);
         w->width_before_max_min_imize=width_before_max_min_imize;
         w->height_before_max_min_imize=height_before_max_min_imize;
-        //printf("legacy_zxvision_new_window_gn_cim. window is minimized\n");  
+        //printf("zxvision_new_window_gn_cim. window is minimized\n");  
     }
 
-    //printf("legacy_zxvision_new_window_gn_cim. before minimize ancho %d alto %d\n",width_before_max_min_imize,height_before_max_min_imize);  
+    //printf("zxvision_new_window_gn_cim. before minimize ancho %d alto %d\n",width_before_max_min_imize,height_before_max_min_imize);  
   
 
     //indicar nombre del grabado de geometria
