@@ -103,11 +103,6 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
 
--Estado maximizado al restaurar ventanas
-pendiente corregir todas legacy_util_find_window_geometry a util_find_window_geometry usando nuevo parametro is_maximized
-pendiente corregir todas legacy_zxvision_new_window_gn_cim a zxvision_new_window_gn_cim usando nuevo parametro is_maximized
-
-
 
 -Carga de archivos .p desde ZRCP
 
@@ -116,3 +111,6 @@ https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
 DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0
 
 -fbdev con double buffer y zoom decimal no lo hace bien
+
+
+-botones extender zx desktop no parece ir bien con zoom 1 y tbblue

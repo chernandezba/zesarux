@@ -2617,7 +2617,7 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
 
 	int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
     //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
-    //zxvision_new_window_nocheck_staticsize en vez de legacy_zxvision_new_window_gn_cim
+    //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
 	if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		xorigin=menu_origin_x();

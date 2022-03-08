@@ -594,7 +594,7 @@ typedef struct s_saved_config_window_geometry saved_config_window_geometry;
 
 extern int total_config_window_geometry;
 
-extern int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *width_before_max_min_imize,int *height_before_max_min_imize);
+//extern int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *width_before_max_min_imize,int *height_before_max_min_imize);
 extern int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,int *is_maximized,int *width_before_max_min_imize,int *height_before_max_min_imize);
 
 extern int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize);

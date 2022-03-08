@@ -17424,6 +17424,7 @@ int util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,in
 
 
 //Retorna 0 si no encontrado
+/*
 int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *alto,int *is_minimized,
     int *width_before_max_min_imize,int *height_before_max_min_imize)
 {
@@ -17455,6 +17456,7 @@ int legacy_util_find_window_geometry(char *nombre,int *x,int *y,int *ancho,int *
         debug_printf (VERBOSE_DEBUG,"Returning default window geometry for %s",nombre);
         return 0;
 }
+*/
 
 //Retorna 0 si error. Lo agrega si no existe. Si existe, lo modifica
 /*

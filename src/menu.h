@@ -266,7 +266,7 @@ typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
 
 
 extern void zxvision_new_window(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title);
-extern void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize);
+//extern void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize);
 extern void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize);
 extern void zxvision_new_window_nocheck_staticsize(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title);
 extern void zxvision_cls(zxvision_window *w);

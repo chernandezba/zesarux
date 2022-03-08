@@ -6562,7 +6562,7 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
     zxvision_delete_window_if_exists(ventana);    
 
 	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-    //no usamos ancho_antes_minimize ni alto_antes_minimize porque usamos zxvision_new_window_nocheck_staticsize en vez de legacy_zxvision_new_window_gn_cim
+    //no usamos ancho_antes_minimize ni alto_antes_minimize porque usamos zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
 	
 	if (!util_find_window_geometry("hexeditor",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
@@ -8560,12 +8560,12 @@ void menu_display_total_palette_cursor_abajo(void)
 }
 
 void menu_display_total_palette_crea_ventana(zxvision_window *ventana,int xventana,int yventana,int ancho_ventana,int alto_ventana,
-    int is_minimized,int ancho_antes_minimize,int alto_antes_minimize)
+    int is_minimized,int is_maximized,int ancho_antes_minimize,int alto_antes_minimize)
 {
     //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Colour palettes");
 
-    legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Colour palettes",
-        "displaypalettes",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Colour palettes",
+        "displaypalettes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;
     //Permitir hotkeys desde raton
@@ -8595,9 +8595,9 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 	zxvision_delete_window_if_exists(ventana);	
 
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("displaypalettes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("displaypalettes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		xventana=TOTAL_PALETTE_WINDOW_X;
 		yventana=TOTAL_PALETTE_WINDOW_Y;
 		ancho_ventana=TOTAL_PALETTE_WINDOW_ANCHO;
@@ -8609,7 +8609,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
     //int alto_ventana_inicial=alto_ventana;
 
 
-    menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
     
 
     //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
@@ -11642,10 +11642,10 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 	if (!MACHINE_IS_ZX8081) view_sprites_zx81_pseudohires.v=0;
 
-	int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 	
-    if (!legacy_util_find_window_geometry("sprites",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("sprites",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=SPRITES_X;
         y=SPRITES_Y;
         ancho=SPRITES_ANCHO;
@@ -11654,7 +11654,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 
 	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,64,64+2,"Sprites");
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,64,64+2,"Sprites","sprites",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,64,64+2,"Sprites","sprites",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
 	ventana->can_be_backgrounded=1;
@@ -17752,10 +17752,10 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 		char *titulo_ventana="Audio Chip Piano";
 
-        int is_minimized,ancho_antes_minimize,alto_antes_minimize;
+        int is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 
-		if (!legacy_util_find_window_geometry("aypiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		if (!util_find_window_geometry("aypiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
 				if (!si_mostrar_ay_piano_grafico()) {
 
@@ -17856,7 +17856,8 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 		//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
 
-        legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"aypiano",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"aypiano",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 		ventana->can_be_backgrounded=1;	
 		//indicar nombre del grabado de geometria
@@ -18084,9 +18085,9 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 	//Como si fuera 1 solo chip
 
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 	char *titulo_ventana="Wave Piano";
-	if (!legacy_util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         if (!si_mostrar_ay_piano_grafico()) {
 
             xventana=7;
@@ -18127,8 +18128,8 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 	//No alteramos el ancho, que sea el que tenga por geometria
 	//if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;	
 
-    legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
-                "wavepiano",is_minimized,ancho_antes_minimize,alto_antes_minimize);		
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
+                "wavepiano",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);		
 
 
 	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
@@ -18698,9 +18699,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     zxvision_delete_window_if_exists(ventana);
 
 		
-	int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		//x=menu_origin_x();
 		x=0;
 		y=0;
@@ -18718,7 +18719,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 	//zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help");
 
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help","helpshowkeyboard",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help","helpshowkeyboard",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;	
 	//indicar nombre del grabado de geometria
@@ -19282,9 +19283,9 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
     zxvision_delete_window_if_exists(ventana);    
 
-    int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!legacy_util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=menu_origin_x();
         y=0;
         ancho=32;
@@ -19295,7 +19296,8 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     //DEBUG_UNNAMED_CONSOLE_WIDTH+1 porque damos 1 espacio con margen por la izquierda
     //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
 
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",is_minimized,ancho_antes_minimize,alto_antes_minimize);    
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
+        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
   
     //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas
 
@@ -19663,9 +19665,9 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
     zxvision_delete_window_if_exists(ventana);    
 
-    int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!legacy_util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=menu_origin_x();
         y=1;
         ancho=33;
@@ -19674,7 +19676,7 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
 
 
     //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound","audiogensound",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound","audiogensound",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
     //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound");
@@ -19846,9 +19848,9 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
     zxvision_delete_window_if_exists(ventana);    
 
-    int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!legacy_util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=menu_origin_x();
         y=1;
         ancho=33;
@@ -19883,7 +19885,7 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
     //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana);
   
 
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana,"debugioports",is_minimized,ancho_antes_minimize,alto_antes_minimize);    
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana,"debugioports",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
 
     ventana->can_be_backgrounded=1;
 
@@ -21633,10 +21635,10 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
     zxvision_delete_window_if_exists(ventana);    
 
-    int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
     //Recuperar geometria
-    if (!legacy_util_find_window_geometry("viewsensors",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("viewsensors",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         alto_ventana=MENU_VIEW_SENSORS_TOTAL_ROWS*MENU_SENSORS_SEPARACION_ENTRE_FILAS+MENU_VIEW_SENSORS_START_Y;
         ancho_ventana=MENU_VIEW_SENSORS_TOTAL_COLUMNS*MENU_SENSORS_SEPARACION_ENTRE_COLUMNAS+MENU_VIEW_SENSORS_START_X+1;
         
@@ -21651,7 +21653,8 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     //Crear ventana
 	//zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors");
 
-    legacy_zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors","viewsensors",is_minimized,ancho_antes_minimize,alto_antes_minimize);                            
+    zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors","viewsensors",
+        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
 
     //Se puede ir a background
     ventana->can_be_backgrounded=1;
@@ -22355,9 +22358,9 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
 	zxvision_delete_window_if_exists(ventana);
 
-	int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("visualrealtape",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("visualrealtape",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=VISUALREALTAPE_X;
         y=VISUALREALTAPE_Y-2;
         ancho=VISUALREALTAPE_ANCHO;
@@ -22366,7 +22369,7 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 
 
 	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape");
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape","visualrealtape",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape","visualrealtape",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;
 	//indicar nombre del grabado de geometria
@@ -25323,9 +25326,9 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
 	zxvision_delete_window_if_exists(ventana);
 
-	int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("shortcutshelper",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("shortcutshelper",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         x=SHORTCUTS_HELPER_X;
         y=SHORTCUTS_HELPER_Y;
         ancho=SHORTCUTS_HELPER_ANCHO;
@@ -25333,7 +25336,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 	}
 
 
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Shortcuts helper","shortcutshelper",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Shortcuts helper","shortcutshelper",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;
 	//indicar nombre del grabado de geometria
@@ -30243,9 +30246,9 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
     int xventana;
     int yventana;
 
-    int is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!legacy_util_find_window_geometry("osdkeyboard",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("osdkeyboard",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         ancho_ventana=OSD_KEYBOARD_ANCHO_VENTANA;
         alto_ventana=OSD_KEYBOARD_ALTO_VENTANA;
         xventana=OSD_KEYBOARD_X_VENTANA;

@@ -8860,6 +8860,7 @@ void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width
 
 }
 
+/*
 void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,
     char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize)
 {
@@ -8867,6 +8868,7 @@ void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visibl
         is_minimized,0,width_before_max_min_imize,height_before_max_min_imize);
 
 }
+*/
 
 //Borrar contenido ventana con espacios
 void zxvision_clear_window_contents(zxvision_window *w)
