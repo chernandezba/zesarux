@@ -2615,11 +2615,11 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
 {
 
 
-	int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
     //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
     //zxvision_new_window_nocheck_staticsize en vez de legacy_zxvision_new_window_gn_cim
 
-	if (!legacy_util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		xorigin=menu_origin_x();
 		yorigin=0;
 		ancho_ventana=32;
@@ -2630,8 +2630,8 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
 	//asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
 	//zxvision_new_window_nocheck_staticsize(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU");
 
-    legacy_zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
-        "debugcpu",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
+        "debugcpu",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
 	//Preservar ancho y alto anterior
@@ -2835,9 +2835,9 @@ void menu_watches(MENU_ITEM_PARAMETERS)
     zxvision_delete_window_if_exists(ventana);
 
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
         xventana=menu_origin_x();
         yventana=1;
@@ -2849,7 +2849,8 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 
 	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
-    legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",is_minimized,ancho_antes_minimize,alto_antes_minimize);  
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
 
 	ventana->can_be_backgrounded=1;	
 	//indicar nombre del grabado de geometria
@@ -5474,9 +5475,9 @@ void menu_debug_daad_view_graphics(void)
     ventana=&zxvision_window_paws_render; 
 
 
-    int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+    int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!legacy_util_find_window_geometry("textadvgraphics",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    if (!util_find_window_geometry("textadvgraphics",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         int ancho_minimo_deseado=41+RENDER_PAWS_START_X_DRAW;
 
         ancho_ventana=(256/menu_char_width)+7+RENDER_PAWS_START_X_DRAW; //para hacer 32+7=39 en una ventana de char width = 8
@@ -5497,7 +5498,8 @@ void menu_debug_daad_view_graphics(void)
 
     //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
 
-    legacy_zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"textadvgraphics",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"textadvgraphics",
+        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     zxvision_draw_window(ventana);
     //indicar nombre del grabado de geometria

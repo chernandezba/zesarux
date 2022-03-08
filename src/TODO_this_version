@@ -104,7 +104,6 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 
 
 -Estado maximizado al restaurar ventanas
-pendiente nuevo setting --windowgeometry-full diferente que restaure estado maximizado
 pendiente corregir todas legacy_util_find_window_geometry a util_find_window_geometry usando nuevo parametro is_maximized
 pendiente corregir todas legacy_zxvision_new_window_gn_cim a zxvision_new_window_gn_cim usando nuevo parametro is_maximized
 

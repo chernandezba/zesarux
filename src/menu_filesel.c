@@ -4590,10 +4590,10 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 		//Usar ultimas coordenadas y tamaño, sin comprobar rango de maximo ancho y alto 32x24
 		//Si no hay ultimas, poner las de por defecto
 
-        int is_minimized,ancho_antes_minimize,alto_antes_minimize;  //aunque no usamos estos parametros
+        int is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;  //aunque no usamos estos parametros
 
-		if (!legacy_util_find_window_geometry("filesel",&last_filesel_ventana_x,&last_filesel_ventana_y,
-            &last_filesel_ventana_visible_ancho,&last_filesel_ventana_visible_alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		if (!util_find_window_geometry("filesel",&last_filesel_ventana_x,&last_filesel_ventana_y,
+            &last_filesel_ventana_visible_ancho,&last_filesel_ventana_visible_alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 			last_filesel_ventana_x=FILESEL_INICIAL_X;
 			last_filesel_ventana_y=FILESEL_INICIAL_Y;
 			last_filesel_ventana_visible_ancho=FILESEL_INICIAL_ANCHO;

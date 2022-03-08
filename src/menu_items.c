@@ -912,9 +912,9 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     zxvision_delete_window_if_exists(ventana);
 
 		
-	int x,y,ancho,alto,is_minimized,ancho_antes_minimize,alto_antes_minimize;
+	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!legacy_util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		x=menu_origin_x();
 		y=1;
 		ancho=32;
@@ -925,7 +925,8 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
 
 	//zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics");
 
-    legacy_zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics","cpucompactstatistics",is_minimized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics","cpucompactstatistics",
+        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
 	ventana->can_be_backgrounded=1;	
