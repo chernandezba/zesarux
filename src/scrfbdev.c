@@ -2083,7 +2083,7 @@ int scrfbdev_init (void){
 	}
 
 	if (zoom_x>zoom_max_x || zoom_y>zoom_max_y) {
-		debug_printf (VERBOSE_ERR,"fbdev: zoom to big");
+		debug_printf (VERBOSE_ERR,"fbdev: zoom too big");
 		zoom_x=zoom_y=1;
 		set_putpixel_zoom();
 	}
