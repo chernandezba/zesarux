@@ -47,8 +47,8 @@ Improved ZX Vision:
 -Added button preview when customizing ZX Desktop buttons or F-keys
 -Better detection of any file size of 6912 bytes is guessed as Spectrum screen
 -Show when a menu has submenus using the ">" character
--Preserve minimized state on windows
--Remember size before minimize window
+-Preserve minimized and maximized state on windows
+-Remember size before minimize and maximize window
 -Bigger window resize indicator (bottom-right of the window)
 -Enlarge content size when resizing window without having to recreate it
 -Allow to avoid refreshing window when changing scroll

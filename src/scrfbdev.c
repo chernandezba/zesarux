@@ -403,6 +403,14 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
 
     if (fbdev_double_buffer_enabled.v) {
         //Hacer flush del doble buffer a la pantalla
+
+        //En este caso se vuelca siempre toda la pantalla
+        if (ventana_fullscreen && fbdev_decimal_full_scale_fbdev)
+            memcpy(fbdev_pointer,double_buffer_pointer,fbdev_screensize);
+        }
+
+        else {
+
         //int total_lineas=100; //temp
         int totalspectrumalto=screen_get_window_size_height_zoom_border_en();
         int y;
@@ -419,6 +427,7 @@ void scrfbdev_refresca_pantalla_solo_driver(void)
 
             memcpy(destino,origen,fbdev_line_length);
 
+        }
         }
     }
 }
