@@ -2408,26 +2408,7 @@ void util_daad_get_message_table_lookup(z80_byte index,z80_int table_dir,char *t
 
 void util_textadventure_filter_message(char *texto)
 {
-    //filtrar caracteres
-    int filtrar_acentos_daad=0;
-    int filtrar_acentos_paws=0;
 
-
-
-    if (util_daad_detect()) {
-        if (util_daad_is_spanish() ) filtrar_acentos_daad=1;
-    }
-
-
-    if (util_textadv_detect_paws_quill()) {
-        if (util_paws_is_spanish()) {
-            filtrar_acentos_paws=1;
-            //printf("es spanish\n");
-        }
-        //else {
-        //    printf("es english\n");
-        //}
-    }
 
 
     int inicio;
