@@ -394,6 +394,13 @@ void zxuno_footer_print_flash_operating(void)
 
 
 	generic_footertext_print_operating("FLASH");
+
+    //Y poner icono en inverso
+    if (!zxdesktop_icon_zxunoflash_inverse) {
+        //printf("icon activity\n");
+        zxdesktop_icon_zxunoflash_inverse=1;
+        menu_draw_ext_desktop();
+    }    
 }
 
 void zxuno_footer_flash_operating(void)

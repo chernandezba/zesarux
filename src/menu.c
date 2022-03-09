@@ -4366,6 +4366,25 @@ void zxdesktop_lowericon_dandanator_accion(void)
     menu_dandanator(0);
 }
 
+//Funciones para zxuno flash
+int zxdesktop_lowericon_zxunoflash_is_visible(void)
+{
+	if (MACHINE_IS_ZXUNO) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_zxunoflash_is_active(void)
+{
+	if (MACHINE_IS_ZXUNO) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_zxunoflash_accion(void)
+{
+    menu_zxuno_spi_flash(0);
+}
+
 
 //Funciones para Cartuchos MSX, Coleco, SVI, SG1000, SMS
 
@@ -4528,6 +4547,7 @@ int zxdesktop_icon_ide_inverse=0;
 int zxdesktop_icon_zxpand_inverse=0;
 int zxdesktop_icon_mdv_flp_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
+int zxdesktop_icon_zxunoflash_inverse=0;
 
 struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
 	//cinta standard
@@ -4596,7 +4616,9 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
 		bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse},	    
 
-
+    //zxuno flash
+	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,
+		bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},
 
 };
 

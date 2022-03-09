@@ -12,6 +12,7 @@ Added Z80 Halt signal state support on zsf snapshot
 Added MSX Joystick emulation
 Added Spectravideo Joystick emulation
 Added another easter egg ;)
+Added button for ZX-Uno Flash device
 
 
 Improved Text Adventure Debugging:

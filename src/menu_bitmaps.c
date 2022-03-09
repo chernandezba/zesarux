@@ -1672,6 +1672,37 @@ char *bitmap_lowericon_ext_desktop_dandanator_inactive[EXT_DESKTOP_BUTTONS_ANCHO
 };
 
 
+char *bitmap_lowericon_ext_desktop_zxunoflash[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",				
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",			
+	"wxxxxxxxxxxxxxxxxxxxxxxxxw",	
+	"wx                      xw",    		
+	"wx  xxxx                xw", 		
+	"wx    x                 xw",	
+	"wx   x                  xw",    	
+	"wx  xxxx    xxx    xxx  xw",		
+	"wx  xxxxx      x  x   x xw",	
+	"wx  xx  xx  xxxx  x   x xw",			
+	"wx  xx  xx x   x  x   x xw",		
+	"wx  xx  xx  xxx x x   x xw",		
+	"wx  xx  xx              xw",		
+	"wx  xxxxx               xw",		
+	"wx  xxxx                xw",		
+	"wx                      xw",				
+	"wx                      xw",		
+	"wxxxxxxxxxxxxxxxxxxxxxxxxw",    
+	"wwwwwwwxxxxxxxxxxxxxxwwwww",	//20	
+	"      wxxxxxxxxxxxxxxw    ",		
+	"      wxxxxxxxxxxxxxxw    ",	
+	"      wxxxxxxxxxxxxxxw    ",			
+	"      wwwwwwwwwwwwwwww    ",
+	"                          " 	 //25
+};
+
+
 
 /*
 Template
