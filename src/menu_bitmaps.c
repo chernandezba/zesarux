@@ -1674,10 +1674,10 @@ char *bitmap_lowericon_ext_desktop_dandanator_inactive[EXT_DESKTOP_BUTTONS_ANCHO
 
 char *bitmap_lowericon_ext_desktop_zxunoflash[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "    xx    xx    xx    xx  ",     //0
-  	"    xx    xx    xx    xx  ",      
-	"    xx    xx    xx    xx  ",				
-	"   xx    xx    xx    xx   ",			
+    "   wxxw  wxxw  wxxw  wxxw ",     //0
+  	"   wxxw  wxxw  wxxw  wxxw ",      
+	"   wxxw  wxxw  wxxw  wxxw ",
+	"  wxxw  wxxw  wxxw  wxxw  ",
 	"wwwxxwwwwxxwwwwxxwwwwxxwww",	
 	"wxxxxxxxxxxxxxxxxxxxxxxxxw",
 	"wxxxxxxxxxxxxxxxxxxxxxxxxw",
@@ -1696,10 +1696,10 @@ char *bitmap_lowericon_ext_desktop_zxunoflash[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"wxxxxxxxxxxxxxxxxxxxxxxxxw",
 	"wxxxxxxxxxxxxxxxxxxxxxxxxw",  //20
 	"wwwxxwwwwxxwwwwxxwwwwxxwww",
-	"   xx    xx    xx    xx   ",
-    "    xx    xx    xx    xx  ",     
-  	"    xx    xx    xx    xx  ",      
-	"    xx    xx    xx    xx  ",	//25			
+	"  wxxw  wxxw  wxxw  wxxw  ",
+    "   wxxw  wxxw  wxxw  wxxw ",
+  	"   wxxw  wxxw  wxxw  wxxw ",
+	"   wxxw  wxxw  wxxw  wxxw "	//25			
 };
 
 
