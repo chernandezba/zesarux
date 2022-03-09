@@ -16818,12 +16818,15 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
 }
 
 char *menu_text_string_sure_spanish="Seguro?";
+char *menu_text_string_sure_catalan="Segur?";
 char *menu_text_string_sure_english="Sure?";
 
 char *menu_text_string_autoframeskip_spanish="Auto Saltar Frames";
+char *menu_text_string_autoframeskip_catalan="Auto Saltar Frames";
 char *menu_text_string_autoframeskip_english="Auto Frameskip";
 
 char *menu_text_string_select_manufacturer_spanish="Selecciona fabricante";
+char *menu_text_string_select_manufacturer_catalan="Selecciona fabricant";
 char *menu_text_string_select_manufacturer_english="Select manufacturer";
 
 
@@ -16833,16 +16836,19 @@ char *menu_get_string_language(char *texto)
 {
     if (!strcmp(texto,"Sure?")) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_sure_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_sure_catalan;
         else return menu_text_string_sure_english;
     }
 
     else if (!strcmp(texto,"Auto Frameskip")) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_autoframeskip_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_autoframeskip_catalan;
         else return menu_text_string_autoframeskip_english;        
     }
 
     else if (!strcmp(texto,"Select manufacturer")) {
         if (gui_language==GUI_LANGUAGE_SPANISH) return menu_text_string_select_manufacturer_spanish;
+        else if (gui_language==GUI_LANGUAGE_CATALAN) return menu_text_string_select_manufacturer_catalan;
         else return menu_text_string_select_manufacturer_english;          
     }
 
@@ -19104,6 +19110,7 @@ void menu_inicio_bucle_main(void)
 
             menu_add_item_menu_inicial(&array_menu_principal,"~~Smart load",MENU_OPCION_NORMAL,menu_smartload,NULL);
             menu_add_item_menu_spanish(array_menu_principal,"Carga ingenio~~sa");
+            menu_add_item_menu_catalan(array_menu_principal,"Carrega ingenio~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
                     menu_add_item_menu_tooltip(array_menu_principal,"Smart load tape, snapshot, Z88 memory card or Timex Cartridge");
                     menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
@@ -19185,6 +19192,7 @@ void menu_inicio_bucle_main(void)
 
             menu_add_item_menu(array_menu_principal,"Sett~~ings",MENU_OPCION_NORMAL,menu_settings,NULL);
             menu_add_item_menu_spanish(array_menu_principal,"Opc~~iones");
+            menu_add_item_menu_catalan(array_menu_principal,"Opc~~ions");
             menu_add_item_menu_shortcut(array_menu_principal,'i');
             menu_add_item_menu_tooltip(array_menu_principal,"General Settings");
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
@@ -19198,13 +19206,17 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
-            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"%s Close menu",esc_key_message);
-            menu_add_item_menu_spanish_format(array_menu_principal,"%s Cerrar menu",esc_key_message);
+            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"Close menu");
+            menu_add_item_menu_spanish_format(array_menu_principal,"Cerrar menu");
+            menu_add_item_menu_catalan_format(array_menu_principal,"Tancar menu");
+            menu_add_item_menu_prefijo_format(array_menu_principal,"%s ",esc_key_message);
             menu_add_item_menu_tooltip(array_menu_principal,string_esc_go_back);
             menu_add_item_menu_ayuda(array_menu_principal,string_esc_go_back);
 
-            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,"%sExit ZEsarUX",(f_functions==1 ? "F10 ": "") );
-            menu_add_item_menu_spanish_format(array_menu_principal,"%sSalir ZEsarUX",(f_functions==1 ? "F10 ": "") );
+            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,"Exit ZEsarUX");
+            menu_add_item_menu_spanish_format(array_menu_principal,"Salir ZEsarUX");
+            menu_add_item_menu_catalan_format(array_menu_principal,"Sortir ZEsarUX");
+            menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
 
