@@ -1864,7 +1864,7 @@ printf (
         "--disablefooter             Disable window footer\n"             
         "--ignoremouseclickopenmenu  Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
         "--limitopenmenu             Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
-        "--language language         Select alternate language for menu. Available languages: es\n"
+        "--language language         Select alternate language for menu. Available languages: es, ca\n"
 
 #ifndef MINGW
 		"--no-cpu-usage              Do not show host CPU usage on footer\n"
@@ -7322,6 +7322,9 @@ int parse_cmdline_options(void) {
                 if (!strcasecmp(argv[puntero_parametro],"es")) {
                     gui_language=GUI_LANGUAGE_SPANISH;
                 }
+                else if (!strcasecmp(argv[puntero_parametro],"ca")) {
+                    gui_language=GUI_LANGUAGE_CATALAN;
+                }                
                 else {
                     printf("Invalid language\n");
                     exit(1);

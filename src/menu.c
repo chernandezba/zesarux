@@ -14186,10 +14186,20 @@ char *menu_retorna_item_language(menu_item *m)
         //printf("Retornando spanish %s (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
         texto_opcion=m->texto_opcion_spanish;
     }
-    else if (gui_language==GUI_LANGUAGE_CATALAN && m->texto_opcion_catalan[0]!=0) {
-        //printf("Retornando catalan %s (%s)\n",m->texto_opcion_catalan,m->texto_opcion);
-        texto_opcion=m->texto_opcion_catalan;
-    }    
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+
+        if (m->texto_opcion_catalan[0]!=0) {
+            texto_opcion=m->texto_opcion_catalan;
+        }
+        //Si no hay en catalan, al menos retornar en español, si es que existe, antes que en ingles.
+        //ademas quiza algunos items seran iguales en ambos idiomas y nos ahorramos tener que escribirlos dos veces        
+        else if (m->texto_opcion_spanish[0]!=0) {
+            texto_opcion=m->texto_opcion_spanish;
+        }
+
+        else texto_opcion=m->texto_opcion;
+    }
+
     else {
         texto_opcion=m->texto_opcion;
     }

@@ -3794,6 +3794,7 @@ int util_write_configfile(void)
   if (menu_hide_background_button_on_inactive.v==0) ADD_STRING_CONFIG,"--show-menu-background-button");
 
   if (gui_language==GUI_LANGUAGE_SPANISH)   ADD_STRING_CONFIG,"--language es");
+  if (gui_language==GUI_LANGUAGE_CATALAN)   ADD_STRING_CONFIG,"--language ca");
   
 
   if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
