@@ -104,6 +104,7 @@ extern void menu_timexcart(MENU_ITEM_PARAMETERS);
 extern void menu_msxcart(MENU_ITEM_PARAMETERS);
 extern void menu_z88_slot_insert(MENU_ITEM_PARAMETERS);
 extern void menu_dandanator(MENU_ITEM_PARAMETERS);
+extern void menu_zxuno_spi_flash(MENU_ITEM_PARAMETERS);
 extern void menu_realtape_pause_unpause(MENU_ITEM_PARAMETERS);
 extern void menu_smartload(MENU_ITEM_PARAMETERS);
 extern void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS);
