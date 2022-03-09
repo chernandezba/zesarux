@@ -41,7 +41,7 @@ Improved ZX Vision:
 -Improve RetroMac GUI style: striped title bar
 -Improve BeOS GUI style: buttons positions right after the title
 -Detect when video driver can not use the current GUI style and set to another one that can use
--Added translation of menu items to Spanish
+-Added translation of menu items to Spanish and Catalan
 -Added shortcuts helper to see hotkeys pressed
 -Text windows enlarge/reduce line width when resizing windows
 -Text windows wider by default (40 characters instead of 32)

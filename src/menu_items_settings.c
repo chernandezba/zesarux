@@ -565,7 +565,7 @@ void menu_interface_language(MENU_ITEM_PARAMETERS)
 {
     gui_language++;
 
-    if (gui_language>GUI_LANGUAGE_SPANISH) gui_language=0;
+    if (gui_language>GUI_LANGUAGE_CATALAN) gui_language=0;
 
     menu_first_aid("language");
 }
@@ -1004,9 +1004,12 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         char idioma[32];
         strcpy(idioma,"Default");
         if (gui_language==GUI_LANGUAGE_SPANISH) strcpy(idioma,"Español");
+        if (gui_language==GUI_LANGUAGE_CATALAN) strcpy(idioma,"Catala");
 
-       	menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_language,NULL,"[%s] ~~Language",idioma);
-        menu_add_item_menu_spanish_format(array_menu_window_settings,"[%s] ~~Lenguaje",idioma);
+       	menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_language,NULL,"~~Language");
+        menu_add_item_menu_spanish(array_menu_window_settings,"~~Lenguaje");
+        menu_add_item_menu_catalan(array_menu_window_settings,"~~Llenguatge");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
 
         

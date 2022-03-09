@@ -14186,6 +14186,10 @@ char *menu_retorna_item_language(menu_item *m)
         //printf("Retornando spanish %s (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
         texto_opcion=m->texto_opcion_spanish;
     }
+    else if (gui_language==GUI_LANGUAGE_CATALAN && m->texto_opcion_catalan[0]!=0) {
+        //printf("Retornando catalan %s (%s)\n",m->texto_opcion_catalan,m->texto_opcion);
+        texto_opcion=m->texto_opcion_catalan;
+    }    
     else {
         texto_opcion=m->texto_opcion;
     }
@@ -16648,6 +16652,10 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
     //Texto en español vacio por defecto
     m->texto_opcion_spanish[0]=0;
 
+    //Texto en catalan vacio por defecto
+    m->texto_opcion_catalan[0]=0;
+
+
     //Prefijo vacio por defecto
     m->texto_opcion_prefijo[0]=0;
 
@@ -16722,6 +16730,10 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 
     //Texto en español vacio por defecto
     next->texto_opcion_spanish[0]=0;    
+
+    //Texto en catalan vacio por defecto
+    next->texto_opcion_catalan[0]=0;    
+
  
     //Prefijo vacio por defecto
     next->texto_opcion_prefijo[0]=0;
@@ -16856,6 +16868,33 @@ void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...)
 }
 
 
+//Agregar texto de item menu en catalan
+void menu_add_item_menu_catalan(menu_item *m,char *s)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->next!=NULL)
+    {
+            m=m->next;
+    }
+
+    strcpy(m->texto_opcion_catalan,s);
+
+}
+
+//Agregar texto de item menu en catalan
+//Parametros: puntero de menu_item inicial. texto con formato
+void menu_add_item_menu_catalan_format(menu_item *m,const char * format , ...)
+{
+	char buffer[100];
+	va_list args;
+	va_start (args, format);
+	vsprintf (buffer,format, args);
+	va_end (args);
+
+	menu_add_item_menu_catalan(m,buffer);
+}
+
 //Agregar texto de prefijo de item menu 
 void menu_add_item_menu_prefijo(menu_item *m,char *s)
 {
@@ -16987,6 +17026,7 @@ void menu_add_ESC_item(menu_item *array_menu_item)
         char mensaje_esc_back[32];
 
         if (gui_language==GUI_LANGUAGE_SPANISH) sprintf (mensaje_esc_back,"%s Volver",esc_key_message);
+        else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf (mensaje_esc_back,"%s Tornar",esc_key_message);
         else sprintf (mensaje_esc_back,"%s Back",esc_key_message);
 
         menu_add_item_menu(array_menu_item,mensaje_esc_back,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
@@ -19069,6 +19109,7 @@ void menu_inicio_bucle_main(void)
 
             menu_add_item_menu(array_menu_principal,"S~~napshot",MENU_OPCION_NORMAL,menu_snapshot,NULL);
             menu_add_item_menu_spanish(array_menu_principal,"I~~nstantanea");
+            menu_add_item_menu_catalan(array_menu_principal,"I~~nstantania");
             menu_add_item_menu_shortcut(array_menu_principal,'n');
             menu_add_item_menu_tooltip(array_menu_principal,"Load or save snapshots");
             menu_add_item_menu_ayuda(array_menu_principal,"Load or save different snapshot images. Snapshot images are loaded or saved at once");
@@ -19099,6 +19140,7 @@ void menu_inicio_bucle_main(void)
 
             menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_storage,NULL,"S~~torage");
             menu_add_item_menu_spanish(array_menu_principal,"Almacenamien~~to");
+            menu_add_item_menu_catalan(array_menu_principal,"Emmagatzema~~tge");
             menu_add_item_menu_shortcut(array_menu_principal,'t');
             menu_add_item_menu_tooltip(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");
             menu_add_item_menu_ayuda(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");

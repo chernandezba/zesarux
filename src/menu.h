@@ -50,6 +50,7 @@ typedef struct s_overlay_screen overlay_screen;
 //Idiomas de la interfaz
 #define GUI_LANGUAGE_DEFAULT 0
 #define GUI_LANGUAGE_SPANISH 1
+#define GUI_LANGUAGE_CATALAN 2
 
 //tecla F1
 #define MENU_TECLA_AYUDA 21
@@ -635,6 +636,8 @@ struct s_menu_item {
 
     char texto_opcion_spanish[MAX_TEXTO_OPCION];
 
+    char texto_opcion_catalan[MAX_TEXTO_OPCION];
+
     //posible prefijo
     char texto_opcion_prefijo[MAX_TEXTO_OPCION];
 
@@ -711,6 +714,10 @@ extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
+
+extern void menu_add_item_menu_catalan(menu_item *m,char *s);
+extern void menu_add_item_menu_catalan_format(menu_item *m,const char * format , ...);
+
 
 extern void menu_add_item_menu_prefijo(menu_item *m,char *s);
 extern void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...);
