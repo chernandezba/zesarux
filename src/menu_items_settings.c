@@ -2901,8 +2901,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 		if (si_complete_video_driver() ) {
-			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    Show ~~Piano: %s",
-					(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
+			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"~~Piano Type");
+            menu_add_item_menu_spanish(array_menu_settings_audio,"Tipo ~~Piano");
+            menu_add_item_menu_catalan(array_menu_settings_audio,"Tipus ~~Piano");
+			menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
+
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
