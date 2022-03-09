@@ -3006,7 +3006,10 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"[%c] ROM SAVE filter",(output_beep_filter_on_rom_save.v ? 'X' : ' '));
+			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_filter_on_rom_save,NULL,"ROM SAVE filter");
+            menu_add_item_menu_spanish_format(array_menu_settings_audio,"Filtro SAVE en ROM");
+            menu_add_item_menu_catalan_format(array_menu_settings_audio,"Filtre SAVE a ROM");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(output_beep_filter_on_rom_save.v ? 'X' : ' '));            
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Apply filter on ROM save routines");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"It detects when on ROM save routines and alter audio output to use only "
 					"the MIC bit of the FEH port");

@@ -155,7 +155,7 @@ __FEATURES__
 
 * Uses its own powerful window environment (ZX Vision) inside the program application window, having the same GUI style on all plattforms. Allows to have an extended display to hold menus and multitask windows in the GUI (ZX Desktop)
 
-* Partial support for Spanish language on menus
+* Support for Spanish and Catalan language on menus
 
 * Can be used with joystick and environments without keyboard, like Raspiboy / Retropie
 
