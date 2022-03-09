@@ -1566,16 +1566,23 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
     do {
 
 	
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"[%d] Menu char w~~idth",menu_char_width);
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char w~~idth");
+        menu_add_item_menu_spanish(array_menu_common,"Ampl~~itud de caracter de menu");
+        menu_add_item_menu_catalan(array_menu_common,"Ampl~~itud de caracter de menu");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
 		menu_add_item_menu_shortcut(array_menu_common,'i');	
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character width. You can reduce it so allowing more text columns in a window");
 
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,"[%c] First aid help",(menu_disable_first_aid.v==0 ? 'X' : ' ') );	
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,"First aid help");	
+        menu_add_item_menu_spanish(array_menu_common,"Ayuda de primeros auxilios");
+        menu_add_item_menu_catalan(array_menu_common,"Ajuda de primers auxilis");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );	
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");		
+        
 
         if (menu_disable_first_aid.v==0) {
 

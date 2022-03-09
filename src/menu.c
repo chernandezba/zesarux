@@ -19110,7 +19110,7 @@ void menu_inicio_bucle_main(void)
 
             menu_add_item_menu_inicial(&array_menu_principal,"~~Smart load",MENU_OPCION_NORMAL,menu_smartload,NULL);
             menu_add_item_menu_spanish(array_menu_principal,"Carga ingenio~~sa");
-            menu_add_item_menu_catalan(array_menu_principal,"Carrega ingenio~~sa");
+            menu_add_item_menu_catalan(array_menu_principal,"Carrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
                     menu_add_item_menu_tooltip(array_menu_principal,"Smart load tape, snapshot, Z88 memory card or Timex Cartridge");
                     menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
@@ -19214,8 +19214,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_ayuda(array_menu_principal,string_esc_go_back);
 
             menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,"Exit ZEsarUX");
-            menu_add_item_menu_spanish_format(array_menu_principal,"Salir ZEsarUX");
-            menu_add_item_menu_catalan_format(array_menu_principal,"Sortir ZEsarUX");
+            menu_add_item_menu_spanish_format(array_menu_principal,"Salir de ZEsarUX");
+            menu_add_item_menu_catalan_format(array_menu_principal,"Sortir de ZEsarUX");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");
