@@ -13094,10 +13094,12 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 
 					if (mid_is_recording.v==0) {
 						menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_start,menu_cond_ay_or_sn_chip,"Start Recording");	
+                        menu_add_item_menu_spanish(array_menu_record_mid,"Iniciar Grabacion");
 					}
 
 					else {
 						menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_stop,menu_cond_ay_or_sn_chip,"Stop Recording");	
+                        menu_add_item_menu_spanish(array_menu_record_mid,"Detener Grabacion");
 					}
 
 				
@@ -13109,10 +13111,12 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 
 						if (mid_is_paused.v==0) {
 							menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,"Pause Recording");
+                            menu_add_item_menu_spanish(array_menu_record_mid,"Pausar Grabacion");
 						}
 
 						else {
 							menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,"Resume Recording");
+                            menu_add_item_menu_spanish(array_menu_record_mid,"Continuar Grabacion");
 						}		
 
 
@@ -13134,6 +13138,7 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 
 
                     menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_instrument,NULL,"Change Instrument");			
+                    menu_add_item_menu_spanish(array_menu_record_mid,"Cambiar Instrumento");
                     menu_add_item_menu_tiene_submenu(array_menu_record_mid);
 
 					if (mid_notes_recorded) {
@@ -25608,6 +25613,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 	                //menu_add_item_menu_ayuda(array_menu_debug,"Show which memory zones are changed or which memory address with opcodes have been executed");
 
 			menu_add_item_menu(array_menu_debug,"~~Visual memory",MENU_OPCION_NORMAL,menu_debug_new_visualmem,NULL);
+            menu_add_item_menu_spanish(array_menu_debug,"Memoria ~~Visual");
 			menu_add_item_menu_shortcut(array_menu_debug,'v');
 	                menu_add_item_menu_tooltip(array_menu_debug,"Show which memory zones are changed or which memory address with opcodes have been executed");
 	                menu_add_item_menu_ayuda(array_menu_debug,"Show which memory zones are changed or which memory address with opcodes have been executed");			

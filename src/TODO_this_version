@@ -112,3 +112,36 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 
 -botones extender zx desktop no parece ir bien con zoom 1 y tbblue
+
+-En traducciones a español de menu, hacer de alguna manera que items de menu con settings tipo enabled/disabled no tener que escribir
+una linea entera con la condicion repetida, por ejemplo:
+
+menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"[%c] ~~Master",(zeng_i_am_master ? 'X' : ' ') );
+menu_add_item_menu_spanish_format(array_menu_common,"[%c] ~~Maestro",(zeng_i_am_master ? 'X' : ' ') );
+
+Es ineficiente tener que escribir dos veces dicha condicion
+
+Alguna manera para no tener que escribirla dos veces y poder tener texto en español y la condicion aparte
+
+Alternativa 1:
+
+usar variable char con condicion. Simple pero un rollo si hay que definir varias char en diferentes opciones
+
+char cond1=(zeng_i_am_master ? 'X' : ' ');
+menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"[%c] ~~Master",cond1 );
+menu_add_item_menu_spanish_format(array_menu_common,"[%c] ~~Maestro",cond1 );
+
+Alternativa 2:
+De alguna manera que la condicion se meta en alguna parte del item del menu, y luego se reuse desde el item
+menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"[%c] ~~Master" );
+menu_add_item_menu_spanish_format(array_menu_common,"[%c] ~~Maestro" );
+menu_add_item_menu_cond(array_menu_common,(zeng_i_am_master ? 'X' : ' ') );
+Problema que el gestor de menus tiene que saber que ese texto hay que parsearlo y agregar condicion
+Ademas asumimos que es un caracter 'X' o ' '. pero y en items que hay un texto? como "[Solid] Fill type"
+->Quiza usar dos textos de menu: uno adicional con la opcion, que ira delante del texto:
+
+menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_master,menu_zeng_host_cond,"~~Master");
+menu_add_item_menu_spanish_format(array_menu_common,"~~Maestro" );
+menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(zeng_i_am_master ? 'X' : ' ') );
+
+Escogida opcion 2

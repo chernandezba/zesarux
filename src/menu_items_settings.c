@@ -2857,7 +2857,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
         if (!MACHINE_IS_QL && sn_chip_present.v==0) {
-            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"[%c] A~~utoenable AY Chip",(autoenable_ay_chip.v==1 ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~utoenable AY Chip");
+            menu_add_item_menu_spanish(array_menu_settings_audio,"A~~utohabilitar Chip AY");
+            menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(autoenable_ay_chip.v==1 ? 'X' : ' '));
+
+
             menu_add_item_menu_shortcut(array_menu_settings_audio,'u');
             menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable AY Chip automatically when it is needed");
             menu_add_item_menu_ayuda(array_menu_settings_audio,"This option is usefor for example on Spectrum 48k games that uses AY Chip "

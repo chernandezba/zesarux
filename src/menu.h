@@ -635,6 +635,12 @@ struct s_menu_item {
 
     char texto_opcion_spanish[MAX_TEXTO_OPCION];
 
+    //posible prefijo
+    char texto_opcion_prefijo[MAX_TEXTO_OPCION];
+
+    //item final concatenando prefijo y texto
+    char texto_opcion_concatenado[MAX_TEXTO_OPCION];
+
 	//Texto misc para usuario, para guardar url por ejemplo en online browser
 	char texto_misc[MENU_MAX_TEXTO_MISC];
 
@@ -705,6 +711,9 @@ extern void menu_add_item_menu_tiene_submenu(menu_item *m);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
+
+extern void menu_add_item_menu_prefijo(menu_item *m,char *s);
+extern void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...);
 
 
 extern void menu_warn_message(char *texto);

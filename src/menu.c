@@ -14178,12 +14178,22 @@ menu_item *menu_retorna_item(menu_item *m,int i)
 char *menu_retorna_item_language(menu_item *m)
 {
     //printf("Item spanish (%s) english (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
+    //Dado que hay que concatenar el prefijo, guardamos el string final en un campo del mismo item de menu
+
+    char *texto_opcion;
 
     if (gui_language==GUI_LANGUAGE_SPANISH && m->texto_opcion_spanish[0]!=0) {
         //printf("Retornando spanish %s (%s)\n",m->texto_opcion_spanish,m->texto_opcion);
-        return m->texto_opcion_spanish;
+        texto_opcion=m->texto_opcion_spanish;
     }
-    else return m->texto_opcion;
+    else {
+        texto_opcion=m->texto_opcion;
+    }
+
+    //concatenar
+    sprintf(m->texto_opcion_concatenado,"%s%s",m->texto_opcion_prefijo,texto_opcion);
+
+    return m->texto_opcion_concatenado;
 }
 
 
@@ -16638,6 +16648,8 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
     //Texto en español vacio por defecto
     m->texto_opcion_spanish[0]=0;
 
+    //Prefijo vacio por defecto
+    m->texto_opcion_prefijo[0]=0;
 
 
 
@@ -16711,6 +16723,8 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
     //Texto en español vacio por defecto
     next->texto_opcion_spanish[0]=0;    
  
+    //Prefijo vacio por defecto
+    next->texto_opcion_prefijo[0]=0;
 
 
 	next->tipo_opcion=tipo_opcion;
@@ -16841,6 +16855,33 @@ void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...)
 	menu_add_item_menu_spanish(m,buffer);
 }
 
+
+//Agregar texto de prefijo de item menu 
+void menu_add_item_menu_prefijo(menu_item *m,char *s)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->next!=NULL)
+    {
+            m=m->next;
+    }
+
+    strcpy(m->texto_opcion_prefijo,s);
+
+}
+
+//Agregar texto de prefijo de item menu 
+//Parametros: puntero de menu_item inicial. texto con formato
+void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...)
+{
+	char buffer[100];
+	va_list args;
+	va_start (args, format);
+	vsprintf (buffer,format, args);
+	va_end (args);
+
+	menu_add_item_menu_prefijo(m,buffer);
+}
 
 //Agregar funcion de gestion de tecla espacio
 void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio)
