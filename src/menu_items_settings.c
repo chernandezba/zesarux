@@ -1567,8 +1567,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 	
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char w~~idth");
-        menu_add_item_menu_spanish(array_menu_common,"Ampl~~itud de caracter de menu");
-        menu_add_item_menu_catalan(array_menu_common,"Ampl~~itud de caracter de menu");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ampl~~itud de caracter de menu","Ampl~~itud de caracter de menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
 		menu_add_item_menu_shortcut(array_menu_common,'i');	
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
@@ -1577,8 +1576,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,"First aid help");	
-        menu_add_item_menu_spanish(array_menu_common,"Ayuda de primeros auxilios");
-        menu_add_item_menu_catalan(array_menu_common,"Ajuda de primers auxilis");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ayuda de primeros auxilios","Ajuda de primers auxilis");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );	
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");		
@@ -1587,14 +1585,17 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         if (menu_disable_first_aid.v==0) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,"    Restore all 1st aid mess.");
+            menu_add_item_menu_spanish_catalan(array_menu_common,"    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
             menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
             menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
 
         }
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,"[%c] Select machine by name",
-			(setting_machine_selection_by_name.v ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,"Select machine by name");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Seleccionar maquina por nombre","Escollir maquina pel nom");
+		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
+
 		menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
 		menu_add_item_menu_ayuda(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
 
@@ -2863,13 +2864,14 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		//hotkeys usadas: vuacpdrbfoilh
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_volume,NULL,"    Output ~~Volume [%d%%]", audiovolume);
+		menu_add_item_menu_inicial_format(&array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_volume,NULL,"Output ~~Volume");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Volumen de salida","Volum de sortida");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d%%] ", audiovolume);
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
         if (!MACHINE_IS_QL && sn_chip_present.v==0) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip_autoenable,NULL,"A~~utoenable AY Chip");
-            menu_add_item_menu_spanish(array_menu_settings_audio,"A~~utohabilitar Chip AY");
-            menu_add_item_menu_spanish(array_menu_settings_audio,"A~~utohabilitar Xip AY");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"A~~utohabilitar Chip AY","A~~utohabilitar Xip AY");
             menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(autoenable_ay_chip.v==1 ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_settings_audio,'u');
             menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable AY Chip automatically when it is needed");
@@ -2877,8 +2879,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                         "and for some ZX80/81 games that also uses it (Bi-Pak ZON-X81, but not Quicksilva QS Sound board)");		
 
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_ay_chip,NULL,"~~AY Chip");
-            menu_add_item_menu_spanish(array_menu_settings_audio,"Chip ~~AY");
-            menu_add_item_menu_spanish(array_menu_settings_audio,"Xip ~~AY");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Chip ~~AY","Xip ~~AY");
             menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ", (ay_chip_present.v==1 ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_settings_audio,'a');
             menu_add_item_menu_tooltip(array_menu_settings_audio,"Enable AY Chip on this machine");
@@ -2909,8 +2910,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		if (si_complete_video_driver() ) {
 			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"~~Piano Type");
-            menu_add_item_menu_spanish(array_menu_settings_audio,"Tipo ~~Piano");
-            menu_add_item_menu_catalan(array_menu_settings_audio,"Tipus ~~Piano");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Tipo ~~Piano","Tipus ~~Piano");
 			menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
 
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
