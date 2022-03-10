@@ -26182,89 +26182,90 @@ void menu_snapshot_save_game_config(MENU_ITEM_PARAMETERS)
 void menu_snapshot(MENU_ITEM_PARAMETERS)
 {
 
-        menu_item *array_menu_snapshot;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_snapshot;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        do {
-
-
-                menu_add_item_menu_inicial(&array_menu_snapshot,"~~Load snapshot",MENU_OPCION_NORMAL,menu_snapshot_load,NULL);
-        menu_add_item_menu_spanish(array_menu_snapshot,"~~Load instantanea");
-
-		menu_add_item_menu_shortcut(array_menu_snapshot,'l');
-		menu_add_item_menu_tooltip(array_menu_snapshot,"Load snapshot");
-		menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on load:\n"
-					"Z80, ZX, SP, SNA, O, 80, P, 81, Z81");
-
-                menu_add_item_menu(array_menu_snapshot,"~~Save snapshot",MENU_OPCION_NORMAL,menu_snapshot_save,NULL);
-        menu_add_item_menu_spanish(array_menu_snapshot,"~~Salvar instantanea");                
-		menu_add_item_menu_shortcut(array_menu_snapshot,'s');
-		menu_add_item_menu_tooltip(array_menu_snapshot,"Save snapshot of the current machine state");
-		menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on save:\n"
-					"Z80, ZX, SP, P, O\n"
-					"You must write the file name with the extension");
-
-					menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-					if (rzx_reproduciendo) {
-						menu_add_item_menu(array_menu_snapshot,"Stop RZX Play",MENU_OPCION_NORMAL,menu_snapshot_stop_rzx_play,NULL);
-						menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-					}
+    do {
 
 
-					menu_add_item_menu_format(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quickload,NULL,"Quickl~~oad");
-                    menu_add_item_menu_spanish(array_menu_snapshot,"L~~oad rapido");
-					menu_add_item_menu_shortcut(array_menu_snapshot,'o');
-					menu_add_item_menu_tooltip(array_menu_snapshot,"Load a snapshot quickly");
-					menu_add_item_menu_ayuda(array_menu_snapshot,"Browses on the quicksave directory");
+        menu_add_item_menu_inicial(&array_menu_snapshot,"~~Load snapshot",MENU_OPCION_NORMAL,menu_snapshot_load,NULL);
+        menu_add_item_menu_spanish_catalan(array_menu_snapshot,"~~Load instantanea","~~Load instantania");
 
-					menu_add_item_menu_format(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quicksave,NULL,"Quicks~~ave");
-                    menu_add_item_menu_spanish(array_menu_snapshot,"S~~alvado rapido");
-					menu_add_item_menu_shortcut(array_menu_snapshot,'a');
-					menu_add_item_menu_tooltip(array_menu_snapshot,"Save a snapshot quickly");
-					menu_add_item_menu_ayuda(array_menu_snapshot,"Save a snapshot quickly. Name prefix and directory to save are configured on settings->Snapshot");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'l');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Load snapshot");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on load:\n"
+                "Z80, ZX, SP, SNA, O, 80, P, 81, Z81");
 
-                    menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save,NULL,
+            "~~Save snapshot","~~Salvar instantanea","~~Salvar instantania");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'s');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Save snapshot of the current machine state");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Supported snapshot formats on save:\n"
+                "Z80, ZX, SP, P, O\n"
+                "You must write the file name with the extension");
 
-					menu_add_item_menu_format(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,"Snapshots to ~~RAM");
-                    menu_add_item_menu_spanish(array_menu_snapshot,"Instantaneas a ~~RAM");
-					menu_add_item_menu_shortcut(array_menu_snapshot,'r');
-					menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
-					menu_add_item_menu_ayuda(array_menu_snapshot,"Options to keep last snapshots in RAM");
-                    menu_add_item_menu_tiene_submenu(array_menu_snapshot);
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-
-				menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-				menu_add_item_menu_format(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_game_config,NULL,"Save a~~utoconfig file");
-                menu_add_item_menu_spanish(array_menu_snapshot,"Salvar archivo a~~utoconfig");
-				menu_add_item_menu_shortcut(array_menu_snapshot,'u');
-				menu_add_item_menu_tooltip(array_menu_snapshot,"Generate .config file with common settings");
-				menu_add_item_menu_ayuda(array_menu_snapshot,"Generate .config file with common settings. Used to define custom settings for games, "
-					"by default it asks to generate a .config file for the last smartloaded game");
+        if (rzx_reproduciendo) {
+            menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_stop_rzx_play,NULL,
+                "Stop RZX Play","Detener RZX Play","Aturar RZX Play");
+            menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        }
 
 
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quickload,NULL,
+            "Quickl~~oad","L~~oad rapido","L~~oad rapid");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'o');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Load a snapshot quickly");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Browses on the quicksave directory");
+
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_quicksave,NULL,
+            "Quicks~~ave","S~~alvado rapido","S~~alvat rapid");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'a');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Save a snapshot quickly");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Save a snapshot quickly. Name prefix and directory to save are configured on settings->Snapshot");
+
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_rewind,NULL,
+            "Snapshots to ~~RAM","Instantaneas a ~~RAM","Instantanies a ~~RAM");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'r');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Options to keep last snapshots in RAM");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Options to keep last snapshots in RAM");
+        menu_add_item_menu_tiene_submenu(array_menu_snapshot);
 
 
-                menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-		menu_add_ESC_item(array_menu_snapshot);
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot" );
 
-                
+        menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_game_config,NULL,
+            "Save a~~utoconfig file","Salvar archivo a~~utoconfig","Salvar arxiu a~~utoconfig");
+        menu_add_item_menu_shortcut(array_menu_snapshot,'u');
+        menu_add_item_menu_tooltip(array_menu_snapshot,"Generate .config file with common settings");
+        menu_add_item_menu_ayuda(array_menu_snapshot,"Generate .config file with common settings. Used to define custom settings for games, "
+            "by default it asks to generate a .config file for the last smartloaded game");
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				
-                        }
-                }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+        menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_snapshot);
+
+        retorno_menu=menu_dibuja_menu(&snapshot_opcion_seleccionada,&item_seleccionado,array_menu_snapshot,"Snapshot" );
+
+            
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+    
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
