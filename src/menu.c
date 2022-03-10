@@ -14205,7 +14205,7 @@ char *menu_retorna_item_language(menu_item *m)
     }
 
     //concatenar
-    sprintf(m->texto_opcion_concatenado,"%s%s",m->texto_opcion_prefijo,texto_opcion);
+    sprintf(m->texto_opcion_concatenado,"%s%s%s",m->texto_opcion_prefijo,texto_opcion,m->texto_opcion_sufijo);
 
     return m->texto_opcion_concatenado;
 }
@@ -16676,6 +16676,8 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
     //Prefijo vacio por defecto
     m->texto_opcion_prefijo[0]=0;
 
+    //Sufijo vacio por defecto
+    m->texto_opcion_sufijo[0]=0;
 
 
 
@@ -16754,6 +16756,9 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
  
     //Prefijo vacio por defecto
     next->texto_opcion_prefijo[0]=0;
+
+    //Sufijo vacio por defecto
+    next->texto_opcion_sufijo[0]=0;
 
 
 	next->tipo_opcion=tipo_opcion;
@@ -16950,6 +16955,34 @@ void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...)
 	va_end (args);
 
 	menu_add_item_menu_prefijo(m,buffer);
+}
+
+
+//Agregar texto de sufijo de item menu 
+void menu_add_item_menu_sufijo(menu_item *m,char *s)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->next!=NULL)
+    {
+            m=m->next;
+    }
+
+    strcpy(m->texto_opcion_sufijo,s);
+
+}
+
+//Agregar texto de sufijo de item menu 
+//Parametros: puntero de menu_item inicial. texto con formato
+void menu_add_item_menu_sufijo_format(menu_item *m,const char * format , ...)
+{
+	char buffer[100];
+	va_list args;
+	va_start (args, format);
+	vsprintf (buffer,format, args);
+	va_end (args);
+
+	menu_add_item_menu_sufijo(m,buffer);
 }
 
 //Agregar funcion de gestion de tecla espacio

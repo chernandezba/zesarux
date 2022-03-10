@@ -1608,8 +1608,12 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,"    ~~Style [%s]",
-						definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,"    ~~Style");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"    E~~stilo","    E~~stil");
+
+		menu_add_item_menu_sufijo_format(array_menu_common," [%s]",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
+
+
 		menu_add_item_menu_shortcut(array_menu_common,'s');
 		menu_add_item_menu_tooltip(array_menu_common,"Change GUI Style");
                 menu_add_item_menu_ayuda(array_menu_common,"You can switch between:\n"
@@ -1642,14 +1646,22 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 					
 					);
         menu_add_item_menu_tiene_submenu(array_menu_common);
-        
+
+        char temp_charset[MAX_CHARSET_NAME];
+
         if (user_charset>=0) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,"Custom charset [%s]",
-                charset_list[user_charset].nombre);
+            sprintf(temp_charset," [%s]",charset_list[user_charset].nombre);
         }
         else {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,"Custom charset [None]");
+            strcpy(temp_charset," [ ]");
         }
+        
+       
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,"    Custom charset");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"    Charset personalizado","    Charset personalitzat");
+        menu_add_item_menu_sufijo(array_menu_common,temp_charset);
+    
+
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -2864,9 +2876,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		//hotkeys usadas: vuacpdrbfoilh
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_volume,NULL,"Output ~~Volume");
-        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Volumen de salida","Volum de sortida");
-        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d%%] ", audiovolume);
+		menu_add_item_menu_inicial_format(&array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_volume,NULL,"    Output ~~Volume");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Volumen de salida","    Volum de sortida");
+        menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%d%%]", audiovolume);
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'v');
 
         if (!MACHINE_IS_QL && sn_chip_present.v==0) {
@@ -2909,9 +2921,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 		if (si_complete_video_driver() ) {
-			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"~~Piano Type");
-            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Tipo ~~Piano","Tipus ~~Piano");
-			menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
+			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
+            menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
+			menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
 
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
@@ -3051,9 +3063,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		char string_aofile_shown[10];
 		menu_tape_settings_trunc_name(aofilename,string_aofile_shown,10);
-		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile,NULL,"Audio ~~out to file");
-        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio ~~out a archivo","Audio ~~out a arxiu");
-        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",string_aofile_shown);
+		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile,NULL,"    Audio ~~out to file");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Audio ~~out a archivo","    Audio ~~out a arxiu");
+        menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",string_aofile_shown);
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'o');
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Saves the generated sound to a file");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"You can save .raw format and if compiled with sndfile, to .wav format. "

@@ -641,6 +641,9 @@ struct s_menu_item {
     //posible prefijo
     char texto_opcion_prefijo[MAX_TEXTO_OPCION];
 
+    //posible sufijo
+    char texto_opcion_sufijo[MAX_TEXTO_OPCION];
+
     //item final concatenando prefijo y texto
     char texto_opcion_concatenado[MAX_TEXTO_OPCION];
 
@@ -723,6 +726,9 @@ extern void menu_add_item_menu_spanish_catalan(menu_item *m,char *spanish,char *
 
 extern void menu_add_item_menu_prefijo(menu_item *m,char *s);
 extern void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...);
+
+extern void menu_add_item_menu_sufijo(menu_item *m,char *s);
+extern void menu_add_item_menu_sufijo_format(menu_item *m,const char * format , ...);
 
 
 extern void menu_warn_message(char *texto);

@@ -38,8 +38,10 @@ extern unsigned char char_set_msx[];
 extern unsigned char char_set_beos[];
 extern unsigned char char_set_dos[];
 
+#define MAX_CHARSET_NAME 32
+
 struct s_charset_list {
-    char nombre[32];
+    char nombre[MAX_CHARSET_NAME];
     unsigned char *puntero;
 };
 
