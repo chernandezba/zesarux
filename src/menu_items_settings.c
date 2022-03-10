@@ -1763,24 +1763,30 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,"[%c] ~~Background windows",(menu_allow_background_windows ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows,NULL,
+            "~~Background windows","Ventanas en ~~background","Finestres a ~~background");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_allow_background_windows ? 'X' : ' ') );
 		menu_add_item_menu_shortcut(array_menu_common,'b');
         menu_add_item_menu_tooltip(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
 		menu_add_item_menu_ayuda(array_menu_common,"You can allow some menu windows to be put on the background. See Help-> Background Windows Help for more info");
 
 
         if (menu_allow_background_windows && menu_multitarea) {
-           menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
-            "[%c]  Even when menu closed",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') ); 
+           menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
+            "Even when menu closed","Incluso con menu cerrado","Inclus amb menu tancat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') ); 
            menu_add_item_menu_tooltip(array_menu_common,"Shows background window even when menu closed");
            menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");
         }
 
 		if (menu_allow_background_windows && menu_multitarea && save_configuration_file_on_exit.v) {
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reopen_background_windows_on_start,NULL,"[%c] Reopen windows on start",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_reopen_background_windows_on_start,NULL,
+                "Reopen windows on start","Reabrir ventanas al inicio","Reobrir finestres al inici");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_reopen_background_windows_on_start.v ? 'X' : ' ') );
 		}
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,"    Restore windows geometry");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_windows_geometry,NULL,
+            "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
 		menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
 		menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
 
