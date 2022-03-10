@@ -1727,25 +1727,33 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,"[%c] Background button on inactive",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
+            "Background button on inactive","Boton de background en inactivo","Boto de background a inactiu");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
         menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,"[%c] Invert mouse scroll",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,
+            "Invert mouse scroll","Invertir scroll raton","Invertir scroll ratoli");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
 		//menu_add_item_menu_shortcut(array_menu_common,'n');
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,"[%c] M~~ultitask menu", (menu_multitarea==1 ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,
+            "M~~ultitask menu","Menu m~~ultitarea","Menu m~~ultitasca");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (menu_multitarea==1 ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_common,'u');
 		menu_add_item_menu_tooltip(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
         menu_add_item_menu_ayuda(array_menu_common,"When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu");
 
 
         if (menu_multitarea) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,"[%c] Sto~~p emulation on menu",
-                (menu_emulation_paused_on_menu ? 'X' : ' ' ));
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
+                "Sto~~p emulation on menu","Sto~~p emulacion en menu","Sto~~p emulacio al menu");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
+
             menu_add_item_menu_shortcut(array_menu_common,'p');
             menu_add_item_menu_tooltip(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
             menu_add_item_menu_ayuda(array_menu_common,"When multitask is enabled, you can disable emulation when opening the menu");
