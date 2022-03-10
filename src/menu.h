@@ -718,6 +718,8 @@ extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format ,
 extern void menu_add_item_menu_catalan(menu_item *m,char *s);
 extern void menu_add_item_menu_catalan_format(menu_item *m,const char * format , ...);
 
+extern void menu_add_item_menu_spanish_catalan(menu_item *m,char *spanish,char *catalan);
+
 
 extern void menu_add_item_menu_prefijo(menu_item *m,char *s);
 extern void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...);

@@ -3051,7 +3051,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 		char string_aofile_shown[10];
 		menu_tape_settings_trunc_name(aofilename,string_aofile_shown,10);
-		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile,NULL,"Audio ~~out to file [%s]",string_aofile_shown);
+		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile,NULL,"Audio ~~out to file");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio ~~out a archivo","Audio ~~out a arxiu");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",string_aofile_shown);
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'o');
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Saves the generated sound to a file");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"You can save .raw format and if compiled with sndfile, to .wav format. "
@@ -3059,17 +3061,22 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile_insert,menu_aofile_cond,"[%c] Audio file ~~inserted",(aofile_inserted.v ? 'X' : ' ' ));
+		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_aofile_insert,menu_aofile_cond,"Audio file ~~inserted");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Archivo audio ~~insertado","Arxiu audio ~~insertat");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(aofile_inserted.v ? 'X' : ' ' ));
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'i');
 
 
-				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"[%c] Si~~lence detector",(silence_detector_setting.v ? 'X' : ' ' ));
+				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
+                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
 				menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
 				menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
 				menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
 
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    C~~hange Audio Driver");
-				menu_add_item_menu_shortcut(array_menu_settings_audio,'h');
+                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
+                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
+				menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
                 menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
 
 
@@ -3087,6 +3094,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
             if (ay_chip_present.v || sn_chip_present.v || i8049_chip_present) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_direct_midi_output,audio_midi_available,"Audio Chip to ~~MIDI Output");
+                    menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Audio Chip a salida ~~MIDI","Audio Xip a sortida ~~MIDI");
 					menu_add_item_menu_tooltip(array_menu_settings_audio,"Direct Audio Chip (AY, SN or i8049) music output to a real MIDI device. Supported on Linux, Mac and Windows. On Linux, needs alsa driver compiled.");
             
 

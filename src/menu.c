@@ -16911,6 +16911,13 @@ void menu_add_item_menu_catalan_format(menu_item *m,const char * format , ...)
 	menu_add_item_menu_catalan(m,buffer);
 }
 
+//Insertar los dos desde una misma funcion
+void menu_add_item_menu_spanish_catalan(menu_item *m,char *spanish,char *catalan)
+{
+    menu_add_item_menu_spanish(m,spanish);
+    menu_add_item_menu_catalan(m,catalan);
+}
+
 //Agregar texto de prefijo de item menu 
 void menu_add_item_menu_prefijo(menu_item *m,char *s)
 {
