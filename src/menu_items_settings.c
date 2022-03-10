@@ -1692,26 +1692,39 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,"[%c] Force confirm yes",(force_confirm_yes.v ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,"Force confirm yes");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Forzar confirmaciones a si","Forçar confirmacions a si");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 		menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,"[%c] Percentage bar",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,"Percentage bar");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Barra de porcentaje","Barra de percentatge");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
 		//menu_add_item_menu_shortcut(array_menu_common,'p');
 		menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 		menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,"[%c] Submenu indicator",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,"Submenu indicator");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Indicador de submenu","Indicador de submenu");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
         menu_add_item_menu_ayuda(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,"[%c] Minimize button",(menu_hide_minimize_button.v ? ' ' : 'X') );
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,"[%c] Maximize button",(menu_hide_maximize_button.v ? ' ' : 'X') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,"Minimize button");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de minimizar","Boto de minimitzar");
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,"Maximize button");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de maximizar","Boto de maximitzar");
 		
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,"[%c] Close button",(menu_hide_close_button.v ? ' ' : 'X') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,"Close button");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de cerrar","Boto de tancar");
 		//menu_add_item_menu_shortcut(array_menu_common,'l');
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,"[%c] Background button on inactive",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
