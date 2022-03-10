@@ -16469,7 +16469,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				//menu_espera_no_tecla();
 				menu_dibuja_menu_espera_no_tecla();
 
-                int tecla_atajo=tecla;
+                //int tecla_atajo=tecla;
 
 				//decimos que se ha pulsado Enter
 				tecla=13;
@@ -16485,10 +16485,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
                     }
                 }
 
-                if (tecla!=0) {
+                /*if (tecla!=0) {
                     //printf("Shortcut for key %c\n",tecla_atajo);
                     zxvision_helper_menu_shortcut_print(tecla_atajo);
-                }
+                }*/
 
             
 
@@ -16588,6 +16588,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	item_seleccionado->tipo_opcion=menu_sel->tipo_opcion;
 	item_seleccionado->valor_opcion=menu_sel->valor_opcion;
+    item_seleccionado->atajo_tecla=menu_sel->atajo_tecla;
 	strcpy(item_seleccionado->texto_opcion,menu_retorna_item_language(menu_sel));
 	strcpy(item_seleccionado->texto_misc,menu_sel->texto_misc);
 
@@ -16631,7 +16632,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	else if (tecla==MENU_RETORNO_F10) return MENU_RETORNO_F10;
 	else if (tecla==MENU_RETORNO_BACKGROUND) return MENU_RETORNO_BACKGROUND;
 
-	else return MENU_RETORNO_NORMAL;
+	else {
+        int tecla_atajo=item_seleccionado->atajo_tecla;
+        if (tecla_atajo==0) tecla_atajo='?';
+        zxvision_helper_menu_shortcut_print(tecla_atajo);
+
+        return MENU_RETORNO_NORMAL;
+    }
 
 }
 
