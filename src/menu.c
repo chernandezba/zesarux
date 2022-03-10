@@ -6518,6 +6518,16 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             }
         }
 
+		if (caracter==0xA7) {
+			//ç cedilla
+			if (si_complete_video_driver()) {
+                return 158; 
+            }
+            else {
+                return 'c';
+            }
+        }        
+
 		if (caracter==0xA9) {
 			//é e acentuada
 			if (si_complete_video_driver()) {

@@ -1666,12 +1666,16 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,"[%c] Use mouse on menu", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,"Use mouse on menu");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Usar raton en el menu","Usar ratoli al menu");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
         if (mouse_menu_disabled.v==0) {
             if (!strcmp(scr_new_driver_name,"xwindows")  || !strcmp(scr_new_driver_name,"sdl") || !strcmp(scr_new_driver_name,"cocoa") ) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hidemouse,NULL,"[%c] Mouse pointer", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hidemouse,NULL,"Mouse pointer");
+                menu_add_item_menu_spanish_catalan(array_menu_common,"Puntero del raton","Punter del ratoli");
+                menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
             }
         }
@@ -1681,7 +1685,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable tooltips");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");          
         
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_atajo,NULL,"[%c] Force visible ~~hotkeys",(menu_force_writing_inverse_color.v ? 'X' : ' ') );
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_atajo,NULL,"Force visible ~~hotkeys");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Forzar visibilidad ~~hotkeys","Forçar visibilitat ~~hotkeys");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_force_writing_inverse_color.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'h');
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
