@@ -1065,7 +1065,7 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
 
 
     int ancho=32;
-    int alto=23;
+    int alto=24;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
@@ -1150,12 +1150,20 @@ void menu_interface_change_gui_style_test(MENU_ITEM_PARAMETERS)
         //Aunque este buffer esta pensado para maximo 32 caracteres de la linea
         char buffer_extra[64];
         int posicion=0;
-        for (i=128;i<=MAX_CHARSET_GRAPHIC;i++,posicion++) {
+        for (i=128;i<128+ancho-2;i++,posicion++) {
             buffer_extra[posicion]=i;
         }
 
         buffer_extra[posicion]=0;
         zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,buffer_extra);
+
+        posicion=0;
+        for (;i<=MAX_CHARSET_GRAPHIC;i++,posicion++) {
+            buffer_extra[posicion]=i;
+        }
+
+        buffer_extra[posicion]=0;
+        zxvision_print_string(&ventana,1,linea++,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,buffer_extra);        
     }
 
     else {
