@@ -1483,81 +1483,71 @@ void menu_interface_reduce_bright_menu(MENU_ITEM_PARAMETERS)
 
 void menu_special_fx_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_special_fx_settings;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-
-
-		//menu_add_item_menu_inicial_format(&array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_multitask,NULL,"[%c] M~~ultitask menu", (menu_multitarea==1 ? 'X' : ' '));
-	
-
+    menu_item *array_menu_special_fx_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
 /*
-
 0=Menu por encima de maquina, si no es transparente
 1=Menu por encima de maquina, si no es transparente. Y Color Blanco con brillo es transparente
 2=Mix de los dos colores, con control de transparecnai
-
-
-
 */
 
 
+        menu_add_item_menu_inicial_format(&array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_menu,NULL,"Menu Mix Method");
+        menu_add_item_menu_spanish_catalan(array_menu_special_fx_settings,"Metodo mezclado menu","Metode barreja menu");
+        menu_add_item_menu_prefijo_format(array_menu_special_fx_settings,"[%s] ",screen_menu_mix_methods_strings[screen_menu_mix_method] );
+        menu_add_item_menu_tooltip(array_menu_special_fx_settings,"How to mix menu and the layer below");
+        menu_add_item_menu_ayuda(array_menu_special_fx_settings,"How to mix menu and the layer below");
 
-			menu_add_item_menu_inicial_format(&array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_menu,NULL,"[%s] Menu Mix Method",screen_menu_mix_methods_strings[screen_menu_mix_method] );
-			menu_add_item_menu_tooltip(array_menu_special_fx_settings,"How to mix menu and the layer below");
-			menu_add_item_menu_ayuda(array_menu_special_fx_settings,"How to mix menu and the layer below");
+        if (screen_menu_mix_method==2) {
+            menu_add_item_menu_en_es_ca(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_tranparency,NULL,
+                "Transparency","Transparencia","Transparencia");
+            menu_add_item_menu_prefijo_format(array_menu_special_fx_settings,"[%d%%] ",screen_menu_mix_transparency );
+            menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
+            menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
+        }
 
-			if (screen_menu_mix_method==2) {
-				menu_add_item_menu_format(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_mix_tranparency,NULL,"[%d%%] Transparency",screen_menu_mix_transparency );
-				menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
-				menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Transparency percentage to apply to menu");
-			}
-
-			if (screen_menu_mix_method==0 || screen_menu_mix_method==1) {
-                //Lo desactivo. Esto da problemas con footer
-                /*
-				menu_add_item_menu_format(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_reduce_bright_menu,NULL,"[%c] Darken when menu",(screen_menu_reduce_bright_machine.v ? 'X' : ' ' ) );
-				menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Darken layer below menu when menu open");
-				menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Darken layer below menu when menu open");
-                */
-			}
-		
-
-
-				menu_add_item_menu_format(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_bw_no_multitask,NULL,"[%c] B&W on menu+no multitask",(screen_machine_bw_no_multitask.v ? 'X' : ' ' ) );
-				menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Grayscale layer below menu when menu opened and multitask is disabled");
-				menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Grayscale layer below menu when menu opened and multitask is disabled");
+        if (screen_menu_mix_method==0 || screen_menu_mix_method==1) {
+            //Lo desactivo. Esto da problemas con footer
+            /*
+            menu_add_item_menu_format(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_reduce_bright_menu,NULL,"[%c] Darken when menu",(screen_menu_reduce_bright_machine.v ? 'X' : ' ' ) );
+            menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Darken layer below menu when menu open");
+            menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Darken layer below menu when menu open");
+            */
+        }
+    
 
 
+        menu_add_item_menu_en_es_ca(array_menu_special_fx_settings,MENU_OPCION_NORMAL,menu_interface_bw_no_multitask,NULL,
+            "B&W on menu+no multitask","B&N en menu+no multitarea","B&N al menu+no multitasca");
+        menu_add_item_menu_prefijo_format(array_menu_special_fx_settings,"[%c] ",(screen_machine_bw_no_multitask.v ? 'X' : ' ' ) );
+        menu_add_item_menu_tooltip(array_menu_special_fx_settings,"Grayscale layer below menu when menu opened and multitask is disabled");
+        menu_add_item_menu_ayuda(array_menu_special_fx_settings,"Grayscale layer below menu when menu opened and multitask is disabled");
 
 
+                    
 
-   
+        menu_add_item_menu(array_menu_special_fx_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        
+        menu_add_ESC_item(array_menu_special_fx_settings);
 
-						
+        retorno_menu=menu_dibuja_menu(&special_fx_settings_opcion_seleccionada,&item_seleccionado,array_menu_special_fx_settings,"Special FX Settings" );
 
-                menu_add_item_menu(array_menu_special_fx_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_special_fx_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-		menu_add_ESC_item(array_menu_special_fx_settings);
+            
 
-                retorno_menu=menu_dibuja_menu(&special_fx_settings_opcion_seleccionada,&item_seleccionado,array_menu_special_fx_settings,"Special FX Settings" );
-
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                 
+            }
+        }
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
@@ -1804,7 +1794,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (si_complete_video_driver() ) {
-			menu_add_item_menu(array_menu_common,"Special ~~FX",MENU_OPCION_NORMAL,menu_special_fx_settings,NULL);
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_special_fx_settings,NULL,
+                "Special ~~FX","E~~fectos especiales","E~~fectes especials");
+
             menu_add_item_menu_shortcut(array_menu_common,'f');
             menu_add_item_menu_tiene_submenu(array_menu_common);
         }
