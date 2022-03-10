@@ -17075,6 +17075,13 @@ void menu_add_item_menu_format(menu_item *m,int tipo_opcion,t_menu_funcion menu_
 	menu_add_item_menu(m,buffer,tipo_opcion,menu_funcion,menu_funcion_activo);
 }
 
+//Agregar item de menu en inglés, castellano y catalán
+void menu_add_item_menu_en_es_ca(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo,
+    char *english,char *spanish,char *catalan)
+{
+	menu_add_item_menu(m,english,tipo_opcion,menu_funcion,menu_funcion_activo);
+    menu_add_item_menu_spanish_catalan(m,spanish,catalan);
+}
 
 //Agregar el item inicial del menu
 //Parametros: puntero al puntero de menu_item inicial. texto con formato

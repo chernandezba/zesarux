@@ -1575,8 +1575,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,"First aid help");	
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Ayuda de primeros auxilios","Ajuda de primers auxilis");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,
+            "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_disable_first_aid.v==0 ? 'X' : ' ') );	
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable First Aid help");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable First Aid help");		
@@ -1584,16 +1584,16 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_disable_first_aid.v==0) {
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,"    Restore all 1st aid mess.");
-            menu_add_item_menu_spanish_catalan(array_menu_common,"    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_restore_first_aid,NULL,
+                "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
             menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
             menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
 
         }
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,"Select machine by name");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Seleccionar maquina por nombre","Escollir maquina pel nom");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
+            "Select machine by name","Seleccionar maquina por nombre","Escollir maquina pel nom");
 		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
 
 		menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
@@ -1608,8 +1608,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,"    ~~Style");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"    E~~stilo","    E~~stil");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
+            "    ~~Style","    E~~stilo","    E~~stil");
 
 		menu_add_item_menu_sufijo_format(array_menu_common," [%s]",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
 
@@ -1657,8 +1657,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         }
         
        
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,"    Custom charset");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"    Charset personalizado","    Charset personalitzat");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,
+            "    Custom charset","    Charset personalizado","    Charset personalitzat");
         menu_add_item_menu_sufijo(array_menu_common,temp_charset);
     
 
@@ -1666,15 +1666,15 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,"Use mouse on menu");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Usar raton en el menu","Usar ratoli al menu");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
+            "Use mouse on menu","Usar raton en el menu","Usar ratoli al menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
         if (mouse_menu_disabled.v==0) {
             if (!strcmp(scr_new_driver_name,"xwindows")  || !strcmp(scr_new_driver_name,"sdl") || !strcmp(scr_new_driver_name,"cocoa") ) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hidemouse,NULL,"Mouse pointer");
-                menu_add_item_menu_spanish_catalan(array_menu_common,"Puntero del raton","Punter del ratoli");
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hidemouse,NULL,
+                    "Mouse pointer","Puntero del raton","Punter del ratoli");
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
             }
@@ -1685,47 +1685,47 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_common,"Enable or disable tooltips");
 		menu_add_item_menu_ayuda(array_menu_common,"Enable or disable tooltips");          
         
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_atajo,NULL,"Force visible ~~hotkeys");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Forzar visibilidad ~~hotkeys","Forçar visibilitat ~~hotkeys");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_atajo,NULL,
+            "Force visible ~~hotkeys","Forzar visibilidad ~~hotkeys","Forçar visibilitat ~~hotkeys");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_force_writing_inverse_color.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'h');
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,"Force confirm yes");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Forzar confirmaciones a si","Forçar confirmacions a si");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,
+            "Force confirm yes","Forzar confirmaciones a si","Forçar confirmacions a si");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 		menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,"Percentage bar");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Barra de porcentaje","Barra de percentatge");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_vertical_perc_bar,NULL,
+            "Percentage bar","Barra de porcentaje","Barra de percentatge");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_vertical_percentaje_bar.v==0 ? 'X' : ' ') );
 		//menu_add_item_menu_shortcut(array_menu_common,'p');
 		menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 		menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,"Submenu indicator");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Indicador de submenu","Indicador de submenu");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
+            "Submenu indicator","Indicador de submenu","Indicador de submenu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
         menu_add_item_menu_ayuda(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
 
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,"Minimize button");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
+            "Minimize button","Boton de minimizar","Boto de minimitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de minimizar","Boto de minimitzar");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,"Maximize button");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
+            "Maximize button","Boton de maximizar","Boto de maximitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de maximizar","Boto de maximitzar");
 		
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,"Close button");
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
+            "Close button","Boton de cerrar","Boto de tancar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Boton de cerrar","Boto de tancar");
-		//menu_add_item_menu_shortcut(array_menu_common,'l');
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,"[%c] Background button on inactive",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
