@@ -9322,18 +9322,22 @@ void menu_zxdesktop_scrfile_disable_flash(MENU_ITEM_PARAMETERS)
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_ext_desktop_settings;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_ext_desktop_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    do {
 
 
 
-		menu_add_item_menu_inicial_format(&array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_enable,menu_ext_desktop_cond,"[%c] Enabled",(screen_ext_desktop_enabled ? 'X' : ' ' ) );
+        menu_add_item_menu_inicial_format(&array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_enable,menu_ext_desktop_cond,"Enabled");
+        menu_add_item_menu_spanish_catalan(array_menu_ext_desktop_settings,"Activado","Activat");
+        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_enabled ? 'X' : ' ' ) );
 
 
 		if (screen_ext_desktop_enabled) {
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"[%4d] ~~Width",screen_ext_desktop_width);
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"~~Width");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_width);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
@@ -9347,42 +9351,62 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_ext_desktop_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 			
 
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,"[%c] Open Menu on ZX Desktop",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
+			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
+                "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_buttons,NULL,"[%c] ~~Direct access buttons",(menu_zxdesktop_buttons_enabled.v ? 'X' : ' ' ) );
+			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_buttons,NULL,
+                "~~Direct access buttons","Botones de acceso ~~directo","Botons d'access ~~directe");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_zxdesktop_buttons_enabled.v ? 'X' : ' ' ) );
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'d');
 
 			if (menu_zxdesktop_buttons_enabled.v) {
-				menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,"[%c] Transparent upper buttons",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
-                menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,"[%c] Box on upper buttons",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
+                    "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
 
-                menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,"    Customize ~~buttons");
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
+                    "Box on upper buttons","Caja en botones superiores","Caixa als botons superiors");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,
+                    "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
 
-				menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,"[%c] Transparent lower buttons",(menu_ext_desktop_transparent_lower_icons.v ? 'X' : ' ' ) );
-                menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_box,NULL,"[%c] Box on lower buttons",(menu_ext_desktop_disable_box_lower_icons.v ? ' ' : 'X' ) );
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
+                    "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_lower_icons.v ? 'X' : ' ' ) );
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_box,NULL,
+                    "Box on lower buttons","Caja en botones inferiores","Caixa als botons inferiors");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_lower_icons.v ? ' ' : 'X' ) );
 			}
         }
 
-        menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,"[%c] Footer enlarge/reduce buttons",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
+        menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
+            "Footer +/- buttons","Botones +/- en pie de pagina","Botons +/- al peu de pagina");
+        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
         menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
         menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
 
 
         if (screen_ext_desktop_enabled) {
 
-            menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
-                "[%c] Disable on Full Screen",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
+                "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
+
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. It will be enabled again going back from full screen");
 
 
 			menu_add_item_menu(array_menu_ext_desktop_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 			
-			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,"--Background--");
+			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
+                "--Background--","--Fondo--","--Fons--");
 			
 
             char fill_type_name[32];
@@ -9437,7 +9461,9 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			}
 
-            menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_filltype,NULL,"[%s] ~~Fill type",fill_type_name);
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_filltype,NULL,
+                "~~Fill type","Tipo ~~fill","Tipus ~~farcit");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",fill_type_name);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'f');
 			
 			if (seleccion_primary) {
@@ -9445,42 +9471,58 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
                 int color_primario=menu_ext_desktop_fill_first_color;
                 if (menu_ext_desktop_fill==7) color_primario &=7;
-				menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor,NULL,
-                        "[%s] Primary Fill Color",spectrum_colour_names[color_primario]);
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor,NULL,
+                        "Primary Fill Color","Color primario relleno","Color primari de farciment");
+				menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[color_primario]);
+
 			}
 
 			if (seleccion_secondary) {
-				menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor_second,NULL,"[%s] Secondary Fill Color",spectrum_colour_names[menu_ext_desktop_fill_second_color]);
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor_second,NULL,
+                    "Secondary Fill Color","Color secundario relleno","Color secundari de farciment");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[menu_ext_desktop_fill_second_color]);
 			}
 
 
             char string_back_scr_shown[20];
             menu_tape_settings_trunc_name(zxdesktop_draw_scrfile_name,string_back_scr_shown,20);
-            menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile,NULL,"~~SCR file [%s]",string_back_scr_shown);
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile,NULL,
+                "~~SCR file","archivo ~~SCR","arxiu ~~SCR");
+            menu_add_item_menu_sufijo_format(array_menu_ext_desktop_settings," [%s]",string_back_scr_shown);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'s');         
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Sets a SCR file for ZX Desktop background. Flash attributes are not used");
           
 			if (zxdesktop_draw_scrfile_name[0]!=0) {
-                menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_enable,NULL,
-                    "[%c] SCR active",(zxdesktop_draw_scrfile_enabled ? 'X' : ' ' ));
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_enable,NULL,
+                    "SCR active","SCR activo","SCR actiu");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_enabled ? 'X' : ' ' ));
+
 
                 if (zxdesktop_draw_scrfile_enabled) {
 
-                    menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_centered,NULL,
-                        "[%c] SCR centered",(zxdesktop_draw_scrfile_centered ? 'X' : ' ' ));
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_centered,NULL,
+                        "SCR centered","SCR centrado","SCR centrat");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_centered ? 'X' : ' ' ));
 
-                    menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_fillscale,NULL,
-                        "[%c] SCR autoscale",(zxdesktop_draw_scrfile_fill_scale ? 'X' : ' ' ));
+
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_fillscale,NULL,
+                        "SCR autoscale","SCR autoescalar","SCR autoescalar");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_fill_scale ? 'X' : ' ' ));
+
 
 
                     if (!zxdesktop_draw_scrfile_fill_scale) {
-                        menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_scalefactor,NULL,
-                            "[%d] SCR scale factor",zxdesktop_draw_scrfile_scale_factor);
+                        menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_scalefactor,NULL,
+                            "SCR scale factor","SCR factor de escala","SCR factor d'escala");
+                        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%d] ",zxdesktop_draw_scrfile_scale_factor);
+
                     }
 
-                    menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
-                        "[%c] SCR allow flash",(zxdesktop_draw_scrfile_disable_flash==0 ? 'X' : ' ' ));
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
+                        "SCR allow flash","SCR permitir parpadeo","SCR permetre parpelleig");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_disable_flash==0 ? 'X' : ' ' ));
+
 
                 }
 
