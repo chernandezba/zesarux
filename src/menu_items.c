@@ -23092,8 +23092,8 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_machine_selection,"Change machine type without resetting.");
                         menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
 
-                        menu_add_item_menu(array_menu_machine_selection,"Custom machine",MENU_OPCION_NORMAL,menu_custom_machine,NULL);
-                        menu_add_item_menu_spanish(array_menu_machine_selection,"Maquina personalizada");
+                        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine,NULL,
+                            "Custom machine","Maquina personalizada","Maquina personalitzada");
                         menu_add_item_menu_tooltip(array_menu_machine_selection,"Specify custom machine type & ROM");
                         menu_add_item_menu_ayuda(array_menu_machine_selection,"Specify custom machine type & ROM");
                         menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
@@ -24276,11 +24276,12 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 				
 
         menu_add_item_menu_inicial(&array_menu_audio,"Audio Chip ~~Registers",MENU_OPCION_NORMAL,menu_ay_registers,menu_cond_ay_or_sn_chip);
-        menu_add_item_menu_spanish(array_menu_audio,"Audio Chip ~~Registros");
+        menu_add_item_menu_spanish_catalan(array_menu_audio,"~~Registros del Chip de Audio","~~Registres del Xip d'Audio");
         menu_add_item_menu_shortcut(array_menu_audio,'r');
 
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_pianokeyboard,menu_cond_ay_or_sn_chip,"Audio Chip P~~iano");
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_pianokeyboard,menu_cond_ay_or_sn_chip,
+            "Audio Chip P~~iano","P~~iano del Chip de Audio","P~~iano del Xip d'Audio");
         menu_add_item_menu_shortcut(array_menu_audio,'i');
         menu_add_item_menu_tooltip(array_menu_audio,"Shows a piano keyboard with the notes being played on the AY Chip");
         menu_add_item_menu_ayuda(array_menu_audio,"Shows a piano keyboard with the notes being played on the AY Chip");
