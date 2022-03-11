@@ -19414,6 +19414,84 @@ int zxvision_simple_window_manager(int reopen_menu)
 
 }
 
+   
+
+
+z80_byte menu_topbarmenu_get_key(void)
+{
+    z80_byte tecla;
+
+    if (!menu_multitarea) {
+            //printf ("refresca pantalla\n");
+            menu_refresca_pantalla();
+    }
+
+
+    menu_cpu_core_loop();
+
+
+    menu_espera_tecla();
+    tecla=zxvision_read_keyboard();
+
+                        
+
+    return tecla;    
+}
+
+void menu_topbarmenu(void)
+{
+
+    //Prueba para mostrar una linea de menu arriba
+
+    menu_escribe_texto(0,0,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,
+        " Z | Smartload | Snapshot | Machine | Audio | Display | Storage | Debug | Network | Windows | Settings | Help ");
+
+    int tecla_leida=0;
+
+    do {
+
+        menu_refresca_pantalla();
+
+        tecla_leida=menu_topbarmenu_get_key();    
+
+        printf("tecla leida: %d\n",tecla_leida);
+
+        if (mouse_left) tecla_leida=13;
+
+    } while (tecla_leida==0);
+
+    if (tecla_leida==13 && mouse_left) {
+        int posicion_x=mouse_x/menu_char_width/menu_gui_zoom;
+
+        printf("posicion x: %d\n",posicion_x);
+
+        menu_espera_no_tecla_con_repeticion();
+
+        //prueba abrir diferentes menus
+        if (posicion_x<11) {
+
+        }
+        else if (posicion_x<34) menu_smartload(0);
+        else if (posicion_x<56) menu_snapshot(0);
+        else if (posicion_x<76) menu_machine_selection(0);
+        else if (posicion_x<92) menu_audio(0);
+        else if (posicion_x<112) menu_display_settings(0);
+        else if (posicion_x<132) menu_storage(0);
+        else if (posicion_x<148) menu_debug_main(0);
+        else if (posicion_x<169) menu_network(0);
+        else if (posicion_x<188) menu_windows(0);
+        else if (posicion_x<199) menu_settings(0);
+        else if (posicion_x<300) menu_help(0);
+
+
+//34,56,76,92,112,132,148,169,188
+
+         
+    }
+
+    menu_espera_no_tecla_con_repeticion();
+}
+
 void menu_inicio_bucle(void)
 {
 
@@ -19448,6 +19526,9 @@ void menu_inicio_bucle(void)
 		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0) {
 			//printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
 		}
+
+        //prueba menu en barra arriba del todo
+        //menu_topbarmenu();
 
         //printf("antes menu_inicio_bucle_main\n");
 		menu_inicio_bucle_main();
