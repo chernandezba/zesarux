@@ -35,10 +35,6 @@ Luego pulsar botón salir emulador
 Y cierra menus pero no sale
 
 
--Error: Con acciones con  con tecla F
-No habilita boton de cerrar todas las ventanas
-->va determinado por variable menu_mostrar_boton_close_all_menus.v=1;
-
 
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?

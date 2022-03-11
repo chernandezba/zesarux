@@ -19513,7 +19513,7 @@ void menu_inicio_bucle(void)
     //printf("salir todos menus en menu_inicio_bucle: %d\n",salir_todos_menus);
 
     //A partir de aqui ya se debe mostrar boton de cerrar todos menus
-    menu_mostrar_boton_close_all_menus.v=1;
+    //menu_mostrar_boton_close_all_menus.v=1;
 
 
 	//Si reabrimos menu despues de conmutar entre ventanas en background
@@ -19564,7 +19564,7 @@ void menu_inicio_bucle(void)
 	} while (reopen_menu);		
 
     //Ya no se deberia mostrar boton de cerrar todos menus
-    menu_mostrar_boton_close_all_menus.v=0;
+    //menu_mostrar_boton_close_all_menus.v=0;
 
 	if (textspeech_also_send_menu.v) textspeech_print_speech("Closing emulator menu and going back to emulated machine");
 	        
@@ -19581,7 +19581,7 @@ void menu_inicio_pre_retorno(void)
     menu_set_menu_abierto(0);
 
     //Ya no se deberia mostrar boton de cerrar todos menus
-    //TODO: si desde aqui ya va bien, quitarlo desde el otro sitio donde se habilita, en menu_inicio_bucle
+    //como desde aqui ya va bien, se quitó desde el otro sitio donde se deshabilita, en menu_inicio_bucle
     menu_mostrar_boton_close_all_menus.v=0;    
 
 
@@ -20199,7 +20199,7 @@ void menu_inicio(void)
 	//printf ("inicio menu_inicio2 salir todos menus: %d\n",salir_todos_menus);
 
     //a partir de este momento ya mostrar boton de cerrar todos menus
-    //TODO: si desde aqui ya va bien, quitarlo desde el otro sitio donde se habilita, en menu_inicio_bucle 
+    //como desde aqui ya va bien, se quitó desde el otro sitio donde se habilita, en menu_inicio_bucle 
     menu_mostrar_boton_close_all_menus.v=1;
 
 
