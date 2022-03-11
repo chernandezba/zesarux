@@ -19580,6 +19580,10 @@ void menu_inicio_pre_retorno(void)
     reset_menu_overlay_function();
     menu_set_menu_abierto(0);
 
+    //Ya no se deberia mostrar boton de cerrar todos menus
+    //TODO: si desde aqui ya va bien, quitarlo desde el otro sitio donde se habilita, en menu_inicio_bucle
+    menu_mostrar_boton_close_all_menus.v=0;    
+
 
     //Para refrescar border en caso de tsconf por ejemplo, en que el menu sobreescribe el border
     //modificado_border.v=1;
@@ -20193,6 +20197,10 @@ void menu_inicio(void)
 	salir_todos_menus=0;
 
 	//printf ("inicio menu_inicio2 salir todos menus: %d\n",salir_todos_menus);
+
+    //a partir de este momento ya mostrar boton de cerrar todos menus
+    //TODO: si desde aqui ya va bien, quitarlo desde el otro sitio donde se habilita, en menu_inicio_bucle 
+    menu_mostrar_boton_close_all_menus.v=1;
 
 
 	//Si first aid al inicio
