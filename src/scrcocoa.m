@@ -545,7 +545,7 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
     //printf("Element value: %ld\n", elementValue);
 
     int usage = IOHIDElementGetUsage(element);
-    printf("Usage: %d X %d Y %d HAT %d\n",usage,kHIDUsage_GD_X,kHIDUsage_GD_Y,kHIDUsage_GD_Hatswitch);
+    //printf("Usage: %d X %d Y %d HAT %d\n",usage,kHIDUsage_GD_X,kHIDUsage_GD_Y,kHIDUsage_GD_Hatswitch);
 
     int usagePage = IOHIDElementGetUsagePage(element);
     //printf("Usagepage: %d kHIDPage_GenericDesktop %d kHIDPage_Button %d\n",usagePage,kHIDPage_GenericDesktop,kHIDPage_Button);
@@ -572,193 +572,164 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
     //Axis
     if(usagePage==kHIDPage_GenericDesktop) {
 
-            switch(usage) {
-      case kHIDUsage_GD_X:
-      case kHIDUsage_GD_Y:
-        //printf("AXIS\n");
+        switch(usage) {
+            case kHIDUsage_GD_X:
+            case kHIDUsage_GD_Y:
+            //printf("AXIS\n");
 
-        boton=usage;
-        long int valorboton=elementValue;      //necesitamos que esto sea long para poder multiplicar por 65534 y no salir del rangpo maximo  
+                boton=usage;
+                long int valorboton=elementValue;      //necesitamos que esto sea long para poder multiplicar por 65534 y no salir del rangpo maximo  
 
-        long max=IOHIDElementGetPhysicalMax(element);
-        long min=IOHIDElementGetPhysicalMin(element);
-        long diff=max-min;
-        debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
+                long max=IOHIDElementGetPhysicalMax(element);
+                long min=IOHIDElementGetPhysicalMin(element);
+                long diff=max-min;
+                debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event button value: %ld. Min allowed: %ld Max allowed: %ld Diff: %ld ",valorboton,min,max,diff);
 
-        //Al menos 2 valores de diferencia 
-        if (diff>1) {
-               
+                //Al menos 2 valores de diferencia 
+                if (diff>1) {
+                    
 
-            //Desplazamos. Valor menor a 0
-            valorboton -=min;
+                    //Desplazamos. Valor menor a 0
+                    valorboton -=min;
 
-            //printf("1: %ld\n",valorboton);
+                    //printf("1: %ld\n",valorboton);
 
-            //Y escalamos a 65535
-            valorboton=(valorboton*65535)/diff;
+                    //Y escalamos a 65535
+                    valorboton=(valorboton*65535)/diff;
 
-            //printf("2: %ld\n",valorboton);
+                    //printf("2: %ld\n",valorboton);
 
-            //Y desplazamos a -32767 a 32767
-            valorboton -=32767;
+                    //Y desplazamos a -32767 a 32767
+                    valorboton -=32767;
 
-            //printf("3: %ld\n",valorboton);
-
-
-
-            int valorfinalaxis=valorboton;
-
-            //El valor de info lo guardo como el valor en crudo sin ajustar con autocalibrate
-            menu_info_joystick_last_raw_value=valorfinalaxis;
-
-            //Si valor en medio, asumimos 0
-            if (valorfinalaxis<realjoystick_autocalibrate_value && valorfinalaxis>-realjoystick_autocalibrate_value) valorfinalaxis=0;
-
-            //printf("Set axis %d value %d\n\n",boton,valorfinalaxis);
-
-            debug_printf(VERBOSE_DEBUG,"Set axis %d value %d",boton,valorfinalaxis);
-
-            realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis);
-            realjoystick_hit=1;
-     
-        }
-
-        break;
-
-        case kHIDUsage_GD_Hatswitch:
-            printf("Hat pressed\n");
-            printf("boton %d\n",usage);
-
-            boton=usage;
-
-            int valorfinalaxis=0;
-
-            //Left, Right en valor de boton
-            //Down, UP en valor de boton+1
-            //TODO: esto es completamente arbitrario y solo para poder usar bien funcion realjoystick_common_set_event como si fuera un AXIS
-
-            printf("elementValue: %ld\n",elementValue);
-
-            //Valores deducidos mediante dos joystick con hat: 0 arriba, 2 derecha, 4 abajo, 6 izquierda
-            //0,1,2,3,4,5,6,7, empezando con direccion arriba y yendo en las agujas del reloj
-            /*
-
-                   ^  ^
-                   | /
-                   |/
-                   ----
-
-            */
-
-            int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
-
-            #define BITMASK_DIR_UP    8
-            #define BITMASK_DIR_DOWN  4
-            #define BITMASK_DIR_LEFT  2
-            #define BITMASK_DIR_RIGHT 1
-
-            int direccion=elementValue;
-
-            switch(direccion) {
-                case 0: //up
-                    bitmask_direction |= BITMASK_DIR_UP;
-                break;
-
-                case 1: //up+right
-                    bitmask_direction |= BITMASK_DIR_UP | BITMASK_DIR_RIGHT;
-                break;
-
-                case 2: //right
-                    bitmask_direction |= BITMASK_DIR_RIGHT;
-                break;
-
-                case 3: //down+right
-                    bitmask_direction |= BITMASK_DIR_RIGHT | BITMASK_DIR_DOWN;
-                break;
-
-                case 4: //down
-                    bitmask_direction |= BITMASK_DIR_DOWN;
-                break;
-
-                case 5: //down+left
-                    bitmask_direction |= BITMASK_DIR_DOWN | BITMASK_DIR_LEFT;
-                break;
-
-                case 6: //left
-                    bitmask_direction |= BITMASK_DIR_LEFT;
-                break;
-
-                case 7: //left+up
-                    bitmask_direction |= BITMASK_DIR_LEFT | BITMASK_DIR_UP;
-                break;
+                    //printf("3: %ld\n",valorboton);
 
 
 
-                /*case 0:
-                    printf("UP\n");
-                    boton++;
-                    valorfinalaxis=-32767;
-                break;
+                    int valorfinalaxis=valorboton;
 
-                case 2:
-                    printf("RIGHT\n");
-                    valorfinalaxis=+32767;
-                break;
+                    //El valor de info lo guardo como el valor en crudo sin ajustar con autocalibrate
+                    menu_info_joystick_last_raw_value=valorfinalaxis;
 
-                case 4:
-                    printf("DOWN\n");
-                    boton++;
-                    valorfinalaxis=+32767;
-                break;
+                    //Si valor en medio, asumimos 0
+                    if (valorfinalaxis<realjoystick_autocalibrate_value && valorfinalaxis>-realjoystick_autocalibrate_value) valorfinalaxis=0;
 
-                case 6:
-                    printf("LEFT\n");
-                    valorfinalaxis=-32767;
-                break;*/
-            }
+                    //printf("Set axis %d value %d\n\n",boton,valorfinalaxis);
 
+                    debug_printf(VERBOSE_DEBUG,"Set axis %d value %d",boton,valorfinalaxis);
+
+                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis);
+                    realjoystick_hit=1;
             
-
-            //boton: up : -32767 down: 32767
-            //boton+1 left: -32767, right: 32767
-
-            if (bitmask_direction) {
-                if (bitmask_direction&BITMASK_DIR_UP) {
-                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
-                    menu_info_joystick_last_raw_value=-32767;
                 }
 
-                if (bitmask_direction&BITMASK_DIR_DOWN) {
-                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
-                    menu_info_joystick_last_raw_value=+32767;
+            break;
+
+            case kHIDUsage_GD_Hatswitch:
+                //Los "Hat" se encuentran en joysticks tipicos de simulacion de vuelo, aunque tambien en el mango de la NeoGeo X
+                //Distribuidos en forma de cruceta
+                
+
+                boton=usage;
+
+                int valorfinalaxis=0;
+
+                //Left, Right en valor de boton
+                //Down, UP en valor de boton+1
+                //TODO: esto es completamente arbitrario y solo para poder usar bien funcion realjoystick_common_set_event como si fuera un AXIS
+
+
+                printf("Cocoa driver: received joystick event, type hat, pressed button %d value %ld\n",boton,elementValue);
+
+                //Valores deducidos mediante dos joystick con hat: 0 arriba, 2 derecha, 4 abajo, 6 izquierda
+                //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
+           
+
+                int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
+
+                #define BITMASK_DIR_UP    8
+                #define BITMASK_DIR_DOWN  4
+                #define BITMASK_DIR_LEFT  2
+                #define BITMASK_DIR_RIGHT 1
+
+                int direccion=elementValue;
+
+                //TODO: podria enviar las direcciones directamente desde este switch pero queda mas limpio enviarlas abajo,
+                //tambien me ahorro sentencias de realjoystick_common_set_event repetidas para las diagonales
+
+                switch(direccion) {
+                    case 0: //up
+                        bitmask_direction |= BITMASK_DIR_UP;
+                    break;
+
+                    case 1: //up+right
+                        bitmask_direction |= BITMASK_DIR_UP | BITMASK_DIR_RIGHT;
+                    break;
+
+                    case 2: //right
+                        bitmask_direction |= BITMASK_DIR_RIGHT;
+                    break;
+
+                    case 3: //down+right
+                        bitmask_direction |= BITMASK_DIR_RIGHT | BITMASK_DIR_DOWN;
+                    break;
+
+                    case 4: //down
+                        bitmask_direction |= BITMASK_DIR_DOWN;
+                    break;
+
+                    case 5: //down+left
+                        bitmask_direction |= BITMASK_DIR_DOWN | BITMASK_DIR_LEFT;
+                    break;
+
+                    case 6: //left
+                        bitmask_direction |= BITMASK_DIR_LEFT;
+                    break;
+
+                    case 7: //left+up
+                        bitmask_direction |= BITMASK_DIR_LEFT | BITMASK_DIR_UP;
+                    break;
+
+
                 }
 
-                if (bitmask_direction&BITMASK_DIR_LEFT) {
-                    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
-                    menu_info_joystick_last_raw_value=-32767;
+                
+
+                //boton: up : -32767 down: 32767
+                //boton+1 left: -32767, right: 32767
+
+                if (bitmask_direction) {
+                    if (bitmask_direction&BITMASK_DIR_UP) {
+                        realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
+                        menu_info_joystick_last_raw_value=-32767;
+                    }
+
+                    if (bitmask_direction&BITMASK_DIR_DOWN) {
+                        realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
+                        menu_info_joystick_last_raw_value=+32767;
+                    }
+
+                    if (bitmask_direction&BITMASK_DIR_LEFT) {
+                        realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
+                        menu_info_joystick_last_raw_value=-32767;
+                    }
+
+                    if (bitmask_direction&BITMASK_DIR_RIGHT) {
+                        realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
+                        menu_info_joystick_last_raw_value=+32767;
+                    }                
+
+
+                    realjoystick_hit=1;
+
                 }
 
-                if (bitmask_direction&BITMASK_DIR_RIGHT) {
-                    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
-                    menu_info_joystick_last_raw_value=+32767;
-                }                
-
-
-                //printf("Set axis %d value %d",boton,valorfinalaxis);
-
-                //realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,valorfinalaxis);
-                realjoystick_hit=1;
-
-                //menu_info_joystick_last_raw_value=valorfinalaxis;
-
-            }
-
-            //y si es 0, reseteamos movimiento
-            else {
-                realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
-                realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
-            }
-        break;
+                //y si es 0, reseteamos movimiento
+                else {
+                    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+                    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+                }
+            break;
 
         }
     }
