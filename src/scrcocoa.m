@@ -639,7 +639,7 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
                 //TODO: esto es completamente arbitrario y solo para poder usar bien funcion realjoystick_common_set_event como si fuera un AXIS
 
 
-                printf("Cocoa driver: received joystick event, type hat, pressed button %d value %ld\n",boton,elementValue);
+                debug_printf(VERBOSE_DEBUG,"Cocoa driver: received joystick event, type hat, pressed button %d value %ld",boton,elementValue);
 
                 //Valores deducidos mediante dos joystick con hat: 0 arriba, 2 derecha, 4 abajo, 6 izquierda
                 //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
