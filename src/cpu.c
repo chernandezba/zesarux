@@ -9536,7 +9536,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 //En SDL2 y SDL1, rutinas de refresco de pantalla se deben lanzar desde el thread principal. Por tanto:
 #ifdef COMPILE_SDL
 	if (!strcmp(driver_screen,"sdl")) {
-		debug_printf (VERBOSE_INFO,"Calling main loop emulator on the main thread as it is required by SDL2");
+		debug_printf (VERBOSE_INFO,"Calling main loop emulator on the main thread as it is required by SDL");
 		emulator_main_loop();
 
 		//Aqui no se llega nunca pero por si acaso

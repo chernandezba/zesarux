@@ -13,8 +13,8 @@ Added Autorewind tape setting
 Added Z80 Halt signal state support on zsf snapshot
 Added MSX Joystick emulation
 Added Spectravideo Joystick emulation
+Added device button for ZX-Uno Flash device
 Added another easter egg ;)
-Added button for ZX-Uno Flash device
 
 
 Improved Text Adventure Debugging:

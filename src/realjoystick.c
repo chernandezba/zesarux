@@ -1304,25 +1304,27 @@ void realjoystick_common_set_hat(int boton,int direccion)
     //boton+1 left: -32767, right: 32767
 
     if (bitmask_direction) {
-        if (bitmask_direction&BITMASK_DIR_UP) {
+
+
+        if (bitmask_direction&BITMASK_DIR_LEFT) {
             realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
             menu_info_joystick_last_raw_value=-32767;
         }
 
-        if (bitmask_direction&BITMASK_DIR_DOWN) {
+        if (bitmask_direction&BITMASK_DIR_RIGHT) {
             realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
             menu_info_joystick_last_raw_value=+32767;
-        }
+        }     
 
-        if (bitmask_direction&BITMASK_DIR_LEFT) {
+        if (bitmask_direction&BITMASK_DIR_UP) {
             realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,-32767);    
             menu_info_joystick_last_raw_value=-32767;
         }
 
-        if (bitmask_direction&BITMASK_DIR_RIGHT) {
+        if (bitmask_direction&BITMASK_DIR_DOWN) {
             realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,+32767);    
             menu_info_joystick_last_raw_value=+32767;
-        }                
+        }                   
 
 
         realjoystick_hit=1;
