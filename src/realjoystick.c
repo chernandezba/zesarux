@@ -1245,7 +1245,8 @@ void realjoystick_common_set_hat(int boton,int direccion)
 
     //Valores deducidos mediante dos joystick con hat: 
     //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
-    //15 es no movimiento (o centro?)
+    //15 es no movimiento (o centro?). Para el caso, cualquier otro valor diferente de 0-7, equivale a no movimiento
+    //aunque se elige el 15 porque es el mismo que se recibe desde la lectura de un hat de joystick
 
     //Primero reseteamos movimiento en los dos ejes simulados
     realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);

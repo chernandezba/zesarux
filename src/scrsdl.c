@@ -1669,6 +1669,7 @@ int sdl_convert_hat_windows(int v)
 
 
         default:
+            //15 indica centro en la funcion realjoystick_common_set_hat
             nuevovalor=15;
         break;
 
