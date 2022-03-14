@@ -7264,7 +7264,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_inicial(&array_menu_settings,"~~Accessibility",MENU_OPCION_NORMAL,menu_accessibility_settings,NULL);
-        menu_add_item_menu_spanish_format(array_menu_settings,"~~Accesibilidad");
+        menu_add_item_menu_spanish_catalan(array_menu_settings,"~~Accesibilidad","~~Accessibilitat");
 		menu_add_item_menu_shortcut(array_menu_settings,'a');
 		menu_add_item_menu_tooltip(array_menu_settings,"Accessibility settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Accessibility settings, to use text-to-speech facilities on ZEsarUX menu and games");
@@ -7276,8 +7276,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings,"Audio settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
-		menu_add_item_menu(array_menu_settings,"Configu~~ration file",MENU_OPCION_NORMAL,menu_settings_config_file,NULL);
-        menu_add_item_menu_spanish_format(array_menu_settings,"Archivo configu~~racion");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_config_file,NULL,
+            "Configu~~ration file","Archivo configu~~racion","Arxiu configu~~racio");
 		menu_add_item_menu_shortcut(array_menu_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_settings,"Configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings,"Configuration file");
@@ -7301,23 +7301,23 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings,"Display settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
-		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_external_tools_config,NULL,"E~~xternal tools paths");
-        menu_add_item_menu_spanish_format(array_menu_settings,"Rutas utilidades e~~xternas");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_external_tools_config,NULL,
+            "E~~xternal tools paths","Rutas utilidades e~~xternas","Rutes utilitats e~~xternes");
 		menu_add_item_menu_shortcut(array_menu_settings,'x');
         menu_add_item_menu_tooltip(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_ayuda(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
-		menu_add_item_menu(array_menu_settings,"~~File Browser",MENU_OPCION_NORMAL,menu_fileselector_settings,NULL);
-        menu_add_item_menu_spanish_format(array_menu_settings,"Navegador de ~~ficheros");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_fileselector_settings,NULL,
+            "~~File Browser","Navegador de ~~ficheros","Navegador de ~~fitxers");
 		menu_add_item_menu_shortcut(array_menu_settings,'f');
 		menu_add_item_menu_tooltip(array_menu_settings,"Settings for the File browser");
 		menu_add_item_menu_ayuda(array_menu_settings,"These settings are related to the File Browser");   
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
 		//Set F keys functions
-		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_hardware_set_f_functions,NULL,"Fu~~nction keys");
-        menu_add_item_menu_spanish_format(array_menu_settings,"Teclas de fu~~nciones");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_hardware_set_f_functions,NULL,
+            "Fu~~nction keys","Teclas de fu~~nciones","Tecles de fu~~ncions");
 		menu_add_item_menu_tooltip(array_menu_settings,"Assign actions to F keys");
 		menu_add_item_menu_ayuda(array_menu_settings,"Assign actions to F keys");
         menu_add_item_menu_shortcut(array_menu_settings,'n'); 
@@ -7341,8 +7341,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings,'o');
         menu_add_item_menu_tiene_submenu(array_menu_settings);	        
 
-		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,"~~Snapshot");
-        menu_add_item_menu_spanish_format(array_menu_settings,"In~~stantanea");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,
+            "~~Snapshot","In~~stantanea","Instantania");
 		menu_add_item_menu_shortcut(array_menu_settings,'s');
 		menu_add_item_menu_tooltip(array_menu_settings,"Snapshot settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Snapshot settings");
@@ -7353,8 +7353,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		//De momento todo lo que hay en el menu de Statistics requiere red, y este requiere pthreads
 		//Si no hay threads, tampoco este menu
 
-		menu_add_item_menu(array_menu_settings,"Stat~~istics",MENU_OPCION_NORMAL,menu_settings_statistics,NULL);
-        menu_add_item_menu_spanish_format(array_menu_settings,"Estad~~isticas");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_statistics,NULL,
+            "Stat~~istics","Estad~~isticas","Estad~~istiques");
 		menu_add_item_menu_shortcut(array_menu_settings,'i');
 		menu_add_item_menu_tooltip(array_menu_settings,"Statistics settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Statistics settings");
@@ -7362,8 +7362,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 
 #endif
 
-		menu_add_item_menu(array_menu_settings,"S~~torage",MENU_OPCION_NORMAL,menu_settings_storage,NULL);
-        menu_add_item_menu_spanish_format(array_menu_settings,"Almacenamien~~to");
+		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_storage,NULL,
+            "S~~torage","Almacenamien~~to","Emmagatzema~~tge");
 		menu_add_item_menu_shortcut(array_menu_settings,'t');
 		menu_add_item_menu_tooltip(array_menu_settings,"Storage settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Storage settings");
