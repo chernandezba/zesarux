@@ -55,6 +55,8 @@
 
 char string_dev_joystick[1024]="/dev/input/js0";
 
+int realjoystick_index=0;
+
 int ptr_realjoystick;
 
 //Por defecto dice que esta habilitado. Luego cada driver (o el null) diran si realmente existe o no

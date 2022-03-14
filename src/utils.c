@@ -4068,6 +4068,8 @@ int util_write_configfile(void)
   if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
 
 
+  if (realjoystick_index!=0)                ADD_STRING_CONFIG,"--realjoystickindex %d",realjoystick_index);
+	         
   if (no_native_linux_realjoystick.v)          ADD_STRING_CONFIG,"--no-native-linux-realjoy");
 		  
 

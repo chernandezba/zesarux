@@ -99,6 +99,8 @@ extern void realjoystick_initialize_joystick(void);
 
 extern char string_dev_joystick[];
 
+extern int realjoystick_index;
+
 extern z80_bit realjoystick_present;
 
 extern z80_bit realjoystick_disabled;
