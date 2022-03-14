@@ -1247,6 +1247,10 @@ void realjoystick_common_set_hat(int boton,int direccion)
     //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
     //15 es no movimiento (o centro?)
 
+    //Primero reseteamos movimiento en los dos ejes simulados
+    realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+    realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+
 
     int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
 
@@ -1326,10 +1330,10 @@ void realjoystick_common_set_hat(int boton,int direccion)
     }
 
     //y si es 0, reseteamos movimiento
-    else {
+    /*else {
         realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
         realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
-    }
+    }*/
 
 
 }
