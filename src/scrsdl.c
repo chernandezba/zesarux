@@ -1790,15 +1790,9 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                     
 
                         realjoystick_common_set_hat(i,valorfinalaxis);
-                        //realjoystick_hit=1;
-                        //menu_info_joystick_last_raw_value=valorfinalaxis;
-                        //realjoystick_ultimo_axis=i;
+                      
                 }   
 
-                /*if (realjoystick_ultimo_axis==i) {
-                        //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
-                        menu_info_joystick_last_raw_value=valoraxis;   
-                } */                            
 
                 sdl_states_joy_hats[i]=valorfinalaxis;
         }
