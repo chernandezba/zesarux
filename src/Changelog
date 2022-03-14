@@ -1,6 +1,7 @@
 Version 10.1-RC1 - Carrier Command edition. 11 March 2022
 
 Added real joystick support on Mac
+Added joystick support for Hat controllers
 Added setting to change ULA Data bus value
 Added showing microdrive label when expanding qlay mdv files of size 174930 bytes
 Added action to trigger left-right movement on joystick, to play Decathlon-like games

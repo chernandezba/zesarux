@@ -1537,14 +1537,17 @@ int realjoystick_sdl_total_joysticks=0;
 SDL_Joystick *sdl_joy;
 
 int sdl_num_axes=0;
+int sdl_num_hats=0;
 int sdl_num_buttons=0;
 
 
 #define SDL_JOY_MAX_BOTONS 128
 #define SDL_JOY_MAX_AXES 16
+#define SDL_JOY_MAX_HATS 16
 
 int sdl_states_joy_buttons[SDL_JOY_MAX_BOTONS];
 int sdl_states_joy_axes[SDL_JOY_MAX_AXES];
+int sdl_states_joy_hats[SDL_JOY_MAX_HATS];
 
 
 int realjoystick_sdl_init(void)
@@ -1572,10 +1575,12 @@ int realjoystick_sdl_init(void)
                         debug_printf(VERBOSE_DEBUG,"Opened Joystick 0");
 
                         sdl_num_axes=SDL_JoystickNumAxes(sdl_joy);
+                        sdl_num_hats=SDL_JoystickNumHats(sdl_joy);
                         sdl_num_buttons=SDL_JoystickNumButtons(sdl_joy);
 
                         debug_printf(VERBOSE_DEBUG,"Name: %s", SDL_JoystickName(0));
                         debug_printf(VERBOSE_DEBUG,"Number of Axes: %d", sdl_num_axes);
+                        debug_printf(VERBOSE_DEBUG,"Number of Hats: %d", sdl_num_hats);
                         debug_printf(VERBOSE_DEBUG,"Number of Buttons: %d", sdl_num_buttons);
                         //printf("Number of Balls: %d\n", SDL_JoystickNumBalls(sdl_joy));
                         //printf("Number of Hats: %d\n",SDL_JoystickNumHats(sdl_joy));
@@ -1602,6 +1607,7 @@ int realjoystick_sdl_init(void)
         int i;
         for (i=0;i<SDL_JOY_MAX_BOTONS;i++) sdl_states_joy_buttons[i]=0;
         for (i=0;i<SDL_JOY_MAX_AXES;i++) sdl_states_joy_axes[i]=0;
+        for (i=0;i<SDL_JOY_MAX_HATS;i++) sdl_states_joy_hats[i]=0;
 
 
 	return 0; //OK
@@ -1642,6 +1648,9 @@ int sdl_states_joy_axes[SDL_JOY_MAX_AXES];
 
         int total_axes=sdl_num_axes;
         if (total_axes>SDL_JOY_MAX_AXES) total_axes=SDL_JOY_MAX_AXES;
+
+        int total_hats=sdl_num_hats;
+        if (total_axes>SDL_JOY_MAX_HATS) total_hats=SDL_JOY_MAX_HATS;        
  
         for (i=0;i<total_botones;i++) {
                 int valorboton=SDL_JoystickGetButton(sdl_joy, i);
@@ -1693,10 +1702,45 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                         menu_info_joystick_last_raw_value=valoraxis;
                         realjoystick_ultimo_axis=i;
                 }
-
                 sdl_states_joy_axes[i]=valorfinalaxis;
         }
 
+
+
+        for (i=0;i<total_hats;i++) {
+                int valoraxis=SDL_JoystickGetHat(sdl_joy, i);
+                //printf ("axes %d: %d\n",i,valoraxis);
+
+                int valorfinalaxis;
+
+ 
+/*
+*en test joystick, sdl hará que last raw value se actualice al leer siempre que axis coincida con último last axis leído
+Dicho valor de axis se sobreescribira si se pulsa otro axis
+El funcionamiento será que se verá actualizado continuamente en test joystick cuando pase el umbral de calibrado. 
+A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a empezar 
+*/
+
+                valorfinalaxis=valoraxis;
+
+
+                if (realjoystick_ultimo_axis==i) {
+                        //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
+                        menu_info_joystick_last_raw_value=valoraxis;   
+                }
+
+
+                if (valorfinalaxis!=sdl_states_joy_hats[i]) {
+                        //printf ("Enviar cambio estado hat %d : %d\n",i,valorfinalaxis);
+                        debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
+                        realjoystick_common_set_hat(i,valorfinalaxis);
+                        realjoystick_hit=1;
+                        menu_info_joystick_last_raw_value=valoraxis;
+                        realjoystick_ultimo_axis=i;
+                }                
+
+                sdl_states_joy_hats[i]=valorfinalaxis;
+        }
 
 }
 
