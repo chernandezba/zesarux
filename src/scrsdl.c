@@ -1624,6 +1624,60 @@ int realjoystick_sdl_main_hit=0;
 
 int realjoystick_ultimo_axis=-1;
 
+int sdl_convert_hat_windows(int v)
+{
+
+    int nuevovalor;
+
+    //Convertir de:
+    // 1 arriba, 2 derecha, 4 abajo, 8 izquierda, y diagonales sumando bits. 0 es no movimiento
+    //a 
+    //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
+    switch (v)
+    {
+        case 1: //arriba
+            nuevovalor=0;
+        break;
+
+        case 2: //derecha
+            nuevovalor=2;
+        break;
+
+        case 3: //arriba+derecha
+            nuevovalor=1;
+        break;
+
+        case 4: //abajo
+            nuevovalor=4;
+        break;
+
+        case 6: //abajo+derecha.
+            nuevovalor=3;
+        break;
+
+        case 8: //izquierda
+            nuevovalor=6;
+        break;
+
+        case 9: //izquierda+arriba
+            nuevovalor=7;
+        break;
+
+        case 12: //izquierda+abajo
+            nuevovalor=5;
+        break;
+
+
+        default:
+            nuevovalor=15;
+        break;
+
+    }
+
+
+    return nuevovalor;
+}
+
 void realjoystick_sdl_main(void)
 {
         //printf ("calling joy sdl main\n");
@@ -1733,6 +1787,12 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                 if (valorfinalaxis!=sdl_states_joy_hats[i]) {
                         //printf ("Enviar cambio estado hat %d : %d\n",i,valorfinalaxis);
                         debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
+
+                        //por alguna razon caprichosa, en Windows estos valores no se reciben igual
+#ifdef MINGW
+                        valorfinalaxis=sdl_convert_hat_windows(valorfinalaxis);
+#endif                        
+
                         realjoystick_common_set_hat(i,valorfinalaxis);
                         realjoystick_hit=1;
                         menu_info_joystick_last_raw_value=valoraxis;

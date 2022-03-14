@@ -1245,6 +1245,7 @@ void realjoystick_common_set_hat(int boton,int direccion)
 
     //Valores deducidos mediante dos joystick con hat: 
     //0,1,2,3,4,5,6,7 empezando con direccion arriba y yendo en las agujas del reloj
+    //15 es no movimiento (o centro?)
 
 
     int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
