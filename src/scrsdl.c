@@ -1778,28 +1778,27 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
                 valorfinalaxis=valoraxis;
 
 
-                if (realjoystick_ultimo_axis==i) {
-                        //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
-                        menu_info_joystick_last_raw_value=valoraxis;   
-                }
-
+//por alguna razon caprichosa, en Windows estos valores no se reciben igual
+#ifdef MINGW
+                valorfinalaxis=sdl_convert_hat_windows(valorfinalaxis);
+#endif    
 
                 if (valorfinalaxis!=sdl_states_joy_hats[i]) {
                         //printf ("Enviar cambio estado hat %d : %d\n",i,valorfinalaxis);
-
-                        //por alguna razon caprichosa, en Windows estos valores no se reciben igual
-#ifdef MINGW
-                        valorfinalaxis=sdl_convert_hat_windows(valorfinalaxis);
-#endif    
 
                         debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
                     
 
                         realjoystick_common_set_hat(i,valorfinalaxis);
-                        realjoystick_hit=1;
+                        //realjoystick_hit=1;
                         //menu_info_joystick_last_raw_value=valorfinalaxis;
-                        realjoystick_ultimo_axis=i;
-                }                
+                        //realjoystick_ultimo_axis=i;
+                }   
+
+                /*if (realjoystick_ultimo_axis==i) {
+                        //printf ("guardar para test joystick axis boton %d valor %d\n",i,valoraxis);
+                        menu_info_joystick_last_raw_value=valoraxis;   
+                } */                            
 
                 sdl_states_joy_hats[i]=valorfinalaxis;
         }
