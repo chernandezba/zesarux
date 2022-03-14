@@ -1786,12 +1786,14 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 
                 if (valorfinalaxis!=sdl_states_joy_hats[i]) {
                         //printf ("Enviar cambio estado hat %d : %d\n",i,valorfinalaxis);
-                        debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
 
                         //por alguna razon caprichosa, en Windows estos valores no se reciben igual
 #ifdef MINGW
                         valorfinalaxis=sdl_convert_hat_windows(valorfinalaxis);
-#endif                        
+#endif    
+
+                        debug_printf (VERBOSE_DEBUG,"SDL Joystick: Sending state change, hat: %d value: %d",i,valorfinalaxis);
+                    
 
                         realjoystick_common_set_hat(i,valorfinalaxis);
                         realjoystick_hit=1;
