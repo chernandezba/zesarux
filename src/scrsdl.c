@@ -1797,7 +1797,7 @@ A partir de entonces se verá continuo hasta que se pulse otro axis. Y vuelta a 
 
                         realjoystick_common_set_hat(i,valorfinalaxis);
                         realjoystick_hit=1;
-                        menu_info_joystick_last_raw_value=valorfinalaxis;
+                        //menu_info_joystick_last_raw_value=valorfinalaxis;
                         realjoystick_ultimo_axis=i;
                 }                
 
