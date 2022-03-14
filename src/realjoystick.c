@@ -1250,6 +1250,7 @@ void realjoystick_common_set_hat(int boton,int direccion)
     //Primero reseteamos movimiento en los dos ejes simulados
     realjoystick_common_set_event(boton,REALJOYSTICK_INPUT_EVENT_AXIS,0);
     realjoystick_common_set_event(boton+1,REALJOYSTICK_INPUT_EVENT_AXIS,0);
+    menu_info_joystick_last_raw_value=0;
 
 
     int bitmask_direction=0;  //Up 8 Down 4 Left 2 Right 1  
