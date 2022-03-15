@@ -6508,6 +6508,17 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             }
         }
 
+
+		if (caracter==0xA0) {
+			//à a acentuada abierta
+			if (si_complete_video_driver()) {
+                return 159; 
+            }
+            else {
+                return 'a';
+            }
+        }
+
 		if (caracter==0xA1) {
 			//á a acentuada
 			if (si_complete_video_driver()) {
@@ -6525,6 +6536,16 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             }
             else {
                 return 'c';
+            }
+        }        
+
+		if (caracter==0xA8) {
+			//è e acentuada abierta
+			if (si_complete_video_driver()) {
+                return 160; 
+            }
+            else {
+                return 'e';
             }
         }        
 
@@ -6548,6 +6569,16 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             }
         }    
 
+		if (caracter==0xB2) {
+			//ò o acentuada abierta
+			if (si_complete_video_driver()) {
+                return 161; 
+            }
+            else {
+                return 'o';
+            }
+        }           
+
 		if (caracter==0xB3) {
 			//ó o acentuada
 			if (si_complete_video_driver()) {
@@ -6566,7 +6597,17 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             else {
                 return 'u';
             }
-        }                     
+        }   
+
+		if (caracter==0xBC) {
+			//ü u con dieresis
+			if (si_complete_video_driver()) {
+                return 162; 
+            }
+            else {
+                return 'u';
+            }
+        }                            
 
 	}
 
