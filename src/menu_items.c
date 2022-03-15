@@ -15187,7 +15187,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
                 
             menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_uartbridge,menu_network_uartbridge_cond,"~~UART Bridge emulation");
-            menu_add_item_menu_spanish(array_menu_common,"Emulacion Puente ~~UART");
+            menu_add_item_menu_spanish_catalan(array_menu_common,"Emulacion Puente ~~UART","Emulacio Pont ~~UART");
 			menu_add_item_menu_shortcut(array_menu_common,'u');
                         
 			menu_add_item_menu_tooltip(array_menu_common,"Bridge from emulated machine uart ports to a local serial uart device");
@@ -15246,8 +15246,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_online_download_extras,NULL,"Download ZEsarUX e~~xtras");
-            menu_add_item_menu_spanish(array_menu_common,"Descargar ZEsarUX e~~xtras");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_online_download_extras,NULL,
+                "Download ZEsarUX e~~xtras","Descargar e~~xtras ZEsarUX","Descarregar e~~xtres ZEsarUX");
 			menu_add_item_menu_shortcut(array_menu_common,'x');   
 			menu_add_item_menu_tooltip(array_menu_common,"Download ZEsarUX extras package");
 			menu_add_item_menu_ayuda(array_menu_common,"ZEsarUX extras package contains lots of documentation, sample games, demos, etc");
@@ -15255,8 +15255,8 @@ void menu_network(MENU_ITEM_PARAMETERS)
 #endif    
 
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_network_http_request,NULL,"Test Http request"); 
-            menu_add_item_menu_spanish(array_menu_common,"Test peticion Http");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_network_http_request,NULL,
+                "Test Http request","Test peticion Http","Test peticio Http");
 
 //Fin de condicion si hay pthreads
 #endif
@@ -24996,21 +24996,21 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 //menu debug
 void menu_debug_main(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_debug;
-        menu_item item_seleccionado;
+    menu_item *array_menu_debug;
+    menu_item item_seleccionado;
 	int retorno_menu;
 
-		//letras usadas: rhndmictxbsvfpoaug
-        do {
-                menu_add_item_menu_inicial(&array_menu_debug,"~~Reset",MENU_OPCION_NORMAL,menu_debug_reset,NULL);
+    //letras usadas: rhndmictxbsvfpoaug
+    do {
+        menu_add_item_menu_inicial(&array_menu_debug,"~~Reset",MENU_OPCION_NORMAL,menu_debug_reset,NULL);
 		menu_add_item_menu_shortcut(array_menu_debug,'r');
 
         //Agregar una acción de solo hacer PC=0 en casos, por ejemplo, en que hay divide en modo mapram y no queremos
         //que se reinicialice toda la maquina y perder ese mapeo
         //Dejamos que la acción siempre esté visible
         if (CPU_IS_Z80) {
-            menu_add_item_menu(array_menu_debug,"Set PC=0",MENU_OPCION_NORMAL,menu_debug_set_pc_zero,NULL);
-            menu_add_item_menu_spanish(array_menu_debug,"Establecer PC=0");
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_set_pc_zero,NULL,
+                "Set PC=0","Establecer PC=0","Establir PC=0");
             menu_add_item_menu_tooltip(array_menu_debug,"It only resets cpu by setting PC register to zero");
             menu_add_item_menu_ayuda(array_menu_debug,"It only resets cpu by setting PC register to zero.\n"
                 "Useful for example using DivIDE firmwares in MAPRAM mode and you need to restart it but without "
@@ -25025,10 +25025,10 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		}
 
 		if (MACHINE_IS_Z88 || MACHINE_IS_ZXUNO || MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || superupgrade_enabled.v || MACHINE_IS_TSCONF || MACHINE_IS_BASECONF) {
-	                menu_add_item_menu(array_menu_debug,"~~Hard Reset",MENU_OPCION_NORMAL,menu_debug_hard_reset,NULL);
+            menu_add_item_menu(array_menu_debug,"~~Hard Reset",MENU_OPCION_NORMAL,menu_debug_hard_reset,NULL);
 			menu_add_item_menu_shortcut(array_menu_debug,'h');
-	                menu_add_item_menu_tooltip(array_menu_debug,"Hard resets the machine");
-	                menu_add_item_menu_ayuda(array_menu_debug,"Hard resets the machine.\n"
+            menu_add_item_menu_tooltip(array_menu_debug,"Hard resets the machine");
+            menu_add_item_menu_ayuda(array_menu_debug,"Hard resets the machine.\n"
 				"On Z88, it's the same as opening flap and pressing reset button.\n"
 				"On ZX-Uno, it's the same as pressing Ctrl-Alt-Backspace or powering off and on the machine"
 				);
@@ -25039,11 +25039,14 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_spanish(array_menu_debug,"Generar ~~NMI");
 			menu_add_item_menu_shortcut(array_menu_debug,'n');
 
-			if (MACHINE_IS_TBBLUE && multiface_enabled.v && (tbblue_registers[6]&8) ) menu_add_item_menu(array_menu_debug,"Generate Multiface NMI",MENU_OPCION_NORMAL,menu_debug_nmi_multiface_tbblue,NULL);
+			if (MACHINE_IS_TBBLUE && multiface_enabled.v && (tbblue_registers[6]&8) ) {
+                menu_add_item_menu(array_menu_debug,"Generate Multiface NMI",MENU_OPCION_NORMAL,menu_debug_nmi_multiface_tbblue,NULL);
+            }
 		}
 
 		if (MACHINE_IS_ZXUNO_BOOTM_DISABLED) {
-	                menu_add_item_menu(array_menu_debug,"Generate Special NMI",MENU_OPCION_NORMAL,menu_debug_special_nmi,NULL);
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_special_nmi,NULL,
+                "Generate Special NMI","Generar NMI Especial","Generar NMI Especial");
 		}
 
 		menu_add_item_menu(array_menu_debug,"~~Debug CPU",MENU_OPCION_NORMAL,menu_debug_registers,NULL);
@@ -25072,8 +25075,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);                    
 
-        menu_add_item_menu(array_menu_debug,"Load Source Code",MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL);    
-        menu_add_item_menu_spanish(array_menu_debug,"Cargar Codigo Fuente");
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL,
+            "Load Source Code","Cargar Codigo Fuente","Carregar Codi Font");
         menu_add_item_menu_tooltip(array_menu_debug,"Load source code");                
         menu_add_item_menu_ayuda(array_menu_debug,"Load source code. It is shown on the Debug CPU window. "
             "Source code must have labels in format LXXXX or XXXX where XXXX is an address in hexadecimal. \n"
@@ -25085,8 +25088,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "of the line until the label/address is located, typically 6 or 7 characters");   
 
         if (remote_tamanyo_archivo_raw_source_code) {
-            menu_add_item_menu(array_menu_debug,"Unload Source Code",MENU_OPCION_NORMAL,menu_debug_unload_source_code,NULL);
-            menu_add_item_menu_spanish(array_menu_debug,"Descartar Codigo Fuente");
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unload_source_code,NULL,
+                "Unload Source Code","Descartar Codigo Fuente","Descartar Codi Font");
         }     
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_ZXUNO || datagear_dma_emulation.v) {
@@ -25098,8 +25101,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Ports");
 			menu_add_item_menu_shortcut(array_menu_debug,'i');
 
-			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,"~~CPU Transaction Log");
-            menu_add_item_menu_spanish(array_menu_debug,"Registro transacciones ~~CPU");
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,
+                "~~CPU Transaction Log","Registro transacciones ~~CPU","Registre transaccions ~~CPU");
 			menu_add_item_menu_shortcut(array_menu_debug,'c');
             menu_add_item_menu_tiene_submenu(array_menu_debug);
 		}
@@ -25161,8 +25164,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_debug);
 		}		
 
-        menu_add_item_menu(array_menu_debug,"Debug console",MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL);
-        menu_add_item_menu_spanish(array_menu_debug,"Consola Depuracion");
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
+            "Debug console","Consola Depuracion","Consola Depuracio");
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -25173,13 +25176,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish(array_menu_debug,"Editor He~~xadecimal");
 		menu_add_item_menu_shortcut(array_menu_debug,'x');
 
-		menu_add_item_menu(array_menu_debug,"View ~~Basic",MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond);
-        menu_add_item_menu_spanish(array_menu_debug,"Ver ~~Basic");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic,menu_debug_view_basic_cond,
+            "View ~~Basic","Ver ~~Basic","Veure ~~Basic");
 		menu_add_item_menu_shortcut(array_menu_debug,'b');
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-		    menu_add_item_menu(array_menu_debug,"View Basic variab~~les",MENU_OPCION_NORMAL,menu_debug_view_basic_variables,NULL);
-            menu_add_item_menu_spanish(array_menu_debug,"Ver variab~~les Basic");
+		    menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_basic_variables,NULL,
+                "View Basic variab~~les","Ver variab~~les Basic","Veure variab~~les Basic");
             menu_add_item_menu_shortcut(array_menu_debug,'l');
         }
 
@@ -25191,12 +25194,12 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 #endif        
 
-        menu_add_item_menu(array_menu_debug,"View Sensors",MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL);
-        menu_add_item_menu_spanish(array_menu_debug,"Ver Sensores");
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,
+            "View Sensors","Ver Sensores","Veure Sensors");
 
 		if (si_complete_video_driver() ) {
-			menu_add_item_menu(array_menu_debug,"View ~~Sprites",MENU_OPCION_NORMAL,menu_debug_view_sprites,NULL);
-            menu_add_item_menu_spanish(array_menu_debug,"Ver ~~Sprites");
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sprites,NULL,
+                "View ~~Sprites","Ver ~~Sprites","Veure ~~Sprites");
 			menu_add_item_menu_shortcut(array_menu_debug,'s');
 		}
 
@@ -25246,19 +25249,19 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_binary,NULL,"L~~oad binary block");
-        menu_add_item_menu_spanish(array_menu_debug,"Cargar bl~~oque binario");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_binary,NULL,
+            "L~~oad binary block","Cargar bl~~oque binario","Carregar bl~~oc binari");
 		menu_add_item_menu_shortcut(array_menu_debug,'o');
 
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_save_binary,NULL,"S~~ave binary block");
-        menu_add_item_menu_spanish(array_menu_debug,"S~~alvar bloque binario");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_save_binary,NULL,
+            "S~~ave binary block","S~~alvar bloque binario","S~~alvar bloc binari");
 		menu_add_item_menu_shortcut(array_menu_debug,'a');
 
 
 		if (menu_desactivado_file_utilities.v==0) {
 
-			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_file_utils,NULL,"File ~~utilities");
-            menu_add_item_menu_spanish(array_menu_debug,"~~Utilidades de archivos");
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_file_utils,NULL,
+                "File ~~utilities","~~Utilidades de archivos","~~Utilidats d'arxius");
 			menu_add_item_menu_shortcut(array_menu_debug,'u');
 			menu_add_item_menu_tooltip(array_menu_debug,"Some file utilities. NOTE: Shortcuts must be chosen pressing Shift+Key");
 			menu_add_item_menu_ayuda(array_menu_debug,"Some file utilities.\nNOTE: Shortcuts in file utilities must be chosen by pressing Shift+Key, "
@@ -25288,13 +25291,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		*/
 
 
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_write_message,NULL,"Write message");
-        menu_add_item_menu_spanish(array_menu_debug,"Escribir mensaje");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_write_message,NULL,
+            "Write message","Escribir mensaje","Escriure missatge");
 		menu_add_item_menu_tooltip(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
 		menu_add_item_menu_ayuda(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
 
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_shortcuts_window,NULL,"Shortcuts helper");
-        menu_add_item_menu_spanish(array_menu_debug,"Ayudante de atajos");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_shortcuts_window,NULL,
+            "Shortcuts helper","Ayudante de atajos","Ajudant de dreceres");
 		menu_add_item_menu_tooltip(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
 
@@ -25315,8 +25318,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 	if (MACHINE_IS_SPECTRUM_16_48) {
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_run_mantransfer,NULL,"Run mantransfer");
-        menu_add_item_menu_spanish(array_menu_debug,"Ejecutar mantransfer");
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_run_mantransfer,NULL,
+            "Run mantransfer","Ejecutar mantransfer","Executar mantransfer");
 		menu_add_item_menu_tooltip(array_menu_debug,"Run mantransfer, which dumps ram memory contents (snapshot) to Spectrum Tape\n"
 					"Only Spectrum 48k/16k models supported");
 		menu_add_item_menu_ayuda(array_menu_debug,"The difference between this option and the Save snapshot option is that "
@@ -25345,11 +25348,11 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 	
 
 
-                menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 //menu_add_item_menu(array_menu_debug,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_debug);
 
-                retorno_menu=menu_dibuja_menu(&debug_opcion_seleccionada,&item_seleccionado,array_menu_debug,"Debug" );
+        retorno_menu=menu_dibuja_menu(&debug_opcion_seleccionada,&item_seleccionado,array_menu_debug,"Debug" );
 
                 
 
