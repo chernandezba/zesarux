@@ -860,12 +860,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 			//hotkeys usadas: fbmzropcilna
 
-        	menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
+        menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
 		menu_add_item_menu_shortcut(array_menu_window_settings,'f');
 
 		if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC) {
-	        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,"[%c] ~~Border enabled", (border_enabled.v==1 ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] ~~Borde activado", (border_enabled.v==1 ? 'X' : ' ') );
+	        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
+                "~~Border enabled","~~Borde activado","~~Border activat");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
 			menu_add_item_menu_shortcut(array_menu_window_settings,'b');
 		}
 
@@ -899,46 +900,49 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 
         if (autoframeskip.v) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_no_autoframeskip_move_windows,NULL,
-                "[%c]  Also when moving windows",        
-				(auto_frameskip_even_when_movin_windows.v ? 'X' : ' ')
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_no_autoframeskip_move_windows,NULL,
+                "Also when moving windows","También al mover ventanas","També al moure finestres");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(auto_frameskip_even_when_movin_windows.v ? 'X' : ' ')                
             );
             menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving or resizing windows");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving or resizing windows. Enabling it uses less cpu when moving or resizing windows but "
                 "can make windows disappear or not refresh quickly. Disabling it enhances refreshing windows when moving but uses more cpu and may slow down emulation");
         }        
 
-		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,"[%c] Flash enabled",(disable_change_flash.v==0 ? 'X' : ' '));
-        menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Parpadeo activado",(disable_change_flash.v==0 ? 'X' : ' '));
+		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
+            "Flash enabled","Parpadeo activado","Parpelleig activat");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
 
 
         if (mouse_menu_disabled.v==0) {
-            menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,"[%c] Cl~~icking mouse opens menu", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Cl~~ick raton abre menu", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_ignore_click_open_menu,NULL,
+                "Cl~~icking mouse opens menu","Cl~~ick raton abre menú","Cl~~ick ratolí obre menú");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (mouse_menu_ignore_click_open.v==0 ? 'X' : ' ') );
+
+            
             menu_add_item_menu_tooltip(array_menu_window_settings,"Ignore mouse clicking to open menu or ZX Desktop buttons");
             menu_add_item_menu_shortcut(array_menu_window_settings,'i');
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disabling this will make mouse be ignored when clicking on "
                 "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
         }
 
-		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,"[%c] Li~~mit menu opening",
-			(menu_limit_menu_open.v ? 'X' : ' ') );
-		menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Li~~mitar apertura menu",
-			(menu_limit_menu_open.v ? 'X' : ' ') );            
+		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,
+            "Li~~mit menu opening","Li~~mitar apertura menú","Li~~mitar apertura menú");
+		menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(menu_limit_menu_open.v ? 'X' : ' ') );
 		menu_add_item_menu_shortcut(array_menu_window_settings,'m');	
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button)");			
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
 
 
 
-                if (si_complete_video_driver() ) {
-                        menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
-			menu_add_item_menu_shortcut(array_menu_window_settings,'z');
-                        menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
-                        menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
-                }
+        if (si_complete_video_driver() ) {
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom,menu_interface_zoom_cond,"[%d] Window Size ~~Zoom",zoom_x);
+                menu_add_item_menu_shortcut(array_menu_window_settings,'z');
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+        }
 
 
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075,NULL,"[%c] R~~educe to 0.75",(screen_reduce_075.v ? 'X' : ' ') );
@@ -981,8 +985,9 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		//Uso cpu no se ve en windows
 #ifndef MINGW
 		if (menu_footer) {
-			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_usage,NULL,"[%c] Show ~~CPU usage",(screen_show_cpu_usage.v ? 'X' : ' ') );
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"[%c] Mostrar uso ~~CPU",(screen_show_cpu_usage.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_show_cpu_usage,NULL,
+                "Show ~~CPU usage","Mostrar uso ~~CPU","Mostrar us ~~CPU");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(screen_show_cpu_usage.v ? 'X' : ' ') );
 			menu_add_item_menu_shortcut(array_menu_window_settings,'c');
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU usage on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells you how much host cpu machine is using ZEsarUX. So it's better to have it low. "
@@ -1005,11 +1010,10 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         char idioma[32];
         strcpy(idioma,"Default");
         if (gui_language==GUI_LANGUAGE_SPANISH) strcpy(idioma,"Español");
-        if (gui_language==GUI_LANGUAGE_CATALAN) strcpy(idioma,"Catala");
+        if (gui_language==GUI_LANGUAGE_CATALAN) strcpy(idioma,"Català");
 
-       	menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_language,NULL,"~~Language");
-        menu_add_item_menu_spanish(array_menu_window_settings,"~~Lenguaje");
-        menu_add_item_menu_catalan(array_menu_window_settings,"~~Llenguatge");
+       	menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_language,NULL,
+            "~~Language","~~Lenguaje","~~Llenguatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
 
@@ -1018,8 +1022,8 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		if (strcmp(scr_new_driver_name,"cocoa")) {
             menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,"Change Video Driver");
-            menu_add_item_menu_spanish_format(array_menu_window_settings,"Cambiar Driver Video");
+			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
+                "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
 		}
 
 	
@@ -1027,21 +1031,21 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         
 		menu_add_ESC_item(array_menu_window_settings);
 
-                //retorno_menu=menu_dibuja_menu(&window_settings_opcion_seleccionada,&item_seleccionado,array_menu_window_settings,"ZEsarUX Window Settings" );
-                retorno_menu=menu_dibuja_menu(&window_settings_opcion_seleccionada,&item_seleccionado,array_menu_window_settings,"General Settings" );
+        //retorno_menu=menu_dibuja_menu(&window_settings_opcion_seleccionada,&item_seleccionado,array_menu_window_settings,"ZEsarUX Window Settings" );
+        retorno_menu=menu_dibuja_menu(&window_settings_opcion_seleccionada,&item_seleccionado,array_menu_window_settings,"General Settings" );
 
-                
+        
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
