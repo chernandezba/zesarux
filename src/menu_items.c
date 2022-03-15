@@ -27870,7 +27870,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		char string_realtape_shown[23];
 
 		menu_add_item_menu_inicial_format(&array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,"--Standard Tape--");
-        menu_add_item_menu_spanish_format(array_menu_tape_settings,"--Cinta Estandar--");
+        menu_add_item_menu_spanish_catalan(array_menu_tape_settings,"--Cinta Estandar--","--Cinta Estandard--");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Select Standard tape for Input and Output");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Standard tapes are those handled by ROM routines and "
 					"have normal speed (no turbo). These tapes are handled by the emulator and loaded or saved "
@@ -27920,8 +27920,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_tape_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,"--Input Real Tape--");
-        menu_add_item_menu_spanish_format(array_menu_tape_settings,"--Cinta Real de Entrada--");
+		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,NULL,NULL,
+            "--Input Real Tape--","--Cinta Real de Entrada--","--Cinta Real d'Entrada--");
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Input Real Tape at normal loading Speed");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"You may select any input valid tape: o, p, tap, tzx, rwa, wav, smp. "
 					"This tape is handled the same way as the real machine does, at normal loading speed, and may "
@@ -27931,20 +27931,25 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 
 
         menu_tape_settings_trunc_name(realtape_name,string_realtape_shown,23);
-        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_open,NULL,"~~File [%s]",string_realtape_shown);
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_open,NULL,
+            "~~File","~~Fichero","~~Fitxer");
+        menu_add_item_menu_sufijo_format(array_menu_tape_settings," [%s]",string_realtape_shown);
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'f');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Audio file to use as the input audio");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Audio file to use as the input audio");
 
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,"[%c] Inserted", (realtape_inserted.v==1 ? 'X' : ' '));
+		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_insert,menu_realtape_cond,
+            "Inserted","Insertado","Insertat");
+        menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (realtape_inserted.v==1 ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Insert the audio file");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Insert the audio file");
 
 
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_pause_unpause,menu_realtape_inserted_cond,"[%c] ~~Playing", (realtape_playing.v==1 ? 'X' : ' '));
-        menu_add_item_menu_spanish_format(array_menu_tape_settings,"[%c] Re~~produciendose", (realtape_playing.v==1 ? 'X' : ' '));
+		menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_realtape_pause_unpause,menu_realtape_inserted_cond,
+            "~~Playing","Re~~produciendose","Re~~produint-se");
+        menu_add_item_menu_prefijo_format(array_menu_tape_settings,"[%c] ", (realtape_playing.v==1 ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'p');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Start playing the audio tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Start playing the audio tape");
@@ -27954,8 +27959,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");				
 
-        menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_realtape,NULL,"~~Visual Real Tape");
-        menu_add_item_menu_spanish_format(array_menu_tape_settings,"Cinta Real ~~Visual");
+        menu_add_item_menu_en_es_ca(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_visual_realtape,NULL,
+            "~~Visual Real Tape","Cinta Real ~~Visual","Cinta Real ~~Visual");
         menu_add_item_menu_shortcut(array_menu_tape_settings,'v');
         menu_add_item_menu_tooltip(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
         menu_add_item_menu_ayuda(array_menu_tape_settings,"See an audio render of your tape, see tape blocks and rewind or move forward the cassette player");
