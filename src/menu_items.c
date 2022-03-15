@@ -24004,8 +24004,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
         int retorno_menu;
         do {
             menu_add_item_menu_inicial(&array_menu_common,"~~About",MENU_OPCION_NORMAL,menu_about_about_which,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"~~Acerca de");
-            menu_add_item_menu_catalan(array_menu_common,"Quant ~~a");
+            menu_add_item_menu_spanish_catalan(array_menu_common,"~~Acerca de","Quant ~~a");
 			menu_add_item_menu_shortcut(array_menu_common,'a');
 
 			menu_add_item_menu(array_menu_common,"~~Help",MENU_OPCION_NORMAL,menu_about_help,NULL);
@@ -24023,15 +24022,16 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_common,"~~Features",MENU_OPCION_NORMAL,menu_about_features,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'f');
 
-			menu_add_item_menu(array_menu_common,"E~~xclusive features",MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL);
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL,
+                "E~~xclusive features","Caracteristicas e~~xclusivas","Caracteristiques e~~xclusives");
 			menu_add_item_menu_shortcut(array_menu_common,'x');            
 
             menu_add_item_menu(array_menu_common,"H~~istory",MENU_OPCION_NORMAL,menu_about_history,NULL);
             menu_add_item_menu_spanish(array_menu_common,"H~~istoria");
 			menu_add_item_menu_shortcut(array_menu_common,'i');
 
-            menu_add_item_menu(array_menu_common,"A~~cknowledgements",MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Agrade~~cimientos");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_acknowledgements,NULL,
+                "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
 			menu_add_item_menu_shortcut(array_menu_common,'c');
 
 			menu_add_item_menu(array_menu_common,"~~Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
@@ -24044,48 +24044,40 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_common,"Cha~~ngelog",MENU_OPCION_NORMAL,menu_about_changelog,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'n');
 
-			menu_add_item_menu(array_menu_common,"Alternate RO~~MS",MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"RO~~MS alternativas");
-            menu_add_item_menu_catalan(array_menu_common,"RO~~MS alternatives");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_alternate_roms,NULL,
+                "Alternate RO~~MS","RO~~MS alternativas","RO~~MS alternatives");
 			menu_add_item_menu_shortcut(array_menu_common,'m');
 
-			menu_add_item_menu(array_menu_common,"Included ~~tapes",MENU_OPCION_NORMAL,menu_about_included_tapes,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Cin~~tas incluidas");
-            menu_add_item_menu_catalan(array_menu_common,"Cin~~tes incloses");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_included_tapes,NULL,
+                "Included ~~tapes","Cin~~tas incluidas","Cin~~tes incloses");
 			menu_add_item_menu_shortcut(array_menu_common,'t');
 
 			menu_add_item_menu(array_menu_common,"Insta~~ll",MENU_OPCION_NORMAL,menu_about_install,NULL);
             menu_add_item_menu_spanish(array_menu_common,"Insta~~lar");
 			menu_add_item_menu_shortcut(array_menu_common,'l');
 
-			menu_add_item_menu(array_menu_common,"Install on ~~Windows",MENU_OPCION_NORMAL,menu_about_installwindows,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Instalar en ~~Windows");
-            menu_add_item_menu_catalan(array_menu_common,"Instalar a ~~Windows");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_installwindows,NULL,
+                "Install on ~~Windows","Instalar en ~~Windows","Instalar a ~~Windows");
 			menu_add_item_menu_shortcut(array_menu_common,'w');
 
-            menu_add_item_menu(array_menu_common,"C~~ompile info",MENU_OPCION_NORMAL,menu_about_compile_info,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Informacion de c~~ompilacion");
-            menu_add_item_menu_catalan(array_menu_common,"Informacio de c~~ompilacio");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
+                "C~~ompile info","Informacion de c~~ompilacion","Informacio de c~~ompilacio");
 			menu_add_item_menu_shortcut(array_menu_common,'o');			
 
-            menu_add_item_menu(array_menu_common,"~~Statistics",MENU_OPCION_NORMAL,menu_about_statistics,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"E~~stadisticas");
-            menu_add_item_menu_catalan(array_menu_common,"E~~stadistiques");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
+                "~~Statistics","E~~stadisticas","E~~stadistiques");
 			menu_add_item_menu_shortcut(array_menu_common,'s');
 
-            menu_add_item_menu(array_menu_common,"Core Statistics",MENU_OPCION_NORMAL,menu_about_core_statistics,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Estadisticas del nucleo");
-            menu_add_item_menu_catalan(array_menu_common,"Estadistiques del nucli");
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
+                "Core Statistics","Estadisticas del nucleo","Estadistiques del nucli");
 			//menu_add_item_menu_shortcut(array_menu_common,'r');
 
-			menu_add_item_menu(array_menu_common,"R~~unning info",MENU_OPCION_NORMAL,menu_about_running_info,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Informacion de ejec~~ucion");
-            menu_add_item_menu_catalan(array_menu_common,"Informacio d'exec~~ucio");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
+                "R~~unning info","Informacion de ejec~~ucion","Informacio d'exec~~ucio");
 			menu_add_item_menu_shortcut(array_menu_common,'u');
 
-			menu_add_item_menu(array_menu_common,"Lic~~enses",MENU_OPCION_NORMAL,menu_licenses,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"Lic~~encias");
-            menu_add_item_menu_catalan(array_menu_common,"Llic~~encies");
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
+                "Lic~~enses","Lic~~encias","Llic~~encies");
 			menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
