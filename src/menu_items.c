@@ -12676,13 +12676,13 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_inicial(&array_menu_record_mid,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 					if (mid_is_recording.v==0) {
-						menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_start,menu_cond_ay_or_sn_chip,"Start Recording");	
-                        menu_add_item_menu_spanish(array_menu_record_mid,"Iniciar Grabacion");
+						menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_start,menu_cond_ay_or_sn_chip,
+                            "Start Recording","Iniciar Grabacion","Iniciar Gravacio");
 					}
 
 					else {
-						menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_stop,menu_cond_ay_or_sn_chip,"Stop Recording");	
-                        menu_add_item_menu_spanish(array_menu_record_mid,"Detener Grabacion");
+						menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_stop,menu_cond_ay_or_sn_chip,
+                            "Stop Recording","Detener Grabacion","Aturar Gravacio");
 					}
 
 				
@@ -12693,13 +12693,13 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 					if (mid_is_recording.v) {
 
 						if (mid_is_paused.v==0) {
-							menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,"Pause Recording");
-                            menu_add_item_menu_spanish(array_menu_record_mid,"Pausar Grabacion");
+							menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,
+                                "Pause Recording","Pausar Grabacion","Pausar Gravacio");
 						}
 
 						else {
-							menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,"Resume Recording");
-                            menu_add_item_menu_spanish(array_menu_record_mid,"Continuar Grabacion");
+							menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_pause_unpause,menu_cond_ay_or_sn_chip,
+                                "Resume Recording","Continuar Grabacion","Continuar Gravacio");
 						}		
 
 
@@ -12709,7 +12709,8 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 					//No dejamos grabar hasta que no se haga stop
 					//porque el flush del final mete cabeceras de final de pistas y ya no se puede reaprovechar
 					if (mid_has_been_initialized() && mid_notes_recorded && mid_is_recording.v==0) {
-						menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_save,menu_cond_ay_or_sn_chip,"Save .MID file");
+						menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_save,menu_cond_ay_or_sn_chip,
+                            "Save .MID file","Grabar archivo .MID","Gravar arxiu .MID");
 					}
 
 
@@ -12720,8 +12721,8 @@ void menu_record_mid(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_ayuda(array_menu_record_mid,"Record also channels enabled as tone+noise");
 
 
-                    menu_add_item_menu_format(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_instrument,NULL,"Change Instrument");			
-                    menu_add_item_menu_spanish(array_menu_record_mid,"Cambiar Instrumento");
+                    menu_add_item_menu_en_es_ca(array_menu_record_mid,MENU_OPCION_NORMAL,menu_record_mid_instrument,NULL,
+                        "Change Instrument","Cambiar Instrumento","Canviar Instrument");
                     menu_add_item_menu_tiene_submenu(array_menu_record_mid);
 
 					if (mid_notes_recorded) {
