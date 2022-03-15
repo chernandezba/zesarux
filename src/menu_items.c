@@ -11257,6 +11257,8 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 	int redibujar_texto=1;	
 
+    int ancho_anterior,alto_anterior;
+    zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
     do {
 
@@ -11440,6 +11442,17 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 						//no es tecla valida, no redibujar texto
 						redibujar_texto=0;
 					break;
+
+		}
+
+		if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
+            //printf("Reescribir texto porque ha cambiado tamanyo ventana\n");
+
+			redibujar_texto=1;
+
+            zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+
+            zxvision_cls(ventana);
 
 		}
 
