@@ -9266,6 +9266,41 @@ void menu_debug_text_adventure_help(void)
         "Aparte de estas teclas, mediante los cursores, PgUp/Down, y el raton, se puede desplazar el mapa convenientemente.\n"
         );
     }
+
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_generic_message("Ajuda",
+        "Aquesta finestra és un mapa de l'aventura conversacional. Es genera automàticament sense necessitat de visitar cada posició (localitat).\n"
+        "ZEsarUX s'encarrega de visitar el mapejat de localitats sencer tot just carregar el joc, utilitzant un algoritme recursiu,"
+        "on es genera un mapa en quadrícula i es van ubicant cada localitat.\n"
+        "\n"
+        "El resultat és aquest mapa, on es mostra cada localitat, i a cadascuna:\n"
+        "- Sortides de cada localitat, indicant sortides possibles a cada punt cardinal (nord, sud, est i oest), les seves diagonals, i pujar i baixar\n"
+        "- Descripcions de cada localitat, en cas que aquesta localitat no tingui dibuix o els haguem deshabilitat del tot\n"
+        "- Dibuixos de cada localitat\n"
+        "- Objectes de cada localitat\n"
+        "Depenent del zoom aplicat, es veuen més detalls o menys.\n"
+        "\n"
+        "A causa del funcionament de l'algoritme, i que les aventures realment no ens indiquen la posició al mapa, és possible que de vegades "
+        "algunes localitats ocupin les mateixes posicions que altres. En aquest cas, es pot visualitzar de la manera següent:\n"
+        "- Localitzacions amb ? en el número són dubtoses, indiquen ubicació ocupada per mes d'una localitat, com a boscos...\n"
+        "- Sortides marcades en vermell ens porten a habitacions dubtoses.\n"
+        "\n"
+        "Les tecles següents actuen sobre el mapa:\n"
+        "z: Reduir zoom\n"
+        "x: Augmentar zoom\n"
+        "u: Pujar\n"
+        "d: Baixar\n"
+        "t: Teletransport, permet modificar l'habitació actual del joc\n"
+        "f1: Aquesta ajuda\n"
+        "f: Seguir la posició actual al mapa\n"
+        "o: Mostra objectes\n"
+        "p: Mostra dibuixos\n"
+        "v: Mostra totes les localitats, o només les localitats que hem visitat\n"
+        "c: Mostra també les habitacions sense connectar (que no tenen sortides)\n"
+        "A part d'aquestes tecles, mitjançant els cursors, PgUp/Down, i el ratolí, podeu desplaçar el mapa convenientment.\n"
+        );
+    }
+
     else {
         menu_generic_message("Help",
         "This window is a map of the text adventure. It is generated automatically without the need to visit each position (location).\n"
