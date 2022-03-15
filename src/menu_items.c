@@ -16588,33 +16588,33 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
                 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Window management");
-        menu_add_item_menu_spanish(array_menu_common,"Gestion ventanas");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Gestion ventanas","Gestio finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Move to top or close individual windows");
         menu_add_item_menu_ayuda(array_menu_common,"Move to top or close individual windows");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,"Reduce all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Reducir todas ventanas");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
+            "Reduce all windows","Reducir todas las ventanas","Reduir totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Reduce windows to maximum size 20x10");
         menu_add_item_menu_ayuda(array_menu_common,"Reduce windows to maximum size 20x10");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all,NULL,"Minimize all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Minimizar todas ventanas");        
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all,NULL,
+            "Minimize all windows","Minimizar todas las ventanas","Minimitzar totes les finestres");        
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,"Rearrange all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Reubicar todas ventanas");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_rearrange_all,NULL,
+            "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
         menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all_rearrange,NULL,"Reduce+rearrange all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Reducir+reubicar todas ventanas");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all_rearrange,NULL,
+            "Reduce+rearrange all windows","Reducir+reubicar todas las ventanas","Reduir+reubicar totes les finestres");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all_rearrange,NULL,"Minimize+rearrange all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Minimizar+reubicar todas ventanas");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_minimize_all_rearrange,NULL,
+            "Minimize+rearrange all windows","Minimizar+reubicar todas ventanas","Minimitzar+reubicar totes les finestres");
                     
         
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,"Close all windows");
-        menu_add_item_menu_spanish(array_menu_common,"Cerrar todas ventanas");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,
+            "Close all windows","Cerrar todas las ventanas","Tancar totes les finestres");
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -16655,65 +16655,66 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_inicial(&array_menu_display_settings,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu(array_menu_display_settings,"~~Load Screen",MENU_OPCION_NORMAL,menu_display_load_screen,NULL);
-            menu_add_item_menu_spanish(array_menu_display_settings,"~~Load Pantalla");
+			menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_load_screen,NULL,
+                "~~Load Screen","~~Load Pantalla","~~Load Pantalla");
 			menu_add_item_menu_shortcut(array_menu_display_settings,'l');
 		}
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
-		menu_add_item_menu(array_menu_display_settings,"~~Save Screen",MENU_OPCION_NORMAL,menu_display_save_screen,NULL);
-        menu_add_item_menu_spanish(array_menu_display_settings,"~~Salvar Pantalla");
+		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_save_screen,NULL,
+            "~~Save Screen","~~Salvar Pantalla","~~Salvar Pantalla");
 		menu_add_item_menu_shortcut(array_menu_display_settings,'s');
 		menu_add_item_menu_tooltip(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		menu_add_item_menu_ayuda(array_menu_display_settings,"Save screen to disk. BMP format requires to enable real video first");
 		}
 
 
-		menu_add_item_menu(array_menu_display_settings,"~~View Screen",MENU_OPCION_NORMAL,menu_view_screen,NULL);
-        menu_add_item_menu_spanish(array_menu_display_settings,"~~Ver Pantalla");
+		menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_view_screen,NULL,
+            "~~View Screen","~~Ver Pantalla","~~Veure Pantalla");
 		menu_add_item_menu_shortcut(array_menu_display_settings,'v');
 
 
-			menu_add_item_menu(array_menu_display_settings,"View ~~Colour Palettes",MENU_OPCION_NORMAL,menu_display_total_palette,NULL);
-            menu_add_item_menu_spanish(array_menu_display_settings,"Ver Paletas de ~~Colores");
-			menu_add_item_menu_shortcut(array_menu_display_settings,'c');
-			menu_add_item_menu_tooltip(array_menu_display_settings,"View full palettes or mapped palettes");
-			menu_add_item_menu_ayuda(array_menu_display_settings,"You can see in this menu full colour palettes or mapped colour palettes. \n"
-			 									"Full colour palettes means all the colours available for a mode, for example 256 colours on ULAPlus.\n"
-												"Mapped colour palettes means the active palette for a mode, for example 64 colours on ULAPlus."
-
-				);
+        menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_display_total_palette,NULL,
+            "View ~~Colour Palettes","Ver Paletas de ~~Colores","Veure Paletes de ~~Colors");
+        menu_add_item_menu_shortcut(array_menu_display_settings,'c');
+        menu_add_item_menu_tooltip(array_menu_display_settings,"View full palettes or mapped palettes");
+        menu_add_item_menu_ayuda(array_menu_display_settings,"You can see in this menu full colour palettes or mapped colour palettes. \n"
+                                            "Full colour palettes means all the colours available for a mode, for example 256 colours on ULAPlus.\n"
+                                            "Mapped colour palettes means the active palette for a mode, for example 64 colours on ULAPlus.");
 
 
        //Teclados en pantalla
-                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
-	                menu_add_item_menu(array_menu_display_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+            menu_add_item_menu(array_menu_display_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                        menu_add_item_menu_format(array_menu_display_settings,MENU_OPCION_NORMAL,menu_onscreen_keyboard,NULL,"On Screen ~~Keyboard");
-                        menu_add_item_menu_shortcut(array_menu_display_settings,'k');
-                        menu_add_item_menu_tooltip(array_menu_display_settings,"Open on screen keyboard");
-                        menu_add_item_menu_ayuda(array_menu_display_settings,"You can also get this pressing F8, only for Spectrum and ZX80/81 machines");
-				}
+            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_onscreen_keyboard,NULL,
+                "On Screen ~~Keyboard","Te~~klado en pantalla","Te~~klat a pantalla");
+            menu_add_item_menu_shortcut(array_menu_display_settings,'k');
+            menu_add_item_menu_tooltip(array_menu_display_settings,"Open on screen keyboard");
+            menu_add_item_menu_ayuda(array_menu_display_settings,"You can also get this pressing F8, only for Spectrum and ZX80/81 machines");
+        }
 
-				if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
 
-			menu_add_item_menu_format(array_menu_display_settings,MENU_OPCION_NORMAL,menu_osd_adventure_keyboard,NULL,"On Screen ~~Adventure Keyboard");
-                        menu_add_item_menu_shortcut(array_menu_display_settings,'a');
-                        menu_add_item_menu_tooltip(array_menu_display_settings,"Open On Screen Adventure Keyboard");
-                        menu_add_item_menu_ayuda(array_menu_display_settings,"Here you have an on screen keyboard but uses words instead of just letters. "
-				"It's useful to play Text Adventures, you can redefine your own words");
+            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_osd_adventure_keyboard,NULL,
+                "On Screen ~~Adventure Keyboard","Teclado de ~~Aventura en Pantalla","Teclat d'~~Aventura a Pantalla");
+            menu_add_item_menu_shortcut(array_menu_display_settings,'a');
+            menu_add_item_menu_tooltip(array_menu_display_settings,"Open On Screen Adventure Keyboard");
+            menu_add_item_menu_ayuda(array_menu_display_settings,"Here you have an on screen keyboard but uses words instead of just letters. "
+                "It's useful to play Text Adventures, you can redefine your own words");
 
-				}
+        }
 
 
-			if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) {
-				menu_add_item_menu_format(array_menu_display_settings,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL," ~~Extract words to Adv. Keyb.");
-                menu_add_item_menu_spanish(array_menu_display_settings," ~~Extraer palabras a tecl. aven.");
-				menu_add_item_menu_shortcut(array_menu_display_settings,'e');
-				menu_add_item_menu_tooltip(array_menu_display_settings,"Runs the word extractor tool for adventure text games");
-				menu_add_item_menu_ayuda(array_menu_display_settings,"It runs the word extractor tool and insert these words on the On Screen Adventure Keyboard. "
-					"It can detect words on games written with Quill, Paws, DAAD, and GAC");
-			}
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) {
+            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL,
+                " ~~Extract words to Adv. Keyb."," ~~Extraer palabras a Tecl. Av."," ~~Extreure paraules a Tecl. Av.");
+            menu_add_item_menu_spanish(array_menu_display_settings," ~~Extraer palabras a tecl. aven.");
+            menu_add_item_menu_shortcut(array_menu_display_settings,'e');
+            menu_add_item_menu_tooltip(array_menu_display_settings,"Runs the word extractor tool for adventure text games");
+            menu_add_item_menu_ayuda(array_menu_display_settings,"It runs the word extractor tool and insert these words on the On Screen Adventure Keyboard. "
+                "It can detect words on games written with Quill, Paws, DAAD, and GAC");
+        }
 
 
 			
@@ -16721,11 +16722,11 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
  
 
-                menu_add_item_menu(array_menu_display_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_display_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_item_menu(array_menu_display_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_display_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_display_settings);
 
-                retorno_menu=menu_dibuja_menu(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display" );
+        retorno_menu=menu_dibuja_menu(&display_settings_opcion_seleccionada,&item_seleccionado,array_menu_display_settings,"Display" );
 
                 
 
@@ -24301,22 +24302,24 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
 
 		if (si_complete_video_driver() ) {
-                menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_partitura,menu_cond_ay_or_sn_chip,"Audio Chip ~~Sheet");
-                menu_add_item_menu_spanish(array_menu_audio,"Audio Chip Partitura~~s");
+                menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_partitura,menu_cond_ay_or_sn_chip,
+                    "Audio Chip ~~Sheet","Audio Chip Partitura~~s","Audio Xip Partiture~~s");
                 menu_add_item_menu_shortcut(array_menu_audio,'s');
 		}
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_chip_info,menu_cond_ay_or_sn_chip,"Audio Chip Info");
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_chip_info,menu_cond_ay_or_sn_chip,
+            "Audio Chip Info","Audio Chip Info","Audio Xip Info");
 
         if (MACHINE_IS_SPECTRUM && gs_enabled.v) {
-            menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_general_sound,NULL,"General Sound Info");
+            menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_general_sound,NULL,
+                "General Sound Info","General Sound Info","General Sound Info");
         }
 					
 
 
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_beeper_pianokeyboard,NULL,"W~~ave Piano");
-        menu_add_item_menu_spanish(array_menu_audio,"Pi~~ano de onda");
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_beeper_pianokeyboard,NULL,
+            "W~~ave Piano","Pi~~ano de onda","Pi~~ano d'ona");
         menu_add_item_menu_shortcut(array_menu_audio,'a');		
         menu_add_item_menu_tooltip(array_menu_audio,"Shows a piano keyboard with the note being played through the output speakers");
         menu_add_item_menu_ayuda(array_menu_audio,"Shows a piano keyboard with the note being played through the output speakers. "
@@ -24326,8 +24329,8 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
         
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_new_waveform,NULL,"~~Waveform");
-        menu_add_item_menu_spanish(array_menu_audio,"Forma de onda");
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_new_waveform,NULL,
+            "~~Waveform","Forma de onda","Forma d'ona");
         menu_add_item_menu_tooltip(array_menu_audio,"Shows the waveform being played through the output speakers");
         menu_add_item_menu_ayuda(array_menu_audio,"Shows the waveform being played through the output speakers");
         menu_add_item_menu_shortcut(array_menu_audio,'w');
@@ -24350,8 +24353,8 @@ void menu_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_audio,'p');                    
 
 
-        menu_add_item_menu_format(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,"Audio Chip to .~~mid");
-        menu_add_item_menu_spanish(array_menu_audio,"Audio Chip a .~~mid");
+        menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_record_mid,menu_cond_ay_or_sn_chip,
+            "Audio Chip to .~~mid","Audio Chip a .~~mid","Audio Xip a .~~mid");
         menu_add_item_menu_tooltip(array_menu_audio,"Saves music from the AY Chip to a .mid file");
         menu_add_item_menu_ayuda(array_menu_audio,"Saves music from the AY Chip to a .mid file");
         menu_add_item_menu_shortcut(array_menu_audio,'m');
