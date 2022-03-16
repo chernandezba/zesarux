@@ -89,6 +89,7 @@ Fixed ZX Vision:
 -fixed glitches resizing some windows: AY Registers, Debug CPU, etc...
 -fixed drawing scroll bars when window is not at the top of all windows
 -fixed window Hex Editor while moving or resizing
+-fixed flickering when resizing Keyboard Help window
 -fixed reducing all windows
 
 Some other minor bugfixes and improvements

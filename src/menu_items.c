@@ -18262,7 +18262,20 @@ void menu_help_keyboard_overlay(void)
 }
 
 
+void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,
+    int ancho_antes_minimize,int alto_antes_minimize)
+{
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help","helpshowkeyboard",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
+	ventana->can_be_backgrounded=1;
+
+    //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
+    //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
+    //Al meter caracter transparente, el normal_overlay lo ignora y no dibuja ese caracter
+    zxvision_fill_window_transparent(ventana);
+
+    zxvision_draw_window(ventana);
+}
 
 zxvision_window menu_help_show_keyboard_ventana;
 
@@ -18309,15 +18322,11 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 	//zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help");
 
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help","helpshowkeyboard",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+    menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"helpshowkeyboard");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+    int ancho_anterior,alto_anterior;
+    zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
-    zxvision_draw_window(ventana);
 
 	
     //Cargar el archivo bmp
@@ -18374,10 +18383,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     if (help_keyboard_bmp_file_mem==NULL) return;
 
 
-    //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
-    //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
-    //Al meter caracter transparente, el normal_overlay lo ignora y no dibuja ese caracter
-    zxvision_fill_window_transparent(ventana);
 		
 
 
@@ -18405,6 +18410,21 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         tecla=zxvision_common_getkey_refresh();		
         zxvision_handle_cursors_pgupdn(ventana,tecla);
         //printf ("tecla: %d\n",tecla);
+
+		if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
+
+            zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+            zxvision_window_save_size(ventana,&ancho,&alto);
+            is_minimized=ventana->is_minimized;
+            is_maximized=ventana->is_maximized;
+
+            cls_menu_overlay();
+            zxvision_destroy_window(ventana);
+
+            //printf("Recrear ventana\n");
+            menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+		}        
 	} while (tecla!=2 && tecla!=3);				
 
 	//Gestionar salir con tecla background
