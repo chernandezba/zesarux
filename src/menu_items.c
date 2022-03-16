@@ -19554,7 +19554,7 @@ void menu_new_about_window_overlay(void)
 
 
 
-
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
 	zxvision_window *ventana;
 

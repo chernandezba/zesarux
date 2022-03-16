@@ -82,7 +82,7 @@ ok?->pendiente controlar que ancho linea texto no exceda en total ancho pantalla
 Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longitud de la constante MAX_….?
 
 
--probar speech ahora con nuevas funciones de generic message
+-speech con caracteres con acentos no los envia, los filtra 
 
 -Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
@@ -100,20 +100,10 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
 
-
 -Carga de archivos .p desde ZRCP
 
 https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
 
 DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0
 
--letras acentuadas abiertas, cerradas, reescribirlas para resto de charsets (ya hechas para Default, DOS), y cedilla y eñes
-a: 97 
-e: 101 
-i: 105 
-o: 111 
-u: 117
-c: 99
-n: 110
-N: 78
--probar diferentes char size a ver como se ven los acentos
+-Iconos snapshot en escritorio y otros “archivos” de ramdisk
