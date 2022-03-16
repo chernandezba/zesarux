@@ -42,6 +42,7 @@ Improved ZX Vision:
 -Added GUI styles: AmigaOS, Atari TOS, OS/2, RiscOS, ZEsarUX Plus (and this one is now the default style)
 -Improve RetroMac GUI style: striped title bar
 -Improve BeOS GUI style: buttons positions right after the title
+-Improve accented characters on different charsets
 -Detect when video driver can not use the current GUI style and set to another one that can use
 -Added translation of menu items to Spanish and Catalan
 -Added shortcuts helper to see hotkeys pressed
