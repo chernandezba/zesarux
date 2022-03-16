@@ -18320,7 +18320,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 	}		
 
 
-	//zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"Keyboard Help");
 
     menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
@@ -18414,15 +18413,10 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 		if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
 
             zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
-            zxvision_window_save_size(ventana,&ancho,&alto);
-            is_minimized=ventana->is_minimized;
-            is_maximized=ventana->is_maximized;
-
-            cls_menu_overlay();
-            zxvision_destroy_window(ventana);
-
-            //printf("Recrear ventana\n");
-            menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            
+            //Esto evita el parpadeo al redimensionar para hacer mas grande. Llenamos toda la ventana con el transparente,
+            //que se hace asi siempre al crearla por primera vez
+            zxvision_fill_window_transparent(ventana);
 
 		}        
 	} while (tecla!=2 && tecla!=3);				
