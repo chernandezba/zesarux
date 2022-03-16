@@ -19649,20 +19649,28 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
     //Textos. Creamos antes para ver el que tiene mas ancho
     char mensaje_about[3][200];
-    unsigned char letra_enye;
+    //unsigned char letra_enye;
 
     //mensaje completo con enye en segundo apellido
-    letra_enye=129;       
+    //letra_enye=129;       
 
     sprintf (mensaje_about[0],"ZEsarUX v." EMULATOR_VERSION " (" EMULATOR_SHORT_DATE ")");
     sprintf (mensaje_about[1]," - " EMULATOR_EDITION_NAME " - ");
-    sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Ba%co",letra_enye);   
+    //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Ba%co",letra_enye);   
+    sprintf (mensaje_about[2],"(C) 2013 César Hernández Bañó");   
+    //sprintf (mensaje_about[2],"(C) 2013 Cesar Hernandez Bano");   
 
     int ancho_maximo=0; 
     int i;
 
     for (i=0;i<3;i++) {
         int ancho_texto=strlen(mensaje_about[i]);
+
+        //TODO: dado que en mi nombre he puesto 3 acentos y una eñe, son 4 caracteres utf, que ocupan 2 bytes cada uno
+        //por tanto strlen ve aparentemente 4 bytes de mas, los restamos para que se redimensione correctamente la ventana
+        //lo ideal seria tener una funcion diferente a strlen que de la longitud real de un texto considerando utf
+        if (i==2) ancho_texto -=4;
+
         if (ancho_texto>ancho_maximo) ancho_maximo=ancho_texto;
     }
 

@@ -1670,14 +1670,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
-            "Use mouse on menu","Usar raton en el menu","Usar ratoli al menu");
+            "Use mouse on menu","Usar raton en el menu","Usar ratolí al menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
         if (mouse_menu_disabled.v==0) {
             if (!strcmp(scr_new_driver_name,"xwindows")  || !strcmp(scr_new_driver_name,"sdl") || !strcmp(scr_new_driver_name,"cocoa") ) {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hidemouse,NULL,
-                    "Mouse pointer","Puntero del raton","Punter del ratoli");
+                    "Mouse pointer","Puntero del raton","Punter del ratolí");
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
             }
