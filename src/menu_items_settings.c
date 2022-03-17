@@ -9666,31 +9666,31 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_ZXUNO) {
             //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-					menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,
-                        "~~Deny turbo on boot","~~Denegar turbo al inicio","~~Denegar turbo a l'inici");
-					menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );                            
-					menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
-					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
-					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
+            menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,
+                "~~Deny turbo on boot","~~Denegar turbo al inicio","~~Denegar turbo a l'inici");
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );                            
+            menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
+            menu_add_item_menu_tooltip(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
+            menu_add_item_menu_ayuda(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
 	  }
 
 		if (MACHINE_IS_TBBLUE) {
             //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-					menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,
-                        "Limit turbo on ROM","Limitar turbo en la ROM","Limitar turbo a la ROM");
-					menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,
+                "Limit turbo on ROM","Limitar turbo en la ROM","Limitar turbo a la ROM");
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
 
-					//menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
-					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
-					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
+            //menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
+            menu_add_item_menu_tooltip(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
+            menu_add_item_menu_ayuda(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
 
-					if (tbblue_deny_turbo_rom.v) {
-						menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom_max_allowed,NULL,
-                            "Max turbo allowed","Max turbo permitido","Max turbo permès");
-                        menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%d] ",tbblue_deny_turbo_rom_max_allowed);
-                        menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
-                        menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
-					}
+            if (tbblue_deny_turbo_rom.v) {
+                menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom_max_allowed,NULL,
+                    "Max turbo allowed","Max turbo permitido","Max turbo permès");
+                menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%d] ",tbblue_deny_turbo_rom_max_allowed);
+                menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
+                menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
+            }
 	  }	  
 
 		if (!MACHINE_IS_Z88) {
@@ -9734,23 +9734,23 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_ESC_item(array_menu_cpu_settings);
+        menu_add_ESC_item(array_menu_cpu_settings);
 
-                retorno_menu=menu_dibuja_menu(&cpu_settings_opcion_seleccionada,&item_seleccionado,array_menu_cpu_settings,"CPU Settings" );
+        retorno_menu=menu_dibuja_menu(&cpu_settings_opcion_seleccionada,&item_seleccionado,array_menu_cpu_settings,"CPU Settings" );
 
-                
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
