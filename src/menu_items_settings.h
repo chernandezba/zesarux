@@ -36,6 +36,7 @@ extern void menu_debug_verbose(MENU_ITEM_PARAMETERS);
 extern void menu_settings_tape(MENU_ITEM_PARAMETERS);
 extern void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS);
 extern void menu_settings_snapshot(MENU_ITEM_PARAMETERS);
+extern void menu_cpu_settings(MENU_ITEM_PARAMETERS);
 
 extern int menu_inves_cond(void);
 extern int menu_cond_stdout(void);

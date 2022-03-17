@@ -212,6 +212,7 @@ int accessibility_menu_opcion_seleccionada=0;
 int userdef_button_func_action_opcion_seleccionada=0;
 int zxdesktop_set_userdef_buttons_functions_opcion_seleccionada=0;
 int ext_desktop_settings_opcion_seleccionada=0;
+int cpu_settings_opcion_seleccionada=0;
 
 
 //Fin opciones seleccionadas para cada menu
@@ -9565,4 +9566,183 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 }
 
+
+void menu_spectrum_core_reduced(MENU_ITEM_PARAMETERS)
+{
+	core_spectrum_uses_reduced.v ^=1;
+
+	set_cpu_core_loop();
+
+}
+
+
+
+void menu_tbblue_deny_turbo_rom(MENU_ITEM_PARAMETERS)
+{
+
+	tbblue_deny_turbo_rom.v ^=1;
+}
+
+void menu_hardware_top_speed(MENU_ITEM_PARAMETERS)
+{
+	timer_toggle_top_speed_timer();
+}
+
+void menu_turbo_mode(MENU_ITEM_PARAMETERS)
+{
+	if (cpu_turbo_speed==MAX_CPU_TURBO_SPEED) cpu_turbo_speed=1;
+	else cpu_turbo_speed *=2;
+
+	cpu_set_turbo_speed();
+}
+
+void menu_zxuno_deny_turbo_bios_boot(MENU_ITEM_PARAMETERS)
+{
+	zxuno_deny_turbo_bios_boot.v ^=1;
+}
+
+void menu_cpu_type(MENU_ITEM_PARAMETERS)
+{
+	z80_cpu_current_type++;
+	if (z80_cpu_current_type>=TOTAL_Z80_CPU_TYPES) z80_cpu_current_type=0;
+}
+
+
+void menu_cpu_ldir_hack(MENU_ITEM_PARAMETERS)
+{
+	cpu_ldir_lddr_hack_optimized.v ^=1;
+}
+
+
+void menu_tbblue_deny_turbo_rom_max_allowed(MENU_ITEM_PARAMETERS)
+{
+	tbblue_deny_turbo_rom_max_allowed *=2;
+
+	if (tbblue_deny_turbo_rom_max_allowed>8) tbblue_deny_turbo_rom_max_allowed=1;
+}
+
+
+
+
+
+//menu cpu settings
+void menu_cpu_settings(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_cpu_settings;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+		//hotkeys usadas: todc
+
+		char buffer_velocidad[16];
+
+		if (CPU_IS_Z80 && !MACHINE_IS_Z88) {
+			int cpu_hz=get_cpu_frequency();
+			int cpu_khz=cpu_hz/1000;
+
+			//Obtener decimales
+			int mhz_enteros=cpu_khz/1000;
+			int decimal_mhz=cpu_khz-(mhz_enteros*1000);
+
+								//01234567890123456789012345678901
+								//           1234567890
+								//Turbo: 16X 99.999 MHz
+			sprintf(buffer_velocidad,"%d.%d MHz",mhz_enteros,decimal_mhz);
+		}
+		else {
+			buffer_velocidad[0]=0;
+		}
+
+		menu_add_item_menu_inicial_format(&array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_turbo_mode,NULL,"~~Turbo [%dX %s]",cpu_turbo_speed,buffer_velocidad);
+		menu_add_item_menu_shortcut(array_menu_cpu_settings,'t');
+		menu_add_item_menu_tooltip(array_menu_cpu_settings,"Changes only the Z80 speed");
+		menu_add_item_menu_ayuda(array_menu_cpu_settings,"Changes only the Z80 speed. Do not modify FPS, interrupts or any other parameter. "
+					"Some machines, like ZX-Uno or Chloe, change this setting");
+
+
+
+
+
+		if (MACHINE_IS_ZXUNO) {
+            //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+					menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,"[%c] ~~Deny turbo on boot",
+							(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );
+					menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
+					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
+					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
+	  }
+
+		if (MACHINE_IS_TBBLUE) {
+            //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+					menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,"[%c] Limit turbo on ROM",
+							(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
+					//menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
+					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
+					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
+
+					if (tbblue_deny_turbo_rom.v) {
+						menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom_max_allowed,NULL,"[%d] Max turbo allowed",tbblue_deny_turbo_rom_max_allowed);
+                        menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
+                        menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
+					}
+	  }	  
+
+		if (!MACHINE_IS_Z88) {
+			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_hardware_top_speed,NULL,"[%c] T~~op Speed",(top_speed_timer.v ? 'X' : ' ') );
+			menu_add_item_menu_shortcut(array_menu_cpu_settings,'o');
+			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Runs at maximum speed, when menu closed. Not available on Z88");
+			menu_add_item_menu_ayuda(array_menu_cpu_settings,"Runs at maximum speed, using 100% of CPU of host machine, when menu closed. "
+						"The display is refreshed 1 time per second. This mode is also entered when loading a real tape and "
+						"accelerate loaders setting is enabled. Not available on Z88");
+
+		}	  
+
+		if (CPU_IS_Z80) {
+            menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_type,NULL,"Z80 CPU Type [%s]",z80_cpu_types_strings[z80_cpu_current_type]);
+			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Chooses the cpu type");
+			menu_add_item_menu_ayuda(array_menu_cpu_settings,"CPU type modifies the way the CPU fires an IM0 interrupt, or the behaviour of opcode OUT (C),0, for example");
+
+
+			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_ldir_hack,NULL,"[%c] Z80 LDIR/LDDR Hack",(cpu_ldir_lddr_hack_optimized.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_cpu_settings,"EXPERIMENTAL feature! It makes a fast data transference without taking care of timings. Speeds up cpu core");
+			menu_add_item_menu_ayuda(array_menu_cpu_settings,"EXPERIMENTAL feature! It makes a fast data transference without taking care of timings. Speeds up cpu core");
+		}		
+
+		if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_spectrum_core_reduced,NULL,"Spectrum ~~core [%s]",
+			(core_spectrum_uses_reduced.v ? "Reduced" : "Normal") );
+			menu_add_item_menu_shortcut(array_menu_cpu_settings,'c');
+			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Switches between the normal Spectrum core or the reduced core");
+			menu_add_item_menu_ayuda(array_menu_cpu_settings,"When using the Spectrum reduced core, the following features are NOT available or are NOT properly emulated:\n"
+				"Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, Multiface, RZX, Raster interrupts, ZX-Uno DMA, TBBlue DMA, Datagear DMA, TBBlue Copper, Audio DAC, Stereo AY, Video out to file, Last core frame statistics");
+		}
+
+
+
+                menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                menu_add_ESC_item(array_menu_cpu_settings);
+
+                retorno_menu=menu_dibuja_menu(&cpu_settings_opcion_seleccionada,&item_seleccionado,array_menu_cpu_settings,"CPU Settings" );
+
+                
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                                
+                        }
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+}
 
