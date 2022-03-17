@@ -811,10 +811,13 @@ You can find also a "Man Software GUI Style" on the ZEsarUX menu, that uses a fo
 
 
 Q: What is ZX Vision?
-A: ZX Vision is the new ZEsarUX windows style used since version 7.2. These windows can be moved, resized, scrolled, minimized and much more.... The name is inspired by "Turbo Vision" text windows environment used on old Borland Turbo C and Turbo Pascal compilers.
+A: ZX Vision is the new ZEsarUX windows style used since version 7.2. These windows can be moved, resized, scrolled, minimized and much more.... The name is inspired from different sources:
+- "Turbo Vision" text windows environment used on old Borland Turbo C and Turbo Pascal compilers,
+- ZX Spectrum, because the first ZX Vision menu style was the same as the ones used on Spectrum +2 and +3
+- The "ZX" in ZX Vision also mean "(Z)EsarU(X)", so "ZX Vision" also means "ZEsarUX Vision"
 
 Q: What is ZX Desktop?
-A: ZX Desktop enables you to have a space on the right to place zxvision windows or other widgets. This is a work in progress, so expect improvements in the next versions
+A: ZX Desktop enables you to have a space on the right to place zxvision windows, direct access buttons, device buttons or other widgets.
 
 
 Q: What are the files required to run ZEsarUX? I see lots of files, even the Extras package have a lot more

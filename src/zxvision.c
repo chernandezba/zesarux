@@ -20,7 +20,7 @@
 */
 
 /*
-   Common menu interface functions
+   Common menu interface functions, also known as "ZX Vision"
 */
 
 //
