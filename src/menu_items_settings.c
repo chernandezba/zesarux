@@ -9666,8 +9666,9 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_ZXUNO) {
             //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-					menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,"[%c] ~~Deny turbo on boot",
-							(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );
+					menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_zxuno_deny_turbo_bios_boot,NULL,
+                        "~~Deny turbo on boot","~~Denegar turbo al inicio","~~Denegar turbo a l'inici");
+					menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(zxuno_deny_turbo_bios_boot.v ? 'X' : ' ') );                            
 					menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
 					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
 					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Denies changing turbo mode when booting ZX-Uno and on bios");
@@ -9675,14 +9676,18 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_TBBLUE) {
             //menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-					menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,"[%c] Limit turbo on ROM",
-							(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
+					menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom,NULL,
+                        "Limit turbo on ROM","Limitar turbo en la ROM","Limitar turbo a la ROM");
+					menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(tbblue_deny_turbo_rom.v ? 'X' : ' ') );
+
 					//menu_add_item_menu_shortcut(array_menu_cpu_settings,'d');
 					menu_add_item_menu_tooltip(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
 					menu_add_item_menu_ayuda(array_menu_cpu_settings,"Limit changing turbo mode on Next ROM. Useful on slow machines. Can make the boot process to fail");
 
 					if (tbblue_deny_turbo_rom.v) {
-						menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom_max_allowed,NULL,"[%d] Max turbo allowed",tbblue_deny_turbo_rom_max_allowed);
+						menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_tbblue_deny_turbo_rom_max_allowed,NULL,
+                            "Max turbo allowed","Max turbo permitido","Max turbo permès");
+                        menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%d] ",tbblue_deny_turbo_rom_max_allowed);
                         menu_add_item_menu_tooltip(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
                         menu_add_item_menu_ayuda(array_menu_cpu_settings,"Max turbo value allowed on Next ROM.");
 					}
@@ -9701,12 +9706,16 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 		if (CPU_IS_Z80) {
             menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_type,NULL,"Z80 CPU Type [%s]",z80_cpu_types_strings[z80_cpu_current_type]);
+			menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_type,NULL,
+                "Z80 CPU Type","Tipo CPU Z80","Tipus CPU Z80");
+            menu_add_item_menu_sufijo_format(array_menu_cpu_settings," [%s]",z80_cpu_types_strings[z80_cpu_current_type]);
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Chooses the cpu type");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"CPU type modifies the way the CPU fires an IM0 interrupt, or the behaviour of opcode OUT (C),0, for example");
 
 
-			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_ldir_hack,NULL,"[%c] Z80 LDIR/LDDR Hack",(cpu_ldir_lddr_hack_optimized.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_cpu_ldir_hack,NULL,
+                "Z80 LDIR/LDDR Hack","Truco Z80 LDIR/LDDR","Truc Z80 LDIR/LDDR");
+            menu_add_item_menu_prefijo_format(array_menu_cpu_settings,"[%c] ",(cpu_ldir_lddr_hack_optimized.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"EXPERIMENTAL feature! It makes a fast data transference without taking care of timings. Speeds up cpu core");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"EXPERIMENTAL feature! It makes a fast data transference without taking care of timings. Speeds up cpu core");
 		}		
@@ -9714,8 +9723,9 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu(array_menu_cpu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-			menu_add_item_menu_format(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_spectrum_core_reduced,NULL,"Spectrum ~~core [%s]",
-			(core_spectrum_uses_reduced.v ? "Reduced" : "Normal") );
+			menu_add_item_menu_en_es_ca(array_menu_cpu_settings,MENU_OPCION_NORMAL,menu_spectrum_core_reduced,NULL,
+                "Spectrum ~~core","~~Core Spectrum","~~Core Spectrum");
+			menu_add_item_menu_sufijo_format(array_menu_cpu_settings," [%s]",(core_spectrum_uses_reduced.v ? "Reduced" : "Normal") );            
 			menu_add_item_menu_shortcut(array_menu_cpu_settings,'c');
 			menu_add_item_menu_tooltip(array_menu_cpu_settings,"Switches between the normal Spectrum core or the reduced core");
 			menu_add_item_menu_ayuda(array_menu_cpu_settings,"When using the Spectrum reduced core, the following features are NOT available or are NOT properly emulated:\n"
