@@ -55,6 +55,7 @@ Improved ZX Vision:
 -Remember size before minimize and maximize window
 -Bigger window resize indicator (bottom-right of the window)
 -Enlarge content size when resizing window without having to recreate it
+-Notify to the parent function when a window has been resized
 -Allow to avoid refreshing window when changing scroll
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file

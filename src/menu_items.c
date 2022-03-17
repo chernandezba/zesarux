@@ -25203,7 +25203,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 #ifdef EMULATE_CPU_STATS
 		if (CPU_IS_Z80) {
-			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,"View CPU Statistics");
+			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,
+                "View CPU Statistics","Ver estadísticas CPU","Veure estadístiques CPU");
             menu_add_item_menu_tiene_submenu(array_menu_debug);
 		}
 
