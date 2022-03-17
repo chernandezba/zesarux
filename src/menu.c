@@ -2334,9 +2334,7 @@ z80_byte menu_get_pressed_key(void)
 
 	if (menu_backspace.v) return 12;
 
-
 	tecla=menu_get_pressed_key_no_modifier();
-
 
 
 	if (tecla==0) return 0;
@@ -9062,7 +9060,6 @@ z80_byte zxvision_read_keyboard(void)
     //Decimos que de momento no se pulsa shift+left/right
     menu_pressed_shift_left=menu_pressed_shift_right=0;
 
-	//printf ("antes menu_get_pressed_key\n");
     z80_byte tecla;
 	
 	if (!mouse_pressed_close_window && !mouse_pressed_background_window && !mouse_pressed_hotkey_window) {
@@ -13932,7 +13929,6 @@ z80_byte zxvision_common_getkey_refresh(void)
 		
 	            menu_cpu_core_loop();
 
-
 				menu_espera_tecla();
 				tecla=zxvision_read_keyboard();
 
@@ -14630,6 +14626,14 @@ z80_byte menu_da_todas_teclas(void)
 {
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 1: %d\n",mouse_movido);
+    //Inicializo a 0 para evitar warnings en el compilador
+    int ancho_anterior=0;
+    int alto_anterior=0;
+
+    if (zxvision_current_window!=NULL) {
+        zxvision_window_save_size(zxvision_current_window,&ancho_anterior,&alto_anterior);
+        //printf("--ancho antes: %d\n",zxvision_current_window->visible_width);
+    }
 
 	//Ver tambien eventos de mouse de zxvision
     //int pulsado_boton_cerrar=
@@ -14719,7 +14723,18 @@ z80_byte menu_da_todas_teclas(void)
 	//printf("valor_teclas_menus: %d\n",valor_teclas_menus);
 	acumulado=acumulado & valor_teclas_menus;
 
-
+    //Si ha cambiado tamanyo ventana, notificar como si se hubiera pulsado una tecla
+    //asi en menus como por ejemplo help keyboard, o generic message tooltip, reciben al momento como si se hubiera pulsado tecla
+    //y veran que el tamaño ha cambiado y actuan en consecuencia, por ejemplo en help keyboard recrea la ventana en transparente,
+    //y en generic message tooltip justifica de nuevo todo el texto al ancho actual
+    if (zxvision_current_window!=NULL) {
+        if (zxvision_current_window->visible_width!=ancho_anterior || zxvision_current_window->visible_height!=alto_anterior) {
+            //printf("salir por cambio geometria\n");
+            acumulado &=(255-1);
+            //NOTA: indicamos aqui que ha habido pulsacion de tecla,
+            //dado que partimos de mascara 255, poner ese bit a 0 le decimos que hay pulsada una tecla
+        }
+    }
 
 	//printf("acumulado 00 %d\n",acumulado);
 
