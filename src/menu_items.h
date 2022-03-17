@@ -110,10 +110,12 @@ extern void menu_smartload(MENU_ITEM_PARAMETERS);
 extern void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS);
 extern void menu_principal_salir_emulador(MENU_ITEM_PARAMETERS);
 extern void menu_exit_emulator(MENU_ITEM_PARAMETERS);
+extern void menu_inicio_bucle_main(void);
 
 extern void menu_reinsert_real_tape(void);
 extern int menu_tape_input_insert_cond(void);
 extern int menu_realtape_cond(void);
+
 
 
 

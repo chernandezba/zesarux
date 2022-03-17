@@ -186,6 +186,9 @@ extern int menu_generic_message_final_abajo(int primera_linea,int alto_ventana,i
 extern void menu_espera_tecla_timeout_window_splash(void);
 extern void menu_espera_tecla_o_wheel(void);
 
+extern int f_functions;
+extern char *string_esc_go_back;
+
 #define MENU_CPU_CORE_LOOP_SLEEP_NO_MULTITASK 500
 
 extern void menu_cpu_core_loop(void);
@@ -521,6 +524,9 @@ extern int defined_buttons_functions_array[];
 
 extern int menu_define_key_function(int tecla,char *funcion);
 extern int menu_define_button_function(int tecla,char *funcion);
+extern void menu_inicio_handle_button_presses(void);
+extern void menu_inicio_handle_lower_icon_presses(void);
+extern void zxvision_helper_menu_shortcut_init(void);
 
 extern enum defined_f_function_ids menu_da_accion_direct_functions_indice(int indice);
 
@@ -1032,6 +1038,11 @@ extern z80_bit menu_ext_desktop_disable_box_upper_icons;
 extern z80_bit menu_ext_desktop_disable_box_lower_icons;
 
 extern int lowericon_realtape_frame;
+
+extern int menu_pressed_zxdesktop_lower_icon_which;
+extern int menu_pressed_zxdesktop_button_which;
+
+extern int pulsado_alguna_ventana_con_menu_cerrado;
 
 
 #define ESTILO_GUI_PAPEL_NORMAL (definiciones_estilos_gui[estilo_gui_activo].papel_normal)
