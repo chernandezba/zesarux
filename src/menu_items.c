@@ -16589,7 +16589,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
                 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Window management");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Gestion ventanas","Gestio finestres");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Gestión ventanas","Gestió finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Move to top or close individual windows");
         menu_add_item_menu_ayuda(array_menu_common,"Move to top or close individual windows");
 
@@ -30240,17 +30240,16 @@ void menu_inicio_bucle_main(void)
                         );
 
 
-            menu_add_item_menu(array_menu_principal,"S~~napshot",MENU_OPCION_NORMAL,menu_snapshot,NULL);
-            menu_add_item_menu_spanish(array_menu_principal,"I~~nstantanea");
-            menu_add_item_menu_catalan(array_menu_principal,"I~~nstantania");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_snapshot,NULL,
+                "S~~napshot","I~~nstantánea","I~~nstantània");
             menu_add_item_menu_shortcut(array_menu_principal,'n');
             menu_add_item_menu_tooltip(array_menu_principal,"Load or save snapshots");
             menu_add_item_menu_ayuda(array_menu_principal,"Load or save different snapshot images. Snapshot images are loaded or saved at once");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
-            menu_add_item_menu(array_menu_principal,"~~Machine",MENU_OPCION_NORMAL,menu_machine_selection,NULL);
-            menu_add_item_menu_spanish(array_menu_principal,"~~Maquina");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
+                "~~Machine","~~Máquina","~~Màquina");
             menu_add_item_menu_shortcut(array_menu_principal,'m');
             menu_add_item_menu_tooltip(array_menu_principal,"Change active machine");
             menu_add_item_menu_ayuda(array_menu_principal,"You can switch to another machine. It also resets the machine");
@@ -30271,9 +30270,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
-            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_storage,NULL,"S~~torage");
-            menu_add_item_menu_spanish(array_menu_principal,"Almacenamien~~to");
-            menu_add_item_menu_catalan(array_menu_principal,"Emmagatzema~~tge");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_storage,NULL,
+                "S~~torage","Almacenamien~~to","Emmagatzema~~tge");
             menu_add_item_menu_shortcut(array_menu_principal,'t');
             menu_add_item_menu_tooltip(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");
             menu_add_item_menu_ayuda(array_menu_principal,"Select storage mediums, like tape, MMC, IDE, etc");
@@ -30306,9 +30304,8 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu(array_menu_principal,"",MENU_OPCION_SEPARADOR,NULL,NULL);		
 
 
-            menu_add_item_menu(array_menu_principal,"Sett~~ings",MENU_OPCION_NORMAL,menu_settings,NULL);
-            menu_add_item_menu_spanish(array_menu_principal,"Opc~~iones");
-            menu_add_item_menu_catalan(array_menu_principal,"Opc~~ions");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_settings,NULL,
+                "Sett~~ings","Opc~~iones","Opc~~ions");
             menu_add_item_menu_shortcut(array_menu_principal,'i');
             menu_add_item_menu_tooltip(array_menu_principal,"General Settings");
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
@@ -30322,16 +30319,14 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
 
-            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,"Close menu");
-            menu_add_item_menu_spanish_format(array_menu_principal,"Cerrar menu");
-            menu_add_item_menu_catalan_format(array_menu_principal,"Tancar menu");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL,
+                "Close menu","Cerrar menu","Tancar menu");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s ",esc_key_message);
             menu_add_item_menu_tooltip(array_menu_principal,string_esc_go_back);
             menu_add_item_menu_ayuda(array_menu_principal,string_esc_go_back);
 
-            menu_add_item_menu_format(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,"Exit ZEsarUX");
-            menu_add_item_menu_spanish_format(array_menu_principal,"Salir de ZEsarUX");
-            menu_add_item_menu_catalan_format(array_menu_principal,"Sortir de ZEsarUX");
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_principal_salir_emulador,NULL,
+                "Exit ZEsarUX","Salir de ZEsarUX","Sortir de ZEsarUX");
             menu_add_item_menu_prefijo_format(array_menu_principal,"%s",(f_functions==1 ? "F10 ": "") );
             menu_add_item_menu_tooltip(array_menu_principal,"Exit ZEsarUX");
             menu_add_item_menu_ayuda(array_menu_principal,"Exit ZEsarUX");

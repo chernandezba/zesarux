@@ -402,24 +402,29 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_save_on_exit,NULL,"[%c] ~~Autosave on exit",(save_configuration_file_on_exit.v ? 'X' : ' '));
+		menu_add_item_menu_inicial_format(&array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_save_on_exit,NULL,"~~Autosave on exit");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_config_file,"~~Autosalvar al salir","~~Autosalvar al sortir");
+        menu_add_item_menu_prefijo_format(array_menu_settings_config_file,"[%c] ",(save_configuration_file_on_exit.v ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'a');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Auto save configuration on exit emulator");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Auto save configuration on exit emulator and overwrite it. Note: not all settings are saved");
 
-		menu_add_item_menu_format(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_save_config,NULL,"    ~~Save configuration");
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_save_config,NULL,
+            "    ~~Save configuration","    ~~Salvar configuración","    ~~Salvar configuració");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'s');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
 
 
-		menu_add_item_menu_format(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show,NULL,"    ~~View config file");
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show,NULL,
+            "    ~~View config file","    ~~Ver archivo configuración","    ~~Veure arxiu configuració");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'v');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
 
 
-		menu_add_item_menu_format(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,"    ~~Reset config file");
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
+            "    ~~Reset config file","    ~~Resetear archivo config","    ~~Resetejar arxiu config");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'r');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Reset configuration file to default values");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");		
@@ -7206,13 +7211,15 @@ void menu_accessibility_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial_format(&array_menu_accessibility_settings,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");
+        menu_add_item_menu_spanish_catalan(array_menu_accessibility_settings,"Traps de im~~presión de caracteres","Traps d'im~~pressió de caràcters");
         menu_add_item_menu_shortcut(array_menu_accessibility_settings,'p');
         menu_add_item_menu_tooltip(array_menu_accessibility_settings,"Settings on capture print character routines");
         menu_add_item_menu_ayuda(array_menu_accessibility_settings,"Settings on capture print character routines");
         menu_add_item_menu_tiene_submenu(array_menu_accessibility_settings);
 
 
-        menu_add_item_menu_format(array_menu_accessibility_settings,MENU_OPCION_NORMAL,menu_textspeech,NULL,"~~Text to speech");
+        menu_add_item_menu_en_es_ca(array_menu_accessibility_settings,MENU_OPCION_NORMAL,menu_textspeech,NULL,
+            "~~Text to speech","~~Texto a voz","~~Text a veu");
         menu_add_item_menu_shortcut(array_menu_accessibility_settings,'t');
         menu_add_item_menu_tooltip(array_menu_accessibility_settings,"Specify a script or program to send all text generated, "
                                 "from Spectrum display or emulator menu, "
@@ -7281,7 +7288,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_config_file,NULL,
-            "Configu~~ration file","Archivo configu~~racion","Arxiu configu~~racio");
+            "Configu~~ration file","Archivo configu~~ración","Arxiu configu~~ració");
 		menu_add_item_menu_shortcut(array_menu_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_settings,"Configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings,"Configuration file");
@@ -7346,7 +7353,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);	        
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,
-            "~~Snapshot","In~~stantanea","Instantania");
+            "~~Snapshot","In~~stantánea","Instantània");
 		menu_add_item_menu_shortcut(array_menu_settings,'s');
 		menu_add_item_menu_tooltip(array_menu_settings,"Snapshot settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Snapshot settings");
@@ -7358,7 +7365,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		//Si no hay threads, tampoco este menu
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_statistics,NULL,
-            "Stat~~istics","Estad~~isticas","Estad~~istiques");
+            "Stat~~istics","Estad~~ísticas","Estad~~ístiques");
 		menu_add_item_menu_shortcut(array_menu_settings,'i');
 		menu_add_item_menu_tooltip(array_menu_settings,"Statistics settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Statistics settings");
