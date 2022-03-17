@@ -32,7 +32,7 @@
 #include "zx8081.h"
 #include "z88.h"
 #include "charset.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "timer.h"
 #include "utils.h"
 //#include "operaciones.h"

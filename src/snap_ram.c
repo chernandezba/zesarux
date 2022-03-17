@@ -43,7 +43,7 @@
 
 #include "snap_zsf.h"
 #include "snap_ram.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "autoselectoptions.h"
 
 

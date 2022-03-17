@@ -34,7 +34,7 @@
 #include "spectra.h"
 #include "debug.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "screen.h"
 #include "operaciones.h"
 #include "ulaplus.h"

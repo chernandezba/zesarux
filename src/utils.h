@@ -28,7 +28,7 @@
 
 #include "cpu.h"
 #include "compileoptions.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "expression_parser.h"
 
 #include <stdio.h>

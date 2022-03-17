@@ -27,7 +27,7 @@
 #include "debug.h"
 #include "contend.h"
 #include "mem128.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "tape.h"
 
 #include "chloe.h"

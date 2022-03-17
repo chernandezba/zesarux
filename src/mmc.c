@@ -28,7 +28,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "screen.h"
 #include "divmmc.h"
 #include "compileoptions.h"

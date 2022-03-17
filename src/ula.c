@@ -28,7 +28,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "contend.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "multiface.h"
 #include "betadisk.h"
 #include "settings.h"

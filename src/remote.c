@@ -38,7 +38,7 @@
 #include "compileoptions.h"
 #include "ql.h"
 #include "disassemble.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "menu_items.h"
 #include "menu_debug_cpu.h"
 #include "audio.h"

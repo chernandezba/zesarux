@@ -56,7 +56,7 @@ THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "mem128.h"
 #include "debug.h"
 #include "contend.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "screen.h"
 #include "ula.h"
 #include "operaciones.h"

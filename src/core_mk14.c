@@ -39,7 +39,7 @@
 #include "ay38912.h"
 #include "operaciones.h"
 #include "timer.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "compileoptions.h"
 #include "contend.h"
 #include "utils.h"

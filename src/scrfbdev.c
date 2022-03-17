@@ -106,7 +106,7 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "debug.h"
 #include "screen.h"
 #include "cpu.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "charset.h"
 #include "utils.h"
 #include "joystick.h"

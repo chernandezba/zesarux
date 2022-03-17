@@ -64,7 +64,7 @@
 #include "mem128.h"
 #include "zx8081.h"
 #include "snap.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "menu_debug_cpu.h"
 #include "core_spectrum.h"
 #include "core_zx8081.h"

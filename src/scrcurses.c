@@ -34,7 +34,7 @@
 #include "zx8081.h"
 #include "screen.h"
 #include "audio.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "joystick.h"
 #include "ula.h"

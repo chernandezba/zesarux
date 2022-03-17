@@ -29,7 +29,7 @@
 #include "contend.h"
 #include "timex.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 
 
 

@@ -26,7 +26,7 @@
 
 #include "cpu.h"
 #include "stats.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "compileoptions.h"
 #include "debug.h"
 #include "network.h"

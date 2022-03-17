@@ -29,7 +29,7 @@
 #include "audio.h"
 #include "core_ace.h"
 #include "operaciones.h"
-#include "menu.h"
+#include "zxvision.h"
 
 int amplitud_speaker_actual_ace=AMPLITUD_BEEPER;
 

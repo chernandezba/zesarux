@@ -33,7 +33,7 @@
 #include "m68k.h"
 #include "utils.h"
 #include "scmp.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "tbblue.h"
 #include "utils_text_adventure.h"
 

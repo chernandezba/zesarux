@@ -42,7 +42,7 @@
 #include "tape_smp.h"
 #include "audio.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "tape.h"
 #include "snap.h"
 #include "snap_z81.h"

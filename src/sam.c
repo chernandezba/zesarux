@@ -28,7 +28,7 @@
 #include "debug.h"
 #include "contend.h"
 #include "joystick.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "operaciones.h"
 #include "utils.h"
 #include "audio.h"

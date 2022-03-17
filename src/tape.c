@@ -41,7 +41,7 @@
 #include "snap_z81.h"
 #include "compileoptions.h"
 #include "zx8081.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "audio.h"
 #include "screen.h"

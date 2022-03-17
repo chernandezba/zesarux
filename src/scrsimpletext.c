@@ -30,7 +30,7 @@
 #include "operaciones.h"
 #include "cpu.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "joystick.h"
 #include "ula.h"
 #include "disassemble.h"

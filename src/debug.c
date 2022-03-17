@@ -38,7 +38,7 @@
 #include "debug.h"
 #include "mem128.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "zx8081.h"
 #include "operaciones.h"
 #include "core_spectrum.h"

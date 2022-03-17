@@ -38,7 +38,7 @@
 #include "screen.h"
 #include "charset.h"
 #include "debug.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "joystick.h"
 #include "cpc.h"

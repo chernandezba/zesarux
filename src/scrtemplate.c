@@ -39,7 +39,7 @@ videoname with the video driver name in lowercase letters, like "xwindows"
 #include "screen.h"
 #include "charset.h"
 #include "debug.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "cpc.h"
 #include "settings.h"
 

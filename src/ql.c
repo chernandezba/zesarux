@@ -29,7 +29,7 @@
 #include "m68k.h"
 #include "debug.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "operaciones.h"
 #include "screen.h"
 #include "settings.h"

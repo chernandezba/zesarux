@@ -41,7 +41,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "joystick.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "screen.h"
 #include "compileoptions.h"

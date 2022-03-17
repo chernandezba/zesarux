@@ -27,7 +27,7 @@
 #include "screen.h"
 #include "debug.h"
 #include "spectra.h"
-#include "menu.h"
+#include "zxvision.h"
 
 
 

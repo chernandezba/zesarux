@@ -29,7 +29,7 @@
 #include "debug.h"
 #include "contend.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "divmmc.h"
 #include "diviface.h"
 #include "screen.h"

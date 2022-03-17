@@ -27,7 +27,7 @@
 #include "ay38912.h"
 #include "mem128.h"
 #include "zx8081.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "screen.h"
 #include "compileoptions.h"
 #include "contend.h"

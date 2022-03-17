@@ -30,7 +30,7 @@
 #include "operaciones.h"
 #include "zx8081.h"
 #include "charset.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "menu_bitmaps.h"
 #include "audio.h"
 #include "contend.h"

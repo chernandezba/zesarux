@@ -29,7 +29,7 @@
 #include "cpu.h"
 #include "screen.h"
 #include "debug.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "operaciones.h"
 #include "utils.h"
 #include "ide.h"

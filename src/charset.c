@@ -24,7 +24,7 @@
 #include <string.h>
 
 #include "charset.h"
-#include "menu.h"
+#include "zxvision.h"
 
 
 struct s_charset_list charset_list[]={

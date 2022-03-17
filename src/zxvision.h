@@ -19,8 +19,8 @@
 
 */
 
-#ifndef MENU_H
-#define MENU_H
+#ifndef ZXVISION_H
+#define ZXVISION_H
 
 #include <dirent.h>
 #if defined(__APPLE__)

@@ -32,7 +32,7 @@
 #include "tape.h"
 #include "realjoystick.h"
 #include "ulaplus.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "chardetect.h"
 

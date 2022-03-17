@@ -37,7 +37,7 @@
 #include "snap.h"
 #include "zx8081.h"
 #include "timer.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "compileoptions.h"
 #include "contend.h"
 #include "snap_zx8081.h"

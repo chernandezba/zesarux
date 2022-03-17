@@ -26,7 +26,7 @@
 #include "debug.h"
 #include "screen.h"
 #include "chardetect.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "utils.h"
 #include "sam.h"
 #include "chardevice.h"

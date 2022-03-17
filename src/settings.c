@@ -34,7 +34,7 @@
 
 #include "settings.h"
 
-#include "menu.h"
+#include "zxvision.h"
 #include "menu_items.h"
 #include "screen.h"
 #include "cpu.h"

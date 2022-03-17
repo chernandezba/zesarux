@@ -25,7 +25,7 @@
 #include "operaciones.h"
 #include "debug.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "textspeech.h"
 #include "disassemble.h"
 #include "settings.h"

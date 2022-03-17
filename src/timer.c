@@ -37,7 +37,7 @@
 #include "cpu.h"
 #include "audio.h"
 #include "debug.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "tape.h"
 #include "screen.h"
 #include "compileoptions.h"

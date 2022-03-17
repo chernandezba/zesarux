@@ -35,7 +35,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
-#include "menu.h"
+#include "zxvision.h"
 
 
 z80_byte mk14_keystatus[MK14_DIGITS]={

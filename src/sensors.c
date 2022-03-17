@@ -30,7 +30,7 @@
 #include "ay38912.h"
 #include "sn76489an.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "timer.h"
 #include "stats.h"
 #include "audio.h"

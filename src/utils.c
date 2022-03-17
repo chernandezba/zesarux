@@ -61,7 +61,7 @@
 #include "snap.h"
 #include "screen.h"
 #include "realjoystick.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "menu_file_viewer_browser.h"
 #include "menu_filesel.h"
 #include "z88.h"

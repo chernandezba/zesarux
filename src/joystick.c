@@ -27,7 +27,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "zeng.h"
 
 #ifdef COMPILE_CURSES

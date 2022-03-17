@@ -36,7 +36,7 @@
 #include "zx8081.h"
 #include "snap.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "snap_zx8081.h"
 #include "utils.h"
 #include "settings.h"

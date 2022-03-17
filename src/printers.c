@@ -27,7 +27,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 
 //Si zx printer esta activa
 z80_bit zxprinter_enabled;

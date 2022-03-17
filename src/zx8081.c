@@ -29,7 +29,7 @@
 #include "audio.h"
 #include "core_zx8081.h"
 #include "operaciones.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "ula.h"
 
 //http://nocash.emubase.de/zxdocs.htm#zx80zx81videointerruptsintsandnmis

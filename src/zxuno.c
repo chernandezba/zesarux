@@ -30,7 +30,7 @@
 #include "utils.h"
 #include "ula.h"
 #include "screen.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "divmmc.h"
 #include "ay38912.h"
 #include "ulaplus.h"

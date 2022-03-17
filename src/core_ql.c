@@ -39,7 +39,7 @@
 #include "operaciones.h"
 #include "snap.h"
 #include "timer.h"
-#include "menu.h"
+#include "zxvision.h"
 #include "compileoptions.h"
 #include "contend.h"
 #include "utils.h"
