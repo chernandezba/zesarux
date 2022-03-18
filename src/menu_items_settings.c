@@ -2390,29 +2390,36 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console_enable,NULL,"[%c] Enable debug console window",
-			( debug_unnamed_console_enabled.v ? 'X' : ' ') );    
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console_enable,NULL,
+            "Debug console window","Ventana de consola depuración","Finestra de consola depuració");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_unnamed_console_enabled.v ? 'X' : ' ') );    
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Enables debug console window, it will be visible on Debug->Debug console menu");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Enables debug console window, it will be visible on Debug->Debug console menu. "
             "There it shows the same messages as the ones shown on terminal console");
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_always_console,NULL,"[%c] Always verbose console",
-			( debug_always_show_messages_in_console.v ? 'X' : ' ') );
-		menu_add_item_menu_tooltip(array_menu_settings_debug,"Always show messages in console (using simple printf) additionally to the default video driver");
-		menu_add_item_menu_ayuda(array_menu_settings_debug,"Always show messages in console (using simple printf) additionally to the default video driver. Interesting in some cases as curses, aa or caca video drivers");
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_always_console,NULL,
+            "Always debug in terminal","Siempre debug a terminal","Sempre debug a terminal");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_always_show_messages_in_console.v ? 'X' : ' ') );
+
+		menu_add_item_menu_tooltip(array_menu_settings_debug,"Always show messages in terminal console (using simple printf) additionally to the default video driver");
+		menu_add_item_menu_ayuda(array_menu_settings_debug,"Always show messages in terminal console (using simple printf) additionally to the default video driver. Interesting in some cases as curses, aa or caca video drivers");
 				
 
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_dump_snap_panic,NULL,"[%c] Dump snapshot on panic",
-			( debug_dump_zsf_on_cpu_panic.v ? 'X' : ' ') );	
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_dump_snap_panic,NULL,
+            "Dump snapshot on panic","Volcar snapshot cuando panic","Volcar snapshot quan panic");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_dump_zsf_on_cpu_panic.v ? 'X' : ' ') );	
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");	
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Dump .zsf snapshot when a cpu panic is fired");	
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_registers_console,NULL,"[%c] Show r~~egisters in console",(debug_registers==1 ? 'X' : ' '));
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_registers_console,NULL,
+            "View r~~egisters in terminal","Ver r~~egistros en terminal","Veure r~~egistres a la terminal");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(debug_registers==1 ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'e');
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_shows_invalid_opcode,NULL,"[%c] Show ~~invalid opcode",
-			(debug_shows_invalid_opcode.v ? 'X' : ' ') ); 
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_shows_invalid_opcode,NULL,
+            "Show ~~invalid opcode","Mostrar opcode ~~inválido","Mostrar opcode ~~invàlid");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(debug_shows_invalid_opcode.v ? 'X' : ' ') ); 
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'i');
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Show which opcodes are invalid (considering ED, DD, FD prefixes)");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Show which opcodes are invalid (considering ED, DD, FD prefixes). "
@@ -2423,8 +2430,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         char ayuda_leyenda[32*10]; // para 10 lineas de ayuda, mas que suficiente
         sprintf(ayuda_leyenda,"Maximum items allowed on cpu history feature. Each item uses %d bytes of memory",CPU_HISTORY_REGISTERS_SIZE);
 
-        menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_max_history,NULL,"[%d] Max history items",
-            cpu_history_get_max_size() );
+        menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_max_history,NULL,
+            "Max history items","Max items en historial","Max items a l'historial");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",cpu_history_get_max_size() );
         menu_add_item_menu_tooltip(array_menu_settings_debug,ayuda_leyenda);
         menu_add_item_menu_ayuda(array_menu_settings_debug,ayuda_leyenda);
 
@@ -2433,13 +2441,17 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
 #ifndef NETWORKING_DISABLED
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto,NULL,"[%c] ZRCP Remote protocol",(remote_protocol_enabled.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto,NULL,
+            "ZRCP Remote protocol","ZRCP protocolo Remoto","ZRCP protocol Remot");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(remote_protocol_enabled.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'r');
 
 		if (remote_protocol_enabled.v) {
-			menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,"[%d] Remote protocol ~~port",remote_protocol_port );
+			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,
+                "ZRCP ~~port","~~Puerto ZRCP","~~Port ZRCP");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",remote_protocol_port );
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'p');
@@ -2448,7 +2460,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 #endif
 
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_hardware_debug_port,NULL,"[%c] Hardware ~~debug ports",(hardware_debug_port.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_hardware_debug_port,NULL,
+            "Hardware ~~debug ports","Puertos ~~debug hardware","Ports ~~debug hardware");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(hardware_debug_port.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"If hardware debug ports are enabled");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"These ports are used to interact with ZEsarUX, for example showing a ASCII character on console, read ZEsarUX version, etc. "
 														"Read file extras/docs/zesarux_zxi_registers.txt for more information");
@@ -2457,7 +2471,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 		if (hardware_debug_port.v) {
 			menu_tape_settings_trunc_name(zesarux_zxi_hardware_debug_file,string_zesarux_zxi_hardware_debug_file_shown,18);
-        	menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_zesarux_zxi_hardware_debug_file,NULL,"Byte ~~file [%s]",string_zesarux_zxi_hardware_debug_file_shown);
+        	menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_zesarux_zxi_hardware_debug_file,NULL,
+                "Byte ~~file","~~Fichero byte","~~Fitxer byte");
+            menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",string_zesarux_zxi_hardware_debug_file_shown);
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"File used on using register 6 (HARDWARE_DEBUG_BYTE_FILE)");		
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"File used on using register 6 (HARDWARE_DEBUG_BYTE_FILE)");	
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'f');							
