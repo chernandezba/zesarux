@@ -11710,8 +11710,13 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 				//printf ("letra: %02XH\n",letra);
 				//Prefijo utf
                 if (menu_es_prefijo_utf(*texto)) {
+                    //DUDA: por que asigno a *texto y no a 1? quiza es por detectar si final de texto (codigo 0) ?
         	        era_utf=*texto;
 					//printf ("activado utf\n");
+
+                    //Si era con inverso y es utf, hay que decir que se mantiene el inverso activado durante 2 bytes, que es lo que suelen ocupar los 
+                    //utf con acentos
+                    if (inverso_letra) inverso_letra++;      
 	            }
 
 				/*else {
@@ -11744,7 +11749,8 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 			if (minuscula_letra) caracter_aux.caracter=letra_minuscula(caracter_aux.caracter);			
 		}
 
-		inverso_letra=0;
+        //Poder soportar color inverso para mas de 1 byte, especial para caracteres utf
+		if (inverso_letra) inverso_letra--;
 
 
 		caracter_aux.parpadeo=parpadeo;

@@ -2302,17 +2302,21 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_settings_debug,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_lprefix,NULL,"[%c] Source code L Prefix",
-			( remote_debug_settings & 4 ? ' ' : 'X') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_lprefix,NULL,
+            "Source code L Prefix","Código fuente prefijo L","Codi font prefix L");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( remote_debug_settings & 4 ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Consider a L preffix when searching source code labels");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Consider a L preffix when searching source code labels");
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_skipcols,NULL,"[%d] Source code skip Cols",
-			debug_load_source_code_skip_columns);
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_sourcecode_skipcols,NULL,
+            "Source code skip Cols","Código fuente saltar cols","Codi font saltar cols");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",debug_load_source_code_skip_columns);
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");   
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_configuration_stepover,NULL,"[%c] Step ~~over interrupt",(remote_debug_settings&32 ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_configuration_stepover,NULL,
+            "Step ~~over interrupt","Pas~~o salta interrupción","Pas salta interrupci~~ó");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(remote_debug_settings&32 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Avoid step to step or continuous execution of nmi or maskable interrupt routines on debug cpu menu");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Avoid step to step or continuous execution of nmi or maskable interrupt routines on debug cpu menu");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'o');         
