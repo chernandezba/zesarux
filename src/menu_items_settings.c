@@ -2348,7 +2348,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		else strcpy(show_fired_breakpoint_type,"Never");																	//						   OnlyNonPC
 																															//  01234567890123456789012345678901
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
-            "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparado");
+            "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparat");
         menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired. "
@@ -2371,8 +2371,10 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
 
 		if (si_complete_video_driver() ) {
-			menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_settings_visualmem_grafico,NULL,"    Show Visualmem: %s",
-					(setting_mostrar_visualmem_grafico.v ? "Graphic" : "Text") );
+			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_settings_visualmem_grafico,NULL,
+                "    Show Visualmem","    Ver Memoria Visual","    Veure Memoria Visual");
+			menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(setting_mostrar_visualmem_grafico.v ? "Graphic" : "Text") );
+
 
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows Visualmem menu with graphic or with text");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows Visualmem menu with graphic or with text");
@@ -2381,7 +2383,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose,NULL,"[%d] Verbose ~~level",verbose_level);
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose,NULL,
+            "Verbose ~~level","Nive~~l Verbose","Nive~~ll Verbose");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",verbose_level);
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
