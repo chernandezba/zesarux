@@ -2315,24 +2315,28 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Skip columns when searching for label from the beginning of line");   
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_configuration_stepover,NULL,
-            "Step ~~over interrupt","Pas~~o salta interrupción","Pas salta interrupci~~ó");
+            "Step ~~over interrupt","Pas~~o a paso salta interrupción","Pas a pas salta interrupci~~ó");
         menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",(remote_debug_settings&32 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Avoid step to step or continuous execution of nmi or maskable interrupt routines on debug cpu menu");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Avoid step to step or continuous execution of nmi or maskable interrupt routines on debug cpu menu");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'o');         
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_screen,NULL,"[%c] Show display on debug",
-			( debug_settings_show_screen.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_screen,NULL,
+            "Show display on debug","Ver pantalla al debugar","Veure pantalla al debugar");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_settings_show_screen.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"If shows emulated screen on every key action on debug registers menu");	
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"If shows emulated screen on every key action on debug registers menu");	        
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_scanline,NULL,"[%c] Show electron on debug",
-			( menu_debug_registers_if_showscan.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_scanline,NULL,
+            "Show electron on debug","Ver electrón al debugar","Veure electró al debugar");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_registers_if_showscan.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
 
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,"~~Breakp. behaviour [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
+            "~~Breakp. behaviour","Comportamiento ~~Breakp.","Comportament ~~Breakp.");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",(debug_breakpoints_cond_behaviour.v ? "On Change" : "Always") );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Indicates whether breakpoints are fired always or only on change from false to true");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'b');
@@ -2343,7 +2347,9 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		else if (debug_show_fired_breakpoints_type==1) strcpy(show_fired_breakpoint_type,"NoPC");
 		else strcpy(show_fired_breakpoint_type,"Never");																	//						   OnlyNonPC
 																															//  01234567890123456789012345678901
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,"Show fired breakpoint [%s]",show_fired_breakpoint_type);
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_breakpoint,NULL,
+            "Show fired breakpoint","Ver breakpoint disparado","Veure breakpoint disparado");
+        menu_add_item_menu_sufijo_format(array_menu_settings_debug," [%s]",show_fired_breakpoint_type);
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Tells to show the breakpoint condition when it is fired. "
 								"Possible values:\n"
@@ -2355,8 +2361,10 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_settings_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_item_menu_format(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_address_basic,NULL,"[%c] Show address on View Basic",
-			( debug_view_basic_show_address.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_address_basic,NULL,
+            "Show address on View Basic","Ver dirección en Ver Basic","Veure adreça a Veure Basic");
+		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_view_basic_show_address.v ? 'X' : ' ') );
+
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows location address of every basic line on menu View Basic");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows location address of every basic line on menu View Basic");
 
