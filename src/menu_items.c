@@ -24163,12 +24163,12 @@ void menu_audio(MENU_ITEM_PARAMETERS)
 
 		if (si_complete_video_driver() ) {
                 menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_ay_partitura,menu_cond_ay_or_sn_chip,
-                    "Audio Chip ~~Sheet","Audio Chip Partitura~~s","Audio Xip Partiture~~s");
+                    "Audio Chip ~~Sheet","Partitura~~s del Chip de Audio","Partiture~~s del Xip d'Audio");
                 menu_add_item_menu_shortcut(array_menu_audio,'s');
 		}
 
         menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_chip_info,menu_cond_ay_or_sn_chip,
-            "Audio Chip Info","Audio Chip Info","Audio Xip Info");
+            "Audio Chip Info","Info del Chip de Audio","Info del Xip d'Audio");
 
         if (MACHINE_IS_SPECTRUM && gs_enabled.v) {
             menu_add_item_menu_en_es_ca(array_menu_audio,MENU_OPCION_NORMAL,menu_audio_general_sound,NULL,
