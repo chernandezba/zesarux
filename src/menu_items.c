@@ -18034,12 +18034,76 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 }
 
 
+z80_byte *help_keyboard_bmp_file_mem=NULL;
+
+void menu_help_keyboard_load_bmp(void)
+{
+	
+    //Cargar el archivo bmp
+    /*
+    Deben ser, idealmente: 540x201.  (puede ser otro tamaño)
+    bmp. 256 colour (indexed).  grabar con no-codificación run lenght,  y no sobreescribir la información de espacio de colores
+    */
+
+    char nombrebmp[PATH_MAX];
+
+
+    if (MACHINE_IS_CHLOE) strcpy(nombrebmp,"keyboard_chloe.bmp");
+    else if (MACHINE_IS_COLECO) strcpy(nombrebmp,"keyboard_coleco.bmp");
+    else if (MACHINE_IS_CPC) strcpy(nombrebmp,"keyboard_cpc.bmp");
+    else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
+    else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK95) strcpy(nombrebmp,"keyboard_tk95.bmp");
+    else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
+    else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
+    else if (MACHINE_IS_PENTAGON) strcpy(nombrebmp,"keyboard_pentagon.bmp");
+    else if (MACHINE_IS_QL) strcpy(nombrebmp,"keyboard_ql.bmp");
+    else if (MACHINE_IS_SAM) strcpy(nombrebmp,"keyboard_sam.bmp");
+    else if (MACHINE_IS_SG1000) strcpy(nombrebmp,"keyboard_sg1000.bmp");
+    else if (MACHINE_IS_SMS) strcpy(nombrebmp,"keyboard_sms.bmp");
+    else if (MACHINE_IS_SVI) strcpy(nombrebmp,"keyboard_svi.bmp");
+    else if (MACHINE_IS_TBBLUE) strcpy(nombrebmp,"keyboard_next.bmp");
+    else if (MACHINE_IS_TIMEX_TS2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
+    else if (MACHINE_IS_Z88) strcpy(nombrebmp,"keyboard_z88.bmp");
+    else if (MACHINE_IS_SPECTRUM_P2) strcpy(nombrebmp,"keyboard_p2.bmp");
+    else if (MACHINE_IS_SPECTRUM_P2A_P3) strcpy(nombrebmp,"keyboard_p3.bmp");
+    else if (MACHINE_IS_SPECTRUM_16) strcpy(nombrebmp,"keyboard_16.bmp");
+    else if (MACHINE_IS_SPECTRUM_48_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
+    else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
+    else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
+    else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
+    else if (MACHINE_IS_ZX81) strcpy(nombrebmp,"keyboard_zx81.bmp");
+    else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
+    else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
+    else strcpy(nombrebmp,"keyboard_48.bmp");
+
+    //localizarlo
+    char buffer_nombre[PATH_MAX];
+
+    int existe=find_sharedfile(nombrebmp,buffer_nombre);
+    if (!existe)  {
+            debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp);
+            return;
+    }
+
+    help_keyboard_bmp_file_mem=util_load_bmp_file(buffer_nombre);
+
+
+    //if (help_keyboard_bmp_file_mem==NULL) return;
+
+
+		
+
+}
+
+
 int help_keyboard_valor_contador_segundo_anterior;
 
 zxvision_window *menu_help_keyboard_overlay_window;
 
 
-z80_byte *help_keyboard_bmp_file_mem=NULL;
+
 
 void menu_help_keyboard_overlay(void)
 {
@@ -18102,6 +18166,8 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
     zxvision_draw_window(ventana);
 }
 
+
+
 zxvision_window menu_help_show_keyboard_ventana;
 
 void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
@@ -18152,63 +18218,8 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
 
+    menu_help_keyboard_load_bmp();
 	
-    //Cargar el archivo bmp
-    /*
-    Deben ser, idealmente: 540x201.  (puede ser otro tamaño)
-    bmp. 256 colour (indexed).  grabar con no-codificación run lenght,  y no sobreescribir la información de espacio de colores
-    */
-
-    char nombrebmp[PATH_MAX];
-
-
-    if (MACHINE_IS_CHLOE) strcpy(nombrebmp,"keyboard_chloe.bmp");
-    else if (MACHINE_IS_COLECO) strcpy(nombrebmp,"keyboard_coleco.bmp");
-    else if (MACHINE_IS_CPC) strcpy(nombrebmp,"keyboard_cpc.bmp");
-    else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
-    else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK95) strcpy(nombrebmp,"keyboard_tk95.bmp");
-    else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
-    else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
-    else if (MACHINE_IS_PENTAGON) strcpy(nombrebmp,"keyboard_pentagon.bmp");
-    else if (MACHINE_IS_QL) strcpy(nombrebmp,"keyboard_ql.bmp");
-    else if (MACHINE_IS_SAM) strcpy(nombrebmp,"keyboard_sam.bmp");
-    else if (MACHINE_IS_SG1000) strcpy(nombrebmp,"keyboard_sg1000.bmp");
-    else if (MACHINE_IS_SMS) strcpy(nombrebmp,"keyboard_sms.bmp");
-    else if (MACHINE_IS_SVI) strcpy(nombrebmp,"keyboard_svi.bmp");
-    else if (MACHINE_IS_TBBLUE) strcpy(nombrebmp,"keyboard_next.bmp");
-    else if (MACHINE_IS_TIMEX_TS2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
-    else if (MACHINE_IS_Z88) strcpy(nombrebmp,"keyboard_z88.bmp");
-    else if (MACHINE_IS_SPECTRUM_P2) strcpy(nombrebmp,"keyboard_p2.bmp");
-    else if (MACHINE_IS_SPECTRUM_P2A_P3) strcpy(nombrebmp,"keyboard_p3.bmp");
-    else if (MACHINE_IS_SPECTRUM_16) strcpy(nombrebmp,"keyboard_16.bmp");
-    else if (MACHINE_IS_SPECTRUM_48_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
-    else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
-    else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
-    else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
-    else if (MACHINE_IS_ZX81) strcpy(nombrebmp,"keyboard_zx81.bmp");
-    else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
-    else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
-    else strcpy(nombrebmp,"keyboard_48.bmp");
-
-    //localizarlo
-    char buffer_nombre[PATH_MAX];
-
-    int existe=find_sharedfile(nombrebmp,buffer_nombre);
-    if (!existe)  {
-            debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp);
-            return;
-    }
-
-    help_keyboard_bmp_file_mem=util_load_bmp_file(buffer_nombre);
-
-
-    if (help_keyboard_bmp_file_mem==NULL) return;
-
-
-		
-
 
     menu_help_keyboard_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
