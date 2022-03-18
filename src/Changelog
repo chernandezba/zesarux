@@ -67,6 +67,7 @@ Improved handling of individual colour palettes modifications (Red, Green, Blue)
 Improved portability of shell scripts
 Improved fbdev driver: added setting for double buffer to avoid flickering on menu (--fbdev-double-buffer)
 Improved fbdev driver: added setting to avoid resolution change on Raspberry Pi full screen mode (--fbdev-no-res-change)
+Improved Keyboard Help: load image automatically when changing machine
 
 
 Fixed Z80 halt behavior and PC location
