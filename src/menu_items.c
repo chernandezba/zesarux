@@ -18036,6 +18036,9 @@ void menu_debug_tsconf_tbblue_msx(MENU_ITEM_PARAMETERS)
 
 z80_byte *help_keyboard_bmp_file_mem=NULL;
 
+//Ultima maquina activa cuando se cargo el teclado. Si cambia maquina, cargar teclado correspondiente
+int help_keyboard_last_current_machine=-1;
+
 void menu_help_keyboard_load_bmp(void)
 {
 	
@@ -18112,6 +18115,14 @@ void menu_help_keyboard_overlay(void)
 
     if (!si_complete_video_driver() ) return;
 
+
+    //Cargar bmp si ha cambiado de maquina
+    if (help_keyboard_last_current_machine!=current_machine_type) {
+        help_keyboard_last_current_machine=current_machine_type;
+
+        debug_printf(VERBOSE_DEBUG,"Loading help keyboard bmp");
+        menu_help_keyboard_load_bmp();
+    }
 
 	//Si no hay archivo bmp cargado
 	if (help_keyboard_bmp_file_mem==NULL) return;
@@ -18217,8 +18228,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     int ancho_anterior,alto_anterior;
     zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
-
-    menu_help_keyboard_load_bmp();
 	
 
     menu_help_keyboard_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
