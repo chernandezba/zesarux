@@ -342,7 +342,7 @@ overlay_screen footer_screen_array[WINDOW_FOOTER_COLUMNS*WINDOW_FOOTER_LINES];
 
 
 //buffer de texto usado 
-int overlay_usado_screen_array[OVERLAY_SCREEN_MAX_WIDTH*OVERLAY_SCREEN_MAX_HEIGTH];
+//int overlay_usado_screen_array[OVERLAY_SCREEN_MAX_WIDTH*OVERLAY_SCREEN_MAX_HEIGTH];
 
 //Indica que hay una segunda capa de texto por encima de menu y por encima del juego incluso
 //util para mostrar indicadores de carga de cinta, por ejemplo
@@ -2902,7 +2902,7 @@ void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int p
 	else overlay_screen_array[pos_array].caracter=caracter;
 
 
-	overlay_usado_screen_array[y*scr_get_menu_width()+xusado]=1;
+	//overlay_usado_screen_array[y*scr_get_menu_width()+xusado]=1;
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
     overlay_screen_array[pos_array].modificado=1;
 #endif
@@ -3561,7 +3561,7 @@ void cls_menu_overlay(void)
 	//Borrar solo el tamanyo de menu activo
 	for (i=0;i<scr_get_menu_width()*scr_get_menu_height();i++) {
 		overlay_screen_array[i].caracter=0;
-		overlay_usado_screen_array[i]=0;
+		//overlay_usado_screen_array[i]=0;
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT        
         overlay_screen_array[i].modificado=1;
 #endif

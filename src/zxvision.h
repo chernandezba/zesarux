@@ -1221,7 +1221,7 @@ extern char snapshot_save_file[];
 extern int menu_char_width;
 extern int menu_char_height;
 
-extern int overlay_usado_screen_array[];
+//extern int overlay_usado_screen_array[];
 
 
 extern int return_color_zesarux_ascii(char c);

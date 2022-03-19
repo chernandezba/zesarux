@@ -3503,13 +3503,14 @@ for (y=0;y<192;y+=8) {
 //por tanto, es preferible que si esa zona de pantalla de spectrum esta ocupada por algun texto del menu, no repintar para no borrar texto del menu
 //Esto incluye tambien el texto de splash del inicio
 //No incluiria cualquier otra funcion de overlay diferente del menu o el splash
-int scr_ver_si_refrescar_por_menu_activo(int x,int fila)
+int scr_ver_si_refrescar_por_menu_activo(int x GCC_UNUSED,int fila GCC_UNUSED)
 {
 
 
 	//Esta funcion ya no tiene sentido. Escribir siempre 
 	return 1;
 
+    /*
 	x /=menu_gui_zoom;
 	fila /=menu_gui_zoom;
 
@@ -3535,6 +3536,7 @@ int scr_ver_si_refrescar_por_menu_activo(int x,int fila)
 		}
 	}
 	return 1;
+    */
 
 }
 
