@@ -39,11 +39,13 @@
 #endif
 
 /*
- Activar cache de overlay_screen_array. Si no se ha modificado una posicion concreta en overlay_screen_array,
+ ZXVISION_USE_CACHE_OVERLAY_TEXT : Activar cache de overlay_screen_array. Si no se ha modificado una posicion concreta en overlay_screen_array,
  no se reescribe en pantalla desde normal_overlay_texto_menu
  Se ha validado que esto sea compatible con el mezclado de capas de menu:
  de renderizado maquina: escribe en buffer_layer_machine, acaba llamando a screen_putpixel_mix_layers. y este a scr_putpixel_final_rgb
  de menu, scr_putchar_menu_comun_zoom llama a scr_putpixel_gui_zoom,  escribe en buffer_layer_menu, y acaba llamando a screen_putpixel_mix_layers
+ Se implementó a partir de versión 10.1-RC1
+ Se puede desactivar simplemente comentando aquí esta definición
 
 Pruebas de uso cpu:
 

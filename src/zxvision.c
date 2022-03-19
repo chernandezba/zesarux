@@ -6310,9 +6310,9 @@ void normal_overlay_texto_menu(void)
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
             if (overlay_usado_screen_array[pos_array] && overlay_screen_array[pos_array].modificado) {
         
-            //Indicar que el caracter ya se ha dibujado en pantalla
+            //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
-            
+
 #else
 			if (overlay_usado_screen_array[pos_array]) {
 #endif
