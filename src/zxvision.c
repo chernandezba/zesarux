@@ -6308,13 +6308,14 @@ void normal_overlay_texto_menu(void)
 			caracter=overlay_screen_array[pos_array].caracter;
 			//si caracter es 0, no mostrar
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
-            if (overlay_usado_screen_array[pos_array] && overlay_screen_array[pos_array].modificado) {
+            if (caracter && overlay_screen_array[pos_array].modificado) {
         
             //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
 
 #else
-			if (overlay_usado_screen_array[pos_array]) {
+			//if (overlay_usado_screen_array[pos_array]) {
+            if (caracter) {
 #endif
 				//128 y 129 corresponden a franja de menu y a letra enye minuscula
 				if (si_valid_char(caracter) ) {
