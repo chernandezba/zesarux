@@ -2903,8 +2903,9 @@ void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int p
 
 
 	overlay_usado_screen_array[y*scr_get_menu_width()+xusado]=1;
-
-	
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+    overlay_screen_array[pos_array].modificado=1;
+#endif
 }
 
 
@@ -3561,6 +3562,9 @@ void cls_menu_overlay(void)
 	for (i=0;i<scr_get_menu_width()*scr_get_menu_height();i++) {
 		overlay_screen_array[i].caracter=0;
 		overlay_usado_screen_array[i]=0;
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT        
+        overlay_screen_array[i].modificado=1;
+#endif
 	}
 
 	menu_desactiva_cuadrado();
@@ -6303,9 +6307,15 @@ void normal_overlay_texto_menu(void)
 		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
 			caracter=overlay_screen_array[pos_array].caracter;
 			//si caracter es 0, no mostrar
-
-			//if (overlay_usado_screen_array[pos_array]) {
-			if (caracter) {
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
+            if (overlay_usado_screen_array[pos_array] && overlay_screen_array[pos_array].modificado) {
+        
+            //Indicar que el caracter ya se ha dibujado en pantalla
+            overlay_screen_array[pos_array].modificado=0;
+            
+#else
+			if (overlay_usado_screen_array[pos_array]) {
+#endif
 				//128 y 129 corresponden a franja de menu y a letra enye minuscula
 				if (si_valid_char(caracter) ) {
 					tinta=overlay_screen_array[pos_array].tinta;

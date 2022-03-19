@@ -38,11 +38,45 @@
 #define NAME_MAX MAX_PATH
 #endif
 
+/*
+ Activar cache de overlay_screen_array. Si no se ha modificado una posicion concreta en overlay_screen_array,
+ no se reescribe en pantalla desde normal_overlay_texto_menu
+ Se ha validado que esto sea compatible con el mezclado de capas de menu:
+ de renderizado maquina: escribe en buffer_layer_machine, acaba llamando a screen_putpixel_mix_layers. y este a scr_putpixel_final_rgb
+ de menu, scr_putchar_menu_comun_zoom llama a scr_putpixel_gui_zoom,  escribe en buffer_layer_menu, y acaba llamando a screen_putpixel_mix_layers
 
+Pruebas de uso cpu:
+
+make -j 3 && ./zesarux  --noconfigfile --ao null --enable-zxdesktop --zxdesktop-width 600 --disablebetawarning 10.1-RC1 --disable-autoframeskip
+
+
+Abri help->readme y maximizarlo para que ocupe pantalla completa
+
+Usos cpu:
+
+-Compilado con  O3
+-con ZXVISION_USE_CACHE_OVERLAY_TEXT: 15%
+-sin ZXVISION_USE_CACHE_OVERLAY_TEXT: 87%
+
+-Compilado Sin O3
+-con ZXVISION_USE_CACHE_OVERLAY_TEXT: 20%
+-sin ZXVISION_USE_CACHE_OVERLAY_TEXT: 92%
+
+
+
+de renderizado maquina: escribe en buffer_layer_machine, acaba llamando a screen_putpixel_mix_layers. y este a scr_putpixel_final_rgb
+de menu, scr_putchar_menu_comun_zoom llama a scr_putpixel_gui_zoom,  escribe en buffer_layer_menu, y acaba llamando a screen_putpixel_mix_layers
+
+*/
+
+#define ZXVISION_USE_CACHE_OVERLAY_TEXT
 
 struct s_overlay_screen {
 	int tinta,papel,parpadeo;
 	z80_byte caracter;
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+    int modificado; //Indica si se ha modificado el caracter y por tanto hay que redibujarlo desde normal_overlay_texto_menu
+#endif
 };
 
 typedef struct s_overlay_screen overlay_screen;
