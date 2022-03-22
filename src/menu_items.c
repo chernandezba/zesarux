@@ -2142,14 +2142,16 @@ M1-M0= mode bits:
 
                 //fila inicial segun total de chips
                 int fila_texto=12;
-                if (total_chips==2) fila_texto=23;
+                if (total_chips==2) fila_texto=22;
                 if (total_chips==3) fila_texto=22;
 
                 //Y desplazamiento vertical segun donde ubicamos el contador grafico segun el contador de chip
                 fila_texto +=((longitud_linea/8)+4)*chip;
 
                //TODO: con 3 chips no cabe en vertical todo
-                int yorigen_linea=(fila_texto*8)+longitud_linea+16;
+                int yorigen_linea=(fila_texto*8)+longitud_linea+16-1; 
+                //-1 porque la linea del speedometer cuando esta horizontal
+                //del todo, queda en la siguiente posicion y
 
                 char buffer_texto_meter[100];
                 
