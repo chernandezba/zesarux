@@ -1634,6 +1634,7 @@ Calculando ese tiempo: 12% cpu
     if (core_statistics_ultimo_cpu_use_mostrado>=75) color=ESTILO_GUI_COLOR_AVISO;
     
     zxvision_print_string_defaults(ventana,pos_x,fila_texto,"CPU");
+    zxvision_widgets_erase_speedometer(ventana,xorigen_linea,yorigen_linea);
     zxvision_widgets_draw_speedometer_common(ventana,xorigen_linea,yorigen_linea,core_statistics_ultimo_cpu_use_mostrado,color,color);                   
 
 
@@ -1647,6 +1648,7 @@ Calculando ese tiempo: 12% cpu
     if (core_statistics_last_perc_audio>=90 || core_statistics_last_perc_audio<=10) color=ESTILO_GUI_COLOR_AVISO;        
 
     zxvision_print_string_defaults(ventana,pos_x,fila_texto,"Audio");
+    zxvision_widgets_erase_speedometer(ventana,xorigen_linea,yorigen_linea);
     zxvision_widgets_draw_speedometer_common(ventana,xorigen_linea,yorigen_linea,core_statistics_last_perc_audio,color,color);           
 
 
@@ -1659,6 +1661,7 @@ Calculando ese tiempo: 12% cpu
     if (core_statistics_last_perc_dropped>=75) color=ESTILO_GUI_COLOR_AVISO;              
     
     zxvision_print_string_defaults(ventana,pos_x,fila_texto,"Dropped");
+    zxvision_widgets_erase_speedometer(ventana,xorigen_linea,yorigen_linea);
     zxvision_widgets_draw_speedometer_common(ventana,xorigen_linea,yorigen_linea,core_statistics_last_perc_dropped,color,color);
 
 

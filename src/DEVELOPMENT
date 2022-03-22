@@ -610,3 +610,26 @@ mix de la maquina emulada con los pixeles del menu (llamando a screen_putpixel_m
 No implica mucho mas uso de cpu (si hay poca ventana abierta) pero hay que tener en cuenta que por el hecho de tener esa opcion activada, incluso con todas las ventanas cerradas, ya consume algo mas de cpu
 
 ----  
+
+Borrador rapido de como se redibuja pantalla
+
+-ventanas zxvision: zxvision_draw_window_contents, zxvision_draw windows y otras, escriben en overlay de menu las letras, usando funcion putchar
+-normal_overlay_texto_menu se encarga de leer de overlay de menu y poner los pixeles correspondientes en pantalla de acuerdo a cada letra
+-ventanas con dibujos pixeles (waveform, visualmem etc) tienen una funcion adicional de overlay que ponen pixeles ellas mismas
+Hay dos optimizaciones de cache:
+
+1) Campo .modificado en overlay dice que se ha escrito ese caracter y al refrescar desde nomal_overlay_texto_menu debe renderizarlo. Desde alli,
+al renderizar, se pondra ese campo .modificado a 0. Asi en ventanas como help->readme, si no se mueve no hace scroll ni nada, 
+solo se renderiza una vez, en cada refresco de pantalla no se renderiza de nuevo, ahorrando monton de ciclos de cpu
+
+2) Si el caracter a escribir es el mismo, con mismos atributos, y parametro use_cache_mismo_caracter=1, no modificamos ese caracter, por tanto
+no se renderizara desde nomal_overlay_texto_menu. Dado que es mismo caracter, ahorraremos ciclos de cpu
+
+//El parametro cache_mismo_caracter le dice si usamos cache al escribir caracter. Esta cache no se usa por ejemplo en ventanas que
+//tienen mucho putpixel con fondo en blanco (caracter " ") que quieren que se escriba el fondo al refrescar ventana
+//Podria dar problemas con alguna otra llamada a putchar_menu_overlay o putchar_menu_overlay_parpadeo  (donde se usa cache)
+//pero lo que hemos hecho es que en putchar_menu_overlay y putchar_menu_overlay_parpadeo, siempre llama sin cache
+
+-ventanas que dibujan en pixeles, suele ser responsabilidad de ellas borrar los pixeles del frame anterior, o quedaran "restos".
+Alternativamente se puede usar parametro must_clear_cache_on_draw de la ventana, que indica que a cada refresco, se redibuja siempre el fondo de texto, 
+que suele ser caracter " " y se le dice que no haga cache de ese caracter, con lo que se borra la ventana (incluido logicamente los pixeles)
