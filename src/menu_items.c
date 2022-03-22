@@ -2169,6 +2169,8 @@ M1-M0= mode bits:
                 if (porcentaje>=85) color=ESTILO_GUI_COLOR_AVISO;
 
                 zxvision_print_string_defaults(menu_ay_registers_overlay_window,columna_texto,fila_texto,buffer_texto_meter);
+                //borrar primero el espacio ocupado por el speedometer por el frame anterior. Si no lo hicieramos, quedaria "rastro"
+                zxvision_widgets_erase_speedometer(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea);
                 zxvision_widgets_draw_speedometer_common(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea,
                     porcentaje,color,color);    
 
@@ -2185,6 +2187,7 @@ M1-M0= mode bits:
                 if (porcentaje>=85) color=ESTILO_GUI_COLOR_AVISO;                
 
                 zxvision_print_string_defaults(menu_ay_registers_overlay_window,columna_texto,fila_texto,buffer_texto_meter);
+                zxvision_widgets_erase_speedometer(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea);
                 zxvision_widgets_draw_speedometer_common(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea,
                     porcentaje,color,color);              
 
@@ -2201,6 +2204,7 @@ M1-M0= mode bits:
                 if (porcentaje>=85) color=ESTILO_GUI_COLOR_AVISO;                
 
                 zxvision_print_string_defaults(menu_ay_registers_overlay_window,columna_texto,fila_texto,buffer_texto_meter);
+                zxvision_widgets_erase_speedometer(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea);
                 zxvision_widgets_draw_speedometer_common(menu_ay_registers_overlay_window,xorigen_linea,yorigen_linea,
                     porcentaje,color,color);                                          
             //}

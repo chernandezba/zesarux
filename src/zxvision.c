@@ -12197,6 +12197,27 @@ void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,int xcent
    
 }
 
+void zxvision_widgets_draw_filled_rectangle(zxvision_window *ventana,int xinicio,int yinicio,int ancho,int alto,int color)
+{
+
+    int x,y;
+    for (x=xinicio;x<xinicio+ancho;x++) {
+        for (y=yinicio;y<yinicio+alto;y++) {
+            zxvision_putpixel(ventana,x,y,color);
+        }
+    }
+           
+   
+}
+
+void zxvision_widgets_erase_speedometer(zxvision_window *ventana,int xcentro_widget,int ycentro_widget)
+{
+
+    zxvision_widgets_draw_filled_rectangle(ventana,
+        xcentro_widget-ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH,ycentro_widget-ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH,
+        ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH*2+1,ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH+1,ESTILO_GUI_PAPEL_NORMAL);
+}
+
 void zxvision_widgets_draw_circle_ellipse(zxvision_window *ventana,int x,int y,int percentaje,int color,int radio_total_x,int radio_total_y,int concentrico)
 {
 
