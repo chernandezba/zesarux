@@ -1998,6 +1998,7 @@ printf (
 		"--enable-restore-windows                 Allow restore windows on start\n"
         "--restorewindow s                        Restore window s on start\n"
 		"--clear-all-windowgeometry               Clear all windows geometry thay may be loaded from the configuration file\n"
+        "--restore-all-known-windows              Restore all known windows on start. Use ONLY for debugging!\n"
 
 
 		"\n"
@@ -8477,6 +8478,10 @@ int parse_cmdline_options(void) {
                 add_window_to_restore(argv[puntero_parametro]);
 
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--restore-all-known-windows")) {
+				zxvision_add_all_windows_to_restore();
+			}            
 
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-restore-windows")) {

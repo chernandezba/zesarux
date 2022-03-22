@@ -410,6 +410,8 @@ extern char restore_window_array[MAX_RESTORE_WINDOWS_START][MAX_NAME_WINDOW_GEOM
 
 extern void add_window_to_restore(char *nombre_ventana);
 
+extern void zxvision_add_all_windows_to_restore(void);
+
 
 struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio

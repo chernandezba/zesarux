@@ -8232,6 +8232,20 @@ int zxvision_find_known_window(char *nombre)
 	return -1;
 }
 
+//Funcion en casos de debug. Agregar todas las ventanas para restaurar
+void zxvision_add_all_windows_to_restore(void)
+{
+	int i;
+
+
+	for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++) {
+
+		add_window_to_restore(zxvision_known_window_names_array[i].nombre);
+
+	}
+	
+}
+
 void zxvision_restore_windows_on_startup(void)
 {
 	if (!menu_allow_background_windows) return;
