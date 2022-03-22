@@ -21467,3 +21467,17 @@ void menu_adjust_gui_style_to_driver(void)
 
 
 }
+
+void add_window_to_restore(char *nombre_ventana)
+{
+//char restore_window_array[MAX_RESTORE_WINDOWS_START][MAX_NAME_WINDOW_GEOMETRY];
+    if (total_restore_window_array_elements>=MAX_RESTORE_WINDOWS_START) {
+        debug_printf(VERBOSE_ERR,"Maximum windows to restore reached (%d)",MAX_RESTORE_WINDOWS_START);
+    }
+
+    else {
+		
+        strcpy(restore_window_array[total_restore_window_array_elements++],nombre_ventana);
+
+	}
+}

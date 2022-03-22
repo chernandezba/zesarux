@@ -408,6 +408,8 @@ extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_anch
 
 extern char restore_window_array[MAX_RESTORE_WINDOWS_START][MAX_NAME_WINDOW_GEOMETRY];
 
+extern void add_window_to_restore(char *nombre_ventana);
+
 
 struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio

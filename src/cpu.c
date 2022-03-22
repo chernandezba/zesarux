@@ -8473,7 +8473,8 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--restorewindow")) {
 				siguiente_parametro_argumento();
 
-				strcpy(restore_window_array[total_restore_window_array_elements++],argv[puntero_parametro]);
+				//strcpy(restore_window_array[total_restore_window_array_elements++],argv[puntero_parametro]);
+                add_window_to_restore(argv[puntero_parametro]);
 
 			}
 
