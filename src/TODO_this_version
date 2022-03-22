@@ -117,3 +117,5 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 *quiza hacer 50 fps, que siempre escriba
 *borrar frame anterior escribiendo misma onda antes pero con color de fondo. o quiza borrar rectangulo de pantalla considerando
 maximo alto del frame anterior
+*en scroll ya se tiene en un buffer lo anterior. solo hay que redibujarlo con color de fondo. y en modos no scroll adaptarlo para que
+usen el mismo buffer
