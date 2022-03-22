@@ -10213,6 +10213,52 @@ z80_byte menu_debug_draw_sprites_get_byte(menu_z80_moto_int puntero)
 	return byte_leido;
 }
 
+int menu_draw_sprites_get_origin_x(void)
+{
+	int sx=1;
+	//int sx=SPRITES_X+1;
+	//int sx=1;
+	//int sy=SPRITES_Y+3;
+	
+	//Si es mas ancho, que ventana visible, mover coordenada x 1 posicion atrás
+	//if (view_sprites_ancho_sprite/menu_char_width>=SPRITES_ANCHO-2) sx--;
+
+	//Si es mas alto, mover coordenada sprite a 1, asi podemos mostrar sprites de hasta 192 de alto
+	//if (view_sprites_alto_sprite>168) sy=1;
+
+	//Si se pasa aun mas
+	//if (view_sprites_alto_sprite>184) sy=0;
+
+        int xorigen=sx*menu_char_width;
+
+    return xorigen;    
+}
+
+int menu_draw_sprites_get_origin_y(void)
+{
+	//int sx=SPRITES_X+1;
+	//int sx=1;
+	//int sy=SPRITES_Y+3;
+	
+	//Si es mas ancho, que ventana visible, mover coordenada x 1 posicion atrás
+	//if (view_sprites_ancho_sprite/menu_char_width>=SPRITES_ANCHO-2) sx--;
+
+	//Si es mas alto, mover coordenada sprite a 1, asi podemos mostrar sprites de hasta 192 de alto
+	//if (view_sprites_alto_sprite>168) sy=1;
+
+	//Si se pasa aun mas
+	//if (view_sprites_alto_sprite>184) sy=0;    
+    int yorigen=16; //sy*8;    
+
+    return yorigen;
+}
+
+//Borrar zona ocupada por los sprites
+/*void menu_draw_sprites_clear(zxvision_window *w)
+{
+    zxvision_draw_filled_rectangle(w,menu_draw_sprites_get_origin_x(),menu_draw_sprites_get_origin_y(),
+        view_sprites_ancho_sprite,view_sprites_alto_sprite,ESTILO_GUI_PAPEL_NORMAL);
+}*/
 
 void menu_debug_draw_sprites(void)
 {
@@ -10228,7 +10274,7 @@ void menu_debug_draw_sprites(void)
 
 
 	//int sx=SPRITES_X+1;
-	int sx=1;
+	//int sx=1;
 	//int sy=SPRITES_Y+3;
 	
 	//Si es mas ancho, que ventana visible, mover coordenada x 1 posicion atrás
@@ -10240,12 +10286,15 @@ void menu_debug_draw_sprites(void)
 	//Si se pasa aun mas
 	//if (view_sprites_alto_sprite>184) sy=0;
 
-        int xorigen=sx*menu_char_width;
+    //int xorigen=sx*menu_char_width;
+
+    int xorigen=menu_draw_sprites_get_origin_x();
         
-		int yorigen=16; //sy*8;
+	//int yorigen=16; //sy*8;
+    int yorigen=menu_draw_sprites_get_origin_y();
 
 
-        int x,y,bit;
+    int x,y,bit;
 	z80_byte byte_leido;
 
 	menu_z80_moto_int puntero;
