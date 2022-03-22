@@ -11132,7 +11132,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
     //decimos que tiene que borrar fondo cada vez al redibujar
     //por tanto es como decirle que no use cache de putchar
     //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;        
+    //ventana->must_clear_cache_on_draw=1;        
 
 	zxvision_draw_window(ventana);
 
@@ -11311,7 +11311,17 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					break;
 
 					case 'o':
-						if (view_sprites_ancho_sprite>view_sprites_ppb) view_sprites_ancho_sprite -=view_sprites_ppb;
+						if (view_sprites_ancho_sprite>view_sprites_ppb) {
+                            view_sprites_ancho_sprite -=view_sprites_ppb;
+
+                            //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+                            //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
+                            //el uso de cpu cuando no modificamos pasar por ejemplo de un uso de 82% teniendo esto siempre a 1, 
+                            //a usar 52% cuando lo tenemos a 0
+                            ventana->must_clear_cache_on_draw=1;
+                            zxvision_draw_window_contents(ventana);        
+                            ventana->must_clear_cache_on_draw=0;
+                        }
 					break;
 
 					case 'p':
@@ -11320,7 +11330,12 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					break;
 
                     case 'q':
-                        if (view_sprites_alto_sprite>1) view_sprites_alto_sprite--;
+                        if (view_sprites_alto_sprite>1) {
+                            view_sprites_alto_sprite--;
+                            ventana->must_clear_cache_on_draw=1;
+                            zxvision_draw_window_contents(ventana);        
+                            ventana->must_clear_cache_on_draw=0;
+                        }                            
                     break;
 
                     case 'a':
