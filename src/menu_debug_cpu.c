@@ -9183,6 +9183,11 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
     //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
     //refrescara convenientemente
     ventana->no_refresh_change_offset=1;
+
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;    
 }
 
 

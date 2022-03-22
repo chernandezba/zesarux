@@ -81,6 +81,13 @@ struct s_overlay_screen {
 #endif
 };
 
+//Para poder debugar los caracteres de overlay que no pasan por la cache, estos se incrementan en cada redibujado completo
+//los que no se incrementan, es que estan en cache
+//Esto normalmente deberia estar comentado
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+//    #define DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+#endif
+
 typedef struct s_overlay_screen overlay_screen;
 
 //Idiomas de la interfaz
@@ -143,6 +150,12 @@ struct s_zxvision_window {
 
 
 	int can_use_all_width; //Si tenemos usable también la ultima columna derecha
+
+    //Si se debe forzar que al llamar a draw_window_contents, se redibuje contenido vaciando la cache
+    //especialmente usado en ventanas con contenido de pixel (como waveform por ejemplo) que se necesita
+    //que al escribir el texto con espacios, esos espacios borren la cache de putchar cada vez
+    int must_clear_cache_on_draw;
+
 
 	//Posicion del cursor y si esta visible
 	int visible_cursor;

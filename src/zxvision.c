@@ -2528,6 +2528,7 @@ z80_byte menu_get_pressed_key(void)
 }
 
 //escribe la cadena de texto
+/*
 void menu_scanf_print_string(char *string,int offset_string,int max_length_shown,int x,int y)
 {
 	int papel=ESTILO_GUI_PAPEL_NORMAL;
@@ -2569,6 +2570,7 @@ void menu_scanf_print_string(char *string,int offset_string,int max_length_shown
 
 
 }
+*/
 
 //funcion que guarda el contenido del texto del menu. Usado por ejemplo en scanf cuando se usa teclado en pantalla
 void menu_save_overlay_text_contents(overlay_screen *destination,int size)
@@ -2870,13 +2872,28 @@ void reset_menu_overlay_function(void)
 
 }
 
-//funcion para escribir un caracter en el buffer de overlay
+/*funcion para escribir un caracter en el buffer de overlay
 //tinta y/o papel pueden tener brillo (color+8)
 
 //Nota: funciones putchar_menu_overlay* vienen heredadas del anterior entorno sin zxvision
 //aunque ahora solo se deberian usar para escribir caracteres que van al titulo de la ventana.
 //Para escribir dentro de la ventana (no en el titulo) se deben usar funciones de zxvision_*
-void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int papel,int parpadeo)
+
+Hay dos optimizaciones de cache:
+
+1) Campo .modificado dice que se ha escrito ese caracter y al refrescar desde nomal_overlay_texto_menu debe renderizarlo. Desde alli,
+al renderizar, se pondra ese campo .modificado a 0. Asi en ventanas como help->readme, si no se mueve no hace scroll ni nada, 
+solo se renderiza una vez, en cada refresco de pantalla no se renderiza de nuevo, ahorrando monton de ciclos de cpu
+
+2) Si el caracter a escribir es el mismo, con mismos atributos, y parametro use_cache_mismo_caracter=1, no modificamos ese caracter, por tanto
+no se renderizara desde nomal_overlay_texto_menu. Dado que es mismo caracter, ahorraremos ciclos de cpu
+
+//El parametro cache_mismo_caracter le dice si usamos cache al escribir caracter. Esta cache no se usa por ejemplo en ventanas que
+//tienen mucho putpixel con fondo en blanco (caracter " ") que quieren que se escriba el fondo al refrescar ventana
+//Podria dar problemas con alguna otra llamada a putchar_menu_overlay o putchar_menu_overlay_parpadeo  (donde se usa cache)
+//pero lo que hemos hecho es que en putchar_menu_overlay y putchar_menu_overlay_parpadeo, siempre llama sin cache
+*/
+void putchar_menu_overlay_parpadeo_cache_or_not(int x,int y,z80_byte caracter,int tinta,int papel,int parpadeo,int use_cache_mismo_caracter)
 {
 
 	int xusado=x;
@@ -2894,20 +2911,49 @@ void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int p
 	}
 
 	int pos_array=y*scr_get_menu_width()+x;
+    if (ESTILO_GUI_SOLO_MAYUSCULAS) caracter=letra_mayuscula(caracter);
+
+/*
+Otra optimizacion mas. Si se escribe el mismo caracter con iguales atributos, decimos que esta en cache
+Con esto se pasa, por ejemplo, enseñando el Sonic, con varias ventanas de menu abiertas, de usar
+67 % de cpu
+a usar
+27% de cpu
+
+Esto requiere por otra parte que, ventanas que dibujan con putpixel (como waveform, audio chip sheet etc)
+esperan que siempre se borre con espacios la ventana y luego ellos escriben encima sus pixeles con el fondo "ya limpio"
+Esto ya no sucede mas, pues el fondo limpio con espacios, al no alterarse, no se redibuja limpiando los pixeles anteriores
+Requiere entonces que llamen a una función que limpia la ventana e indicando parametro de .modificado 
+*/
+
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+    //Cualquier atributo alterado del caracter, o el propio caracter, decimos a la cache que se ha alterado y hay que redibujar
+	if (
+        use_cache_mismo_caracter==0 ||
+        overlay_screen_array[pos_array].tinta!=tinta ||
+	    overlay_screen_array[pos_array].papel!=papel ||
+	    overlay_screen_array[pos_array].parpadeo!=parpadeo ||
+	    overlay_screen_array[pos_array].caracter!=caracter
+    ) {
+        overlay_screen_array[pos_array].modificado=1;
+    }
+#endif
+
 	overlay_screen_array[pos_array].tinta=tinta;
 	overlay_screen_array[pos_array].papel=papel;
 	overlay_screen_array[pos_array].parpadeo=parpadeo;
-
-	if (ESTILO_GUI_SOLO_MAYUSCULAS) overlay_screen_array[pos_array].caracter=letra_mayuscula(caracter);
-	else overlay_screen_array[pos_array].caracter=caracter;
+	overlay_screen_array[pos_array].caracter=caracter;
 
 
 	//overlay_usado_screen_array[y*scr_get_menu_width()+xusado]=1;
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
-    overlay_screen_array[pos_array].modificado=1;
-#endif
+
 }
 
+
+void putchar_menu_overlay_parpadeo(int x,int y,z80_byte caracter,int tinta,int papel,int parpadeo)
+{
+    putchar_menu_overlay_parpadeo_cache_or_not(x,y,caracter,tinta,papel,parpadeo,0);
+}
 
 //funcion para escribir un caracter en el buffer de overlay
 //tinta y/o papel pueden tener brillo (color+8)
@@ -3566,7 +3612,6 @@ void cls_menu_overlay(void)
         overlay_screen_array[i].modificado=1;
 #endif
 	}
-
 	menu_desactiva_cuadrado();
 
         //si hay segunda capa, escribir la segunda capa en esta primera
@@ -6286,14 +6331,19 @@ void menu_draw_background_windows_overlay_after_normal(void)
 	//printf ("overlay funcion desde menu_draw_background_windows_overlay\n");
 }
 
-
-
+#ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+z80_byte debug_zxvision_cache_overlay_caracter=33;
+#endif
 
 //funcion normal de impresion de overlay de buffer de texto y cuadrado de lineas usado en los menus
 void normal_overlay_texto_menu(void)
 {
 
 	//printf ("inicio normal_overlay_texto_menu\n");
+#ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT    
+    debug_zxvision_cache_overlay_caracter++;
+    if (debug_zxvision_cache_overlay_caracter>126) debug_zxvision_cache_overlay_caracter=33;
+#endif
 
 	int x,y;
 	int tinta,papel,parpadeo;
@@ -6306,12 +6356,24 @@ void normal_overlay_texto_menu(void)
 	for (y=0;y<scr_get_menu_height();y++) {
 		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
 			caracter=overlay_screen_array[pos_array].caracter;
+
+            //sacamos el papel antes para poder alterarlo cuando se habilita DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+            papel=overlay_screen_array[pos_array].papel;
 			//si caracter es 0, no mostrar
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
-            if (caracter && overlay_screen_array[pos_array].modificado) {
+            if (
+                (caracter && overlay_screen_array[pos_array].modificado) ||
+                overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
+            ) {
         
             //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
+
+#ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+            //caracter=caracter ^ (debug_zxvision_cache_overlay_caracter & 1);
+            //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
+            papel += (debug_zxvision_cache_overlay_caracter&7);
+#endif
 
 #else
 			//if (overlay_usado_screen_array[pos_array]) {
@@ -6320,7 +6382,7 @@ void normal_overlay_texto_menu(void)
 				//128 y 129 corresponden a franja de menu y a letra enye minuscula
 				if (si_valid_char(caracter) ) {
 					tinta=overlay_screen_array[pos_array].tinta;
-					papel=overlay_screen_array[pos_array].papel;
+					//papel=overlay_screen_array[pos_array].papel;
 					parpadeo=overlay_screen_array[pos_array].parpadeo;
 
 					//Si esta multitask, si es caracter con parpadeo y si el estado del contador del parpadeo indica parpadear
@@ -6832,6 +6894,7 @@ void menu_escribe_texto(int x,int y,int tinta,int papel,char *texto)
 
 //escribe una linea de texto
 //coordenadas relativas al interior de la ventana (0,0=inicio zona "blanca")
+/*
 void menu_escribe_texto_ventana(int x,int y,int tinta,int papel,char *texto)
 {
 
@@ -6839,6 +6902,7 @@ void menu_escribe_texto_ventana(int x,int y,int tinta,int papel,char *texto)
 
 
 }
+*/
 
 int menu_if_speech_enabled(void)
 {
@@ -7223,6 +7287,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 //coordenadas "indice" relativa al interior de la ventana (0=inicio)
 //opcion_actual indica que numero de linea es la seleccionada
 //opcion activada indica a 1 que esa opcion es seleccionable
+/*
 void menu_escribe_linea_opcion(int indice,int opcion_actual,int opcion_activada,char *texto_entrada)
 {
 
@@ -7286,7 +7351,7 @@ void menu_escribe_linea_opcion(int indice,int opcion_actual,int opcion_activada,
 	menu_textspeech_send_text(texto);
 
 }
-
+*/
 
 
 
@@ -7991,10 +8056,12 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 	//if (menu_char_width!=8) xderecha++; //?????
 
 	//contenido en blanco normalmente en estilo ZEsarUX
+    //Sin usar cache
+    //Para evitar por ejemplo que ventanas como daad graphics, que aparecen encima de otra ventana tipo visualmem o audio chip piano con pixeles,
+    //que esos pixeles no se metan "dentro" de la ventana de daad graphics    
 	for (i=0;i<alto-1;i++) {
 		for (j=0;j<ancho;j++) {
-			//putchar_menu_overlay(x+j,y+i+1,' ',0,7+8);
-			putchar_menu_overlay(x+j,y+i+1,' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL);
+			putchar_menu_overlay_parpadeo_cache_or_not(x+j,y+i+1,' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,0);
 		}
 	}
 
@@ -8690,6 +8757,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 	w->can_use_all_width=0;
 	//w->applied_can_use_all_width=0;
+
+    w->must_clear_cache_on_draw=0;
 
 	w->can_mouse_send_hotkeys=0;
 
@@ -11349,6 +11418,15 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 	int x,y;
 
+    //si usamos cache de putchar de mismo caracter, por defecto la usamos
+    int use_cache=1;
+
+    //decimos que hay que borrar fondo, por tanto no usamos cache
+    if (w->must_clear_cache_on_draw) {
+        use_cache=0;
+    }
+
+
 	for (y=0;y<height;y++) {
 		int indice_speech=0;
 		for (x=0;x<width;x++) {
@@ -11425,8 +11503,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
 				//if (!zxvision_coords_in_superior_windows(w,xdestination,ydestination)) {
 
 				//printf ("antes de putchar\n");
-				putchar_menu_overlay_parpadeo(xdestination,ydestination,
-					caracter_escribir,tinta,papel,caracter->parpadeo);
+				putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
+					caracter_escribir,tinta,papel,caracter->parpadeo,use_cache);
 
 					//printf ("despues de putchar\n");
 
@@ -11443,8 +11521,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
 			else {
 				//printf ("fuera de rango\n");
 				if (!ventana_encima) {
-				putchar_menu_overlay_parpadeo(xdestination,ydestination,
-				' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0);
+				putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
+				' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,use_cache);
 				}
 			}
 			//printf ("sonda 3\n");

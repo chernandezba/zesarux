@@ -4589,6 +4589,11 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     //restaurar estado minimizado de ventana
     //ventana->is_minimized=is_minimized;    
 
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;
+
 	//printf("despues zxvision_new_window_nocheck_staticsize\n");
 	zxvision_draw_window(ventana);		
 
@@ -8573,6 +8578,11 @@ void menu_display_total_palette_crea_ventana(zxvision_window *ventana,int xventa
 	//strcpy(ventana->geometry_name,"displaypalettes");
     //restaurar estado minimizado de ventana
     //ventana->is_minimized=is_minimized;    
+
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;        
 }
 
 zxvision_window zxvision_window_display_palettes;
@@ -11061,6 +11071,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 	//Permitir hotkeys desde raton
 	ventana->can_mouse_send_hotkeys=1;
 
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;        
+
 	zxvision_draw_window(ventana);
 
 	z80_byte tecla;
@@ -12239,6 +12254,11 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
     //strcpy(ventana->geometry_name,"aysheet");
     //restaurar estado minimizado de ventana
     //ventana->is_minimized=is_minimized;        
+
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;      
 
     zxvision_draw_window(ventana);	
 
@@ -18172,7 +18192,9 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
     //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
     //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
     //Al meter caracter transparente, el normal_overlay lo ignora y no dibuja ese caracter
-    zxvision_fill_window_transparent(ventana);
+
+    //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
+    //zxvision_fill_window_transparent(ventana);
 
     zxvision_draw_window(ventana);
 }
@@ -18246,7 +18268,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
         return;
     }	
 
-	
+	//Al entrar siempre cargar bmp, esto especialmente es importante por si conmutamos a ventana about o cualquier otra que cargue bmp,
+    //que luego al entrar aqui recargue la paleta asociada
+    menu_help_keyboard_load_bmp();
 
 	z80_byte tecla;
 
@@ -18261,7 +18285,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
             
             //Esto evita el parpadeo al redimensionar para hacer mas grande. Llenamos toda la ventana con el transparente,
             //que se hace asi siempre al crearla por primera vez
-            zxvision_fill_window_transparent(ventana);
+
+            //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
+            //zxvision_fill_window_transparent(ventana);
 
 		}        
 	} while (tecla!=2 && tecla!=3);				
@@ -19613,7 +19639,9 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
     //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
     //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
     //Al meter caracter transparente, el normal_overlay lo ignora y no dibuja ese caracter
-    zxvision_fill_window_transparent(ventana);
+
+    //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
+    //zxvision_fill_window_transparent(ventana);
 
 
 
@@ -21121,6 +21149,12 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     //ventana->can_mouse_send_hotkeys=1;    
     //restaurar estado minimizado de ventana
     //ventana->is_minimized=is_minimized;    
+
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    ventana->must_clear_cache_on_draw=1;    
+
     //Y dibujar la ventana
     zxvision_draw_window(ventana);
 
