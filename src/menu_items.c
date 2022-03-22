@@ -11316,7 +11316,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
                             //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
                             //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
-                            //el uso de cpu cuando no modificamos pasar por ejemplo de un uso de 82% teniendo esto siempre a 1, 
+                            //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1, 
                             //a usar 52% cuando lo tenemos a 0
                             ventana->must_clear_cache_on_draw=1;
                             zxvision_draw_window_contents(ventana);        
