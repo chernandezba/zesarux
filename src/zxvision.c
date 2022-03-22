@@ -2916,9 +2916,9 @@ void putchar_menu_overlay_parpadeo_cache_or_not(int x,int y,z80_byte caracter,in
 /*
 Otra optimizacion mas. Si se escribe el mismo caracter con iguales atributos, decimos que esta en cache
 Con esto se pasa, por ejemplo, enseñando el Sonic, con varias ventanas de menu abiertas, de usar
-67 % de cpu
+88 % de cpu
 a usar
-27% de cpu
+45% de cpu
 
 Esto requiere por otra parte que, ventanas que dibujan con putpixel (como waveform, audio chip sheet etc)
 esperan que siempre se borre con espacios la ventana y luego ellos escriben encima sus pixeles con el fondo "ya limpio"
