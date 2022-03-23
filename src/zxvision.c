@@ -17569,7 +17569,8 @@ void menu_debug_dissassemble_una_instruccion(char *dumpassembler,menu_z80_moto_i
 }
 
 
-
+/*
+Antigua funcion de linea vertical
 void menu_linea_zxvision(zxvision_window *ventana,int x,int y1,int y2,int color)
 {
 
@@ -17593,7 +17594,7 @@ void menu_linea_zxvision(zxvision_window *ventana,int x,int y1,int y2,int color)
 		zxvision_putpixel(ventana,x,yorigen,color);
 	}
 }
-
+*/
 
 
 
