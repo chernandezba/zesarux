@@ -4155,6 +4155,35 @@ zxvision_window *menu_audio_draw_sound_wave_window;
 
 z80_bit menu_waveform_separar_canales={0};
 
+void menu_waveform_draw_array(int ancho,int alto,int xorigen,int yorigen)
+{
+    int x,y;
+
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho;x++) {
+
+            //Y siempre que estemos en rango
+            if (x<MAX_ANCHO_WAVEFORM_PIXEL_ARRAY && y<MAX_ALTO_WAVEFORM_PIXEL_ARRAY) {
+
+                int offset_destino=y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+x;
+                int valor=menu_waveform_pixel_array[offset_destino];
+
+                //Dibujar pixel solo si no es blanco
+                //Dado que esto es overlay de pixeles, continuamente se resetea a blanco al refrescar pantalla,
+                //no hace falta dibujar esos pixeles que ya son blancos
+                if (valor!=ESTILO_GUI_PAPEL_NORMAL) {
+                    zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,y+yorigen,valor);
+                }
+            }
+            else {
+                //Si no, rellenar con color distinto. Rojo para avisar
+                zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,y+yorigen,ESTILO_GUI_TINTA_NO_DISPONIBLE);
+            }
+            
+        }
+    }    
+}
+
 void menu_audio_draw_sound_wave(void)
 {
 
@@ -4491,29 +4520,8 @@ void menu_audio_draw_sound_wave(void)
 
 	if (menu_sound_wave_llena==2) {
 
-		for (y=0;y<alto;y++) {
-			for (x=0;x<ancho;x++) {
+        menu_waveform_draw_array(ancho,alto,xorigen,yorigen);
 
-				//Y siempre que estemos en rango
-				if (x<MAX_ANCHO_WAVEFORM_PIXEL_ARRAY && y<MAX_ALTO_WAVEFORM_PIXEL_ARRAY) {
-
-					int offset_destino=y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+x;
-					int valor=menu_waveform_pixel_array[offset_destino];
-
-					//Dibujar pixel solo si no es blanco
-					//Dado que esto es overlay de pixeles, continuamente se resetea a blanco al refrescar pantalla,
-					//no hace falta dibujar esos pixeles que ya son blancos
-					if (valor!=ESTILO_GUI_PAPEL_NORMAL) {
-						zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,y+yorigen,valor);
-					}
-				}
-				else {
-					//Si no, rellenar con color distinto. Rojo para avisar
-					zxvision_putpixel(menu_audio_draw_sound_wave_window,x+xorigen,y+yorigen,ESTILO_GUI_TINTA_NO_DISPONIBLE);
-				}
-				
-			}
-		}
 	}
 
 
@@ -4601,7 +4609,11 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     //decimos que tiene que borrar fondo cada vez al redibujar
     //por tanto es como decirle que no use cache de putchar
     //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;
+    //77% cpu con esto a 1
+    //37% cpu con esto a 0
+    //42% cpu con esto a 0 y borrando pixeles anteriores
+    //ventana->must_clear_cache_on_draw=1;
+
 
 	//printf("despues zxvision_new_window_nocheck_staticsize\n");
 	zxvision_draw_window(ventana);		
