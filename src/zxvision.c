@@ -6330,9 +6330,12 @@ void menu_draw_background_windows_overlay_after_normal(void)
 	//printf ("overlay funcion desde menu_draw_background_windows_overlay\n");
 }
 
-//TODO: Por alguna razon que aun no se, drivers no completos (curses, aa, caca etc) no refrescan bien con la cache
-//es necesario evitar condicion overlay_screen_array[pos_array].modificado para que funcionen
-//Creo que tiene que ver con la manera en que se refresca la pantalla en esos casos
+//En drivers no graficos, cuando renderizan la maquina emulada, siempre escriben encima de cualquier cosa, aunque haya menu abierto
+//luego es cuando se redibuja la capa de menu. Pero claro, si la capa de menu tiene que .modificado es 0, no volvera a escribir el menu
+//encima despues de que la maquina emulada haya borrado dicho menu
+//A diferencia de drivers graficos, en que la maquina emulada, si hay menu abierto, no escriben encima, sino que hacen mix (over o segun el modo transparencia)
+//con el menu
+//Es por esto que en drivers no graficos, NO hacemos caso de la cache putchar
 void normal_overlay_texto_menu_no_complete_video_driver(void)
 {
 
