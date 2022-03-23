@@ -6331,12 +6331,10 @@ void menu_draw_background_windows_overlay_after_normal(void)
 	//printf ("overlay funcion desde menu_draw_background_windows_overlay\n");
 }
 
-//Por alguna razon que aun no se, drivers no completos (curses, aa, caca etc) no refrescan bien con la cache
+//TODO: Por alguna razon que aun no se, drivers no completos (curses, aa, caca etc) no refrescan bien con la cache
 //es necesario evitar condicion overlay_screen_array[pos_array].modificado para que funcionen
 void normal_overlay_texto_menu_no_complete_video_driver(void)
 {
-
-
 
 	int x,y;
 	int tinta,papel,parpadeo;
@@ -6359,6 +6357,7 @@ void normal_overlay_texto_menu_no_complete_video_driver(void)
                 overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
             ) {
                 //quitar condicion && overlay_screen_array[pos_array].modificado para que funcione bien en curses, aa, caca, etc
+                //por tanto no esta usando realmente la cache en estos casos
         
             //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
@@ -6456,25 +6455,21 @@ void normal_overlay_texto_menu(void)
                 (caracter && overlay_screen_array[pos_array].modificado) ||
                 overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
             ) {
-                //quitar condicion && overlay_screen_array[pos_array].modificado para que funcione bien en curses, aa, caca, etc
         
             //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
 
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
-            //caracter=caracter ^ (debug_zxvision_cache_overlay_caracter & 1);
             //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
             papel += (debug_zxvision_cache_overlay_caracter&7);
 #endif
 
 #else
-			//if (overlay_usado_screen_array[pos_array]) {
             if (caracter) {
 #endif
 				//128 y 129 corresponden a franja de menu y a letra enye minuscula
 				if (si_valid_char(caracter) ) {
 					tinta=overlay_screen_array[pos_array].tinta;
-					//papel=overlay_screen_array[pos_array].papel;
 					parpadeo=overlay_screen_array[pos_array].parpadeo;
 
 					//Si esta multitask, si es caracter con parpadeo y si el estado del contador del parpadeo indica parpadear
