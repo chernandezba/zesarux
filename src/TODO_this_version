@@ -123,3 +123,6 @@ usen el mismo buffer
 
 -quiza unificar mejor normal_overlay_texto_menu_no_complete_video_driver y normal_overlay_texto_menu
 normal_overlay_texto_menu_no_complete_video_driver no deberia mirar nada de cache
+
+-ver si daad/paws/gac graphics en algun momento no limpia el fondo de graficos (quiza al quitar paper?) y por tanto la cache resulta
+incompatible, y hay que hacer que siempre refresque el fondo de texto blanco
