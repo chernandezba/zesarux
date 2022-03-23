@@ -6331,6 +6331,92 @@ void menu_draw_background_windows_overlay_after_normal(void)
 	//printf ("overlay funcion desde menu_draw_background_windows_overlay\n");
 }
 
+//Por alguna razon que aun no se, drivers no completos (curses, aa, caca etc) no refrescan bien con la cache
+//es necesario evitar condicion overlay_screen_array[pos_array].modificado para que funcionen
+void normal_overlay_texto_menu_no_complete_video_driver(void)
+{
+
+
+
+	int x,y;
+	int tinta,papel,parpadeo;
+
+	z80_byte caracter;
+	int pos_array=0;
+
+
+	//printf ("normal_overlay_texto_menu\n");
+	for (y=0;y<scr_get_menu_height();y++) {
+		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
+			caracter=overlay_screen_array[pos_array].caracter;
+
+            //sacamos el papel antes para poder alterarlo cuando se habilita DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+            papel=overlay_screen_array[pos_array].papel;
+			//si caracter es 0, no mostrar
+#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
+            if (
+                (caracter /*&& overlay_screen_array[pos_array].modificado*/) ||
+                overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
+            ) {
+                //quitar condicion && overlay_screen_array[pos_array].modificado para que funcione bien en curses, aa, caca, etc
+        
+            //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
+            overlay_screen_array[pos_array].modificado=0;
+
+
+
+#else
+			//if (overlay_usado_screen_array[pos_array]) {
+            if (caracter) {
+#endif
+				//128 y 129 corresponden a franja de menu y a letra enye minuscula
+				if (si_valid_char(caracter) ) {
+					tinta=overlay_screen_array[pos_array].tinta;
+					//papel=overlay_screen_array[pos_array].papel;
+					parpadeo=overlay_screen_array[pos_array].parpadeo;
+
+					//Si esta multitask, si es caracter con parpadeo y si el estado del contador del parpadeo indica parpadear
+					if (menu_multitarea && parpadeo && estado_parpadeo.v) caracter=' '; //si hay parpadeo y toca, meter espacio tal cual (se oculta)
+
+					scr_putchar_menu(x,y,caracter,tinta,papel);
+				}
+
+				else if (caracter==255) {
+					//Significa no mostrar caracter. Usado en pantalla panic
+				}
+
+				//Si caracter no valido, mostrar ?
+				else {
+					tinta=overlay_screen_array[pos_array].tinta;
+					papel=overlay_screen_array[pos_array].papel;
+					scr_putchar_menu(x,y,'?',tinta,papel);
+				}
+			}
+		}
+	}
+
+	if (cuadrado_activo && ventana_tipo_activa) {
+		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
+
+	}
+
+	//Dibujar ventanas en background pero solo si menu está abierto, esto evita que aparezcan las ventanas cuando hay un 
+	//mensaje de splash y el menú está cerrado
+	if (menu_allow_background_windows && 
+	  (menu_abierto || overlay_visible_when_menu_closed)
+	) {
+		//printf("redrawing windows on normal_overlay\n");
+		//Conservar estado de tecla pulsada o no para el speech
+		int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
+		menu_draw_background_windows_overlay_after_normal();
+		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
+	}
+ 
+
+}
+
+
+
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
 z80_byte debug_zxvision_cache_overlay_caracter=33;
 #endif
@@ -6338,6 +6424,11 @@ z80_byte debug_zxvision_cache_overlay_caracter=33;
 //funcion normal de impresion de overlay de buffer de texto y cuadrado de lineas usado en los menus
 void normal_overlay_texto_menu(void)
 {
+
+    if (!si_complete_video_driver() ) {
+        normal_overlay_texto_menu_no_complete_video_driver();
+        return;
+    }
 
 	//printf ("inicio normal_overlay_texto_menu\n");
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT    
