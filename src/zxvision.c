@@ -6365,6 +6365,7 @@ void normal_overlay_texto_menu(void)
                 (caracter && overlay_screen_array[pos_array].modificado) ||
                 overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
             ) {
+                //quitar condicion && overlay_screen_array[pos_array].modificado para que funcione bien en curses, aa, caca, etc
         
             //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
             overlay_screen_array[pos_array].modificado=0;
