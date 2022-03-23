@@ -2925,7 +2925,6 @@ esperan que siempre se borre con espacios la ventana y luego ellos escriben enci
 Esto ya no sucede mas, pues el fondo limpio con espacios, al no alterarse, no se redibuja limpiando los pixeles anteriores
 Requiere entonces que llamen a una función que limpia la ventana e indicando parametro de .modificado 
 */
-
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
     //Cualquier atributo alterado del caracter, o el propio caracter, decimos a la cache que se ha alterado y hay que redibujar
 	if (
@@ -6333,6 +6332,7 @@ void menu_draw_background_windows_overlay_after_normal(void)
 
 //TODO: Por alguna razon que aun no se, drivers no completos (curses, aa, caca etc) no refrescan bien con la cache
 //es necesario evitar condicion overlay_screen_array[pos_array].modificado para que funcionen
+//Creo que tiene que ver con la manera en que se refresca la pantalla en esos casos
 void normal_overlay_texto_menu_no_complete_video_driver(void)
 {
 
@@ -6348,7 +6348,8 @@ void normal_overlay_texto_menu_no_complete_video_driver(void)
 		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
 			caracter=overlay_screen_array[pos_array].caracter;
 
-            //sacamos el papel antes para poder alterarlo cuando se habilita DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+            //printf("x %d y %d m %d\n",x,y,overlay_screen_array[pos_array].modificado);
+
             papel=overlay_screen_array[pos_array].papel;
 			//si caracter es 0, no mostrar
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
