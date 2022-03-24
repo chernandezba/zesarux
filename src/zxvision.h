@@ -156,6 +156,10 @@ struct s_zxvision_window {
     //que al escribir el texto con espacios, esos espacios borren la cache de putchar cada vez
     int must_clear_cache_on_draw;
 
+    //Lo mismo que el setting must_clear_cache_on_draw pero se pondra a 0 al llamar a draw_window_contents
+    //usado por ejemplo en Daad/paws/gac graphics
+    int must_clear_cache_on_draw_once;
+
 
 	//Posicion del cursor y si esta visible
 	int visible_cursor;

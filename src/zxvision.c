@@ -8791,6 +8791,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->must_clear_cache_on_draw=0;
 
+    w->must_clear_cache_on_draw_once=0;
+
 	w->can_mouse_send_hotkeys=0;
 
     w->no_refresh_change_offset=0;
@@ -11456,6 +11458,12 @@ void zxvision_draw_window_contents(zxvision_window *w)
     if (w->must_clear_cache_on_draw) {
         use_cache=0;
     }
+
+    //decimos que hay que borrar fondo, por tanto no usamos cache. Y este flag se resetea solo
+    if (w->must_clear_cache_on_draw_once) {
+        use_cache=0;
+        w->must_clear_cache_on_draw_once=0;
+    }    
 
 
 	for (y=0;y<height;y++) {
