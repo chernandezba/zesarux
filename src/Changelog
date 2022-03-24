@@ -35,6 +35,7 @@ Improved Accessibility:
 -added setting to disable Flash
 
 Improved ZX Vision:
+-Reduced up to 5 times cpu usage on menu by using a cache
 -Added maximize window button
 -Background button on inactive windows is hidden by default
 -Improve window refreshing by disabling autoframeskip while moving
@@ -161,7 +162,6 @@ Improved Debugging:
 -Added command line setting to load source code
 
 Improved ZX Vision menu interface:
--Reduced up to 5 times cpu usage on menu by using a cache
 -Added GUI styles: BeOS, Bloody, Grass, Ocean, Sunny, Panther, Sky
 -Added actions for reinsert, rewind, ffwd real tape
 -Added setting to pause cpu emulation on menu when multitask active
