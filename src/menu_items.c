@@ -11349,9 +11349,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                             //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
                             //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1, 
                             //a usar 52% cuando lo tenemos a 0
-                            ventana->must_clear_cache_on_draw=1;
-                            zxvision_draw_window_contents(ventana);        
-                            ventana->must_clear_cache_on_draw=0;
+                            ventana->must_clear_cache_on_draw_once=1;
                         }
 					break;
 
@@ -11363,9 +11361,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                     case 'q':
                         if (view_sprites_alto_sprite>1) {
                             view_sprites_alto_sprite--;
-                            ventana->must_clear_cache_on_draw=1;
-                            zxvision_draw_window_contents(ventana);        
-                            ventana->must_clear_cache_on_draw=0;
+                            ventana->must_clear_cache_on_draw_once=1;
                         }                            
                     break;
 
