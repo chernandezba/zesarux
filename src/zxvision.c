@@ -6330,73 +6330,9 @@ void menu_draw_background_windows_overlay_after_normal(void)
 	//printf ("overlay funcion desde menu_draw_background_windows_overlay\n");
 }
 
-//En drivers no graficos, cuando renderizan la maquina emulada, siempre escriben encima de cualquier cosa, aunque haya menu abierto
-//luego es cuando se redibuja la capa de menu. Pero claro, si la capa de menu tiene que .modificado es 0, no volvera a escribir el menu
-//encima despues de que la maquina emulada haya borrado dicho menu
-//A diferencia de drivers graficos, en que la maquina emulada, si hay menu abierto, no escriben encima, sino que hacen mix (over o segun el modo transparencia)
-//con el menu
-//Es por esto que en drivers no graficos, NO hacemos caso de la cache putchar
-void normal_overlay_texto_menu_no_complete_video_driver(void)
+
+void normal_overlay_texto_menu_final(void)
 {
-
-	int x,y;
-	int tinta,papel,parpadeo;
-
-	z80_byte caracter;
-	int pos_array=0;
-
-
-	//printf ("normal_overlay_texto_menu\n");
-	for (y=0;y<scr_get_menu_height();y++) {
-		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
-			caracter=overlay_screen_array[pos_array].caracter;
-
-            //printf("x %d y %d m %d\n",x,y,overlay_screen_array[pos_array].modificado);
-
-            papel=overlay_screen_array[pos_array].papel;
-			//si caracter es 0, no mostrar
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
-            if (
-                (caracter /*&& overlay_screen_array[pos_array].modificado*/) ||
-                overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
-            ) {
-                //quitar condicion && overlay_screen_array[pos_array].modificado para que funcione bien en curses, aa, caca, etc
-                //por tanto no esta usando realmente la cache en estos casos
-        
-            //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
-            overlay_screen_array[pos_array].modificado=0;
-
-
-
-#else
-			//if (overlay_usado_screen_array[pos_array]) {
-            if (caracter) {
-#endif
-				//128 y 129 corresponden a franja de menu y a letra enye minuscula
-				if (si_valid_char(caracter) ) {
-					tinta=overlay_screen_array[pos_array].tinta;
-					//papel=overlay_screen_array[pos_array].papel;
-					parpadeo=overlay_screen_array[pos_array].parpadeo;
-
-					//Si esta multitask, si es caracter con parpadeo y si el estado del contador del parpadeo indica parpadear
-					if (menu_multitarea && parpadeo && estado_parpadeo.v) caracter=' '; //si hay parpadeo y toca, meter espacio tal cual (se oculta)
-
-					scr_putchar_menu(x,y,caracter,tinta,papel);
-				}
-
-				else if (caracter==255) {
-					//Significa no mostrar caracter. Usado en pantalla panic
-				}
-
-				//Si caracter no valido, mostrar ?
-				else {
-					tinta=overlay_screen_array[pos_array].tinta;
-					papel=overlay_screen_array[pos_array].papel;
-					scr_putchar_menu(x,y,'?',tinta,papel);
-				}
-			}
-		}
-	}
 
 	if (cuadrado_activo && ventana_tipo_activa) {
 		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
@@ -6425,13 +6361,15 @@ z80_byte debug_zxvision_cache_overlay_caracter=33;
 #endif
 
 //funcion normal de impresion de overlay de buffer de texto y cuadrado de lineas usado en los menus
+//En drivers no graficos, cuando renderizan la maquina emulada, siempre escriben encima de cualquier cosa, aunque haya menu abierto
+//luego es cuando se redibuja la capa de menu. Pero claro, si la capa de menu tiene que .modificado es 0, no volvera a escribir el menu
+//encima despues de que la maquina emulada haya borrado dicho menu
+//A diferencia de drivers graficos, en que la maquina emulada, si hay menu abierto, no escriben encima, sino que hacen mix (over o segun el modo transparencia)
+//con el menu
+//Es por esto que en drivers no graficos, NO hacemos caso de la cache putchar
 void normal_overlay_texto_menu(void)
 {
 
-    if (!si_complete_video_driver() ) {
-        normal_overlay_texto_menu_no_complete_video_driver();
-        return;
-    }
 
 	//printf ("inicio normal_overlay_texto_menu\n");
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT    
@@ -6445,6 +6383,9 @@ void normal_overlay_texto_menu(void)
 	z80_byte caracter;
 	int pos_array=0;
 
+    int nocache=0;
+    if (!si_complete_video_driver() ) nocache=1;
+
 
 	//printf ("normal_overlay_texto_menu\n");
 	for (y=0;y<scr_get_menu_height();y++) {
@@ -6456,16 +6397,16 @@ void normal_overlay_texto_menu(void)
 			//si caracter es 0, no mostrar
 #ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT            
             if (
-                (caracter && overlay_screen_array[pos_array].modificado) ||
+                (caracter && (overlay_screen_array[pos_array].modificado || nocache) ) ||  //Siempre que sea caracter!=0, y si se ha modificado la  cache
                 overlay_screen_array[pos_array].parpadeo   //caracter con parpadeo se redibuja siempre
             ) {
         
-            //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
-            overlay_screen_array[pos_array].modificado=0;
+                //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
+                overlay_screen_array[pos_array].modificado=0;
 
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
-            //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
-            papel += (debug_zxvision_cache_overlay_caracter&7);
+                //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
+                papel += (debug_zxvision_cache_overlay_caracter&7);
 #endif
 
 #else
@@ -6496,22 +6437,7 @@ void normal_overlay_texto_menu(void)
 		}
 	}
 
-	if (cuadrado_activo && ventana_tipo_activa) {
-		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
-
-	}
-
-	//Dibujar ventanas en background pero solo si menu está abierto, esto evita que aparezcan las ventanas cuando hay un 
-	//mensaje de splash y el menú está cerrado
-	if (menu_allow_background_windows && 
-	  (menu_abierto || overlay_visible_when_menu_closed)
-	) {
-		//printf("redrawing windows on normal_overlay\n");
-		//Conservar estado de tecla pulsada o no para el speech
-		int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-		menu_draw_background_windows_overlay_after_normal();
-		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
-	}
+	normal_overlay_texto_menu_final();
  
 
 }
