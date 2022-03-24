@@ -5501,6 +5501,13 @@ void menu_debug_daad_view_graphics(void)
     zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"textadvgraphics",
         is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
+    //decimos que tiene que borrar fondo cada vez al redibujar
+    //por tanto es como decirle que no use cache de putchar
+    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+    //ventana->must_clear_cache_on_draw=1;
+    //Nota: parece que a la practica no hace falta este setting, pero lo pongo por si acaso. Quiza no es necesario porque hay alguna funcion
+    //como cls_menu_overlay u otras que estan vaciando la cache, aunque no he conseguido determinar donde        
+
     zxvision_draw_window(ventana);
     //indicar nombre del grabado de geometria
     //strcpy(ventana->geometry_name,"textadvgraphics");    
