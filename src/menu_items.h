@@ -116,7 +116,7 @@ extern void menu_reinsert_real_tape(void);
 extern int menu_tape_input_insert_cond(void);
 extern int menu_realtape_cond(void);
 
-
+extern void menu_reinsert_std_tape(void);
 
 
 extern int menu_zeng_send_message_cond(void);

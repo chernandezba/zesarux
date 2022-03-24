@@ -17748,27 +17748,7 @@ void menu_uncompress_zip_progress(char *zip_file,char *dest_dir)
 
 
 
-//Esto de momento solo se llama desde una tecla F. Lo pongo aqui para que este cerca de las condiciones y acciones de insert
-void menu_reinsert_std_tape(void)
-{
 
-	debug_printf(VERBOSE_DEBUG,"Running reinsert tape");
-
-	if (!menu_tape_input_insert_cond() ) {
-		debug_printf(VERBOSE_DEBUG,"No tape inserted to reinsert");
-		return;
-	}
-
-	//Si esta insertada, expulsar
-	if ((tape_loadsave_inserted & TAPE_LOAD_INSERTED)) {
-		debug_printf(VERBOSE_DEBUG,"Ejecting tape");
-		tap_close();
-	}
-
-	//E insertar
-	debug_printf(VERBOSE_DEBUG,"Inserting tape");
-	tap_open();
-}
 
 
 
