@@ -115,3 +115,4 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -limpieza includes en zxvision.c y mover funciones que no sean estrictamente de zxvision.c.
 menu_process_f_functions_by_action_name por ejemplo no deberia estar ahi
+Funciones memory zone quizá no deberían estar en zxvision.c. Quizá en utils u otro sitio
