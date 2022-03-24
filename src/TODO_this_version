@@ -111,7 +111,5 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
--maximo ancho zx desktop excede el limite de ancho de overlay_screen_array. corregirlo
-
 
 

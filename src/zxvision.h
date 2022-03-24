@@ -1396,7 +1396,15 @@ extern z80_bit menu_current_drive_mmc_image;
 #define ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS 1280
 
 //Limite admitido desde menu
-#define ZXDESKTOP_MAX_WIDTH_MENU_LIMIT (ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS*2)
+//TODO: Esto es mayor que el maximo de overlay de menu, cosa que no tiene mucho sentido, porque se puede hacer la ventana mas grande
+//pero no se puede usar desde menu
+//#define ZXDESKTOP_MAX_WIDTH_MENU_LIMIT (ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS*2)
+
+//Limite admitido desde menu. El overlay total incluye pantalla emulada y zx desktop
+//por tanto el maximo zxdesktop habria que quitarle el ancho minimo de una maquina (256)
+//Da igual realmente que esto fuera mas grande, pues las funciones de driver de video (scrXXXX_get_menu_width)
+//ya controlan que no se pueda usar mas ancho de overlay
+#define ZXDESKTOP_MAX_WIDTH_MENU_LIMIT ((OVERLAY_SCREEN_MAX_WIDTH*8)-256)
 
 //Total botones a la derecha: 3 (background, minimizar, maximizar)
 #define ZXVISION_TOTAL_BUTTONS_RIGHT 3
