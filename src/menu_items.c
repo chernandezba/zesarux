@@ -1624,7 +1624,7 @@ Calculando ese tiempo: 12% cpu
 
         else perc_chars=(stats_normal_overlay_menu_drawn_chars*100)/stats_normal_overlay_menu_total_chars;
         zxvision_print_string_defaults_fillspc_format(ventana,1,core_statistics_linea_mostrar_estadisticas_chars,
-            "Menu cache. Chars Total %5d Drawn %5d (%3d%%)",
+            "Menu cache. Total Chars %5d Drawn %5d (%3d%%)",
             stats_normal_overlay_menu_total_chars,stats_normal_overlay_menu_drawn_chars,perc_chars);
 
     }

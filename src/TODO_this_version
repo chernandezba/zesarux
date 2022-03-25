@@ -112,6 +112,3 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
 
--limpieza includes en zxvision.c y mover funciones que no sean estrictamente de zxvision.c.
-menu_process_f_functions_by_action_name por ejemplo no deberia estar ahi
-Funciones memory zone quizá no deberían estar en zxvision.c. Quizá en utils u otro sitio
