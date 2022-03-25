@@ -38,7 +38,7 @@ Improved ZX Vision:
 -Reduced up to 5 times cpu usage on menu by using a cache
 -Added maximize window button
 -Background button on inactive windows is hidden by default
--Improve window refreshing by disabling autoframeskip while moving
+-Improve window refreshing by disabling autoframeskip while moving or resizing
 -When sending a window to the background, and the setting "Background windows even when menu closed", the menu will be closed
 -Added GUI styles: AmigaOS, Atari TOS, OS/2, RiscOS, ZEsarUX Plus (and this one is now the default style)
 -Improve RetroMac GUI style: striped title bar
