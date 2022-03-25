@@ -31,6 +31,7 @@
 #include "ula.h"
 #include "screen.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "divmmc.h"
 #include "ay38912.h"
 #include "ulaplus.h"

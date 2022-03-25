@@ -215,5 +215,16 @@ extern menu_debug_view_sensors_list menu_debug_view_sensors_list_sensors[];
 
 extern struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[];
 
+extern int zxdesktop_icon_tape_inverse;
+extern int zxdesktop_icon_tape_real_inverse;
+extern int zxdesktop_icon_mmc_inverse;
+extern int zxdesktop_icon_plus3_inverse;
+extern int zxdesktop_icon_betadisk_inverse;
+extern int zxdesktop_icon_ide_inverse;
+extern int zxdesktop_icon_zxpand_inverse;
+extern int zxdesktop_icon_mdv_flp_inverse;
+extern int zxdesktop_icon_dandanator_inverse;
+extern int zxdesktop_icon_zxunoflash_inverse;
+
 #endif
 

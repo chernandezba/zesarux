@@ -31,6 +31,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "operaciones.h"
 #include "screen.h"
 #include "settings.h"

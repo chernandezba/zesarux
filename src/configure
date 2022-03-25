@@ -1319,7 +1319,7 @@ timer.o: timer.c timer.h cpu.h audio.h debug.h zxvision.h tape.h screen.h compil
 debug.o: debug.c cpu.h debug.h mem128.h timex.h screen.h zxvision.h zx8081.h operaciones.h core_spectrum.h core_reduced_spectrum.h core_zx8081.h core_z88.h core_ace.h core_cpc.h core_msx.h core_svi.h core_coleco.h core_sg1000.h core_sms.h disassemble.h utils.h prism.h core_sam.h core_ql.h spectra.h tbblue.h zxuno.h ulaplus.h timex.h ay38912.h ula.h ql.h m68k.h superupgrade.h core_mk14.h scmp.h dandanator.h kartusho.h ifrom.h spritefinder.h multiface.h chloe.h cpc.h sam.h snap.h diviface.h betadisk.h zxevo.h tsconf.h baseconf.h remote.h charset.h settings.h datagear.h expression_parser.h atomic.h msx.h coleco.h sn76489an.h svi.h vdp_9918a.h ql_zx8302.h ide.h mmc.h esxdos_handler.h vdp_9918a_sms.h
 	\$(CC) \$(CFLAGS) -c debug.c
 
-tape.o: tape.c tape.h cpu.h operaciones.h debug.h tape_tap.h tape_tzx.h tape_smp.h chloe.h prism.h mem128.h timex.h snap.h compileoptions.h screen.h zx8081.h zxvision.h snap_z81.h utils.h audio.h screen.h autoselectoptions.h zxuno.h timer.h superupgrade.h multiface.h chrome.h zxevo.h tsconf.h baseconf.h snap_spg.h tbblue.h settings.h msx.h samram.h
+tape.o: tape.c tape.h cpu.h operaciones.h debug.h tape_tap.h tape_tzx.h tape_smp.h chloe.h prism.h mem128.h timex.h snap.h compileoptions.h screen.h zx8081.h zxvision.h snap_z81.h utils.h audio.h screen.h autoselectoptions.h zxuno.h timer.h superupgrade.h multiface.h chrome.h zxevo.h tsconf.h baseconf.h snap_spg.h tbblue.h settings.h msx.h samram.h menu_items.h
 	\$(CC) \$(CFLAGS) -c tape.c
 
 tape_tap.o: tape_tap.c tape_tap.h tape.h cpu.h operaciones.h debug.h
@@ -1370,7 +1370,7 @@ sms.o: sms.c sms.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h sn76489an.h
 saa_simul.o: saa_simul.c saa_simul.h ay38912.h cpu.h audio.h debug.h
 	\$(CC) \$(CFLAGS) -c saa_simul.c
 
-screen.o: screen.c screen.h debug.h mem128.h chloe.h prism.h timex.h cpc.h prism.h operaciones.h zx8081.h charset.h zxvision.h menu_bitmaps.h audio.h contend.h ula.h tape_smp.h z88.h ulaplus.h zxuno.h spectra.h spritechip.h timer.h sam.h ql.h chrome.h zxevo.h tsconf.h baseconf.h mk14.h vdp_9918a.h msx.h coleco.h ql_zx8302.h stats.h vdp_9918a_sms.h
+screen.o: screen.c screen.h debug.h mem128.h chloe.h prism.h timex.h cpc.h prism.h operaciones.h zx8081.h charset.h zxvision.h menu_bitmaps.h audio.h contend.h ula.h tape_smp.h z88.h ulaplus.h zxuno.h spectra.h spritechip.h timer.h sam.h ql.h chrome.h zxevo.h tsconf.h baseconf.h mk14.h vdp_9918a.h msx.h coleco.h ql_zx8302.h stats.h vdp_9918a_sms.h menu_items.h
 	\$(CC) \$(CFLAGS) -c screen.c
 
 mem128.o: mem128.c cpu.h mem128.h debug.h contend.h zxuno.h chloe.h prism.h timex.h sam.h ula.h tbblue.h superupgrade.h chrome.h zxevo.h tsconf.h baseconf.h msx.h coleco.h sg1000.h sms.h svi.h
@@ -1460,7 +1460,7 @@ sam.o: sam.c sam.h cpu.h screen.h debug.h core_sam.h contend.h joystick.h zxvisi
 atomlite.o: atomlite.c atomlite.h cpu.h screen.h debug.h zxvision.h operaciones.h utils.h ide.h
 	\$(CC) \$(CFLAGS) -c atomlite.c
 
-zxuno.o: zxuno.c zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h screen.h zxvision.h divmmc.h diviface.h ay38912.h ulaplus.h operaciones.h chloe.h chardevice.h uartbridge.h
+zxuno.o: zxuno.c zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h screen.h zxvision.h divmmc.h diviface.h ay38912.h ulaplus.h operaciones.h chloe.h chardevice.h uartbridge.h menu_items.h
 	\$(CC) \$(CFLAGS) -c zxuno.c
 
 #ql.o: 68000.c 68000_debug.c op68kadd.c op68karith.c op68ksub.c op68klogop.c op68kmisc.c op68kmove.c op68kshift.c 68000_additional.c ql.c
@@ -1469,7 +1469,7 @@ zxuno.o: zxuno.c zxuno.h cpu.h debug.h contend.h mem128.h utils.h ula.h screen.h
 ql.o: ql.c ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c ql.c
 
-ql_qdos_handler.o: ql_qdos_handler.c ql_qdos_handler.h ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h
+ql_qdos_handler.o: ql_qdos_handler.c ql_qdos_handler.h ql.h debug.h m68k.h utils.h zxvision.h operaciones.h settings.h ql_i8049.h ql_zx8302.h menu_items.h
 	\$(CC) \$(CFLAGS) -c ql_qdos_handler.c
 
 ql_i8049.o: ql_i8049.c ql_i8049.h debug.h utils.h ql.h audio.h
@@ -1574,25 +1574,25 @@ joystick.o: joystick.c joystick.h cpu.h debug.h screen.h zxvision.h zeng.h
 ula.o: ula.c ula.h cpu.h debug.h screen.h contend.h zxvision.h multiface.h betadisk.h settings.h divmmc.c hilow.h
 	\$(CC) \$(CFLAGS) -c ula.c
 
-mmc.o: mmc.c mmc.h cpu.h debug.h utils.h zxvision.h screen.h divmmc.h compileoptions.h operaciones.h
+mmc.o: mmc.c mmc.h cpu.h debug.h utils.h zxvision.h screen.h divmmc.h compileoptions.h operaciones.h menu_items.h
 	\$(CC) \$(CFLAGS) -c mmc.c
 
-ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h screen.h divide.h
+ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h screen.h divide.h menu_items.h
 	\$(CC) \$(CFLAGS) -c ide.c
 
-pd765.o: pd765.c pd765.h cpu.h debug.h utils.h zxvision.h screen.h mem128.h operaciones.h tape.h
+pd765.o: pd765.c pd765.h cpu.h debug.h utils.h zxvision.h screen.h mem128.h operaciones.h tape.h menu_items.h
 	\$(CC) \$(CFLAGS) -c pd765.c
 
-zxpand.o: zxpand.c zxpand.h mmc.h cpu.h debug.h utils.h zxvision.h screen.h zx8081.h joystick.h
+zxpand.o: zxpand.c zxpand.h mmc.h cpu.h debug.h utils.h zxvision.h screen.h zx8081.h joystick.h menu_items.h
 	\$(CC) \$(CFLAGS) -c zxpand.c
 
-dandanator.o: dandanator.c dandanator.h cpu.h debug.h utils.h operaciones.h ula.h audio.h screen.h
+dandanator.o: dandanator.c dandanator.h cpu.h debug.h utils.h operaciones.h ula.h audio.h screen.h menu_items.h
 	\$(CC) \$(CFLAGS) -c dandanator.c
 
 gs.o: gs.c gs.h cpu.h debug.h utils.h operaciones.h contend.h audio.h
 	\$(CC) \$(CFLAGS) -c gs.c
 
-betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tsconf.h tape.h
+betadisk.o: betadisk.c betadisk.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tsconf.h tape.h menu_items.h
 	\$(CC) \$(CFLAGS) -c betadisk.c
 
 codetests.o: codetests.c codetests.h cpu.h debug.h utils.h operaciones.h ula.h mem128.h screen.h tbblue.h assemble.h expression_parser.h audio.h zeng.h network.h settings.h atomic.h

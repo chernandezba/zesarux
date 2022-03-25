@@ -32,6 +32,7 @@
 #include "charset.h"
 #include "zxvision.h"
 #include "menu_bitmaps.h"
+#include "menu_items.h"
 #include "audio.h"
 #include "contend.h"
 #include "ula.h"

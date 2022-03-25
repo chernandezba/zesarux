@@ -39,6 +39,7 @@
 #include "screen.h"
 #include "tsconf.h"
 #include "tape.h"
+#include "menu_items.h"
 
 
 z80_bit betadisk_enabled={0};

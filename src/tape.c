@@ -42,6 +42,7 @@
 #include "compileoptions.h"
 #include "zx8081.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "utils.h"
 #include "audio.h"
 #include "screen.h"

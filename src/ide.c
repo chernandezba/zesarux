@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "screen.h"
 #include "divide.h"
 
