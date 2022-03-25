@@ -228,6 +228,313 @@ void menu_debug_dissassemble_una_instruccion(char *dumpassembler,menu_z80_moto_i
 
 
 
+int menu_debug_show_memory_zones=0;
+int menu_debug_memory_zone=-1;
+menu_z80_moto_int menu_debug_memory_zone_size=65536;
+
+
+//
+// Inicio funciones de gestion de zonas de memoria
+//
+
+void menu_debug_set_memory_zone_attr(void)
+{
+
+	int readwrite;
+
+	if (menu_debug_show_memory_zones==0) {
+		menu_debug_memory_zone_size=65536;
+		if (MACHINE_IS_QL) menu_debug_memory_zone_size=QL_MEM_LIMIT+1;
+		return;
+	}
+
+	//Primero ver si zona actual no esta disponible, fallback a 0 que siempre esta
+	 menu_debug_memory_zone_size=machine_get_memory_zone_attrib(menu_debug_memory_zone,&readwrite);
+	if (!menu_debug_memory_zone_size) {
+		//printf ("Zona no disponible. Fallback a memory mapped\n");
+		menu_debug_set_memory_zone_mapped();
+		//menu_debug_memory_zone=0;
+		//menu_debug_memory_zone_size=machine_get_memory_zone_attrib(menu_debug_memory_zone,&readwrite);
+	}
+}
+
+//Muestra byte mapeado de ram normal o de zona de menu mapeada
+z80_byte menu_debug_get_mapped_byte(int direccion)
+{
+
+	//Mostrar memoria normal
+	if (menu_debug_show_memory_zones==0) {
+		//printf ("menu_debug_get_mapped_byte dir %04XH result %02XH\n",direccion,peek_byte_z80_moto(direccion));
+		return peek_byte_z80_moto(direccion);
+	}
+
+
+	//Mostrar zonas mapeadas
+	//printf ("menu_debug_get_mapped_byte 1\n");
+	menu_debug_set_memory_zone_attr();
+
+	//Aqui si se ha hecho fallback a mapped zone, recomprobar de nuevo
+	if (menu_debug_show_memory_zones==0) {
+		//printf ("menu_debug_get_mapped_byte dir %04XH result %02XH\n",direccion,peek_byte_z80_moto(direccion));
+		//printf ("menu_debug_get_mapped_byte 1.5\n");
+		return peek_byte_z80_moto(direccion);
+	}	
+
+	//printf ("menu_debug_get_mapped_byte 2\n");
+
+	//printf ("menu_debug_get_mapped_byte menu_debug_memory_zone_size: %d\n",menu_debug_memory_zone_size);
+
+	direccion=direccion % menu_debug_memory_zone_size;
+	//printf ("menu_debug_get_mapped_byte 3\n");
+	return *(machine_get_memory_zone_pointer(menu_debug_memory_zone,direccion));
+	
+
+
+}
+
+
+
+
+//Escribe byte mapeado de ram normal o de zona de menu mapeada
+void menu_debug_write_mapped_byte(int direccion,z80_byte valor)
+{
+
+
+
+	//Mostrar memoria normal
+	if (menu_debug_show_memory_zones==0) {
+		return poke_byte_z80_moto(direccion,valor);
+	}
+
+
+	//Mostrar zonas mapeadas
+	menu_debug_set_memory_zone_attr();
+
+
+	//Aqui si se ha hecho fallback a mapped zone, recomprobar de nuevo
+	if (menu_debug_show_memory_zones==0) {
+		return poke_byte_z80_moto(direccion,valor);
+	}	
+
+	direccion=direccion % menu_debug_memory_zone_size;
+	*(machine_get_memory_zone_pointer(menu_debug_memory_zone,direccion))=valor;
+
+
+
+}
+
+
+menu_z80_moto_int adjust_address_memory_size(menu_z80_moto_int direccion)
+{
+
+	//Si modo mapeo normal
+	if (menu_debug_show_memory_zones==0) {
+		return adjust_address_space_cpu(direccion);
+	}
+
+	//Si zonas memoria mapeadas
+	if (direccion>=menu_debug_memory_zone_size) {
+		//printf ("ajustamos direccion %x a %x\n",direccion,menu_debug_memory_zone_size);
+		direccion=direccion % menu_debug_memory_zone_size;
+		//printf ("resultado ajustado: %x\n",direccion);
+	}
+
+	return direccion;
+}
+
+
+void menu_debug_set_memory_zone_mapped(void)
+{
+		menu_debug_memory_zone=-1;
+		menu_debug_show_memory_zones=0;	
+		menu_debug_memory_zone_size=65536;
+}
+
+
+//Retorna -1 si mapped memory. 0 o en adelante si otros. -2 si ESC
+int menu_change_memory_zone_list_title(char *titulo)
+{
+
+        menu_item *array_menu_memory_zones;
+        menu_item item_seleccionado;
+        int retorno_menu;
+		int menu_change_memory_zone_list_opcion_seleccionada=0;
+        //do {
+
+                char buffer_texto[40];
+
+				
+
+				menu_add_item_menu_inicial_format(&array_menu_memory_zones,MENU_OPCION_NORMAL,NULL,NULL,"Mapped memory");
+				menu_add_item_menu_valor_opcion(array_menu_memory_zones,-1);
+
+                int zone=-1;
+				int i=1;
+                do {
+
+					zone++;
+					zone=machine_get_next_available_memory_zone(zone);
+					if (zone>=0) {
+						machine_get_memory_zone_name(zone,buffer_texto);
+						menu_add_item_menu_format(array_menu_memory_zones,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+						menu_add_item_menu_valor_opcion(array_menu_memory_zones,zone);
+
+						if (menu_debug_memory_zone==zone) menu_change_memory_zone_list_opcion_seleccionada=i;
+
+					}
+					i++;
+				} while (zone>=0);
+
+
+                menu_add_item_menu(array_menu_memory_zones,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                
+                menu_add_ESC_item(array_menu_memory_zones);
+
+                retorno_menu=menu_dibuja_menu(&menu_change_memory_zone_list_opcion_seleccionada,&item_seleccionado,array_menu_memory_zones,titulo );
+
+                
+
+
+				if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+						//Cambiamos la zona
+						int valor_opcion=item_seleccionado.valor_opcion;
+						return valor_opcion;
+                    
+                }
+
+	return -2;
+
+}
+
+int menu_change_memory_zone_list(void)
+{
+  return menu_change_memory_zone_list_title("Zones");
+ }
+
+void menu_set_memzone(int valor_opcion)
+{
+if (valor_opcion<0) {
+		menu_debug_set_memory_zone_mapped();
+	}
+	else {
+		menu_debug_show_memory_zones=1;
+		menu_debug_memory_zone=valor_opcion;
+	}	
+}
+
+void menu_debug_change_memory_zone(void)
+{
+	int valor_opcion=menu_change_memory_zone_list();
+	if (valor_opcion==-2) return; //Pulsado ESC
+	
+	menu_set_memzone(valor_opcion);
+
+
+	/*if (menu_debug_show_memory_zones==0) menu_debug_show_memory_zones=1;
+
+	//Si se ha habilitado en el if anterior, entrara aqui
+	if (menu_debug_show_memory_zones) {
+		menu_debug_memory_zone++;
+		menu_debug_memory_zone=machine_get_next_available_memory_zone(menu_debug_memory_zone);
+		if (menu_debug_memory_zone<0)  {
+			menu_debug_set_memory_zone_mapped();
+
+		}
+	}
+	*/
+}
+
+void menu_debug_change_memory_zone_non_interactive(void)
+{
+
+
+	if (menu_debug_show_memory_zones==0) menu_debug_show_memory_zones=1;
+
+	//Si se ha habilitado en el if anterior, entrara aqui
+	if (menu_debug_show_memory_zones) {
+		menu_debug_memory_zone++;
+		menu_debug_memory_zone=machine_get_next_available_memory_zone(menu_debug_memory_zone);
+		if (menu_debug_memory_zone<0)  {
+			menu_debug_set_memory_zone_mapped();
+
+		}
+	}
+	
+}
+
+void menu_debug_set_memory_zone(int zone)
+{
+	//Cambiar a zona memoria indicada
+	int salir=0;
+
+	//int zona_inicial=menu_debug_memory_zone;
+
+	while (menu_debug_memory_zone!=zone && salir<2) {
+		menu_debug_change_memory_zone_non_interactive();
+
+		//Si ha pasado dos veces por la zona mapped, es que no existe dicha zona
+		if (menu_debug_memory_zone<0) salir++;
+	}
+}
+
+int menu_get_current_memory_zone_name_number(char *s)
+{
+	if (menu_debug_show_memory_zones==0) {
+		strcpy(s,"Mapped memory");
+		return -1;
+	}
+
+	machine_get_memory_zone_name(menu_debug_memory_zone,s);
+	return menu_debug_memory_zone;
+}
+
+//Retorna el numero de digitos para representar un numero en hexadecimal
+int menu_debug_get_total_digits_hexa(int valor)
+{
+	char temp_digitos[20];
+	sprintf (temp_digitos,"%X",valor);
+	return strlen(temp_digitos);
+}
+
+//Retorna el numero de digitos para representar un numero en decimal
+int menu_debug_get_total_digits_dec(int valor)
+{
+	char temp_digitos[20];
+	sprintf (temp_digitos,"%d",valor);
+	return strlen(temp_digitos);
+}
+
+//Escribe una direccion en texto, en hexa, teniendo en cuenta zona memoria (rellenando espacios segun tamanyo zona)
+void menu_debug_print_address_memory_zone(char *texto, menu_z80_moto_int address)
+{
+	//primero meter 6 espacios
+	sprintf (texto,"      ");
+
+	address=adjust_address_memory_size(address);
+	//int longitud_direccion=MAX_LENGTH_ADDRESS_MEMORY_ZONE;
+
+	//Obtener cuantos digitos hexa se necesitan
+	//char temp_digitos[20];
+	//sprintf (temp_digitos,"%X",menu_debug_memory_zone_size-1);
+	//int digitos=strlen(temp_digitos);
+
+	int digitos=menu_debug_get_total_digits_hexa(menu_debug_memory_zone_size-1);
+
+	//Obtener posicion inicial a escribir direccion. Suponemos maximo 6
+	int posicion_inicial_digitos=6-digitos;
+
+
+	//Escribimos direccion
+	sprintf (&texto[posicion_inicial_digitos],"%0*X",digitos,address);
+}
+
+
+//
+// Fin funciones de gestion de zonas de memoria
+//
+
+
+
 void menu_mem_breakpoints_edit(MENU_ITEM_PARAMETERS)
 {
 

@@ -30,6 +30,7 @@
 #include "operaciones.h"
 #include "disassemble.h"
 #include "debug.h"
+#include "menu_debug_cpu.h"
 #include "m68k.h"
 #include "utils.h"
 #include "scmp.h"

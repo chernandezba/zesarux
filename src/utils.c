@@ -64,6 +64,7 @@
 #include "zxvision.h"
 #include "menu_file_viewer_browser.h"
 #include "menu_filesel.h"
+#include "menu_debug_cpu.h"
 #include "z88.h"
 #include "audio.h"
 #include "playtzx.h"

@@ -23,6 +23,9 @@
 #define MENU_DEBUG_CPU_H
 
 #include "cpu.h"
+#include "zxvision.h"
+
+#define MAX_LENGTH_ADDRESS_MEMORY_ZONE 6
 
 extern void menu_debug_registers(MENU_ITEM_PARAMETERS);
 extern void menu_debug_registers_view_adventure(MENU_ITEM_PARAMETERS);
@@ -35,6 +38,24 @@ extern void menu_debug_dissassemble_una_inst_sino_hexa(char *dumpassembler,menu_
 extern menu_z80_moto_int menu_debug_disassemble_last_ptr;
 extern menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial);
 extern menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial);
+
+extern int menu_debug_hexdump_with_ascii_modo_ascii;
+extern z80_byte menu_debug_get_mapped_byte(int direccion);
+extern void menu_debug_write_mapped_byte(int direccion,z80_byte valor);
+extern void menu_debug_set_memory_zone_mapped(void);
+extern void menu_debug_set_memory_zone_attr(void);
+extern menu_z80_moto_int menu_debug_hexdump_adjusta_en_negativo(menu_z80_moto_int dir,int linesize);
+extern int menu_debug_memory_zone;
+extern menu_z80_moto_int menu_debug_memory_zone_size;
+extern void menu_debug_print_address_memory_zone(char *texto, menu_z80_moto_int address);
+extern void menu_debug_set_memory_zone(int zone);
+extern int menu_debug_show_memory_zones;
+extern menu_z80_moto_int adjust_address_memory_size(menu_z80_moto_int direccion);
+extern int menu_debug_hexdump_change_pointer(int p);
+extern void menu_debug_change_memory_zone(void);
+extern int menu_debug_get_total_digits_hexa(int valor);
+extern int menu_get_current_memory_zone_name_number(char *s);
+
 
 extern int map_adventure_offset_x;
 extern int map_adventure_offset_y;
