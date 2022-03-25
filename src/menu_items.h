@@ -185,6 +185,8 @@ extern void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS);
 
 extern void menu_shortcuts_window(MENU_ITEM_PARAMETERS);
 
+extern void menu_process_f_functions_by_action_name(int id_funcion);
+
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];
     int fila;

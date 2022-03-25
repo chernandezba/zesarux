@@ -204,6 +204,8 @@ typedef struct s_zxvision_window zxvision_window;
 extern int menu_overlay_activo;
 extern void (*menu_overlay_function)(void);
 
+extern int overlay_visible_when_menu_closed;
+
 extern char *esc_key_message;
 extern char *openmenu_key_message;
 
@@ -887,6 +889,7 @@ extern void menu_footer_bottom_line(void);
 
 
 extern void menu_inicio(void);
+extern void menu_inicio_bucle(void);
 
 extern void set_welcome_message(void);
 extern void reset_welcome_message(void);
