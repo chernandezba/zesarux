@@ -3939,7 +3939,9 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 
 
-
+//
+// Inicio funciones de dispositivos especificos en el ZX Desktop
+//
 
 //Funciones para cinta de cassette
 
@@ -4359,6 +4361,11 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
 
 };
+
+
+//
+// Fin funciones de dispositivos especificos en el ZX Desktop
+//
 
 
 //Busca el N elemento dentro del array y que este visible
