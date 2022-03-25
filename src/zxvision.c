@@ -57,7 +57,6 @@
 #include "tape.h"
 #include "audio.h"
 #include "timer.h"
-//#include "snap.h"
 #include "operaciones.h"
 #include "disassemble.h"
 #include "utils.h"
@@ -66,7 +65,6 @@
 #include "realjoystick.h"
 #include "scrstdout.h"
 #include "autoselectoptions.h"
-//#include "zxuno.h"
 #include "charset.h"
 #include "chardetect.h"
 #include "textspeech.h"
@@ -82,7 +80,6 @@
 #include "dandanator.h"
 #include "remote.h"
 #include "tsconf.h"
-//#include "spritefinder.h"
 #include "betadisk.h"
 #include "settings.h"
 #include "stats.h"
@@ -93,7 +90,6 @@
 #include "sms.h"
 #include "svi.h"
 #include "ql_qdos_handler.h"
-//#include "snap_ram.h"
 #include "zvfs.h"
 
 #if defined(__APPLE__)
