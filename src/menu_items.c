@@ -1404,6 +1404,9 @@ int core_statistics_last_perc_dropped=0;
 
 int core_statistics_ultimo_cpu_use_mostrado=0;
 
+//Linea donde va ubicado el texto. Inicialmente no sabemos donde estara
+int core_statistics_linea_mostrar_estadisticas_chars=-1;
+
 //La funcion de overlay
 void menu_about_core_statistics_overlay_window_overlay(void)
 {
@@ -1536,6 +1539,11 @@ Calculando ese tiempo: 12% cpu
             media_cpu=cpu_use_total_acumulado/cpu_use_total_acumulado_medidas;
         }*/
 
+        //Dejamos hueco para estadisticas de chars 
+        core_statistics_linea_mostrar_estadisticas_chars=linea;
+        linea++;
+
+
         int media_cpu=sensor_get_percentaje_value("instant_avg_cpu");
 
         int tamanyo_buffer_audio,posicion_buffer_audio;
@@ -1607,9 +1615,23 @@ Calculando ese tiempo: 12% cpu
     }
 
 
-    //Prueba medidores de rendimiento
+    //Estadisticas chars dibujar siempre
+    //Linea donde va ubicado el texto
+    if (core_statistics_linea_mostrar_estadisticas_chars>=0) {
+        int perc_chars;
+
+        if (stats_normal_overlay_menu_total_chars==0) perc_chars=0;
+
+        else perc_chars=(stats_normal_overlay_menu_drawn_chars*100)/stats_normal_overlay_menu_total_chars;
+        zxvision_print_string_defaults_fillspc_format(ventana,1,core_statistics_linea_mostrar_estadisticas_chars,
+            "Menu cache. Chars Total %5d Drawn %5d (%3d%%)",
+            stats_normal_overlay_menu_total_chars,stats_normal_overlay_menu_drawn_chars,perc_chars);
+
+    }
+
+    //Medidores de rendimiento
     
-    int fila_texto=14;
+    int fila_texto=15;
     int margen_horizontal=ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH;
     
     int longitud_linea=ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH;
@@ -1700,7 +1722,7 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
 
     //Recuperar geometria
     if (!util_find_window_geometry("corestatistics",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        alto_ventana=14;
+        alto_ventana=15;
         ancho_ventana=32;
 
         x_ventana=menu_center_x()-ancho_ventana/2; 

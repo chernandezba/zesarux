@@ -2925,7 +2925,7 @@ esperan que siempre se borre con espacios la ventana y luego ellos escriben enci
 Esto ya no sucede mas, pues el fondo limpio con espacios, al no alterarse, no se redibuja limpiando los pixeles anteriores
 Requiere entonces que llamen a una función que limpia la ventana e indicando parametro de .modificado 
 */
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+//#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
     //Cualquier atributo alterado del caracter, o el propio caracter, decimos a la cache que se ha alterado y hay que redibujar
 	if (
         use_cache_mismo_caracter==0 ||
@@ -2936,7 +2936,7 @@ Requiere entonces que llamen a una función que limpia la ventana e indicando pa
     ) {
         overlay_screen_array[pos_array].modificado=1;
     }
-#endif
+//#endif
 
 	overlay_screen_array[pos_array].tinta=tinta;
 	overlay_screen_array[pos_array].papel=papel;
@@ -3607,9 +3607,9 @@ void cls_menu_overlay(void)
 	for (i=0;i<scr_get_menu_width()*scr_get_menu_height();i++) {
 		overlay_screen_array[i].caracter=0;
 		//overlay_usado_screen_array[i]=0;
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT        
+//#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT        
         overlay_screen_array[i].modificado=1;
-#endif
+//#endif
 	}
 	menu_desactiva_cuadrado();
 
@@ -6360,6 +6360,12 @@ void normal_overlay_texto_menu_final(void)
 z80_byte debug_zxvision_cache_overlay_caracter=33;
 #endif
 
+
+//Para estadisticas. Total de caracteres visibles en el overlay
+int stats_normal_overlay_menu_total_chars=0;
+//Total de caracteres que se han redibujado en normal_overlay_texto_menu, o sea, que no estaban en cache
+int stats_normal_overlay_menu_drawn_chars=0;
+
 //funcion normal de impresion de overlay de buffer de texto y cuadrado de lineas usado en los menus
 //En drivers no graficos, cuando renderizan la maquina emulada, siempre escriben encima de cualquier cosa, aunque haya menu abierto
 //luego es cuando se redibuja la capa de menu. Pero claro, si la capa de menu tiene que .modificado es 0, no volvera a escribir el menu
@@ -6370,12 +6376,92 @@ z80_byte debug_zxvision_cache_overlay_caracter=33;
 void normal_overlay_texto_menu(void)
 {
 
+    stats_normal_overlay_menu_total_chars=0;
+    stats_normal_overlay_menu_drawn_chars=0;
 
 	//printf ("inicio normal_overlay_texto_menu\n");
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT    
     debug_zxvision_cache_overlay_caracter++;
     if (debug_zxvision_cache_overlay_caracter>126) debug_zxvision_cache_overlay_caracter=33;
 #endif
+
+	int x,y;
+	int tinta,papel,parpadeo;
+
+	z80_byte caracter;
+	int pos_array=0;
+
+    int nocache=0;
+    if (!si_complete_video_driver() ) nocache=1;
+
+
+	//printf ("normal_overlay_texto_menu\n");
+	for (y=0;y<scr_get_menu_height();y++) {
+		for (x=0;x<scr_get_menu_width();x++,pos_array++) {
+			caracter=overlay_screen_array[pos_array].caracter;
+
+            //sacamos el papel antes para poder alterarlo cuando se habilita DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+            papel=overlay_screen_array[pos_array].papel;
+			//si caracter es 0, no mostrar
+
+            if (caracter) {
+                stats_normal_overlay_menu_total_chars++;
+           
+                if (overlay_screen_array[pos_array].modificado || nocache || overlay_screen_array[pos_array].parpadeo) {
+                    //Siempre que sea caracter!=0, y si se ha modificado la  cache
+                    //caracter con parpadeo se redibuja siempre
+                
+                    stats_normal_overlay_menu_drawn_chars++;
+            
+                    //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
+                    overlay_screen_array[pos_array].modificado=0;
+
+    #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
+                    //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
+                    papel += (debug_zxvision_cache_overlay_caracter&7);
+    #endif
+
+
+
+                    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+                    if (si_valid_char(caracter) ) {
+                        tinta=overlay_screen_array[pos_array].tinta;
+                        parpadeo=overlay_screen_array[pos_array].parpadeo;
+
+                        //Si esta multitask, si es caracter con parpadeo y si el estado del contador del parpadeo indica parpadear
+                        if (menu_multitarea && parpadeo && estado_parpadeo.v) caracter=' '; //si hay parpadeo y toca, meter espacio tal cual (se oculta)
+
+                        scr_putchar_menu(x,y,caracter,tinta,papel);
+                    }
+
+                    else if (caracter==255) {
+                        //Significa no mostrar caracter. Usado en pantalla panic
+                    }
+
+                    //Si caracter no valido, mostrar ?
+                    else {
+                        tinta=overlay_screen_array[pos_array].tinta;
+                        papel=overlay_screen_array[pos_array].papel;
+                        scr_putchar_menu(x,y,'?',tinta,papel);
+                    }
+                }
+            }
+		}
+	}
+
+	normal_overlay_texto_menu_final();
+ 
+
+}
+
+/*
+Antigua funcion con los "if" de ZXVISION_USE_CACHE_OVERLAY_TEXT
+void old_delete_normal_overlay_texto_menu(void)
+{
+
+
+	//printf ("inicio normal_overlay_texto_menu\n");
+
 
 	int x,y;
 	int tinta,papel,parpadeo;
@@ -6404,10 +6490,7 @@ void normal_overlay_texto_menu(void)
                 //Indicar que el caracter ya se ha dibujado en pantalla, para que en el siguiente refresco se muestre, si conviene
                 overlay_screen_array[pos_array].modificado=0;
 
-#ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
-                //Para que de alguna manera se vea facilmente las zonas que no estan cacheandose
-                papel += (debug_zxvision_cache_overlay_caracter&7);
-#endif
+
 
 #else
             if (caracter) {
@@ -6441,6 +6524,7 @@ void normal_overlay_texto_menu(void)
  
 
 }
+*/
 
 
 //establece cuadrado activo usado en los menus para xwindows y fbdev

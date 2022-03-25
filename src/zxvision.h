@@ -76,19 +76,21 @@ de menu, scr_putchar_menu_comun_zoom llama a scr_putpixel_gui_zoom,  escribe en 
 struct s_overlay_screen {
 	int tinta,papel,parpadeo;
 	z80_byte caracter;
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
+//#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
     int modificado; //Indica si se ha modificado el caracter y por tanto hay que redibujarlo desde normal_overlay_texto_menu
-#endif
+//#endif
 };
 
 //Para poder debugar los caracteres de overlay que no pasan por la cache, estos se incrementan en cada redibujado completo
 //los que no se incrementan, es que estan en cache
 //Esto normalmente deberia estar comentado
-#ifdef ZXVISION_USE_CACHE_OVERLAY_TEXT
-//    #define DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
-#endif
+//#define DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
 
 typedef struct s_overlay_screen overlay_screen;
+
+
+extern int stats_normal_overlay_menu_total_chars;
+extern int stats_normal_overlay_menu_drawn_chars;
 
 //Idiomas de la interfaz
 #define GUI_LANGUAGE_DEFAULT 0
