@@ -1348,7 +1348,7 @@ extern int zxdesktop_icon_zxunoflash_inverse;
 
 #define TOTAL_ZXDESKTOP_MAX_LOWER_ICONS 19
 
-extern struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[];
+
 
 extern void zxvision_espera_tecla_condicion_progreso(zxvision_window *w,int (*funcioncond) (zxvision_window *),void (*funcionprint) (zxvision_window *) );
 extern void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_window *),void (*funcionprint) (zxvision_window *) );

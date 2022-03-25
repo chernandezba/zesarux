@@ -213,5 +213,7 @@ typedef struct s_menu_debug_view_sensors_list menu_debug_view_sensors_list;
 
 extern menu_debug_view_sensors_list menu_debug_view_sensors_list_sensors[];
 
+extern struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[];
+
 #endif
 

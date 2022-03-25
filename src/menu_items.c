@@ -30618,3 +30618,433 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 }
 
 
+
+
+
+//
+// Inicio funciones de dispositivos especificos en el ZX Desktop
+//
+
+//Funciones para cinta de cassette
+
+int zxdesktop_lowericon_cassete_is_visible(void)
+{
+	if (!MACHINE_IS_Z88 && !MACHINE_IS_QL && !MACHINE_IS_CHLOE && !MACHINE_IS_COLECO && !MACHINE_IS_SG1000 && !MACHINE_IS_SMS) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_cassete_is_active(void)
+{
+    return is_tape_inserted();
+}
+
+int zxdesktop_lowericon_cassete_real_is_active(void)
+{
+	if (realtape_inserted.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_cassete_accion(void)
+{
+	menu_storage_tape(0);
+}
+
+//Funciones para floppy +3
+
+
+int zxdesktop_lowericon_plus3_flp_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM_P2A_P3) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_plus3_flp_is_active(void)
+{
+	if (dskplusthree_emulation.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_plus3_flp_accion(void)
+{
+	menu_plusthreedisk(0);
+}
+
+//Funciones para Betadisk
+
+
+int zxdesktop_lowericon_betadisk_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_betadisk_is_active(void)
+{
+	if (trd_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_betadisk_accion(void)
+{
+	menu_betadisk(0);
+}
+
+
+//Funciones para MMC
+
+int zxdesktop_lowericon_mmc_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_mmc_is_active(void)
+{
+	if (mmc_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_mmc_accion(void)
+{
+	menu_mmc_divmmc(0);
+}
+
+//Funciones para IDE
+
+int zxdesktop_lowericon_ide_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM || MACHINE_IS_SAM) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_ide_is_active(void)
+{
+	if (ide_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_ide_accion(void)
+{
+	menu_ide_divide(0);
+}
+
+//Funciones para zxpand
+
+int zxdesktop_lowericon_zxpand_is_visible(void)
+{
+	if (MACHINE_IS_ZX8081) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_zxpand_is_active(void)
+{
+	if (zxpand_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_zxpand_accion(void)
+{
+	menu_zxpand(0);
+}
+
+//Funciones para Cartuchos TS 2068
+
+int zxdesktop_lowericon_cart_timex_is_visible(void)
+{
+	if (MACHINE_IS_TIMEX_TS2068) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cart_timex_is_active(void)
+{
+	if (timex_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_cart_timex_accion(void)
+{
+	menu_timexcart(0);
+}
+
+//Funciones para dandanator
+int zxdesktop_lowericon_dandanator_is_visible(void)
+{
+	if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_dandanator_is_active(void)
+{
+	if (dandanator_enabled.v) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_dandanator_accion(void)
+{
+    menu_dandanator(0);
+}
+
+//Funciones para zxuno flash
+int zxdesktop_lowericon_zxunoflash_is_visible(void)
+{
+	if (MACHINE_IS_ZXUNO) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_zxunoflash_is_active(void)
+{
+	if (MACHINE_IS_ZXUNO) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_zxunoflash_accion(void)
+{
+    menu_zxuno_spi_flash(0);
+}
+
+
+//Funciones para Cartuchos MSX, Coleco, SVI, SG1000, SMS
+
+
+void zxdesktop_lowericon_cartridge_accion(void)
+{
+	menu_msxcart(0);
+}
+
+
+
+int zxdesktop_lowericon_cartridge_msx_is_visible(void)
+{
+	if (MACHINE_IS_MSX) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_msx_is_active(void)
+{
+	if (msx_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+
+int zxdesktop_lowericon_cartridge_svi_is_visible(void)
+{
+	if (MACHINE_IS_SVI) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_svi_is_active(void)
+{
+	if (svi_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_coleco_is_visible(void)
+{
+	if (MACHINE_IS_COLECO) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_coleco_is_active(void)
+{
+	if (coleco_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+
+int zxdesktop_lowericon_cartridge_sg1000_is_visible(void)
+{
+	if (MACHINE_IS_SG1000) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_sg1000_is_active(void)
+{
+	if (sg1000_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_sms_is_visible(void)
+{
+	if (MACHINE_IS_SMS) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_cartridge_sms_is_active(void)
+{
+	if (sms_cartridge_inserted.v) return 1;
+	else return 0;
+}
+
+
+//Funciones para MDV/Floppy QL
+
+int zxdesktop_lowericon_mdv_flp_is_visible(void)
+{
+	if (MACHINE_IS_QL) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_mdv_flp_is_active(void)
+{
+	if (ql_microdrive_floppy_emulation) return 1;
+	else return 0;
+}
+
+void zxdesktop_lowericon_mdv_flp_accion(void)
+{
+	menu_ql_mdv_flp(0);
+}
+
+
+// Funciones para cartuchos Z88
+
+int zxdesktop_lowericon_z88_cart_is_visible(void)
+{
+	if (MACHINE_IS_Z88) return 1;
+
+	else return 0;
+}
+
+int zxdesktop_lowericon_z88_cart_N_is_active(int slot)
+{
+	if (z88_memory_slots[slot].size!=0) return 1;
+	else return 0;
+}
+
+int zxdesktop_lowericon_z88_cart_1_is_active(void)
+{
+	return zxdesktop_lowericon_z88_cart_N_is_active(1);
+}
+
+int zxdesktop_lowericon_z88_cart_2_is_active(void)
+{
+	return zxdesktop_lowericon_z88_cart_N_is_active(2);
+}
+
+int zxdesktop_lowericon_z88_cart_3_is_active(void)
+{
+	return zxdesktop_lowericon_z88_cart_N_is_active(3);
+}
+
+void zxdesktop_lowericon_z88_cart_1_accion(void)
+{
+	menu_z88_slot_insert(1);
+}
+
+void zxdesktop_lowericon_z88_cart_2_accion(void)
+{
+	menu_z88_slot_insert(2);
+}
+
+
+void zxdesktop_lowericon_z88_cart_3_accion(void)
+{
+	menu_z88_slot_insert(3);
+}
+
+//Para iconos que no alteran su inverso, apuntar a aqui
+int zxdesktop_common_icon_no_inverse=0;
+
+//Variables que indican actividad de ese icono (se dibujan en color inverso)
+int zxdesktop_icon_tape_inverse=0;
+
+//este no se usa, se deja por requisitos de la estructura zdesktop_lowericons_array
+int zxdesktop_icon_tape_real_inverse=0;
+
+int zxdesktop_icon_mmc_inverse=0;
+int zxdesktop_icon_plus3_inverse=0;
+int zxdesktop_icon_betadisk_inverse=0;
+int zxdesktop_icon_ide_inverse=0;
+int zxdesktop_icon_zxpand_inverse=0;
+int zxdesktop_icon_mdv_flp_inverse=0;
+int zxdesktop_icon_dandanator_inverse=0;
+int zxdesktop_icon_zxunoflash_inverse=0;
+
+struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
+	//cinta standard
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_is_active,zxdesktop_lowericon_cassete_accion,
+		bitmap_lowericon_ext_desktop_cassette_std_active,bitmap_lowericon_ext_desktop_cassette_std_inactive,&zxdesktop_icon_tape_inverse},
+
+	//cinta real
+	{ zxdesktop_lowericon_cassete_is_visible, zxdesktop_lowericon_cassete_real_is_active,zxdesktop_lowericon_cassete_accion,
+		bitmap_lowericon_ext_desktop_cassette_active,bitmap_lowericon_ext_desktop_cassette_inactive,&zxdesktop_icon_tape_real_inverse},
+
+	//floppy +3
+	{ zxdesktop_lowericon_plus3_flp_is_visible, zxdesktop_lowericon_plus3_flp_is_active,zxdesktop_lowericon_plus3_flp_accion,
+		bitmap_lowericon_ext_desktop_plus3_flp_active,bitmap_lowericon_ext_desktop_plus3_flp_inactive,&zxdesktop_icon_plus3_inverse},		
+
+	//betadisk
+	{ zxdesktop_lowericon_betadisk_is_visible, zxdesktop_lowericon_betadisk_is_active,zxdesktop_lowericon_betadisk_accion,
+		bitmap_lowericon_ext_desktop_betadisk_active,bitmap_lowericon_ext_desktop_betadisk_inactive,&zxdesktop_icon_betadisk_inverse},			
+
+	//MMC
+	{ zxdesktop_lowericon_mmc_is_visible, zxdesktop_lowericon_mmc_is_active, zxdesktop_lowericon_mmc_accion,
+		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_mmc_inverse},		
+
+	//IDE
+	{ zxdesktop_lowericon_ide_is_visible, zxdesktop_lowericon_ide_is_active, zxdesktop_lowericon_ide_accion,
+		bitmap_lowericon_ext_desktop_ide_active,bitmap_lowericon_ext_desktop_ide_inactive,&zxdesktop_icon_ide_inverse},				
+
+	//ZXPand
+	{ zxdesktop_lowericon_zxpand_is_visible, zxdesktop_lowericon_zxpand_is_active, zxdesktop_lowericon_zxpand_accion,
+		bitmap_lowericon_ext_desktop_mmc_active,bitmap_lowericon_ext_desktop_mmc_inactive,&zxdesktop_icon_zxpand_inverse},			
+
+	//Cartuchos msx, coleco, svi, sg1000, sms
+	{ zxdesktop_lowericon_cartridge_msx_is_visible, zxdesktop_lowericon_cartridge_msx_is_active, zxdesktop_lowericon_cartridge_accion,
+		bitmap_lowericon_ext_desktop_msx_cart_active,bitmap_lowericon_ext_desktop_msx_cart_inactive,&zxdesktop_common_icon_no_inverse},	
+
+	{ zxdesktop_lowericon_cartridge_svi_is_visible, zxdesktop_lowericon_cartridge_svi_is_active, zxdesktop_lowericon_cartridge_accion,
+		bitmap_lowericon_ext_desktop_svi_active,bitmap_lowericon_ext_desktop_svi_inactive,&zxdesktop_common_icon_no_inverse},				
+
+	{ zxdesktop_lowericon_cartridge_coleco_is_visible, zxdesktop_lowericon_cartridge_coleco_is_active, zxdesktop_lowericon_cartridge_accion,
+		bitmap_lowericon_ext_desktop_coleco_active,bitmap_lowericon_ext_desktop_coleco_inactive,&zxdesktop_common_icon_no_inverse},	
+
+	{ zxdesktop_lowericon_cartridge_sg1000_is_visible, zxdesktop_lowericon_cartridge_sg1000_is_active, zxdesktop_lowericon_cartridge_accion,
+		bitmap_lowericon_ext_desktop_sg1000_active,bitmap_lowericon_ext_desktop_sg1000_inactive,&zxdesktop_common_icon_no_inverse},	
+
+	{ zxdesktop_lowericon_cartridge_sms_is_visible, zxdesktop_lowericon_cartridge_sms_is_active, zxdesktop_lowericon_cartridge_accion,
+		bitmap_lowericon_ext_desktop_sms_active,bitmap_lowericon_ext_desktop_sms_inactive,&zxdesktop_common_icon_no_inverse},	        
+
+	//Cartuchos Timex TS2068	
+	{ zxdesktop_lowericon_cart_timex_is_visible, zxdesktop_lowericon_cart_timex_is_active, zxdesktop_lowericon_cart_timex_accion,
+		bitmap_lowericon_ext_desktop_cart_timex_active,bitmap_lowericon_ext_desktop_cart_timex_inactive,&zxdesktop_common_icon_no_inverse},										
+
+	//MDV/Floppy QL.
+	{ zxdesktop_lowericon_mdv_flp_is_visible, zxdesktop_lowericon_mdv_flp_is_active, zxdesktop_lowericon_mdv_flp_accion,
+		bitmap_lowericon_ext_desktop_mdv_active,bitmap_lowericon_ext_desktop_mdv_inactive,&zxdesktop_icon_mdv_flp_inverse},	
+
+	//3 Cartuchos de Z88. 
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,
+		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&zxdesktop_common_icon_no_inverse},	
+
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,
+		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&zxdesktop_common_icon_no_inverse},	
+
+	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,
+		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&zxdesktop_common_icon_no_inverse},	
+
+    //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
+	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,
+		bitmap_lowericon_ext_desktop_zxunoflash,bitmap_lowericon_ext_desktop_zxunoflash,&zxdesktop_icon_zxunoflash_inverse},        		
+
+    //cartucho dandanator
+	{ zxdesktop_lowericon_dandanator_is_visible, zxdesktop_lowericon_dandanator_is_active, zxdesktop_lowericon_dandanator_accion,
+		bitmap_lowericon_ext_desktop_dandanator_active,bitmap_lowericon_ext_desktop_dandanator_inactive,&zxdesktop_icon_dandanator_inverse},	    
+
+
+
+};
+
+
+//
+// Fin funciones de dispositivos especificos en el ZX Desktop
+//
