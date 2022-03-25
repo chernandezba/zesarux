@@ -30,6 +30,12 @@ extern void menu_watches(MENU_ITEM_PARAMETERS);
 extern void menu_debug_registers_run_cpu_opcode(void);
 extern void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS);
 
+extern void menu_debug_dissassemble_una_instruccion(char *dumpassembler,menu_z80_moto_int dir,int *longitud_final_opcode);
+extern void menu_debug_dissassemble_una_inst_sino_hexa(char *dumpassembler,menu_z80_moto_int dir,int *longitud_final_opcode,int sino_hexa,int full_hexa_dump_motorola);
+extern menu_z80_moto_int menu_debug_disassemble_last_ptr;
+extern menu_z80_moto_int menu_debug_disassemble_subir(menu_z80_moto_int dir_inicial);
+extern menu_z80_moto_int menu_debug_disassemble_bajar(menu_z80_moto_int dir_inicial);
+
 extern int map_adventure_offset_x;
 extern int map_adventure_offset_y;
 
