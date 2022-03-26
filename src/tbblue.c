@@ -989,6 +989,8 @@ z80_bit tbblue_force_disable_layer_tilemap={0};
 z80_bit tbblue_force_disable_layer_sprites={0};
 z80_bit tbblue_force_disable_layer_layer_two={0};
 
+z80_bit tbblue_allow_layer2_priority_bit={1};
+
 //Forzar a desactivar cooper
 z80_bit tbblue_force_disable_cooper={0};
 
@@ -1777,6 +1779,13 @@ int tbblue_si_sprite_transp_ficticio(z80_int color)
 {
         if (color==TBBLUE_SPRITE_TRANS_FICT) return 1;
         return 0;
+}
+
+//Dice si ese color es de layer2 con priority bit
+int tbblue_color_is_layer2_priority(z80_int color)
+{
+    if (!tbblue_si_sprite_transp_ficticio(color) && (color&TBBLUE_LAYER2_PRIORITY) ) return 1;
+    else return 0;
 }
 
 
@@ -6169,9 +6178,20 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
 	for (i=0;i<ancho_rainbow;i++) {
 
-        //Si color de layer2 tiene bit de prioridad y no es el transparente
+
         color = tbblue_layer_layer2[i];
-        if (color&TBBLUE_LAYER2_PRIORITY && !tbblue_si_sprite_transp_ficticio(color)) {
+
+        //Si no se permite layer2 con priority bit, resetearlo
+        if (tbblue_allow_layer2_priority_bit.v==0) {
+            if (tbblue_color_is_layer2_priority(color)) {
+                color &= 0x1FF;
+            }
+        }
+
+        //Si color de layer2 tiene bit de prioridad y no es el transparente
+        //Se mira que no sea el color ficticio de transparente porque este es 65535 (todos los bits a 1) y el
+        //TBBLUE_LAYER2_PRIORITY=0x8000, por lo que un color como transparente se podria interpretar como que es de layer2 con prioridad
+        if (tbblue_color_is_layer2_priority(color)) {
             //printf("bit con prioridad\n");
             //Tiene prioridad. Quitar ese bit de prioridad y cualquier otro que no es el indice de color
             color &= 0x1FF;

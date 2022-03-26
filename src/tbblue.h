@@ -295,6 +295,8 @@ extern z80_bit tbblue_force_disable_layer_tilemap;
 extern z80_bit tbblue_force_disable_layer_sprites;
 extern z80_bit tbblue_force_disable_layer_layer_two;
 
+extern z80_bit tbblue_allow_layer2_priority_bit;
+
 extern z80_bit tbblue_force_disable_cooper;
 
 extern int tbblue_if_sprites_enabled(void);

@@ -7878,6 +7878,8 @@ void menu_tsconf_layer_overlay_mostrar_texto(void)
 					zxvision_print_string_defaults_fillspc(menu_tsconf_layer_overlay_window,1,linea,texto_layer);
 					linea +=3;						
 
+                    //Hueco para L2 allow priority bit
+                    linea +=2;
 
 					//Layer priorities
 
@@ -7915,7 +7917,6 @@ void menu_tsconf_layer_overlay_mostrar_texto(void)
 						zxvision_print_string_defaults_fillspc(menu_tsconf_layer_overlay_window,1,linea++,texto_layer);
 
 					}
-				
 				}		
 
                 if (MACHINE_HAS_VDP_9918A) {
@@ -8185,6 +8186,11 @@ void menu_sms_layer_force_bg_tiles(MENU_ITEM_PARAMETERS)
     vdp_9918a_force_bg_tiles.v ^=1;
 }
 
+void menu_tbblue_layer_settings_layer2_priority_bit(MENU_ITEM_PARAMETERS)
+{
+    tbblue_allow_layer2_priority_bit.v ^=1;
+}
+
 void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 {
 
@@ -8199,7 +8205,8 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 	//y=1;	
 
 	if (MACHINE_IS_TBBLUE) {
-		alto=20;
+		alto=22;
+        ancho=27;
 		//y=1;
 	}
 
@@ -8312,7 +8319,12 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tabulado(array_menu_tsconf_layer_settings,1,lin);
  			menu_add_item_menu_format(array_menu_tsconf_layer_settings,MENU_OPCION_NORMAL,menu_tbblue_layer_reveal_layer2,NULL,"%s",(tbblue_reveal_layer_layer2.v ? "Reveal" : "Normal"));
 			menu_add_item_menu_tabulado(array_menu_tsconf_layer_settings,12,lin);				
-			lin+=3;				
+			lin+=2;
+
+            menu_add_item_menu_format(array_menu_tsconf_layer_settings,MENU_OPCION_NORMAL,menu_tbblue_layer_settings_layer2_priority_bit,NULL,
+                "[%c] Allow L2 priority bit",(tbblue_allow_layer2_priority_bit.v ? 'X' : ' '));
+            menu_add_item_menu_tabulado(array_menu_tsconf_layer_settings,1,lin);
+            	
 		}
 
         if (MACHINE_HAS_VDP_9918A) {
