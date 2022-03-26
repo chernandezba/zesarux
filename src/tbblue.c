@@ -6184,7 +6184,10 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
         //Si no se permite layer2 con priority bit, resetearlo
         if (tbblue_allow_layer2_priority_bit.v==0) {
             if (tbblue_color_is_layer2_priority(color)) {
+                //Este para el check que viene luego de tbblue_color_is_layer2_priority, que no lo detecte como priority
                 color &= 0x1FF;
+                //Y este ya para el renderizado de capas, dejar un color normal de 9 bits
+                tbblue_layer_layer2[i] &= 0x1FF;
             }
         }
 
