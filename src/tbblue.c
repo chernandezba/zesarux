@@ -6183,52 +6183,52 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
         else {
 
-		//Primera capa
-		color=p_layer_first[i];
-		if (!tbblue_fn_pixel_layer_transp_first(color) ) {
-			*puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
-			//doble de alto
-			puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
-		}
+            //Primera capa
+            color=p_layer_first[i];
+            if (!tbblue_fn_pixel_layer_transp_first(color) ) {
+                *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                //doble de alto
+                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+            }
 
-		else {
-			color=p_layer_second[i];
-			if (!tbblue_fn_pixel_layer_transp_second(color) ) {
-				*puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
-				//doble de alto
-				puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;				
-			}
+            else {
+                color=p_layer_second[i];
+                if (!tbblue_fn_pixel_layer_transp_second(color) ) {
+                    *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                    //doble de alto
+                    puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;				
+                }
 
-			else {
-				color=p_layer_third[i];
-				if (!tbblue_fn_pixel_layer_transp_third(color) ) {
-					*puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
-					//doble de alto
-					puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;					
-				}
-					
-				else {
-					if (estamos_borde_supinf) {
-						//Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
-					}
+                else {
+                    color=p_layer_third[i];
+                    if (!tbblue_fn_pixel_layer_transp_third(color) ) {
+                        *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                        //doble de alto
+                        puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;					
+                    }
+                        
+                    else {
+                        if (estamos_borde_supinf) {
+                            //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
+                        }
 
-					else {
-						//Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
-						if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
-							//Poner color indicado por "Transparency colour fallback" registro:
-							*puntero_final_rainbow=fallbackcolour;
-							//doble de alto
-							puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
-						}
-						else {
-							//Es borde. dejar ese color
-						}
-					
-					}
-				}
-			}
+                        else {
+                            //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
+                            if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
+                                //Poner color indicado por "Transparency colour fallback" registro:
+                                *puntero_final_rainbow=fallbackcolour;
+                                //doble de alto
+                                puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
+                            }
+                            else {
+                                //Es borde. dejar ese color
+                            }
+                        
+                        }
+                    }
+                }
 
-		}
+            }
         }
 
 		puntero_final_rainbow++;
