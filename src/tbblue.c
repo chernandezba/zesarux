@@ -1575,6 +1575,7 @@ void tbblue_write_palette_value_high8(z80_byte valor)
 
 }
 
+#define TBBLUE_LAYER2_PRIORITY 0x8000
 
 //Escribe valor de 1 bit inferior (de total de 9) para indice de color de paleta y incrementa indice
 void tbblue_write_palette_value_low1(z80_byte valor)
@@ -1603,6 +1604,12 @@ void tbblue_write_palette_value_low1(z80_byte valor)
   2nd write. 
      bit 7-1 = Reserved, must be 0
      bit 0 = lsb B
+
+If writing the Layer 2 palette colour, in the second byte, bit 7 is "priority" bit. 
+Priority colour will be always on top (drawn above all other layers), even on a priority arrangement like "USL" . 
+If you need the exact same colour with priority and non priority, you will need to program the same colour twice, 
+changing bit 7 to 0 for the non priority colour alternative.
+
   After the two consecutives writes the palette index is auto-incremented.
   The changed palette remais until a Hard Reset.
 
@@ -1617,6 +1624,11 @@ void tbblue_write_palette_value_low1(z80_byte valor)
 
 	//Conservamos 8 bits altos
 	color_actual &=0x1FE;
+
+    if ((valor&128) && (tbblue_registers[0x43]&0x30) == 0x10) {
+            // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
+            color_actual |= TBBLUE_LAYER2_PRIORITY;
+    }    
 
 	//Y valor indicado, solo conservar 1 bit
 	valor &= 1;
@@ -5071,7 +5083,13 @@ Bit	Function
 
 			paleta=tbblue_get_palette_rw();	
 
-			return paleta[indice_paleta] & 1;		
+            z80_int color=paleta[indice_paleta];
+
+            if (color & TBBLUE_LAYER2_PRIORITY) {
+                    return (color & 1) | 0x80;
+            }            
+
+			return color & 1;		
 		
 		break;		
 
@@ -6151,6 +6169,19 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
 	for (i=0;i<ancho_rainbow;i++) {
 
+        //Si color de layer2 tiene bit de prioridad y no es el transparente
+        color = tbblue_layer_layer2[i];
+        if (color&TBBLUE_LAYER2_PRIORITY && !tbblue_si_sprite_transp_ficticio(color)) {
+            //printf("bit con prioridad\n");
+            //Tiene prioridad. Quitar ese bit de prioridad y cualquier otro que no es el indice de color
+            color &= 0x1FF;
+
+			*puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+			//doble de alto
+			puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;            
+        }
+
+        else {
 
 		//Primera capa
 		color=p_layer_first[i];
@@ -6198,6 +6229,7 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 			}
 
 		}
+        }
 
 		puntero_final_rainbow++;
 
