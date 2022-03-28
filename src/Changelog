@@ -18,22 +18,22 @@ Added another easter egg ;)
 
 
 Improved Text Adventure Debugging:
--added Text Adventure Map
--added Locations Connections list
--added direct menu entry and f-function/button to view 8 (adventure debug)
--improved detection of some paws adventures (like superlopez and abracadabra)
--improved detection of some daad adventures (like jabato)
+-Added Text Adventure Map
+-Added Locations Connections list
+-Added direct menu entry and f-function/button to view 8 (adventure debug)
+-Improved detection of some paws adventures (like superlopez and abracadabra)
+-Improved detection of some daad adventures (like jabato)
 
 Improved Debug CPU: 
--now it highlights which registers will be modified by the opcode at the cursor position
--added t-states counter on default view
--allow to have a decimal view of opcode decoding using key m (mode)
--added breakpoints actions to start and stop cpu transaction log
--new breakpoint address expression FPEEK, that can see contents in the range of the total machine address space
+-Now it highlights which registers will be modified by the opcode at the cursor position
+-Added t-states counter on default view
+-Allow to have a decimal view of opcode decoding using key m (mode)
+-Added breakpoints actions to start and stop cpu transaction log
+-New address breakpoint expression FPEEK, that can read contents in the range of the total machine address space
 
 Improved Accessibility: 
--added direct settings for inverse colours and gray mode
--added setting to disable Flash
+-Added direct settings for inverse colours and gray mode
+-Added setting to disable Flash
 
 Improved ZX Vision:
 -Reduced up to 5 times cpu usage on menu by using a cache
@@ -90,12 +90,12 @@ Fixed crash when saving configuration file larger than 20kb
 Fixed showing character 127 on curses, stdout and simpletext video drivers
 
 Fixed ZX Vision:
--fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)
--fixed glitches resizing some windows: AY Registers, Debug CPU, etc...
--fixed drawing scroll bars when window is not at the top of all windows
--fixed window Hex Editor while moving or resizing
--fixed flickering when resizing Keyboard Help window
--fixed reducing all windows
+-Fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)
+-Fixed glitches resizing some windows: AY Registers, Debug CPU, etc...
+-Fixed drawing scroll bars when window is not at the top of all windows
+-Fixed window Hex Editor while moving or resizing
+-Fixed flickering when resizing Keyboard Help window
+-Fixed reducing all windows
 
 Some other minor bugfixes and improvements
 
