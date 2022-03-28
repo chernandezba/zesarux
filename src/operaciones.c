@@ -1513,7 +1513,6 @@ z80_byte peek_byte_no_time_spectrum_128k(z80_int dir)
 	z80_byte *puntero;
 	segmento=dir / 16384;
 
-
 	dir = dir & 16383;
 	puntero=memory_paged[segmento]+dir;
 //		printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
@@ -1561,9 +1560,8 @@ z80_byte peek_byte_no_time_spectrum_128kp2a(z80_int dir)
 
 	dir = dir & 16383;
 	puntero=memory_paged[segmento]+dir;
-//              printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
+//      printf ("segmento: %d dir: %d puntero: %p\n",segmento,dir,puntero);
 	return *puntero;
-
 }
 
 z80_byte peek_byte_spectrum_128kp2a(z80_int dir)

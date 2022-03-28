@@ -8223,7 +8223,11 @@ z80_byte far_peek_byte(int dir)
 
     if (memoria_spectrum==NULL) return 0;
 
-    if (MACHINE_IS_QL) return peek_byte_z80_moto(dir);
+    if (MACHINE_IS_QL) {
+        //El QL es algo especial, ya que puede direccionar toda la memoria, retornamos un peek tal cual
+        //En este caso no estamos limitados a la zona de SRAM, sino que es toda la rom, ram y zona de entrada/salida de puertos
+        return peek_byte_z80_moto(dir);
+    }
     if (MACHINE_IS_TBBLUE) {
         //2 MB Maximo
         //ROMS, RAM... Esto es el espacio de memoria lineal tal cual de Spectrum Next. la SRAM
@@ -8244,8 +8248,33 @@ z80_byte far_peek_byte(int dir)
         return memoria_spectrum[16384+dir];
     }
 
-	//Cualquier otra cosa, 0
-    return 0;
+    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
+        //Aunque sé que la ram asignada en estos casos empieza siempre en ram_mem_table[0] y podria 
+        //ir desde ahi y sumarle simplemente dir, voy a hacer lo mas estandar y sacar el banco y el offset en el banco
+        //para obtener la dirección, por si por alguna extraña razon, los bancos de memoria no estuvieran ordenados desde el 0 en adelante
+        //(que actualmente lo están, pero si en un futuro me da por cambiarlo...)
+        //Nota para mi yo del futuro: seguro que no lo cambiaré esto, pero queda mejor así
+
+        //Limitamos a 128kb
+        int maximo=(128*1024)-1;
+
+        dir &=maximo;        
+
+        int ram_bank;
+        z80_byte *puntero;
+        ram_bank=dir / 16384;
+
+        dir = dir & 16383;
+        puntero=ram_mem_table[ram_bank]+dir;
+
+        //printf("banco: %d dir: %d\n",ram_bank,dir);
+        return *puntero;        
+    }
+
+    //TODO: resto de maquinas con mas de 64 kb: TSConf, etc
+
+	//Cualquier otra cosa, un peek normal
+    return peek_byte_z80_moto(dir);
 }
 
 //Rutinas de timesensors. Agrega un define TIMESENSORS_ENABLED en compileoptions.h para activarlo y lanza make
