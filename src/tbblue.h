@@ -33,7 +33,13 @@
 #define TBBLUE_LAYERS_PIXEL_WIDTH ((48+256+48)*2)
 
 //De momento esto solo se usa en carga/grabacion snapshots zsf
-#define TBBLUE_TOTAL_RAM_SIZE 2048
+//#define TBBLUE_TOTAL_RAM_SIZE 2048
+
+#define TBBLUE_MAX_SRAM_8KB_BLOCKS 224
+
+#define TBBLUE_TOTAL_RAM (0x040000+8192*TBBLUE_MAX_SRAM_8KB_BLOCKS)
+
+#define TBBLUE_TOTAL_RAM_SIZE (TBBLUE_TOTAL_RAM/1024)
 
 #define TBBLUE_FPGA_ROM_SIZE 8
 

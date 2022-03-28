@@ -46,9 +46,9 @@
 #include "settings.h"
 #include "joystick.h"
 
-#define TBBLUE_MAX_SRAM_8KB_BLOCKS 224
 
-//Punteros a los 64 bloques de 8kb de ram de spectrum
+
+//Punteros a los bloques de 8kb de ram de spectrum
 z80_byte *tbblue_ram_memory_pages[TBBLUE_MAX_SRAM_8KB_BLOCKS];
 
 //2MB->224 bloques (16+16+64*3) (3 bloques extra de 512)

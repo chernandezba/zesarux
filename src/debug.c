@@ -8213,7 +8213,27 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     
 }
 
+//Para hacer peek de una direccion de todo el espacio de memoria de una maquina
+z80_byte far_peek_byte(int dir)
+{
 
+    //Si esto entra antes de inicializar una maquina (al inicio del emulador), volver 
+
+    if (memoria_spectrum==NULL) return 0;
+
+    if (MACHINE_IS_QL) return peek_byte_z80_moto(dir);
+    if (MACHINE_IS_TBBLUE) {
+        //2 MB Maximo
+        //ROMS, RAM... Esto es el espacio de memoria lineal tal cual de Spectrum Next
+        int maximo=TBBLUE_TOTAL_RAM-1;
+        
+        dir &=maximo;
+        return memoria_spectrum[dir];
+	}
+
+	//Cualquier otra cosa, 0
+    return 0;
+}
 
 //Rutinas de timesensors. Agrega un define TIMESENSORS_ENABLED en compileoptions.h para activarlo y lanza make
 #ifdef TIMESENSORS_ENABLED

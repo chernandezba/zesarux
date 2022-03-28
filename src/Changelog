@@ -29,6 +29,7 @@ Improved Debug CPU:
 -added t-states counter on default view
 -allow to have a decimal view of opcode decoding using key m (mode)
 -added breakpoints actions to start and stop cpu transaction log
+-address breakpoint expression FPEEK, that can see contents in the range of the total machine address space
 
 Improved Accessibility: 
 -added direct settings for inverse colours and gray mode

@@ -103,8 +103,9 @@ extern int map_adventure_offset_y;
 "SCANLINE: scanline counter\n" \
 "\n" \
 "[FUNCTION] can be:\n" \
-"PEEK(e): returns the byte at address e, where e is any expression\n" \
+"PEEK(e): returns the byte at address e, where e is any expression. Address e is in the range of the visible cpu address space.\n" \
 "PEEKW(e): returns the word at address e\n" \
+"FPEEK(e): returns the byte at far address e, where e is any expression. Address e is in the range of the total machine address space.\n" \
 "IN(e): returns the byte at port e\n" \
 "NOT(e): negates expression e: if it's 0, returns 1. Otherwhise, return 0. \n" \
 "ABS(e): returns absolute value of expression e\n" \
