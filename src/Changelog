@@ -2,17 +2,17 @@ Version 10.1-RC1 - Carrier Command edition. 11 March 2022
 
 Added real joystick support on Mac
 Added joystick support for Hat controllers
+Added new joystick event to exit ZEsarUX
+Added action to trigger left-right movement on joystick, to play Decathlon-like games
+Added MSX Joystick emulation
+Added Spectravideo Joystick emulation
 Added setting to select a different joystick on Windows and OS with SDL driver
 Added setting to change ULA Data bus value
 Added showing microdrive label when expanding qlay mdv files of size 174930 bytes
-Added action to trigger left-right movement on joystick, to play Decathlon-like games
-Added new joystick event to exit ZEsarUX
 Added Jupiter Ace TAP & TZX support on tape browser
 Added TZX support for ID 33 - Hardware type
 Added Autorewind tape setting
 Added Z80 Halt signal state support on zsf snapshot
-Added MSX Joystick emulation
-Added Spectravideo Joystick emulation
 Added device button for ZX-Uno Flash device
 Added another easter egg ;)
 
@@ -26,10 +26,10 @@ Improved Text Adventure Debugging:
 
 Improved Debug CPU: 
 -Now it highlights which registers will be modified by the opcode at the cursor position
+-New address breakpoint expression FPEEK, that can read contents in the range of the total machine address space
 -Added t-states counter on default view
 -Allow to have a decimal view of opcode decoding using key m (mode)
 -Added breakpoints actions to start and stop cpu transaction log
--New address breakpoint expression FPEEK, that can read contents in the range of the total machine address space
 
 Improved Accessibility: 
 -Added direct settings for inverse colours and gray mode
@@ -65,37 +65,38 @@ Improved ZX Vision:
 
 Improved OSD Adventure Keyboard: allow to send space, enter and quotation marks
 Improved OSD Keyboard: allow to use mouse, preserve window geometry
+Improved Keyboard Help: load image automatically when changing machine
 Improved handling of individual colour palettes modifications (Red, Green, Blue)
 Improved portability of shell scripts
 Improved fbdev driver: added setting for double buffer to avoid flickering on menu (--fbdev-double-buffer)
 Improved fbdev driver: added setting to avoid resolution change on Raspberry Pi full screen mode (--fbdev-no-res-change)
-Improved Keyboard Help: load image automatically when changing machine
 Improved ZX Spectrum Next emulation: added layer2 priority colour bit
 
 
 Fixed Z80 halt behavior and PC location
 Fixed disabling border when realvideo enabled on machines: Colecovision, Master System, MSX, SG1000, SpectraVideo
-Fixed drawing close button on background windows
 Fixed redrawing footer when fade out
-Fixed bug restoring windows on startup when a previous error was generated
-Fixed refreshing Visual Real Tape window when Top Speed condition
+Fixed showing character 127 on curses, stdout and simpletext video drivers
 Fixed preserve breakpoints state when doing smartload
 Fixed saving snapshot on some events that close ZEsarUX (F-key, AY Player, etc)
 Fixed loading/saving TZX as Standard tape on Jupiter Ace
-Fixed segfault pressing F5 after pressing pause key
-Fixed showing input tape insert state on menu and zx desktop icon when tape can't be opened
 Fixed ejecting Spectravideo cartridge
+Fixed segfault pressing F5 after pressing pause key
 Fixed bug on OSD Adventure Keyboard when words of 5 characters lenght and setting sending final space enabled
 Fixed crash when saving configuration file larger than 20kb
-Fixed showing character 127 on curses, stdout and simpletext video drivers
 
 Fixed ZX Vision:
 -Fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)
 -Fixed glitches resizing some windows: AY Registers, Debug CPU, etc...
--Fixed drawing scroll bars when window is not at the top of all windows
--Fixed window Hex Editor while moving or resizing
 -Fixed flickering when resizing Keyboard Help window
 -Fixed reducing all windows
+-Fixed bug restoring windows on startup when a previous error was generated
+-Fixed drawing scroll bars when window is not at the top of all windows
+-Fixed drawing close button on background windows
+-Fixed showing input tape insert state on menu and zx desktop icon when tape can't be opened
+-Fixed window Hex Editor while moving or resizing
+-Fixed refreshing Visual Real Tape window when Top Speed condition
+
 
 Some other minor bugfixes and improvements
 

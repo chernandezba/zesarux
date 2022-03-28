@@ -4151,8 +4151,8 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                 if (util_daad_has_graphics()) strcpy(buffer_temp_graphics,"~~Graphics ");
 
-				if (util_daad_condact_uses_message() ) sprintf(s,"%sCo~~nnections G~~amemap cond~~Message",buffer_temp_graphics);
-				else sprintf(s,"%sCo~~nnections G~~amemap",buffer_temp_graphics);
+				if (util_daad_condact_uses_message() ) sprintf(s,"%sCo~~nnections ~~advmap cond~~Message",buffer_temp_graphics);
+				else sprintf(s,"%sCo~~nnections ~~advmap",buffer_temp_graphics);
 				return;
 			}
 
