@@ -37,28 +37,28 @@ Improved Accessibility:
 
 Improved ZX Vision:
 -Reduced up to 5 times cpu usage on menu by using a cache
--Added maximize window button
--Background button on inactive windows is hidden by default
 -Improve window refreshing by disabling autoframeskip while moving or resizing
--When sending a window to the background, and the setting "Background windows even when menu closed", the menu will be closed
+-Enlarge content size when resizing window without having to recreate it
+-Notify to the parent function when a window has been resized
+-Allow to avoid refreshing window when changing scroll
 -Added GUI styles: AmigaOS, Atari TOS, OS/2, RiscOS, ZEsarUX Plus (and this one is now the default style)
 -Improve RetroMac GUI style: striped title bar
 -Improve BeOS GUI style: buttons positions right after the title
--Improve accented characters on different charsets
 -Detect when video driver can not use the current GUI style and set to another one that can use
--Added translation of menu items to Spanish and Catalan
--Added shortcuts helper to see hotkeys pressed
+-Added maximize window button
+-Background button on inactive windows is hidden by default
+-Bigger window resize indicator (bottom-right of the window)
 -Text windows enlarge/reduce line width when resizing windows
 -Text windows wider by default (40 characters instead of 32)
+-When sending a window to the background, and the setting "Background windows even when menu closed", the menu will be closed
+-Improve accented characters on different charsets
+-Added translation of menu items to Spanish and Catalan
+-Added shortcuts helper to see hotkeys pressed
 -Added button preview when customizing ZX Desktop buttons or F-keys
 -Better detection of any file size of 6912 bytes is guessed as Spectrum screen
 -Show when a menu has submenus using the ">" character
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
--Bigger window resize indicator (bottom-right of the window)
--Enlarge content size when resizing window without having to recreate it
--Notify to the parent function when a window has been resized
--Allow to avoid refreshing window when changing scroll
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file
 -ZX Desktop: added setting to disable ZX Desktop when going to full screen 
