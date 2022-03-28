@@ -8214,6 +8214,8 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 }
 
 //Para hacer peek de una direccion de todo el espacio de memoria de una maquina
+//realmente no es que podamos acceder a todo la memoria asignada de esa memoria, sino que vemos la SRAM
+//Especialmente util para Spectrum Next o ZXUno por ejemplo
 z80_byte far_peek_byte(int dir)
 {
 
@@ -8224,12 +8226,23 @@ z80_byte far_peek_byte(int dir)
     if (MACHINE_IS_QL) return peek_byte_z80_moto(dir);
     if (MACHINE_IS_TBBLUE) {
         //2 MB Maximo
-        //ROMS, RAM... Esto es el espacio de memoria lineal tal cual de Spectrum Next
+        //ROMS, RAM... Esto es el espacio de memoria lineal tal cual de Spectrum Next. la SRAM
         int maximo=TBBLUE_TOTAL_RAM-1;
         
         dir &=maximo;
         return memoria_spectrum[dir];
 	}
+
+    if (MACHINE_IS_ZXUNO) {
+        //512 KB SRAM
+        int maximo=(512*1024)-1;
+
+        dir &=maximo;
+
+        //saltamos los 16kb de boot rom de nuestra asignacion de ram
+
+        return memoria_spectrum[16384+dir];
+    }
 
 	//Cualquier otra cosa, 0
     return 0;
