@@ -24102,7 +24102,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'w');
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_compile_info,NULL,
-                "C~~ompile info","Informacion de c~~ompilacion","Informacio de c~~ompilacio");
+                "C~~ompile info","Información de c~~ompilación","Informació de c~~ompilació");
 			menu_add_item_menu_shortcut(array_menu_common,'o');			
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
@@ -24110,7 +24110,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'s');
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
-                "Core Statistics","Estadísticas del nucleo","Estadístiques del nucli");
+                "Core Statistics","Estadísticas del núcleo","Estadístiques del nucli");
 			//menu_add_item_menu_shortcut(array_menu_common,'r');
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
