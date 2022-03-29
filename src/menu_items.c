@@ -24064,7 +24064,7 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'f');
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_exclusivefeatures,NULL,
-                "E~~xclusive features","Caracteristicas e~~xclusivas","Caracteristiques e~~xclusives");
+                "E~~xclusive features","Características e~~xclusivas","Característiques e~~xclusives");
 			menu_add_item_menu_shortcut(array_menu_common,'x');            
 
             menu_add_item_menu(array_menu_common,"H~~istory",MENU_OPCION_NORMAL,menu_about_history,NULL);
@@ -24106,19 +24106,19 @@ void menu_help(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'o');			
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_statistics,NULL,
-                "~~Statistics","E~~stadisticas","E~~stadistiques");
+                "~~Statistics","E~~stadísticas","E~~stadístiques");
 			menu_add_item_menu_shortcut(array_menu_common,'s');
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_core_statistics,NULL,
-                "Core Statistics","Estadisticas del nucleo","Estadistiques del nucli");
+                "Core Statistics","Estadísticas del nucleo","Estadístiques del nucli");
 			//menu_add_item_menu_shortcut(array_menu_common,'r');
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_running_info,NULL,
-                "R~~unning info","Informacion de ejec~~ucion","Informacio d'exec~~ucio");
+                "R~~unning info","Información de ejec~~ución","Informació d'exec~~ució");
 			menu_add_item_menu_shortcut(array_menu_common,'u');
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_licenses,NULL,
-                "Lic~~enses","Lic~~encias","Llic~~encies");
+                "Lic~~enses","Lic~~encias","Llic~~ències");
 			menu_add_item_menu_shortcut(array_menu_common,'e');
             menu_add_item_menu_tiene_submenu(array_menu_common);
 
