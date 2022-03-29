@@ -25109,7 +25109,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);                    
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL,
-            "Load Source Code","Cargar Codigo Fuente","Carregar Codi Font");
+            "Load Source Code","Cargar Código Fuente","Carregar Codi Font");
         menu_add_item_menu_tooltip(array_menu_debug,"Load source code");                
         menu_add_item_menu_ayuda(array_menu_debug,"Load source code. It is shown on the Debug CPU window. "
             "Source code must have labels in format LXXXX or XXXX where XXXX is an address in hexadecimal. \n"
@@ -25198,7 +25198,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		}		
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
-            "Debug console","Consola Depuracion","Consola Depuracio");
+            "Debug console","Consola Depuración","Consola Depuració");
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -25295,7 +25295,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		if (menu_desactivado_file_utilities.v==0) {
 
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_file_utils,NULL,
-                "File ~~utilities","~~Utilidades de archivos","~~Utilidats d'arxius");
+                "File ~~utilities","~~Utilidades de archivos","~~Utilitats d'arxius");
 			menu_add_item_menu_shortcut(array_menu_debug,'u');
 			menu_add_item_menu_tooltip(array_menu_debug,"Some file utilities. NOTE: Shortcuts must be chosen pressing Shift+Key");
 			menu_add_item_menu_ayuda(array_menu_debug,"Some file utilities.\nNOTE: Shortcuts in file utilities must be chosen by pressing Shift+Key, "
