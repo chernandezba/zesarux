@@ -4456,10 +4456,6 @@ void menu_filesel_overlay(void)
 
 	//Y el procesado de nueva preview no tan seguido
 	//esto hara ejecutar esto 5 veces por segundo
-
-    //temp
-    //if (1) {  printf("Mostrando siempre\n");
-      
 	if ( ((contador_segundo%200) == 0 && menu_filesel_overlay_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
 		menu_filesel_overlay_valor_contador_segundo_anterior=contador_segundo;
 
@@ -4472,7 +4468,13 @@ void menu_filesel_overlay(void)
 
 
 	//El overlay de la pantalla siempre
-    menu_filesel_overlay_draw_preview();    
+    menu_filesel_overlay_draw_preview();
+
+    //Realmente no tiene contenido de texto este overlay, pero dado que estamos
+    //dibujando un preview, necesitamos que cuando no haya preview, este zxvision_draw_window_contents limpie
+    //el contenido de la ventana gracias al parametro de must_clear_cache_on_draw que hemos activado al crear la ventana
+    //Si no se hiciera esto, la cache de putchar veria que no hay modificaciones y no limpia el preview anterior
+    zxvision_draw_window_contents(menu_filesel_overlay_window);
 }
 
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
@@ -4614,6 +4616,9 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			//Activar los hotkeys desde raton en el caso de file utilities
 			ventana->can_mouse_send_hotkeys=1;
 		}
+
+        //Para que elimine restos de anteriores previews
+        ventana->must_clear_cache_on_draw=1;
 
 		zxvision_draw_window(ventana);
 
