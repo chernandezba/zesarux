@@ -16919,7 +16919,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
 
-    int ancho_octava=29;
+    int ancho_octava=29-1; //-1 para quitar la linea de la derecha de separacion de octava
 
     int offset_x=xposicion*ancho_octava;
 
@@ -16930,34 +16930,34 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 	int x,y;
 	for (x=0;x<29;x++) {
 		for (y=ybase;y<ybase+scale_y_chip(8);y++) {
-			menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(ventana,x,y,7);
+			menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(ventana,x+offset_x,y,7);
 		}
 	}
 
 	//Linea superior
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0, ybase+0, +1, 0, 29, 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+0, +1, 0, 29, 0);
 
 	//Linea vertical izquierda
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0, ybase+0, 0, +1, scale_y_chip(8), 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
 
 	//Linea vertical derecha
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,28, ybase+0, 0, +1, scale_y_chip(8), 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,28+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
 
 	//6 separaciones verticales pequeñas
 	int i;
 	x=4;
 	for (i=0;i<6;i++) {
-		menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,x, ybase+5, 0, +1, scale_y_chip(3), 0);
+		menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,x+offset_x, ybase+5, 0, +1, scale_y_chip(3), 0);
 		x+=4;
 	}
 
 	//Linea vertical central
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,12, ybase+0, 0, +1, scale_y_chip(8), 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,12+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
 
 	//Y ahora las 5 negras
 	x=3;
 	for (i=0;i<5;i++) {
-		menu_ay_piano_graph_dibujar_negra(ventana,x,ybase+1,0);
+		menu_ay_piano_graph_dibujar_negra(ventana,x+offset_x,ybase+1,0);
 		/*
 		for (y=1;y<=4;y++) {
 			menu_ay_pianokeyboard_draw_graphical_piano_draw_line(x, y, +1, 0, 3, 0);
@@ -16972,7 +16972,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
     
 
 	//Dibujar la linea inferior. Realmente la linea inferior es siempre la linea superior del siguiente canal, excepto en el ultimo canal
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0, ybase+scale_y_chip(8), +1, 0, ancho_octava, 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+scale_y_chip(8), +1, 0, ancho_octava, 0);
 }
 
 void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int linea GCC_UNUSED,int canal,char *note)
@@ -16989,6 +16989,8 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 
     int ancho_octava=29;
 
+    //Dos octavas visualizamos
+    menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,0);
     menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,1);
 
 
