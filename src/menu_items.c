@@ -16975,14 +16975,17 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+scale_y_chip(8), +1, 0, ancho_octava, 0);
 }
 
+/*int audio_chip_piano_ultimas_octavas[9]={
+    0,0,0,0,0,0,0,0,0
+};*/
+
 void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int linea GCC_UNUSED,int canal,char *note)
 {
 	
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
 
-	//temp
-	int ybase=scale_y_chip(separacion_y_entre_teclados)*canal;
 
+	int ybase=scale_y_chip(separacion_y_entre_teclados)*canal;
 	
 	int x;
 
@@ -16995,7 +16998,20 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 
 
     //TODO: obtener si marcamos la nota de la primera octava visualizada o la segunda
+    //Escribir las octavas
+    int nota_final=-1;
+    int sostenido;
+    int octava;
+
+
+    get_note_values(note,&nota_final,&sostenido,&octava);
+
+
     int xposicion=0; //sera 0 o 1
+
+    //temp
+    //si impar, en segundo teclado. Si par, en primer teclado
+    if (octava&1) xposicion=1;
 
     int offset_x=xposicion*ancho_octava;
 

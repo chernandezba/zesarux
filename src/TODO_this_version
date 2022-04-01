@@ -114,6 +114,7 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -Extender ZX desktop a lo alto 
 
--En ay piano indicar Octava visible de ese trozo de piano
-
--Ay piano enseñar más de una octava en pantalla 
+-ay piano dos octavas: revisar y hacer para piano texto
+quiza no hace falta mostrar la octava? es confuso porque no sabe si indica la octava de la tecla pulsada (lo que hace ahora),
+o bien la octava que tiene justo las teclas de la derecha
+-wave piano tambien dibuja dos octavas.. revisar esto y tambien el wave piano de texto
