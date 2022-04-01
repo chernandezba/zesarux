@@ -16889,7 +16889,8 @@ void menu_ay_piano_graph_dibujar_blanca_derecha(zxvision_window *ventana,int x, 
 	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,x+2, y, 0, +1, scale_y_chip(7), color);
 }
 
-void menu_ay_pianokeyboard_draw_piano_one_octave(zxvision_window *ventana,int canal)
+//xposicion vale 0 para el primer teclado mostrado, 1 para el segundo, etc
+void menu_ay_pianokeyboard_draw_piano_one_octave(zxvision_window *ventana,int canal,int xposicion)
 {
 	/*
 	Teclado:
@@ -16917,6 +16918,10 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 	//printf ("linea: %d\n",linea);
 
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
+
+    int ancho_octava=29;
+
+    int offset_x=xposicion*ancho_octava;
 
 	//temp
 	int ybase=scale_y_chip(separacion_y_entre_teclados)*canal;
@@ -16964,7 +16969,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 	}
 
 
-    int ancho_octava=29;
+    
 
 	//Dibujar la linea inferior. Realmente la linea inferior es siempre la linea superior del siguiente canal, excepto en el ultimo canal
 	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0, ybase+scale_y_chip(8), +1, 0, ancho_octava, 0);
@@ -16981,7 +16986,10 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 	
 	int x;
 
-    menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal);
+
+    int ancho_octava=29;
+
+    menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,1);
 
 
 	//Y ahora destacar la que se pulsa
