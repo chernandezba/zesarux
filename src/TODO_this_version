@@ -118,8 +118,7 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 quiza no hace falta mostrar la octava? es confuso porque no sabe si indica la octava de la tecla pulsada (lo que hace ahora),
 o bien la octava que tiene justo las teclas de la derecha
 -tambien puede parecer confuso si esta pulsando continuamente octava 3 (que aparecera en la derecha) y octava 4 (que aparecera en la izquierda),
-pero para esto es dificil corregir... a no ser que se vea teclado entero... mmm y con parametro de scroll arriba?porque todas las octavas no caben
-y scroll por defecto que se vea a partir de octava 3 o asi
+pero para esto es dificil corregir... a no ser que se vea teclado entero... mmm y con scroll de propia ventana en horizontal?porque todas las octavas no caben. y scroll por defecto que se vea a partir de octava 3 o asi
 
 -wave piano tambien dibuja dos octavas.. revisar esto y tambien el wave piano de texto
 -falta pixel abajo derecha del segundo teclado de octavas
