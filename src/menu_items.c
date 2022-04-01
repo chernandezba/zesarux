@@ -16766,9 +16766,9 @@ void menu_ay_pianokeyboard_insert_inverse(char *origen_orig, int indice)
 }
 
 //#define PIANO_GRAPHIC_BASE_X 9
-#define PIANO_GRAPHIC_BASE_X (menu_center_x()-7)
+//#define PIANO_GRAPHIC_BASE_X (menu_center_x()-7)
 
-int piano_graphic_base_y=0;
+//int piano_graphic_base_y=0;
 
 #define PIANO_ZOOM_X ( menu_char_width>=7 ? 3 : 2 )
 #define PIANO_ZOOM_Y 3
@@ -17329,81 +17329,51 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         int is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 
-		if (!util_find_window_geometry("aypiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		if (!util_find_window_geometry("aypiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,
+            &ancho_antes_minimize,&alto_antes_minimize)) {
 
 				if (!si_mostrar_ay_piano_grafico()) {
 
 					ancho_ventana=14;
 
 					if (total_chips==1) {
-						xventana=9;
-						yventana=7;					
+						//xventana=9;
+						//yventana=7;
+                        alto_ventana=11;
 					}
           			else if (total_chips==2) {
-						xventana=9;
-						yventana=2;						  					  
+						//xventana=9;
+						//yventana=2;
+                        alto_ventana=20;
 					}
 
 					else {
-						xventana=9;
-						yventana=1;					
+						//xventana=9;
+						//yventana=1;
+                        alto_ventana=22;					
 					}
 
 				}
 
 				else {
-					//Dibujar ay piano con grafico. Ajustar segun ancho de caracter (de ahi que use AY_PIANO_ANCHO_VENTANA en vez de valor fijo 14)
+					//Dibujar ay piano con grafico.
+                    //xventana=PIANO_GRAPHIC_BASE_X;
+                    //yventana=piano_graphic_base_y;
+                    ancho_ventana=AY_PIANO_ANCHO_VENTANA;
+
 					if (total_chips==1) {
-						xventana=PIANO_GRAPHIC_BASE_X;
-						yventana=piano_graphic_base_y;
-						ancho_ventana=AY_PIANO_ANCHO_VENTANA;					
-					}
-					else if (total_chips==2) {
-						xventana=PIANO_GRAPHIC_BASE_X;
-						yventana=piano_graphic_base_y;
-						ancho_ventana=AY_PIANO_ANCHO_VENTANA;							
-					}
-
-					else {
-						xventana=PIANO_GRAPHIC_BASE_X;
-						yventana=piano_graphic_base_y;
-						ancho_ventana=AY_PIANO_ANCHO_VENTANA;						
-					}
-				}
-
-
-
-				//El alto ventana lo calculamos segun el numero de chips
-				if (!si_mostrar_ay_piano_grafico()) {
-
-					if (total_chips==1) {			
-						alto_ventana=11;
-					}
-          			else if (total_chips==2) {
-						alto_ventana=20;						  						  
-					}
-
-					else {
-						alto_ventana=22;						
-					}
-
-				}
-
-				else {
-					//Dibujar ay piano con grafico. Ajustar segun ancho de caracter (de ahi que use AY_PIANO_ANCHO_VENTANA en vez de valor fijo 14)
-					if (total_chips==1) {
-						piano_graphic_base_y=5;						
+						//piano_graphic_base_y=5;						
 						alto_ventana=13;						
 					}
 					else if (total_chips==2) {
-						piano_graphic_base_y=1;
+						//piano_graphic_base_y=1;
 						alto_ventana=22;							
 					}
 
 					else {
-						piano_graphic_base_y=0;						
+						//piano_graphic_base_y=0;						
 						alto_ventana=24;							
-					}
+					}                    
 				}
 
 
@@ -17413,8 +17383,11 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 			
 			if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;
 
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;            
 
-			}
+
+        }
 
 		
 
@@ -17664,8 +17637,8 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 	if (!util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         if (!si_mostrar_ay_piano_grafico()) {
 
-            xventana=7;
-            yventana=7;
+            //xventana=7;
+            //yventana=7;
             ancho_ventana=19;
             alto_ventana=11;
 
@@ -17673,8 +17646,8 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
         else {
             //Dibujar ay piano con grafico. Ajustar segun ancho de caracter (de ahi que use AY_PIANO_ANCHO_VENTANA en vez de valor fijo 14)
-            xventana=PIANO_GRAPHIC_BASE_X-2;
-            yventana=piano_graphic_base_y;
+            //xventana=PIANO_GRAPHIC_BASE_X-2;
+            //yventana=0;
             ancho_ventana=AY_PIANO_ANCHO_VENTANA;
             alto_ventana=8;
 
@@ -17689,7 +17662,8 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 		//Para que se lea el titulo de la ventana cuando tamaño por defecto
 		if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;					
 
-
+        xventana=menu_center_x()-ancho_ventana/2;
+        yventana=menu_center_y()-alto_ventana/2;  
 
 	}
 

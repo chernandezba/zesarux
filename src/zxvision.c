@@ -11347,11 +11347,7 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 
 
 */
-	/*
-	    int offsetx=PIANO_GRAPHIC_BASE_X*menu_char_width+12;
-    int offsety=piano_graphic_base_y*scale_y_chip(8)+18;
 
-*/
 	//Obtener coordenadas en pixeles de zona ventana dibujable
 	int window_pixel_start_x=(w->x)*menu_char_width;
 	int window_pixel_start_y=((w->y)+1)*8;
@@ -11396,11 +11392,7 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 
 
 */
-	/*
-	    int offsetx=PIANO_GRAPHIC_BASE_X*menu_char_width+12;
-    int offsety=piano_graphic_base_y*scale_y_chip(8)+18;
 
-*/
 	//Obtener coordenadas en pixeles de zona ventana dibujable
 	//En este caso multiplicar por zoom_x zoom_y pues coordenadas finales no tienen en cuenta zoom
 	int window_pixel_start_x=(w->x)*menu_char_width*zoom_x;
