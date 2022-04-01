@@ -17055,11 +17055,12 @@ void menu_ay_pianokeyboard_draw_text_piano(zxvision_window *w,int linea,int cana
 
 	menu_writing_inverse_color.v=1;
 
-	char linea_negras[40];
-	char linea_blancas[40];
+	char linea_negras[43];
+	char linea_blancas[43];
 												//012345678901
-	sprintf (linea_negras, " # #  # # #");
-	sprintf (linea_blancas,"C D EF G A B");
+	sprintf (linea_negras, "    # #  # # #");
+
+	sprintf (linea_blancas,"   C D EF G A B");
 
 	if (note==NULL || note[0]==0) {
 	}
@@ -17257,10 +17258,10 @@ void menu_ay_pianokeyboard_overlay(void)
 
 			int incremento_linea=4;
 
-			if (!si_mostrar_ay_piano_grafico()) {
+			//if (!si_mostrar_ay_piano_grafico()) {
 				//Dibujar ay piano con texto. Comprimir el texto (quitar linea de entre medio) cuando hay 3 chips
-				if (total_chips>2) incremento_linea=3;
-			}
+			//	if (total_chips>2) incremento_linea=3;
+			//}
 
 
 			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_a);
@@ -17292,14 +17293,18 @@ void menu_ay_pianokeyboard_overlay(void)
             //Por suerte esto da multiple de 8 y podemos dividir bien
             int text_separation_lines=pixel_separation_lines/8;
 
+            if (!si_mostrar_ay_piano_grafico()) {
+                text_separation_lines=4;
+            }
+
             int linea_texto_octava=2+(chip*(text_separation_lines*3));
-            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_a);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_a);
 
             linea_texto_octava +=text_separation_lines;
-            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_b);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_b);
 
             linea_texto_octava +=text_separation_lines;
-            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_c);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_c);
 
 
 	}
