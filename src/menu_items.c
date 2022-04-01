@@ -16906,16 +16906,13 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
 	*/
 
-	//scr_putpixel_zoom(x,y,ESTILO_GUI_TINTA_NORMAL);
-
-	int ybase=0; //TODO: depende de linea de entrada
 
 	//printf ("linea: %d\n",linea);
 
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
 
 	//temp
-	ybase +=scale_y_chip(separacion_y_entre_teclados)*canal;
+	int ybase=scale_y_chip(separacion_y_entre_teclados)*canal;
 
 	//Recuadro en blanco
 	int x,y;
