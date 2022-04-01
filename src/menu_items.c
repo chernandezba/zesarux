@@ -16797,14 +16797,18 @@ int scale_y_chip(int y)
 }
 
 
-
+//Retornar separacion entre teclados 
+int menu_audiochip_piano_get_keys_separation(void)
+{
+    return 8;
+}
 
 void menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(zxvision_window *ventana,int x,int y,int color)
 {
 	//#define PIANO_ZOOM 3
 
 	int offsetx=12;
-	int offsety=scale_y_chip(8)+0;
+	int offsety=scale_y_chip(menu_audiochip_piano_get_keys_separation() )+0;
 
 	x=offsetx+x*PIANO_ZOOM_X;
 	y=offsety+y*PIANO_ZOOM_Y;
@@ -16892,7 +16896,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 	x   x   x   x   x   x   x   x         5
 	x   x   x   x   x   x   x   x         6
 	x   x   x   x   x   x   x   x         7
-
+    O3                                    8
 	0123456789012345678901234567890
 
     C   D   E   F   G   A   B
@@ -16908,8 +16912,10 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
 	//printf ("linea: %d\n",linea);
 
+    int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
+
 	//temp
-	ybase +=scale_y_chip(8)*canal;
+	ybase +=scale_y_chip(separacion_y_entre_teclados)*canal;
 
 	//Recuadro en blanco
 	int x,y;
@@ -17321,7 +17327,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 					}
 
 					else {
-                        alto_ventana=31;					
+                        alto_ventana=31;
 					}
 
 				}
@@ -17334,16 +17340,16 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 					if (total_chips==1) {
 						//piano_graphic_base_y=5;						
-						alto_ventana=16;						
+						alto_ventana=16;
 					}
 					else if (total_chips==2) {
 						//piano_graphic_base_y=1;
-						alto_ventana=28;							
+						alto_ventana=28;
 					}
 
 					else {
 						//piano_graphic_base_y=0;						
-						alto_ventana=33;							
+						alto_ventana=33;
 					}                    
 				}
 
