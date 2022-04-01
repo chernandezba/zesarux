@@ -112,3 +112,8 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
 
+-Extender ZX desktop a lo alto 
+
+-En ay piano indicar Octava visible de ese trozo de piano
+
+-Ay piano enseñar más de una octava en pantalla 

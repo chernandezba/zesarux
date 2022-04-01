@@ -8935,6 +8935,9 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
 
 	zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,
 							ancho_ventana-1,MAX_F_FUNCTIONS+2,"Set Action");
+
+    //Decir que siempre hay que borrar cache al refrescar, especial en el caso de accion por defecto y que no tiene dibujo
+    ventana->must_clear_cache_on_draw=1;
 	zxvision_draw_window(ventana);		
 
 
