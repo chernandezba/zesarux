@@ -17245,11 +17245,11 @@ void menu_ay_pianokeyboard_overlay(void)
                 //printf("audio piano canal 2 silencio\n");
             }
 
-			int incremento_linea=3;
+			int incremento_linea=4;
 
 			if (!si_mostrar_ay_piano_grafico()) {
 				//Dibujar ay piano con texto. Comprimir el texto (quitar linea de entre medio) cuando hay 3 chips
-				if (total_chips>2) incremento_linea=2;
+				if (total_chips>2) incremento_linea=3;
 			}
 
 
@@ -17314,20 +17314,14 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 					ancho_ventana=14;
 
 					if (total_chips==1) {
-						//xventana=9;
-						//yventana=7;
-                        alto_ventana=11;
+                        alto_ventana=14;
 					}
           			else if (total_chips==2) {
-						//xventana=9;
-						//yventana=2;
-                        alto_ventana=20;
+                        alto_ventana=26;
 					}
 
 					else {
-						//xventana=9;
-						//yventana=1;
-                        alto_ventana=22;					
+                        alto_ventana=31;					
 					}
 
 				}
@@ -17340,16 +17334,16 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 					if (total_chips==1) {
 						//piano_graphic_base_y=5;						
-						alto_ventana=13;						
+						alto_ventana=16;						
 					}
 					else if (total_chips==2) {
 						//piano_graphic_base_y=1;
-						alto_ventana=22;							
+						alto_ventana=28;							
 					}
 
 					else {
 						//piano_graphic_base_y=0;						
-						alto_ventana=24;							
+						alto_ventana=33;							
 					}                    
 				}
 
