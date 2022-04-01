@@ -16785,6 +16785,10 @@ int scale_y_chip(int y)
 	//Si venimos de un Wave Piano, no hay que hacerlo pequeño , aunque tengamos 3 chips de audio, a ese menu no le tiene que afectar
 	if (menu_ay_piano_drawing_wavepiano.v) return y;
 
+    //Dejamos tal cual mismo espacio aunque hayan 3 chips
+    return y;
+
+
 	//Casos:
 	//3,4,7,8
 	if (y==3) y=1;
@@ -16800,14 +16804,17 @@ int scale_y_chip(int y)
 //Retornar separacion entre teclados 
 int menu_audiochip_piano_get_keys_separation(void)
 {
+    //Estos incluye son 8 "pixeles" dentro del piano, que se multiplican por PIANO_ZOOM_Y
+    //Por tanto si PIANO_ZOOM_Y es 3, cada teclado de piano ocupa 24 pixeles de alto, o sea, 3 lineas de texto
     return 8;
+
 }
 
 void menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(zxvision_window *ventana,int x,int y,int color)
 {
 	//#define PIANO_ZOOM 3
 
-	int offsetx=12;
+	int offsetx=8+16; //8 de margen y otros mas para poder escribir la octava
 	int offsety=scale_y_chip(menu_audiochip_piano_get_keys_separation() )+0;
 
 	x=offsetx+x*PIANO_ZOOM_X;
@@ -17267,6 +17274,33 @@ void menu_ay_pianokeyboard_overlay(void)
 			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_c);
 			linea+=incremento_linea;
 			canal++;
+
+
+            //Escribir las octavas
+            int nota_final=-1;
+            int sostenido;
+            int octava_a,octava_b,octava_c;
+            
+
+            get_note_values(nota_a,&nota_final,&sostenido,&octava_a);
+            get_note_values(nota_b,&nota_final,&sostenido,&octava_b);
+            get_note_values(nota_c,&nota_final,&sostenido,&octava_c);
+
+
+            int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+            //Por suerte esto da multiple de 8 y podemos dividir bien
+            int text_separation_lines=pixel_separation_lines/8;
+
+            int linea_texto_octava=2+(chip*(text_separation_lines*3));
+            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_a);
+
+            linea_texto_octava +=text_separation_lines;
+            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_b);
+
+            linea_texto_octava +=text_separation_lines;
+            zxvision_print_string_defaults_fillspc_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_c);
+
 
 	}
 
