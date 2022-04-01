@@ -17230,30 +17230,7 @@ void menu_ay_pianokeyboard_overlay(void)
 			char nota_c[4];
 			sprintf(nota_c,"%s",get_note_name(freq_c) );
 
-			//Si canales no suenan como tono, o volumen 0 meter cadena vacia en nota
-            /*
-			if (sn_chip_present.v) {
-				if ((sn_chip_registers[6] & 15)==15) nota_a[0]=0;
-				if ((sn_chip_registers[7] & 15)==15) nota_b[0]=0;
-				if ((sn_chip_registers[8] & 15)==15) nota_c[0]=0;				
-			}
-
-			else if (i8049_chip_present) {
-                if (!ql_audio_playing) {
-                    nota_a[0]=0;
-                }
-
-                //Los otros dos canales, nada
-                nota_b[0]=0;
-                nota_c[0]=0;                               
-			}            
-
-			else {
-				if (ay_3_8912_registros[chip][7]&1 || ay_3_8912_registros[chip][8]==0) nota_a[0]=0;
-				if (ay_3_8912_registros[chip][7]&2 || ay_3_8912_registros[chip][9]==0) nota_b[0]=0;
-				if (ay_3_8912_registros[chip][7]&4 || ay_3_8912_registros[chip][10]==0) nota_c[0]=0;
-			}
-            */
+			
 
             if (!audio_si_canal_tono(chip,0)) {
                 nota_a[0]=0;
@@ -17392,16 +17369,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 		
 
 
-		
-		//int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
-
-		//Para que siempre se lea el titulo de la ventana
-		//No alteramos el ancho, que sea el que tenga por geometria
-		//if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;
-
-
-
-		//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
+	
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"aypiano",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
