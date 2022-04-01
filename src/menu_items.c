@@ -16987,12 +16987,17 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 	int x;
 
 
-    int ancho_octava=29;
+    int ancho_octava=29-1; //-1 para quitar la linea de la derecha de separacion de octava
 
     //Dos octavas visualizamos
     menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,0);
     menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,1);
 
+
+    //TODO: obtener si marcamos la nota de la primera octava visualizada o la segunda
+    int xposicion=0; //sera 0 o 1
+
+    int offset_x=xposicion*ancho_octava;
 
 	//Y ahora destacar la que se pulsa
 	char letra_nota=note[0];
@@ -17038,7 +17043,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 				x=-1;
 			break;
 		}
-		if (x!=-1) menu_ay_piano_graph_dibujar_negra(ventana,x,ybase+1,1); //Color 1 para probar
+		if (x!=-1) menu_ay_piano_graph_dibujar_negra(ventana,x+offset_x,ybase+1,1); //Color 1 para probar
 	}
 
 	else {
@@ -17046,34 +17051,34 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 		switch (letra_nota)
 		{
 			case 'C':
-			 menu_ay_piano_graph_dibujar_blanca_izquierda(ventana,1, ybase+1,1);
+			 menu_ay_piano_graph_dibujar_blanca_izquierda(ventana,1+offset_x, ybase+1,1);
 			break;
 
 			case 'D':
 			//Como D, G, A
-			 menu_ay_piano_graph_dibujar_blanca_media(ventana,5, ybase+1,1);
+			 menu_ay_piano_graph_dibujar_blanca_media(ventana,5+offset_x, ybase+1,1);
 			break;
 
 			case 'E':
-				menu_ay_piano_graph_dibujar_blanca_derecha(ventana,9, ybase+1,1);
+				menu_ay_piano_graph_dibujar_blanca_derecha(ventana,9+offset_x, ybase+1,1);
 			break;
 
 			case 'F':
-			 menu_ay_piano_graph_dibujar_blanca_izquierda(ventana,13, ybase+1,1);
+			 menu_ay_piano_graph_dibujar_blanca_izquierda(ventana,13+offset_x, ybase+1,1);
 			break;
 
 			case 'G':
 			//Como D, G, A
-			 menu_ay_piano_graph_dibujar_blanca_media(ventana,17, ybase+1,1);
+			 menu_ay_piano_graph_dibujar_blanca_media(ventana,17+offset_x, ybase+1,1);
 			break;
 
 			case 'A':
 			//Como D, G, A
-			 menu_ay_piano_graph_dibujar_blanca_media(ventana,21, ybase+1,1);
+			 menu_ay_piano_graph_dibujar_blanca_media(ventana,21+offset_x, ybase+1,1);
 			break;
 
 			case 'B':
-				menu_ay_piano_graph_dibujar_blanca_derecha(ventana,25, ybase+1,1);
+				menu_ay_piano_graph_dibujar_blanca_derecha(ventana,25+offset_x, ybase+1,1);
 			break;          
 		}
 
