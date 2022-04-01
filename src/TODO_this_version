@@ -122,3 +122,4 @@ pero para esto es dificil corregir... a no ser que se vea teclado entero... mmm 
 
 -wave piano tambien dibuja dos octavas.. revisar esto y tambien el wave piano de texto
 -falta pixel abajo derecha del segundo teclado de octavas
+-amplitud teclas piano que se pueda cambiar y no dependa de char size
