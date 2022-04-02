@@ -10031,7 +10031,11 @@ void zxvision_set_offset_x(zxvision_window *w,int offset_x)
 
 	w->offset_x=offset_x;	
 
-	if (w->no_refresh_change_offset==0) zxvision_draw_window_contents(w);
+	if (w->no_refresh_change_offset==0) {
+        //borrar cache por si hay restos de pixeles
+        w->must_clear_cache_on_draw_once=1;
+        zxvision_draw_window_contents(w);
+    }
 	zxvision_draw_scroll_bars(w);
 }
 
@@ -10062,7 +10066,11 @@ void zxvision_set_offset_y(zxvision_window *w,int offset_y)
 
 	w->offset_y=offset_y;	
 
-	if (w->no_refresh_change_offset==0) zxvision_draw_window_contents(w);
+	if (w->no_refresh_change_offset==0) {
+        //borrar cache por si hay restos de pixeles
+        w->must_clear_cache_on_draw_once=1;
+        zxvision_draw_window_contents(w);
+    }
 	zxvision_draw_scroll_bars(w);
 }
 

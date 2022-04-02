@@ -17296,6 +17296,8 @@ zxvision_window *menu_ay_pianokeyboard_overlay_window;
 
 //int temp_zzzz;
 
+int menu_audiochip_piano_last_offset_window_x=0;
+
 void menu_ay_pianokeyboard_overlay(void)
 {
 
@@ -17560,8 +17562,8 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         }
 
 		
-        //Suficiente para que quepan todas las octavas
-        int total_width=AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
+        //Suficiente para que quepan todas las octavas, y texto de octava y cursores
+        int total_width=5+AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
 
 	
 
