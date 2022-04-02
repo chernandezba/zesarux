@@ -16770,8 +16770,14 @@ void menu_ay_pianokeyboard_insert_inverse(char *origen_orig, int indice)
 
 //int piano_graphic_base_y=0;
 
-#define PIANO_ZOOM_X ( menu_char_width>=7 ? 3 : 2 )
-#define PIANO_ZOOM_Y 3
+int audiochip_piano_zoom_x=3;
+int audiochip_piano_zoom_y=3;
+
+//#define PIANO_ZOOM_X ( menu_char_width>=7 ? 3 : 2 )
+#define PIANO_ZOOM_X audiochip_piano_zoom_x
+#define PIANO_ZOOM_Y audiochip_piano_zoom_y
+
+#define AUDIOCHIP_PIANO_LINE_START 1
 
 #define AY_PIANO_ANCHO_VENTANA ( menu_char_width==8 || menu_char_width==6 ? 14 : 15 )
 
@@ -16815,7 +16821,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(zxvision_window 
 	//#define PIANO_ZOOM 3
 
 	int offsetx=8+16; //8 de margen y otros mas para poder escribir la octava
-	int offsety=scale_y_chip(menu_audiochip_piano_get_keys_separation() )+0;
+	int offsety=scale_y_chip(menu_audiochip_piano_get_keys_separation() )+AUDIOCHIP_PIANO_LINE_START*menu_char_height;
 
 	x=offsetx+x*PIANO_ZOOM_X;
 	y=offsety+y*PIANO_ZOOM_Y;
