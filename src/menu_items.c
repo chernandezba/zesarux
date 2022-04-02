@@ -17033,6 +17033,8 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
     //sin tener en cuenta par/impar
     xposicion=octava-offset_octava_visible;
 
+    if (xposicion<0) return;
+
     int offset_x=xposicion*ancho_octava;
 
 	//Y ahora destacar la que se pulsa
@@ -17400,6 +17402,30 @@ void menu_ay_pianokeyboard_overlay(void)
 zxvision_window zxvision_window_ay_piano;
 
 
+void menu_audiochip_piano_dec_octave(MENU_ITEM_PARAMETERS)
+{
+    int canal=valor_opcion;
+
+    int offset_octava=audio_chip_piano_offsets_octavas[canal];
+
+    if (offset_octava>0) {
+        offset_octava--;
+        audio_chip_piano_offsets_octavas[canal]=offset_octava;
+    }
+}
+
+void menu_audiochip_piano_inc_octave(MENU_ITEM_PARAMETERS)
+{
+    int canal=valor_opcion;
+
+    int offset_octava=audio_chip_piano_offsets_octavas[canal];
+
+    if (offset_octava<AUDIO_CHIP_PIANO_TOTAL_OCTAVAS-1) {
+        offset_octava++;
+        audio_chip_piano_offsets_octavas[canal]=offset_octava;
+    }
+}
+
 void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 {
         menu_espera_no_tecla();
@@ -17538,7 +17564,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
        }
 
 
-
+        /*
 	    z80_byte tecla=0;
 
         do {
@@ -17575,6 +17601,64 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         //} while (  (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA && tecla==0)  ;
 
 		} while (tecla!=2 && tecla!=3);				
+    */
+
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+            //borrar cache por si hay restos de mover offsets octavas
+            ventana->must_clear_cache_on_draw_once=1;
+        //zxvision_print_string_defaults_fillspc(ventana,1,6,"");
+        //zxvision_print_string_defaults_fillspc(ventana,1,7,"");
+
+
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+            int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+            //Por suerte esto da multiple de 8 y podemos dividir bien
+            int text_separation_lines=pixel_separation_lines/8;
+
+
+        int i;
+        int linea=3;
+
+        for (i=0;i<total_chips;i++) {
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_dec_octave,NULL,"<");
+            menu_add_item_menu_tabulado(array_menu_common,1,linea);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_inc_octave,NULL,">");
+            menu_add_item_menu_tabulado(array_menu_common,2,linea);
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+
+            linea +=text_separation_lines;
+
+        }
+
+        //Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu(&audio_visual_realtape_opcion_seleccionada,&item_seleccionado,array_menu_common,"Audio Chip Piano" );
+
+        if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+
+                //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+                cls_menu_overlay();
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                                //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+                        }
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
 
@@ -17589,7 +17673,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     util_add_window_geometry_compact(ventana);
 
-	if (tecla==3) {
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
         zxvision_message_put_window_background();
 	}
 
