@@ -17432,6 +17432,20 @@ void menu_audiochip_piano_inc_octave(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_audiochip_piano_change_zoom(MENU_ITEM_PARAMETERS)
+{
+
+    if (audiochip_piano_zoom_x==3) {
+        audiochip_piano_zoom_x=2;
+        audiochip_piano_zoom_y=2;
+    }
+    else {
+        audiochip_piano_zoom_x=3;
+        audiochip_piano_zoom_y=3;        
+    }
+
+}
+
 void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 {
         menu_espera_no_tecla();
@@ -17616,17 +17630,24 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
             //borrar cache por si hay restos de mover offsets octavas
             ventana->must_clear_cache_on_draw_once=1;
+            //borrar ventana por si hay restos de texto al cambiar zoom
+            zxvision_cls(ventana);
         //zxvision_print_string_defaults_fillspc(ventana,1,6,"");
         //zxvision_print_string_defaults_fillspc(ventana,1,7,"");
 
 
 
-        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-            int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_change_zoom,NULL,
+            "[%c] Zoom",(audiochip_piano_zoom_x ==3 ? 'X' : ' ' ));
+        menu_add_item_menu_tabulado(array_menu_common,1,0);
+        
 
-            //Por suerte esto da multiple de 8 y podemos dividir bien
-            int text_separation_lines=pixel_separation_lines/8;
+        int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+        //Por suerte esto da multiple de 8 y podemos dividir bien
+        int text_separation_lines=pixel_separation_lines/8;
 
 
         int i;
