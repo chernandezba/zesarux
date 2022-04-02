@@ -16979,9 +16979,13 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
     0,0,0,0,0,0,0,0,0
 };*/
 
+//Octavas de la 0 a la 9
+#define AUDIO_CHIP_PIANO_TOTAL_OCTAVAS 10
 
-int audio_chip_piano_offsets_octavas[9]={
-    0,0,0,0,0,0,0,0,0
+//Primera octava visible por defecto sera la 2
+
+int audio_chip_piano_offsets_octavas[AUDIO_CHIP_PIANO_TOTAL_OCTAVAS]={
+    2,2,2,2,2,2,2,2,2
 };
 
 void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int linea GCC_UNUSED,int canal,char *note)
@@ -17001,7 +17005,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 
     int offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
 
-    int total_octavas=9-offset_octava_visible;
+    int total_octavas=AUDIO_CHIP_PIANO_TOTAL_OCTAVAS-offset_octava_visible;
     int i;
     for (i=0;i<total_octavas;i++) {
         menu_ay_pianokeyboard_draw_piano_one_octave(ventana,canal,i);
@@ -17351,14 +17355,17 @@ void menu_ay_pianokeyboard_overlay(void)
 
 
             //Escribir las octavas
-            int nota_final=-1;
-            int sostenido;
-            int octava_a,octava_b,octava_c;
+            //int nota_final=-1;
+            //int sostenido;
+            //int octava_a,octava_b,octava_c;
             
 
-            get_note_values(nota_a,&nota_final,&sostenido,&octava_a);
-            get_note_values(nota_b,&nota_final,&sostenido,&octava_b);
-            get_note_values(nota_c,&nota_final,&sostenido,&octava_c);
+            //get_note_values(nota_a,&nota_final,&sostenido,&octava_a);
+            //get_note_values(nota_b,&nota_final,&sostenido,&octava_b);
+            //get_note_values(nota_c,&nota_final,&sostenido,&octava_c);
+
+            int indice_offset_octavas=chip*3;
+            
 
 
             int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
@@ -17371,13 +17378,16 @@ void menu_ay_pianokeyboard_overlay(void)
             }
 
             int linea_texto_octava=2+(chip*(text_separation_lines*3));
-            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_a);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,
+                "O%d",audio_chip_piano_offsets_octavas[indice_offset_octavas]);
 
             linea_texto_octava +=text_separation_lines;
-            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_b);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,
+                "O%d",audio_chip_piano_offsets_octavas[indice_offset_octavas+1]);
 
             linea_texto_octava +=text_separation_lines;
-            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,"O%d",octava_c);
+            zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,
+                "O%d",audio_chip_piano_offsets_octavas[indice_offset_octavas+2]);
 
 
 	}
