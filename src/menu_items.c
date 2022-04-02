@@ -16782,7 +16782,11 @@ int audiochip_piano_zoom_y=3;
 //1 de margen y otros mas para poder escribir la octava y los cursores
 #define AUDIOCHIP_PIANO_COLUMN_START 5
 
-#define AY_PIANO_ANCHO_VENTANA ( menu_char_width==8 || menu_char_width==6 ? 14 : 15 )
+//#define AY_PIANO_ANCHO_VENTANA ( menu_char_width==8 || menu_char_width==6 ? 14 : 15 )
+
+#define AY_PIANO_ANCHO_VENTANA 32
+
+#define AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA 29
 
 z80_bit menu_ay_piano_drawing_wavepiano={0};
 
@@ -16942,7 +16946,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
 
-    int ancho_octava=29-1; //-1 para quitar la linea de la derecha de separacion de octava
+    int ancho_octava=AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA-1; //-1 para quitar la linea de la derecha de separacion de octava
 
     int offset_x=xposicion*ancho_octava;
 
@@ -16951,7 +16955,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
 	//Recuadro en blanco
 	int x,y;
-	for (x=0;x<29;x++) {
+	for (x=0;x<AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA;x++) {
 		for (y=ybase;y<ybase+scale_y_chip(8);y++) {
 			menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(ventana,x+offset_x,y,7);
 		}
@@ -17022,7 +17026,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 	int x;
 
 
-    int ancho_octava=29-1; //-1 para quitar la linea de la derecha de separacion de octava
+    int ancho_octava=AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA-1; //-1 para quitar la linea de la derecha de separacion de octava
 
     //Dos octavas visualizamos
 
@@ -17522,7 +17526,12 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
                     //yventana=piano_graphic_base_y;
                     ancho_ventana=AY_PIANO_ANCHO_VENTANA;
 
-					if (total_chips==1) {
+
+                    int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
+                    alto_ventana=text_separation_lines*total_chips*3+AUDIOCHIP_PIANO_LINE_START+4;
+
+
+					/*if (total_chips==1) {
 						//piano_graphic_base_y=5;						
 						alto_ventana=16;
 					}
@@ -17534,7 +17543,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 					else {
 						//piano_graphic_base_y=0;						
 						alto_ventana=33;
-					}                    
+					} */                   
 				}
 
 
@@ -17551,11 +17560,12 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         }
 
 		
-
+        //Suficiente para que quepan todas las octavas
+        int total_width=AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
 
 	
 
-        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,"aypiano",
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,alto_ventana-2,titulo_ventana,"aypiano",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 		ventana->can_be_backgrounded=1;	
@@ -17672,7 +17682,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
         int i;
-        int linea=2;
+        int linea=AUDIOCHIP_PIANO_LINE_START+1;
 
         for (i=0;i<total_chips*3;i++) {
 
