@@ -17626,7 +17626,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         int i;
         int linea=3;
 
-        for (i=0;i<total_chips;i++) {
+        for (i=0;i<total_chips*3;i++) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_dec_octave,NULL,"<");
             menu_add_item_menu_tabulado(array_menu_common,1,linea);
