@@ -16779,6 +16779,9 @@ int audiochip_piano_zoom_y=3;
 
 #define AUDIOCHIP_PIANO_LINE_START 1
 
+//1 de margen y otros mas para poder escribir la octava y los cursores
+#define AUDIOCHIP_PIANO_COLUMN_START 5
+
 #define AY_PIANO_ANCHO_VENTANA ( menu_char_width==8 || menu_char_width==6 ? 14 : 15 )
 
 z80_bit menu_ay_piano_drawing_wavepiano={0};
@@ -16816,11 +16819,25 @@ int menu_audiochip_piano_get_keys_separation(void)
 
 }
 
+//Retorna separacion en lineas de texto entre teclados
+int menu_audiochip_piano_get_text_separation_lines(void)
+{
+    int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+    //Por suerte esto da multiple de 8 y podemos dividir bien
+    int text_separation_lines=pixel_separation_lines/8;
+
+    //Al menos dos lineas de separacion para escribir offset octava y cursores movimiento
+    //if (text_separation_lines<2) text_separation_lines=2;
+
+    return text_separation_lines;
+}
+
 void menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(zxvision_window *ventana,int x,int y,int color)
 {
 	//#define PIANO_ZOOM 3
 
-	int offsetx=8+16; //8 de margen y otros mas para poder escribir la octava
+	int offsetx=AUDIOCHIP_PIANO_COLUMN_START*menu_char_width; 
 	int offsety=scale_y_chip(menu_audiochip_piano_get_keys_separation() )+AUDIOCHIP_PIANO_LINE_START*menu_char_height;
 
 	x=offsetx+x*PIANO_ZOOM_X;
@@ -17376,10 +17393,12 @@ void menu_ay_pianokeyboard_overlay(void)
             
 
 
-            int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+            /*int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
 
             //Por suerte esto da multiple de 8 y podemos dividir bien
-            int text_separation_lines=pixel_separation_lines/8;
+            int text_separation_lines=pixel_separation_lines/8;*/
+
+            int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
 
             if (!si_mostrar_ay_piano_grafico()) {
                 text_separation_lines=4;
@@ -17435,14 +17454,14 @@ void menu_audiochip_piano_inc_octave(MENU_ITEM_PARAMETERS)
 void menu_audiochip_piano_change_zoom(MENU_ITEM_PARAMETERS)
 {
 
-    if (audiochip_piano_zoom_x==3) {
-        audiochip_piano_zoom_x=2;
-        audiochip_piano_zoom_y=2;
-    }
-    else {
+    audiochip_piano_zoom_x--;
+    audiochip_piano_zoom_y--;
+
+    if (audiochip_piano_zoom_x==0) {
         audiochip_piano_zoom_x=3;
-        audiochip_piano_zoom_y=3;        
+        audiochip_piano_zoom_y=3;
     }
+        
 
 }
 
@@ -17640,27 +17659,29 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_change_zoom,NULL,
-            "[%c] Zoom",(audiochip_piano_zoom_x ==3 ? 'X' : ' ' ));
+            "[%d] Zoom",audiochip_piano_zoom_x);
         menu_add_item_menu_tabulado(array_menu_common,1,0);
         
 
-        int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+        /*int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
 
         //Por suerte esto da multiple de 8 y podemos dividir bien
-        int text_separation_lines=pixel_separation_lines/8;
+        int text_separation_lines=pixel_separation_lines/8;*/
+
+        int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
 
 
         int i;
-        int linea=3;
+        int linea=2;
 
         for (i=0;i<total_chips*3;i++) {
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_dec_octave,NULL,"<");
-            menu_add_item_menu_tabulado(array_menu_common,1,linea);
+            menu_add_item_menu_tabulado(array_menu_common,3,linea);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_inc_octave,NULL,">");
-            menu_add_item_menu_tabulado(array_menu_common,2,linea);
+            menu_add_item_menu_tabulado(array_menu_common,4,linea);
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
 
