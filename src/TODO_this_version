@@ -121,8 +121,9 @@ o bien la octava que tiene justo las teclas de la derecha
 pero para esto es dificil corregir... a no ser que se vea teclado entero... mmm y con scroll de propia ventana en horizontal?porque todas las octavas no caben. y scroll por defecto que se vea a partir de octava 3 o asi
 
 -wave piano tambien dibuja dos octavas.. revisar esto y tambien el wave piano de texto
--falta pixel abajo derecha del segundo teclado de octavas
+-falta pixel abajo derecha del ultimo teclado derecha
 -amplitud teclas piano que se pueda cambiar y no dependa de char size
 
 -Probar si con el cambio de limpiar caché al
 -Mover scroll se ha roto algo… ver aventure game map por ejemplo
+
