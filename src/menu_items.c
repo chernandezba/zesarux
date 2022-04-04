@@ -21476,7 +21476,7 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     //Y esperar escape (2) o tecla background (3)
     do {
 
-                //borrar rastros de textos anteriores
+        //borrar rastros de textos anteriores
         zxvision_cls(ventana);
 
         //Forzar a mostrar atajos
@@ -21495,127 +21495,127 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
         //menu_debug_view_sensors_print_cursor(ventana,menu_view_sensors_cursor_fila,menu_view_sensors_cursor_columna);
 
         
-            int offset_array=menu_view_sensors_cursor_fila*MENU_VIEW_SENSORS_TOTAL_COLUMNS+menu_view_sensors_cursor_columna;
+        int offset_array=menu_view_sensors_cursor_fila*MENU_VIEW_SENSORS_TOTAL_COLUMNS+menu_view_sensors_cursor_columna;
 
-            menu_view_sensors_fondo_cursor(ventana,ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO);
-            
-       
-            tecla=zxvision_common_getkey_refresh();
-            zxvision_handle_cursors_pgupdn(ventana,tecla);
+        menu_view_sensors_fondo_cursor(ventana,ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO);
+        
+    
+        tecla=zxvision_common_getkey_refresh();
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
 
-            //printf("mouse_left: %d tecla: %d\n",mouse_left,tecla);
-         
+        //printf("mouse_left: %d tecla: %d\n",mouse_left,tecla);
+        
 
-            //Si se pulsa boton y esta en rango
-            if (mouse_left && tecla==0 && menu_view_sensors_mouse_in_zone_widgets(NULL,NULL) ) {
-                //printf("pulsado left\n");
-                //menu_espera_no_tecla();
-                tecla=13;
+        //Si se pulsa boton y esta en rango
+        if (mouse_left && tecla==0 && menu_view_sensors_mouse_in_zone_widgets(NULL,NULL) ) {
+            //printf("pulsado left\n");
+            //menu_espera_no_tecla();
+            tecla=13;
+        }
+
+        //printf("mouse %d %d\n",menu_mouse_x,menu_mouse_y);
+
+        //antes_mouse_left=mouse_left;
+
+        //gestionar movimiento cursor
+        //Solo si se ha movido
+        if (antes_menu_mouse_x!=menu_mouse_x || antes_menu_mouse_y!=menu_mouse_y) {
+            //printf("mouse movido\n");
+
+            int cursor_mouse_x,cursor_mouse_y;
+
+            if (menu_view_sensors_mouse_in_zone_widgets(&cursor_mouse_x,&cursor_mouse_y)) {
+                //movemos cursor
+                menu_view_sensors_cursor_columna=cursor_mouse_x;
+                menu_view_sensors_cursor_fila=cursor_mouse_y;
             }
 
-            //printf("mouse %d %d\n",menu_mouse_x,menu_mouse_y);
+            
+        }
 
-            //antes_mouse_left=mouse_left;
+        antes_menu_mouse_x=menu_mouse_x;
+        antes_menu_mouse_y=menu_mouse_y;
 
-            //gestionar movimiento cursor
-            //Solo si se ha movido
-            if (antes_menu_mouse_x!=menu_mouse_x || antes_menu_mouse_y!=menu_mouse_y) {
-                //printf("mouse movido\n");
+        switch(tecla) {
+            case 8:
+                if (menu_view_sensors_cursor_columna>0) menu_view_sensors_cursor_columna--;
+            break;
 
-                int cursor_mouse_x,cursor_mouse_y;
+            case 9:
+                if (menu_view_sensors_cursor_columna<MENU_VIEW_SENSORS_TOTAL_COLUMNS-1) menu_view_sensors_cursor_columna++;
+            break;
 
-                if (menu_view_sensors_mouse_in_zone_widgets(&cursor_mouse_x,&cursor_mouse_y)) {
-                    //movemos cursor
-                    menu_view_sensors_cursor_columna=cursor_mouse_x;
-                    menu_view_sensors_cursor_fila=cursor_mouse_y;
+            case 11:
+                if (menu_view_sensors_cursor_fila>0) menu_view_sensors_cursor_fila--;
+            break;
+
+            case 10:
+                if (menu_view_sensors_cursor_fila<MENU_VIEW_SENSORS_TOTAL_ROWS-1) menu_view_sensors_cursor_fila++;
+            break;        
+
+            case 13:
+                
+                //necesario cuando viene de pulsar boton izquierdo con raton
+                menu_espera_no_tecla();
+
+                //buscar el id para ese nombre de sensor
+                short_name=menu_debug_view_sensors_list_sensors[offset_array].short_name;
+                int sensor_id;
+
+                
+
+                //estaba vacio. asignar
+                if (short_name[0]==0) {
+                    sensor_id=0;
+                }
+                else {
+                    sensor_id=sensor_find(short_name);
+                    sensor_id++;
+                    //invalido
+                    if (sensor_id<0) sensor_id=0;                        
                 }
 
-               
-            }
+                sensor_id=menu_debug_view_sensors_get_sensor_item(sensor_id);
 
-            antes_menu_mouse_x=menu_mouse_x;
-            antes_menu_mouse_y=menu_mouse_y;
-
-            switch(tecla) {
-                case 8:
-                    if (menu_view_sensors_cursor_columna>0) menu_view_sensors_cursor_columna--;
-                break;
-
-                case 9:
-                    if (menu_view_sensors_cursor_columna<MENU_VIEW_SENSORS_TOTAL_COLUMNS-1) menu_view_sensors_cursor_columna++;
-                break;
-
-                case 11:
-                    if (menu_view_sensors_cursor_fila>0) menu_view_sensors_cursor_fila--;
-                break;
-
-                case 10:
-                    if (menu_view_sensors_cursor_fila<MENU_VIEW_SENSORS_TOTAL_ROWS-1) menu_view_sensors_cursor_fila++;
-                break;        
-
-                case 13:
-                    
-                    //necesario cuando viene de pulsar boton izquierdo con raton
-                    menu_espera_no_tecla();
-
-                    //buscar el id para ese nombre de sensor
-                    short_name=menu_debug_view_sensors_list_sensors[offset_array].short_name;
-                    int sensor_id;
-
-                    
-
-                    //estaba vacio. asignar
-                    if (short_name[0]==0) {
-                        sensor_id=0;
+                if (sensor_id>=0) {
+                    if (sensor_id==0) {
+                        //vacio
+                        strcpy(menu_debug_view_sensors_list_sensors[offset_array].short_name,"");
                     }
                     else {
-                        sensor_id=sensor_find(short_name);
-                        sensor_id++;
-                        //invalido
-                        if (sensor_id<0) sensor_id=0;                        
+                        //indice-1
+                        sensor_id--;
+                        short_name=sensors_array[sensor_id].short_name;
+                        strcpy(menu_debug_view_sensors_list_sensors[offset_array].short_name,short_name);                            
                     }
+                }
 
-                    sensor_id=menu_debug_view_sensors_get_sensor_item(sensor_id);
+            break;
 
-                    if (sensor_id>=0) {
-                        if (sensor_id==0) {
-                            //vacio
-                            strcpy(menu_debug_view_sensors_list_sensors[offset_array].short_name,"");
-                        }
-                        else {
-                            //indice-1
-                            sensor_id--;
-                            short_name=sensors_array[sensor_id].short_name;
-                            strcpy(menu_debug_view_sensors_list_sensors[offset_array].short_name,short_name);                            
-                        }
-                    }
+            case 't':
+                menu_debug_view_sensors_tipo=menu_debug_view_sensors_list_sensors[offset_array].tipo;
 
-                break;
+                menu_debug_view_sensors_tipo=menu_debug_view_sensors_get_sensor_tipo(menu_debug_view_sensors_tipo);
 
-                case 't':
-                    menu_debug_view_sensors_tipo=menu_debug_view_sensors_list_sensors[offset_array].tipo;
+                //menu_debug_view_sensors_tipo++;
+                //if (menu_debug_view_sensors_tipo>=ZXVISION_TOTAL_WIDGET_TYPES) menu_debug_view_sensors_tipo=0;
 
-                    menu_debug_view_sensors_tipo=menu_debug_view_sensors_get_sensor_tipo(menu_debug_view_sensors_tipo);
+                if (menu_debug_view_sensors_tipo>=0) menu_debug_view_sensors_list_sensors[offset_array].tipo=menu_debug_view_sensors_tipo;
+            break;
 
-                    //menu_debug_view_sensors_tipo++;
-                    //if (menu_debug_view_sensors_tipo>=ZXVISION_TOTAL_WIDGET_TYPES) menu_debug_view_sensors_tipo=0;
+            case 'a':
+                menu_debug_view_sensors_list_sensors[offset_array].valor_en_vez_de_perc ^=1;
+                if (menu_debug_view_sensors_list_sensors[offset_array].valor_en_vez_de_perc) {
+                    menu_generic_message_splash("Display value","OK Showing absolute value instead of percentage");
+                }
+                else {
+                    menu_generic_message_splash("Display percentage","OK Showing percentage instead of absolute value");
+                }
 
-                    if (menu_debug_view_sensors_tipo>=0) menu_debug_view_sensors_list_sensors[offset_array].tipo=menu_debug_view_sensors_tipo;
-                break;
-
-                case 'a':
-                    menu_debug_view_sensors_list_sensors[offset_array].valor_en_vez_de_perc ^=1;
-                    if (menu_debug_view_sensors_list_sensors[offset_array].valor_en_vez_de_perc) {
-                        menu_generic_message_splash("Display value","OK Showing absolute value instead of percentage");
-                    }
-                    else {
-                        menu_generic_message_splash("Display percentage","OK Showing percentage instead of absolute value");
-                    }
-
-                break;
+            break;
 
 
-            }
+        }
             //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
@@ -21639,12 +21639,11 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     util_add_window_geometry_compact(ventana);
 
     if (tecla==3) {
-    //if (retorno_menu==MENU_RETORNO_BACKGROUND) {
-            zxvision_message_put_window_background();
+        zxvision_message_put_window_background();
     }
 
     else {
-            zxvision_destroy_window(ventana);
+        zxvision_destroy_window(ventana);
     }
 
 
