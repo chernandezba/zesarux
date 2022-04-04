@@ -16788,15 +16788,15 @@ int audiochip_piano_zoom_y=3;
 
 #define AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA 29
 
-z80_bit menu_ay_piano_drawing_wavepiano={0};
+//z80_bit menu_ay_piano_drawing_wavepiano={0};
 
 //Escala alto en vertical teclado piano segun si ay chip>2, para que el teclado sea mas pequeñito
 int scale_y_chip(int y)
 {
-	if (ay_retorna_numero_chips()<3) return y;
+	//if (ay_retorna_numero_chips()<3) return y;
 
 	//Si venimos de un Wave Piano, no hay que hacerlo pequeño , aunque tengamos 3 chips de audio, a ese menu no le tiene que afectar
-	if (menu_ay_piano_drawing_wavepiano.v) return y;
+	//if (menu_ay_piano_drawing_wavepiano.v) return y;
 
     //Dejamos tal cual mismo espacio aunque hayan 3 chips
     return y;
@@ -16813,6 +16813,19 @@ int scale_y_chip(int y)
 	return y;
 }
 
+//Dice si se muestra piano grafico o de texto.
+//Si es un driver de solo texto, mostrar texto
+//Si es un driver grafico y setting dice que lo mostremos en texto, mostrar texto
+//Si nada de lo demas, mostrar grafico
+int si_mostrar_ay_piano_grafico(void)
+{
+	if (!si_complete_video_driver()) return 0;
+
+	if (!setting_mostrar_ay_piano_grafico.v) return 0;
+
+	return 1;
+
+}
 
 //Retornar separacion entre teclados 
 int menu_audiochip_piano_get_keys_separation(void)
@@ -16826,6 +16839,12 @@ int menu_audiochip_piano_get_keys_separation(void)
 //Retorna separacion en lineas de texto entre teclados
 int menu_audiochip_piano_get_text_separation_lines(void)
 {
+
+    if (!si_mostrar_ay_piano_grafico()) {
+        return 3;
+    }
+
+
     int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
 
     //Por suerte esto da multiple de 8 y podemos dividir bien
@@ -17015,7 +17034,7 @@ int audio_chip_piano_offsets_octavas[AUDIO_CHIP_PIANO_TOTAL_OCTAVAS]={
     2,2,2,2,2,2,2,2,2
 };
 
-void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int linea GCC_UNUSED,int canal,char *note)
+void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int linea GCC_UNUSED,int canal,char *note,int offset_octava_visible)
 {
 	
     int separacion_y_entre_teclados=menu_audiochip_piano_get_keys_separation();
@@ -17028,9 +17047,9 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 
     int ancho_octava=AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA-1; //-1 para quitar la linea de la derecha de separacion de octava
 
-    //Dos octavas visualizamos
 
-    int offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
+
+    //int offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
 
     int total_octavas=AUDIO_CHIP_PIANO_TOTAL_OCTAVAS-offset_octava_visible;
     int i;
@@ -17039,9 +17058,6 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
     }
     
 
-
-    //TODO: obtener si marcamos la nota de la primera octava visualizada o la segunda
-    //Escribir las octavas
     int nota_final=-1;
     int sostenido;
     int octava;
@@ -17050,15 +17066,7 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
     get_note_values(note,&nota_final,&sostenido,&octava);
 
 
-    int xposicion=0; //sera 0 o 1
-
-    //temp
-    //si impar, en segundo teclado. Si par, en primer teclado
-    if (octava&1) xposicion=1;
-
-
-    //sin tener en cuenta par/impar
-    xposicion=octava-offset_octava_visible;
+    int xposicion=octava-offset_octava_visible;
 
     if (xposicion<0) return;
 
@@ -17152,21 +17160,19 @@ void menu_ay_pianokeyboard_draw_graphical_piano(zxvision_window *ventana,int lin
 
 }
 
-void menu_ay_pianokeyboard_draw_text_piano(zxvision_window *w,int linea,int canal GCC_UNUSED,char *note)
+void menu_ay_pianokeyboard_draw_text_piano_one_octave(zxvision_window *w,int linea,int posicion_x,char *note)
 {
-
 	//Forzar a mostrar atajos
 	z80_bit antes_menu_writing_inverse_color;
 	antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
 
 	menu_writing_inverse_color.v=1;
 
-	char linea_negras[43];
-	char linea_blancas[43];
+	char linea_negras[40];
+	char linea_blancas[40];
 												//012345678901
-	sprintf (linea_negras, "    # #  # # #");
-
-	sprintf (linea_blancas,"   C D EF G A B");
+	sprintf (linea_negras, " # #  # # #");
+	sprintf (linea_blancas,"C D EF G A B");
 
 	if (note==NULL || note[0]==0) {
 	}
@@ -17255,39 +17261,70 @@ void menu_ay_pianokeyboard_draw_text_piano(zxvision_window *w,int linea,int cana
 	//menu_escribe_linea_opcion(linea++,-1,1,linea_negras);
 	//menu_escribe_linea_opcion(linea++,-1,1,linea_blancas);
 
-	zxvision_print_string_defaults(w,1,linea++,linea_negras);
-	zxvision_print_string_defaults(w,1,linea++,linea_blancas);
+    int columna=posicion_x;
+
+	zxvision_print_string_defaults(w,columna,linea++,linea_negras);
+	zxvision_print_string_defaults(w,columna,linea++,linea_blancas);
 
 
-	menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
-
+	menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;    
 }
 
-
-
-
-
-//Dice si se muestra piano grafico o de texto.
-//Si es un driver de solo texto, mostrar texto
-//Si es un driver grafico y setting dice que lo mostremos en texto, mostrar texto
-//Si nada de lo demas, mostrar grafico
-int si_mostrar_ay_piano_grafico(void)
+void menu_ay_pianokeyboard_draw_text_piano(zxvision_window *w,int linea,int canal GCC_UNUSED,char *note,int offset_octava_visible)
 {
-	if (!si_complete_video_driver()) return 0;
 
-	if (!setting_mostrar_ay_piano_grafico.v) return 0;
+    linea++;
 
-	return 1;
+    int nota_final=-1;
+    int sostenido;
+    int octava;
+
+
+    get_note_values(note,&nota_final,&sostenido,&octava);
+
+
+    int columna_inicio=AUDIOCHIP_PIANO_COLUMN_START+1;
+
+
+
+    //13 de separacion en caso de texto
+    int ancho_octava=13;
+
+    
+
+    //int offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
+
+    int total_octavas=AUDIO_CHIP_PIANO_TOTAL_OCTAVAS-offset_octava_visible;
+    int i;
+    for (i=0;i<total_octavas;i++) {
+
+        int columna=columna_inicio+ancho_octava*i;
+
+        int xposicion_octava=octava-offset_octava_visible;
+
+        //Si octava de la nota coincide con octava escrita
+        if (xposicion_octava==i) menu_ay_pianokeyboard_draw_text_piano_one_octave(w,linea,columna,note);
+
+        //Si no, indicar nota vacia para que no la marque
+        else menu_ay_pianokeyboard_draw_text_piano_one_octave(w,linea,columna,"");
+
+    }
+    
+
+
+
 
 }
 
-void menu_ay_pianokeyboard_draw_piano(zxvision_window *w,int linea,int canal,char *note)
+
+
+void menu_ay_pianokeyboard_draw_piano(zxvision_window *w,int linea,int canal,char *note,int offset_octava_visible)
 {
 	if (!si_mostrar_ay_piano_grafico()) {
-		menu_ay_pianokeyboard_draw_text_piano(w,linea,canal,note);
+		menu_ay_pianokeyboard_draw_text_piano(w,linea,canal,note,offset_octava_visible);
 	}
 	else {
-		menu_ay_pianokeyboard_draw_graphical_piano(w,linea,canal,note);
+		menu_ay_pianokeyboard_draw_graphical_piano(w,linea,canal,note,offset_octava_visible);
 	}
 }
 
@@ -17364,23 +17401,27 @@ void menu_ay_pianokeyboard_overlay(void)
                 //printf("audio piano canal 2 silencio\n");
             }
 
-			int incremento_linea=4;
+			int incremento_linea=menu_audiochip_piano_get_text_separation_lines();
 
 			//if (!si_mostrar_ay_piano_grafico()) {
 				//Dibujar ay piano con texto. Comprimir el texto (quitar linea de entre medio) cuando hay 3 chips
 			//	if (total_chips>2) incremento_linea=3;
 			//}
 
+            int offset_octava_visible;
 
-			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_a);
+            offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
+			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_a,offset_octava_visible);
 			linea+=incremento_linea;
 			canal++;
 
-			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_b);
+            offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
+			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_b,offset_octava_visible);
 			linea+=incremento_linea;
 			canal++;
 
-			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_c);
+            offset_octava_visible=audio_chip_piano_offsets_octavas[canal];
+			menu_ay_pianokeyboard_draw_piano(menu_ay_pianokeyboard_overlay_window,linea,canal,nota_c,offset_octava_visible);
 			linea+=incremento_linea;
 			canal++;
 
@@ -17405,10 +17446,6 @@ void menu_ay_pianokeyboard_overlay(void)
             int text_separation_lines=pixel_separation_lines/8;*/
 
             int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
-
-            if (!si_mostrar_ay_piano_grafico()) {
-                text_separation_lines=4;
-            }
 
             int linea_texto_octava=2+(chip*(text_separation_lines*3));
             zxvision_print_string_defaults_format(menu_ay_pianokeyboard_overlay_window,1,linea_texto_octava,
@@ -17668,11 +17705,14 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 
-        //menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_change_zoom,NULL,
-            "[%d] Zoom",audiochip_piano_zoom_x);
-        menu_add_item_menu_tabulado(array_menu_common,1,0);
+
+        if (si_mostrar_ay_piano_grafico() ) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_change_zoom,NULL,
+                "[%d] Zoom",audiochip_piano_zoom_x);
+            menu_add_item_menu_tabulado(array_menu_common,1,0);
+        }
         
 
         /*int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
@@ -17768,6 +17808,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_beeper_pianokeyboard_overlay_window;
 
+int menu_beeper_piano_offset_octava_visble=2;
 
 void menu_beeper_pianokeyboard_overlay(void)
 {
@@ -17809,12 +17850,29 @@ void menu_beeper_pianokeyboard_overlay(void)
     if (frecuencia<=5) nota_a[0]=0;
 
     //Indicar que no hay que reducir el tamaño del piano segun el numero de chips (esto va bien en ay piano, pero no aqui)
-    menu_ay_piano_drawing_wavepiano.v=1;
-    menu_ay_pianokeyboard_draw_piano(menu_beeper_pianokeyboard_overlay_window,linea,canal,nota_a);
+    //menu_ay_piano_drawing_wavepiano.v=1;
+    menu_ay_pianokeyboard_draw_piano(menu_beeper_pianokeyboard_overlay_window,linea,canal,nota_a,menu_beeper_piano_offset_octava_visble);
     //Restauramos comportamiento por defecto
-    menu_ay_piano_drawing_wavepiano.v=0;
+    //menu_ay_piano_drawing_wavepiano.v=0;
 
     //workaround_pentagon_clear_putpixel_cache();
+
+
+            //int indice_offset_octavas=chip*3;
+            
+
+
+            /*int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+            //Por suerte esto da multiple de 8 y podemos dividir bien
+            int text_separation_lines=pixel_separation_lines/8;*/
+
+            //int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
+
+    int linea_texto_octava=2;
+    zxvision_print_string_defaults_format(menu_beeper_pianokeyboard_overlay_window,1,linea_texto_octava,
+        "O%d",menu_beeper_piano_offset_octava_visble);
+
 
     char buffer_texto[40];
     
@@ -17827,7 +17885,7 @@ void menu_beeper_pianokeyboard_overlay(void)
         
     
     //menu_escribe_linea_opcion(5,-1,1,buffer_texto);
-    zxvision_print_string_defaults(menu_beeper_pianokeyboard_overlay_window,1,5,buffer_texto);
+    zxvision_print_string_defaults(menu_beeper_pianokeyboard_overlay_window,1,6,buffer_texto);
     //printf ("menu_speech_tecla_pulsada despues de enviar texto: %d\n",menu_speech_tecla_pulsada);
 
 
@@ -17838,6 +17896,22 @@ void menu_beeper_pianokeyboard_overlay(void)
 
 
 zxvision_window zxvision_menu_beeper_pianokeyboard;
+
+void menu_beeper_piano_dec_octave(MENU_ITEM_PARAMETERS)
+{
+
+    if (menu_beeper_piano_offset_octava_visble>0) {
+        menu_beeper_piano_offset_octava_visble--;
+    }
+}
+
+void menu_beeper_piano_inc_octave(MENU_ITEM_PARAMETERS)
+{
+
+    if (menu_beeper_piano_offset_octava_visble<AUDIO_CHIP_PIANO_TOTAL_OCTAVAS-1) {
+        menu_beeper_piano_offset_octava_visble++;
+    }
+}
 
 void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 {
@@ -17867,20 +17941,15 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 	char *titulo_ventana="Wave Piano";
 	if (!util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
         if (!si_mostrar_ay_piano_grafico()) {
-
-            //xventana=7;
-            //yventana=7;
-            ancho_ventana=19;
-            alto_ventana=11;
+            ancho_ventana=14;
+            alto_ventana=9;
 
         }
 
         else {
-            //Dibujar ay piano con grafico. Ajustar segun ancho de caracter (de ahi que use AY_PIANO_ANCHO_VENTANA en vez de valor fijo 14)
-            //xventana=PIANO_GRAPHIC_BASE_X-2;
-            //yventana=0;
             ancho_ventana=AY_PIANO_ANCHO_VENTANA;
-            alto_ventana=8;
+            int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
+            alto_ventana=text_separation_lines+AUDIOCHIP_PIANO_LINE_START+4+1;        //+1 para indicar Hz de la nota     
 
         }
 
@@ -17942,59 +18011,97 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
     }
 
 
-	z80_byte tecla=0;
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
 
-    do {
-
-        //esto hara ejecutar esto 2 veces por segundo
-        //if ( (contador_segundo%500) == 0 || menu_multitarea==0) {
-		if ( ((contador_segundo%500) == 0 && valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
-            valor_contador_segundo_anterior=contador_segundo;
-
-            //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
-			if (menu_multitarea==0) menu_refresca_pantalla();
-
-		}
-
-		menu_cpu_core_loop();
-
-		//si no hay multitarea, esperar tecla y salir
-		if (menu_multitarea==0) {
-            menu_espera_tecla();
-		}
-
-		
-		tecla=zxvision_read_keyboard();
-
-		//con enter no salimos. TODO: esto se hace porque el mouse esta enviando enter al pulsar boton izquierdo, y lo hace tambien al hacer dragging
-		//lo ideal seria que mouse no enviase enter al pulsar boton izquierdo y entonces podemos hacer que se salga tambien con enter
-		if (tecla==13) tecla=0;
+            //borrar cache por si hay restos de mover offsets octavas
+            ventana->must_clear_cache_on_draw_once=1;
+            //borrar ventana por si hay restos de texto al cambiar zoom
+            zxvision_cls(ventana);
+        //zxvision_print_string_defaults_fillspc(ventana,1,6,"");
+        //zxvision_print_string_defaults_fillspc(ventana,1,7,"");
 
 
-	} while (tecla!=2 && tecla!=3);										
 
-      
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+        if (si_mostrar_ay_piano_grafico() ) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_audiochip_piano_change_zoom,NULL,
+                "[%d] Zoom",audiochip_piano_zoom_x);
+            menu_add_item_menu_tabulado(array_menu_common,1,0);
+        }
+        
+
+        /*int pixel_separation_lines=menu_audiochip_piano_get_keys_separation()*PIANO_ZOOM_Y;
+
+        //Por suerte esto da multiple de 8 y podemos dividir bien
+        int text_separation_lines=pixel_separation_lines/8;*/
+
+        int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
+
+
+        int i;
+        int linea=AUDIOCHIP_PIANO_LINE_START+1;
+
+        //for (i=0;i<total_chips*3;i++) {
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_beeper_piano_dec_octave,NULL,"<");
+            menu_add_item_menu_tabulado(array_menu_common,3,linea);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_beeper_piano_inc_octave,NULL,">");
+            menu_add_item_menu_tabulado(array_menu_common,4,linea);
+
+
+            linea +=text_separation_lines;
+
+        //}
+
+        //Nombre de ventana solo aparece en el caso de stdout
+        retorno_menu=menu_dibuja_menu(&audio_visual_realtape_opcion_seleccionada,&item_seleccionado,array_menu_common,"Audio Chip Piano" );
+
+        if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+
+                //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+                cls_menu_overlay();
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                                //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+                        }
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
 	zxvision_set_window_overlay_from_current(ventana);
 
-	//restauramos modo normal de texto de menu
-	set_menu_overlay_function(normal_overlay_texto_menu);
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-	cls_menu_overlay();
+    cls_menu_overlay();
 
-	util_add_window_geometry_compact(ventana);		
+    util_add_window_geometry_compact(ventana);
 
-
-	if (tecla==3) {
-		zxvision_message_put_window_background();
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
 	}
 
 	else {
-	
-		zxvision_destroy_window(ventana);
-
+		
+		zxvision_destroy_window(ventana);			
 	}
+
+
+
 
 	menu_espera_no_tecla();
 
