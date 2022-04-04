@@ -18520,8 +18520,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 	if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		//x=menu_origin_x();
-		x=0;
-		y=0;
+
 
 		//540x201 es lo que ocupa el bmp de spectrum 48k
 
@@ -18530,6 +18529,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 		alto=1+2+201/8/zoom_y;
 
 		//printf ("ancho %d alto %d\n",ancho,alto);
+
+        x=menu_center_x()-ancho/2;
+        y=menu_center_y()-alto/2;
 
 	}		
 
