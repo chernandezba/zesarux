@@ -16966,13 +16966,13 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 	}
 
 	//Linea superior
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+0, +1, 0, 29, 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+0, +1, 0, AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA, 0);
 
 	//Linea vertical izquierda
 	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
 
 	//Linea vertical derecha
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,28+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA-1+offset_x, ybase+0, 0, +1, scale_y_chip(8), 0);
 
 	//6 separaciones verticales pequeñas
 	int i;
@@ -16999,7 +16999,7 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
     
 
 	//Dibujar la linea inferior. Realmente la linea inferior es siempre la linea superior del siguiente canal, excepto en el ultimo canal
-	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+scale_y_chip(8), +1, 0, ancho_octava, 0);
+	menu_ay_pianokeyboard_draw_graphical_piano_draw_line(ventana,0+offset_x, ybase+scale_y_chip(8), +1, 0, ancho_octava+1, 0);
 }
 
 
@@ -17823,7 +17823,11 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
+
+    //Suficiente para que quepan todas las octavas, y texto de octava y cursores
+    int total_width=5+AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
+
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,alto_ventana-2,titulo_ventana,
                 "wavepiano",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);		
 
 
