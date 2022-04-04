@@ -21360,6 +21360,9 @@ void menu_view_sensors_fondo_cursor(zxvision_window *ventana,int tinta,int papel
 
 int menu_view_sensors_mouse_in_zone_widgets(int *columna,int *fila)
 {
+
+    if (!si_menu_mouse_en_ventana_no_en_scrolls()) return 0;
+
     int cursor_mouse_y=menu_mouse_y;
     //empieza dentro de ventana en la 1
     cursor_mouse_y--;

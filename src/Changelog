@@ -96,6 +96,7 @@ Fixed ZX Vision:
 -Fixed drawing close button on background windows
 -Fixed showing input tape insert state on menu and zx desktop icon when tape can't be opened
 -Fixed window Hex Editor while moving or resizing
+-Fixed view sensors when clicking on the scroll bars
 -Fixed refreshing Visual Real Tape window when Top Speed condition
 
 

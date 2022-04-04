@@ -221,6 +221,7 @@ extern void menu_cls_refresh_emulated_screen();
 extern void menu_escribe_texto(int x,int y,int tinta,int papel,char *texto);
 extern void normal_overlay_texto_menu(void);
 extern int si_menu_mouse_en_ventana(void);
+extern int si_menu_mouse_en_ventana_no_en_scrolls(void);
 extern void menu_calculate_mouse_xy(void);
 extern z80_byte menu_retorna_caracter_espacio_titulo(void);
 

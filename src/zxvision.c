@@ -13866,6 +13866,12 @@ int si_menu_mouse_en_ventana(void)
 	return 0;
 }
 
+//Si en ventana pero no en zona de scrolls
+int si_menu_mouse_en_ventana_no_en_scrolls(void)
+{
+	if (menu_mouse_x>=0 && menu_mouse_y>=0 && menu_mouse_x<current_win_ancho-1 && menu_mouse_y<current_win_alto-1 ) return 1;
+	return 0;
+}
 
 int menu_allows_mouse(void)
 {
