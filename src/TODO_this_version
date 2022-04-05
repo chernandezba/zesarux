@@ -114,3 +114,13 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -Extender ZX desktop a lo alto 
 
+-quiza flag de ventana que diga "dirty" cuando se ha movido, redimensionado, cambiado scroll, pasado ventana por encima...
+o sea que tiene que redibujar. Asi se evitaria que ventanas como Keyboard Help estén redibujando continuamente, solo lo harian cuando es realmente necesario. Casos:
+*se crea nueva ventana (cualquiera) -> flag afecta a todas
+*se destruye ventana (cualquiera) -> flag afecta a todas
+*se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
+*se escribe en esa ventana concreta -> flag solo afecta a esa
+*se hace putpixel en esa ventana concreta -> flag solo afecta a esa. quiza esto no, pues los putpixel vienen por overlay y no por zxvision_draw_window_contents
+*se cambia scroll en esa ventana concreta -> flag solo afecta a esa
+
+quiza ese flag deberia leerlo zxvision_draw_window_contents. si va a dibujar una ventana que tiene el flag dirty, la redibuja. si no, no hace nada
