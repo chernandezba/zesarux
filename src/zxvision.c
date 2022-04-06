@@ -3280,7 +3280,6 @@ void menu_init_footer(void)
 //funcion para limpiar el buffer de overlay y si hay cuadrado activo
 void cls_menu_overlay(void)
 {
-
 	int i;
 
 	//Borrar solo el tamanyo de menu activo
@@ -8082,6 +8081,11 @@ void zxvision_set_flag_dirty_must_draw_contents(zxvision_window *w)
 
 void zxvision_set_all_flag_dirty_must_draw_contents(void)
 {
+
+    //TODO: Por alguna razon que desconozco, esto peta desde end_emulator si se sale con ctrl+c con menu principal abierto
+    //Quiza porque zxvision_current_window se ha liberado de memoria y ya no existe
+    if (ending_emulator_flag) return;
+
 	//Podemos empezar desde la de arriba por ejemplo, da igual
 	zxvision_window *ventana;
 
@@ -8089,6 +8093,8 @@ void zxvision_set_all_flag_dirty_must_draw_contents(void)
 
 
 	while (ventana!=NULL) {
+        //printf("ventana : %p\n",ventana);
+        //printf("ventana titulo: %s\n",ventana->window_title);
 
 		zxvision_set_flag_dirty_must_draw_contents(ventana);
 
@@ -8470,7 +8476,7 @@ void zxvision_destroy_window(zxvision_window *w)
 	//printf ("Setting current window to %p\n",zxvision_current_window);
 
 	//printf ("Next window was %p\n",w->next_window);
-
+    //printf("Destroying window %p\n",w);
 	
 	ventana_tipo_activa=1;
 	zxvision_keys_event_not_send_to_machine=1;
@@ -11000,9 +11006,9 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 
     //temp
-    if (!strcasecmp("Keyboard Help",w->window_title)) {
-        printf("draw window contents keyboard help\n");
-    }
+    //if (!strcasecmp("Keyboard Help",w->window_title)) {
+    //    printf("draw window contents keyboard help\n");
+    //}
 
     //if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
 

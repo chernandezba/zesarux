@@ -9633,6 +9633,7 @@ void dump_ram_file_on_exit(void)
 	}
 }
 
+int ending_emulator_flag=0;
 
 //Se pasa parametro que dice si guarda o no la configuración.
 //antes se guardaba siempre, pero ahora en casos de recepcion de señales de terminar, no se guarda,
@@ -9641,9 +9642,7 @@ void end_emulator_saveornot_config(int saveconfig)
 {
 	debug_printf (VERBOSE_INFO,"End emulator");
 	
-	
-
-	
+    ending_emulator_flag=1;
 	
 	
 	
