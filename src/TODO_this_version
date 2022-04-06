@@ -145,3 +145,4 @@ if (must_return) return;
 esto es por:
 //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
 //cls_menu_overlay();
+Habria que ver tambien el uso de cls_menu_overlay, no se deberia llamar desde muchos sitios... quiza solo al cerrar una ventana?

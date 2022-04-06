@@ -4720,13 +4720,13 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 
 		
 			//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-			cls_menu_overlay();
+			//cls_menu_overlay();
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 				//llamamos por valor de funcion
 				if (item_seleccionado.menu_funcion!=NULL) {
 					//printf ("actuamos por funcion\n");
 					item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-					//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
 				
 				}
 			}
