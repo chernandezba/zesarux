@@ -121,7 +121,7 @@ ok *se destruye ventana (cualquiera) -> flag afecta a todas
 ok *se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
 ok *se escribe en esa ventana concreta-> flag solo afecta a esa
 *se hace putpixel en esa ventana concreta -> no deberia afectar al flag
-ok *se cambia scroll en esa ventana concreta -> flag solo afecta a esa. aunque lo hago con must_clear_cache_on_draw_once
+ok *se cambia scroll en esa ventana concreta -> flag solo afecta a esa. 
 
 quiza ese flag deberia leerlo zxvision_draw_window_contents. si va a dibujar una ventana que tiene el flag dirty, la redibuja. si no, no hace nada
 

@@ -10069,6 +10069,8 @@ void zxvision_set_offset_x(zxvision_window *w,int offset_x)
         zxvision_draw_window_contents(w);
     }
 	zxvision_draw_scroll_bars(w);
+
+    zxvision_set_flag_dirty_must_draw_contents(w);
 }
 
 int zxvision_maximum_offset_y(zxvision_window *w)
@@ -10104,6 +10106,9 @@ void zxvision_set_offset_y(zxvision_window *w,int offset_y)
         zxvision_draw_window_contents(w);
     }
 	zxvision_draw_scroll_bars(w);
+
+    zxvision_set_flag_dirty_must_draw_contents(w);
+
 }
 
 void zxvision_set_offset_y_or_maximum(zxvision_window *w,int offset_y)
