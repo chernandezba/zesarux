@@ -8173,7 +8173,6 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->must_clear_cache_on_draw_once=0;
 
-    //zxvision_set_flag_dirty_must_draw_contents(w);
     zxvision_set_all_flag_dirty_must_draw_contents();
 
     w->has_been_drawn_contents=0;
@@ -11010,7 +11009,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
     //    printf("draw window contents keyboard help\n");
     //}
 
-    //if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
+    if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
 
 }
 
@@ -11207,8 +11206,6 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
 
 void zxvision_print_char_simple(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,z80_byte caracter)
 {
-    zxvision_set_flag_dirty_must_draw_contents(w);
-
 	overlay_screen caracter_aux;
 	caracter_aux.caracter=caracter;
 	caracter_aux.tinta=tinta;
@@ -11225,8 +11222,6 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 	int inverso_letra=0;
 	int minuscula_letra=1;
 	int era_utf=0;
-
-    zxvision_set_flag_dirty_must_draw_contents(w);
 
 	while (*texto) {
 
