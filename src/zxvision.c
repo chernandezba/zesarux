@@ -8167,7 +8167,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->must_clear_cache_on_draw_once=0;
 
-    zxvision_set_flag_dirty_must_draw_contents(w);
+    //zxvision_set_flag_dirty_must_draw_contents(w);
+    zxvision_set_all_flag_dirty_must_draw_contents();
 
 	w->can_mouse_send_hotkeys=0;
 
@@ -10874,7 +10875,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
         must_return=0;
     }
 
-    //TODO: esto hay que habilitarlo
+    //if (w!=NULL) printf("Start draw window contents: %s\n",w->window_title);
+    
     if (must_return) return;
 
 
@@ -10994,6 +10996,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
     //if (!strcasecmp("Keyboard Help",w->window_title)) {
     //    printf("draw window contents keyboard help\n");
     //}
+
+    //if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
 
 }
 
