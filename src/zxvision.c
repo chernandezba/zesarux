@@ -8066,6 +8066,16 @@ void zxvision_alloc_memory(zxvision_window *w,int total_width,int total_height)
 	*/
 }
 
+void zxvision_reset_flag_dirty_must_draw_contents(zxvision_window *w)
+{
+    w->dirty_must_draw_contents=0;    
+}
+
+void zxvision_set_flag_dirty_must_draw_contents(zxvision_window *w)
+{
+    w->dirty_must_draw_contents=1;    
+}
+
 void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title)
 {
 
@@ -8135,7 +8145,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->must_clear_cache_on_draw_once=0;
 
-    w->dirty_must_draw_contents=1;
+    zxvision_set_flag_dirty_must_draw_contents(w);
 
 	w->can_mouse_send_hotkeys=0;
 
@@ -10786,7 +10796,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 	if (!strcmp(scr_new_driver_name,"stdout")) {
 		zxvision_draw_window_contents_stdout(w);
-        w->dirty_must_draw_contents=0;
+        zxvision_reset_flag_dirty_must_draw_contents(w);
 		return;
 	}
 
@@ -10828,7 +10838,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
     }
 
     //TODO: esto hay que habilitarlo
-    //if (must_return) return;
+    if (must_return) return;
 
 
 	for (y=0;y<height;y++) {
@@ -10940,7 +10950,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 	}
 
 
-    w->dirty_must_draw_contents=0;
+    zxvision_reset_flag_dirty_must_draw_contents(w);
 
 }
 
@@ -11091,7 +11101,7 @@ void zxvision_set_attr(zxvision_window *w,int x,int y,int tinta,int papel,int pa
 	//Sacamos offset
 	int offset=(y*w->total_width)+x;
 
-
+    zxvision_set_flag_dirty_must_draw_contents(w);
 
 	//Puntero
 	overlay_screen *p;
@@ -11112,6 +11122,8 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
 {
 	//Comprobar limites
 	if (x>=w->total_width || x<0 || y>=w->total_height || y<0) return;
+
+    zxvision_set_flag_dirty_must_draw_contents(w);
 
 	//Sacamos offset
 	int offset=(y*w->total_width)+x;
@@ -11135,6 +11147,8 @@ void zxvision_print_char(zxvision_window *w,int x,int y,overlay_screen *caracter
 
 void zxvision_print_char_simple(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,z80_byte caracter)
 {
+    zxvision_set_flag_dirty_must_draw_contents(w);
+
 	overlay_screen caracter_aux;
 	caracter_aux.caracter=caracter;
 	caracter_aux.tinta=tinta;
@@ -11151,6 +11165,8 @@ void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,in
 	int inverso_letra=0;
 	int minuscula_letra=1;
 	int era_utf=0;
+
+    zxvision_set_flag_dirty_must_draw_contents(w);
 
 	while (*texto) {
 
