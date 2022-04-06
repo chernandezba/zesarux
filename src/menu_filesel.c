@@ -2669,7 +2669,7 @@ int menu_filesel_mkdir(char *directory)
 
 void menu_filesel_exist_ESC(void)
 {
-                                                cls_menu_overlay();
+                                                //cls_menu_overlay();
                                                 menu_espera_no_tecla();
                                                 zvfs_chdir(filesel_directorio_inicial);
                                                 menu_filesel_free_mem();
@@ -4559,7 +4559,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			//Error leyendo directorio
 			//restauramos modo normal de texto de menu
      		set_menu_overlay_function(normal_overlay_texto_menu);
-			cls_menu_overlay();
+			//cls_menu_overlay();
 			menu_espera_no_tecla();
 			zvfs_chdir(filesel_directorio_inicial);
 			menu_filesel_free_mem();
@@ -4574,7 +4574,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 		//Crear ventana. Si ya existia, borrarla
 		if (ventana!=NULL) {
 			//printf ("Destroy previous filesel window\n");
-			cls_menu_overlay();
+			//cls_menu_overlay();
 
 			//Guardar anteriores tamaños ventana
 			menu_filesel_save_params_window(ventana);
@@ -4760,7 +4760,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 					//sino, devolvemos nombre con path, siempre que extension sea conocida
 					else {
-                    	cls_menu_overlay();
+                    	//cls_menu_overlay();
                         menu_espera_no_tecla();
 
 						if (menu_avisa_si_extension_no_habitual(filtros,filesel_nombre_archivo_seleccionado)) {
@@ -4781,7 +4781,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						//restauramos modo normal de texto de menu
 			     		set_menu_overlay_function(normal_overlay_texto_menu);
 
-						cls_menu_overlay();
+						//cls_menu_overlay();
 						zxvision_destroy_window(ventana);
 						last_filesused_insert(archivo);
 						return 1;
@@ -4794,7 +4794,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 							//restauramos modo normal de texto de menu
      						set_menu_overlay_function(normal_overlay_texto_menu);
 
-							cls_menu_overlay();
+							//cls_menu_overlay();
 							zxvision_destroy_window(ventana);
 							return 0;
 						}
@@ -5083,7 +5083,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 								//Si estan las file utils, enter no hace nada
 								if (menu_filesel_show_utils.v==0) { 
 
-					                cls_menu_overlay();
+					                //cls_menu_overlay();
         	                        menu_espera_no_tecla();
 
 									if (menu_avisa_si_extension_no_habitual(filtros,filesel_nombre_archivo_seleccionado)) {
@@ -5102,7 +5102,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 									//restauramos modo normal de texto de menu
 									set_menu_overlay_function(normal_overlay_texto_menu);
 
-									cls_menu_overlay();
+									//cls_menu_overlay();
 									zxvision_destroy_window(ventana);
 									last_filesused_insert(archivo);
 									return 1;
@@ -5116,7 +5116,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 														//restauramos modo normal de texto de menu
 														set_menu_overlay_function(normal_overlay_texto_menu);
 
-														cls_menu_overlay();
+														//cls_menu_overlay();
 														zxvision_destroy_window(ventana);
                                                         return 0;
                                     }
@@ -5160,7 +5160,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                         set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-                        cls_menu_overlay();
+                        //cls_menu_overlay();
                         zxvision_destroy_window(ventana);
                         return 1;
 
@@ -5377,7 +5377,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 		                //ESC
                                 else if (tecla==2) {
-                                                cls_menu_overlay();
+                                                //cls_menu_overlay();
                                                 menu_espera_no_tecla();
                                                 zvfs_chdir(filesel_directorio_inicial);
 						menu_filesel_free_mem();
