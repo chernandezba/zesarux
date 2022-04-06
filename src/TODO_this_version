@@ -118,7 +118,7 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 o sea que tiene que redibujar. Asi se evitaria que ventanas como Keyboard Help estén redibujando continuamente, solo lo harian cuando es realmente necesario. Casos:
 ok *se crea nueva ventana (cualquiera) -> flag afecta a todas
 ok *se destruye ventana (cualquiera) -> flag afecta a todas
-*se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
+ok *se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
 ok *se escribe en esa ventana concreta-> flag solo afecta a esa
 *se hace putpixel en esa ventana concreta -> no deberia afectar al flag
 ok *se cambia scroll en esa ventana concreta -> flag solo afecta a esa. aunque lo hago con must_clear_cache_on_draw_once

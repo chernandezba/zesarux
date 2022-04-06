@@ -10619,6 +10619,8 @@ void zxvision_set_visible_width(zxvision_window *w,int visible_width)
 	w->visible_width=visible_width;
 	zxvision_redraw_window_on_move(w);
 
+    zxvision_set_all_flag_dirty_must_draw_contents();
+
 }
 
 //Funcion que cambia alto visible pero tambien alto total de la ventana,
@@ -10639,6 +10641,8 @@ void zxvision_set_visible_height(zxvision_window *w,int visible_height)
     
 	w->visible_height=visible_height;
 	zxvision_redraw_window_on_move(w);
+
+    zxvision_set_all_flag_dirty_must_draw_contents();
 
 }
 
