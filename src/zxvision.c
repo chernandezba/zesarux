@@ -8076,6 +8076,24 @@ void zxvision_set_flag_dirty_must_draw_contents(zxvision_window *w)
     w->dirty_must_draw_contents=1;    
 }
 
+void zxvision_set_all_flag_dirty_must_draw_contents(void)
+{
+	//Podemos empezar desde la de arriba por ejemplo, da igual
+	zxvision_window *ventana;
+
+	ventana=zxvision_current_window;
+
+
+	while (ventana!=NULL) {
+
+		zxvision_set_flag_dirty_must_draw_contents(ventana);
+
+		ventana=ventana->previous_window;
+	}	
+
+    
+}
+
 void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title)
 {
 
@@ -8482,6 +8500,8 @@ void zxvision_destroy_window(zxvision_window *w)
 	if (zxvision_current_window!=NULL) zxvision_current_window->next_window=NULL;
 
 	//para poder hacer destroy de ventana de en medio seria tan simple como hacer que zxvision_current_window->next_window= fuera el next que habia al principio
+
+    zxvision_set_all_flag_dirty_must_draw_contents();
 
 }
 
@@ -10477,6 +10497,8 @@ void zxvision_set_x_position(zxvision_window *w,int x)
 	w->x=x;
 	zxvision_redraw_window_on_move(w);
 
+    zxvision_set_all_flag_dirty_must_draw_contents();
+
 }
 
 void zxvision_set_y_position(zxvision_window *w,int y)
@@ -10485,6 +10507,8 @@ void zxvision_set_y_position(zxvision_window *w,int y)
 
 	w->y=y;
 	zxvision_redraw_window_on_move(w);
+
+    zxvision_set_all_flag_dirty_must_draw_contents();
 
 }
 
