@@ -15360,14 +15360,14 @@ void menu_dibuja_menu_help_tooltip(char *texto, int si_tooltip)
 
 
 
-                                        //Guardar funcion de texto overlay activo, para menus como el de visual memory por ejemplo, para desactivar temporalmente
-                                        //Esto solo es necesario cuando no hay background windows
-                                        void (*previous_function)(void);
+        //Guardar funcion de texto overlay activo, para menus como el de visual memory por ejemplo, para desactivar temporalmente
+        //Esto solo es necesario cuando no hay background windows
+        void (*previous_function)(void);
 
-                                        previous_function=menu_overlay_function;
+        previous_function=menu_overlay_function;
 
-                                       //restauramos modo normal de texto de menu
-                                       set_menu_overlay_function(normal_overlay_texto_menu);
+        //restauramos modo normal de texto de menu
+        set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 
