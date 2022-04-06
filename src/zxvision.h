@@ -165,6 +165,10 @@ struct s_zxvision_window {
     //indica a zxvision_draw_window_contents que tiene que redibujar esa ventana por haberse redimensionado, movido, o alterado otras ventanas
     int dirty_must_draw_contents;
 
+
+    //indica a algunas ventanas (como Keyboard Help) que se ha lanzado zxvision_draw_window_contents y redibujado el fondo de texto
+    int has_been_drawn_contents;
+
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;
