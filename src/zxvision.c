@@ -10022,6 +10022,9 @@ void zxvision_draw_window(zxvision_window *w)
 	//Mostrar boton background
 	menu_dibuja_ventana_boton_background(w->x,w->y,w->visible_width,w);
 
+    //Dado que se ha borrado el contenido, luego en zxvision_draw_window_contents hay que refrescar
+    zxvision_set_flag_dirty_must_draw_contents(w);
+
 
 }
 
