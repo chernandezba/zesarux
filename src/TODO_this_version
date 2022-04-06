@@ -142,3 +142,6 @@ Desactivar:
 if (must_return) return;
 
 -pulsar por ejemplo en visualm memory, looking, y se borran el resto de ventanas
+esto es por:
+//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+//cls_menu_overlay();
