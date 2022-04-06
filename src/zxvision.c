@@ -516,6 +516,8 @@ void zxvision_helper_menu_shortcut_print(int tecla);
 void zxvision_helper_menu_shortcut_delete_last(void);
 void zxvision_helper_menu_shortcut_init(void);
 
+void zxvision_set_all_flag_dirty_must_draw_contents(void);
+
 
 //Gestión de conmutar entre ventanas mediante shift+left/right
 /*
@@ -3315,6 +3317,8 @@ void cls_menu_overlay(void)
 	}
 
 	menu_draw_ext_desktop();
+
+    zxvision_set_all_flag_dirty_must_draw_contents();
 
 }
 
@@ -10984,6 +10988,12 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 
     zxvision_reset_flag_dirty_must_draw_contents(w);
+
+
+    //temp
+    //if (!strcasecmp("Keyboard Help",w->window_title)) {
+    //    printf("draw window contents keyboard help\n");
+    //}
 
 }
 
