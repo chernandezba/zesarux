@@ -11001,7 +11001,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
         printf("draw window contents keyboard help\n");
     }
 
-    if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
+    //if (w!=NULL) printf("YES draw window contents: %s\n",w->window_title);
 
 }
 

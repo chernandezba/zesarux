@@ -137,3 +137,6 @@ si no flag dirty, no hace nada. Ver si solo seria flag dirty en casos como wavef
 ->Todo esto cambiaria si los pixeles los gestionasemos directamente desde las funciones de zxvision_draw_window_contents, para no tener que hacer estos "inventos"
 
 ->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
+En void zxvision_draw_window_contents(zxvision_window *w)
+Desactivar:
+if (must_return) return;
