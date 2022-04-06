@@ -8135,6 +8135,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->must_clear_cache_on_draw_once=0;
 
+    w->dirty_must_draw_contents=1;
+
 	w->can_mouse_send_hotkeys=0;
 
     w->no_refresh_change_offset=0;
@@ -10784,6 +10786,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 	if (!strcmp(scr_new_driver_name,"stdout")) {
 		zxvision_draw_window_contents_stdout(w);
+        w->dirty_must_draw_contents=0;
 		return;
 	}
 
@@ -10924,6 +10927,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
 		//printf ("sonda 4\n");
 	}
 
+
+    w->dirty_must_draw_contents=0;
 
 }
 

@@ -162,6 +162,8 @@ struct s_zxvision_window {
     //usado por ejemplo en Daad/paws/gac graphics
     int must_clear_cache_on_draw_once;
 
+    //indica a zxvision_draw_window_contents que tiene que redibujar esa ventana por haberse redimensionado, movido, o alterado otras ventanas
+    int dirty_must_draw_contents;
 
 	//Posicion del cursor y si esta visible
 	int visible_cursor;

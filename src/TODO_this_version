@@ -120,7 +120,14 @@ o sea que tiene que redibujar. Asi se evitaria que ventanas como Keyboard Help e
 *se destruye ventana (cualquiera) -> flag afecta a todas
 *se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
 *se escribe en esa ventana concreta -> flag solo afecta a esa
-*se hace putpixel en esa ventana concreta -> flag solo afecta a esa. quiza esto no, pues los putpixel vienen por overlay y no por zxvision_draw_window_contents
+*se hace putpixel en esa ventana concreta -> no deberia afectar al flag
 *se cambia scroll en esa ventana concreta -> flag solo afecta a esa
 
 quiza ese flag deberia leerlo zxvision_draw_window_contents. si va a dibujar una ventana que tiene el flag dirty, la redibuja. si no, no hace nada
+
+*ventanas que tienen overlay de pixel, con fondo de texto blanco , y necesitan que el fondo limpie los pixeles a cada frame... cuando este el flag must_clear_cache_on_draw o must_clear_cache_on_draw_once, esto tenga mas prioridad que el flag dirty y se haga refresco siempre. 
+
+con esto, ventana de help keyboard, el flag no se cambia al hacer putpixel, y solo se redibujara en las situaciones anteriores comentadas, asi no esta siempre renderizando el teclado.
+
+->zxvision_draw_window_contents: con flag dirty, o must_clear_cache_on_draw, o must_clear_cache_on_draw_once, se redibuja
+si no flag dirty, no hace nada
