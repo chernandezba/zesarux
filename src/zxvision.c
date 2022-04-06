@@ -10804,19 +10804,31 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 	int x,y;
 
+    //Si hay que volver de la funcion sin hacer nada
+    int must_return=1;
+
     //si usamos cache de putchar de mismo caracter, por defecto la usamos
     int use_cache=1;
 
     //decimos que hay que borrar fondo, por tanto no usamos cache
     if (w->must_clear_cache_on_draw) {
         use_cache=0;
+        must_return=0;
     }
 
     //decimos que hay que borrar fondo, por tanto no usamos cache. Y este flag se resetea solo
     if (w->must_clear_cache_on_draw_once) {
         use_cache=0;
         w->must_clear_cache_on_draw_once=0;
+        must_return=0;
     }    
+
+    if (w->dirty_must_draw_contents) {
+        must_return=0;
+    }
+
+    //TODO: esto hay que habilitarlo
+    //if (must_return) return;
 
 
 	for (y=0;y<height;y++) {
