@@ -17900,7 +17900,7 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
       
 
         //Nombre de ventana solo aparece en el caso de stdout
-        retorno_menu=menu_dibuja_menu(&audio_visual_realtape_opcion_seleccionada,&item_seleccionado,array_menu_common,"Audio Chip Piano" );
+        retorno_menu=menu_dibuja_menu(&audio_visual_realtape_opcion_seleccionada,&item_seleccionado,array_menu_common,"Wave Piano" );
 
         if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
