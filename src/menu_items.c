@@ -977,7 +977,7 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();	
+    //cls_menu_overlay();	
 
 	//Grabar geometria ventana
 	util_add_window_geometry_compact(ventana);		
@@ -1778,7 +1778,7 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
     util_add_window_geometry_compact(ventana);
 
     if (tecla==3) {
@@ -2436,7 +2436,7 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
      set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();	
+    //cls_menu_overlay();	
 
 	util_add_window_geometry_compact(ventana);	
 
@@ -2836,7 +2836,7 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 	set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();	
+    //cls_menu_overlay();	
 	util_add_window_geometry_compact(ventana);
 
 	if (tecla==3) {
@@ -3371,7 +3371,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
 	//restauramos modo normal de texto de menu
     set_menu_overlay_function(normal_overlay_texto_menu);		
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
     
     menu_debug_spritenav_save_geometry(ventana);
 
@@ -4128,7 +4128,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 	//restauramos modo normal de texto de menu
     set_menu_overlay_function(normal_overlay_texto_menu);		
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana. Usamos funcion auxiliar pues la llamamos tambien al cambiar de modo y layer
 	menu_debug_tsconf_tbblue_msx_save_geometry(ventana);
@@ -4741,7 +4741,7 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
 	//Grabar geometria ventana
 	util_add_window_geometry_compact(ventana);	
@@ -5406,7 +5406,7 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 	set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
 	util_add_window_geometry_compact(ventana);
 
@@ -6040,7 +6040,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
 	util_add_window_geometry_compact(ventana);
 
@@ -6339,7 +6339,7 @@ void menu_debug_hexdump_info_subzones(void)
 
     zxvision_wait_until_esc(&ventana);
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     zxvision_destroy_window(&ventana);					
 
@@ -7088,7 +7088,7 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
 
 
-	cls_menu_overlay();
+	//cls_menu_overlay();
 
 	//Grabar geometria ventana
 	util_add_window_geometry_compact(ventana);
@@ -7456,7 +7456,7 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 		//Guardamos offset de ventana actual
 		menu_osd_advkb_last_offset_y=ventana.offset_y;
 
-        cls_menu_overlay();
+        //cls_menu_overlay();
 		//menu_espera_no_tecla();
 
 		//menu_abierto=1;
@@ -7783,7 +7783,7 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
        set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-        cls_menu_overlay();
+        //cls_menu_overlay();
 
 	//En caso de menus tabulados, es responsabilidad de este de liberar ventana
 	zxvision_destroy_window(&ventana);				
@@ -8421,7 +8421,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
        set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-	   cls_menu_overlay();
+	   //cls_menu_overlay();
 
 	//En caso de menus tabulados, es responsabilidad de este de liberar ventana
 	zxvision_destroy_window(&ventana);			   
@@ -8960,7 +8960,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-	cls_menu_overlay();
+	//cls_menu_overlay();
 	util_add_window_geometry_compact(ventana);
 
 	if (tecla==3) {
@@ -9209,7 +9209,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
 	} while (tecla!=2); 
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 	zxvision_destroy_window(&ventana);		
 
  
@@ -9344,7 +9344,7 @@ void menu_debug_assemble(MENU_ITEM_PARAMETERS)
 
 		
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 	zxvision_destroy_window(&ventana);		
 
  
@@ -11450,7 +11450,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
     //restauramos modo normal de texto de menu
     set_menu_overlay_function(normal_overlay_texto_menu);
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     	//Grabar geometria ventana
 
@@ -12494,7 +12494,7 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 	set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     util_add_window_geometry_compact(ventana);	
 
@@ -13947,7 +13947,7 @@ char menu_online_browse_zx81_letter(void)
 
 
 
-        cls_menu_overlay();
+        //cls_menu_overlay();
 		
 
 		//printf ("en final de funcion\n");
@@ -17646,7 +17646,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     util_add_window_geometry_compact(ventana);
 
@@ -17927,7 +17927,7 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     util_add_window_geometry_compact(ventana);
 
@@ -18146,7 +18146,7 @@ void menu_debug_msx_svi_memory_info(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
                                 //En caso de menus tabulados, es responsabilidad de este de liberar ventana
                 zxvision_destroy_window(&ventana);	
@@ -18245,7 +18245,7 @@ void menu_debug_sprite_mangement_disable(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
     zxvision_destroy_window(&ventana);	
@@ -18603,7 +18603,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();	
+    //cls_menu_overlay();	
 
 	//Grabar geometria ventana
 	util_add_window_geometry_compact(ventana);		
@@ -19141,7 +19141,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
      set_menu_overlay_function(normal_overlay_texto_menu);
 
     
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);    
@@ -19504,7 +19504,7 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
      set_menu_overlay_function(normal_overlay_texto_menu);
 
     
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);    
@@ -19705,7 +19705,7 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
      set_menu_overlay_function(normal_overlay_texto_menu);
 
     
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);    
@@ -20032,7 +20032,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
      set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();	
+    //cls_menu_overlay();	
 
 
 
@@ -21645,7 +21645,7 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    cls_menu_overlay();
+    //cls_menu_overlay();
     util_add_window_geometry_compact(ventana);
 
     if (tecla==3) {
@@ -22270,7 +22270,7 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);
@@ -24727,7 +24727,7 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 
 	if (ret==1) {
 
-		cls_menu_overlay();
+		//cls_menu_overlay();
 
 		menu_debug_change_memory_zone();
 
@@ -24738,7 +24738,7 @@ void menu_debug_load_binary(MENU_ITEM_PARAMETERS)
 		int valor_leido_direccion=parse_string_to_number(string_direccion);
 		load_binary_last_address=valor_leido_direccion;
 
-		cls_menu_overlay();
+		//cls_menu_overlay();
 
 		char string_longitud[8];
 		sprintf (string_longitud,"%d",load_binary_last_length);
@@ -24882,7 +24882,7 @@ void menu_debug_save_binary(MENU_ITEM_PARAMETERS)
 
 		}
 
-		cls_menu_overlay();
+		//cls_menu_overlay();
 
 		menu_debug_change_memory_zone();
 
@@ -24892,7 +24892,7 @@ void menu_debug_save_binary(MENU_ITEM_PARAMETERS)
 		int valor_leido_direccion=parse_string_to_number(string_direccion);
 		save_binary_last_address=valor_leido_direccion;
 
-		cls_menu_overlay();
+		//cls_menu_overlay();
 		char string_longitud[8];
 		sprintf (string_longitud,"%d",save_binary_last_length);
 		menu_ventana_scanf("Length: 0 - all",string_longitud,8);
@@ -24954,7 +24954,7 @@ void menu_debug_file_utils(MENU_ITEM_PARAMETERS)
 
         if (ret==1) {
 
-						cls_menu_overlay();
+						//cls_menu_overlay();
 						//menu_file_utils_read_file("File view",file_utils_file_name);
 				}
 
@@ -25167,7 +25167,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    cls_menu_overlay();
+    //cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);
@@ -27732,7 +27732,7 @@ int menu_ask_no_append_truncate_texto(char *texto_ventana,char *texto_interior)
 
 	
 
-        cls_menu_overlay();
+        //cls_menu_overlay();
 
         menu_espera_no_tecla();
 
@@ -30268,7 +30268,7 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
 
 	}
 
-	cls_menu_overlay();
+	//cls_menu_overlay();
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(&ventana);

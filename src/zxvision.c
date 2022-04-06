@@ -8515,6 +8515,8 @@ void zxvision_destroy_window(zxvision_window *w)
 
     zxvision_set_all_flag_dirty_must_draw_contents();
 
+    cls_menu_overlay();
+
 }
 
 void zxvision_speech_read_current_window(void)
