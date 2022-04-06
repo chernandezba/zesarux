@@ -5386,7 +5386,7 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
                     if (item_seleccionado.menu_funcion!=NULL) {
                             //printf ("actuamos por funcion\n");
                             item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
                             
                     }
             }
@@ -6018,13 +6018,13 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 	if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-	cls_menu_overlay();
+	//cls_menu_overlay();
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                         //llamamos por valor de funcion
                         if (item_seleccionado.menu_funcion!=NULL) {
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
                                 
                         }
                 }
@@ -7435,7 +7435,7 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-        cls_menu_overlay();
+        //cls_menu_overlay();
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                         //llamamos por valor de funcion
                         if (item_seleccionado.menu_funcion!=NULL) {
@@ -7445,7 +7445,7 @@ void menu_osd_adventure_keyboard(MENU_ITEM_PARAMETERS)
 	                        salir_todos_menus=1;
 
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
                                 
                         }
                 }
@@ -7764,13 +7764,13 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
 
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-	cls_menu_overlay();
+	//cls_menu_overlay();
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                         //llamamos por valor de funcion
                         if (item_seleccionado.menu_funcion!=NULL) {
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
                                 
                         }
                 }
@@ -8402,7 +8402,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
         retorno_menu=menu_dibuja_menu(&tsconf_layer_settings_opcion_seleccionada,&item_seleccionado,array_menu_tsconf_layer_settings,"TSConf Layers" );
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-        cls_menu_overlay();
+        //cls_menu_overlay();
 
 				//Nombre de ventana solo aparece en el caso de stdout
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -8410,7 +8410,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
                         if (item_seleccionado.menu_funcion!=NULL) {
                                 //printf ("actuamos por funcion\n");
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
                                 
                         }
                 }
@@ -13927,7 +13927,7 @@ char menu_online_browse_zx81_letter(void)
 
 
 	    //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-        cls_menu_overlay();
+        //cls_menu_overlay();
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                         //llamamos por valor de funcion
                         if (item_seleccionado.menu_funcion!=NULL) {
@@ -13937,7 +13937,7 @@ char menu_online_browse_zx81_letter(void)
 	                        
 
                                 letra_seleccionada=item_seleccionado.valor_opcion;
-				//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
 				salir=1;
                                 
                         }
@@ -22250,13 +22250,13 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
 			//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-			cls_menu_overlay();
+			//cls_menu_overlay();
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 				//llamamos por valor de funcion
 				if (item_seleccionado.menu_funcion!=NULL) {
 					//printf ("actuamos por funcion\n");
 					item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-					//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+
 				}
 			}
 		}
