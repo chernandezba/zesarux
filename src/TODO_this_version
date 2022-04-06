@@ -140,3 +140,5 @@ si no flag dirty, no hace nada. Ver si solo seria flag dirty en casos como wavef
 En void zxvision_draw_window_contents(zxvision_window *w)
 Desactivar:
 if (must_return) return;
+
+-pulsar por ejemplo en visualm memory, looking, y se borran el resto de ventanas

@@ -5377,18 +5377,19 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 		retorno_menu=menu_dibuja_menu(&debug_new_visualmem_opcion_seleccionada,&item_seleccionado,array_menu_debug_new_visualmem,"Visual memory" );
 
 		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
-		//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-		cls_menu_overlay();
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
+            //cls_menu_overlay();
 
-		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-				//llamamos por valor de funcion
-				if (item_seleccionado.menu_funcion!=NULL) {
-						//printf ("actuamos por funcion\n");
-						item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-		//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-						
-				}
-		}
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+                            
+                    }
+            }
 		}
 
 	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
