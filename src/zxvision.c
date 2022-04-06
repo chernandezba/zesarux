@@ -3319,6 +3319,8 @@ void cls_menu_overlay(void)
 
     zxvision_set_all_flag_dirty_must_draw_contents();
 
+    //printf("cls menu overlay\n");
+
 }
 
 
@@ -15379,11 +15381,14 @@ void menu_dibuja_menu_help_tooltip(char *texto, int si_tooltip)
         //Restauramos funcion anterior de overlay
         set_menu_overlay_function(previous_function);
 
-		if (zxvision_current_window!=NULL) {
+		/*if (zxvision_current_window!=NULL) {
 			zxvision_draw_window(zxvision_current_window);
 			//printf ("antes draw windows contents\n");
 			zxvision_draw_window_contents(zxvision_current_window);
-		}
+		}*/
+
+        //zxvision_draw_below_windows_nospeech(zxvision_current_window);
+        zxvision_redraw_all_windows();
 
 		//printf ("antes refrescar pantalla\n");
         menu_refresca_pantalla();
