@@ -8519,6 +8519,8 @@ void zxvision_destroy_window(zxvision_window *w)
 
     cls_menu_overlay();
 
+    zxvision_redraw_all_windows();
+
 }
 
 void zxvision_speech_read_current_window(void)
