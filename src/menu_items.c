@@ -5936,14 +5936,15 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 						
 			
 
-			int lin=12;
+			int lin=13;
 
-			menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+5);
+  
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin-1);
 
 				//Vamos a borrar con espacios para que no quede rastro de opciones anteriores, como Yes/No 
 				//Si no, pasaria que mostraria "Nos" como parte de la s final de Yes
 				int i;
-				for (i=12;i<=16;i++) {
+				for (i=12;i<=17;i++) {
 					zxvision_fill_width_spaces(ventana,i);
 				}			
 
