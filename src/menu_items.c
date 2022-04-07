@@ -5927,9 +5927,9 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
             //Hay que redibujar la ventana desde este bucle
             //menu_audio_new_ayplayer_dibuja_ventana();
 
+            menu_add_item_menu_inicial(&array_menu_audio_new_ayplayer,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-
-            menu_add_item_menu_inicial_format(&array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_load,NULL,"~~Load");
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_load,NULL,"~~Load");
             menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'l');
             menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Load AY file");
 
