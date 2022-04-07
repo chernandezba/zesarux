@@ -10752,7 +10752,7 @@ int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 //Dice si las coordenadas de ventana indicada coinciden con cualquiera de las ventanas que tenga encima
 int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
-	if (!menu_allow_background_windows) return 0;
+	//if (!menu_allow_background_windows) return 0;
 
 	if (w==NULL) return 0;
 
@@ -10907,6 +10907,8 @@ void zxvision_draw_window_contents(zxvision_window *w)
 
 			//Ver si caracter final tiene ventana por encima
 			int ventana_encima=zxvision_coords_in_superior_windows(w,xdestination,ydestination);
+
+            //if (ventana_encima) printf("ventana encima x %d y %d\n",xdestination,ydestination);
 
 			
 			//obtener caracter
