@@ -2041,7 +2041,7 @@ void ay_player_load_and_play(char *filename)
 
 
 
-void 	ay_player_next_track (void)
+void ay_player_next_track(void)
 {
 
 	if (audio_ay_player_mem==NULL) return;

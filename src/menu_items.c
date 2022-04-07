@@ -5766,6 +5766,11 @@ void menu_audio_new_ayplayer_next(MENU_ITEM_PARAMETERS)
 {
 	ay_player_next_track();
 
+    //Si llega al final y hace reset, se borra overlay menu desde scr_clear_layer_menu (de ahi viene desde set_machine)
+    //y se borran las ventanas que se estaban redibujando. Redibujar desde aqui por si acaso
+
+    zxvision_redraw_all_windows();
+
 }
 
 void menu_audio_new_ayplayer_stop(MENU_ITEM_PARAMETERS)
