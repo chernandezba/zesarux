@@ -3473,10 +3473,6 @@ void menu_debug_registers_set_view(zxvision_window *ventana,int vista)
 
 	
 
-    cls_menu_overlay();
-
-	
-
 	int ventana_x=ventana->x;
 	int ventana_y=ventana->y;
 	int ventana_visible_width=ventana->visible_width;

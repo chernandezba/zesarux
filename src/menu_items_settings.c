@@ -7720,7 +7720,6 @@ void old_menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 		}
 	}
 
-        cls_menu_overlay();
 }
 */
 
