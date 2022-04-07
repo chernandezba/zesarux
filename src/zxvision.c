@@ -10349,6 +10349,8 @@ void zxvision_draw_below_windows(zxvision_window *w)
 	while (pointer_window!=w && pointer_window!=NULL) {
 		//printf ("window from bottom to top %p\n",pointer_window);
 		//printf ("window from bottom to top %p. name: %s\n",pointer_window,pointer_window->window_title);
+
+        debug_printf(VERBOSE_DEBUG,"Redrawing window %s",pointer_window->window_title);
 		
 		zxvision_draw_window(pointer_window);
 	    zxvision_draw_window_contents(pointer_window);
@@ -10505,6 +10507,8 @@ void zxvision_redraw_window_on_move(zxvision_window *w)
 {
 	cls_menu_overlay();
 	zxvision_draw_below_windows_nospeech(w);
+
+    debug_printf(VERBOSE_DEBUG,"Redrawing window %s",w->window_title);
 	zxvision_draw_window(w);
 	zxvision_draw_window_contents(w);
 }
@@ -10764,7 +10768,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 		superior_window=w->next_window;
 
 		if (superior_window!=NULL) {
-
+            //printf("ventana %s encima de la que se redibuja %s\n",superior_window->window_title,w->window_title);
 			if (zxvision_coords_in_window(superior_window,x,y)) return 1;
 
 		}
