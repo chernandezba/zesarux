@@ -142,3 +142,7 @@ Desactivar:
 if (must_return) return;
 
 -comprobar que todo funcione bien (tooltips, help, borrado ventanas) cuando no se permite ventanas en background
+
+-en ay player, si no hay opcion Repeat, cuando llega al final de las pistas hace un reset con set_machine. Esto borra layer de menu y acaba
+borrando las ventanas, y no se refrescan. Probar por ejemplo teniendo un visualmem activado. Con opcion de next track, se solvento 
+poniendo al final de menu_audio_new_ayplayer_next un zxvision_redraw_all_windows.

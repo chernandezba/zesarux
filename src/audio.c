@@ -2102,7 +2102,13 @@ void ay_player_stop_player(void)
 	ay_player_playing.v=0;
 	audio_ay_player_mem=NULL;
 
-	set_machine(NULL);
+	//set_machine(NULL);
+
+    //cargar la rom normal para eliminar el "invento" que se hace en la rom para poder cargar los archivos .ay
+    //no interesa hacer un set_machine(NULL) porque eso borra layer de menu y acaba
+    //borrando las ventanas, y no se refrescan
+
+    rom_load(NULL);
 	cold_start_cpu_registers();
 	reset_cpu();
 }
