@@ -9418,7 +9418,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 
 	if (tooltip_enabled==0) {
 		menu_espera_no_tecla_con_repeticion();
-		//cls_menu_overlay();
+		
 	}
 
 	zxvision_window *ventana;
@@ -9732,7 +9732,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 
 	}
 
-    //cls_menu_overlay();
+    
 	zxvision_destroy_window(ventana);
 
 
@@ -13662,7 +13662,7 @@ void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_
 		zxvision_espera_tecla_condicion_progreso(&ventana,funcioncond,funcionprint);
 
 
-        //cls_menu_overlay();
+        
 
         zxvision_destroy_window(&ventana);
 }
@@ -16286,7 +16286,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar con cls y liberar ventana 
 	if (es_tabulado==0) {
-		//cls_menu_overlay();
+		
 		zxvision_destroy_window(ventana);
 	}
 
@@ -17666,7 +17666,7 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
         }
 
 
-        //cls_menu_overlay();
+        
 
         menu_espera_no_tecla();
 
@@ -17716,7 +17716,7 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2)
 {
 
-        //cls_menu_overlay();
+        
 
         menu_espera_no_tecla();
 
@@ -17764,7 +17764,7 @@ int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char *opcio
 int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3)
 {
 
-        //cls_menu_overlay();
+        
 
         menu_espera_no_tecla();
 
@@ -17815,7 +17815,7 @@ int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opc
 int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4)
 {
 
-        //cls_menu_overlay();
+        
 
         menu_espera_no_tecla();
 
@@ -17870,7 +17870,7 @@ int menu_ask_list_texto(char *texto_ventana,char *texto_interior,char *entradas_
 
 
 
-        //cls_menu_overlay();
+        
 
         menu_espera_no_tecla();
 
@@ -18032,7 +18032,7 @@ void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !salir);
 
 
-	//cls_menu_overlay();
+	
 	zxvision_destroy_window(ventana);
 
 	//Y liberar esa memoria, dado que la ventana esta asignada en memoria global
@@ -18357,7 +18357,7 @@ int menu_ventana_scanf_numero(char *titulo,char *texto,int max_length,int increm
     //En caso de menus tabulados, es responsabilidad de este de liberar ventana
     zxvision_destroy_window(&ventana);	
 
-	//cls_menu_overlay();
+	
 
 	if (comun_opcion_seleccionada==4 || retorno_menu==MENU_RETORNO_ESC) return -1; //Pulsado Cancel
 
@@ -20382,7 +20382,7 @@ int menu_first_aid_title(char *key_setting,char *title) //(enum first_aid_number
 	if (*valor_opcion) return 0;
 
 
-	//cls_menu_overlay();
+	
 	zxvision_menu_generic_message_setting(title,texto_opcion,"Do not show it again",valor_opcion);
 		
 	return 1;

@@ -7907,7 +7907,7 @@ void menu_hardware_realjoystick_event_button(MENU_ITEM_PARAMETERS)
 
     //menu_espera_no_joystick();
 
-	//cls_menu_overlay();
+	
 	zxvision_destroy_window(&ventana);    
     
 }
@@ -8035,7 +8035,7 @@ void menu_hardware_realjoystick_keys_button_by_button(int indice,z80_byte caract
 
     //menu_espera_no_joystick();
 
-	//cls_menu_overlay();
+	
 	zxvision_destroy_window(&ventana);    
 
 
@@ -8071,7 +8071,7 @@ void menu_hardware_realjoystick_keys_button(MENU_ITEM_PARAMETERS)
 
 
 
-	//cls_menu_overlay();
+	
 
 	if (tipo==1) { //Definir por boton
 
@@ -8465,7 +8465,7 @@ void menu_hardware_realjoystick_test(MENU_ITEM_PARAMETERS)
         } while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA);
 
 
-	//cls_menu_overlay();
+	
 	zxvision_destroy_window(&ventana);
 
 }
@@ -8979,7 +8979,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    //cls_menu_overlay();
+    
 
     //Asumimos que se pulsa ESC
     int indice_retorno=-1;

@@ -3389,7 +3389,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 	if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
 	//En caso de menus tabulados, es responsabilidad de este de borrar la ventana
-        //cls_menu_overlay();
+        
 
 				//Nombre de ventana solo aparece en el caso de stdout
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -3426,7 +3426,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
        set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-	   //cls_menu_overlay();
+	   
 
 	util_add_window_geometry_compact(ventana);	   
 
@@ -6191,7 +6191,7 @@ void menu_debug_daad_view_graphics(void)
 
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    //cls_menu_overlay();
+    
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);    
@@ -8328,7 +8328,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	//zxvision_set_window_overlay_from_current(ventana);
 
 
-    //cls_menu_overlay();
+    
 
 	util_add_window_geometry_compact(ventana);
 
@@ -9665,7 +9665,7 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
 void menu_debug_textadventure_map_connections_recreate_window(zxvision_window *ventana)
 {
     //recrear para calcular tamaño segun zoom
-    //cls_menu_overlay();
+    
     //guardar geometria por si se redimensiona y luego pulsa boton zoom, que sepa tamaño anterior
     util_add_window_geometry_compact(ventana);    
     zxvision_destroy_window(ventana);
@@ -9954,7 +9954,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     set_menu_overlay_function(normal_overlay_texto_menu);
 
 
-    //cls_menu_overlay();
+    
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);    
