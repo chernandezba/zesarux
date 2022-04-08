@@ -3450,8 +3450,8 @@ char *menu_filesel_recent_files(void)
 
 	menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-    #define MAX_RECENT_FILE_CHAR_LENGHT 29
-    char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
+    #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
+    //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
 
 
     int i;
@@ -3467,7 +3467,7 @@ char *menu_filesel_recent_files(void)
             //menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,string_last_file_shown);
 
             //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
-            util_trunc_name_right(archivo_sin_dir,MAX_RECENT_FILE_CHAR_LENGHT-1,MAX_RECENT_FILE_CHAR_LENGHT);
+            util_trunc_name_right(archivo_sin_dir,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
 
 			menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,archivo_sin_dir);
 
