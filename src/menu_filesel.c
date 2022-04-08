@@ -4477,6 +4477,15 @@ void menu_filesel_overlay(void)
     zxvision_draw_window_contents(menu_filesel_overlay_window);
 }
 
+void menu_filesel_preexit(zxvision_window *ventana)
+{
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+    zxvision_destroy_window(ventana);
+
+}
+
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
 //Si seleccionado archivo, lo guarda en variable *archivo
 //Si sale con ESC, devuelve en menu_filesel_last_directory_seen ultimo directorio
@@ -4579,10 +4588,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			//Guardar anteriores tamaños ventana
 			menu_filesel_save_params_window(ventana);
 
-			//restauramos modo normal de texto de menu
-     		set_menu_overlay_function(normal_overlay_texto_menu);
-
-			zxvision_destroy_window(ventana);
+            menu_filesel_preexit(ventana);
 		}
 		ventana=&ventana_filesel;
 
@@ -4701,11 +4707,9 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				//ESC
                 if (tecla==2) {
                 	menu_filesel_exist_ESC();
-					//restauramos modo normal de texto de menu
-     				set_menu_overlay_function(normal_overlay_texto_menu);
 
-					zxvision_destroy_window(ventana);
-                    return 0;
+                    menu_filesel_preexit(ventana);
+                    return 0;                    
 				}
 
 				if (tecla==13) {
@@ -4777,12 +4781,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                         zvfs_chdir(filesel_directorio_inicial);
 						menu_filesel_free_mem();
 
-						//return menu_avisa_si_extension_no_habitual(filtros,archivo);
-						//restauramos modo normal de texto de menu
-			     		set_menu_overlay_function(normal_overlay_texto_menu);
-
-						
-						zxvision_destroy_window(ventana);
+						menu_filesel_preexit(ventana);
 						last_filesused_insert(archivo);
 						return 1;
 
@@ -4792,10 +4791,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 							//Extension no conocida. No modificar variable archivo
 							//printf ("Unknown extension. Do not modify archivo. Contents: %s\n",archivo);
 							//restauramos modo normal de texto de menu
-     						set_menu_overlay_function(normal_overlay_texto_menu);
-
-							
-							zxvision_destroy_window(ventana);
+     						menu_filesel_preexit(ventana);
 							return 0;
 						}
 						
@@ -4937,10 +4933,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                         //Guardamos geometria al pulsar Escape
                         menu_filesel_save_params_window(ventana);
 
-						//restauramos modo normal de texto de menu
-			     		set_menu_overlay_function(normal_overlay_texto_menu);
-
-						zxvision_destroy_window(ventana);
+						menu_filesel_preexit(ventana);
                         return 0;
 
 					break;
@@ -4957,11 +4950,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                                                 if (item_seleccionado==NULL) {
                                                         //Esto pasa en las carpetas vacias, como /home en Mac OS
                                                                         menu_filesel_exist_ESC();
-																		//restauramos modo normal de texto de menu
-																		set_menu_overlay_function(normal_overlay_texto_menu);
-
-
-																		zxvision_destroy_window(ventana);
+																		menu_filesel_preexit(ventana);
                                                                         return 0;
 
 
@@ -5003,10 +4992,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 						if (item_seleccionado==NULL) {
 							//Esto pasa en las carpetas vacias, como /home en Mac OS
                                                                         menu_filesel_exist_ESC();
-																		//restauramos modo normal de texto de menu
-     																	set_menu_overlay_function(normal_overlay_texto_menu);
-
-																		zxvision_destroy_window(ventana);
+																		menu_filesel_preexit(ventana);
                                                                         return 0;
 
 
@@ -5064,10 +5050,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 								if (menu_filesel_uncompress(item_seleccionado->d_name,tmpdir) ) {
 									menu_filesel_exist_ESC();
-									//restauramos modo normal de texto de menu
-     								set_menu_overlay_function(normal_overlay_texto_menu);
-
-									zxvision_destroy_window(ventana);
+									menu_filesel_preexit(ventana);
 									return 0;
 								}
 
@@ -5099,11 +5082,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 									//Guardar anteriores tamaños ventana
 									menu_filesel_save_params_window(ventana);
 
-									//restauramos modo normal de texto de menu
-									set_menu_overlay_function(normal_overlay_texto_menu);
-
-									
-									zxvision_destroy_window(ventana);
+									menu_filesel_preexit(ventana);
 									last_filesused_insert(archivo);
 									return 1;
 
@@ -5113,11 +5092,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                                                         //Extension no conocida. No modificar variable archivo
                                                         //printf ("Unknown extension. Do not modify archivo. Contents: %s\n",archivo);
 
-														//restauramos modo normal de texto de menu
-														set_menu_overlay_function(normal_overlay_texto_menu);
-
-														
-														zxvision_destroy_window(ventana);
+														menu_filesel_preexit(ventana);
                                                         return 0;
                                     }
 
@@ -5156,12 +5131,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
                         //return menu_avisa_si_extension_no_habitual(filtros,archivo);
 
-                        //restauramos modo normal de texto de menu
-                        set_menu_overlay_function(normal_overlay_texto_menu);
-
-
-                        
-                        zxvision_destroy_window(ventana);
+                        menu_filesel_preexit(ventana);
                         return 1;
 
 					}
@@ -5375,20 +5345,16 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                                                 menu_espera_no_tecla();
 				}
 
-		                //ESC
-                                else if (tecla==2) {
+                //ESC
+                else if (tecla==2) {
                                                 
-                                                menu_espera_no_tecla();
-                                                zvfs_chdir(filesel_directorio_inicial);
-						menu_filesel_free_mem();
+                    menu_espera_no_tecla();
+                    zvfs_chdir(filesel_directorio_inicial);
+                    menu_filesel_free_mem();
 
-						//restauramos modo normal de texto de menu
-						set_menu_overlay_function(normal_overlay_texto_menu);
-
-
-						zxvision_destroy_window(ventana);
-                                                return 0;
-                                }
+                    menu_filesel_preexit(ventana);
+                    return 0;
+                }
 
 				//cambiar de zona con tab
 				else if (tecla==15) {

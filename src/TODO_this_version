@@ -110,30 +110,10 @@ DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is n
 
 -menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
--Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
+-Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: 
+con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
 
 -Extender ZX desktop a lo alto 
-
--quiza flag de ventana que diga "dirty" cuando se ha movido, redimensionado, cambiado scroll, pasado ventana por encima...
-o sea que tiene que redibujar. Asi se evitaria que ventanas como Keyboard Help estén redibujando continuamente, solo lo harian cuando es realmente necesario. Casos:
-ok *se crea nueva ventana (cualquiera) -> flag afecta a todas
-ok *se destruye ventana (cualquiera) -> flag afecta a todas
-ok *se mueve o redimensiona ventana (cualquiera) -> flag afecta a todas
-ok *se escribe en esa ventana concreta-> flag solo afecta a esa
-*se hace putpixel en esa ventana concreta -> no deberia afectar al flag
-ok *se cambia scroll en esa ventana concreta -> flag solo afecta a esa. 
-ok * en zxvision_draw_window, dado que se borra el contenido de dentro
-
-quiza ese flag deberia leerlo zxvision_draw_window_contents. si va a dibujar una ventana que tiene el flag dirty, la redibuja. si no, no hace nada
-
-*ventanas que tienen overlay de pixel, con fondo de texto blanco , y necesitan que el fondo limpie los pixeles a cada frame... cuando este el flag must_clear_cache_on_draw o must_clear_cache_on_draw_once, esto tenga mas prioridad que el flag dirty y se haga refresco siempre. 
-
-con esto, ventana de help keyboard, el flag no se cambia al hacer putpixel, y solo se redibujara en las situaciones anteriores comentadas, asi no esta siempre renderizando el teclado.
-
-->zxvision_draw_window_contents: con flag dirty, o must_clear_cache_on_draw, o must_clear_cache_on_draw_once, se redibuja
-si no flag dirty, no hace nada. Ver si solo seria flag dirty en casos como waveform, con texto de fondo blanco que interesa que borre siempre los pixeles
-
-->Todo esto cambiaria si los pixeles los gestionasemos directamente desde las funciones de zxvision_draw_window_contents, para no tener que hacer estos "inventos"
 
 
 ->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
@@ -143,7 +123,5 @@ if (must_return) return;
 
 -Nuevo concepto para ventanas:
 Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
-
 Ideal para help keyboard por ejemplo
-
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
