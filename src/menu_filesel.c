@@ -3450,7 +3450,8 @@ char *menu_filesel_recent_files(void)
 
 	menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-    char string_last_file_shown[29];
+    #define MAX_RECENT_FILE_CHAR_LENGHT 29
+    char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
 
 
     int i;
@@ -3462,8 +3463,17 @@ char *menu_filesel_recent_files(void)
 			char archivo_sin_dir[PATH_MAX];
 			util_get_file_no_directory(last_files_used_array[i],archivo_sin_dir);
 
-            menu_tape_settings_trunc_name(archivo_sin_dir,string_last_file_shown,29);
-			menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,string_last_file_shown);
+            //menu_tape_settings_trunc_name(archivo_sin_dir,string_last_file_shown,MAX_RECENT_FILE_CHAR_LENGHT);
+            //menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,string_last_file_shown);
+
+            //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la detecha
+            if (strlen(archivo_sin_dir)>=MAX_RECENT_FILE_CHAR_LENGHT-1) {
+                archivo_sin_dir[MAX_RECENT_FILE_CHAR_LENGHT-1]=0;
+                archivo_sin_dir[MAX_RECENT_FILE_CHAR_LENGHT-2]='.';
+                archivo_sin_dir[MAX_RECENT_FILE_CHAR_LENGHT-3]='.';
+                archivo_sin_dir[MAX_RECENT_FILE_CHAR_LENGHT-4]='.';
+            }
+			menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,archivo_sin_dir);
 
 			//Agregar tooltip con ruta entera
 			menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
