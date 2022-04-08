@@ -5945,7 +5945,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		menu_tape_settings_trunc_name(vofilename,string_vofile_shown,10);
 
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_display,MENU_OPCION_NORMAL,menu_vofile,NULL,"Video out to file: %s",string_vofile_shown);
+		menu_add_item_menu_inicial_format(&array_menu_settings_display,MENU_OPCION_NORMAL,menu_vofile,NULL,"Video out to file:");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_display,"Salida video a archivo:","Sortida video a arxiu:");
+        menu_add_item_menu_sufijo_format(array_menu_settings_display," %s",string_vofile_shown);
 		menu_add_item_menu_tooltip(array_menu_settings_display,"Saves the video output to a file");
 		menu_add_item_menu_ayuda(array_menu_settings_display,"The generated file have raw format. You can see the file parameters "
 			"on the console enabling verbose debug level to 2 minimum.\n"
@@ -5955,7 +5957,9 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 		if (menu_vofile_cond() ) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_vofile_fps,menu_vofile_cond,"[%d] FPS Video file",50/vofile_fps);
-			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_vofile_insert,menu_vofile_cond,"[%c] Video file enabled",(vofile_inserted.v ? 'X' : ' ' ));
+			menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_vofile_insert,menu_vofile_cond,
+                "Video file enabled","Archivo video activado","Arxiu video activat");
+            menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(vofile_inserted.v ? 'X' : ' ' ));
 		}
 
 		else {
@@ -6398,7 +6402,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_settings_display,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_colour_settings,NULL,"Colour settings");
+		menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_colour_settings,NULL,
+            "Colour settings","Opciones de colores","Opcions de colors");
         menu_add_item_menu_tiene_submenu(array_menu_settings_display);
 		//menu_add_item_menu_shortcut(array_menu_settings_display,'c');		
 
