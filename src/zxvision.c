@@ -15087,7 +15087,8 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
 
 		//Opcion de donde esta el cursor
-		char texto_opcion_seleccionada[100];
+        //Margen suficiente para que quepa dicha linea y el texto "Selected item: "
+		char texto_opcion_seleccionada[MAX_TEXTO_OPCION+30];
 		//Asumimos por si acaso que no hay ninguna activa
 		texto_opcion_seleccionada[0]=0;
 		//La opcion donde esta el cursor, si esta activada o no. Asumimos que si, por si acaso
