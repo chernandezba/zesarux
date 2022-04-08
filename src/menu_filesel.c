@@ -3112,6 +3112,8 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 	inicial=0;
 
 	//printf ("\nmenu_print_dir\n");
+    //Si directorio vacio por ejemplo, no se escribiria nunca este texto de File:. Al menos escribirlo vacio al principio
+    zxvision_print_string_defaults_fillspc(ventana,1,1,"File: ");
 
 	//escribir en ventana directorio de archivos
 
