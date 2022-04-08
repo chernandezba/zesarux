@@ -1824,7 +1824,7 @@ void menu_ay_registers_overlay(void)
 	char textovolumen[35]; //32+3 de posible color rojo del maximo
 
 
-	int total_chips=ay_retorna_numero_chips();
+	int total_chips=audio_get_total_chips();
 
 	//Como maximo mostrarmos 3 canales ay
 	if (total_chips>3) total_chips=3;
@@ -2315,7 +2315,7 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 	zxvision_delete_window_if_exists(ventana);
 
 
-    int total_chips=ay_retorna_numero_chips();
+    int total_chips=audio_get_total_chips();
     if (total_chips>3) total_chips=3;
 
     int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
@@ -13236,7 +13236,7 @@ menu_item *array_menu_ay_mixer;
 
 			int chip;
 
-			for (chip=0;chip<ay_retorna_numero_chips();chip++) {
+			for (chip=0;chip<audio_get_total_chips();chip++) {
 				int canal;
 				menu_add_item_menu_format(array_menu_ay_mixer,MENU_OPCION_SEPARADOR,NULL,NULL,"---Chip %d---",chip+1);
 
@@ -17482,7 +17482,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 
-    int  total_chips=ay_retorna_numero_chips();
+    int total_chips=audio_get_total_chips();
     //Max 3 ay chips
     if (total_chips>3) total_chips=3;
 

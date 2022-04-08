@@ -3613,7 +3613,7 @@ char nota_beeper_anterior[4]="";
 //si es maquina con chip AY, retornara el numero de chips AY segun el setting activo
 int audio_get_total_chips(void)
 {
-	int  total_chips=ay_retorna_numero_chips();
+	int total_chips=ay_retorna_numero_chips();
 
 	if (sn_chip_present.v) total_chips=1;
 
