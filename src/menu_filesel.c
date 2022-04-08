@@ -3144,48 +3144,48 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 		//Solo hacer esto si es visible en pantalla
 		if (i<mostrados_en_pantalla) {
 		
-		zxvision_menu_filesel_print_file(ventana,p->d_name,(ventana->total_width)-2,i);
-		
+            zxvision_menu_filesel_print_file(ventana,p->d_name,(ventana->total_width)-2,i);
+            
 
-		//if (filesel_linea_seleccionada==i) {
-		if (ventana->cursor_line==i) {
-			char buffer[OVERLAY_SCREEN_MAX_WIDTH+1],buffer2[OVERLAY_SCREEN_MAX_WIDTH+1+32];
-			
+            //if (filesel_linea_seleccionada==i) {
+            if (ventana->cursor_line==i) {
+                char buffer[OVERLAY_SCREEN_MAX_WIDTH+1],buffer2[OVERLAY_SCREEN_MAX_WIDTH+1+32];
+                
 
-			strcpy(filesel_nombre_archivo_seleccionado,p->d_name);
+                strcpy(filesel_nombre_archivo_seleccionado,p->d_name);
 
-			//menu_tape_settings_trunc_name(filesel_nombre_archivo_seleccionado,buffer,22);
-			//printf ("antes de trunc\n");
+                //menu_tape_settings_trunc_name(filesel_nombre_archivo_seleccionado,buffer,22);
+                //printf ("antes de trunc\n");
 
-			int tamanyo_mostrar=ventana->visible_width-6-1; //6 ocupa el texto "File: "
+                int tamanyo_mostrar=ventana->visible_width-6-1; //6 ocupa el texto "File: "
 
-				menu_tape_settings_trunc_name(filesel_nombre_archivo_seleccionado,buffer,tamanyo_mostrar); 
+                menu_tape_settings_trunc_name(filesel_nombre_archivo_seleccionado,buffer,tamanyo_mostrar); 
 
-			sprintf (buffer2,"File: %s",buffer);
-			
-			zxvision_print_string_defaults_fillspc(ventana,1,1,buffer2);
-
-
-				debug_printf (VERBOSE_DEBUG,"Selected: %s. filesel_zona_pantalla: %d",p->d_name,filesel_zona_pantalla);
-				//Para speech
-				//Si estamos en zona central del selector de archivos, decirlo
-				if (filesel_zona_pantalla==1) {
-
-	                                if (menu_active_item_primera_vez) {
-						
-
-        	                                sprintf (texto_opcion_activa,"Selected item: %s %s",p->d_name,(get_file_type(p->d_name) == 2 ? "directory" : ""));
-                	                        menu_active_item_primera_vez=0;
-                        	        }
-
-                                	else {
-	                                        sprintf (texto_opcion_activa,"%s %s",p->d_name,(get_file_type(p->d_name) == 2 ? "directory" : ""));
-        	                        }
-
-				}
+                sprintf (buffer2,"File: %s",buffer);
+                
+                zxvision_print_string_defaults_fillspc(ventana,1,1,buffer2);
 
 
-		}
+                debug_printf (VERBOSE_DEBUG,"Selected: %s. filesel_zona_pantalla: %d",p->d_name,filesel_zona_pantalla);
+                //Para speech
+                //Si estamos en zona central del selector de archivos, decirlo
+                if (filesel_zona_pantalla==1) {
+
+                    if (menu_active_item_primera_vez) {
+        
+
+                        sprintf (texto_opcion_activa,"Selected item: %s %s",p->d_name,(get_file_type(p->d_name) == 2 ? "directory" : ""));
+                        menu_active_item_primera_vez=0;
+                    }
+
+                    else {
+                        sprintf (texto_opcion_activa,"%s %s",p->d_name,(get_file_type(p->d_name) == 2 ? "directory" : ""));
+                    }
+
+                }
+
+
+            }
 		}
 
 		p=p->next;
@@ -3224,25 +3224,25 @@ void zxvision_menu_print_dir(int inicial,zxvision_window *ventana)
 	zxvision_print_string_defaults_fillspc(ventana,1,0,buffer3);
 
 
-                if (texto_opcion_activa[0]!=0) {
+    if (texto_opcion_activa[0]!=0) {
 
-			debug_printf (VERBOSE_DEBUG,"Send active line to speech: %s",texto_opcion_activa);
-                        //Selected item siempre quiero que se escuche
+        debug_printf (VERBOSE_DEBUG,"Send active line to speech: %s",texto_opcion_activa);
+        //Selected item siempre quiero que se escuche
 
-                        //Guardamos estado actual
-                        int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
-                        menu_speech_tecla_pulsada=0;
+        //Guardamos estado actual
+        int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
+        menu_speech_tecla_pulsada=0;
 
-                        menu_textspeech_send_text(texto_opcion_activa);
+        menu_textspeech_send_text(texto_opcion_activa);
 
-                        //Restauro estado
-                        //Pero si se ha pulsado tecla, no restaurar estado
-                        //Esto sino provocaria que , por ejemplo, en la ventana de confirmar yes/no,
-                        //se entra con menu_speech_tecla_pulsada=0, se pulsa tecla mientras se esta leyendo el item activo,
-                        //y luego al salir de aqui, se pierde el valor que se habia metido (1) y se vuelve a poner el 0 del principio
-                        //provocando que cada vez que se mueve el cursor, se relea la ventana entera
-                        if (menu_speech_tecla_pulsada==0) menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
-                }
+        //Restauro estado
+        //Pero si se ha pulsado tecla, no restaurar estado
+        //Esto sino provocaria que , por ejemplo, en la ventana de confirmar yes/no,
+        //se entra con menu_speech_tecla_pulsada=0, se pulsa tecla mientras se esta leyendo el item activo,
+        //y luego al salir de aqui, se pierde el valor que se habia metido (1) y se vuelve a poner el 0 del principio
+        //provocando que cada vez que se mueve el cursor, se relea la ventana entera
+        if (menu_speech_tecla_pulsada==0) menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
+    }
 
 
 }
