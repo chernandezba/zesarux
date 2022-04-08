@@ -18454,19 +18454,19 @@ void menu_help_keyboard_overlay(void)
     //Solo redibujar cuando se ha refrescado el fondo de texto
     if (ventana->has_been_drawn_contents) {
 
-    //esto hara ejecutar esto 5 veces por segundo (lo habitual en muchos de estos que no actualizan siempre es 2 veces por segundo)
-    //if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
-                                    help_keyboard_valor_contador_segundo_anterior=contador_segundo;
-        //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
+        //esto hara ejecutar esto 5 veces por segundo (lo habitual en muchos de estos que no actualizan siempre es 2 veces por segundo)
+        if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+                                        help_keyboard_valor_contador_segundo_anterior=contador_segundo;
+            //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
 
-        //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
-        screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+            //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
+            screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
 
-        ventana->has_been_drawn_contents=0;
-                
+            ventana->has_been_drawn_contents=0;
+                    
 
 
-    //}
+        }
 
     }
 

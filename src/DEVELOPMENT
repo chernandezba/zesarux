@@ -633,3 +633,5 @@ no se renderizara desde nomal_overlay_texto_menu. Dado que es mismo caracter, ah
 -ventanas que dibujan en pixeles, suele ser responsabilidad de ellas borrar los pixeles del frame anterior, o quedaran "restos".
 Alternativamente se puede usar parametro must_clear_cache_on_draw de la ventana, que indica que a cada refresco, se redibuja siempre el fondo de texto, 
 que suele ser caracter " " y se le dice que no haga cache de ese caracter, con lo que se borra la ventana (incluido logicamente los pixeles)
+
+Aparte de todo eso, cuando no se permite background windows, habitualmente solo se tiene una ventana visible, pero se puede dar en caso de 2 a la vez, por ejemplo al pulsar F1 en algun item de menu. Es por eso que hay varias funciones que consideran cuando hay mas de 1 ventana a la vez (aunque no se permitan en background), como el redraw all windows o la función de ver si una ventana está encima de otra que se llama desde draw window contents (zxvision_coords_in_superior_windows)
