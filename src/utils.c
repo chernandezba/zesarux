@@ -18969,3 +18969,30 @@ void *util_malloc_max_texto_browser(void)
 {
     return util_malloc(MAX_TEXTO_BROWSER,"Can not allocate memory for browser");
 }
+
+//Cortar un texto por la derecha con ...
+//max_length es la longitud efectiva en caracteres que queremos. Por ejemplo para un maximo de 3 caracteres, indicar un 3
+//char_buffer_size es el tamaño del buffer de char, por ejemplo si es char buffer[10], le pasamos un 10
+void util_trunc_name_right(char *texto,int max_length,int char_buffer_size)
+{
+
+    int longitud_texto=strlen(texto);
+
+    if (longitud_texto>max_length && max_length>=3 && char_buffer_size>=4) {
+        texto[max_length]=0;
+        texto[max_length-1]='.';
+        texto[max_length-2]='.';
+        texto[max_length-3]='.';
+    }    
+
+    //Ejemplo:
+    //1234567890 <-longitud
+    //HOLA QUE TAL  <- texto
+
+    //01234567890   <- indice array
+    //Cortar a 10 
+    //          0
+    //         .
+    //        .
+    //       .
+}  

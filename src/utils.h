@@ -919,4 +919,6 @@ extern void *util_malloc(int total,char *mensaje_panic);
 extern void *util_malloc_max_texto_generic_message(char *mensaje_panic);
 extern void *util_malloc_max_texto_browser(void);
 
+extern void util_trunc_name_right(char *texto,int max_length,int char_buffer_size);
+
 #endif
