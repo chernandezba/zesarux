@@ -85,6 +85,7 @@ Fixed ejecting Spectravideo cartridge
 Fixed segfault pressing F5 after pressing pause key
 Fixed bug on OSD Adventure Keyboard when words of 5 characters lenght and setting sending final space enabled
 Fixed crash when saving configuration file larger than 20kb
+Fixed crash when browing on a completely empty directory
 
 Fixed ZX Vision:
 -Fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)

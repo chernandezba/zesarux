@@ -1203,8 +1203,10 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
     buffer_expand[0]=0;
 
     if (!es_directorio) {
-        if (menu_filesel_file_can_be_expanded(item_seleccionado->d_name)) {
-            strcpy(buffer_expand," ~^S~^P~^C: Expand");
+        if (item_seleccionado!=NULL) {
+            if (menu_filesel_file_can_be_expanded(item_seleccionado->d_name)) {
+                strcpy(buffer_expand," ~^S~^P~^C: Expand");
+            }
         }
     }    
 
