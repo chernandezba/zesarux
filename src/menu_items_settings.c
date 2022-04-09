@@ -9427,6 +9427,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
 
+                menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
                     "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_lower_icons.v ? 'X' : ' ' ) );
@@ -9434,6 +9436,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_box,NULL,
                     "Box on lower buttons","Caja en botones inferiores","Caixa als botons inferiors");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_lower_icons.v ? ' ' : 'X' ) );
+
+                menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 			}
         }
 
@@ -9449,12 +9453,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
-
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. It will be enabled again going back from full screen");
 
 
-			menu_add_item_menu(array_menu_ext_desktop_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+			menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 			
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
                 "--Background--","--Fondo--","--Fons--");

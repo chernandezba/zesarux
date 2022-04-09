@@ -790,6 +790,7 @@ extern void menu_add_item_menu_tabulado(menu_item *m,int x,int y);
 extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio);
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
+extern void menu_add_item_menu_separator(menu_item *m);
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);

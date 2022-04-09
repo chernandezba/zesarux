@@ -16451,6 +16451,12 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 	next->next=NULL;
 }
 
+//Agregar un item separador
+void menu_add_item_menu_separator(menu_item *m)
+{
+    menu_add_item_menu(m,"",MENU_OPCION_SEPARADOR,NULL,NULL);    
+}
+
 //Agregar ayuda al ultimo item de menu
 void menu_add_item_menu_ayuda(menu_item *m,char *texto_ayuda)
 {
