@@ -4282,7 +4282,7 @@ void menu_audio_draw_sound_wave(void)
 			//Average, min, max    
 
 			sprintf (buffer_texto_medio,"Av.: %d Min: %d Max: %d",
-			menu_audio_draw_sound_wave_valor_medio,menu_audio_draw_sound_wave_valor_min,menu_audio_draw_sound_wave_valor_max);
+			    menu_audio_draw_sound_wave_valor_medio,menu_audio_draw_sound_wave_valor_min,menu_audio_draw_sound_wave_valor_max);
 
 
 			//menu_escribe_linea_opcion(1,-1,1,buffer_texto_medio);
@@ -4297,7 +4297,7 @@ void menu_audio_draw_sound_wave(void)
 
 			//Frecuency
 			sprintf (buffer_texto_medio,"Average freq: %d Hz (%s)",
-			menu_audio_draw_sound_wave_frecuencia_aproximada,get_note_name(menu_audio_draw_sound_wave_frecuencia_aproximada));
+			    menu_audio_draw_sound_wave_frecuencia_aproximada,get_note_name(menu_audio_draw_sound_wave_frecuencia_aproximada));
 			
 			zxvision_print_string_defaults_fillspc(menu_audio_draw_sound_wave_window,1,3,buffer_texto_medio);
 
