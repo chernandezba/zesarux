@@ -3861,6 +3861,8 @@ int util_write_configfile(void)
   if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
   if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");
 
+                                              ADD_STRING_CONFIG,"--audiopiano-zoom %d",audiochip_piano_zoom_x);
+
 
   if (audio_midi_output_initialized)          ADD_STRING_CONFIG,"--enable-midi");
                                               ADD_STRING_CONFIG,"--midi-client %d",audio_midi_client);

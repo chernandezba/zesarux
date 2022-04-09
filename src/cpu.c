@@ -1622,6 +1622,7 @@ printf (
 		"--ayplayer-inf-length n   Limit to n seconds to ay tracks with infinite length\n"
 		"--ayplayer-any-length n   Limit to n seconds to all ay tracks\n"
 		"--ayplayer-cpc            Set AY Player to CPC mode (default: Spectrum)\n"
+        "--audiopiano-zoom n       Set zoom for Audio Chip Piano and Wave Piano (1-3)\n"
 		"--enable-midi             Enable midi output\n"
 		"--midi-client n           Set midi client value to n. Needed only on Linux with Alsa audio driver\n"
 		"--midi-port n             Set midi port value to n. Needed on Windows and Linux with Alsa audio driver\n"
@@ -7597,6 +7598,18 @@ int parse_cmdline_options(void) {
 
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-cpc")) {
 				ay_player_cpc_mode.v=1;
+			}
+
+            
+			else if (!strcmp(argv[puntero_parametro],"--audiopiano-zoom")) {
+				siguiente_parametro_argumento();
+				int valor=parse_string_to_number(argv[puntero_parametro]);
+				if (valor<1 || valor>3) {
+					printf ("Invalid audiopiano-zoom value. Must be between 1 and 3\n");
+					exit(1);
+				}
+				audiochip_piano_zoom_x=valor;
+                audiochip_piano_zoom_y=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--enable-midi")) {

@@ -198,6 +198,9 @@ z80_bit realtape_algorithm_new={0};
 //Si se muestra piano grafico en drivers grafico. Si no, muestra piano de texto en drivers graficos
 z80_bit setting_mostrar_ay_piano_grafico={1}; 
 
+//Zoom usado en Audio Chip piano y Wave Piano
+int audiochip_piano_zoom_x=3;
+int audiochip_piano_zoom_y=3;
 
 
 //

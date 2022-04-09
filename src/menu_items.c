@@ -16769,8 +16769,6 @@ void menu_ay_pianokeyboard_insert_inverse(char *origen_orig, int indice)
 
 
 
-int audiochip_piano_zoom_x=3;
-int audiochip_piano_zoom_y=3;
 
 #define PIANO_ZOOM_X audiochip_piano_zoom_x
 #define PIANO_ZOOM_Y audiochip_piano_zoom_y

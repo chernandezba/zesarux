@@ -107,5 +107,8 @@ extern int gui_language;
 
 extern int zxdesktop_disable_on_full_screen;
 
+extern int audiochip_piano_zoom_x;
+extern int audiochip_piano_zoom_y;
+
 #endif
 
