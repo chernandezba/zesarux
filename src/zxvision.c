@@ -1060,8 +1060,12 @@ estilos_gui definiciones_estilos_gui[ESTILOS_GUI]={
 		RISCOS_COLOUR_RED,7+8,		//Color para opcion marcada
 		155, //caracter de cerrar ventana
         '-', //caracter de minimizar ventana
-        157, //caracter de maximizar ventana
-        157, //caracter de restaurar ventana. En RiscOS mismo boton maximizar/restaurar
+        
+        //En RiscOS originalmente tiene la misma apariencia el botón de maximizar y el de restaurar
+        //aquí, para que no sea confuso, utilizo dos diferentes
+        152, //caracter de maximizar ventana
+        157, //caracter de restaurar ventana
+
         156, //caracter de background ventana
         ' ', //caracter de fondo de titulo
 		2+8, //color de aviso
