@@ -6766,7 +6766,7 @@ void menu_debug_help(void)
         "1 - Vista per defecte. Es mostra una zona superior amb desensamblat d'instruccions i registres. Aquesta zona es pot canviar mitjançant tecla m, "
         "la qual commuta en vista de desassemblat, vista hexadecimal, vista ascii, i vista de desassemblat sense registres. En aquesta vista 1, "
         "es pot moure el cursor mitjançant teclat o ratolí; també, en prémer amb ratolí en una línia de desassemblat, s'assigna un breakpoint. \n"
-        "En aquesta vista també es visualitzen, en color vermell, els registres que modificará la instrucció en que està posicionat el cursor.\n"
+        "En aquesta vista també es visualitzen, en color vermell, els registres que modificarà la instrucció en que està posicionat el cursor.\n"
         "\n"
         "2 - Vista d'una línia de desassemblatge, registres i diferents ports de maquinari\n"
         "\n"
