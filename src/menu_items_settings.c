@@ -9379,12 +9379,9 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
     do {
 
-
-
         menu_add_item_menu_inicial_format(&array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_enable,menu_ext_desktop_cond,"Enabled");
         menu_add_item_menu_spanish_catalan(array_menu_ext_desktop_settings,"Activado","Activat");
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_enabled ? 'X' : ' ' ) );
-
 
 		if (screen_ext_desktop_enabled) {
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"~~Width");
@@ -9395,23 +9392,18 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
-
-			
+		
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. It will be enabled again going back from full screen");
-
-
-			
-
+	
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
                 "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
-
         }
 
         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
@@ -9422,7 +9414,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
         if (screen_ext_desktop_enabled) {
 
-            menu_add_item_menu(array_menu_ext_desktop_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_direct_buttons,NULL,
                 "~~Direct access buttons","Botones de acceso ~~directo","Botons d'access ~~directe");
@@ -9455,13 +9447,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			}
 
-
 			menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 			
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
                 "--Background--","--Fondo--","--Fons--");
 			
-
             char fill_type_name[32];
 			int seleccion_primary=0;
 			int seleccion_secondary=0;
@@ -9521,13 +9511,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			
 			if (seleccion_primary) {
                 //en tipo degraded, no tiene sentido mostrar los colores bright
-
                 int color_primario=menu_ext_desktop_fill_first_color;
                 if (menu_ext_desktop_fill==7) color_primario &=7;
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor,NULL,
                         "Primary Fill Color","Color primario relleno","Color primari de farciment");
 				menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[color_primario]);
-
 			}
 
 			if (seleccion_secondary) {
@@ -9584,9 +9572,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 		}
 
- 
 
-        menu_add_item_menu(array_menu_ext_desktop_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
 		menu_add_ESC_item(array_menu_ext_desktop_settings);
 
