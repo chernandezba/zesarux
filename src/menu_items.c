@@ -16396,8 +16396,55 @@ void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
 	}
 }
 
+zxvision_window *menu_display_window_list_window;
+
+void menu_display_window_list_overlay(void)
+{
+    printf("refrecando. contador segundo: %d\n",contador_segundo); 
+}
+
+zxvision_window zxvision_window_menu_window_list;
+
 void menu_display_window_list(MENU_ITEM_PARAMETERS)
 {
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_menu_window_list;
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    zxvision_delete_window_if_exists(ventana);    
+
+    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+    if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        ancho=32;
+        alto=20;
+
+        x=menu_center_x()-ancho/2;
+        y=menu_center_y()-alto/2;
+    }    
+
+
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Window Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+    ventana->can_be_backgrounded=1;
+
+    zxvision_draw_window(ventana);
+
+    //Cambiamos funcion overlay de texto de menu
+    set_menu_overlay_function(menu_display_window_list_overlay);
+
+    menu_display_window_list_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }
+
         //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
         menu_item *array_menu_common;
         menu_item item_seleccionado;
@@ -16410,15 +16457,19 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 		//menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
+        menu_add_item_menu_tabulado(array_menu_common,1,1);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
 		int total_ventanas=0;
 
+        int linea=2;
+
 		while (item_ventana_puntero!=NULL) {
 
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
 			menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
+            menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 			total_ventanas++;
 
@@ -16427,12 +16478,15 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		}
 
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Bottom-");
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 		//if (!total_ventanas) menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Empty)");
 
-		menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+		//menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        linea++;
 
 		menu_add_ESC_item(array_menu_common);
+        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
 
@@ -16446,7 +16500,29 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 					}
 			}
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+    zxvision_set_window_overlay_from_current(ventana);
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+    //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
+
+
+    //Grabar geometria ventana
+    util_add_window_geometry_compact(ventana);
+
+
+    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+        zxvision_message_put_window_background();
+    }
+
+    else {
+        //En caso de menus tabulados, es responsabilidad de este de liberar ventana
+        zxvision_destroy_window(ventana);
+    }    
 
 }
 
