@@ -125,3 +125,5 @@ if (must_return) return;
 Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
 Ideal para help keyboard por ejemplo
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
+
+-Opción zx visión para tener una ventana siempre encima
