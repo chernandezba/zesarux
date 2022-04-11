@@ -16363,7 +16363,6 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 }
 
 
-//Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
 int menu_display_window_conmutar_ventana=0;
 
 void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
@@ -16388,6 +16387,8 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
 	    clicked_on_background_windows=1;
 	    which_window_clicked_on_background=ventana;
+
+        //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
 	    menu_display_window_conmutar_ventana=1;
     }
     else if (tipo==2) zxvision_window_move_this_window_on_top(ventana);
