@@ -16366,7 +16366,7 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 {
 	//en valor_opcion, numero entrada
 
-    int tipo=menu_simple_four_choices("Action","Do you want to","Move to top","Minimize","Maximize","Close");
+    int tipo=menu_simple_five_choices("Action","Do you want to","Move to top","Move to bottom","Minimize","Maximize","Close");
 
     if (tipo==0) return; //ESC	
 
@@ -16381,8 +16381,9 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 	}
 
 	if (tipo==1) zxvision_window_move_this_window_on_top(ventana);
-    else if (tipo==2) zxvision_minimize_window(ventana);
-    else if (tipo==3) zxvision_maximize_window(ventana);
+    else if (tipo==2) zxvision_window_move_this_window_to_bottom(ventana);
+    else if (tipo==3) zxvision_minimize_window(ventana);
+    else if (tipo==4) zxvision_maximize_window(ventana);
 	else zxvision_window_delete_this_window(ventana);
 }
 

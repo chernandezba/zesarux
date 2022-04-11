@@ -8351,6 +8351,46 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
 }
 
 
+void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana)
+{
+		//hacer esta la ventana activa
+		/*
+		Ventana activa: zxvision_current_window. Si no hay ventanas, vale NULL
+		Por debajo: se enlaza con previous_window. Hacia arriba se enlaza con next_window
+
+		Para hacer esta ventana la activa
+
+		           NULL *prev* <- A  *prev* <-  -> *next* ventana *prev* <-  -> *next* C <-> D <-> E <-> zxvision_current_window -> NULL
+
+
+		NULL *prev* <- ventana <- A  *prev* <-  -> *next*                       *next* C <-> D <-> E <->  zxvision_current_window -> NULL
+		*/
+
+		zxvision_window_delete_this_window_no_free_mem(ventana);
+
+
+        //Hasta aqui lo que hemos hecho ha sido quitar nuestra ventana
+
+        //buscamos la de abajo del todo
+        zxvision_window *lower_window=zxvision_find_first_window_below_this(zxvision_current_window);
+
+        if (lower_window!=NULL) {
+            //Indicamos la nueva de abajo del todo
+            lower_window->previous_window=ventana;
+
+            //Y de la nuestra, su siguiente
+            ventana->next_window=lower_window;
+
+            //Y de la nuestra, la de abajo (ninguna)
+            ventana->previous_window=NULL;
+        }
+
+
+		zxvision_redraw_all_windows();
+}
+
+
+
 //Retorna ventana empezando por la 0 desde arriba hasta abajo
 //NULL si no existe
 zxvision_window *zxvision_return_n_window_from_top(int indice)

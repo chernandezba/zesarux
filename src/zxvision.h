@@ -351,6 +351,7 @@ extern void zxvision_draw_overlay_if_exists(zxvision_window *w);
 //extern void menu_draw_background_windows_overlay(void);
 
 extern void zxvision_window_move_this_window_on_top(zxvision_window *ventana);
+extern void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana);
 extern int zxvision_if_window_already_exists(zxvision_window *w);
 extern void zxvision_window_delete_this_window(zxvision_window *ventana);
 extern zxvision_window *zxvision_return_n_window_from_top(int indice);
