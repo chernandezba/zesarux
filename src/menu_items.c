@@ -16411,18 +16411,18 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		//menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
 
-		zxvision_window *ventana_puntero=zxvision_current_window;
+		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
 		int total_ventanas=0;
 
-		while (ventana_puntero!=NULL) {
+		while (item_ventana_puntero!=NULL) {
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",ventana_puntero->window_title);
+			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
 			menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
 
 			total_ventanas++;
 
-			ventana_puntero=ventana_puntero->previous_window;
+			item_ventana_puntero=item_ventana_puntero->previous_window;
 			
 		}
 
