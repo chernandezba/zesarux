@@ -16396,6 +16396,17 @@ void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
 	}
 }
 
+
+void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *texto)
+{
+    if (ventana->is_maximized) strcpy(texto," (M)");
+    else if (ventana->is_minimized) strcpy(texto," (m)");
+    else texto[0]=0;    
+}
+
+
+
+
 zxvision_window *menu_display_window_list_window;
 
 int menu_display_window_list_valor_contador_segundo_anterior;
@@ -16431,8 +16442,13 @@ void menu_display_window_list_overlay(void)
 
         int linea=1;
 
+        //Si esta minimizada o Maximizada
+        char window_flags[32];
+
 		while (item_ventana_puntero!=NULL) {
-            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea++,item_ventana_puntero->window_title);
+            menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags); 
+            zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
+                "%s%s",item_ventana_puntero->window_title,window_flags);
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 			
@@ -16519,11 +16535,17 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
         int linea=1;
 
+        //Si esta minimizada o Maximizada
+        char window_flags[32];
+
 		while (item_ventana_puntero!=NULL) {
 
             //excluirnos nosotros mismos
             if (item_ventana_puntero!=ventana) {
-			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
+                menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+
+			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
+                    "%s%s",item_ventana_puntero->window_title,window_flags);
 			    menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
                 total_ventanas++;
