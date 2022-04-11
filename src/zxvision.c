@@ -12178,6 +12178,22 @@ void zxvision_handle_click_minimize(zxvision_window *w)
 
 }
 
+void zxvision_minimize_window(zxvision_window *w)
+{
+	if (w!=NULL) {
+
+		//Primero decimos que no esta minimizada
+        w->is_minimized=0;
+
+        //Luego simulamos accion de pulsar boton de minimizar ventana
+        zxvision_handle_click_minimize(w);
+
+
+		//Y guardar la geometria
+		util_add_window_geometry_compact(w);    
+    }
+}
+
 
 void zxvision_handle_maximize(zxvision_window *w)
 {
@@ -12270,6 +12286,22 @@ void zxvision_handle_maximize(zxvision_window *w)
 		zxvision_draw_window_contents(w);
 	}
 
+}
+
+void zxvision_maximize_window(zxvision_window *w)
+{
+	if (w!=NULL) {
+
+		//Primero decimos que no esta maximizada
+        w->is_maximized=0;
+
+        //Luego simulamos accion de pulsar boton de maximizar ventana
+        zxvision_handle_maximize(w);
+
+
+		//Y guardar la geometria
+		util_add_window_geometry_compact(w);    
+    }
 }
 
 void zxvision_send_scroll_right_and_draw(zxvision_window *w)

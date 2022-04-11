@@ -398,6 +398,8 @@ extern void zxvision_generic_message_tooltip(char *titulo, int return_after_prin
 extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud,int max_ancho_texto,char **buffer_lineas);
 
 extern void zxvision_handle_click_minimize(zxvision_window *w);
+extern void zxvision_minimize_window(zxvision_window *w);
+extern void zxvision_maximize_window(zxvision_window *w);
 
 extern int zxvision_trocear_string_lineas(char *texto,char *buffer_lineas[]);
 extern void zxvision_print_mensaje_lineas_troceado(zxvision_window *ventana,char *mensaje_entrada);
