@@ -16412,7 +16412,7 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
 {
     if (ventana->is_maximized) strcpy(texto," (M)");
     else if (ventana->is_minimized) strcpy(texto," (m)");
-    else texto[0]=0;    
+    else texto[0]=0;
 }
 
 
@@ -16422,7 +16422,7 @@ int menu_display_window_list_valor_contador_segundo_anterior;
 
 void menu_display_window_list_overlay(void)
 {
-    
+
     if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
     //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
 
@@ -16436,28 +16436,27 @@ void menu_display_window_list_overlay(void)
     if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
         menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
 
-        //printf("refrescando. contador segundo: %d\n",contador_segundo); 
+        //printf("refrescando. contador segundo: %d\n",contador_segundo);
 
         zxvision_cls(menu_display_window_list_window);
 
 		zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,0,"-Top-");
-        
+
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
-		
+
         int linea=1;
 
         //Si esta minimizada o Maximizada
         char window_flags[32];
 
 		while (item_ventana_puntero!=NULL) {
-            menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags); 
+            menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
             zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
                 "%s%s",item_ventana_puntero->window_title,window_flags);
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
-			
 		}
 
         zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,"-Bottom-");
@@ -16480,7 +16479,7 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
 
         x=menu_center_x()-ancho/2;
         y=menu_center_y()-alto/2;
-    }    
+    }
 
 
     zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Window Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -16499,7 +16498,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    zxvision_delete_window_if_exists(ventana);
 
     menu_display_window_list_create_window(ventana);
 
@@ -16520,7 +16519,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     //restauramos modo normal de texto de menu
     //solo queremos el overlay cuando estamos fuera
     //Aqui dentro, la lista de ventanas son items de menu. En el overlay, la lista de ventanas son lineas sin menus
-    set_menu_overlay_function(normal_overlay_texto_menu);    
+    set_menu_overlay_function(normal_overlay_texto_menu);
 
     //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
     menu_item *array_menu_common;
@@ -16607,7 +16606,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     else {
         //En caso de menus tabulados, es responsabilidad de este de liberar ventana
         zxvision_destroy_window(ventana);
-    }    
+    }
 
     menu_display_window_conmutar_ventana=0;
 
