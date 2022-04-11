@@ -17903,6 +17903,63 @@ int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opci
 }
 
 
+//retorna 1 si opcion 1
+//retorna 2 si opcion 2
+//retorna 3 si opcion 3
+//retorna 4 si opcion 4
+//retorna 5 si opcion 5
+//retorna 0 si ESC
+int menu_simple_five_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5)
+{
+
+        
+
+        menu_espera_no_tecla();
+
+
+	menu_item *array_menu_simple_five_choices;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+	//Siempre indicamos la primera opcion
+	int simple_five_choices_opcion_seleccionada=1;
+        do {
+
+		menu_add_item_menu_inicial_format(&array_menu_simple_five_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+                menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+                menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+
+				menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+
+                menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+
+                menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion5);
+
+                //separador adicional para que quede mas grande la ventana y mas mono
+                menu_add_item_menu_format(array_menu_simple_five_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+                retorno_menu=menu_dibuja_menu(&simple_five_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_five_choices,texto_ventana);
+
+                
+
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        return simple_five_choices_opcion_seleccionada;
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
+
+
+
 
 //Funcion para preguntar opcion de una lista, usando interfaz de menus
 //Entradas de lista finalizadas con NULL
