@@ -7573,6 +7573,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"visualrealtape",menu_visual_realtape},
     {"textadvmap",menu_debug_textadventure_map_connections},
     {"shortcutshelper",menu_shortcuts_window},
+    {"windowlist",menu_display_window_list},
 
 	{"",NULL} //NO BORRAR ESTA!!
 };

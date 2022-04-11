@@ -171,6 +171,8 @@ extern void menu_debug_view_basic_variables(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_view_sensors(MENU_ITEM_PARAMETERS);
 
+extern void menu_display_window_list(MENU_ITEM_PARAMETERS);
+
 extern void menu_accessibility_settings(MENU_ITEM_PARAMETERS);
 
 extern void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS);

@@ -16400,7 +16400,19 @@ zxvision_window *menu_display_window_list_window;
 
 void menu_display_window_list_overlay(void)
 {
-    printf("refrecando. contador segundo: %d\n",contador_segundo); 
+    printf("refrescando. contador segundo: %d\n",contador_segundo); 
+
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+    //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
+
+     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_display_window_list_window->is_minimized) return;
+
+
+    zxvision_draw_window_contents(menu_display_window_list_window);
 }
 
 zxvision_window zxvision_window_menu_window_list;
@@ -16457,21 +16469,25 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 		//menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
-        menu_add_item_menu_tabulado(array_menu_common,1,1);
+        menu_add_item_menu_tabulado(array_menu_common,1,0);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
 		int total_ventanas=0;
 
-        int linea=2;
+        int linea=1;
 
 		while (item_ventana_puntero!=NULL) {
 
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
-			menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
-            menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+            //excluirnos nosotros mismos
+            if (item_ventana_puntero!=ventana) {
+			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
+			    menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
+                menu_add_item_menu_tabulado(array_menu_common,1,linea++);
+    
+            }
 
-			total_ventanas++;
+            total_ventanas++;
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 			
@@ -16480,13 +16496,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Bottom-");
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
-		//if (!total_ventanas) menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Empty)");
 
-		//menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        linea++;
-
-		menu_add_ESC_item(array_menu_common);
-        menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
 
