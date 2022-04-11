@@ -16416,8 +16416,6 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
 }
 
 
-
-
 zxvision_window *menu_display_window_list_window;
 
 int menu_display_window_list_valor_contador_segundo_anterior;
@@ -16425,12 +16423,10 @@ int menu_display_window_list_valor_contador_segundo_anterior;
 void menu_display_window_list_overlay(void)
 {
     
-
-
     if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
     //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
 
-     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_display_window_list_window->is_minimized) return;
@@ -16450,7 +16446,6 @@ void menu_display_window_list_overlay(void)
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
 		
-
         int linea=1;
 
         //Si esta minimizada o Maximizada
@@ -16524,19 +16519,18 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     //restauramos modo normal de texto de menu
     //solo queremos el overlay cuando estamos fuera
+    //Aqui dentro, la lista de ventanas son items de menu. En el overlay, la lista de ventanas son lineas sin menus
     set_menu_overlay_function(normal_overlay_texto_menu);    
 
-        //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-		int comun_opcion_seleccionada=0;
+    int comun_opcion_seleccionada=0;
 
 	do {
 
-
-		//menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
@@ -16575,19 +16569,19 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
 
 			
-			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-					//llamamos por valor de funcion
-					if (item_seleccionado.menu_funcion!=NULL) {
-							//printf ("actuamos por funcion\n");
-                            //cerrar primero nosotros mismos
-                            zxvision_destroy_window(ventana);
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        //cerrar primero nosotros mismos
+                        zxvision_destroy_window(ventana);
 
-							item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-                            //Y volver a abrir ventana
-							menu_display_window_list_create_window(ventana);
-					}
-			}
+                        //Y volver a abrir ventana
+                        menu_display_window_list_create_window(ventana);
+                }
+        }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && 
         !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND && !menu_display_window_conmutar_ventana);
@@ -16600,8 +16594,6 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     //restauramos modo normal de texto de menu
     //set_menu_overlay_function(normal_overlay_texto_menu);
-
-    //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 
 
     //Grabar geometria ventana
