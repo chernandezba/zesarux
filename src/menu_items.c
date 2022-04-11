@@ -16398,9 +16398,11 @@ void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_display_window_list_window;
 
+int menu_display_window_list_valor_contador_segundo_anterior;
+
 void menu_display_window_list_overlay(void)
 {
-    printf("refrescando. contador segundo: %d\n",contador_segundo); 
+    
 
 
     if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
@@ -16410,6 +16412,35 @@ void menu_display_window_list_overlay(void)
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_display_window_list_window->is_minimized) return;
+
+
+    //esto hara ejecutar esto 5 veces por segundo
+    if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+        menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
+
+        printf("refrescando. contador segundo: %d\n",contador_segundo); 
+
+        zxvision_cls(menu_display_window_list_window);
+
+		zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,0,"-Top-");
+        
+
+		zxvision_window *item_ventana_puntero=zxvision_current_window;
+
+		int total_ventanas=0;
+
+        int linea=1;
+
+		while (item_ventana_puntero!=NULL) {
+            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,item_ventana_puntero->window_title);
+
+			item_ventana_puntero=item_ventana_puntero->previous_window;
+			
+		}
+
+        zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,"-Bottom-");
+
+    }
 
 
     zxvision_draw_window_contents(menu_display_window_list_window);
@@ -16451,6 +16482,8 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     menu_display_window_list_create_window(ventana);
 
     //Cambiamos funcion overlay de texto de menu
+    //el overlay realmente solo se activa al salir de aqui
+    //la ponemos temporalmente por si se esta restaurando en inicio
     set_menu_overlay_function(menu_display_window_list_overlay);
 
     menu_display_window_list_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -16461,6 +16494,10 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
             //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
             return;
     }
+
+    //restauramos modo normal de texto de menu
+    //solo queremos el overlay cuando estamos fuera
+    set_menu_overlay_function(normal_overlay_texto_menu);    
 
         //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
         menu_item *array_menu_common;
@@ -16510,24 +16547,25 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 					if (item_seleccionado.menu_funcion!=NULL) {
 							//printf ("actuamos por funcion\n");
                             //cerrar primero nosotros mismos
-                            set_menu_overlay_function(normal_overlay_texto_menu);
                             zxvision_destroy_window(ventana);
 
 							item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
                             //Y volver a abrir ventana
 							menu_display_window_list_create_window(ventana);
-                            set_menu_overlay_function(menu_display_window_list_overlay);
 					}
 			}
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
+    //zxvision_set_window_overlay_from_current(ventana);
+
+    //Este caso es especial, activamos el overlay solo cuando estamos fuera de la ventana
+    ventana->overlay_function=menu_display_window_list_overlay;
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 
