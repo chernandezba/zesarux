@@ -8366,15 +8366,17 @@ void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana)
 		NULL *prev* <- ventana <- A  *prev* <-  -> *next*                       *next* C <-> D <-> E <->  zxvision_current_window -> NULL
 		*/
 
-		zxvision_window_delete_this_window_no_free_mem(ventana);
-
-
-        //Hasta aqui lo que hemos hecho ha sido quitar nuestra ventana
+		
 
         //buscamos la de abajo del todo
         zxvision_window *lower_window=zxvision_find_first_window_below_this(zxvision_current_window);
 
-        if (lower_window!=NULL) {
+        //Si hay mas de 1
+        if (lower_window!=ventana) {
+            zxvision_window_delete_this_window_no_free_mem(ventana);
+
+            //Hasta aqui lo que hemos hecho ha sido quitar nuestra ventana
+
             //Indicamos la nueva de abajo del todo
             lower_window->previous_window=ventana;
 
