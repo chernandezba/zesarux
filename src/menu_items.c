@@ -16417,17 +16417,8 @@ void menu_display_window_list_overlay(void)
 
 zxvision_window zxvision_window_menu_window_list;
 
-void menu_display_window_list(MENU_ITEM_PARAMETERS)
+void menu_display_window_list_create_window(zxvision_window *ventana)
 {
-
-    zxvision_window *ventana;
-    ventana=&zxvision_window_menu_window_list;
-
-    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
-
     int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
     if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
@@ -16444,6 +16435,20 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     ventana->can_be_backgrounded=1;
 
     zxvision_draw_window(ventana);
+}
+
+void menu_display_window_list(MENU_ITEM_PARAMETERS)
+{
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_menu_window_list;
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    zxvision_delete_window_if_exists(ventana);    
+
+    menu_display_window_list_create_window(ventana);
 
     //Cambiamos funcion overlay de texto de menu
     set_menu_overlay_function(menu_display_window_list_overlay);
@@ -16484,10 +16489,9 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,"%s",item_ventana_puntero->window_title);
 			    menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
-    
+                total_ventanas++;
             }
 
-            total_ventanas++;
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 			
@@ -16505,8 +16509,15 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 					//llamamos por valor de funcion
 					if (item_seleccionado.menu_funcion!=NULL) {
 							//printf ("actuamos por funcion\n");
+                            //cerrar primero nosotros mismos
+                            set_menu_overlay_function(normal_overlay_texto_menu);
+                            zxvision_destroy_window(ventana);
+
 							item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-							
+
+                            //Y volver a abrir ventana
+							menu_display_window_list_create_window(ventana);
+                            set_menu_overlay_function(menu_display_window_list_overlay);
 					}
 			}
 
