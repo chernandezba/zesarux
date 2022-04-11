@@ -365,6 +365,11 @@ extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max
 
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 
+
+extern int clicked_on_background_windows;
+
+extern zxvision_window *which_window_clicked_on_background;
+
 extern void zxvision_set_window_overlay_from_current(zxvision_window *ventana);
 
 extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w);
@@ -841,6 +846,7 @@ extern int menu_simple_two_choices(char *texto_ventana,char *texto_interior,char
 extern int menu_simple_three_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3);
 extern int menu_simple_four_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4);
 extern int menu_simple_five_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5);
+extern int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6);
 
 extern void menu_refresca_pantalla(void);
 

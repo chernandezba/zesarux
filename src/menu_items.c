@@ -16362,11 +16362,15 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 
 }
 
+
+//Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
+int menu_display_window_conmutar_ventana=0;
+
 void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 {
 	//en valor_opcion, numero entrada
 
-    int tipo=menu_simple_five_choices("Action","Do you want to","Move to top","Move to bottom","Minimize","Maximize","Close");
+    int tipo=menu_simple_six_choices("Action","Do you want to","Switch to","Move to top","Move to bottom","Minimize","Maximize","Close");
 
     if (tipo==0) return; //ESC	
 
@@ -16380,10 +16384,16 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 		return;
 	}
 
-	if (tipo==1) zxvision_window_move_this_window_on_top(ventana);
-    else if (tipo==2) zxvision_window_move_this_window_to_bottom(ventana);
-    else if (tipo==3) zxvision_minimize_window(ventana);
-    else if (tipo==4) zxvision_maximize_window(ventana);
+	if (tipo==1) {
+        //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
+	    clicked_on_background_windows=1;
+	    which_window_clicked_on_background=ventana;
+	    menu_display_window_conmutar_ventana=1;
+    }
+    else if (tipo==2) zxvision_window_move_this_window_on_top(ventana);
+    else if (tipo==3) zxvision_window_move_this_window_to_bottom(ventana);
+    else if (tipo==4) zxvision_minimize_window(ventana);
+    else if (tipo==5) zxvision_maximize_window(ventana);
 	else zxvision_window_delete_this_window(ventana);
 }
 
@@ -16578,7 +16588,8 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 					}
 			}
 
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && 
+        !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND && !menu_display_window_conmutar_ventana);
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
     //zxvision_set_window_overlay_from_current(ventana);
@@ -16596,7 +16607,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     util_add_window_geometry_compact(ventana);
 
 
-    if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+    if (retorno_menu==MENU_RETORNO_BACKGROUND || menu_display_window_conmutar_ventana) {
         zxvision_message_put_window_background();
     }
 
@@ -16604,6 +16615,8 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         //En caso de menus tabulados, es responsabilidad de este de liberar ventana
         zxvision_destroy_window(ventana);
     }    
+
+    menu_display_window_conmutar_ventana=0;
 
 }
 
