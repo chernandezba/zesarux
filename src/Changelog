@@ -60,6 +60,7 @@ Improved ZX Vision:
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
 -Added actions on menu Window Management to: minimize, maximize or move to bottom
+-Window list window can be set always visible (running on background)
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file
 -ZX Desktop: added setting to disable ZX Desktop when going to full screen 

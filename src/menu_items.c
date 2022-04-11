@@ -16418,7 +16418,7 @@ void menu_display_window_list_overlay(void)
     if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
         menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
 
-        printf("refrescando. contador segundo: %d\n",contador_segundo); 
+        //printf("refrescando. contador segundo: %d\n",contador_segundo); 
 
         zxvision_cls(menu_display_window_list_window);
 
@@ -16427,12 +16427,12 @@ void menu_display_window_list_overlay(void)
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
-		int total_ventanas=0;
+		
 
         int linea=1;
 
 		while (item_ventana_puntero!=NULL) {
-            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,item_ventana_puntero->window_title);
+            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea++,item_ventana_puntero->window_title);
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 			
