@@ -48,7 +48,7 @@ int scrcaca_totalrealwidth;
 int scrcaca_totalrealheight;
 unsigned char *framebuffer_caca=NULL;
 
-    cucul_canvas_t *cv; caca_display_t *dp; caca_event_t ev;
+    caca_canvas_t *cv; caca_display_t *dp; caca_event_t ev;
 
 int caca_last_message_shown_timer=0;
 char caca_last_message_shown[DEBUG_MAX_MESSAGE_LENGTH];
@@ -494,7 +494,7 @@ void scrcaca_end(void)
 
 
 //    caca_free_display(dp);
-//    cucul_free_canvas(cv);
+//    caca_free_canvas(cv);
 
 
 }
@@ -715,15 +715,15 @@ int scrcaca_init (void)
 debug_printf (VERBOSE_INFO,"Init cacalib Video Driver");
 
     /* Initialise libcaca */
-    cv = cucul_create_canvas(0, 0);
+    cv = caca_create_canvas(0, 0);
     dp = caca_create_display(cv);
     /* Set window title */
     caca_set_display_title(dp, "ZEsarUX");
 
     /* Choose drawing colours */
-    //cucul_set_color_ansi(cv, CUCUL_BLACK, CUCUL_WHITE);
+    //caca_set_color_ansi(cv, CUCUL_BLACK, CUCUL_WHITE);
     /* Draw a string at coordinates (0, 0) */
-    //cucul_putstr(cv, 0, 0, "This is a message");
+    //caca_putstr(cv, 0, 0, "This is a message");
 
 scr_putpixel=scrcaca_putpixel;
 scr_putpixel_final=scrcaca_putpixel_final;
