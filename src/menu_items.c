@@ -16486,6 +16486,9 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
 
     ventana->can_be_backgrounded=1;
 
+    //prueba
+    ventana->always_visible=1;
+
     zxvision_draw_window(ventana);
 }
 

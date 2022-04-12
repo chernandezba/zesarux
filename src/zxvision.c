@@ -10807,6 +10807,10 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
 	//if (!menu_allow_background_windows) return 0;
 
+    zxvision_window *orig_w;
+
+    orig_w=w;
+
 	if (w==NULL) return 0;
 
 	if (zxvision_current_window==w) return 0;
@@ -10829,6 +10833,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 
     //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
+    w=orig_w;
 	do {
 		zxvision_window *inferior_window;
 
