@@ -10805,6 +10805,9 @@ int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 //Dice si las coordenadas de ventana indicada coinciden con cualquiera de las ventanas que tenga encima
 int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
+    //Si esta ventana tiene flag always_visible, siempre escribe
+    if (w->always_visible) return 0;
+
 	//if (!menu_allow_background_windows) return 0;
 
     zxvision_window *orig_w;

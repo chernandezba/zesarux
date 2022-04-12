@@ -4660,6 +4660,8 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     //42% cpu con esto a 0 y borrando pixeles anteriores
     //ventana->must_clear_cache_on_draw=1;
 
+    //prueba
+    //ventana->always_visible=1;
 
 	//printf("despues zxvision_new_window_nocheck_staticsize\n");
 	zxvision_draw_window(ventana);		
@@ -16485,9 +16487,6 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
     zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Window Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     ventana->can_be_backgrounded=1;
-
-    //prueba
-    ventana->always_visible=1;
 
     zxvision_draw_window(ventana);
 }
