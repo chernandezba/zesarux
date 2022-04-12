@@ -4660,8 +4660,6 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     //42% cpu con esto a 0 y borrando pixeles anteriores
     //ventana->must_clear_cache_on_draw=1;
 
-    //prueba
-    //ventana->always_visible=1;
 
 	//printf("despues zxvision_new_window_nocheck_staticsize\n");
 	zxvision_draw_window(ventana);		

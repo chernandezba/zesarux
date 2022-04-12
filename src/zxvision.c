@@ -10806,7 +10806,7 @@ int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
     //Si esta ventana tiene flag always_visible, siempre escribe
-    if (w->always_visible) return 0;
+    //if (w->always_visible) return 0;
 
 	//if (!menu_allow_background_windows) return 0;
 
@@ -10834,6 +10834,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 	} while (w!=zxvision_current_window && w!=NULL);
 
+    return 0;
 
     //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
     w=orig_w;
@@ -10844,7 +10845,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 		if (inferior_window!=NULL) {
             if (inferior_window->always_visible) {
-                //printf("ventana %s encima de la que se redibuja %s\n",inferior_window->window_title,w->window_title);
+                printf("ventana %s con always visible encima de la que se redibuja %s\n",inferior_window->window_title,orig_w->window_title);
 		        if (zxvision_coords_in_window(inferior_window,x,y)) return 1;
             }
 
