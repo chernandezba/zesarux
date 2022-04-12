@@ -169,6 +169,9 @@ struct s_zxvision_window {
     //indica a algunas ventanas (como Keyboard Help) que se ha lanzado zxvision_draw_window_contents y redibujado el fondo de texto
     int has_been_drawn_contents;
 
+    //indica que la ventana siempre debe mostrarse por encima de las demas
+    int always_visible;
+
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;

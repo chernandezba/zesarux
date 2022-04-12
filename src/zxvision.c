@@ -8184,6 +8184,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->has_been_drawn_contents=0;
 
+    w->always_visible=0;
+
 	w->can_mouse_send_hotkeys=0;
 
     w->no_refresh_change_offset=0;
@@ -10822,6 +10824,26 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 
 		w=superior_window;
+
+	} while (w!=zxvision_current_window && w!=NULL);
+
+
+    //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
+	do {
+		zxvision_window *inferior_window;
+
+		inferior_window=w->previous_window;
+
+		if (inferior_window!=NULL) {
+            if (inferior_window->always_visible) {
+                //printf("ventana %s encima de la que se redibuja %s\n",inferior_window->window_title,w->window_title);
+		        if (zxvision_coords_in_window(inferior_window,x,y)) return 1;
+            }
+
+		}
+
+
+		w=inferior_window;
 
 	} while (w!=zxvision_current_window && w!=NULL);
 
