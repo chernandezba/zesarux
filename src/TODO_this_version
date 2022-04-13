@@ -129,3 +129,5 @@ En draw window contents solo renderiza si se ha modificado o bien la capa de tex
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
 Considerar algun modo de dibujado mas rapido
 
+-al debugar aventura, sacar lista de vocabulario, se borra el listado de palabras de on screen adventure keyboard:
+creo que el problema viene al llamar a util_paws_dump_vocabulary_tostring

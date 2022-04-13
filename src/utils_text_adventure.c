@@ -1265,7 +1265,7 @@ int util_daad_dump_vocabulary(int tipo,char *texto,int max_string)
 
         debug_printf (VERBOSE_DEBUG,"Dumping Daad vocabulary");
 
-        util_clear_text_adventure_kdb();
+        if (tipo==0) util_clear_text_adventure_kdb();
 
         z80_int puntero=util_daad_get_start_vocabulary();
 
@@ -1353,12 +1353,13 @@ int util_daad_dump_vocabulary(int tipo,char *texto,int max_string)
 
 //Volcar vocabulario para el extractor de palabras (teclado text adventure) o como un string con saltos de linea
 //tipo=0: para text adventure. 1:para string 
+//Nota: actualmente solo lo utilizo con tipo 1:para string
 int util_paws_dump_vocabulary_tostring(int tipo,char *texto,int max_string)
 {
 
         debug_printf (VERBOSE_DEBUG,"Dumping Daad vocabulary");
 
-        util_clear_text_adventure_kdb();
+        if (tipo==0) util_clear_text_adventure_kdb();
 
         z80_int puntero=util_paws_get_start_vocabulary();
 
