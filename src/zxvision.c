@@ -4443,7 +4443,7 @@ void menu_draw_ext_desktop_footer(void)
 
 }
 
-
+/*
 void old_menu_draw_ext_desktop(void)
 {
 
@@ -4455,15 +4455,15 @@ void old_menu_draw_ext_desktop(void)
 		//usar scr_putpixel_zoom_rainbow y scr_putpixel_zoom dependiendo del caso, y sumar margenes en el caso de rainbow,
 		//pero no vale la pena, con una sola funcion scr_putpixel vale para todos los casos
 		//Con zoom se habria hecho asi:
-		/*
-			int margenx_izq;
-			int margeny_arr;
-			scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
-			if (rainbow_enabled.v==1) scr_putpixel_zoom_rainbow(x+margenx_izq,y+margenx_der,color);
-			else scr_putpixel_zoom(x,y,color);
-
-			Y considerando el espacio de coordenadas x e y con zoom
-		*/
+		//
+		//	int margenx_izq;
+		//	int margeny_arr;
+		//	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+		//	if (rainbow_enabled.v==1) scr_putpixel_zoom_rainbow(x+margenx_izq,y+margenx_der,color);
+		//	else scr_putpixel_zoom(x,y,color);
+        //
+		//	Y considerando el espacio de coordenadas x e y con zoom
+		
 
 		int xinicio=screen_get_ext_desktop_start_x();
 		int yinicio=0;
@@ -4644,19 +4644,19 @@ void old_menu_draw_ext_desktop(void)
 
 
 	//Agregamos logo ZEsarUX en esquina inferior derecha, con margen, solo si menu esta abierto
-	/*
-	if (menu_abierto) {
-		int xfinal;
-		int yfinal;
-		//xfinal=xinicio+ancho-ZESARUX_ASCII_LOGO_ANCHO-ZESARUX_WATERMARK_LOGO_MARGIN;
-		//yfinal=alto-ZESARUX_ASCII_LOGO_ALTO-ZESARUX_WATERMARK_LOGO_MARGIN;
-
-		menu_ext_desktop_get_logo_coords(&xfinal,&yfinal);
-
-		//El ancho y el puntero dan igual, no los vamos a usar
-		screen_put_watermark_generic(NULL,xfinal,yfinal,0, menu_draw_ext_desktop_putpixel_bitmap);
-	}
-	*/
+	
+	//if (menu_abierto) {
+	//	int xfinal;
+	//	int yfinal;
+	//	//xfinal=xinicio+ancho-ZESARUX_ASCII_LOGO_ANCHO-ZESARUX_WATERMARK_LOGO_MARGIN;
+	//	//yfinal=alto-ZESARUX_ASCII_LOGO_ALTO-ZESARUX_WATERMARK_LOGO_MARGIN;
+    //
+	//	menu_ext_desktop_get_logo_coords(&xfinal,&yfinal);
+    //
+	//	//El ancho y el puntero dan igual, no los vamos a usar
+	//	screen_put_watermark_generic(NULL,xfinal,yfinal,0, menu_draw_ext_desktop_putpixel_bitmap);
+	//}
+	
 
 	//Dibujar botones si están activados (por defecto)
 	if (menu_zxdesktop_buttons_enabled.v) {
@@ -4668,7 +4668,7 @@ void old_menu_draw_ext_desktop(void)
 	
 }
 
-
+*/
 
 //si habilitado fondo scr
 int zxdesktop_draw_scrfile_enabled=0;
