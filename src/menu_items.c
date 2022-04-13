@@ -16369,7 +16369,9 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 {
 	//en valor_opcion, numero entrada
 
-    int tipo=menu_simple_six_choices("Action","Do you want to","Switch to","Move to top","Move to bottom","Minimize","Maximize","Close");
+
+    int tipo=menu_simple_seven_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
+        "Minimize","Maximize","Switch always visible","Close");
 
     if (tipo==0) return; //ESC	
 
@@ -16395,6 +16397,9 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     else if (tipo==3) zxvision_window_move_this_window_to_bottom(ventana);
     else if (tipo==4) zxvision_minimize_window(ventana);
     else if (tipo==5) zxvision_maximize_window(ventana);
+    else if (tipo==6) {
+        ventana->always_visible ^=1;
+    }
 	else zxvision_window_delete_this_window(ventana);
 }
 
@@ -16410,9 +16415,16 @@ void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
 
 void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *texto)
 {
-    if (ventana->is_maximized) strcpy(texto," (M)");
-    else if (ventana->is_minimized) strcpy(texto," (m)");
-    else texto[0]=0;
+    if (!ventana->is_maximized && !ventana->is_minimized && !ventana->always_visible) {
+        texto[0]=0;
+        return;
+    }
+
+    sprintf(texto," [%s%s%s]",
+        (ventana->is_maximized   ? "M" : ""),
+        (ventana->is_minimized   ? "m" : ""),
+        (ventana->always_visible ? "V" : "")
+    );
 }
 
 

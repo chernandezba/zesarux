@@ -10806,7 +10806,7 @@ int zxvision_coords_in_window(zxvision_window *w,int x,int y)
 int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 {
     //Si esta ventana tiene flag always_visible, siempre escribe
-    //if (w->always_visible) return 0;
+    if (w->always_visible) return 0;
 
 	//if (!menu_allow_background_windows) return 0;
 
@@ -10816,7 +10816,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 	if (w==NULL) return 0;
 
-	if (zxvision_current_window==w) return 0;
+	//if (zxvision_current_window==w) return 0;
 
 	do {
 		zxvision_window *superior_window;
@@ -10834,7 +10834,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 	} while (w!=zxvision_current_window && w!=NULL);
 
-    return 0;
+    //return 0;
 
     //O si hay alguna ventana por debajo que tenga el flag de siempre por encima
     w=orig_w;
@@ -10845,7 +10845,7 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 		if (inferior_window!=NULL) {
             if (inferior_window->always_visible) {
-                printf("ventana %s con always visible encima de la que se redibuja %s\n",inferior_window->window_title,orig_w->window_title);
+                //printf("ventana %s con always visible encima de la que se redibuja %s\n",inferior_window->window_title,orig_w->window_title);
 		        if (zxvision_coords_in_window(inferior_window,x,y)) return 1;
             }
 
@@ -18081,6 +18081,67 @@ int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcio
             if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                     //llamamos por valor de funcion
                     return simple_six_choices_opcion_seleccionada;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
+
+//retorna 1 si opcion 1
+//retorna 2 si opcion 2
+//retorna 3 si opcion 3
+//retorna 4 si opcion 4
+//retorna 5 si opcion 5
+//retorna 6 si opcion 6
+//retorna 7 si opcion 7
+//retorna 0 si ESC
+int menu_simple_seven_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,
+    char *opcion4,char *opcion5,char *opcion6,char *opcion7)
+{
+
+
+    menu_espera_no_tecla();
+
+
+	menu_item *array_menu_simple_seven_choices;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+	//Siempre indicamos la primera opcion
+	int simple_seven_choices_opcion_seleccionada=1;
+        do {
+
+		    menu_add_item_menu_inicial_format(&array_menu_simple_seven_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion5);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion6);
+
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion7);
+
+            //separador adicional para que quede mas grande la ventana y mas mono
+            menu_add_item_menu_format(array_menu_simple_seven_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+            retorno_menu=menu_dibuja_menu(&simple_seven_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_seven_choices,texto_ventana);
+
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    return simple_seven_choices_opcion_seleccionada;
             }
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);

@@ -38,6 +38,7 @@ Improved Accessibility:
 Improved ZX Vision:
 -Reduced up to 5 times cpu usage on menu by using a cache
 -Improve window refreshing by disabling autoframeskip while moving or resizing
+-Allow to set a window always visible
 -Enlarge content size when resizing window without having to recreate it
 -Notify to the parent function when a window has been resized
 -Allow to avoid refreshing window when changing scroll
@@ -59,7 +60,7 @@ Improved ZX Vision:
 -Show when a menu has submenus using the ">" character
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
--Added actions on menu Window Management to: switch to, minimize, maximize or move to bottom
+-Added actions on menu Window Management to: switch to, minimize, maximize, move to bottom, set always visible
 -Window list window can be set always visible (running on background)
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file
