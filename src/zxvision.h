@@ -851,6 +851,7 @@ extern int menu_simple_four_choices(char *texto_ventana,char *texto_interior,cha
 extern int menu_simple_five_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5);
 extern int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6);
 extern int menu_simple_seven_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6,char *opcion7);
+extern int menu_simple_eight_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8);
 
 extern void menu_refresca_pantalla(void);
 

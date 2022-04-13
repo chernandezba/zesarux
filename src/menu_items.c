@@ -16362,6 +16362,29 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_display_window_list_info(zxvision_window *w)
+{
+    menu_generic_message_format("Window information",
+        "Title: %s\n"
+        "Position: %d,%d\n"
+        "Visible size: %dX%d\n"
+        "Total size: %dX%d\n"
+        "Scroll %d,%d\n"
+        "Minimized: %s\n"
+        "Maximized: %s\n"
+        "Always visible: %s\n"
+        "Can be resized: %s\n"
+        ,
+        w->window_title,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
+        w->offset_x,w->offset_y,
+        (w->is_minimized ? "Yes" : "No"),
+        (w->is_maximized ? "Yes" : "No"),
+        (w->always_visible ? "Yes" : "No"),
+        (w->can_be_resized ? "Yes" : "No")
+    );
+
+
+}
 
 int menu_display_window_conmutar_ventana=0;
 
@@ -16370,8 +16393,8 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 	//en valor_opcion, numero entrada
 
 
-    int tipo=menu_simple_seven_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
-        "Minimize","Maximize","Switch always visible","Close");
+    int tipo=menu_simple_eight_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
+        "Minimize","Maximize","Switch always visible","Information","Close");
 
     if (tipo==0) return; //ESC	
 
@@ -16415,6 +16438,10 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 
         case 6:
             ventana->always_visible ^=1;
+        break;
+
+        case 7:
+            menu_display_window_list_info(ventana);
         break;
     
 
