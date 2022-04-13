@@ -16385,22 +16385,44 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 		return;
 	}
 
-	if (tipo==1) {
-        //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
-	    clicked_on_background_windows=1;
-	    which_window_clicked_on_background=ventana;
+    switch (tipo) {
 
-        //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
-	    menu_display_window_conmutar_ventana=1;
+	    case 1:
+            //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
+            clicked_on_background_windows=1;
+            which_window_clicked_on_background=ventana;
+
+            //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
+            menu_display_window_conmutar_ventana=1;
+
+        break;
+    
+        case 2:
+            zxvision_window_move_this_window_on_top(ventana);
+        break;
+
+        case 3:
+            zxvision_window_move_this_window_to_bottom(ventana);
+        break;
+
+        case 4:
+            zxvision_minimize_window(ventana);
+        break;
+
+        case 5:
+            zxvision_maximize_window(ventana);
+        break;
+
+        case 6:
+            ventana->always_visible ^=1;
+        break;
+    
+
+        default:
+	        zxvision_window_delete_this_window(ventana);
+        break;
+
     }
-    else if (tipo==2) zxvision_window_move_this_window_on_top(ventana);
-    else if (tipo==3) zxvision_window_move_this_window_to_bottom(ventana);
-    else if (tipo==4) zxvision_minimize_window(ventana);
-    else if (tipo==5) zxvision_maximize_window(ventana);
-    else if (tipo==6) {
-        ventana->always_visible ^=1;
-    }
-	else zxvision_window_delete_this_window(ventana);
 }
 
 void menu_display_window_close_all(MENU_ITEM_PARAMETERS)
