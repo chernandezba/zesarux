@@ -126,5 +126,6 @@ Buffer de pixel gestionado desde ventanas y renderizado desde draw window conten
 Ideal para help keyboard por ejemplo
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
 
--Opción zx visión para tener una ventana siempre encima
+-Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
+Considerar algun modo de dibujado mas rapido
 

@@ -16633,7 +16633,9 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
                 //llamamos por valor de funcion
                 if (item_seleccionado.menu_funcion!=NULL) {
                         //printf ("actuamos por funcion\n");
-                        //cerrar primero nosotros mismos
+                        //cerrar primero nosotros mismos,
+                        //dado que la lista de ventanas que tenemos aqui no nos consideramos a nosotros mismos,
+                        //y es importante dado que le enviamos el numero de linea seleccionada (valor_opcion)
                         zxvision_destroy_window(ventana);
 
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
