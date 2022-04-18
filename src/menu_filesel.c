@@ -3417,17 +3417,19 @@ int menu_filesel_set_cursor_at_mouse(zxvision_window *ventana)
 
 								//Ajustar cursor ventana
 
-								//if (zxvision_cursor_out_view(ventana)) {
+								
 								filesel_archivo_seleccionado=ventana->offset_y;
-								ventana->cursor_line=filesel_archivo_seleccionado;
-								//}
-
-								//ventana->cursor_line -=filesel_linea_seleccionada;
+								zxvision_set_cursor_line(ventana,filesel_archivo_seleccionado);
+								
+					
 	
 								//printf ("Seleccionamos item %d\n",linea_final);
                                 filesel_linea_seleccionada=linea_final;
 
-								ventana->cursor_line +=filesel_linea_seleccionada;
+                                int linea_cursor_final=filesel_archivo_seleccionado;
+                                linea_cursor_final += filesel_linea_seleccionada;
+                                zxvision_set_cursor_line(ventana,linea_cursor_final);
+
                                 menu_speech_tecla_pulsada=1;
 								return 1;
                             }

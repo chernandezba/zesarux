@@ -9051,7 +9051,9 @@ int zxvision_generic_message_cursor_up(zxvision_window *ventana)
 
 		//Y si cursor no esta visible, lo ponemos para que este arriba del todo (hemos de suponer que estaba arriba i ha subido 1 mas)
 		if (cursor<offset_y || cursor>=offset_y+ventana->visible_height-2) {
-			if (offset_y>0) ventana->cursor_line=offset_y-1;
+			if (offset_y>0) {
+                zxvision_set_cursor_line(ventana,offset_y-1);
+            }
 			zxvision_send_scroll_up(ventana);
 			//printf ("Subimos linea cursor y subimos offset\n");
 		}
