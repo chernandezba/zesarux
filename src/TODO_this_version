@@ -96,9 +96,7 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 
 
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
-
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
-
 
 
 
