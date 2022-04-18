@@ -1648,7 +1648,7 @@ void codetests_main(int main_argc,char *main_argv[])
 	printf ("\nRunning code tests tbblue_set_ram_blocks\n");
 	codetests_tbblue_set_ram_blocks();
 
-    printf("\nRunnign cosine table tests\n");
+    printf("\nRunning cosine table tests\n");
     codetests_cosine_table();
 
 
