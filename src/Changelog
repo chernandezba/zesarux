@@ -51,7 +51,7 @@ Improved ZX Vision:
 -Bigger window resize indicator (bottom-right of the window)
 -Text windows enlarge/reduce line width when resizing windows
 -Text windows wider by default (40 characters instead of 32)
--When sending a window to the background, and the setting "Background windows even when menu closed", the menu will be closed
+-When sending a window to the background, and the setting "Background windows even when menu closed" is enabled, the menu will be closed
 -Improve accented characters on different charsets
 -Added translation of menu items to Spanish and Catalan
 -Added shortcuts helper to see hotkeys pressed
@@ -61,7 +61,7 @@ Improved ZX Vision:
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
 -Added actions on menu Window Management to: switch to, minimize, maximize, move to bottom, set always visible, window information
--Window list window can be set always visible (running on background)
+-Window management window can run on background
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file
 -ZX Desktop: added setting to disable ZX Desktop when going to full screen 
