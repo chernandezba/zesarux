@@ -56,10 +56,10 @@ Examples
 
 
 //testeo o para forzar una versión en develop
-#define ZESARUX_EXTRAS_URL "https://github.com/chernandezba/zesarux/releases/download/ZEsarUX-10.0/ZEsarUX_extras-10.0.zip"
+//#define ZESARUX_EXTRAS_URL "https://github.com/chernandezba/zesarux/releases/download/ZEsarUX-10.0/ZEsarUX_extras-10.0.zip"
 
 //final
-//#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
+#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
 #define EDITION_NAME_GAME "editionnamegame.tzx"
 
