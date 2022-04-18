@@ -11066,7 +11066,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 				linea_cursor +=w->lower_margin;
 				linea_cursor +=w->upper_margin;
 				if (w->visible_cursor && linea_cursor==offset_y_final) {
-                    printf("cursor en linea %d\n",linea_cursor);
+                    //printf("cursor en linea %d\n",linea_cursor);
 					tinta=ESTILO_GUI_TINTA_SELECCIONADO;
 					papel=ESTILO_GUI_PAPEL_SELECCIONADO;
 				} 
