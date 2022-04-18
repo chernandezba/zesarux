@@ -8996,7 +8996,7 @@ int zxvision_generic_message_cursor_down(zxvision_window *ventana)
 		//Movemos el cursor si es que es posible
 		if (ventana->cursor_line<ventana->total_height-1) {
 			//printf ("Incrementamos linea cursor\n");
-			ventana->cursor_line++;
+			zxvision_inc_cursor_line(ventana);
 		}
 		else {
 			
@@ -9010,7 +9010,7 @@ int zxvision_generic_message_cursor_down(zxvision_window *ventana)
 
 		//Y si cursor no esta visible, lo ponemos para que este abajo del todo (hemos de suponer que estaba abajo y ha bajado 1 mas)
 		if (cursor<offset_y || cursor>=offset_y+ventana->visible_height-2) {
-			ventana->cursor_line=offset_y+ventana->visible_height-2;
+			zxvision_set_cursor_line(ventana,offset_y+ventana->visible_height-2);
 			zxvision_send_scroll_down(ventana);
 			//printf ("Bajamos linea cursor y bajamos offset\n");
 		}
@@ -9040,7 +9040,7 @@ int zxvision_generic_message_cursor_up(zxvision_window *ventana)
 		//Movemos el cursor si es que es posible
 		if (ventana->cursor_line>0) {
 			//printf ("Decrementamos linea cursor\n");
-			ventana->cursor_line--;
+			zxvision_dec_cursor_line(ventana);
 		}
 		else return ventana->cursor_line;
 
@@ -9685,7 +9685,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
 
                     ventana->visible_cursor=1;
 
-                    ventana->cursor_line=i;
+                    zxvision_set_cursor_line(ventana,i);
 
                     //Si no esta visible, cambiamos offset
                     zxvision_set_offset_y_visible(ventana,i);
@@ -10330,7 +10330,6 @@ int zxvision_adjust_cursor_bottom(zxvision_window *ventana)
 
         //printf ("Reajustar cursor\n");
         zxvision_set_cursor_line(ventana,offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin);
-        //ventana->cursor_line=offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin;
         return 1;
 	}
 
@@ -10351,7 +10350,7 @@ int zxvision_adjust_cursor_top(zxvision_window *ventana)
 
 			if (offset_y>0) {
 				//printf ("Reajustar cursor\n");
-				ventana->cursor_line=offset_y-1;
+				zxvision_set_cursor_line(ventana,offset_y-1);
 				return 1;
 			}
 
