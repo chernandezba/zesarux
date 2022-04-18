@@ -5268,7 +5268,10 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
     //  escribir_socket (misocket,"Error. Unknown file format");
     //}
 
-    if (quickload(remote_command_argv[0])) {
+    strcpy(quickload_file,remote_command_argv[0]);
+    quickfile=quickload_file;
+ 
+    if (quickload(quickload_file)) {
       escribir_socket (misocket,"Error. Unknown file format");
     }		
 

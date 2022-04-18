@@ -100,11 +100,7 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
 
--Carga de archivos .p desde ZRCP
 
-https://sinclairzxworld.com/viewtopic.php?p=44599#p44599
-
-DeZog load is working for SNA spectrum files but not for ZX81 .p file as it is now in v10.0
 
 -Iconos snapshot en escritorio y otros "archivos" de ramdisk
 
@@ -128,6 +124,3 @@ En draw window contents solo renderiza si se ha modificado o bien la capa de tex
 
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
 Considerar algun modo de dibujado mas rapido
-
--al debugar aventura, sacar lista de vocabulario, se borra el listado de palabras de on screen adventure keyboard:
-creo que el problema viene al llamar a util_paws_dump_vocabulary_tostring
