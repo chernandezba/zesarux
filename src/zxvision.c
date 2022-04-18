@@ -10275,20 +10275,20 @@ void zxvision_send_scroll_right(zxvision_window *w)
 int zxvision_cursor_out_view(zxvision_window *ventana)
 {
 
-        //int linea_retornar;
+    //int linea_retornar;
 
-        if (ventana->visible_cursor) {
+    if (ventana->visible_cursor) {
 
-                //Ver en que offset estamos
-                int offset_y=ventana->offset_y;
-                //Y donde esta el cursor
-                int cursor=ventana->cursor_line;
+        //Ver en que offset estamos
+        int offset_y=ventana->offset_y;
+        //Y donde esta el cursor
+        int cursor=ventana->cursor_line;
 
-                //Y si cursor no esta visible, lo ponemos para que este abajo del todo (hemos de suponer que estaba abajo y ha bajado 1 mas)
-                if (cursor<offset_y || cursor>=offset_y+ventana->visible_height-2) {
-			return 1;
-                }
+        //Y si cursor no esta visible, lo ponemos para que este abajo del todo (hemos de suponer que estaba abajo y ha bajado 1 mas)
+        if (cursor<offset_y || cursor>=offset_y+ventana->visible_height-2) {
+            return 1;
         }
+    }
 
         return 0;
 
@@ -10308,9 +10308,9 @@ int zxvision_adjust_cursor_bottom(zxvision_window *ventana)
 		//Y donde esta el cursor
 		//int cursor=ventana->cursor_line;
 
-			//printf ("Reajustar cursor\n");
-			ventana->cursor_line=offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin;
-			return 1;
+        //printf ("Reajustar cursor\n");
+        ventana->cursor_line=offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin;
+        return 1;
 	}
 
 	return 0;
@@ -11044,6 +11044,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 				linea_cursor +=w->lower_margin;
 				linea_cursor +=w->upper_margin;
 				if (w->visible_cursor && linea_cursor==offset_y_final) {
+                    printf("cursor en linea %d\n",linea_cursor);
 					tinta=ESTILO_GUI_TINTA_SELECCIONADO;
 					papel=ESTILO_GUI_PAPEL_SELECCIONADO;
 				} 
