@@ -1373,6 +1373,8 @@ extern int zxvision_adjust_cursor_bottom(zxvision_window *ventana);
 extern void zxvision_set_cursor_line(zxvision_window *ventana,int linea);
 extern void zxvision_inc_cursor_line(zxvision_window *ventana);
 extern void zxvision_dec_cursor_line(zxvision_window *ventana);
+extern void zxvision_set_visible_cursor(zxvision_window *ventana);
+extern void zxvision_reset_visible_cursor(zxvision_window *ventana);
 
 extern z80_bit menu_current_drive_mmc_image;
 

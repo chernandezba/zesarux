@@ -9685,7 +9685,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
                     //Mostramos cursor para poder indicar en que linea se ha encontrado el texto
                     mostrar_cursor=1;
 
-                    ventana->visible_cursor=1;
+                    zxvision_set_visible_cursor(ventana);
 
                     zxvision_set_cursor_line(ventana,i);
 
@@ -10313,6 +10313,20 @@ void zxvision_inc_cursor_line(zxvision_window *ventana)
 void zxvision_dec_cursor_line(zxvision_window *ventana)
 {
     ventana->cursor_line--;
+
+    zxvision_set_flag_dirty_must_draw_contents(ventana);
+}
+
+void zxvision_set_visible_cursor(zxvision_window *ventana)
+{
+    ventana->visible_cursor=1;
+
+    zxvision_set_flag_dirty_must_draw_contents(ventana);
+}
+
+void zxvision_reset_visible_cursor(zxvision_window *ventana)
+{
+    ventana->visible_cursor=0;
 
     zxvision_set_flag_dirty_must_draw_contents(ventana);
 }

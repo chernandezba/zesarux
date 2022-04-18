@@ -4627,7 +4627,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 	    ventana->upper_margin=4;
 	    ventana->lower_margin=4;
-		ventana->visible_cursor=1;
+		zxvision_set_visible_cursor(ventana);
 		strcpy(ventana->geometry_name,"filesel");
 
 		if (menu_filesel_show_utils.v) {
@@ -4824,7 +4824,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				//zona selector de archivos
 
 				debug_printf (VERBOSE_DEBUG,"Read directory. menu_speech_tecla_pulsada=%d",menu_speech_tecla_pulsada);
-				ventana->visible_cursor=1;
+				zxvision_set_visible_cursor(ventana);
 				zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
 
                 //Queremos que actualice la leyenda sobretodo en el caso de fileutils, para mostrar/ocultar
