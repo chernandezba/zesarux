@@ -9266,7 +9266,7 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana
 
 	if (!resizable) zxvision_set_not_resizable(ventana);	
 
-	if (mostrar_cursor) ventana->visible_cursor=1;	
+	if (mostrar_cursor) zxvision_set_visible_cursor(ventana);
 
     ventana->is_minimized=is_minimized;
     ventana->is_maximized=is_maximized;

@@ -4686,7 +4686,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			switch (filesel_zona_pantalla) {
 				case 0:
 				//zona superior de nombre de archivo
-				ventana->visible_cursor=0;
+				zxvision_reset_visible_cursor(ventana);
 		                zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
 				zxvision_draw_window_contents(ventana);
                 		//para que haga lectura del edit box
@@ -5337,7 +5337,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 			case 2:
 				//zona filtros
-				ventana->visible_cursor=0;
+				zxvision_reset_visible_cursor(ventana);
                                 zxvision_menu_print_dir(filesel_archivo_seleccionado,ventana);
 
                                 //para que haga lectura de los filtros
