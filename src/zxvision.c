@@ -10294,6 +10294,26 @@ int zxvision_cursor_out_view(zxvision_window *ventana)
 
 }
 
+void zxvision_set_cursor_line(zxvision_window *ventana,int linea)
+{
+    ventana->cursor_line=linea;
+
+    zxvision_set_flag_dirty_must_draw_contents(ventana);
+}
+
+void zxvision_inc_cursor_line(zxvision_window *ventana)
+{
+    ventana->cursor_line++;
+
+    zxvision_set_flag_dirty_must_draw_contents(ventana);
+}
+
+void zxvision_dec_cursor_line(zxvision_window *ventana)
+{
+    ventana->cursor_line--;
+
+    zxvision_set_flag_dirty_must_draw_contents(ventana);
+}
 
 //Retorna 1 si ha reajustado el cursor
 int zxvision_adjust_cursor_bottom(zxvision_window *ventana)
@@ -10309,7 +10329,8 @@ int zxvision_adjust_cursor_bottom(zxvision_window *ventana)
 		//int cursor=ventana->cursor_line;
 
         //printf ("Reajustar cursor\n");
-        ventana->cursor_line=offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin;
+        zxvision_set_cursor_line(ventana,offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin);
+        //ventana->cursor_line=offset_y+ventana->visible_height-2-ventana->upper_margin-ventana->lower_margin;
         return 1;
 	}
 

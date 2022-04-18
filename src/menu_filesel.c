@@ -1387,7 +1387,7 @@ void zxvision_menu_filesel_localiza_letra(zxvision_window *ventana,char letra)
                 if (letra_minuscula(p->d_name[0])>=letra_minuscula(letra)) {
                         filesel_linea_seleccionada=0;
                         filesel_archivo_seleccionado=i;
-			ventana->cursor_line=i;
+			zxvision_set_cursor_line(ventana,i);
 			zxvision_set_offset_y_or_maximum(ventana,i);
 			//printf ("linea seleccionada en localizacion: %d\n",i);
                         return;
@@ -1414,7 +1414,7 @@ void zxvision_menu_filesel_localiza_archivo(zxvision_window *ventana,char *nombr
                 if (strcasecmp(nombrebuscar,p->d_name)<=0) {
                         filesel_linea_seleccionada=0;
                         filesel_archivo_seleccionado=i;
-						ventana->cursor_line=i;
+						zxvision_set_cursor_line(ventana,i);
 						zxvision_set_offset_y_or_maximum(ventana,i);
                         debug_printf (VERBOSE_DEBUG,"Found at position %d",i);
                         return;
@@ -2569,7 +2569,7 @@ void zxvision_menu_filesel_cursor_arriba(zxvision_window *ventana)
 {
 	//ver que no sea primer archivo
     if (filesel_archivo_seleccionado+filesel_linea_seleccionada!=0) {
-	 ventana->cursor_line--;
+	 zxvision_dec_cursor_line(ventana);
                                                 //ver si es principio de pantalla
                                                 if (filesel_linea_seleccionada==0) {
 							zxvision_send_scroll_up(ventana);
@@ -2603,7 +2603,7 @@ void zxvision_menu_filesel_cursor_abajo(zxvision_window *ventana)
 {
 	//ver que no sea ultimo archivo
 	if (si_menu_filesel_no_mas_alla_ultimo_item(filesel_linea_seleccionada)) {
-		ventana->cursor_line++;
+		zxvision_inc_cursor_line(ventana);
                                                 //ver si es final de pantalla
                                                 if (filesel_linea_seleccionada==zxvision_get_filesel_alto_dir(ventana)-1) {
                                                         filesel_archivo_seleccionado++;
