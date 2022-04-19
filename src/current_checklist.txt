@@ -113,8 +113,6 @@ ok coreaudio, null
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
--probar watermark, reduce 0.75
-
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
@@ -304,20 +302,3 @@ pruebas Z88:
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
 -probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
-pruebas QL
--teclado:
-
-the main thing to check is the character codes - use:
-REP Loop:print code(inkey$(-1))
-
-This will show the character code for each pressed key.
-
-In particular check 
-
-a (97)
-CTRL a (1) 
-and 
-ALT a ( ALT is awkard, it returns 255 plus the character code, so you should see on screen two values, 255 then 97 when you press this combination)
-
--cargar manualmente juegos en memoria mediante load binary
--cargar lbytes mediante emulacion de microdrive&floppy
