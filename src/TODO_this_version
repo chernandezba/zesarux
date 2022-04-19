@@ -122,3 +122,5 @@ En draw window contents solo renderiza si se ha modificado o bien la capa de tex
 
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
 Considerar algun modo de dibujado mas rapido
+
+-menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
