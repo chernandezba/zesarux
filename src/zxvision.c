@@ -9483,7 +9483,8 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
     //printf("max_ancho_texto %d ancho_ventana %d ancho_total_permitido: %d Maximo ancho: %d\n",
     //    max_ancho_texto,ancho_ventana,ancho_total_permitido,ZXVISION_MAX_ANCHO_VENTANA);
 
-	int xventana=menu_center_x()-ancho_ventana/2;
+	//int xventana=menu_center_x()-ancho_ventana/2;
+    int xventana=menu_center_x_from_width(ancho_ventana);
 	int yventana=menu_center_y()-alto_ventana/2;
 
 	if (tooltip_enabled==0) {
