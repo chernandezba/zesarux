@@ -9133,7 +9133,7 @@ int menu_center_x(void)
 	return scr_get_menu_width()/2;
 }
 
-//Retorna inicio x para una nueva ventana considerando ancho
+//Retorna inicio x para una nueva ventana considerando ancho y el centro 
 int menu_center_x_from_width(int ancho_ventana)
 {
 
