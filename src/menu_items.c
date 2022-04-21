@@ -18764,7 +18764,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
 		//printf ("ancho %d alto %d\n",ancho,alto);
 
-        x=menu_center_x()-ancho/2;
+        x=menu_center_x_from_width(ancho);
         y=menu_center_y()-alto/2;
 
 	}		
