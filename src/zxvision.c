@@ -9133,6 +9133,25 @@ int menu_center_x(void)
 	return scr_get_menu_width()/2;
 }
 
+//Retorna inicio x para una nueva ventana considerando ancho
+int menu_center_x_from_width(int ancho_ventana)
+{
+
+    int x_ventana=menu_center_x()-ancho_ventana/2; 
+
+    int ancho_total_menu=scr_get_menu_width();
+
+    //Si sobresale la ventana por la derecha (por ejemplo en caso de zxdesktop habilitado con tamaño 256 y ancho mayor que 32)
+    if (x_ventana+ancho_ventana>=ancho_total_menu) {
+        //printf("Sale de rango. Corrigiendo\n");
+        x_ventana=ancho_total_menu-ancho_ventana;
+        //Por si acaso
+        if (x_ventana<0) x_ventana=0;
+    }
+
+    return x_ventana;
+}
+
 int menu_center_y(void)
 {
 	return scr_get_menu_height()/2;
@@ -13795,7 +13814,7 @@ void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_
 		int ancho_ventana=40;
 
 
-        int x_ventana=menu_center_x()-ancho_ventana/2; 
+        int x_ventana=menu_center_x_from_width(ancho_ventana);
         int y_ventana=menu_center_y()-alto_ventana/2; 
 
         zxvision_new_window(&ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo);
