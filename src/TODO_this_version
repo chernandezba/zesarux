@@ -126,4 +126,6 @@ Considerar algun modo de dibujado mas rapido
 -menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
--con ancho zxdesktop 280, tooltips salen enormes. tambien mensaje error por ejemplo de descarga red fallida
+ok corregido-con ancho zxdesktop 280, tooltips salen enormes. tambien mensaje error por ejemplo de descarga red fallida
+
+-idea para driver pc speaker: en vez de enviar secuencias de 0/1, programar el timer del pcspeaker para generar frecuencia segun ultimo trozo de sonido recibido. Para ello, averiguar cuando empieza y acaba una nota, sacar su frecuencia, y enviar. y pausar el tiempo necesario hasta siguiente nota
