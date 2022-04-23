@@ -3171,7 +3171,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 if (audiopcspeaker_agudo_filtro) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
                     "Minimum","Mínimo","Mínim");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"  [%d us] ",audiopcspeaker_agudo_filtro_limite * 64);                    
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d us] ",audiopcspeaker_agudo_filtro_limite * 64);                    
                 }
                            
 			}				
