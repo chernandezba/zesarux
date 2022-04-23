@@ -209,8 +209,6 @@ void *audiopcspeaker_enviar_audio(void *nada)
 
 		int ofs=0;
 
-		audiopcspeakertiempo_inicial();
-
 
 		//Valor de referencia
 		/*
@@ -255,15 +253,11 @@ Bit 0    Effect
 
 			last_audio_sample=current_audio_sample;
 
-			int tiempo_espera=audiopcspeaker_tiempo_espera;
-
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
 				outb(valor_puerto_original | bit_final_speaker,0x61);
-				tiempo_espera--; //se supone que el out tarda 1 microsegundo
 			}
 
-			//if (tiempo_espera>0) usleep(tiempo_espera);
 
 			bit_anterior_speaker=bit_final_speaker;
 
@@ -275,6 +269,7 @@ Bit 0    Effect
 			if (!audiopcspeaker_intensive_cpu_usage) usleep(1);
 			int tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
 
+			//Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
 			while (tiempo_pasado_usec<64) {
 				//printf("Tiempo usec: %d\n",tiempo_pasado_usec);
 				tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
