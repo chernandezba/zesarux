@@ -258,6 +258,7 @@ Bit 0    Effect
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
                 int enviar_a_speaker=1;
+                audiopcspeaker_agudo_filtro_contador++;
                 if (audiopcspeaker_agudo_filtro) {
                     //Si ha cambiado hace poco, no conmutar
                     if (audiopcspeaker_agudo_filtro_contador<10) enviar_a_speaker=0;
