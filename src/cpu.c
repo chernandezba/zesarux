@@ -7665,15 +7665,10 @@ int parse_cmdline_options(void) {
 			}
 
 			//Setting de pcspeaker siempre compilado, simplemente si no esta, no sale en la ayuda
-			/*else if (!strcmp(argv[puntero_parametro],"--pcspeaker-wait-time")) {
+			//opcion obsoleta. no hacer nada. solo leer valor de parametro
+			else if (!strcmp(argv[puntero_parametro],"--pcspeaker-wait-time")) {
 				siguiente_parametro_argumento();
-				int valor=parse_string_to_number(argv[puntero_parametro]);
-				if (valor<0 || valor>64) {
-					printf ("Invalid wait time value. Must be between 0 and 64\n");
-					exit(1);
-				}
-				audiopcspeaker_tiempo_espera=valor;
-			}*/
+			}
 			
 
 
