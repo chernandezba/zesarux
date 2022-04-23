@@ -261,7 +261,7 @@ Bit 0    Effect
                 audiopcspeaker_agudo_filtro_contador++;
                 if (audiopcspeaker_agudo_filtro) {
                     //Si ha cambiado hace poco, no conmutar
-                    if (audiopcspeaker_agudo_filtro_contador<10) enviar_a_speaker=0;
+                    if (audiopcspeaker_agudo_filtro_contador<3) enviar_a_speaker=0;
                 }
 
                 if (enviar_a_speaker) outb(valor_puerto_original | bit_final_speaker,0x61);
