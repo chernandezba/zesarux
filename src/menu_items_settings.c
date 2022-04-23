@@ -2888,7 +2888,7 @@ void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
 {
     audiopcspeaker_agudo_filtro_limite--;
 
-    if (audiopcspeaker_agudo_filtro_limite<=1) audiopcspeaker_agudo_filtro_limite=15;
+    if (audiopcspeaker_agudo_filtro_limite==0) audiopcspeaker_agudo_filtro_limite=15;
 }
 
 void menu_audio_i8049_chip_present(MENU_ITEM_PARAMETERS)
@@ -3171,7 +3171,8 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 if (audiopcspeaker_agudo_filtro) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
                     "Minimum","Mínimo","Mínim");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d us] ",audiopcspeaker_agudo_filtro_limite * 64);                    
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
+                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);                    
                 }
                            
 			}				
