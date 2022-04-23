@@ -113,9 +113,6 @@ void audiopcspeaker_end(void)
 	audiopcspeaker_thread_finish();
 	audio_playing.v=0;
 
-	//stop_beep();
-
-	//close(ptr_audiopcspeaker);
 }
 
 
@@ -152,7 +149,7 @@ struct timeval audiopcspeakertimer_antes, audiopcspeakertimer_ahora;
 void audiopcspeakertiempo_inicial(void)
 {
 
-        gettimeofday(&audiopcspeakertimer_antes, NULL);
+    gettimeofday(&audiopcspeakertimer_antes, NULL);
 
 }
 
@@ -161,16 +158,16 @@ void audiopcspeakertiempo_inicial(void)
 long audiopcspeakertiempo_final_usec(void)
 {
 
-        long audiopcspeakertimer_time, audiopcspeakertimer_seconds, audiopcspeakertimer_useconds;    
+    long audiopcspeakertimer_time, audiopcspeakertimer_seconds, audiopcspeakertimer_useconds;    
 
-        gettimeofday(&audiopcspeakertimer_ahora, NULL);
+    gettimeofday(&audiopcspeakertimer_ahora, NULL);
 
-        audiopcspeakertimer_seconds  = audiopcspeakertimer_ahora.tv_sec  - audiopcspeakertimer_antes.tv_sec;
-        audiopcspeakertimer_useconds = audiopcspeakertimer_ahora.tv_usec - audiopcspeakertimer_antes.tv_usec;
+    audiopcspeakertimer_seconds  = audiopcspeakertimer_ahora.tv_sec  - audiopcspeakertimer_antes.tv_sec;
+    audiopcspeakertimer_useconds = audiopcspeakertimer_ahora.tv_usec - audiopcspeakertimer_antes.tv_usec;
 
-        audiopcspeakertimer_time = ((audiopcspeakertimer_seconds) * 1000000 + audiopcspeakertimer_useconds);
+    audiopcspeakertimer_time = ((audiopcspeakertimer_seconds) * 1000000 + audiopcspeakertimer_useconds);
 
-        //printf("Elapsed time: %ld milliseconds\n\r", audiopcspeakertimer_mtime);
+    //printf("Elapsed time: %ld milliseconds\n\r", audiopcspeakertimer_mtime);
 
 	return audiopcspeakertimer_time;
 }
@@ -265,11 +262,16 @@ Bit 0    Effect
 			//stereo. Pasamos del otro canal directamente
 			ofs++;
 
-			//Asumimos que al menos hagamos 1 microsegundo de pausa, para no saturar toda la cpu
+			//Asumimos que al menos hagamos 1 microsegundo de pausa, para no saturar toda la cpu,
+            //aunque al hacer este usleep se oye todo peor. Es mejor sin eso, aunque saturamos mas la cpu
 			if (!audiopcspeaker_intensive_cpu_usage) usleep(1);
+
 			int tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
 
 			//Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
+            //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos 
+            //(descontando el tiempo que se tardaba en ejecutar este codigo), pero parece
+            //que en Linux no funcionan bien esas pausas de tan poco tiempo, no son perfectas
 			while (tiempo_pasado_usec<64) {
 				//printf("Tiempo usec: %d\n",tiempo_pasado_usec);
 				tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
