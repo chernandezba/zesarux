@@ -3170,7 +3170,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
                 if (audiopcspeaker_agudo_filtro) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
-                    "Minimum","Mínimo","Mínim");
+                    "Limit","Límite","Límit");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
                         FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);                    
                 }
