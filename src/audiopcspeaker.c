@@ -185,6 +185,11 @@ int audiopcspeaker_esperando_frame=0;
 //Ultimo valor.
 z80_byte bit_anterior_speaker=0;
 
+//Para filtro agudos
+int audiopcspeaker_agudo_filtro=1;
+
+int audiopcspeaker_agudo_filtro_contador=0;
+
 void *audiopcspeaker_enviar_audio(void *nada)
 {
 
@@ -252,8 +257,18 @@ Bit 0    Effect
 
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
-				outb(valor_puerto_original | bit_final_speaker,0x61);
+                int enviar_a_speaker=1;
+                if (audiopcspeaker_agudo_filtro) {
+                    //Si ha cambiado hace poco, no conmutar
+                    if (audiopcspeaker_agudo_filtro_contador<10) enviar_a_speaker=0;
+                }
+
+                if (enviar_a_speaker) outb(valor_puerto_original | bit_final_speaker,0x61);
 			}
+
+            else {
+                audiopcspeaker_agudo_filtro_contador=0;
+            }
 
 
 			bit_anterior_speaker=bit_final_speaker;
