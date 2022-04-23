@@ -3452,7 +3452,7 @@ int util_write_configfile(void)
   if (silence_detector_setting.v)	      ADD_STRING_CONFIG,"--enable-silencedetector");
   else 					      ADD_STRING_CONFIG,"--disable-silencedetector");
 
-                                              ADD_STRING_CONFIG,"--pcspeaker-wait-time %d",audiopcspeaker_tiempo_espera);
+//                                              ADD_STRING_CONFIG,"--pcspeaker-wait-time %d",audiopcspeaker_tiempo_espera);
 
   if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
   if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");

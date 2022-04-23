@@ -316,8 +316,10 @@ int beeper_real_enabled=1;
 
 //Setting para pcspeaker. Lo pongo aquí asi es una variable siempre compilada, y se puede tener un setting
 //de linea de comandos, aunque no esté compilado
+int audiopcspeaker_intensive_cpu_usage=0;
+
 //Tiempo de espera en microsegundos entre cada envio de byte de audio
-int audiopcspeaker_tiempo_espera=8;
+//int audiopcspeaker_tiempo_espera=8;
 
 
 //Listado de instrumentos midi

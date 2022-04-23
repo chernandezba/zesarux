@@ -2871,27 +2871,6 @@ void menu_audio_resample_1bit(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_pcspeaker_wait_time(MENU_ITEM_PARAMETERS)
-{
-
-
-        char string_time[3];
-
-        sprintf (string_time,"%d",audiopcspeaker_tiempo_espera);
-
-        menu_ventana_scanf("Wait time (0-64)",string_time,3);
-
-        int valor_tiempo=parse_string_to_number(string_time);
-
-        if (valor_tiempo<0 || valor_tiempo>64) {
-                                        debug_printf (VERBOSE_ERR,"Invalid value %d",valor_tiempo);
-                                        return;
-        }
-
-        audiopcspeaker_tiempo_espera=valor_tiempo;
-
-
-}
 
 void menu_pcspeaker_intensive_cpu(MENU_ITEM_PARAMETERS)
 {

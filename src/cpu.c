@@ -1643,7 +1643,7 @@ printf (
 
 
 #ifdef COMPILE_PCSPEAKER
-		"--pcspeaker-wait-time       Wait time between every audio byte sent. Values between 0 and 64 microseconds\n"
+//		"--pcspeaker-wait-time       Wait time between every audio byte sent. Values between 0 and 64 microseconds\n"
 #endif
 
 
@@ -7665,7 +7665,7 @@ int parse_cmdline_options(void) {
 			}
 
 			//Setting de pcspeaker siempre compilado, simplemente si no esta, no sale en la ayuda
-			else if (!strcmp(argv[puntero_parametro],"--pcspeaker-wait-time")) {
+			/*else if (!strcmp(argv[puntero_parametro],"--pcspeaker-wait-time")) {
 				siguiente_parametro_argumento();
 				int valor=parse_string_to_number(argv[puntero_parametro]);
 				if (valor<0 || valor>64) {
@@ -7673,7 +7673,7 @@ int parse_cmdline_options(void) {
 					exit(1);
 				}
 				audiopcspeaker_tiempo_espera=valor;
-			}
+			}*/
 			
 
 

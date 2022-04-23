@@ -55,7 +55,6 @@
 
 //static char const * const default_device = "/dev/input/by-path/platform-pcspkr-event-spkr";
 //
-int audiopcspeaker_intensive_cpu_usage=0;
 
 int audiopcspeaker_init(void)
 {
