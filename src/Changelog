@@ -75,7 +75,7 @@ Improved fbdev driver: added setting for double buffer to avoid flickering on me
 Improved fbdev driver: added setting to avoid resolution change on Raspberry Pi full screen mode (--fbdev-no-res-change)
 Improved ZX Spectrum Next emulation: added layer2 priority colour bit
 Improved Audio Chip Piano and Wave Piano: can show all octaves and set piano zoom
-Improved pc speaker audio driver: better sound
+Improved pc speaker audio driver: better sound and high frequency filter
 
 
 Fixed Z80 halt behavior and PC location
