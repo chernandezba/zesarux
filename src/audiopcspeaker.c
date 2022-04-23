@@ -232,6 +232,7 @@ Bit 0    Effect
 			
 			audiopcspeakertiempo_inicial();
 			char current_audio_sample=buffer_playback_pcspeaker[ofs];
+                audiopcspeaker_agudo_filtro_contador++;
 			
 			//Si valor actual es mayor, enviar 1
 			if (current_audio_sample>last_audio_sample) {
@@ -257,19 +258,16 @@ Bit 0    Effect
 
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
-                int enviar_a_speaker=1;
-                audiopcspeaker_agudo_filtro_contador++;
-                if (audiopcspeaker_agudo_filtro) {
-                    //Si ha cambiado hace poco, no conmutar
-                    if (audiopcspeaker_agudo_filtro_contador<3) enviar_a_speaker=0;
-                }
+                		int enviar_a_speaker=1;
+		                if (audiopcspeaker_agudo_filtro) {
+                		    //Si ha cambiado hace poco, no conmutar
+		                    if (audiopcspeaker_agudo_filtro_contador<5) enviar_a_speaker=0;
+                		}
 
-                if (enviar_a_speaker) outb(valor_puerto_original | bit_final_speaker,0x61);
+                		if (enviar_a_speaker) outb(valor_puerto_original | bit_final_speaker,0x61);
+		                audiopcspeaker_agudo_filtro_contador=0;
 			}
 
-            else {
-                audiopcspeaker_agudo_filtro_contador=0;
-            }
 
 
 			bit_anterior_speaker=bit_final_speaker;
