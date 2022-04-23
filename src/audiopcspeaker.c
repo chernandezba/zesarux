@@ -54,6 +54,8 @@
 //#define BASE_SOUND_FRAG_PWR     6
 
 //static char const * const default_device = "/dev/input/by-path/platform-pcspkr-event-spkr";
+//
+int audiopcspeaker_intensive_cpu_usage=0;
 
 int audiopcspeaker_init(void)
 {
@@ -155,23 +157,25 @@ void audiopcspeakertiempo_inicial(void)
 
 }
 
-//Para calcular tiempos funciones. Contar contador despues e imprimir tiempo por pantalla
-int audiopcspeakertiempo_final(void)
+
+//Calcular tiempo pasado en microsegundos
+long audiopcspeakertiempo_final_usec(void)
 {
 
-        long audiopcspeakertimer_mtime, audiopcspeakertimer_seconds, audiopcspeakertimer_useconds;    
+        long audiopcspeakertimer_time, audiopcspeakertimer_seconds, audiopcspeakertimer_useconds;    
 
         gettimeofday(&audiopcspeakertimer_ahora, NULL);
 
         audiopcspeakertimer_seconds  = audiopcspeakertimer_ahora.tv_sec  - audiopcspeakertimer_antes.tv_sec;
         audiopcspeakertimer_useconds = audiopcspeakertimer_ahora.tv_usec - audiopcspeakertimer_antes.tv_usec;
 
-        audiopcspeakertimer_mtime = ((audiopcspeakertimer_seconds) * 1000 + audiopcspeakertimer_useconds/1000.0) + 0.5;
+        audiopcspeakertimer_time = ((audiopcspeakertimer_seconds) * 1000000 + audiopcspeakertimer_useconds);
 
         //printf("Elapsed time: %ld milliseconds\n\r", audiopcspeakertimer_mtime);
 
-	return audiopcspeakertimer_mtime;
+	return audiopcspeakertimer_time;
 }
+
 
 
 
@@ -180,25 +184,6 @@ char *buffer_playback_pcspeaker;
 char last_audio_sample=0;
 
 int audiopcspeaker_esperando_frame=0;
-
-int audiopcspeaker_calibrando_tiempo_espera=0;
-
-void audiopcspeaker_calibrate_tiempo_espera(void)
-{
-	audio_playing.v=0;
-
-	//Esperar que se vaya a bucle de espera
-	usleep(1000000);
-
-	//Y activar calibracion
-
-	audiopcspeaker_calibrando_tiempo_espera=1;
-
-	//Empezamos con wait 0
-	audiopcspeaker_tiempo_espera=0;
-
-	audio_playing.v=1;
-}
 
 
 //Ultimo valor.
@@ -246,6 +231,7 @@ Bit 0    Effect
 		z80_byte bit_final_speaker;
 		for (;len>0;len--) {
 			
+			audiopcspeakertiempo_inicial();
 			char current_audio_sample=buffer_playback_pcspeaker[ofs];
 			
 			//Si valor actual es mayor, enviar 1
@@ -278,45 +264,24 @@ Bit 0    Effect
 				tiempo_espera--; //se supone que el out tarda 1 microsegundo
 			}
 
-			if (tiempo_espera>0) usleep(tiempo_espera);
+			//if (tiempo_espera>0) usleep(tiempo_espera);
 
 			bit_anterior_speaker=bit_final_speaker;
 
 			ofs++;
 			//stereo. Pasamos del otro canal directamente
 			ofs++;
+
+			//Asumimos que al menos hagamos 1 microsegundo de pausa, para no saturar toda la cpu
+			if (!audiopcspeaker_intensive_cpu_usage) usleep(1);
+			int tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
+
+			while (tiempo_pasado_usec<64) {
+				//printf("Tiempo usec: %d\n",tiempo_pasado_usec);
+				tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
+			}
 		}
          
-		int tiempo_pasado_ms=audiopcspeakertiempo_final();
-
-		if (audiopcspeaker_calibrando_tiempo_espera) {
-			int ideal_time=20*FRAMES_VECES_BUFFER_AUDIO; //20 ms*frames
-			debug_printf(VERBOSE_INFO,"Calibrating. Wait time: %d Elapsed time: %d ms ideal: %d ms",audiopcspeaker_tiempo_espera,tiempo_pasado_ms,20*FRAMES_VECES_BUFFER_AUDIO);
-
-			//Si se pasa
-			if (tiempo_pasado_ms>ideal_time) {
-				//Nos quedamos con valor anterior
-				audiopcspeaker_tiempo_espera--;
-				if (audiopcspeaker_tiempo_espera<0) audiopcspeaker_tiempo_espera=0;
-
-				audiopcspeaker_calibrando_tiempo_espera=0;
-
-				debug_printf(VERBOSE_INFO,"End calibration. Wait time parameter: %d",audiopcspeaker_tiempo_espera);
-
-			}
-
-			else {
-				//Seguimos probando
-				audiopcspeaker_tiempo_espera++;
-				if (audiopcspeaker_tiempo_espera>64) {
-					audiopcspeaker_tiempo_espera=64;
-					audiopcspeaker_calibrando_tiempo_espera=0;
-
-					debug_printf(VERBOSE_INFO,"End calibration, reached limit. Wait time parameter: %d",audiopcspeaker_tiempo_espera);
-				}
-
-			}
-		}
 
 		while (audio_playing.v==0 || silence_detection_counter==SILENCE_DETECTION_MAX) {
 				//1 ms

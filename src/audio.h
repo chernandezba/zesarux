@@ -280,6 +280,8 @@ extern void audiodac_set_custom_port(z80_byte valor);
 
 extern int audiopcspeaker_tiempo_espera;
 
+extern int audiopcspeaker_intensive_cpu_usage;
+
 
 struct s_audiobuffer_stats
 {
