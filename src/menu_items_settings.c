@@ -2888,7 +2888,7 @@ void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
 {
     audiopcspeaker_agudo_filtro_limite--;
 
-    if (audiopcspeaker_agudo_filtro_limite<=1) audiopcspeaker_agudo_filtro_limite=20;
+    if (audiopcspeaker_agudo_filtro_limite<=1) audiopcspeaker_agudo_filtro_limite=15;
 }
 
 void menu_audio_i8049_chip_present(MENU_ITEM_PARAMETERS)
