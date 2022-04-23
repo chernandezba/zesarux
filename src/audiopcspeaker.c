@@ -260,7 +260,7 @@ Bit 0    Effect
                 		int enviar_a_speaker=1;
 		                if (audiopcspeaker_agudo_filtro) {
                 		    //Si ha cambiado hace poco, no conmutar
-		                    if (audiopcspeaker_agudo_filtro_contador<5) enviar_a_speaker=0;
+		                    if (audiopcspeaker_agudo_filtro_contador<audiopcspeaker_agudo_filtro_limite) enviar_a_speaker=0;
                 		}
 
                 		if (enviar_a_speaker) outb(valor_puerto_original | bit_final_speaker,0x61);

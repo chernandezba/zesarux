@@ -283,6 +283,7 @@ extern void audiodac_set_custom_port(z80_byte valor);
 extern int audiopcspeaker_intensive_cpu_usage;
 
 extern int audiopcspeaker_agudo_filtro;
+extern int audiopcspeaker_agudo_filtro_limite;
 
 
 struct s_audiobuffer_stats
