@@ -69,13 +69,13 @@ Improved ZX Vision:
 Improved OSD Adventure Keyboard: allow to send space, enter and quotation marks
 Improved OSD Keyboard: allow to use mouse, preserve window geometry
 Improved Keyboard Help: load image automatically when changing machine
+Improved PC Speaker audio driver: better sound quality and high frequency filter
 Improved handling of individual colour palettes modifications (Red, Green, Blue)
 Improved portability of shell scripts
 Improved fbdev driver: added setting for double buffer to avoid flickering on menu (--fbdev-double-buffer)
 Improved fbdev driver: added setting to avoid resolution change on Raspberry Pi full screen mode (--fbdev-no-res-change)
 Improved ZX Spectrum Next emulation: added layer2 priority colour bit
 Improved Audio Chip Piano and Wave Piano: can show all octaves and set piano zoom
-Improved pc speaker audio driver: better sound and high frequency filter
 
 
 Fixed Z80 halt behavior and PC location
@@ -341,7 +341,7 @@ Some other minor bugfixes and improvements
 
 Version 9.1 - Toi Acid Game edition. 26 November 2020
 
-Added pc speaker audio driver (for Linux only)
+Added PC Speaker audio driver (for Linux only)
 Added General Sound emulation
 Added compile setting to disable networking functions
 Added date & time field info to ZSF snapshots
