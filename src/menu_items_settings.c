@@ -3163,15 +3163,15 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
                 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro,NULL,
-                    "PC Speaker acute filter","PC Speaker filtro agudos","PC Speaker filtre aguts");
+                    "PC Speaker Hi Freq filter","PC Speaker Hi Freq filtro","PC Speaker Hi Freq filtre");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_agudo_filtro ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");     
 
                 if (audiopcspeaker_agudo_filtro) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
-                    "PC Speaker acute filter limit","PC Speaker filtro agudos limite","PC Speaker filtre aguts limit");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d us] ",audiopcspeaker_agudo_filtro_limite * 64);                    
+                    "Minimum","Mínimo","Mínim");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"  [%d us] ",audiopcspeaker_agudo_filtro_limite * 64);                    
                 }
                            
 			}				
