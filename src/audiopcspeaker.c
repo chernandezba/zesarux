@@ -185,8 +185,7 @@ int audiopcspeaker_esperando_frame=0;
 //Ultimo valor.
 z80_byte bit_anterior_speaker=0;
 
-//Para filtro agudos
-int audiopcspeaker_agudo_filtro=1;
+
 
 int audiopcspeaker_agudo_filtro_contador=0;
 
