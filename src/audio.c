@@ -319,7 +319,7 @@ int beeper_real_enabled=1;
 int audiopcspeaker_intensive_cpu_usage=0;
 
 //Para filtro agudos
-int audiopcspeaker_agudo_filtro=1;
+int audiopcspeaker_agudo_filtro=0;
 
 //Tiempo de espera en microsegundos entre cada envio de byte de audio
 //int audiopcspeaker_tiempo_espera=8;
