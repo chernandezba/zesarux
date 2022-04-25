@@ -3452,7 +3452,10 @@ int util_write_configfile(void)
   if (silence_detector_setting.v)	      ADD_STRING_CONFIG,"--enable-silencedetector");
   else 					      ADD_STRING_CONFIG,"--disable-silencedetector");
 
-//                                              ADD_STRING_CONFIG,"--pcspeaker-wait-time %d",audiopcspeaker_tiempo_espera);
+  if (audiopcspeaker_intensive_cpu_usage)     ADD_STRING_CONFIG,"--pcspeaker-improved");
+  if (audiopcspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--pcspeaker-hifreq-filter");
+                                              ADD_STRING_CONFIG,"--pcspeaker-hifreq-filter-divider %d",audiopcspeaker_agudo_filtro_limite);
+
 
   if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
   if (mouse_pointer_shown.v==0)               ADD_STRING_CONFIG,"--hidemousepointer");

@@ -3172,7 +3172,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
                     "Limit","Límite","Límit");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
-                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);                    
+                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);
+                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
+                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                 }
                            
 			}				
