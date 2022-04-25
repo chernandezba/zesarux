@@ -129,7 +129,11 @@ void audiopulse_end(void)
 void audiopulse_get_buffer_info (int *buffer_size,int *current_size)
 {
   *buffer_size=AUDIO_BUFFER_SIZE;
-  *current_size=0;
+
+  //realmente no usa un buffer fifo, esto puede ser engañoso porque siempre dice que está lleno el buffer
+  //pero mejor asi que no diga que siempre esta vacio
+  //total esto solo se usa para estadisticas en Core Statistics  
+  *current_size=AUDIO_BUFFER_SIZE;
 }
 
 
