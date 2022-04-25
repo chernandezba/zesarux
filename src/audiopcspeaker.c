@@ -346,6 +346,6 @@ void audiopcspeaker_send_frame(char *buffer)
 void audiopcspeaker_get_buffer_info (int *buffer_size,int *current_size)
 {
   *buffer_size=AUDIO_BUFFER_SIZE*2; //*2 porque es stereo
-  *current_size=AUDIO_BUFFER_SIZE;
+  *current_size=AUDIO_BUFFER_SIZE*2;
 }
 
