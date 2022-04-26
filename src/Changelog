@@ -6,6 +6,7 @@ Added new joystick event to exit ZEsarUX
 Added action to trigger left-right movement on joystick, to play Decathlon-like games
 Added MSX Joystick emulation
 Added Spectravideo Joystick emulation
+Added support for simple speaker output on Raspberry PI Using GPIO pins and no sound card, using the pcspeaker driver
 Added setting to select a different joystick on Windows and OS with SDL driver
 Added setting to change ULA Data bus value
 Added showing microdrive label when expanding qlay mdv files of size 174930 bytes
