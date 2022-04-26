@@ -322,6 +322,8 @@ int audiopcspeaker_intensive_cpu_usage=0;
 int audiopcspeaker_agudo_filtro=0;
 int audiopcspeaker_agudo_filtro_limite=3;
 
+int audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
+
 //Tiempo de espera en microsegundos entre cada envio de byte de audio
 //int audiopcspeaker_tiempo_espera=8;
 
