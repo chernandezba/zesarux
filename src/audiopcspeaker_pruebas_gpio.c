@@ -56,11 +56,35 @@
 //static char const * const default_device = "/dev/input/by-path/platform-pcspkr-event-spkr";
 //
 
+#define GPIO_EXPORT_PATH "/sys/class/gpio/export"
+#define GPIO_UNEXPORT_PATH "/sys/class/gpio/unexport"
+
+int rpi_gpio_pin=22;
+
+int gpio_file_handle;
+
+int audiopcspeaker_init_gpio_path(char *name,char *text)
+{
+    int fd = open(name, O_WRONLY);
+    if (fd == -1) {
+        return 1;
+    }
+
+    int longitud=strlen(text)+1;
+
+    if (write(fd, text, longitud) != longitud) {
+        return 1;
+    }
+
+    close(fd);   
+
+    return 0; 
+}
+
 int audiopcspeaker_init(void)
 {
 
 	//audio_driver_accepts_stereo.v=1;
-
 
 
     debug_printf (VERBOSE_INFO,"Init PC Speaker Audio Driver");
@@ -70,19 +94,45 @@ int audiopcspeaker_init(void)
                 //ptr_audiopcspeaker=open(default_device,O_WRONLY);
 
 
-	//Pedir "permiso" para usar puerto pc speaker
-	if (ioperm(0x61,1,1)) {
-		debug_printf(VERBOSE_ERR,"Error asking permissions on speaker port. You usually need to be root to do this");
-		return 1;
-	}
+    //echo 22 > /sys/class/gpio/export
+    char buffer_gpio[256];
+    sprintf(buffer_gpio,"%d\n",rpi_gpio_pin);
+
+    if (audiopcspeaker_init_gpio_path(GPIO_EXPORT_PATH,buffer_gpio)) {
+        debug_printf(VERBOSE_ERR,"Can not open gpio export device");
+        return 1;
+    }        
 
 
+
+
+    //echo out> /sys/class/gpio/gpio22/direction
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",rpi_gpio_pin);
+    if (audiopcspeaker_init_gpio_path(buffer_gpio,"out")) {
+        debug_printf(VERBOSE_ERR,"Can not set gpio direction. Path: %s",buffer_gpio);
+        return 1;
+    }    
+
+
+    //echo 1 > /sys/class/gpio/gpio22/value
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/value",rpi_gpio_pin);
+    gpio_file_handle = open(buffer_gpio, O_WRONLY);
+    if (gpio_file_handle == -1) {
+        debug_printf(VERBOSE_ERR,"Can not open gpio output port");
+        return 1;
+    }
 
 
 	//Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
 	audio_set_driver_name("pcspeaker");
 
 	return 0;
+
+/*
+
+  303  echo 1 > /sys/class/gpio/gpio22/value
+  304  echo 0 > /sys/class/gpio/gpio22/value
+*/
 
 }
 
@@ -112,6 +162,15 @@ void audiopcspeaker_end(void)
 	debug_printf (VERBOSE_INFO,"Ending pcspeaker audio driver");
 	audiopcspeaker_thread_finish();
 	audio_playing.v=0;
+    close(gpio_file_handle);
+
+    //echo 22 > /sys/class/gpio/unexport
+    char buffer_gpio[256];
+    sprintf(buffer_gpio,"%d\n",rpi_gpio_pin);
+
+    if (audiopcspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
+        debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");
+    }         
 
 }
 
@@ -193,7 +252,15 @@ z80_byte audiopcspeaker_valor_puerto_original;
 
 void audiopcspeaker_send_1bit(z80_byte bit_final_speaker)
 {
-    outb(audiopcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
+    //printf("pc speaker send %d\n",bit_final_speaker);
+    if (bit_final_speaker) {
+        write(gpio_file_handle,"1",1);
+    }
+    else{
+        write(gpio_file_handle,"0",1);
+    }
+    fsync(gpio_file_handle);
+    //printf("after pc speaker send\n");
 }
 
 void *audiopcspeaker_enviar_audio(void *nada)
@@ -228,8 +295,8 @@ Bit 0    Effect
   1      The speaker will be connected to PIT channel 2, bit 1 is
          used as switch ie 0 = not connected, 1 = connected.		
 		*/
-		audiopcspeaker_valor_puerto_original=inb(0x61);
-		audiopcspeaker_valor_puerto_original &=(255-2-1);
+		//audiopcspeaker_valor_puerto_original=inb(0x61);
+		//audiopcspeaker_valor_puerto_original &=(255-2-1);
 
 
 
