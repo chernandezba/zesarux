@@ -129,7 +129,7 @@ int audiopcspeaker_init(void)
 
     //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
 #ifdef EMULATE_RASPBERRY    
-    audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
+    audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
     debug_printf (VERBOSE_WARN,"Setting Speaker type to GPIO");
 #endif
 
