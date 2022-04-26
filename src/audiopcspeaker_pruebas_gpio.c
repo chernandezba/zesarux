@@ -67,12 +67,14 @@ int audiopcspeaker_init_gpio_path(char *name,char *text)
 {
     int fd = open(name, O_WRONLY);
     if (fd == -1) {
+        debug_printf(VERBOSE_ERR,"Error opening %s. Errno: %d : %s",name,errno,strerror(errno));
         return 1;
     }
 
     int longitud=strlen(text)+1;
 
     if (write(fd, text, longitud) != longitud) {
+        debug_printf(VERBOSE_ERR,"Error writing to %s",name);
         return 1;
     }
 
@@ -81,19 +83,8 @@ int audiopcspeaker_init_gpio_path(char *name,char *text)
     return 0; 
 }
 
-int audiopcspeaker_init(void)
+int raspberry_gpio_init(void)
 {
-
-	//audio_driver_accepts_stereo.v=1;
-
-
-    debug_printf (VERBOSE_INFO,"Init PC Speaker Audio Driver");
-
-
-	//Metodo alternativo era usando el device default_device y enviando eventos, pero eso solo gestiona frecuencias
-                //ptr_audiopcspeaker=open(default_device,O_WRONLY);
-
-
     //echo 22 > /sys/class/gpio/export
     char buffer_gpio[256];
     sprintf(buffer_gpio,"%d\n",rpi_gpio_pin);
@@ -104,11 +95,12 @@ int audiopcspeaker_init(void)
     }        
 
 
-
+	//Pausa de 0.1 segundo. Necesaria para que aparezca el device de gpi direction
+	usleep(100000);
 
     //echo out> /sys/class/gpio/gpio22/direction
     sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",rpi_gpio_pin);
-    if (audiopcspeaker_init_gpio_path(buffer_gpio,"out")) {
+    if (audiopcspeaker_init_gpio_path(buffer_gpio,"out\n")) {
         debug_printf(VERBOSE_ERR,"Can not set gpio direction. Path: %s",buffer_gpio);
         return 1;
     }    
@@ -122,17 +114,29 @@ int audiopcspeaker_init(void)
         return 1;
     }
 
+    return 0;
+}
+
+int audiopcspeaker_init(void)
+{
+
+	//audio_driver_accepts_stereo.v=1;
+
+
+    debug_printf (VERBOSE_INFO,"Init PC Speaker Audio Driver");
+
+
+    int retorno=raspberry_gpio_init();
+
+    if (retorno) return retorno;
+
+
 
 	//Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
 	audio_set_driver_name("pcspeaker");
 
 	return 0;
 
-/*
-
-  303  echo 1 > /sys/class/gpio/gpio22/value
-  304  echo 0 > /sys/class/gpio/gpio22/value
-*/
 
 }
 
