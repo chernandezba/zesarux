@@ -1643,6 +1643,7 @@ printf (
 
 
 #ifdef COMPILE_PCSPEAKER
+        "--pcspeaker-type t                   Define Speaker type for PC Speaker driver (0=PC Speaker,1=Raspberry PI GPIO)\n"
         "--pcspeaker-improved                 Improved PC Speaker sound but uses more cpu\n"
         "--pcspeaker-hifreq-filter            Enable filter on PC Speaker to avoid high frequency sounds\n"
         "--pcspeaker-hifreq-filter-divider n  Set the divider value for the PC Speaker hi freq filter. Accepted values from 1 to 15. Final frequency will be 15600/2/n Hz\n"
@@ -7691,6 +7692,18 @@ int parse_cmdline_options(void) {
                         exit(1);
                 }
                 audiopcspeaker_agudo_filtro_limite=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--pcspeaker-type")) {
+                siguiente_parametro_argumento();
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+
+                if (valor!=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO) {
+                        printf ("Invalid value for --pcspeaker-type\n");
+                        exit(1);
+                }             
+
+                audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
             }
 			
 

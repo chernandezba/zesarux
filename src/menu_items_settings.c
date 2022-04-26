@@ -2893,12 +2893,17 @@ void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
 
 void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
 {
+
+    audio_end();
+
     if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER) {
         audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
     }
     else {
         audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
     }
+
+    audio_init();
 }
 
 void menu_audio_i8049_chip_present(MENU_ITEM_PARAMETERS)
