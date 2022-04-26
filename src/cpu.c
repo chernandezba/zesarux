@@ -7703,7 +7703,7 @@ int parse_cmdline_options(void) {
                         exit(1);
                 }             
 
-                audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
+                audiopcspeaker_tipo_altavoz=valor;
             }
 			
 
