@@ -2917,7 +2917,7 @@ void menu_pcspeaker_gpio_pin(MENU_ITEM_PARAMETERS)
 
     audio_end();
 
-    int audiopcspeaker_rpi_gpio_pin=valor;
+    audiopcspeaker_rpi_gpio_pin=valor;
 
     audio_init();
 }
