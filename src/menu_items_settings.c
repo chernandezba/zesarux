@@ -2906,6 +2906,22 @@ void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
     audio_init();
 }
 
+
+
+void menu_pcspeaker_gpio_pin(MENU_ITEM_PARAMETERS)
+{
+
+    int valor=audiopcspeaker_rpi_gpio_pin;
+
+    menu_ventana_scanf_numero_enhanced("Raspberry GPIO Pin number",&valor,3,+1,0,99,0);
+
+    audio_end();
+
+    int audiopcspeaker_rpi_gpio_pin=valor;
+
+    audio_init();
+}
+
 void menu_audio_i8049_chip_present(MENU_ITEM_PARAMETERS)
 {
     i8049_chip_present ^= 1;
@@ -3174,6 +3190,12 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
                     (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
+
+                if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO) {
+                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_gpio_pin,NULL,
+                        "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audiopcspeaker_rpi_gpio_pin);                    
+                }
 
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_intensive_cpu,NULL,

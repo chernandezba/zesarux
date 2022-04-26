@@ -324,6 +324,8 @@ int audiopcspeaker_agudo_filtro_limite=3;
 
 int audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
 
+int audiopcspeaker_rpi_gpio_pin=22;
+
 //Tiempo de espera en microsegundos entre cada envio de byte de audio
 //int audiopcspeaker_tiempo_espera=8;
 

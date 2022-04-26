@@ -62,7 +62,7 @@
 #define GPIO_EXPORT_PATH "/sys/class/gpio/export"
 #define GPIO_UNEXPORT_PATH "/sys/class/gpio/unexport"
 
-int rpi_gpio_pin=22;
+
 
 int gpio_file_handle;
 
@@ -90,7 +90,7 @@ int raspberry_gpio_init(void)
 {
     //echo 22 > /sys/class/gpio/export
     char buffer_gpio[256];
-    sprintf(buffer_gpio,"%d\n",rpi_gpio_pin);
+    sprintf(buffer_gpio,"%d\n",audiopcspeaker_rpi_gpio_pin);
 
     if (audiopcspeaker_init_gpio_path(GPIO_EXPORT_PATH,buffer_gpio)) {
         debug_printf(VERBOSE_ERR,"Can not open gpio export device");
@@ -102,7 +102,7 @@ int raspberry_gpio_init(void)
 	usleep(100000);
 
     //echo out> /sys/class/gpio/gpio22/direction
-    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",rpi_gpio_pin);
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",audiopcspeaker_rpi_gpio_pin);
     if (audiopcspeaker_init_gpio_path(buffer_gpio,"out\n")) {
         debug_printf(VERBOSE_ERR,"Can not set gpio direction. Path: %s",buffer_gpio);
         return 1;
@@ -110,7 +110,7 @@ int raspberry_gpio_init(void)
 
 
     //echo 1 > /sys/class/gpio/gpio22/value
-    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/value",rpi_gpio_pin);
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/value",audiopcspeaker_rpi_gpio_pin);
     gpio_file_handle = open(buffer_gpio, O_WRONLY);
     if (gpio_file_handle == -1) {
         debug_printf(VERBOSE_ERR,"Can not open gpio output port");
@@ -194,7 +194,7 @@ void audiopcspeaker_end(void)
 
         //echo 22 > /sys/class/gpio/unexport
         char buffer_gpio[256];
-        sprintf(buffer_gpio,"%d\n",rpi_gpio_pin);
+        sprintf(buffer_gpio,"%d\n",audiopcspeaker_rpi_gpio_pin);
 
         if (audiopcspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
             debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");

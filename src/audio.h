@@ -288,6 +288,7 @@ extern int audiopcspeaker_intensive_cpu_usage;
 extern int audiopcspeaker_agudo_filtro;
 extern int audiopcspeaker_agudo_filtro_limite;
 extern int audiopcspeaker_tipo_altavoz;
+extern int audiopcspeaker_rpi_gpio_pin;
 
 struct s_audiobuffer_stats
 {
