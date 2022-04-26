@@ -125,9 +125,14 @@ int audiopcspeaker_init(void)
 
 	//audio_driver_accepts_stereo.v=1;
 
-
-
     debug_printf (VERBOSE_INFO,"Init PC Speaker Audio Driver");
+
+    //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
+#ifdef EMULATE_RASPBERRY    
+    audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
+    debug_printf (VERBOSE_WARN,"Setting Speaker type to GPIO");
+#endif
+
 
 
 	//Metodo alternativo era usando el device default_device y enviando eventos, pero eso solo gestiona frecuencias

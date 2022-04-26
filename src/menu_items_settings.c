@@ -2891,6 +2891,16 @@ void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
     if (audiopcspeaker_agudo_filtro_limite==0) audiopcspeaker_agudo_filtro_limite=15;
 }
 
+void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
+{
+    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER) {
+        audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
+    }
+    else {
+        audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
+    }
+}
+
 void menu_audio_i8049_chip_present(MENU_ITEM_PARAMETERS)
 {
     i8049_chip_present ^= 1;
@@ -3155,6 +3165,12 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 			if (!strcmp(audio_new_driver_name,"pcspeaker")) {
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
+                    "Speaker Type","Tipo Speaker","Tipus Speaker");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
+                    (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
+
+
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_intensive_cpu,NULL,
                     "Improved PC Speaker","PC Speaker mejorado","PC Speaker millorat");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_intensive_cpu_usage ? 'X' : ' ' ));
@@ -3175,7 +3191,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                         FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);
                     menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                     menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
-                }
+                }            
                            
 			}				
 	
