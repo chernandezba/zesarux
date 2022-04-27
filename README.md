@@ -163,7 +163,7 @@ __FEATURES__
 
 * Uses Video drivers: X-Windows, SDL, Cocoa (Mac OS X), Framebuffer, ncurses, aalib, cacalib, stdout(console), simpletext(console)
 
-* Uses Audio Drivers: PulseAudio, Alsa, SDL, DSP(OSS), PC Speaker, CoreAudio (Mac OS X). 
+* Uses Audio Drivers: PulseAudio, Alsa, SDL, DSP(OSS), One Bit Speaker (PC Speaker and Raspberry Pi GPIO speaker), CoreAudio (Mac OS X). 
 
 * Supports dumping audio & video to file
 

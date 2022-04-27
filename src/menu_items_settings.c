@@ -3187,7 +3187,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
                 menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_item_menu(array_menu_settings_audio,"One Bit Speaker driver settings",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"One Bit Speaker settings",MENU_OPCION_SEPARADOR,NULL,NULL);
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");

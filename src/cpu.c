@@ -1643,10 +1643,10 @@ printf (
 
 
 #ifdef COMPILE_ONEBITSPEAKER
-        "--pcspeaker-type t                   Define Speaker type for PC Speaker driver (0=PC Speaker,1=Raspberry PI GPIO)\n"
-        "--pcspeaker-improved                 Improved PC Speaker sound but uses more cpu\n"
-        "--pcspeaker-hifreq-filter            Enable filter on PC Speaker to avoid high frequency sounds\n"
-        "--pcspeaker-hifreq-filter-divider n  Set the divider value for the PC Speaker hi freq filter. Accepted values from 1 to 15. Final frequency will be 15600/2/n Hz\n"
+        "--onebitspeaker-type t                   Define Speaker type for One Bit Speaker driver (0=PC Speaker,1=Raspberry PI GPIO)\n"
+        "--onebitspeaker-improved                 Improved One Bit Speaker sound but uses more cpu\n"
+        "--onebitspeaker-hifreq-filter            Enable filter on One Bit Speaker to avoid high frequency sounds\n"
+        "--onebitspeaker-hifreq-filter-divider n  Set the divider value for the One Bit Speaker hi freq filter. Accepted values from 1 to 15. Final frequency will be 15600/2/n Hz\n"
 
 #endif
 
@@ -7668,38 +7668,54 @@ int parse_cmdline_options(void) {
 				silence_detector_setting.v=0;
 			}
 
-			//opcion obsoleta. no hacer nada. solo leer valor de parametro
+			//opciones obsoletas pc speaker. no hacer nada. solo leer valor de parametro
 			else if (!strcmp(argv[puntero_parametro],"--pcspeaker-wait-time")) {
 				siguiente_parametro_argumento();
 			}
 
-            //Settings de pcspeaker siempre compilados, simplemente si no estan, no salen en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--pcspeaker-improved")) {
-                audiopcspeaker_intensive_cpu_usage=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--pcspeaker-hifreq-filter")) {
-                audiopcspeaker_agudo_filtro=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--pcspeaker-hifreq-filter-divider")) {
+                siguiente_parametro_argumento();
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--pcspeaker-type")) {
+                siguiente_parametro_argumento();
+            }
+            //fin opciones obsoletas pc speaker
+
+
+            //Settings de pcspeaker siempre compilados, simplemente si no estan, no salen en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-improved")) {
+                audiopcspeaker_intensive_cpu_usage=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-hifreq-filter")) {
+                audiopcspeaker_agudo_filtro=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-hifreq-filter-divider")) {
 
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor<1 || valor>15) {
-                        printf ("Invalid value for pcspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
+                        printf ("Invalid value for onebitspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
                         exit(1);
                 }
                 audiopcspeaker_agudo_filtro_limite=valor;
             }
 
-            else if (!strcmp(argv[puntero_parametro],"--pcspeaker-type")) {
+            else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-type")) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
                 if (valor!=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
-                        printf ("Invalid value for --pcspeaker-type\n");
+                        printf ("Invalid value for --onebitspeaker-type\n");
                         exit(1);
                 }             
 
