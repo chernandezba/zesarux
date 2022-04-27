@@ -3186,6 +3186,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"One Bit Speaker driver settings",MENU_OPCION_SEPARADOR,NULL,NULL);
+
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
@@ -3199,14 +3202,14 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_intensive_cpu,NULL,
-                    "Improved PC Speaker","PC Speaker mejorado","PC Speaker millorat");
+                    "Improved sound","Sonido mejorado","So millorat");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_intensive_cpu_usage ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Improved sound but uses more cpu");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Improved sound but uses more cpu");
 
                 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro,NULL,
-                    "PC Speaker Hi Freq filter","PC Speaker Hi Freq filtro","PC Speaker Hi Freq filtre");
+                    "Hi Freq filter","Hi Freq filtro","Hi Freq filtre");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_agudo_filtro ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");     
@@ -3218,7 +3221,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                         FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);
                     menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                     menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
-                }            
+                }   
+
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);         
                            
 			}				
 	
