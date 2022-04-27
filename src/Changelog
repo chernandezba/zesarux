@@ -6,7 +6,7 @@ Added new joystick event to exit ZEsarUX
 Added action to trigger left-right movement on joystick, to play Decathlon-like games
 Added MSX Joystick emulation
 Added Spectravideo Joystick emulation
-Added support for simple speaker output on Raspberry PI Using GPIO pins and no sound card, using the pcspeaker driver
+Added support for simple speaker output on Raspberry PI Using GPIO pins and no sound card
 Added setting to select a different joystick on Windows and OS with SDL driver
 Added setting to change ULA Data bus value
 Added showing microdrive label when expanding qlay mdv files of size 174930 bytes
@@ -67,6 +67,7 @@ Improved ZX Vision:
 -ZX Desktop: allow to set a background SCR file
 -ZX Desktop: added setting to disable ZX Desktop when going to full screen 
 
+Improved PC Speaker Driver: now there is a new driver "onebitspeaker" which can handle both PC Speaker and Raspberry PI GPIO speaker
 Improved OSD Adventure Keyboard: allow to send space, enter and quotation marks
 Improved OSD Keyboard: allow to use mouse, preserve window geometry
 Improved Keyboard Help: load image automatically when changing machine
