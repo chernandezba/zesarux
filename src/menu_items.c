@@ -142,7 +142,7 @@
 #endif
 
 
-#ifdef COMPILE_PCSPEAKER
+#ifdef COMPILE_ONEBITSPEAKER
 #include "audioonebitspeaker.h"
 #endif
 

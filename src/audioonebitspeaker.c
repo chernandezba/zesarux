@@ -156,7 +156,7 @@ int audiopcspeaker_init(void)
 
 
 	//Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
-	audio_set_driver_name("pcspeaker");
+	audio_set_driver_name("onebitspeaker");
 
 	return 0;
 

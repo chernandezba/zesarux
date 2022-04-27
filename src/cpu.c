@@ -190,7 +190,7 @@
 #include "audiodsp.h"
 #endif
 
-#ifdef COMPILE_PCSPEAKER
+#ifdef COMPILE_ONEBITSPEAKER
 #include "audioonebitspeaker.h"
 #endif
 
@@ -1411,8 +1411,8 @@ void cpu_help(void)
         printf ("dsp ");
 #endif
 
-#ifdef COMPILE_PCSPEAKER
-        printf ("pcspeaker ");
+#ifdef COMPILE_ONEBITSPEAKER
+        printf ("onebitspeaker ");
 #endif
 
 #ifdef COMPILE_COREAUDIO
@@ -1642,7 +1642,7 @@ printf (
 		"--disable-silencedetector   Disable silence detector. Silence detector is disabled by default\n"
 
 
-#ifdef COMPILE_PCSPEAKER
+#ifdef COMPILE_ONEBITSPEAKER
         "--pcspeaker-type t                   Define Speaker type for PC Speaker driver (0=PC Speaker,1=Raspberry PI GPIO)\n"
         "--pcspeaker-improved                 Improved PC Speaker sound but uses more cpu\n"
         "--pcspeaker-hifreq-filter            Enable filter on PC Speaker to avoid high frequency sounds\n"
@@ -2456,7 +2456,7 @@ int set_audiodriver_dsp(void) {
 #endif
 
 
-#ifdef COMPILE_PCSPEAKER
+#ifdef COMPILE_ONEBITSPEAKER
 int set_audiodriver_pcspeaker(void) {
                         audio_init=audiopcspeaker_init;
                         audio_send_frame=audiopcspeaker_send_frame;
@@ -5305,9 +5305,9 @@ void main_init_audio(void)
                 }
 #endif
 
-#ifdef COMPILE_PCSPEAKER
-                add_audio_init_array("pcspeaker",audiopcspeaker_init,set_audiodriver_pcspeaker);
-                if (!strcmp(driver_audio,"pcspeaker")) {
+#ifdef COMPILE_ONEBITSPEAKER
+                add_audio_init_array("onebitspeaker",audiopcspeaker_init,set_audiodriver_pcspeaker);
+                if (!strcmp(driver_audio,"onebitspeaker")) {
                         set_audiodriver_pcspeaker();
 
                 }
@@ -5979,8 +5979,8 @@ int parse_cmdline_options(void) {
                                 if (!strcmp(driver_audio,"dsp")) driveraook=1;
 #endif
 
-#ifdef COMPILE_PCSPEAKER
-                                if (!strcmp(driver_audio,"pcspeaker")) driveraook=1;
+#ifdef COMPILE_ONEBITSPEAKER
+                                if (!strcmp(driver_audio,"onebitspeaker")) driveraook=1;
 #endif
 
 #ifdef COMPILE_SDL

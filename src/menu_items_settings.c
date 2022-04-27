@@ -138,7 +138,7 @@
 #endif
 
 
-#ifdef COMPILE_PCSPEAKER
+#ifdef COMPILE_ONEBITSPEAKER
 #include "audioonebitspeaker.h"
 #endif
 
@@ -3185,7 +3185,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
 
 
-			if (!strcmp(audio_new_driver_name,"pcspeaker")) {
+			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
