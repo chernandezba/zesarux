@@ -33,7 +33,7 @@
 
 
 
-#include "audiopcspeaker.h"
+#include "audioonebitspeaker.h"
 #include "cpu.h"
 #include "audio.h"
 #include "compileoptions.h"
@@ -129,7 +129,7 @@ int audiopcspeaker_init(void)
 
     //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
 #ifdef EMULATE_RASPBERRY    
-    audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO;
+    audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
     debug_printf (VERBOSE_WARN,"Setting Speaker type to GPIO");
 #endif
 
@@ -138,7 +138,7 @@ int audiopcspeaker_init(void)
 	//Metodo alternativo era usando el device default_device y enviando eventos, pero eso solo gestiona frecuencias
                 //ptr_audiopcspeaker=open(default_device,O_WRONLY);
 
-    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER) {
+    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
 	    //Pedir "permiso" para usar puerto pc speaker
 	    if (ioperm(0x61,1,1)) {
     		debug_printf(VERBOSE_ERR,"Error asking permissions on speaker port. You usually need to be root to do this");
@@ -189,7 +189,7 @@ void audiopcspeaker_end(void)
 	audiopcspeaker_thread_finish();
 	audio_playing.v=0;
 
-     if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO) {
+     if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
         close(gpio_file_handle);
 
         //echo 22 > /sys/class/gpio/unexport
@@ -281,7 +281,7 @@ z80_byte audiopcspeaker_valor_puerto_original;
 
 void audiopcspeaker_send_1bit(z80_byte bit_final_speaker)
 {
-    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER) {
+    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
         outb(audiopcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
     }
     else {
@@ -328,7 +328,7 @@ Bit 0    Effect
   1      The speaker will be connected to PIT channel 2, bit 1 is
          used as switch ie 0 = not connected, 1 = connected.		
 		*/
-        if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER) {
+        if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
 		    audiopcspeaker_valor_puerto_original=inb(0x61);
 		    audiopcspeaker_valor_puerto_original &=(255-2-1);
         }

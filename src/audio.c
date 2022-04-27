@@ -314,7 +314,7 @@ int buffer_beeper[MAX_BEEPER_ARRAY_LENGTH];
 int beeper_real_enabled=1;
 
 
-//Setting para pcspeaker. Lo pongo aquí asi es una variable siempre compilada, y se puede tener un setting
+//Setting para drivers onebitspeaker. Lo pongo aquí asi es una variable siempre compilada, y se puede tener un setting
 //de linea de comandos, aunque no esté compilado
 int audiopcspeaker_intensive_cpu_usage=0;
 
@@ -322,7 +322,7 @@ int audiopcspeaker_intensive_cpu_usage=0;
 int audiopcspeaker_agudo_filtro=0;
 int audiopcspeaker_agudo_filtro_limite=3;
 
-int audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER;
+int audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
 
 int audiopcspeaker_rpi_gpio_pin=22;
 

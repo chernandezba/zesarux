@@ -191,7 +191,7 @@
 #endif
 
 #ifdef COMPILE_PCSPEAKER
-#include "audiopcspeaker.h"
+#include "audioonebitspeaker.h"
 #endif
 
 #ifdef COMPILE_SDL
@@ -7698,7 +7698,7 @@ int parse_cmdline_options(void) {
                 siguiente_parametro_argumento();
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 
-                if (valor!=TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO) {
+                if (valor!=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                         printf ("Invalid value for --pcspeaker-type\n");
                         exit(1);
                 }             

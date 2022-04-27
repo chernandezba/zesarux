@@ -33,7 +33,7 @@
 
 
 
-#include "audiopcspeaker.h"
+#include "audioonebitspeaker.h"
 #include "cpu.h"
 #include "audio.h"
 #include "compileoptions.h"

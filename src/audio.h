@@ -280,8 +280,8 @@ extern void audiodac_set_custom_port(z80_byte valor);
 
 //extern int audiopcspeaker_tiempo_espera;
 
-#define TIPO_ALTAVOZ_PCSPEAKER_PCSPEAKER 0
-#define TIPO_ALTAVOZ_PCSPEAKER_RPI_GPIO 1
+#define TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER 0
+#define TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO 1
 
 extern int audiopcspeaker_intensive_cpu_usage;
 
