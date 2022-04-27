@@ -19,8 +19,8 @@
 
 */
 
-#ifndef AUDIOPCSPEAKER_H
-#define AUDIOPCSPEAKER_H
+#ifndef AUDIOONEBITSPEAKER_H
+#define AUDIOONEBITSPEAKER_H
 
 #include "cpu.h"
 
