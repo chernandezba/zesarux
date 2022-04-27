@@ -125,7 +125,7 @@ int audiopcspeaker_init(void)
 
 	//audio_driver_accepts_stereo.v=1;
 
-    debug_printf (VERBOSE_INFO,"Init PC Speaker Audio Driver");
+    debug_printf (VERBOSE_INFO,"Init One Bit Speaker Audio Driver");
 
     //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
 #ifdef EMULATE_RASPBERRY    
