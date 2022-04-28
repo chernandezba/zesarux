@@ -7695,7 +7695,7 @@ int parse_cmdline_options(void) {
             }
 
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-hifreq-filter")) {
-                audiopcspeaker_agudo_filtro=1;
+                audioonebitspeaker_agudo_filtro=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-hifreq-filter-divider")) {
@@ -7707,7 +7707,7 @@ int parse_cmdline_options(void) {
                         printf ("Invalid value for onebitspeaker-hifreq-filter-divider. Accepted values from 1 to 15\n");
                         exit(1);
                 }
-                audiopcspeaker_agudo_filtro_limite=valor;
+                audioonebitspeaker_agudo_filtro_limite=valor;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-type")) {

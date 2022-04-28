@@ -285,8 +285,8 @@ extern void audiodac_set_custom_port(z80_byte valor);
 
 extern int audioonebitspeaker_intensive_cpu_usage;
 
-extern int audiopcspeaker_agudo_filtro;
-extern int audiopcspeaker_agudo_filtro_limite;
+extern int audioonebitspeaker_agudo_filtro;
+extern int audioonebitspeaker_agudo_filtro_limite;
 extern int audiopcspeaker_tipo_altavoz;
 extern int audiopcspeaker_rpi_gpio_pin;
 

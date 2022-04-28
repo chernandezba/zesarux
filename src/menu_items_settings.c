@@ -2881,14 +2881,14 @@ void menu_pcspeaker_intensive_cpu(MENU_ITEM_PARAMETERS)
 
 void menu_pcspeaker_agudo_filtro(MENU_ITEM_PARAMETERS)
 {
-    audiopcspeaker_agudo_filtro ^=1;
+    audioonebitspeaker_agudo_filtro ^=1;
 }
 
 void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
 {
-    audiopcspeaker_agudo_filtro_limite--;
+    audioonebitspeaker_agudo_filtro_limite--;
 
-    if (audiopcspeaker_agudo_filtro_limite==0) audiopcspeaker_agudo_filtro_limite=15;
+    if (audioonebitspeaker_agudo_filtro_limite==0) audioonebitspeaker_agudo_filtro_limite=15;
 }
 
 void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
@@ -3210,15 +3210,15 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro,NULL,
                     "Hi Freq filter","Hi Freq filtro","Hi Freq filtre");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_agudo_filtro ? 'X' : ' ' ));
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_agudo_filtro ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");     
 
-                if (audiopcspeaker_agudo_filtro) {
+                if (audioonebitspeaker_agudo_filtro) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
                     "Limit","Límite","Límit");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
-                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audiopcspeaker_agudo_filtro_limite);
+                        FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audioonebitspeaker_agudo_filtro_limite);
                     menu_add_item_menu_tooltip(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                     menu_add_item_menu_ayuda(array_menu_settings_audio,"Any sound with a frequency higher than this will not be heard");
                 }   

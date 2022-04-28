@@ -237,7 +237,7 @@ z80_byte bit_anterior_speaker=0;
 
 
 
-int audiopcspeaker_agudo_filtro_contador=0;
+int audioonebitspeaker_agudo_filtro_contador=0;
 
 z80_byte audiopcspeaker_valor_puerto_original;
 
@@ -302,7 +302,7 @@ Bit 0    Effect
 			
 			audiopcspeakertiempo_inicial();
 			char current_audio_sample=buffer_playback_pcspeaker[ofs];
-                audiopcspeaker_agudo_filtro_contador++;
+                audioonebitspeaker_agudo_filtro_contador++;
 			
 			//Si valor actual es mayor, enviar 1
 			if (current_audio_sample>last_audio_sample) {
@@ -329,13 +329,13 @@ Bit 0    Effect
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
                 int enviar_a_speaker=1;
-                if (audiopcspeaker_agudo_filtro) {
+                if (audioonebitspeaker_agudo_filtro) {
                     //Si ha cambiado hace poco, no conmutar
-                    if (audiopcspeaker_agudo_filtro_contador<=audiopcspeaker_agudo_filtro_limite) enviar_a_speaker=0;
+                    if (audioonebitspeaker_agudo_filtro_contador<=audioonebitspeaker_agudo_filtro_limite) enviar_a_speaker=0;
                 }
 
                 if (enviar_a_speaker) audiopcspeaker_send_1bit(bit_final_speaker);
-                audiopcspeaker_agudo_filtro_contador=0;
+                audioonebitspeaker_agudo_filtro_contador=0;
 			}
 
 

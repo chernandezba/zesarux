@@ -3453,8 +3453,8 @@ int util_write_configfile(void)
   else 					      ADD_STRING_CONFIG,"--disable-silencedetector");
 
   if (audioonebitspeaker_intensive_cpu_usage)     ADD_STRING_CONFIG,"--onebitspeaker-improved");
-  if (audiopcspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter");
-                                              ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audiopcspeaker_agudo_filtro_limite);
+  if (audioonebitspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter");
+                                              ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audioonebitspeaker_agudo_filtro_limite);
                                               ADD_STRING_CONFIG,"--onebitspeaker-type %d",audiopcspeaker_tipo_altavoz);        
 
 
