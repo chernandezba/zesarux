@@ -2875,7 +2875,7 @@ void menu_audio_resample_1bit(MENU_ITEM_PARAMETERS)
 void menu_pcspeaker_intensive_cpu(MENU_ITEM_PARAMETERS)
 {
 
-    audiopcspeaker_intensive_cpu_usage ^=1;
+    audioonebitspeaker_intensive_cpu_usage ^=1;
 
 }
 
@@ -3203,7 +3203,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_intensive_cpu,NULL,
                     "Improved sound","Sonido mejorado","So millorat");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audiopcspeaker_intensive_cpu_usage ? 'X' : ' ' ));
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_intensive_cpu_usage ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Improved sound but uses more cpu");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Improved sound but uses more cpu");
 

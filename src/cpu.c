@@ -7691,7 +7691,7 @@ int parse_cmdline_options(void) {
 
             //Settings de pcspeaker siempre compilados, simplemente si no estan, no salen en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-improved")) {
-                audiopcspeaker_intensive_cpu_usage=1;
+                audioonebitspeaker_intensive_cpu_usage=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--onebitspeaker-hifreq-filter")) {

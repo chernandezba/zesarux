@@ -316,7 +316,7 @@ int beeper_real_enabled=1;
 
 //Setting para drivers onebitspeaker. Lo pongo aquí asi es una variable siempre compilada, y se puede tener un setting
 //de linea de comandos, aunque no esté compilado
-int audiopcspeaker_intensive_cpu_usage=0;
+int audioonebitspeaker_intensive_cpu_usage=0;
 
 //Para filtro agudos
 int audiopcspeaker_agudo_filtro=0;

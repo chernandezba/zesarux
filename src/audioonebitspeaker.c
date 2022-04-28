@@ -348,7 +348,7 @@ Bit 0    Effect
 
 			//Asumimos que al menos hagamos 1 microsegundo de pausa, para no saturar toda la cpu,
             //aunque al hacer este usleep se oye todo peor. Es mejor sin eso, aunque saturamos mas la cpu
-			if (!audiopcspeaker_intensive_cpu_usage) usleep(1);
+			if (!audioonebitspeaker_intensive_cpu_usage) usleep(1);
 
 			int tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
 

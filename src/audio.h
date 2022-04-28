@@ -283,7 +283,7 @@ extern void audiodac_set_custom_port(z80_byte valor);
 #define TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER 0
 #define TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO 1
 
-extern int audiopcspeaker_intensive_cpu_usage;
+extern int audioonebitspeaker_intensive_cpu_usage;
 
 extern int audiopcspeaker_agudo_filtro;
 extern int audiopcspeaker_agudo_filtro_limite;
