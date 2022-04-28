@@ -28,8 +28,8 @@ extern int audioonebitspeaker_init(void);
 extern void audioonebitspeaker_end(void);
 extern int audioonebitspeaker_thread_finish(void);
 extern void audioonebitspeaker_send_frame(char *buffer);
-extern void audiopcspeaker_get_buffer_info (int *buffer_size,int *current_size);
-extern void audiopcspeaker_calibrate_tiempo_espera(void);
+extern void audioonebitspeaker_get_buffer_info (int *buffer_size,int *current_size);
+//extern void audioonebitspeaker_calibrate_tiempo_espera(void);
 
 
 #endif
