@@ -2462,7 +2462,7 @@ int set_audiodriver_pcspeaker(void) {
                         audio_send_frame=audioonebitspeaker_send_frame;
 			audio_thread_finish=audioonebitspeaker_thread_finish;
 			audio_end=audioonebitspeaker_end;
-			audio_get_buffer_info=audioonebitspeaker_end_get_buffer_info;
+			audio_get_buffer_info=audioonebitspeaker_get_buffer_info;
 			return 0;
 
                 }
