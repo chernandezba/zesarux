@@ -47,16 +47,6 @@
 
 #endif
 
-//int ptr_audiopcspeaker;
-
-//unsigned int requested, ioctl_format, ioctl_channels, ioctl_rate;
-
-//#define BASE_SOUND_FRAG_PWR     6
-
-//static char const * const default_device = "/dev/input/by-path/platform-pcspkr-event-spkr";
-//
-
-
 
 
 #define GPIO_EXPORT_PATH "/sys/class/gpio/export"
@@ -135,9 +125,6 @@ int audiopcspeaker_init(void)
 
 
 
-	//Metodo alternativo era usando el device default_device y enviando eventos, pero eso solo gestiona frecuencias
-                //ptr_audiopcspeaker=open(default_device,O_WRONLY);
-
     if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
 	    //Pedir "permiso" para usar puerto pc speaker
 	    if (ioperm(0x61,1,1)) {
@@ -176,7 +163,7 @@ int audiopcspeaker_thread_finish(void)
 	}
 
 	//Pausa de 0.1 segundo
-	 usleep(100000);
+    usleep(100000);
 	
 
 	return 0;
@@ -185,11 +172,11 @@ int audiopcspeaker_thread_finish(void)
 
 void audiopcspeaker_end(void)
 {
-	debug_printf (VERBOSE_INFO,"Ending pcspeaker audio driver");
-	audiopcspeaker_thread_finish();
-	audio_playing.v=0;
+    debug_printf (VERBOSE_INFO,"Ending pcspeaker audio driver");
+    audiopcspeaker_thread_finish();
+    audio_playing.v=0;
 
-     if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
+    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
         close(gpio_file_handle);
 
         //echo 22 > /sys/class/gpio/unexport
@@ -199,36 +186,11 @@ void audiopcspeaker_end(void)
         if (audiopcspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
             debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");
         }             
-     }
+    }
 
 }
 
 
-
-
-
-
-
-/* no usados estos
-void beep_freq(int frequency)
-{
-	struct input_event e = { 0 };
-	e.type = EV_SND;
-	e.code = SND_TONE;
-	e.value = frequency; //freq;
-	write(ptr_audiopcspeaker, &e, sizeof(e));
-}
-
-void start_beep(void)
-{
-  beep_freq(10);
-}
-
-void stop_beep(void)
-{
-beep_freq(0);
-}
-*/
 
 
 struct timeval audiopcspeakertimer_antes, audiopcspeakertimer_ahora;
@@ -366,14 +328,14 @@ Bit 0    Effect
 
 			//Si cambia el altavoz
 			if (bit_anterior_speaker!=bit_final_speaker) {
-                		int enviar_a_speaker=1;
-		                if (audiopcspeaker_agudo_filtro) {
-                		    //Si ha cambiado hace poco, no conmutar
-		                    if (audiopcspeaker_agudo_filtro_contador<=audiopcspeaker_agudo_filtro_limite) enviar_a_speaker=0;
-                		}
+                int enviar_a_speaker=1;
+                if (audiopcspeaker_agudo_filtro) {
+                    //Si ha cambiado hace poco, no conmutar
+                    if (audiopcspeaker_agudo_filtro_contador<=audiopcspeaker_agudo_filtro_limite) enviar_a_speaker=0;
+                }
 
-                		if (enviar_a_speaker) audiopcspeaker_send_1bit(bit_final_speaker);
-		                audiopcspeaker_agudo_filtro_contador=0;
+                if (enviar_a_speaker) audiopcspeaker_send_1bit(bit_final_speaker);
+                audiopcspeaker_agudo_filtro_contador=0;
 			}
 
 
@@ -433,9 +395,9 @@ void audiopcspeaker_send_frame(char *buffer)
 
 
 	if (audio_playing.v==0) {
-			//Volvemos a activar pthread
-			buffer_playback_pcspeaker=buffer;
-			audio_playing.v=1;
+        //Volvemos a activar pthread
+        buffer_playback_pcspeaker=buffer;
+        audio_playing.v=1;
 	}
 
 
