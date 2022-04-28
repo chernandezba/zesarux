@@ -175,8 +175,17 @@ Q: Audio does not sound well on Raspberry pi.
 A: Try using sdl audio driver.
 
 
-Q: I've tried to use the pcspeaker driver but returns error on initialization
-A: The PC Speaker driver on ZEsarUX is only available for Linux, and needs pthreads enabled on compilation. Also, you must run ZEsarUX as root in order to use it, as it needs privileged access to the PC Speaker i/o port
+Q: I've tried to use the onebitspeaker driver, type pcspeaker, but returns error on initialization
+A: The PC Speaker type from onebitspeaker driver on ZEsarUX is only available for Linux, and needs pthreads enabled on compilation. Also, you must run ZEsarUX as root in order to use it, as it needs privileged access to the PC Speaker i/o port
+
+
+Q: Before ZEsarUX 10.1, there was a pcspeaker driver which no longer exists now. What happened?
+A: The pcspeaker driver has been replaced by the onespeakerdriver. This driver can now handle PC Speaker output but also Raspberry Pi GPIO Speaker, you can select the type from the menu or command line configuration settings
+
+
+Q: How can I use the Raspberry Pi GPIO Speaker?
+A: As the name suggests, you must connect a speaker to two GPI pins: one goes to GND and the other one to a pin number you want. Then use the onebitspeaker driver, set type to Raspberry Pi GPIO. The default pin number is set to 22, but you can change it to any other you want
+
 
 ----------------------------------------------------------------------------
 
