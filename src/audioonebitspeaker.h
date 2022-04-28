@@ -24,7 +24,7 @@
 
 #include "cpu.h"
 
-extern int audiopcspeaker_init(void);
+extern int audioonebitspeaker_init(void);
 extern void audiopcspeaker_end(void);
 extern int audiopcspeaker_thread_finish(void);
 extern void audiopcspeaker_send_frame(char *buffer);

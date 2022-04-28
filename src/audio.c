@@ -324,10 +324,10 @@ int audioonebitspeaker_agudo_filtro_limite=3;
 
 int audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
 
-int audiopcspeaker_rpi_gpio_pin=22;
+int audioonebitspeaker_rpi_gpio_pin=22;
 
 //Tiempo de espera en microsegundos entre cada envio de byte de audio
-//int audiopcspeaker_tiempo_espera=8;
+//int audioonebitspeaker_tiempo_espera=8;
 
 
 //Listado de instrumentos midi

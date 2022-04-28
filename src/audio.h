@@ -278,7 +278,7 @@ extern int audiodac_set_type(char *texto);
 
 extern void audiodac_set_custom_port(z80_byte valor);
 
-//extern int audiopcspeaker_tiempo_espera;
+//extern int audioonebitspeaker_tiempo_espera;
 
 #define TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER 0
 #define TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO 1
@@ -288,7 +288,7 @@ extern int audioonebitspeaker_intensive_cpu_usage;
 extern int audioonebitspeaker_agudo_filtro;
 extern int audioonebitspeaker_agudo_filtro_limite;
 extern int audioonebitspeaker_tipo_altavoz;
-extern int audiopcspeaker_rpi_gpio_pin;
+extern int audioonebitspeaker_rpi_gpio_pin;
 
 struct s_audiobuffer_stats
 {

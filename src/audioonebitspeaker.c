@@ -56,7 +56,7 @@
 
 int gpio_file_handle;
 
-int audiopcspeaker_init_gpio_path(char *name,char *text)
+int audioonebitspeaker_init_gpio_path(char *name,char *text)
 {
     int fd = open(name, O_WRONLY);
     if (fd == -1) {
@@ -80,9 +80,9 @@ int raspberry_gpio_init(void)
 {
     //echo 22 > /sys/class/gpio/export
     char buffer_gpio[256];
-    sprintf(buffer_gpio,"%d\n",audiopcspeaker_rpi_gpio_pin);
+    sprintf(buffer_gpio,"%d\n",audioonebitspeaker_rpi_gpio_pin);
 
-    if (audiopcspeaker_init_gpio_path(GPIO_EXPORT_PATH,buffer_gpio)) {
+    if (audioonebitspeaker_init_gpio_path(GPIO_EXPORT_PATH,buffer_gpio)) {
         debug_printf(VERBOSE_ERR,"Can not open gpio export device");
         return 1;
     }        
@@ -92,15 +92,15 @@ int raspberry_gpio_init(void)
 	usleep(100000);
 
     //echo out> /sys/class/gpio/gpio22/direction
-    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",audiopcspeaker_rpi_gpio_pin);
-    if (audiopcspeaker_init_gpio_path(buffer_gpio,"out\n")) {
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/direction",audioonebitspeaker_rpi_gpio_pin);
+    if (audioonebitspeaker_init_gpio_path(buffer_gpio,"out\n")) {
         debug_printf(VERBOSE_ERR,"Can not set gpio direction. Path: %s",buffer_gpio);
         return 1;
     }    
 
 
     //echo 1 > /sys/class/gpio/gpio22/value
-    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/value",audiopcspeaker_rpi_gpio_pin);
+    sprintf(buffer_gpio,"/sys/class/gpio/gpio%d/value",audioonebitspeaker_rpi_gpio_pin);
     gpio_file_handle = open(buffer_gpio, O_WRONLY);
     if (gpio_file_handle == -1) {
         debug_printf(VERBOSE_ERR,"Can not open gpio output port");
@@ -110,7 +110,7 @@ int raspberry_gpio_init(void)
     return 0;
 }
 
-int audiopcspeaker_init(void)
+int audioonebitspeaker_init(void)
 {
 
 	//audio_driver_accepts_stereo.v=1;
@@ -181,9 +181,9 @@ void audiopcspeaker_end(void)
 
         //echo 22 > /sys/class/gpio/unexport
         char buffer_gpio[256];
-        sprintf(buffer_gpio,"%d\n",audiopcspeaker_rpi_gpio_pin);
+        sprintf(buffer_gpio,"%d\n",audioonebitspeaker_rpi_gpio_pin);
 
-        if (audiopcspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
+        if (audioonebitspeaker_init_gpio_path(GPIO_UNEXPORT_PATH,buffer_gpio)) {
             debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");
         }             
     }

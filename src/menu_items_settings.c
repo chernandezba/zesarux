@@ -2911,13 +2911,13 @@ void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
 void menu_pcspeaker_gpio_pin(MENU_ITEM_PARAMETERS)
 {
 
-    int valor=audiopcspeaker_rpi_gpio_pin;
+    int valor=audioonebitspeaker_rpi_gpio_pin;
 
     menu_ventana_scanf_numero_enhanced("Raspberry GPIO Pin number",&valor,3,+1,0,99,0);
 
     audio_end();
 
-    audiopcspeaker_rpi_gpio_pin=valor;
+    audioonebitspeaker_rpi_gpio_pin=valor;
 
     audio_init();
 }
@@ -3197,7 +3197,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_gpio_pin,NULL,
                         "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audiopcspeaker_rpi_gpio_pin);                    
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);                    
                 }
 
 
