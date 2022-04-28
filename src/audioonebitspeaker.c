@@ -43,7 +43,7 @@
 #ifdef USE_PTHREADS
 #include <pthread.h>
 
-     pthread_t audiopcspeaker_thread1;
+     pthread_t audioonebitspeaker_thread1;
 
 #endif
 
@@ -154,12 +154,12 @@ int audioonebitspeaker_init(void)
 int audioonebitspeaker_thread_finish(void)
 {
 
-	if (audiopcspeaker_thread1!=0) {
-		debug_printf (VERBOSE_DEBUG,"Ending audiopcspeaker thread");
-		int s=pthread_cancel(audiopcspeaker_thread1);
-		if (s != 0) debug_printf (VERBOSE_DEBUG,"Error cancelling pthread pcspeaker");
+	if (audioonebitspeaker_thread1!=0) {
+		debug_printf (VERBOSE_DEBUG,"Ending audioonebitspeaker thread");
+		int s=pthread_cancel(audioonebitspeaker_thread1);
+		if (s != 0) debug_printf (VERBOSE_DEBUG,"Error cancelling pthread onebitspeaker");
 
-		audiopcspeaker_thread1=0;
+		audioonebitspeaker_thread1=0;
 	}
 
 	//Pausa de 0.1 segundo
@@ -193,33 +193,33 @@ void audioonebitspeaker_end(void)
 
 
 
-struct timeval audiopcspeakertimer_antes, audiopcspeakertimer_ahora;
+struct timeval audioonebitspeakertimer_antes, audioonebitspeakertimer_ahora;
 
 //Para calcular tiempos funciones. Iniciar contador antes
-void audiopcspeakertiempo_inicial(void)
+void audioonebitspeakertiempo_inicial(void)
 {
 
-    gettimeofday(&audiopcspeakertimer_antes, NULL);
+    gettimeofday(&audioonebitspeakertimer_antes, NULL);
 
 }
 
 
 //Calcular tiempo pasado en microsegundos
-long audiopcspeakertiempo_final_usec(void)
+long audioonebitspeakertiempo_final_usec(void)
 {
 
-    long audiopcspeakertimer_time, audiopcspeakertimer_seconds, audiopcspeakertimer_useconds;    
+    long audioonebitspeakertimer_time, audioonebitspeakertimer_seconds, audioonebitspeakertimer_useconds;    
 
-    gettimeofday(&audiopcspeakertimer_ahora, NULL);
+    gettimeofday(&audioonebitspeakertimer_ahora, NULL);
 
-    audiopcspeakertimer_seconds  = audiopcspeakertimer_ahora.tv_sec  - audiopcspeakertimer_antes.tv_sec;
-    audiopcspeakertimer_useconds = audiopcspeakertimer_ahora.tv_usec - audiopcspeakertimer_antes.tv_usec;
+    audioonebitspeakertimer_seconds  = audioonebitspeakertimer_ahora.tv_sec  - audioonebitspeakertimer_antes.tv_sec;
+    audioonebitspeakertimer_useconds = audioonebitspeakertimer_ahora.tv_usec - audioonebitspeakertimer_antes.tv_usec;
 
-    audiopcspeakertimer_time = ((audiopcspeakertimer_seconds) * 1000000 + audiopcspeakertimer_useconds);
+    audioonebitspeakertimer_time = ((audioonebitspeakertimer_seconds) * 1000000 + audioonebitspeakertimer_useconds);
 
-    //printf("Elapsed time: %ld milliseconds\n\r", audiopcspeakertimer_mtime);
+    //printf("Elapsed time: %ld milliseconds\n\r", audioonebitspeakertimer_mtime);
 
-	return audiopcspeakertimer_time;
+	return audioonebitspeakertimer_time;
 }
 
 
@@ -229,7 +229,7 @@ char *buffer_playback_pcspeaker;
 
 char last_audio_sample=0;
 
-int audiopcspeaker_esperando_frame=0;
+int audioonebitspeaker_esperando_frame=0;
 
 
 //Ultimo valor.
@@ -239,12 +239,12 @@ z80_byte bit_anterior_speaker=0;
 
 int audioonebitspeaker_agudo_filtro_contador=0;
 
-z80_byte audiopcspeaker_valor_puerto_original;
+z80_byte audioonebitspeaker_pcspeaker_valor_puerto_original;
 
-void audiopcspeaker_send_1bit(z80_byte bit_final_speaker)
+void audioonebitspeaker_send_1bit(z80_byte bit_final_speaker)
 {
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
-        outb(audiopcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
+        outb(audioonebitspeaker_pcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
     }
     else {
         //GPIO raspberry
@@ -258,13 +258,13 @@ void audiopcspeaker_send_1bit(z80_byte bit_final_speaker)
     }
 }
 
-void *audiopcspeaker_enviar_audio(void *nada)
+void *audioonebitspeaker_enviar_audio(void *nada)
 {
 
 
 	while (1) {
 
-		audiopcspeaker_esperando_frame=1;
+		audioonebitspeaker_esperando_frame=1;
 
 
 		//Establecer el buffer de reproduccion
@@ -291,8 +291,8 @@ Bit 0    Effect
          used as switch ie 0 = not connected, 1 = connected.		
 		*/
         if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
-		    audiopcspeaker_valor_puerto_original=inb(0x61);
-		    audiopcspeaker_valor_puerto_original &=(255-2-1);
+		    audioonebitspeaker_pcspeaker_valor_puerto_original=inb(0x61);
+		    audioonebitspeaker_pcspeaker_valor_puerto_original &=(255-2-1);
         }
 
 
@@ -300,7 +300,7 @@ Bit 0    Effect
 		z80_byte bit_final_speaker;
 		for (;len>0;len--) {
 			
-			audiopcspeakertiempo_inicial();
+			audioonebitspeakertiempo_inicial();
 			char current_audio_sample=buffer_playback_pcspeaker[ofs];
                 audioonebitspeaker_agudo_filtro_contador++;
 			
@@ -334,7 +334,7 @@ Bit 0    Effect
                     if (audioonebitspeaker_agudo_filtro_contador<=audioonebitspeaker_agudo_filtro_limite) enviar_a_speaker=0;
                 }
 
-                if (enviar_a_speaker) audiopcspeaker_send_1bit(bit_final_speaker);
+                if (enviar_a_speaker) audioonebitspeaker_send_1bit(bit_final_speaker);
                 audioonebitspeaker_agudo_filtro_contador=0;
 			}
 
@@ -350,7 +350,7 @@ Bit 0    Effect
             //aunque al hacer este usleep se oye todo peor. Es mejor sin eso, aunque saturamos mas la cpu
 			if (!audioonebitspeaker_intensive_cpu_usage) usleep(1);
 
-			int tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
+			int tiempo_pasado_usec=audioonebitspeakertiempo_final_usec();
 
 			//Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
             //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos 
@@ -358,7 +358,7 @@ Bit 0    Effect
             //que en Linux no funcionan bien esas pausas de tan poco tiempo, no son perfectas
 			while (tiempo_pasado_usec<64) {
 				//printf("Tiempo usec: %d\n",tiempo_pasado_usec);
-				tiempo_pasado_usec=audiopcspeakertiempo_final_usec();
+				tiempo_pasado_usec=audioonebitspeakertiempo_final_usec();
 			}
 		}
          
@@ -372,7 +372,7 @@ Bit 0    Effect
 		//TODO: esto deberia ser una variable atomica, pero la probabilidad que se modifique 
 		//en esta funcion y en audioonebitspeaker_send_frame a la vez es casi nula
 		//ademas si se pierde un frame, entrara el siguiente
-		while (audiopcspeaker_esperando_frame) {
+		while (audioonebitspeaker_esperando_frame) {
 			//100 microsegundos
 			usleep(100);
 		}
@@ -388,7 +388,7 @@ Bit 0    Effect
 	return NULL;
 } 
 
-pthread_t audiopcspeaker_thread1=0;
+pthread_t audioonebitspeaker_thread1=0;
 
 void audioonebitspeaker_send_frame(char *buffer)
 {
@@ -401,14 +401,14 @@ void audioonebitspeaker_send_frame(char *buffer)
 	}
 
 
-	if (audiopcspeaker_thread1==0) {
+	if (audioonebitspeaker_thread1==0) {
 		buffer_playback_pcspeaker=buffer;
-     	if (pthread_create( &audiopcspeaker_thread1, NULL, &audiopcspeaker_enviar_audio, NULL) ) {
-                cpu_panic("Can not create audiopcspeaker pthread");
+     	if (pthread_create( &audioonebitspeaker_thread1, NULL, &audioonebitspeaker_enviar_audio, NULL) ) {
+                cpu_panic("Can not create audioonebitspeaker pthread");
         }      
 	}
 
-	audiopcspeaker_esperando_frame=0;
+	audioonebitspeaker_esperando_frame=0;
 	
 }
 
