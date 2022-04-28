@@ -48,12 +48,11 @@
 #endif
 
 
-
 #define GPIO_EXPORT_PATH "/sys/class/gpio/export"
 #define GPIO_UNEXPORT_PATH "/sys/class/gpio/unexport"
 
 
-
+//El file handle para enviarle los 0/1 al altavoz gpio de la rpi
 int gpio_file_handle;
 
 int audioonebitspeaker_init_gpio_path(char *name,char *text)

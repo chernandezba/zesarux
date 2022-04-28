@@ -2872,26 +2872,26 @@ void menu_audio_resample_1bit(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_pcspeaker_intensive_cpu(MENU_ITEM_PARAMETERS)
+void menu_onebitspeaker_intensive_cpu(MENU_ITEM_PARAMETERS)
 {
 
     audioonebitspeaker_intensive_cpu_usage ^=1;
 
 }
 
-void menu_pcspeaker_agudo_filtro(MENU_ITEM_PARAMETERS)
+void menu_onebitspeaker_agudo_filtro(MENU_ITEM_PARAMETERS)
 {
     audioonebitspeaker_agudo_filtro ^=1;
 }
 
-void menu_pcspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
+void menu_onebitspeaker_agudo_filtro_limite(MENU_ITEM_PARAMETERS)
 {
     audioonebitspeaker_agudo_filtro_limite--;
 
     if (audioonebitspeaker_agudo_filtro_limite==0) audioonebitspeaker_agudo_filtro_limite=15;
 }
 
-void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
+void menu_onebitspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
 {
 
     audio_end();
@@ -2908,7 +2908,7 @@ void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_pcspeaker_gpio_pin(MENU_ITEM_PARAMETERS)
+void menu_onebitspeaker_gpio_pin(MENU_ITEM_PARAMETERS)
 {
 
     int valor=audioonebitspeaker_rpi_gpio_pin;
@@ -3189,33 +3189,33 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                 menu_add_item_menu(array_menu_settings_audio,"--One Bit Speaker settings--",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
                     (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
 
                 if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_gpio_pin,NULL,
+                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_gpio_pin,NULL,
                         "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);                    
                 }
 
 
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_intensive_cpu,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_intensive_cpu,NULL,
                     "Improved sound","Sonido mejorado","So millorat");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_intensive_cpu_usage ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Improved sound but uses more cpu");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Improved sound but uses more cpu");
 
                 
-                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro,NULL,
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro,NULL,
                     "Hi Freq filter","Hi Freq filtro","Hi Freq filtre");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(audioonebitspeaker_agudo_filtro ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_settings_audio,"Filter to avoid high frequency sounds");
                 menu_add_item_menu_ayuda(array_menu_settings_audio,"Filter to avoid high frequency sounds");     
 
                 if (audioonebitspeaker_agudo_filtro) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_agudo_filtro_limite,NULL,
+                    menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_agudo_filtro_limite,NULL,
                     "Limit","Límite","Límit");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio," [%d Hz] ",
                         FRECUENCIA_CONSTANTE_NORMAL_SONIDO/2/audioonebitspeaker_agudo_filtro_limite);
