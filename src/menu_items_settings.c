@@ -2896,11 +2896,11 @@ void menu_pcspeaker_tipo_speaker(MENU_ITEM_PARAMETERS)
 
     audio_end();
 
-    if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
-        audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
+    if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
+        audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
     }
     else {
-        audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
+        audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
     }
 
     audio_init();
@@ -3192,9 +3192,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_tipo_speaker,NULL,
                     "Speaker Type","Tipo Speaker","Tipus Speaker");
                 menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
-                    (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
+                    (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER ? "PC Speaker" : "Raspberry GPIO"));
 
-                if (audiopcspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
+                if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_pcspeaker_gpio_pin,NULL,
                         "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
                     menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audiopcspeaker_rpi_gpio_pin);                    

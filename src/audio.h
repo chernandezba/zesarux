@@ -287,7 +287,7 @@ extern int audioonebitspeaker_intensive_cpu_usage;
 
 extern int audioonebitspeaker_agudo_filtro;
 extern int audioonebitspeaker_agudo_filtro_limite;
-extern int audiopcspeaker_tipo_altavoz;
+extern int audioonebitspeaker_tipo_altavoz;
 extern int audiopcspeaker_rpi_gpio_pin;
 
 struct s_audiobuffer_stats

@@ -7719,7 +7719,7 @@ int parse_cmdline_options(void) {
                         exit(1);
                 }             
 
-                audiopcspeaker_tipo_altavoz=valor;
+                audioonebitspeaker_tipo_altavoz=valor;
             }
 			
 

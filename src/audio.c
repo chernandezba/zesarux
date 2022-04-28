@@ -322,7 +322,7 @@ int audioonebitspeaker_intensive_cpu_usage=0;
 int audioonebitspeaker_agudo_filtro=0;
 int audioonebitspeaker_agudo_filtro_limite=3;
 
-int audiopcspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
+int audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
 
 int audiopcspeaker_rpi_gpio_pin=22;
 
