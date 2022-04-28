@@ -172,7 +172,7 @@ int audioonebitspeaker_thread_finish(void)
 
 void audioonebitspeaker_end(void)
 {
-    debug_printf (VERBOSE_INFO,"Ending pcspeaker audio driver");
+    debug_printf (VERBOSE_INFO,"Ending onebitspeaker audio driver");
     audioonebitspeaker_thread_finish();
     audio_playing.v=0;
 
@@ -225,7 +225,7 @@ long audioonebitspeakertiempo_final_usec(void)
 
 
 
-char *buffer_playback_pcspeaker;
+char *buffer_playback_onebitspeaker;
 
 char last_audio_sample=0;
 
@@ -268,7 +268,7 @@ void *audioonebitspeaker_enviar_audio(void *nada)
 
 
 		//Establecer el buffer de reproduccion
-		buffer_playback_pcspeaker=audio_buffer_playback;
+		buffer_playback_onebitspeaker=audio_buffer_playback;
 
 		//enviamos siguiente sonido avisando de interrupcion a cpu
 		//interrupt_finish_sound.v=1;
@@ -301,7 +301,7 @@ Bit 0    Effect
 		for (;len>0;len--) {
 			
 			audioonebitspeakertiempo_inicial();
-			char current_audio_sample=buffer_playback_pcspeaker[ofs];
+			char current_audio_sample=buffer_playback_onebitspeaker[ofs];
                 audioonebitspeaker_agudo_filtro_contador++;
 			
 			//Si valor actual es mayor, enviar 1
@@ -396,13 +396,13 @@ void audioonebitspeaker_send_frame(char *buffer)
 
 	if (audio_playing.v==0) {
         //Volvemos a activar pthread
-        buffer_playback_pcspeaker=buffer;
+        buffer_playback_onebitspeaker=buffer;
         audio_playing.v=1;
 	}
 
 
 	if (audioonebitspeaker_thread1==0) {
-		buffer_playback_pcspeaker=buffer;
+		buffer_playback_onebitspeaker=buffer;
      	if (pthread_create( &audioonebitspeaker_thread1, NULL, &audioonebitspeaker_enviar_audio, NULL) ) {
                 cpu_panic("Can not create audioonebitspeaker pthread");
         }      
