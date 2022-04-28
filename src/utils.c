@@ -4910,7 +4910,12 @@ int quickload_continue(char *nombre) {
 
 #ifdef EMULATE_RASPBERRY
 	//desactivar realvideo por defecto en raspberry. Si hace falta, el realvideo se activara desde el archivo snapshot o en la deteccion por ssl
-	disable_rainbow();
+	if (no_cambio_parametros_maquinas_lentas.v==1) {
+		debug_printf (VERBOSE_INFO,"Parameter nochangeslowparameters enabled. Do not change any frameskip or realvideo parameters");
+	}
+    else {
+	    disable_rainbow();
+    }
 #endif
 
 	//expulsar cinta insertada
