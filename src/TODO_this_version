@@ -128,16 +128,3 @@ Considerar algun modo de dibujado mas rapido
 
 
 -idea para driver pc speaker: en vez de enviar secuencias de 0/1, programar el timer del pcspeaker para generar frecuencia segun ultimo trozo de sonido recibido. Para ello, averiguar cuando empieza y acaba una nota, sacar su frecuencia, y enviar. y pausar el tiempo necesario hasta siguiente nota
-
--gpio raspberry:
-
-
-echo 22 > /sys/class/gpio/export
-
-
-  302  echo out> /sys/class/gpio/gpio22/direction
-
-  
-  303  echo 1 > /sys/class/gpio/gpio22/value
-  304  echo 0 > /sys/class/gpio/gpio22/value
-  305  echo 1 > /sys/class/gpio/gpio22/value
