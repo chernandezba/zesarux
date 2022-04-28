@@ -2457,7 +2457,7 @@ int set_audiodriver_dsp(void) {
 
 
 #ifdef COMPILE_ONEBITSPEAKER
-int set_audiodriver_pcspeaker(void) {
+int set_audiodriver_onebitspeaker(void) {
                         audio_init=audioonebitspeaker_init;
                         audio_send_frame=audioonebitspeaker_send_frame;
 			audio_thread_finish=audioonebitspeaker_thread_finish;
@@ -5306,9 +5306,9 @@ void main_init_audio(void)
 #endif
 
 #ifdef COMPILE_ONEBITSPEAKER
-                add_audio_init_array("onebitspeaker",audioonebitspeaker_init,set_audiodriver_pcspeaker);
+                add_audio_init_array("onebitspeaker",audioonebitspeaker_init,set_audiodriver_onebitspeaker);
                 if (!strcmp(driver_audio,"onebitspeaker")) {
-                        set_audiodriver_pcspeaker();
+                        set_audiodriver_onebitspeaker();
 
                 }
 #endif
