@@ -151,7 +151,7 @@ int audioonebitspeaker_init(void)
 
 
 
-int audiopcspeaker_thread_finish(void)
+int audioonebitspeaker_thread_finish(void)
 {
 
 	if (audiopcspeaker_thread1!=0) {
@@ -170,10 +170,10 @@ int audiopcspeaker_thread_finish(void)
 
 }
 
-void audiopcspeaker_end(void)
+void audioonebitspeaker_end(void)
 {
     debug_printf (VERBOSE_INFO,"Ending pcspeaker audio driver");
-    audiopcspeaker_thread_finish();
+    audioonebitspeaker_thread_finish();
     audio_playing.v=0;
 
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
@@ -370,7 +370,7 @@ Bit 0    Effect
 
 		//Esperamos a que llegue el siguiente frame de sonido , si es que no ha llegado ya
 		//TODO: esto deberia ser una variable atomica, pero la probabilidad que se modifique 
-		//en esta funcion y en audiopcspeaker_send_frame a la vez es casi nula
+		//en esta funcion y en audioonebitspeaker_send_frame a la vez es casi nula
 		//ademas si se pierde un frame, entrara el siguiente
 		while (audiopcspeaker_esperando_frame) {
 			//100 microsegundos
@@ -390,7 +390,7 @@ Bit 0    Effect
 
 pthread_t audiopcspeaker_thread1=0;
 
-void audiopcspeaker_send_frame(char *buffer)
+void audioonebitspeaker_send_frame(char *buffer)
 {
 
 

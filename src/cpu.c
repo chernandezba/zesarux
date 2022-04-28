@@ -2459,10 +2459,10 @@ int set_audiodriver_dsp(void) {
 #ifdef COMPILE_ONEBITSPEAKER
 int set_audiodriver_pcspeaker(void) {
                         audio_init=audioonebitspeaker_init;
-                        audio_send_frame=audiopcspeaker_send_frame;
-			audio_thread_finish=audiopcspeaker_thread_finish;
-			audio_end=audiopcspeaker_end;
-			audio_get_buffer_info=audiopcspeaker_get_buffer_info;
+                        audio_send_frame=audioonebitspeaker_send_frame;
+			audio_thread_finish=audioonebitspeaker_thread_finish;
+			audio_end=audioonebitspeaker_end;
+			audio_get_buffer_info=audioonebitspeaker_end_get_buffer_info;
 			return 0;
 
                 }
