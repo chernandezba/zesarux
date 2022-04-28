@@ -53,7 +53,7 @@
 
 
 //El file handle para enviarle los 0/1 al altavoz gpio de la rpi
-int gpio_file_handle;
+int gpio_file_handle=-1;
 
 int audioonebitspeaker_init_gpio_path(char *name,char *text)
 {
@@ -77,6 +77,10 @@ int audioonebitspeaker_init_gpio_path(char *name,char *text)
 
 int raspberry_gpio_init(void)
 {
+
+    //de momento asumir no inicializado
+    gpio_file_handle=-1;
+
     //echo 22 > /sys/class/gpio/export
     char buffer_gpio[256];
     sprintf(buffer_gpio,"%d\n",audioonebitspeaker_rpi_gpio_pin);
@@ -177,6 +181,7 @@ void audioonebitspeaker_end(void)
 
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
         close(gpio_file_handle);
+        gpio_file_handle=-1;
 
         //echo 22 > /sys/class/gpio/unexport
         char buffer_gpio[256];
@@ -247,6 +252,8 @@ void audioonebitspeaker_send_1bit(z80_byte bit_final_speaker)
     }
     else {
         //GPIO raspberry
+        //por si resulta de un cambio de pcspeaker a gpio y da error
+        if (gpio_file_handle<0) return;
         if (bit_final_speaker) {
             write(gpio_file_handle,"1",1);
         }
