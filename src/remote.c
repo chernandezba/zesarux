@@ -3041,6 +3041,8 @@ char *find_space_or_end(char *s)
 
 void remote_cerrar_conexion(void)
 {
+
+    //Solo hacer close de eso cuando habia una conexión activa
     if (sock_conectat>=0) {
 #ifdef MINGW
 	closesocket(sock_conectat);
