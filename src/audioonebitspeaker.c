@@ -51,6 +51,7 @@
 #define GPIO_EXPORT_PATH "/sys/class/gpio/export"
 #define GPIO_UNEXPORT_PATH "/sys/class/gpio/unexport"
 
+int audioonebitspeaker_initialized=0;
 
 //El file handle para enviarle los 0/1 al altavoz gpio de la rpi
 int gpio_file_handle=-1;
@@ -78,8 +79,7 @@ int audioonebitspeaker_init_gpio_path(char *name,char *text)
 int raspberry_gpio_init(void)
 {
 
-    //de momento asumir no inicializado
-    gpio_file_handle=-1;
+
 
     //echo 22 > /sys/class/gpio/export
     char buffer_gpio[256];
@@ -118,6 +118,9 @@ int audioonebitspeaker_init(void)
 
 	//audio_driver_accepts_stereo.v=1;
 
+    //de momento asumir no inicializado
+    audioonebitspeaker_initialized=0;    
+
     debug_printf (VERBOSE_INFO,"Init One Bit Speaker Audio Driver");
 
     //Detectamos tipo. En Raspberry, no se permite tipo PCSpeaker
@@ -147,6 +150,8 @@ int audioonebitspeaker_init(void)
 
 	//Esto debe estar al final, para que funcione correctamente desde menu, cuando se selecciona un driver, y no va, que pueda volver al anterior
 	audio_set_driver_name("onebitspeaker");
+
+    audioonebitspeaker_initialized=1;
 
 	return 0;
 
@@ -181,8 +186,7 @@ void audioonebitspeaker_end(void)
 
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
         close(gpio_file_handle);
-        gpio_file_handle=-1;
-
+        
         //echo 22 > /sys/class/gpio/unexport
         char buffer_gpio[256];
         sprintf(buffer_gpio,"%d\n",audioonebitspeaker_rpi_gpio_pin);
@@ -191,6 +195,8 @@ void audioonebitspeaker_end(void)
             debug_printf(VERBOSE_ERR,"Can not open gpio unexport device");
         }             
     }
+
+    audioonebitspeaker_initialized=0;
 
 }
 
@@ -247,13 +253,16 @@ z80_byte audioonebitspeaker_pcspeaker_valor_puerto_original;
 
 void audioonebitspeaker_send_1bit(z80_byte bit_final_speaker)
 {
+
+    //por si resulta de un cambio de pcspeaker a gpio y da error
+    if (!audioonebitspeaker_initialized) return;
+
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
         outb(audioonebitspeaker_pcspeaker_valor_puerto_original | bit_final_speaker,0x61);    
     }
     else {
         //GPIO raspberry
-        //por si resulta de un cambio de pcspeaker a gpio y da error
-        if (gpio_file_handle<0) return;
+        
         if (bit_final_speaker) {
             write(gpio_file_handle,"1",1);
         }

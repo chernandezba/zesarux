@@ -129,6 +129,15 @@ Considerar algun modo de dibujado mas rapido
 
 -idea para driver pc speaker: en vez de enviar secuencias de 0/1, programar el timer del pcspeaker para generar frecuencia segun ultimo trozo de sonido recibido. Para ello, averiguar cuando empieza y acaba una nota, sacar su frecuencia, y enviar. y pausar el tiempo necesario hasta siguiente nota
 
--idea Para enviar sonido desde menú:
+-idea Para enviar sonido desde menú: Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
 
-Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
+-Otra idea pc speaker y que puede servir también para reconocimiento de notas en audio piano: reconocer frecuencias sonido (notas) en un sample de audio 
+Leer y ver cuanto tarda en conmutar pulso. Ver siguiente conmutación. Si tarda lo mismo que la anterior, seguimos en misma nota. Si tarda diferente, es que ha cambiado de nota. Obtener frecuencia y duración
+Esto en pc speaker solo serviría para sonidos tipo beep o sonidos del chip ay con 1 canal y sin ruido
+Para samples no vale. Además en pc speaker implicaría lanzar ese sonido mediante el pc timer, indicando duración y frecuencia 
+
+-Para un futuro: que ventanas tengan iconos en una tabla y el gestor de ventanas muestre dichos iconos
+
+-Botón del medio de ratón para enviar al fondo una ventana
+
+-Doble buffer fbdev copia más ancho del que realmente ocupa. Considerar totalspectrumancho x bits pixel? 
