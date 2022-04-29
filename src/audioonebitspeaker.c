@@ -305,7 +305,7 @@ Bit 0    Effect
   1      The speaker will be connected to PIT channel 2, bit 1 is
          used as switch ie 0 = not connected, 1 = connected.		
 		*/
-        if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
+        if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && audioonebitspeaker_initialized) {
 		    audioonebitspeaker_pcspeaker_valor_puerto_original=inb(0x61);
 		    audioonebitspeaker_pcspeaker_valor_puerto_original &=(255-2-1);
         }
