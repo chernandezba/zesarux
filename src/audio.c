@@ -40,6 +40,7 @@
 #include "svi.h"
 #include "sn76489an.h"
 #include "ql_i8049.h"
+#include "compileoptions.h"
 
 #include "audionull.h"
 
@@ -322,7 +323,12 @@ int audioonebitspeaker_intensive_cpu_usage=0;
 int audioonebitspeaker_agudo_filtro=0;
 int audioonebitspeaker_agudo_filtro_limite=3;
 
-int audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
+#ifdef EMULATE_RASPBERRY
+    //En raspberry por defecto es altavoz gpio
+    int audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO;
+#else
+    int audioonebitspeaker_tipo_altavoz=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER;
+#endif
 
 int audioonebitspeaker_rpi_gpio_pin=22;
 
