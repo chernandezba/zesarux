@@ -134,7 +134,7 @@ int audioonebitspeaker_init(void)
     if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER) {
 	    //Pedir "permiso" para usar puerto pc speaker
 	    if (ioperm(0x61,1,1)) {
-    		debug_printf(VERBOSE_ERR,"Error asking permissions on speaker port. You usually need to be root to do this");
+    		debug_printf(VERBOSE_ERR,"Error asking permissions on PC Speaker port. You usually need to be root to do this");
 	    	return 1;
 	    }
     }
