@@ -124,7 +124,7 @@ ahora sale por consola del sistema operativo, quiza se podria tener una ventana 
 
 -Explicar cuando se usa escalado especial en fbdev
 
--fbdev: al salir de ZEsarUX la consola no responde. Se puede volver matando el proceso bash desde ssh. Es algo que sucede al finalizar, porque si vuelve a consola desde un segfault no falla
+-fbdev: al salir de ZEsarUX la consola no responde. Se puede volver matando el proceso bash desde ssh. Es algo que sucede al finalizar, porque si vuelve a consola desde un segfault no falla. Parece que tiene algo que ver al finalizar end_remote_protocol
 
 -hacer zoom a traves de xwindows con extensiones de... xvideo? opengl? libxv-dev?. Esto serviria para todo excepto para modo scanlines
 

@@ -105,7 +105,8 @@ z80_bit remote_calling_end_emulator={0};
 
 struct sockaddr_in adr;
 unsigned int long_adr;
-int sock_listen,sock_conectat;
+int sock_listen;
+int sock_conectat=-1;
 
 int remote_salir_conexion;
 
@@ -3040,6 +3041,7 @@ char *find_space_or_end(char *s)
 
 void remote_cerrar_conexion(void)
 {
+    if (sock_conectat>=0) {
 #ifdef MINGW
 	closesocket(sock_conectat);
 #else
@@ -3049,6 +3051,9 @@ void remote_cerrar_conexion(void)
 	//#ifdef MINGW
 	//WSACleanup();
 	//#endif
+    }
+
+    sock_conectat=-1;
 }
 
 //Parseo de parametros de comando.
