@@ -128,3 +128,7 @@ Considerar algun modo de dibujado mas rapido
 
 
 -idea para driver pc speaker: en vez de enviar secuencias de 0/1, programar el timer del pcspeaker para generar frecuencia segun ultimo trozo de sonido recibido. Para ello, averiguar cuando empieza y acaba una nota, sacar su frecuencia, y enviar. y pausar el tiempo necesario hasta siguiente nota
+
+-idea Para enviar sonido desde menú:
+
+Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada

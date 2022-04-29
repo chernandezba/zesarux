@@ -184,7 +184,9 @@ A: The pcspeaker driver has been replaced by the onespeakerdriver. This driver c
 
 
 Q: How can I use the Raspberry Pi GPIO Speaker?
-A: As the name suggests, you must connect a speaker to two GPI pins: one goes to GND and the other one to a pin number you want. Then use the onebitspeaker driver, set type to Raspberry Pi GPIO. The default pin number is set to 22, but you can change it to any other you want
+A: As the name suggests, you must connect a speaker to two GPI pins: one goes to GND and the other one to a pin number you want. I use a cheap piezoelectric speaker directly plugged to those pins.
+Then use the onebitspeaker driver, set type to Raspberry Pi GPIO.
+The default pin number is set to 22, but you can change it to any other you want. 
 
 
 ----------------------------------------------------------------------------
