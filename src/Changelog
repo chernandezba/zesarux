@@ -94,6 +94,7 @@ Fixed crash when saving configuration file larger than 20kb
 Fixed crash when browsing on a completely empty directory
 Fixed bug emptying osd adventure text keyboard when debugging vocabulary
 Fixed smartload from ZRCP
+Fixed crash when exiting emulator and ZRCP enabled (usually failed on Raspberry Pi)
 
 Fixed ZX Vision:
 -Fixed hang when pressing cursor up/down on any tabbed menu with only one line (like Audio Waveform)
