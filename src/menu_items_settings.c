@@ -3197,7 +3197,9 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
                 if (audioonebitspeaker_tipo_altavoz==TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                     menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_onebitspeaker_gpio_pin,NULL,
                         "GPIO Pinout number","GPIO Pinout number","GPIO Pinout number");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);                    
+                    menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%d] ",audioonebitspeaker_rpi_gpio_pin);
+                    menu_add_item_menu_tooltip(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
+                    menu_add_item_menu_ayuda(array_menu_settings_audio,"Which GPIO port is the speaker connected to");
                 }
 
 
