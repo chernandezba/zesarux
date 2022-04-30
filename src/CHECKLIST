@@ -207,7 +207,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar rzx files con extras/media/spectrum/rzx
--probar quicksave, autosave at interval
+-probar quicksave, autosave at interval, snapshots to ram
 -probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81

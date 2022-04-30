@@ -130,8 +130,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar assembler, desde menu y ZRCP
 -probar watches
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
--probar quicksave, autosave at interval
--probar todas opciones de menu en general, menus con mas opciones verticalmente de las visibles -> audio settings
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
@@ -149,20 +147,16 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 ** primer y segundo mensaje se desplazan, como voyage of peril
 ** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
 * Con y sin border enabled
--probar autoload & autosave
 -probar diferentes joysticks: kempston (inves y no-inves), cursor, fuller, etc. autofire
 -probar on screen keyboard, con F8 y con joystick
 -probar on screen adventure keyboard 
--probar asignar teclas f a funciones
 -probar --limitopenmenu
 -probar idle bus. con Arkanoid por ejemplo
 -probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
 -probar cambio driver audio desde menu
 -probar desactivar putpixel cache en compilacion
 -probar Setting putpixel functions to zoom 1, variable, interlace
--probar frameskip
 -probar easter eggs
--probar repeticion de teclas en selector de archivos, ayuda, etc (en opciones de menu no hace repeticion)
 -probar ghosting
 -probar teclas en menu: normal, mayus, minus, -+ ,. TAB BACKSPACE, en mk14, zx8081, spectrum,  , ql, cpc, z88  ( ',' y "." en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB). en driver xwindow y curses, para cada maquina (total: 6 pruebas)
 -probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
@@ -174,20 +168,10 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
 -probar opcion para desactivar paging en ram/rom
 -probar cpu transaction log
--probar menu file utilities
--probar demos beeper
--probar real beeper activo/desactivado
--probar tone generator --tonegenerator con 1,2 y 3 en spectrum 48k. Ver menu waveform
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena. probar interlace y abrir menu visualmem y view sprites (debe desactivar interlace momentaneamente)
 -probar modo gigascreen. demos e imagenes
 -probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
 -probar View Basic: ZX80, ZX81, Spectrum
--probar View Hexdump
--probar View Sprites
--probar emulator speed
--probar turbo mode. manual y en zxuno, prism, chloe y tbblue
--probar top speed, con threads y sin threads
--probar accelerate loaders
 -probar mantransferv3
 -probar multiface
 -probar betadisk
@@ -203,17 +187,9 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Probar Sam Coupe. Todas teclas. Probar atomlite
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
--Probar TSConf
--Probar Baseconf
--Probar Chrome
--Probar MK14
 
--Pruebas interfaz menu:
-* habilitar zx desktop
-* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
 
 -probar Sprite chip con demo
--probar textos splash en cambio de modo de video por ejemplo
 -probar usar extension de archivo no conocida y ver que avisa
 -probar activando funciones de captura de segmentation fault y forzando fallo
 -probar cpu_panic. desde dentro del emulador y antes de entrar 
@@ -232,5 +208,4 @@ pruebas Z88:
 -tarjeta hibrida ram+eprom: insertar la de actualizacion a oz 4.7 a ver si la reconoce y si reconoce RAM
 -grabar snaps con eproms y flash en diferentes slots
 -probar en menus tarjetas de aplicaciones, archivos, desconocidas
--probar sonido normal beeper (teclas, juegos, etc) y 3200 hz snap_tests/test3200z88.zx
 
