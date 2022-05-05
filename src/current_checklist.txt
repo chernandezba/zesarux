@@ -42,15 +42,12 @@ ok mac, linux
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar simular pantalla zx81 en spectrum
--probar desactivar colores pantalla spectrum
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar specdrum, covox
 -probar opcion ay speech on/off con chase hq por ejemplo
 -probar abc/acb/bac stereo con extras/snap_tests/teststereo.tap y demos y teststereo.h
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak)
--probar sonido vsync en zx81, con orquesta.p, sound.p, beatles.p. probar vsync sound detection
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar a guardar snapshots versiones anteriores (1, 2, 3, 4, 5 y 6) y cargar en ZEsarUX versiones viejas y ZXSpectr
@@ -78,9 +75,6 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar betadisk
 -probar discos +3
 
--probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
-Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
-
 -probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
 Modo 0 con solo habilitarlo
 Modo 1 con testtimexmode1.tap
@@ -101,7 +95,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar azerty. se puede probar pulsando guion o cedilla
 -probar redefinir teclas, en menu y linea comandos
 -probar desactivando contended memory en compilacion
-
 
 -probar desactivando memptr i pasar z80tests.tap de spectrum. probar activando memptr i pasar z80tests.tap
 -probar z80flags.tap. con memptr y --enable-undoc-scfccf son 6 de 152: fallan bit n,a ; bit n,[r,(hl)], ldi, ldd, ldir, lddr
