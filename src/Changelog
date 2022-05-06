@@ -1,4 +1,4 @@
-Version 10.1 - Carrier Command edition. 18 April 2022
+Version 10.1 - Carrier Command edition. 06 May 2022
 
 Added real joystick support on Mac
 Added joystick support for Hat controllers
@@ -57,7 +57,7 @@ Improved ZX Vision:
 -Added translation of menu items to Spanish and Catalan
 -Added shortcuts helper to see hotkeys pressed
 -Added button preview when customizing ZX Desktop buttons or F-keys
--Better detection of any file size of 6912 bytes is guessed as Spectrum screen
+-Better detection of Spectrum screen file: any file size of 6912 bytes 
 -Show when a menu has submenus using the ">" character
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
@@ -68,10 +68,10 @@ Improved ZX Vision:
 -ZX Desktop: added setting to disable ZX Desktop when going to full screen 
 
 Improved PC Speaker Driver: now there is a new driver "onebitspeaker" which can handle both PC Speaker and Raspberry PI GPIO speaker
+Improved PC Speaker audio driver: better sound quality and high frequency filter
 Improved OSD Adventure Keyboard: allow to send space, enter and quotation marks
 Improved OSD Keyboard: allow to use mouse, preserve window geometry
 Improved Keyboard Help: load image automatically when changing machine
-Improved PC Speaker audio driver: better sound quality and high frequency filter
 Improved handling of individual colour palettes modifications (Red, Green, Blue)
 Improved portability of shell scripts
 Improved fbdev driver: added setting for double buffer to avoid flickering on menu (--fbdev-double-buffer)
@@ -107,7 +107,7 @@ Fixed ZX Vision:
 -Fixed showing input tape insert state on menu and zx desktop icon when tape can't be opened
 -Fixed window Hex Editor while moving or resizing
 -Fixed view sensors when clicking on the scroll bars
--Fixed refreshing Visual Real Tape window when Top Speed condition
+-Fixed refreshing Visual Real Tape window when enabled Top Speed
 
 
 Some other minor bugfixes and improvements

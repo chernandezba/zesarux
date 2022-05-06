@@ -1,0 +1,232 @@
+Version 10.1 - Carrier Command edition. 06 Mayo 2022
+
+Agregado soporte de joystick real en Mac
+Agregado soporte de joystick para controladores Hat
+Agregado un nuevo evento de joystick para salir de ZEsarUX
+Acción agregada para activar el movimiento de izquierda a derecha en el joystick, para jugar juegos tipo Decathlon
+Añadida emulación MSX Joystick
+Añadida emulación de joystick Spectravideo
+Agregado soporte para salida de altavoz simple en Raspberry PI usando pines GPIO y sin tarjeta de sonido
+Agregada opción para seleccionar un joystick diferente en Windows y OS con controlador SDL
+Agregada opciíon para cambiar el valor del bus de datos ULA
+Agregado la etiqueta de microdrive al expandir archivos qlay mdv de tamaño 174930 bytes
+Agregado compatibilidad con Jupiter Ace TAP y TZX en el navegador de cintas
+Agregado soporte TZX para ID 33 - Tipo de hardware
+Agregada opción para autorebobinado de cinta
+Agregado compatibilidad con el estado de la señal Z80 Halt en la instantánea zsf
+Agregado Botón de dispositivo ZX-Uno Flash
+Agregado otro huevo de Pascua;)
+
+
+Depuración de aventura de texto mejorada:
+-Agreado Mapa de aventura de texto 
+-Añadida Lista de conexiones de ubicaciones 
+-Agregado una entrada de menú directo y f-función vista 8 (depuración de aventura)
+-Detección mejorada de algunas aventuras de paws (como superlopez y abracadabra)
+-Detección mejorada de algunas aventuras daad (como jabato)
+
+Mejorada depuración de CPU:
+-Ahora resalta qué registros serán modificados por el código de operación en la posición del cursor
+-Nueva expresión de breakpoint FPEEK, que puede leer contenidos en el rango del espacio total de direcciones de la máquina
+-Contador de t-estados agregado en la vista predeterminada
+-Permitir tener una vista decimal de la decodificación del código de operación usando la tecla m (modo)
+-Se agregaron acciones de puntos de interrupción para iniciar y detener el registro de transacciones de la CPU
+
+Accesibilidad mejorada:
+-Agregada opción directa para colores inversos y modo gris
+-Agregada opción para deshabilitar Flash
+
+Mejorado ZX Vision:
+-Reducción de hasta 5 veces el uso de la CPU en el menú mediante el uso de un caché
+-Mejorada la actualización de la ventana al deshabilitar la omisión automática de fotogramas mientras se mueve o cambia el tamaño
+-Permitir establecer una ventana siempre visible
+-Ampliar el tamaño del contenido al cambiar el tamaño de la ventana sin tener que volver a crearlo
+-Notificar a la función principal cuando se ha cambiado el tamaño de una ventana
+-Permitir evitar actualizar la ventana al cambiar el desplazamiento
+-Estilos de GUI agregados: AmigaOS, Atari TOS, OS/2, RiscOS, ZEsarUX Plus (y este ahora es el estilo predeterminado)
+-Mejorar el estilo del GUI RetroMac: barra de título rayada
+-Mejorar el estilo del GUI de BeOS: posiciones de los botones justo después del título
+-Detecta cuando el controlador de video no puede usar el estilo GUI actual y configura otro que pueda usar
+-Agregado botón de maximizar ventana
+-El botón de background en las ventanas inactivas está oculto por defecto
+-Indicador de cambio de tamaño de ventana más grande (abajo a la derecha de la ventana)
+-Las ventanas de texto amplían/reducen el ancho de línea al cambiar el tamaño de las ventanas
+-Ventanas de texto más anchas por defecto (40 caracteres en lugar de 32)
+-Al enviar una ventana al fondo, y la configuración "Ventanas de fondo incluso cuando el menú está cerrado" está habilitada, el menú se cerrará
+-Mejorado los caracteres acentuados en diferentes juegos de caracteres.
+-Agregada traducción de elementos del menú al español y al catalán
+-Agregado un asistente de atajos para ver las hotkeys pulsadas
+-Vista previa de botón agregada al personalizar los botones o teclas F de ZX Desktop
+-Mejor detección de archivos de pantalla de Spectrum: cualquier archivo de tamaño 6912 bytes 
+-Mostrar cuando un menú tiene submenús usando el carácter ">"
+-Preservar el estado minimizado y maximizado en las ventanas
+-Recordar el tamaño antes de minimizar y maximizar la ventana
+-Acciones añadidas en el menú Gestión de ventanas para: cambiar a, minimizar, maximizar, mover al fondo, configurar siempre visible, información de la ventana
+-La ventana de administración de ventanas se puede ejecutar en segundo plano
+-ZX Desktop: botones de pie de página para ampliar o reducir ZX Desktop, no solo habilitar o deshabilitar
+-ZX Desktop: permite configurar un archivo SCR de fondo
+-ZX Desktop: configuración agregada para deshabilitar ZX Desktop cuando se va a pantalla completa
+
+Mejorado driver de PC Speaker: ahora hay un nuevo controlador "onebitspeaker" que puede manejar tanto el altavoz de PC como el altavoz Raspberry PI GPIO
+Mejorado driver de PC Speaker: mejor calidad de sonido y filtro de alta frecuencia
+Mejorado Teclado OSD Adventure: permite enviar espacios, ingresar y comillas
+Mejorado Teclado OSD: permite usar el mouse, conserva la geometría de la ventana
+Mejorado Ayuda de teclado: cargar la imagen automáticamente al cambiar de máquina
+Mejorado manejo modificaciones de paletas de colores individuales (Rojo, Verde, Azul)
+Mejorada Portabilidad de scripts de shell
+Mejorado Driver fbdev: agregada opción para doble búfer para evitar el parpadeo en el menú (--fbdev-double-buffer)
+Mejorado Driver fbdev: agregada opción para evitar el cambio de resolución en el modo de pantalla completa de Raspberry Pi (--fbdev-no-res-change)
+Mejorado Emulación ZX Spectrum Next: agregado bit de color de prioridad de layer 2
+Mejorado Piano de chip de audio y piano de onda mejorados: puede mostrar todas las octavas y configurar el zoom del piano
+
+
+Corregido el comportamiento de detención de Z80 y la ubicación del registro PC
+Corregido deshabilitado de borde cuando realvideo estaba habilitado en máquinas: Colecovision, Master System, MSX, SG1000, SpectraVideo
+Corregido el redibujado del pie de página cuando se hace fade out
+Corregido la visualización del carácter 127 en curses, stdout y controladores de video de texto simple
+Corregido preservado estado de breakpoints al hacer Smartload
+Corregido el guardado de instantáneas en algunos eventos que cierran ZEsarUX (tecla F, reproductor AY, etc.)
+Corregido cargar/guardar TZX como cinta estándar en Jupiter Ace
+Corregido expulsando cartucho de Spectravideo
+Corregido segfault al presionar F5 después de presionar la tecla de pausa
+Corregido un error en OSD Adventure Keyboard cuando las palabras de 5 caracteres de longitud y la configuración de envío del espacio final estaban habilitadas
+Corregido crash al guardar el archivo de configuración de más de 20 kb
+Corregido crash al navegar en un directorio completamente vacío
+Corregido el error al vaciar el teclado de texto de aventura osd al depurar el vocabulario
+Corregido smartload desde ZRCP
+Corregido crash al salir del emulador y ZRCP habilitado (generalmente fallaba en Raspberry Pi)
+
+Corregido ZX Vision:
+-Corregido el bloqueo al presionar el cursor hacia arriba o hacia abajo en cualquier menú con pestañas con una sola línea (como la forma de onda de audio)
+-Corregido glitches que cambiaban el tamaño de algunas ventanas: registros AY, CPU de depuración, etc.
+-Corregido el parpadeo al cambiar el tamaño de la ventana de ayuda del teclado
+-Corregido la reducción de todas las ventanas
+-Corregido error al restaurar ventanas al inicio cuando se generaba un error anterior
+-Corregido las barras de desplazamiento de dibujo cuando la ventana no está en la parte superior de todas las ventanas.
+-Corregido dibujado de botón de cierre en las ventanas de fondo
+-Corregido que se mostrara el estado de inserción de la cinta de entrada en el menú y el ícono del ZX Desktop cuando la cinta no se puede abrir
+-Corregido ventana Editor hexadecimal mientras se mueve o cambia el tamaño
+-Corregido view sensors al hacer clic en las barras de desplazamiento
+-Corregido la actualización de la ventana Visual Real Tape cuando activado Top Speed
+
+
+Algunas otras correcciones y mejoras
+
+
+
+Version 10.0 - Clive Sinclair edition. 4 Octubre 2021
+
+Hay un montón de cambios en esta versión, pero algunos de ellos son destacables:
+
+- Nueva máquina emulada: Sega Master System
+- Características de "Máquina del tiempo": Snapshots Automáticos en RAM + Rebobinado, debugging hacia atrás, ejecución hacia atrás
+- Traducción en tiempo real de aventuras conversacionales en una ventana de ZEsarUX
+- Puede renderizar cualquier imagen de una aventura conversacional de Spectrum (parsers soportados: Quill, Paws, Daad, Gac)
+- Agregado Visual Real Tape. Puedes tener un renderizado de audio de tu cinta, ver bloques de cinta y rebobinar o mover adelante la cinta
+- Puedes mostrar variables de Basic en ZX Spectrum, ZX81 y ZX80
+- Puedes personalizar los botones superiores a acciones
+- Agregada Ventana de Ver Sensores para graficar sensores de emulación internos, rendimiento, estadísticas, etc
+- Agregado selección de idioma en el menú entre la opción por defecto (Inglés) y Español. De momento sólo algunos textos están traducidos a Español
+
+
+El listado completo para esta versión 10.0 es:
+
+Agregado Sega Master System emulation
+Agregado visor archivos .sms
+Agregado midi output y .mid support para QL y SN audio chips (Master System, SG1000, etc)
+Agregado Automatic Snapshots para RAM + Rebobinado
+Agregado nuevo algoritmo mejorado de carga real tape
+Agregado opción para desactivar pausas TZX
+Agregado soporte zsf a scr para snapshots de Next, ZX-Uno y TSConf
+Agregado emulación de 51 KB RAM en Jupiter Ace
+Agregado Fuzix ide image en el zesarux-extras package
+Agregado TK90X v3 roms de Rodolfo Guerra en el zesarux-extras package
+Agregado soporte de ZSF snapshot para Jupiter Ace, Z88
+Agregado --slotcard-num opción para insertar una tarjeta Z88 en un slot numerado (1, 2 or 3)
+Agregado ZEsarUX logo en el window footer
+Agregado opción para desactivar ZX80/81 tape traps
+Agregado wav/rwa/smp tape audio browser, para ver Spectrum/ZX80/ZX81 bloques de cinta desde archivo audio
+Agregado Visual Real Tape. Puedes tener un renderizado de audio de tu cinta, ver bloques de cinta y rebobinar o mover adelante la cinta
+Agregado selección de idioma en el menú entre la opción por defecto (Inglés) y Español. De momento sólo algunos textos están traducidos a Español
+Agregado comandos ZRCP:
+-mmc-reload: recargar MMC imagen
+-snapshot-inram-get-index: Retorna indice a una posición de snapshot en RAM
+-snapshot-inram-load: Carga snapshot de RAM de una posición
+
+Agregado conversores: 
+-wav/rwa/smp a tap
+-wav/rwa/smp a p
+-wav/rwa/smp a o
+-rwa a wav
+
+
+Mejorado Ventana Debug CPU:
+-Agregado debugging hacia atrás, ejecución hacia atrás
+-Agregado cpu history menu para ver registros en el pasado (lo mismo que ya tenías en ZRCP)
+-Acciones de Ratón: click (conmutar breakpoint, cambiar registros), scrolling arriba/abajo con la rueda del ratón
+-Mejorar refresco de ventana al presionar teclas en modo no-paso a paso
+-Preservar modo paso a paso al ensamblar
+-Agregado nueva tecla hacer PC=PTR
+-Agregado nueva tecla para ir a siguiente breakpoint de tipo PC=dir
+-Permitir definir hasta 100 breakpoints (lo mismo que ya se podía desde ZRCP)
+
+Mejorado Debugging:
+-Puedes mostrar variables de Basic en ZX Spectrum, ZX81 y ZX80
+-Agregado opción para mostrar dirección de cada linea de Basic y linea actual en View Basic
+-Agregada Ventana de Ver Sensores para graficar sensores de emulación internos, rendimiento, estadísticas, etc
+-Agregado opción de linea de comandos para cargar código fuente
+
+Mejorado interfaz de menú ZX Vision:
+-Agregado estilos de GUI: BeOS, Bloody ("Sangriento"), Grass ("Hierba"), Ocean, Sunny ("Soleado"), Panther, Sky ("Cielo")
+-Agregado acciones para reinsertar, rebobinar, avanzar cinta real
+-Agregado opción para pausar emulación de cpu en menu cuando multitask activo
+-Agregado Tipo de Rellenado "Degradado" en ZX Desktop
+-Agregado botón en footer para conmutar ZX Desktop
+-Agregado menú Accessibility->GUI como una manera rápida para activar ciertas mejoras en el GUI: estilo de alto contraste, hotkeys, etc
+-Agregado item para reducir+reubicar ventanass
+-Agregado algunos medidores graficos en AY Registers, Core Statistics
+-Agregado opción para desactivar cajas alrededor de botones inferiores y superiores de ZX Desktop
+-Agregado soporte para caracteres acentuados
+-Permitir personalizar tipo de caracteres
+-Permitir personalizar botones superiores a acciones
+-Icono de Real tape ahora está animado al cargar de cinta
+-Reorganizados menus GUI Settings y Window Settings: "GUI Settings" menu se llama ahora "ZX Vision Settings", "Window Settings" menu se llama ahora "General settings"
+-Lista de fabricantes de máquinas ahora está ordenado por nombre (en vez de cierta mezcla entre tipo y antigüedad)
+-Mostrar en file selector cuando un archivo se puede expandir
+-Mejorado screen file previews: cualquier archivo de tamaño 6912 bytes se supone que es una pantalla de Spectrum
+-Maximizando ventanas ahora tiene en cuenta el tamaño del ZX Desktop cuando opción "Open menu on ZX Desktop" está activada
+-Gestionar pulsaciones de ventanas cuando menú cerrado
+-Ventana de Colour palette ahora muestra todos los colores que caben en la ventana
+-Leyenda en View sprite ahora se adapta al tamaño
+
+Mejorado emulación Next:
+-Turbo setting: por defecto hacerlo limitado en NextZXOS
+-ZSF snapshots incluyen toda la info del puerto 123b (previos snapshots TBBlue .zsf son incompatibles con esta versión, lo siento!)
+-Agregado mensaje splash al cambiar modos Layer 2
+
+Mejorado características de Aventuras Conversacionales: 
+-Mejorado detección de aventuras Daad en debugging
+-Traducción en tiempo real de aventuras conversacionales en una ventana de ZEsarUX, mediante scripts
+-Puedes renderizar cualquier imagen de una aventura conversacional de Spectrum (parsers soportados: Quill, Paws, Daad, Gac)
+
+Mejorado Find menu: ahora puedes buscar varios bytes y también abrir el Editor Hexadecimal desde los resultados
+Mejorado exportador de Audio a .mid: permitir cambiar instrumento
+Mejorado archivo de configuración: incrementado máximo permitido a 256kb y 2000 parámetros
+Mejorado curses driver en ZX80/81: ahora modo realvideo puede usar caracteres extendidos utf-8 blocky
+
+
+Corregido file previews en archivos corruptos: pzx, tap
+Corregido reubicar ventanas y usando total alto ventana
+Corregido Next ULA Scroll para usar registros 0x26 y 0x27
+Corregido comportamiento puerto 123b en Next: 48kb ram paging, shadow display, 3bit offset, read access
+Corregido comportamiento cpu-step la primera vez que se ejecuta
+Corregido teclas cursor arriba/abajo en Jupiter Ace
+Corregido opciones --help y --experthelp: no parsear archivo de configuración al mostrar ayuda
+Corregido autoload en spectrum 48k+ español
+Corregido carga de ZX80/81 Snapshots/Tapes cuando el archivo tiene más de una extensión
+Corregido tipo de forma de onda "Scroll" en View WaveForm
+
+
+Algunas otras correcciones y mejoras
+
+
