@@ -39,6 +39,21 @@ Exolon, Koronis Rift, Fox Fights back, Gauntlet, Pheenix, Death Wish 3
 
 --------------
 
+Ejemplos de nombres de archivos de una distribución estable y sus tamaños:
+
+ ZEsarUX_extras-10.0.zip                        152 MB
+ ZEsarUX_freebsd-10.0-freebsd12_x64.tar.gz      35.9 MB
+ ZEsarUX_linux-10.0-debian10_x32.tar.gz         36.1 MB
+ ZEsarUX_linux-10.0-debian10_x64.tar.gz         36.1 MB
+ ZEsarUX_macos-10.0-legacy.dmg                  34.3 MB
+ ZEsarUX_macos-10.0.dmg                         34.5 MB
+ ZEsarUX_raspberrypios-framebuffer-10.0.tar.gz  35.7 MB
+ ZEsarUX_src-10.0.tar.gz                        37.4 MB
+ ZEsarUX_windows-10.0-legacy.zip                37.5 MB
+ ZEsarUX_windows-10.0.zip                       37.2 MB
+
+--------------
+
 Establecer username y mail en repo descargado:
 git config --global user.name "chernandezba" ; git config --global user.email chernandezba@hotmail.com
 
