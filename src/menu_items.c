@@ -23805,7 +23805,10 @@ void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
 
 void menu_about_changelog(MENU_ITEM_PARAMETERS)
 {
-        menu_about_read_file("Changelog","Changelog",1);
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        menu_about_read_file("Cambios","Cambios",1);
+    }
+    else menu_about_read_file("Changelog","Changelog",1);
 }
 
 

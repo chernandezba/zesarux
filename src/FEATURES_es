@@ -71,7 +71,7 @@
 
 * Soporta drivers de Video: X-Windows, SDL, Cocoa (Mac OS X), Framebuffer, ncurses, aalib, cacalib, stdout(console), simpletext(console)
 
-* Soporta drivers de Audio: PulseAudio, Alsa, SDL, DSP(OSS), PC Speaker, CoreAudio (Mac OS X). 
+* Soporta drivers de Audio: PulseAudio, Alsa, SDL, DSP(OSS), One Bit Speaker (PC Speaker y Raspberry Pi GPIO speaker, sin ningún tipo de tarjeta de sonido), CoreAudio (Mac OS X).
 
 * Soporta volcar audio & video a archivo
 
