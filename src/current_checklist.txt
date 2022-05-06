@@ -13,22 +13,16 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 ok mac, linux
 
--probar cambio idioma menu y ver diferentes menus
-
-
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
-
 
 -probar targets:
 * linux 32 bits
 * linux 64 bits
 * raspberry. y activando extensiones raspberry
-* mac os x, con opengl y sin
+* mac os x
 * windows mingw, con y sin pthreads
 * windows cygwin
-
-
 
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
@@ -84,7 +78,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 
 -probar simulacion de carga en spectrum, zx80, zx81
 -probar audio filter on rom save
--probar verbose 3, 4, debugregisters
 -probar desactivando border, con y sin realvideo, en spectrum y zx8081
 -probar efectos border: btime, overscan, vectron, BorderTrix, Hercules, dark star (cuando te matan), aqua plane, paperboy, super wonder boy (pausa), thelosttapesofalbion0 (pausa), rotatrix, shock megademo, KnightsDemonsDX. en modos 128, 48k e inves.
 -probar ula48.tap, ula128.tap, scroll2017. Deberian verse bien sin necesidad de cambiar early / late timings
@@ -102,7 +95,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
 -ver paletas de colores
 -probar expansiones de ram de zx80/81
--probar a generar algun error y que aparezca en menu
 -probar a sobreescribir algun archivo y que pida confirmacion en menu
 -probar opcion desactivar contended memory en menu
 -probar fuller audio box emulation
@@ -115,13 +107,11 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar buscador vidas infinitas. tambien con cpu top speed
--probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
 -probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
 -probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
 -probar desactivar breakpoints con espacio
 -probar exportar disassemble a archivo texto
 -probar assembler, desde menu y ZRCP
--probar watches
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar fallback de drivers graficos y de sonido
 -probar impresora: en zx spectrum, zx81
@@ -180,7 +170,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Probar Sam Coupe. Todas teclas. Probar atomlite
 -probar ZX-Uno. diferentes maquinas (48k, 128k, +2a), juegos rom. Probar spi flash file, default y custom. En 48k, 128k, +2a: probar carga tap y grabacion tap, y autosend LOAD"". Probar rutina carga de cinta desde la BIOS. Probar DMA
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
-
 
 -probar Sprite chip con demo
 -probar usar extension de archivo no conocida y ver que avisa

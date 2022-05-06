@@ -67,7 +67,7 @@ Drivers audio:
 * linux 32 bits
 * linux 64 bits
 * raspberry. y activando extensiones raspberry
-* mac os x, con opengl y sin
+* mac os x, con y sin optimizaciones
 * windows mingw, con y sin pthreads
 * windows cygwin
 
