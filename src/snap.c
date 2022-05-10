@@ -3005,13 +3005,15 @@ void load_z80_snapshot(char *archivo)
 			//Z80 version 2 o 3
 
 			//leemos longitud de la cabecera adicional
+            //cabecera de 31 bytes no parece ser estandard, la encuentro en juego Dungeon Raiders, aunque ni Fuse ni RVM son capaces de cargar 
+            //ese snapshot. En cambio ZXSP si
 			leidos=fread(z80_header_adicional,1,2,ptr_z80file);
 			z80_int long_cabecera_adicional=value_8_to_16(z80_header_adicional[1],z80_header_adicional[0]);
-			if (long_cabecera_adicional!= 23 && long_cabecera_adicional!= 54 && long_cabecera_adicional!= 55) {
+			if (long_cabecera_adicional!= 23 && long_cabecera_adicional!= 31 && long_cabecera_adicional!= 54 && long_cabecera_adicional!= 55) {
 				debug_printf(VERBOSE_ERR,"Header with %d bytes unknown",long_cabecera_adicional);
 				return;
 			}
-			if (long_cabecera_adicional==23) {
+			if (long_cabecera_adicional==23 || long_cabecera_adicional==31) {
 				debug_printf(VERBOSE_INFO,".Z80 version 2 detected");
 				z80_version=2;
 			}
@@ -3217,6 +3219,7 @@ if (long_cabecera_adicional>25) {
 						break;
 
 						case 8:
+                        case 3: //Este 3 lo encuentro con cabeceras de 31 bytes
 							direccion_destino=16384;
 						break;
 
