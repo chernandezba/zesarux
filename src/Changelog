@@ -4,6 +4,7 @@ Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header 
 Added ZSF support for Timex TS2068
 
 Fixed .Z80 Timex TS2068 snapshot loading
+Fixed showing Recent Files when file name contains character %
 
 
 Version 10.1 - Carrier Command edition. 06 May 2022
