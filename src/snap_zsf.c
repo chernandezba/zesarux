@@ -2839,7 +2839,7 @@ Byte fields:
 
 
   //Maquinas Spectrum de 48kb y zx80/81 y Ace
-  if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE) {
+  if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE || MACHINE_IS_TIMEX_TS2068) {
 
 	  int inicio_ram=16384;
 	  int longitud_ram=49152;
@@ -2861,14 +2861,6 @@ Byte fields:
         inicio_ram=8192;
         longitud_ram=65536-inicio_ram;
     }
-
-    //Test. Save 48kb block
-    //Allocate 5+48kb bytes
-    /*z80_byte *ramblock=malloc(longitud_ram+5);
-    if (ramblock==NULL) {
-      debug_printf (VERBOSE_ERR,"Error allocating memory");
-      return;
-    }*/
 
 
     //Para el bloque comprimido

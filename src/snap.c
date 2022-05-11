@@ -3006,7 +3006,7 @@ void load_z80_snapshot(char *archivo)
 
 			//leemos longitud de la cabecera adicional
             //cabecera de 31 bytes no parece ser estandard, la encuentro en juego Dungeon Raiders, aunque ni Fuse ni RVM son capaces de cargar 
-            //ese snapshot. En cambio ZXSP si
+            //ese snapshot. En cambio ZXSP si. Parece que el error es del propio ZXSP cuando guarda los snapshots
 			leidos=fread(z80_header_adicional,1,2,ptr_z80file);
 			z80_int long_cabecera_adicional=value_8_to_16(z80_header_adicional[1],z80_header_adicional[0]);
 			if (long_cabecera_adicional!= 23 && long_cabecera_adicional!= 31 && long_cabecera_adicional!= 54 && long_cabecera_adicional!= 55) {
@@ -3014,7 +3014,8 @@ void load_z80_snapshot(char *archivo)
 				return;
 			}
 			if (long_cabecera_adicional==23 || long_cabecera_adicional==31) {
-				debug_printf(VERBOSE_INFO,".Z80 version 2 detected");
+                if (long_cabecera_adicional==31) debug_printf(VERBOSE_WARN,".Z80 corrupted version 2 detected created on ZXSP emulator. Trying to load it anyway");
+				else debug_printf(VERBOSE_INFO,".Z80 version 2 detected");
 				z80_version=2;
 			}
 			else {
@@ -3033,7 +3034,9 @@ void load_z80_snapshot(char *archivo)
 			z80_byte modify_hardware=z80_header_adicional[7]&128;
 
 
-			debug_printf(VERBOSE_DEBUG,"Header machine type: %d Modify hardware flag: %d",maquina_leida,modify_hardware);
+			debug_printf(VERBOSE_DEBUG,"Header machine type: %d Modify hardware flag: %d",maquina_leida,
+                (modify_hardware ? 1: 0 )
+            );
 
 			if (load_sna_snapshot_must_change_machine() ) {
 
@@ -3134,8 +3137,7 @@ void load_z80_snapshot(char *archivo)
 
 					case 128:
 						//TS2068
-						debug_printf(VERBOSE_ERR,"Unsupported machine type TS2068");
-						return;
+                        current_machine_type=MACHINE_ID_TIMEX_TS2068;
 					break;									
 
 					default:
@@ -3207,7 +3209,9 @@ if (long_cabecera_adicional>25) {
 					comprimido=0;
 				}
 
-				if (MACHINE_IS_SPECTRUM_16_48) {
+                debug_printf(VERBOSE_DEBUG,"Z80 block number %d length %d compressed: %d",numerobloque,longitudbloque,comprimido);
+
+				if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_TIMEX_TS2068) {
 					//gestionar maquinas de 48 k
 					switch (numerobloque) {
 						case 4:
@@ -3219,13 +3223,24 @@ if (long_cabecera_adicional>25) {
 						break;
 
 						case 8:
-                        case 3: //Este 3 lo encuentro con cabeceras de 31 bytes
 							direccion_destino=16384;
 						break;
 
 						case 0:
 							//Carga en rom. lo ignoramos
 						break;
+
+                        case 3: 
+                            //Este 3 lo encuentro con cabeceras de 31 bytes, probablemente cabeceras corruptas de ZXSP
+                            if (long_cabecera_adicional==31) {
+                                direccion_destino=16384;
+                            }
+                            else {
+                                debug_printf(VERBOSE_ERR,"Z80 snapshot page number %d unknown",numerobloque);
+                                return;
+                            }
+							
+						break;                        
 
 						default:
 							debug_printf(VERBOSE_ERR,"Z80 snapshot page number %d unknown",numerobloque);
