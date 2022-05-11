@@ -561,6 +561,21 @@ Byte fields:
 
 37: blink_uit
 
+-Block ID 43: ZSF_Z80_HALT_STATE
+Byte fields:
+0: z80_halt_signal.v;
+  
+
+-Block ID 44: ZSF_TIMEX_DOCK_ROM
+A rom dock for timex ts 2068
+Byte Fields:
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5 and next bytes: data bytes
+
 
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
@@ -575,7 +590,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 43
+#define MAX_ZSF_BLOCK_ID_NAMES 44
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -622,6 +637,7 @@ char *zsf_block_id_names[]={
   "ZSF_Z88_MEMBLOCK",
   "ZSF_Z88_CONF",
   "ZSF_Z80_HALT_STATE",
+  "ZSF_TIMEX_DOCK_ROM",
 
   "Unknown"  //Este siempre al final
 };
@@ -926,6 +942,35 @@ void load_zsf_zxuno_snapshot_block_data(z80_byte *block_data,int longitud_origin
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],zxuno_sram_mem_table_new[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+void load_zsf_timex_dockrom_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+
+  debug_printf (VERBOSE_DEBUG,"Block rom_dock start: %d Length: %d Compressed: %s Length_source: %d",block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=5;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],timex_dock_rom_mem_table[0],block_lenght,longitud_original,block_flags&1);
+
+  timex_cartridge_inserted.v=1;
 
 }
 
@@ -1458,6 +1503,8 @@ void load_zsf_timex(z80_byte *header)
 {
   timex_port_f4=header[0];
   timex_port_ff=header[1];
+
+  if (MACHINE_IS_TIMEX_TS2068) timex_set_memory_pages();
 }
 
 
@@ -2493,7 +2540,11 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_Z80_HALT_STATE:
         load_zsf_snapshot_z80_halt_state(block_data);
-      break;      
+      break;
+
+      case ZSF_TIMEX_DOCK_ROM:
+        load_zsf_timex_dockrom_block_data(block_data,block_lenght);
+      break;
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -2892,6 +2943,57 @@ Byte fields:
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_RAMBLOCK, longitud_bloque+5);
 
     free(compressed_ramblock);
+
+  }
+
+  //Cartucho timex en DOCK
+  if (MACHINE_IS_TIMEX_TS2068 && timex_cartridge_inserted.v) {
+
+   int longitud_dock_rom=65536;
+
+  
+   //Para el bloque comprimido
+   z80_byte *compressed_romblock=malloc(longitud_dock_rom*2);
+  if (compressed_romblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }      
+
+/*
+-Block ID 44: ZSF_TIMEX_DOCK_ROM
+A rom dock for timex ts 2068
+Byte Fields:
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5 and next bytes: data bytes
+
+
+
+  */
+
+    //Nota: grabamos los 64kb del maximo de un cartucho dock, sin importar cuanto realmente hay de ese cartucho
+    //al final el bloque está comprimido por lo que lo que no se esté usando no ocupará casi espacio
+
+    compressed_romblock[0]=0;
+    compressed_romblock[1]=0;
+    compressed_romblock[2]=0;
+    compressed_romblock[3]=value_16_to_8l(longitud_dock_rom);
+    compressed_romblock[4]=value_16_to_8h(longitud_dock_rom);
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(timex_dock_rom_mem_table[0],&compressed_romblock[5],longitud_dock_rom,&si_comprimido);
+    if (si_comprimido) compressed_romblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_TIMEX_DOCK_ROM length: %d",longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_romblock,ZSF_TIMEX_DOCK_ROM, longitud_bloque+5);
+
+    free(compressed_romblock);
+
 
   }
 
