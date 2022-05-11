@@ -3475,7 +3475,8 @@ char *menu_filesel_recent_files(void)
             //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
             util_trunc_name_right(archivo_sin_dir,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
 
-			menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,archivo_sin_dir);
+            //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
+            menu_add_item_menu(array_menu_recent_files,archivo_sin_dir,MENU_OPCION_NORMAL,NULL,NULL);
 
 			//Agregar tooltip con ruta entera
 			menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
