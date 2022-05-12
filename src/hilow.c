@@ -286,9 +286,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             
             z80_int inicio_datos=8192;
+            z80_int leer_datos=HILOW_SECTOR_SIZE;
 
-                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+HILOW_SECTOR_SIZE);
-                for (i=0;i<HILOW_SECTOR_SIZE;i++) {
+                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+leer_datos);
+                for (i=0;i<leer_datos;i++) {
                     //poke_byte_no_time(reg_ix+i,'!');
                     //reg_de?
                     //poke_byte_no_time(inicio_datos+i,'!');
