@@ -333,6 +333,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
                 //trampeamos los bytes que da espacio ocupado??
+                //parece que al escribir mete valores 00 00 , pero tiene que ser 255
+                //quiza es que no lee el tamaño de cinta total por eso mete un 0
                 
                 if (reg_a==0) {
                  //   poke_byte_no_time(inicio_datos+0,2);   
