@@ -326,7 +326,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                 printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
 
+
+
                 //trampeamos los dos primeros bytes que da espacio ocupado??
+                
                 if (reg_a==0) {
                  //   poke_byte_no_time(inicio_datos+0,2);   
                    // poke_byte_no_time(inicio_datos+1,10);   
@@ -356,6 +359,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         }
                     }                   
                 }
+                
 
                 printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
             
@@ -366,10 +370,20 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 for (i=0;i<2048;i++) {
                     //poke_byte_no_time(reg_ix+i,'!');
                     //reg_de?
-                    poke_byte_no_time(inicio_datos+i,'!');
+                    //poke_byte_no_time(inicio_datos+i,'!');
 
+                        z80_int destino=inicio_datos+i;
+                        destino &= (HILOW_RAM_SIZE-1);
+                        destino +=8192;
 
+                        z80_int temp_sp=reg_sp;
+                        temp_sp &= (HILOW_RAM_SIZE-1);
+                        temp_sp +=8192;   
+                        
+                        //Chapuza para no sobreescribir stack. Temporal                
+                        if (destino!=temp_sp && destino!=temp_sp+1) {                        
                     poke_byte_no_time(inicio_datos+i,255);
+                        }
                 }
 
                 //TODO: en algun punto dice los KB libres de la cinta...
@@ -417,9 +431,9 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 poke_byte_no_time(inicio_datos+11+9,'8');
                 poke_byte_no_time(inicio_datos+11+10,' ');
 
-                //tamaño archivo. 
-                poke_byte_no_time(inicio_datos+11+11,1); 
-                poke_byte_no_time(inicio_datos+11+12,3); 
+                //tamaño archivo.  -> screen$
+                poke_byte_no_time(inicio_datos+11+11,0x00); 
+                poke_byte_no_time(inicio_datos+11+12,0x1b); 
 
                 //primer parametro de cabecera de cinta: direccion, line, etc
                 poke_byte_no_time(inicio_datos+11+13,4);
