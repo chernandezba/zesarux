@@ -288,7 +288,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
                     //en algun punto de esta zona debe estar a 255 para que retorne 510 KB libres
-                    for (i=1000;i<2048;i++) {
+                    //for (i=1000;i<2048;i++) {
+                    for (i=1000;i<1048;i++) {
                         //poke_byte_no_time(reg_ix+i,'!');
 
 
@@ -508,7 +509,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_pc=0x1acf;
 
             printf("Returning to address %04XH\n",reg_pc);
-        }              
+        }             
 
         if (reg_pc==0x1AF1 && hilow_mapped_rom.v) {
             
