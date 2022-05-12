@@ -443,6 +443,13 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             //reg_pc=0x18a3;
 
+            //no carry
+	        //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
+
+            //carry
+        	//Z80_FLAGS |=FLAG_C;
+
+
             printf("Returning to address %04XH\n",reg_pc);
         }
 
@@ -509,8 +516,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
             //Z80_FLAGS |=FLAG_Z;
-        }     
-
+        }
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
 

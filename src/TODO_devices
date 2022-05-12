@@ -197,7 +197,7 @@ https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
 -hilow: cargar ok. 
 quiza el punto de entrada a READ_SECTOR no es exactamente ese o bien volver con algo distinto de un RET
 
-grabar no ok, error fuera rango, quiza por error en el sector 0 simulado. aunque pongo un sector 0 bueno y siempre da fuera de rango. por que?
+grabar no ok, error "B integer out of range", quiza por error en el sector 0 simulado. aunque pongo un sector 0 bueno y siempre da fuera de rango. por que?
 quiza el salto a write sector es otro
 
 formatear da error despues de escribir pista 1. quiza algun registro de retorno?
