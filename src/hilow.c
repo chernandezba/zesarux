@@ -328,7 +328,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
 
-                //trampeamos los dos primeros bytes que da espacio ocupado??
+                //trampeamos los bytes que da espacio ocupado??
                 
                 if (reg_a==0) {
                  //   poke_byte_no_time(inicio_datos+0,2);   
@@ -338,8 +338,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     //en algun punto de esta zona debe estar a 255 para que retorne 510 KB libres
                     //for (i=1000;i<2048;i++) {
 
-                    printf("Resetting from %04XH to %04XH to 255\n",inicio_datos+1000,inicio_datos+1048);
-                    for (i=1000;i<1048;i++) {
+                    printf("Resetting from %04XH to %04XH to 255\n",inicio_datos+1011,inicio_datos+1011);
+                    for (i=1011;i<1012;i++) {
                         //poke_byte_no_time(reg_ix+i,'!');
 
                         z80_int destino=inicio_datos+i;
@@ -359,6 +359,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         }
                     }                   
                 }
+                
                 
 
                 printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
