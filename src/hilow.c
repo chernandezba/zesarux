@@ -523,10 +523,12 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             }
             printf("\n");
 
-            //sector 1=0??
+            
             int sector=reg_a;
 
-            if (sector==1) sector=0;
+            //sector 1=0??
+            sector--;
+            //if (sector==1) sector=0;
 
             for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                 z80_byte c=hilow_read_ram_byte(i);
@@ -747,7 +749,7 @@ A8H: ??
 Bit de valor 08H tambien parece tener algo que ver
 Puede que esos comandos sea combinacion de bits
 */
-	printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
+	//printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
 }
 
 
@@ -776,7 +778,7 @@ L1C03:          IN      A,(HLWPORT)
 
 */
 
-	printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
+	//printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
 
 
     z80_byte valor_retorno=0;
