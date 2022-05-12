@@ -29,9 +29,10 @@
 
 #define HILOW_ROM_SIZE 8192
 
-#define HILOW_RAM_SIZE 2048
+#define HILOW_RAM_SIZE 8192
 
 //8 KB rom, 2 kb ram
+//Creo que son 8 kb ram...
 #define HILOW_MEM_SIZE (HILOW_ROM_SIZE+HILOW_RAM_SIZE)
 
 extern z80_byte *hilow_memory_pointer;

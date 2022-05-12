@@ -88,7 +88,13 @@ z80_byte hilow_read_ram_byte(z80_int dir)
 {
 
 	//printf ("Read ram byte from %04XH\n",dir);
-	dir &= 2047; 
+	
+    
+    //solo 2kb ram
+    //dir &= 2047; 
+
+    //8kb ram
+    dir &= 8191;
 
 
 	//La RAM esta despues de los 8kb de rom
@@ -100,7 +106,14 @@ void hilow_poke_ram(z80_int dir,z80_byte value)
 
 	if (hilow_check_if_ram_area(dir) ) {
 		//printf ("Poke ram byte to %04XH with value %02XH\n",dir,value);
-		dir &= 2047; 
+
+        //2kb ram
+		//dir &= 2047; 
+
+        //8kb ram
+        dir &= 8191;
+
+
 		//La RAM esta despues de los 8kb de rom
 		hilow_memory_pointer[8192+dir]=value;	
 	}
