@@ -299,7 +299,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
             
-            /* 
+            /*
             if (reg_a==0) { //Sector 0 directorio
 
                 for (i=0;i<2048;i++) {
@@ -517,6 +517,18 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
             //Z80_FLAGS |=FLAG_Z;
+        }
+
+
+        if (reg_pc==0x08FB && hilow_mapped_rom.v) {
+            printf("Entering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+
+            //saltar opcode JP      Z,BREAKCONT
+            reg_pc +=3;
+
+            printf("Skipping to address %04XH\n",reg_pc);
+
+            //Esto al hacer un SAVE al final parece ir a la direccion 0 y se resetea...
         }
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
