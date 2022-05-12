@@ -252,6 +252,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Entering READ_SECTOR. from %04XH A=%02XH IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
                 peek_word(reg_sp),reg_a,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
 
+            printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+
             char buffer[2048];
             print_registers(buffer);
 
@@ -263,13 +265,16 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 z80_byte c=hilow_read_ram_byte(i);
                 printf("%c",(c>=32 && c<=126 ? c : '.'));
             }
-            printf("\n");            
+            printf("\n");   
+
+            printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
 
             //pruebas de handler. Le escribo datos y retorno de dicha funcion
 
             
             z80_int inicio_datos=8192;
 
+                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+2048);
                 for (i=0;i<2048;i++) {
                     //poke_byte_no_time(reg_ix+i,'!');
                     //reg_de?
@@ -280,7 +285,9 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                     //lectura de la imagen de memoria
                     poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
-                }     
+                }    
+
+                printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
 
                 //trampeamos los dos primeros bytes que da espacio ocupado??
                 if (reg_a==0) {
@@ -290,6 +297,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                     //en algun punto de esta zona debe estar a 255 para que retorne 510 KB libres
                     //for (i=1000;i<2048;i++) {
+
+                    printf("Resetting from %04XH to %04XH to 255\n",inicio_datos+1000,inicio_datos+1048);
                     for (i=1000;i<1048;i++) {
                         //poke_byte_no_time(reg_ix+i,'!');
 
@@ -298,6 +307,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     }                   
                 }
 
+                printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
             
             
             /*
