@@ -236,14 +236,14 @@ z80_byte temp_hilow_buffer[1024*1024];
 
 void temp_hilow_write(int sector,int offset,z80_byte valor)
 {
-    offset +=(sector*2048);
+    offset +=(sector*HILOW_SECTOR_SIZE);
 
     temp_hilow_buffer[offset]=valor;
 }
 
 z80_byte temp_hilow_read(int sector,int offset)
 {
-    offset +=(sector*2048);
+    offset +=(sector*HILOW_SECTOR_SIZE);
 
     return temp_hilow_buffer[offset];
 }
@@ -267,7 +267,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
 
-            char buffer[2048];
+            char buffer[HILOW_SECTOR_SIZE];
             print_registers(buffer);
 
             printf ("%s\n",buffer);
@@ -287,8 +287,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             
             z80_int inicio_datos=8192;
 
-                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+2048);
-                for (i=0;i<2048;i++) {
+                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+HILOW_SECTOR_SIZE);
+                for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                     //poke_byte_no_time(reg_ix+i,'!');
                     //reg_de?
                     //poke_byte_no_time(inicio_datos+i,'!');
@@ -297,7 +297,25 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     //poke_byte_no_time(inicio_datos+i,255);
 
                     //lectura de la imagen de memoria
+
+                      z80_int destino=inicio_datos+i;
+                        destino &= (HILOW_RAM_SIZE-1);
+                        destino +=8192;
+
+                        z80_int temp_sp=reg_sp;
+                        temp_sp &= (HILOW_RAM_SIZE-1);
+                        temp_sp +=8192;
+
+                        //Chapuza para no sobreescribir stack. Temporal
+                        if (destino!=temp_sp && destino!=temp_sp+1) {
+                            //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
+
                     poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
+
+                        }
+                        else {
+                            printf("NOT %04XH\n",destino);
+                        }
                 }    
 
                 printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
@@ -318,7 +336,13 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         z80_int destino=inicio_datos+i;
                         destino &= (HILOW_RAM_SIZE-1);
                         destino +=8192;
-                        if (destino!=reg_sp && destino!=reg_sp+1) {
+
+                        z80_int temp_sp=reg_sp;
+                        temp_sp &= (HILOW_RAM_SIZE-1);
+                        temp_sp +=8192;        
+
+                        //Chapuza para no sobreescribir stack. Temporal                
+                        if (destino!=temp_sp && destino!=temp_sp+1) {
 	
 
                             poke_byte_no_time(inicio_datos+i,255);
@@ -492,7 +516,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             //mostrar algunos caracteres
             int i;
-            for (i=0;i<2048;i++) {
+            for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                 z80_byte c=hilow_read_ram_byte(i);
                 if (c>=32 && c<=126) printf("%c",c);
                 else printf(" %02XH ",c);
@@ -504,7 +528,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             if (sector==1) sector=0;
 
-            for (i=0;i<2048;i++) {
+            for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                 z80_byte c=hilow_read_ram_byte(i);
                 temp_hilow_write(sector,i,c);
             }            
