@@ -249,7 +249,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //debug de rutinas
         if (reg_pc==0x186D && hilow_mapped_rom.v) {
             //probablemente esta direccion NO es lectura de sector
-            printf("Entering READ_SECTOR. A=%02XH IX=%04XH DE=%04XH HL=%04XH BC=%04XH\n",reg_a,reg_ix,reg_de,reg_hl,reg_bc);
+            printf("Entering READ_SECTOR. from %04XH A=%02XH IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+                peek_word(reg_sp),reg_a,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
 
             char buffer[2048];
             print_registers(buffer);
@@ -451,7 +452,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         	//Z80_FLAGS |=FLAG_C;
 
 
-            printf("Returning to address %04XH\n",reg_pc);
+            printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
         }
 
         //debug de rutinas
@@ -482,7 +483,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_a=0;
 
             reg_pc=pop_valor();
-            printf("Returning to address %04XH\n",reg_pc);
+            printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
 
 
         }        
@@ -496,7 +497,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_pc=0x1ac8;
             reg_pc=0x1acf;
 
-            printf("Returning to address %04XH\n",reg_pc);
+            printf("Skipping to address %04XH\n",reg_pc);
         }              
 
         if (reg_pc==0x1AC0 && hilow_mapped_rom.v) {
@@ -508,7 +509,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_pc=0x1ac8;
             reg_pc=0x1acf;
 
-            printf("Returning to address %04XH\n",reg_pc);
+            printf("Skipping to address %04XH\n",reg_pc);
         }             
 
         if (reg_pc==0x1AF1 && hilow_mapped_rom.v) {
