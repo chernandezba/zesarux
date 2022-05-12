@@ -267,7 +267,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             //pruebas de handler. Le escribo datos y retorno de dicha funcion
 
-
+            
             z80_int inicio_datos=8192;
 
                 for (i=0;i<2048;i++) {
@@ -298,7 +298,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     }                   
                 }
 
-
+            
             
             /*
             if (reg_a==0) { //Sector 0 directorio
