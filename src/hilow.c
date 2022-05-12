@@ -94,7 +94,7 @@ z80_byte hilow_read_ram_byte(z80_int dir)
     //dir &= 2047; 
 
     //8kb ram
-    dir &= 8191;
+    dir &= (HILOW_RAM_SIZE-1);
 
 
 	//La RAM esta despues de los 8kb de rom
@@ -111,7 +111,7 @@ void hilow_poke_ram(z80_int dir,z80_byte value)
 		//dir &= 2047; 
 
         //8kb ram
-        dir &= 8191;
+        dir &= (HILOW_RAM_SIZE-1);
 
 
 		//La RAM esta despues de los 8kb de rom
@@ -315,8 +315,15 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     for (i=1000;i<1048;i++) {
                         //poke_byte_no_time(reg_ix+i,'!');
 
+                        z80_int destino=inicio_datos+i;
+                        destino &= (HILOW_RAM_SIZE-1);
+                        destino +=8192;
+                        if (destino!=reg_sp && destino!=reg_sp+1) {
+	
 
-                        poke_byte_no_time(inicio_datos+i,255);
+                            poke_byte_no_time(inicio_datos+i,255);
+
+                        }
                     }                   
                 }
 
