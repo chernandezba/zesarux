@@ -291,7 +291,11 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //temp
             leer_datos=reg_de;
 
+            //no estoy seguro de esto
             if (leer_datos>HILOW_SECTOR_SIZE) leer_datos=HILOW_SECTOR_SIZE;
+
+            //no estoy seguro de esto
+            if (leer_datos==0) leer_datos=HILOW_SECTOR_SIZE;
 
                 printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+leer_datos);
                 for (i=0;i<leer_datos;i++) {
@@ -534,6 +538,13 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         if (reg_pc==0x16D0 && hilow_mapped_rom.v) {
             
             printf("Entering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+
+            /*
+            ; IX=inicio datos
+            ; DE=longitud datos
+            ; A= sector
+            ???
+            */
 
             //mostrar algunos caracteres
             int i;
