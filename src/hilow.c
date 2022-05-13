@@ -468,8 +468,8 @@ void hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_de
 {
     int i;
 
-    printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH\n",
-        dir,sector,longitud);
+    printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH offset_destination=%04XH\n",
+        dir,sector,longitud,offset_destination);
 
     if (sector>=HILOW_MAX_SECTORS) {
         printf("Sector beyond maximum. Do nothing\n");
@@ -613,6 +613,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         //despues_directorio=1;
                     }
                     else {
+                        /*if (reg_de==6) {
+                            printf("posible cat\n");
+                            leer_datos=0x4b;
+                        }*/
                         /*
                         //prueba chapuza
                         if (despues_directorio==1) {
