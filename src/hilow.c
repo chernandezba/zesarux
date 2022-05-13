@@ -538,7 +538,9 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 if (reg_de>HILOW_SECTOR_SIZE) {
                     //printf("WARN. DE > %d. Writing only to maximum\n",HILOW_SECTOR_SIZE);
                     printf("WARN. DE > %d. Probably dir entry\n",HILOW_SECTOR_SIZE);
-                    hilow_write_mem_to_device(reg_ix,reg_a,45,11);
+                    hilow_write_mem_to_device(reg_ix,reg_a,17,11);
+                    //Y meter valor a 1 despues... esto con 1 archivo, que sucede con 2??
+                    temp_hilow_write(0,17+11,1);
                 }
                 else {
                     hilow_write_mem_to_device(reg_ix,reg_a,reg_de,0);
