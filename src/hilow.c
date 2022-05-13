@@ -583,6 +583,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 if (reg_a!=0) {
                     leer_datos=reg_de;
                     //leer_datos=reg_bc;
+                    inicio_datos=reg_ix;
                 }
 
                 else {
