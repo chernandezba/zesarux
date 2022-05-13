@@ -455,8 +455,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //debug de rutinas
         if (reg_pc==0x186D && hilow_mapped_rom.v) {
             //probablemente esta direccion NO es lectura de sector
-            printf("Entering READ_SECTOR. return=%04XH A=%02XH Carry=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
-                peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+            printf("\nEntering READ_WRITE_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+                reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
 
 
             printf("(3F31)=%04XH\n",peek_word(0x3f31));
@@ -491,15 +491,20 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
 
             if (!(Z80_FLAGS & FLAG_C)) {
-                printf("Retornando porque no carry. Posible escritura?\n\n");
+                printf("WRITE probably\n");
+                //printf("Retornando porque no carry. Posible escritura?\n\n");
 
-                //Escritura???
+                
                 reg_a=0;
 
-                // reg_a++;
+                //reg_a++;
 
                 //valor distinto de 0 retorna el error "Error en la cinta"
                 //reg_a=1;
+
+                //reg_a=255;
+                //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
+                //Z80_FLAGS |=FLAG_C;                
 
                 //No seguro de esto
                 reg_ix +=reg_de;
@@ -510,7 +515,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             else {            
 
-                                
+                printf("READ probably\n");
+
                 z80_int inicio_datos=8192;
                 z80_int leer_datos=HILOW_SECTOR_SIZE;
 
@@ -609,7 +615,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //debug de rutinas
         if (reg_pc==0x16D0 && hilow_mapped_rom.v) {
             
-            printf("Entering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
+            printf("\nEntering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
             /*
             ; IX=inicio datos??  (quiza siempre direccion 8192)
@@ -645,7 +651,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         if (reg_pc==0x1A9E && hilow_mapped_rom.v) {
             
-            printf("Entering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //saltar adelante en codigo. feo....
             //reg_pc=0x1ad8;
@@ -657,7 +663,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         if (reg_pc==0x1AC0 && hilow_mapped_rom.v) {
             
-            printf("Entering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //saltar adelante en codigo. feo....
             //reg_pc=0x1ad8;
@@ -669,7 +675,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         if (reg_pc==0x1AF1 && hilow_mapped_rom.v) {
             
-            printf("Entering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            printf("\nEntering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
             //Z80_FLAGS |=FLAG_Z;
@@ -677,7 +683,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
         if (reg_pc==0x08FB && hilow_mapped_rom.v) {
-            printf("Entering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            printf("\nEntering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //saltar opcode JP      Z,BREAKCONT
             reg_pc +=3;
