@@ -541,6 +541,11 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     hilow_write_mem_to_device(reg_ix,reg_a,17,11);
                     //Y meter valor a 1 despues... esto con 1 archivo, que sucede con 2??
                     temp_hilow_write(0,17+11,1);
+
+
+                    //quiza directamente copiar lo de la cache hacia aqui
+                    //esto soluciona la escritura
+                    hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);
                 }
                 else {
                     hilow_write_mem_to_device(reg_ix,reg_a,reg_de,0);
