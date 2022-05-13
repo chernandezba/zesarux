@@ -426,17 +426,35 @@ void temp_chapuza_espacio_disponible(z80_int inicio_datos)
                 
 }
 
-void temp_debug_mem_registers(void)
+void temp_debug_registers(void)
 {
     char buffer[HILOW_SECTOR_SIZE];
     print_registers(buffer);
 
     printf ("%s\n",buffer);
 
+}
+
+void temp_debug_mem_registers(void)
+{
+    temp_debug_registers();
+
     //mostrar algunos caracteres
     int i;
     for (i=0;i<100;i++) {
         z80_byte c=hilow_read_ram_byte(i);
+        printf("%c",(c>=32 && c<=126 ? c : '.'));
+    }
+    printf("\n");      
+}
+
+void temp_dump_from_addr(z80_int dir)
+{
+
+    //mostrar algunos caracteres
+    int i;
+    for (i=0;i<100;i++) {
+        z80_byte c=peek_byte_no_time(dir+i);
         printf("%c",(c>=32 && c<=126 ? c : '.'));
     }
     printf("\n");      
@@ -461,7 +479,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             printf("(3F31)=%04XH\n",peek_word(0x3f31));
 
-            printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+            //printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
 
             /*
             Posible entrada: 
@@ -482,18 +500,16 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             */
 
- 
-
-            temp_debug_mem_registers();
 
             int i;
 
-            printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
+            //printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
 
             if (!(Z80_FLAGS & FLAG_C)) {
                 printf("WRITE probably\n");
                 //printf("Retornando porque no carry. Posible escritura?\n\n");
-
+                temp_debug_registers();
+                temp_dump_from_addr(reg_ix);
                 
                 reg_a=0;
 
@@ -508,12 +524,19 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                 //No seguro de esto
                 reg_ix +=reg_de;
+
+                //siguiente sector???
                 reg_bc++;
+
+                //siguiente sector??
+                reg_a_shadow++;
 
                 reg_pc=pop_valor();                
             }
 
-            else {            
+            else {         
+
+                temp_debug_mem_registers();   
 
                 printf("READ probably\n");
 
@@ -557,7 +580,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                             }
                     }    
 
-                    printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+                    //printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
 
 
 
@@ -573,7 +596,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     
                     
 
-                    printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+                //printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
                 
 
                 //temp_directorio_falso(inicio_datos);
@@ -605,7 +628,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 //No seguro de esto
                 reg_ix +=reg_de;
 
-                    
+                //siguiente sector???
+                reg_bc++;
 
 
                 printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
