@@ -416,12 +416,12 @@ void temp_chapuza_espacio_disponible(z80_int inicio_datos)
         temp_sp +=8192;        
 
         //Chapuza para no sobreescribir stack. Temporal                
-        if (destino!=temp_sp && destino!=temp_sp+1) {
+        //if (destino!=temp_sp && destino!=temp_sp+1) {
 
 
             poke_byte_no_time(dir_space_avail+i,255);
 
-        }
+        //}
     }                   
                 
 }
@@ -589,15 +589,15 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                             temp_sp +=8192;
 
                             //Chapuza para no sobreescribir stack. Temporal
-                            if (destino!=temp_sp && destino!=temp_sp+1) {
+                            //if (destino!=temp_sp && destino!=temp_sp+1 && reg_sp<16384) {
                                 //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
 
-                        poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
+                                poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
 
-                            }
-                            else {
-                                printf("NOT %04XH\n",destino);
-                            }
+                            //}
+                            //else {
+                            //    printf("NOT %04XH\n",destino);
+                            //}
                     }    
 
                     //printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
@@ -670,6 +670,15 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
            temp_debug_mem_registers();
 
+            //mostrar algunos caracteres
+            int i;
+            for (i=0;i<2048;i++) {
+                z80_byte c=peek_byte_no_time(8192+i);
+                if (c>=32 && c<=126) printf("%c",c);
+                else printf(" %02X ",c);
+            }
+            printf("\n");           
+
             
             int sector=reg_a;
 
@@ -677,14 +686,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //Sin esto, al hacer un cat, no aparece el label de la cinta
             sector--;
             //if (sector==1) sector=0;
-            int i;
-
-            /*
-            for (i=0;i<HILOW_SECTOR_SIZE;i++) {
-                z80_byte c=hilow_read_ram_byte(i);
-                temp_hilow_write(sector,i,c);
-            } 
-            */
+       
 
             hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE);           
 
