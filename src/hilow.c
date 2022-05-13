@@ -603,6 +603,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                         //si dejo en 17, carga solo si la grabacion ha sido justo ahora (porque probablemente lo tenga en cache)
                         leer_datos=17;
+                        //inicio_datos=reg_ix;
 
                         //offset_device=11;
 
