@@ -578,7 +578,11 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 //esto no siempre me cuadra con lo que debe...
                 if (reg_a!=0) {
                     leer_datos=reg_de;
-                    leer_datos=reg_bc;
+                    //leer_datos=reg_bc;
+                }
+
+                else {
+                    //leer_datos=100; //al azar
                 }
 
                 //temp
@@ -590,7 +594,9 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 //no estoy seguro de esto
                 if (leer_datos==0) leer_datos=HILOW_SECTOR_SIZE;
 
-                    printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+leer_datos);
+                    int sector=reg_a;
+
+                    printf("Reading data from sector %d length %04XH to address %04XH\n",sector,leer_datos,inicio_datos);
                     for (i=0;i<leer_datos;i++) {
 
 
@@ -606,7 +612,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                             //if (destino!=temp_sp && destino!=temp_sp+1 && reg_sp<16384) {
                                 //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
 
-                                poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
+                                poke_byte_no_time(inicio_datos+i,temp_hilow_read(sector,i));
 
                             //}
                             //else {
