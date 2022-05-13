@@ -830,6 +830,7 @@ extern int util_concat_string(char *original,char *string_to_add,int limite);
 #define MEMORY_ZONE_SMS_VRAM 32
 
 #define MEMORY_ZONE_HILOW_RAM 33
+#define MEMORY_ZONE_HILOW_DEVICE 34
 
 
 

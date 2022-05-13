@@ -35,6 +35,12 @@
 #define HILOW_SECTOR_SIZE 2048
 //#define HILOW_SECTOR_SIZE 1024
 
+#define HILOW_MAX_SECTORS 256
+
+#define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
+
+extern z80_byte hilow_device_buffer[];
+
 //8 KB rom, 2 kb ram
 //Creo que son 8 kb ram...
 #define HILOW_MEM_SIZE (HILOW_ROM_SIZE+HILOW_RAM_SIZE)

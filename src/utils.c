@@ -12410,6 +12410,13 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;    
 
+    //hilow device
+    case MEMORY_ZONE_HILOW_DEVICE:
+        if (hilow_enabled.v) {
+            *readwrite=1;      
+            size=HILOW_DEVICE_SIZE;
+        }
+    break; 
 
   }
 
@@ -12791,6 +12798,14 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (hilow_enabled.v) {
 	        //La RAM esta despues de los 8kb de rom
             p=&hilow_memory_pointer[8192+address];             
+        }
+    break;      
+
+    //hilow device
+    case MEMORY_ZONE_HILOW_DEVICE:
+        if (hilow_enabled.v) {
+	        //La RAM esta despues de los 8kb de rom
+            p=&hilow_device_buffer[address];             
         }
     break;      
 
@@ -13192,6 +13207,13 @@ void machine_get_memory_zone_name(int zone, char *name)
             strcpy(name,"Hilow RAM");
         }
     break;      
+
+    //hilow ram
+    case MEMORY_ZONE_HILOW_DEVICE:
+        if (hilow_enabled.v) {
+            strcpy(name,"Hilow Device");
+        }
+    break;     
 
   }
 

@@ -232,20 +232,20 @@ void hilow_automap_unmap_memory(z80_int dir)
 
 //temporal para guardar la imagen del datadrive
 //esto probablemente deberia ser 512 kb: 256 sectores X 2048 bytes/sector = 512 KB
-z80_byte temp_hilow_buffer[1024*1024];
+z80_byte hilow_device_buffer[HILOW_DEVICE_SIZE];
 
 void temp_hilow_write(int sector,int offset,z80_byte valor)
 {
     offset +=(sector*HILOW_SECTOR_SIZE);
 
-    temp_hilow_buffer[offset]=valor;
+    hilow_device_buffer[offset]=valor;
 }
 
 z80_byte temp_hilow_read(int sector,int offset)
 {
     offset +=(sector*HILOW_SECTOR_SIZE);
 
-    return temp_hilow_buffer[offset];
+    return hilow_device_buffer[offset];
 }
 
 void temp_directorio_falso(z80_int inicio_datos)
@@ -460,16 +460,21 @@ void temp_dump_from_addr(z80_int dir)
     printf("\n");      
 }
 
-void hilow_write_mem_to_device(z80_int dir,int sector,int longitud)
+void hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_destination)
 {
     int i;
 
     printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH\n",
         dir,sector,longitud);
 
+    if (sector>=HILOW_MAX_SECTORS) {
+        printf("Sector beyond maximum. Do nothing\n");
+        return;
+    }
+
     for (i=0;i<longitud;i++) {
         z80_byte c=peek_byte_no_time(dir+i);
-        temp_hilow_write(sector,i,c);
+        temp_hilow_write(sector,i+offset_destination,c);
     }        
 }
 
@@ -525,10 +530,12 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 temp_dump_from_addr(reg_ix);
 
                 if (reg_de>HILOW_SECTOR_SIZE) {
-                    printf("NOT writing because DE > %d\n",HILOW_SECTOR_SIZE);
+                    //printf("WARN. DE > %d. Writing only to maximum\n",HILOW_SECTOR_SIZE);
+                    printf("WARN. DE > %d. Probably dir entry\n",HILOW_SECTOR_SIZE);
+                    hilow_write_mem_to_device(reg_ix,reg_a,45,11);
                 }
                 else {
-                    hilow_write_mem_to_device(reg_ix,reg_a,reg_de);
+                    hilow_write_mem_to_device(reg_ix,reg_a,reg_de,0);
                 }
                 
                 reg_a=0;
@@ -565,7 +572,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
                 //temp
                 //esto no siempre me cuadra con lo que debe...
-                leer_datos=reg_de;
+                if (reg_a!=0) {
+                    leer_datos=reg_de;
+                    leer_datos=reg_bc;
+                }
 
                 //temp
                 //inicio_datos=reg_ix;
@@ -688,7 +698,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //if (sector==1) sector=0;
        
 
-            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE);           
+            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);           
 
             //no error?
             reg_a=0;
