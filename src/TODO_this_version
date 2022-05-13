@@ -158,3 +158,5 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 
 *parece que si primero grabo una pantalla, parte de los bytes al cargar salen corruptos (byte con valor igual, 56 el de atributo, supongo
 que porque se lia con los sectores). en cambio si se graba primero archivo pequeño y luego sobreescribo ya lo hace bien 
+
+-sugerencia: para evitar lectura de cache de directorio, decir siempre que se ha abierto la puerta

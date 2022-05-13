@@ -680,7 +680,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     
                     if (reg_a==0) {
 
-                        temp_chapuza_espacio_disponible(inicio_datos);
+                        //temp_chapuza_espacio_disponible(inicio_datos);
                     
                     }
                     
@@ -756,6 +756,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //Sin esto, al hacer un cat, no aparece el label de la cinta
             sector--;
             //if (sector==1) sector=0;
+
+            if (sector==0) {
+                temp_chapuza_espacio_disponible(8192);
+            }
        
 
             hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);           
