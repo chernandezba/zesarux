@@ -398,6 +398,10 @@ void temp_directorio_falso(z80_int inicio_datos)
 void temp_chapuza_espacio_disponible(z80_int inicio_datos)
 {
 
+    poke_byte_no_time(inicio_datos+1011,255);
+
+    return;
+
     int i;
 
     z80_int dir_space_avail;

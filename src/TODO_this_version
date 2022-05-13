@@ -148,7 +148,8 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 
 -hilow: estado
 *formatear parece que borra pero luego da error
-*save "cat" parece obtener listado de cache siempre. espacio total libre lo estamos falseando
-*load ".archivo" no parece encontrarlo nunca. Aunque un save ".archivo" si existe lo detecta
+*save "cat" . espacio total libre lo estamos falseando
+*load ".archivo" encuentra el archivo aunque da error al cargarlo
+* save ".archivo" consigo guardar entrada directorio (deduciendo que es una entrada de directorio) aunque el sector de datos en escritura es aparentemente siempre FF
 *funcion de grabar parece ser la misma que al cargar pero o bien con carry=0 (y carry=1 es escritura) o bien depende de registro A (00 o FF)
 *quiza grabar o cargar usan registro bc como sector?
