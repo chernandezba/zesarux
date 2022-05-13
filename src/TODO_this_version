@@ -160,3 +160,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 que porque se lia con los sectores). en cambio si se graba primero archivo pequeño y luego sobreescribo ya lo hace bien 
 
 -sugerencia: para evitar lectura de cache de directorio, decir siempre que se ha abierto la puerta
+
+->parece que ya graba bien. Pero ahora no asigna bien los sectores de cada bloque
+->truco para hacer que recargue la cache del sector 0: save "cat" sacara el catalogo

@@ -327,6 +327,14 @@ void temp_directorio_falso(z80_int inicio_datos)
                 //primer parametro de cabecera de cinta: direccion, line, etc
                 poke_byte_no_time(inicio_datos+11+13,4);
                 poke_byte_no_time(inicio_datos+11+14,2);
+
+                //byte 15?
+                //byte 16?
+
+                //byte 17: numero de sectores
+                //byte 18: primer sector
+                //byte 19: segundo sector
+                //etc
                 
                 //atributo? valor 3 (o bits 0 y 1 activos)= directorio?
                 //for (i=11+15;i<11+45;i++) {
