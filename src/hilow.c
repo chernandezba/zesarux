@@ -262,10 +262,32 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //debug de rutinas
         if (reg_pc==0x186D && hilow_mapped_rom.v) {
             //probablemente esta direccion NO es lectura de sector
-            printf("Entering READ_SECTOR. from %04XH A=%02XH IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
-                peek_word(reg_sp),reg_a,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+            printf("Entering READ_SECTOR. return=%04XH A=%02XH Carry=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+                peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+
+
+            printf("(3F31)=%04XH\n",peek_word(0x3f31));
 
             printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+
+            /*
+            Posible entrada: 
+            DE=longitud a leer
+            Destino a leer: 8192
+            Probablemente carry indica algo al entrar:
+                                XOR     A
+                                CALL    EX_RDSECT
+                L090D:          POP     IX
+                                RET
+            ....
+                                SCF
+                L0931:          CALL    EX_RDSECT
+
+            A=00 lectura??
+            A=FF escritura??
+            
+
+            */
 
             char buffer[HILOW_SECTOR_SIZE];
             print_registers(buffer);
@@ -282,6 +304,26 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
             printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
 
+            if (!(Z80_FLAGS & FLAG_C)) {
+                printf("Retornando porque no carry. Posible escritura?\n\n");
+
+                //Escritura???
+                reg_a=0;
+
+                // reg_a++;
+
+                //valor distinto de 0 retorna el error "Error en la cinta"
+                //reg_a=1;
+
+                //No seguro de esto
+                reg_ix +=reg_de;
+                reg_bc++;
+
+                reg_pc=pop_valor();                
+            }
+
+            else {            
+
             //pruebas de handler. Le escribo datos y retorno de dicha funcion
 
             
@@ -289,7 +331,11 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             z80_int leer_datos=HILOW_SECTOR_SIZE;
 
             //temp
+            //esto no siempre me cuadra con lo que debe...
             leer_datos=reg_de;
+
+            //temp
+            //inicio_datos=reg_ix;
 
             //no estoy seguro de esto
             if (leer_datos>HILOW_SECTOR_SIZE) leer_datos=HILOW_SECTOR_SIZE;
@@ -344,11 +390,14 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     //en algun punto de esta zona debe estar a 255 para que retorne 510 KB libres
                     //for (i=1000;i<2048;i++) {
 
-                    printf("Resetting from %04XH to %04XH to 255\n",inicio_datos+1011,inicio_datos+1011);
+                    z80_int dir_space_avail;
+                    dir_space_avail=inicio_datos;
+                    //dir_space_avail=8192;
+                    printf("Resetting from %04XH to %04XH to 255\n",dir_space_avail+1011,dir_space_avail+1011);
                     for (i=1011;i<1012;i++) {
                         //poke_byte_no_time(reg_ix+i,'!');
 
-                        z80_int destino=inicio_datos+i;
+                        z80_int destino=dir_space_avail+i;
                         destino &= (HILOW_RAM_SIZE-1);
                         destino +=8192;
 
@@ -360,7 +409,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         if (destino!=temp_sp && destino!=temp_sp+1) {
 	
 
-                            poke_byte_no_time(inicio_datos+i,255);
+                            poke_byte_no_time(dir_space_avail+i,255);
 
                         }
                     }                   
@@ -517,6 +566,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //Z80_FLAGS |=FLAG_C;
             reg_a=0;
 
+            //reg_a++;            
+
             //valor distinto de 0 retorna el error "Error en la cinta"
             //reg_a=1;
 
@@ -532,18 +583,24 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //carry
         	//Z80_FLAGS |=FLAG_C;
 
+                //No seguro de esto
+                reg_ix +=reg_de;
+
+                
+
 
             printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
+        }
         }
 
         //debug de rutinas
         if (reg_pc==0x16D0 && hilow_mapped_rom.v) {
             
-            printf("Entering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            printf("Entering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
             /*
-            ; IX=inicio datos
-            ; DE=longitud datos
+            ; IX=inicio datos??  (quiza siempre direccion 8192)
+            ; DE=longitud datos?? (quiza siempre escribe tamaño de HILOW_SECTOR_SIZE)
             ; A= sector
             ???
             */
@@ -551,6 +608,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //mostrar algunos caracteres
             int i;
             for (i=0;i<HILOW_SECTOR_SIZE;i++) {
+                if (i==1024) printf("\n---\n");
                 z80_byte c=hilow_read_ram_byte(i);
                 if (c>=32 && c<=126) printf("%c",c);
                 else printf(" %02XH ",c);
@@ -561,6 +619,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             int sector=reg_a;
 
             //sector 1=0??
+            //Sin esto, al hacer un cat, no aparece el label de la cinta
             sector--;
             //if (sector==1) sector=0;
 
