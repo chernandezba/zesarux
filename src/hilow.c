@@ -592,7 +592,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         //lectura entrada directorio??
                         printf("Leyendo entrada directorio\n");
                         offset_device=0;
-                        leer_datos=80; //11+45; //17; //valor al azar
+
+                        //descomentando el leer_datos, intenta leer pero con direccion y longitud incorrectas y peta
+                        //si lo dejo comentado, suele quedarse en un bucle cerrado o dar tape loading error
+                        //leer_datos=500; //80 //11+45; //17; //valor al azar
 
                         //despues_directorio=1;
                     }
