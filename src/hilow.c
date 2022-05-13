@@ -460,6 +460,19 @@ void temp_dump_from_addr(z80_int dir)
     printf("\n");      
 }
 
+void hilow_write_mem_to_device(z80_int dir,int sector,int longitud)
+{
+    int i;
+
+    printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH\n",
+        dir,sector,longitud);
+
+    for (i=0;i<longitud;i++) {
+        z80_byte c=peek_byte_no_time(dir+i);
+        temp_hilow_write(sector,i,c);
+    }        
+}
+
 z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
@@ -510,6 +523,13 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 //printf("Retornando porque no carry. Posible escritura?\n\n");
                 temp_debug_registers();
                 temp_dump_from_addr(reg_ix);
+
+                if (reg_de>HILOW_SECTOR_SIZE) {
+                    printf("NOT writing because DE > %d\n",HILOW_SECTOR_SIZE);
+                }
+                else {
+                    hilow_write_mem_to_device(reg_ix,reg_a,reg_de);
+                }
                 
                 reg_a=0;
 
@@ -659,10 +679,14 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //if (sector==1) sector=0;
             int i;
 
+            /*
             for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                 z80_byte c=hilow_read_ram_byte(i);
                 temp_hilow_write(sector,i,c);
-            }            
+            } 
+            */
+
+            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE);           
 
             //no error?
             reg_a=0;
