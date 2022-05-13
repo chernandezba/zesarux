@@ -596,6 +596,8 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                         //descomentando el leer_datos, intenta leer pero con direccion y longitud incorrectas y peta
                         //si lo dejo comentado, suele quedarse en un bucle cerrado o dar tape loading error
                         //leer_datos=500; //80 //11+45; //17; //valor al azar
+                        leer_datos=17;
+                        //offset_device=11;
 
                         //despues_directorio=1;
                     }
