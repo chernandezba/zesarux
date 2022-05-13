@@ -248,180 +248,13 @@ z80_byte temp_hilow_read(int sector,int offset)
     return temp_hilow_buffer[offset];
 }
 
-
-z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
+void temp_directorio_falso(z80_int inicio_datos)
 {
 
-        //Llamar a anterior
-        debug_nested_core_call_previous(hilow_nested_id_core);
-
-
-		hilow_automap_unmap_memory(reg_pc);
-
-
-        //debug de rutinas
-        if (reg_pc==0x186D && hilow_mapped_rom.v) {
-            //probablemente esta direccion NO es lectura de sector
-            printf("Entering READ_SECTOR. return=%04XH A=%02XH Carry=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
-                peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
-
-
-            printf("(3F31)=%04XH\n",peek_word(0x3f31));
-
-            printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
-
-            /*
-            Posible entrada: 
-            DE=longitud a leer
-            Destino a leer: 8192
-            Probablemente carry indica algo al entrar:
-                                XOR     A
-                                CALL    EX_RDSECT
-                L090D:          POP     IX
-                                RET
-            ....
-                                SCF
-                L0931:          CALL    EX_RDSECT
-
-            A=00 lectura??
-            A=FF escritura??
+    int i;
             
-
-            */
-
-            char buffer[HILOW_SECTOR_SIZE];
-            print_registers(buffer);
-
-            printf ("%s\n",buffer);
-
-            //mostrar algunos caracteres
-            int i;
-            for (i=0;i<100;i++) {
-                z80_byte c=hilow_read_ram_byte(i);
-                printf("%c",(c>=32 && c<=126 ? c : '.'));
-            }
-            printf("\n");   
-
-            printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
-
-            if (!(Z80_FLAGS & FLAG_C)) {
-                printf("Retornando porque no carry. Posible escritura?\n\n");
-
-                //Escritura???
-                reg_a=0;
-
-                // reg_a++;
-
-                //valor distinto de 0 retorna el error "Error en la cinta"
-                //reg_a=1;
-
-                //No seguro de esto
-                reg_ix +=reg_de;
-                reg_bc++;
-
-                reg_pc=pop_valor();                
-            }
-
-            else {            
-
-            //pruebas de handler. Le escribo datos y retorno de dicha funcion
-
-            
-            z80_int inicio_datos=8192;
-            z80_int leer_datos=HILOW_SECTOR_SIZE;
-
-            //temp
-            //esto no siempre me cuadra con lo que debe...
-            leer_datos=reg_de;
-
-            //temp
-            //inicio_datos=reg_ix;
-
-            //no estoy seguro de esto
-            if (leer_datos>HILOW_SECTOR_SIZE) leer_datos=HILOW_SECTOR_SIZE;
-
-            //no estoy seguro de esto
-            if (leer_datos==0) leer_datos=HILOW_SECTOR_SIZE;
-
-                printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+leer_datos);
-                for (i=0;i<leer_datos;i++) {
-                    //poke_byte_no_time(reg_ix+i,'!');
-                    //reg_de?
-                    //poke_byte_no_time(inicio_datos+i,'!');
-
-                    //todo a 255
-                    //poke_byte_no_time(inicio_datos+i,255);
-
-                    //lectura de la imagen de memoria
-
-                      z80_int destino=inicio_datos+i;
-                        destino &= (HILOW_RAM_SIZE-1);
-                        destino +=8192;
-
-                        z80_int temp_sp=reg_sp;
-                        temp_sp &= (HILOW_RAM_SIZE-1);
-                        temp_sp +=8192;
-
-                        //Chapuza para no sobreescribir stack. Temporal
-                        if (destino!=temp_sp && destino!=temp_sp+1) {
-                            //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
-
-                    poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
-
-                        }
-                        else {
-                            printf("NOT %04XH\n",destino);
-                        }
-                }    
-
-                printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
-
-
-
-                //trampeamos los bytes que da espacio ocupado??
-                //parece que al escribir mete valores 00 00 , pero tiene que ser 255
-                //quiza es que no lee el tamaño de cinta total por eso mete un 0
-                
-                if (reg_a==0) {
-                 //   poke_byte_no_time(inicio_datos+0,2);   
-                   // poke_byte_no_time(inicio_datos+1,10);   
-
-
-                    //en algun punto de esta zona debe estar a 255 para que retorne 510 KB libres
-                    //for (i=1000;i<2048;i++) {
-
-                    z80_int dir_space_avail;
-                    dir_space_avail=inicio_datos;
-                    //dir_space_avail=8192;
-                    printf("Resetting from %04XH to %04XH to 255\n",dir_space_avail+1011,dir_space_avail+1011);
-                    for (i=1011;i<1012;i++) {
-                        //poke_byte_no_time(reg_ix+i,'!');
-
-                        z80_int destino=dir_space_avail+i;
-                        destino &= (HILOW_RAM_SIZE-1);
-                        destino +=8192;
-
-                        z80_int temp_sp=reg_sp;
-                        temp_sp &= (HILOW_RAM_SIZE-1);
-                        temp_sp +=8192;        
-
-                        //Chapuza para no sobreescribir stack. Temporal                
-                        if (destino!=temp_sp && destino!=temp_sp+1) {
-	
-
-                            poke_byte_no_time(dir_space_avail+i,255);
-
-                        }
-                    }                   
-                }
-                
-                
-
-                printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
-            
-            
-            /*
-            if (reg_a==0) { //Sector 0 directorio
+     if (reg_a==0) { //Sector 0 directorio
+         //Sector 0 directorio
 
                 for (i=0;i<2048;i++) {
                     //poke_byte_no_time(reg_ix+i,'!');
@@ -559,38 +392,218 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                 //PC=186d SP=3fdc AF=0301 BC=0003 HL=0800 DE=0301 IX=4000 IY=5c3a AF'=0301 BC'=1721 HL'=ffff DE'=369b I=3f R=77  F=-------C F'=-------C MEMPTR=186d IM1 IFF-- VPS: 0 MMU=00000000000000000000000000000000
                 
             }
+}
+
+
+void temp_chapuza_espacio_disponible(z80_int inicio_datos)
+{
+
+    int i;
+
+    z80_int dir_space_avail;
+    dir_space_avail=inicio_datos;
+    //dir_space_avail=8192;
+    printf("Resetting from %04XH to %04XH to 255\n",dir_space_avail+1011,dir_space_avail+1011);
+    for (i=1011;i<1012;i++) {
+        //poke_byte_no_time(reg_ix+i,'!');
+
+        z80_int destino=dir_space_avail+i;
+        destino &= (HILOW_RAM_SIZE-1);
+        destino +=8192;
+
+        z80_int temp_sp=reg_sp;
+        temp_sp &= (HILOW_RAM_SIZE-1);
+        temp_sp +=8192;        
+
+        //Chapuza para no sobreescribir stack. Temporal                
+        if (destino!=temp_sp && destino!=temp_sp+1) {
+
+
+            poke_byte_no_time(dir_space_avail+i,255);
+
+        }
+    }                   
+                
+}
+
+void temp_debug_mem_registers(void)
+{
+    char buffer[HILOW_SECTOR_SIZE];
+    print_registers(buffer);
+
+    printf ("%s\n",buffer);
+
+    //mostrar algunos caracteres
+    int i;
+    for (i=0;i<100;i++) {
+        z80_byte c=hilow_read_ram_byte(i);
+        printf("%c",(c>=32 && c<=126 ? c : '.'));
+    }
+    printf("\n");      
+}
+
+z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
+{
+
+        //Llamar a anterior
+        debug_nested_core_call_previous(hilow_nested_id_core);
+
+
+		hilow_automap_unmap_memory(reg_pc);
+
+
+        //debug de rutinas
+        if (reg_pc==0x186D && hilow_mapped_rom.v) {
+            //probablemente esta direccion NO es lectura de sector
+            printf("Entering READ_SECTOR. return=%04XH A=%02XH Carry=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+                peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+
+
+            printf("(3F31)=%04XH\n",peek_word(0x3f31));
+
+            printf("Retorno 1: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+
+            /*
+            Posible entrada: 
+            DE=longitud a leer
+            Destino a leer: 8192
+            Probablemente carry indica algo al entrar:
+                                XOR     A
+                                CALL    EX_RDSECT
+                L090D:          POP     IX
+                                RET
+            ....
+                                SCF
+                L0931:          CALL    EX_RDSECT
+
+            A=00 lectura??
+            A=FF escritura??
+            
+
             */
 
-            //no error?
-            //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
-            //Z80_FLAGS |=FLAG_C;
-            reg_a=0;
+ 
 
-            //reg_a++;            
+            temp_debug_mem_registers();
 
-            //valor distinto de 0 retorna el error "Error en la cinta"
-            //reg_a=1;
+            int i;
 
-            reg_pc=pop_valor();
+            printf("Retorno 2: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);  
 
-            //reg_pc=0x1927;
+            if (!(Z80_FLAGS & FLAG_C)) {
+                printf("Retornando porque no carry. Posible escritura?\n\n");
 
-            //reg_pc=0x18a3;
+                //Escritura???
+                reg_a=0;
 
-            //no carry
-	        //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
+                // reg_a++;
 
-            //carry
-        	//Z80_FLAGS |=FLAG_C;
+                //valor distinto de 0 retorna el error "Error en la cinta"
+                //reg_a=1;
+
+                //No seguro de esto
+                reg_ix +=reg_de;
+                reg_bc++;
+
+                reg_pc=pop_valor();                
+            }
+
+            else {            
+
+                                
+                z80_int inicio_datos=8192;
+                z80_int leer_datos=HILOW_SECTOR_SIZE;
+
+                //temp
+                //esto no siempre me cuadra con lo que debe...
+                leer_datos=reg_de;
+
+                //temp
+                //inicio_datos=reg_ix;
+
+                //no estoy seguro de esto
+                if (leer_datos>HILOW_SECTOR_SIZE) leer_datos=HILOW_SECTOR_SIZE;
+
+                //no estoy seguro de esto
+                if (leer_datos==0) leer_datos=HILOW_SECTOR_SIZE;
+
+                    printf("Writing data from %04XH to %04XH\n",inicio_datos,inicio_datos+leer_datos);
+                    for (i=0;i<leer_datos;i++) {
+
+
+                        z80_int destino=inicio_datos+i;
+                            destino &= (HILOW_RAM_SIZE-1);
+                            destino +=8192;
+
+                            z80_int temp_sp=reg_sp;
+                            temp_sp &= (HILOW_RAM_SIZE-1);
+                            temp_sp +=8192;
+
+                            //Chapuza para no sobreescribir stack. Temporal
+                            if (destino!=temp_sp && destino!=temp_sp+1) {
+                                //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
+
+                        poke_byte_no_time(inicio_datos+i,temp_hilow_read(reg_a,i));
+
+                            }
+                            else {
+                                printf("NOT %04XH\n",destino);
+                            }
+                    }    
+
+                    printf("Retorno 3: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+
+
+
+                    //trampeamos los bytes que da espacio ocupado??
+                    //parece que al escribir mete valores 00 00 , pero tiene que ser 255
+                    //quiza es que no lee el tamaño de cinta total por eso mete un 0
+                    
+                    if (reg_a==0) {
+
+                        temp_chapuza_espacio_disponible(inicio_datos);
+                    
+                    }
+                    
+                    
+
+                    printf("Retorno 4: %04XH. SP=%04XH\n",peek_word(reg_sp),reg_sp);
+                
+
+                //temp_directorio_falso(inicio_datos);
+                
+            
+
+                //no error?
+                //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
+                //Z80_FLAGS |=FLAG_C;
+                reg_a=0;
+
+                //reg_a++;            
+
+                //valor distinto de 0 retorna el error "Error en la cinta"
+                //reg_a=1;
+
+                reg_pc=pop_valor();
+
+                //reg_pc=0x1927;
+
+                //reg_pc=0x18a3;
+
+                //no carry
+                //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
+
+                //carry
+                //Z80_FLAGS |=FLAG_C;
 
                 //No seguro de esto
                 reg_ix +=reg_de;
 
-                
+                    
 
 
-            printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
-        }
+                printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
+            }
         }
 
         //debug de rutinas
@@ -605,15 +618,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             ???
             */
 
-            //mostrar algunos caracteres
-            int i;
-            for (i=0;i<HILOW_SECTOR_SIZE;i++) {
-                if (i==1024) printf("\n---\n");
-                z80_byte c=hilow_read_ram_byte(i);
-                if (c>=32 && c<=126) printf("%c",c);
-                else printf(" %02XH ",c);
-            }
-            printf("\n");
+           temp_debug_mem_registers();
 
             
             int sector=reg_a;
@@ -622,6 +627,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //Sin esto, al hacer un cat, no aparece el label de la cinta
             sector--;
             //if (sector==1) sector=0;
+            int i;
 
             for (i=0;i<HILOW_SECTOR_SIZE;i++) {
                 z80_byte c=hilow_read_ram_byte(i);
