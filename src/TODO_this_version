@@ -163,3 +163,6 @@ que porque se lia con los sectores). en cambio si se graba primero archivo peque
 
 ->parece que ya graba bien. Pero ahora no asigna bien los sectores de cada bloque
 ->truco para hacer que recargue la cache del sector 0: save "cat" sacara el catalogo
+
+
+-tabla de sectores: hacia la dirección 400h

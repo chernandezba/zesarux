@@ -431,7 +431,7 @@ void temp_chapuza_espacio_disponible(z80_int inicio_datos)
         //if (destino!=temp_sp && destino!=temp_sp+1) {
 
 
-            poke_byte_no_time(dir_space_avail+i,255);
+            poke_byte_no_time(dir_space_avail+i,HILOW_MAX_SECTORS-1);
 
         //}
     }                   
@@ -488,6 +488,25 @@ void hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_de
         z80_byte c=peek_byte_no_time(dir+i);
         temp_hilow_write(sector,i+offset_destination,c);
     }        
+}
+
+void hilow_create_sector_table(void)
+{
+    /*
+    Empieza en dirección 400h del sector 0 (esto es 1024-mitad de sector)
+    Lo metemos tanto en el dispositivo como en RAM
+    */
+
+    printf("Creating free sectors table\n");
+    int i;
+
+    z80_byte id_sector_tabla=1;
+
+    for (i=0;i<HILOW_MAX_SECTORS;i++,id_sector_tabla++) {
+        temp_hilow_write(0,0x400+i,id_sector_tabla);
+        poke_byte_no_time(8192+0x400+i,id_sector_tabla);
+    }
+
 }
 
 //int despues_directorio=0;
@@ -784,7 +803,10 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             }
        
 
-            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);           
+            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);    
+
+
+            hilow_create_sector_table();       
 
             //no error?
             reg_a=0;

@@ -35,7 +35,8 @@
 #define HILOW_SECTOR_SIZE 2048
 //#define HILOW_SECTOR_SIZE 1024
 
-#define HILOW_MAX_SECTORS 256
+//Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
+#define HILOW_MAX_SECTORS 246
 
 #define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
