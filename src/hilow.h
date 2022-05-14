@@ -37,10 +37,13 @@
 
 //Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
 #define HILOW_MAX_SECTORS 246
+//#define HILOW_MAX_SECTORS 256
 
 #define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
-extern z80_byte hilow_device_buffer[];
+extern z80_byte *hilow_device_buffer;
+
+extern void hilow_nmi(void);
 
 //8 KB rom, 2 kb ram
 //Creo que son 8 kb ram...

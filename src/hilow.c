@@ -34,6 +34,7 @@
 #include "utils.h"
 #include "operaciones.h"
 #include "ula.h"
+#include "screen.h"
 
 
 z80_bit hilow_enabled={0};
@@ -230,19 +231,44 @@ void hilow_automap_unmap_memory(z80_int dir)
 
 }
 
-//temporal para guardar la imagen del datadrive
-//esto probablemente deberia ser 512 kb: 256 sectores X 2048 bytes/sector = 512 KB
-z80_byte hilow_device_buffer[HILOW_DEVICE_SIZE];
-
-void temp_hilow_write(int sector,int offset,z80_byte valor)
+void hilow_nmi(void)
 {
+    if (hilow_mapped_rom.v==0) {
+        printf("Enabling hilow memory from nmi triggered\n");
+        hilow_mapped_rom.v=1;
+        hilow_mapped_ram.v=1;
+    }   
+}
+
+void hilow_footer_operating(void)
+{
+    generic_footertext_print_operating("HILOW");
+
+    //Y poner icono en inverso
+    /*if (!zxdesktop_icon_dandanator_inverse) {
+        //printf("icon activity\n");
+        zxdesktop_icon_dandanator_inverse=1;
+        menu_draw_ext_desktop();
+    }*/
+}
+
+
+//para guardar la imagen del datadrive
+z80_byte *hilow_device_buffer;
+
+void hilow_write_byte_device(int sector,int offset,z80_byte valor)
+{
+    hilow_footer_operating();
+
     offset +=(sector*HILOW_SECTOR_SIZE);
 
     hilow_device_buffer[offset]=valor;
 }
 
-z80_byte temp_hilow_read(int sector,int offset)
+z80_byte hilow_read_byte_device(int sector,int offset)
 {
+    hilow_footer_operating();
+
     offset +=(sector*HILOW_SECTOR_SIZE);
 
     return hilow_device_buffer[offset];
@@ -406,36 +432,9 @@ void temp_directorio_falso(z80_int inicio_datos)
 void temp_chapuza_espacio_disponible(z80_int inicio_datos)
 {
 
-    poke_byte_no_time(inicio_datos+1011,255);
+    poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
 
-    return;
-
-    int i;
-
-    z80_int dir_space_avail;
-    dir_space_avail=inicio_datos;
-    //dir_space_avail=8192;
-    printf("Resetting from %04XH to %04XH to 255\n",dir_space_avail+1011,dir_space_avail+1011);
-    for (i=1011;i<1012;i++) {
-        //poke_byte_no_time(reg_ix+i,'!');
-
-        z80_int destino=dir_space_avail+i;
-        destino &= (HILOW_RAM_SIZE-1);
-        destino +=8192;
-
-        z80_int temp_sp=reg_sp;
-        temp_sp &= (HILOW_RAM_SIZE-1);
-        temp_sp +=8192;        
-
-        //Chapuza para no sobreescribir stack. Temporal                
-        //if (destino!=temp_sp && destino!=temp_sp+1) {
-
-
-            poke_byte_no_time(dir_space_avail+i,HILOW_MAX_SECTORS-1);
-
-        //}
-    }                   
-                
+                                 
 }
 
 void temp_debug_registers(void)
@@ -486,7 +485,7 @@ void hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_de
 
     for (i=0;i<longitud;i++) {
         z80_byte c=peek_byte_no_time(dir+i);
-        temp_hilow_write(sector,i+offset_destination,c);
+        hilow_write_byte_device(sector,i+offset_destination,c);
     }        
 }
 
@@ -500,11 +499,13 @@ void hilow_create_sector_table(void)
     printf("Creating free sectors table\n");
     int i;
 
-    z80_byte id_sector_tabla=1;
+    int id_sector_tabla;
 
-    for (i=0;i<HILOW_MAX_SECTORS;i++,id_sector_tabla++) {
-        temp_hilow_write(0,0x400+i,id_sector_tabla);
-        poke_byte_no_time(8192+0x400+i,id_sector_tabla);
+    int offset=0x400;
+
+    for (id_sector_tabla=1;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
+        hilow_write_byte_device(0,offset,id_sector_tabla);
+        poke_byte_no_time(8192+offset,id_sector_tabla);
     }
 
 }
@@ -567,7 +568,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                     printf("WARN. DE > %d. Probably dir entry\n",HILOW_SECTOR_SIZE);
                     hilow_write_mem_to_device(reg_ix,reg_a,17,11);
                     //Y meter valor a 1 despues... esto con 1 archivo, que sucede con 2??
-                    temp_hilow_write(0,17+11,1);
+                    hilow_write_byte_device(0,17+11,1);
 
 
                     //quiza directamente copiar lo de la cache hacia aqui
@@ -703,7 +704,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
                             //if (destino!=temp_sp && destino!=temp_sp+1 && reg_sp<16384) {
                                 //printf("%04XH %04XH (SP)=%04XH\n",destino,inicio_datos+i,peek_word(reg_sp));
 
-                                poke_byte_no_time(inicio_datos+i,temp_hilow_read(sector,i+offset_device));
+                                poke_byte_no_time(inicio_datos+i,hilow_read_byte_device(sector,i+offset_device));
 
                             //}
                             //else {
@@ -770,7 +771,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //debug de rutinas
         if (reg_pc==0x16D0 && hilow_mapped_rom.v) {
             
-            printf("\nEntering WRITE_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
+            printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
             /*
             ; IX=inicio datos??  (quiza siempre direccion 8192)
@@ -901,16 +902,36 @@ void hilow_restore_peek_poke_functions(void)
 
 
 
-void hilow_alloc_memory(void)
+void hilow_alloc_rom_ram_memory(void)
 {
-        int size=HILOW_MEM_SIZE;  
+    //memoria de la ram y rom
+    int size=HILOW_MEM_SIZE;  
 
-        debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for hilow emulation",size/1024);
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for hilow emulation",size/1024);
 
-        hilow_memory_pointer=malloc(size);
-        if (hilow_memory_pointer==NULL) {
-                cpu_panic ("No enough memory for hilow emulation");
-        }
+    hilow_memory_pointer=malloc(size);
+    if (hilow_memory_pointer==NULL) {
+            cpu_panic ("No enough memory for hilow emulation");
+    }
+
+
+}
+
+void hilow_alloc_device_memory(void)
+{
+
+    //z80_byte hilow_device_buffer[HILOW_DEVICE_SIZE];
+    
+    int size=HILOW_DEVICE_SIZE;  
+
+    debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for hilow device emulation",size/1024);
+
+    printf ("Allocating %d kb of memory for hilow device emulation\n",size/1024);
+
+    hilow_device_buffer=malloc(size);
+    if (hilow_device_buffer==NULL) {
+            cpu_panic ("No enough memory for hilow emulation");
+    }
 
 
 }
@@ -961,7 +982,11 @@ void hilow_enable(void)
 	}
 
 
-	hilow_alloc_memory();
+	hilow_alloc_rom_ram_memory();
+
+    hilow_alloc_device_memory();
+
+
 	if (hilow_load_rom()) return;
 
 	hilow_set_peek_poke_functions();
@@ -982,6 +1007,8 @@ void hilow_disable(void)
 	hilow_restore_peek_poke_functions();
 
 	free(hilow_memory_pointer);
+
+    free(hilow_device_buffer);
 
 	hilow_enabled.v=0;
 }
@@ -1005,6 +1032,7 @@ void hilow_reset(void)
 
 void hilow_write_port_ff(z80_int port,z80_byte value)
 {
+    hilow_footer_operating();
 /*
 Escritura:
 
@@ -1029,6 +1057,7 @@ Puede que esos comandos sea combinacion de bits
 z80_byte hilow_read_port_ff(z80_int puerto)
 {
 
+    hilow_footer_operating();
 
 /*
 Lectura:

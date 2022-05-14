@@ -323,8 +323,7 @@ void nmi_handle_pending_prepost_fetch(void)
     }
 
     if (hilow_enabled.v) {
-        hilow_mapped_rom.v=1;
-        hilow_mapped_ram.v=1;
+        hilow_nmi();
     }
 
     

@@ -147,22 +147,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
 
 -hilow: estado
-*formatear parece que borra pero luego da error
-*save "cat" . espacio total libre lo estamos falseando
-*load ".archivo" capaz de cargar archivos de hasta 1000 bytes. mas alla, se resetea. quiza porque sobreescribe el stack?
-->aunque PARECE que lo carga de la cache, si se hace un NEW y se intenta cargar algo, se resetea
-
-* save ".archivo" consigo guardar entrada directorio (deduciendo que es una entrada de directorio), pero solo 1 archivo, no mas
-*funcion de grabar parece ser la misma que al cargar pero o bien con carry=0 (y carry=1 es escritura) o bien depende de registro A (00 o FF)
-*quiza grabar o cargar usan registro bc como sector?
-
-*parece que si primero grabo una pantalla, parte de los bytes al cargar salen corruptos (byte con valor igual, 56 el de atributo, supongo
-que porque se lia con los sectores). en cambio si se graba primero archivo pequeño y luego sobreescribo ya lo hace bien 
-
--sugerencia: para evitar lectura de cache de directorio, decir siempre que se ha abierto la puerta
-
-->parece que ya graba bien. Pero ahora no asigna bien los sectores de cada bloque
-->truco para hacer que recargue la cache del sector 0: save "cat" sacara el catalogo
-
-
--tabla de sectores: hacia la dirección 400h
+-verificar: no va?
+-copiar archivos de un casette a otro
+-nmi no va?

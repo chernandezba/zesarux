@@ -1229,7 +1229,7 @@ echo Final LDFLAGS=$LDFLAGS >>$LOGFILE
 
 echo "Creating Makefile"
 cat > Makefile << _EOF
-EMULATOR_VERSION=10.1
+EMULATOR_VERSION=10.2
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 CC=$CCOMPILER
@@ -1624,7 +1624,7 @@ samram.o: samram.c samram.h cpu.h debug.h utils.h operaciones.h ula.h joystick.h
 ifrom.o: ifrom.c ifrom.h cpu.h debug.h utils.h operaciones.h ula.h
 	\$(CC) \$(CFLAGS) -c ifrom.c
 
-hilow.o: hilow.c hilow.h cpu.h debug.h utils.h operaciones.h ula.h
+hilow.o: hilow.c hilow.h cpu.h debug.h utils.h operaciones.h ula.h screen.h
 	\$(CC) \$(CFLAGS) -c hilow.c
 
 datagear.o: datagear.c datagear.h cpu.h debug.h utils.h operaciones.h ula.h
