@@ -83,6 +83,8 @@ int pentagon_inicio_interrupt=160;
 //int tempcontafifty=0;
 //int temp_xx_veces;
 
+int antes_iff1=0;
+
 int si_siguiente_sonido(void)
 {
 
@@ -640,11 +642,13 @@ void core_spectrum_handle_interrupts(void)
 					//else {
 
 			
+int handle_int=1;
 
+if (interrupcion_maskable_generada.v && byte_leido_core_spectrum==251 && antes_iff1==0) handle_int=0;
 
 					//justo despues de EI no debe generar interrupcion
 					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251) {
+						if (interrupcion_maskable_generada.v && handle_int) {
 
 						//printf ("Lanzada interrupcion spectrum normal\n");
 
@@ -828,6 +832,9 @@ void core_spectrum_ciclo_fetch(void)
 				scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
 
+	            
+antes_iff1=iff1.v;	            
+	            
 	            codsinpr[byte_leido_core_spectrum]  () ;
 
 
