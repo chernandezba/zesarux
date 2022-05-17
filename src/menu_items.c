@@ -29041,6 +29041,83 @@ void menu_storage_hilow_cover(MENU_ITEM_PARAMETERS)
     hilow_tapa_abierta.v ^=1;
 }
 
+void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
+{
+
+	hilow_disable();
+
+    char *filtros[2];
+
+    filtros[0]="hti"; //Hilow Tape Image
+    filtros[1]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de trd
+    //si no hay directorio, vamos a rutas predefinidas
+    if (hilow_file_name[0]==0) menu_chdir_sharedfiles();
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(hilow_file_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
+        }
+    }
+
+
+        
+    int ret=menu_filesel("Select Data Drive File",filtros,hilow_file_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+    if (ret==1) {
+		if (!si_existe_archivo(hilow_file_name)) {
+			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                hilow_file_name[0]=0;
+                return;
+            }
+
+		
+
+
+			//Crear archivo vacio
+            FILE *ptr_hilowfile;
+			ptr_hilowfile=fopen(hilow_file_name,"wb");
+
+            long int totalsize=HILOW_DEVICE_SIZE;
+			z80_byte valor_grabar=0;
+
+            if (ptr_hilowfile!=NULL) {
+				while (totalsize) {
+					fwrite(&valor_grabar,1,1,ptr_hilowfile);
+					totalsize--;
+				}
+                fclose(ptr_hilowfile);
+            }
+
+		}
+
+
+    }
+    //Sale con ESC
+    else {
+            //Quitar nombre
+            hilow_file_name[0]=0;
+
+
+    }
+}
+
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_hilow;
@@ -29048,8 +29125,18 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         int retorno_menu;
         do {
 
+            char string_hilow_file_shown[17];
+								
 
-            menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,NULL,"[%c] ~~Hilow Enabled", (hilow_enabled.v ? 'X' : ' '));
+
+            menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
+            menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"Hilow ~~File [%s]",string_hilow_file_shown);
+            menu_add_item_menu_shortcut(array_menu_hilow,'f');
+            menu_add_item_menu_tooltip(array_menu_hilow,"Hilow Data Drive Emulation file");
+            menu_add_item_menu_ayuda(array_menu_hilow,"Hilow Data Drive Emulation file");
+
+
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,NULL,"[%c] ~~Hilow Enabled", (hilow_enabled.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'h');
             menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
             menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
@@ -29072,7 +29159,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_hilow);
 
-                retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"Hilow" );
+                retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"Hilow Data Drive" );
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -29744,7 +29831,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}        
 
 		if (MACHINE_IS_SPECTRUM) {
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_hilow,NULL,"~~HiLow");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_hilow,NULL,"~~HiLow Data Drive");
             menu_add_item_menu_shortcut(array_menu_storage,'h');
             menu_add_item_menu_tooltip(array_menu_storage,"HiLow settings");
             menu_add_item_menu_ayuda(array_menu_storage,"HiLow settings");

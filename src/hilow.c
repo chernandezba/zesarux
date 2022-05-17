@@ -254,7 +254,7 @@ void hilow_footer_operating(void)
 
 
 //para guardar la imagen del datadrive
-z80_byte *hilow_device_buffer;
+z80_byte *hilow_device_buffer=NULL;
 
 void hilow_write_byte_device(int sector,int offset,z80_byte valor)
 {
@@ -966,7 +966,46 @@ int hilow_load_rom(void)
         return 0;
 }
 
+char hilow_file_name[PATH_MAX]="";
 
+int hilow_load_device_file(void)
+{
+    if (hilow_device_buffer==NULL) {
+        debug_printf(VERBOSE_ERR,"Hilow is not enabled");
+        return 1;
+    }
+
+    FILE *ptr_hilowfile;
+    unsigned int leidos=0;
+
+    debug_printf (VERBOSE_INFO,"Opening Hilow Data Drive File %s",hilow_file_name);
+    ptr_hilowfile=fopen(hilow_file_name,"rb");
+
+
+    unsigned int bytes_a_leer=HILOW_DEVICE_SIZE;
+
+
+    if (ptr_hilowfile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error opening Hilow Data Drive file %s",hilow_file_name);
+        return 1;
+    }
+
+    leidos=fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
+    fclose(ptr_hilowfile);
+
+
+
+    //De momento no comprobamos tamaño leido, por si en el futuro cambiamos el formato
+    /*
+    if (leidos!=bytes_a_leer) {
+        debug_printf (VERBOSE_ERR,"Error reading hilow. Asked: %ld Read: %d",bytes_a_leer,leidos);
+        return 1;
+    }
+    */
+
+    return 0;
+
+}
 
 void hilow_enable(void)
 {
@@ -985,6 +1024,8 @@ void hilow_enable(void)
 	hilow_alloc_rom_ram_memory();
 
     hilow_alloc_device_memory();
+
+    if (hilow_load_device_file()) return;
 
 
 	if (hilow_load_rom()) return;
