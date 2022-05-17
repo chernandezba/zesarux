@@ -29048,7 +29048,8 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
     char *filtros[2];
 
-    filtros[0]="hti"; //HiLow Tape Image
+    filtros[0]="ddh"; //Data Drive HiLow
+    //Parecido a los de Coleco ddp ( digital data pack)
     filtros[1]=0;
 
 

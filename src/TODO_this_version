@@ -151,4 +151,4 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 *copiar archivos de un casette a otro no va
 *nmi no va 
 *despues de borrar con menu , parece que no calcula bien espacio total
-*controlar lectura/escritura mas alla de dispositivo. en .pruebas de cinta lee sector 255?
+*llenado cinta y ultimos archivos dice que estan en sector 255
