@@ -35,6 +35,7 @@
 #include "operaciones.h"
 #include "ula.h"
 #include "screen.h"
+#include "menu_items.h"
 
 
 z80_bit hilow_enabled={0};
@@ -314,11 +315,11 @@ void hilow_footer_operating(void)
     generic_footertext_print_operating("HILOW");
 
     //Y poner icono en inverso
-    /*if (!zxdesktop_icon_dandanator_inverse) {
+    if (!zxdesktop_icon_hilow_inverse) {
         //printf("icon activity\n");
-        zxdesktop_icon_dandanator_inverse=1;
+        zxdesktop_icon_hilow_inverse=1;
         menu_draw_ext_desktop();
-    }*/
+    }
 }
 
 

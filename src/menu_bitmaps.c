@@ -1702,6 +1702,67 @@ char *bitmap_lowericon_ext_desktop_zxunoflash[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"   wxxw  wxxw  wxxw  wxxw "	//25			
 };
 
+char *bitmap_lowericon_ext_desktop_hilow_active[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",//0
+  	"                          ",
+	"                          ",	
+	"                          ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",		
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",		
+	"wxxggggggggggggggggggggxxw",	
+	"wxggggggggggggggggggggggxw",			
+	"wxgggxxxggggggggggxxxgggxw",			
+	"wxggxx xxg      gxx xxggxw",		
+	"wxggx   xg      gx   xggxw",	//10	
+	"wxggxx xxg      gxx xxggxw",		
+	"wxgggxxxggggggggggxxxgggxw",		
+	"wxggggggggggggggggggggggxw",		
+	"wxggggggggggggggggggggggxw",		
+	"wxggggggggggggggggggggggxw",		
+	"wxgggggxxxxxxxxxxxxgggggxw",		
+	"wxggggxggggggggggggxggggxw",		
+	"wxxgggxggggggggggggxgggxxw",		
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",		
+	" wwwwwwwwwwwwwwwwwwwwwwww ",	//20	
+	"                          ",		
+	"                          ",
+	"                          ",		
+	"                          ",		
+	"                          "//25		
+
+};
+
+char *bitmap_lowericon_ext_desktop_hilow_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",    
+	"                          ",	   
+	"                          ",
+	" wwwwwwwwwwwwwwwwwwwwwwww ",		
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",		
+	"wxx                    xxw",	
+	"wx                      xw",			
+	"wx   xxx          xxx   xw",			
+	"wx  xx xx        xx xx  xw", 		
+	"wx  x   x        x   x  xw",	//10	
+	"wx  xx xx        xx xx  xw",		
+	"wx   xxx          xxx   xw",		
+	"wx                      xw",		
+	"wx                      xw",		
+	"wx                      xw",		
+	"wx     xxxxxxxxxxxx     xw",		
+	"wx    x            x    xw",		
+	"wxx   x            x   xxw",		
+	"wwxxxxxxxxxxxxxxxxxxxxxxww",		
+	" wwwwwwwwwwwwwwwwwwwwwwww ",	//20	
+	"                          ",		
+	"                          ",    
+	"                          ",		
+	"                          ",		
+	"                          "  //25		
+
+};
 
 
 /*
