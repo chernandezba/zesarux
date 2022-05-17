@@ -64,6 +64,13 @@ z80_bit hilow_tapa_abierta={1};
 
 int hilow_must_flush_to_disk=0;
 
+
+//Si cambios en escritura se hace flush a disco
+z80_bit hilow_persistent_writes={1};
+
+
+z80_bit hilow_write_protection={0};
+
 void hilow_flush_contents_to_disk(void)
 {
 
@@ -74,10 +81,10 @@ void hilow_flush_contents_to_disk(void)
         return;
     }
 
-    /*if (hilow_persistent_writes.v==0) {
+    if (hilow_persistent_writes.v==0) {
         debug_printf (VERBOSE_DEBUG,"Trying to flush hilow to disk but persistent writes disabled");
         return;
-    }*/
+    }
 
 
     debug_printf (VERBOSE_INFO,"Flushing hilow to disk");
@@ -321,6 +328,8 @@ z80_byte *hilow_device_buffer=NULL;
 void hilow_write_byte_device(int sector,int offset,z80_byte valor)
 {
     hilow_footer_operating();
+
+    if (hilow_write_protection.v) return;
 
     offset +=(sector*HILOW_SECTOR_SIZE);
 

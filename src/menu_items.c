@@ -29117,6 +29117,21 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_storage_hilow_persistent_writes(MENU_ITEM_PARAMETERS)
+{
+	hilow_persistent_writes.v ^=1;
+}
+
+int menu_storage_hilow_emulation_cond(void)
+{
+    if (hilow_file_name[0]==0) return 0;
+    else return 1;
+}
+
+void menu_storage_hilow_write_protect(MENU_ITEM_PARAMETERS)
+{
+	hilow_write_protection.v ^=1;
+}    
 
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
@@ -29136,10 +29151,23 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_hilow,"Hilow Data Drive Emulation file");
 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,NULL,"[%c] ~~Hilow Enabled", (hilow_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~Hilow Enabled", (hilow_enabled.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'h');
             menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
             menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
+
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,"[%c] ~~Write protect", (hilow_write_protection.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_hilow,'w');
+            menu_add_item_menu_tooltip(array_menu_hilow,"If hilow disk is write protected");
+            menu_add_item_menu_ayuda(array_menu_hilow,"If hilow disk is write protected");
+
+
+			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_hilow,"Tells if hilow writes are saved to disk");
+			menu_add_item_menu_ayuda(array_menu_hilow,"Tells if hilow writes are saved to disk. "
+			"Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
+			"tells if these changes are written to disk or not."
+			);            
 
             menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted", (hilow_cinta_insertada.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'i');
