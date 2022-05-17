@@ -1953,7 +1953,7 @@ void instruccion_ddfd_220 ()
 
 void instruccion_ddfd_221 ()
 {
-        //Doble prefijo DD/FD + DD/FD. Decir al core que hay que volver a hacer fetch y sumar longitud instruccion
+        //Doble prefijo DD/FD + DD/FD. Decir al core que hay que volver a hacer fetch y no permitir interrupcion en medio
         core_refetch=1;
 }
 
@@ -2149,7 +2149,7 @@ void instruccion_ddfd_252 ()
 
 void instruccion_ddfd_253 ()
 {
-        //Doble prefijo DD/FD + DD/FD. Decir al core que hay que volver a hacer fetch y sumar longitud instruccion
+        //Doble prefijo DD/FD + DD/FD. Decir al core que hay que volver a hacer fetch y no permitir interrupcion en medio
         core_refetch=1;
 }
 

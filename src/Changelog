@@ -3,9 +3,11 @@ Version 10.2 - xx edition. 14 May 2022
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068
 
+Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed .Z80 Timex TS2068 snapshot loading
 Fixed showing Recent Files when file name contains character %
 Fixed DataDrive HiLow emulation
+Fixed crash (stack smashing detected) when showing Debug CPU window (and compiled using -fstack-protector)
 
 
 

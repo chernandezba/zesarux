@@ -73,7 +73,7 @@
 z80_byte byte_leido_core_spectrum;
 
 
-int duracion_ultimo_opcode=0;
+//int duracion_ultimo_opcode=0;
 
 
 int disparada_int_pentagon=0;
@@ -82,6 +82,8 @@ int pentagon_inicio_interrupt=160;
 
 //int tempcontafifty=0;
 //int temp_xx_veces;
+
+int testados_desde_inicio_pulso_interrupcion=0;
 
 int si_siguiente_sonido(void)
 {
@@ -342,6 +344,8 @@ void core_spectrum_fin_frame_pantalla(void)
 				if (iff1.v==1) {
 					interrupcion_maskable_generada.v=1;
 
+                    testados_desde_inicio_pulso_interrupcion=t_estados;
+
 					//En Timex, ver bit 6 de puerto FF
 					if ( MACHINE_IS_TIMEX_TS2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
 
@@ -365,10 +369,10 @@ void core_spectrum_fin_frame_pantalla(void)
 
 
 					//Si la anterior instruccion ha tardado 32 ciclos o mas
-					if (duracion_ultimo_opcode>=cpu_duracion_pulso_interrupcion) {
-						debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more");
+					/*if (duracion_ultimo_opcode>=cpu_duracion_pulso_interrupcion) {
+						debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more: %d tstates: %d ",duracion_ultimo_opcode,t_estados);
 						interrupcion_maskable_generada.v=0;
-					}
+					}*/
 				 	
 
 					//en el Spectrum la INT comienza en el scanline 248, 0T
@@ -623,7 +627,7 @@ void core_spectrum_handle_interrupts(void)
 													superupgrade_set_memory_pages();
 												}
 
-						//Prueba
+						
 						//Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
 						if (diviface_enabled.v) {
 							//diviface_paginacion_manual_activa.v=0;
@@ -637,14 +641,20 @@ void core_spectrum_handle_interrupts(void)
 					}
 
 					if (1==1) {
-					//else {
+								
 
-			
+					//Si el pulso de interrupcion ya ha pasado
+					if (testados_desde_inicio_pulso_interrupcion>=cpu_duracion_pulso_interrupcion) {
+					    //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
+					    interrupcion_maskable_generada.v=0;
+					}
 
 
-					//justo despues de EI no debe generar interrupcion
+
+					//justo despues de EI no debe generar interrupcion (incluso aunque antes del EI ya estuvieran habilitadas las interrupciones)
+                    //tampoco se puede generar en medio de un refetch de prefijo DD o FD
 					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251) {
+						if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch) {
 
 						//printf ("Lanzada interrupcion spectrum normal\n");
 
@@ -730,12 +740,14 @@ void core_spectrum_handle_interrupts_pentagon(void)
 							//printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
 							interrupcion_maskable_generada.v=1;		
 
+                            testados_desde_inicio_pulso_interrupcion=0;
+
 
 							//Si la anterior instruccion ha tardado 32 ciclos o mas
-							if (duracion_ultimo_opcode>=cpu_duracion_pulso_interrupcion) {
+							/*if (duracion_ultimo_opcode>=cpu_duracion_pulso_interrupcion) {
 								debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more");
 								interrupcion_maskable_generada.v=0;
-							}			
+							}*/
 						}
 					}
 
@@ -836,11 +848,12 @@ void core_spectrum_ciclo_fetch(void)
 				scf_ccf_undoc_flags_after_changed=(Z80_FLAGS  == scf_ccf_undoc_flags_before ? 0 : 1);
 #endif				
 
-				//Ultima duracion, si es que ultimo opcode no genera fetch de nuevo del opcode
-				if (!core_refetch) duracion_ultimo_opcode=t_estados-t_estados_antes_opcode;
-				else duracion_ultimo_opcode +=t_estados-t_estados_antes_opcode;
-						
-					
+                int delta_t_estados=t_estados-t_estados_antes_opcode;
+
+				//if (!core_refetch) duracion_ultimo_opcode=delta_t_estados;
+				//else duracion_ultimo_opcode +=delta_t_estados;
+
+				testados_desde_inicio_pulso_interrupcion +=delta_t_estados;
 
 				/*if (rzx_reproduciendo && rzx_in_fetch_counter_til_next_int) {
 					if (rzx_in_fetch_counter_til_next_int_counter>=rzx_in_fetch_counter_til_next_int) {
@@ -983,7 +996,7 @@ void cpu_core_loop_spectrum(void)
 		
 
 		//Ya hemos leido duracion ultimo opcode. Resetearla a 0 si no hay que hacer refetch
-		if (!core_refetch) duracion_ultimo_opcode=0;		
+		//if (!core_refetch) duracion_ultimo_opcode=0;		
 
 
 

@@ -840,6 +840,7 @@ extern int util_concat_string(char *original,char *string_to_add,int limite);
 extern void util_str_add_char(char *texto,int posicion,char letra);
 extern void util_str_del_char(char *texto,int posicion);
 extern int get_file_lines(char *filename);
+extern void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracter);
 
 extern char util_printable_char(char c);
 

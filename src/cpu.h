@@ -50,7 +50,7 @@ Examples
 
 #define EMULATOR_DATE "14 May 2022"
 #define EMULATOR_SHORT_DATE "14/05/2022"
-#define EMULATOR_GAME_EDITION "xxx Command"
+#define EMULATOR_GAME_EDITION "xxx"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com" 
 

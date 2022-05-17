@@ -19029,3 +19029,12 @@ void util_trunc_name_right(char *texto,int max_length,int char_buffer_size)
     //        .
     //       .
 }  
+
+//Inicializar una string con un caracter y finalizarlo con 0
+//longitud es la cantidad de caracter a repetir, si se trata de llenar toda la string, deberia ser el tamaño del buffer-1
+void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracter)
+{
+    int j;
+    for (j=0;j<longitud;j++) buffer_linea[j]=caracter;
+    buffer_linea[j]=0;
+}

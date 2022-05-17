@@ -2399,8 +2399,9 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 				for (i=0;i<total_lineas_debug;i++) {
 
 					//Inicializamos linea a mostrar con espacios primero
-					int j; 
-					for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
+					//int j; 
+					//for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
+                    util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
 						//Si esta en zona de parser
 						if (util_daad_is_in_parser() || util_paws_is_in_parser() ) {
@@ -2524,8 +2525,10 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
 					//Inicializamos linea a mostrar primero con espacios
 					
-					int j; 
-					for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
+					//int j; 
+					//for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
+
+                    util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
 					int opcion_actual=-1;
 
@@ -2695,9 +2698,10 @@ int menu_debug_registers_subview_type=0;
 				//Vamos a ver si metemos una linea mas de la parte de la derecha extra, siempre que tenga contenido (primer caracter no espacio)
 				//Esto sucede por ejemplo en tbblue, pues tiene 8 segmentos de memoria
 				//Inicializamos a espacios
-				int j;
-				for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
+				//int j;
+				//for (j=0;j<MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH;j++) buffer_linea[j]=32;
 
+                util_fill_string_character(buffer_linea,MAX_ESCR_LINEA_OPCION_ZXVISION_LENGTH-1,32);
 
 				
 				menu_debug_registros_parte_derecha(i,buffer_linea,columna_registros,1,&columnas_modificadas);
