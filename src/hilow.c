@@ -947,13 +947,13 @@ void hilow_set_peek_poke_functions(void)
                 debug_printf (VERBOSE_DEBUG,"Setting hilow poke / peek functions");
 
 	//Asignar mediante nuevas funciones de core anidados
-	hilow_nested_id_poke_byte=debug_nested_poke_byte_add(hilow_poke_byte,"Hilow poke_byte");
-	hilow_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(hilow_poke_byte_no_time,"Hilow poke_byte_no_time");
-	hilow_nested_id_peek_byte=debug_nested_peek_byte_add(hilow_peek_byte,"Hilow peek_byte");
-	hilow_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(hilow_peek_byte_no_time,"Hilow peek_byte_no_time");
+	hilow_nested_id_poke_byte=debug_nested_poke_byte_add(hilow_poke_byte,"HiLow poke_byte");
+	hilow_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(hilow_poke_byte_no_time,"HiLow poke_byte_no_time");
+	hilow_nested_id_peek_byte=debug_nested_peek_byte_add(hilow_peek_byte,"HiLow peek_byte");
+	hilow_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(hilow_peek_byte_no_time,"HiLow peek_byte_no_time");
 
 
-	hilow_nested_id_core=debug_nested_core_add(cpu_core_loop_spectrum_hilow,"Hilow Spectrum core");
+	hilow_nested_id_core=debug_nested_core_add(cpu_core_loop_spectrum_hilow,"HiLow Spectrum core");
 
 
 }
@@ -1044,14 +1044,14 @@ char hilow_file_name[PATH_MAX]="";
 int hilow_load_device_file(void)
 {
     if (hilow_device_buffer==NULL) {
-        debug_printf(VERBOSE_ERR,"Hilow is not enabled");
+        debug_printf(VERBOSE_ERR,"HiLow is not enabled");
         return 1;
     }
 
     FILE *ptr_hilowfile;
     unsigned int leidos=0;
 
-    debug_printf (VERBOSE_INFO,"Opening Hilow Data Drive File %s",hilow_file_name);
+    debug_printf (VERBOSE_INFO,"Opening HiLow Data Drive File %s",hilow_file_name);
     ptr_hilowfile=fopen(hilow_file_name,"rb");
 
 
@@ -1059,7 +1059,7 @@ int hilow_load_device_file(void)
 
 
     if (ptr_hilowfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error opening Hilow Data Drive file %s",hilow_file_name);
+        debug_printf (VERBOSE_ERR,"Error opening HiLow Data Drive file %s",hilow_file_name);
         return 1;
     }
 

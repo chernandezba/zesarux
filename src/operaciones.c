@@ -7032,7 +7032,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         }
 
 
-        //Puerto Hilow
+        //Puerto HiLow
         if (hilow_enabled.v && puerto_l==0xFF) {
 		return hilow_read_port_ff(puerto);
         }
@@ -9226,7 +9226,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	if (spritechip_enabled.v && (puerto==SPRITECHIP_COMMAND_PORT || puerto==SPRITECHIP_DATA_PORT) ) spritechip_write(puerto,value);
 
 
-	//Puerto Hilow
+	//Puerto HiLow
 	if (hilow_enabled.v && puerto_l==0xFF) {
 		hilow_write_port_ff(puerto,value);
 	}

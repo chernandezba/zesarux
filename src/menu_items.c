@@ -23955,7 +23955,7 @@ void menu_about_license_qemu(MENU_ITEM_PARAMETERS)
 
 void menu_about_license_hilow(MENU_ITEM_PARAMETERS)
 {
-        menu_about_read_file("Hilow License","licenses/LICENSE_hilow",1);
+        menu_about_read_file("HiLow License","licenses/LICENSE_hilow",1);
 }
 
 void menu_about_license_fatfs(MENU_ITEM_PARAMETERS)
@@ -24357,7 +24357,7 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_common,"~~grackle",MENU_OPCION_NORMAL,menu_about_license_grackle,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'g');
 
-			menu_add_item_menu(array_menu_common,"~~Hilow",MENU_OPCION_NORMAL,menu_about_license_hilow,NULL);
+			menu_add_item_menu(array_menu_common,"~~HiLow",MENU_OPCION_NORMAL,menu_about_license_hilow,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'h');
 
 			menu_add_item_menu(array_menu_common,"m~~dvtool",MENU_OPCION_NORMAL,menu_about_license_mdvtool,NULL);
@@ -29048,7 +29048,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 
     char *filtros[2];
 
-    filtros[0]="hti"; //Hilow Tape Image
+    filtros[0]="hti"; //HiLow Tape Image
     filtros[1]=0;
 
 
@@ -29145,13 +29145,13 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
 
             menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
-            menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"Hilow ~~File [%s]",string_hilow_file_shown);
+            menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"HiLow ~~File [%s]",string_hilow_file_shown);
             menu_add_item_menu_shortcut(array_menu_hilow,'f');
-            menu_add_item_menu_tooltip(array_menu_hilow,"Hilow Data Drive Emulation file");
-            menu_add_item_menu_ayuda(array_menu_hilow,"Hilow Data Drive Emulation file");
+            menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
+            menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~Hilow Enabled", (hilow_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~HiLow Enabled", (hilow_enabled.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'h');
             menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
             menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
@@ -29187,7 +29187,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
                 menu_add_ESC_item(array_menu_hilow);
 
-                retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"Hilow Data Drive" );
+                retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"HiLow Data Drive" );
 
 
                 if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

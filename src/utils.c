@@ -13204,14 +13204,14 @@ void machine_get_memory_zone_name(int zone, char *name)
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:
         if (hilow_enabled.v) {
-            strcpy(name,"Hilow RAM");
+            strcpy(name,"HiLow RAM");
         }
     break;      
 
     //hilow ram
     case MEMORY_ZONE_HILOW_DEVICE:
         if (hilow_enabled.v) {
-            strcpy(name,"Hilow Device");
+            strcpy(name,"HiLow Device");
         }
     break;     
 
