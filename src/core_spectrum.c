@@ -569,154 +569,148 @@ void core_spectrum_fin_scanline(void)
 
 void core_spectrum_handle_interrupts(void)
 {
-		debug_fired_interrupt=1;
+    debug_fired_interrupt=1;
 
-			//printf ("Generada interrupcion Z80\n");
+
+
+    //ver si esta en HALT
+    if (z80_halt_signal.v) {
+        z80_halt_signal.v=0;
+    }
+
+    //ver si estaba en halt el copper
+    //if (MACHINE_IS_TBBLUE) tbblue_if_copper_halt();
 
 			
 
-			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
-
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-                        }
-
-						//ver si estaba en halt el copper
-						//if (MACHINE_IS_TBBLUE) tbblue_if_copper_halt();
-
-			if (1==1) {
-
-					if (interrupcion_non_maskable_generada.v) {
-						debug_anota_retorno_step_nmi();
-						//printf ("generada nmi\n");
-                                                interrupcion_non_maskable_generada.v=0;
+    if (interrupcion_non_maskable_generada.v) {
+        debug_anota_retorno_step_nmi();
+        //printf ("generada nmi\n");
+        interrupcion_non_maskable_generada.v=0;
 
 
-                                                //NMI wait 14 estados
-                                                t_estados += 14;
+        //NMI wait 14 estados
+        t_estados += 14;
+
+   
+
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
 
-                                                
+        reg_r++;
+        iff1.v=0;
+        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
 
-												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+        //Otros 6 estados
+        t_estados += 6;
 
+        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+        reg_pc= 0x66;
 
-                                                reg_r++;
-                                                iff1.v=0;
-                                                //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+        //printf ("generada nmi pc=%04XH\n",reg_pc);
 
-                                                //Otros 6 estados
-                                                t_estados += 6;
+        //temp
 
-                                                //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-                                                reg_pc= 0x66;
+        t_estados -=15;
 
-												//printf ("generada nmi pc=%04XH\n",reg_pc);
+        if (superupgrade_enabled.v) {
+            //Saltar a NMI de ROM0. TODO: que pasa con puertos 32765 y 8189?
+            superupgrade_puerto_43b = 0;
+            puerto_32765=0;
+            puerto_8189=0;
+            superupgrade_set_memory_pages();
+        }
 
-                                                //temp
+        
+        //Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
+        if (diviface_enabled.v) {
+            //diviface_paginacion_manual_activa.v=0;
+            diviface_control_register&=(255-128);
+            diviface_paginacion_automatica_activa.v=0;
+        }
 
-                                                t_estados -=15;
-
-												if (superupgrade_enabled.v) {
-													//Saltar a NMI de ROM0. TODO: que pasa con puertos 32765 y 8189?
-													superupgrade_puerto_43b = 0;
-													puerto_32765=0;
-													puerto_8189=0;
-													superupgrade_set_memory_pages();
-												}
-
-						
-						//Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
-						if (diviface_enabled.v) {
-							//diviface_paginacion_manual_activa.v=0;
-							diviface_control_register&=(255-128);
-							diviface_paginacion_automatica_activa.v=0;
-						}
-
-						generate_nmi_prepare_fetch();
+        generate_nmi_prepare_fetch();
 
 
-					}
+    }
 
-					if (1==1) {
+                
 								
 
-					//Si el pulso de interrupcion ya ha pasado
-					if (testados_desde_inicio_pulso_interrupcion>=cpu_duracion_pulso_interrupcion) {
-					    //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
-					    interrupcion_maskable_generada.v=0;
-					}
+    //Si el pulso de interrupcion ya ha pasado
+    if (testados_desde_inicio_pulso_interrupcion>=cpu_duracion_pulso_interrupcion) {
+        //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
+        interrupcion_maskable_generada.v=0;
+    }
 
 
 
-					//justo despues de EI no debe generar interrupcion (incluso aunque antes del EI ya estuvieran habilitadas las interrupciones)
-                    //tampoco se puede generar en medio de un refetch de prefijo DD o FD
-					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch) {
+    //justo despues de EI no debe generar interrupcion (incluso aunque antes del EI ya estuvieran habilitadas las interrupciones)
+    //tampoco se puede generar en medio de un refetch de prefijo DD o FD
+    //e interrupcion nmi tiene prioridad
+    if (interrupcion_maskable_generada.v && byte_leido_core_spectrum!=251 && !core_refetch) {
 
-						//printf ("Lanzada interrupcion spectrum normal\n");
+        //printf ("Lanzada interrupcion spectrum normal\n");
 
-						debug_anota_retorno_step_maskable();
-						//Tratar interrupciones maskable
-						interrupcion_maskable_generada.v=0;
+        debug_anota_retorno_step_maskable();
+        //Tratar interrupciones maskable
+        interrupcion_maskable_generada.v=0;
 
-						interrupcion_si_despues_lda_ir();
+        interrupcion_si_despues_lda_ir();
 
-						//Aunque parece que rzx deberia saltar aqui al siguiente frame, lo hacemos solo cuando es necesario (cuando las lecturas en un frame exceden el frame)
-						//if (rzx_reproduciendo) {
-							//rzx_next_frame_recording();
-						//}
+        //Aunque parece que rzx deberia saltar aqui al siguiente frame, lo hacemos solo cuando es necesario (cuando las lecturas en un frame exceden el frame)
+        //if (rzx_reproduciendo) {
+            //rzx_next_frame_recording();
+        //}
 
-						
-						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+        
+        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
-						reg_r++;
+        reg_r++;
 
-						
+        
 
-						//Caso Inves. Hacer poke (I*256+R) con 255
-						if (MACHINE_IS_INVES) {
-							z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
+        //Caso Inves. Hacer poke (I*256+R) con 255
+        if (MACHINE_IS_INVES) {
+            z80_byte reg_r_total=(reg_r&127) | (reg_r_bit7 &128);
 
-							z80_int dir=reg_i*256+reg_r_total;
+            z80_int dir=reg_i*256+reg_r_total;
 
-							poke_byte_no_time(dir,255);
-						}
-
-
-						//desactivar interrupciones al generar una
-						iff1.v=iff2.v=0;
-						//Modelos spectrum
-
-						if (im_mode==0 || im_mode==1) {
-							cpu_common_jump_im01();
-						}
-						else {
-						//IM 2.
-
-							z80_int temp_i;
-							z80_byte dir_l,dir_h;
-
-							if (MACHINE_IS_TSCONF) temp_i=reg_i*256+tsconf_vector_fired_interrupt;
-
-                            else temp_i=get_im2_interrupt_vector();
-							dir_l=peek_byte(temp_i++);
-							dir_h=peek_byte(temp_i);
-							reg_pc=value_8_to_16(dir_h,dir_l);
-							t_estados += 7;
-
-							//Para mejorar demos ula128 y scroll2017
-							//Pero esto hace empeorar la demo ulatest3.tap
-							if (ula_im2_slow.v) t_estados++;
-						}
-
-					}
-				}
+            poke_byte_no_time(dir,255);
+        }
 
 
-			}
+        //desactivar interrupciones al generar una
+        iff1.v=iff2.v=0;
+        //Modelos spectrum
+
+        if (im_mode==0 || im_mode==1) {
+            cpu_common_jump_im01();
+        }
+        else {
+        //IM 2.
+
+            z80_int temp_i;
+            z80_byte dir_l,dir_h;
+
+            if (MACHINE_IS_TSCONF) temp_i=reg_i*256+tsconf_vector_fired_interrupt;
+
+            else temp_i=get_im2_interrupt_vector();
+            dir_l=peek_byte(temp_i++);
+            dir_h=peek_byte(temp_i);
+            reg_pc=value_8_to_16(dir_h,dir_l);
+            t_estados += 7;
+
+            //Para mejorar demos ula128 y scroll2017
+            //Pero esto hace empeorar la demo ulatest3.tap
+            if (ula_im2_slow.v) t_estados++;
+        }
+
+    }
+				
+
+
+			
 }
 
 
