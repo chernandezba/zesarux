@@ -334,6 +334,15 @@ void hilow_write_byte_device(int sector,int offset,z80_byte valor)
 
     offset +=(sector*HILOW_SECTOR_SIZE);
 
+    if (offset>=HILOW_DEVICE_SIZE) {
+        debug_printf (VERBOSE_ERR,"Error. Trying to write beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
+                        HILOW_DEVICE_SIZE,sector,offset);
+
+        //no desactivamos porque esto implica quitar funciones de peek/poke anidadas del core y petaria
+		//hilow_disable();
+		return;
+	}    
+
     hilow_device_buffer[offset]=valor;
 
     hilow_must_flush_to_disk=1;
@@ -344,6 +353,14 @@ z80_byte hilow_read_byte_device(int sector,int offset)
     hilow_footer_operating();
 
     offset +=(sector*HILOW_SECTOR_SIZE);
+
+    if (offset>=HILOW_DEVICE_SIZE) {
+        debug_printf (VERBOSE_ERR,"Error. Trying to read beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
+                        HILOW_DEVICE_SIZE,sector,offset);
+        //no desactivamos porque esto implica quitar funciones de peek/poke anidadas del core y petaria
+		//hilow_disable();
+		return 0;
+	}        
 
     return hilow_device_buffer[offset];
 }
