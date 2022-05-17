@@ -9749,6 +9749,7 @@ void end_emulator_saveornot_config(int saveconfig)
 	ide_flush_flash_to_disk();
 	trd_flush_contents_to_disk();
 	superupgrade_flush_flash_to_disk();
+    hilow_flush_contents_to_disk();
 
 	audio_midi_output_finish();
 

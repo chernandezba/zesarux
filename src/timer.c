@@ -62,6 +62,7 @@
 #include "ql_i8049.h"
 #include "cpc.h"
 #include "snap_ram.h"
+#include "hilow.h"
 
 #include "autoselectoptions.h"
 
@@ -782,6 +783,9 @@ void timer_check_interrupt(void)
 
             //escritura de contenido de DSK a disco
             dskplusthree_flush_contents_to_disk();
+
+            //escritura de contenido de Hilow a disco
+            hilow_flush_contents_to_disk();            
 
             rzx_print_footer();
 

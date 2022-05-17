@@ -52,6 +52,8 @@ extern void hilow_nmi(void);
 #define HILOW_MEM_SIZE (HILOW_ROM_SIZE+HILOW_RAM_SIZE)
 
 extern z80_byte *hilow_memory_pointer;
+
+extern void hilow_flush_contents_to_disk(void);
  
 //extern void hilow_press_button(void);
 extern void hilow_enable(void);

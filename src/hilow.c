@@ -62,6 +62,68 @@ z80_bit hilow_cinta_insertada={1};
 //de momento asi abierta para probar
 z80_bit hilow_tapa_abierta={1};
 
+int hilow_must_flush_to_disk=0;
+
+void hilow_flush_contents_to_disk(void)
+{
+
+    if (hilow_enabled.v==0) return;
+
+    if (hilow_must_flush_to_disk==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush hilow to disk but no changes made");
+        return;
+    }
+
+    /*if (hilow_persistent_writes.v==0) {
+        debug_printf (VERBOSE_DEBUG,"Trying to flush hilow to disk but persistent writes disabled");
+        return;
+    }*/
+
+
+    debug_printf (VERBOSE_INFO,"Flushing hilow to disk");
+
+
+    FILE *ptr_hilowfile;
+
+    debug_printf (VERBOSE_INFO,"Opening hilow File %s",hilow_file_name);
+    ptr_hilowfile=fopen(hilow_file_name,"wb");
+
+
+
+    int escritos=0;
+    long int size;
+    size=HILOW_DEVICE_SIZE;
+
+
+
+    if (ptr_hilowfile!=NULL) {
+
+
+        z80_byte *puntero;
+        puntero=hilow_device_buffer;
+
+        //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
+        //metera flush a 1
+        hilow_must_flush_to_disk=0;
+
+        escritos=fwrite(puntero,1,size,ptr_hilowfile);
+
+        fclose(ptr_hilowfile);
+
+
+    }
+
+    //printf ("ptr_hilowfile: %d\n",ptr_hilowfile);
+    //printf ("escritos: %d\n",escritos);
+
+    if (escritos!=size || ptr_hilowfile==NULL) {
+        debug_printf (VERBOSE_ERR,"Error writing to hilow file");
+    }
+
+}
+
+
+
 int hilow_check_if_rom_area(z80_int dir)
 {
     if (dir<8192 && hilow_mapped_rom.v) {
@@ -263,6 +325,8 @@ void hilow_write_byte_device(int sector,int offset,z80_byte valor)
     offset +=(sector*HILOW_SECTOR_SIZE);
 
     hilow_device_buffer[offset]=valor;
+
+    hilow_must_flush_to_disk=1;
 }
 
 z80_byte hilow_read_byte_device(int sector,int offset)
@@ -1044,6 +1108,9 @@ void hilow_enable(void)
 void hilow_disable(void)
 {
 	if (hilow_enabled.v==0) return;
+
+	//Hacer flush si hay algun cambio
+	hilow_flush_contents_to_disk();
 
 	hilow_restore_peek_poke_functions();
 
