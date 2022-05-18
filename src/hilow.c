@@ -547,6 +547,8 @@ void temp_chapuza_espacio_disponible(z80_int inicio_datos)
 {
 
     poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
+    //no tengo claro este segundo byte para que sirve. si no lo escribo, le pone un 0
+    poke_byte_no_time(inicio_datos+1012,HILOW_MAX_SECTORS-1);
 
                                  
 }
