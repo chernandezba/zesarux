@@ -1152,6 +1152,12 @@ int hilow_load_device_file(void)
     }
     */
 
+    //por alguna razon, el cat inicial necesita que este abierta la tapa
+    //luego se autocierra en lectura o escritura
+    //quiza indica mejor si esta a 0 -> cinta cambiada. y a 1- >cinta no cambiaa
+    //quien indica que ya no ha sido abierta?
+    hilow_tapa_action_was_opened();   
+
     return 0;
 
 }
@@ -1183,11 +1189,7 @@ void hilow_enable(void)
 
 	hilow_enabled.v=1;
 
-    //por alguna razon, el cat inicial necesita que este abierta la tapa
-    //luego se autocierra en lectura o escritura
-    //quiza indica mejor si esta a 0 -> cinta cambiada. y a 1- >cinta no cambiaa
-    //quien indica que ya no ha sido abierta?
-    hilow_tapa_action_was_opened();
+
 
 	hilow_reset();
 

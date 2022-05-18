@@ -29044,7 +29044,7 @@ void menu_storage_hilow_cover(MENU_ITEM_PARAMETERS)
 void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
 {
 
-	hilow_disable();
+	//hilow_disable();  //para poder cambiar cinta en caliente y copiar con SAVE "=programa"
 
     char *filtros[2];
 
@@ -29106,6 +29106,11 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
             }
 
 		}
+
+        //si ya estaba habilitado, cargar la imagen
+        if (hilow_enabled.v) {
+            hilow_load_device_file();
+        }
 
 
     }

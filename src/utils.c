@@ -3647,7 +3647,7 @@ int util_write_configfile(void)
 
   if (divmmc_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divmmc-rom \"%s\"",divmmc_rom_name);
 
-
+  if (hilow_file_name[0]!=0)                    ADD_STRING_CONFIG,"--hilow-file \"%s\"",hilow_file_name);
 
 
   if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);

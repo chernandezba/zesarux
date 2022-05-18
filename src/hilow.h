@@ -45,6 +45,8 @@ extern z80_byte *hilow_device_buffer;
 
 extern char hilow_file_name[];
 
+extern int hilow_load_device_file(void);
+
 extern void hilow_nmi(void);
 
 //8 KB rom, 2 kb ram

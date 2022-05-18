@@ -154,3 +154,5 @@ Parece algun problema a partir sector EBH
 
 *formateo da error. es el emulador quien genera la tabla de asignacion de sectores. varios traps de pruebas comentados para intentar que pueda 
 llegar a finalizar el formateo
+
+*iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
