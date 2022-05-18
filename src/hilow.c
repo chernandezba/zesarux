@@ -831,9 +831,14 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 		hilow_automap_unmap_memory(reg_pc);
 
+        if (hilow_mapped_rom.v==0) {
+            //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+            return 0;
+        }
+
 
         //debug de rutinas
-        if (reg_pc==0x186D && hilow_mapped_rom.v) {
+        if (reg_pc==0x186D) {
             
             printf("\nEntering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
                 reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,Z80_FLAGS & FLAG_Z,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
@@ -855,7 +860,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         }
 
         //debug de rutinas
-        if (reg_pc==0x16D0 && hilow_mapped_rom.v) {
+        if (reg_pc==0x16D0) {
             
             printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
@@ -904,7 +909,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         }        
 
-        if (reg_pc==0x1A9E && hilow_mapped_rom.v) {
+        if (reg_pc==0x1A9E) {
             
             printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
@@ -916,7 +921,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Skipping to address %04XH\n",reg_pc);
         }              
 
-        if (reg_pc==0x1AC0 && hilow_mapped_rom.v) {
+        if (reg_pc==0x1AC0) {
             
             printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
@@ -928,7 +933,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Skipping to address %04XH\n",reg_pc);
         }             
 
-        if (reg_pc==0x1AF1 && hilow_mapped_rom.v) {
+        if (reg_pc==0x1AF1) {
             
             printf("\nEntering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
@@ -937,7 +942,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         }
 
 
-        if (reg_pc==0x08FB && hilow_mapped_rom.v) {
+        if (reg_pc==0x08FB) {
             printf("\nEntering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //saltar opcode JP      Z,BREAKCONT
