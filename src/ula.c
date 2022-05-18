@@ -350,6 +350,7 @@ void generate_nmi_multiface_tbblue(void)
    
 }
 
+/*
 void old_generate_nmi_prepare_fetch(void)
 {
     //Vamos a suponer que lo normal es que salte en 66h, o sea, con pre_opcode
@@ -363,6 +364,7 @@ void old_generate_nmi_prepare_fetch(void)
     }
 
 }
+*/
 
 void generate_nmi_prepare_fetch(void)
 {
@@ -382,8 +384,15 @@ void generate_nmi_prepare_fetch(void)
         nmi_pending_post_opcode=0;        
     }
 
+    //hilow. todo indica que lo hace con pre
+    if (hilow_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;        
+    }    
+
 }
 
+/*
 void old_old_generate_nmi_prepare_fetch(void)
 {
     nmi_pending_post_opcode=1;
@@ -399,6 +408,7 @@ void old_old_generate_nmi_prepare_fetch(void)
         nmi_pending_pre_opcode=1;        
     }
 }
+*/
 
 //Convertir tecla leida del recreated en tecla real y en si es un press (1) o un release(0)
 /*

@@ -29038,7 +29038,7 @@ void menu_storage_hilow_insert(MENU_ITEM_PARAMETERS)
 
 void menu_storage_hilow_cover(MENU_ITEM_PARAMETERS)
 {
-    hilow_tapa_abierta.v ^=1;
+    hilow_tapa_has_been_opened.v ^=1;
 }
 
 void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
@@ -29163,17 +29163,20 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_hilow,"If hilow disk is write protected");
 
 
-			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
+			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] ~~Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_hilow,'p');
 			menu_add_item_menu_tooltip(array_menu_hilow,"Tells if hilow writes are saved to disk");
 			menu_add_item_menu_ayuda(array_menu_hilow,"Tells if hilow writes are saved to disk. "
 			"Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
 			"tells if these changes are written to disk or not."
-			);            
+			);           
+
+            menu_add_item_menu_separator(array_menu_hilow); 
 
             menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted", (hilow_cinta_insertada.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'i');
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover ~~open", (hilow_tapa_abierta.v ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'o');            
 
 /*
