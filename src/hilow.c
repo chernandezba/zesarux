@@ -610,6 +610,14 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
 
 void hilow_device_set_espacio_disponible(z80_int inicio_datos)
 {
+    //total sectores: HILOW_MAX_SECTORS
+    //maximo id usable: HILOW_MAX_SECTORS-1
+    //total sectores para usar en la tabla (descartando el 0): HILOW_MAX_SECTORS-1
+
+    //Ejemplo con 3 sectores:
+    //total sectores: 3
+    //maximo id usable: 2
+    //total sectores para usar en la tabla (descartando el 0): 2  (el 1 y el 2)  
 
     poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
     //no tengo claro este segundo byte para que sirve. si no lo escribo, le pone un 0
@@ -641,8 +649,8 @@ void hilow_create_sector_table(void)
 
     
 
-    //Y byte 0 para el final
-    //poke_byte_no_time(8192+offset,0);
+    //Y byte 0 para el final. No estoy seguro que sea necesario
+    poke_byte_no_time(8192+offset,0);
 
 }
 

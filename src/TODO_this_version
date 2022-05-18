@@ -156,3 +156,11 @@ Parece algun problema a partir sector EBH
 llegar a finalizar el formateo
 
 *iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
+
+*error con:
+formatear
+grabar pantalla
+grabar basic
+bucle grabar bloques (3)
+borrar pantalla
+espacio libre pasa a ser 2 sectores (4k). en offset 3f3h le mete un 2
