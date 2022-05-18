@@ -543,15 +543,7 @@ void temp_directorio_falso(z80_int inicio_datos)
 }
 
 
-void hilow_device_set_espacio_disponible(z80_int inicio_datos)
-{
 
-    poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
-    //no tengo claro este segundo byte para que sirve. si no lo escribo, le pone un 0
-    poke_byte_no_time(inicio_datos+1012,HILOW_MAX_SECTORS-1);
-
-                                 
-}
 
 void temp_debug_registers(void)
 {
@@ -616,6 +608,16 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
     return 0;      
 }
 
+void hilow_device_set_espacio_disponible(z80_int inicio_datos)
+{
+
+    poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
+    //no tengo claro este segundo byte para que sirve. si no lo escribo, le pone un 0
+    poke_byte_no_time(inicio_datos+1012,HILOW_MAX_SECTORS-1);
+
+                                 
+}
+
 void hilow_create_sector_table(void)
 {
     /*
@@ -640,7 +642,7 @@ void hilow_create_sector_table(void)
     
 
     //Y byte 0 para el final
-    poke_byte_no_time(8192+offset,0);
+    //poke_byte_no_time(8192+offset,0);
 
 }
 
