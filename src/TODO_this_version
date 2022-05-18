@@ -151,3 +151,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 *despues de borrar con menu , parece que no calcula bien espacio total
 *llenado cinta y ultimos archivos dice que estan en sector 255. quiza en tabla de asignacion de sectores o en alguna parte antes de la 400h hay que indicar ultimo sector valido
 Parece algun problema a partir sector EBH
+
+*formateo da error. es el emulador quien genera la tabla de asignacion de sectores. varios traps de pruebas comentados para intentar que pueda 
+llegar a finalizar el formateo

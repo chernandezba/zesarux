@@ -543,7 +543,7 @@ void temp_directorio_falso(z80_int inicio_datos)
 }
 
 
-void temp_chapuza_espacio_disponible(z80_int inicio_datos)
+void hilow_device_set_espacio_disponible(z80_int inicio_datos)
 {
 
     poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
@@ -620,7 +620,7 @@ void hilow_create_sector_table(void)
 {
     /*
     Empieza en dirección 400h del sector 0 (esto es 1024-mitad de sector)
-    Lo metemos tanto en el dispositivo como en RAM
+    Lo metemos en ram y luego ya escribira en dispositivo
     */
 
     printf("Creating free sectors table\n");
@@ -631,7 +631,7 @@ void hilow_create_sector_table(void)
     int offset=0x400;
 
     for (id_sector_tabla=1;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
-        hilow_write_byte_device(0,offset,id_sector_tabla);
+        //hilow_write_byte_device(0,offset,id_sector_tabla);
         poke_byte_no_time(8192+offset,id_sector_tabla);
     }
 
@@ -893,14 +893,16 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             //if (sector==1) sector=0;
 
             if (sector==0) {
-                temp_chapuza_espacio_disponible(8192);
+                //Dado que no lee bien el espacio total, indicarlo nosotros (si no, pondria un 0)
+                hilow_device_set_espacio_disponible(8192);
             }
        
 
-            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);    
+            //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
+            hilow_create_sector_table();     
 
 
-            hilow_create_sector_table();       
+            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);      
 
             //no error?
             reg_a=0;
@@ -909,11 +911,64 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
 
 
+        }    
+
+        if (reg_pc==0x1BEF) {
+            printf("\nEntering COMMAND_HILOW_PORT PC=%04XH. Exiting\n",reg_pc);
+            reg_pc=pop_valor();
+            printf("\nExiting to %04XH\n",reg_pc);
+        }
+
+        if (reg_pc==0x17D5) {
+            printf("\nEntering RETARDO PC=%04XH. Exiting\n",reg_pc);
+
+            reg_a=1;
+            reg_hl=0;
+
+            reg_pc=pop_valor();
+            printf("\nExiting to %04XH\n",reg_pc);            
+        }
+
+        /*if (reg_pc==0x17BB) {
+            printf("\nEntering DETECT ERROR PC=%04XH. Skipping\n",reg_pc);
+
+            reg_pc+=3;
+
+            
+            printf("\nExiting to %04XH\n",reg_pc);            
         }        
+
+        if (reg_pc==0x17B4) {
+            printf("\nEntering DETECT Z PC=%04XH. Forcing Z\n",reg_pc);
+            //L17B4:          JR      Z,L17D0
+
+            Z80_FLAGS |=FLAG_Z;
+          
+        }    
+
+         
+        if (reg_pc==0x1B4C) {
+            printf("\nEntering Cinta no sirve PC=%04XH. Forcing C\n",reg_pc);
+            //L1B4C:          JP      NC,L1A47  ;Cinta no sirve 
+
+            Z80_FLAGS |=FLAG_C;
+          
+        }       
+
+        if (reg_pc==0x1BBC || reg_pc==0x1BCB) {
+            printf("\nEntering More detect NC PC=%04XH. Forcing C\n",reg_pc);
+
+            Z80_FLAGS |=FLAG_C;
+          
+        }  
+        */
+
+
 
         if (reg_pc==0x1A9E) {
             
             printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            
 
             //saltar adelante en codigo. feo....
             //reg_pc=0x1ad8;
@@ -921,11 +976,12 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_pc=0x1acf;
 
             printf("Skipping to address %04XH\n",reg_pc);
-        }              
+        }
 
         if (reg_pc==0x1AC0) {
             
             printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+            
 
             //saltar adelante en codigo. feo....
             //reg_pc=0x1ad8;
@@ -933,15 +989,15 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             reg_pc=0x1acf;
 
             printf("Skipping to address %04XH\n",reg_pc);
-        }             
+        }
 
-        if (reg_pc==0x1AF1) {
+        /*if (reg_pc==0x1AF1) {
             
             printf("\nEntering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
             //Z80_FLAGS |=FLAG_Z;
-        }
+        }*/
 
 
         /*if (reg_pc==0x08FB) {
@@ -1193,7 +1249,7 @@ A8H: ??
 Bit de valor 08H tambien parece tener algo que ver
 Puede que esos comandos sea combinacion de bits
 */
-	printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
+	//printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
 }
 
 
@@ -1223,7 +1279,7 @@ L1C03:          IN      A,(HLWPORT)
 
 */
 
-	printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
+	//printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
 
 
     z80_byte valor_retorno=0;
