@@ -942,7 +942,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         }
 
 
-        if (reg_pc==0x08FB) {
+        /*if (reg_pc==0x08FB) {
             printf("\nEntering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
             //saltar opcode JP      Z,BREAKCONT
@@ -951,7 +951,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             printf("Skipping to address %04XH\n",reg_pc);
 
             //Esto al hacer un SAVE al final parece ir a la direccion 0 y se resetea...
-        }
+        }*/
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
 
@@ -1191,7 +1191,7 @@ A8H: ??
 Bit de valor 08H tambien parece tener algo que ver
 Puede que esos comandos sea combinacion de bits
 */
-	//printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
+	printf ("Writing hilow port %04XH value %02XH from PC=%04XH\n",port,value,reg_pc);
 }
 
 
@@ -1221,7 +1221,7 @@ L1C03:          IN      A,(HLWPORT)
 
 */
 
-	//printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
+	printf ("Reading hilow port %04XH value from PC=%04XH\n",puerto,reg_pc);
 
 
     z80_byte valor_retorno=0;
