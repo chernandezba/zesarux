@@ -630,10 +630,17 @@ void hilow_create_sector_table(void)
 
     int offset=0x400;
 
+    offset=0x3f5;
+
     for (id_sector_tabla=1;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
         //hilow_write_byte_device(0,offset,id_sector_tabla);
         poke_byte_no_time(8192+offset,id_sector_tabla);
     }
+
+    
+
+    //Y byte 0 para el final
+    poke_byte_no_time(8192+offset,0);
 
 }
 
