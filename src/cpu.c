@@ -2128,7 +2128,8 @@ printf (
         "--enable-trd                    Enable TRD emulation. Usually requires --trd-file\n"
         "--trd-write-protection          Enable TRD write protection\n"
 		"--trd-no-persistent-writes      Disable TRD persistent writes\n"
-        "--enable-hilow                  Enable hilow\n"
+        "--hilow-file f                  Set HiLow Data Drive image file\n"
+        "--enable-hilow                  Enable hilow. Usually requires --hilow-file\n"
 		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
 		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
 		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
@@ -6757,6 +6758,29 @@ int parse_cmdline_options(void) {
 				dskplusthree_persistent_writes.v=0;
 			}
 
+
+			else if (!strcmp(argv[puntero_parametro],"--hilow-file")) {
+				siguiente_parametro_argumento();
+
+                //Si es ruta relativa, poner ruta absoluta
+                if (!si_ruta_absoluta(argv[puntero_parametro])) {
+                        //printf ("es ruta relativa\n");
+
+                        //TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+                        //no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+                        //directorio de archivo
+                        char directorio_actual[PATH_MAX];
+                        getcwd(directorio_actual,PATH_MAX);
+
+                        sprintf (hilow_file_name,"%s/%s",directorio_actual,argv[puntero_parametro]);
+
+                }
+
+				else {
+					sprintf (hilow_file_name,"%s",argv[puntero_parametro]);
+				}
+
+			}
 
                         else if (!strcmp(argv[puntero_parametro],"--enable-hilow")) {
                                 command_line_hilow.v=1;
