@@ -664,7 +664,7 @@ void hilow_device_initialize_sector_zero(int si_escribir_en_ram,int si_escribir_
                                  
 }
 
-void hilow_device_set_files_used(int si_escribir_en_ram,int si_escribir_en_device)
+void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_device)
 {
 
 
@@ -736,7 +736,7 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
             
     hilow_device_initialize_sector_zero(si_escribir_en_ram,si_escribir_en_device);
 
-    hilow_device_set_files_used(si_escribir_en_ram,si_escribir_en_device);
+    hilow_device_set_usage_counter(si_escribir_en_ram,si_escribir_en_device);
 
     hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
 

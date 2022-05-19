@@ -3269,8 +3269,8 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto;        
 
-    z80_byte total_files=puntero_memoria[0];
-    sprintf (buffer_texto,"Total files: %d",total_files);
+    z80_int usage_counter=value_8_to_16(puntero_memoria[1],puntero_memoria[0]);
+    sprintf (buffer_texto,"Usage counter: %d",usage_counter);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
     sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto; 
@@ -3286,9 +3286,9 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     int salir=0;
 
     //Maximo 22 archivos en directorio
-    if (total_files>22) total_files=22;
+    //if (total_files>22) total_files=22;
 
-    for (i=0;i<total_files && !salir;i++) {
+    for (i=0;i<22 && !salir;i++) {
         //Obtener archivos
         int offset_archivo=i*45+11;
 
