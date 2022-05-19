@@ -146,6 +146,7 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 * ZEsarUX 10.1 on Mac: no hang after pressing pause several times
 * ZEsarUX 10.1 on Windows or Linux: press pause, then enter, no hang. Press pause, pause again, hangs
 
+-tbblue bit invertir orden sprites
 
 -Para ZENG con más de 2 pcs:
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil

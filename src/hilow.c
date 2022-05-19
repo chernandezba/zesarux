@@ -733,16 +733,12 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
 
 void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label)
 {
-    
-        
+            
     hilow_device_initialize_sector_zero(si_escribir_en_ram,si_escribir_en_device);
-
 
     hilow_device_set_files_used(si_escribir_en_ram,si_escribir_en_device);
 
-
     hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
-
 
     hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device);
 
@@ -776,13 +772,7 @@ void hilow_trap_write_verify(void)
 
         //if (reg_de>HILOW_SECTOR_SIZE) {
         if (sector==0) {
-            //printf("WARN. DE > %d. Writing only to maximum\n",HILOW_SECTOR_SIZE);
-            //printf("WARN. DE > %d. Probably dir entry\n",HILOW_SECTOR_SIZE);
             printf("Writing from cache memory to sector 0\n");
-            //hilow_write_mem_to_device(reg_ix,reg_a,17,11);
-            //Y meter valor a 1 despues... esto con 1 archivo, que sucede con 2??
-            //hilow_write_byte_device(0,17+11,1);
-
 
             //directamente copiar lo de la cache hacia aqui
             //esto soluciona la escritura
@@ -790,9 +780,7 @@ void hilow_trap_write_verify(void)
             dir_inicio=8192;
             longitud=HILOW_SECTOR_SIZE;
         }
-        //else {
-        //    hilow_write_mem_to_device(dir_inicio,sector,longitud,0);
-        //}
+
 
         if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
             //Error al escribir, sector mas alla del rango
@@ -805,20 +793,10 @@ void hilow_trap_write_verify(void)
     
     reg_a=retorno_error;
 
-    //reg_a++;
-
-    //valor distinto de 0 retorna el error "Error en la cinta"
-    //reg_a=1;
-
-    
 
     //No seguro de esto
     reg_ix +=reg_de;
 
-    //siguiente sector???
-    //reg_bc++;
-
-    //siguiente sector??
     reg_a_shadow++;
 
     reg_pc=pop_valor();  
