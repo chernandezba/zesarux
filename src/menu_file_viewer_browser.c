@@ -3295,7 +3295,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
         }
         else {
 
-            char buffer_file_name[50];
+            char buffer_file_name[100];
 
 
             //Maximo 17 bytes. Copiamos a buffer temporal para evitar que se salga puntero de sitio
@@ -3311,7 +3311,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
             z80_int cabecera_aux=value_8_to_16(puntero_memoria[offset_archivo+16],puntero_memoria[offset_archivo+15]);
             
 
-            char buffer_file_info[50];
+            char buffer_file_info[100];
             sprintf(buffer_file_info," Start: %d Lenght: %d Aux: %d",cabecera_inicio,cabecera_longitud,cabecera_aux);
 
             
@@ -3350,29 +3350,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
         }      
 
     }
-    /*
 
-	while(total_mem>0) {
-		longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,1);
-		total_mem-=longitud_bloque;
-		puntero_lectura +=longitud_bloque;
-		
-        
-
-
-        longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
-        if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
-				debug_printf (VERBOSE_ERR,"Too much headers. Showing only the allowed in memory");
-				total_mem=0; //Finalizar bloque
-        }
-
-        else {
-            sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
-            indice_buffer +=longitud_texto;
-        }
-
-	}
-    */
 
 	texto_browser[indice_buffer]=0;
 
