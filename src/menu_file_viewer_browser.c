@@ -3276,7 +3276,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     indice_buffer +=longitud_texto; 
 
     z80_byte free_sectors=puntero_memoria[0x3F3];
-    sprintf (buffer_texto,"Free sectors: %d\n",free_sectors);
+    sprintf (buffer_texto,"Free sectors: %d (%d KB)\n",free_sectors,(free_sectors*HILOW_SECTOR_SIZE)/1024);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
     sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto; 
