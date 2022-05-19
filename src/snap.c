@@ -3233,6 +3233,7 @@ if (long_cabecera_adicional>25) {
                         case 3: 
                             //Este 3 lo encuentro con cabeceras de 31 bytes, probablemente cabeceras corruptas de ZXSP
                             if (long_cabecera_adicional==31) {
+                                debug_printf(VERBOSE_WARN,"Z80 snapshot page number %d unknown, asuming corrupted file created on ZXSP emulator. Trying to load it at address 16384 anyway",numerobloque);
                                 direccion_destino=16384;
                             }
                             else {

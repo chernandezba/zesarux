@@ -29033,7 +29033,12 @@ void menu_storage_hilow_emulation(MENU_ITEM_PARAMETERS)
 
 void menu_storage_hilow_insert(MENU_ITEM_PARAMETERS)
 {
-    hilow_cinta_insertada.v ^=1;
+    if (hilow_cinta_insertada_flag.v) {
+        hilow_action_open_tape();
+    }
+    else {
+        hilow_action_close_tape();
+    }
 }
 
 void menu_storage_hilow_cover(MENU_ITEM_PARAMETERS)
@@ -29139,6 +29144,27 @@ void menu_storage_hilow_write_protect(MENU_ITEM_PARAMETERS)
 	hilow_write_protection.v ^=1;
 }    
 
+
+void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno_texto("Format drive","Sure?")) {
+
+        char buffer_nombre[10];
+
+        buffer_nombre[0]=0;
+        menu_ventana_scanf("Drive label",buffer_nombre,10);
+
+
+        hilow_device_mem_format(0,1,buffer_nombre);
+
+        //Para indicar que hay que releer el sector 0
+        hilow_tapa_action_was_opened();
+
+        menu_generic_message_splash("Format","Ok. Device has been formatted");
+
+    }
+}
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_hilow;
@@ -29178,11 +29204,14 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_hilow); 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted flag", (hilow_cinta_insertada.v ? 'X' : ' '));
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted flag", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'i');
 
             menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_hilow,'o');            
+            menu_add_item_menu_shortcut(array_menu_hilow,'o');  
+
+
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,NULL,"Format");
 
 /*
 			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_press_button,menu_storage_hilow_press_button_cond,"~~Press button");

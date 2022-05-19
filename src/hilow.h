@@ -43,6 +43,13 @@
 
 extern z80_byte *hilow_device_buffer;
 
+extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);
+
+extern void hilow_tapa_action_was_opened(void);
+
+extern void hilow_action_open_tape(void);
+extern void hilow_action_close_tape(void);
+
 extern char hilow_file_name[];
 
 extern int hilow_load_device_file(void);
@@ -74,7 +81,7 @@ extern z80_bit hilow_mapped_ram;
 extern z80_byte hilow_read_port_ff(z80_int puerto);
 extern void hilow_write_port_ff(z80_int port,z80_byte value);
 
-extern z80_bit hilow_cinta_insertada;
+extern z80_bit hilow_cinta_insertada_flag;
 extern z80_bit hilow_tapa_has_been_opened;
 
 #endif

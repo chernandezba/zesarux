@@ -148,19 +148,10 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 
 -hilow: estado:
 *copiar archivos de un casette a otro no va
-*despues de borrar con menu , parece que no calcula bien espacio total
-*llenado cinta y ultimos archivos dice que estan en sector 255. quiza en tabla de asignacion de sectores o en alguna parte antes de la 400h hay que indicar ultimo sector valido
-Parece algun problema a partir sector EBH
 
 *formateo da error. es el emulador quien genera la tabla de asignacion de sectores. varios traps de pruebas comentados para intentar que pueda 
 llegar a finalizar el formateo
 
 *iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
 
-*error con:
-formatear
-grabar pantalla
-grabar basic
-bucle grabar bloques (3)
-borrar pantalla
-espacio libre pasa a ser 2 sectores (4k). en offset 3f3h le mete un 2
+*item menu de "cover has been opened" quiza quitarlo del menu

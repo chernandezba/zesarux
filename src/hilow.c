@@ -58,8 +58,8 @@ z80_bit hilow_mapped_rom={0};
 z80_bit hilow_mapped_ram={0};
 
 
-//Esto de momento se puede conmutar pero luego ira asociado a una cinta real
-z80_bit hilow_cinta_insertada={1};
+//Flag que indica si cinta insertada, esto se utiliza por la lectura del puerto de hardware
+z80_bit hilow_cinta_insertada_flag={1};
 
 z80_bit hilow_tapa_has_been_opened={0};
 
@@ -335,6 +335,21 @@ void hilow_tapa_reset_was_opened(void)
    hilow_tapa_has_been_opened.v=0; 
 }
 
+void hilow_action_open_tape(void)
+{
+    if (hilow_cinta_insertada_flag.v) {
+        //quitamos cinta. ademas indicamos tapa se ha abierto
+        hilow_tapa_action_was_opened();
+        hilow_cinta_insertada_flag.v=0;
+    }
+}
+
+void hilow_action_close_tape(void)
+{
+    if (hilow_cinta_insertada_flag.v==0) {
+        hilow_cinta_insertada_flag.v=1;  
+    }  
+}
 
 //para guardar la imagen del datadrive
 z80_byte *hilow_device_buffer=NULL;
@@ -439,7 +454,7 @@ void temp_directorio_falso(z80_int inicio_datos)
 
 
 
-
+                //Maximo 22 archivos
                 //primera entrada cinta
                 //tipo archivo
                 //0=bas
@@ -608,7 +623,7 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
     return 0;      
 }
 
-void hilow_device_set_espacio_disponible(z80_int inicio_datos)
+void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir_en_device)
 {
     //total sectores: HILOW_MAX_SECTORS
     //maximo id usable: HILOW_MAX_SECTORS-1
@@ -619,39 +634,119 @@ void hilow_device_set_espacio_disponible(z80_int inicio_datos)
     //maximo id usable: 2
     //total sectores para usar en la tabla (descartando el 0): 2  (el 1 y el 2)  
 
-    poke_byte_no_time(inicio_datos+1011,HILOW_MAX_SECTORS-1);
-    //no tengo claro este segundo byte para que sirve. si no lo escribo, le pone un 0
-    poke_byte_no_time(inicio_datos+1012,HILOW_MAX_SECTORS-1);
+    int offset=1011;
+    z80_byte value_to_write=HILOW_MAX_SECTORS-1;
+
+    if (si_escribir_en_ram) poke_byte_no_time(8192+offset,value_to_write);
+    if (si_escribir_en_device) hilow_write_byte_device(0,offset,value_to_write);
+    //en las rutinas de la rom se suele acceder por la direccion 3BF3
+    //(3BF3 AND 2047) = 1011
+    //Dado que la ram es de 2kb y se repite desde 8192 hasta 16383, se puede acceder a misma memoria
+    //desde varios sitios
+
+
 
                                  
 }
 
-void hilow_create_sector_table(void)
+void hilow_device_initialize_sector_zero(int si_escribir_en_ram,int si_escribir_en_device)
 {
-    /*
-    Empieza en dirección 400h del sector 0 (esto es 1024-mitad de sector)
-    Lo metemos en ram y luego ya escribira en dispositivo
-    */
+
+
+    int offset=0;
+    int i;
+
+    for (i=0;i<HILOW_SECTOR_SIZE;i++,offset++) {
+        if (si_escribir_en_device) hilow_write_byte_device(0,offset,255);
+        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,255);
+    }
+
+                                 
+}
+
+void hilow_device_set_files_used(int si_escribir_en_ram,int si_escribir_en_device)
+{
+
+
+    int offset=0;
+    int i;
+
+    for (i=0;i<2;i++,offset++) {
+        if (si_escribir_en_device) hilow_write_byte_device(0,offset,0);
+        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,0);
+    }
+
+                                 
+}
+
+void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
+{
 
     printf("Creating free sectors table\n");
     int i;
 
     int id_sector_tabla;
 
-    int offset=0x400;
+    int offset=0x3f4;
 
-    offset=0x3f5;
+    //Nota: el sector 0 como tal no se usa para archivos logicamente
+    //pero en la tabla de sectores usados debe estar, pues al borrar archivos, en rutina L06D1, utiliza
+    //ese 00 inicial para saber donde empieza la tabla y de alguna manera indica donde finalizar con el movimiento de sectores de la tabla
 
-    for (id_sector_tabla=1;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
-        //hilow_write_byte_device(0,offset,id_sector_tabla);
-        poke_byte_no_time(8192+offset,id_sector_tabla);
+    for (id_sector_tabla=0;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
+        if (si_escribir_en_device) hilow_write_byte_device(0,offset,id_sector_tabla);
+        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
     }
 
     
 
     //Y byte 0 para el final. No estoy seguro que sea necesario
-    poke_byte_no_time(8192+offset,0);
+    //poke_byte_no_time(8192+offset,0);
 
+}
+
+void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *label)
+{
+
+    int i;
+
+    //9 espacios por defecto 123456789
+    char buffer_destino[10]="         ";
+
+
+    //guardarlo en buffer temporal con espacios
+    for (i=0;i<9 && *label;i++) {
+        buffer_destino[i]=*label;
+        label++;
+    }
+
+    //Y pasarlo a memoria y/o dispositivo
+    int offset=2;
+
+    for (i=0;i<9;i++,offset++) {
+        if (si_escribir_en_device) hilow_write_byte_device(0,offset,buffer_destino[i]);
+        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,buffer_destino[i]);
+    }
+
+
+}
+
+void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label)
+{
+    
+        
+    hilow_device_initialize_sector_zero(si_escribir_en_ram,si_escribir_en_device);
+
+
+    hilow_device_set_files_used(si_escribir_en_ram,si_escribir_en_device);
+
+
+    hilow_set_tapelabel(si_escribir_en_ram,si_escribir_en_device,label);
+
+
+    hilow_device_set_sectores_disponible(si_escribir_en_ram,si_escribir_en_device);
+
+    hilow_create_sector_table(si_escribir_en_ram,si_escribir_en_device);
 }
 
 
@@ -901,25 +996,23 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             }
             printf("\n");           
 
-            
-            int sector=reg_a;
+            //Rellenamos parte restante del sector 0
+            //int sector=reg_a;
 
             //sector 1=0??
             //Sin esto, al hacer un cat, no aparece el label de la cinta
-            sector--;
+            //sector--;
             //if (sector==1) sector=0;
 
-            if (sector==0) {
-                //Dado que no lee bien el espacio total, indicarlo nosotros (si no, pondria un 0)
-                hilow_device_set_espacio_disponible(8192);
-            }
+            //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
+            hilow_device_set_sectores_disponible(1,0);
        
 
             //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
-            hilow_create_sector_table();     
+            hilow_create_sector_table(1,0);     
 
 
-            hilow_write_mem_to_device(8192,sector,HILOW_SECTOR_SIZE,0);      
+            hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
 
             //no error?
             reg_a=0;
@@ -1303,7 +1396,7 @@ L1C03:          IN      A,(HLWPORT)
 
     z80_byte valor_retorno=0;
 
-    if (hilow_cinta_insertada.v) valor_retorno |=4; //Hay cinta insertada
+    if (hilow_cinta_insertada_flag.v) valor_retorno |=4; //Hay cinta insertada
 
     if (hilow_tapa_has_been_opened.v==0) valor_retorno |=8; //No se ha abierto la tapa en algun momento
 
