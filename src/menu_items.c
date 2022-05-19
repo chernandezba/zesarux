@@ -29220,9 +29220,11 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_hilow,'o');  
 
+            menu_add_item_menu_separator(array_menu_hilow); 
+
 
             menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Format");
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browser");
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browse");
 
 /*
 			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_press_button,menu_storage_hilow_press_button_cond,"~~Press button");
@@ -29232,7 +29234,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 */
 
 
-                                menu_add_item_menu(array_menu_hilow,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_hilow); 
 
                 menu_add_ESC_item(array_menu_hilow);
 

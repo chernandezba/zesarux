@@ -142,6 +142,11 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 
 -Doble buffer fbdev copia más ancho del que realmente ocupa. Considerar totalspectrumancho x bits pixel? 
 
+-cuelgue tecla pausa
+* ZEsarUX 10.1 on Mac: no hang after pressing pause several times
+* ZEsarUX 10.1 on Windows or Linux: press pause, then enter, no hang. Press pause, pause again, hangs
+
+
 -Para ZENG con más de 2 pcs:
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
