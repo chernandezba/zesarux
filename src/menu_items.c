@@ -29177,80 +29177,73 @@ void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
 
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hilow;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_hilow;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
-            char string_hilow_file_shown[17];
+        char string_hilow_file_shown[17];
 								
 
 
-            menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
-            menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"HiLow ~~File [%s]",string_hilow_file_shown);
-            menu_add_item_menu_shortcut(array_menu_hilow,'f');
-            menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
-            menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
+        menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
+        menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"HiLow ~~File [%s]",string_hilow_file_shown);
+        menu_add_item_menu_shortcut(array_menu_hilow,'f');
+        menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
+        menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~HiLow Enabled", (hilow_enabled.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_hilow,'h');
-            menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
-            menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~HiLow Enabled", (hilow_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'h');
+        menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
+        menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,"[%c] ~~Write protect", (hilow_write_protection.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_hilow,'w');
-            menu_add_item_menu_tooltip(array_menu_hilow,"If hilow disk is write protected");
-            menu_add_item_menu_ayuda(array_menu_hilow,"If hilow disk is write protected");
-
-
-			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] ~~Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
-            menu_add_item_menu_shortcut(array_menu_hilow,'p');
-			menu_add_item_menu_tooltip(array_menu_hilow,"Tells if hilow writes are saved to disk");
-			menu_add_item_menu_ayuda(array_menu_hilow,"Tells if hilow writes are saved to disk. "
-			"Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
-			"tells if these changes are written to disk or not."
-			);           
-
-            menu_add_item_menu_separator(array_menu_hilow); 
-
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted flag", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_hilow,'i');
-
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
-            menu_add_item_menu_shortcut(array_menu_hilow,'o');  
-
-            menu_add_item_menu_separator(array_menu_hilow); 
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,"[%c] ~~Write protect", (hilow_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'w');
+        menu_add_item_menu_tooltip(array_menu_hilow,"If hilow disk is write protected");
+        menu_add_item_menu_ayuda(array_menu_hilow,"If hilow disk is write protected");
 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Format");
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browse");
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] ~~Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_hilow,'p');
+        menu_add_item_menu_tooltip(array_menu_hilow,"Tells if hilow writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_hilow,"Tells if hilow writes are saved to disk. "
+        "Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );           
 
-/*
-			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_press_button,menu_storage_hilow_press_button_cond,"~~Press button");
-			menu_add_item_menu_shortcut(array_menu_hilow,'p');
-                        menu_add_item_menu_tooltip(array_menu_hilow,"Press button");
-                        menu_add_item_menu_ayuda(array_menu_hilow,"Press button");
-*/
+        menu_add_item_menu_separator(array_menu_hilow); 
+
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted flag", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'i');
+
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'o');  
+
+        menu_add_item_menu_separator(array_menu_hilow); 
 
 
-            menu_add_item_menu_separator(array_menu_hilow); 
-
-                menu_add_ESC_item(array_menu_hilow);
-
-                retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"HiLow Data Drive" );
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Format");
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browse");
 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+        menu_add_item_menu_separator(array_menu_hilow); 
 
-                        }
+        menu_add_ESC_item(array_menu_hilow);
+
+        retorno_menu=menu_dibuja_menu(&hilow_opcion_seleccionada,&item_seleccionado,array_menu_hilow,"HiLow Data Drive" );
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
