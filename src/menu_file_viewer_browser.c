@@ -3285,6 +3285,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 
     int salir=0;
 
+    //Maximo 22 archivos en directorio
     for (i=0;i<22 && !salir;i++) {
         //Obtener archivos
         int offset_archivo=i*45+11;
@@ -3327,7 +3328,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
             int i;
             int offset_texto_sector=0;
             z80_byte total_sectores=puntero_memoria[offset_archivo+17];
-            if (total_sectores>HILOW_BUFFER_SECTORS) total_sectores=HILOW_BUFFER_SECTORS;
+            if (total_sectores>HILOW_MAX_FILE_SECTORS) total_sectores=HILOW_MAX_FILE_SECTORS;
 
             int offset_inicio_sectores=offset_archivo+18;
             for (i=0;i<total_sectores;i++,offset_texto_sector+=4,offset_inicio_sectores++) {
@@ -3336,7 +3337,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 
             buffer_sectors[offset_texto_sector]=0;
 
-            sprintf(buffer_texto,"%s\n%s\n Sectors: %d: %s\n",buffer_file_name,buffer_file_info,total_sectores,buffer_sectors);
+            sprintf(buffer_texto,"%s\n%s\n Sectors (%d): %s\n",buffer_file_name,buffer_file_info,total_sectores,buffer_sectors);
 
             longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
             if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
@@ -3355,7 +3356,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 
 	texto_browser[indice_buffer]=0;
 
-    printf("browser: %s\n",texto_browser);
+    //printf("browser: %s\n",texto_browser);
 	
 	zxvision_generic_message_tooltip("Hilow Data Drive browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
