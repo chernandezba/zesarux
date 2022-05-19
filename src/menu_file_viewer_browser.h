@@ -45,6 +45,7 @@ extern void menu_file_hexdump_browser_show(char *filename);
 extern void menu_file_mmc_browser_show_file(z80_byte *origen,char *destino,int sipuntoextension,int longitud);
 extern void menu_file_viewer_read_text_file(char *title,char *file_name);
 extern void menu_file_dsk_browser_show(char *filename);
+extern void menu_hilow_datadrive_browser(z80_byte *puntero_memoria);
 
 
 #endif

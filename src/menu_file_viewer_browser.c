@@ -3238,7 +3238,74 @@ void menu_tape_browser_show(char *filename)
 
 }
 
+void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
+{
 
+
+	char buffer_texto[40];
+
+	int longitud_bloque;
+
+	int longitud_texto;
+
+	char *texto_browser=util_malloc_max_texto_browser();
+	int indice_buffer=0;
+
+    char buffer_file_label[10];
+    memcpy(buffer_file_label,&puntero_memoria[2],9);
+    buffer_file_label[9]=0;
+    sprintf (buffer_texto,"Label: %s",buffer_file_label);
+    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+    indice_buffer +=longitud_texto;        
+
+    z80_byte total_files=puntero_memoria[0];
+    sprintf (buffer_texto,"Total files: %d",total_files);
+    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+    indice_buffer +=longitud_texto; 
+
+    z80_byte free_sectors=puntero_memoria[0x3F3];
+    sprintf (buffer_texto,"Free sectors: %d",free_sectors);
+    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+    indice_buffer +=longitud_texto; 
+       
+
+    /*
+
+	while(total_mem>0) {
+		longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,1);
+		total_mem-=longitud_bloque;
+		puntero_lectura +=longitud_bloque;
+		
+        
+
+
+        longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
+        if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
+				debug_printf (VERBOSE_ERR,"Too much headers. Showing only the allowed in memory");
+				total_mem=0; //Finalizar bloque
+        }
+
+        else {
+            sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+            indice_buffer +=longitud_texto;
+        }
+
+	}
+    */
+
+	texto_browser[indice_buffer]=0;
+
+    printf("browser: %s\n",texto_browser);
+	
+	zxvision_generic_message_tooltip("Hilow Data Drive browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+
+    free(texto_browser);
+
+}
 
 
 z80_byte *last_bas_browser_memory;

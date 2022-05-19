@@ -29139,6 +29139,11 @@ int menu_storage_hilow_emulation_cond(void)
     else return 1;
 }
 
+int menu_storage_hilow_enabled_cond(void)
+{
+    return hilow_enabled.v;
+}
+
 void menu_storage_hilow_write_protect(MENU_ITEM_PARAMETERS)
 {
 	hilow_write_protection.v ^=1;
@@ -29163,6 +29168,11 @@ void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
         menu_generic_message_splash("Format","Ok. Device has been formatted");
 
     }
+}
+
+void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
+{
+    menu_hilow_datadrive_browser(hilow_device_buffer);
 }
 
 void menu_hilow(MENU_ITEM_PARAMETERS)
@@ -29211,7 +29221,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_hilow,'o');  
 
 
-            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,NULL,"Format");
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Format");
+            menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browser");
 
 /*
 			menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_press_button,menu_storage_hilow_press_button_cond,"~~Press button");
