@@ -826,15 +826,30 @@ void hilow_trap_read(void)
         leer_datos=reg_de;
     }
 
+    if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
+        //leer sector 0 desde rutina de copia de archivos de una cinta a otra
+        //Esto es una chapucilla pero funciona
+        printf("--------------------\n");
+        printf("--Probably copying between two datadrives, reading sector 0---\n");
+        printf("--------------------\n");
+        //leemos algo menos para no sobrescribir stack, pues SP andara sobre direccion 3FE2 aprox
+        leer_datos=0x600;
 
+    }
 
     z80_byte retorno_error=0;
 
     //no estoy seguro de esto
-    if (leer_datos>HILOW_SECTOR_SIZE) leer_datos=HILOW_SECTOR_SIZE;
+    if (leer_datos>HILOW_SECTOR_SIZE) {
+        printf("Size to read %d exceeds maximum %d\n",leer_datos,HILOW_SECTOR_SIZE);
+        leer_datos=HILOW_SECTOR_SIZE;
+    }
 
     //no estoy seguro de esto
-    if (leer_datos==0) leer_datos=HILOW_SECTOR_SIZE;
+    if (leer_datos==0) {
+        printf("Size to read is zero\n");
+        leer_datos=HILOW_SECTOR_SIZE;
+    }
 
     int sector=reg_a;
 
