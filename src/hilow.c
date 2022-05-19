@@ -797,8 +797,6 @@ void hilow_trap_write_verify(void)
     //No seguro de esto
     reg_ix +=reg_de;
 
-    reg_a_shadow++;
-
     reg_pc=pop_valor();  
 
     printf("Returning from WRITE/VERIFY SECTOR to address %04XH\n",reg_pc);       
@@ -827,38 +825,6 @@ void hilow_trap_read(void)
         inicio_datos=reg_ix;
         leer_datos=reg_de;
     }
-
-
-    /*else {
-        //Sector 0
-        //leer_datos=100; //al azar
-        if (reg_de==17) {
-            
-            //lectura entrada directorio??
-            printf("Leyendo entrada directorio\n");
-
-            //offset_device=0;
-
-            //descomentando el leer_datos, intenta leer pero con direccion y longitud incorrectas y peta
-            //si lo dejo comentado, suele quedarse en un bucle cerrado o dar tape loading error
-            //leer_datos=500; //80 //11+45; //17; //valor al azar
-
-            //si subo algo mas de 17, suele resetearse
-            //leer_datos=100;
-
-            //si dejo en 17, carga solo si la grabacion ha sido justo ahora (porque probablemente lo tenga en cache)
-            leer_datos=17;
-
-            //leer_datos=1;
-            //leer_datos=45+11;
-            //inicio_datos=reg_ix;
-
-            //offset_device=11;
-
-            //despues_directorio=1;
-        }
-    }*/
-
 
 
 
@@ -891,14 +857,8 @@ void hilow_trap_read(void)
     }
 
 
-
-    //no error?
-    //Z80_FLAGS=(Z80_FLAGS & (255-FLAG_C));
-    //Z80_FLAGS |=FLAG_C;
     reg_a=retorno_error;
 
-
-    //valor distinto de 0 retorna el error "Error en la cinta"
 
     reg_pc=pop_valor();
 
@@ -906,98 +866,97 @@ void hilow_trap_read(void)
     //No seguro de esto
     reg_ix +=reg_de;
 
-    //siguiente sector???
-    //reg_bc++;
-
 
     printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
 
 }
 
+
+void hilow_trap_format(void)
+{
+
+    /*
+    ; IX=inicio datos??  (quiza siempre direccion 8192)
+    ; DE=longitud datos?? (quiza siempre escribe tamaño de HILOW_SECTOR_SIZE)
+    ; A= sector
+    ???
+    */
+
+    temp_debug_mem_registers();
+
+    //mostrar algunos caracteres
+    int i;
+    for (i=0;i<2048;i++) {
+        z80_byte c=peek_byte_no_time(8192+i);
+        if (c>=32 && c<=126) printf("%c",c);
+        else printf(" %02X ",c);
+    }
+    printf("\n");           
+
+    //Rellenamos parte restante del sector 0
+    //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
+    hilow_device_set_sectores_disponible(1,0);
+
+
+    //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
+    hilow_create_sector_table(1,0);     
+
+
+    hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
+
+    //no error
+    reg_a=0;
+
+    reg_pc=pop_valor();
+    printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
+
+
+}    
+
+
 z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
 {
 
-        //Llamar a anterior
-        debug_nested_core_call_previous(hilow_nested_id_core);
+    //Llamar a anterior
+    debug_nested_core_call_previous(hilow_nested_id_core);
 
 
-		hilow_automap_unmap_memory(reg_pc);
+    hilow_automap_unmap_memory(reg_pc);
 
-        if (hilow_mapped_rom.v==0) {
-            //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-            return 0;
+    if (hilow_mapped_rom.v==0) {
+        //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+        return 0;
+    }
+
+
+    //debug de rutinas
+    if (reg_pc==0x186D) {
+        
+        printf("\nEntering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+            reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,Z80_FLAGS & FLAG_Z,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+
+
+        //printf("(3F31)=%04XH\n",peek_word(0x3f31));
+        printf("Sector: %d\n",reg_a);
+
+        
+        if (!(Z80_FLAGS & FLAG_C)) {
+            hilow_trap_write_verify();      
         }
 
+        //No carry. Read
+        else {         
 
-        //debug de rutinas
-        if (reg_pc==0x186D) {
-            
-            printf("\nEntering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
-                reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,Z80_FLAGS & FLAG_Z,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
-
-
-            //printf("(3F31)=%04XH\n",peek_word(0x3f31));
-            printf("Sector: %d\n",reg_a);
-
-            
-            if (!(Z80_FLAGS & FLAG_C)) {
-                hilow_trap_write_verify();      
-            }
-
-            //No carry. Read
-            else {         
-
-                hilow_trap_read();
-            }
+            hilow_trap_read();
         }
+    }
 
         //debug de rutinas
         if (reg_pc==0x16D0) {
             
             printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
-            /*
-            ; IX=inicio datos??  (quiza siempre direccion 8192)
-            ; DE=longitud datos?? (quiza siempre escribe tamaño de HILOW_SECTOR_SIZE)
-            ; A= sector
-            ???
-            */
-
-           temp_debug_mem_registers();
-
-            //mostrar algunos caracteres
-            int i;
-            for (i=0;i<2048;i++) {
-                z80_byte c=peek_byte_no_time(8192+i);
-                if (c>=32 && c<=126) printf("%c",c);
-                else printf(" %02X ",c);
-            }
-            printf("\n");           
-
-            //Rellenamos parte restante del sector 0
-            //int sector=reg_a;
-
-            //sector 1=0??
-            //Sin esto, al hacer un cat, no aparece el label de la cinta
-            //sector--;
-            //if (sector==1) sector=0;
-
-            //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
-            hilow_device_set_sectores_disponible(1,0);
-       
-
-            //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
-            hilow_create_sector_table(1,0);     
-
-
-            hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
-
-            //no error?
-            reg_a=0;
-
-            reg_pc=pop_valor();
-            printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
-
+            hilow_trap_format();
 
         }    
 
@@ -1270,19 +1229,13 @@ void hilow_enable(void)
 
     if (hilow_load_device_file()) return;
 
-
 	if (hilow_load_rom()) return;
 
 	hilow_set_peek_poke_functions();
 
 	hilow_enabled.v=1;
 
-
-
 	hilow_reset();
-
-
-
 
 }
 
@@ -1313,8 +1266,6 @@ void hilow_reset(void)
 
 	hilow_mapped_rom.v=0;
 	hilow_mapped_ram.v=0;
-
-
 
 }
 
