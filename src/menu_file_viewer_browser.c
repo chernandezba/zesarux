@@ -3286,7 +3286,9 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     int salir=0;
 
     //Maximo 22 archivos en directorio
-    for (i=0;i<22 && !salir;i++) {
+    if (total_files>22) total_files=22;
+
+    for (i=0;i<total_files && !salir;i++) {
         //Obtener archivos
         int offset_archivo=i*45+11;
 
