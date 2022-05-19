@@ -11508,7 +11508,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 	char buffer_nombre[11];
 
 	z80_byte first_byte=tape[0];
-		if (flag==0 && first_byte<=3 && longitud==19) {
+		if (flag==0 && first_byte<=4 && longitud==19) {
 			//Posible cabecera
 			util_tape_get_name_header(&tape[1],buffer_nombre);
 
@@ -11541,6 +11541,10 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 					else sprintf(texto,"Code %s [%d,%d]",buffer_nombre,cabecera_inicio,cabecera_longitud);
 				break;
 
+                //Esto solo soportado por Hilow
+				case 4:
+					sprintf(texto,"NMI %s",buffer_nombre);
+				break;
 			}
 		}
 

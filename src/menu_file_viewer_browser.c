@@ -3238,11 +3238,20 @@ void menu_tape_browser_show(char *filename)
 
 }
 
+void menu_hilow_datadrive_browser_aux_get_label(z80_byte *orig,char *dest)
+{
+    char buffer_file_label[10];
+    memcpy(dest,orig,9);
+    dest[9]=0;    
+}
+
+
+
 void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 {
 
 
-	char buffer_texto[40];
+	char buffer_texto[1024];
 
 	int longitud_bloque;
 
@@ -3252,7 +3261,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 	int indice_buffer=0;
 
     char buffer_file_label[10];
-    memcpy(buffer_file_label,&puntero_memoria[2],9);
+    menu_hilow_datadrive_browser_aux_get_label(&puntero_memoria[2],buffer_file_label);
     buffer_file_label[9]=0;
     sprintf (buffer_texto,"Label: %s",buffer_file_label);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
@@ -3271,7 +3280,76 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto; 
        
+    int i;
 
+    int salir=0;
+
+    for (i=0;i<22 && !salir;i++) {
+        //Obtener archivos
+        int offset_archivo=i*45+11;
+
+        z80_byte tipo_archivo=puntero_memoria[offset_archivo];
+
+        if (tipo_archivo==255) {
+            salir=1;
+        }
+        else {
+
+            char buffer_file_name[50];
+
+
+            //Maximo 17 bytes. Copiamos a buffer temporal para evitar que se salga puntero de sitio
+            z80_byte buffer_temp[17];
+            util_memcpy_protect_origin(buffer_temp, &puntero_memoria[offset_archivo], 17, 0, 17);
+            util_tape_get_info_tapeblock(buffer_temp,0,19,buffer_file_name);
+
+            printf("Archivo: %s\n",buffer_file_name);
+
+            
+            z80_int cabecera_longitud=value_8_to_16(puntero_memoria[offset_archivo+12],puntero_memoria[offset_archivo+11]);
+            z80_int cabecera_inicio=value_8_to_16(puntero_memoria[offset_archivo+14],puntero_memoria[offset_archivo+13]);
+            z80_int cabecera_aux=value_8_to_16(puntero_memoria[offset_archivo+16],puntero_memoria[offset_archivo+15]);
+            
+
+            char buffer_file_info[50];
+            sprintf(buffer_file_info," Start: %d Lenght: %d Aux: %d",cabecera_inicio,cabecera_longitud,cabecera_aux);
+
+            
+
+            //hasta 27 sectores
+            //cada sector: 000 -> 4 caracteres
+            #define HILOW_MAX_FILE_SECTORS 27
+            #define HILOW_BUFFER_SECTORS (HILOW_MAX_FILE_SECTORS*4)
+
+            char buffer_sectors[HILOW_BUFFER_SECTORS*2]; //mas que suficiente (espero)
+
+            int i;
+            int offset_texto_sector=0;
+            z80_byte total_sectores=puntero_memoria[offset_archivo+17];
+            if (total_sectores>HILOW_BUFFER_SECTORS) total_sectores=HILOW_BUFFER_SECTORS;
+
+            int offset_inicio_sectores=offset_archivo+18;
+            for (i=0;i<total_sectores;i++,offset_texto_sector+=4,offset_inicio_sectores++) {
+                sprintf(&buffer_sectors[offset_texto_sector],"%3d ",puntero_memoria[offset_inicio_sectores]);
+            }
+
+            buffer_sectors[offset_texto_sector]=0;
+
+            sprintf(buffer_texto,"%s\n%s\n Sectors: %d: %s\n",buffer_file_name,buffer_file_info,total_sectores,buffer_sectors);
+
+            longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
+            if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
+                    debug_printf (VERBOSE_ERR,"Too many files. Showing only the allowed in memory");
+                    salir=1; //Finalizar bloque
+            }
+
+            else {
+                sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
+                indice_buffer +=longitud_texto;
+            }
+        }      
+
+    }
     /*
 
 	while(total_mem>0) {
