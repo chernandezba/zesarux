@@ -51,6 +51,7 @@
 #include "msx.h"
 #include "snap_spg.h"
 #include "snap_zsf.h"
+#include "hilow.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -3275,7 +3276,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
     indice_buffer +=longitud_texto; 
 
     z80_byte free_sectors=puntero_memoria[0x3F3];
-    sprintf (buffer_texto,"Free sectors: %d",free_sectors);
+    sprintf (buffer_texto,"Free sectors: %d\n",free_sectors);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
     sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto; 
@@ -3303,7 +3304,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
             util_memcpy_protect_origin(buffer_temp, &puntero_memoria[offset_archivo], 17, 0, 17);
             util_tape_get_info_tapeblock(buffer_temp,0,19,buffer_file_name);
 
-            printf("Archivo: %s\n",buffer_file_name);
+            //printf("Archivo: %s\n",buffer_file_name);
 
             
             z80_int cabecera_longitud=value_8_to_16(puntero_memoria[offset_archivo+12],puntero_memoria[offset_archivo+11]);
@@ -3360,6 +3361,60 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 
 
     free(texto_browser);
+
+}
+
+void menu_file_ddh_browser_show(char *filename)
+{
+
+
+
+    //Leer solo sector 0
+	long int bytes_to_load=HILOW_SECTOR_SIZE;
+
+	z80_byte *ddh_file_memory;
+	ddh_file_memory=malloc(bytes_to_load);
+	if (ddh_file_memory==NULL) {
+		debug_printf(VERBOSE_ERR,"Unable to assign memory");
+		return;
+	}
+	
+	//Leemos archivo 
+    FILE *ptr_file_ddh_browser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+    //printf("menu_file_p_browser_show %s\n",filename);
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_file_ddh_browser,&fil)<0) {
+		debug_printf(VERBOSE_ERR,"Unable to open file");
+		free(ddh_file_memory);
+    }
+
+
+
+    int leidos;
+        
+    leidos=zvfs_fread(in_fatfs,ddh_file_memory,bytes_to_load,ptr_file_ddh_browser,&fil);
+    
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_file_ddh_browser,&fil);
+    
+        
+    menu_hilow_datadrive_browser(ddh_file_memory);
+
+
+
+	free(ddh_file_memory);
+
 
 }
 
@@ -4402,6 +4457,8 @@ void menu_file_viewer_read_file(char *title,char *file_name)
         else if (!util_compare_file_extension(file_name,"trd")) menu_file_trd_browser_show(file_name,"TRD");
 
         else if (!util_compare_file_extension(file_name,"dsk")) menu_file_dsk_browser_show(file_name);
+
+        else if (!util_compare_file_extension(file_name,"ddh")) menu_file_ddh_browser_show(file_name);
 
         else if (!util_compare_file_extension(file_name,"tzx")) menu_file_tzx_browser_show(file_name);
 
