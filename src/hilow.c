@@ -627,15 +627,15 @@ void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir
 {
     //total sectores: HILOW_MAX_SECTORS
     //maximo id usable: HILOW_MAX_SECTORS-1
-    //total sectores para usar en la tabla (descartando el 0): HILOW_MAX_SECTORS-1
+    //total sectores para usar en la tabla (descartando el 0 y el 1): HILOW_MAX_SECTORS-2
 
     //Ejemplo con 3 sectores:
     //total sectores: 3
-    //maximo id usable: 2
-    //total sectores para usar en la tabla (descartando el 0): 2  (el 1 y el 2)  
+    //maximo id usable: 1
+    //total sectores para usar en la tabla (descartando el 0 y el 1): 1  (el 2)  
 
     int offset=1011;
-    z80_byte value_to_write=HILOW_MAX_SECTORS-1;
+    z80_byte value_to_write=HILOW_MAX_SECTORS-2;
 
     if (si_escribir_en_ram) poke_byte_no_time(8192+offset,value_to_write);
     if (si_escribir_en_device) hilow_write_byte_device(0,offset,value_to_write);
@@ -693,9 +693,16 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
     //pero en la tabla de sectores usados debe estar, pues al borrar archivos, en rutina L06D1, utiliza
     //ese 00 inicial para saber donde empieza la tabla y de alguna manera indica donde finalizar con el movimiento de sectores de la tabla
 
-    for (id_sector_tabla=0;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++,offset++) {
-        if (si_escribir_en_device) hilow_write_byte_device(0,offset,id_sector_tabla);
-        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
+    
+
+    for (id_sector_tabla=0;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++) {
+        //sector 1 no lo metemos en tabla
+        if (id_sector_tabla!=1) {
+            if (si_escribir_en_device) hilow_write_byte_device(0,offset,id_sector_tabla);
+            if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
+
+            offset++;
+        }
     }
 
     
