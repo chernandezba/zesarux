@@ -85,6 +85,8 @@ enum token_parser_indice {
 	TPI_V_SEG6,
 	TPI_V_SEG7,
 
+    TPI_V_HILOWMAPPED,
+
 	TPI_V_RAM,
 	TPI_V_ROM,
 

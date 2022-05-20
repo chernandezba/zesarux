@@ -41,6 +41,7 @@
 #include "m68k.h"
 #include "prism.h"
 #include "tbblue.h"
+#include "hilow.h"
 
 /*
 
@@ -170,6 +171,8 @@ token_parser_textos_indices tpti_variables[]={
     {TPI_V_SEG5,"SEG5"},
     {TPI_V_SEG6,"SEG6"},
     {TPI_V_SEG7,"SEG7"},
+
+    {TPI_V_HILOWMAPPED,"HILOWMAPPED"},
 
     {TPI_V_OPCODE1,"OPCODE1"},
     {TPI_V_OPCODE2,"OPCODE2"},
@@ -1196,6 +1199,9 @@ int exp_par_calculate_numvarreg(token_parser *token)
         if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[7];
     break;           
 
+    case TPI_V_HILOWMAPPED:
+        return hilow_mapped_rom.v; //sirve tambien para ram, se mapean ram y rom al mismo tiempo
+    break;
 
     case TPI_V_ROM:
 	    //ram mapeada en 49152-65535 de Spectrum

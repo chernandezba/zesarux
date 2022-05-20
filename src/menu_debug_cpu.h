@@ -82,6 +82,7 @@ extern int map_adventure_offset_y;
 "ROM: ROM mapped on 0-16383 on Spectrum 128,\n" \
 "SEG0, SEG1, SEG2, SEG3: memory banks mapped on each 4 memory segments on Z88\n" \
 "SEG0, SEG1, ...., SEG7: memory banks mapped on each 8 memory segments on TBBlue\n" \
+"HILOWMAPPED: returns 1 if HiLow ROM & RAM is mapped\n" \
 "MRV: value returned on read memory operation\n" \
 "MWV: value written on write memory operation\n" \
 "MRA: address used on read memory operation\n" \
