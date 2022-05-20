@@ -2129,7 +2129,9 @@ printf (
         "--trd-write-protection          Enable TRD write protection\n"
 		"--trd-no-persistent-writes      Disable TRD persistent writes\n"
         "--hilow-file f                  Set HiLow Data Drive image file\n"
-        "--enable-hilow                  Enable hilow. Usually requires --hilow-file\n"
+        "--enable-hilow                  Enable HiLow Data Drive. Usually requires --hilow-file\n"
+		"--hilow-write-protection        Enable HiLow Data Drive write protection\n"
+		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"        
 		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
 		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
 		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
@@ -6785,6 +6787,14 @@ int parse_cmdline_options(void) {
                         else if (!strcmp(argv[puntero_parametro],"--enable-hilow")) {
                                 command_line_hilow.v=1;
                         }
+
+			else if (!strcmp(argv[puntero_parametro],"--hilow-write-protection")) {
+				hilow_write_protection.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--hilow-no-persistent-writes")) {
+				hilow_persistent_writes.v=0;
+			}                        
 
             else if (!strcmp(argv[puntero_parametro],"--load-source-code")) {
                     command_line_load_source_code.v=1;

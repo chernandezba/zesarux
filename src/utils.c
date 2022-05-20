@@ -3648,6 +3648,9 @@ int util_write_configfile(void)
   if (divmmc_rom_name[0]!=0)                  ADD_STRING_CONFIG,"--divmmc-rom \"%s\"",divmmc_rom_name);
 
   if (hilow_file_name[0]!=0)                    ADD_STRING_CONFIG,"--hilow-file \"%s\"",hilow_file_name);
+  if (hilow_enabled.v)                          ADD_STRING_CONFIG,"--enable-hilow");
+  if (hilow_write_protection.v)		            ADD_STRING_CONFIG,"--hilow-write-protection");
+  if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");  
 
 
   if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);
@@ -12405,11 +12408,19 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;
 
+    //hilow rom
+    case MEMORY_ZONE_HILOW_ROM:
+        if (hilow_enabled.v) {
+            *readwrite=1;      
+            size=HILOW_ROM_SIZE;
+        }
+    break;      
+
 
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:
         if (hilow_enabled.v) {
-            *readwrite=1;      
+            *readwrite=3; //read+write
             size=HILOW_RAM_SIZE;
         }
     break;    
@@ -12417,7 +12428,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //hilow device
     case MEMORY_ZONE_HILOW_DEVICE:
         if (hilow_enabled.v) {
-            *readwrite=1;      
+            *readwrite=3; //read+write
             size=HILOW_DEVICE_SIZE;
         }
     break; 
@@ -12795,6 +12806,13 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 
         }
     break; 
+
+    //hilow rom
+    case MEMORY_ZONE_HILOW_ROM:
+        if (hilow_enabled.v) {
+            p=&hilow_memory_pointer[address];             
+        }
+    break;      
 
 
     //hilow ram
@@ -13203,7 +13221,14 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (MACHINE_IS_TBBLUE) {
             strcpy(name,"TBBlue sprites");  
         }
-    break;     
+    break;   
+
+    //hilow rom
+    case MEMORY_ZONE_HILOW_ROM:
+        if (hilow_enabled.v) {
+            strcpy(name,"HiLow ROM");
+        }
+    break;         
 
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:

@@ -830,9 +830,9 @@ void hilow_trap_read(void)
         //leer sector 0 desde rutina de copia de archivos de una cinta a otra
         //Esto es una chapucilla pero funciona
         printf("--------------------\n");
-        printf("--Probably copying between two datadrives, reading sector 0---\n");
+        printf("--Probably copying between two datadrives, reading partially sector 0---\n");
         printf("--------------------\n");
-        //leemos algo menos para no sobrescribir stack, pues SP andara sobre direccion 3FE2 aprox
+        //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
         leer_datos=0x600;
 
     }
@@ -906,7 +906,9 @@ void hilow_trap_format(void)
         if (c>=32 && c<=126) printf("%c",c);
         else printf(" %02X ",c);
     }
-    printf("\n");           
+    printf("\n");       
+
+    //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error    
 
     //Rellenamos parte restante del sector 0
     //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
@@ -916,7 +918,7 @@ void hilow_trap_format(void)
     //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
     hilow_create_sector_table(1,0);     
 
-
+    //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo
     hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
 
     //no error
@@ -966,114 +968,114 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         }
     }
 
-        //debug de rutinas
-        if (reg_pc==0x16D0) {
-            
-            printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
+    //debug de rutinas
+    if (reg_pc==0x16D0) {
+        
+        printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
 
-            hilow_trap_format();
+        hilow_trap_format();
 
-        }    
+    }    
 
-        if (reg_pc==0x1BEF) {
-            printf("\nEntering COMMAND_HILOW_PORT PC=%04XH. Exiting\n",reg_pc);
-            reg_pc=pop_valor();
-            printf("\nExiting to %04XH\n",reg_pc);
-        }
+    if (reg_pc==0x1BEF) {
+        printf("\nEntering COMMAND_HILOW_PORT PC=%04XH. Exiting\n",reg_pc);
+        reg_pc=pop_valor();
+        printf("\nExiting to %04XH\n",reg_pc);
+    }
 
-        if (reg_pc==0x17D5) {
-            printf("\nEntering RETARDO PC=%04XH. Exiting\n",reg_pc);
+    if (reg_pc==0x17D5) {
+        printf("\nEntering RETARDO PC=%04XH. Exiting\n",reg_pc);
 
-            reg_a=1;
-            reg_hl=0;
+        reg_a=1;
+        reg_hl=0;
 
-            reg_pc=pop_valor();
-            printf("\nExiting to %04XH\n",reg_pc);            
-        }
+        reg_pc=pop_valor();
+        printf("\nExiting to %04XH\n",reg_pc);            
+    }
 
-        /*if (reg_pc==0x17BB) {
-            printf("\nEntering DETECT ERROR PC=%04XH. Skipping\n",reg_pc);
+    /*if (reg_pc==0x17BB) {
+        printf("\nEntering DETECT ERROR PC=%04XH. Skipping\n",reg_pc);
 
-            reg_pc+=3;
+        reg_pc+=3;
 
-            
-            printf("\nExiting to %04XH\n",reg_pc);            
-        }        
+        
+        printf("\nExiting to %04XH\n",reg_pc);            
+    }        
 
-        if (reg_pc==0x17B4) {
-            printf("\nEntering DETECT Z PC=%04XH. Forcing Z\n",reg_pc);
-            //L17B4:          JR      Z,L17D0
+    if (reg_pc==0x17B4) {
+        printf("\nEntering DETECT Z PC=%04XH. Forcing Z\n",reg_pc);
+        //L17B4:          JR      Z,L17D0
 
-            Z80_FLAGS |=FLAG_Z;
-          
-        }    
+        Z80_FLAGS |=FLAG_Z;
+        
+    }    
 
          
-        if (reg_pc==0x1B4C) {
-            printf("\nEntering Cinta no sirve PC=%04XH. Forcing C\n",reg_pc);
-            //L1B4C:          JP      NC,L1A47  ;Cinta no sirve 
+    if (reg_pc==0x1B4C) {
+        printf("\nEntering Cinta no sirve PC=%04XH. Forcing C\n",reg_pc);
+        //L1B4C:          JP      NC,L1A47  ;Cinta no sirve 
 
-            Z80_FLAGS |=FLAG_C;
-          
-        }       
+        Z80_FLAGS |=FLAG_C;
+        
+    }       
 
-        if (reg_pc==0x1BBC || reg_pc==0x1BCB) {
-            printf("\nEntering More detect NC PC=%04XH. Forcing C\n",reg_pc);
+    if (reg_pc==0x1BBC || reg_pc==0x1BCB) {
+        printf("\nEntering More detect NC PC=%04XH. Forcing C\n",reg_pc);
 
-            Z80_FLAGS |=FLAG_C;
-          
-        }  
-        */
-
-
-
-        if (reg_pc==0x1A9E) {
-            
-            printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
-            
-
-            //saltar adelante en codigo. feo....
-            //reg_pc=0x1ad8;
-            reg_pc=0x1ac8;
-            reg_pc=0x1acf;
-
-            printf("Skipping to address %04XH\n",reg_pc);
-        }
-
-        if (reg_pc==0x1AC0) {
-            
-            printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
-            
-
-            //saltar adelante en codigo. feo....
-            //reg_pc=0x1ad8;
-            reg_pc=0x1ac8;
-            reg_pc=0x1acf;
-
-            printf("Skipping to address %04XH\n",reg_pc);
-        }
-
-        /*if (reg_pc==0x1AF1) {
-            
-            printf("\nEntering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
-
-            //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
-            //Z80_FLAGS |=FLAG_Z;
-        }*/
+        Z80_FLAGS |=FLAG_C;
+        
+    }  
+    */
 
 
-        /*if (reg_pc==0x08FB) {
-            printf("\nEntering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
 
-            //saltar opcode JP      Z,BREAKCONT
-            reg_pc +=3;
+    if (reg_pc==0x1A9E) {
+        
+        printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+        
 
-            printf("Skipping to address %04XH\n",reg_pc);
+        //saltar adelante en codigo. feo....
+        //reg_pc=0x1ad8;
+        reg_pc=0x1ac8;
+        reg_pc=0x1acf;
 
-            //Esto al hacer un SAVE al final parece ir a la direccion 0 y se resetea...
-        }*/
-        //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-        return 0;
+        printf("Skipping to address %04XH\n",reg_pc);
+    }
+
+    if (reg_pc==0x1AC0) {
+        
+        printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+        
+
+        //saltar adelante en codigo. feo....
+        //reg_pc=0x1ad8;
+        reg_pc=0x1ac8;
+        reg_pc=0x1acf;
+
+        printf("Skipping to address %04XH\n",reg_pc);
+    }
+
+    /*if (reg_pc==0x1AF1) {
+        
+        printf("\nEntering POST_FORMAT3. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+
+        //engañar... para saltar una condicion que hace cancelar el bucle de sectores 1,2,3,...
+        //Z80_FLAGS |=FLAG_Z;
+    }*/
+
+
+    /*if (reg_pc==0x08FB) {
+        printf("\nEntering L08FB. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+
+        //saltar opcode JP      Z,BREAKCONT
+        reg_pc +=3;
+
+        printf("Skipping to address %04XH\n",reg_pc);
+
+        //Esto al hacer un SAVE al final parece ir a la direccion 0 y se resetea...
+    }*/
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    return 0;
 
 }
 

@@ -29154,18 +29154,23 @@ void menu_storage_hilow_format(MENU_ITEM_PARAMETERS)
 {
     if (menu_confirm_yesno_texto("Format drive","Sure?")) {
 
+        menu_first_aid("hilow_format");
+
         char buffer_nombre[10];
 
         buffer_nombre[0]=0;
         menu_ventana_scanf("Drive label",buffer_nombre,10);
 
+        if (menu_confirm_yesno_texto("Format drive","Really Sure?")) {
 
-        hilow_device_mem_format(0,1,buffer_nombre);
+            hilow_device_mem_format(0,1,buffer_nombre);
 
-        //Para indicar que hay que releer el sector 0
-        hilow_tapa_action_was_opened();
+            //Para indicar que hay que releer el sector 0
+            hilow_tapa_action_was_opened();
 
-        menu_generic_message_splash("Format","Ok. Device has been formatted");
+            menu_generic_message_splash("Format","Ok. Device has been formatted");
+
+        }
 
     }
 }

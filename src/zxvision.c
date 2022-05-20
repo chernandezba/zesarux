@@ -20531,6 +20531,10 @@ int first_aid_no_language=0;
 char *first_aid_string_language="Warning: not all messages are translated. Aviso: No todos los mensajes están traducidos";
 
 
+int first_aid_no_hilow_format=0;
+char *first_aid_string_hilow_format="You can also format the Data Drive using the command SAVE \"FORMAT name\" on the Basic prompt. It finishes with an error but ir really works.";
+
+
 //Items que se disparan en startup
 
 
@@ -20644,6 +20648,7 @@ void menu_first_aid_init(void)
     menu_first_aid_add("back_run_rainbow",&first_aid_no_back_run_rainbow,first_aid_string_back_run_rainbow,0);
     menu_first_aid_add("language",&first_aid_no_language,first_aid_string_language,0);
     menu_first_aid_add("snapshot_save_zsf",&first_aid_no_snapshot_save_zsf,first_aid_string_snapshot_save_zsf,0);
+    menu_first_aid_add("hilow_format",&first_aid_no_hilow_format,first_aid_string_hilow_format,0);
     
 
 

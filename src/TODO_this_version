@@ -161,5 +161,4 @@ llegar a finalizar el formateo
 
 *item menu de "cover has been opened" quiza quitarlo del menu
 
-*puede que la lectura de sector 0 no siempre se haga de 2kb, por ejemplo al copiar archivo de una cinta a otro, el stack esta por debajo
-de la 16384 y se sobreescribiria
+-poder expand .ddh files
