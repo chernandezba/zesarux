@@ -845,6 +845,51 @@ void hilow_trap_write_verify(void)
     printf("Returning from WRITE/VERIFY SECTOR to address %04XH\n",reg_pc);       
 }
 
+void hilow_read_directory_sector(void)
+{
+
+}
+
+
+int hilow_read_mem_to_device(z80_int dir,int sector,int longitud)
+{
+    int retorno_error=0;
+
+    //no estoy seguro de esto
+    if (longitud>HILOW_SECTOR_SIZE) {
+        printf("Size to read %d exceeds maximum %d\n",longitud,HILOW_SECTOR_SIZE);
+        longitud=HILOW_SECTOR_SIZE;
+    }
+
+    //no estoy seguro de esto
+    if (longitud==0) {
+        printf("Size to read is zero\n");
+        longitud=HILOW_SECTOR_SIZE;
+    }
+
+    
+
+    printf("Reading data from sector %d length %04XH to address %04XH\n",sector,longitud,dir);
+
+
+    if (sector>=HILOW_MAX_SECTORS) {
+        //printf("Sector beyond maximum. Do nothing\n");
+
+        debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d",
+                HILOW_DEVICE_SIZE,sector);                
+        retorno_error=1;
+    }
+    else {
+        int i;
+        for (i=0;i<longitud;i++) {
+            poke_byte_no_time(dir+i,hilow_read_byte_device(sector,i));
+        }    
+    }
+
+    return retorno_error;
+
+}
+
 void hilow_trap_read(void)
 {
 
@@ -861,7 +906,19 @@ void hilow_trap_read(void)
     if (reg_a==0) {
         //sector 0
         inicio_datos=8192;
-        leer_datos=HILOW_SECTOR_SIZE;                    
+        leer_datos=HILOW_SECTOR_SIZE;    
+
+
+        if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
+            //leer sector 0 desde rutina de copia de archivos de una cinta a otra
+            //Esto es una chapucilla pero funciona
+            printf("--------------------\n");
+            printf("--Probably copying between two datadrives, reading partially sector 0---\n");
+            printf("--------------------\n");
+            //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
+            leer_datos=0x600;
+
+        }                        
     }
 
     else {
@@ -869,53 +926,9 @@ void hilow_trap_read(void)
         leer_datos=reg_de;
     }
 
-    if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
-        //leer sector 0 desde rutina de copia de archivos de una cinta a otra
-        //Esto es una chapucilla pero funciona
-        printf("--------------------\n");
-        printf("--Probably copying between two datadrives, reading partially sector 0---\n");
-        printf("--------------------\n");
-        //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
-        leer_datos=0x600;
-
-    }
-
-    z80_byte retorno_error=0;
-
-    //no estoy seguro de esto
-    if (leer_datos>HILOW_SECTOR_SIZE) {
-        printf("Size to read %d exceeds maximum %d\n",leer_datos,HILOW_SECTOR_SIZE);
-        leer_datos=HILOW_SECTOR_SIZE;
-    }
-
-    //no estoy seguro de esto
-    if (leer_datos==0) {
-        printf("Size to read is zero\n");
-        leer_datos=HILOW_SECTOR_SIZE;
-    }
-
     int sector=reg_a;
 
-    printf("Reading data from sector %d length %04XH to address %04XH\n",sector,leer_datos,inicio_datos);
-
-
-    if (sector>=HILOW_MAX_SECTORS) {
-        //printf("Sector beyond maximum. Do nothing\n");
-
-        debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d",
-                HILOW_DEVICE_SIZE,sector);                
-        retorno_error=1;
-    }
-    else {
-        for (i=0;i<leer_datos;i++) {
-            poke_byte_no_time(inicio_datos+i,hilow_read_byte_device(sector,i/*+offset_device*/));
-
-
-        }    
-    }
-
-
-    reg_a=retorno_error;
+    reg_a=hilow_read_mem_to_device(inicio_datos,sector,leer_datos);
 
 
     reg_pc=pop_valor();
