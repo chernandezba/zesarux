@@ -902,7 +902,7 @@ void hilow_read_directory_sector(void)
     contador_sector_cero=value_8_to_16(hilow_read_byte_device(0,1),hilow_read_byte_device(0,0));
     contador_sector_uno= value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
 
-    printf("Contadores directorios. Sector cero: %d Sector uno: %d\n",contador_sector_cero,contador_sector_uno);
+    printf("Diretory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
 
 
     if (contador_sector_cero>contador_sector_uno) {
@@ -912,7 +912,7 @@ void hilow_read_directory_sector(void)
         hilow_sector_tabla_directorio=1;
     }
 
-    printf("Leyendo desde sector %d\n",hilow_sector_tabla_directorio);
+    printf("Reading directory from sector %d as it has the highest usage counter\n",hilow_sector_tabla_directorio);
 
 
     if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {

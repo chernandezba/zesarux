@@ -3251,6 +3251,15 @@ void menu_hilow_datadrive_browser_aux_get_label(z80_byte *orig,char *dest)
 void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
 {
 
+    //Preguntar si ver copia del sector 0 o 1
+    int opcion=menu_simple_two_choices("Directory browser","You want to see","Sector 0","Sector 1");
+
+    if (opcion==0) return; //ESC    
+
+    if (opcion==2) {
+        //Ir al siguiente sector
+        puntero_memoria +=HILOW_SECTOR_SIZE;
+    }
 
 	char buffer_texto[1024];
 
