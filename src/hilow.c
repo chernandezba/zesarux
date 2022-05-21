@@ -845,10 +845,7 @@ void hilow_trap_write_verify(void)
     printf("Returning from WRITE/VERIFY SECTOR to address %04XH\n",reg_pc);       
 }
 
-void hilow_read_directory_sector(void)
-{
 
-}
 
 
 int hilow_read_mem_to_device(z80_int dir,int sector,int longitud)
@@ -890,6 +887,49 @@ int hilow_read_mem_to_device(z80_int dir,int sector,int longitud)
 
 }
 
+void hilow_read_directory_sector(void)
+{
+    //sector de directorio
+    z80_int inicio_datos=8192;
+    z80_int leer_datos=HILOW_SECTOR_SIZE;    
+
+    //Usar el sector 0/1 dependiendo de que tenga el valor de contador mas alto
+
+    z80_int contador_sector_cero;
+    z80_int contador_sector_uno;
+
+
+    contador_sector_cero=value_8_to_16(hilow_read_byte_device(0,1),hilow_read_byte_device(0,0));
+    contador_sector_uno= value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
+
+    printf("Contadores directorios. Sector cero: %d Sector uno: %d\n",contador_sector_cero,contador_sector_uno);
+
+    int sector_a_leer;
+
+    if (contador_sector_cero>contador_sector_uno) {
+        sector_a_leer=0;
+    }
+    else {
+        sector_a_leer=1;
+    }
+
+    printf("Leyendo desde sector %d\n",sector_a_leer);
+
+
+    if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
+        //leer sector 0 desde rutina de copia de archivos de una cinta a otra
+        //Esto es una chapucilla pero funciona
+        printf("--------------------\n");
+        printf("--Probably copying between two datadrives, reading partially sector 0---\n");
+        printf("--------------------\n");
+        //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
+        leer_datos=0x600;
+
+    }        
+
+    reg_a=hilow_read_mem_to_device(inicio_datos,sector_a_leer,leer_datos);      
+}
+
 void hilow_trap_read(void)
 {
 
@@ -904,23 +944,9 @@ void hilow_trap_read(void)
     //int offset_device=0;
 
     if (reg_a==0) {
-        //sector 0
-        inicio_datos=8192;
-        leer_datos=HILOW_SECTOR_SIZE;    
 
-
-        if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
-            //leer sector 0 desde rutina de copia de archivos de una cinta a otra
-            //Esto es una chapucilla pero funciona
-            printf("--------------------\n");
-            printf("--Probably copying between two datadrives, reading partially sector 0---\n");
-            printf("--------------------\n");
-            //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
-            leer_datos=0x600;
-
-        }        
-
-        reg_a=hilow_read_mem_to_device(inicio_datos,0,leer_datos);                        
+        hilow_read_directory_sector();
+                  
     }
 
     else {
