@@ -945,8 +945,9 @@ void hilow_trap_format(void)
     //Dado que no finaliza el formateo, tenemos que indicar nosotros la tabla de sectores
     hilow_create_sector_table(1,0);     
 
-    //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo
+    //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo, en ambas copias de directorio
     hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
+    hilow_write_mem_to_device(8192,1,HILOW_SECTOR_SIZE,0);      
 
     //no error
     reg_a=0;
