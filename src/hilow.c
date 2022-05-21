@@ -918,25 +918,26 @@ void hilow_trap_read(void)
             //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
             leer_datos=0x600;
 
-        }                        
+        }        
+
+        reg_a=hilow_read_mem_to_device(inicio_datos,0,leer_datos);                        
     }
 
     else {
         inicio_datos=reg_ix;
         leer_datos=reg_de;
+
+        int sector=reg_a;
+
+        reg_a=hilow_read_mem_to_device(inicio_datos,sector,leer_datos);        
     }
 
-    int sector=reg_a;
-
-    reg_a=hilow_read_mem_to_device(inicio_datos,sector,leer_datos);
-
-
-    reg_pc=pop_valor();
 
 
     //No seguro de esto
     reg_ix +=reg_de;
 
+    reg_pc=pop_valor();
 
     printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
 
