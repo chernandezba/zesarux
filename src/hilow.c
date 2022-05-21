@@ -904,16 +904,15 @@ void hilow_read_directory_sector(void)
 
     printf("Contadores directorios. Sector cero: %d Sector uno: %d\n",contador_sector_cero,contador_sector_uno);
 
-    int sector_a_leer;
 
     if (contador_sector_cero>contador_sector_uno) {
-        sector_a_leer=0;
+        hilow_sector_tabla_directorio=0;
     }
     else {
-        sector_a_leer=1;
+        hilow_sector_tabla_directorio=1;
     }
 
-    printf("Leyendo desde sector %d\n",sector_a_leer);
+    printf("Leyendo desde sector %d\n",hilow_sector_tabla_directorio);
 
 
     if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
@@ -927,7 +926,7 @@ void hilow_read_directory_sector(void)
 
     }        
 
-    reg_a=hilow_read_mem_to_device(inicio_datos,sector_a_leer,leer_datos);      
+    reg_a=hilow_read_mem_to_device(inicio_datos,hilow_sector_tabla_directorio,leer_datos);      
 }
 
 void hilow_trap_read(void)
