@@ -638,7 +638,11 @@ void hilow_device_set_sectores_disponible(int si_escribir_en_ram,int si_escribir
     z80_byte value_to_write=HILOW_MAX_SECTORS-2;
 
     if (si_escribir_en_ram) poke_byte_no_time(8192+offset,value_to_write);
-    if (si_escribir_en_device) hilow_write_byte_device(0,offset,value_to_write);
+    if (si_escribir_en_device) {
+        //En ambas copias de directorio
+        hilow_write_byte_device(0,offset,value_to_write);
+        hilow_write_byte_device(1,offset,value_to_write);
+    }
     //en las rutinas de la rom se suele acceder por la direccion 3BF3
     //(3BF3 AND 2047) = 1011
     //Dado que la ram es de 2kb y se repite desde 8192 hasta 16383, se puede acceder a misma memoria
@@ -657,7 +661,11 @@ void hilow_device_initialize_sector_zero(int si_escribir_en_ram,int si_escribir_
     int i;
 
     for (i=0;i<HILOW_SECTOR_SIZE;i++,offset++) {
-        if (si_escribir_en_device) hilow_write_byte_device(0,offset,255);
+        if (si_escribir_en_device) {
+            //En ambas copias de directorio
+            hilow_write_byte_device(0,offset,255);
+            hilow_write_byte_device(1,offset,255);
+        }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,255);
     }
 
@@ -672,7 +680,11 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
     int i;
 
     for (i=0;i<2;i++,offset++) {
-        if (si_escribir_en_device) hilow_write_byte_device(0,offset,0);
+        if (si_escribir_en_device) {
+            //En ambas copias de directorio
+            hilow_write_byte_device(0,offset,0);
+            hilow_write_byte_device(1,offset,0);
+        }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,0);
     }
 
@@ -698,7 +710,11 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
     for (id_sector_tabla=0;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++) {
         //sector 1 no lo metemos en tabla
         if (id_sector_tabla!=1) {
-            if (si_escribir_en_device) hilow_write_byte_device(0,offset,id_sector_tabla);
+            if (si_escribir_en_device) {
+                //En ambas copias de directorio
+                hilow_write_byte_device(0,offset,id_sector_tabla);
+                hilow_write_byte_device(1,offset,id_sector_tabla);
+            }
             if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
 
             offset++;
@@ -731,7 +747,11 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
     int offset=2;
 
     for (i=0;i<9;i++,offset++) {
-        if (si_escribir_en_device) hilow_write_byte_device(0,offset,buffer_destino[i]);
+        if (si_escribir_en_device) {
+            //En ambas copias de directorio
+            hilow_write_byte_device(0,offset,buffer_destino[i]);
+            hilow_write_byte_device(1,offset,buffer_destino[i]);
+        }
         if (si_escribir_en_ram) poke_byte_no_time(8192+offset,buffer_destino[i]);
     }
 
