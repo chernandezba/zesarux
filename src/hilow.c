@@ -781,9 +781,9 @@ void hilow_write_directory_sector(void)
     hilow_sector_tabla_directorio ^=1;
 
     z80_int dir_inicio=8192;
-    z80_int longitud=HILOW_SECTOR_SIZE;
+    z80_int longitud=HILOW_DIRECTORY_TABLE_SIZE;
 
-    printf("Writing directory to sector %d\n",hilow_sector_tabla_directorio);
+    printf("Writing directory (size: %d) to sector %d\n",longitud,hilow_sector_tabla_directorio);
     hilow_write_mem_to_device(dir_inicio,hilow_sector_tabla_directorio,longitud,0);    
 }
 
@@ -891,7 +891,7 @@ void hilow_read_directory_sector(void)
 {
     //sector de directorio
     z80_int inicio_datos=8192;
-    z80_int leer_datos=HILOW_SECTOR_SIZE;    
+    z80_int leer_datos=HILOW_DIRECTORY_TABLE_SIZE;    
 
     //Usar el sector 0/1 dependiendo de que tenga el valor de contador mas alto
 
@@ -912,10 +912,10 @@ void hilow_read_directory_sector(void)
         hilow_sector_tabla_directorio=1;
     }
 
-    printf("Reading directory from sector %d as it has the highest usage counter\n",hilow_sector_tabla_directorio);
+    printf("Reading directory (size: %d) from sector %d as it has the highest usage counter\n",leer_datos,hilow_sector_tabla_directorio);
 
 
-    if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
+    /* if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
         //leer sector 0 desde rutina de copia de archivos de una cinta a otra
         //Esto es una chapucilla pero funciona
         printf("--------------------\n");
@@ -924,7 +924,7 @@ void hilow_read_directory_sector(void)
         //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
         leer_datos=0x600;
 
-    }        
+    }    */    
 
     reg_a=hilow_read_mem_to_device(inicio_datos,hilow_sector_tabla_directorio,leer_datos);      
 }
