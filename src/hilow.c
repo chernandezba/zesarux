@@ -773,6 +773,20 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 }
 
 
+//Cual es el sector de la tabla de directorio leido. Al escribir se va alternando 0 y 1
+int hilow_sector_tabla_directorio=0;
+
+void hilow_write_directory_sector(void)
+{
+    hilow_sector_tabla_directorio ^=1;
+
+    z80_int dir_inicio=8192;
+    z80_int longitud=HILOW_SECTOR_SIZE;
+
+    printf("Writing directory to sector %d\n",hilow_sector_tabla_directorio);
+    hilow_write_mem_to_device(dir_inicio,hilow_sector_tabla_directorio,longitud,0);    
+}
+
 void hilow_trap_write_verify(void)
 {
     printf("VERIFY or WRITE probably\n");
@@ -799,19 +813,21 @@ void hilow_trap_write_verify(void)
 
         //if (reg_de>HILOW_SECTOR_SIZE) {
         if (sector==0) {
-            printf("Writing from cache memory to sector 0\n");
+            printf("Writing from cache memory to directory sector\n");
 
             //directamente copiar lo de la cache hacia aqui
             //esto soluciona la escritura
             //hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);
-            dir_inicio=8192;
-            longitud=HILOW_SECTOR_SIZE;
+            hilow_write_directory_sector();
         }
 
+        else {
 
-        if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
-            //Error al escribir, sector mas alla del rango
-            retorno_error=1; //Error en la cinta
+            if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
+                //Error al escribir, sector mas alla del rango
+                retorno_error=1; //Error en la cinta
+            }
+
         }
 
     }
