@@ -902,7 +902,7 @@ void hilow_read_directory_sector(void)
     contador_sector_cero=value_8_to_16(hilow_read_byte_device(0,1),hilow_read_byte_device(0,0));
     contador_sector_uno= value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
 
-    printf("Diretory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
+    printf("Directory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
 
 
     if (contador_sector_cero>contador_sector_uno) {
@@ -912,7 +912,7 @@ void hilow_read_directory_sector(void)
         hilow_sector_tabla_directorio=1;
     }
 
-    printf("Reading directory (size: %d) from sector %d as it has the highest usage counter\n",leer_datos,hilow_sector_tabla_directorio);
+    printf("Reading directory (size: %d) from sector %d as it has the highest usage counter (or they are both the same)\n",leer_datos,hilow_sector_tabla_directorio);
 
 
     /* if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
@@ -1008,6 +1008,12 @@ void hilow_trap_format(void)
     reg_a=0;
 
     reg_pc=pop_valor();
+
+    //Decimos que el ultimo sector de directorio leido es el 0
+    //esto realmente daria un poco igual, pero es para indicar despues de un formateo que dado que ambos sectores 0 y 1 son iguales,
+    //los dos tienen contador a 0, y por la logica de escritura, habremos leido del 0 pero escrito en el 1
+    hilow_sector_tabla_directorio=0;
+
     printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
 
 
