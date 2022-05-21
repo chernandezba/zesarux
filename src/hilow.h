@@ -35,6 +35,12 @@
 #define HILOW_SECTOR_SIZE 2048
 //#define HILOW_SECTOR_SIZE 1024
 
+/*
+una cinta recien formateada acaba los ultimos bytes "útiles" (los de la tabla de sectores libres) hacia la dirección 4E8 hexadecimal
+por tanto podria definir el tamaño total de directorio como 500 hexadecimal
+*/
+#define HILOW_DIRECTORY_TABLE_SIZE 0x500
+
 //Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
 #define HILOW_MAX_SECTORS 246
 //#define HILOW_MAX_SECTORS 256
