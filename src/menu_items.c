@@ -29265,10 +29265,45 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     }
 
 
-    sprintf (buffer_texto,"%s Usage counters: %d/%d ",buffer_ok_error,usage_counter_zero,usage_counter_one);
+    sprintf (buffer_texto,"%s Usage counters: %d/%d",buffer_ok_error,usage_counter_zero,usage_counter_one);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto;        
+
+
+    //Free sectors
+    //No puede ser mayor que el valor de HILOW_MAX_SECTORS-2
+    int sector;
+
+    for (sector=0;sector<2;sector++) {
+        z80_byte free_sectors=hilow_util_get_free_sectors(sector,hilow_device_buffer);
+        if (free_sectors>=HILOW_MAX_SECTORS-2) strcpy(buffer_ok_error,txt_err);
+        else strcpy(buffer_ok_error,txt_ok);
+
+        sprintf (buffer_texto,"%s Free sectors (sector %d): %d",buffer_ok_error,sector,free_sectors);
+        longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+        sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+        indice_buffer +=longitud_texto;             
+    }
+
+
+    //Total files. no puede ser mayor que HILOW_MAX_FILES_DIRECTORY
+    int total_files;
+
+    for (sector=0;sector<2;sector++) {
+        z80_byte total_files=hilow_util_get_total_files(sector,hilow_device_buffer);
+        if (total_files>HILOW_MAX_FILES_DIRECTORY) strcpy(buffer_ok_error,txt_err);
+        else strcpy(buffer_ok_error,txt_ok);
+
+        sprintf (buffer_texto,"%s Total files (sector %d): %d",buffer_ok_error,sector,total_files);
+        longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+        sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+        indice_buffer +=longitud_texto;             
+    }
+
+    //Sectores asignados de cada archivo. Que no se repitan en un archivo, que no se repitan en diferentes archivos,
+    //que no haya mas de HILOW_MAX_SECTORS_PER_FILE asignados para un archivo
+    //y que los ids no sean mayores o igual que HILOW_MAX_SECTORS
 
     /*
             longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea

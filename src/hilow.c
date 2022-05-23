@@ -1496,6 +1496,57 @@ L1C03:          IN      A,(HLWPORT)
 
 z80_int hilow_util_get_usage_counter(int sector,z80_byte *p)
 {
-    if (sector==0) return value_8_to_16(p[1],p[0]);
-    else return value_8_to_16(p[2048+1],p[2048+0]);
+    if (sector) p +=2048;
+
+    return value_8_to_16(p[1],p[0]);
+}
+
+z80_int hilow_util_get_free_sectors(int sector,z80_byte *p)
+{
+    if (sector) p +=2048;  
+
+    return p[0x3F3];  
+}
+
+int hilow_util_get_file_offset(int indice_archivo)
+{
+    return indice_archivo*HILOW_DIRECTORY_ENTRY_SIZE+11;
+}
+
+
+int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria)
+{
+
+    if (sector) puntero_memoria +=2048;
+
+    int i;
+    
+    //aunque el maximo es HILOW_MAX_FILES_DIRECTORY, obtenemos el maximo que diria el filesystem, puede que este corrupto
+    for (i=0;i<=255;i++) {
+        //Obtener archivos
+        int offset_archivo=hilow_util_get_file_offset(i);
+
+        z80_byte tipo_archivo=puntero_memoria[offset_archivo];
+
+        if (tipo_archivo==255) {
+            return i;
+        }
+
+    }
+
+    return i;
+
+
+}
+
+int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo)
+{
+
+    if (sector) puntero_memoria +=2048;
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+    int i;
+    
+    return puntero_memoria[offset_archivo+17];    
 }

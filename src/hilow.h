@@ -49,6 +49,8 @@ por tanto podria definir el tamaño total de directorio como 500 hexadecimal
 
 #define HILOW_MAX_SECTORS_PER_FILE 25
 
+#define HILOW_MAX_FILES_DIRECTORY 22
+
 //Lo que ocupa cada entrada de directorio
 #define HILOW_DIRECTORY_ENTRY_SIZE 45
 
@@ -96,5 +98,10 @@ extern z80_bit hilow_cinta_insertada_flag;
 extern z80_bit hilow_tapa_has_been_opened;
 
 extern z80_int hilow_util_get_usage_counter(int sector,z80_byte *p);
+extern z80_int hilow_util_get_free_sectors(int sector,z80_byte *p);
+
+extern int hilow_util_get_file_offset(int indice_archivo);
+extern int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria);
+extern int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo);
 
 #endif

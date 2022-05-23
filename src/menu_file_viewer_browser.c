@@ -3246,30 +3246,19 @@ void menu_hilow_datadrive_browser_aux_get_label(z80_byte *orig,char *dest)
     dest[9]=0;    
 }
 
-int menu_hilow_datadrive_browser_get_file_offset(int indice_archivo)
+/*int menu_hilow_datadrive_browser_get_file_offset(int indice_archivo)
 {
-    return indice_archivo*HILOW_DIRECTORY_ENTRY_SIZE+11;
+    return hilow_util_get_file_offset(indice_archivo);
 }
+*/
 
 int menu_hilow_datadrive_browser_get_total_files(z80_byte *puntero_memoria)
 {
+    int max=hilow_util_get_total_files(0,puntero_memoria);
 
-    int i;
-    
+    if (max>HILOW_MAX_FILES_DIRECTORY) max=HILOW_MAX_FILES_DIRECTORY;
 
-    for (i=0;i<22;i++) {
-        //Obtener archivos
-        int offset_archivo=menu_hilow_datadrive_browser_get_file_offset(i);
-
-        z80_byte tipo_archivo=puntero_memoria[offset_archivo];
-
-        if (tipo_archivo==255) {
-            return i;
-        }
-
-    }
-
-    return i;
+    return max;
 
 
 }
@@ -3277,7 +3266,7 @@ int menu_hilow_datadrive_browser_get_total_files(z80_byte *puntero_memoria)
 void menu_hilow_datadrive_browser_get_name_info(int indice_archivo,z80_byte *puntero_memoria,char *buffer_file_name,char *buffer_file_info)
 {
 
-    int offset_archivo=menu_hilow_datadrive_browser_get_file_offset(indice_archivo);
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
           
     //Maximo 17 bytes. Copiamos a buffer temporal para evitar que se salga puntero de sitio
@@ -3299,7 +3288,7 @@ void menu_hilow_datadrive_browser_get_name_info(int indice_archivo,z80_byte *pun
 
 int menu_hilow_datadrive_browser_get_sectors_file(int indice_archivo,z80_byte *puntero_memoria,int *sectores)
 {
-    int offset_archivo=menu_hilow_datadrive_browser_get_file_offset(indice_archivo);
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
     int i;
     
@@ -3422,7 +3411,7 @@ Maximo sectores por archivo: 25
         z80_int usage_counter=hilow_util_get_usage_counter(0,puntero_memoria);
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Usage counter: %d",usage_counter);
 
-        z80_byte free_sectors=puntero_memoria[0x3F3];
+        z80_byte free_sectors=hilow_util_get_free_sectors(0,puntero_memoria);
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Free sectors: %d (%d KB)",free_sectors,(free_sectors*HILOW_SECTOR_SIZE)/1024);
 
         zxvision_print_string_defaults_format(&ventana,1,linea++,"~~Directory sector: %d",sector_directorio);
