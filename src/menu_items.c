@@ -29230,6 +29230,8 @@ void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
     menu_hilow_datadrive_browser(hilow_device_buffer);
 }
 
+int menu_storage_hilow_chkdsk_sectors_used[256];
+
 void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 {
 
@@ -29271,10 +29273,19 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     indice_buffer +=longitud_texto;        
 
 
+    
+
     //Free sectors
     //No puede ser mayor que el valor de HILOW_MAX_SECTORS-2
     int sector;
     for (sector=0;sector<2;sector++) {
+        //Inicializar tabla de sectores usados
+        int i;
+        for (i=0;i<256;i++) {
+            menu_storage_hilow_chkdsk_sectors_used[i]=0;
+        }
+
+
         sprintf (buffer_texto,"\nDirectory sector %d",sector);
         longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
         sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
@@ -29315,25 +29326,40 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
                 sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
                 indice_buffer +=longitud_texto;                   
             }
+
+            int sectores[HILOW_MAX_SECTORS_PER_FILE];
+            //Este s esta normalizado al maximo de HILOW_MAX_SECTORS_PER_FILE
+            int s=hilow_util_get_sectors_file(sector,f,hilow_device_buffer,sectores);
+
+            //Ver si se repite con alguno
+            int j;
+            for (j=0;j<s;j++) {
+                int sector_usado=sectores[j];
+                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS 
+                if (sector_usado>=HILOW_MAX_SECTORS) {
+                    sprintf (buffer_texto,"%s File id %d uses invalid sector %d",txt_err,f,sector_usado);
+                    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+                    sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+                    indice_buffer +=longitud_texto;                      
+                }
+
+                if (menu_storage_hilow_chkdsk_sectors_used[sector_usado]) {
+                    //Ya estaba usado!
+                    sprintf (buffer_texto,"%s File id %d uses repeated sector %d",txt_err,f,sector_usado);
+                    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+                    sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+                    indice_buffer +=longitud_texto;                        
+                }
+                else {
+                    menu_storage_hilow_chkdsk_sectors_used[sector_usado]=1;
+                }
+            }
         }
     }
 
    
 
-    /*
-            longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
-            if (indice_buffer+longitud_texto>MAX_texto_chkdsk-1) {
-                    debug_printf (VERBOSE_ERR,"Too many files. Showing only the allowed in memory");
-                    salir=1; //Finalizar bloque
-            }
 
-            else {
-                sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
-                indice_buffer +=longitud_texto;
-            }
-        }      
-
-    */
 
 
 	texto_chkdsk[indice_buffer]=0;

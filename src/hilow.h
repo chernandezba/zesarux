@@ -103,5 +103,6 @@ extern z80_int hilow_util_get_free_sectors(int sector,z80_byte *p);
 extern int hilow_util_get_file_offset(int indice_archivo);
 extern int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria);
 extern int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo);
+extern int hilow_util_get_sectors_file(int sector,int indice_archivo,z80_byte *puntero_memoria,int *sectores);
 
 #endif

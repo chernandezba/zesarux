@@ -1550,3 +1550,23 @@ int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_a
     
     return puntero_memoria[offset_archivo+17];    
 }
+
+
+int hilow_util_get_sectors_file(int sector,int indice_archivo,z80_byte *puntero_memoria,int *sectores)
+{
+    if (sector) puntero_memoria +=2048;
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+    int i;
+    
+    z80_byte total_sectores=puntero_memoria[offset_archivo+17];
+    if (total_sectores>HILOW_MAX_SECTORS_PER_FILE) total_sectores=HILOW_MAX_SECTORS_PER_FILE;
+
+    int offset_inicio_sectores=offset_archivo+18;
+    for (i=0;i<total_sectores;i++,offset_inicio_sectores++) {
+        sectores[i]=puntero_memoria[offset_inicio_sectores];
+    }
+
+    return total_sectores;
+}
