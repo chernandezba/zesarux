@@ -95,4 +95,6 @@ extern void hilow_write_port_ff(z80_int port,z80_byte value);
 extern z80_bit hilow_cinta_insertada_flag;
 extern z80_bit hilow_tapa_has_been_opened;
 
+extern z80_int hilow_util_get_usage_counter(int sector,z80_byte *p);
+
 #endif

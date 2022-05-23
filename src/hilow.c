@@ -1493,3 +1493,9 @@ L1C03:          IN      A,(HLWPORT)
 
 
 }
+
+z80_int hilow_util_get_usage_counter(int sector,z80_byte *p)
+{
+    if (sector==0) return value_8_to_16(p[1],p[0]);
+    else return value_8_to_16(p[2048+1],p[2048+0]);
+}

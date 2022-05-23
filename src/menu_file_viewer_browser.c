@@ -3419,7 +3419,7 @@ Maximo sectores por archivo: 25
         buffer_file_label[9]=0;
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Label: %s",buffer_file_label);
 
-        z80_int usage_counter=value_8_to_16(puntero_memoria[1],puntero_memoria[0]);
+        z80_int usage_counter=hilow_util_get_usage_counter(0,puntero_memoria);
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Usage counter: %d",usage_counter);
 
         z80_byte free_sectors=puntero_memoria[0x3F3];

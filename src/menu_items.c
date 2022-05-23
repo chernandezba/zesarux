@@ -29249,8 +29249,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
     char buffer_ok_error[10];    
 
-    z80_int usage_counter_zero=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
-    z80_int usage_counter_one=value_8_to_16(p_sector_one[1],p_sector_one[0]);
+    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,hilow_device_buffer);
+    z80_int usage_counter_one=hilow_util_get_usage_counter(1,hilow_device_buffer);
 
     if (usage_counter_zero==usage_counter_one) {
         strcpy(buffer_ok_error,txt_ok);
