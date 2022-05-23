@@ -3288,19 +3288,9 @@ void menu_hilow_datadrive_browser_get_name_info(int indice_archivo,z80_byte *pun
 
 int menu_hilow_datadrive_browser_get_sectors_file(int indice_archivo,z80_byte *puntero_memoria,int *sectores)
 {
-    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
-    int i;
-    
-    z80_byte total_sectores=puntero_memoria[offset_archivo+17];
-    if (total_sectores>HILOW_MAX_SECTORS_PER_FILE) total_sectores=HILOW_MAX_SECTORS_PER_FILE;
+   return hilow_util_get_sectors_file(0,indice_archivo,puntero_memoria,sectores);
 
-    int offset_inicio_sectores=offset_archivo+18;
-    for (i=0;i<total_sectores;i++,offset_inicio_sectores++) {
-        sectores[i]=puntero_memoria[offset_inicio_sectores];
-    }
-
-    return total_sectores;
 }
 
 #define HILOW_BROWSER_MAPA_SECTORS_LINEA 50
@@ -3650,7 +3640,7 @@ Maximo sectores por archivo: 27
 
             longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
             if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
-                    debug_printf (VERBOSE_ERR,"Too many files. Showing only the allowed in memory");
+                    debug_printf (VERBOSE_ERR,"Too many entries. Showing only the allowed in memory");
                     salir=1; //Finalizar bloque
             }
 
