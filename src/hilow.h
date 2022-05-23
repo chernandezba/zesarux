@@ -47,6 +47,11 @@ por tanto podria definir el tamaño total de directorio como 500 hexadecimal
 
 #define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
+#define HILOW_MAX_SECTORS_PER_FILE 25
+
+//Lo que ocupa cada entrada de directorio
+#define HILOW_DIRECTORY_ENTRY_SIZE 45
+
 extern z80_byte *hilow_device_buffer;
 
 extern void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label);

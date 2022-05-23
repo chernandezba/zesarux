@@ -25,6 +25,7 @@
 #include "compileoptions.h"
 
 #include "cpu.h"
+#include "hilow.h"
 
 #ifdef EMULATE_MEMPTR
         #define set_memptr(value) memptr=value
@@ -36,6 +37,7 @@
 #ifdef EMULATE_VISUALMEM
 
 #define VISUALMEM_MMC_BUFFER_SIZE (1024*1024)
+#define VISUALMEM_HILOW_BUFFER_SIZE (HILOW_DEVICE_SIZE)
 
 
 extern z80_byte *visualmem_buffer;
@@ -60,6 +62,14 @@ extern void clear_visualmemmmc_read_buffer(int dir);
 extern z80_byte *visualmem_mmc_write_buffer;
 extern void set_visualmemmmc_write_buffer(int dir);
 extern void clear_visualmemmmc_write_buffer(int dir);
+
+extern z80_byte *visualmem_hilow_read_buffer;
+extern void set_visualmemhilow_read_buffer(int dir);
+extern void clear_visualmemhilow_read_buffer(int dir);
+
+extern z80_byte *visualmem_hilow_write_buffer;
+extern void set_visualmemhilow_write_buffer(int dir);
+extern void clear_visualmemhilow_write_buffer(int dir);
 
 
 #endif

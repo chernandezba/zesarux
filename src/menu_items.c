@@ -4792,6 +4792,9 @@ int visualmem_y_variable=VISUALMEM_DEFAULT_Y;
 //4=vemos mmc write
 //5=vemos mmc read
 //6=vemos mmc write+read
+//7=vemos HiLow write
+//8=vemos HiLow read
+//9=vemos HiLow write+read
 int menu_visualmem_donde=0;
 
 int menu_visualmem_modo_defrag=1;
@@ -4914,6 +4917,10 @@ void menu_visualmem_get_start_end(int *inicio,int *final)
 		final_puntero_membuffer=VISUALMEM_MMC_BUFFER_SIZE;
 	}
 
+	if (menu_visualmem_donde==7 || menu_visualmem_donde==8 || menu_visualmem_donde==9) {
+		final_puntero_membuffer=VISUALMEM_HILOW_BUFFER_SIZE;
+	}    
+
 
 	*inicio=inicio_puntero_membuffer;
 	*final=final_puntero_membuffer;
@@ -4967,6 +4974,23 @@ void menu_visualmem_get_accumulated_value(int puntero,int *acumulado,int *acumul
 			clear_visualmemmmc_write_buffer(puntero);
 			clear_visualmemmmc_read_buffer(puntero);
 		break;			
+
+		case 7:
+			*acumulado +=visualmem_hilow_write_buffer[puntero];
+			clear_visualmemhilow_write_buffer(puntero);
+		break;					
+
+		case 8:
+			*acumulado +=visualmem_hilow_read_buffer[puntero];
+			clear_visualmemhilow_read_buffer(puntero);
+		break;
+
+		case 9:
+			*acumulado_written +=visualmem_hilow_write_buffer[puntero];
+			*acumulado_read +=visualmem_hilow_read_buffer[puntero];
+			clear_visualmemhilow_write_buffer(puntero);
+			clear_visualmemhilow_read_buffer(puntero);
+		break;		        
 
 
 	}
@@ -5192,10 +5216,33 @@ void menu_debug_draw_visualmem(void)
 
 					}					
 
+
+					else if (menu_visualmem_donde==9) {
+						//Los 2 de hilow a la vez. Combinamos color RGB sacando color de paleta tsconf (15 bits)
+						//Paleta es RGB R: 5 bits altos, G: 5 bits medios, B:5 bits bajos
+
+
+						//Sacar valor medio de los 2 componentes
+						int color_final_written=acumulado_written/max_valores;
+						color_final_written=color_final_written*visualmem_bright_multiplier;
+						if (color_final_written>31) color_final_written=31;
+
+						int color_final_read=acumulado_read/max_valores;
+						color_final_read=color_final_read*visualmem_bright_multiplier;
+						if (color_final_read>31) color_final_read=31;		
+
+						//Blue sera para los written
+						//Green sera para los read
+
+						color_final=(color_final_read<<5)|color_final_written;		
+
+						color_final +=TSCONF_INDEX_FIRST_COLOR;
+
+					}					
+
 					else {
 						color_final +=HEATMAP_INDEX_FIRST_COLOR;
 					}
-
 
 				}
 
@@ -5241,7 +5288,7 @@ void menu_debug_draw_visualmem(void)
 void menu_debug_new_visualmem_looking(MENU_ITEM_PARAMETERS)
 {
 	menu_visualmem_donde++;
-	if (menu_visualmem_donde==7) menu_visualmem_donde=0;
+	if (menu_visualmem_donde==10) menu_visualmem_donde=0;
 }
 
 void menu_debug_new_visualmem_defrag_mode(MENU_ITEM_PARAMETERS)
@@ -5354,7 +5401,10 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 		else if (menu_visualmem_donde == 3) sprintf (texto_looking,"MEM W+R+Opcode");
 		else if (menu_visualmem_donde == 4) sprintf (texto_looking,"MMC Write");
 		else if (menu_visualmem_donde == 5) sprintf (texto_looking,"MMC Read");
-		else sprintf (texto_looking,"MMC Write+Read");
+		else if (menu_visualmem_donde == 6) sprintf (texto_looking,"MMC Write+Read");
+		else if (menu_visualmem_donde == 7) sprintf (texto_looking,"HiLow Write");
+		else if (menu_visualmem_donde == 8) sprintf (texto_looking,"HiLow Read");
+		else sprintf (texto_looking,"HiLow Write+Read");        
 
 		menu_add_item_menu_format(array_menu_debug_new_visualmem,MENU_OPCION_NORMAL,menu_debug_new_visualmem_looking,NULL,"~~Looking: %s",texto_looking);
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualmem,'l');

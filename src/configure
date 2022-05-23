@@ -1624,7 +1624,7 @@ samram.o: samram.c samram.h cpu.h debug.h utils.h operaciones.h ula.h joystick.h
 ifrom.o: ifrom.c ifrom.h cpu.h debug.h utils.h operaciones.h ula.h
 	\$(CC) \$(CFLAGS) -c ifrom.c
 
-hilow.o: hilow.c hilow.h cpu.h debug.h utils.h operaciones.h ula.h screen.h menu_items.h mem128.h
+hilow.o: hilow.c hilow.h cpu.h debug.h utils.h operaciones.h ula.h screen.h menu_items.h mem128.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c hilow.c
 
 datagear.o: datagear.c datagear.h cpu.h debug.h utils.h operaciones.h ula.h

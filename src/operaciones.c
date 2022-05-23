@@ -143,6 +143,11 @@ z80_byte *visualmem_mmc_read_buffer=NULL;
 z80_byte *visualmem_mmc_write_buffer=NULL;
 
 
+//lo mismo pero para hilow lectura
+z80_byte *visualmem_hilow_read_buffer=NULL;
+
+//lo mismo pero para hilow escritura
+z80_byte *visualmem_hilow_write_buffer=NULL;
 
 void init_visualmembuffer(void)
 {
@@ -191,6 +196,22 @@ void init_visualmembuffer(void)
 
 
 
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem HiLow read buffer",VISUALMEM_HILOW_BUFFER_SIZE);
+
+	visualmem_hilow_read_buffer=malloc(VISUALMEM_HILOW_BUFFER_SIZE);
+	if (visualmem_hilow_read_buffer==NULL) {
+		cpu_panic("Can not allocate visualmem HiLow read buffer");
+	}
+
+
+	debug_printf(VERBOSE_INFO,"Allocating %d bytes for visualmem HiLow write buffer",VISUALMEM_HILOW_BUFFER_SIZE);
+
+	visualmem_hilow_write_buffer=malloc(VISUALMEM_HILOW_BUFFER_SIZE);
+	if (visualmem_hilow_write_buffer==NULL) {
+		cpu_panic("Can not allocate visualmem HiLow write buffer");
+	}
+
+
 }
 
 void set_visualmembuffer(int dir)
@@ -233,6 +254,17 @@ void set_visualmemmmc_write_buffer(int dir)
         if (valor<255) visualmem_mmc_write_buffer[dir]=valor+1;
 }
 
+void set_visualmemhilow_read_buffer(int dir)
+{
+        z80_byte valor=visualmem_hilow_read_buffer[dir];
+        if (valor<255) visualmem_hilow_read_buffer[dir]=valor+1;
+}
+
+void set_visualmemhilow_write_buffer(int dir)
+{
+        z80_byte valor=visualmem_hilow_write_buffer[dir];
+        if (valor<255) visualmem_hilow_write_buffer[dir]=valor+1;
+}
 
 void clear_visualmembuffer(int dir)
 {
@@ -259,6 +291,15 @@ void clear_visualmemmmc_write_buffer(int dir)
         visualmem_mmc_write_buffer[dir]=0;
 }
 
+void clear_visualmemhilow_read_buffer(int dir)
+{
+        visualmem_hilow_read_buffer[dir]=0;
+}
+
+void clear_visualmemhilow_write_buffer(int dir)
+{
+        visualmem_hilow_write_buffer[dir]=0;
+}
 
 #endif
 

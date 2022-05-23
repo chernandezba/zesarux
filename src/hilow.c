@@ -32,6 +32,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
+#include "compileoptions.h"
 #include "operaciones.h"
 #include "ula.h"
 #include "screen.h"
@@ -71,6 +72,50 @@ z80_bit hilow_persistent_writes={1};
 
 
 z80_bit hilow_write_protection={0};
+
+//-1 si no aplica
+int hilow_get_visualmem_position(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+	
+
+    //El buffer de visualmem en este caso tiene mismo tamaño que dispositivo hilow
+    int posicion_final=address;
+
+    //por si acaso
+    if (posicion_final>=0 && posicion_final<VISUALMEM_HILOW_BUFFER_SIZE) {
+        return posicion_final;
+            //printf ("add %d hilow_size %ld visualsize: %d final: %ld\n",address,hilow_size,VISUALMEM_hilow_BUFFER_SIZE,posicion_final);
+
+    }
+	
+
+#endif
+
+	return -1;
+}
+
+void hilow_set_visualmem_read(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+	int posicion_final=hilow_get_visualmem_position(address);
+	if (posicion_final>=0) {
+		set_visualmemhilow_read_buffer(posicion_final);
+	}
+
+#endif
+}
+ 
+void hilow_set_visualmem_write(unsigned int address)
+{
+#ifdef EMULATE_VISUALMEM
+	int posicion_final=hilow_get_visualmem_position(address);
+	if (posicion_final>=0) {
+		set_visualmemhilow_write_buffer(posicion_final);
+	}
+
+#endif
+}
 
 void hilow_flush_contents_to_disk(void)
 {
@@ -378,6 +423,8 @@ int hilow_write_byte_device(int sector,int offset,z80_byte valor)
 
     hilow_device_buffer[offset]=valor;
 
+    hilow_set_visualmem_write(offset);
+
     hilow_must_flush_to_disk=1;
 
     return 0;
@@ -399,6 +446,8 @@ z80_byte hilow_read_byte_device(int sector,int offset)
 		//hilow_disable();
 		return 0;
 	}        
+
+    hilow_set_visualmem_read(offset);
 
     return hilow_device_buffer[offset];
 }
