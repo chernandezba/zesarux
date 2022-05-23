@@ -29239,11 +29239,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     p_sector_zero=hilow_device_buffer;
     p_sector_one=&hilow_device_buffer[2048];
 
-    z80_int usage_counter_zero=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
-    z80_int usage_counter_one=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
-
-	
-	char *texto_browser=util_malloc_max_texto_browser();
+	char *texto_chkdsk=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
 	char buffer_texto[1024];
@@ -29251,8 +29247,25 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     char *txt_ok="OK ";
     char *txt_err="ERR";
 
+    char buffer_ok_error[10];    
 
-    sprintf (buffer_texto,"%s Usage counters: %d/%d ",usage_counter_zero,usage_counter_one);
+    z80_int usage_counter_zero=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
+    z80_int usage_counter_one=value_8_to_16(p_sector_one[1],p_sector_one[0]);
+
+    if (usage_counter_zero==usage_counter_one) {
+        strcpy(buffer_ok_error,txt_ok);
+    }
+    else if (usage_counter_zero>usage_counter_one) {
+        if (usage_counter_zero==usage_counter_one+1) strcpy(buffer_ok_error,txt_ok);
+        else strcpy(buffer_ok_error,txt_err);
+    }
+    else {
+        if (usage_counter_one==usage_counter_zero+1) strcpy(buffer_ok_error,txt_ok);
+        else strcpy(buffer_ok_error,txt_err);        
+    }
+
+
+    sprintf (buffer_texto,"%s Usage counters: %d/%d ",buffer_ok_error,usage_counter_zero,usage_counter_one);
     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
     indice_buffer +=longitud_texto;        
