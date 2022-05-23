@@ -29292,7 +29292,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
     
         z80_byte free_sectors=hilow_util_get_free_sectors(sector,hilow_device_buffer);
-        if (free_sectors>=HILOW_MAX_SECTORS-2) strcpy(buffer_ok_error,txt_err);
+        if (free_sectors>HILOW_MAX_SECTORS-2) strcpy(buffer_ok_error,txt_err);
         else strcpy(buffer_ok_error,txt_ok);
 
         sprintf (buffer_texto,"%s Free sectors: %d",buffer_ok_error,free_sectors);
@@ -29310,6 +29310,27 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
         sprintf (buffer_texto,"%s Total files: %d",buffer_ok_error,total_files);
         longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+
+
+        //Controlar en parte que no se exceda el maximo
+        //TODO: esto es un tanto chapuza y habria que mejorarlo
+        //llamando a funciones de agregar texto que compruebe limite siempre (que la hay)
+        //printf("%d\n",indice_buffer+longitud_texto);
+        if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-2000) {
+            debug_printf (VERBOSE_ERR,"Too many entries. Showing only the allowed in memory");
+            //salir
+
+            texto_chkdsk[indice_buffer]=0;
+
+            //printf("browser: %s\n",texto_chkdsk);
+            
+            zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 0 , 0, 0, 1, NULL, 1, "%s", texto_chkdsk);
+
+            free(texto_chkdsk);                        
+            return;
+        }
+
+
         sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
         indice_buffer +=longitud_texto;         
 
@@ -29322,25 +29343,6 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
             if (sectors_file>HILOW_MAX_SECTORS_PER_FILE)  {
                 sprintf (buffer_texto,"%s File id %d has %d sectors",txt_err,f,sectors_file);
                 longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
-
-                //Controlar en parte que no se exceda el maximo
-                //TODO: esto es un tanto chapuza y habria que mejorarlo
-                //llamando a funciones de agregar texto que compruebe limite siempre (que la hay)
-                if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-2000) {
-                    debug_printf (VERBOSE_ERR,"Too many entries. Showing only the allowed in memory");
-                    //salir
-
-                    texto_chkdsk[indice_buffer]=0;
-
-                    //printf("browser: %s\n",texto_chkdsk);
-                    
-                    zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 0 , 0, 0, 1, NULL, 1, "%s", texto_chkdsk);
-
-                    free(texto_chkdsk);                        
-                    return;
-                }
-
-
 
                 sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
                 indice_buffer +=longitud_texto;                   
