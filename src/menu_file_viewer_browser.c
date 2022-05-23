@@ -3321,21 +3321,26 @@ void menu_hilow_datadrive_browser_get_xy_mapa_sector(int sector,int *x,int *y)
     *x=sector % HILOW_BROWSER_MAPA_SECTORS_LINEA;
 }
 
-void menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
+void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
 {
 
     //Preguntar si ver copia del sector 0 o 1
-    int opcion=menu_simple_two_choices("Directory browser","You want to see","Sector 0","Sector 1");
+    /*int opcion=menu_simple_two_choices("Directory browser","You want to see","Sector 0","Sector 1");
 
     if (opcion==0) return; //ESC    
+
+
+    z80_byte *puntero_memoria;
+
+    puntero_memoria=puntero_memoria_orig;
 
     if (opcion==2) {
         //Ir al siguiente sector
         puntero_memoria +=HILOW_SECTOR_SIZE;
-    }
+    }*/
 
     int ancho=52;
-    int alto=18;
+    int alto=19;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
@@ -3368,29 +3373,45 @@ Maximo sectores por archivo: 25
 1    Usage counter: 714
 2    Free sectors: 89 (178 KB)  
 3    File: 11/20 Next File Previous File
-4    File: Screen$ .pant
-5    Start: 16384 Lenght: 6912 Aux: 32990
-6    Sectors (25): 255 255 255 255 255 255 255 255 
-7                  255 255 255 255 255 255 255 255
+4    Directory sector: 0
+5    File: Screen$ .pant
+6    Start: 16384 Lenght: 6912 Aux: 32990
+7    Sectors (25): 255 255 255 255 255 255 255 255 
 8                  255 255 255 255 255 255 255 255
-9                  255 
-10
-11   ..................................................
+9                  255 255 255 255 255 255 255 255
+10                  255 
+11
 12   ..................................................
-13   .............XXXX.................................
-14   ..................................................
+13   ..................................................
+14   .............XXXX.................................
 15   ..................................................
+16   ..................................................
 
     */    
 
    z80_byte tecla;
    int current_file=0;
+   int sector_directorio=0;
 
     do {   
+
+        z80_byte *puntero_memoria;
+
+        puntero_memoria=puntero_memoria_orig;
+
+        if (sector_directorio) {
+            //Ir al siguiente sector
+            puntero_memoria +=HILOW_SECTOR_SIZE;
+        }        
 
         int linea=0;
 
         zxvision_cls(&ventana);
+
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;    
+        menu_writing_inverse_color.v=1;           
 
 
         char buffer_file_label[10];
@@ -3404,6 +3425,8 @@ Maximo sectores por archivo: 25
         z80_byte free_sectors=puntero_memoria[0x3F3];
         zxvision_print_string_defaults_format(&ventana,1,linea++,"Free sectors: %d (%d KB)",free_sectors,(free_sectors*HILOW_SECTOR_SIZE)/1024);
 
+        zxvision_print_string_defaults_format(&ventana,1,linea++,"~~Directory sector: %d",sector_directorio);
+
         int total_files=menu_hilow_datadrive_browser_get_total_files(puntero_memoria);
         
 
@@ -3411,15 +3434,9 @@ Maximo sectores por archivo: 25
             zxvision_print_string_defaults_format(&ventana,1,linea++,"No files");
         }
         else {
-            //Forzar a mostrar atajos
-            z80_bit antes_menu_writing_inverse_color;
-            antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-            menu_writing_inverse_color.v=1;            
 
             zxvision_print_string_defaults_format(&ventana,1,linea++,"File: %2d/%2d ~~Next ~~Previous",current_file+1,total_files);
-
-            //Restaurar comportamiento atajos
-            menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;            
+          
 
             char buffer_file_name[100];
             char buffer_file_info[100];
@@ -3441,11 +3458,11 @@ Maximo sectores por archivo: 25
             zxvision_print_string_defaults_fillspc_format(&ventana,1,linea,"Sectors (%2d): ",total_sectores);
 
             //Inicializar mapa de sectores, de momento todos a "."
-            int linea_mapa=11;
+            //int linea_mapa=11;
 
             int col=0;
             int i;
-            int inicio_y_mapa=11;
+            int inicio_y_mapa=12;
             for (i=0;i<HILOW_MAX_SECTORS;i++) {
 
                 int xmapa,ymapa;
@@ -3485,6 +3502,9 @@ Maximo sectores por archivo: 25
             }
         }
 
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;          
+
         zxvision_draw_window_contents(&ventana);
 
 
@@ -3499,6 +3519,10 @@ Maximo sectores por archivo: 25
 
 			case 'n':
                 if (current_file<total_files-1) current_file++;
+            break;
+
+            case 'd':
+                sector_directorio ^=1;
             break;
 		}		
 

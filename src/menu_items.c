@@ -29230,6 +29230,59 @@ void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
     menu_hilow_datadrive_browser(hilow_device_buffer);
 }
 
+void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
+{
+
+    z80_byte *p_sector_zero;
+    z80_byte *p_sector_one;
+
+    p_sector_zero=hilow_device_buffer;
+    p_sector_one=&hilow_device_buffer[2048];
+
+    z80_int usage_counter_zero=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
+    z80_int usage_counter_one=value_8_to_16(p_sector_zero[1],p_sector_zero[0]);
+
+	
+	char *texto_browser=util_malloc_max_texto_browser();
+	int indice_buffer=0;
+
+	char buffer_texto[1024];
+    int longitud_texto;
+    char *txt_ok="OK ";
+    char *txt_err="ERR";
+
+
+    sprintf (buffer_texto,"%s Usage counters: %d/%d ",usage_counter_zero,usage_counter_one);
+    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+    sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+    indice_buffer +=longitud_texto;        
+
+    /*
+            longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
+            if (indice_buffer+longitud_texto>MAX_texto_chkdsk-1) {
+                    debug_printf (VERBOSE_ERR,"Too many files. Showing only the allowed in memory");
+                    salir=1; //Finalizar bloque
+            }
+
+            else {
+                sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+                indice_buffer +=longitud_texto;
+            }
+        }      
+
+    */
+
+
+	texto_chkdsk[indice_buffer]=0;
+
+    //printf("browser: %s\n",texto_chkdsk);
+	
+	zxvision_generic_message_tooltip("Hilow Data Drive chkdsk" , 0 , 0, 0, 1, NULL, 1, "%s", texto_chkdsk);
+
+
+    free(texto_chkdsk);    
+}
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_hilow;
@@ -29278,8 +29331,12 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_hilow); 
 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Format");
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"Browse");
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Fo~~rmat");
+        menu_add_item_menu_shortcut(array_menu_hilow,'r');
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"~~Browse");
+        menu_add_item_menu_shortcut(array_menu_hilow,'b');
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,"~~chkdsk");
+        menu_add_item_menu_shortcut(array_menu_hilow,'c');
 
 
         menu_add_item_menu_separator(array_menu_hilow); 
