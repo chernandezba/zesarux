@@ -1071,6 +1071,8 @@ void hilow_trap_format(void)
     printf("\n");     
     */  
 
+    debug_printf(VERBOSE_INFO,"HiLow: Formatting device");
+
     //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)   
 
     //Rellenamos parte restante del sector 0
