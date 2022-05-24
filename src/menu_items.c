@@ -29449,11 +29449,17 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_hilow); 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted flag", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_hilow,'i');
+        menu_add_item_menu_tooltip(array_menu_hilow,"This flag is only read by the ROM, tells the tape is inserted or not");
+        menu_add_item_menu_ayuda(array_menu_hilow,"This flag is only read by the ROM, tells the tape is inserted or not");
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_hilow,'o');  
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened flag", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'o');
+        menu_add_item_menu_tooltip(array_menu_hilow,"This flag is only read by the ROM, tells the cover tape has been opened (but is not necessarily open now)");
+        menu_add_item_menu_ayuda(array_menu_hilow,"This flag is only read by the ROM, tells the cover tape has been opened (but is not necessarily open now). "
+                                "Is is automatically reset when reading or writing. "
+                                "You can set it to force reading the directory sector when doing a SAVE \"CAT\" for example");
 
         menu_add_item_menu_separator(array_menu_hilow); 
 

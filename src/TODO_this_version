@@ -152,13 +152,5 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
 
--hilow: estado:
-
-*formateo da error. es el emulador quien genera la tabla de asignacion de sectores. varios traps de pruebas comentados para intentar que pueda 
-llegar a finalizar el formateo
-
+-hilow: 
 *iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
-
-*item menu de "cover has been opened" quiza quitarlo del menu
-
-* evitar error format con algun trap?

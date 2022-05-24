@@ -198,6 +198,11 @@ https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
 
 - emular puerto FFH
 
+- tamaño del sector de directorio se define como 500H de longitud aunque no se sabe seguro.
+Se ha visto que es suficiente para contener la info del directorio aunque no se sabe si es así realmente
+Lo que sí que se ve es que acciones como copiar de una cinta a otra (con SAVE "=") ponen el stack en el final de la ram de Hilow
+y si se leyese el sector de directorio entero (los 2kb / 800H bytes) se sobreescribiria el stack y se generaria un reset
+
 
 ------------------            
 
