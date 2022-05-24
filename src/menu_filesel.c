@@ -2844,7 +2844,7 @@ int menu_filesel_file_can_be_expanded(char *archivo)
     char *extensiones_validas[]={
         "hdf","tap","tzx","cdt","pzx",
         "trd","dsk","epr","eprom",
-        "flash","p","o","mdv","scl",
+        "flash","p","o","mdv","scl","ddh",
         NULL
     };
 
@@ -2885,6 +2885,11 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
                 debug_printf (VERBOSE_DEBUG,"Is a tap file");
         	return util_extract_tap(archivo,tmpdir,NULL);
         }
+
+        else if (!util_compare_file_extension(archivo,"ddh") ) {
+                debug_printf (VERBOSE_DEBUG,"Is a ddh file");
+        	return util_extract_ddh(archivo,tmpdir);
+        }        
 
         else if (
             !util_compare_file_extension(archivo,"tzx") || 
@@ -4269,7 +4274,8 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tzx") ||
 		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"pzx") ||
 		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"trd") ||
-		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"dsk") 
+		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"dsk") ||
+        !util_compare_file_extension(filesel_nombre_archivo_seleccionado,"ddh") 
 	
 	) {
 	
@@ -4305,6 +4311,11 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 					debug_printf (VERBOSE_DEBUG,"Is a trd file");
 					retorno=util_extract_trd(filesel_nombre_archivo_seleccionado,tmpdir);
 			}		
+
+			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"ddh") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a ddh file");
+					retorno=util_extract_ddh(filesel_nombre_archivo_seleccionado,tmpdir);
+			}	            
 
 			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"dsk") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a dsk file");

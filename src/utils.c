@@ -14479,6 +14479,124 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile)
 
 }
 
+//Rutina para extraer DDH
+int util_extract_ddh(char *filename,char *tempdir)
+{
+
+	if (util_compare_file_extension(filename,"ddh")!=0) {
+		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
+		return 1;
+	}
+
+	//Leemos cinta en memoria
+	int total_file_size=HILOW_DEVICE_SIZE;
+
+	z80_byte *taperead;
+
+
+
+    FILE *ptr_tapebrowser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
+        return 1;
+    }
+
+
+	taperead=util_malloc(total_file_size,"Can not allocate memory for expand ddh");
+
+ 
+    int leidos;
+        
+
+    leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
+        
+
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading tape");
+		free(taperead);
+        return 1;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
+
+
+	char buffer_texto[32*4]; //4 lineas mas que suficiente
+
+	int longitud_bloque;
+
+
+    int id_archivo;
+
+    //Ver que sector usamos, si el 0 o el 1
+    int sector;
+    z80_int usage_counter_zero=hilow_util_get_usage_counter(0,taperead);
+    z80_int usage_counter_one=hilow_util_get_usage_counter(1,taperead);
+
+    if (usage_counter_zero>usage_counter_one) sector=0;
+    else sector=1;
+
+    int total_archivos=hilow_util_get_total_files(sector,taperead);
+
+    if (total_archivos>HILOW_MAX_FILES_DIRECTORY) total_archivos=HILOW_MAX_FILES_DIRECTORY;
+
+    for (id_archivo=0;id_archivo<total_archivos;id_archivo++) {
+
+
+        hilow_util_get_file_name(sector,taperead,id_archivo,buffer_texto);
+
+    
+        z80_int longitud=hilow_util_get_file_length(sector,taperead,id_archivo);
+
+        //printf("nombre: %s longitud: %d\n",buffer_texto,longitud);
+
+        z80_byte *mem_archivo;
+
+        mem_archivo=util_malloc(longitud,"Can not allocate memory for expand ddh");
+
+        hilow_util_get_file_contents(sector,taperead,id_archivo,mem_archivo);
+
+        //Si es program, agregar extension .bas
+        z80_byte tipo_archivo=hilow_util_get_file_type(sector,taperead,id_archivo);
+
+        char buffer_temp_file[PATH_MAX];
+
+        if (tipo_archivo==0) {
+            sprintf (buffer_temp_file,"%s/%s.bas",tempdir,buffer_texto);
+        }
+        else sprintf (buffer_temp_file,"%s/%s",tempdir,buffer_texto);
+
+
+        util_save_file(mem_archivo,longitud,buffer_temp_file);
+
+        //Si longitud era 6912, indicar la pantalla para los previews
+        if (longitud==6912) {
+            //Indicar con un archivo en la propia carpeta cual es el archivo de pantalla
+            //usado en los previews
+            char buff_preview_scr[PATH_MAX];
+            sprintf(buff_preview_scr,"%s/%s",tempdir,MENU_SCR_INFO_FILE_NAME);
+
+            //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
+            util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
+        }        
+
+        free(mem_archivo);
+    }
+
+
+	free(taperead);
+
+	return 0;
+
+}
+
 
 //Rutina para extraer TZX pero tambien para convertir a TAP
 //Si tapfile !=NULL, lo convierte a tap, en vez de expandir

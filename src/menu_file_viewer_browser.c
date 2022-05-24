@@ -3300,6 +3300,66 @@ void menu_hilow_datadrive_browser_get_xy_mapa_sector(int sector,int *x,int *y)
     *x=sector % HILOW_BROWSER_MAPA_SECTORS_LINEA;
 }
 
+int hilow_browser_inicio_y_mapa=15;
+
+void menu_hilow_browser_print_char_sector(zxvision_window *w,int sector,char caracter)
+{
+    int xmapa,ymapa;
+
+    menu_hilow_datadrive_browser_get_xy_mapa_sector(sector,&xmapa,&ymapa);
+
+    zxvision_print_string_defaults_format(w,xmapa+1,ymapa+hilow_browser_inicio_y_mapa,"%c",caracter);    
+}
+
+int hilow_browser_fragmentation_total_sectors=0;
+int hilow_browser_fragmentation_fragmented_sectors=0;
+
+void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_memoria,int total_files)
+{
+    //hasta 27 sectores (HILOW_MAX_SECTORS_PER_FILE)
+    int sectores[HILOW_MAX_SECTORS_PER_FILE];
+
+    int current_file;
+
+    hilow_browser_fragmentation_total_sectors=0;
+    hilow_browser_fragmentation_fragmented_sectors=0;
+
+
+    for (current_file=0;current_file<total_files;current_file++) {
+
+            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);  
+
+            int i;
+            z80_byte sector_anterior=255;
+
+            int parcial_fragmentacion=0;
+
+            for (i=0;i<total_sectores;i++) {  
+                z80_byte sector_actual=sectores[i];
+                menu_hilow_browser_print_char_sector(w,sector_actual,'u');
+
+                if (i>0 && sector_actual!=sector_anterior+1) parcial_fragmentacion++;
+
+                sector_anterior=sector_actual;
+
+                hilow_browser_fragmentation_total_sectors++;
+            }
+
+            if (parcial_fragmentacion) {
+                //Si hay fragmentacion, minimo es 2:
+                //2 sectores que están no consecutivos, consideramos que son 2 sectores fragmentados
+                //3 sectores que están no consecutivos, consideramos que son 3 sectores fragmentados
+                //1 sector fragmentado en cambio no tiene sentido, o es 0, o es a partir de 2
+                parcial_fragmentacion++;
+            }
+
+
+            hilow_browser_fragmentation_fragmented_sectors +=parcial_fragmentacion;
+
+    }
+
+}
+
 void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
 {
 
@@ -3319,7 +3379,7 @@ void menu_hilow_datadrive_browser(z80_byte *puntero_memoria_orig)
     }*/
 
     int ancho=52;
-    int alto=19;
+    int alto=22;
     int x=menu_center_x()-ancho/2;
     int y=menu_center_y()-alto/2;
 
@@ -3353,18 +3413,25 @@ Maximo sectores por archivo: 25
 2    Free sectors: 89 (178 KB)  
 3    File: 11/20 Next File Previous File
 4    Directory sector: 0
-5    File: Screen$ .pant
-6    Start: 16384 Lenght: 6912 Aux: 32990
-7    Sectors (25): 255 255 255 255 255 255 255 255 
-8                  255 255 255 255 255 255 255 255
-9                  255 255 255 255 255 255 255 255
-10                  255 
-11
-12   ..................................................
-13   ..................................................
-14   .............XXXX.................................
-15   ..................................................
+5    Fragmentation: 30%
+6
+7    File: Screen$ .pant
+8    Start: 16384 Lenght: 6912 Aux: 32990
+9    Sectors (25): 255 255 255 255 255 255 255 255 
+10                 255 255 255 255 255 255 255 255
+11                 255 255 255 255 255 255 255 255
+12                 255 
+13
+14   Legend
+15   uu................................................
 16   ..................................................
+17   .............XXXX.................................
+18   ..................................................
+19   ..................................................
+
+    . : libre
+    u : usado
+    X : usado por ese archivo
 
     */    
 
@@ -3406,6 +3473,13 @@ Maximo sectores por archivo: 25
 
         zxvision_print_string_defaults_format(&ventana,1,linea++,"~~Directory sector: %d",sector_directorio);
 
+        //Espacio para fragmentacion
+        int linea_fragmentacion=linea;
+        linea++;
+
+        //Y linea en blanco
+        linea++;
+
         int total_files=menu_hilow_datadrive_browser_get_total_files(puntero_memoria);
         
 
@@ -3437,22 +3511,36 @@ Maximo sectores por archivo: 25
             zxvision_print_string_defaults_fillspc_format(&ventana,1,linea,"Sectors (%2d): ",total_sectores);
 
             //Inicializar mapa de sectores, de momento todos a "."
-            //int linea_mapa=11;
 
             int col=0;
             int i;
-            int inicio_y_mapa=12;
+            
             for (i=0;i<HILOW_MAX_SECTORS;i++) {
-
-                int xmapa,ymapa;
-
-                menu_hilow_datadrive_browser_get_xy_mapa_sector(i,&xmapa,&ymapa);
-
-                zxvision_print_string_defaults(&ventana,xmapa+1,ymapa+inicio_y_mapa,".");
-
+                menu_hilow_browser_print_char_sector(&ventana,i,'.');
             }        
 
-            //escribir lista de sectores
+
+            //mostrar los usados con "u". Y calcular fragmentacion
+            menu_hilow_browser_print_used_sectors(&ventana,puntero_memoria,total_files);
+
+            //Y el 0 y el 1 los usa las dos copias de directorio
+            menu_hilow_browser_print_char_sector(&ventana,0,'D');
+            menu_hilow_browser_print_char_sector(&ventana,1,'D');
+
+            //linea fragmentacion
+            //int hilow_browser_fragmentation_total_sectors=0;
+            //int hilow_browser_fragmentation_fragmented_sectors=0;
+            int porcentaje_frag=0;
+
+
+            if (hilow_browser_fragmentation_total_sectors!=0) {
+                porcentaje_frag=(hilow_browser_fragmentation_fragmented_sectors*100)/hilow_browser_fragmentation_total_sectors;
+            }
+
+            zxvision_print_string_defaults_fillspc_format(&ventana,1,linea_fragmentacion,"Fragmentation: %d%%",porcentaje_frag);
+
+
+            //escribir lista de sectores usados por ese archivo
             int columna_sectores=14;
             int sectores_por_linea=8;
 
@@ -3465,11 +3553,8 @@ Maximo sectores por archivo: 25
 
                 zxvision_print_string_defaults_format(&ventana,columna_sectores+col,linea,"%3d ",sectores[i]);
 
-                int xmapa,ymapa;
-
-                menu_hilow_datadrive_browser_get_xy_mapa_sector(sectores[i],&xmapa,&ymapa);
-
-                zxvision_print_string_defaults(&ventana,xmapa+1,ymapa+inicio_y_mapa,"X");            
+                menu_hilow_browser_print_char_sector(&ventana,sectores[i],'F');
+           
 
                 if ((i+1) % sectores_por_linea == 0) {
                     linea++;
@@ -3479,6 +3564,9 @@ Maximo sectores por archivo: 25
                     col +=4;
                 }
             }
+
+
+            zxvision_print_string_defaults(&ventana,1,hilow_browser_inicio_y_mapa-1,"Legend: [D]irectory [u]sed [F]ile [.]free");
         }
 
         //Restaurar comportamiento atajos
@@ -3502,6 +3590,7 @@ Maximo sectores por archivo: 25
 
             case 'd':
                 sector_directorio ^=1;
+                current_file=0;
             break;
 		}		
 
@@ -3517,152 +3606,7 @@ Maximo sectores por archivo: 25
 
 }
 
-void old_menu_hilow_datadrive_browser(z80_byte *puntero_memoria)
-{
 
-    //Preguntar si ver copia del sector 0 o 1
-    int opcion=menu_simple_two_choices("Directory browser","You want to see","Sector 0","Sector 1");
-
-    if (opcion==0) return; //ESC    
-
-    if (opcion==2) {
-        //Ir al siguiente sector
-        puntero_memoria +=HILOW_SECTOR_SIZE;
-    }
-
-	char buffer_texto[1024];
-
-	int longitud_bloque;
-
-	int longitud_texto;
-
-	char *texto_browser=util_malloc_max_texto_browser();
-	int indice_buffer=0;
-
-    char buffer_file_label[10];
-    menu_hilow_datadrive_browser_aux_get_label(&puntero_memoria[2],buffer_file_label);
-    buffer_file_label[9]=0;
-    sprintf (buffer_texto,"Label: %s",buffer_file_label);
-    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
-    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
-    indice_buffer +=longitud_texto;        
-
-    z80_int usage_counter=value_8_to_16(puntero_memoria[1],puntero_memoria[0]);
-    sprintf (buffer_texto,"Usage counter: %d",usage_counter);
-    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
-    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
-    indice_buffer +=longitud_texto; 
-
-    z80_byte free_sectors=puntero_memoria[0x3F3];
-    sprintf (buffer_texto,"Free sectors: %d (%d KB)\n",free_sectors,(free_sectors*HILOW_SECTOR_SIZE)/1024);
-    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
-    sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
-    indice_buffer +=longitud_texto; 
-       
-    int i;
-
-    int salir=0;
-
-    //Maximo 22 archivos en directorio
-    //if (total_files>22) total_files=22;
-
-    /*
-Label: cinta
-Usage counter: 714
-Free sectors: 89 (178 KB)
-
-Screen$ .pant
- Start: 16384 Lenght: 6912 Aux: 32990
- Sectors (4): 129 130 131 132
-
-Program .prog
- Start: 32800 Lenght: 222 Aux: 222
- Sectors (1):   2
-
-Maximo sectores por archivo: 27
-
-    01234567890123456789012345678901234567890123456789
-0   Label: cinta
-1   Usage counter: 714
-2   Free sectors: 89 (178 KB)  
-3   File: 11/20 Next File Previous File
-4   File: Screen$ .pant
-5   Start: 16384 Lenght: 6912 Aux: 32990
-6   Sectors (27): 255 255 255 255 255 255 255 255 
-7                 255 255 255 255 255 255 255 255
-8                 255 255 255 255 255 255 255 255
-9                 255 255 255
-10
-11  ..................................................
-12  ..................................................
-13  .............XXXX.................................
-14  ..................................................
-15  ..................................................
-
-    */
-
-    for (i=0;i<22 && !salir;i++) {
-        //Obtener archivos
-        int offset_archivo=i*HILOW_DIRECTORY_ENTRY_SIZE+11;
-
-        z80_byte tipo_archivo=puntero_memoria[offset_archivo];
-
-        if (tipo_archivo==255) {
-            salir=1;
-        }
-        else {
-
-            char buffer_file_name[100];
-            char buffer_file_info[100];
-
-            menu_hilow_datadrive_browser_get_name_info(i,puntero_memoria,buffer_file_name,buffer_file_info);
-
-            
-            //hasta 27 sectores (HILOW_MAX_SECTORS_PER_FILE)
-            int sectores[HILOW_MAX_SECTORS_PER_FILE];
-            //cada sector: 000 -> 4 caracteres
-            #define HILOW_BUFFER_SECTORS (HILOW_MAX_SECTORS_PER_FILE*4)
-
-            char buffer_sectors[HILOW_BUFFER_SECTORS*2]; //mas que suficiente (espero)
-
-            int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(i,puntero_memoria,sectores);
-
-            int i;
-            int offset_texto_sector=0;
-
-            for (i=0;i<total_sectores;i++,offset_texto_sector+=4) {
-                sprintf(&buffer_sectors[offset_texto_sector],"%3d ",sectores[i]);
-            }
-
-            buffer_sectors[offset_texto_sector]=0;
-
-            sprintf(buffer_texto,"%s\n%s\n Sectors (%d): %s\n",buffer_file_name,buffer_file_info,total_sectores,buffer_sectors);
-
-            longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea
-            if (indice_buffer+longitud_texto>MAX_TEXTO_BROWSER-1) {
-                    debug_printf (VERBOSE_ERR,"Too many entries. Showing only the allowed in memory");
-                    salir=1; //Finalizar bloque
-            }
-
-            else {
-                sprintf (&texto_browser[indice_buffer],"%s\n",buffer_texto);
-                indice_buffer +=longitud_texto;
-            }
-        }      
-
-    }
-
-
-	texto_browser[indice_buffer]=0;
-
-    //printf("browser: %s\n",texto_browser);
-	
-	zxvision_generic_message_tooltip("Hilow Data Drive browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
-
-
-    free(texto_browser);
-
-}
 
 
 void menu_file_ddh_browser_show(char *filename)
@@ -3670,8 +3614,8 @@ void menu_file_ddh_browser_show(char *filename)
 
 
 
-    //Leer solo sector 0
-	long int bytes_to_load=HILOW_SECTOR_SIZE;
+    //Leer solo sector 0 y 1
+	long int bytes_to_load=HILOW_SECTOR_SIZE*2;
 
 	z80_byte *ddh_file_memory;
 	ddh_file_memory=malloc(bytes_to_load);
@@ -3709,10 +3653,13 @@ void menu_file_ddh_browser_show(char *filename)
 
     zvfs_fclose(in_fatfs,ptr_file_ddh_browser,&fil);
     
+    //Permitir mostrar caracteres hotkeys, los desactiva desde menu_file_viewer_read_file
+    int antes_menu_disable_special_chars=menu_disable_special_chars.v;
+    menu_disable_special_chars.v=0;
         
     menu_hilow_datadrive_browser(ddh_file_memory);
 
-
+    menu_disable_special_chars.v=antes_menu_disable_special_chars;
 
 	free(ddh_file_memory);
 

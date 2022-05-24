@@ -1039,7 +1039,7 @@ void hilow_trap_format(void)
     }
     printf("\n");       
 
-    //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error    
+    //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)   
 
     //Rellenamos parte restante del sector 0
     //Dado que no finaliza el formateo, tenemos que indicar nosotros el total de sectores disponibles
@@ -1051,7 +1051,9 @@ void hilow_trap_format(void)
 
     //Finalmente escribimos tal cual el contenido de la memoria HiLow al dispositivo, en ambas copias de directorio
     hilow_write_mem_to_device(8192,0,HILOW_SECTOR_SIZE,0);      
-    hilow_write_mem_to_device(8192,1,HILOW_SECTOR_SIZE,0);      
+    hilow_write_mem_to_device(8192,1,HILOW_SECTOR_SIZE,0);
+
+    //La rom posteriormente escribira una copia del directorio desde direccion L08C4
 
     //no error
     reg_a=0;
@@ -1121,7 +1123,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         printf("\nExiting to %04XH\n",reg_pc);
     }
 
-    if (reg_pc==0x17D5) {
+    /*if (reg_pc==0x17D5) {
         printf("\nEntering RETARDO PC=%04XH. Exiting\n",reg_pc);
 
         reg_a=1;
@@ -1129,7 +1131,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         reg_pc=pop_valor();
         printf("\nExiting to %04XH\n",reg_pc);            
-    }
+    }*/
 
     /*if (reg_pc==0x17BB) {
         printf("\nEntering DETECT ERROR PC=%04XH. Skipping\n",reg_pc);
@@ -1174,7 +1176,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         //saltar adelante en codigo. feo....
         //reg_pc=0x1ad8;
-        reg_pc=0x1ac8;
+        //reg_pc=0x1ac8;
         reg_pc=0x1acf;
 
         printf("Skipping to address %04XH\n",reg_pc);
@@ -1187,11 +1189,28 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         //saltar adelante en codigo. feo....
         //reg_pc=0x1ad8;
-        reg_pc=0x1ac8;
+        //reg_pc=0x1ac8;
         reg_pc=0x1acf;
 
         printf("Skipping to address %04XH\n",reg_pc);
     }
+
+    //Evitar error del formateo
+    if (reg_pc==0x08C4 && (!(Z80_FLAGS & FLAG_Z)) ) {
+        //L08C4:          JP      NZ,ERR_IO    
+
+        //Saltar instruccion
+        printf("\nEntering POST_FORMAT_ERROR\n");
+
+        reg_pc +=3;
+
+        //Y hacemos un CALL para hacer sonido. Para que se vea momentaneamente texto de Formateando...
+        //push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+        //reg_pc=0x106F;
+
+        printf("Skipping to address %04XH\n",reg_pc);
+    }
+
 
     /*if (reg_pc==0x1AF1) {
         
@@ -1514,10 +1533,10 @@ int hilow_util_get_file_offset(int indice_archivo)
 }
 
 
-int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria)
+int hilow_util_get_total_files(int sector_dir,z80_byte *puntero_memoria)
 {
 
-    if (sector) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=2048;
 
     int i;
     
@@ -1539,22 +1558,20 @@ int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria)
 
 }
 
-int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo)
+int hilow_get_num_sectors_file(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
 {
 
-    if (sector) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=2048;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
-
-    int i;
     
     return puntero_memoria[offset_archivo+17];    
 }
 
 
-int hilow_util_get_sectors_file(int sector,int indice_archivo,z80_byte *puntero_memoria,int *sectores)
+int hilow_util_get_sectors_file(int sector_dir,int indice_archivo,z80_byte *puntero_memoria,int *sectores)
 {
-    if (sector) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=2048;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1569,4 +1586,106 @@ int hilow_util_get_sectors_file(int sector,int indice_archivo,z80_byte *puntero_
     }
 
     return total_sectores;
+}
+
+void hilow_util_get_file_name(int sector_dir,z80_byte *puntero_memoria,int indice_archivo,char *nombre)
+{
+    if (sector_dir) puntero_memoria +=2048;
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+
+    util_tape_get_info_tapeblock(&puntero_memoria[offset_archivo],0,19,nombre);
+    
+		
+    //Eliminar posibles / del nombre
+    int i;
+    for (i=0;nombre[i];i++) {
+            if (nombre[i]=='/') nombre[i]=' ';
+    }
+
+
+}    
+
+//Retorna el primer byte de la cabecera: 0 program, 3 bytes, etc
+z80_byte hilow_util_get_file_type(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
+{
+    if (sector_dir) puntero_memoria +=2048;
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+
+    return puntero_memoria[offset_archivo];
+
+}  
+
+z80_int hilow_util_get_file_length(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
+{
+
+    //printf("hilow_util_get_file_length sector: %d puntero_memoria %p indice_archivo %d\n",sector_dir,puntero_memoria,indice_archivo);
+
+    if (sector_dir) puntero_memoria +=2048;
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+
+    return value_8_to_16(puntero_memoria[offset_archivo+12],puntero_memoria[offset_archivo+11]);
+
+
+} 
+
+z80_byte hilow_util_get_sector_byte(int sector,z80_byte *puntero_memoria,int offset_origen)
+{
+    int offset=sector*HILOW_SECTOR_SIZE;
+
+    offset +=offset_origen;
+
+    if (offset>=HILOW_DEVICE_SIZE) return 0;
+
+    return puntero_memoria[offset];
+}
+
+void hilow_util_get_sector(int sector,z80_byte *puntero_memoria,z80_byte *destino,int total_leer)
+{
+    
+    int i;
+
+    for (i=0;i<total_leer;i++) {
+        z80_byte byte_leido=hilow_util_get_sector_byte(sector,puntero_memoria,i);
+        *destino=byte_leido;
+        destino++;
+    }
+}
+
+void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int indice_archivo,z80_byte *destino_memoria)
+{
+
+    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+
+    z80_int longitud=hilow_util_get_file_length(sector_dir,puntero_memoria,indice_archivo);
+
+
+    int sectores[HILOW_MAX_SECTORS_PER_FILE];
+
+    int total_sectores=hilow_util_get_sectors_file(sector_dir,indice_archivo,puntero_memoria,sectores);
+
+    int indice_sector=0;
+
+    //printf("Extracting %d bytes\n",longitud);
+
+    while (longitud>0) {
+        int leer=longitud;
+        if (leer>HILOW_SECTOR_SIZE) leer=HILOW_SECTOR_SIZE;
+
+        int sector_leer=sectores[indice_sector++];
+
+        //printf("Reading sector %d\n",sector_leer);
+
+        hilow_util_get_sector(sector_leer,puntero_memoria,destino_memoria,leer);
+
+        destino_memoria +=leer;
+
+        longitud -=leer;
+    }
+
 }

@@ -104,5 +104,9 @@ extern int hilow_util_get_file_offset(int indice_archivo);
 extern int hilow_util_get_total_files(int sector,z80_byte *puntero_memoria);
 extern int hilow_get_num_sectors_file(int sector,z80_byte *puntero_memoria,int indice_archivo);
 extern int hilow_util_get_sectors_file(int sector,int indice_archivo,z80_byte *puntero_memoria,int *sectores);
+extern void hilow_util_get_file_name(int sector,z80_byte *puntero_memoria,int indice_archivo,char *nombre);
+extern z80_int hilow_util_get_file_length(int sector,z80_byte *puntero_memoria,int indice_archivo);
+extern z80_byte hilow_util_get_file_type(int sector,z80_byte *puntero_memoria,int indice_archivo);
+extern void hilow_util_get_file_contents(int sector,z80_byte *puntero_memoria,int indice_archivo,z80_byte *destino_memoria);
 
 #endif
