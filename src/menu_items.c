@@ -29230,7 +29230,11 @@ void menu_storage_hilow_browser(MENU_ITEM_PARAMETERS)
     menu_hilow_datadrive_browser(hilow_device_buffer);
 }
 
+//Sectores usados por los archivos. En cada posicion N, indica que el sector N está usado si no es 0 el valor
 int menu_storage_hilow_chkdsk_sectors_used[256];
+
+//Sectores libres no usados por los archivos. El contenido son los indices de la tabla tal cual
+int menu_storage_hilow_chkdsk_sectors_free[256];
 
 void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 {
@@ -29283,6 +29287,9 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
         for (i=0;i<256;i++) {
             menu_storage_hilow_chkdsk_sectors_used[i]=0;
         }
+
+        //Obtener sectores libres
+        hilow_util_get_free_sectors_list(sector,hilow_device_buffer,menu_storage_hilow_chkdsk_sectors_free);
 
 
         sprintf (buffer_texto,"\nDirectory sector %d",sector);
@@ -29359,6 +29366,14 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
                 //que los ids no sean mayores o igual que HILOW_MAX_SECTORS, o no sean menor que 2
                 if (sector_usado>=HILOW_MAX_SECTORS || sector_usado<2) {
                     sprintf (buffer_texto,"%s File id %d uses invalid sector %d",txt_err,f,sector_usado);
+                    longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+                    sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+                    indice_buffer +=longitud_texto;                      
+                }
+
+                //Si archivo usa un sector que sale en la tabla de libres
+                if (menu_storage_hilow_chkdsk_sectors_free[sector_usado]) {
+                    sprintf (buffer_texto,"%s File id %d uses free sector %d",txt_err,f,sector_usado);
                     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
                     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
                     indice_buffer +=longitud_texto;                      

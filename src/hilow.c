@@ -1537,18 +1537,43 @@ Bit 0: A 1 cuando esta listo para leer?
 
 }
 
-z80_int hilow_util_get_usage_counter(int sector,z80_byte *p)
+z80_int hilow_util_get_usage_counter(int sector_dir,z80_byte *p)
 {
-    if (sector) p +=2048;
+    if (sector_dir) p +=HILOW_SECTOR_SIZE;
 
     return value_8_to_16(p[1],p[0]);
 }
 
-z80_int hilow_util_get_free_sectors(int sector,z80_byte *p)
+z80_byte hilow_util_get_free_sectors(int sector_dir,z80_byte *p)
 {
-    if (sector) p +=2048;  
+    if (sector_dir) p +=HILOW_SECTOR_SIZE;  
 
     return p[0x3F3];  
+}
+
+//Rellena una tabla de sectores[256] dice a 1 si el sector esta ocupado
+void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_memoria,int *sectores)
+{
+    int total_free_sectores=hilow_util_get_free_sectors(sector_dir,puntero_memoria);
+
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
+
+    puntero_memoria +=0x3F4;
+
+
+    int i;
+    for (i=0;i<256;i++) {
+       sectores[i]=0; 
+    }
+
+    for (i=0;i<total_free_sectores;i++) {
+        z80_byte s=*puntero_memoria;
+
+        sectores[s]=1;
+
+        puntero_memoria++;
+    }
+
 }
 
 int hilow_util_get_file_offset(int indice_archivo)
@@ -1560,7 +1585,7 @@ int hilow_util_get_file_offset(int indice_archivo)
 int hilow_util_get_total_files(int sector_dir,z80_byte *puntero_memoria)
 {
 
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int i;
     
@@ -1585,7 +1610,7 @@ int hilow_util_get_total_files(int sector_dir,z80_byte *puntero_memoria)
 int hilow_get_num_sectors_file(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
 {
 
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
     
@@ -1595,7 +1620,7 @@ int hilow_get_num_sectors_file(int sector_dir,z80_byte *puntero_memoria,int indi
 
 int hilow_util_get_sectors_file(int sector_dir,int indice_archivo,z80_byte *puntero_memoria,int *sectores)
 {
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1614,7 +1639,7 @@ int hilow_util_get_sectors_file(int sector_dir,int indice_archivo,z80_byte *punt
 
 void hilow_util_get_file_name(int sector_dir,z80_byte *puntero_memoria,int indice_archivo,char *nombre)
 {
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1634,7 +1659,7 @@ void hilow_util_get_file_name(int sector_dir,z80_byte *puntero_memoria,int indic
 //Retorna el primer byte de la cabecera: 0 program, 3 bytes, etc
 z80_byte hilow_util_get_file_type(int sector_dir,z80_byte *puntero_memoria,int indice_archivo)
 {
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
@@ -1648,7 +1673,7 @@ z80_int hilow_util_get_file_length(int sector_dir,z80_byte *puntero_memoria,int 
 
     //printf("hilow_util_get_file_length sector: %d puntero_memoria %p indice_archivo %d\n",sector_dir,puntero_memoria,indice_archivo);
 
-    if (sector_dir) puntero_memoria +=2048;
+    if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
     int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
