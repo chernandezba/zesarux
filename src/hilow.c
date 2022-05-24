@@ -832,37 +832,44 @@ void hilow_write_directory_sector(void)
     z80_int dir_inicio=8192;
     z80_int longitud=HILOW_DIRECTORY_TABLE_SIZE;
 
-    printf("Writing directory (size: %d) to sector %d\n",longitud,hilow_sector_tabla_directorio);
+    //printf("Writing directory (size: %d) to sector %d\n",longitud,hilow_sector_tabla_directorio);
+
+    debug_printf(VERBOSE_DEBUG,"HiLow: Write from cache memory to directory sector (size: %d sector: %d)",longitud,hilow_sector_tabla_directorio);
+
     hilow_write_mem_to_device(dir_inicio,hilow_sector_tabla_directorio,longitud,0);    
 }
 
 void hilow_trap_write_verify(void)
 {
-    printf("VERIFY or WRITE probably\n");
+    //printf("VERIFY or WRITE probably\n");
 
 
     //printf("Retornando porque no carry. Posible escritura?\n\n");
-    temp_debug_registers();
-    temp_dump_from_addr(reg_ix);
+    //temp_debug_registers();
+    //temp_dump_from_addr(reg_ix);
 
     z80_byte retorno_error=0;
 
     if (!(Z80_FLAGS & FLAG_Z)) {
-        printf("VERIFY probably\n");
+        debug_printf(VERBOSE_DEBUG,"HiLow: Verify action. Just return ok");
+        //printf("VERIFY probably\n");
         //No hacer nada y retornar todo ok
     }   
 
     else {    
 
-        printf("WRITE probably\n");  
+        //printf("WRITE probably\n");  
 
         z80_int dir_inicio=reg_ix;   
         z80_int longitud=reg_de;  
         z80_byte sector=reg_a;  
 
+
         //if (reg_de>HILOW_SECTOR_SIZE) {
         if (sector==0) {
-            printf("Writing from cache memory to directory sector\n");
+            //printf("Writing from cache memory to directory sector\n");
+
+            
 
             //directamente copiar lo de la cache hacia aqui
             //esto soluciona la escritura
@@ -871,6 +878,8 @@ void hilow_trap_write_verify(void)
         }
 
         else {
+
+            debug_printf(VERBOSE_DEBUG,"HiLow: Write from %04XH length %04XH sector %d",dir_inicio,longitud,sector);
 
             if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
                 //Error al escribir, sector mas alla del rango
@@ -891,7 +900,7 @@ void hilow_trap_write_verify(void)
 
     reg_pc=pop_valor();  
 
-    printf("Returning from WRITE/VERIFY SECTOR to address %04XH\n",reg_pc);       
+    //printf("Returning from WRITE/VERIFY SECTOR to address %04XH\n",reg_pc);       
 }
 
 
@@ -1028,7 +1037,7 @@ void hilow_trap_format(void)
     ???
     */
 
-    temp_debug_mem_registers();
+    /*temp_debug_mem_registers();
 
     //mostrar algunos caracteres
     int i;
@@ -1037,7 +1046,8 @@ void hilow_trap_format(void)
         if (c>=32 && c<=126) printf("%c",c);
         else printf(" %02X ",c);
     }
-    printf("\n");       
+    printf("\n");     
+    */  
 
     //Asumimos siempre sector 0, pues rutina de formateo no llega a avanzar a siguientes sectores y da error  (error que interceptamos)   
 
@@ -1065,7 +1075,7 @@ void hilow_trap_format(void)
     //los dos tienen contador a 0, y por la logica de escritura, habremos leido del 0 pero escrito en el 1
     hilow_sector_tabla_directorio=0;
 
-    printf("Returning from WRITE_SECTOR to address %04XH\n",reg_pc);
+    //printf("Returning from FORMAT to address %04XH\n",reg_pc);
 
 
 }    
@@ -1089,12 +1099,12 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
     //debug de rutinas
     if (reg_pc==0x186D) {
         
-        printf("\nEntering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH\n",
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH",
             reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,Z80_FLAGS & FLAG_Z,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
 
 
         //printf("(3F31)=%04XH\n",peek_word(0x3f31));
-        printf("Sector: %d\n",reg_a);
+        //printf("Sector: %d\n",reg_a);
 
         
         if (!(Z80_FLAGS & FLAG_C)) {
@@ -1103,24 +1113,21 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
         //No carry. Read
         else {         
-
             hilow_trap_read();
         }
     }
 
     //debug de rutinas
     if (reg_pc==0x16D0) {
-        
-        printf("\nEntering FORMAT_SECTOR. A=%02XH IX=%04XH DE=%04XH SP=%04XH\n",reg_a,reg_ix,reg_de,reg_sp);
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering FORMAT_SECTOR. PC=%04XH",reg_pc);
 
         hilow_trap_format();
-
     }    
 
     if (reg_pc==0x1BEF) {
-        printf("\nEntering COMMAND_HILOW_PORT PC=%04XH. Exiting\n",reg_pc);
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering COMMAND_HILOW_PORT PC=%04XH. Returning",reg_pc);
         reg_pc=pop_valor();
-        printf("\nExiting to %04XH\n",reg_pc);
+        //printf("\nExiting to %04XH\n",reg_pc);
     }
 
     /*if (reg_pc==0x17D5) {
@@ -1170,29 +1177,30 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
 
 
     if (reg_pc==0x1A9E) {
-        
-        printf("\nEntering POST_FORMAT. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
-        
 
+        z80_int next_pc=0x1acf;
+        
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering PRE_FORMAT. PC=%04XH. Skipping to %04XH",reg_pc,next_pc);
+        
         //saltar adelante en codigo. feo....
-        //reg_pc=0x1ad8;
-        //reg_pc=0x1ac8;
-        reg_pc=0x1acf;
 
-        printf("Skipping to address %04XH\n",reg_pc);
+        reg_pc=next_pc;
+
+        //printf("Skipping to address %04XH\n",reg_pc);
     }
 
     if (reg_pc==0x1AC0) {
         
-        printf("\nEntering POST_FORMAT2. A=%02XH IX=%04XH DE=%04XH\n",reg_a,reg_ix,reg_de);
+        z80_int next_pc=0x1acf;
+
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering PRE_FORMAT2. PC=%04XH. Skipping to %04XH",reg_pc,next_pc);
         
 
         //saltar adelante en codigo. feo....
-        //reg_pc=0x1ad8;
-        //reg_pc=0x1ac8;
-        reg_pc=0x1acf;
 
-        printf("Skipping to address %04XH\n",reg_pc);
+        reg_pc=next_pc;
+
+        //printf("Skipping to address %04XH\n",reg_pc);
     }
 
     //Evitar error del formateo
@@ -1200,7 +1208,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //L08C4:          JP      NZ,ERR_IO    
 
         //Saltar instruccion
-        printf("\nEntering POST_FORMAT_ERROR\n");
+        debug_printf(VERBOSE_DEBUG,"HiLow: Entering POST_FORMAT_ERROR. PC=%04XH. Avoiding it",reg_pc);
 
         reg_pc +=3;
 
@@ -1208,7 +1216,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
         //reg_pc=0x106F;
 
-        printf("Skipping to address %04XH\n",reg_pc);
+        //printf("Skipping to address %04XH\n",reg_pc);
     }
 
 
