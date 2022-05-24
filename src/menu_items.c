@@ -29288,9 +29288,6 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
             menu_storage_hilow_chkdsk_sectors_used[i]=0;
         }
 
-        //Obtener sectores libres
-        hilow_util_get_free_sectors_list(sector,hilow_device_buffer,menu_storage_hilow_chkdsk_sectors_free);
-
 
         sprintf (buffer_texto,"\nDirectory sector %d",sector);
         longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
@@ -29307,7 +29304,15 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
         sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
         indice_buffer +=longitud_texto;             
     
-
+        //Obtener sectores libres
+        hilow_util_get_free_sectors_list(sector,hilow_device_buffer,menu_storage_hilow_chkdsk_sectors_free);
+        //Si en esa lista esta el 0 o el 1, error
+        if (menu_storage_hilow_chkdsk_sectors_free[0] || menu_storage_hilow_chkdsk_sectors_free[1]) {
+            sprintf (buffer_texto,"%s Sector 0 or 1 can not be in free sectors table",txt_err);
+            longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
+            sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
+            indice_buffer +=longitud_texto;                
+        }
 
         //Total files. no puede ser mayor que HILOW_MAX_FILES_DIRECTORY
 

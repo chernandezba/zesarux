@@ -1558,7 +1558,7 @@ void hilow_util_get_free_sectors_list(int sector_dir,z80_byte *puntero_memoria,i
 
     if (sector_dir) puntero_memoria +=HILOW_SECTOR_SIZE;
 
-    puntero_memoria +=0x3F4;
+    puntero_memoria +=0x3F5;
 
 
     int i;
