@@ -1152,6 +1152,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
         //printf("\nExiting to %04XH\n",reg_pc);
     }
 
+    //No saltamos este retardo. Asi permite poder ver algo del texto de inicio de formateo. Si no, seria demasiado rapido
     /*if (reg_pc==0x17D5) {
         printf("\nEntering RETARDO PC=%04XH. Exiting\n",reg_pc);
 
