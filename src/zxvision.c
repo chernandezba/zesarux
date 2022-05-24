@@ -20532,7 +20532,7 @@ char *first_aid_string_language="Warning: not all messages are translated. Aviso
 
 
 int first_aid_no_hilow_format=0;
-char *first_aid_string_hilow_format="You can also format the Data Drive using the command SAVE \"FORMAT name\" on the Basic prompt. It finishes with an error but ir really works.";
+char *first_aid_string_hilow_format="You can also format the Data Drive using the command SAVE \"FORMAT name\" on the Basic prompt.";
 
 
 //Items que se disparan en startup
