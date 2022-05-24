@@ -9526,7 +9526,6 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     //hilow
     if (command_line_hilow.v) {
-        printf("Enabling hilow\n");
         hilow_enable();
     }
 

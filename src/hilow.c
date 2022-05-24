@@ -352,7 +352,7 @@ void hilow_automap_unmap_memory(z80_int dir)
 void hilow_nmi(void)
 {
     if (hilow_mapped_rom.v==0) {
-        printf("Enabling hilow memory from nmi triggered\n");
+        debug_printf(VERBOSE_DEBUG,"Enabling hilow memory from nmi triggered");
         hilow_mapped_rom.v=1;
         hilow_mapped_ram.v=1;
     }   
@@ -608,7 +608,7 @@ void temp_directorio_falso(z80_int inicio_datos)
 
 
 
-
+/*
 void temp_debug_registers(void)
 {
     char buffer[HILOW_SECTOR_SIZE];
@@ -642,6 +642,7 @@ void temp_dump_from_addr(z80_int dir)
     }
     printf("\n");      
 }
+*/
 
 int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_destination)
 {
@@ -809,6 +810,26 @@ void hilow_set_tapelabel(int si_escribir_en_ram,int si_escribir_en_device,char *
 
 void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,char *label)
 {
+
+    /*
+    Formato de un directorio HiLow:
+
+    - Directorio se guarda alternativamente en sector 0 y 1
+    - Contenido directorio:
+
+    * Offset 0: 16 bits: usage counter. Indica cuantas escrituras se han hecho en ese directorio. Dado que se alternan las escrituras del sector 0 y 1,
+    lo habitual es que este usage counter en un sector sea igual al otro sector +1
+
+    * Offset 2: 9 bytes. Etiqueta de la cinta
+
+    * Offset 1011 (3F3H): 1 byte: numero de sectores disponibles
+
+    * Offset 1012 (3F4H): 1 byte a 0. Marcador de inicio de la tabla de sectores disponibles
+
+    * Offset 1013 (3F5H): X bytes. Tabla de sectores disponibles. En una cinta vacia empezará con 2, 3, 4, etc...  
+    Ni el 0 ni el 1 pueden estar en la lista
+
+    */
             
     hilow_device_initialize_sector_zero(si_escribir_en_ram,si_escribir_en_device);
 
@@ -976,9 +997,6 @@ void hilow_read_directory_sector(void)
     /* if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
         //leer sector 0 desde rutina de copia de archivos de una cinta a otra
         //Esto es una chapucilla pero funciona
-        printf("--------------------\n");
-        printf("--Probably copying between two datadrives, reading partially sector 0---\n");
-        printf("--------------------\n");
         //leemos algo menos para no sobrescribir stack, pues SP probablemente estara sobre direccion 3FE2 aprox
         leer_datos=0x600;
 
@@ -1104,7 +1122,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
     if (reg_pc==0x186D) {
         
         debug_printf(VERBOSE_DEBUG,"HiLow: Entering READ_WRITE_VERIFY_SECTOR. PC=%04XH return=%04XH A=%02XH Carry=%d Z=%d IX=%04XH DE=%04XH HL=%04XH BC=%04XH SP=%04XH",
-            reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,Z80_FLAGS & FLAG_Z,reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
+            reg_pc,peek_word(reg_sp),reg_a,Z80_FLAGS & FLAG_C,(Z80_FLAGS & FLAG_Z ? 1 : 0),reg_ix,reg_de,reg_hl,reg_bc,reg_sp);
 
 
         //printf("(3F31)=%04XH\n",peek_word(0x3f31));
@@ -1308,7 +1326,6 @@ void hilow_alloc_device_memory(void)
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for hilow device emulation",size/1024);
 
-    printf ("Allocating %d kb of memory for hilow device emulation\n",size/1024);
 
     hilow_device_buffer=malloc(size);
     if (hilow_device_buffer==NULL) {
@@ -1399,15 +1416,16 @@ void hilow_enable(void)
 {
 
     if (!MACHINE_IS_SPECTRUM) {
-        debug_printf(VERBOSE_INFO,"Can not enable hilow on non Spectrum machine");
+        debug_printf(VERBOSE_INFO,"Can not enable HiLow on non Spectrum machine");
         return;
     }
 
 	if (hilow_enabled.v) {
-		debug_printf (VERBOSE_DEBUG,"Already enabled");
+		debug_printf (VERBOSE_DEBUG,"HiLow Already enabled");
 		return;
 	}
 
+    debug_printf (VERBOSE_DEBUG,"Enabling HiLow interface");
 
 	hilow_alloc_rom_ram_memory();
 
