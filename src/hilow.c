@@ -647,8 +647,8 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
 {
     int i;
 
-    printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH offset_destination=%04XH\n",
-        dir,sector,longitud,offset_destination);
+    //printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH offset_destination=%04XH\n",
+    //    dir,sector,longitud,offset_destination);
 
     if (sector>=HILOW_MAX_SECTORS) {
         //printf("Sector beyond maximum. Do nothing\n");
@@ -743,7 +743,7 @@ void hilow_device_set_usage_counter(int si_escribir_en_ram,int si_escribir_en_de
 void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 {
 
-    printf("Creating free sectors table\n");
+    debug_printf(VERBOSE_DEBUG,"HiLow: Creating free sectors table");
     int i;
 
     int id_sector_tabla;
@@ -906,25 +906,25 @@ void hilow_trap_write_verify(void)
 
 
 
-int hilow_read_mem_to_device(z80_int dir,int sector,int longitud)
+int hilow_read_device_to_mem(z80_int dir,int sector,int longitud)
 {
     int retorno_error=0;
 
     //no estoy seguro de esto
     if (longitud>HILOW_SECTOR_SIZE) {
-        printf("Size to read %d exceeds maximum %d\n",longitud,HILOW_SECTOR_SIZE);
+        debug_printf (VERBOSE_DEBUG,"HiLow: Error. Size to read %d exceeds maximum %d",longitud,HILOW_SECTOR_SIZE);
         longitud=HILOW_SECTOR_SIZE;
     }
 
     //no estoy seguro de esto
     if (longitud==0) {
-        printf("Size to read is zero\n");
+        debug_printf (VERBOSE_DEBUG,"HiLow: Size to read is zero");
         longitud=HILOW_SECTOR_SIZE;
     }
 
     
 
-    printf("Reading data from sector %d length %04XH to address %04XH\n",sector,longitud,dir);
+    //printf("Reading data from sector %d length %04XH to address %04XH\n",sector,longitud,dir);
 
 
     if (sector>=HILOW_MAX_SECTORS) {
@@ -960,7 +960,7 @@ void hilow_read_directory_sector(void)
     contador_sector_cero=value_8_to_16(hilow_read_byte_device(0,1),hilow_read_byte_device(0,0));
     contador_sector_uno= value_8_to_16(hilow_read_byte_device(1,1),hilow_read_byte_device(1,0));
 
-    printf("Directory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
+    //printf("Directory usage counters. Sector zero: %d Sector one: %d\n",contador_sector_cero,contador_sector_uno);
 
 
     if (contador_sector_cero>contador_sector_uno) {
@@ -970,7 +970,7 @@ void hilow_read_directory_sector(void)
         hilow_sector_tabla_directorio=1;
     }
 
-    printf("Reading directory (size: %d) from sector %d as it has the highest usage counter (or they are both the same)\n",leer_datos,hilow_sector_tabla_directorio);
+    //printf("Reading directory (size: %d) from sector %d as it has the highest usage counter (or they are both the same)\n",leer_datos,hilow_sector_tabla_directorio);
 
 
     /* if (reg_a==0 && reg_de==0xFFFF && reg_sp<16384) {
@@ -984,16 +984,18 @@ void hilow_read_directory_sector(void)
 
     }    */    
 
-    reg_a=hilow_read_mem_to_device(inicio_datos,hilow_sector_tabla_directorio,leer_datos);      
+    debug_printf(VERBOSE_DEBUG,"HiLow: Read from directory sector (size: %d sector: %d) to cache memory",leer_datos,hilow_sector_tabla_directorio);
+
+    reg_a=hilow_read_device_to_mem(inicio_datos,hilow_sector_tabla_directorio,leer_datos);      
 }
 
 void hilow_trap_read(void)
 {
 
-    int i;
-    temp_debug_mem_registers();   
+    //int i;
+    //temp_debug_mem_registers();   
 
-    printf("READ probably\n");
+    //printf("READ probably\n");
 
     z80_int inicio_datos;
     z80_int leer_datos;
@@ -1012,7 +1014,9 @@ void hilow_trap_read(void)
 
         int sector=reg_a;
 
-        reg_a=hilow_read_mem_to_device(inicio_datos,sector,leer_datos);        
+        debug_printf(VERBOSE_DEBUG,"HiLow: Read from sector %d to %04XH length %04XH",sector,inicio_datos,leer_datos);
+
+        reg_a=hilow_read_device_to_mem(inicio_datos,sector,leer_datos);        
     }
 
 
@@ -1022,7 +1026,7 @@ void hilow_trap_read(void)
 
     reg_pc=pop_valor();
 
-    printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
+    //printf("Returning from READ_SECTOR to address %04XH\n",reg_pc);
 
 }
 
