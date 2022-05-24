@@ -855,7 +855,7 @@ void hilow_write_directory_sector(void)
 
     //printf("Writing directory (size: %d) to sector %d\n",longitud,hilow_sector_tabla_directorio);
 
-    debug_printf(VERBOSE_DEBUG,"HiLow: Write from cache memory to directory sector (size: %d sector: %d)",longitud,hilow_sector_tabla_directorio);
+    debug_printf(VERBOSE_INFO,"HiLow: Write from cache memory to directory sector (size: %d sector: %d)",longitud,hilow_sector_tabla_directorio);
 
     hilow_write_mem_to_device(dir_inicio,hilow_sector_tabla_directorio,longitud,0);    
 }
@@ -872,7 +872,7 @@ void hilow_trap_write_verify(void)
     z80_byte retorno_error=0;
 
     if (!(Z80_FLAGS & FLAG_Z)) {
-        debug_printf(VERBOSE_DEBUG,"HiLow: Verify action. Just return ok");
+        debug_printf(VERBOSE_INFO,"HiLow: Verify action. Just return ok");
         //printf("VERIFY probably\n");
         //No hacer nada y retornar todo ok
     }   
@@ -900,7 +900,7 @@ void hilow_trap_write_verify(void)
 
         else {
 
-            debug_printf(VERBOSE_DEBUG,"HiLow: Write from %04XH length %04XH sector %d",dir_inicio,longitud,sector);
+            debug_printf(VERBOSE_INFO,"HiLow: Write from %04XH length %04XH sector %d",dir_inicio,longitud,sector);
 
             if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
                 //Error al escribir, sector mas alla del rango
@@ -1002,7 +1002,7 @@ void hilow_read_directory_sector(void)
 
     }    */    
 
-    debug_printf(VERBOSE_DEBUG,"HiLow: Read from directory sector (size: %d sector: %d) to cache memory",leer_datos,hilow_sector_tabla_directorio);
+    debug_printf(VERBOSE_INFO,"HiLow: Read from directory sector (size: %d sector: %d) to cache memory",leer_datos,hilow_sector_tabla_directorio);
 
     reg_a=hilow_read_device_to_mem(inicio_datos,hilow_sector_tabla_directorio,leer_datos);      
 }
@@ -1032,7 +1032,7 @@ void hilow_trap_read(void)
 
         int sector=reg_a;
 
-        debug_printf(VERBOSE_DEBUG,"HiLow: Read from sector %d to %04XH length %04XH",sector,inicio_datos,leer_datos);
+        debug_printf(VERBOSE_INFO,"HiLow: Read from sector %d to %04XH length %04XH",sector,inicio_datos,leer_datos);
 
         reg_a=hilow_read_device_to_mem(inicio_datos,sector,leer_datos);        
     }
