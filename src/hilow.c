@@ -1515,12 +1515,6 @@ Bit 2: A 1 si hay cinta insertada
 Bit 1: ??
 Bit 0: A 1 cuando esta listo para leer?
 
-L1C03:          IN      A,(HLWPORT)
-                BIT     0,A
-                RET     NZ
-                DJNZ    L1C03
-                RET
-
 
 */
 

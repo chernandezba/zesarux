@@ -29356,8 +29356,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
             int j;
             for (j=0;j<s;j++) {
                 int sector_usado=sectores[j];
-                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS 
-                if (sector_usado>=HILOW_MAX_SECTORS) {
+                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS, o no sean menor que 2
+                if (sector_usado>=HILOW_MAX_SECTORS || sector_usado<2) {
                     sprintf (buffer_texto,"%s File id %d uses invalid sector %d",txt_err,f,sector_usado);
                     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
                     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
@@ -29442,7 +29442,7 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_hilow,'r');
         menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"~~Browse");
         menu_add_item_menu_shortcut(array_menu_hilow,'b');
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,"~~chkdsk");
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,"~~Chkdsk");
         menu_add_item_menu_shortcut(array_menu_hilow,'c');
 
 
