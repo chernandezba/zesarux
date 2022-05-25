@@ -48,7 +48,7 @@ int filtro_ruido=2;
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
-int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
+/*int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
     z80_byte valor_anterior=lee_byte_memoria(posicion);
     int direccion=+1;
@@ -105,6 +105,7 @@ int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
 
     } while (!salir);
 }
+*/
 
 int util_get_absolute(int valor)
 {
@@ -471,7 +472,7 @@ void lee_sector(int posicion)
     }
 
     //dump total ascii+hexa
-    int colwidth=40;
+    int colwidth=50;
 
     int sector=buffer_result[0];
 
