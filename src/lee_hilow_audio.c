@@ -85,6 +85,33 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
     } while (!salir);
 }
 
+//a 44100 Hz
+#define LONGITUD_ONDA_INICIO_BITS 367
+#define LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA 180
+#define LONGITUD_ONDA_INICIO_BITS_MARGEN 20
+int buscar_onda_inicio_bits(int posicion)
+{
+    int salir=0;
+
+    int duracion_flanco_bajada;
+
+    do {
+
+        int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
+
+        if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
+            duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
+                //TODO: puede ser -1??
+                return posicion;
+            }
+
+        posicion +=duracion;
+        
+    } while (!salir && posicion!=-1);
+}
+
+
+
 int esperar_inicio_sincronismo(int posicion)
 {
 
@@ -206,10 +233,10 @@ int lee_byte(int posicion,z80_byte *byte_salida)
 z80_byte buffer_result[HILOW_SECTOR_SIZE+1];
 
 
-void lee_sector(void)
+void lee_sector(int posicion)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
-    int posicion=0;
+    //int posicion=0;
 
     int i;
 
@@ -233,7 +260,7 @@ void lee_sector(void)
 
     printf("Sector: %d\n",sector);
 
-    for (i=1;i<total && posicion!=-1;i+=colwidth) {
+    for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
         int col;
 
         printf("%08X ",i-1);
@@ -417,7 +444,14 @@ int main(int argc,char *argv[])
     printf("puntero: %p\n",hilow_ddh);
     //sleep(2);
 
-    lee_sector();
+    int posicion=0;
+    posicion=buscar_onda_inicio_bits(posicion);
+
+    printf("Posicion inicio bits: %d\n",posicion);
+
+    sleep(60);
+
+    lee_sector(posicion);
 
     write_hilow_ddh_file(archivo_ddh);
 
