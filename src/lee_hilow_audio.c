@@ -502,6 +502,9 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    int i;
 
    for (i=0;i<8;i++) {
+
+       byte_final=byte_final<<1;
+
        int duracion_flanco_bajada;
        int duracion_bit=duracion_onda(posicion,&duracion_flanco_bajada);
        //printf("L%d ",duracion_bit);
@@ -526,7 +529,7 @@ int lee_byte(int posicion,z80_byte *byte_salida)
         }
         //printf("\n");
        
-       if (i!=7) byte_final=byte_final<<1;
+       //if (i!=7) byte_final=byte_final<<1;
     }
 
     // printf("final: (%d) \n",byte_final);
