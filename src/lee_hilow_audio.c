@@ -31,6 +31,8 @@ por tanto podria definir el tamaño total de directorio como 500 hexadecimal
 //Lo que ocupa cada entrada de directorio
 #define HILOW_DIRECTORY_ENTRY_SIZE 45
 
+int lee_byte(int posicion,z80_byte *byte_salida);
+
 int lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=tamanyo_archivo) {
@@ -269,10 +271,59 @@ int buscar_inicio_sector(int posicion)
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
     int i;
 
-    for (i=0;i<3;i++) {
-        posicion=buscar_dos_sync_bits(posicion);
+
+    posicion=buscar_dos_sync_bits(posicion);
+    if (posicion==-1) return -1;
+
+    //Leer los 5 bytes indicadores de sector
+    z80_byte buffer_byte[5];
+    
+    for (i=0;i<5;i++) {
+        z80_byte byte_leido;
+        posicion=lee_byte(posicion,&byte_leido);
         if (posicion==-1) return -1;
+        buffer_byte[i]=byte_leido;
     }
+
+    printf("5 bytes id sector: ");
+
+    for (i=0;i<5;i++) {
+        printf("%02XH ",buffer_byte[i]);
+    }
+
+    printf("\n");
+
+    sleep(3);
+
+
+    posicion=buscar_dos_sync_bits(posicion);
+    if (posicion==-1) return -1;
+
+    //Leer el label del sector
+
+    //Leer los 5 bytes indicadores de sector
+    z80_byte buffer_label[17];
+    
+    for (i=0;i<17;i++) {
+        z80_byte byte_leido;
+        posicion=lee_byte(posicion,&byte_leido);
+        if (posicion==-1) return -1;
+        buffer_label[i]=byte_leido;
+    }
+
+    printf("17 bytes of label: ");
+
+    for (i=0;i<17;i++) {
+        z80_byte byte_leido=buffer_label[i];
+        printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+    }
+
+    printf("\n");
+
+    sleep(3);    
+
+    posicion=buscar_dos_sync_bits(posicion);
+    if (posicion==-1) return -1;                    
     //sleep(2);
 
     return posicion;
