@@ -125,9 +125,13 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
             //fin de archivo
             return -1;
         }
+
+
         if (direccion==+1) {
             //subimos. vemos si bajamos
             if (valor_leido+filtro_ruido<valor_anterior) direccion=-1;
+
+            valor_anterior=valor_leido;
         }
         else {
             //bajamos. ver si subimos y por tanto finalizamos
@@ -136,10 +140,12 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
                 return duracion;
             }
 
+            valor_anterior=valor_leido;
+
             (*duracion_flanco_bajada)++;
         }
 
-        valor_anterior=valor_leido;
+        
         duracion++;
         posicion++;
 
