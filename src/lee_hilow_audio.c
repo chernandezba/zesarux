@@ -46,7 +46,7 @@ int filtro_ruido=2;
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
-int duracion_onda(int posicion,int *duracion_flanco_bajada)
+int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
     z80_byte valor_anterior=lee_byte_memoria(posicion);
     int direccion=+1;
@@ -71,6 +71,9 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
         int nosigndelta=delta;
         if (nosigndelta<0) nosigndelta=-nosigndelta;
 
+        //temp 
+        nosigndelta=99; 
+
         if (nosigndelta<filtro_ruido) {
             //nada
         }
@@ -87,12 +90,56 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
                     return duracion;
                 }
 
-                (*duracion_flanco_bajada)++;
+                
             }
 
             valor_anterior=valor_leido;
 
         }
+
+        if (direccion==-1) (*duracion_flanco_bajada)++;
+        duracion++;
+        posicion++;
+
+    } while (!salir);
+}
+
+
+//Dice la duracion de una onda, asumiendo:
+//subimos - bajamos - y empezamos a subir
+int duracion_onda(int posicion,int *duracion_flanco_bajada)
+{
+    z80_byte valor_anterior=lee_byte_memoria(posicion);
+    int direccion=+1;
+
+    int salir=0;
+    int duracion=0;
+
+    *duracion_flanco_bajada=0;
+
+    do {
+        //printf("%d ",direccion);
+        int valor_leido=lee_byte_memoria(posicion);
+        //printf("V%d ",valor_leido);
+        if (valor_leido==-1) {
+            //fin de archivo
+            return -1;
+        }
+        if (direccion==+1) {
+            //subimos. vemos si bajamos
+            if (valor_leido+filtro_ruido<valor_anterior) direccion=-1;
+        }
+        else {
+            //bajamos. ver si subimos y por tanto finalizamos
+            if (valor_leido-filtro_ruido>valor_anterior) {
+                //printf("\n");
+                return duracion;
+            }
+
+            (*duracion_flanco_bajada)++;
+        }
+
+        valor_anterior=valor_leido;
         duracion++;
         posicion++;
 
@@ -521,11 +568,12 @@ int main(int argc,char *argv[])
 
     int posicion=0;
     //posicion=buscar_onda_inicio_bits(posicion);
-    posicion=buscar_inicio_sector(posicion);
+    /*posicion=buscar_inicio_sector(posicion);
 
     printf("Posicion inicio bits: %d\n",posicion);
 
     sleep(60);
+    */
 
     lee_sector(posicion);
 
