@@ -440,7 +440,10 @@ void lee_sector(int posicion)
         printf("%d\n",i);
         hilow_ddh[offset_destino+i]=buffer_result[i+1];
     }*/
-    memcpy(&hilow_ddh[offset_destino],&buffer_result[1],HILOW_SECTOR_SIZE);
+
+    if (sector<HILOW_MAX_SECTORS) {
+        memcpy(&hilow_ddh[offset_destino],&buffer_result[1],HILOW_SECTOR_SIZE);
+    }
 
 }
 
