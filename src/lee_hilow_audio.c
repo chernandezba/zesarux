@@ -59,26 +59,40 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        //printf("V%d ",valor_leido);
+        printf("V(%d)%d ",direccion,valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
         }
-        if (direccion==+1) {
-            //subimos. vemos si bajamos
-            if (valor_leido+filtro_ruido<valor_anterior) direccion=-1;
+
+        //si variacion es muy poca, no actuar
+        int delta=valor_leido-valor_anterior;
+
+        int nosigndelta=delta;
+        if (nosigndelta<0) nosigndelta=-nosigndelta;
+
+        if (nosigndelta<filtro_ruido) {
+            //nada
         }
+        
         else {
-            //bajamos. ver si subimos y por tanto finalizamos
-            if (valor_leido-filtro_ruido>valor_anterior) {
-                //printf("\n");
-                return duracion;
+            if (direccion==+1) {
+                //subimos. vemos si bajamos
+                if (delta<0) direccion=-1;
+            }
+            else {
+                //bajamos. ver si subimos y por tanto finalizamos
+                if (delta>0) {
+                    //printf("\n");
+                    return duracion;
+                }
+
+                (*duracion_flanco_bajada)++;
             }
 
-            (*duracion_flanco_bajada)++;
-        }
+            valor_anterior=valor_leido;
 
-        valor_anterior=valor_leido;
+        }
         duracion++;
         posicion++;
 
@@ -88,7 +102,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
 //a 44100 Hz
 #define LONGITUD_ONDA_INICIO_BITS 367
 #define LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA 180
-#define LONGITUD_ONDA_INICIO_BITS_MARGEN 20
+#define LONGITUD_ONDA_INICIO_BITS_MARGEN 40
 int buscar_onda_inicio_bits(int posicion)
 {
     int salir=0;
@@ -99,10 +113,12 @@ int buscar_onda_inicio_bits(int posicion)
 
         int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
 
+        printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
+
         if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
                 //TODO: puede ser -1??
-                return posicion;
+                return posicion+duracion;
             }
 
         posicion +=duracion;
@@ -110,7 +126,66 @@ int buscar_onda_inicio_bits(int posicion)
     } while (!salir && posicion!=-1);
 }
 
+int buscar_dos_sync_bits(int posicion)
+{
+    //Buscar 3 veces las dos marcas consecutivas de inicio de bits
+    
+    //Buscar dos marcas consecutivas primero
 
+    do {
+    
+    printf("1 posicion %d\n",posicion);
+    posicion=buscar_onda_inicio_bits(posicion);
+    if (posicion==-1) return -1;
+    //Estamos al final de la primera
+    
+
+    int posicion0=posicion;
+
+    printf("2 posicion %d\n",posicion);
+    sleep(5);
+
+
+    posicion=buscar_onda_inicio_bits(posicion);
+    if (posicion==-1) return -1;
+
+
+    printf("3 posicion %d\n",posicion);
+    //sleep(5);
+
+    //Estamos al final de la segunda
+
+    
+
+    //Ver si la segunda acaba en donde acaba la primera + el tiempo de onda
+    int delta=posicion-posicion0;
+
+    printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
+
+    sleep(5);
+
+    if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
+            delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
+                printf("Dos sync consecutivos en %d\n",posicion);
+                sleep(5);
+                return posicion;
+            }
+
+    } while (posicion!=-1);
+}
+
+int buscar_inicio_sector(int posicion)
+{
+    //Buscar 3 veces las dos marcas consecutivas de inicio de bits
+    int i;
+
+    for (i=0;i<3;i++) {
+        posicion=buscar_dos_sync_bits(posicion);
+        if (posicion==-1) return -1;
+    }
+
+    return posicion;
+}
 
 int esperar_inicio_sincronismo(int posicion)
 {
@@ -445,7 +520,8 @@ int main(int argc,char *argv[])
     //sleep(2);
 
     int posicion=0;
-    posicion=buscar_onda_inicio_bits(posicion);
+    //posicion=buscar_onda_inicio_bits(posicion);
+    posicion=buscar_inicio_sector(posicion);
 
     printf("Posicion inicio bits: %d\n",posicion);
 
