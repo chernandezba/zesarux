@@ -147,7 +147,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
 
                 else {
                     //No baja lo suficiente
-                    //valor_anterior=valor_leido;
+                    valor_anterior=valor_leido;
                 }
             }
 
