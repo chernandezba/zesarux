@@ -160,7 +160,7 @@ int lee_byte(int posicion,z80_byte *byte_salida)
 
    int diferencia_cero_uno=duracion_uno-duracion_cero;
 
-   int dif_umbral=(diferencia_cero_uno)/4;
+   int dif_umbral=(diferencia_cero_uno)/2;
    
 
    //Umbrales entre uno y otro
@@ -173,7 +173,8 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    for (i=0;i<8;i++) {
        int duracion_flanco_bajada;
        int duracion_bit=duracion_onda(posicion,&duracion_flanco_bajada);
-       printf("L%d ",duracion_bit);
+       //printf("L%d ",duracion_bit);
+       printf("L%d ",duracion_flanco_bajada);
        if (duracion_bit==-1) {
            //fin
            *byte_salida=byte_final;
@@ -260,6 +261,16 @@ void lee_sector(void)
 
     printf("\n");
 
+    printf("Correcto? (s/n)");
+
+    char buffer_pregunta[100];
+
+    scanf("%s",buffer_pregunta);
+
+    if (buffer_pregunta[0]!='s') {
+        printf("Aborting\n");
+        return;
+    }
 
 
     //TODO: en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
@@ -330,17 +341,17 @@ z80_byte *read_hilow_audio_file(char *archivo)
 }
 
 
-z80_byte *read_hilow_ddh_file(char *archivo)
+void *read_hilow_ddh_file(char *archivo)
 {
-    z80_byte *puntero;
+    //z80_byte *puntero;
 
 
     //Leer archivo ddh
     //Asignar memoria
     int tamanyo=HILOW_DEVICE_SIZE;
-    puntero=malloc(tamanyo);
+    hilow_ddh=malloc(tamanyo);
 
-    if (puntero==NULL) {
+    if (hilow_ddh==NULL) {
         printf("Can not allocate memory for hilow ddh file");
         return NULL;
     }
@@ -355,12 +366,11 @@ z80_byte *read_hilow_ddh_file(char *archivo)
             return NULL;
     }
 
-    fread(puntero,1,tamanyo,ptr_ddhfile);
+    fread(hilow_ddh,1,tamanyo,ptr_ddhfile);
     fclose(ptr_ddhfile);    
 
  
 
-    return puntero;
 }
 
 void *write_hilow_ddh_file(char *archivo)
@@ -403,7 +413,7 @@ int main(int argc,char *argv[])
 
     hilow_memoria=read_hilow_audio_file(archivo);
 
-    hilow_ddh=read_hilow_ddh_file(archivo_ddh);
+    read_hilow_ddh_file(archivo_ddh);
     printf("puntero: %p\n",hilow_ddh);
     //sleep(2);
 
