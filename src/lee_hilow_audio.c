@@ -104,6 +104,12 @@ int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
     } while (!salir);
 }
 
+int util_get_absolute(int valor)
+{
+        if (valor<0) valor=-valor;
+
+        return valor;
+}
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
@@ -129,18 +135,45 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
 
         if (direccion==+1) {
             //subimos. vemos si bajamos
-            if (valor_leido+filtro_ruido<valor_anterior) direccion=-1;
+            if (valor_leido<valor_anterior) {
+                //bajamos
+                if (valor_leido+filtro_ruido<valor_anterior) {
+                    //Baja lo suficiente que cambia direccion
+                    direccion=-1;
+                    valor_anterior=valor_leido;
+                }
 
-            valor_anterior=valor_leido;
+                else {
+                    //No baja lo suficiente
+                    //valor_anterior=valor_leido;
+                }
+            }
+
+            else {
+                //subimos
+                valor_anterior=valor_leido;
+            }
         }
         else {
             //bajamos. ver si subimos y por tanto finalizamos
-            if (valor_leido-filtro_ruido>valor_anterior) {
-                //printf("\n");
-                return duracion;
-            }
+            if (valor_leido>valor_anterior) {
+                //subimos
+                if (valor_leido-filtro_ruido>valor_anterior) {
+                    //Sube lo suficiente que cambia direccion
+                    //printf("\n");
+                    return duracion;
+                }
+                else {
+                    //No sube lo suficiente
+                    valor_anterior=valor_leido;
+                }
 
-            valor_anterior=valor_leido;
+
+            }
+            else {
+                //Bajamos
+                valor_anterior=valor_leido;
+            }
 
             (*duracion_flanco_bajada)++;
         }
