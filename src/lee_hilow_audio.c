@@ -441,6 +441,7 @@ void lee_sector(int posicion)
         hilow_ddh[offset_destino+i]=buffer_result[i+1];
     }*/
 
+    //por si acaso sector fuera de rango
     if (sector<HILOW_MAX_SECTORS) {
         memcpy(&hilow_ddh[offset_destino],&buffer_result[1],HILOW_SECTOR_SIZE);
     }
