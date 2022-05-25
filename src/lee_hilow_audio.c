@@ -129,7 +129,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        //printf("V%d ",valor_leido);
+        printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -202,7 +202,7 @@ int buscar_onda_inicio_bits(int posicion)
 
         int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
 
-        //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
+        printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
         if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
@@ -232,12 +232,12 @@ int buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     printf("2 posicion %d\n",posicion);
-    //sleep(5);
+    sleep(5);
 
     //TODO: la segunda no se detecta bien. asumir posicion
     //no la detecta por variaciones muy tenues en la segunda onda
-    printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
-    return posicion+LONGITUD_ONDA_INICIO_BITS;
+    //printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
+    //return posicion+LONGITUD_ONDA_INICIO_BITS;
 
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
@@ -255,7 +255,7 @@ int buscar_dos_sync_bits(int posicion)
 
     printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    sleep(5);
+    sleep(30);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
