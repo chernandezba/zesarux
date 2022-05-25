@@ -822,6 +822,8 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
 
     * Offset 2: 9 bytes. Etiqueta de la cinta
 
+    * TODO: formato entradas de cada archivo
+
     * Offset 1011 (3F3H): 1 byte: numero de sectores disponibles
 
     * Offset 1012 (3F4H): 1 byte a 0. Marcador de inicio de la tabla de sectores disponibles
