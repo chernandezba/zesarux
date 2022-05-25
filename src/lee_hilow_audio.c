@@ -476,7 +476,7 @@ void lee_sector(int posicion)
     int sector=buffer_result[0];
 
     printf("Sector: %d\n",sector);
-    sleep(3);
+    sleep(1);
 
     for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
         int col;
