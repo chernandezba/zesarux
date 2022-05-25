@@ -293,7 +293,7 @@ int buscar_inicio_sector(int posicion)
 
     printf("\n");
 
-    sleep(3);
+    //sleep(3);
 
 
     posicion=buscar_dos_sync_bits(posicion);
@@ -320,7 +320,7 @@ int buscar_inicio_sector(int posicion)
 
     printf("\n");
 
-    sleep(3);    
+    //sleep(3);    
 
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;                    
@@ -410,7 +410,7 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    //Umbrales entre uno y otro
    int umbral_cero_uno=duracion_cero+dif_umbral;
 
-   printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
+   //printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
 
    int i;
 
@@ -418,11 +418,11 @@ int lee_byte(int posicion,z80_byte *byte_salida)
        int duracion_flanco_bajada;
        int duracion_bit=duracion_onda(posicion,&duracion_flanco_bajada);
        //printf("L%d ",duracion_bit);
-       printf("L%d ",duracion_flanco_bajada);
+       //printf("L%d ",duracion_flanco_bajada);
        if (duracion_bit==-1) {
            //fin
            *byte_salida=byte_final;
-           printf("\n");
+           //printf("\n");
            return posicion;
        }
        posicion +=duracion_bit;
@@ -430,19 +430,19 @@ int lee_byte(int posicion,z80_byte *byte_salida)
         //if (duracion_bit<umbral_cero_uno) {
         if (duracion_flanco_bajada<umbral_cero_uno) {
             //Es un 0
-            printf(" -0- ");
+            //printf(" -0- ");
         }
         else {
             //Es un 1
             byte_final |=1;
-            printf(" -1- ");
+            //printf(" -1- ");
         }
-        printf("\n");
+        //printf("\n");
        
        if (i!=7) byte_final=byte_final<<1;
     }
 
-    printf("final: (%d) \n",byte_final);
+    // printf("final: (%d) \n",byte_final);
    *byte_salida=byte_final;
    return posicion;
 }
@@ -459,12 +459,12 @@ void lee_sector(int posicion)
 
     
     for (i=0;i<total && posicion!=-1;i++) {
-        printf("\nPos %d %d\n",i,posicion);
+        //printf("\nPos %d %d\n",i,posicion);
         z80_byte byte_leido;
 
         posicion=lee_byte(posicion,&byte_leido);
         if (posicion!=-1) {
-            printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
+            //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
         }
 
         buffer_result[i]=byte_leido;
@@ -476,6 +476,7 @@ void lee_sector(int posicion)
     int sector=buffer_result[0];
 
     printf("Sector: %d\n",sector);
+    sleep(3);
 
     for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
         int col;
