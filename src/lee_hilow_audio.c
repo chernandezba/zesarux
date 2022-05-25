@@ -116,6 +116,92 @@ int util_get_absolute(int valor)
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
+int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
+{
+
+    int minimo_variacion=1;
+
+    z80_byte valor_anterior=lee_byte_memoria(posicion);
+    int direccion=+1;
+
+    int salir=0;
+    int duracion=0;
+
+    *duracion_flanco_bajada=0;
+
+    int duracion_variacion=0;
+
+    do {
+        //printf("%d ",direccion);
+        int valor_leido=lee_byte_memoria(posicion);
+        //printf("V%d ",valor_leido);
+        if (valor_leido==-1) {
+            //fin de archivo
+            return -1;
+        }
+
+
+        if (direccion==+1) {
+            //subimos. vemos si bajamos
+            if (valor_leido<valor_anterior) {
+                //bajamos
+                if (duracion_variacion>minimo_variacion) {
+                    //Baja lo suficiente que cambia direccion
+                    direccion=-1;
+                    duracion_variacion=0;
+                    valor_anterior=valor_leido;
+                }
+
+                else {
+                    valor_anterior=valor_leido;
+                    duracion_variacion++;
+                }
+            }
+
+            else {
+                //subimos
+                valor_anterior=valor_leido;
+                duracion_variacion=0;
+            }
+        }
+        else {
+            //bajamos. ver si subimos y por tanto finalizamos
+            if (valor_leido>valor_anterior) {
+                //subimos
+                if (duracion_variacion>minimo_variacion) {
+                    //Sube lo suficiente que cambia direccion
+                    //printf("\n");
+                    (*duracion_flanco_bajada) -=minimo_variacion;
+                    return duracion-minimo_variacion;
+                }
+                else {
+                    valor_anterior=valor_leido;
+                    duracion_variacion++;
+                }
+
+
+            }
+            else {
+                //Bajamos
+                valor_anterior=valor_leido;
+                duracion_variacion=0;
+            }
+
+            (*duracion_flanco_bajada)++;
+        }
+
+        
+
+        
+        duracion++;
+        posicion++;
+
+    } while (!salir);
+}
+
+
+//Dice la duracion de una onda, asumiendo:
+//subimos - bajamos - y empezamos a subir
 int duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
     z80_byte valor_anterior=lee_byte_memoria(posicion);
@@ -129,7 +215,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        printf("V%d ",valor_leido);
+        //printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -202,7 +288,7 @@ int buscar_onda_inicio_bits(int posicion)
 
         int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
 
-        printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
+        //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
         if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
@@ -232,19 +318,19 @@ int buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     printf("2 posicion %d\n",posicion);
-    sleep(5);
+    //sleep(5);
 
     //TODO: la segunda no se detecta bien. asumir posicion
     //no la detecta por variaciones muy tenues en la segunda onda
-    //printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
-    //return posicion+LONGITUD_ONDA_INICIO_BITS;
+    printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
+    return posicion+LONGITUD_ONDA_INICIO_BITS;
 
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
 
 
     printf("3 posicion %d\n",posicion);
-    sleep(5);
+    //sleep(5);
 
     //Estamos al final de la segunda
 
@@ -255,7 +341,7 @@ int buscar_dos_sync_bits(int posicion)
 
     printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    sleep(30);
+    //sleep(3);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
