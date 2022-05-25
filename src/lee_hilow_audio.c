@@ -160,7 +160,7 @@ int buscar_onda_inicio_bits(int posicion)
 
         int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
 
-        printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
+        //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
         if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
@@ -175,7 +175,7 @@ int buscar_onda_inicio_bits(int posicion)
 
 int buscar_dos_sync_bits(int posicion)
 {
-    //Buscar 3 veces las dos marcas consecutivas de inicio de bits
+    
     
     //Buscar dos marcas consecutivas primero
 
@@ -190,8 +190,12 @@ int buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     printf("2 posicion %d\n",posicion);
-    sleep(5);
+    //sleep(5);
 
+    //TODO: la segunda no se detecta bien. asumir posicion
+    //no la detecta por variaciones muy tenues en la segunda onda
+    printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
+    return posicion+LONGITUD_ONDA_INICIO_BITS;
 
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
@@ -209,12 +213,12 @@ int buscar_dos_sync_bits(int posicion)
 
     printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    sleep(5);
+    //sleep(5);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
                 printf("Dos sync consecutivos en %d\n",posicion);
-                sleep(5);
+                //sleep(5);
                 return posicion;
             }
 
@@ -230,6 +234,7 @@ int buscar_inicio_sector(int posicion)
         posicion=buscar_dos_sync_bits(posicion);
         if (posicion==-1) return -1;
     }
+    //sleep(2);
 
     return posicion;
 }
@@ -567,17 +572,21 @@ int main(int argc,char *argv[])
     //sleep(2);
 
     int posicion=0;
-    //posicion=buscar_onda_inicio_bits(posicion);
-    /*posicion=buscar_inicio_sector(posicion);
+
+    while (1) {
+    
+    posicion=buscar_inicio_sector(posicion);
 
     printf("Posicion inicio bits: %d\n",posicion);
 
-    sleep(60);
-    */
+    //sleep(5);
+    
 
     lee_sector(posicion);
 
     write_hilow_ddh_file(archivo_ddh);
+
+    }
 
 
     free(hilow_memoria);
