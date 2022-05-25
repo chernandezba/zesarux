@@ -241,7 +241,7 @@ int buscar_dos_sync_bits(int posicion)
 
 
     printf("3 posicion %d\n",posicion);
-    //sleep(5);
+    sleep(5);
 
     //Estamos al final de la segunda
 
@@ -252,7 +252,7 @@ int buscar_dos_sync_bits(int posicion)
 
     printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    //sleep(5);
+    sleep(5);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
