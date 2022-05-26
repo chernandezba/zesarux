@@ -412,7 +412,7 @@ int hilow_write_byte_device(int sector,int offset,z80_byte valor)
 
     //if (sector==255) printf("Sector 255 offset: %d max: %d\n",offset,HILOW_DEVICE_SIZE);
 
-    if (offset>=HILOW_DEVICE_SIZE) {
+    if (offset>=HILOW_DEVICE_SIZE || offset<0) {
         debug_printf (VERBOSE_DEBUG,"Error. Trying to write beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
                         HILOW_DEVICE_SIZE,sector,offset);
 
@@ -439,7 +439,7 @@ z80_byte hilow_read_byte_device(int sector,int offset)
 
     offset +=(sector*HILOW_SECTOR_SIZE);
 
-    if (offset>=HILOW_DEVICE_SIZE) {
+    if (offset>=HILOW_DEVICE_SIZE || offset<0) {
         debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond HiLow Data Drive. Size: %ld Asked sector: %d Offset: %d",
                         HILOW_DEVICE_SIZE,sector,offset);
         //no desactivamos porque esto implica quitar funciones de peek/poke anidadas del core y petaria
@@ -651,7 +651,7 @@ int hilow_write_mem_to_device(z80_int dir,int sector,int longitud,int offset_des
     //printf("Writing memory to hilow device. dir=%04XH sector=%d length=%04XH offset_destination=%04XH\n",
     //    dir,sector,longitud,offset_destination);
 
-    if (sector>=HILOW_MAX_SECTORS) {
+    if (sector>=HILOW_MAX_SECTORS || sector<0) {
         //printf("Sector beyond maximum. Do nothing\n");
 
         debug_printf (VERBOSE_DEBUG,"Error. Trying to write beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d Offset: %d",
@@ -755,20 +755,31 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
     //pero en la tabla de sectores usados debe estar, pues al borrar archivos, en rutina L06D1, utiliza
     //ese 00 inicial para saber donde empieza la tabla y de alguna manera indica donde finalizar con el movimiento de sectores de la tabla
 
-    
 
-    for (id_sector_tabla=0;id_sector_tabla<HILOW_MAX_SECTORS;id_sector_tabla++) {
-        //sector 1 no lo metemos en tabla
-        if (id_sector_tabla!=1) {
-            if (si_escribir_en_device) {
-                //En ambas copias de directorio
-                hilow_write_byte_device(0,offset,id_sector_tabla);
-                hilow_write_byte_device(1,offset,id_sector_tabla);
-            }
-            if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
+    //El 00 inicial de la tabla
+    if (si_escribir_en_device) {
+        //En ambas copias de directorio
+        hilow_write_byte_device(0,offset,0);
+        hilow_write_byte_device(1,offset,0);
+    }
+    if (si_escribir_en_ram) poke_byte_no_time(8192+offset,0);
 
-            offset++;
+    offset++;
+
+
+    //Es <= dado que el id de sector siempre lo decrementamos
+    for (id_sector_tabla=3;id_sector_tabla<=HILOW_MAX_SECTORS;id_sector_tabla++) {
+        //sector 1 y 2 no lo metemos en tabla
+        
+        if (si_escribir_en_device) {
+            //En ambas copias de directorio
+            hilow_write_byte_device(0,offset,id_sector_tabla);
+            hilow_write_byte_device(1,offset,id_sector_tabla);
         }
+        if (si_escribir_en_ram) poke_byte_no_time(8192+offset,id_sector_tabla);
+
+        offset++;
+    
     }
 
     
@@ -902,6 +913,18 @@ void hilow_trap_write_verify(void)
 
         else {
 
+            //Sectores 1 y 2 son de directorio. Al final el sector logico de hilow 1 es el mio 0
+
+            //Lo logico seria no permitir esto. Sector 0 para llamadas a la rom es el directorio (sea el 0 o 1 logico), 
+            //y luego se empieza a usar sectores de la rom a partir del 3
+            if (sector==1 || sector==2) {
+                debug_printf(VERBOSE_ERR,"HiLow: Trying to write to invalid sector %d",sector);
+                return;
+            }
+
+
+            sector--;
+
             debug_printf(VERBOSE_INFO,"HiLow: Write from %04XH length %04XH sector %d",dir_inicio,longitud,sector);
 
             if (hilow_write_mem_to_device(dir_inicio,sector,longitud,0)) {
@@ -950,7 +973,7 @@ int hilow_read_device_to_mem(z80_int dir,int sector,int longitud)
     //printf("Reading data from sector %d length %04XH to address %04XH\n",sector,longitud,dir);
 
 
-    if (sector>=HILOW_MAX_SECTORS) {
+    if (sector>=HILOW_MAX_SECTORS || sector<0) {
         //printf("Sector beyond maximum. Do nothing\n");
 
         debug_printf (VERBOSE_DEBUG,"Error. Trying to read beyond max HiLow Data Drive sectors. Size: %ld Asked sector: %d",
@@ -1033,6 +1056,15 @@ void hilow_trap_read(void)
         leer_datos=reg_de;
 
         int sector=reg_a;
+
+
+        if (sector==1 || sector==2) {
+            debug_printf(VERBOSE_ERR,"HiLow: Trying to read from invalid sector %d",sector);
+            return;
+        }        
+
+        //Sectores 1 y 2 son de directorio. Al final el sector logico de hilow 1 es el mio 0
+        sector--;        
 
         debug_printf(VERBOSE_INFO,"HiLow: Read from sector %d to %04XH length %04XH",sector,inicio_datos,leer_datos);
 

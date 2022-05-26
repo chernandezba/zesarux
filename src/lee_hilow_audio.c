@@ -777,7 +777,11 @@ int lee_sector(int posicion)
     }*/
 
     //por si acaso sector fuera de rango
-    if (sector<HILOW_MAX_SECTORS) {
+    if (sector<1 || sector>=HILOW_MAX_SECTORS) {
+        printf("Out of range sector\n");
+    }
+
+    else {
         memcpy(&hilow_ddh[offset_destino],&buffer_result[1],HILOW_SECTOR_SIZE);
     }
 
