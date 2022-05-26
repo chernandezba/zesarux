@@ -3336,7 +3336,9 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
 
             for (i=0;i<total_sectores;i++) {  
                 z80_byte sector_actual=sectores[i];
-                menu_hilow_browser_print_char_sector(w,sector_actual,'u');
+
+                //Id de sectores usados empieza por el 1
+                menu_hilow_browser_print_char_sector(w,sector_actual-1,'u');
 
                 if (i>0 && sector_actual!=sector_anterior+1) parcial_fragmentacion++;
 
@@ -3553,7 +3555,8 @@ Maximo sectores por archivo: 25
 
                 zxvision_print_string_defaults_format(&ventana,columna_sectores+col,linea,"%3d ",sectores[i]);
 
-                menu_hilow_browser_print_char_sector(&ventana,sectores[i],'F');
+                //Id de sectores empieza a numerar en 1
+                menu_hilow_browser_print_char_sector(&ventana,sectores[i]-1,'F');
            
 
                 if ((i+1) % sectores_por_linea == 0) {

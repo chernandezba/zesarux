@@ -1,3 +1,24 @@
+/*
+    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    Copyright (C) 2013 Cesar Hernandez Bano
+
+    This file is part of ZEsarUX.
+
+    ZEsarUX is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include <stdio.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -39,6 +60,8 @@ int modo_verbose=0;
 int directo_a_pista=0;
 
 int ejecutar_sleep=0;
+
+int completamente_automatico=0;
 
 int pausa(int segundos)
 {
@@ -711,12 +734,12 @@ int lee_sector(int posicion)
     if (!directo_a_pista) {
 
         if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
-                sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+            sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
 
-                    sector_aparentemente_correcto=0;
-                    printf("Probably sector mismatch!\n");
-                    print_mostrar_ids_sector();
-                    pausa(2);
+            sector_aparentemente_correcto=0;
+            printf("Probably sector mismatch!\n");
+            print_mostrar_ids_sector();
+            pausa(2);
         }
 
     }
@@ -730,7 +753,7 @@ int lee_sector(int posicion)
 
     char buffer_pregunta[100];
 
-    if (!sector_aparentemente_correcto) {
+    /*if (!sector_aparentemente_correcto) {
         printf("Quieres cambiar el sector? (s/n)");
     
 
@@ -743,23 +766,40 @@ int lee_sector(int posicion)
             sector=atoi(buffer_pregunta);
             printf("Nuevo sector: %d\n",sector);
         }
-    }
+    }*/
 
 
-    printf("Grabar sector? (s/n) f: fin  ");
+    if (!completamente_automatico) {
+        buffer_pregunta[0]=0;
 
-    scanf("%s",buffer_pregunta);
+        do {
+
+            printf("Grabar sector? (s/n) e: editar numero sector f: fin  ");
+
+            scanf("%s",buffer_pregunta);
 
 
 
-    if (buffer_pregunta[0]=='f') {
-        printf("Ending\n");
-        return -1;
-    }
+            if (buffer_pregunta[0]=='f') {
+                printf("Ending\n");
+                return -1;
+            }
 
-    if (buffer_pregunta[0]!='s') {
-        printf("Not saving this sector\n");
-        return posicion;
+            if (buffer_pregunta[0]=='e') {
+                printf("Nuevo sector? : ");
+                int sector;
+                char buffer_sector[100];
+                scanf("%s",buffer_sector);
+                sector=atoi(buffer_sector);
+                printf("Nuevo sector: %d\n",sector);
+            }    
+
+            if (buffer_pregunta[0]!='s') {
+                printf("Not saving this sector\n");
+                return posicion;
+            }
+
+        } while (buffer_pregunta[0]=='e');
     }
 
     //TODO: en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
@@ -901,7 +941,8 @@ int main(int argc,char *argv[])
     if (argc>1 && !strcasecmp(argv[1],"--help")) mostrar_ayuda=1;
 
     if(argc<3 || mostrar_ayuda) {
-        printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] [algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause]\n",argv[0]);
+        printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] "
+                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause] [--automatic]\n",argv[0]);
         exit(1);
     }
 
@@ -937,6 +978,8 @@ int main(int argc,char *argv[])
         if (!strcasecmp(argv[indice_argumento],"--wave_improved")) algoritmo_duracion_onda=1;
 
         if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
+
+        if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
 
         indice_argumento++;
         argumentos_leer--;
@@ -991,6 +1034,8 @@ int main(int argc,char *argv[])
     free(hilow_memoria);
 
     free(hilow_ddh);
+
+    printf("Finalizado proceso\n");
 
 
     return 0;

@@ -29307,8 +29307,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
         //Obtener sectores libres
         hilow_util_get_free_sectors_list(sector,hilow_device_buffer,menu_storage_hilow_chkdsk_sectors_free);
         //Si en esa lista esta el 0 o el 1, error
-        if (menu_storage_hilow_chkdsk_sectors_free[0] || menu_storage_hilow_chkdsk_sectors_free[1]) {
-            sprintf (buffer_texto,"%s Sector 0 or 1 can not be in free sectors table",txt_err);
+        if (menu_storage_hilow_chkdsk_sectors_free[0] || menu_storage_hilow_chkdsk_sectors_free[1] || menu_storage_hilow_chkdsk_sectors_free[2]) {
+            sprintf (buffer_texto,"%s Sector 0 or 1 or 2 can not be in free sectors table",txt_err);
             longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
             sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
             indice_buffer +=longitud_texto;                
