@@ -36,6 +36,15 @@ int lee_byte(int posicion,z80_byte *byte_salida);
 
 int modo_verbose=0;
 
+int directo_a_pista=0;
+
+int ejecutar_sleep=0;
+
+int pausa(int segundos)
+{
+    if (ejecutar_sleep) sleep(segundos);
+}
+
 int lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=tamanyo_archivo) {
@@ -337,7 +346,7 @@ int buscar_dos_sync_bits(int posicion)
     
     if (modo_verbose) {
         printf("\n1 posicion %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
@@ -348,7 +357,7 @@ int buscar_dos_sync_bits(int posicion)
 
     if (modo_verbose) {
         printf("\n2 posicion %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
 
 
@@ -367,7 +376,7 @@ int buscar_dos_sync_bits(int posicion)
 
     if (modo_verbose) {
         printf("\n3 posicion %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
 
     //Estamos al final de la segunda
@@ -379,14 +388,14 @@ int buscar_dos_sync_bits(int posicion)
 
     if (modo_verbose) printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    //sleep(3);
+    //pausa(3);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN)
         {
         if (modo_verbose) {
             printf("\n---Dos sync consecutivos en %d---\n",posicion);
-            sleep(5);
+            pausa(5);
         }
         
         return posicion;
@@ -395,7 +404,7 @@ int buscar_dos_sync_bits(int posicion)
     else {
         if (modo_verbose) {
             printf("\n---NO hay dos sync consecutivos en %d---\n",posicion);
-            sleep(5);
+            pausa(5);
         }
     }
 
@@ -405,6 +414,18 @@ int buscar_dos_sync_bits(int posicion)
 //los 5 bytes indicadores de sector
 z80_byte buffer_sector_five_byte[5];
 
+void print_mostrar_ids_sector(void)
+{
+    int i;
+
+    for (i=0;i<5;i++) {
+        printf("%02XH ",buffer_sector_five_byte[i]);
+    }
+
+    printf("\n");
+
+}
+
 int buscar_inicio_sector(int posicion)
 {
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
@@ -412,7 +433,7 @@ int buscar_inicio_sector(int posicion)
 
     if (modo_verbose) {
         printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
@@ -427,17 +448,13 @@ int buscar_inicio_sector(int posicion)
 
     printf("5 bytes id sector: ");
 
-    for (i=0;i<5;i++) {
-        printf("%02XH ",buffer_sector_five_byte[i]);
-    }
+    print_mostrar_ids_sector();
 
-    printf("\n");
-
-    //sleep(3);
+    //pausa(3);
 
     if (modo_verbose) {
         printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
@@ -463,15 +480,15 @@ int buscar_inicio_sector(int posicion)
 
     printf("\n");
 
-    //sleep(3);    
+    //pausa(3);    
 
     if (modo_verbose) {
         printf("\n---Buscando tecer par de marcas de sincronismo en %d\n",posicion);
-        sleep(2);
+        pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;                    
-    //sleep(2);
+    //pausa(2);
 
     return posicion;
 }
@@ -639,17 +656,27 @@ void lee_sector(int posicion)
 
     int sector_aparentemente_correcto=1;
 
-    if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
-            sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+    if (!directo_a_pista) {
 
-    //      printf("%d %d\n",buffer_sector_five_byte[1],buffer_sector_five_byte[2]);
-                sector_aparentemente_correcto=0;
-                printf("Probably sector mismatch!\n");
-                sleep(2);
+        if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
+                sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+
+        //      printf("%d %d\n",buffer_sector_five_byte[1],buffer_sector_five_byte[2]);
+                    sector_aparentemente_correcto=0;
+                    printf("Probably sector mismatch!\n");
+                    print_mostrar_ids_sector();
+                    pausa(2);
+        }
+
+    }
+
+    else {
+        //Para que pregunte al usuario dado que no tenemos las marcas de sector y no sabemos si el id de sector es correcto
+        sector_aparentemente_correcto=0;
     }
 
 
-    sleep(1);
+    pausa(1);
 
     for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
         int col;
@@ -697,7 +724,7 @@ void lee_sector(int posicion)
     }
 
 
-    printf("Correcto? (s/n)");
+    printf("Sector %d Correcto? (s/n)",sector);
 
     scanf("%s",buffer_pregunta);
 
@@ -835,7 +862,7 @@ void *write_hilow_ddh_file(char *archivo)
 int main(int argc,char *argv[])
 {
     if(argc<3) {
-        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [algorithm wave: wave_legacy / wave_improved] [verbose]\n",argv[0]);
+        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [algorithm wave: wave_legacy / wave_improved] [verbose] [pause]\n",argv[0]);
         exit(1);
     }
 
@@ -849,7 +876,7 @@ int main(int argc,char *argv[])
     char *archivo_ddh;
     archivo_ddh=argv[2];
 
-    int directo_a_pista=0;
+    
 
     int indice_argumento=3;
 
@@ -868,13 +895,15 @@ int main(int argc,char *argv[])
 
         if (!strcasecmp(argv[indice_argumento],"wave_improved")) algoritmo_duracion_onda=1;
 
+        if (!strcasecmp(argv[indice_argumento],"pause")) ejecutar_sleep=1;
+
         indice_argumento++;
         argumentos_leer--;
     }
 
     printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d algorithm_wave %d verbose %d\n",
         archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,algoritmo_duracion_onda,modo_verbose);
-    sleep(2);
+    pausa(2);
 
 
     tamanyo_archivo=get_file_size(archivo);
@@ -884,7 +913,7 @@ int main(int argc,char *argv[])
 
     read_hilow_ddh_file(archivo_ddh);
     printf("puntero: %p\n",hilow_ddh);
-    //sleep(2);
+    //pausa(2);
 
     int posicion=0;
 
@@ -892,9 +921,8 @@ int main(int argc,char *argv[])
 
         //temp. En directo_a_pista esto no se debe hacer
         //posicion=buscar_dos_sync_bits(posicion);
-        posicion=buscar_inicio_sector(posicion);
+        //posicion=buscar_inicio_sector(posicion);
         
-
         lee_sector(posicion);
         write_hilow_ddh_file(archivo_ddh);
     }
@@ -907,7 +935,7 @@ int main(int argc,char *argv[])
 
         printf("Posicion inicio bits: %d\n",posicion);
 
-        //sleep(5);
+        //pausa(5);
         
 
         lee_sector(posicion);
