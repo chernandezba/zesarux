@@ -2,6 +2,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 typedef unsigned char z80_byte;
 
@@ -815,8 +816,8 @@ void *write_hilow_ddh_file(char *archivo)
 
 int main(int argc,char *argv[])
 {
-    if(argc<4) {
-        printf("%s source_wav destination.ddh 0/1:autoadjust_bit_width [solopista] [verbose]\n",argv[0]);
+    if(argc<3) {
+        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [verbose]\n",argv[0]);
         exit(1);
     }
 
@@ -832,15 +833,26 @@ int main(int argc,char *argv[])
 
     int directo_a_pista=0;
 
-    if (argv[3][0]=='1') autoajustar_duracion_bits=1;
+    int indice_argumento=3;
 
-    if (argc>=5) {
-        if (argv[4][0]=='s') directo_a_pista=1;
+    //Leidos ya el programa y source y destino
+    int argumentos_leer=argc-3;
+
+    while (argumentos_leer>0) {
+
+        if (!strcasecmp(argv[indice_argumento],"autoadjust_bit_width")) autoajustar_duracion_bits=1;
+
+        if (!strcasecmp(argv[indice_argumento],"solopista")) directo_a_pista=1;
+
+        if (!strcasecmp(argv[indice_argumento],"verbose")) modo_verbose=1;
+
+        indice_argumento++;
+        argumentos_leer--;
     }
 
-    if (argc>=6) {
-        if (argv[5][0]=='v') modo_verbose=1;
-    }
+    printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d verbose %d\n",
+        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,modo_verbose);
+    sleep(2);
 
 
     tamanyo_archivo=get_file_size(archivo);
