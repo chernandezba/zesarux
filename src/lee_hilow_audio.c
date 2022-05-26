@@ -670,7 +670,7 @@ void dump_sector_contents(void)
     printf("\n");      
 }
 
-void lee_sector(int posicion)
+int lee_sector(int posicion)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
     //int posicion=0;
@@ -746,15 +746,21 @@ void lee_sector(int posicion)
     }
 
 
-    printf("Grabar sector? (s/n)");
+    printf("Grabar sector? (s/n) f: fin  ");
 
     scanf("%s",buffer_pregunta);
 
-    if (buffer_pregunta[0]!='s') {
-        printf("Not saving this sector\n");
-        return;
+
+
+    if (buffer_pregunta[0]=='f') {
+        printf("Ending\n");
+        return -1;
     }
 
+    if (buffer_pregunta[0]!='s') {
+        printf("Not saving this sector\n");
+        return posicion;
+    }
 
     //TODO: en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
     if (sector==2 || sector==1) sector--;
@@ -774,6 +780,8 @@ void lee_sector(int posicion)
     if (sector<HILOW_MAX_SECTORS) {
         memcpy(&hilow_ddh[offset_destino],&buffer_result[1],HILOW_SECTOR_SIZE);
     }
+
+    return posicion;
 
 }
 
@@ -883,10 +891,17 @@ void *write_hilow_ddh_file(char *archivo)
 
 int main(int argc,char *argv[])
 {
-    if(argc<3) {
-        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [algorithm wave: wave_legacy / wave_improved] [verbose] [pause]\n",argv[0]);
+
+    int mostrar_ayuda=0;
+
+    if (argc>1 && !strcasecmp(argv[1],"--help")) mostrar_ayuda=1;
+
+    if(argc<3 || mostrar_ayuda) {
+        printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] [algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause]\n",argv[0]);
         exit(1);
     }
+
+    
 
     char *archivo;
 
@@ -907,17 +922,17 @@ int main(int argc,char *argv[])
 
     while (argumentos_leer>0) {
 
-        if (!strcasecmp(argv[indice_argumento],"autoadjust_bit_width")) autoajustar_duracion_bits=1;
+        if (!strcasecmp(argv[indice_argumento],"--autoadjust_bit_width")) autoajustar_duracion_bits=1;
 
-        if (!strcasecmp(argv[indice_argumento],"solopista")) directo_a_pista=1;
+        if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
 
-        if (!strcasecmp(argv[indice_argumento],"verbose")) modo_verbose=1;
+        if (!strcasecmp(argv[indice_argumento],"--verbose")) modo_verbose=1;
 
-        if (!strcasecmp(argv[indice_argumento],"wave_legacy")) algoritmo_duracion_onda=0;
+        if (!strcasecmp(argv[indice_argumento],"--wave_legacy")) algoritmo_duracion_onda=0;
 
-        if (!strcasecmp(argv[indice_argumento],"wave_improved")) algoritmo_duracion_onda=1;
+        if (!strcasecmp(argv[indice_argumento],"--wave_improved")) algoritmo_duracion_onda=1;
 
-        if (!strcasecmp(argv[indice_argumento],"pause")) ejecutar_sleep=1;
+        if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
 
         indice_argumento++;
         argumentos_leer--;
@@ -960,7 +975,7 @@ int main(int argc,char *argv[])
             //pausa(5);
             
 
-            lee_sector(posicion);
+            posicion=lee_sector(posicion);
 
             write_hilow_ddh_file(archivo_ddh);
 
