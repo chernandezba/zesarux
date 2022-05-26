@@ -315,13 +315,14 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
 #define LONGITUD_ONDA_INICIO_BITS_MARGEN 40
 int buscar_onda_inicio_bits(int posicion)
 {
-    int salir=0;
+    
 
     int duracion_flanco_bajada;
+    int duracion;
 
     do {
 
-        int duracion=duracion_onda(posicion,&duracion_flanco_bajada);
+        duracion=duracion_onda(posicion,&duracion_flanco_bajada);
 
         //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
@@ -331,9 +332,11 @@ int buscar_onda_inicio_bits(int posicion)
                 return posicion+duracion;
             }
 
-        posicion +=duracion;
+        if (duracion!=-1) posicion +=duracion;
         
-    } while (!salir && posicion!=-1);
+    } while (posicion!=-1 && duracion!=-1);
+
+    return -1;
 }
 
 int buscar_dos_sync_bits(int posicion)
@@ -351,6 +354,9 @@ int buscar_dos_sync_bits(int posicion)
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
     //Estamos al final de la primera
+
+
+    //printf("despues 1\n");
     
 
     int posicion0=posicion;
@@ -487,6 +493,8 @@ int buscar_inicio_sector(int posicion)
         pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
+    //printf("despues buscar_dos_sync_bits\n");
+
     if (posicion==-1) return -1;                    
     //pausa(2);
 
@@ -729,7 +737,7 @@ void lee_sector(int posicion)
         scanf("%s",buffer_pregunta);
 
         if (buffer_pregunta[0]=='s') {
-            printf("nuevo sector: ");
+            printf("Nuevo sector? : ");
             int sector;
             scanf("%s",buffer_pregunta);
             sector=atoi(buffer_pregunta);
@@ -738,12 +746,12 @@ void lee_sector(int posicion)
     }
 
 
-    printf("Sector Correcto? (s/n)");
+    printf("Grabar sector? (s/n)");
 
     scanf("%s",buffer_pregunta);
 
     if (buffer_pregunta[0]!='s') {
-        printf("Aborting\n");
+        printf("Not saving this sector\n");
         return;
     }
 
@@ -943,18 +951,18 @@ int main(int argc,char *argv[])
 
     else {
 
-        while (1) {
+        while (posicion!=-1) {
         
-        posicion=buscar_inicio_sector(posicion);
+            posicion=buscar_inicio_sector(posicion);
 
-        printf("Posicion inicio bits: %d\n",posicion);
+            printf("Posicion inicio bits: %d\n",posicion);
 
-        //pausa(5);
-        
+            //pausa(5);
+            
 
-        lee_sector(posicion);
+            lee_sector(posicion);
 
-        write_hilow_ddh_file(archivo_ddh);
+            write_hilow_ddh_file(archivo_ddh);
 
         }
 
