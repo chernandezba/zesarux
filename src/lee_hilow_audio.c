@@ -693,10 +693,12 @@ void dump_sector_contents(void)
     printf("\n");      
 }
 
-int lee_sector(int posicion)
+int lee_sector_unavez(int posicion,int *repetir)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
     //int posicion=0;
+
+    *repetir=0;
 
     int i;
 
@@ -774,16 +776,41 @@ int lee_sector(int posicion)
 
         do {
 
-            printf("Grabar sector? (s/n) e: editar numero sector f: fin  ");
+            printf("Grabar sector? (s/n) e: editar numero sector p: cambio parametros r: repetir f: fin  ");
 
             scanf("%s",buffer_pregunta);
 
-
+            if (buffer_pregunta[0]=='r') {
+                printf("Repeat\n");
+                *repetir=1;
+                return posicion;
+            }
 
             if (buffer_pregunta[0]=='f') {
                 printf("Ending\n");
                 return -1;
             }
+
+            if (buffer_pregunta[0]=='p') {
+
+                int parm;
+
+                do {
+                    printf("Parametros: 1) autoadjust_bit_width %d 2) algorithm_wave %d 3) verbose %d 0 end \n",
+                        autoajustar_duracion_bits,algoritmo_duracion_onda,modo_verbose);  
+
+                    
+                    char buffer_parm[100];
+                    scanf("%s",buffer_parm);
+                    parm=atoi(buffer_parm);
+                    
+                    if (parm==1) autoajustar_duracion_bits ^=1;
+                    if (parm==2) algoritmo_duracion_onda ^=1;
+                    if (parm==3) modo_verbose ^=1;
+
+
+                } while(parm!=0);
+            }              
 
             if (buffer_pregunta[0]=='e') {
                 printf("Nuevo sector? : ");
@@ -794,12 +821,12 @@ int lee_sector(int posicion)
                 printf("Nuevo sector: %d\n",sector);
             }    
 
-            if (buffer_pregunta[0]!='s') {
+            if (buffer_pregunta[0]=='n') {
                 printf("Not saving this sector\n");
                 return posicion;
             }
 
-        } while (buffer_pregunta[0]=='e');
+        } while (buffer_pregunta[0]=='e' || buffer_pregunta[0]=='p');
     }
 
     //en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
@@ -829,6 +856,25 @@ int lee_sector(int posicion)
 
     return posicion;
 
+}
+
+int lee_sector(int posicion)
+{
+    int repetir;
+
+    int posicion_inicial=posicion;
+
+    repetir=0;
+
+    do {
+
+        posicion=posicion_inicial;
+
+        posicion=lee_sector_unavez(posicion,&repetir);
+
+    } while(repetir);
+
+    return posicion;
 }
 
 long int get_file_size(char *nombre)
