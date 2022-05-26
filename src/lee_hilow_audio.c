@@ -802,8 +802,10 @@ int lee_sector(int posicion)
         } while (buffer_pregunta[0]=='e');
     }
 
-    //TODO: en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
-    if (sector==2 || sector==1) sector--;
+    //en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
+    //if (sector==2 || sector==1) sector--;
+
+    sector--;
 
     //Copiar a memoria ddh
     int offset_destino=sector*HILOW_SECTOR_SIZE;    
@@ -817,7 +819,7 @@ int lee_sector(int posicion)
     }*/
 
     //por si acaso sector fuera de rango
-    if (sector<1 || sector>=HILOW_MAX_SECTORS) {
+    if (sector<0 || sector>=HILOW_MAX_SECTORS) {
         printf("Out of range sector\n");
     }
 
