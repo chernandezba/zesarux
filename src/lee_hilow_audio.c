@@ -120,7 +120,9 @@ int util_get_absolute(int valor)
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
 //TESTEO: aun no funciona bien esta
-int testeo_duracion_onda(int posicion,int *duracion_flanco_bajada)
+//Este va mejor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
+//aunque a veces algo peor para bits
+int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
     int minimo_variacion=1;
@@ -209,7 +211,8 @@ int testeo_duracion_onda(int posicion,int *duracion_flanco_bajada)
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
 //Buena aunque no detecta bien dobles marcas de sync antes de los bits
-int duracion_onda(int posicion,int *duracion_flanco_bajada)
+//Este va mejor para detectar bits pero peor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
+int legacy_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
     z80_byte valor_anterior=lee_byte_memoria(posicion);
     int direccion=+1;
@@ -280,6 +283,21 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
         posicion++;
 
     } while (!salir);
+}
+
+
+//0=legacy
+//1=improved
+int algoritmo_duracion_onda=0;
+
+int duracion_onda(int posicion,int *duracion_flanco_bajada)
+{
+    if (algoritmo_duracion_onda==1) {
+        return improved_duracion_onda(posicion,duracion_flanco_bajada);
+    }
+    else {
+        return legacy_duracion_onda(posicion,duracion_flanco_bajada);
+    }
 }
 
 //a 44100 Hz
@@ -817,7 +835,7 @@ void *write_hilow_ddh_file(char *archivo)
 int main(int argc,char *argv[])
 {
     if(argc<3) {
-        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [verbose]\n",argv[0]);
+        printf("%s source_wav destination.ddh [autoadjust_bit_width] [solopista] [algorithm wave: wave_legacy / wave_improved] [verbose]\n",argv[0]);
         exit(1);
     }
 
@@ -846,12 +864,16 @@ int main(int argc,char *argv[])
 
         if (!strcasecmp(argv[indice_argumento],"verbose")) modo_verbose=1;
 
+        if (!strcasecmp(argv[indice_argumento],"wave_legacy")) algoritmo_duracion_onda=0;
+
+        if (!strcasecmp(argv[indice_argumento],"wave_improved")) algoritmo_duracion_onda=1;
+
         indice_argumento++;
         argumentos_leer--;
     }
 
-    printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d verbose %d\n",
-        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,modo_verbose);
+    printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d algorithm_wave %d verbose %d\n",
+        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,algoritmo_duracion_onda,modo_verbose);
     sleep(2);
 
 
