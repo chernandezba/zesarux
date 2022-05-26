@@ -626,57 +626,14 @@ int lee_byte(int posicion,z80_byte *byte_salida)
 
 z80_byte buffer_result[HILOW_SECTOR_SIZE+1];
 
-
-void lee_sector(int posicion)
+void dump_sector_contents(void)
 {
-    int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
-    //int posicion=0;
-
-    int i;
-
-    
-    for (i=0;i<total && posicion!=-1;i++) {
-        //printf("\nPos %d %d\n",i,posicion);
-        z80_byte byte_leido;
-
-        posicion=lee_byte(posicion,&byte_leido);
-        if (posicion!=-1) {
-            //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
-        }
-
-        buffer_result[i]=byte_leido;
-    }
+     int total=HILOW_SECTOR_SIZE+1;
 
     //dump total ascii+hexa
-    int colwidth=50;
+    int colwidth=50;     
 
-    int sector=buffer_result[0];
-
-    printf("Sector: %d\n",sector);
-
-    int sector_aparentemente_correcto=1;
-
-    if (!directo_a_pista) {
-
-        if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
-                sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
-
-        //      printf("%d %d\n",buffer_sector_five_byte[1],buffer_sector_five_byte[2]);
-                    sector_aparentemente_correcto=0;
-                    printf("Probably sector mismatch!\n");
-                    print_mostrar_ids_sector();
-                    pausa(2);
-        }
-
-    }
-
-    else {
-        //Para que pregunte al usuario dado que no tenemos las marcas de sector y no sabemos si el id de sector es correcto
-        sector_aparentemente_correcto=0;
-    }
-
-
-    pausa(1);
+    int i;
 
     for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
         int col;
@@ -700,11 +657,68 @@ void lee_sector(int posicion)
 
         printf("\n");
 
-    }    
+    } 
+
+    printf("\n");      
+}
+
+void lee_sector(int posicion)
+{
+    int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
+    //int posicion=0;
+
+    int i;
 
     
+    for (i=0;i<total && posicion!=-1;i++) {
+        //printf("\nPos %d %d\n",i,posicion);
+        z80_byte byte_leido;
 
-    printf("\n");
+        posicion=lee_byte(posicion,&byte_leido);
+        if (posicion!=-1) {
+            //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
+        }
+
+        buffer_result[i]=byte_leido;
+    }
+
+
+
+    int sector=buffer_result[0];
+
+    //printf("Sector: %d\n",sector);
+
+
+
+
+    pausa(1);
+
+    dump_sector_contents();   
+     
+
+
+
+    int sector_aparentemente_correcto=1;
+
+    if (!directo_a_pista) {
+
+        if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
+                sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+
+                    sector_aparentemente_correcto=0;
+                    printf("Probably sector mismatch!\n");
+                    print_mostrar_ids_sector();
+                    pausa(2);
+        }
+
+    }
+
+    else {
+        //Para que pregunte al usuario dado que no tenemos las marcas de sector y no sabemos si el id de sector es correcto
+        sector_aparentemente_correcto=0;
+    }    
+
+    printf("Sector %d\n",sector);
 
     char buffer_pregunta[100];
 
@@ -724,7 +738,7 @@ void lee_sector(int posicion)
     }
 
 
-    printf("Sector %d Correcto? (s/n)",sector);
+    printf("Sector Correcto? (s/n)");
 
     scanf("%s",buffer_pregunta);
 
