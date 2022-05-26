@@ -33,6 +33,8 @@ por tanto podria definir el tamaño total de directorio como 500 hexadecimal
 
 int lee_byte(int posicion,z80_byte *byte_salida);
 
+int modo_verbose=0;
+
 int lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=tamanyo_archivo) {
@@ -116,7 +118,8 @@ int util_get_absolute(int valor)
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
-int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
+//TESTEO: aun no funciona bien esta
+int testeo_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
     int minimo_variacion=1;
@@ -134,7 +137,7 @@ int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        //printf("V%d ",valor_leido);
+        if (modo_verbose) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -147,6 +150,7 @@ int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
                 //bajamos
                 if (duracion_variacion>minimo_variacion) {
                     //Baja lo suficiente que cambia direccion
+                    if (modo_verbose) printf(" cambio a bajada. pos=%d\n",posicion);
                     direccion=-1;
                     duracion_variacion=0;
                     valor_anterior=valor_leido;
@@ -171,6 +175,7 @@ int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
                 if (duracion_variacion>minimo_variacion) {
                     //Sube lo suficiente que cambia direccion
                     //printf("\n");
+                    if (modo_verbose) printf(" fin flanco. pos=%d\n",posicion);
                     (*duracion_flanco_bajada) -=minimo_variacion;
                     return duracion-minimo_variacion;
                 }
@@ -202,6 +207,7 @@ int nuevo_duracion_onda(int posicion,int *duracion_flanco_bajada)
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
+//Buena aunque no detecta bien dobles marcas de sync antes de los bits
 int duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
     z80_byte valor_anterior=lee_byte_memoria(posicion);
@@ -215,7 +221,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        //printf("V%d ",valor_leido);
+        if (modo_verbose) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -229,6 +235,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
                 if (valor_leido+filtro_ruido<valor_anterior) {
                     //Baja lo suficiente que cambia direccion
                     direccion=-1;
+                    if (modo_verbose) printf(" cambio a bajada. pos=%d\n",posicion);
                     valor_anterior=valor_leido;
                 }
 
@@ -249,7 +256,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
                 //subimos
                 if (valor_leido-filtro_ruido>valor_anterior) {
                     //Sube lo suficiente que cambia direccion
-                    //printf("\n");
+                    if (modo_verbose) printf(" fin flanco. pos=%d\n",posicion);
                     return duracion;
                 }
                 else {
@@ -309,7 +316,10 @@ int buscar_dos_sync_bits(int posicion)
 
     do {
     
-    printf("1 posicion %d\n",posicion);
+    if (modo_verbose) {
+        printf("\n1 posicion %d\n",posicion);
+        sleep(2);
+    }
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
     //Estamos al final de la primera
@@ -317,20 +327,29 @@ int buscar_dos_sync_bits(int posicion)
 
     int posicion0=posicion;
 
-    printf("2 posicion %d\n",posicion);
-    //sleep(5);
+    if (modo_verbose) {
+        printf("\n2 posicion %d\n",posicion);
+        sleep(2);
+    }
+
+
 
     //TODO: la segunda no se detecta bien. asumir posicion
     //no la detecta por variaciones muy tenues en la segunda onda
+    //necesario con funcion "buena" de duracion_onda
     printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
     return posicion+LONGITUD_ONDA_INICIO_BITS;
+
+
 
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
 
 
-    printf("3 posicion %d\n",posicion);
-    //sleep(5);
+    if (modo_verbose) {
+        printf("\n3 posicion %d\n",posicion);
+        sleep(2);
+    }
 
     //Estamos al final de la segunda
 
@@ -339,50 +358,68 @@ int buscar_dos_sync_bits(int posicion)
     //Ver si la segunda acaba en donde acaba la primera + el tiempo de onda
     int delta=posicion-posicion0;
 
-    printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
+    if (modo_verbose) printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
     //sleep(3);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
-            delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
-                printf("Dos sync consecutivos en %d\n",posicion);
-                //sleep(5);
-                return posicion;
-            }
+            delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN)
+        {
+        if (modo_verbose) {
+            printf("\n---Dos sync consecutivos en %d---\n",posicion);
+            sleep(5);
+        }
+        
+        return posicion;
+    }
+
+    else {
+        if (modo_verbose) {
+            printf("\n---NO hay dos sync consecutivos en %d---\n",posicion);
+            sleep(5);
+        }
+    }
 
     } while (posicion!=-1);
 }
+
+//los 5 bytes indicadores de sector
+z80_byte buffer_sector_five_byte[5];
 
 int buscar_inicio_sector(int posicion)
 {
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
     int i;
 
-
+    if (modo_verbose) {
+        printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
+        sleep(2);
+    }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
 
-    //Leer los 5 bytes indicadores de sector
-    z80_byte buffer_byte[5];
     
     for (i=0;i<5;i++) {
         z80_byte byte_leido;
         posicion=lee_byte(posicion,&byte_leido);
         if (posicion==-1) return -1;
-        buffer_byte[i]=byte_leido;
+        buffer_sector_five_byte[i]=byte_leido;
     }
 
     printf("5 bytes id sector: ");
 
     for (i=0;i<5;i++) {
-        printf("%02XH ",buffer_byte[i]);
+        printf("%02XH ",buffer_sector_five_byte[i]);
     }
 
     printf("\n");
 
     //sleep(3);
 
-
+    if (modo_verbose) {
+        printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
+        sleep(2);
+    }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
 
@@ -409,6 +446,10 @@ int buscar_inicio_sector(int posicion)
 
     //sleep(3);    
 
+    if (modo_verbose) {
+        printf("\n---Buscando tecer par de marcas de sincronismo en %d\n",posicion);
+        sleep(2);
+    }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;                    
     //sleep(2);
@@ -436,6 +477,8 @@ int esperar_inicio_sincronismo(int posicion)
         posicion++;
     } while(1);
 }
+
+int autoajustar_duracion_bits=0;
 
 //Retorna posicion
 int lee_byte(int posicion,z80_byte *byte_salida)
@@ -479,9 +522,17 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    //int duracion_uno=(duracion_flanco_bajada*140)/100;
    //int duracion_cero=(duracion_flanco_bajada*92)/100;   
 
-   int duracion_uno=(duracion_flanco_bajada*70)/100;
-   int duracion_cero=(duracion_flanco_bajada*27)/100;   
+   int duracion_uno;
+   int duracion_cero;   
 
+   //duraciones bits 0 y 1 fijas
+    duracion_uno=28;
+    duracion_cero=11;
+
+    if (autoajustar_duracion_bits) {
+        duracion_uno=(duracion_flanco_bajada*70)/100;
+        duracion_cero=(duracion_flanco_bajada*27)/100;         
+    }
 
    //int duracion_uno=(duracion_sincronismo_byte*80)/100;
    //int duracion_cero=(duracion_sincronismo_byte*40)/100;
@@ -566,6 +617,19 @@ void lee_sector(int posicion)
     int sector=buffer_result[0];
 
     printf("Sector: %d\n",sector);
+
+    int sector_aparentemente_correcto=1;
+
+    if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
+            sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+
+    //      printf("%d %d\n",buffer_sector_five_byte[1],buffer_sector_five_byte[2]);
+                sector_aparentemente_correcto=0;
+                printf("Probably sector mismatch!\n");
+                sleep(2);
+    }
+
+
     sleep(1);
 
     for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
@@ -596,9 +660,25 @@ void lee_sector(int posicion)
 
     printf("\n");
 
-    printf("Correcto? (s/n)");
-
     char buffer_pregunta[100];
+
+    if (!sector_aparentemente_correcto) {
+        printf("Quieres cambiar el sector? (s/n)");
+    
+
+        scanf("%s",buffer_pregunta);
+
+        if (buffer_pregunta[0]=='s') {
+            printf("nuevo sector: ");
+            int sector;
+            scanf("%s",buffer_pregunta);
+            sector=atoi(buffer_pregunta);
+            printf("Nuevo sector: %d\n",sector);
+        }
+    }
+
+
+    printf("Correcto? (s/n)");
 
     scanf("%s",buffer_pregunta);
 
@@ -735,7 +815,10 @@ void *write_hilow_ddh_file(char *archivo)
 
 int main(int argc,char *argv[])
 {
-    
+    if(argc<4) {
+        printf("%s source_wav destination.ddh 0/1:autoadjust_bit_width [solopista] [verbose]\n",argv[0]);
+        exit(1);
+    }
 
     char *archivo;
 
@@ -746,6 +829,19 @@ int main(int argc,char *argv[])
 
     char *archivo_ddh;
     archivo_ddh=argv[2];
+
+    int directo_a_pista=0;
+
+    if (argv[3][0]=='1') autoajustar_duracion_bits=1;
+
+    if (argc>=5) {
+        if (argv[4][0]=='s') directo_a_pista=1;
+    }
+
+    if (argc>=6) {
+        if (argv[5][0]=='v') modo_verbose=1;
+    }
+
 
     tamanyo_archivo=get_file_size(archivo);
 
@@ -758,18 +854,33 @@ int main(int argc,char *argv[])
 
     int posicion=0;
 
-    while (1) {
-    
-    posicion=buscar_inicio_sector(posicion);
+    if (directo_a_pista) {
 
-    printf("Posicion inicio bits: %d\n",posicion);
+        //temp. En directo_a_pista esto no se debe hacer
+        //posicion=buscar_dos_sync_bits(posicion);
+        posicion=buscar_inicio_sector(posicion);
+        
 
-    //sleep(5);
-    
+        lee_sector(posicion);
+        write_hilow_ddh_file(archivo_ddh);
+    }
 
-    lee_sector(posicion);
+    else {
 
-    write_hilow_ddh_file(archivo_ddh);
+        while (1) {
+        
+        posicion=buscar_inicio_sector(posicion);
+
+        printf("Posicion inicio bits: %d\n",posicion);
+
+        //sleep(5);
+        
+
+        lee_sector(posicion);
+
+        write_hilow_ddh_file(archivo_ddh);
+
+        }
 
     }
 
