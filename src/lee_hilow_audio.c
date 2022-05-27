@@ -829,7 +829,7 @@ void dump_sector_contents(void)
     printf("\n");      
 }
 
-int lee_sector_unavez(int posicion,int *repetir)
+int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
     //int posicion=0;
@@ -838,8 +838,9 @@ int lee_sector_unavez(int posicion,int *repetir)
 
     int i;
 
+    *total_bytes_leidos=0;
     
-    for (i=0;i<total && posicion!=-1;i++) {
+    for (i=0;i<total && posicion!=-1;i++,(*total_bytes_leidos)++) {
         //printf("\nPos %d %d\n",i,posicion);
         z80_byte byte_leido;
 
@@ -852,6 +853,10 @@ int lee_sector_unavez(int posicion,int *repetir)
     }
 
 
+    if (*total_bytes_leidos==0) {
+        printf("Zero bytes read\n");
+        return posicion;
+    }
 
     int sector=buffer_result[0];
 
@@ -887,6 +892,7 @@ int lee_sector_unavez(int posicion,int *repetir)
         sector_aparentemente_correcto=0;
     }    
 
+    printf("Total bytes leidos: %d\n",*total_bytes_leidos);
     printf("Sector %d\n",sector);
 
     char buffer_pregunta[100];
@@ -993,7 +999,7 @@ int lee_sector_unavez(int posicion,int *repetir)
 
 }
 
-int lee_sector(int posicion)
+int lee_sector(int posicion,int *total_bytes_leidos)
 {
     int repetir;
 
@@ -1005,7 +1011,7 @@ int lee_sector(int posicion)
 
         posicion=posicion_inicial;
 
-        posicion=lee_sector_unavez(posicion,&repetir);
+        posicion=lee_sector_unavez(posicion,&repetir,total_bytes_leidos);
 
     } while(repetir);
 
@@ -1212,6 +1218,7 @@ int main(int argc,char *argv[])
     //pausa(2);
 
     int posicion=0;
+    int total_bytes_leidos;
 
     if (directo_a_pista) {
 
@@ -1219,7 +1226,7 @@ int main(int argc,char *argv[])
         //posicion=buscar_dos_sync_bits(posicion);
         //posicion=buscar_inicio_sector(posicion);
         
-        lee_sector(posicion);
+        lee_sector(posicion,&total_bytes_leidos);
         write_hilow_ddh_file(archivo_ddh);
     }
 
@@ -1234,7 +1241,7 @@ int main(int argc,char *argv[])
             //pausa(5);
             
 
-            posicion=lee_sector(posicion);
+            posicion=lee_sector(posicion,&total_bytes_leidos);
 
             write_hilow_ddh_file(archivo_ddh);
 
