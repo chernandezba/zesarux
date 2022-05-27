@@ -72,7 +72,7 @@ int hilow_read_audio_pausa(int segundos)
     if (hilow_read_audio_ejecutar_sleep) sleep(segundos);
 }
 
-int lee_byte_memoria(int posicion)
+int hilow_read_audio_lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=tamanyo_archivo) {
         //TODO: mejorar esto, no finalizar sino retornar fin de memoria a la rutina que llama
@@ -95,11 +95,11 @@ int hilow_read_audio_get_absolute(int valor)
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
 
-int duracion_onda(int posicion,int *duracion_flanco_bajada)
+int hilow_read_audio_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
 
-    z80_byte valor_anterior=lee_byte_memoria(posicion);
+    z80_byte valor_anterior=hilow_read_audio_lee_byte_memoria(posicion);
     int direccion=+1;
 
     *duracion_flanco_bajada=0;
@@ -116,7 +116,7 @@ int duracion_onda(int posicion,int *duracion_flanco_bajada)
 
     do {
         //printf("%d ",direccion);
-        int valor_leido=lee_byte_memoria(posicion);
+        int valor_leido=hilow_read_audio_lee_byte_memoria(posicion);
         if (hilow_read_audio_modo_verbose_extra) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
@@ -215,7 +215,7 @@ Si bajamos.
 
 
 
-int buscar_onda_inicio_bits(int posicion)
+int hilow_read_audio_buscar_onda_inicio_bits(int posicion)
 {
     
 
@@ -224,7 +224,7 @@ int buscar_onda_inicio_bits(int posicion)
 
     do {
 
-        duracion=duracion_onda(posicion,&duracion_flanco_bajada);
+        duracion=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
 
         //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
@@ -241,7 +241,7 @@ int buscar_onda_inicio_bits(int posicion)
     return -1;
 }
 
-int buscar_dos_sync_bits(int posicion)
+int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 {
     
     
@@ -253,7 +253,7 @@ int buscar_dos_sync_bits(int posicion)
         printf("\nposicion antes buscar inicio onda sincronismo bits %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
-    posicion=buscar_onda_inicio_bits(posicion);
+    posicion=hilow_read_audio_buscar_onda_inicio_bits(posicion);
     if (posicion==-1) {
         printf("\nFin de archivo intentando leer primera onda de sincronismo bits\n");
         return -1;
@@ -275,7 +275,7 @@ int buscar_dos_sync_bits(int posicion)
 
     //TODO: la segunda no se detecta bien. asumir posicion
     //no la detecta por variaciones muy tenues en la segunda onda
-    //necesario con funcion "buena" de duracion_onda
+    //necesario con funcion "buena" de hilow_read_audio_duracion_onda
     int final_posicion;
 
     
@@ -289,7 +289,7 @@ int buscar_dos_sync_bits(int posicion)
 
 
 
-    posicion=buscar_onda_inicio_bits(posicion);
+    posicion=hilow_read_audio_buscar_onda_inicio_bits(posicion);
     if (posicion==-1) return -1;
 
 
@@ -344,7 +344,7 @@ void hilow_read_audio_print_mostrar_ids_sector(void)
 
 }
 
-int buscar_inicio_sector(int posicion)
+int hilow_read_audio_buscar_inicio_sector(int posicion)
 {
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
     int i;
@@ -355,7 +355,7 @@ int buscar_inicio_sector(int posicion)
             printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
             hilow_read_audio_pausa(2);
         }
-        posicion=buscar_dos_sync_bits(posicion);
+        posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
         if (posicion==-1) return -1;
 
 
@@ -377,7 +377,7 @@ int buscar_inicio_sector(int posicion)
         printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
-    posicion=buscar_dos_sync_bits(posicion);
+    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
 
     //Leer el label del sector
@@ -407,8 +407,8 @@ int buscar_inicio_sector(int posicion)
         printf("\n---Buscando tecer par de marcas de sincronismo en %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
-    posicion=buscar_dos_sync_bits(posicion);
-    //printf("despues buscar_dos_sync_bits\n");
+    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
+    //printf("despues hilow_read_audio_buscar_dos_sync_bits\n");
 
     if (posicion==-1) return -1;                    
     //hilow_read_audio_pausa(2);
@@ -416,13 +416,13 @@ int buscar_inicio_sector(int posicion)
     return posicion;
 }
 
-int esperar_inicio_sincronismo(int posicion)
+int hilow_read_audio_esperar_inicio_sincronismo(int posicion)
 {
 
-    z80_byte valor_anterior=lee_byte_memoria(posicion);
+    z80_byte valor_anterior=hilow_read_audio_lee_byte_memoria(posicion);
     do {
         //printf("%d ",direccion);
-        int valor_leido=lee_byte_memoria(posicion);
+        int valor_leido=hilow_read_audio_lee_byte_memoria(posicion);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -455,7 +455,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
 
    //Saltar zona de señal plana hasta que realmente empieza el sincronismo
    /*printf("pos antes inicio sync: %d\n",posicion);
-   posicion=esperar_inicio_sincronismo(posicion);
+   posicion=hilow_read_audio_esperar_inicio_sincronismo(posicion);
    printf("pos en inicio sync: %d\n",posicion);
 
    if (posicion==-1) {
@@ -467,7 +467,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    z80_byte byte_final=0;
 
     int duracion_flanco_bajada;
-   int duracion_sincronismo_byte=duracion_onda(posicion,&duracion_flanco_bajada);
+   int duracion_sincronismo_byte=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
 
    if (duracion_sincronismo_byte==-1) {
        //fin
@@ -519,7 +519,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
        byte_final=byte_final<<1;
 
        int duracion_flanco_bajada;
-       int duracion_bit=duracion_onda(posicion,&duracion_flanco_bajada);
+       int duracion_bit=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
        //printf("L%d ",duracion_bit);
        //printf("L%d ",duracion_flanco_bajada);
        if (duracion_bit==-1) {
@@ -588,7 +588,7 @@ void hilow_read_audio_dump_sector_contents(void)
     printf("\n");      
 }
 
-int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
+int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
     //int posicion=0;
@@ -758,7 +758,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 
 }
 
-int lee_sector(int posicion,int *total_bytes_leidos)
+int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos)
 {
     int repetir;
 
@@ -770,7 +770,7 @@ int lee_sector(int posicion,int *total_bytes_leidos)
 
         posicion=posicion_inicial;
 
-        posicion=lee_sector_unavez(posicion,&repetir,total_bytes_leidos);
+        posicion=hilow_read_audio_lee_sector_unavez(posicion,&repetir,total_bytes_leidos);
 
     } while(repetir);
 
@@ -984,10 +984,10 @@ int main(int argc,char *argv[])
     if (hilow_read_audio_directo_a_pista) {
 
         //temp. En hilow_read_audio_directo_a_pista esto no se debe hacer
-        //posicion=buscar_dos_sync_bits(posicion);
-        //posicion=buscar_inicio_sector(posicion);
+        //posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
+        //posicion=hilow_read_audio_buscar_inicio_sector(posicion);
         
-        lee_sector(posicion,&total_bytes_leidos);
+        hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
         hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
     }
 
@@ -995,14 +995,14 @@ int main(int argc,char *argv[])
 
         while (posicion!=-1) {
         
-            posicion=buscar_inicio_sector(posicion);
+            posicion=hilow_read_audio_buscar_inicio_sector(posicion);
 
             printf("Posicion inicio bits: %d\n",posicion);
 
             //hilow_read_audio_pausa(5);
             
 
-            posicion=lee_sector(posicion,&total_bytes_leidos);
+            posicion=hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
 
             hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
 
