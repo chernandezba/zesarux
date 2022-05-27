@@ -283,9 +283,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 
     
     final_posicion=posicion+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS;
-
     if (hilow_read_audio_modo_verbose) printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
-    
     return final_posicion;
 
     
@@ -407,7 +405,7 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
     //hilow_read_audio_pausa(3);    
 
     if (hilow_read_audio_modo_verbose) {
-        printf("\n---Buscando tecer par de marcas de sincronismo en %d\n",posicion);
+        printf("\n---Buscando tercer par de marcas de sincronismo en %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
     posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
@@ -740,9 +738,9 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
     //Copiar a memoria ddh
     int offset_destino=sector*HILOW_SECTOR_SIZE;    
 
-    printf("offset_destino: %d\n",offset_destino);
+    if (hilow_read_audio_modo_verbose) printf("offset_destino a archivo ddh: %d\n",offset_destino);
 
-    printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
+    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
     /*for (i=0;i<HILOW_SECTOR_SIZE;i++) {
         printf("%d\n",i);
         hilow_ddh[offset_destino+i]=hilow_read_audio_buffer_result[i+1];
@@ -1002,7 +1000,7 @@ int main(int argc,char *argv[])
         
             posicion=hilow_read_audio_buscar_inicio_sector(posicion);
 
-            printf("Posicion inicio bits: %d\n",posicion);
+            if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",posicion);
 
             //hilow_read_audio_pausa(5);
             
