@@ -3340,7 +3340,18 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
                 //Id de sectores usados empieza por el 1
                 menu_hilow_browser_print_char_sector(w,sector_actual-1,'u');
 
-                if (i>0 && sector_actual!=sector_anterior+1) parcial_fragmentacion++;
+                //sectores en cara B se numeran igual en orden pero con bit 7 alzado
+                //Considerar por ejemplo sector 3 y 131, ambos son consecutivos
+                if (i>0) {
+                    if (
+                    sector_actual!=sector_anterior+1 &&
+                    (sector_actual & 127)!=(sector_anterior & 127)
+                    )
+                    {
+                        parcial_fragmentacion++;
+                    }
+                }
+                
 
                 sector_anterior=sector_actual;
 
