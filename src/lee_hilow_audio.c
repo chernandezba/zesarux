@@ -85,66 +85,7 @@ int lee_byte_memoria(int posicion)
 
 int filtro_ruido=2;
 
-//Dice la duracion de una onda, asumiendo:
-//subimos - bajamos - y empezamos a subir
-/*int new_duracion_onda(int posicion,int *duracion_flanco_bajada)
-{
-    z80_byte valor_anterior=lee_byte_memoria(posicion);
-    int direccion=+1;
 
-    int salir=0;
-    int duracion=0;
-
-    *duracion_flanco_bajada=0;
-
-    do {
-        //printf("%d ",direccion);
-        int valor_leido=lee_byte_memoria(posicion);
-        printf("V(%d)%d ",direccion,valor_leido);
-        if (valor_leido==-1) {
-            //fin de archivo
-            return -1;
-        }
-
-        //si variacion es muy poca, no actuar
-        int delta=valor_leido-valor_anterior;
-
-        int nosigndelta=delta;
-        if (nosigndelta<0) nosigndelta=-nosigndelta;
-
-        //temp 
-        nosigndelta=99; 
-
-        if (nosigndelta<filtro_ruido) {
-            //nada
-        }
-        
-        else {
-            if (direccion==+1) {
-                //subimos. vemos si bajamos
-                if (delta<0) direccion=-1;
-            }
-            else {
-                //bajamos. ver si subimos y por tanto finalizamos
-                if (delta>0) {
-                    //printf("\n");
-                    return duracion;
-                }
-
-                
-            }
-
-            valor_anterior=valor_leido;
-
-        }
-
-        if (direccion==-1) (*duracion_flanco_bajada)++;
-        duracion++;
-        posicion++;
-
-    } while (!salir);
-}
-*/
 
 int util_get_absolute(int valor)
 {
@@ -153,20 +94,15 @@ int util_get_absolute(int valor)
         return valor;
 }
 
+
+int minimo_variacion=10;
+
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
-//TESTEO: aun no funciona bien esta
-//Este va mejor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
-//aunque a veces algo peor para bits
-
-
-
-
 
 int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
-    int minimo_variacion=10;
 
     z80_byte valor_anterior=lee_byte_memoria(posicion);
     int direccion=+1;
@@ -194,16 +130,28 @@ int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
 
 
 /*
+La idea es ver, que cuando haya una variacion en el sentido contrario al que vamos, sea lo suficientemente mayor
+como para interpretar que ahí hay un pico (si es abajo, un "valle" de onda, y si es arriba, una "cresta" de onda)
+Si no es suficientemente mayor, esto evitar variaciones de ruido en la señal
 
-subimos. 
--si flag_menor=0 y si valor leido es menor indicar hemos leido un valor menor. flag_menor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca) que es mayor que el actual
+
+flag_menor indica si se ha detectado un momento en que el pico va de bajada, cuando estamos subiendo
+flag_mayor indica si se ha detectado un momento en que el pico va de subida, cuando estamos bajando
+posmarca indica desde que posicion se ha detectado un pico
+vmarca contiene el valor del sample de audio en el momento que se detecta un pico
+Nota: flag_menor y flag_mayor podrian ser realmente la misma variable, pero se deja en dos separadas para que quede mas claro
+lo que hace el algoritmo
+
+
+Si subimos. 
+-si flag_menor=0 y si valor leido es menor indicar hemos leido un valor menor. flag_menor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca)
 
 -si flag_menor=1 y valor leido>vmarca, resetear flag_menor
 -si flag_menor=1 y valor leido<vmarca y hay mas de un umbral (minimo_variacion) apuntar en inicio_bajada posicion posmarca. pasar a bajada
 
 
-bajamos. 
--si flag_mayor=0 y si valor leido es mayor indicar hemos leido un valor mayor. flag_mayor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca) que es menor que el actual
+Si bajamos. 
+-si flag_mayor=0 y si valor leido es mayor indicar hemos leido un valor mayor. flag_mayor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca)
 
 -si flag_mayor=1 y valor leido<vmarca, resetear flag_mayor
 -si flag_mayor=1 y valor leido>vmarca y hay mas de un umbral (minimo_variacion) retornar posmarca
@@ -269,95 +217,7 @@ bajamos.
     } while (1);
 }
 
-//Dice la duracion de una onda, asumiendo:
-//subimos - bajamos - y empezamos a subir
-//TESTEO: aun no funciona bien esta
-//Este va mejor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
-//aunque a veces algo peor para bits
-int old_improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
-{
 
-    int minimo_variacion=5;
-
-    z80_byte valor_anterior=lee_byte_memoria(posicion);
-    int direccion=+1;
-
-    int salir=0;
-    int duracion=0;
-
-    *duracion_flanco_bajada=0;
-
-    int duracion_variacion=0;
-
-    do {
-        //printf("%d ",direccion);
-        int valor_leido=lee_byte_memoria(posicion);
-        if (modo_verbose_extra) printf("V%d ",valor_leido);
-        if (valor_leido==-1) {
-            //fin de archivo
-            return -1;
-        }
-
-
-        if (direccion==+1) {
-            //subimos. vemos si bajamos
-            if (valor_leido<valor_anterior) {
-                //bajamos
-                if (duracion_variacion>minimo_variacion) {
-                    //Baja lo suficiente que cambia direccion
-                    if (modo_verbose) printf(" cambio a bajada. pos=%d\n",posicion);
-                    direccion=-1;
-                    duracion_variacion=0;
-                    valor_anterior=valor_leido;
-                }
-
-                else {
-                    valor_anterior=valor_leido;
-                    duracion_variacion++;
-                }
-            }
-
-            else {
-                //subimos
-                valor_anterior=valor_leido;
-                duracion_variacion=0;
-            }
-        }
-        else {
-            //bajamos. ver si subimos y por tanto finalizamos
-            if (valor_leido>valor_anterior) {
-                //subimos
-                if (duracion_variacion>minimo_variacion) {
-                    //Sube lo suficiente que cambia direccion
-                    //printf("\n");
-                    if (modo_verbose) printf(" fin flanco. pos=%d\n",posicion);
-                    (*duracion_flanco_bajada) -=minimo_variacion;
-                    return duracion-minimo_variacion;
-                }
-                else {
-                    valor_anterior=valor_leido;
-                    duracion_variacion++;
-                }
-
-
-            }
-            else {
-                //Bajamos
-                valor_anterior=valor_leido;
-                duracion_variacion=0;
-            }
-
-            (*duracion_flanco_bajada)++;
-        }
-
-        
-
-        
-        duracion++;
-        posicion++;
-
-    } while (!salir);
-}
 
 
 //Dice la duracion de una onda, asumiendo:
@@ -1181,6 +1041,8 @@ int main(int argc,char *argv[])
     while (argumentos_leer>0) {
 
         if (!strcasecmp(argv[indice_argumento],"--autoadjust_bit_width")) autoajustar_duracion_bits=1;
+
+        //con opcion autoadjust_bit_width suele cargar peor
 
         else if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
 
