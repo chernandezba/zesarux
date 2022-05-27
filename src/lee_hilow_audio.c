@@ -276,15 +276,12 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 
 
 
-    //TODO: la segunda no se detecta bien. asumir posicion
-    //no la detecta por variaciones muy tenues en la segunda onda
-    //necesario con funcion "buena" de hilow_read_audio_duracion_onda
     int final_posicion;
 
-    
-    final_posicion=posicion+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS;
-    if (hilow_read_audio_modo_verbose) printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
-    return final_posicion;
+    //Antes la segunda onda no se detectaba bien. Descomentar estas lineas si vuelve a suceder    
+    //final_posicion=posicion+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS;
+    //if (hilow_read_audio_modo_verbose) printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
+    //return final_posicion;
 
     
 
@@ -329,6 +326,8 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
     }
 
     } while (posicion!=-1);
+
+    return posicion;
 }
 
 
@@ -997,6 +996,8 @@ int main(int argc,char *argv[])
     else {
 
         while (posicion!=-1) {
+
+            printf("\n");
         
             posicion=hilow_read_audio_buscar_inicio_sector(posicion);
 
