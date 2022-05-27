@@ -63,6 +63,8 @@ int ejecutar_sleep=0;
 
 int completamente_automatico=0;
 
+int leer_cara_dos=0;
+
 int pausa(int segundos)
 {
     if (ejecutar_sleep) sleep(segundos);
@@ -371,7 +373,7 @@ int buscar_dos_sync_bits(int posicion)
     do {
     
     if (modo_verbose) {
-        printf("\n1 posicion %d\n",posicion);
+        printf("\nposicion antes buscar inicio onda bits %d\n",posicion);
         pausa(2);
     }
     posicion=buscar_onda_inicio_bits(posicion);
@@ -385,7 +387,7 @@ int buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     if (modo_verbose) {
-        printf("\n2 posicion %d\n",posicion);
+        printf("\nposicion final primera onda bits %d\n",posicion);
         pausa(2);
     }
 
@@ -394,8 +396,23 @@ int buscar_dos_sync_bits(int posicion)
     //TODO: la segunda no se detecta bien. asumir posicion
     //no la detecta por variaciones muy tenues en la segunda onda
     //necesario con funcion "buena" de duracion_onda
+    int final_posicion;
+
+    if (leer_cara_dos) {
+        //saltar 3 ondas en vez de 2
+        final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS*2;
+    }
+    else {
+        final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS;
+    }
+    
+
+
     printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
+    //TODO: esto deberia ser return final_posicion, pero por alguna razon, al leer cara B, si lo pongo "bien" no funciona correctamente...
     return posicion+LONGITUD_ONDA_INICIO_BITS;
+
+    //TODO: de aqui en adelante considerar cuando se trata la cara B y hay que esperar 3 marcas de sync en vez de 2
 
 
 
@@ -460,26 +477,29 @@ int buscar_inicio_sector(int posicion)
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
     int i;
 
-    if (modo_verbose) {
-        printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
-        pausa(2);
-    }
-    posicion=buscar_dos_sync_bits(posicion);
-    if (posicion==-1) return -1;
 
-    
-    for (i=0;i<5;i++) {
-        z80_byte byte_leido;
-        posicion=lee_byte(posicion,&byte_leido);
+    if (!leer_cara_dos) {
+        if (modo_verbose) {
+            printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
+            pausa(2);
+        }
+        posicion=buscar_dos_sync_bits(posicion);
         if (posicion==-1) return -1;
-        buffer_sector_five_byte[i]=byte_leido;
+
+
+        for (i=0;i<5;i++) {
+            z80_byte byte_leido;
+            posicion=lee_byte(posicion,&byte_leido);
+            if (posicion==-1) return -1;
+            buffer_sector_five_byte[i]=byte_leido;
+        }
+
+        printf("5 bytes id sector: ");
+
+        print_mostrar_ids_sector();
+
+        //pausa(3);
     }
-
-    printf("5 bytes id sector: ");
-
-    print_mostrar_ids_sector();
-
-    //pausa(3);
 
     if (modo_verbose) {
         printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
@@ -733,7 +753,7 @@ int lee_sector_unavez(int posicion,int *repetir)
 
     int sector_aparentemente_correcto=1;
 
-    if (!directo_a_pista) {
+    if (!directo_a_pista && !leer_cara_dos) {
 
         if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
             sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
@@ -893,6 +913,27 @@ long int get_file_size(char *nombre)
 }
 
 
+void espejar_sonido(z80_byte *puntero,int tamanyo)
+{
+
+    int mitad=tamanyo/2;
+    int indice_final=tamanyo-1;
+
+    int i;
+
+    z80_byte byte_izquierda,byte_derecha;
+
+    for (i=0;i<mitad;i++,indice_final--) {
+        byte_izquierda=puntero[i];
+        byte_derecha=puntero[indice_final];
+
+        //intercambiar
+        puntero[i]=byte_derecha;
+        puntero[indice_final]=byte_izquierda;
+
+    }
+}
+
 z80_byte *read_hilow_audio_file(char *archivo)
 {
     z80_byte *puntero;
@@ -922,7 +963,10 @@ z80_byte *read_hilow_audio_file(char *archivo)
     fread(puntero,1,tamanyo,ptr_bmpfile);
     fclose(ptr_bmpfile);
 
-
+    //Si leemos cara 2, invertir todo el sonido (el principio al final)
+    if (leer_cara_dos) {
+        espejar_sonido(puntero,tamanyo);
+    }
 
     return puntero;
 }
@@ -990,7 +1034,7 @@ int main(int argc,char *argv[])
 
     if(argc<3 || mostrar_ayuda) {
         printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] "
-                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause] [--automatic]\n",argv[0]);
+                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause] [--automatic] [--bside]\n",argv[0]);
         exit(1);
     }
 
@@ -1028,6 +1072,8 @@ int main(int argc,char *argv[])
         if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
 
         if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
+
+        if (!strcasecmp(argv[indice_argumento],"--bside")) leer_cara_dos=1;
 
         indice_argumento++;
         argumentos_leer--;
