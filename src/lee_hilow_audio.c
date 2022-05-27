@@ -71,7 +71,7 @@ z80_byte hilow_read_audio_buffer_sector_five_byte[5];
 z80_byte hilow_read_audio_buffer_result[HILOW_SECTOR_SIZE+1];
 
 
-int hilow_read_audio_pausa(int segundos)
+void hilow_read_audio_pausa(int segundos)
 {
     if (hilow_read_audio_ejecutar_sleep) sleep(segundos);
 }
@@ -856,7 +856,7 @@ z80_byte *read_hilow_audio_file(char *archivo)
 }
 
 
-void *hilow_read_audio_read_hilow_ddh_file(char *archivo)
+void hilow_read_audio_read_hilow_ddh_file(char *archivo)
 {
     //z80_byte *puntero;
 
@@ -867,8 +867,9 @@ void *hilow_read_audio_read_hilow_ddh_file(char *archivo)
     hilow_read_audio_hilow_ddh=malloc(tamanyo);
 
     if (hilow_read_audio_hilow_ddh==NULL) {
+        //TODO: que hacer si no se puede asignar memoria
         printf("Can not allocate memory for hilow ddh file");
-        return NULL;
+        exit(1);
     }
 
 
@@ -877,18 +878,19 @@ void *hilow_read_audio_read_hilow_ddh_file(char *archivo)
     ptr_ddhfile=fopen(archivo,"rb");
 
     if (!ptr_ddhfile) {
-            printf("Unable to open ddh file %s\n",archivo);
-            return NULL;
+        //Esto es normal, si archivo de output no existe
+        printf("Unable to open ddh file %s\n",archivo);
+        return;
     }
 
     fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
     fclose(ptr_ddhfile);    
 
- 
+
 
 }
 
-void *hilow_read_audio_write_hilow_ddh_file(char *archivo)
+void hilow_read_audio_write_hilow_ddh_file(char *archivo)
 {
     z80_byte *puntero;
 
@@ -900,7 +902,7 @@ void *hilow_read_audio_write_hilow_ddh_file(char *archivo)
 
     if (!ptr_ddhfile) {
             printf("Unable to open ddh file %s\n",archivo);
-            return NULL;
+            return;
     }
 
     fwrite(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
