@@ -158,7 +158,123 @@ int util_get_absolute(int valor)
 //TESTEO: aun no funciona bien esta
 //Este va mejor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
 //aunque a veces algo peor para bits
+
+
+
+
+
 int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
+{
+
+    int minimo_variacion=10;
+
+    z80_byte valor_anterior=lee_byte_memoria(posicion);
+    int direccion=+1;
+
+    *duracion_flanco_bajada=0;
+
+    int duracion_variacion=0;
+
+    int flag_menor=0;
+    int flag_mayor=0;
+    int posmarca;
+    int inicio_bajada_pos;
+    z80_byte vmarca;
+
+    int pos_inicio=posicion;
+
+    do {
+        //printf("%d ",direccion);
+        int valor_leido=lee_byte_memoria(posicion);
+        if (modo_verbose_extra) printf("V%d ",valor_leido);
+        if (valor_leido==-1) {
+            //fin de archivo
+            return -1;
+        }
+
+
+/*
+
+subimos. 
+-si flag_menor=0 y si valor leido es menor indicar hemos leido un valor menor. flag_menor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca) que es mayor que el actual
+
+-si flag_menor=1 y valor leido>vmarca, resetear flag_menor
+-si flag_menor=1 y valor leido<vmarca y hay mas de un umbral (minimo_variacion) apuntar en inicio_bajada posicion posmarca. pasar a bajada
+
+
+bajamos. 
+-si flag_mayor=0 y si valor leido es mayor indicar hemos leido un valor mayor. flag_mayor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca) que es menor que el actual
+
+-si flag_mayor=1 y valor leido<vmarca, resetear flag_mayor
+-si flag_mayor=1 y valor leido>vmarca y hay mas de un umbral (minimo_variacion) retornar posmarca
+
+*/        
+
+        //subimos
+        if (direccion==+1) {
+            //vemos si bajamos
+            if (!flag_menor) {
+                if (valor_leido<valor_anterior) {
+                    flag_menor=1;
+
+                    posmarca=posicion;
+                    vmarca=valor_anterior;
+                }
+            }
+
+            else {
+                if (valor_leido>vmarca) flag_menor=0;
+
+                if (valor_leido<vmarca) {
+                    int delta=util_get_absolute(valor_leido-vmarca);
+                    if (delta>minimo_variacion) {
+                        inicio_bajada_pos=posmarca;
+                        direccion=-1;
+                    }
+                }
+            }
+        }
+
+        //bajamos
+        else {
+            //vemos si subimos
+            if (!flag_mayor) {
+                if (valor_leido>valor_anterior) {
+                    flag_mayor=1;
+
+                    posmarca=posicion;
+                    vmarca=valor_anterior;
+                }
+            }
+
+            else {
+                if (valor_leido<vmarca) flag_mayor=0;
+
+                if (valor_leido>vmarca) {
+                    int delta=util_get_absolute(valor_leido-vmarca);
+                    if (delta>minimo_variacion) {
+                        (*duracion_flanco_bajada)=posmarca-inicio_bajada_pos;
+                        
+                        int duracion=posmarca-pos_inicio;
+                        return duracion;
+                    }
+                }
+            }
+        }
+
+        posicion++;
+        valor_anterior=valor_leido;
+        
+
+    } while (1);
+}
+
+//Dice la duracion de una onda, asumiendo:
+//subimos - bajamos - y empezamos a subir
+//TESTEO: aun no funciona bien esta
+//Este va mejor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
+//aunque a veces algo peor para bits
+int old_improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
     int minimo_variacion=5;
