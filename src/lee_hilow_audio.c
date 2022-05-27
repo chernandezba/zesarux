@@ -161,7 +161,7 @@ int util_get_absolute(int valor)
 int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
-    int minimo_variacion=1;
+    int minimo_variacion=5;
 
     z80_byte valor_anterior=lee_byte_memoria(posicion);
     int direccion=+1;
@@ -406,7 +406,7 @@ int buscar_dos_sync_bits(int posicion)
     
     final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS;
 
-    printf("final posicion %d\n",final_posicion);
+    printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
     
     return final_posicion;
 
@@ -601,6 +601,9 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    }
    posicion +=duracion_sincronismo_byte;
 
+
+   if (modo_verbose_extra) printf("\nFin sincronismo inicio bits: pos: %d\n",posicion);
+
    //int duracion_uno=(duracion_sincronismo_byte*79)/100;
    //int duracion_cero=(duracion_sincronismo_byte*40)/100;
 
@@ -656,19 +659,19 @@ int lee_byte(int posicion,z80_byte *byte_salida)
         //if (duracion_bit<umbral_cero_uno) {
         if (duracion_flanco_bajada<umbral_cero_uno) {
             //Es un 0
-            //printf(" -0- ");
+            if (modo_verbose_extra) printf(" -0- ");
         }
         else {
             //Es un 1
             byte_final |=1;
-            //printf(" -1- ");
+            if (modo_verbose_extra) printf(" -1- ");
         }
         //printf("\n");
        
        //if (i!=7) byte_final=byte_final<<1;
     }
 
-    // printf("final: (%d) \n",byte_final);
+    if (modo_verbose_extra) printf("\nbyte final: %02XH\n",byte_final);
    *byte_salida=byte_final;
    return posicion;
 }
