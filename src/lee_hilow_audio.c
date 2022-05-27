@@ -29,9 +29,13 @@
 #include "hilow.h"
 #include "utils.h"
 
-long int tamanyo_archivo;
-z80_byte *hilow_memoria;
-z80_byte *hilow_ddh;
+long int hilow_read_audio_tamanyo_archivo;
+
+//Puntero a los datos del audio leido
+z80_byte *hilow_read_audio_read_hilow_memoria;
+
+//Puntero a los datos del archivo de salida ddh
+z80_byte *hilow_read_audio_hilow_ddh;
 
 
 
@@ -74,13 +78,13 @@ int hilow_read_audio_pausa(int segundos)
 
 int hilow_read_audio_lee_byte_memoria(int posicion)
 {
-    if (posicion<0 || posicion>=tamanyo_archivo) {
+    if (posicion<0 || posicion>=hilow_read_audio_tamanyo_archivo) {
         //TODO: mejorar esto, no finalizar sino retornar fin de memoria a la rutina que llama
         printf("fuera de rango %d\n",posicion);
         return -1;
     }
 
-    return hilow_memoria[posicion];
+    return hilow_read_audio_read_hilow_memoria[posicion];
 }
 
 
@@ -739,7 +743,7 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
 
     printf("offset_destino: %d\n",offset_destino);
 
-    printf("puntero: %p\n",hilow_ddh);
+    printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
     /*for (i=0;i<HILOW_SECTOR_SIZE;i++) {
         printf("%d\n",i);
         hilow_ddh[offset_destino+i]=hilow_read_audio_buffer_result[i+1];
@@ -751,7 +755,7 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
     }
 
     else {
-        memcpy(&hilow_ddh[offset_destino],&hilow_read_audio_buffer_result[1],HILOW_SECTOR_SIZE);
+        memcpy(&hilow_read_audio_hilow_ddh[offset_destino],&hilow_read_audio_buffer_result[1],HILOW_SECTOR_SIZE);
     }
 
     return posicion;
@@ -777,7 +781,7 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos)
     return posicion;
 }
 
-long int get_file_size(char *nombre)
+long int hilow_read_audio_get_file_size(char *nombre)
 {
         struct stat buf_stat;
 
@@ -822,7 +826,7 @@ z80_byte *read_hilow_audio_file(char *archivo)
    
 
     //Asignar memoria
-    int tamanyo=get_file_size(archivo);
+    int tamanyo=hilow_read_audio_get_file_size(archivo);
     puntero=malloc(tamanyo);
 
     if (puntero==NULL) {
@@ -860,9 +864,9 @@ void *hilow_read_audio_read_hilow_ddh_file(char *archivo)
     //Leer archivo ddh
     //Asignar memoria
     int tamanyo=HILOW_DEVICE_SIZE;
-    hilow_ddh=malloc(tamanyo);
+    hilow_read_audio_hilow_ddh=malloc(tamanyo);
 
-    if (hilow_ddh==NULL) {
+    if (hilow_read_audio_hilow_ddh==NULL) {
         printf("Can not allocate memory for hilow ddh file");
         return NULL;
     }
@@ -877,7 +881,7 @@ void *hilow_read_audio_read_hilow_ddh_file(char *archivo)
             return NULL;
     }
 
-    fread(hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
     fclose(ptr_ddhfile);    
 
  
@@ -899,7 +903,7 @@ void *hilow_read_audio_write_hilow_ddh_file(char *archivo)
             return NULL;
     }
 
-    fwrite(hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fwrite(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
     fclose(ptr_ddhfile);    
 
 }
@@ -969,13 +973,13 @@ int main(int argc,char *argv[])
     hilow_read_audio_pausa(2);
 
 
-    tamanyo_archivo=get_file_size(archivo);
+    hilow_read_audio_tamanyo_archivo=hilow_read_audio_get_file_size(archivo);
 
 
-    hilow_memoria=read_hilow_audio_file(archivo);
+    hilow_read_audio_read_hilow_memoria=read_hilow_audio_file(archivo);
 
     hilow_read_audio_read_hilow_ddh_file(archivo_ddh);
-    printf("puntero: %p\n",hilow_ddh);
+    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
     //hilow_read_audio_pausa(2);
 
     int posicion=0;
@@ -1011,9 +1015,9 @@ int main(int argc,char *argv[])
     }
 
 
-    free(hilow_memoria);
+    free(hilow_read_audio_read_hilow_memoria);
 
-    free(hilow_ddh);
+    free(hilow_read_audio_hilow_ddh);
 
     printf("Finalizado proceso\n");
 
