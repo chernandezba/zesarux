@@ -438,9 +438,7 @@ int legacy_duracion_onda(int posicion,int *duracion_flanco_bajada)
 }
 
 
-//0=legacy
-//1=improved
-int algoritmo_duracion_onda=0;
+
 
 int duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
@@ -934,8 +932,8 @@ int lee_sector_unavez(int posicion,int *repetir)
                 int parm;
 
                 do {
-                    printf("Parametros: 1) autoadjust_bit_width %d 2) algorithm_wave %d 3) verbose %d 0 end \n",
-                        autoajustar_duracion_bits,algoritmo_duracion_onda,modo_verbose);  
+                    printf("Parametros: 1) autoadjust_bit_width %d 2) verbose %d   0) end \n",
+                        autoajustar_duracion_bits,modo_verbose);  
 
                     
                     char buffer_parm[100];
@@ -943,8 +941,7 @@ int lee_sector_unavez(int posicion,int *repetir)
                     parm=atoi(buffer_parm);
                     
                     if (parm==1) autoajustar_duracion_bits ^=1;
-                    if (parm==2) algoritmo_duracion_onda ^=1;
-                    if (parm==3) modo_verbose ^=1;
+                    if (parm==2) modo_verbose ^=1;
 
 
                 } while(parm!=0);
@@ -1152,7 +1149,7 @@ int main(int argc,char *argv[])
 
     if(argc<3 || mostrar_ayuda) {
         printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] "
-                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--verboseextra] [--pause] [--automatic] [--bside]\n",argv[0]);
+                "[--verbose] [--verboseextra] [--pause] [--automatic] [--bside]\n",argv[0]);
         exit(1);
     }
 
@@ -1185,10 +1182,6 @@ int main(int argc,char *argv[])
 
         else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) modo_verbose_extra=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--wave_legacy")) algoritmo_duracion_onda=0;
-
-        else if (!strcasecmp(argv[indice_argumento],"--wave_improved")) algoritmo_duracion_onda=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
@@ -1204,8 +1197,8 @@ int main(int argc,char *argv[])
         argumentos_leer--;
     }
 
-    printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d algorithm_wave %d verbose %d\n",
-        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,algoritmo_duracion_onda,modo_verbose);
+    printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d verbose %d\n",
+        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,modo_verbose);
     pausa(2);
 
 
