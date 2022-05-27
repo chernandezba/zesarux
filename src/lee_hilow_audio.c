@@ -25,41 +25,34 @@
 #include <string.h>
 #include <unistd.h>
 
-typedef unsigned char z80_byte;
+#include "hilow.h"
+#include "cpu.h"
 
 long int tamanyo_archivo;
 z80_byte *hilow_memoria;
 z80_byte *hilow_ddh;
 
-#include "hilow.h"
-
-#define HILOW_SECTOR_SIZE 2048
-//#define HILOW_SECTOR_SIZE 1024
-
-
-//Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
-#define HILOW_MAX_SECTORS 246
-//#define HILOW_MAX_SECTORS 256
-
-#define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
 
 
-int lee_byte(int posicion,z80_byte *byte_salida);
+int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida);
 
-int modo_verbose=0;
+int hilow_read_audio_modo_verbose=0;
 
-int modo_verbose_extra=0;
+int hilow_read_audio_modo_verbose_extra=0;
 
 int directo_a_pista=0;
 
 int ejecutar_sleep=0;
 
-int completamente_automatico=0;
+int hilow_read_audio_completamente_automatico=0;
 
 int leer_cara_dos=0;
 
-int pausa(int segundos)
+//Para descartar ruido
+int hilow_read_audio_minimo_variacion=10;
+
+int hilow_read_audio_pausa(int segundos)
 {
     if (ejecutar_sleep) sleep(segundos);
 }
@@ -87,12 +80,12 @@ int util_get_absolute(int valor)
 }
 
 
-int minimo_variacion=10;
+
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
 
-int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
+int duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
 
 
@@ -114,7 +107,7 @@ int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        if (modo_verbose_extra) printf("V%d ",valor_leido);
+        if (hilow_read_audio_modo_verbose_extra) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -139,14 +132,14 @@ Si subimos.
 -si flag_menor=0 y si valor leido es menor indicar hemos leido un valor menor. flag_menor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca)
 
 -si flag_menor=1 y valor leido>vmarca, resetear flag_menor
--si flag_menor=1 y valor leido<vmarca y hay mas de un umbral (minimo_variacion) apuntar en inicio_bajada posicion posmarca. pasar a bajada
+-si flag_menor=1 y valor leido<vmarca y hay mas de un umbral (hilow_read_audio_minimo_variacion) apuntar en inicio_bajada posicion posmarca. pasar a bajada
 
 
 Si bajamos. 
 -si flag_mayor=0 y si valor leido es mayor indicar hemos leido un valor mayor. flag_mayor=1. apuntar posicion (posmarca). apuntar valor leido anterior (vmarca)
 
 -si flag_mayor=1 y valor leido<vmarca, resetear flag_mayor
--si flag_mayor=1 y valor leido>vmarca y hay mas de un umbral (minimo_variacion) retornar posmarca
+-si flag_mayor=1 y valor leido>vmarca y hay mas de un umbral (hilow_read_audio_minimo_variacion) retornar posmarca
 
 */        
 
@@ -167,7 +160,7 @@ Si bajamos.
 
                 if (valor_leido<vmarca) {
                     int delta=util_get_absolute(valor_leido-vmarca);
-                    if (delta>minimo_variacion) {
+                    if (delta>hilow_read_audio_minimo_variacion) {
                         inicio_bajada_pos=posmarca;
                         direccion=-1;
                     }
@@ -192,7 +185,7 @@ Si bajamos.
 
                 if (valor_leido>vmarca) {
                     int delta=util_get_absolute(valor_leido-vmarca);
-                    if (delta>minimo_variacion) {
+                    if (delta>hilow_read_audio_minimo_variacion) {
                         (*duracion_flanco_bajada)=posmarca-inicio_bajada_pos;
                         
                         int duracion=posmarca-pos_inicio;
@@ -212,96 +205,9 @@ Si bajamos.
 
 
 
-//Dice la duracion de una onda, asumiendo:
-//subimos - bajamos - y empezamos a subir
-//Buena aunque no detecta bien dobles marcas de sync antes de los bits
-//Este va mejor para detectar bits pero peor para detectar cambios en flancos con subidas consecutivas (2 sync de bits de sincronismo)
-int legacy_duracion_onda(int posicion,int *duracion_flanco_bajada)
-{
-    z80_byte valor_anterior=lee_byte_memoria(posicion);
-    int direccion=+1;
-
-    int salir=0;
-    int duracion=0;
-
-    *duracion_flanco_bajada=0;
-
-    do {
-        //printf("%d ",direccion);
-        int valor_leido=lee_byte_memoria(posicion);
-        if (modo_verbose_extra) printf("V%d ",valor_leido);
-        if (valor_leido==-1) {
-            //fin de archivo
-            return -1;
-        }
-
-
-        if (direccion==+1) {
-            //subimos. vemos si bajamos
-            if (valor_leido<valor_anterior) {
-                //bajamos
-                if (valor_leido+filtro_ruido<valor_anterior) {
-                    //Baja lo suficiente que cambia direccion
-                    direccion=-1;
-                    if (modo_verbose) printf(" cambio a bajada. pos=%d\n",posicion);
-                    valor_anterior=valor_leido;
-                }
-
-                else {
-                    //No baja lo suficiente
-                    valor_anterior=valor_leido;
-                }
-            }
-
-            else {
-                //subimos
-                valor_anterior=valor_leido;
-            }
-        }
-        else {
-            //bajamos. ver si subimos y por tanto finalizamos
-            if (valor_leido>valor_anterior) {
-                //subimos
-                if (valor_leido-filtro_ruido>valor_anterior) {
-                    //Sube lo suficiente que cambia direccion
-                    if (modo_verbose) printf(" fin flanco. pos=%d\n",posicion);
-                    return duracion;
-                }
-                else {
-                    //No sube lo suficiente
-                    valor_anterior=valor_leido;
-                }
-
-
-            }
-            else {
-                //Bajamos
-                valor_anterior=valor_leido;
-            }
-
-            (*duracion_flanco_bajada)++;
-        }
-
-        
-        duracion++;
-        posicion++;
-
-    } while (!salir);
-}
 
 
 
-
-int duracion_onda(int posicion,int *duracion_flanco_bajada)
-{
-    //Solo ejecutar nuevo algoritmo
-    //if (algoritmo_duracion_onda==1) {
-        return improved_duracion_onda(posicion,duracion_flanco_bajada);
-    //}
-    //else {
-    //    return legacy_duracion_onda(posicion,duracion_flanco_bajada);
-    //}
-}
 
 //a 44100 Hz
 #define LONGITUD_ONDA_INICIO_BITS 367
@@ -341,9 +247,9 @@ int buscar_dos_sync_bits(int posicion)
 
     do {
     
-    if (modo_verbose) {
+    if (hilow_read_audio_modo_verbose) {
         printf("\nposicion antes buscar inicio onda sincronismo bits %d\n",posicion);
-        pausa(2);
+        hilow_read_audio_pausa(2);
     }
     posicion=buscar_onda_inicio_bits(posicion);
     if (posicion==-1) {
@@ -358,9 +264,9 @@ int buscar_dos_sync_bits(int posicion)
 
     int posicion0=posicion;
 
-    if (modo_verbose) {
+    if (hilow_read_audio_modo_verbose) {
         printf("\nposicion final primera onda sincronismo bits %d\n",posicion);
-        pausa(2);
+        hilow_read_audio_pausa(2);
     }
 
 
@@ -385,9 +291,9 @@ int buscar_dos_sync_bits(int posicion)
     if (posicion==-1) return -1;
 
 
-    if (modo_verbose) {
+    if (hilow_read_audio_modo_verbose) {
         printf("\n3 posicion %d\n",posicion);
-        pausa(2);
+        hilow_read_audio_pausa(2);
     }
 
     //Estamos al final de la segunda
@@ -397,25 +303,25 @@ int buscar_dos_sync_bits(int posicion)
     //Ver si la segunda acaba en donde acaba la primera + el tiempo de onda
     int delta=posicion-posicion0;
 
-    if (modo_verbose) printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
+    if (hilow_read_audio_modo_verbose) printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
 
-    //pausa(3);
+    //hilow_read_audio_pausa(3);
 
     if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
             delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN)
         {
-        if (modo_verbose) {
+        if (hilow_read_audio_modo_verbose) {
             printf("\n---Dos sync consecutivos en %d---\n",posicion);
-            pausa(5);
+            hilow_read_audio_pausa(5);
         }
         
         return posicion;
     }
 
     else {
-        if (modo_verbose) {
+        if (hilow_read_audio_modo_verbose) {
             printf("\n---NO hay dos sync consecutivos en %d---\n",posicion);
-            pausa(5);
+            hilow_read_audio_pausa(5);
         }
     }
 
@@ -444,9 +350,9 @@ int buscar_inicio_sector(int posicion)
 
 
     if (!leer_cara_dos) {
-        if (modo_verbose) {
+        if (hilow_read_audio_modo_verbose) {
             printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
-            pausa(2);
+            hilow_read_audio_pausa(2);
         }
         posicion=buscar_dos_sync_bits(posicion);
         if (posicion==-1) return -1;
@@ -454,7 +360,7 @@ int buscar_inicio_sector(int posicion)
 
         for (i=0;i<5;i++) {
             z80_byte byte_leido;
-            posicion=lee_byte(posicion,&byte_leido);
+            posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
             if (posicion==-1) return -1;
             buffer_sector_five_byte[i]=byte_leido;
         }
@@ -463,12 +369,12 @@ int buscar_inicio_sector(int posicion)
 
         print_mostrar_ids_sector();
 
-        //pausa(3);
+        //hilow_read_audio_pausa(3);
     }
 
-    if (modo_verbose) {
+    if (hilow_read_audio_modo_verbose) {
         printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
-        pausa(2);
+        hilow_read_audio_pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
     if (posicion==-1) return -1;
@@ -480,7 +386,7 @@ int buscar_inicio_sector(int posicion)
     
     for (i=0;i<17;i++) {
         z80_byte byte_leido;
-        posicion=lee_byte(posicion,&byte_leido);
+        posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
         if (posicion==-1) return -1;
         buffer_label[i]=byte_leido;
     }
@@ -494,17 +400,17 @@ int buscar_inicio_sector(int posicion)
 
     printf("\n");
 
-    //pausa(3);    
+    //hilow_read_audio_pausa(3);    
 
-    if (modo_verbose) {
+    if (hilow_read_audio_modo_verbose) {
         printf("\n---Buscando tecer par de marcas de sincronismo en %d\n",posicion);
-        pausa(2);
+        hilow_read_audio_pausa(2);
     }
     posicion=buscar_dos_sync_bits(posicion);
     //printf("despues buscar_dos_sync_bits\n");
 
     if (posicion==-1) return -1;                    
-    //pausa(2);
+    //hilow_read_audio_pausa(2);
 
     return posicion;
 }
@@ -533,7 +439,7 @@ int esperar_inicio_sincronismo(int posicion)
 int autoajustar_duracion_bits=0;
 
 //Retorna posicion
-int lee_byte(int posicion,z80_byte *byte_salida)
+int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
 {
     //Averiguar primero duracion pulso
     /*
@@ -569,7 +475,7 @@ int lee_byte(int posicion,z80_byte *byte_salida)
    posicion +=duracion_sincronismo_byte;
 
 
-   if (modo_verbose_extra) printf("\nFin sincronismo inicio bits: pos: %d\n",posicion);
+   if (hilow_read_audio_modo_verbose_extra) printf("\nFin sincronismo inicio bits: pos: %d\n",posicion);
 
    //int duracion_uno=(duracion_sincronismo_byte*79)/100;
    //int duracion_cero=(duracion_sincronismo_byte*40)/100;
@@ -626,19 +532,19 @@ int lee_byte(int posicion,z80_byte *byte_salida)
         //if (duracion_bit<umbral_cero_uno) {
         if (duracion_flanco_bajada<umbral_cero_uno) {
             //Es un 0
-            if (modo_verbose_extra) printf(" -0- ");
+            if (hilow_read_audio_modo_verbose_extra) printf(" -0- ");
         }
         else {
             //Es un 1
             byte_final |=1;
-            if (modo_verbose_extra) printf(" -1- ");
+            if (hilow_read_audio_modo_verbose_extra) printf(" -1- ");
         }
         //printf("\n");
        
        //if (i!=7) byte_final=byte_final<<1;
     }
 
-    if (modo_verbose_extra) printf("\nbyte final: %02XH\n",byte_final);
+    if (hilow_read_audio_modo_verbose_extra) printf("\nbyte final: %02XH\n",byte_final);
    *byte_salida=byte_final;
    return posicion;
 }
@@ -696,7 +602,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
         //printf("\nPos %d %d\n",i,posicion);
         z80_byte byte_leido;
 
-        posicion=lee_byte(posicion,&byte_leido);
+        posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
         if (posicion!=-1) {
             //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
         }
@@ -717,7 +623,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 
 
 
-    pausa(1);
+    hilow_read_audio_pausa(1);
 
     dump_sector_contents();   
      
@@ -734,7 +640,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
             sector_aparentemente_correcto=0;
             printf("Probably sector mismatch!\n");
             print_mostrar_ids_sector();
-            pausa(2);
+            hilow_read_audio_pausa(2);
         }
 
     }
@@ -765,7 +671,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
     }*/
 
 
-    if (!completamente_automatico) {
+    if (!hilow_read_audio_completamente_automatico) {
         buffer_pregunta[0]=0;
 
         do {
@@ -791,7 +697,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 
                 do {
                     printf("Parametros: 1) autoadjust_bit_width %d 2) verbose %d   0) end \n",
-                        autoajustar_duracion_bits,modo_verbose);  
+                        autoajustar_duracion_bits,hilow_read_audio_modo_verbose);  
 
                     
                     char buffer_parm[100];
@@ -799,7 +705,7 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
                     parm=atoi(buffer_parm);
                     
                     if (parm==1) autoajustar_duracion_bits ^=1;
-                    if (parm==2) modo_verbose ^=1;
+                    if (parm==2) hilow_read_audio_modo_verbose ^=1;
 
 
                 } while(parm!=0);
@@ -1038,13 +944,13 @@ int main(int argc,char *argv[])
 
         else if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--verbose")) modo_verbose=1;
+        else if (!strcasecmp(argv[indice_argumento],"--verbose")) hilow_read_audio_modo_verbose=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) modo_verbose_extra=1;
+        else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) hilow_read_audio_modo_verbose_extra=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
+        else if (!strcasecmp(argv[indice_argumento],"--automatic")) hilow_read_audio_completamente_automatico=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--bside")) leer_cara_dos=1;
 
@@ -1058,8 +964,8 @@ int main(int argc,char *argv[])
     }
 
     printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d verbose %d\n",
-        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,modo_verbose);
-    pausa(2);
+        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,hilow_read_audio_modo_verbose);
+    hilow_read_audio_pausa(2);
 
 
     tamanyo_archivo=get_file_size(archivo);
@@ -1069,7 +975,7 @@ int main(int argc,char *argv[])
 
     read_hilow_ddh_file(archivo_ddh);
     printf("puntero: %p\n",hilow_ddh);
-    //pausa(2);
+    //hilow_read_audio_pausa(2);
 
     int posicion=0;
     int total_bytes_leidos;
@@ -1092,7 +998,7 @@ int main(int argc,char *argv[])
 
             printf("Posicion inicio bits: %d\n",posicion);
 
-            //pausa(5);
+            //hilow_read_audio_pausa(5);
             
 
             posicion=lee_sector(posicion,&total_bytes_leidos);
