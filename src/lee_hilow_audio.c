@@ -31,14 +31,11 @@ long int tamanyo_archivo;
 z80_byte *hilow_memoria;
 z80_byte *hilow_ddh;
 
+#include "hilow.h"
+
 #define HILOW_SECTOR_SIZE 2048
 //#define HILOW_SECTOR_SIZE 1024
 
-/*
-una cinta recien formateada acaba los ultimos bytes "útiles" (los de la tabla de sectores libres) hacia la dirección 4E8 hexadecimal
-por tanto podria definir el tamaño total de directorio como 500 hexadecimal
-*/
-#define HILOW_DIRECTORY_TABLE_SIZE 0x500
 
 //Deduzco por la tabla de sectores libre y como se modifica que el sector mayor es F5H (245)
 #define HILOW_MAX_SECTORS 246
@@ -46,12 +43,7 @@ por tanto podria definir el tamaño total de directorio como 500 hexadecimal
 
 #define HILOW_DEVICE_SIZE (HILOW_SECTOR_SIZE*HILOW_MAX_SECTORS)
 
-#define HILOW_MAX_SECTORS_PER_FILE 25
 
-#define HILOW_MAX_FILES_DIRECTORY 22
-
-//Lo que ocupa cada entrada de directorio
-#define HILOW_DIRECTORY_ENTRY_SIZE 45
 
 int lee_byte(int posicion,z80_byte *byte_salida);
 
