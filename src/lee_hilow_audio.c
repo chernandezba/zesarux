@@ -27,7 +27,6 @@
 
 #include "cpu.h"
 #include "hilow.h"
-#include "utils.h"
 
 long int hilow_read_audio_tamanyo_archivo;
 
