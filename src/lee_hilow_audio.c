@@ -25,8 +25,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "hilow.h"
 #include "cpu.h"
+#include "hilow.h"
+#include "utils.h"
 
 long int tamanyo_archivo;
 z80_byte *hilow_memoria;
@@ -41,20 +42,30 @@ int hilow_read_audio_modo_verbose=0;
 
 int hilow_read_audio_modo_verbose_extra=0;
 
-int directo_a_pista=0;
+int hilow_read_audio_directo_a_pista=0;
 
-int ejecutar_sleep=0;
+int hilow_read_audio_ejecutar_sleep=0;
 
 int hilow_read_audio_completamente_automatico=0;
 
-int leer_cara_dos=0;
+int hilow_read_audio_leer_cara_dos=0;
 
 //Para descartar ruido
 int hilow_read_audio_minimo_variacion=10;
 
+
+//a 44100 Hz
+#define HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS 367
+#define HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA 180
+#define HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN 40
+
+//los 5 bytes indicadores de sector
+z80_byte hilow_read_audio_buffer_sector_five_byte[5];
+
+
 int hilow_read_audio_pausa(int segundos)
 {
-    if (ejecutar_sleep) sleep(segundos);
+    if (hilow_read_audio_ejecutar_sleep) sleep(segundos);
 }
 
 int lee_byte_memoria(int posicion)
@@ -68,19 +79,14 @@ int lee_byte_memoria(int posicion)
     return hilow_memoria[posicion];
 }
 
-int filtro_ruido=2;
 
-
-
-int util_get_absolute(int valor)
+//Devolver valor sin signo
+int hilow_read_audio_get_absolute(int valor)
 {
         if (valor<0) valor=-valor;
 
         return valor;
 }
-
-
-
 
 //Dice la duracion de una onda, asumiendo:
 //subimos - bajamos - y empezamos a subir
@@ -159,7 +165,7 @@ Si bajamos.
                 if (valor_leido>vmarca) flag_menor=0;
 
                 if (valor_leido<vmarca) {
-                    int delta=util_get_absolute(valor_leido-vmarca);
+                    int delta=hilow_read_audio_get_absolute(valor_leido-vmarca);
                     if (delta>hilow_read_audio_minimo_variacion) {
                         inicio_bajada_pos=posmarca;
                         direccion=-1;
@@ -184,7 +190,7 @@ Si bajamos.
                 if (valor_leido<vmarca) flag_mayor=0;
 
                 if (valor_leido>vmarca) {
-                    int delta=util_get_absolute(valor_leido-vmarca);
+                    int delta=hilow_read_audio_get_absolute(valor_leido-vmarca);
                     if (delta>hilow_read_audio_minimo_variacion) {
                         (*duracion_flanco_bajada)=posmarca-inicio_bajada_pos;
                         
@@ -205,14 +211,6 @@ Si bajamos.
 
 
 
-
-
-
-
-//a 44100 Hz
-#define LONGITUD_ONDA_INICIO_BITS 367
-#define LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA 180
-#define LONGITUD_ONDA_INICIO_BITS_MARGEN 40
 int buscar_onda_inicio_bits(int posicion)
 {
     
@@ -226,8 +224,8 @@ int buscar_onda_inicio_bits(int posicion)
 
         //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
-        if (duracion_flanco_bajada>=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
-            duracion_flanco_bajada<=LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+LONGITUD_ONDA_INICIO_BITS_MARGEN) {
+        if (duracion_flanco_bajada>=HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA-HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN &&
+            duracion_flanco_bajada<=HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_FLANCO_BAJADA+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN) {
                 //TODO: puede ser -1??
                 return posicion+duracion;
             }
@@ -277,9 +275,9 @@ int buscar_dos_sync_bits(int posicion)
     int final_posicion;
 
     
-    final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS;
+    final_posicion=posicion+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS;
 
-    printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
+    if (hilow_read_audio_modo_verbose) printf("final posicion dos ondas sincronismo: %d\n",final_posicion);
     
     return final_posicion;
 
@@ -303,12 +301,12 @@ int buscar_dos_sync_bits(int posicion)
     //Ver si la segunda acaba en donde acaba la primera + el tiempo de onda
     int delta=posicion-posicion0;
 
-    if (hilow_read_audio_modo_verbose) printf("delta %d esperado %d\n",delta,LONGITUD_ONDA_INICIO_BITS);
+    if (hilow_read_audio_modo_verbose) printf("delta %d esperado %d\n",delta,HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS);
 
     //hilow_read_audio_pausa(3);
 
-    if (delta>=LONGITUD_ONDA_INICIO_BITS-LONGITUD_ONDA_INICIO_BITS_MARGEN &&
-            delta<=LONGITUD_ONDA_INICIO_BITS+LONGITUD_ONDA_INICIO_BITS_MARGEN)
+    if (delta>=HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS-HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN &&
+            delta<=HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN)
         {
         if (hilow_read_audio_modo_verbose) {
             printf("\n---Dos sync consecutivos en %d---\n",posicion);
@@ -328,15 +326,14 @@ int buscar_dos_sync_bits(int posicion)
     } while (posicion!=-1);
 }
 
-//los 5 bytes indicadores de sector
-z80_byte buffer_sector_five_byte[5];
+
 
 void print_mostrar_ids_sector(void)
 {
     int i;
 
     for (i=0;i<5;i++) {
-        printf("%02XH ",buffer_sector_five_byte[i]);
+        printf("%02XH ",hilow_read_audio_buffer_sector_five_byte[i]);
     }
 
     printf("\n");
@@ -349,7 +346,7 @@ int buscar_inicio_sector(int posicion)
     int i;
 
 
-    if (!leer_cara_dos) {
+    if (!hilow_read_audio_leer_cara_dos) {
         if (hilow_read_audio_modo_verbose) {
             printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
             hilow_read_audio_pausa(2);
@@ -362,7 +359,7 @@ int buscar_inicio_sector(int posicion)
             z80_byte byte_leido;
             posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
             if (posicion==-1) return -1;
-            buffer_sector_five_byte[i]=byte_leido;
+            hilow_read_audio_buffer_sector_five_byte[i]=byte_leido;
         }
 
         printf("5 bytes id sector: ");
@@ -632,10 +629,10 @@ int lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 
     int sector_aparentemente_correcto=1;
 
-    if (!directo_a_pista && !leer_cara_dos) {
+    if (!hilow_read_audio_directo_a_pista && !hilow_read_audio_leer_cara_dos) {
 
-        if (sector!=buffer_sector_five_byte[1] && sector!=buffer_sector_five_byte[2] && 
-            sector!=buffer_sector_five_byte[3] && sector!=buffer_sector_five_byte[4]) {
+        if (sector!=hilow_read_audio_buffer_sector_five_byte[1] && sector!=hilow_read_audio_buffer_sector_five_byte[2] && 
+            sector!=hilow_read_audio_buffer_sector_five_byte[3] && sector!=hilow_read_audio_buffer_sector_five_byte[4]) {
 
             sector_aparentemente_correcto=0;
             printf("Probably sector mismatch!\n");
@@ -843,7 +840,7 @@ z80_byte *read_hilow_audio_file(char *archivo)
     fclose(ptr_bmpfile);
 
     //Si leemos cara 2, invertir todo el sonido (el principio al final)
-    if (leer_cara_dos) {
+    if (hilow_read_audio_leer_cara_dos) {
         espejar_sonido(puntero,tamanyo);
     }
 
@@ -942,17 +939,17 @@ int main(int argc,char *argv[])
 
         //con opcion autoadjust_bit_width suele cargar peor
 
-        else if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
+        else if (!strcasecmp(argv[indice_argumento],"--onlysector")) hilow_read_audio_directo_a_pista=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--verbose")) hilow_read_audio_modo_verbose=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) hilow_read_audio_modo_verbose_extra=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
+        else if (!strcasecmp(argv[indice_argumento],"--pause")) hilow_read_audio_ejecutar_sleep=1;
 
         else if (!strcasecmp(argv[indice_argumento],"--automatic")) hilow_read_audio_completamente_automatico=1;
 
-        else if (!strcasecmp(argv[indice_argumento],"--bside")) leer_cara_dos=1;
+        else if (!strcasecmp(argv[indice_argumento],"--bside")) hilow_read_audio_leer_cara_dos=1;
 
         else {
             printf("Invalid parameter %s\n",argv[indice_argumento]);
@@ -964,7 +961,7 @@ int main(int argc,char *argv[])
     }
 
     printf("Parametros: origen %s destino %s autoadjust_bit_width %d solopista %d verbose %d\n",
-        archivo,archivo_ddh,autoajustar_duracion_bits,directo_a_pista,hilow_read_audio_modo_verbose);
+        archivo,archivo_ddh,autoajustar_duracion_bits,hilow_read_audio_directo_a_pista,hilow_read_audio_modo_verbose);
     hilow_read_audio_pausa(2);
 
 
@@ -980,9 +977,9 @@ int main(int argc,char *argv[])
     int posicion=0;
     int total_bytes_leidos;
 
-    if (directo_a_pista) {
+    if (hilow_read_audio_directo_a_pista) {
 
-        //temp. En directo_a_pista esto no se debe hacer
+        //temp. En hilow_read_audio_directo_a_pista esto no se debe hacer
         //posicion=buscar_dos_sync_bits(posicion);
         //posicion=buscar_inicio_sector(posicion);
         
