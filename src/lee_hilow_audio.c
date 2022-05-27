@@ -57,6 +57,8 @@ int lee_byte(int posicion,z80_byte *byte_salida);
 
 int modo_verbose=0;
 
+int modo_verbose_extra=0;
+
 int directo_a_pista=0;
 
 int ejecutar_sleep=0;
@@ -174,7 +176,7 @@ int improved_duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        if (modo_verbose) printf("V%d ",valor_leido);
+        if (modo_verbose_extra) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -259,7 +261,7 @@ int legacy_duracion_onda(int posicion,int *duracion_flanco_bajada)
     do {
         //printf("%d ",direccion);
         int valor_leido=lee_byte_memoria(posicion);
-        if (modo_verbose) printf("V%d ",valor_leido);
+        if (modo_verbose_extra) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
             return -1;
@@ -373,11 +375,14 @@ int buscar_dos_sync_bits(int posicion)
     do {
     
     if (modo_verbose) {
-        printf("\nposicion antes buscar inicio onda bits %d\n",posicion);
+        printf("\nposicion antes buscar inicio onda sincronismo bits %d\n",posicion);
         pausa(2);
     }
     posicion=buscar_onda_inicio_bits(posicion);
-    if (posicion==-1) return -1;
+    if (posicion==-1) {
+        printf("\nFin de archivo intentando leer primera onda de sincronismo bits\n");
+        return -1;
+    }
     //Estamos al final de la primera
 
 
@@ -387,7 +392,7 @@ int buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     if (modo_verbose) {
-        printf("\nposicion final primera onda bits %d\n",posicion);
+        printf("\nposicion final primera onda sincronismo bits %d\n",posicion);
         pausa(2);
     }
 
@@ -398,21 +403,14 @@ int buscar_dos_sync_bits(int posicion)
     //necesario con funcion "buena" de duracion_onda
     int final_posicion;
 
-    if (leer_cara_dos) {
-        //saltar 3 ondas en vez de 2
-        final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS*2;
-    }
-    else {
-        final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS;
-    }
     
+    final_posicion=posicion+LONGITUD_ONDA_INICIO_BITS;
 
+    printf("final posicion %d\n",final_posicion);
+    
+    return final_posicion;
 
-    printf("final posicion %d\n",posicion+LONGITUD_ONDA_INICIO_BITS);
-    //TODO: esto deberia ser return final_posicion, pero por alguna razon, al leer cara B, si lo pongo "bien" no funciona correctamente...
-    return posicion+LONGITUD_ONDA_INICIO_BITS;
-
-    //TODO: de aqui en adelante considerar cuando se trata la cara B y hay que esperar 3 marcas de sync en vez de 2
+    
 
 
 
@@ -1034,7 +1032,7 @@ int main(int argc,char *argv[])
 
     if(argc<3 || mostrar_ayuda) {
         printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] "
-                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--pause] [--automatic] [--bside]\n",argv[0]);
+                "[algorithm wave: --wave_legacy / --wave_improved] [--verbose] [--verboseextra] [--pause] [--automatic] [--bside]\n",argv[0]);
         exit(1);
     }
 
@@ -1061,19 +1059,26 @@ int main(int argc,char *argv[])
 
         if (!strcasecmp(argv[indice_argumento],"--autoadjust_bit_width")) autoajustar_duracion_bits=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
+        else if (!strcasecmp(argv[indice_argumento],"--onlysector")) directo_a_pista=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--verbose")) modo_verbose=1;
+        else if (!strcasecmp(argv[indice_argumento],"--verbose")) modo_verbose=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--wave_legacy")) algoritmo_duracion_onda=0;
+        else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) modo_verbose_extra=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--wave_improved")) algoritmo_duracion_onda=1;
+        else if (!strcasecmp(argv[indice_argumento],"--wave_legacy")) algoritmo_duracion_onda=0;
 
-        if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
+        else if (!strcasecmp(argv[indice_argumento],"--wave_improved")) algoritmo_duracion_onda=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
+        else if (!strcasecmp(argv[indice_argumento],"--pause")) ejecutar_sleep=1;
 
-        if (!strcasecmp(argv[indice_argumento],"--bside")) leer_cara_dos=1;
+        else if (!strcasecmp(argv[indice_argumento],"--automatic")) completamente_automatico=1;
+
+        else if (!strcasecmp(argv[indice_argumento],"--bside")) leer_cara_dos=1;
+
+        else {
+            printf("Invalid parameter %s\n",argv[indice_argumento]);
+            exit(1);
+        }
 
         indice_argumento++;
         argumentos_leer--;
