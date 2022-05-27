@@ -444,12 +444,13 @@ int algoritmo_duracion_onda=0;
 
 int duracion_onda(int posicion,int *duracion_flanco_bajada)
 {
-    if (algoritmo_duracion_onda==1) {
+    //Solo ejecutar nuevo algoritmo
+    //if (algoritmo_duracion_onda==1) {
         return improved_duracion_onda(posicion,duracion_flanco_bajada);
-    }
-    else {
-        return legacy_duracion_onda(posicion,duracion_flanco_bajada);
-    }
+    //}
+    //else {
+    //    return legacy_duracion_onda(posicion,duracion_flanco_bajada);
+    //}
 }
 
 //a 44100 Hz
