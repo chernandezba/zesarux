@@ -1794,8 +1794,16 @@ install: all
 #utilities: \$(UTILITIES)
 utilities: smpatap sp_z80 tapabin leezx81 file_to_eprom bmp_to_prism_4_planar bmp_to_sprite spedtotxt bin_sprite_to_c lee_hilow_audio
 
-lee_hilow_audio: lee_hilow_audio.c
-	\$(CC) \$(CFLAGS) lee_hilow_audio.c -o lee_hilow_audio
+
+hilow_audio.o: hilow_audio.c
+	\$(CC) \$(CFLAGS) -c hilow_audio.c
+
+main_lee_hilow_audio.o: main_lee_hilow_audio.c hilow_audio.h
+	\$(CC) \$(CFLAGS) -c main_lee_hilow_audio.c
+
+lee_hilow_audio: main_lee_hilow_audio.o hilow_audio.o
+	\$(CC) \$(CFLAGS) main_lee_hilow_audio.o hilow_audio.o -o lee_hilow_audio
+
 
 spedtotxt: spedtotxt.c
 	\$(CC) \$(CFLAGS) spedtotxt.c -o spedtotxt
