@@ -249,19 +249,12 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
     do {
 
         posicion=posicion_inicial;
-
         posicion=hilow_read_audio_lee_sector(posicion,total_bytes_leidos,&sector);
 
 
-
-
         hilow_read_audio_pausa(1);
-
         hilow_read_audio_dump_sector_contents();   
         
-
-
-
         if (!hilow_read_audio_directo_a_pista) {
             if (hilow_read_audio_warn_if_sector_mismatch(sector)) {
                 printf("Probably sector mismatch!\n");
@@ -269,7 +262,6 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
                 hilow_read_audio_pausa(2);            
             }
         }
-
 
         printf("Total bytes leidos: %d\n",*total_bytes_leidos);
         printf("Sector %d\n",sector);        
@@ -334,15 +326,10 @@ int main(int argc,char *argv[])
         //con opcion autoadjust_bit_width suele cargar peor
 
         else if (!strcasecmp(argv[indice_argumento],"--onlysector")) hilow_read_audio_directo_a_pista=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--verbose")) hilow_read_audio_modo_verbose=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) hilow_read_audio_modo_verbose_extra=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--pause")) hilow_read_audio_ejecutar_sleep=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--automatic")) hilow_read_audio_completamente_automatico=1;
-
         else if (!strcasecmp(argv[indice_argumento],"--bside")) hilow_read_audio_leer_cara_dos=1;
 
         else {
@@ -371,10 +358,8 @@ int main(int argc,char *argv[])
     int posicion=0;
     int total_bytes_leidos;
 
-    if (hilow_read_audio_directo_a_pista) {
-        
+    if (hilow_read_audio_directo_a_pista) {  
         hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
-      
     }
 
     else {
@@ -382,13 +367,10 @@ int main(int argc,char *argv[])
         while (posicion!=-1) {
 
             printf("\n");
-        
             posicion=hilow_read_audio_buscar_inicio_sector(posicion);
-
             if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",posicion);
             
             posicion=hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
-
 
         }
 
@@ -396,9 +378,7 @@ int main(int argc,char *argv[])
 
     hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
 
-
     free(hilow_read_audio_read_hilow_memoria_audio);
-
     free(hilow_read_audio_hilow_ddh);
 
     printf("Finalizado proceso\n");

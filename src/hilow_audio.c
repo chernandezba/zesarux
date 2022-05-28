@@ -344,77 +344,6 @@ void hilow_read_audio_print_mostrar_ids_sector(void)
 
 }
 
-int hilow_read_audio_buscar_inicio_sector(int posicion)
-{
-    //Buscar 3 veces las dos marcas consecutivas de inicio de bits
-    int i;
-
-
-    if (!hilow_read_audio_leer_cara_dos) {
-        if (hilow_read_audio_modo_verbose) {
-            printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
-            hilow_read_audio_pausa(2);
-        }
-        posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
-        if (posicion==-1) return -1;
-
-
-        for (i=0;i<5;i++) {
-            z80_byte byte_leido;
-            posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
-            if (posicion==-1) return -1;
-            hilow_read_audio_buffer_sector_five_byte[i]=byte_leido;
-        }
-
-        printf("5 bytes id sector: ");
-
-        hilow_read_audio_print_mostrar_ids_sector();
-
-        //hilow_read_audio_pausa(3);
-    }
-
-    if (hilow_read_audio_modo_verbose) {
-        printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
-        hilow_read_audio_pausa(2);
-    }
-    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
-    if (posicion==-1) return -1;
-
-    //Leer el label del sector
-
-    //Leer los 5 bytes indicadores de sector
-    z80_byte buffer_label[17];
-    
-    for (i=0;i<17;i++) {
-        z80_byte byte_leido;
-        posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
-        if (posicion==-1) return -1;
-        buffer_label[i]=byte_leido;
-    }
-
-    printf("17 bytes of label: ");
-
-    for (i=0;i<17;i++) {
-        z80_byte byte_leido=buffer_label[i];
-        printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
-    }
-
-    printf("\n");
-
-    //hilow_read_audio_pausa(3);    
-
-    if (hilow_read_audio_modo_verbose) {
-        printf("\n---Buscando tercer par de marcas de sincronismo en %d\n",posicion);
-        hilow_read_audio_pausa(2);
-    }
-    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
-    //printf("despues hilow_read_audio_buscar_dos_sync_bits\n");
-
-    if (posicion==-1) return -1;                    
-    //hilow_read_audio_pausa(2);
-
-    return posicion;
-}
 
 int hilow_read_audio_esperar_inicio_sincronismo(int posicion)
 {
@@ -551,6 +480,77 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
 }
 
 
+int hilow_read_audio_buscar_inicio_sector(int posicion)
+{
+    //Buscar 3 veces las dos marcas consecutivas de inicio de bits
+    int i;
+
+
+    if (!hilow_read_audio_leer_cara_dos) {
+        if (hilow_read_audio_modo_verbose) {
+            printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
+            hilow_read_audio_pausa(2);
+        }
+        posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
+        if (posicion==-1) return -1;
+
+
+        for (i=0;i<5;i++) {
+            z80_byte byte_leido;
+            posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
+            if (posicion==-1) return -1;
+            hilow_read_audio_buffer_sector_five_byte[i]=byte_leido;
+        }
+
+        printf("5 bytes id sector: ");
+
+        hilow_read_audio_print_mostrar_ids_sector();
+
+        //hilow_read_audio_pausa(3);
+    }
+
+    if (hilow_read_audio_modo_verbose) {
+        printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
+        hilow_read_audio_pausa(2);
+    }
+    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
+    if (posicion==-1) return -1;
+
+    //Leer el label del sector
+
+    //Leer los 5 bytes indicadores de sector
+    z80_byte buffer_label[17];
+    
+    for (i=0;i<17;i++) {
+        z80_byte byte_leido;
+        posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
+        if (posicion==-1) return -1;
+        buffer_label[i]=byte_leido;
+    }
+
+    printf("17 bytes of label: ");
+
+    for (i=0;i<17;i++) {
+        z80_byte byte_leido=buffer_label[i];
+        printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+    }
+
+    printf("\n");
+
+    //hilow_read_audio_pausa(3);    
+
+    if (hilow_read_audio_modo_verbose) {
+        printf("\n---Buscando tercer par de marcas de sincronismo en %d\n",posicion);
+        hilow_read_audio_pausa(2);
+    }
+    posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
+    //printf("despues hilow_read_audio_buscar_dos_sync_bits\n");
+
+    if (posicion==-1) return -1;                    
+    //hilow_read_audio_pausa(2);
+
+    return posicion;
+}
 
 
 
@@ -630,8 +630,6 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
     int sector=hilow_read_audio_buffer_result[0];
 
     //printf("Sector: %d\n",sector);
-
-
 
 
 
