@@ -198,7 +198,7 @@ int hilow_read_audio_ask_save_sector(void)
     return 1;  
 }
 
-int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos)
+int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos)
 {
     //int repetir;
 
@@ -319,7 +319,7 @@ int main(int argc,char *argv[])
         //posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
         //posicion=hilow_read_audio_buscar_inicio_sector(posicion);
         
-        hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
+        hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
 
         
     }
@@ -336,7 +336,7 @@ int main(int argc,char *argv[])
 
             //hilow_read_audio_pausa(5);
             
-            posicion=hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
+            posicion=hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
 
 
         }
