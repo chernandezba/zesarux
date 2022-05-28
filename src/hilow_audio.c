@@ -588,6 +588,31 @@ void hilow_read_audio_dump_sector_contents(void)
     printf("\n");      
 }
 
+void hilow_read_audio_write_sector_to_memory(int sector)
+{
+    sector--;
+
+    //Copiar a memoria ddh
+    int offset_destino=sector*HILOW_SECTOR_SIZE;    
+
+    if (hilow_read_audio_modo_verbose) printf("offset_destino a archivo ddh: %d\n",offset_destino);
+
+    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
+    /*for (i=0;i<HILOW_SECTOR_SIZE;i++) {
+        printf("%d\n",i);
+        hilow_ddh[offset_destino+i]=hilow_read_audio_buffer_result[i+1];
+    }*/
+
+    //por si acaso sector fuera de rango
+    if (sector<0 || sector>=HILOW_MAX_SECTORS) {
+        printf("Out of range sector\n");
+    }
+
+    else {
+        memcpy(&hilow_read_audio_hilow_ddh[offset_destino],&hilow_read_audio_buffer_result[1],HILOW_SECTOR_SIZE);
+    }    
+}
+
 int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
@@ -732,27 +757,7 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
     //en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
     //if (sector==2 || sector==1) sector--;
 
-    sector--;
-
-    //Copiar a memoria ddh
-    int offset_destino=sector*HILOW_SECTOR_SIZE;    
-
-    if (hilow_read_audio_modo_verbose) printf("offset_destino a archivo ddh: %d\n",offset_destino);
-
-    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
-    /*for (i=0;i<HILOW_SECTOR_SIZE;i++) {
-        printf("%d\n",i);
-        hilow_ddh[offset_destino+i]=hilow_read_audio_buffer_result[i+1];
-    }*/
-
-    //por si acaso sector fuera de rango
-    if (sector<0 || sector>=HILOW_MAX_SECTORS) {
-        printf("Out of range sector\n");
-    }
-
-    else {
-        memcpy(&hilow_read_audio_hilow_ddh[offset_destino],&hilow_read_audio_buffer_result[1],HILOW_SECTOR_SIZE);
-    }
+    hilow_read_audio_write_sector_to_memory(sector);
 
     return posicion;
 
@@ -813,12 +818,6 @@ void hilow_read_audio_espejar_sonido(z80_byte *puntero,int tamanyo)
 
     }
 }
-
-
-
-
-
-
 
 
 

@@ -201,7 +201,8 @@ int main(int argc,char *argv[])
         //posicion=hilow_read_audio_buscar_inicio_sector(posicion);
         
         hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
-        hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
+
+        
     }
 
     else {
@@ -216,14 +217,14 @@ int main(int argc,char *argv[])
 
             //hilow_read_audio_pausa(5);
             
-
             posicion=hilow_read_audio_lee_sector(posicion,&total_bytes_leidos);
 
-            hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
 
         }
 
     }
+
+    hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
 
 
     free(hilow_read_audio_read_hilow_memoria_audio);
