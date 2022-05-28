@@ -25,37 +25,24 @@
 #include "cpu.h"
 
 extern int hilow_read_audio_modo_verbose;
-
 extern int hilow_read_audio_modo_verbose_extra;
-
 extern int hilow_read_audio_directo_a_pista;
-
 extern int hilow_read_audio_ejecutar_sleep;
-
 extern int hilow_read_audio_leer_cara_dos;
-
 extern int hilow_read_audio_autoajustar_duracion_bits;
 
-extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector);
-
-
-extern int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida);
-
-extern int hilow_read_audio_buscar_inicio_sector(int posicion);
-
 extern long int hilow_read_audio_tamanyo_archivo_audio;
-
 extern z80_byte *hilow_read_audio_read_hilow_memoria_audio;
-
 extern z80_byte *hilow_read_audio_hilow_ddh;
+extern z80_byte hilow_read_audio_buffer_result[];
 
+extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector);
+extern int hilow_read_audio_buscar_inicio_sector(int posicion);
 extern void hilow_read_audio_pausa(int segundos);
-
 extern long int hilow_read_audio_get_file_size(char *nombre);
-
 extern void hilow_read_audio_espejar_sonido(z80_byte *puntero,int tamanyo);
-
 extern void hilow_read_audio_write_sector_to_memory(int sector);
-
+extern int hilow_read_audio_warn_if_sector_mismatch(int sector);
+extern void hilow_read_audio_print_mostrar_ids_sector(void);
 
 #endif

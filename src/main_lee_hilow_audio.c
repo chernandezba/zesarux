@@ -83,7 +83,7 @@ void hilow_read_audio_read_hilow_ddh_file(char *archivo)
     }
 
 
-    //cargarlo en memoria
+    //cargarlo en memoria, si es que existe
     FILE *ptr_ddhfile;
     ptr_ddhfile=fopen(archivo,"rb");
 
@@ -198,6 +198,42 @@ int hilow_read_audio_ask_save_sector(void)
     return 1;  
 }
 
+void hilow_read_audio_dump_sector_contents(void)
+{
+     int total=HILOW_SECTOR_SIZE+1;
+
+    //dump total ascii+hexa
+    int colwidth=50;     
+
+    int i;
+
+    for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
+        int col;
+
+        printf("%08X ",i-1);
+
+        for (col=0;col<colwidth && i+col<HILOW_SECTOR_SIZE+1;col++) {
+            z80_byte byte_leido=hilow_read_audio_buffer_result[i+col];
+
+            printf("%02X",byte_leido);
+        }        
+
+        printf(" ");
+
+        for (col=0;col<colwidth && i+col<HILOW_SECTOR_SIZE+1;col++) {
+
+            z80_byte byte_leido=hilow_read_audio_buffer_result[i+col];
+
+            printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+        }
+
+        printf("\n");
+
+    } 
+
+    printf("\n");      
+}
+
 int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos)
 {
     //int repetir;
@@ -215,6 +251,28 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
         posicion=posicion_inicial;
 
         posicion=hilow_read_audio_lee_sector(posicion,total_bytes_leidos,&sector);
+
+
+
+
+        hilow_read_audio_pausa(1);
+
+        hilow_read_audio_dump_sector_contents();   
+        
+
+
+
+        if (!hilow_read_audio_directo_a_pista) {
+            if (hilow_read_audio_warn_if_sector_mismatch(sector)) {
+                printf("Probably sector mismatch!\n");
+                hilow_read_audio_print_mostrar_ids_sector();
+                hilow_read_audio_pausa(2);            
+            }
+        }
+
+
+        printf("Total bytes leidos: %d\n",*total_bytes_leidos);
+        printf("Sector %d\n",sector);        
 
         respuesta=hilow_read_audio_ask_save_sector();
 

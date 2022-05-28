@@ -552,41 +552,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
 
 
 
-void hilow_read_audio_dump_sector_contents(void)
-{
-     int total=HILOW_SECTOR_SIZE+1;
 
-    //dump total ascii+hexa
-    int colwidth=50;     
-
-    int i;
-
-    for (i=1;i<total /*&& posicion!=-1*/;i+=colwidth) {
-        int col;
-
-        printf("%08X ",i-1);
-
-        for (col=0;col<colwidth && i+col<HILOW_SECTOR_SIZE+1;col++) {
-            z80_byte byte_leido=hilow_read_audio_buffer_result[i+col];
-
-            printf("%02X",byte_leido);
-        }        
-
-        printf(" ");
-
-        for (col=0;col<colwidth && i+col<HILOW_SECTOR_SIZE+1;col++) {
-
-            z80_byte byte_leido=hilow_read_audio_buffer_result[i+col];
-
-            printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
-        }
-
-        printf("\n");
-
-    } 
-
-    printf("\n");      
-}
 
 void hilow_read_audio_write_sector_to_memory(int sector)
 {
@@ -615,6 +581,21 @@ void hilow_read_audio_write_sector_to_memory(int sector)
     }    
 }
 
+int hilow_read_audio_warn_if_sector_mismatch(int sector)
+{
+    if (!hilow_read_audio_leer_cara_dos) {
+
+        if (sector!=hilow_read_audio_buffer_sector_five_byte[1] && sector!=hilow_read_audio_buffer_sector_five_byte[2] && 
+            sector!=hilow_read_audio_buffer_sector_five_byte[3] && sector!=hilow_read_audio_buffer_sector_five_byte[4]) {
+
+            return 1;
+
+        }
+
+    }    
+
+    return 0;
+}
 
 
 int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector)
@@ -653,35 +634,6 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
 
 
 
-    hilow_read_audio_pausa(1);
-
-    hilow_read_audio_dump_sector_contents();   
-     
-
-
-
-    int sector_aparentemente_correcto=1;
-
-    if (!hilow_read_audio_directo_a_pista && !hilow_read_audio_leer_cara_dos) {
-
-        if (sector!=hilow_read_audio_buffer_sector_five_byte[1] && sector!=hilow_read_audio_buffer_sector_five_byte[2] && 
-            sector!=hilow_read_audio_buffer_sector_five_byte[3] && sector!=hilow_read_audio_buffer_sector_five_byte[4]) {
-
-            sector_aparentemente_correcto=0;
-            printf("Probably sector mismatch!\n");
-            hilow_read_audio_print_mostrar_ids_sector();
-            hilow_read_audio_pausa(2);
-        }
-
-    }
-
-    else {
-        //Para que pregunte al usuario dado que no tenemos las marcas de sector y no sabemos si el id de sector es correcto
-        sector_aparentemente_correcto=0;
-    }    
-
-    printf("Total bytes leidos: %d\n",*total_bytes_leidos);
-    printf("Sector %d\n",sector);
 
     
     *p_sector=sector;
