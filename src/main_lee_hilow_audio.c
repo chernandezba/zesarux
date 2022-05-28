@@ -290,13 +290,27 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
 int main(int argc,char *argv[])
 {
 
+    printf( "lee_hilow_audio v.1.0\n"
+            "Copyright (C) 2022 Cesar Hernandez Bano\n"
+            "Utility to convert audio file from a HiLow Data Drive to a binary dump (.ddh file) useful for ZEsarUX emulator\n"
+            "Import audio must be: raw format (no headers), mono, 8 bits, unsigned, 44100 Hz\n\n");
+
     int mostrar_ayuda=0;
 
     if (argc>1 && !strcasecmp(argv[1],"--help")) mostrar_ayuda=1;
 
     if(argc<3 || mostrar_ayuda) {
-        printf("%s source_wav destination.ddh [--autoadjust_bit_width] [--onlysector] "
-                "[--verbose] [--verboseextra] [--pause] [--automatic] [--bside]\n",argv[0]);
+        printf( "Usage: %s source.raw destination.ddh\n",argv[0]);
+        printf("Available switches:\n"
+                "\n"      
+                "--autoadjust_bit_width: Try to adjust bit length width depending on the sync signal\n"
+                "--automatic: Do not ask anything\n"
+                "--bside: Needed to convert audio from B side\n"
+                "--onlysector: Convert dump audio which starts just at the data sector data\n"
+                "--pause: Add some delays after some actions\n"
+                "--verbose: Print debugging info\n"
+                "--verboseextra: Print even more debugging info\n"
+        );
         exit(1);
     }
 
