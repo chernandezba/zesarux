@@ -306,8 +306,8 @@ int main(int argc,char *argv[])
                 "--autoadjust_bit_width: Try to adjust bit length width depending on the sync signal\n"
                 "--automatic: Do not ask anything\n"
                 "--bside: Needed to convert audio from B side\n"
-                "--onlysector: Convert dump audio which starts just at the data sector data\n"
-                "--pause: Add some delays after some actions\n"
+                "--onlysector: Convert dump audio which starts just at the sector data, and convert only one sector\n"
+                "--pause: Add delays after some actions\n"
                 "--verbose: Print debugging info\n"
                 "--verboseextra: Print even more debugging info\n"
         );
