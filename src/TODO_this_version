@@ -158,3 +158,8 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 quiza 514H (1300 decimal) de longitud sector directorio? cinta logo cambia a partir de ahi
 
 -documentar y nombrar cada tipo de señal hilow con nombre concreto
+
+-lee_hilow_audio: ultimo sector en cara B dice:
+
+Total bytes leidos: 0
+Sector -407021264
