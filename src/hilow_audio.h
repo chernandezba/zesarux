@@ -32,15 +32,12 @@ extern int hilow_read_audio_directo_a_pista;
 
 extern int hilow_read_audio_ejecutar_sleep;
 
-extern int hilow_read_audio_completamente_automatico;
-
 extern int hilow_read_audio_leer_cara_dos;
 
 extern int hilow_read_audio_autoajustar_duracion_bits;
 
-extern int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_bytes_leidos);
+extern int hilow_read_audio_lee_sector_unavez(int posicion,int *total_bytes_leidos,int *p_sector);
 
-extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos);
 
 extern int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida);
 
@@ -57,6 +54,8 @@ extern void hilow_read_audio_pausa(int segundos);
 extern long int hilow_read_audio_get_file_size(char *nombre);
 
 extern void hilow_read_audio_espejar_sonido(z80_byte *puntero,int tamanyo);
+
+extern void hilow_read_audio_write_sector_to_memory(int sector);
 
 
 #endif
