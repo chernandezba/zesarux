@@ -214,7 +214,7 @@ int hilow_read_audio_lee_sector_preguntando(int posicion,int *total_bytes_leidos
 
         posicion=posicion_inicial;
 
-        posicion=hilow_read_audio_lee_sector_unavez(posicion,total_bytes_leidos,&sector);
+        posicion=hilow_read_audio_lee_sector(posicion,total_bytes_leidos,&sector);
 
         respuesta=hilow_read_audio_ask_save_sector();
 
@@ -314,14 +314,9 @@ int main(int argc,char *argv[])
     int total_bytes_leidos;
 
     if (hilow_read_audio_directo_a_pista) {
-
-        //temp. En hilow_read_audio_directo_a_pista esto no se debe hacer
-        //posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
-        //posicion=hilow_read_audio_buscar_inicio_sector(posicion);
         
         hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
-
-        
+      
     }
 
     else {
@@ -333,8 +328,6 @@ int main(int argc,char *argv[])
             posicion=hilow_read_audio_buscar_inicio_sector(posicion);
 
             if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",posicion);
-
-            //hilow_read_audio_pausa(5);
             
             posicion=hilow_read_audio_lee_sector_preguntando(posicion,&total_bytes_leidos);
 

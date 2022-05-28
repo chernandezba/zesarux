@@ -617,7 +617,7 @@ void hilow_read_audio_write_sector_to_memory(int sector)
 
 
 
-int hilow_read_audio_lee_sector_unavez(int posicion,int *total_bytes_leidos,int *p_sector)
+int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector)
 {
     int total=HILOW_SECTOR_SIZE+1; //2049; //2049; //byte de numero de sector + 2048 del sector
     //int posicion=0;

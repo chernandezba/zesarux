@@ -36,7 +36,7 @@ extern int hilow_read_audio_leer_cara_dos;
 
 extern int hilow_read_audio_autoajustar_duracion_bits;
 
-extern int hilow_read_audio_lee_sector_unavez(int posicion,int *total_bytes_leidos,int *p_sector);
+extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector);
 
 
 extern int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida);
