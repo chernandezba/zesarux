@@ -19,8 +19,104 @@
 
 */
 
-#include "hilow_audio.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
+#include "hilow_audio.h"
+#include "hilow.h"
+
+
+z80_byte *read_hilow_audio_file(char *archivo)
+{
+    z80_byte *puntero;
+
+
+   
+
+    //Asignar memoria
+    int tamanyo=hilow_read_audio_get_file_size(archivo);
+    puntero=malloc(tamanyo);
+
+    if (puntero==NULL) {
+        printf("Can not allocate memory for hilow audio file");
+        return NULL;
+    }
+
+
+    //cargarlo en memoria
+    FILE *ptr_bmpfile;
+    ptr_bmpfile=fopen(archivo,"rb");
+
+    if (!ptr_bmpfile) {
+            printf("Unable to open bmp file %s\n",archivo);
+            return NULL;
+    }
+
+    fread(puntero,1,tamanyo,ptr_bmpfile);
+    fclose(ptr_bmpfile);
+
+    //Si leemos cara 2, invertir todo el sonido (el principio al final)
+    if (hilow_read_audio_leer_cara_dos) {
+        hilow_read_audio_espejar_sonido(puntero,tamanyo);
+    }
+
+    return puntero;
+}
+
+void hilow_read_audio_read_hilow_ddh_file(char *archivo)
+{
+    //z80_byte *puntero;
+
+
+    //Leer archivo ddh
+    //Asignar memoria
+    int tamanyo=HILOW_DEVICE_SIZE;
+    hilow_read_audio_hilow_ddh=malloc(tamanyo);
+
+    if (hilow_read_audio_hilow_ddh==NULL) {
+        //TODO: que hacer si no se puede asignar memoria
+        printf("Can not allocate memory for hilow ddh file");
+        exit(1);
+    }
+
+
+    //cargarlo en memoria
+    FILE *ptr_ddhfile;
+    ptr_ddhfile=fopen(archivo,"rb");
+
+    if (!ptr_ddhfile) {
+        //Esto es normal, si archivo de output no existe
+        printf("Unable to open ddh file %s\n",archivo);
+        return;
+    }
+
+    fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fclose(ptr_ddhfile);    
+
+
+
+}
+
+void hilow_read_audio_write_hilow_ddh_file(char *archivo)
+{
+    z80_byte *puntero;
+
+    int tamanyo=HILOW_DEVICE_SIZE;
+
+
+    FILE *ptr_ddhfile;
+    ptr_ddhfile=fopen(archivo,"wb");
+
+    if (!ptr_ddhfile) {
+            printf("Unable to open ddh file %s\n",archivo);
+            return;
+    }
+
+    fwrite(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fclose(ptr_ddhfile);    
+
+}
 
 int main(int argc,char *argv[])
 {
@@ -86,10 +182,10 @@ int main(int argc,char *argv[])
     hilow_read_audio_pausa(2);
 
 
-    hilow_read_audio_tamanyo_archivo=hilow_read_audio_get_file_size(archivo);
+    hilow_read_audio_tamanyo_archivo_audio=hilow_read_audio_get_file_size(archivo);
 
 
-    hilow_read_audio_read_hilow_memoria=read_hilow_audio_file(archivo);
+    hilow_read_audio_read_hilow_memoria_audio=read_hilow_audio_file(archivo);
 
     hilow_read_audio_read_hilow_ddh_file(archivo_ddh);
     //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
@@ -130,7 +226,7 @@ int main(int argc,char *argv[])
     }
 
 
-    free(hilow_read_audio_read_hilow_memoria);
+    free(hilow_read_audio_read_hilow_memoria_audio);
 
     free(hilow_read_audio_hilow_ddh);
 

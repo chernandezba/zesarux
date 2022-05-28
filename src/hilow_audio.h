@@ -46,4 +46,17 @@ extern int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida);
 
 extern int hilow_read_audio_buscar_inicio_sector(int posicion);
 
+extern long int hilow_read_audio_tamanyo_archivo_audio;
+
+extern z80_byte *hilow_read_audio_read_hilow_memoria_audio;
+
+extern z80_byte *hilow_read_audio_hilow_ddh;
+
+extern void hilow_read_audio_pausa(int segundos);
+
+extern long int hilow_read_audio_get_file_size(char *nombre);
+
+extern void hilow_read_audio_espejar_sonido(z80_byte *puntero,int tamanyo);
+
+
 #endif
