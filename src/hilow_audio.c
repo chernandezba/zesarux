@@ -649,8 +649,8 @@ int hilow_read_audio_ask_save_sector(void)
                 int parm;
 
                 do {
-                    printf("Parametros: 1) autoadjust_bit_width %d 2) verbose %d   0) end \n",
-                        hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose);  
+                    printf("Parametros: 1) autoadjust_bit_width %d  2) verbose %d  3) verbose_extra %d   0) end \n",
+                        hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose,hilow_read_audio_modo_verbose_extra);  
 
                     
                     char buffer_parm[100];
@@ -659,6 +659,7 @@ int hilow_read_audio_ask_save_sector(void)
                     
                     if (parm==1) hilow_read_audio_autoajustar_duracion_bits ^=1;
                     if (parm==2) hilow_read_audio_modo_verbose ^=1;
+                    if (parm==3) hilow_read_audio_modo_verbose_extra ^=1;
 
 
                 } while(parm!=0);
@@ -686,7 +687,7 @@ int hilow_read_audio_ask_save_sector(void)
         } while (1);
     } 
 
-    //Es automatico. Asumimos grabar sector
+    //Esta en modo automatico. Asumimos grabar sector
     return 1;  
 }
 
@@ -758,21 +759,8 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
 
     
 
-    /*if (!sector_aparentemente_correcto) {
-        printf("Quieres cambiar el sector? (s/n)");
-    
 
-        scanf("%s",buffer_pregunta);
-
-        if (buffer_pregunta[0]=='s') {
-            printf("Nuevo sector? : ");
-            int sector;
-            scanf("%s",buffer_pregunta);
-            sector=atoi(buffer_pregunta);
-            printf("Nuevo sector: %d\n",sector);
-        }
-    }*/
-
+    int respuesta=hilow_read_audio_ask_save_sector();
 
     /*
     Posibles salidas: 
@@ -782,67 +770,28 @@ int hilow_read_audio_lee_sector_unavez(int posicion,int *repetir,int *total_byte
     -Repetir lectura sector: Salida 2
     */
 
-   char buffer_pregunta[100];
 
-    if (!hilow_read_audio_completamente_automatico) {
-        buffer_pregunta[0]=0;
+    switch (respuesta) {
+        case -1:
+            //Finalizar
+            return -1;
+        break;
 
-        do {
+        case 0:
+            //no grabar
+            return posicion;
+        break;
 
-            printf("Grabar sector? (s/n) e: editar numero sector p: cambio parametros r: repetir f: fin  ");
+        case 2:
+            //repetir
+            *repetir=1;
+            return posicion;            
+        break;
 
-            scanf("%s",buffer_pregunta);
+        //Cualquier otra cosa, salir del switch y grabar sector
 
-            if (buffer_pregunta[0]=='r') {
-                printf("Repeat\n");
-                *repetir=1;
-                return posicion;
-            }
-
-            if (buffer_pregunta[0]=='f') {
-                printf("Ending\n");
-                return -1;
-            }
-
-            if (buffer_pregunta[0]=='p') {
-
-                int parm;
-
-                do {
-                    printf("Parametros: 1) autoadjust_bit_width %d 2) verbose %d   0) end \n",
-                        hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose);  
-
-                    
-                    char buffer_parm[100];
-                    scanf("%s",buffer_parm);
-                    parm=atoi(buffer_parm);
-                    
-                    if (parm==1) hilow_read_audio_autoajustar_duracion_bits ^=1;
-                    if (parm==2) hilow_read_audio_modo_verbose ^=1;
-
-
-                } while(parm!=0);
-            }              
-
-            if (buffer_pregunta[0]=='e') {
-                printf("Nuevo sector? : ");
-                int sector;
-                char buffer_sector[100];
-                scanf("%s",buffer_sector);
-                sector=atoi(buffer_sector);
-                printf("Nuevo sector: %d\n",sector);
-            }    
-
-            if (buffer_pregunta[0]=='n') {
-                printf("Not saving this sector\n");
-                return posicion;
-            }
-
-        } while (buffer_pregunta[0]=='e' || buffer_pregunta[0]=='p');
     }
 
-    //en emulador usamos sector 0 y 1 para directorio, aunque parece que en real es 1 y 2
-    //if (sector==2 || sector==1) sector--;
 
     hilow_read_audio_write_sector_to_memory(sector);
 
