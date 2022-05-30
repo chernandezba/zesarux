@@ -164,4 +164,11 @@ quiza 514H (1300 decimal) de longitud sector directorio? cinta logo cambia a par
 Total bytes leidos: 0
 Sector -407021264
 
--convert a ddh: no funciona phtread cancel
+-convert a ddh: 
+
+*no funciona phtread cancel
+*indicar 5 bytes numero sector. decir si hay mismatch
+*indicar label sector
+*mejorar teclas y ventana en general
+*agregar ayuda
+*decir en que punto esta: si esperando inicio sector, inicio marcas , etc etc

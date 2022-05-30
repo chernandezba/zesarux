@@ -29578,8 +29578,8 @@ void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 //char temp_vv=30;
 
 //Archivos de entrada y salida para conversión
-char menu_hilow_convert_audio_input_raw[PATH_MAX];
-char menu_hilow_convert_audio_output_ddh[PATH_MAX];
+char menu_hilow_convert_audio_input_raw[PATH_MAX]="";
+char menu_hilow_convert_audio_output_ddh[PATH_MAX]="";
 
 int hilow_convert_audio_thread_running=0;
 int menu_hilow_convert_audio_sector=0;
@@ -29711,8 +29711,8 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
 
     if (!ptr_ddhfile) {
         //Esto es normal, si archivo de output no existe
-        debug_printf(VERBOSE_ERR,"Unable to open ddh file %s",archivo);
-        return 0;
+        debug_printf(VERBOSE_INFO,"Unable to open ddh file for read %s",archivo);
+        return 1;
     }
 
     fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
@@ -29901,7 +29901,7 @@ void menu_hilow_convert_audio_overlay(void)
         zxvision_print_string_defaults_fillspc(ventana,1,0,"s: stop conversion");
     }
 
-    int linea=3;             
+    int linea=4;             
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
         menu_hilow_convert_audio_posicion_read_raw/44100/60,
         (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
@@ -30002,9 +30002,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     //temp
     
     
-    strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1.raw");
-    strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
+    //strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1.raw");
+    //strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
 
+    char buffer_load_file[PATH_MAX];
+
+    char *filtros[2];
 
     do {
 
@@ -30022,7 +30025,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             menu_hilow_convert_speed,
             (menu_hilow_convert_paused ? "On" : "Off"), 
             (hilow_read_audio_leer_cara_dos ? "Yes" : "No")
-            );            
+            );       
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output  x: sound on/off");     
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -30063,6 +30068,28 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case 'b':
                 hilow_read_audio_leer_cara_dos ^=1;
             break;
+
+            case 'i':
+
+                filtros[0]="raw";
+                filtros[1]=0;
+
+
+                if (menu_filesel("Select Input raw File",filtros,buffer_load_file)==1) {
+                    strcpy(menu_hilow_convert_audio_input_raw,buffer_load_file);
+                }              
+            break;
+
+            case 'o':
+
+                filtros[0]="ddh";
+                filtros[1]=0;
+
+                if (menu_filesel("Select Output ddh File",filtros,buffer_load_file)==1) {
+                    strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
+                }              
+            break;            
+
 
             //Salir con ESC
             case 2:
