@@ -172,3 +172,4 @@ Sector -407021264
 *mejorar teclas y ventana en general
 *agregar ayuda
 *decir en que punto esta: si esperando inicio sector, inicio marcas , etc etc
+*zona memoria que este disponible siempre que ventana exista. total esta leyendo del buffer de salida de 2049 bytes, y no de la memoria que se asigna dinamicamente
