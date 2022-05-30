@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "cpu.h"
 #include "hilow_audio.h"
 #include "hilow.h"
 
@@ -51,7 +52,7 @@ z80_byte *read_hilow_audio_file(char *archivo)
     ptr_bmpfile=fopen(archivo,"rb");
 
     if (!ptr_bmpfile) {
-            printf("Unable to open bmp file %s\n",archivo);
+            printf("Unable to open audio file %s\n",archivo);
             return NULL;
     }
 

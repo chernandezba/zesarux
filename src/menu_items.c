@@ -136,6 +136,7 @@
 #include "hilow.h"
 #include "utils_text_adventure.h"
 #include "salamanquesa.h"
+#include "hilow_audio.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -4371,6 +4372,14 @@ void menu_audio_draw_sound_wave(void)
 	menu_audio_draw_sound_wave_frecuencia_aproximada=audiostats.frecuencia;
 	menu_audio_draw_sound_wave_volumen=audiostats.volumen;
 	menu_audio_draw_sound_wave_volumen_escalado=audiostats.volumen_escalado;
+
+    //Si convirtiendo hilow, alterar max y min especial para la vista de scroll
+    //menu_hilow_convert_audio_last_audio_sample
+    if (hilow_convert_audio_thread_running && menu_hilow_convert_muy_lento) {
+        menu_audio_draw_sound_wave_valor_max=menu_hilow_convert_audio_last_audio_sample;
+        menu_audio_draw_sound_wave_valor_min=menu_hilow_convert_audio_last_audio_sample;
+    }
+
 
 	int audiomedio=audiostats.medio;
 	menu_audio_draw_sound_wave_valor_medio=audiomedio;
@@ -29410,6 +29419,538 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
     free(texto_chkdsk);    
 }
 
+
+
+zxvision_window *menu_hilow_convert_audio_window;
+
+
+
+
+
+
+
+struct timeval menu_hilow_convert_audio_timer_antes, menu_hilow_convert_audio_timer_ahora;
+
+
+void menu_hilow_convert_audio_tiempo_inicial(void)
+{
+
+    gettimeofday(&menu_hilow_convert_audio_timer_antes, NULL);
+
+}
+
+//Calcular tiempo pasado en microsegundos
+long menu_hilow_convert_audio_tiempo_final_usec(void)
+{
+
+    long menu_hilow_convert_audio_timer_time, menu_hilow_convert_audio_timer_seconds, menu_hilow_convert_audio_timer_useconds;
+
+    gettimeofday(&menu_hilow_convert_audio_timer_ahora, NULL);
+
+    menu_hilow_convert_audio_timer_seconds  = menu_hilow_convert_audio_timer_ahora.tv_sec  - menu_hilow_convert_audio_timer_antes.tv_sec;
+    menu_hilow_convert_audio_timer_useconds = menu_hilow_convert_audio_timer_ahora.tv_usec - menu_hilow_convert_audio_timer_antes.tv_usec;
+
+    menu_hilow_convert_audio_timer_time = ((menu_hilow_convert_audio_timer_seconds) * 1000000 + menu_hilow_convert_audio_timer_useconds);
+
+    //printf("Elapsed time: %ld milliseconds\n\r", menu_hilow_convert_audio_timer_mtime);
+
+        return menu_hilow_convert_audio_timer_time;
+}
+
+void menu_hilow_convert_audio_precise_usleep(int duracion)
+{
+
+
+    menu_hilow_convert_audio_tiempo_inicial();
+
+
+                    int tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
+
+                        //Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
+            //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos
+            //(descontando el tiempo que se tardaba en ejecutar este codigo), pero parece
+            //que en Linux no funcionan bien esas pausas de tan poco tiempo, no son perfectas
+                        while (tiempo_pasado_usec<duracion) {
+                                //printf("Tiempo usec: %d\n",tiempo_pasado_usec);
+                                tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
+                        }
+}
+
+//Tener la media de los anteriores 3
+int menu_hilow_convert_audio_last_audio_sample_one=0;
+int menu_hilow_convert_audio_last_audio_sample_two=0;
+int menu_hilow_convert_audio_last_audio_sample_three=0;
+
+
+//Valor de audio ultimo leido que se enviara al output
+char menu_hilow_convert_audio_last_audio_sample;
+
+int menu_hilow_convert_muy_lento=0;
+
+
+void menu_hilow_convert_audio_scroll_left_string(char *texto)
+{
+    int longitud=strlen(texto);
+
+    int i;
+
+    //Si longitud 3: ABC
+    //bucle desde 0,1
+    //Final: BCC
+
+    for (i=0;i<longitud-1;i++) {
+        texto[i]=texto[i+1];
+    }
+}
+
+
+
+                                        //   12345678
+char menu_hilow_convert_audio_string_bits[]="        ";
+
+                                                //   11 22 33 44 55 66 77 88
+char menu_hilow_convert_audio_string_bytes[]=       "                        ";
+                                                //   H  O  L  A  Q  U  E  T
+char menu_hilow_convert_audio_string_bytes_ascii[]= "                        ";
+void menu_hilow_convert_audio_write_bit_callback(int valor)
+{
+    printf("bit: %d\n",valor);
+
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bits);
+
+    int longitud=strlen(menu_hilow_convert_audio_string_bits);
+
+    //Meter el bit a la derecha del string
+    menu_hilow_convert_audio_string_bits[longitud-1]='0'+valor;
+
+    
+}
+
+void menu_hilow_convert_audio_write_byte_callback(int valor)
+{
+    printf("byte: %02XH\n",valor);
+
+
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes);
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes);
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes);
+
+    int longitud=strlen(menu_hilow_convert_audio_string_bytes);
+
+    //Meter el bit a la derecha del string
+    sprintf(&menu_hilow_convert_audio_string_bytes[longitud-3],"%02X ",valor);
+
+    //Lo mismo para ascii
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes_ascii);
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes_ascii);
+    menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes_ascii);
+
+    longitud=strlen(menu_hilow_convert_audio_string_bytes_ascii);
+
+    //Meter el bit a la derecha del string
+    char caracter=(valor>=32 && valor<126 ? valor : '.');
+    menu_hilow_convert_audio_string_bytes_ascii[longitud-3]=caracter;
+    
+
+
+}
+
+//char temp_vv=30;
+
+//Archivos de entrada y salida para conversión
+char menu_hilow_convert_audio_input_raw[PATH_MAX];
+char menu_hilow_convert_audio_output_ddh[PATH_MAX];
+
+int hilow_convert_audio_thread_running=0;
+int menu_hilow_convert_audio_sector=0;
+
+int menu_hilow_convert_audio_posicion_read_raw=0;
+
+void menu_hilow_convert_audio_callback(int valor,int posicion)
+{
+    menu_hilow_convert_audio_posicion_read_raw=posicion;
+
+
+    //printf("Valor desde callback: %d\n",valor);
+    //Aprox para 44100 hz
+    //22 seria para 44100 hz
+    //Dado que vamos a 15600, son 3 veces menos
+
+    //usleep(22/3);
+    menu_hilow_convert_audio_precise_usleep(22);
+
+
+    if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
+
+    menu_hilow_convert_audio_last_audio_sample_three=valor;
+
+    int valor_final=menu_hilow_convert_audio_last_audio_sample_one+menu_hilow_convert_audio_last_audio_sample_two+menu_hilow_convert_audio_last_audio_sample_three;
+
+    valor_final /=3;
+
+    //Pasar a signed char
+    char char_valor_final;
+
+
+    int valor_hilow=menu_hilow_convert_audio_last_audio_sample;
+    valor_final -=128;
+
+    char_valor_final=valor_final;
+
+    menu_hilow_convert_audio_last_audio_sample=char_valor_final;    
+
+    //temp
+    //menu_hilow_convert_audio_last_audio_sample=temp_vv;
+    //temp_vv=-temp_vv;
+
+
+    //Y "rotarlos"
+    menu_hilow_convert_audio_last_audio_sample_one=menu_hilow_convert_audio_last_audio_sample_two;
+    menu_hilow_convert_audio_last_audio_sample_two=menu_hilow_convert_audio_last_audio_sample_three;
+
+    //Y para que no se vaya a silencio, decir que hay sonido y resetear contador de silencio 
+    silence_detection_counter=0;
+    beeper_silence_detection_counter=0;
+}
+
+z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
+{
+    z80_byte *puntero;
+
+
+   
+
+    //Asignar memoria
+    int tamanyo=hilow_read_audio_get_file_size(archivo);
+    puntero=malloc(tamanyo);
+
+    if (puntero==NULL) {
+        cpu_panic("Can not allocate memory for hilow audio file");
+    }
+
+
+    //cargarlo en memoria
+    FILE *ptr_bmpfile;
+    ptr_bmpfile=fopen(archivo,"rb");
+
+    if (!ptr_bmpfile) {
+            debug_printf(VERBOSE_ERR,"Unable to open audio file %s",archivo);
+            return NULL;
+    }
+
+    fread(puntero,1,tamanyo,ptr_bmpfile);
+    fclose(ptr_bmpfile);
+
+    //Si leemos cara 2, invertir todo el sonido (el principio al final)
+    if (hilow_read_audio_leer_cara_dos) {
+        hilow_read_audio_espejar_sonido(puntero,tamanyo);
+    }
+
+    return puntero;
+}
+
+int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
+{
+    //z80_byte *puntero;
+
+
+    //Leer archivo ddh
+    //Asignar memoria
+    int tamanyo=HILOW_DEVICE_SIZE;
+    hilow_read_audio_hilow_ddh=malloc(tamanyo);
+
+    if (hilow_read_audio_hilow_ddh==NULL) {
+        //TODO: que hacer si no se puede asignar memoria
+        cpu_panic("Can not allocate memory for hilow ddh file");
+    }
+
+
+    //cargarlo en memoria, si es que existe
+    FILE *ptr_ddhfile;
+    ptr_ddhfile=fopen(archivo,"rb");
+
+    if (!ptr_ddhfile) {
+        //Esto es normal, si archivo de output no existe
+        debug_printf(VERBOSE_ERR,"Unable to open ddh file %s",archivo);
+        return 0;
+    }
+
+    fread(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fclose(ptr_ddhfile);    
+
+
+    return 1;
+
+}
+
+
+
+#ifdef USE_PTHREADS
+pthread_t hilow_convert_audio_thread;
+
+
+void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
+{
+
+    //Llamar a rutina de conversion
+    hilow_convert_audio_thread_running=0;
+
+    //Temporal: meter sleep
+    //hilow_read_audio_ejecutar_sleep=1;
+
+    //Temporal: verbose
+    hilow_read_audio_modo_verbose=1;
+
+    //meter callback
+    hilow_read_audio_byteread_callback=menu_hilow_convert_audio_callback;
+
+    hilow_read_audio_byte_output_write_callback=menu_hilow_convert_audio_write_byte_callback;
+
+    hilow_read_audio_bit_output_write_callback=menu_hilow_convert_audio_write_bit_callback;
+
+
+    hilow_read_audio_tamanyo_archivo_audio=get_file_size(menu_hilow_convert_audio_input_raw);
+
+    //Leer archivo entrada
+    hilow_read_audio_read_hilow_memoria_audio=menu_hilow_convert_audio_read_hilow_audio_file(menu_hilow_convert_audio_input_raw);
+
+    if (hilow_read_audio_read_hilow_memoria_audio==NULL) return NULL;
+
+
+    //Asignar memoria para archivo salida y leerlo (si existe)
+    if (!menu_hilow_convert_audio_read_hilow_ddh_file(menu_hilow_convert_audio_output_ddh)) return NULL;
+    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
+    //hilow_read_audio_pausa(2);
+
+    menu_hilow_convert_audio_posicion_read_raw=0;
+    int total_bytes_leidos;    
+
+
+    hilow_convert_audio_thread_running=1;
+
+
+    while (menu_hilow_convert_audio_posicion_read_raw!=-1) {
+
+        printf("\n");
+        menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_buscar_inicio_sector(menu_hilow_convert_audio_posicion_read_raw);
+        if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",menu_hilow_convert_audio_posicion_read_raw);
+        
+        menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
+
+        printf("Sector: %d\n",menu_hilow_convert_audio_sector);
+        sleep(1);
+
+    }
+
+
+    //TODO
+    //hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
+
+    free(hilow_read_audio_read_hilow_memoria_audio);
+    free(hilow_read_audio_hilow_ddh);
+
+    printf("Finalizado proceso\n");
+
+
+    hilow_convert_audio_thread_running=0;
+
+
+    return NULL;
+
+
+}
+
+void menu_hilow_convert_audio_run_thread(void)
+{
+    if (pthread_create( &hilow_convert_audio_thread, NULL, &menu_hilow_convert_audio_thread_function, NULL) ) {
+                debug_printf(VERBOSE_ERR,"Can not create download wos thread");
+                return;
+    }    
+}
+
+#endif
+
+
+void menu_hilow_convert_audio_overlay(void)
+{
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_hilow_convert_audio_window->is_minimized) return;  
+
+
+    zxvision_window *ventana;
+
+    ventana=menu_hilow_convert_audio_window;
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
+
+    
+
+    int linea=2;             
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Input audio: bytes read: %d",menu_hilow_convert_audio_posicion_read_raw);
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s",menu_hilow_convert_audio_string_bits);     
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+
+
+    //Mostrar colores
+    zxvision_draw_window_contents(menu_hilow_convert_audio_window);
+    
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_hilow_convert_audio;
+
+
+void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+
+#ifndef USE_PTHREADS
+        menu_warn_message("This window needs pthreads enabled");
+        return;
+#endif    
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_hilow_convert_audio;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	zxvision_delete_window_if_exists(ventana);	
+
+
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		ancho_ventana=30;
+		alto_ventana=20;
+
+        xventana=menu_center_x()-ancho_ventana/2;
+        yventana=menu_center_y()-alto_ventana/2;             
+	}
+
+        
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"HiLow Convert Audio",
+        "hilowconvertaudio",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+	ventana->can_be_backgrounded=1;
+         
+
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_hilow_convert_audio_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+	set_menu_overlay_function(menu_hilow_convert_audio_overlay);
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+
+    //temp
+    
+    
+    strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1_nosilence.raw");
+    strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
+
+
+    do {
+
+        zxvision_cls(ventana);
+
+        if (!hilow_convert_audio_thread_running) zxvision_print_string_defaults_fillspc(ventana,1,0,"r: run conversion");
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"s: slow mode: %s",
+            (menu_hilow_convert_muy_lento ? "On" : "Off") );
+
+		tecla=zxvision_common_getkey_refresh();		
+
+
+        switch (tecla) {
+
+            case 'r':
+                if (!hilow_convert_audio_thread_running) menu_hilow_convert_audio_run_thread();
+            break;
+
+            case 's':
+                menu_hilow_convert_muy_lento ^=1;
+            break;
+
+            case 11:
+                //arriba
+                //blablabla          
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;					
+        }
+
+
+    } while (salir==0);
+
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+	zxvision_set_window_overlay_from_current(ventana);		
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+
+	
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
 void menu_hilow(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_hilow;
@@ -29473,6 +30014,12 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_separator(array_menu_hilow); 
+
+
+#ifdef USE_PTHREADS
+        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,"Convert Audio");
+        menu_add_item_menu_separator(array_menu_hilow); 
+#endif           
 
         menu_add_ESC_item(array_menu_hilow);
 
@@ -31885,3 +32432,159 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 //
 // Fin funciones de dispositivos especificos en el ZX Desktop
 //
+
+
+/*
+Inicio de Template de ventana de menu que se puede enviar a background 
+Sustituir "template_window_can_be_backgrounded" por el nombre de la ventana
+Sustituir "template_window_name" por el nombre corto de la ventana
+Sustituir "Window title" por el titulo de la ventana
+Y definirla en zxvision_known_window_names_array
+*/
+
+
+zxvision_window *menu_template_window_can_be_backgrounded_window;
+
+
+void menu_template_window_can_be_backgrounded_overlay(void)
+{
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_template_window_can_be_backgrounded_window->is_minimized) return;  
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...                      
+
+
+    //Mostrar colores
+    zxvision_draw_window_contents(menu_template_window_can_be_backgrounded_window);
+    
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_template_window_can_be_backgrounded;
+
+
+void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_template_window_can_be_backgrounded;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	zxvision_delete_window_if_exists(ventana);	
+
+
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+	if (!util_find_window_geometry("template_window_name",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		ancho_ventana=30;
+		alto_ventana=20;
+
+        xventana=menu_center_x()-ancho_ventana/2;
+        yventana=menu_center_y()-alto_ventana/2;        
+	}
+
+        
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Window title",
+        "template_window_name",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+	ventana->can_be_backgrounded=1;
+         
+
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_template_window_can_be_backgrounded_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+	set_menu_overlay_function(menu_template_window_can_be_backgrounded_overlay);
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();		
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla          
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;					
+        }
+
+
+    } while (salir==0);
+
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+	zxvision_set_window_overlay_from_current(ventana);		
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+
+	
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
+/*
+Fin de Template de ventana de menu que se puede enviar a background 
+*/

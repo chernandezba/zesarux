@@ -70,6 +70,18 @@ z80_byte hilow_read_audio_buffer_sector_five_byte[5];
 z80_byte hilow_read_audio_buffer_result[HILOW_SECTOR_SIZE+1];
 
 
+//Callback para cada byte de audio leido, poder llamar a una funcion externa
+hilow_read_audio_callback_function hilow_read_audio_byteread_callback=NULL;
+
+
+//Callback para cada byte de output generado, poder llamar a una funcion externa
+hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback=NULL;
+
+//Callback para cada bit de output generado, poder llamar a una funcion externa
+hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback=NULL;
+
+
+
 void hilow_read_audio_pausa(int segundos)
 {
     if (hilow_read_audio_ejecutar_sleep) sleep(segundos);
@@ -83,7 +95,13 @@ int hilow_read_audio_lee_byte_memoria(int posicion)
         return -1;
     }
 
-    return hilow_read_audio_read_hilow_memoria_audio[posicion];
+    int valor=hilow_read_audio_read_hilow_memoria_audio[posicion];
+
+    if (hilow_read_audio_byteread_callback!=NULL) {
+        hilow_read_audio_byteread_callback(valor,posicion);
+    }
+
+    return valor;
 }
 
 
@@ -463,11 +481,14 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
         if (duracion_flanco_bajada<umbral_cero_uno) {
             //Es un 0
             if (hilow_read_audio_modo_verbose_extra) printf(" -0- ");
+
+            if (hilow_read_audio_bit_output_write_callback!=NULL) hilow_read_audio_bit_output_write_callback(0,posicion);
         }
         else {
             //Es un 1
             byte_final |=1;
             if (hilow_read_audio_modo_verbose_extra) printf(" -1- ");
+            if (hilow_read_audio_bit_output_write_callback!=NULL) hilow_read_audio_bit_output_write_callback(1,posicion);
         }
         //printf("\n");
        
@@ -476,6 +497,9 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
 
     if (hilow_read_audio_modo_verbose_extra) printf("\nbyte final: %02XH\n",byte_final);
    *byte_salida=byte_final;
+
+    if (hilow_read_audio_byte_output_write_callback!=NULL) hilow_read_audio_byte_output_write_callback(byte_final,posicion);
+
    return posicion;
 }
 

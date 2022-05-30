@@ -69,6 +69,7 @@
 #include "gs.h"
 #include "snap_ram.h"
 #include "codsinpr.h"
+#include "menu_items.h"
 
 z80_byte byte_leido_core_spectrum;
 
@@ -492,14 +493,23 @@ void core_spectrum_fin_scanline(void)
 
         //if (audio_valor_enviar_sonido>127 || audio_valor_enviar_sonido<-128) printf ("Error audio value: %d\n",audio_valor_enviar_sonido);
 
+
+        //Enviar sample de sonido
         if (audio_tone_generator) {
             audio_send_mono_sample(audio_tone_generator_get() );
         }
 
         else {
-            audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
-        }
+            //Pero si tenemos conversion hilow en curso, escuchar eso precisamente
+            if (hilow_convert_audio_thread_running) {
+                audio_send_stereo_sample(menu_hilow_convert_audio_last_audio_sample,menu_hilow_convert_audio_last_audio_sample);
 
+                //audio_send_stereo_sample(temp_vv,temp_vv);
+                //temp_vv =-temp_vv;
+            }
+
+            else audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
+        }
 
 
         ay_chip_siguiente_ciclo();

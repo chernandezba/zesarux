@@ -1726,11 +1726,12 @@ z80_byte hilow_util_get_sector_byte(int sector,z80_byte *puntero_memoria,int off
 
     offset +=offset_origen;
 
-    if (offset>=HILOW_DEVICE_SIZE) return 0;
+    if (offset>=HILOW_DEVICE_SIZE || offset<0) return 0;
 
     return puntero_memoria[offset];
 }
 
+//Recordar que los sectores en hilow empiezan a numerarse en el 1
 void hilow_util_get_sector(int sector,z80_byte *puntero_memoria,z80_byte *destino,int total_leer)
 {
     
@@ -1767,6 +1768,8 @@ void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int i
 
         //printf("Reading sector %d\n",sector_leer);
 
+        //Recordar que los sectores en hilow empiezan a numerarse en el 1
+        sector_leer--;
         hilow_util_get_sector(sector_leer,puntero_memoria,destino_memoria,leer);
 
         destino_memoria +=leer;

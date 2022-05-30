@@ -392,11 +392,11 @@ de las ventanas en background (si es que está habilitado el background de venta
 
 Con la F-funcion F_FUNCION_OVERLAY_WINDOWS, se activa el dibujado de ventanas en background con el menu cerrado
 
---------------
+---------------------
 
 
 Para soportar background en una ventana:
-(ver como ejemplo menu_about_core_statistics)
+(ver template de ejemplo menu_template_window_can_be_backgrounded)
 
 Para poder enviar una ventana a background:
 
@@ -616,7 +616,7 @@ index 9e32a67e..16a8f772 100644
  }
 
 
---------
+--------------------
 
 Mas notas devel: TODO: apuntarlas en otro sitio
 

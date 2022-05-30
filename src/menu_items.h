@@ -187,7 +187,17 @@ extern void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS);
 
 extern void menu_shortcuts_window(MENU_ITEM_PARAMETERS);
 
+extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
+
 extern void menu_process_f_functions_by_action_name(int id_funcion);
+
+extern char menu_hilow_convert_audio_last_audio_sample;
+
+extern int menu_hilow_convert_muy_lento;
+
+extern int hilow_convert_audio_thread_running;
+
+extern char enviado_hilow_sample_convirtiendo;
 
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];

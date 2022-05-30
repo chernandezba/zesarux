@@ -7574,6 +7574,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"textadvmap",menu_debug_textadventure_map_connections},
     {"shortcutshelper",menu_shortcuts_window},
     {"windowlist",menu_display_window_list},
+    {"hilowconvertaudio",menu_hilow_convert_audio},
 
 	{"",NULL} //NO BORRAR ESTA!!
 };
