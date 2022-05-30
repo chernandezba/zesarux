@@ -4406,19 +4406,26 @@ void menu_audio_draw_sound_wave(void)
 
 		//printf ("max scroll %d %d\n",max_x,max_y);
 
-		for (scroll_y=0;scroll_y<max_y;scroll_y++) {
-			for (scroll_x=0;scroll_x<max_x-1;scroll_x++) {
+        //Si estamos convirtiendo hilow y pausados, no hacer scroll
+        int hacer_scroll=1;
 
-				int offset_dest=scroll_y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+scroll_x;
-				int offset_orig=offset_dest+1;
-				menu_waveform_pixel_array[offset_dest]=menu_waveform_pixel_array[offset_orig];
-			}
-			//Llenar el ultimo en blanco
-			int offset_dest=scroll_y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+scroll_x;
-			menu_waveform_pixel_array[offset_dest]=ESTILO_GUI_PAPEL_NORMAL;
-		}
+        if (hilow_convert_audio_thread_running && menu_hilow_convert_paused) hacer_scroll=0;
+
+        if (hacer_scroll) {
+
+            for (scroll_y=0;scroll_y<max_y;scroll_y++) {
+                for (scroll_x=0;scroll_x<max_x-1;scroll_x++) {
+
+                    int offset_dest=scroll_y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+scroll_x;
+                    int offset_orig=offset_dest+1;
+                    menu_waveform_pixel_array[offset_dest]=menu_waveform_pixel_array[offset_orig];
+                }
+                //Llenar el ultimo en blanco
+                int offset_dest=scroll_y*MAX_ANCHO_WAVEFORM_PIXEL_ARRAY+scroll_x;
+                menu_waveform_pixel_array[offset_dest]=ESTILO_GUI_PAPEL_NORMAL;
+            }
 	
-
+        }
 	
         //Indicar con linea vertical, el maximo y minimo
         int ydestino_min=alto/2-(menu_audio_draw_sound_wave_valor_min*alto)/256;
@@ -29488,6 +29495,9 @@ char menu_hilow_convert_audio_last_audio_sample;
 int menu_hilow_convert_muy_lento=0;
 
 
+int menu_hilow_convert_paused=0;
+
+
 void menu_hilow_convert_audio_scroll_left_string(char *texto)
 {
     int longitud=strlen(texto);
@@ -29512,9 +29522,17 @@ char menu_hilow_convert_audio_string_bits[]="        ";
 char menu_hilow_convert_audio_string_bytes[]=       "                        ";
                                                 //   H  O  L  A  Q  U  E  T
 char menu_hilow_convert_audio_string_bytes_ascii[]= "                        ";
-void menu_hilow_convert_audio_write_bit_callback(int valor)
+
+int menu_hilow_convert_audio_last_bit=0;
+
+int menu_hilow_convert_audio_just_read_bit=0;
+void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
 {
     printf("bit: %d\n",valor);
+
+    menu_hilow_convert_audio_last_bit=valor;
+
+    menu_hilow_convert_audio_just_read_bit=1;
 
     menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bits);
 
@@ -29526,7 +29544,7 @@ void menu_hilow_convert_audio_write_bit_callback(int valor)
     
 }
 
-void menu_hilow_convert_audio_write_byte_callback(int valor)
+void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 {
     printf("byte: %02XH\n",valor);
 
@@ -29566,6 +29584,8 @@ int menu_hilow_convert_audio_sector=0;
 
 int menu_hilow_convert_audio_posicion_read_raw=0;
 
+
+//Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
 {
     menu_hilow_convert_audio_posicion_read_raw=posicion;
@@ -29608,9 +29628,17 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     menu_hilow_convert_audio_last_audio_sample_one=menu_hilow_convert_audio_last_audio_sample_two;
     menu_hilow_convert_audio_last_audio_sample_two=menu_hilow_convert_audio_last_audio_sample_three;
 
-    //Y para que no se vaya a silencio, decir que hay sonido y resetear contador de silencio 
-    silence_detection_counter=0;
-    beeper_silence_detection_counter=0;
+
+    //Si estamos en modo pausado
+
+    do {
+        //Y para que no se vaya a silencio, decir que hay sonido y resetear contador de silencio 
+        silence_detection_counter=0;
+        beeper_silence_detection_counter=0;
+
+        if (menu_hilow_convert_paused) sleep(1);
+
+    } while (menu_hilow_convert_paused);
 }
 
 z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
@@ -29768,6 +29796,30 @@ void menu_hilow_convert_audio_run_thread(void)
     }    
 }
 
+void menu_hilow_convert_audio_stop_thread(void)
+{
+    printf("Stopping thread\n");
+
+    pthread_cancel(hilow_convert_audio_thread);
+
+    hilow_convert_audio_thread_running=0;
+
+
+}
+
+# else
+
+//Si se compila sin pthreads
+void menu_hilow_convert_audio_run_thread(void)
+{
+
+}
+
+void menu_hilow_convert_audio_stop_thread(void)
+{
+
+}
+
 #endif
 
 
@@ -29792,10 +29844,22 @@ void menu_hilow_convert_audio_overlay(void)
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
     
+    if (!hilow_convert_audio_thread_running) {
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"r: run conversion");
+    }
+    else {
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"s: stop conversion");
+    }
 
-    int linea=2;             
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Input audio: bytes read: %d",menu_hilow_convert_audio_posicion_read_raw);
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s",menu_hilow_convert_audio_string_bits);     
+    int linea=3;             
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %d seconds (%d bytes)",
+        menu_hilow_convert_audio_posicion_read_raw/44100,menu_hilow_convert_audio_posicion_read_raw);
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
+        menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
+        (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
+    menu_hilow_convert_audio_just_read_bit=0;
+
+
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
@@ -29888,9 +29952,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
         zxvision_cls(ventana);
 
-        if (!hilow_convert_audio_thread_running) zxvision_print_string_defaults_fillspc(ventana,1,0,"r: run conversion");
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"s: slow mode: %s",
+        
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s",
             (menu_hilow_convert_muy_lento ? "On" : "Off") );
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"p: paused: %s",
+            (menu_hilow_convert_paused ? "On" : "Off") );            
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -29902,15 +29969,17 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;
 
             case 's':
+                if (hilow_convert_audio_thread_running) menu_hilow_convert_audio_stop_thread();
+            break;            
+        
+
+            case 'l':
                 menu_hilow_convert_muy_lento ^=1;
             break;
 
-            case 11:
-                //arriba
-                //blablabla          
-            break;
-
-
+            case 'p':
+                menu_hilow_convert_paused ^=1;
+            break;            
 
             //Salir con ESC
             case 2:

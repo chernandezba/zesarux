@@ -195,6 +195,8 @@ extern char menu_hilow_convert_audio_last_audio_sample;
 
 extern int menu_hilow_convert_muy_lento;
 
+extern int menu_hilow_convert_paused;
+
 extern int hilow_convert_audio_thread_running;
 
 extern char enviado_hilow_sample_convirtiendo;
