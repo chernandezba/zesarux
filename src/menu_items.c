@@ -29494,6 +29494,8 @@ char menu_hilow_convert_audio_last_audio_sample;
 
 int menu_hilow_convert_muy_lento=0;
 
+//Velocidad cuando no esta en fast mode ni en slow
+int menu_hilow_convert_speed=1;
 
 int menu_hilow_convert_paused=0;
 
@@ -29584,6 +29586,7 @@ int menu_hilow_convert_audio_sector=0;
 
 int menu_hilow_convert_audio_posicion_read_raw=0;
 
+//modo sin pausas
 int menu_hilow_convert_audio_fast_mode=0;
 
 int menu_hilow_convert_audio_completamente_automatico=0;
@@ -29607,7 +29610,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     //usleep(22/3);
     if (!menu_hilow_convert_audio_fast_mode) {
-        menu_hilow_convert_audio_precise_usleep(22);
+        menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
         if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
     }
 
@@ -29645,7 +29648,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
         silence_detection_counter=0;
         beeper_silence_detection_counter=0;
 
-        if (menu_hilow_convert_paused) sleep(1);
+        if (menu_hilow_convert_paused) usleep(20000);
 
     } while (menu_hilow_convert_paused);
 }
@@ -29899,7 +29902,7 @@ void menu_hilow_convert_audio_overlay(void)
     int linea=3;             
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
         menu_hilow_convert_audio_posicion_read_raw/44100/60,
-        menu_hilow_convert_audio_posicion_read_raw/44100,menu_hilow_convert_audio_posicion_read_raw);
+        (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
         menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
         (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
@@ -30012,7 +30015,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             
         );
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"p: paused: %s",
+        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"d: speed: %d X  p: paused: %s",
+            menu_hilow_convert_speed,
             (menu_hilow_convert_paused ? "On" : "Off") );            
 
 		tecla=zxvision_common_getkey_refresh();		
@@ -30026,7 +30030,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 's':
                 if (hilow_convert_audio_thread_running) menu_hilow_convert_audio_stop_thread();
-            break;            
+            break;      
+
+            case 'd':
+                menu_hilow_convert_speed *=2;
+                if (menu_hilow_convert_speed==16) menu_hilow_convert_speed=1; 
+            break;    
         
 
             case 'l':
