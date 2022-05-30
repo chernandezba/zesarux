@@ -29468,7 +29468,7 @@ void menu_hilow_convert_audio_precise_usleep(int duracion)
 {
 
 
-    menu_hilow_convert_audio_tiempo_inicial();
+    //menu_hilow_convert_audio_tiempo_inicial();
 
 
                     int tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
@@ -29597,6 +29597,8 @@ int menu_hilow_convert_audio_esperar_siguiente_sector=0;
 int menu_hilow_convert_audio_must_repeat_sector=0;
 
 
+int xxx_conta;
+
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
 {
@@ -29608,11 +29610,19 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //22 seria para 44100 hz
     //Dado que vamos a 15600, son 3 veces menos
 
+    xxx_conta++;
+
+    if ( (xxx_conta % 3)==0) {
+
     //usleep(22/3);
     if (!menu_hilow_convert_audio_fast_mode) {
-        menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
+        menu_hilow_convert_audio_precise_usleep((3*22)/menu_hilow_convert_speed);
         if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
+        menu_hilow_convert_audio_tiempo_inicial();
     }
+
+    }
+    
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
 
@@ -29983,6 +29993,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 
 	int salir=0;
+
+    menu_hilow_convert_audio_tiempo_inicial();
 
 
     menu_hilow_convert_audio_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
