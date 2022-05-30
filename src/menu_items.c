@@ -29584,6 +29584,15 @@ int menu_hilow_convert_audio_sector=0;
 
 int menu_hilow_convert_audio_posicion_read_raw=0;
 
+int menu_hilow_convert_audio_fast_mode=0;
+
+int menu_hilow_convert_audio_completamente_automatico=0;
+
+int menu_hilow_convert_audio_esperar_siguiente_sector=0;
+
+
+int menu_hilow_convert_audio_must_repeat_sector=0;
+
 
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
@@ -29597,10 +29606,10 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //Dado que vamos a 15600, son 3 veces menos
 
     //usleep(22/3);
-    menu_hilow_convert_audio_precise_usleep(22);
-
-
-    if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
+    if (!menu_hilow_convert_audio_fast_mode) {
+        menu_hilow_convert_audio_precise_usleep(22);
+        if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
+    }
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
 
@@ -29712,6 +29721,26 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
 }
 
 
+void menu_hilow_convert_audio_write_hilow_ddh_file(char *archivo)
+{
+    z80_byte *puntero;
+
+    int tamanyo=HILOW_DEVICE_SIZE;
+
+
+    FILE *ptr_ddhfile;
+    ptr_ddhfile=fopen(archivo,"wb");
+
+    if (!ptr_ddhfile) {
+            printf("Unable to open ddh file %s\n",archivo);
+            return;
+    }
+
+    fwrite(hilow_read_audio_hilow_ddh,1,tamanyo,ptr_ddhfile);
+    fclose(ptr_ddhfile);    
+
+}
+
 
 #ifdef USE_PTHREADS
 pthread_t hilow_convert_audio_thread;
@@ -29759,6 +29788,8 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 
     while (menu_hilow_convert_audio_posicion_read_raw!=-1) {
 
+        int antes_posicion=menu_hilow_convert_audio_posicion_read_raw;
+
         printf("\n");
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_buscar_inicio_sector(menu_hilow_convert_audio_posicion_read_raw);
         if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",menu_hilow_convert_audio_posicion_read_raw);
@@ -29766,13 +29797,27 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
 
         printf("Sector: %d\n",menu_hilow_convert_audio_sector);
-        sleep(1);
+
+        if (menu_hilow_convert_audio_completamente_automatico) hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
+        else {
+            //preguntar que hacer
+            menu_hilow_convert_audio_esperar_siguiente_sector=1;
+
+            while (menu_hilow_convert_audio_esperar_siguiente_sector) {
+                usleep(20000);
+            }
+        }
+        //sleep(1);
+
+        if (menu_hilow_convert_audio_must_repeat_sector) {
+            menu_hilow_convert_audio_must_repeat_sector=0;
+            menu_hilow_convert_audio_posicion_read_raw=antes_posicion;
+        }
 
     }
 
 
-    //TODO
-    //hilow_read_audio_write_hilow_ddh_file(archivo_ddh);
+    menu_hilow_convert_audio_write_hilow_ddh_file(menu_hilow_convert_audio_output_ddh);
 
     free(hilow_read_audio_read_hilow_memoria_audio);
     free(hilow_read_audio_hilow_ddh);
@@ -29852,7 +29897,8 @@ void menu_hilow_convert_audio_overlay(void)
     }
 
     int linea=3;             
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %d seconds (%d bytes)",
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
+        menu_hilow_convert_audio_posicion_read_raw/44100/60,
         menu_hilow_convert_audio_posicion_read_raw/44100,menu_hilow_convert_audio_posicion_read_raw);
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
         menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
@@ -29864,6 +29910,12 @@ void menu_hilow_convert_audio_overlay(void)
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+
+
+    if (menu_hilow_convert_audio_esperar_siguiente_sector) {
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End sector. Do you want to:");
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"e: repeat v: save n: next sector");
+    }
 
 
     //Mostrar colores
@@ -29953,8 +30005,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
         zxvision_cls(ventana);
 
         
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s",
-            (menu_hilow_convert_muy_lento ? "On" : "Off") );
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s  f: fast mode: %s  a: automatic: %s",
+            (menu_hilow_convert_muy_lento ? "On" : "Off"),
+            (menu_hilow_convert_audio_fast_mode ? "On" : "Off"),
+            (menu_hilow_convert_audio_completamente_automatico ? "On" : "Off")
+            
+        );
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,2,"p: paused: %s",
             (menu_hilow_convert_paused ? "On" : "Off") );            
@@ -29979,7 +30035,16 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'p':
                 menu_hilow_convert_paused ^=1;
-            break;            
+            break;       
+
+            case 'f':
+                menu_hilow_convert_audio_fast_mode ^=1;
+            break;     
+
+
+            case 'a':
+                menu_hilow_convert_audio_completamente_automatico ^=1;
+            break;
 
             //Salir con ESC
             case 2:
@@ -29991,6 +30056,30 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 salir=1;
             break;					
         }
+
+         if (menu_hilow_convert_audio_esperar_siguiente_sector) {
+            switch(tecla) {
+                case 'n':
+                    printf("Skipping sector\n");
+                    //Siguiente sector
+                    menu_hilow_convert_audio_esperar_siguiente_sector=0;
+                break;
+
+                case 'v':
+                    //Grabar sector 
+                    printf("Saving sector\n");
+                    hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
+                    menu_hilow_convert_audio_esperar_siguiente_sector=0;
+                break;   
+
+                case 'e':
+                    //Repetir lectura
+                    printf("Repeat sector\n");
+                    menu_hilow_convert_audio_must_repeat_sector=1;
+                    menu_hilow_convert_audio_esperar_siguiente_sector=0;
+                break;             
+            }
+         }
 
 
     } while (salir==0);
