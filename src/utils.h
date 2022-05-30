@@ -834,6 +834,7 @@ extern int util_concat_string(char *original,char *string_to_add,int limite);
 #define MEMORY_ZONE_HILOW_ROM 33
 #define MEMORY_ZONE_HILOW_RAM 34
 #define MEMORY_ZONE_HILOW_DEVICE 35
+#define MEMORY_ZONE_HILOW_CONVERT_READ 36
 
 
 

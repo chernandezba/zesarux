@@ -164,4 +164,4 @@ quiza 514H (1300 decimal) de longitud sector directorio? cinta logo cambia a par
 Total bytes leidos: 0
 Sector -407021264
 
--expandir ddh: hay que restar sector -1
+-convert a ddh: no funciona phtread cancel

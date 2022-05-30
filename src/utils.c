@@ -138,6 +138,7 @@
 #include "hilow.h"
 #include "tape_smp.h"
 #include "utils_text_adventure.h"
+#include "hilow_audio.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12433,6 +12434,14 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break; 
 
+    //hilow archivo de salida que se esta leyendo de raw
+    case MEMORY_ZONE_HILOW_CONVERT_READ:
+        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+            *readwrite=3; //read+write
+            size=HILOW_SECTOR_SIZE;
+        }
+    break;     
+
   }
 
   return size;
@@ -12829,7 +12838,15 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 	        //La RAM esta despues de los 8kb de rom
             p=&hilow_device_buffer[address];             
         }
-    break;      
+    break;    
+
+    //hilow archivo de salida que se esta leyendo de raw
+    case MEMORY_ZONE_HILOW_CONVERT_READ:
+        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+            p=&hilow_read_audio_buffer_result[address+1]; //Saltar el primer byte del sector
+        }
+    break;     
+
 
   }
 
@@ -13242,7 +13259,14 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (hilow_enabled.v) {
             strcpy(name,"HiLow Device");
         }
-    break;     
+    break;    
+
+    //hilow archivo de salida que se esta leyendo de raw
+    case MEMORY_ZONE_HILOW_CONVERT_READ:
+        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+            strcpy(name,"HiLow Convert");
+        }
+    break;       
 
   }
 

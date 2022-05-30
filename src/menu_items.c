@@ -29791,6 +29791,8 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 
     while (menu_hilow_convert_audio_posicion_read_raw!=-1) {
 
+        hilow_read_audio_lee_sector_bytes_leidos=0;
+
         int antes_posicion=menu_hilow_convert_audio_posicion_read_raw;
 
         printf("\n");
@@ -29913,6 +29915,7 @@ void menu_hilow_convert_audio_overlay(void)
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
 
 
     if (menu_hilow_convert_audio_esperar_siguiente_sector) {
@@ -29999,7 +30002,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     //temp
     
     
-    strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1_nosilence.raw");
+    strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1.raw");
     strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
 
 
@@ -30015,9 +30018,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             
         );
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"d: speed: %d X  p: paused: %s",
+        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"d: speed: %d X  p: paused: %s  b: bside: %s",
             menu_hilow_convert_speed,
-            (menu_hilow_convert_paused ? "On" : "Off") );            
+            (menu_hilow_convert_paused ? "On" : "Off"), 
+            (hilow_read_audio_leer_cara_dos ? "Yes" : "No")
+            );            
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -30053,6 +30058,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'a':
                 menu_hilow_convert_audio_completamente_automatico ^=1;
+            break;
+
+            case 'b':
+                hilow_read_audio_leer_cara_dos ^=1;
             break;
 
             //Salir con ESC

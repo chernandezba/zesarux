@@ -35,7 +35,7 @@ long int hilow_read_audio_tamanyo_archivo_audio;
 z80_byte *hilow_read_audio_read_hilow_memoria_audio;
 
 //Puntero a los datos del archivo de salida ddh
-z80_byte *hilow_read_audio_hilow_ddh;
+z80_byte *hilow_read_audio_hilow_ddh=NULL;
 
 
 
@@ -49,6 +49,9 @@ int hilow_read_audio_directo_a_pista=0;
 
 int hilow_read_audio_ejecutar_sleep=0;
 
+
+//bytes leidos dentro del sector. Solo identificativos para programa externo que usa esta funcion
+int hilow_read_audio_lee_sector_bytes_leidos=0;
 
 
 int hilow_read_audio_leer_cara_dos=0;
@@ -634,6 +637,7 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
     *total_bytes_leidos=0;
     
     for (i=0;i<total && posicion!=-1;i++,(*total_bytes_leidos)++) {
+        hilow_read_audio_lee_sector_bytes_leidos=i;
         //printf("\nPos %d %d\n",i,posicion);
         z80_byte byte_leido;
 
