@@ -29597,7 +29597,27 @@ int menu_hilow_convert_audio_esperar_siguiente_sector=0;
 int menu_hilow_convert_audio_must_repeat_sector=0;
 
 
-int xxx_conta;
+int menu_hilow_convert_audio_buffer_index=0;
+//buffer mono, circular
+char menu_hilow_convert_audio_buffer[AUDIO_BUFFER_SIZE];
+
+void menu_hilow_convert_get_audio_buffer(void)
+{
+    int i;
+
+    int origen=menu_hilow_convert_audio_buffer_index;
+    int destino=0;
+
+    for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
+        char audio_leido=menu_hilow_convert_audio_buffer[origen++];
+        if (origen==AUDIO_BUFFER_SIZE) origen=0;
+
+        audio_buffer[destino++]=audio_leido;
+        audio_buffer[destino++]=audio_leido;
+    }
+}
+
+int menu_hilow_convert_counter_resample;
 
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
@@ -29610,18 +29630,18 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //22 seria para 44100 hz
     //Dado que vamos a 15600, son 3 veces menos
 
-    xxx_conta++;
 
-    if ( (xxx_conta % 3)==0) {
+
+
 
     //usleep(22/3);
     if (!menu_hilow_convert_audio_fast_mode) {
-        menu_hilow_convert_audio_precise_usleep((3*22)/menu_hilow_convert_speed);
+        menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
         if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
         menu_hilow_convert_audio_tiempo_inicial();
     }
 
-    }
+    
     
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
@@ -29640,6 +29660,16 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     char_valor_final=valor_final;
 
     menu_hilow_convert_audio_last_audio_sample=char_valor_final;    
+
+
+    //Hacer cada 3, pues "convertimos" de 44100hz a 15600
+    if ((menu_hilow_convert_counter_resample%3)==0) {
+        menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
+
+        if (menu_hilow_convert_audio_buffer_index==AUDIO_BUFFER_SIZE) menu_hilow_convert_audio_buffer_index=0;
+    }
+
+    menu_hilow_convert_counter_resample++;
 
     //temp
     //menu_hilow_convert_audio_last_audio_sample=temp_vv;
@@ -30039,7 +30069,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             (hilow_read_audio_leer_cara_dos ? "Yes" : "No")
             );       
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output  x: sound on/off");     
+        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output  x: sound on/off d: adaptative algorithm");     
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -30062,6 +30092,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'l':
                 menu_hilow_convert_muy_lento ^=1;
+
+                if (menu_hilow_convert_muy_lento) {
+                    //Poner buffer a silencio para borrar lo anterior
+                    memset(menu_hilow_convert_audio_buffer,0,AUDIO_BUFFER_SIZE);
+                }
             break;
 
             case 'p':

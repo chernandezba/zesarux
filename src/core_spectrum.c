@@ -329,7 +329,9 @@ void core_spectrum_fin_frame_pantalla(void)
                             linea_estados++;
     }
 
-
+    if (hilow_convert_audio_thread_running) {
+        menu_hilow_convert_get_audio_buffer();
+    }
 
 
     t_estados -=screen_testados_total;
@@ -502,7 +504,8 @@ void core_spectrum_fin_scanline(void)
         else {
             //Pero si tenemos conversion hilow en curso, escuchar eso precisamente
             if (hilow_convert_audio_thread_running) {
-                audio_send_stereo_sample(menu_hilow_convert_audio_last_audio_sample,menu_hilow_convert_audio_last_audio_sample);
+                //no poner nada y luego aplicamos el buffer entero cuando haya que enviarlo
+                //audio_send_stereo_sample(menu_hilow_convert_audio_last_audio_sample,menu_hilow_convert_audio_last_audio_sample);
 
                 //audio_send_stereo_sample(temp_vv,temp_vv);
                 //temp_vv =-temp_vv;
