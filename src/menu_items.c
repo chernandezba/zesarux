@@ -29596,6 +29596,8 @@ int menu_hilow_convert_audio_esperar_siguiente_sector=0;
 
 int menu_hilow_convert_audio_must_repeat_sector=0;
 
+int menu_hilow_convert_audio_hear_sound=1;
+
 
 int menu_hilow_convert_audio_buffer_index=0;
 //buffer mono, circular
@@ -29611,6 +29613,8 @@ void menu_hilow_convert_get_audio_buffer(void)
     for (i=0;i<AUDIO_BUFFER_SIZE;i++) {
         char audio_leido=menu_hilow_convert_audio_buffer[origen++];
         if (origen==AUDIO_BUFFER_SIZE) origen=0;
+
+        if (!menu_hilow_convert_audio_hear_sound) audio_leido=0;
 
         audio_buffer[destino++]=audio_leido;
         audio_buffer[destino++]=audio_leido;
@@ -29947,12 +29951,17 @@ void menu_hilow_convert_audio_overlay(void)
     //Print....      
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
+    //Forzar a mostrar atajos
+    z80_bit antes_menu_writing_inverse_color;
+    antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+    menu_writing_inverse_color.v=1;    
+
     
     if (!hilow_convert_audio_thread_running) {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"r: run conversion");
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output ~~run conversion");
     }
     else {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"s: stop conversion");
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output ~~stop conversion");
     }
 
     int linea=4;             
@@ -29978,7 +29987,10 @@ void menu_hilow_convert_audio_overlay(void)
     }
 
 
-    //Mostrar colores
+    //Restaurar comportamiento atajos
+    menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;       
+
+
     zxvision_draw_window_contents(menu_hilow_convert_audio_window);
     
 }
@@ -30140,13 +30152,15 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             
         );*/
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"d: speed: %d X  p: paused: %s  b: bside: %s",
-            menu_hilow_convert_speed,
-            (menu_hilow_convert_paused ? "On" : "Off"), 
-            (hilow_read_audio_leer_cara_dos ? "Yes" : "No")
+        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] a~~daptative algorithm [%c] so~~und",
+
+            (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
+            (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
+            (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
+
             );       
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output  x: sound on/off d: adaptative algorithm");     
+        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output");     
 
         //Restaurar comportamiento atajos
         menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;        
@@ -30226,6 +30240,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 menu_hilow_convert_speed=0;
             break;     
 
+            case 'd':
+                hilow_read_audio_autoajustar_duracion_bits ^=1;
+            break;
 
             case 'a':
                 menu_hilow_convert_audio_completamente_automatico ^=1;
@@ -30254,7 +30271,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 if (menu_filesel("Select Output ddh File",filtros,buffer_load_file)==1) {
                     strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
                 }              
-            break;            
+            break;  
+
+
+            case 'u':
+                menu_hilow_convert_audio_hear_sound ^=1;
+            break;          
 
 
             //Salir con ESC
