@@ -29636,8 +29636,22 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     //usleep(22/3);
     if (!menu_hilow_convert_audio_fast_mode) {
-        menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
-        if (menu_hilow_convert_muy_lento) menu_hilow_convert_audio_precise_usleep(40000);
+       
+
+
+        //Muy lento
+        if (menu_hilow_convert_muy_lento) {
+            menu_hilow_convert_audio_precise_usleep(40000);
+        }
+
+        //Normal a 1x, 2x, 4x o 8x
+        else  {
+            //no deberia ser cero nunca
+            if (menu_hilow_convert_speed!=0) {
+                menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
+            }
+        }
+
         menu_hilow_convert_audio_tiempo_inicial();
     }
 
@@ -30055,13 +30069,76 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
         zxvision_cls(ventana);
 
+        //Forzar a mostrar atajos
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+        menu_writing_inverse_color.v=1;
+
+        //Escribir linea opciones velocidad
+        //speed: paused/very slow/1x/2x/4x/8x/fastest
+        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"speed: ");
+
         
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s  f: fast mode: %s  a: automatic: %s",
+        int x=8;
+        char buffer_item[30];
+        
+        int i;
+        //7 posibles
+
+        for (i=0;i<7;i++) {
+
+            int seleccionado=0;
+
+            switch (i) {
+                case 0:
+                    strcpy(buffer_item,"~~paused");
+                    if (menu_hilow_convert_paused) seleccionado=1;
+                break;
+
+                case 1:
+                    strcpy(buffer_item,"very s~~low");
+                    if (menu_hilow_convert_muy_lento) seleccionado=1;
+                break;
+
+                case 2:
+                    strcpy(buffer_item,"~~1x");
+                    if (menu_hilow_convert_speed==1) seleccionado=1;
+                break;      
+
+                case 3:
+                    strcpy(buffer_item,"~~2x");
+                    if (menu_hilow_convert_speed==2) seleccionado=1;
+                break;  
+
+                case 4:
+                    strcpy(buffer_item,"~~4x");
+                    if ( menu_hilow_convert_speed==4) seleccionado=1;
+                break;  
+
+                case 5:
+                    strcpy(buffer_item,"~~8x");
+                    if (menu_hilow_convert_speed==8) seleccionado=1;
+                break;  
+
+                case 6:
+                    strcpy(buffer_item,"~~fastest");
+                    if (menu_hilow_convert_audio_fast_mode) seleccionado=1;
+                break;                                                          
+
+            }
+
+            zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s",buffer_item);
+
+            x +=strlen(buffer_item)+1-2; //quitarle 2 del hotkey
+        }
+
+        
+        /*zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s  f: fast mode: %s  a: automatic: %s",
             (menu_hilow_convert_muy_lento ? "On" : "Off"),
             (menu_hilow_convert_audio_fast_mode ? "On" : "Off"),
             (menu_hilow_convert_audio_completamente_automatico ? "On" : "Off")
             
-        );
+        );*/
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,2,"d: speed: %d X  p: paused: %s  b: bside: %s",
             menu_hilow_convert_speed,
@@ -30070,6 +30147,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             );       
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output  x: sound on/off d: adaptative algorithm");     
+
+        //Restaurar comportamiento atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;        
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -30084,27 +30164,66 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 if (hilow_convert_audio_thread_running) menu_hilow_convert_audio_stop_thread();
             break;      
 
-            case 'd':
-                menu_hilow_convert_speed *=2;
-                if (menu_hilow_convert_speed==16) menu_hilow_convert_speed=1; 
+            case '1':
+                menu_hilow_convert_speed=1;
+                
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
             break;    
+
+            case '2':
+                menu_hilow_convert_speed=2;
+                
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
+            break;    
+
+            case '4':
+                menu_hilow_convert_speed=4;
+                
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
+            break;    
+
+            case '8':
+                menu_hilow_convert_speed=8;
+                
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
+            break;                                        
         
 
             case 'l':
-                menu_hilow_convert_muy_lento ^=1;
+                menu_hilow_convert_muy_lento=1;
 
                 if (menu_hilow_convert_muy_lento) {
                     //Poner buffer a silencio para borrar lo anterior
                     memset(menu_hilow_convert_audio_buffer,0,AUDIO_BUFFER_SIZE);
                 }
+
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
+                menu_hilow_convert_speed=0;
             break;
 
             case 'p':
-                menu_hilow_convert_paused ^=1;
+                menu_hilow_convert_paused=1;
+
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_audio_fast_mode=0;   
+                menu_hilow_convert_speed=0;             
             break;       
 
             case 'f':
-                menu_hilow_convert_audio_fast_mode ^=1;
+                menu_hilow_convert_audio_fast_mode=1;
+
+                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_paused=0;
+                menu_hilow_convert_speed=0;
             break;     
 
 
