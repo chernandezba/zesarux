@@ -86,7 +86,22 @@ hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback=N
 //Callback para cada bit de output generado, poder llamar a una funcion externa
 hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback=NULL;
 
+void hilow_read_audio_reset_buffer_label(void)
+{
+    int i;
 
+    for (i=0;i<17;i++) hilow_read_audio_buffer_label[i]=0;
+}
+
+void hilow_read_audio_reset_buffer_sector_five_byte(void)
+{
+    hilow_read_audio_buffer_sector_five_byte[0]=0;
+    hilow_read_audio_buffer_sector_five_byte[1]=0;
+    hilow_read_audio_buffer_sector_five_byte[2]=0;
+    hilow_read_audio_buffer_sector_five_byte[3]=0;
+    hilow_read_audio_buffer_sector_five_byte[4]=0;
+
+}
 
 void hilow_read_audio_pausa(int segundos)
 {

@@ -48,6 +48,9 @@ extern void hilow_read_audio_write_sector_to_memory(int sector);
 extern int hilow_read_audio_warn_if_sector_mismatch(int sector);
 extern void hilow_read_audio_print_mostrar_ids_sector(void);
 
+extern void hilow_read_audio_reset_buffer_label(void);
+extern void hilow_read_audio_reset_buffer_sector_five_byte(void);
+
 extern int hilow_read_audio_lee_sector_bytes_leidos;
 
 //Funcion callback para algunas acciones

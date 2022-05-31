@@ -29870,7 +29870,12 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
                 usleep(20000);
             }
         }
-        //sleep(1);
+        
+        //Siguiente sector o repetir
+        //Antes, reseteamos contador de sector leido, label y buffer marca de 5 bytes sector
+        menu_hilow_convert_audio_sector=0;
+        hilow_read_audio_reset_buffer_label();
+        hilow_read_audio_reset_buffer_sector_five_byte();
 
         if (menu_hilow_convert_audio_must_repeat_sector) {
             menu_hilow_convert_audio_must_repeat_sector=0;
