@@ -29546,6 +29546,8 @@ void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
     
 }
 
+int menu_hilow_convert_audio_sector=0;
+
 void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 {
     printf("byte: %02XH\n",valor);
@@ -29571,7 +29573,8 @@ void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
     char caracter=(valor>=32 && valor<126 ? valor : '.');
     menu_hilow_convert_audio_string_bytes_ascii[longitud-3]=caracter;
     
-
+    //Aunque esto se obtiene al final del sector, irlo leyendo ya a ver si hay algo logico dentro
+    menu_hilow_convert_audio_sector=hilow_read_audio_buffer_result[0];
 
 }
 
@@ -29582,7 +29585,7 @@ char menu_hilow_convert_audio_input_raw[PATH_MAX]="";
 char menu_hilow_convert_audio_output_ddh[PATH_MAX]="";
 
 int hilow_convert_audio_thread_running=0;
-int menu_hilow_convert_audio_sector=0;
+
 
 int menu_hilow_convert_audio_posicion_read_raw=0;
 
@@ -29876,6 +29879,9 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         menu_hilow_convert_audio_sector=0;
         hilow_read_audio_reset_buffer_label();
         hilow_read_audio_reset_buffer_sector_five_byte();
+
+        //Y primer byte del buffer de sector a 0, para que la lectura del numero de sector primero sea 0 y luego se pueda obtener a medida que se lean bytes
+        hilow_read_audio_buffer_result[0]=0;
 
         if (menu_hilow_convert_audio_must_repeat_sector) {
             menu_hilow_convert_audio_must_repeat_sector=0;
