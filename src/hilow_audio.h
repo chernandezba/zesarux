@@ -35,6 +35,9 @@ extern long int hilow_read_audio_tamanyo_archivo_audio;
 extern z80_byte *hilow_read_audio_read_hilow_memoria_audio;
 extern z80_byte *hilow_read_audio_hilow_ddh;
 extern z80_byte hilow_read_audio_buffer_result[];
+extern z80_byte hilow_read_audio_buffer_sector_five_byte[];
+extern z80_byte hilow_read_audio_buffer_label[];
+
 
 extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector);
 extern int hilow_read_audio_buscar_inicio_sector(int posicion);

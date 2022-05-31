@@ -70,6 +70,9 @@ int hilow_read_audio_minimo_variacion=10;
 //los 5 bytes indicadores de sector
 z80_byte hilow_read_audio_buffer_sector_five_byte[5];
 
+//Leer los 5 bytes indicadores de sector
+z80_byte hilow_read_audio_buffer_label[17];
+
 z80_byte hilow_read_audio_buffer_result[HILOW_SECTOR_SIZE+1];
 
 
@@ -545,20 +548,19 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
     //Leer el label del sector
 
-    //Leer los 5 bytes indicadores de sector
-    z80_byte buffer_label[17];
+
     
     for (i=0;i<17;i++) {
         z80_byte byte_leido;
         posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
         if (posicion==-1) return -1;
-        buffer_label[i]=byte_leido;
+        hilow_read_audio_buffer_label[i]=byte_leido;
     }
 
     printf("17 bytes of label: ");
 
     for (i=0;i<17;i++) {
-        z80_byte byte_leido=buffer_label[i];
+        z80_byte byte_leido=hilow_read_audio_buffer_label[i];
         printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
     }
 

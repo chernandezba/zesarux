@@ -29968,6 +29968,9 @@ void menu_hilow_convert_audio_overlay(void)
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
         menu_hilow_convert_audio_posicion_read_raw/44100/60,
         (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
+
+    linea++;
+
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
         menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
         (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
@@ -29977,13 +29980,26 @@ void menu_hilow_convert_audio_overlay(void)
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
+    linea++;
+
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+
+    char buffer_label[32];
+    util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
+
+    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
+        hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
+        hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
+
+
     zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
 
 
     if (menu_hilow_convert_audio_esperar_siguiente_sector) {
+        linea++;
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End sector. Do you want to:");
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"e: repeat v: save n: next sector");
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"r~~epeat sa~~ve ~~next sector c~~hange sector");
     }
 
 
@@ -30158,9 +30174,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
             (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
 
-            );       
+        );       
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"i: input  o: output");     
+        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic",
+            (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' ')
+        );
 
         //Restaurar comportamiento atajos
         menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;        
@@ -30260,7 +30278,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
                 if (menu_filesel("Select Input raw File",filtros,buffer_load_file)==1) {
                     strcpy(menu_hilow_convert_audio_input_raw,buffer_load_file);
-                }              
+                }   
+
+                //Se pierde el overlay cada vez que se abre file selector
+                set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
             break;
 
             case 'o':
@@ -30270,7 +30291,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
                 if (menu_filesel("Select Output ddh File",filtros,buffer_load_file)==1) {
                     strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
-                }              
+                }   
+
+                //Se pierde el overlay cada vez que se abre file selector
+                set_menu_overlay_function(menu_hilow_convert_audio_overlay);                             
             break;  
 
 
