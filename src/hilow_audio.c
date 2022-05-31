@@ -86,6 +86,10 @@ hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback=N
 //Callback para cada bit de output generado, poder llamar a una funcion externa
 hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback=NULL;
 
+
+//Para indicar en que momento esta 
+int hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
+
 void hilow_read_audio_reset_buffer_label(void)
 {
     int i;
@@ -530,6 +534,8 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
     //Buscar 3 veces las dos marcas consecutivas de inicio de bits
     int i;
 
+    hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_MARKS;
+
 
     if (!hilow_read_audio_leer_cara_dos) {
         if (hilow_read_audio_modo_verbose) {
@@ -539,6 +545,7 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
         posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
         if (posicion==-1) return -1;
 
+        hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_READING_SECTOR_MARKS;
 
         for (i=0;i<5;i++) {
             z80_byte byte_leido;
@@ -554,6 +561,8 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
         //hilow_read_audio_pausa(3);
     }
 
+    hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_LABEL;
+
     if (hilow_read_audio_modo_verbose) {
         printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
         hilow_read_audio_pausa(2);
@@ -563,7 +572,7 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
     //Leer el label del sector
 
-
+    hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_READING_SECTOR_LABEL;
     
     for (i=0;i<17;i++) {
         z80_byte byte_leido;
@@ -581,6 +590,8 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
     printf("\n");
 
+    hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA;
+
     //hilow_read_audio_pausa(3);    
 
     if (hilow_read_audio_modo_verbose) {
@@ -592,6 +603,8 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
     if (posicion==-1) return -1;                    
     //hilow_read_audio_pausa(2);
+
+    hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA;
 
     return posicion;
 }

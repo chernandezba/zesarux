@@ -59,5 +59,17 @@ typedef void (*hilow_read_audio_callback_function)(int value,int posicion);
 extern hilow_read_audio_callback_function hilow_read_audio_byteread_callback;
 extern hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback;
 extern hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback;
+extern int hilow_read_audio_current_phase;
+
+//Fases en las que esta
+#define HILOW_READ_AUDIO_PHASE_NONE                     0
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_MARKS   1
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_MARKS     2
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_LABEL   3
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_LABEL     4
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA    5
+
+//Este realmente se activa despues de que se pase del searching sector data
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA      6
 
 #endif

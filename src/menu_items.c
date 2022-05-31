@@ -29898,6 +29898,9 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
 
+
+        hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
+
         printf("Sector: %d\n",menu_hilow_convert_audio_sector);
 
         if (menu_hilow_convert_audio_completamente_automatico) hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
@@ -29978,6 +29981,30 @@ void menu_hilow_convert_audio_stop_thread(void)
 #endif
 
 
+       //Fase en curso
+        /*
+        #define HILOW_READ_AUDIO_PHASE_NONE                     0
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_MARKS   1
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_MARKS     2
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_LABEL   3
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_LABEL     4
+#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA    5
+
+//Este realmente se activa despues de que se pase del searching sector data
+#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA      6
+        */
+
+char *menu_hilow_convert_phases_strings[]={
+    "None",
+    "Searching sector marks",
+    "Reading sector marks",
+    "Searching sector label",
+    "Reading sector label",
+    "Searching sector data",
+    "Reading sector data"
+
+};
+
 void menu_hilow_convert_audio_overlay(void)
 {
 
@@ -30022,6 +30049,14 @@ void menu_hilow_convert_audio_overlay(void)
             menu_hilow_convert_audio_posicion_read_raw/44100/60,
             (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
 
+ 
+
+        if (hilow_read_audio_current_phase>=HILOW_READ_AUDIO_PHASE_NONE && hilow_read_audio_current_phase<=HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA) {
+            //
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Phase: %s",menu_hilow_convert_phases_strings[hilow_read_audio_current_phase]);
+        }
+        
+
         linea++;
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
@@ -30056,7 +30091,7 @@ void menu_hilow_convert_audio_overlay(void)
                         "Probably sector mismatch! Do you want to:");
             }
 
-            else zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector ok. Do you want to:");
+            else zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector seems ok. Do you want to:");
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"r~~epeat sa~~ve ~~next sector c~~hange sector");
         }
 
