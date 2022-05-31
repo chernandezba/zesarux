@@ -29956,52 +29956,73 @@ void menu_hilow_convert_audio_overlay(void)
     antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
     menu_writing_inverse_color.v=1;    
 
+
+    zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output");
+
+    //No escribir nada del texto siguiente si no hay input u output
+    if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
     
-    if (!hilow_convert_audio_thread_running) {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output ~~run conversion");
-    }
-    else {
-        zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output ~~stop conversion");
-    }
+        if (!hilow_convert_audio_thread_running) {
+            zxvision_print_string_defaults(ventana,14,0,"~~run conversion");
+        }
+        else {
+            zxvision_print_string_defaults(ventana,14,0,"~~stop conversion");
+        }
 
-    int linea=4;             
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
-        menu_hilow_convert_audio_posicion_read_raw/44100/60,
-        (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
+        int linea=4;
+              
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
+            menu_hilow_convert_audio_posicion_read_raw/44100/60,
+            (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
 
-    linea++;
-
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
-        menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
-        (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
-    menu_hilow_convert_audio_just_read_bit=0;
-
-
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
-
-    linea++;
-
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
-
-    char buffer_label[32];
-    util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
-
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
-        hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
-        hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
-
-
-    zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
-
-
-    if (menu_hilow_convert_audio_esperar_siguiente_sector) {
         linea++;
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End sector. Do you want to:");
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"r~~epeat sa~~ve ~~next sector c~~hange sector");
-    }
 
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
+            menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
+            (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
+        menu_hilow_convert_audio_just_read_bit=0;
+
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
+
+        linea++;
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+
+        char buffer_label[32];
+        util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
+            hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
+            hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
+
+
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
+
+
+        if (menu_hilow_convert_audio_esperar_siguiente_sector) {
+            linea++;
+            if (hilow_read_audio_warn_if_sector_mismatch(menu_hilow_convert_audio_sector)) {
+                zxvision_print_string_format(ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,
+                        "Probably sector mismatch! Do you want to:");
+            }
+
+            else zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector ok. Do you want to:");
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"r~~epeat sa~~ve ~~next sector c~~hange sector");
+        }
+
+/*
+           if (hilow_read_audio_warn_if_sector_mismatch(sector)) {
+                printf("Probably sector mismatch!\n");
+                hilow_read_audio_print_mostrar_ids_sector();
+                hilow_read_audio_pausa(2);            
+            }
+*/
+
+
+    }
 
     //Restaurar comportamiento atajos
     menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;       
@@ -30102,86 +30123,85 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
         antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
         menu_writing_inverse_color.v=1;
 
-        //Escribir linea opciones velocidad
-        //speed: paused/very slow/1x/2x/4x/8x/fastest
-        zxvision_print_string_defaults_fillspc_format(ventana,1,1,"speed: ");
+        //No escribir nada del texto siguiente si no hay input u output
+        if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
 
-        
-        int x=8;
-        char buffer_item[30];
-        
-        int i;
-        //7 posibles
+            //Escribir linea opciones velocidad
+            //speed: paused/very slow/1x/2x/4x/8x/fastest
+            zxvision_print_string_defaults_fillspc_format(ventana,1,1,"speed: ");
 
-        for (i=0;i<7;i++) {
+            
+            int x=8;
+            char buffer_item[30];
+            
+            int i;
+            //7 posibles
 
-            int seleccionado=0;
+            for (i=0;i<7;i++) {
 
-            switch (i) {
-                case 0:
-                    strcpy(buffer_item,"~~paused");
-                    if (menu_hilow_convert_paused) seleccionado=1;
-                break;
+                int seleccionado=0;
 
-                case 1:
-                    strcpy(buffer_item,"very s~~low");
-                    if (menu_hilow_convert_muy_lento) seleccionado=1;
-                break;
+                switch (i) {
+                    case 0:
+                        strcpy(buffer_item,"~~paused");
+                        if (menu_hilow_convert_paused) seleccionado=1;
+                    break;
 
-                case 2:
-                    strcpy(buffer_item,"~~1x");
-                    if (menu_hilow_convert_speed==1) seleccionado=1;
-                break;      
+                    case 1:
+                        strcpy(buffer_item,"very s~~low");
+                        if (menu_hilow_convert_muy_lento) seleccionado=1;
+                    break;
 
-                case 3:
-                    strcpy(buffer_item,"~~2x");
-                    if (menu_hilow_convert_speed==2) seleccionado=1;
-                break;  
+                    case 2:
+                        strcpy(buffer_item,"~~1x");
+                        if (menu_hilow_convert_speed==1) seleccionado=1;
+                    break;      
 
-                case 4:
-                    strcpy(buffer_item,"~~4x");
-                    if ( menu_hilow_convert_speed==4) seleccionado=1;
-                break;  
+                    case 3:
+                        strcpy(buffer_item,"~~2x");
+                        if (menu_hilow_convert_speed==2) seleccionado=1;
+                    break;  
 
-                case 5:
-                    strcpy(buffer_item,"~~8x");
-                    if (menu_hilow_convert_speed==8) seleccionado=1;
-                break;  
+                    case 4:
+                        strcpy(buffer_item,"~~4x");
+                        if ( menu_hilow_convert_speed==4) seleccionado=1;
+                    break;  
 
-                case 6:
-                    strcpy(buffer_item,"~~fastest");
-                    if (menu_hilow_convert_audio_fast_mode) seleccionado=1;
-                break;                                                          
+                    case 5:
+                        strcpy(buffer_item,"~~8x");
+                        if (menu_hilow_convert_speed==8) seleccionado=1;
+                    break;  
 
+                    case 6:
+                        strcpy(buffer_item,"~~fastest");
+                        if (menu_hilow_convert_audio_fast_mode) seleccionado=1;
+                    break;                                                          
+
+                }
+
+                zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s",buffer_item);
+
+                x +=strlen(buffer_item)+1-2; //quitarle 2 del hotkey
             }
 
-            zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s",buffer_item);
 
-            x +=strlen(buffer_item)+1-2; //quitarle 2 del hotkey
+            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] a~~daptative algorithm [%c] so~~und",
+
+                (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
+                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
+                (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
+
+            );       
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic",
+                (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' ')
+            );
         }
 
-        
-        /*zxvision_print_string_defaults_fillspc_format(ventana,1,1,"l: slow mode: %s  f: fast mode: %s  a: automatic: %s",
-            (menu_hilow_convert_muy_lento ? "On" : "Off"),
-            (menu_hilow_convert_audio_fast_mode ? "On" : "Off"),
-            (menu_hilow_convert_audio_completamente_automatico ? "On" : "Off")
-            
-        );*/
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] a~~daptative algorithm [%c] so~~und",
-
-            (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
-            (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
-            (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
-
-        );       
-
-        zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic",
-            (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' ')
-        );
 
         //Restaurar comportamiento atajos
-        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;        
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;      
+        
 
 		tecla=zxvision_common_getkey_refresh();		
 
@@ -30189,7 +30209,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
         switch (tecla) {
 
             case 'r':
-                if (!hilow_convert_audio_thread_running) menu_hilow_convert_audio_run_thread();
+                if (menu_hilow_convert_audio_input_raw[0]==0) menu_error_message("No input file selected");
+                else if (menu_hilow_convert_audio_output_ddh[0]==0) menu_error_message("No output file selected");
+                else {
+                    if (!hilow_convert_audio_thread_running) menu_hilow_convert_audio_run_thread();
+                }
             break;
 
             case 's':
