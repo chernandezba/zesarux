@@ -29619,6 +29619,12 @@ void menu_hilow_convert_get_audio_buffer(void)
 
         if (!menu_hilow_convert_audio_hear_sound) audio_leido=0;
 
+        //Si estamos esperando input del usuario, tambien silencio
+        if (menu_hilow_convert_audio_esperar_siguiente_sector) audio_leido=0;
+
+        //Si en pausa, tambien silencio
+        if (menu_hilow_convert_paused) audio_leido=0;
+
         audio_buffer[destino++]=audio_leido;
         audio_buffer[destino++]=audio_leido;
     }
