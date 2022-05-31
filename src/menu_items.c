@@ -29721,7 +29721,20 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
             }
         }
 
-        else menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
+        else {
+            if (menu_hilow_convert_audio_fast_mode) {
+
+                ay_randomize(0);
+
+                //randomize_noise es valor de 16 bits. sacar uno de 8 bits
+                char randomize_valor=value_16_to_8h(randomize_noise[0]);
+
+                //Completamente simulado, sonido random mezclado con sonido real
+                menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=(char_valor_final+randomize_valor)/2;
+
+            }
+            else menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
+        }
 
         if (menu_hilow_convert_audio_buffer_index==AUDIO_BUFFER_SIZE) menu_hilow_convert_audio_buffer_index=0;
     }
