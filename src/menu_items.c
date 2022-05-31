@@ -29632,6 +29632,9 @@ void menu_hilow_convert_get_audio_buffer(void)
 
 int menu_hilow_convert_counter_resample;
 
+char menu_hilow_convert_samples_audio_speeds[8];
+int menu_hilow_convert_samples_audio_speeds_index;
+
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
 {
@@ -29691,7 +29694,34 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     //Hacer cada 3, pues "convertimos" de 44100hz a 15600
     if ((menu_hilow_convert_counter_resample%3)==0) {
-        menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
+
+        
+        if (menu_hilow_convert_speed>1) {
+            //char menu_hilow_convert_samples_audio_speeds[8];
+            //int menu_hilow_convert_samples_audio_speeds_index;
+            int indice=menu_hilow_convert_samples_audio_speeds_index % menu_hilow_convert_speed;
+
+            menu_hilow_convert_samples_audio_speeds[indice]=char_valor_final;
+
+            menu_hilow_convert_samples_audio_speeds_index++;
+
+            //Ultimo sample de esa serie de speed. calcular
+            if (indice==menu_hilow_convert_speed-1) {
+                //Sacar la media
+                int j;
+                int result=0;
+
+                for (j=0;j<menu_hilow_convert_speed;j++) {
+                    result +=menu_hilow_convert_samples_audio_speeds[j];
+                }
+
+                result /=menu_hilow_convert_speed;
+
+                menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=result;
+            }
+        }
+
+        else menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
 
         if (menu_hilow_convert_audio_buffer_index==AUDIO_BUFFER_SIZE) menu_hilow_convert_audio_buffer_index=0;
     }
