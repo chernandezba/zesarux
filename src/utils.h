@@ -423,6 +423,8 @@ extern int convert_tzx_to_rwa(char *origen, char *destino);
 extern int convert_tzx_to_rwa_tmpdir(char *origen, char *destino);
 //extern int convert_tzx_to_wav(char *origen, char *destino);
 
+extern int convert_wav_to_raw_tmpdir(char *origen, char *destino);
+
 extern int convert_o_to_rwa(char *origen, char *destino);
 extern int convert_o_to_rwa_tmpdir(char *origen, char *destino);
 

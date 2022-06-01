@@ -166,13 +166,7 @@ Sector -407021264
 
 -convert a ddh: 
 
-*no funciona phtread cancel. solo va en casos:
-   Cancellation Points
-     Cancellation points will occur when a thread is executing the following functions: accept(), aio_suspend(), close(), connect(),
-     creat(), fcntl(), fsync(), lockf(), msgrcv(), msgsnd(), msync(), nanosleep(), open(), pause(), poll(), pread(), pselect(),
-     pthread_cond_timedwait(), pthread_cond_wait(), pthread_join(), pthread_testcancel(), pwrite(), read(), readv(), recv(),
-     recvfrom(), recvmsg(), select(), sem_wait(), send(), sendmsg(), sendto(), sigpause(), sigsuspend(), sigwait(), sleep(), system(),
-     tcdrain(), usleep(), wait(), waitpid(), write(), writev().
+*parece que input desde wav o raw genera output distinto
 
 
 *agregar ayuda

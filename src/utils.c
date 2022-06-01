@@ -8341,7 +8341,41 @@ int convert_smp_to_rwa(char *origen, char *destino)
 
 }
 
+//Convertir wav a raw: 44100 hz, 8 bits, mono, unsigned
+int convert_wav_to_raw(char *origen, char *destino)
+{
 
+
+
+	char sox_command[PATH_MAX];
+
+	char sox_program[PATH_MAX];
+
+
+	sprintf (sox_program,"%s",external_tool_sox);
+	sprintf (sox_command,"%s \"%s\" -t .raw -r %d -b 8 -e unsigned -c 1 \"%s\"",external_tool_sox,origen,44100,destino);
+
+
+
+
+	if (!si_existe_archivo(sox_program)) {
+		debug_printf(VERBOSE_ERR,"Unable to find sox program: %s",sox_program);
+		return 1;
+	}
+
+
+	debug_printf (VERBOSE_DEBUG,"Running %s command",sox_command);
+
+	if (system (sox_command)==-1) {
+		debug_printf (VERBOSE_DEBUG,"Error running command %s",sox_command);
+		return 1;
+	}
+
+	return 0;
+
+}
+
+//Convertir wav a rwa: 15600 hz, 8 bits, mono, unsigned
 int convert_wav_to_rwa(char *origen, char *destino)
 {
 
@@ -9822,6 +9856,16 @@ void convert_to_rwa_common_tmp(char *origen, char *destino)
 }
 
 
+//Crea carpeta temporal y asigna nombre para archivo temporal raw
+void convert_to_raw_common_tmp(char *origen, char *destino)
+{
+        char nombre_origen[NAME_MAX];
+        util_get_file_no_directory(origen,nombre_origen);
+
+        sprintf (destino,"%s/tmp_%s.raw",get_tmpdir_base(),nombre_origen);
+        debug_printf (VERBOSE_INFO,"Creating temporary file %s",destino);
+}
+
 //Convierte archivo tap a rwa en carpeta temporal, generando nombre de archivo destino
 int convert_tap_to_rwa_tmpdir(char *origen, char *destino)
 {
@@ -9860,6 +9904,14 @@ int convert_wav_to_rwa_tmpdir(char *origen, char *destino)
         convert_to_rwa_common_tmp(origen,destino);
 
         return convert_wav_to_rwa(origen,destino);
+
+}
+
+int convert_wav_to_raw_tmpdir(char *origen, char *destino)
+{
+        convert_to_raw_common_tmp(origen,destino);
+
+        return convert_wav_to_raw(origen,destino);
 
 }
 

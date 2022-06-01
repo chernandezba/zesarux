@@ -29812,12 +29812,30 @@ z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
 {
     z80_byte *puntero;
 
+    char archivo_raw[PATH_MAX];
 
-   
+    //Convertir a raw si conviene
+    if (!util_compare_file_extension(archivo,"wav")) {
+        
+        debug_printf (VERBOSE_INFO,"Detected WAV file");
+        
+        if (convert_wav_to_raw_tmpdir(archivo,archivo_raw)) {
+            //debug_printf(VERBOSE_ERR,"Error converting input file");
+            return NULL;
+        }
+
+        if (!si_existe_archivo(archivo_raw)) {
+            debug_printf(VERBOSE_ERR,"Error converting input file. Target file not found");
+            return NULL;
+        }
+        archivo=archivo_raw;
+    }
+       
+    hilow_read_audio_tamanyo_archivo_audio=get_file_size(archivo);
 
     //Asignar memoria
-    int tamanyo=hilow_read_audio_get_file_size(archivo);
-    puntero=malloc(tamanyo);
+    //int tamanyo=hilow_read_audio_get_file_size(archivo);
+    puntero=malloc(hilow_read_audio_tamanyo_archivo_audio);
 
     if (puntero==NULL) {
         cpu_panic("Can not allocate memory for hilow audio file");
@@ -29833,12 +29851,12 @@ z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
             return NULL;
     }
 
-    fread(puntero,1,tamanyo,ptr_rawfile);
+    fread(puntero,1,hilow_read_audio_tamanyo_archivo_audio,ptr_rawfile);
     fclose(ptr_rawfile);
 
     //Si leemos cara 2, invertir todo el sonido (el principio al final)
     if (hilow_read_audio_leer_cara_dos) {
-        hilow_read_audio_espejar_sonido(puntero,tamanyo);
+        hilow_read_audio_espejar_sonido(puntero,hilow_read_audio_tamanyo_archivo_audio);
     }
 
     return puntero;
@@ -29936,10 +29954,10 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     hilow_read_audio_bit_output_write_callback=menu_hilow_convert_audio_write_bit_callback;
 
 
-    hilow_read_audio_tamanyo_archivo_audio=get_file_size(menu_hilow_convert_audio_input_raw);
-
     //Leer archivo entrada
     hilow_read_audio_read_hilow_memoria_audio=menu_hilow_convert_audio_read_hilow_audio_file(menu_hilow_convert_audio_input_raw);
+
+
 
     if (hilow_read_audio_read_hilow_memoria_audio==NULL) {
         hilow_convert_audio_thread_running=0;
@@ -30289,7 +30307,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
     char buffer_load_file[PATH_MAX];
 
-    char *filtros[2];
+    char *filtros[3];
 
     do {
 
@@ -30502,8 +30520,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'i':
 
-                filtros[0]="raw";
-                filtros[1]=0;
+                filtros[0]="wav";
+                filtros[1]="raw";
+                filtros[2]=0;
 
 
                 if (menu_filesel("Select Input raw File",filtros,buffer_load_file)==1) {
