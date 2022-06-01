@@ -29736,6 +29736,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     if ((menu_hilow_convert_counter_resample%3)==0) {
 
         
+        //Acelerar sonido
         if (menu_hilow_convert_speed>1) {
             //char menu_hilow_convert_samples_audio_speeds[8];
             //int menu_hilow_convert_samples_audio_speeds_index;
@@ -29762,6 +29763,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
         }
 
         else {
+            //Lo mas rapido posible
             if (menu_hilow_convert_audio_fast_mode) {
 
                 ay_randomize(0);
@@ -29773,8 +29775,11 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
                 menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=(char_valor_final+randomize_valor)/2;
 
             }
+
+            //Velocidad 1x
             else menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=char_valor_final;
         }
+
 
         if (menu_hilow_convert_audio_buffer_index==AUDIO_BUFFER_SIZE) menu_hilow_convert_audio_buffer_index=0;
     }
@@ -29801,6 +29806,8 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
 }
 
+
+//Leer archivo sonido de entrada
 z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
 {
     z80_byte *puntero;
@@ -29818,16 +29825,16 @@ z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
 
 
     //cargarlo en memoria
-    FILE *ptr_bmpfile;
-    ptr_bmpfile=fopen(archivo,"rb");
+    FILE *ptr_rawfile;
+    ptr_rawfile=fopen(archivo,"rb");
 
-    if (!ptr_bmpfile) {
+    if (!ptr_rawfile) {
             debug_printf(VERBOSE_ERR,"Unable to open audio file %s",archivo);
             return NULL;
     }
 
-    fread(puntero,1,tamanyo,ptr_bmpfile);
-    fclose(ptr_bmpfile);
+    fread(puntero,1,tamanyo,ptr_rawfile);
+    fclose(ptr_rawfile);
 
     //Si leemos cara 2, invertir todo el sonido (el principio al final)
     if (hilow_read_audio_leer_cara_dos) {
@@ -29837,6 +29844,9 @@ z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
     return puntero;
 }
 
+//Leer archivo ddh de salida
+//Si tiene contenido previo, se carga en memoria, y luego lo que se convierta, sobreescribira los sectores existentes
+//Util esto para poder leer primero un archivo de audio de cara A, luego el de cara B, y ambos van a parar a mismo ddh
 int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
 {
     //z80_byte *puntero;
