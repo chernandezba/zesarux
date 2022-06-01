@@ -29880,6 +29880,9 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
         cpu_panic("Can not allocate memory for hilow ddh file");
     }
 
+    //Resetear memoria a 0
+    memset(hilow_read_audio_hilow_ddh,0,tamanyo);
+
 
     //cargarlo en memoria, si es que existe
     FILE *ptr_ddhfile;
@@ -30172,7 +30175,7 @@ void menu_hilow_convert_audio_overlay(void)
         menu_hilow_convert_audio_just_read_bit=0;
 
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s  %s",menu_hilow_convert_audio_string_bytes,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s %s",menu_hilow_convert_audio_string_bytes,
             (menu_hilow_convert_audio_just_read_byte ? "New byte" : "") );   
         menu_hilow_convert_audio_just_read_byte=0;        
 
@@ -30389,7 +30392,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s%c",buffer_item,
                 (i<total_opciones-1 ? '/' : ' ') );
 
-                x +=strlen(buffer_item)+1-2; //quitarle 2 del hotkey
+                x +=strlen(buffer_item)-2; //quitarle 2 del hotkey
+
+                if (i<total_opciones-1) zxvision_print_string_defaults(ventana,x,1,"/");
+
+                x++;
             }
 
 
