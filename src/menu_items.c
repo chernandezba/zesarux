@@ -29437,14 +29437,14 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 
 
 
+//
+// Inicio ventana de convertir audio HiLow a archivo DDH
+//
+
 zxvision_window *menu_hilow_convert_audio_window;
 
 
-
-
-
-
-
+//Para hacer las pausas entre cada sample de audio
 struct timeval menu_hilow_convert_audio_timer_antes, menu_hilow_convert_audio_timer_ahora;
 
 
@@ -29485,6 +29485,7 @@ void menu_hilow_convert_audio_precise_usleep(int duracion)
     }
 }
 
+//Para poder pasar de 44100 a 15600. Hacemos la media de los anteriores 3 valores, aunque esto no sea exacto: 44100/3 no es 15600 pero es aproximado
 //Tener la media de los anteriores 3
 int menu_hilow_convert_audio_last_audio_sample_one=0;
 int menu_hilow_convert_audio_last_audio_sample_two=0;
@@ -29494,14 +29495,16 @@ int menu_hilow_convert_audio_last_audio_sample_three=0;
 //Valor de audio ultimo leido que se enviara al output
 char menu_hilow_convert_audio_last_audio_sample;
 
+//Si estamos en modo lento o muy lento
 int menu_hilow_convert_lento=0;
 
-//Velocidad cuando no esta en fast mode ni en slow
+//Velocidad cuando no esta en fast mode ni en slow (1x, 2x, 4x...)
 int menu_hilow_convert_speed=1;
 
+//Si estamos pausados
 int menu_hilow_convert_paused=0;
 
-
+//Scroll de texto
 void menu_hilow_convert_audio_scroll_left_string(char *texto)
 {
     int longitud=strlen(texto);
@@ -29527,11 +29530,16 @@ char menu_hilow_convert_audio_string_bytes[]=       "                        ";
                                                 //   H  O  L  A  Q  U  E  T
 char menu_hilow_convert_audio_string_bytes_ascii[]= "                        ";
 
+//Ultimo bit leido
 int menu_hilow_convert_audio_last_bit=0;
 
+//Para el texto de "new bit"
 int menu_hilow_convert_audio_just_read_bit=0;
 
+//Para el texto de "new byte"
 int menu_hilow_convert_audio_just_read_byte=0;
+
+//Callback llamado desde la rutina de conversion al leer un bit
 void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
 {
     //printf("bit: %d\n",valor);
@@ -29552,6 +29560,8 @@ void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
 
 int menu_hilow_convert_audio_sector=0;
 
+
+//Callback llamado desde la rutina de conversion al leer un byte
 void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 {
     //printf("byte: %02XH\n",valor);
@@ -29592,28 +29602,34 @@ int menu_hilow_convert_audio_has_been_opened=0;
 char menu_hilow_convert_audio_input_raw[PATH_MAX]="";
 char menu_hilow_convert_audio_output_ddh[PATH_MAX]="";
 
+
+//Si el thread esta ejecutandose
 int hilow_convert_audio_thread_running=0;
 
-
+//Posicion en la lectura del archivo de audio
 int menu_hilow_convert_audio_posicion_read_raw=0;
 
 //modo sin pausas
 int menu_hilow_convert_audio_fast_mode=0;
 
+//Si completamente automatico
 int menu_hilow_convert_audio_completamente_automatico=0;
 
+//Si hay que esperar al usuario en el final de sector y decida que quiere hacer
 int menu_hilow_convert_audio_esperar_siguiente_sector=0;
 
-
+//Si quiere repetir el sector
 int menu_hilow_convert_audio_must_repeat_sector=0;
 
+//Si se escucha sonido y por tanto tambien se ve por visualmem (modo scroll no necesita que se escuche necesariamente)
 int menu_hilow_convert_audio_hear_sound=1;
 
-
+//Para tener un buffer intermedio donde guardar el sonido, luego desde core_spectrum lo usara de aqui
 int menu_hilow_convert_audio_buffer_index=0;
 //buffer mono, circular
 char menu_hilow_convert_audio_buffer[AUDIO_BUFFER_SIZE];
 
+//pasar de mi buffer intermedio al buffer final de sonido 
 void menu_hilow_convert_get_audio_buffer(void)
 {
     int i;
@@ -29641,9 +29657,12 @@ void menu_hilow_convert_get_audio_buffer(void)
     }
 }
 
+//Usado en conversion de 44100 a 15600 hz
 int menu_hilow_convert_counter_resample;
 
+//Usado para alterar el audio segun si velocidad 1x, 2x, 4x o 8x
 char menu_hilow_convert_samples_audio_speeds[8];
+//Usado en este buffer anterior
 int menu_hilow_convert_samples_audio_speeds_index;
 
 //Aqui se entra cada vez que se lee un sample de audio
@@ -29658,7 +29677,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //Dado que vamos a 15600, son 3 veces menos
 
 
-    //Este no hace retardo. Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
+    //Este sleep(0) no hace retardo. Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
     //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
     /*
    Cancellation Points
@@ -29671,23 +29690,18 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     sleep(0);
 
 
-
-    //usleep(22/3);
+    //Si no estamos en modo rapido
     if (!menu_hilow_convert_audio_fast_mode) {
        
-
 
         //Muy lento
         if (menu_hilow_convert_lento) {
             menu_hilow_convert_audio_precise_usleep(20000*menu_hilow_convert_lento);
-
-            //temp
-            //menu_hilow_convert_audio_precise_usleep(80000);
         }
 
         //Normal a 1x, 2x, 4x o 8x
         else  {
-            //no deberia ser cero nunca
+            //no deberia ser cero nunca, pero por si acaso evitamos divisiones entre cero
             if (menu_hilow_convert_speed!=0) {
                 menu_hilow_convert_audio_precise_usleep(22/menu_hilow_convert_speed);
             }
@@ -29701,6 +29715,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
 
+    //Sacamos la media de los 3, para convertir de 44100 a 15600
     int valor_final=menu_hilow_convert_audio_last_audio_sample_one+menu_hilow_convert_audio_last_audio_sample_two+menu_hilow_convert_audio_last_audio_sample_three;
 
     valor_final /=3;
@@ -29766,9 +29781,6 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     menu_hilow_convert_counter_resample++;
 
-    //temp
-    //menu_hilow_convert_audio_last_audio_sample=temp_vv;
-    //temp_vv=-temp_vv;
 
 
     //Y "rotarlos"
@@ -30580,6 +30592,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 }
 
+
+//
+// FIN ventana de convertir audio HiLow a archivo DDH
+//
 
 
 void menu_hilow(MENU_ITEM_PARAMETERS)
