@@ -4244,6 +4244,8 @@ void menu_waveform_draw_array(int ancho,int alto,int xorigen,int yorigen,int for
     }    
 }
 
+int menu_audio_draw_sound_wave_si_scroll_hilow_audio;
+
 void menu_audio_draw_sound_wave(void)
 {
 
@@ -4375,7 +4377,7 @@ void menu_audio_draw_sound_wave(void)
 
     //Si convirtiendo hilow, alterar max y min especial para la vista de scroll
     //menu_hilow_convert_audio_last_audio_sample
-    if (hilow_convert_audio_thread_running && menu_hilow_convert_muy_lento) {
+    if (hilow_convert_audio_thread_running && menu_hilow_convert_lento) {
         menu_audio_draw_sound_wave_valor_max=menu_hilow_convert_audio_last_audio_sample;
         menu_audio_draw_sound_wave_valor_min=menu_hilow_convert_audio_last_audio_sample;
     }
@@ -4409,7 +4411,14 @@ void menu_audio_draw_sound_wave(void)
         //Si estamos convirtiendo hilow y pausados, no hacer scroll
         int hacer_scroll=1;
 
-        if (hilow_convert_audio_thread_running && menu_hilow_convert_paused) hacer_scroll=0;
+        if (hilow_convert_audio_thread_running) {
+            if (menu_hilow_convert_paused) hacer_scroll=0;
+
+            if (menu_hilow_convert_lento>0) {
+                menu_audio_draw_sound_wave_si_scroll_hilow_audio++;
+                if ( (menu_audio_draw_sound_wave_si_scroll_hilow_audio % menu_hilow_convert_lento) !=0) hacer_scroll=0;
+            }
+        }
 
         if (hacer_scroll) {
 
@@ -29492,7 +29501,7 @@ int menu_hilow_convert_audio_last_audio_sample_three=0;
 //Valor de audio ultimo leido que se enviara al output
 char menu_hilow_convert_audio_last_audio_sample;
 
-int menu_hilow_convert_muy_lento=0;
+int menu_hilow_convert_lento=0;
 
 //Velocidad cuando no esta en fast mode ni en slow
 int menu_hilow_convert_speed=1;
@@ -29528,9 +29537,11 @@ char menu_hilow_convert_audio_string_bytes_ascii[]= "                        ";
 int menu_hilow_convert_audio_last_bit=0;
 
 int menu_hilow_convert_audio_just_read_bit=0;
+
+int menu_hilow_convert_audio_just_read_byte=0;
 void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
 {
-    printf("bit: %d\n",valor);
+    //printf("bit: %d\n",valor);
 
     menu_hilow_convert_audio_last_bit=valor;
 
@@ -29550,8 +29561,9 @@ int menu_hilow_convert_audio_sector=0;
 
 void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 {
-    printf("byte: %02XH\n",valor);
+    //printf("byte: %02XH\n",valor);
 
+    menu_hilow_convert_audio_just_read_byte=1;
 
     menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes);
     menu_hilow_convert_audio_scroll_left_string(menu_hilow_convert_audio_string_bytes);
@@ -29578,7 +29590,10 @@ void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
 
 }
 
-//char temp_vv=30;
+//Si se ha abierto esta ventana, y entonces la zona de memoria esta disponible
+//TODO: esto no se pone a 0 nunca, aunque se salga de aqui la zona de memoria seguira disponible,
+//aunque esto no supone un gran problema
+int menu_hilow_convert_audio_has_been_opened=0;
 
 //Archivos de entrada y salida para conversión
 char menu_hilow_convert_audio_input_raw[PATH_MAX]="";
@@ -29647,6 +29662,17 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //Dado que vamos a 15600, son 3 veces menos
 
 
+    //Este no hace retardo. Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
+    //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
+    /*
+   Cancellation Points
+     Cancellation points will occur when a thread is executing the following functions: accept(), aio_suspend(), close(), connect(),
+     creat(), fcntl(), fsync(), lockf(), msgrcv(), msgsnd(), msync(), nanosleep(), open(), pause(), poll(), pread(), pselect(),
+     pthread_cond_timedwait(), pthread_cond_wait(), pthread_join(), pthread_testcancel(), pwrite(), read(), readv(), recv(),
+     recvfrom(), recvmsg(), select(), sem_wait(), send(), sendmsg(), sendto(), sigpause(), sigsuspend(), sigwait(), sleep(), system(),
+     tcdrain(), usleep(), wait(), waitpid(), write(), writev().    
+    */
+    sleep(0);
 
 
 
@@ -29656,8 +29682,11 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
 
         //Muy lento
-        if (menu_hilow_convert_muy_lento) {
-            menu_hilow_convert_audio_precise_usleep(40000);
+        if (menu_hilow_convert_lento) {
+            menu_hilow_convert_audio_precise_usleep(20000*menu_hilow_convert_lento);
+
+            //temp
+            //menu_hilow_convert_audio_precise_usleep(80000);
         }
 
         //Normal a 1x, 2x, 4x o 8x
@@ -29862,14 +29891,23 @@ pthread_t hilow_convert_audio_thread;
 void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 {
 
-    //Llamar a rutina de conversion
-    hilow_convert_audio_thread_running=0;
+    debug_printf(VERBOSE_DEBUG,"Start HiLow convert audio thread");
+
+    //TODO: esto deberia ser un semaforo, pero el usuario tendria que ser muy muy rapido para poder ejecutar esto dos veces seguidas
+    //y que suceda esto simultaneamente en dos sitios a la vez
+    if (hilow_convert_audio_thread_running) {
+        debug_printf(VERBOSE_DEBUG,"Already running HiLow convert audio thread");
+        return NULL;
+    }
+
+    
+    hilow_convert_audio_thread_running=1;
 
     //Temporal: meter sleep
     //hilow_read_audio_ejecutar_sleep=1;
 
     //Temporal: verbose
-    hilow_read_audio_modo_verbose=1;
+    //hilow_read_audio_modo_verbose=1;
 
     //meter callback
     hilow_read_audio_byteread_callback=menu_hilow_convert_audio_callback;
@@ -29884,19 +29922,24 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     //Leer archivo entrada
     hilow_read_audio_read_hilow_memoria_audio=menu_hilow_convert_audio_read_hilow_audio_file(menu_hilow_convert_audio_input_raw);
 
-    if (hilow_read_audio_read_hilow_memoria_audio==NULL) return NULL;
+    if (hilow_read_audio_read_hilow_memoria_audio==NULL) {
+        hilow_convert_audio_thread_running=0;
+        return NULL;
+    }
 
 
     //Asignar memoria para archivo salida y leerlo (si existe)
-    if (!menu_hilow_convert_audio_read_hilow_ddh_file(menu_hilow_convert_audio_output_ddh)) return NULL;
+    if (!menu_hilow_convert_audio_read_hilow_ddh_file(menu_hilow_convert_audio_output_ddh)) {
+        hilow_convert_audio_thread_running=0;
+        return NULL;
+    }
+
     //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
     //hilow_read_audio_pausa(2);
 
     menu_hilow_convert_audio_posicion_read_raw=0;
     int total_bytes_leidos;    
 
-
-    hilow_convert_audio_thread_running=1;
 
 
     while (menu_hilow_convert_audio_posicion_read_raw!=-1) {
@@ -29905,18 +29948,23 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 
         int antes_posicion=menu_hilow_convert_audio_posicion_read_raw;
 
-        printf("\n");
+        debug_printf(VERBOSE_DEBUG,"Position begin search sector: %d",menu_hilow_convert_audio_posicion_read_raw);
+
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_buscar_inicio_sector(menu_hilow_convert_audio_posicion_read_raw);
-        if (hilow_read_audio_modo_verbose) printf("Posicion inicio bits de datos de sector: %d\n",menu_hilow_convert_audio_posicion_read_raw);
+
+        debug_printf(VERBOSE_DEBUG,"Position start sector data: %d",menu_hilow_convert_audio_posicion_read_raw);
         
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
 
 
         hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
 
-        printf("Sector: %d\n",menu_hilow_convert_audio_sector);
+        //printf("Sector: %d\n",menu_hilow_convert_audio_sector);
 
-        if (menu_hilow_convert_audio_completamente_automatico) hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
+        if (menu_hilow_convert_audio_completamente_automatico) {
+            debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
+            hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
+        }
         else {
             //preguntar que hacer
             menu_hilow_convert_audio_esperar_siguiente_sector=1;
@@ -29948,7 +29996,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     free(hilow_read_audio_read_hilow_memoria_audio);
     free(hilow_read_audio_hilow_ddh);
 
-    printf("Finalizado proceso\n");
+    debug_printf(VERBOSE_DEBUG,"End HiLow convert audio thread");
 
 
     hilow_convert_audio_thread_running=0;
@@ -29971,7 +30019,9 @@ void menu_hilow_convert_audio_stop_thread(void)
 {
     printf("Stopping thread\n");
 
-    pthread_cancel(hilow_convert_audio_thread);
+    if (pthread_cancel(hilow_convert_audio_thread)) {
+        menu_error_message("Error canceling thread");
+    }
 
     hilow_convert_audio_thread_running=0;
 
@@ -30057,10 +30107,16 @@ void menu_hilow_convert_audio_overlay(void)
         }
 
         int linea=4;
+
+        int minutos=menu_hilow_convert_audio_posicion_read_raw/44100/60;
+        int segundos=(menu_hilow_convert_audio_posicion_read_raw/44100) % 60;
+        long int frames=menu_hilow_convert_audio_posicion_read_raw % 44100;
+        long int microseconds=(1000000 * frames)/44100;
+
               
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d (%d bytes)",
-            menu_hilow_convert_audio_posicion_read_raw/44100/60,
-            (menu_hilow_convert_audio_posicion_read_raw/44100) % 60,menu_hilow_convert_audio_posicion_read_raw);
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%06ld (mm:ss:microsec) - %d bytes",
+            minutos,segundos,microseconds,
+            menu_hilow_convert_audio_posicion_read_raw);
 
  
 
@@ -30072,26 +30128,32 @@ void menu_hilow_convert_audio_overlay(void)
 
         linea++;
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d %s",
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d  %s",
             menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
             (menu_hilow_convert_audio_just_read_bit ? "New bit" : "") );   
         menu_hilow_convert_audio_just_read_bit=0;
 
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s",menu_hilow_convert_audio_string_bytes);  
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bytes read: %s  %s",menu_hilow_convert_audio_string_bytes,
+            (menu_hilow_convert_audio_just_read_byte ? "New byte" : "") );   
+        menu_hilow_convert_audio_just_read_byte=0;        
+
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
         linea++;
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
 
-        char buffer_label[32];
-        util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
-            hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
-            hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
+        if (!hilow_read_audio_leer_cara_dos) {
+            char buffer_label[32];
+            util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
+                hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
+                hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
+        }
 
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
@@ -30104,17 +30166,16 @@ void menu_hilow_convert_audio_overlay(void)
                         "Probably sector mismatch! Do you want to:");
             }
 
-            else zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector seems ok. Do you want to:");
+            else {
+                if (!hilow_read_audio_leer_cara_dos) zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End read sector, seems ok. Do you want to:");
+                else zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End read sector. Do you want to:");
+            }
+
+
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"r~~epeat sa~~ve ~~next sector c~~hange sector");
         }
 
-/*
-           if (hilow_read_audio_warn_if_sector_mismatch(sector)) {
-                printf("Probably sector mismatch!\n");
-                hilow_read_audio_print_mostrar_ids_sector();
-                hilow_read_audio_pausa(2);            
-            }
-*/
+
 
 
     }
@@ -30205,6 +30266,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     //strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1.raw");
     //strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
 
+    menu_hilow_convert_audio_has_been_opened=1;
+
     char buffer_load_file[PATH_MAX];
 
     char *filtros[2];
@@ -30230,9 +30293,11 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             char buffer_item[30];
             
             int i;
-            //7 posibles
+            //8 posibles
 
-            for (i=0;i<7;i++) {
+            int total_opciones=8;
+
+            for (i=0;i<total_opciones;i++) {
 
                 int seleccionado=0;
 
@@ -30244,37 +30309,47 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
                     case 1:
                         strcpy(buffer_item,"very s~~low");
-                        if (menu_hilow_convert_muy_lento) seleccionado=1;
+                        if (menu_hilow_convert_lento==4) seleccionado=1;
                     break;
 
                     case 2:
+                        strcpy(buffer_item,"slo~~w");
+                        if (menu_hilow_convert_lento==1) seleccionado=1;
+                    break;                    
+
+                    case 3:
                         strcpy(buffer_item,"~~1x");
                         if (menu_hilow_convert_speed==1) seleccionado=1;
                     break;      
 
-                    case 3:
+                    case 4:
                         strcpy(buffer_item,"~~2x");
                         if (menu_hilow_convert_speed==2) seleccionado=1;
                     break;  
 
-                    case 4:
+                    case 5:
                         strcpy(buffer_item,"~~4x");
                         if ( menu_hilow_convert_speed==4) seleccionado=1;
                     break;  
 
-                    case 5:
+                    case 6:
                         strcpy(buffer_item,"~~8x");
                         if (menu_hilow_convert_speed==8) seleccionado=1;
                     break;  
 
-                    case 6:
+                    case 7:
                         strcpy(buffer_item,"~~fastest");
                         if (menu_hilow_convert_audio_fast_mode) seleccionado=1;
                     break;                                                          
 
                 }
 
-                zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s",buffer_item);
+                int tinta=ESTILO_GUI_TINTA_NORMAL;
+
+               
+
+                zxvision_print_string_format(ventana,x,1,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,seleccionado,"%s%c",buffer_item,
+                (i<total_opciones-1 ? '/' : ' ') );
 
                 x +=strlen(buffer_item)+1-2; //quitarle 2 del hotkey
             }
@@ -30312,13 +30387,16 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;
 
             case 's':
-                if (hilow_convert_audio_thread_running) menu_hilow_convert_audio_stop_thread();
+                if (hilow_convert_audio_thread_running) {
+                    menu_hilow_convert_audio_stop_thread();
+                    menu_hilow_convert_audio_esperar_siguiente_sector=0;
+                }
             break;      
 
             case '1':
                 menu_hilow_convert_speed=1;
                 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_audio_fast_mode=0;
                 menu_hilow_convert_paused=0;
             break;    
@@ -30326,7 +30404,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case '2':
                 menu_hilow_convert_speed=2;
                 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_audio_fast_mode=0;
                 menu_hilow_convert_paused=0;
             break;    
@@ -30334,7 +30412,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case '4':
                 menu_hilow_convert_speed=4;
                 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_audio_fast_mode=0;
                 menu_hilow_convert_paused=0;
             break;    
@@ -30342,16 +30420,16 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case '8':
                 menu_hilow_convert_speed=8;
                 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_audio_fast_mode=0;
                 menu_hilow_convert_paused=0;
             break;                                        
         
 
-            case 'l':
-                menu_hilow_convert_muy_lento=1;
+            case 'w':
+                menu_hilow_convert_lento=1;
 
-                if (menu_hilow_convert_muy_lento) {
+                if (menu_hilow_convert_lento) {
                     //Poner buffer a silencio para borrar lo anterior
                     memset(menu_hilow_convert_audio_buffer,0,AUDIO_BUFFER_SIZE);
                 }
@@ -30361,10 +30439,24 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 menu_hilow_convert_speed=0;
             break;
 
+            case 'l':
+                menu_hilow_convert_lento=4;
+
+                if (menu_hilow_convert_lento) {
+                    //Poner buffer a silencio para borrar lo anterior
+                    memset(menu_hilow_convert_audio_buffer,0,AUDIO_BUFFER_SIZE);
+                }
+
+                menu_hilow_convert_audio_fast_mode=0;
+                menu_hilow_convert_paused=0;
+                menu_hilow_convert_speed=0;
+            break;
+
+
             case 'p':
                 menu_hilow_convert_paused=1;
 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_audio_fast_mode=0;   
                 menu_hilow_convert_speed=0;             
             break;       
@@ -30372,7 +30464,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             case 'f':
                 menu_hilow_convert_audio_fast_mode=1;
 
-                menu_hilow_convert_muy_lento=0;
+                menu_hilow_convert_lento=0;
                 menu_hilow_convert_paused=0;
                 menu_hilow_convert_speed=0;
             break;     
@@ -30436,24 +30528,32 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
          if (menu_hilow_convert_audio_esperar_siguiente_sector) {
             switch(tecla) {
                 case 'n':
-                    printf("Skipping sector\n");
+                    debug_printf(VERBOSE_INFO,"Skipping sector");
                     //Siguiente sector
                     menu_hilow_convert_audio_esperar_siguiente_sector=0;
                 break;
 
                 case 'v':
                     //Grabar sector 
-                    printf("Saving sector\n");
+                    debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
                     hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
                     menu_hilow_convert_audio_esperar_siguiente_sector=0;
                 break;   
 
                 case 'e':
                     //Repetir lectura
-                    printf("Repeat sector\n");
+                    debug_printf(VERBOSE_INFO,"Repeating sector");
                     menu_hilow_convert_audio_must_repeat_sector=1;
                     menu_hilow_convert_audio_esperar_siguiente_sector=0;
-                break;             
+                break;  
+
+
+                case 'h':
+                    menu_ventana_scanf_numero_enhanced("Sector?",&menu_hilow_convert_audio_sector,4,+1,1,255,0);
+                break;
+
+
+                
             }
          }
 

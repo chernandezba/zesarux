@@ -275,7 +275,7 @@ extern void menu_about_about_load_editionamegame(void);
 
 extern int zxvision_drawing_in_background;
 
-extern int menu_hardware_advanced_input_value(int minimum,int maximum,char *texto,int *variable);
+
 extern void menu_interface_rgb_inverse_common(void);
 
 extern z80_bit menu_writing_inverse_color;

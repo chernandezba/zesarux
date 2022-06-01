@@ -12434,9 +12434,9 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break; 
 
-    //hilow archivo de salida que se esta leyendo de raw
+    //hilow buffer intermedio de conversion 
     case MEMORY_ZONE_HILOW_CONVERT_READ:
-        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+        if (menu_hilow_convert_audio_has_been_opened) {
             *readwrite=3; //read+write
             size=HILOW_SECTOR_SIZE;
         }
@@ -12840,9 +12840,9 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         }
     break;    
 
-    //hilow archivo de salida que se esta leyendo de raw
+    //hilow buffer intermedio de conversion 
     case MEMORY_ZONE_HILOW_CONVERT_READ:
-        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+        if (menu_hilow_convert_audio_has_been_opened) {
             p=&hilow_read_audio_buffer_result[address+1]; //Saltar el primer byte del sector
         }
     break;     
@@ -13261,9 +13261,9 @@ void machine_get_memory_zone_name(int zone, char *name)
         }
     break;    
 
-    //hilow archivo de salida que se esta leyendo de raw
+    //hilow buffer intermedio de conversion 
     case MEMORY_ZONE_HILOW_CONVERT_READ:
-        if (hilow_convert_audio_thread_running && hilow_read_audio_hilow_ddh!=NULL) {
+        if (menu_hilow_convert_audio_has_been_opened) {
             strcpy(name,"HiLow Convert");
         }
     break;       

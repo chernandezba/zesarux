@@ -193,9 +193,11 @@ extern void menu_process_f_functions_by_action_name(int id_funcion);
 
 extern char menu_hilow_convert_audio_last_audio_sample;
 
-extern int menu_hilow_convert_muy_lento;
+extern int menu_hilow_convert_lento;
 
 extern int menu_hilow_convert_paused;
+
+extern int menu_hilow_convert_audio_has_been_opened;
 
 extern int hilow_convert_audio_thread_running;
 

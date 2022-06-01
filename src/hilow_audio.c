@@ -116,7 +116,7 @@ int hilow_read_audio_lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=hilow_read_audio_tamanyo_archivo_audio) {
         //TODO: mejorar esto, no finalizar sino retornar fin de memoria a la rutina que llama
-        printf("fuera de rango %d\n",posicion);
+        printf("Out of range %d\n",posicion);
         return -1;
     }
 
@@ -296,12 +296,12 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
     do {
     
     if (hilow_read_audio_modo_verbose) {
-        printf("\nposicion antes buscar inicio onda sincronismo bits %d\n",posicion);
+        printf("\nPosition before searching start bits sync wave %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
     posicion=hilow_read_audio_buscar_onda_inicio_bits(posicion);
     if (posicion==-1) {
-        printf("\nFin de archivo intentando leer primera onda de sincronismo bits\n");
+        printf("\nEnd of file trying to read first start bits sync wave\n");
         return -1;
     }
     //Estamos al final de la primera
@@ -313,7 +313,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
     int posicion0=posicion;
 
     if (hilow_read_audio_modo_verbose) {
-        printf("\nposicion final primera onda sincronismo bits %d\n",posicion);
+        printf("\nPosition after first start bits sync wave %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
 
@@ -335,7 +335,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 
 
     if (hilow_read_audio_modo_verbose) {
-        printf("\n3 posicion %d\n",posicion);
+        printf("\nPosition after second start bits sync wave %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
 
@@ -346,7 +346,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
     //Ver si la segunda acaba en donde acaba la primera + el tiempo de onda
     int delta=posicion-posicion0;
 
-    if (hilow_read_audio_modo_verbose) printf("delta %d esperado %d\n",delta,HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS);
+    if (hilow_read_audio_modo_verbose) printf("delta %d expected %d\n",delta,HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS);
 
     //hilow_read_audio_pausa(3);
 
@@ -354,7 +354,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
             delta<=HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS_MARGEN)
         {
         if (hilow_read_audio_modo_verbose) {
-            printf("\n---Dos sync consecutivos en %d---\n",posicion);
+            printf("\n---Two consecutive sync at %d---\n",posicion);
             hilow_read_audio_pausa(5);
         }
         
@@ -363,7 +363,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 
     else {
         if (hilow_read_audio_modo_verbose) {
-            printf("\n---NO hay dos sync consecutivos en %d---\n",posicion);
+            printf("\n---There is NOT two consecutive sync at %d---\n",posicion);
             hilow_read_audio_pausa(5);
         }
     }
@@ -448,7 +448,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    posicion +=duracion_sincronismo_byte;
 
 
-   if (hilow_read_audio_modo_verbose_extra) printf("\nFin sincronismo inicio bits: pos: %d\n",posicion);
+   if (hilow_read_audio_modo_verbose_extra) printf("\nEnd wave sync bits: pos: %d\n",posicion);
 
    //int duracion_uno=(duracion_sincronismo_byte*79)/100;
    //int duracion_cero=(duracion_sincronismo_byte*40)/100;
@@ -520,7 +520,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
        //if (i!=7) byte_final=byte_final<<1;
     }
 
-    if (hilow_read_audio_modo_verbose_extra) printf("\nbyte final: %02XH\n",byte_final);
+    if (hilow_read_audio_modo_verbose_extra) printf("\nfinal byte: %02XH\n",byte_final);
    *byte_salida=byte_final;
 
     if (hilow_read_audio_byte_output_write_callback!=NULL) hilow_read_audio_byte_output_write_callback(byte_final,posicion);
@@ -539,7 +539,7 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
     if (!hilow_read_audio_leer_cara_dos) {
         if (hilow_read_audio_modo_verbose) {
-            printf("\n---Buscando primer par de marcas de sincronismo en %d\n",posicion);
+            printf("\n---Searching first pair of sync marks at %d\n",posicion);
             hilow_read_audio_pausa(2);
         }
         posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
@@ -554,9 +554,11 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
             hilow_read_audio_buffer_sector_five_byte[i]=byte_leido;
         }
 
-        printf("5 bytes id sector: ");
+        if (hilow_read_audio_modo_verbose) {
+            printf("5 bytes id sector: ");
 
-        hilow_read_audio_print_mostrar_ids_sector();
+            hilow_read_audio_print_mostrar_ids_sector();
+        }
 
         //hilow_read_audio_pausa(3);
     }
@@ -564,7 +566,7 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
     hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_LABEL;
 
     if (hilow_read_audio_modo_verbose) {
-        printf("\n---Buscando segundo par de marcas de sincronismo en %d\n",posicion);
+        printf("\n---Searching second pair of sync marks at %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
     posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
@@ -581,21 +583,25 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
         hilow_read_audio_buffer_label[i]=byte_leido;
     }
 
-    printf("17 bytes of label: ");
+    if (hilow_read_audio_modo_verbose) {
 
-    for (i=0;i<17;i++) {
-        z80_byte byte_leido=hilow_read_audio_buffer_label[i];
-        printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+        printf("17 bytes of label: ");
+
+        for (i=0;i<17;i++) {
+            z80_byte byte_leido=hilow_read_audio_buffer_label[i];
+            printf("%c",(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.'));
+        }
+
+        printf("\n");
+
     }
-
-    printf("\n");
 
     hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA;
 
     //hilow_read_audio_pausa(3);    
 
     if (hilow_read_audio_modo_verbose) {
-        printf("\n---Buscando tercer par de marcas de sincronismo en %d\n",posicion);
+        printf("\n---Searching third pair of sync marks at %d\n",posicion);
         hilow_read_audio_pausa(2);
     }
     posicion=hilow_read_audio_buscar_dos_sync_bits(posicion);
@@ -613,14 +619,14 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
 void hilow_read_audio_write_sector_to_memory(int sector)
 {
-    printf("Saving sector %d to memory\n",sector);
+    if (hilow_read_audio_modo_verbose) printf("Saving sector %d to memory\n",sector);
 
     sector--;
 
     //Copiar a memoria ddh
     int offset_destino=sector*HILOW_SECTOR_SIZE;    
 
-    if (hilow_read_audio_modo_verbose) printf("offset_destino a archivo ddh: %d\n",offset_destino);
+    if (hilow_read_audio_modo_verbose) printf("Destination offset to file ddh: %d\n",offset_destino);
 
     //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
     /*for (i=0;i<HILOW_SECTOR_SIZE;i++) {
