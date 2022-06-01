@@ -29476,20 +29476,13 @@ long menu_hilow_convert_audio_tiempo_final_usec(void)
 void menu_hilow_convert_audio_precise_usleep(int duracion)
 {
 
+    int tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
 
-    //menu_hilow_convert_audio_tiempo_inicial();
-
-
-                    int tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
-
-                        //Y esperamos a que hayan pasado 64 microsegundos desde el anterior envio de altavoz
-            //Nota: antiguamente usabamos usleep para hacer pausa de unos 64 microsegundos
-            //(descontando el tiempo que se tardaba en ejecutar este codigo), pero parece
-            //que en Linux no funcionan bien esas pausas de tan poco tiempo, no son perfectas
-                        while (tiempo_pasado_usec<duracion) {
-                                //printf("Tiempo usec: %d\n",tiempo_pasado_usec);
-                                tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
-                        }
+    while (tiempo_pasado_usec<duracion) {
+        //Dormir 1 microsegundo para no saturar la cpu
+        usleep(1);
+        tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
+    }
 }
 
 //Tener la media de los anteriores 3
@@ -29640,6 +29633,9 @@ void menu_hilow_convert_get_audio_buffer(void)
         //Si en pausa, tambien silencio
         if (menu_hilow_convert_paused) audio_leido=0;
 
+        //Esto tanto sirve para waveform (en modos no scroll) para que se vea toda la ventana con mismo ultimo valor
+        if (menu_hilow_convert_lento) audio_leido=menu_hilow_convert_audio_last_audio_sample;
+
         audio_buffer[destino++]=audio_leido;
         audio_buffer[destino++]=audio_leido;
     }
@@ -29780,7 +29776,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     menu_hilow_convert_audio_last_audio_sample_two=menu_hilow_convert_audio_last_audio_sample_three;
 
 
-    //Si estamos en modo pausado
+    
 
     do {
         //Y para que no se vaya a silencio, decir que hay sonido y resetear contador de silencio 
@@ -29789,7 +29785,8 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
         if (menu_hilow_convert_paused) usleep(20000);
 
-    } while (menu_hilow_convert_paused);
+    } while (menu_hilow_convert_paused);  //Si estamos en modo pausado
+
 }
 
 z80_byte *menu_hilow_convert_audio_read_hilow_audio_file(char *archivo)
