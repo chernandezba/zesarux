@@ -29944,8 +29944,8 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     //hilow_read_audio_ejecutar_sleep=1;
 
     //Temporal: verbose
-    hilow_read_audio_modo_verbose=1;
-    hilow_read_audio_modo_verbose_extra=0;
+    //hilow_read_audio_modo_verbose=1;
+    //hilow_read_audio_modo_verbose_extra=0;
 
     //meter callback
     hilow_read_audio_byteread_callback=menu_hilow_convert_audio_callback;
@@ -29993,10 +29993,6 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         debug_printf(VERBOSE_DEBUG,"Position start sector data: %d",menu_hilow_convert_audio_posicion_read_raw);
         
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
-
-        
-        printf("Despues leer sector %d\n",menu_hilow_convert_audio_sector);
-        usleep(100000);
 
 
         hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
