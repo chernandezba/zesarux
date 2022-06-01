@@ -161,11 +161,16 @@ int hilow_read_audio_duracion_onda(int posicion,int *duracion_flanco_bajada)
     int pos_inicio=posicion;
 
     do {
-        //printf("%d ",direccion);
+        if (posicion-pos_inicio>10000) {
+            int r=posicion-pos_inicio;
+            if ((r%1000)==0) printf("LEE ONDA %d\n",posicion);
+        }
         int valor_leido=hilow_read_audio_lee_byte_memoria(posicion);
         if (hilow_read_audio_modo_verbose_extra) printf("V%d ",valor_leido);
         if (valor_leido==-1) {
             //fin de archivo
+            printf("Fin de archivo en dur onda\n");
+            sleep(2);
             return -1;
         }
 
@@ -245,6 +250,7 @@ Si bajamos.
                         (*duracion_flanco_bajada)=posmarca-inicio_bajada_pos;
                         
                         int duracion=posmarca-pos_inicio;
+                        printf("Fin onda\n");
                         return duracion;
                     }
                 }
@@ -271,6 +277,11 @@ int hilow_read_audio_buscar_onda_inicio_bits(int posicion)
     do {
 
         duracion=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
+
+        if (duracion==-1) {
+            printf("-1 en buscar onda inicio\n");
+            sleep(3);
+        }
 
         //printf("duracion %d flanco bajada %d pos_antes %d\n",duracion,duracion_flanco_bajada,posicion);
 
@@ -441,8 +452,12 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
     int duracion_flanco_bajada;
    int duracion_sincronismo_byte=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
 
+   printf("duracion_sincronismo_byte en hilow_read_audio_lee_byte %d\n",duracion_sincronismo_byte);
+
    if (duracion_sincronismo_byte==-1) {
-       //fin
+       printf("-1 en lee byte\n");
+       sleep(3);
+       //fin 
        return -1;
    }
    posicion +=duracion_sincronismo_byte;
@@ -482,7 +497,7 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    //Umbrales entre uno y otro
    int umbral_cero_uno=duracion_cero+dif_umbral;
 
-   //printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
+   printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
 
    int i;
 
@@ -498,7 +513,10 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
            //fin
            *byte_salida=byte_final;
            //printf("\n");
-           return posicion;
+
+           printf("-1 en lee byte 2\n");
+           sleep(3);
+           return -1;
        }
        posicion +=duracion_bit;
 
@@ -674,12 +692,17 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
     
     for (i=0;i<total && posicion!=-1;i++,(*total_bytes_leidos)++) {
         hilow_read_audio_lee_sector_bytes_leidos=i;
-        //printf("\nPos %d %d\n",i,posicion);
+        printf("\nPos %d %d\n",i,posicion);
         z80_byte byte_leido;
 
         posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
         if (posicion!=-1) {
             //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
+        }
+
+        if (posicion==-1) {
+            printf("Fuera de rango\n");
+            sleep(2);
         }
 
         hilow_read_audio_buffer_result[i]=byte_leido;
@@ -699,6 +722,8 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
 
     
     *p_sector=sector;
+
+    printf("fin lee sector\n");
 
     return posicion;
 
