@@ -30135,13 +30135,20 @@ void menu_hilow_convert_audio_run_thread(void)
 
 void menu_hilow_convert_audio_stop_thread(void)
 {
-    debug_printf(VERBOSE_DEBUG,"Stopping HiLow convert audio thread");
 
-    if (pthread_cancel(hilow_convert_audio_thread)) {
-        menu_error_message("Error canceling thread");
+
+    if (hilow_convert_audio_thread_running) {
+        debug_printf(VERBOSE_DEBUG,"Stopping HiLow convert audio thread");
+
+        menu_hilow_convert_audio_esperar_siguiente_sector=0;
+    
+        if (pthread_cancel(hilow_convert_audio_thread)) {
+            menu_error_message("Error canceling thread");
+        }
+
+        hilow_convert_audio_thread_running=0;
+
     }
-
-    hilow_convert_audio_thread_running=0;
 
 
 }
@@ -30538,10 +30545,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;
 
             case 's':
-                if (hilow_convert_audio_thread_running) {
-                    menu_hilow_convert_audio_stop_thread();
-                    menu_hilow_convert_audio_esperar_siguiente_sector=0;
-                }
+                menu_hilow_convert_audio_stop_thread();
             break;   
 
 
@@ -30733,6 +30737,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 	}
 
 	else {
+
+        //Cerrar el thread
+        menu_hilow_convert_audio_stop_thread();
 
 		zxvision_destroy_window(ventana);
 	}
