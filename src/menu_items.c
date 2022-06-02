@@ -30292,7 +30292,8 @@ void menu_hilow_convert_audio_overlay(void)
         }
 
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d",hilow_read_audio_lee_sector_bytes_leidos);
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d (%XH)",
+            hilow_read_audio_lee_sector_bytes_leidos,hilow_read_audio_lee_sector_bytes_leidos);
 
 
         if (menu_hilow_convert_audio_esperar_siguiente_sector) {
