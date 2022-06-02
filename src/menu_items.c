@@ -30072,6 +30072,10 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     free(hilow_read_audio_read_hilow_memoria_audio);
     free(hilow_read_audio_hilow_ddh);
 
+
+    //Para que no aparezca posicion -1
+    menu_hilow_convert_audio_posicion_read_raw=0;
+
     debug_printf(VERBOSE_DEBUG,"End HiLow convert audio thread");
 
 
@@ -30093,7 +30097,7 @@ void menu_hilow_convert_audio_run_thread(void)
 
 void menu_hilow_convert_audio_stop_thread(void)
 {
-    printf("Stopping thread\n");
+    debug_printf(VERBOSE_DEBUG,"Stopping HiLow convert audio thread");
 
     if (pthread_cancel(hilow_convert_audio_thread)) {
         menu_error_message("Error canceling thread");
@@ -30171,17 +30175,17 @@ void menu_hilow_convert_audio_overlay(void)
     antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
     menu_writing_inverse_color.v=1;    
 
-
-    zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output");
+    //f1: help se sobreescribe si hay archivo input y output activo
+    zxvision_print_string_defaults_fillspc(ventana,1,0,"~~input ~~output ~~f~~1:help");
 
     //No escribir nada del texto siguiente si no hay input u output
     if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
     
         if (!hilow_convert_audio_thread_running) {
-            zxvision_print_string_defaults(ventana,14,0,"~~run conversion");
+            zxvision_print_string_defaults(ventana,14,0,". STOPPED. ~~run conversion");
         }
         else {
-            zxvision_print_string_defaults(ventana,14,0,"~~stop conversion");
+            zxvision_print_string_defaults(ventana,14,0,". RUNNING. ~~stop conversion");
         }
 
         int linea=4;
@@ -30205,11 +30209,15 @@ void menu_hilow_convert_audio_overlay(void)
             sprintf(texto_contador_unidades,"%05ld (mm:ss:frames)",frames);
         }
 
-              
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%s - %d bytes",
-            minutos,segundos,texto_contador_unidades,
-            menu_hilow_convert_audio_posicion_read_raw);
+        if (menu_hilow_convert_audio_posicion_read_raw==-1) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: End of file");
+        }
 
+        else {  
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%s - %d bytes",
+                minutos,segundos,texto_contador_unidades,
+                menu_hilow_convert_audio_posicion_read_raw);
+        }
  
 
         if (hilow_read_audio_current_phase>=HILOW_READ_AUDIO_PHASE_NONE && hilow_read_audio_current_phase<=HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA) {
@@ -30313,7 +30321,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=30;
+		ancho_ventana=57;
 		alto_ventana=20;
 
         xventana=menu_center_x()-ancho_ventana/2;
