@@ -165,9 +165,4 @@ Total bytes leidos: 0
 Sector -407021264
 
 -convert a ddh: 
-
-*parece que input desde wav o raw genera output distinto
-
-
-*agregar ayuda
 *creo que no tiene sentido usar hilow_read_audio_directo_a_pista

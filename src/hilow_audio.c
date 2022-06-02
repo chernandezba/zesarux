@@ -116,7 +116,7 @@ int hilow_read_audio_lee_byte_memoria(int posicion)
 {
     if (posicion<0 || posicion>=hilow_read_audio_tamanyo_archivo_audio) {
         //TODO: mejorar esto, no finalizar sino retornar fin de memoria a la rutina que llama
-        printf("Out of range %d\n",posicion);
+        //printf("Out of range %d\n",posicion);
         return -1;
     }
 
