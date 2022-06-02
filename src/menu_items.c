@@ -29774,8 +29774,13 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
                 //randomize_noise es valor de 16 bits. sacar uno de 8 bits
                 char randomize_valor=value_16_to_8h(randomize_noise[0]);
 
+                char valor_sonido_final=(char_valor_final+randomize_valor)/2;
+
+                //Y reducimos un poco el volumen
+                valor_sonido_final /=2;
+
                 //Completamente simulado, sonido random mezclado con sonido real
-                menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=(char_valor_final+randomize_valor)/2;
+                menu_hilow_convert_audio_buffer[menu_hilow_convert_audio_buffer_index++]=valor_sonido_final;
 
             }
 
