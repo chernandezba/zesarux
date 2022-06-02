@@ -29924,6 +29924,41 @@ void menu_hilow_convert_audio_write_hilow_ddh_file(char *archivo)
 }
 
 
+void menu_hilow_convert_help(void)
+{
+    /*
+    if (gui_language==GUI_LANGUAGE_SPANISH) {
+        menu_generic_message("Ayuda",
+        "En esta ventana de Debug CPU se pueden tener diferentes vistas (seleccionables con las teclas 1-8), cada una mostrando diferente información:\n"
+
+        );
+    }
+
+    else if (gui_language==GUI_LANGUAGE_CATALAN) {
+        menu_generic_message("Ajuda",
+        "En aquesta finestra de Debug CPU es poden tenir diferents vistes (seleccionables amb les tecles 1-8), cadascuna mostrant diferent informació:\n"
+   
+        );
+    }
+
+
+    else {
+        menu_generic_message("Help",
+        "This Debug CPU window can show different views (chosen with keys 1-8), each of them showing different information:\n"
+        "1 - Default view. You see a top section with opcodes disassembly and registers. This section can be changed pressing key m, "
+
+        );
+    }*/
+
+        menu_generic_message("Help",
+        "This Convert tool...."
+
+        );
+
+}
+
+
+
 #ifdef USE_PTHREADS
 pthread_t hilow_convert_audio_thread;
 
@@ -30109,6 +30144,8 @@ char *menu_hilow_convert_phases_strings[]={
 
 };
 
+int menu_hilow_convert_unidades_microseconds=0;
+
 void menu_hilow_convert_audio_overlay(void)
 {
 
@@ -30154,9 +30191,23 @@ void menu_hilow_convert_audio_overlay(void)
         long int frames=menu_hilow_convert_audio_posicion_read_raw % 44100;
         long int microseconds=(1000000 * frames)/44100;
 
+
+        //char texto_unidades[30];
+        char texto_contador_unidades[50];
+
+        //Unidades a mostrar mas pequeñas que los segundos
+        //int subsegundos;
+
+        if (menu_hilow_convert_unidades_microseconds) {
+            sprintf(texto_contador_unidades,"%06ld (mm:ss:microsec)",microseconds);
+        }
+        else {
+            sprintf(texto_contador_unidades,"%05ld (mm:ss:frames)",frames);
+        }
+
               
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%06ld (mm:ss:microsec) - %d bytes",
-            minutos,segundos,microseconds,
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%s - %d bytes",
+            minutos,segundos,texto_contador_unidades,
             menu_hilow_convert_audio_posicion_read_raw);
 
  
@@ -30408,8 +30459,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             );       
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic",
-                (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' ')
+            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic [%c] ~~microseconds ~~F~~1:help",
+                (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' '),
+                (menu_hilow_convert_unidades_microseconds ? 'X' : ' ' )
             );
         }
 
@@ -30422,6 +30474,13 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
+
+             //ayuda
+            case MENU_TECLA_AYUDA:
+
+                menu_hilow_convert_help();
+					
+            break;  
 
             case 'r':
                 if (menu_hilow_convert_audio_input_raw[0]==0) menu_error_message("No input file selected");
@@ -30436,7 +30495,12 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                     menu_hilow_convert_audio_stop_thread();
                     menu_hilow_convert_audio_esperar_siguiente_sector=0;
                 }
-            break;      
+            break;   
+
+
+            case 'm':
+                menu_hilow_convert_unidades_microseconds ^=1;
+            break;
 
             case '1':
                 menu_hilow_convert_speed=1;
