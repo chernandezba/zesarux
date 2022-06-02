@@ -29951,7 +29951,38 @@ void menu_hilow_convert_help(void)
     }*/
 
         menu_generic_message("Help",
-        "This Convert tool...."
+        "This tool reads from a HiLow Tape Audio file and converts it to Data Drive Hilow image file (.ddh) that can be used on ZEsarUX.\n"
+        "The input audio file can be a .raw file (44100 Hz, mono, 8 bit, unsigned) but also a .wav file (you will need sox utity to read .wav)\n"
+        "The input audio file must be divided on two files: one from the side A, and the other one from the side B\n"
+        "The sector being is enabled as a Memory Zone, that you may see using the Hexadecimal Editor, for example\n"
+        "\n"
+        "The keys used in this window are:"
+        "F1: This help\n"
+        "i: Set the input audio file\n"
+        "o: Set the output audio file\n"
+        "r: Run conversion\n"
+        "s: Stop conversion\n"
+        "p: Pause conversion\n"
+        "l: Set speed conversion to very slow (1 audio frame every 80ms)\n"
+        "w: Set speed conversion to slow (1 audio frame every 20ms)\n"
+        "1: Set speed conversion to realtime (1x)\n"
+        "2: Set speed conversion to 2x\n"
+        "4: Set speed conversion to 4x\n"
+        "8: Set speed conversion to 8x\n"
+        "b: You must set this for B-side audio files. This setting must be set before start running the conversion\n"
+        "d: Enable adaptative algorithm, which adjusts bit width depending on the byte beginning sync\n"
+        "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that signal shows detailed wave using speed slow or very slow\n"
+        "a: Automatic mode. Do not ask anything to the user and convert all the sectors; "
+        "in non-automatic mode, after every sector you will be asked about what you want to do\n"
+        "m: Show microseconds instead of audio frames on the Elapsed field\n"
+        "After each sector, and if you don't enable automatic mode, you will be asked about what you want to do:"
+        "e: Repeat sector: in case you have changed some settings\n"
+        "v: Save sector: saves sector to a temporary memory. The final ddh file will be saved after all input data has been read\n"
+        "n: Next sector: do not save this sector\n"
+        "h: Change sector: the sector number will be read from the sector data itself; you may change it in case the sector read is not right"
+        "Note: in case the sector number is suspected to be wrong (comparing it to the sector marks on a A-side file) you will be warned "
+        "with a message like: 'Probably sector mismatch!"
+    
 
         );
 

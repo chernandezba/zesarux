@@ -203,6 +203,8 @@ extern int hilow_convert_audio_thread_running;
 
 extern char enviado_hilow_sample_convirtiendo;
 
+extern void menu_hilow_convert_get_audio_buffer(void);
+
 struct s_menu_debug_view_sensors_list {
     char short_name[SENSORS_MAX_SHORT_NAME];
     int fila;
