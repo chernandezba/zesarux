@@ -30203,10 +30203,10 @@ void menu_hilow_convert_audio_overlay(void)
     if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
     
         if (!hilow_convert_audio_thread_running) {
-            zxvision_print_string_defaults(ventana,14,0,". STOPPED. ~~run conversion");
+            zxvision_print_string_defaults(ventana,14,0,"~~run conversion - STOPPED");
         }
         else {
-            zxvision_print_string_defaults(ventana,14,0,". RUNNING. ~~stop conversion");
+            zxvision_print_string_defaults(ventana,14,0,"~~stop conversion - RUNNING");
         }
 
         int linea=4;

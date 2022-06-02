@@ -301,7 +301,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
     }
     posicion=hilow_read_audio_buscar_onda_inicio_bits(posicion);
     if (posicion==-1) {
-        printf("\nEnd of file trying to read first start bits sync wave\n");
+        if (hilow_read_audio_modo_verbose) printf("\nEnd of file trying to read first start bits sync wave\n");
         return -1;
     }
     //Estamos al final de la primera
@@ -637,7 +637,7 @@ void hilow_read_audio_write_sector_to_memory(int sector)
 
     //por si acaso sector fuera de rango
     if (sector<0 || sector>=HILOW_MAX_SECTORS) {
-        printf("Out of range sector\n");
+        if (hilow_read_audio_modo_verbose) printf("Out of range sector\n");
     }
 
     else {
@@ -688,7 +688,7 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
 
 
     if (*total_bytes_leidos==0) {
-        printf("Zero bytes read\n");
+        if (hilow_read_audio_modo_verbose) printf("Zero bytes read\n");
         return posicion;
     }
 
