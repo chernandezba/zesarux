@@ -29441,7 +29441,7 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 // Inicio ventana de convertir audio HiLow a archivo DDH
 //
 
-zxvision_window *menu_hilow_convert_audio_window;
+
 
 
 //Para hacer las pausas entre cada sample de audio
@@ -29623,6 +29623,9 @@ int menu_hilow_convert_audio_must_repeat_sector=0;
 
 //Si se escucha sonido y por tanto tambien se ve por visualmem (modo scroll no necesita que se escuche necesariamente)
 int menu_hilow_convert_audio_hear_sound=1;
+
+//Si mostramos microsegundos en vez de frames
+int menu_hilow_convert_unidades_microseconds=0;
 
 //Para tener un buffer intermedio donde guardar el sonido, luego desde core_spectrum lo usara de aqui
 int menu_hilow_convert_audio_buffer_index=0;
@@ -29876,7 +29879,6 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
     hilow_read_audio_hilow_ddh=malloc(tamanyo);
 
     if (hilow_read_audio_hilow_ddh==NULL) {
-        //TODO: que hacer si no se puede asignar memoria
         cpu_panic("Can not allocate memory for hilow ddh file");
     }
 
@@ -29903,6 +29905,7 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
 }
 
 
+//Escribir de la memoria a archivo ddh
 void menu_hilow_convert_audio_write_hilow_ddh_file(char *archivo)
 {
     z80_byte *puntero;
@@ -30016,18 +30019,10 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     
     hilow_convert_audio_thread_running=1;
 
-    //Temporal: meter sleep
-    //hilow_read_audio_ejecutar_sleep=1;
 
-    //Temporal: verbose
-    //hilow_read_audio_modo_verbose=1;
-    //hilow_read_audio_modo_verbose_extra=0;
-
-    //meter callback
+    //activar callbacks
     hilow_read_audio_byteread_callback=menu_hilow_convert_audio_callback;
-
     hilow_read_audio_byte_output_write_callback=menu_hilow_convert_audio_write_byte_callback;
-
     hilow_read_audio_bit_output_write_callback=menu_hilow_convert_audio_write_bit_callback;
 
 
@@ -30048,33 +30043,27 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         return NULL;
     }
 
-    //printf("puntero: %p\n",hilow_read_audio_hilow_ddh);
-    //hilow_read_audio_pausa(2);
 
     menu_hilow_convert_audio_posicion_read_raw=0;
     int total_bytes_leidos;    
 
 
-
+    //En bucle leer todos los sectores
     while (menu_hilow_convert_audio_posicion_read_raw!=-1) {
 
         hilow_read_audio_lee_sector_bytes_leidos=0;
-
         int antes_posicion=menu_hilow_convert_audio_posicion_read_raw;
 
         debug_printf(VERBOSE_DEBUG,"Position begin search sector: %d",menu_hilow_convert_audio_posicion_read_raw);
-
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_buscar_inicio_sector(menu_hilow_convert_audio_posicion_read_raw);
 
         debug_printf(VERBOSE_DEBUG,"Position start sector data: %d",menu_hilow_convert_audio_posicion_read_raw);
-        
         menu_hilow_convert_audio_posicion_read_raw=hilow_read_audio_lee_sector(menu_hilow_convert_audio_posicion_read_raw,&total_bytes_leidos,&menu_hilow_convert_audio_sector);
-
 
         hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
 
-        //printf("Sector: %d\n",menu_hilow_convert_audio_sector);
 
+        //Si en modo automatico, no pregunto nada y grabamos siempre sector
         if (menu_hilow_convert_audio_completamente_automatico) {
             debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
             hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
@@ -30104,7 +30093,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 
     }
 
-
+    //Escribir memoria a archivo ddh
     menu_hilow_convert_audio_write_hilow_ddh_file(menu_hilow_convert_audio_output_ddh);
 
     free(hilow_read_audio_read_hilow_memoria_audio);
@@ -30125,6 +30114,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 
 }
 
+//Iniciar el thread
 void menu_hilow_convert_audio_run_thread(void)
 {
     if (pthread_create( &hilow_convert_audio_thread, NULL, &menu_hilow_convert_audio_thread_function, NULL) ) {
@@ -30133,6 +30123,7 @@ void menu_hilow_convert_audio_run_thread(void)
     }    
 }
 
+//Detener el thread
 void menu_hilow_convert_audio_stop_thread(void)
 {
 
@@ -30169,19 +30160,7 @@ void menu_hilow_convert_audio_stop_thread(void)
 #endif
 
 
-       //Fase en curso
-        /*
-        #define HILOW_READ_AUDIO_PHASE_NONE                     0
-#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_MARKS   1
-#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_MARKS     2
-#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_LABEL   3
-#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_LABEL     4
-#define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA    5
-
-//Este realmente se activa despues de que se pase del searching sector data
-#define HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA      6
-        */
-
+//Textos de  Fase en curso
 char *menu_hilow_convert_phases_strings[]={
     "None",
     "Searching sector marks",
@@ -30193,7 +30172,7 @@ char *menu_hilow_convert_phases_strings[]={
 
 };
 
-int menu_hilow_convert_unidades_microseconds=0;
+zxvision_window *menu_hilow_convert_audio_window;
 
 void menu_hilow_convert_audio_overlay(void)
 {
@@ -30211,9 +30190,6 @@ void menu_hilow_convert_audio_overlay(void)
 
     ventana=menu_hilow_convert_audio_window;
 
-
-    //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
     //Forzar a mostrar atajos
     z80_bit antes_menu_writing_inverse_color;
@@ -30244,8 +30220,6 @@ void menu_hilow_convert_audio_overlay(void)
         //char texto_unidades[30];
         char texto_contador_unidades[50];
 
-        //Unidades a mostrar mas pequeñas que los segundos
-        //int subsegundos;
 
         if (menu_hilow_convert_unidades_microseconds) {
             sprintf(texto_contador_unidades,"%06ld (mm:ss:microsec)",microseconds);
@@ -30266,7 +30240,6 @@ void menu_hilow_convert_audio_overlay(void)
  
 
         if (hilow_read_audio_current_phase>=HILOW_READ_AUDIO_PHASE_NONE && hilow_read_audio_current_phase<=HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA) {
-            //
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Phase: %s",menu_hilow_convert_phases_strings[hilow_read_audio_current_phase]);
         }
         
@@ -30406,11 +30379,6 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     }	
 
 
-    //temp
-    
-    
-    //strcpy(menu_hilow_convert_audio_input_raw,"/Users/cesarhernandez/Desktop/LOGO HiLow - Lado 1.raw");
-    //strcpy(menu_hilow_convert_audio_output_ddh,"/Users/cesarhernandez/Desktop/nuevank.ddh");
 
     menu_hilow_convert_audio_has_been_opened=1;
 
@@ -30431,7 +30399,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
         if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
 
             //Escribir linea opciones velocidad
-            //speed: paused/very slow/1x/2x/4x/8x/fastest
+            //speed: paused/very slow/slow/1x/2x/4x/8x/fastest
             zxvision_print_string_defaults_fillspc_format(ventana,1,1,"speed: ");
 
             
@@ -30529,7 +30497,6 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
         switch (tecla) {
 
-             //ayuda
             case MENU_TECLA_AYUDA:
 
                 menu_hilow_convert_help();
@@ -30686,7 +30653,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;					
         }
 
-         if (menu_hilow_convert_audio_esperar_siguiente_sector) {
+
+        //Si esperamos accion del usuario a final de sector
+        if (menu_hilow_convert_audio_esperar_siguiente_sector) {
             switch(tecla) {
                 case 'n':
                     debug_printf(VERBOSE_INFO,"Skipping sector");
