@@ -30068,8 +30068,16 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
 
 
+        int preguntar=1;
+
+        if (menu_hilow_convert_audio_completamente_automatico) preguntar=0;
+
+        //Y si hay sector mismatch, preguntar siempre
+        if (hilow_read_audio_warn_if_sector_mismatch(menu_hilow_convert_audio_sector)) preguntar=1;
+
+
         //Si en modo automatico, no pregunto nada y grabamos siempre sector
-        if (menu_hilow_convert_audio_completamente_automatico) {
+        if (!preguntar) {
             debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
             hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
         }
