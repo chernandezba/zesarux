@@ -51,6 +51,8 @@ int hilow_read_audio_ejecutar_sleep=0;
 
 int hilow_read_audio_invertir_senyal=0;
 
+int hilow_read_audio_autocorrect=0;
+
 
 //bytes leidos dentro del sector. Solo identificativos para programa externo que usa esta funcion
 int hilow_read_audio_lee_sector_bytes_leidos=0;
@@ -91,6 +93,8 @@ hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback=NU
 
 //Para indicar en que momento esta 
 int hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
+
+
 
 void hilow_read_audio_reset_buffer_label(void)
 {
@@ -444,13 +448,41 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    z80_byte byte_final=0;
 
     int duracion_flanco_bajada;
-   int duracion_sincronismo_byte=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
+    int duracion_sincronismo_byte;
+
+    //Solo indicar el primer error
+    int error_en_sync_mostrado=0;
+
+do {
+    duracion_sincronismo_byte=hilow_read_audio_duracion_onda(posicion,&duracion_flanco_bajada);
 
    if (duracion_sincronismo_byte==-1) {
        //fin
        return -1;
    }
    posicion +=duracion_sincronismo_byte;
+
+
+#define MINIMO_SYNC_BYTE 45
+
+    if (!error_en_sync_mostrado) {
+
+        if (duracion_sincronismo_byte<MINIMO_SYNC_BYTE) {
+
+            
+            if (hilow_read_audio_autocorrect) {
+                printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. Autocorrecting\n",duracion_sincronismo_byte,posicion);
+                //Si eso sucede, situarnos en la siguiente senyal de sync byte
+            }
+            else {
+                printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. You should enable autocorrect\n",duracion_sincronismo_byte,posicion);
+            }
+
+            error_en_sync_mostrado=1;
+        }
+    }
+
+} while (hilow_read_audio_autocorrect && duracion_sincronismo_byte<MINIMO_SYNC_BYTE);
 
 
    if (hilow_read_audio_modo_verbose_extra) printf("\nEnd wave sync bits: pos: %d\n",posicion);
@@ -487,7 +519,6 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    //Umbrales entre uno y otro
    int umbral_cero_uno=duracion_cero+dif_umbral;
 
-   //if (duracion_sincronismo_byte<45) printf("duracion sync byte %d en pos %d\n",duracion_sincronismo_byte,posicion);
 
    //printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
 

@@ -30488,12 +30488,13 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             }
 
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] inv si~~gnal [%d] fil~~ter [%c] a~~dapt. algor. ",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] inv si~~gnal [%d] fil~~ter [%c] a~~dapt. algor. [%c] auto~~correct",
 
                 (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
                 (hilow_read_audio_invertir_senyal ? 'X' : ' '),
                 hilow_read_audio_minimo_variacion,
-                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' ')
+                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
+                (hilow_read_audio_autocorrect ? 'X' : ' ')
                 
 
             );       
@@ -30540,6 +30541,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'g':
                 hilow_read_audio_invertir_senyal ^=1;
+            break;
+
+            case 'c':
+                hilow_read_audio_autocorrect ^=1;
             break;
 
             case 't':
