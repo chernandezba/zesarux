@@ -166,3 +166,4 @@ Sector -407021264
 
 -convert a ddh: 
 *creo que no tiene sentido usar hilow_read_audio_directo_a_pista
+-linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
