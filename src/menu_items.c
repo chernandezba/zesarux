@@ -29639,6 +29639,9 @@ int menu_hilow_convert_audio_hear_sound=1;
 //Si mostramos microsegundos en vez de frames
 int menu_hilow_convert_unidades_microseconds=0;
 
+//para cuando hay sector mismatch, sugerir que el siguiente es este +1
+int menu_hilow_convert_audio_anterior_sector_leido=0;
+
 //Para tener un buffer intermedio donde guardar el sonido, luego desde core_spectrum lo usara de aqui
 int menu_hilow_convert_audio_buffer_index=0;
 //buffer mono, circular
@@ -29996,6 +29999,7 @@ void menu_hilow_convert_help(void)
         "g: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
         "f: Change noise filter threshold, higher values means increase noise reduction\n"
         "d: Enable adaptative algorithm, which adjusts bit width depending on the byte beginning sync.\n"
+        "c: Autocorrect. Try to fix read errors depending on S_START_BYTE signal\n"
         "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that window "
         "shows detailed wave using slow speed or very slow.\n"
         "a: Automatic mode. Do not ask anything to the user and convert all the sectors; "
@@ -30095,6 +30099,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
         if (!preguntar) {
             debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
             hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
+            menu_hilow_convert_audio_anterior_sector_leido=menu_hilow_convert_audio_sector;
         }
         else {
             //preguntar que hacer
@@ -30237,12 +30242,21 @@ void menu_hilow_convert_audio_overlay(void)
             zxvision_print_string_defaults(ventana,14,0,"~~stop conversion - RUNNING");
         }
 
-        int linea=4;
+        int linea=6;
 
         int minutos=menu_hilow_convert_audio_posicion_read_raw/44100/60;
         int segundos=(menu_hilow_convert_audio_posicion_read_raw/44100) % 60;
         long int frames=menu_hilow_convert_audio_posicion_read_raw % 44100;
         long int microseconds=(1000000 * frames)/44100;
+
+        long int porcentaje_leido;
+
+        if (hilow_read_audio_tamanyo_archivo_audio>0) {
+            porcentaje_leido=(menu_hilow_convert_audio_posicion_read_raw*100)/hilow_read_audio_tamanyo_archivo_audio;
+        }
+        else {
+            porcentaje_leido=0;
+        }
 
 
         //char texto_unidades[30];
@@ -30261,11 +30275,15 @@ void menu_hilow_convert_audio_overlay(void)
         }
 
         else {  
-            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%s - %d bytes",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Elapsed: %02d:%02d:%s - %d %%",
                 minutos,segundos,texto_contador_unidades,
-                menu_hilow_convert_audio_posicion_read_raw);
+                porcentaje_leido);
         }
  
+        if (menu_hilow_convert_audio_posicion_read_raw!=-1) {
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Read position: %d bytes (%d KBytes)",
+            menu_hilow_convert_audio_posicion_read_raw,menu_hilow_convert_audio_posicion_read_raw/1024);
+        }
 
         if (hilow_read_audio_current_phase>=HILOW_READ_AUDIO_PHASE_NONE && hilow_read_audio_current_phase<=HILOW_READ_AUDIO_PHASE_READING_SECTOR_DATA) {
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Phase: %s",menu_hilow_convert_phases_strings[hilow_read_audio_current_phase]);
@@ -30310,7 +30328,7 @@ void menu_hilow_convert_audio_overlay(void)
             linea++;
             if (hilow_read_audio_warn_if_sector_mismatch(menu_hilow_convert_audio_sector)) {
                 zxvision_print_string_format(ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,
-                        "Probably sector mismatch! Do you want to:");
+                        "Probably sector mismatch! Maybe %d. Do you want to:",menu_hilow_convert_audio_anterior_sector_leido+1);
             }
 
             else {
@@ -30369,7 +30387,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		ancho_ventana=57;
-		alto_ventana=20;
+		alto_ventana=23;
 
         xventana=menu_center_x()-ancho_ventana/2;
         yventana=menu_center_y()-alto_ventana/2;             
@@ -30501,23 +30519,25 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             }
 
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] inv si~~gnal [%d] fil~~ter [%c] a~~dapt. algor. [%c] auto~~correct",
-
-                
+            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] invert si~~gnal [%d] fil~~ter",
+                (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
                 (hilow_read_audio_invertir_senyal ? 'X' : ' '),
-                hilow_read_audio_minimo_variacion,
-                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
-                (hilow_read_audio_autocorrect ? 'X' : ' ')
-                
+                hilow_read_audio_minimo_variacion
 
             );       
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~b-side  [%c] so~~und [%c] ~~automatic [%c] ~~microseconds ~~F~~1:help",
-                (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
-                (menu_hilow_convert_audio_hear_sound ? 'X' : ' '),
+            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] a~~daptative algorithm [%c] auto~~correct",
+                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
+                (hilow_read_audio_autocorrect ? 'X' : ' ')
+            );                   
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,4,"[%c] ~~automatic [%c] ~~microseconds [%c] so~~und",      
                 (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' '),
-                (menu_hilow_convert_unidades_microseconds ? 'X' : ' ' )
+                (menu_hilow_convert_unidades_microseconds ? 'X' : ' ' ),
+                (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
             );
+
+            zxvision_print_string_defaults_fillspc_format(ventana,1,5,"~~F~~1:help");
         }
 
 
@@ -30542,6 +30562,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 else {
                     if (!hilow_convert_audio_thread_running) menu_hilow_convert_audio_run_thread();
                 }
+
+                if (!hilow_read_audio_leer_cara_dos) menu_hilow_convert_audio_anterior_sector_leido=0;
+                else menu_hilow_convert_audio_anterior_sector_leido=128;
             break;
 
             case 's':
@@ -30714,6 +30737,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                     debug_printf(VERBOSE_INFO,"Saving sector %d to memory",menu_hilow_convert_audio_sector);
                     hilow_read_audio_write_sector_to_memory(menu_hilow_convert_audio_sector);
                     menu_hilow_convert_audio_esperar_siguiente_sector=0;
+                    menu_hilow_convert_audio_anterior_sector_leido=menu_hilow_convert_audio_sector;
                 break;   
 
                 case 'e':
