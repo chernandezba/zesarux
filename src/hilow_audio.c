@@ -90,6 +90,8 @@ hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback=N
 //Callback para cada bit de output generado, poder llamar a una funcion externa
 hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback=NULL;
 
+//Callback para senyal de sync detectada mas pequenya de lo normal
+hilow_read_audio_callback_function hilow_read_audio_probably_sync_error_callback=NULL;
 
 //Para indicar en que momento esta 
 int hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_NONE;
@@ -469,14 +471,23 @@ do {
 
         if (duracion_sincronismo_byte<MINIMO_SYNC_BYTE) {
 
+
             
             if (hilow_read_audio_autocorrect) {
-                printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. Autocorrecting\n",duracion_sincronismo_byte,posicion);
+                if (hilow_read_audio_modo_verbose) printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. Autocorrecting\n",duracion_sincronismo_byte,posicion);
                 //Si eso sucede, situarnos en la siguiente senyal de sync byte
+
             }
             else {
-                printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. You should enable autocorrect\n",duracion_sincronismo_byte,posicion);
+                if (hilow_read_audio_modo_verbose) printf("Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. You should enable autocorrect\n",duracion_sincronismo_byte,posicion);
             }
+
+            if (hilow_read_audio_probably_sync_error_callback!=NULL) {
+                    hilow_read_audio_probably_sync_error_callback(duracion_sincronismo_byte,posicion);
+            }                
+
+            
+
 
             error_en_sync_mostrado=1;
         }
@@ -685,6 +696,9 @@ void hilow_read_audio_write_sector_to_memory(int sector)
 
 int hilow_read_audio_warn_if_sector_mismatch(int sector)
 {
+
+    if (sector<1) return 1;
+
     //Cara A
     if (!hilow_read_audio_leer_cara_dos) {
 

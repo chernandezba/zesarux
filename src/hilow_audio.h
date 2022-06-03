@@ -62,6 +62,7 @@ typedef void (*hilow_read_audio_callback_function)(int value,int posicion);
 extern hilow_read_audio_callback_function hilow_read_audio_byteread_callback;
 extern hilow_read_audio_callback_function hilow_read_audio_byte_output_write_callback;
 extern hilow_read_audio_callback_function hilow_read_audio_bit_output_write_callback;
+extern hilow_read_audio_callback_function hilow_read_audio_probably_sync_error_callback;
 extern int hilow_read_audio_current_phase;
 
 //Fases en las que esta

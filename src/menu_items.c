@@ -29558,6 +29558,18 @@ void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
     
 }
 
+//Callback llamado cuando hay un posible error de sync
+void menu_hilow_convert_audio_probably_sync_error(int valor,int posicion)
+{
+    if (hilow_read_audio_autocorrect) {
+        debug_printf(VERBOSE_WARN,"Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. Autocorrecting",valor,posicion);
+    }
+    else {
+        debug_printf(VERBOSE_WARN,"Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. You should enable autocorrect",valor,posicion);
+    }
+
+}
+
 int menu_hilow_convert_audio_sector=0;
 
 
@@ -30031,6 +30043,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
     hilow_read_audio_byteread_callback=menu_hilow_convert_audio_callback;
     hilow_read_audio_byte_output_write_callback=menu_hilow_convert_audio_write_byte_callback;
     hilow_read_audio_bit_output_write_callback=menu_hilow_convert_audio_write_bit_callback;
+    hilow_read_audio_probably_sync_error_callback=menu_hilow_convert_audio_probably_sync_error;
 
 
     //Leer archivo entrada
