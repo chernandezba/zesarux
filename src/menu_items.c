@@ -30240,10 +30240,12 @@ void menu_hilow_convert_audio_overlay(void)
     if (menu_hilow_convert_audio_input_raw[0] && menu_hilow_convert_audio_output_ddh[0]) {       
     
         if (!hilow_convert_audio_thread_running) {
+            //agregar el texto
             zxvision_print_string_defaults(ventana,14,0,"~~run conversion - STOPPED");
         }
         else {
-            zxvision_print_string_defaults(ventana,14,0,"~~stop conversion - RUNNING");
+            //Borrar toda la linea y escribir solo esto
+            zxvision_print_string_defaults_fillspc_format(ventana,1,0,"~~stop conversion - RUNNING");
         }
 
         int linea=6;
