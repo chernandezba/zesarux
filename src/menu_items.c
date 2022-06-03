@@ -29539,6 +29539,8 @@ int menu_hilow_convert_audio_just_read_bit=0;
 //Para el texto de "new byte"
 int menu_hilow_convert_audio_just_read_byte=0;
 
+int menu_hilow_convert_mostrar_probable_error=0;
+
 //Callback llamado desde la rutina de conversion al leer un bit
 void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
 {
@@ -29567,6 +29569,8 @@ void menu_hilow_convert_audio_probably_sync_error(int valor,int posicion)
     else {
         debug_printf(VERBOSE_WARN,"Lenght of S_START_BYTE signal is smaller than expected: lenght: %d in position %d. You should enable autocorrect",valor,posicion);
     }
+
+    menu_hilow_convert_mostrar_probable_error=1;
 
 }
 
@@ -30290,6 +30294,16 @@ void menu_hilow_convert_audio_overlay(void)
         }
         
 
+        if (menu_hilow_convert_mostrar_probable_error && !hilow_read_audio_autocorrect) {
+            //Si no esta autocorrect, avisar al usuario que deberia habilitarlo
+                zxvision_print_string_format(ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,
+                        "Probably read error, you should enable autocorrect");
+        }
+        else 
+        {
+            linea++;
+        }
+
         linea++;
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d  %s",
@@ -30386,8 +30400,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=57;
-		alto_ventana=23;
+		ancho_ventana=55;
+		alto_ventana=24;
 
         xventana=menu_center_x()-ancho_ventana/2;
         yventana=menu_center_y()-alto_ventana/2;             
@@ -30560,11 +30574,19 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
                 if (menu_hilow_convert_audio_input_raw[0]==0) menu_error_message("No input file selected");
                 else if (menu_hilow_convert_audio_output_ddh[0]==0) menu_error_message("No output file selected");
                 else {
-                    if (!hilow_convert_audio_thread_running) menu_hilow_convert_audio_run_thread();
+                    if (!hilow_convert_audio_thread_running) {
+                        menu_hilow_convert_audio_run_thread();
+
+                        if (!hilow_read_audio_leer_cara_dos) menu_hilow_convert_audio_anterior_sector_leido=0;
+                        else menu_hilow_convert_audio_anterior_sector_leido=128;
+
+                        //Si hubiera algun aviso de probable error, quitarlo
+                        menu_hilow_convert_mostrar_probable_error=0;
+
+                    }
                 }
 
-                if (!hilow_read_audio_leer_cara_dos) menu_hilow_convert_audio_anterior_sector_leido=0;
-                else menu_hilow_convert_audio_anterior_sector_leido=128;
+
             break;
 
             case 's':
