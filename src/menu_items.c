@@ -29981,6 +29981,8 @@ void menu_hilow_convert_help(void)
         "b: You must set this for B-side audio files. This setting must be set before start running the conversion. "
         "It seems that the B-side will only be correctly read if it was formatted only once; however, I haven't tested it too much "
         "so maybe you have luck reading B-side ;)\n"
+        "g: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
+        "f: Change noise filter threshold, higher values means increase noise reduction\n"
         "d: Enable adaptative algorithm, which adjusts bit width depending on the byte beginning sync.\n"
         "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that window "
         "shows detailed wave using slow speed or very slow.\n"
@@ -30486,15 +30488,18 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             }
 
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] a~~daptative algorithm [%c] so~~und",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,2,"[%c] ~~b-side [%c] inv si~~gnal [%d] fil~~ter [%c] a~~dapt. algor. ",
 
                 (hilow_read_audio_leer_cara_dos ? 'X' : ' '),
-                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' '),
-                (menu_hilow_convert_audio_hear_sound ? 'X' : ' ')
+                (hilow_read_audio_invertir_senyal ? 'X' : ' '),
+                hilow_read_audio_minimo_variacion,
+                (hilow_read_audio_autoajustar_duracion_bits ? 'X' : ' ')
+                
 
             );       
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] ~~automatic [%c] ~~microseconds ~~F~~1:help",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,3,"[%c] so~~und [%c] ~~automatic [%c] ~~microseconds ~~F~~1:help",
+                (menu_hilow_convert_audio_hear_sound ? 'X' : ' '),
                 (menu_hilow_convert_audio_completamente_automatico ? 'X' : ' '),
                 (menu_hilow_convert_unidades_microseconds ? 'X' : ' ' )
             );
@@ -30531,6 +30536,15 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'm':
                 menu_hilow_convert_unidades_microseconds ^=1;
+            break;
+
+            case 'g':
+                hilow_read_audio_invertir_senyal ^=1;
+            break;
+
+            case 't':
+                hilow_read_audio_minimo_variacion +=2;
+                if (hilow_read_audio_minimo_variacion==30) hilow_read_audio_minimo_variacion=2;
             break;
 
             case '1':

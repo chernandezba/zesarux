@@ -30,6 +30,8 @@ extern int hilow_read_audio_directo_a_pista;
 extern int hilow_read_audio_ejecutar_sleep;
 extern int hilow_read_audio_leer_cara_dos;
 extern int hilow_read_audio_autoajustar_duracion_bits;
+extern int hilow_read_audio_invertir_senyal;
+extern int hilow_read_audio_minimo_variacion;
 
 extern long int hilow_read_audio_tamanyo_archivo_audio;
 extern z80_byte *hilow_read_audio_read_hilow_memoria_audio;

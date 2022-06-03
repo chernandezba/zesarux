@@ -49,6 +49,8 @@ int hilow_read_audio_directo_a_pista=0;
 
 int hilow_read_audio_ejecutar_sleep=0;
 
+int hilow_read_audio_invertir_senyal=0;
+
 
 //bytes leidos dentro del sector. Solo identificativos para programa externo que usa esta funcion
 int hilow_read_audio_lee_sector_bytes_leidos=0;
@@ -121,6 +123,9 @@ int hilow_read_audio_lee_byte_memoria(int posicion)
     }
 
     int valor=hilow_read_audio_read_hilow_memoria_audio[posicion];
+
+    //Invertir 
+    if (hilow_read_audio_invertir_senyal) valor=255-valor;
 
     if (hilow_read_audio_byteread_callback!=NULL) {
         hilow_read_audio_byteread_callback(valor,posicion);
@@ -482,6 +487,8 @@ int hilow_read_audio_lee_byte(int posicion,z80_byte *byte_salida)
    //Umbrales entre uno y otro
    int umbral_cero_uno=duracion_cero+dif_umbral;
 
+   //if (duracion_sincronismo_byte<45) printf("duracion sync byte %d en pos %d\n",duracion_sincronismo_byte,posicion);
+
    //printf("Sync %d Bajada %d Zero %d One %d Umbral %d\n",duracion_sincronismo_byte,duracion_flanco_bajada,duracion_cero,duracion_uno,umbral_cero_uno);
 
    int i;
@@ -649,8 +656,8 @@ int hilow_read_audio_warn_if_sector_mismatch(int sector)
 {
     if (!hilow_read_audio_leer_cara_dos) {
 
-        if (sector!=hilow_read_audio_buffer_sector_five_byte[1] && sector!=hilow_read_audio_buffer_sector_five_byte[2] && 
-            sector!=hilow_read_audio_buffer_sector_five_byte[3] && sector!=hilow_read_audio_buffer_sector_five_byte[4]) {
+        if (sector!=hilow_read_audio_buffer_sector_five_byte[1] || sector!=hilow_read_audio_buffer_sector_five_byte[2] || 
+            sector!=hilow_read_audio_buffer_sector_five_byte[3] || sector!=hilow_read_audio_buffer_sector_five_byte[4]) {
 
             return 1;
 
