@@ -758,7 +758,30 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
 
     //printf("Sector: %d\n",sector);
 
+    //Leer otros 28 bytes adicionales de final de sector
+    //Creo que solo son realmente 27, aunque leo 1 de mas porque me da una pista de si se han desplazado bits en la lectura
+#define HILOW_LONGITUD_FINAL_SECTOR 28    
+    char buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR];
 
+     for (i=0;i<HILOW_LONGITUD_FINAL_SECTOR && posicion!=-1;i++) {
+        z80_byte byte_leido;
+
+        posicion=hilow_read_audio_lee_byte(posicion,&byte_leido);
+        if (posicion!=-1) {
+            //printf("Byte leido: %d (%02XH) (%c)\n",byte_leido,byte_leido,(byte_leido>=32 && byte_leido<=126 ? byte_leido : '.') );
+        }
+
+        buffer_end_sector[i]=byte_leido;
+    }   
+
+    printf("End sector bytes:\n");
+
+    for (i=0;i<HILOW_LONGITUD_FINAL_SECTOR;i++) {
+        z80_byte byte_leido=buffer_end_sector[i];
+        printf("%02X ",byte_leido);
+    }    
+
+    printf("\n");
 
     
     *p_sector=sector;
