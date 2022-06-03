@@ -30303,10 +30303,12 @@ void menu_hilow_convert_audio_overlay(void)
         }
         else 
         {
-            linea++;
+            //dejar linea en blanco aparte de borrar si hay algo
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"");
         }
 
-        linea++;
+        //dejar linea en blanco aparte de borrar si hay algo
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"");
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Bits read: %s  Last bit: %d  %s",
             menu_hilow_convert_audio_string_bits,menu_hilow_convert_audio_last_bit,
@@ -30320,7 +30322,9 @@ void menu_hilow_convert_audio_overlay(void)
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Ascii read: %s",menu_hilow_convert_audio_string_bytes_ascii);  
 
-        linea++;
+        //dejar linea en blanco aparte de borrar si hay algo
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"");
+
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
 
@@ -30341,7 +30345,10 @@ void menu_hilow_convert_audio_overlay(void)
 
 
         if (menu_hilow_convert_audio_esperar_siguiente_sector) {
-            linea++;
+            //dejar linea en blanco aparte de borrar si hay algo
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"");
+
+
             if (hilow_read_audio_warn_if_sector_mismatch(menu_hilow_convert_audio_sector)) {
                 zxvision_print_string_format(ventana,1,linea++,ESTILO_GUI_COLOR_AVISO,ESTILO_GUI_PAPEL_NORMAL,0,
                         "Probably sector mismatch! Maybe %d. Do you want to:",menu_hilow_convert_audio_anterior_sector_leido+1);
