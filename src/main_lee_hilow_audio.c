@@ -157,8 +157,9 @@ int hilow_read_audio_ask_save_sector(void)
                 int parm;
 
                 do {
-                    printf("Parametros: 1) autoadjust_bit_width %d  2) verbose %d  3) verbose_extra %d   0) end \n",
-                        hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose,hilow_read_audio_modo_verbose_extra);  
+                    printf("Parametros: 1) autoadjust_bit_width %d  2) verbose %d  3) verbose_extra %d  4) invert %d  5) autocorrect %d  0) end \n",
+                        hilow_read_audio_autoajustar_duracion_bits,hilow_read_audio_modo_verbose,hilow_read_audio_modo_verbose_extra,
+                        hilow_read_audio_invertir_senyal, hilow_read_audio_autocorrect);
 
                     
                     char buffer_parm[100];
@@ -168,6 +169,8 @@ int hilow_read_audio_ask_save_sector(void)
                     if (parm==1) hilow_read_audio_autoajustar_duracion_bits ^=1;
                     if (parm==2) hilow_read_audio_modo_verbose ^=1;
                     if (parm==3) hilow_read_audio_modo_verbose_extra ^=1;
+                    if (parm==4) hilow_read_audio_invertir_senyal ^=1;
+                    if (parm==5) hilow_read_audio_autocorrect ^=1;
 
 
                 } while(parm!=0);
@@ -303,10 +306,12 @@ int main(int argc,char *argv[])
     if(argc<3 || mostrar_ayuda) {
         printf( "Usage: %s source.raw destination.ddh\n",argv[0]);
         printf("Available switches:\n"
-                "\n"      
-                "--autoadjust_bit_width: Try to adjust bit length width depending on the sync signal\n"
+                "\n"   
+                "--autocorrect: Try to fix read errors depending on S_START_BYTE signal\n"   
+                "--autoadjust_bit_width: Try to adjust bit length width depending on the S_START_BYTE signal\n"
                 "--automatic: Do not ask anything\n"
                 "--bside: Needed to convert audio from B side\n"
+                "--invert: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
                 "--onlysector: Convert dump audio which starts just at the sector data, and convert only one sector\n"
                 "--pause: Add delays after some actions\n"
                 "--verbose: Print debugging info\n"
@@ -337,9 +342,8 @@ int main(int argc,char *argv[])
     while (argumentos_leer>0) {
 
         if (!strcasecmp(argv[indice_argumento],"--autoadjust_bit_width")) hilow_read_audio_autoajustar_duracion_bits=1;
-
-        //con opcion autoadjust_bit_width suele cargar peor
-
+        else if (!strcasecmp(argv[indice_argumento],"--autocorrect")) hilow_read_audio_autocorrect=1;
+        else if (!strcasecmp(argv[indice_argumento],"--invert")) hilow_read_audio_invertir_senyal=1;
         else if (!strcasecmp(argv[indice_argumento],"--onlysector")) hilow_read_audio_directo_a_pista=1;
         else if (!strcasecmp(argv[indice_argumento],"--verbose")) hilow_read_audio_modo_verbose=1;
         else if (!strcasecmp(argv[indice_argumento],"--verboseextra")) hilow_read_audio_modo_verbose_extra=1;

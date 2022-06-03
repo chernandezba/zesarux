@@ -30002,7 +30002,7 @@ void menu_hilow_convert_help(void)
         "so maybe you have luck reading B-side ;)\n"
         "g: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
         "f: Change noise filter threshold, higher values means increase noise reduction\n"
-        "d: Enable adaptative algorithm, which adjusts bit width depending on the byte beginning sync.\n"
+        "d: Enable adaptative algorithm, which adjusts bit width depending on the S_START_BYTE signal.\n"
         "c: Autocorrect. Try to fix read errors depending on S_START_BYTE signal\n"
         "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that window "
         "shows detailed wave using slow speed or very slow.\n"
