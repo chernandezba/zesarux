@@ -685,6 +685,7 @@ void hilow_read_audio_write_sector_to_memory(int sector)
 
 int hilow_read_audio_warn_if_sector_mismatch(int sector)
 {
+    //Cara A
     if (!hilow_read_audio_leer_cara_dos) {
 
         if (sector!=hilow_read_audio_buffer_sector_five_byte[1] || sector!=hilow_read_audio_buffer_sector_five_byte[2] || 
@@ -694,7 +695,16 @@ int hilow_read_audio_warn_if_sector_mismatch(int sector)
 
         }
 
+        //O si sector >127
+        if (sector & 128) return 1;
+
     }    
+
+    else {
+        //Cara B
+        //O si sector <128
+        if (!(sector & 128)) return 1;
+    }
 
     return 0;
 }
