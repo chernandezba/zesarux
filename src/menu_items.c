@@ -30339,6 +30339,11 @@ void menu_hilow_convert_audio_overlay(void)
                 hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
         }
 
+        //Realmente hay mas bytes a final de sector pero aqui solo mostramos los 5 ultimos
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End Sector id mark: %02X %02X %02X %02X %02X",
+            hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-5],hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-4],
+            hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-3],hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-2],
+            hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-1]); 
 
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Total sector bytes read: %d (%XH)",
             hilow_read_audio_lee_sector_bytes_leidos,hilow_read_audio_lee_sector_bytes_leidos);
@@ -30410,7 +30415,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		ancho_ventana=55;
-		alto_ventana=24;
+		alto_ventana=25;
 
         xventana=menu_center_x()-ancho_ventana/2;
         yventana=menu_center_y()-alto_ventana/2;             

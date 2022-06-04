@@ -65,6 +65,11 @@ extern hilow_read_audio_callback_function hilow_read_audio_bit_output_write_call
 extern hilow_read_audio_callback_function hilow_read_audio_probably_sync_error_callback;
 extern int hilow_read_audio_current_phase;
 
+
+#define HILOW_LONGITUD_FINAL_SECTOR 28    
+extern z80_byte hilow_read_audio_buffer_end_sector[];
+
+
 //Fases en las que esta
 #define HILOW_READ_AUDIO_PHASE_NONE                     0
 #define HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_MARKS   1
