@@ -30326,7 +30326,7 @@ void menu_hilow_convert_audio_overlay(void)
         zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"");
 
 
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Last sector: %d",menu_hilow_convert_audio_sector);
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector number read: %d (%02XH)",menu_hilow_convert_audio_sector,menu_hilow_convert_audio_sector);
 
 
         if (!hilow_read_audio_leer_cara_dos) {
@@ -30334,13 +30334,23 @@ void menu_hilow_convert_audio_overlay(void)
             util_binary_to_ascii(&hilow_read_audio_buffer_label[1],buffer_label,14,14);
             zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector label: %s",buffer_label);
 
-            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Sector id mark: %02X %02X %02X %02X %02X",
+            zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"Begin Sector id mark: %02X %02X %02X %02X %02X",
                 hilow_read_audio_buffer_sector_five_byte[0],hilow_read_audio_buffer_sector_five_byte[1],hilow_read_audio_buffer_sector_five_byte[2],
                 hilow_read_audio_buffer_sector_five_byte[3],hilow_read_audio_buffer_sector_five_byte[4]);
         }
 
         //Realmente hay mas bytes a final de sector pero aqui solo mostramos los 5 ultimos
-        zxvision_print_string_defaults_fillspc_format(ventana,1,linea++,"End Sector id mark: %02X %02X %02X %02X %02X",
+        zxvision_print_string_defaults_fillspc_format(ventana,1,linea,"End Sector id mark:");
+
+        int tinta_aviso_final_sector=ESTILO_GUI_TINTA_NORMAL;
+
+        //Avisar si hemos leido todo el sector y el byte del final no es el numero de sector
+        if (hilow_read_audio_lee_sector_bytes_leidos==HILOW_SECTOR_SIZE &&
+            hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-1]!=menu_hilow_convert_audio_sector) {
+                tinta_aviso_final_sector=ESTILO_GUI_COLOR_AVISO;
+        }
+
+        zxvision_print_string_format(ventana,23,linea++,tinta_aviso_final_sector,ESTILO_GUI_PAPEL_NORMAL,0,"%02X %02X %02X %02X %02X",
             hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-5],hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-4],
             hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-3],hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-2],
             hilow_read_audio_buffer_end_sector[HILOW_LONGITUD_FINAL_SECTOR-1]); 
