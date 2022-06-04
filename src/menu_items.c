@@ -30003,7 +30003,7 @@ void menu_hilow_convert_help(void)
         "g: Invert audio input signal ('mirror' vertically), needed for some tapes\n"
         "f: Change noise filter threshold, higher values means increase noise reduction\n"
         "d: Enable adaptative algorithm, which adjusts bit width depending on the S_START_BYTE signal.\n"
-        "c: Autocorrect. Try to fix read errors depending on S_START_BYTE signal\n"
+        "c: Autocorrect. Try to fix read errors depending on S_START_BYTE signal, useful for bad quality audio tapes\n"
         "u: Enable sound. You may use the Waveform Window to see the signal; the Scroll shape mode from that window "
         "shows detailed wave using slow speed or very slow.\n"
         "a: Automatic mode. Do not ask anything to the user and convert all the sectors; "
@@ -30507,7 +30507,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
                     case 1:
                         strcpy(buffer_item,"very s~~low");
-                        if (menu_hilow_convert_lento==4) seleccionado=1;
+                        if (menu_hilow_convert_lento==6) seleccionado=1;
                     break;
 
                     case 2:
@@ -30682,7 +30682,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
             break;
 
             case 'l':
-                menu_hilow_convert_lento=4;
+                menu_hilow_convert_lento=6;
 
                 if (menu_hilow_convert_lento) {
                     //Poner buffer a silencio para borrar lo anterior
