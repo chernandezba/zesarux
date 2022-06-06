@@ -3338,7 +3338,8 @@ void menu_hilow_browser_print_used_sectors(zxvision_window *w,z80_byte *puntero_
                 z80_byte sector_actual=sectores[i];
 
                 //Id de sectores usados empieza por el 1
-                menu_hilow_browser_print_char_sector(w,sector_actual-1,'u');
+                //No mostrar sector si es menor que 3
+                if (sector_actual>=3) menu_hilow_browser_print_char_sector(w,sector_actual-1,'u');
 
                 //sectores en cara B se numeran igual en orden pero con bit 7 alzado
                 //Considerar por ejemplo sector 3 y 131, ambos son consecutivos
@@ -3567,7 +3568,9 @@ Maximo sectores por archivo: 25
                 zxvision_print_string_defaults_format(&ventana,columna_sectores+col,linea,"%3d ",sectores[i]);
 
                 //Id de sectores empieza a numerar en 1
-                menu_hilow_browser_print_char_sector(&ventana,sectores[i]-1,'F');
+                int sector_file=sectores[i];
+                //No mostrar sector si es menor que 3
+                if (sector_file>=3) menu_hilow_browser_print_char_sector(&ventana,sector_file-1,'F');
            
 
                 if ((i+1) % sectores_por_linea == 0) {
