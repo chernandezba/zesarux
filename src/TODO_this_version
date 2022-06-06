@@ -169,3 +169,5 @@ Sector -407021264
 -linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
 
 -en windows el conteo de microsegundos se ve a veces valor negativo en hilow convert. quiza es porque es 32 bits?
+
+-quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
