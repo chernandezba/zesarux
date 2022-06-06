@@ -29393,8 +29393,8 @@ void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
             int j;
             for (j=0;j<s;j++) {
                 int sector_usado=sectores[j];
-                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS, o no sean menor que 2
-                if (sector_usado>=HILOW_MAX_SECTORS || sector_usado<2) {
+                //que los ids no sean mayores o igual que HILOW_MAX_SECTORS, o no sean menor que 3
+                if (sector_usado>=HILOW_MAX_SECTORS || sector_usado<3) {
                     sprintf (buffer_texto,"%s File id %d uses invalid sector %d",txt_err,f,sector_usado);
                     longitud_texto=strlen(buffer_texto)+1; //Agregar salto de linea   
                     sprintf (&texto_chkdsk[indice_buffer],"%s\n",buffer_texto);
