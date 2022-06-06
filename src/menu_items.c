@@ -29480,7 +29480,8 @@ void menu_hilow_convert_audio_precise_usleep(int duracion)
 
     while (tiempo_pasado_usec<duracion) {
         //Dormir 1 microsegundo para no saturar la cpu
-        usleep(1);
+	//No. esto no es muy preciso en algunos Linux. Casi prefiero saturar una cpu y que se escuche a tiempo real
+        //usleep(1);
         tiempo_pasado_usec=menu_hilow_convert_audio_tiempo_final_usec();
     }
 }
