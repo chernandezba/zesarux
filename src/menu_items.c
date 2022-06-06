@@ -29687,6 +29687,9 @@ char menu_hilow_convert_samples_audio_speeds[8];
 //Usado en este buffer anterior
 int menu_hilow_convert_samples_audio_speeds_index;
 
+
+int menu_hilow_convert_audio_counter_sleep;
+
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
 {
@@ -29698,18 +29701,6 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     //22 seria para 44100 hz
     //Dado que vamos a 15600, son 3 veces menos
 
-
-    //Este sleep(0) no hace retardo. Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
-    //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
-    /*
-   Cancellation Points
-     Cancellation points will occur when a thread is executing the following functions: accept(), aio_suspend(), close(), connect(),
-     creat(), fcntl(), fsync(), lockf(), msgrcv(), msgsnd(), msync(), nanosleep(), open(), pause(), poll(), pread(), pselect(),
-     pthread_cond_timedwait(), pthread_cond_wait(), pthread_join(), pthread_testcancel(), pwrite(), read(), readv(), recv(),
-     recvfrom(), recvmsg(), select(), sem_wait(), send(), sendmsg(), sendto(), sigpause(), sigsuspend(), sigwait(), sleep(), system(),
-     tcdrain(), usleep(), wait(), waitpid(), write(), writev().    
-    */
-    sleep(0);
 
 
     //Si no estamos en modo rapido
@@ -29732,7 +29723,25 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
         menu_hilow_convert_audio_tiempo_inicial();
     }
 
-    
+   else {
+    //Este sleep(0) hace algo de retardo, por eso solo lo llamo cada 1024 veces (1kb leido). Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
+    //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
+    /*
+   Cancellation Points
+     Cancellation points will occur when a thread is executing the following functions: accept(), aio_suspend(), close(), connect(),
+     creat(), fcntl(), fsync(), lockf(), msgrcv(), msgsnd(), msync(), nanosleep(), open(), pause(), poll(), pread(), pselect(),
+     pthread_cond_timedwait(), pthread_cond_wait(), pthread_join(), pthread_testcancel(), pwrite(), read(), readv(), recv(),
+     recvfrom(), recvmsg(), select(), sem_wait(), send(), sendmsg(), sendto(), sigpause(), sigsuspend(), sigwait(), sleep(), system(),
+     tcdrain(), usleep(), wait(), waitpid(), write(), writev().    
+    */
+
+    menu_hilow_convert_audio_counter_sleep++;
+
+    if ((menu_hilow_convert_audio_counter_sleep % 1024)==0) {
+	    sleep(0);
+	}
+
+   } 
     
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
