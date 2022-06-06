@@ -29654,7 +29654,7 @@ char menu_hilow_convert_audio_buffer[AUDIO_BUFFER_SIZE];
 
 
 //Decirle que el pthread hay que cancelarlo.
-int menu_hilow_convert_audio_must_stop_thread=0;
+//int menu_hilow_convert_audio_must_stop_thread=0;
 
 //pasar de mi buffer intermedio al buffer final de sonido 
 void menu_hilow_convert_get_audio_buffer(void)
@@ -30167,7 +30167,7 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 //Iniciar el thread
 void menu_hilow_convert_audio_run_thread(void)
 {
-    menu_hilow_convert_audio_must_stop_thread=0;
+    //menu_hilow_convert_audio_must_stop_thread=0;
 
     if (pthread_create( &hilow_convert_audio_thread, NULL, &menu_hilow_convert_audio_thread_function, NULL) ) {
                 debug_printf(VERBOSE_ERR,"Can not create HiLow convert audio thread");
@@ -30184,7 +30184,7 @@ void menu_hilow_convert_audio_stop_thread(void)
         debug_printf(VERBOSE_DEBUG,"Stopping HiLow convert audio thread");
 
         menu_hilow_convert_audio_esperar_siguiente_sector=0;
-        menu_hilow_convert_audio_must_stop_thread=1;
+        //menu_hilow_convert_audio_must_stop_thread=1;
     
         if (pthread_cancel(hilow_convert_audio_thread)) {
             menu_error_message("Error canceling thread");
