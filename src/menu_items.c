@@ -29693,7 +29693,6 @@ char menu_hilow_convert_samples_audio_speeds[8];
 int menu_hilow_convert_samples_audio_speeds_index;
 
 
-int menu_hilow_convert_audio_counter_sleep;
 
 //Aqui se entra cada vez que se lee un sample de audio
 void menu_hilow_convert_audio_callback(int valor,int posicion)
@@ -29739,14 +29738,12 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
      tcdrain(), usleep(), wait(), waitpid(), write(), writev().    
     */
 
-    menu_hilow_convert_audio_counter_sleep++;
-
-    //Si han pasado 1kb o se ha activado 
-    if ((menu_hilow_convert_audio_counter_sleep % 1024)==0 || menu_hilow_convert_audio_must_stop_thread) {
+    
+    //Si se quiere cancelar 
+    if (menu_hilow_convert_audio_must_stop_thread) {
         //Esta funcion, si el thread no se tiene que cancelar, no hace nada
         //Y si se tiene que cancelar, la cancela
         pthread_testcancel();
-	    //sleep(0);
 	}
 
     
