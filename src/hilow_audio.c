@@ -646,6 +646,15 @@ int hilow_read_audio_buscar_inicio_sector(int posicion)
 
         printf("\n");
 
+        printf("label in hexa: ");
+
+        for (i=0;i<17;i++) {
+            z80_byte byte_leido=hilow_read_audio_buffer_label[i];
+            printf("%02X ",byte_leido);
+        }
+
+        printf("\n");        
+
     }
 
     hilow_read_audio_current_phase=HILOW_READ_AUDIO_PHASE_SEARCHING_SECTOR_DATA;

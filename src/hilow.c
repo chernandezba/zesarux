@@ -825,21 +825,41 @@ void hilow_device_mem_format(int si_escribir_en_ram,int si_escribir_en_device,ch
     /*
     Formato de un directorio HiLow:
 
-    - Directorio se guarda alternativamente en sector 0 y 1
+    - Directorio se guarda alternativamente en sector 1 y 2
     - Contenido directorio:
 
-    * Offset 0: 16 bits: usage counter. Indica cuantas escrituras se han hecho en ese directorio. Dado que se alternan las escrituras del sector 0 y 1,
+    * Offset 0: 16 bits: usage counter. Indica cuantas escrituras se han hecho en ese directorio. Dado que se alternan las escrituras del sector 1 y 2,
     lo habitual es que este usage counter en un sector sea igual al otro sector +1
 
     * Offset 2: 9 bytes. Etiqueta de la cinta
 
-    * TODO: formato entradas de cada archivo
+    * Offset 11: Primera entrada de archivo. Cada entrada ocupa 45 bytes. Los primeros 17 bytes son los mismos utilizados en cabeceras de ZX Spectrum:
+         11: Tipo archivo: 0 basic, 1 matriz numerica, 2 matriz chr, 3 code. El valor 4 se usa para snapshots de nmi. Se asume valor 255 si esta es la última entrada de directorio
+         12: Nombre. Empieza por caracter punto (.) excepto los snapshots nmi que empiezan por asterisco (*)
+         22: Tamaño archivo
+         24: Inicio, Linea autoarranque, etc
+         26: Auxiliar: tamaño variables, etc
+
+         28: Número de sectores usados en este archivo
+         29: Número del primer sector usado en este archivo
+         30: Número del segundo sector usado en este archivo
+         etc...
+
+    * Offset 56: Segunda entrada de archivo
+
+    ...
+
+    * Offset 956 : Entrada 22 de archivo
+    
+    * Offset 1009: Posibles datos de significado desconocido
+
+    * Offset 1010: Posibles datos de significado desconocido
 
     * Offset 1011 (3F3H): 1 byte: numero de sectores disponibles
 
     * Offset 1012 (3F4H): 1 byte a 0. Marcador de inicio de la tabla de sectores disponibles
 
-    * Offset 1013 (3F5H): X bytes. Tabla de sectores disponibles. En una cinta vacia empezará con 2, 3, 4, etc...  
+    * Offset 1013 (3F5H): X bytes. Tabla de sectores disponibles. En una cinta vacia empezará con 3, 4, 5, etc...  
     Ni el 0 ni el 1 pueden estar en la lista
 
     */
