@@ -29652,6 +29652,10 @@ int menu_hilow_convert_audio_buffer_index=0;
 //buffer mono, circular
 char menu_hilow_convert_audio_buffer[AUDIO_BUFFER_SIZE];
 
+
+//Decirle que el pthread hay que cancelarlo.
+int menu_hilow_convert_audio_must_stop_thread=0;
+
 //pasar de mi buffer intermedio al buffer final de sonido 
 void menu_hilow_convert_get_audio_buffer(void)
 {
@@ -29724,8 +29728,8 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
         menu_hilow_convert_audio_tiempo_inicial();
     }
 
-    //Este sleep(0) hace algo de retardo, por eso solo lo llamo cada 1024 veces (1kb leido). Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
-    //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
+    //Este sleep(0) hace algo de retardo, por eso solo lo llamo cada 1024 veces (1kb leido). Solo es para que si se llama a cancelar el pthread, 
+    //con pthread_cancel, desde el sleep se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
     /*
    Cancellation Points
      Cancellation points will occur when a thread is executing the following functions: accept(), aio_suspend(), close(), connect(),
@@ -29737,8 +29741,12 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 
     menu_hilow_convert_audio_counter_sleep++;
 
-    if ((menu_hilow_convert_audio_counter_sleep % 1024)==0) {
-	    sleep(0);
+    //Si han pasado 1kb o se ha activado 
+    if ((menu_hilow_convert_audio_counter_sleep % 1024)==0 || menu_hilow_convert_audio_must_stop_thread) {
+        //Esta funcion, si el thread no se tiene que cancelar, no hace nada
+        //Y si se tiene que cancelar, la cancela
+        pthread_testcancel();
+	    //sleep(0);
 	}
 
     
@@ -30162,8 +30170,10 @@ void *menu_hilow_convert_audio_thread_function(void *nada GCC_UNUSED)
 //Iniciar el thread
 void menu_hilow_convert_audio_run_thread(void)
 {
+    menu_hilow_convert_audio_must_stop_thread=0;
+
     if (pthread_create( &hilow_convert_audio_thread, NULL, &menu_hilow_convert_audio_thread_function, NULL) ) {
-                debug_printf(VERBOSE_ERR,"Can not create download wos thread");
+                debug_printf(VERBOSE_ERR,"Can not create HiLow convert audio thread");
                 return;
     }    
 }
@@ -30177,6 +30187,7 @@ void menu_hilow_convert_audio_stop_thread(void)
         debug_printf(VERBOSE_DEBUG,"Stopping HiLow convert audio thread");
 
         menu_hilow_convert_audio_esperar_siguiente_sector=0;
+        menu_hilow_convert_audio_must_stop_thread=1;
     
         if (pthread_cancel(hilow_convert_audio_thread)) {
             menu_error_message("Error canceling thread");
