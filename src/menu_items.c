@@ -29724,7 +29724,6 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
         menu_hilow_convert_audio_tiempo_inicial();
     }
 
-   else {
     //Este sleep(0) hace algo de retardo, por eso solo lo llamo cada 1024 veces (1kb leido). Solo es para que si se llama a cancelar el pthread, con pthread_cancel, desde el sleep
     //se lee el estado y se cancela el thread si se ha llamado a pthread_cancel
     /*
@@ -29742,7 +29741,6 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
 	    sleep(0);
 	}
 
-   } 
     
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
