@@ -5320,6 +5320,7 @@ z80_int tbblue_get_border_color(z80_int color)
 {
     int flash_disabled = tbblue_registers[0x43]&1;  //flash_disabled se llamaba antes. ahora indica "enable ulanext"
     int is_timex_hires = timex_video_emulation.v && ((timex_port_ff&7) == 6);
+
     // 1) calculate correct color index into palette
 	if (is_timex_hires) {
         // Timex HiRes 512x256 enforces border color by the FF port value, with priority over other methods
@@ -5337,11 +5338,14 @@ z80_int tbblue_get_border_color(z80_int color)
         // other ULANext modes take border color from palette starting at 128..135
         color += 128;
     }
+
     else {  // ULANext mode OFF (border colors are 16..23)
         color += 16;
     }
+
     // 2) convert index to actual color from palette
     color = tbblue_get_palette_active_ula(color);
+
     // 3) check for transparent colour -> use fallback colour if border is "transparent"
     if (tbblue_si_transparent(color)) {
         color = tbblue_get_9bit_colour(tbblue_registers[0x4A]);
@@ -5366,8 +5370,8 @@ void get_pixel_color_tbblue(z80_byte attribute,z80_int *tinta_orig, z80_int *pap
 	z80_byte flash_disabled=tbblue_registers[0x43]&1; //flash_disabled se llamaba antes. ahora indica "enable ulanext"
 
 
-        z80_byte bright,flash;
-        z80_int aux;
+    z80_byte bright,flash;
+    z80_int aux;
 
 
 
@@ -5386,22 +5390,22 @@ void get_pixel_color_tbblue(z80_byte attribute,z80_int *tinta_orig, z80_int *pap
   The ULA always takes border colour from paper.
 */
 
-                        ink=attribute &7; 
-                        paper=((attribute>>3) &7)+16; //colores papel empiezan en 16
-                        bright=(attribute)&64; 
-                        flash=(attribute)&128; 
-                        if (flash) { 
-                                if (estado_parpadeo.v) { 
-                                        aux=paper; 
-                                        paper=ink; 
-                                        ink=aux; 
-                                } 
-                        } 
-            
-            if (bright) {   
-                paper+=8; 
-                ink+=8; 
-            } 
+        ink=attribute &7; 
+        paper=((attribute>>3) &7)+16; //colores papel empiezan en 16
+        bright=(attribute)&64; 
+        flash=(attribute)&128; 
+        if (flash) { 
+                if (estado_parpadeo.v) { 
+                        aux=paper; 
+                        paper=ink; 
+                        ink=aux; 
+                } 
+        } 
+        
+        if (bright) {   
+            paper+=8; 
+            ink+=8; 
+        } 
 
 	}
 
@@ -5485,27 +5489,27 @@ TODO: el significado es el mismo antes que ahora?
 
 z80_int tbblue_tile_return_color_index(z80_byte index)
 {
-        z80_int color_final=tbblue_get_palette_active_tilemap(index);
-        return color_final;
+    z80_int color_final=tbblue_get_palette_active_tilemap(index);
+    return color_final;
 }
 
 void tbblue_do_tile_putpixel(z80_byte pixel_color,z80_byte transparent_colour,z80_byte tpal,z80_int *puntero_a_layer,int ula_over_tilemap)
 {
 
-			if (pixel_color!=transparent_colour) {
-				//No es color transparente el que ponemos
-				pixel_color |=tpal;
+    if (pixel_color!=transparent_colour) {
+        //No es color transparente el que ponemos
+        pixel_color |=tpal;
 
-				//Vemos lo que hay en la capa
-				z80_int color_previo_capa;
-				color_previo_capa=*puntero_a_layer;
+        //Vemos lo que hay en la capa
+        z80_int color_previo_capa;
+        color_previo_capa=*puntero_a_layer;
 
-				//Poner pixel tile si color de ula era transparente o bien la ula está por debajo
-				if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) { 
-					*puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
-				}
+        //Poner pixel tile si color de ula era transparente o bien la ula está por debajo
+        if (tbblue_si_sprite_transp_ficticio(color_previo_capa) || !ula_over_tilemap) { 
+            *puntero_a_layer=tbblue_tile_return_color_index(pixel_color);
+        }
 
-			}
+    }
 
 
 }
@@ -5608,17 +5612,12 @@ int tbblue_tiles_512_mode(void)
 z80_byte tbblue_get_pixel_tile_xy_monocromo(int x,int y,z80_byte *puntero_this_tiledef)
 {
 
-
 	//Cada linea ocupa 1 bytes
-
 
 	z80_byte byte_leido=puntero_this_tiledef[y];
 
 
-
-	
 	return (byte_leido>> (7-x) ) & 0x1;
-
 
 
 }
@@ -5653,7 +5652,7 @@ void tbblue_do_tile_overlay(int scanline)
 
 	int linea_en_tile=scanline_efectivo %8;
 
-  int tbblue_bytes_per_tile=2;
+    int tbblue_bytes_per_tile=2;
 
 	int tilemap_width=tbblue_get_tilemap_width();
 
@@ -6058,28 +6057,27 @@ void tbblue_fast_render_ula_layer(z80_int *puntero_final_rainbow,int estamos_bor
 
 	
 					
-				else {
-					if (estamos_borde_supinf) {
-						//Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
-					}
+        else {
+            if (estamos_borde_supinf) {
+                //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
+            }
 
-					else {
-						//Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
-						if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
-							//Poner color indicado por "Transparency colour fallback" registro
-							*puntero_final_rainbow=fallbackcolour;
-							//doble de alto
-							puntero_final_rainbow[ancho_rainbow]=fallbackcolour;								
-						}
-						else {
-							//Es borde. dejar ese color
-						}
-					
-					}
-				}
+            else {
+                //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
+                if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
+                    //Poner color indicado por "Transparency colour fallback" registro
+                    *puntero_final_rainbow=fallbackcolour;
+                    //doble de alto
+                    puntero_final_rainbow[ancho_rainbow]=fallbackcolour;								
+                }
+                else {
+                    //Es borde. dejar ese color
+                }
+            
+            }
+        }
 
 
-	
 
 		puntero_final_rainbow++;
 
@@ -6113,43 +6111,43 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
     if (border_enabled.v==0) y=y-screen_borde_superior;
 
 
-		//if (y<diferencia_border_tiles || y>=(screen_indice_inicio_pant+192+TBBLUE_TILES_BORDER)) {	
+    //if (y<diferencia_border_tiles || y>=(screen_indice_inicio_pant+192+TBBLUE_TILES_BORDER)) {	
 
-		if (y<diferencia_border_tiles || y>=(screen_borde_superior+192+TBBLUE_TILES_BORDER)) {	
-			
-			//printf ("t_scanline_draw: %d y: %d diferencia_border_tiles: %d screen_indice_inicio_pant: %d screen_invisible_borde_superior: %d TBBLUE_TILES_BORDER: %d\n",
-			//	t_scanline_draw,y,diferencia_border_tiles,screen_indice_inicio_pant,screen_invisible_borde_superior,TBBLUE_TILES_BORDER);
+    if (y<diferencia_border_tiles || y>=(screen_borde_superior+192+TBBLUE_TILES_BORDER)) {	
+        
+        //printf ("t_scanline_draw: %d y: %d diferencia_border_tiles: %d screen_indice_inicio_pant: %d screen_invisible_borde_superior: %d TBBLUE_TILES_BORDER: %d\n",
+        //	t_scanline_draw,y,diferencia_border_tiles,screen_indice_inicio_pant,screen_invisible_borde_superior,TBBLUE_TILES_BORDER);
 
-			//Si estamos por encima o por debajo de la zona de tiles/layer2,
-			//que es la mas alta de todas las capas
+        //Si estamos por encima o por debajo de la zona de tiles/layer2,
+        //que es la mas alta de todas las capas
 
-			return; 
+        return; 
 
-		}
+    }
 		
 
-		//Calcular donde hay border
-		int final_border_superior=screen_indice_inicio_pant-screen_invisible_borde_superior;
-		int inicio_border_inferior=final_border_superior+192;
+    //Calcular donde hay border
+    int final_border_superior=screen_indice_inicio_pant-screen_invisible_borde_superior;
+    int inicio_border_inferior=final_border_superior+192;
 
-		//Doble de alto
-		y *=2;
+    //Doble de alto
+    y *=2;
 
-		final_border_superior *=2;
-		inicio_border_inferior *=2;
+    final_border_superior *=2;
+    inicio_border_inferior *=2;
 
-		//Vemos si linea esta en zona border
-		int estamos_borde_supinf=0;
-		if (y<final_border_superior || y>=inicio_border_inferior) estamos_borde_supinf=1;
+    //Vemos si linea esta en zona border
+    int estamos_borde_supinf=0;
+    if (y<final_border_superior || y>=inicio_border_inferior) estamos_borde_supinf=1;
 
-		//Zona borde izquierdo y derecho
-		int final_borde_izquierdo=2*screen_total_borde_izquierdo*border_enabled.v;
-		int inicio_borde_derecho=final_borde_izquierdo+TBBLUE_DISPLAY_WIDTH;
-
-
+    //Zona borde izquierdo y derecho
+    int final_borde_izquierdo=2*screen_total_borde_izquierdo*border_enabled.v;
+    int inicio_borde_derecho=final_borde_izquierdo+TBBLUE_DISPLAY_WIDTH;
 
 
-		int ancho_rainbow=get_total_ancho_rainbow();
+
+
+    int ancho_rainbow=get_total_ancho_rainbow();
 
 	z80_int *puntero_final_rainbow=&rainbow_buffer[ y*ancho_rainbow ];
 
@@ -6179,88 +6177,88 @@ void tbblue_render_layers_rainbow(int capalayer2,int capasprites)
 
 	else {
 
-	for (i=0;i<ancho_rainbow;i++) {
+        for (i=0;i<ancho_rainbow;i++) {
 
 
-        color = tbblue_layer_layer2[i];
+            color = tbblue_layer_layer2[i];
 
-        //Si no se permite layer2 con priority bit, resetearlo
-        if (tbblue_allow_layer2_priority_bit.v==0) {
-            if (tbblue_color_is_layer2_priority(color)) {
-                //Este para el check que viene luego de tbblue_color_is_layer2_priority, que no lo detecte como priority
-                color &= 0x1FF;
-                //Y este ya para el renderizado de capas, dejar un color normal de 9 bits
-                tbblue_layer_layer2[i] &= 0x1FF;
+            //Si no se permite layer2 con priority bit, resetearlo
+            if (tbblue_allow_layer2_priority_bit.v==0) {
+                if (tbblue_color_is_layer2_priority(color)) {
+                    //Este para el check que viene luego de tbblue_color_is_layer2_priority, que no lo detecte como priority
+                    color &= 0x1FF;
+                    //Y este ya para el renderizado de capas, dejar un color normal de 9 bits
+                    tbblue_layer_layer2[i] &= 0x1FF;
+                }
             }
-        }
 
-        //Si color de layer2 tiene bit de prioridad y no es el transparente
-        //Se mira que no sea el color ficticio de transparente porque este es 65535 (todos los bits a 1) y el
-        //TBBLUE_LAYER2_PRIORITY=0x8000, por lo que un color como transparente se podria interpretar como que es de layer2 con prioridad
-        if (tbblue_color_is_layer2_priority(color)) {
-            //printf("bit con prioridad\n");
-            //Tiene prioridad. Quitar ese bit de prioridad y cualquier otro que no es el indice de color
-            color &= 0x1FF;
+            //Si color de layer2 tiene bit de prioridad y no es el transparente
+            //Se mira que no sea el color ficticio de transparente porque este es 65535 (todos los bits a 1) y el
+            //TBBLUE_LAYER2_PRIORITY=0x8000, por lo que un color como transparente se podria interpretar como que es de layer2 con prioridad
+            if (tbblue_color_is_layer2_priority(color)) {
+                //printf("bit con prioridad\n");
+                //Tiene prioridad. Quitar ese bit de prioridad y cualquier otro que no es el indice de color
+                color &= 0x1FF;
 
-			*puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
-			//doble de alto
-			puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;            
-        }
-
-        else {
-
-            //Primera capa
-            color=p_layer_first[i];
-            if (!tbblue_fn_pixel_layer_transp_first(color) ) {
                 *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                 //doble de alto
-                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
+                puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;            
             }
 
             else {
-                color=p_layer_second[i];
-                if (!tbblue_fn_pixel_layer_transp_second(color) ) {
+
+                //Primera capa
+                color=p_layer_first[i];
+                if (!tbblue_fn_pixel_layer_transp_first(color) ) {
                     *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                     //doble de alto
-                    puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;				
+                    puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;
                 }
 
                 else {
-                    color=p_layer_third[i];
-                    if (!tbblue_fn_pixel_layer_transp_third(color) ) {
+                    color=p_layer_second[i];
+                    if (!tbblue_fn_pixel_layer_transp_second(color) ) {
                         *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
                         //doble de alto
-                        puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;					
+                        puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;				
                     }
-                        
+
                     else {
-                        if (estamos_borde_supinf) {
-                            //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
+                        color=p_layer_third[i];
+                        if (!tbblue_fn_pixel_layer_transp_third(color) ) {
+                            *puntero_final_rainbow=RGB9_INDEX_FIRST_COLOR+color;
+                            //doble de alto
+                            puntero_final_rainbow[ancho_rainbow]=RGB9_INDEX_FIRST_COLOR+color;					
                         }
-
+                            
                         else {
-                            //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
-                            if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
-                                //Poner color indicado por "Transparency colour fallback" registro:
-                                *puntero_final_rainbow=fallbackcolour;
-                                //doble de alto
-                                puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
+                            if (estamos_borde_supinf) {
+                                //Si estamos en borde inferior o superior, no hacemos nada, dibujar color borde
                             }
+
                             else {
-                                //Es borde. dejar ese color
+                                //Borde izquierdo o derecho o pantalla. Ver si estamos en pantalla
+                                if (i>=final_borde_izquierdo && i<inicio_borde_derecho) {
+                                    //Poner color indicado por "Transparency colour fallback" registro:
+                                    *puntero_final_rainbow=fallbackcolour;
+                                    //doble de alto
+                                    puntero_final_rainbow[ancho_rainbow]=fallbackcolour;
+                                }
+                                else {
+                                    //Es borde. dejar ese color
+                                }
+                            
                             }
-                        
                         }
                     }
+
                 }
-
             }
+
+            puntero_final_rainbow++;
+
+            
         }
-
-		puntero_final_rainbow++;
-
-		
-	}
 
 	}
 }
@@ -6275,11 +6273,11 @@ char *tbblue_layer2_video_modes_names[]={
 
 char *tbblue_get_layer2_mode_name(void)
 {
-		//Resolucion si 256x192x8, organizacion en scanlines, o las otras resoluciones que organizan en columnas
-		//00=256x192x8. 01=320x256x8, 10=640x256x4
-		int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
+    //Resolucion si 256x192x8, organizacion en scanlines, o las otras resoluciones que organizan en columnas
+    //00=256x192x8. 01=320x256x8, 10=640x256x4
+    int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
 
-		return tbblue_layer2_video_modes_names[layer2_resolution];
+    return tbblue_layer2_video_modes_names[layer2_resolution];
 }
 
 
