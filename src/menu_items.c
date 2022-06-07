@@ -29739,14 +29739,12 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     */
 
     
-    //Si se quiere cancelar 
-    //if (menu_hilow_convert_audio_must_stop_thread) {
-        //Esta funcion, si el thread no se tiene que cancelar, no hace nada
-        //Y si se tiene que cancelar, la cancela
-        pthread_testcancel();
-	//}
-
+    //Si se quiere cancelar  el thread
     
+    //Esta funcion, si el thread no se tiene que cancelar, no hace nada
+    //Y si se tiene que cancelar, la cancela
+    pthread_testcancel();
+	
 
     menu_hilow_convert_audio_last_audio_sample_three=valor;
 

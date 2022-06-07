@@ -156,7 +156,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 -hilow: 
 *iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
 
-quiza 514H (1300 decimal) de longitud sector directorio? cinta logo cambia a partir de ahi
 
 
 -lee_hilow_audio: ultimo sector en cara B dice:
