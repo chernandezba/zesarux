@@ -660,7 +660,9 @@ void core_spectrum_handle_interrupts(void)
         if (MACHINE_IS_ZXUNO && zxuno_dma_disabled.v==0) hay_dma=1;
 
         //Soporte Datagear/TBBlue DMA
-        if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) hay_dma=1;        
+        if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) hay_dma=1;
+
+        if (MACHINE_IS_TSCONF) hay_dma=1;
 
         if (!hay_dma) {
             //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
