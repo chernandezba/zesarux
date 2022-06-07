@@ -20325,7 +20325,9 @@ void menu_tell_if_realjoystick_detected(void)
 void show_all_windows_startup(void)
 {
     if (menu_allow_background_windows && menu_multitarea && menu_reopen_background_windows_on_start.v && always_force_overlay_visible_when_menu_closed) {
-        menu_overlay_activo=1;
+        //para activar overlay llamar a set_menu_overlay_function pues se define la funcion de overlay
+        //NO hacer solo un menu_overlay_activo=1 pues aqui en el inicio la funcion de overlay es NULL y provocaria segfault;
+        set_menu_overlay_function(normal_overlay_texto_menu);
 
         //Y redibujamos las ventanas, para que se vean los titulos sobretodo (pues los overlay en background no redibujan los titulos)
         //decir que ventana principal no esta activa, para indicar que están todas en background
