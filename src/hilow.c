@@ -1189,7 +1189,7 @@ z80_byte cpu_core_loop_spectrum_hilow(z80_int dir GCC_UNUSED, z80_byte value GCC
             hilow_trap_write_verify();      
         }
 
-        //No carry. Read
+        //Read
         else {         
             hilow_trap_read();
         }
