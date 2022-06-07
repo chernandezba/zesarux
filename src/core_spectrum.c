@@ -651,9 +651,21 @@ void core_spectrum_handle_interrupts(void)
 								
 
     //Si el pulso de interrupcion ya ha pasado
+    //Pero si no tenemos dma activa, pues la dma esta modificando t_estados, y en una operacion de lectura/escritura larga,
+    //este contador testados_desde_inicio_pulso_interrupcion puede tener un valor muy alto
     if (testados_desde_inicio_pulso_interrupcion>=cpu_duracion_pulso_interrupcion) {
-        //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
-        interrupcion_maskable_generada.v=0;
+        int hay_dma=0;
+
+        //Soporte DMA ZXUNO
+        if (MACHINE_IS_ZXUNO && zxuno_dma_disabled.v==0) hay_dma=1;
+
+        //Soporte Datagear/TBBlue DMA
+        if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) hay_dma=1;        
+
+        if (!hay_dma) {
+            //printf("interrupt timeout. t-states since interrupt triggered: %d\n",testados_desde_inicio_pulso_interrupcion);
+            interrupcion_maskable_generada.v=0;
+        }
     }
 
 
