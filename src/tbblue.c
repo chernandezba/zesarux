@@ -456,31 +456,31 @@ void tbblue_copper_next_opcode(void)
 
 	//Si ha ido a posicion 0
 	if (tbblue_copper_pc==TBBLUE_COPPER_MEMORY) {
-		z80_byte copper_control_bits=tbblue_copper_get_control_bits();
-			switch (copper_control_bits) {
-						case TBBLUE_RCCH_COPPER_STOP:
-							//Se supone que nunca se estara ejecutando cuando el mode sea stop
-							tbblue_copper_set_stop();
-						break;
+        z80_byte copper_control_bits=tbblue_copper_get_control_bits();
+        switch (copper_control_bits) {
+            case TBBLUE_RCCH_COPPER_STOP:
+                //Se supone que nunca se estara ejecutando cuando el mode sea stop
+                tbblue_copper_set_stop();
+            break;
 
-						case TBBLUE_RCCH_COPPER_RUN_LOOP:
-								//loop
-								tbblue_copper_pc=0;
-								//printf ("Reset copper on mode TBBLUE_RCCH_COPPER_RUN_LOOP\n");
-						break;
+            case TBBLUE_RCCH_COPPER_RUN_LOOP:
+                    //loop
+                    tbblue_copper_pc=0;
+                    //printf ("Reset copper on mode TBBLUE_RCCH_COPPER_RUN_LOOP\n");
+            break;
 
-						case TBBLUE_RCCH_COPPER_RUN_LOOP_RESET:
-								//loop
-								tbblue_copper_pc=0;
-								//printf ("Reset copper on mode TBBLUE_RCCH_COPPER_RUN_LOOP_RESET\n");
-						break;
+            case TBBLUE_RCCH_COPPER_RUN_LOOP_RESET:
+                    //loop
+                    tbblue_copper_pc=0;
+                    //printf ("Reset copper on mode TBBLUE_RCCH_COPPER_RUN_LOOP_RESET\n");
+            break;
 
-						case TBBLUE_RCCH_COPPER_RUN_VBI:
-								//loop??
-								tbblue_copper_pc=0;
-								//printf ("Reset copper on mode RUN_VBI\n");
-						break;
-			}
+            case TBBLUE_RCCH_COPPER_RUN_VBI:
+                    //loop??
+                    tbblue_copper_pc=0;
+                    //printf ("Reset copper on mode RUN_VBI\n");
+            break;
+        }
 	}
 
 }
@@ -520,31 +520,31 @@ void tbblue_copper_run_opcodes(void)
     }
 	*/
 
-		if ( (byte_leido&128)==0) {
-			//Es un move
-			z80_byte indice_registro=byte_leido&127;
-			//tbblue_copper_pc++;
-			
-			//tbblue_copper_pc++;
-			//printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,valor_registro);
-			tbblue_set_value_port_position(indice_registro,byte_leido2);
+    if ( (byte_leido&128)==0) {
+        //Es un move
+        z80_byte indice_registro=byte_leido&127;
+        //tbblue_copper_pc++;
+        
+        //tbblue_copper_pc++;
+        //printf ("Executing MOVE register %02XH value %02XH\n",indice_registro,valor_registro);
+        tbblue_set_value_port_position(indice_registro,byte_leido2);
 
-			tbblue_copper_next_opcode();
+        tbblue_copper_next_opcode();
 
-		}
-		else {
-			//Es un wait
-			//Si se cumple, saltar siguiente posicion
-			//z80_int linea, horiz;
-			//tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
-			if (tbblue_copper_wait_cond_fired () ) {
-                                                        //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
-                                                        tbblue_copper_next_opcode();
-                                                        //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
-			}
-			//printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
-			
-		}
+    }
+    else {
+        //Es un wait
+        //Si se cumple, saltar siguiente posicion
+        //z80_int linea, horiz;
+        //tbblue_copper_get_wait_opcode_parameters(&linea,&horiz);
+        if (tbblue_copper_wait_cond_fired () ) {
+                                                    //printf ("Wait condition positive at copper_pc %02XH scanline %d raster %d\n",tbblue_copper_pc,t_scanline,tbblue_get_current_raster_position() );
+                                                    tbblue_copper_next_opcode();
+                                                    //printf ("Wait condition positive, after incrementing copper_pc %02XH\n",tbblue_copper_pc);
+        }
+        //printf ("Waiting until scanline %d horiz %d\n",linea,horiz);
+        
+    }
 	
 }
 
@@ -706,18 +706,18 @@ void tbblue_copper_write_control_hi_byte(z80_byte value)
 
 /*
    //es zona de vsync y borde superior
-                                                                //Aqui el contador raster tiene valor (192+56 en adelante)
-                                                                //contador de scanlines del core, entre 0 y screen_indice_inicio_pant ,
-                                                                if (t_scanline<screen_indice_inicio_pant) {
-                                                                        if (t_scanline==linea_raster-192-screen_total_borde_inferior) disparada_raster=1;
-                                                                }
+    //Aqui el contador raster tiene valor (192+56 en adelante)
+    //contador de scanlines del core, entre 0 y screen_indice_inicio_pant ,
+    if (t_scanline<screen_indice_inicio_pant) {
+            if (t_scanline==linea_raster-192-screen_total_borde_inferior) disparada_raster=1;
+    }
 
-                                                                //Esto es zona de paper o borde inferior
-                                                                //Aqui el contador raster tiene valor 0 .. <(192+56)
-                                                                //contador de scanlines del core, entre screen_indice_inicio_pant y screen_testados_total
-                                                                else {
-                                                                        if (t_scanline-screen_indice_inicio_pant==linea_raster) disparada_raster=1;
-                                                                }
+    //Esto es zona de paper o borde inferior
+    //Aqui el contador raster tiene valor 0 .. <(192+56)
+    //contador de scanlines del core, entre screen_indice_inicio_pant y screen_testados_total
+    else {
+            if (t_scanline-screen_indice_inicio_pant==linea_raster) disparada_raster=1;
+    }
 
 https://github.com/z88dk/z88dk/blob/master/libsrc/_DEVELOPMENT/target/zxn/config/config_zxn_copper.m4#L74
 
@@ -806,20 +806,20 @@ int tbblue_get_current_raster_position(void)
 		raster=t_scanline-screen_indice_inicio_pant;
 
 		//Sumamos offset de la zona raster
-                raster +=0  ; //solo para que quede mas claro
+        raster +=0  ; //solo para que quede mas claro
 
 		//printf ("scanline: %d raster: %d\n",t_scanline,raster);
-                return raster;
-        }
+        return raster;
+    }
 
-	//Caso final. Zona borde inferior
-		//Ajustamos primero a desplazamiento entre 0 y esa zona
-                raster=t_scanline-screen_indice_fin_pant;
+    //Caso final. Zona borde inferior
+    //Ajustamos primero a desplazamiento entre 0 y esa zona
+    raster=t_scanline-screen_indice_fin_pant;
 
-		//Sumamos offset de la zona raster
-                raster +=192;
-		//printf ("scanline: %d raster: %d\n",t_scanline,raster);
-                return raster;
+    //Sumamos offset de la zona raster
+    raster +=192;
+    //printf ("scanline: %d raster: %d\n",t_scanline,raster);
+    return raster;
 
 }
 
@@ -1139,7 +1139,7 @@ Bit	Function
 0 to use bit 0 of tile attribute as "ULA over tilemap" per-tile-selector
 */
 	if (tbblue_registers[0x6B] & 16) return tbblue_palette_tilemap_second[index];
-        else return tbblue_palette_tilemap_first[index];
+    else return tbblue_palette_tilemap_first[index];
 
 }
 
@@ -1187,9 +1187,6 @@ void tbsprite_increment_index_303b() {
 	tbsprite_index_sprite++;
 	tbsprite_index_sprite %= TBBLUE_MAX_SPRITES;
 }
-
-
-
 
 
 
@@ -1628,8 +1625,8 @@ changing bit 7 to 0 for the non priority colour alternative.
 	color_actual &=0x1FE;
 
     if ((valor&128) && (tbblue_registers[0x43]&0x30) == 0x10) {
-            // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
-            color_actual |= TBBLUE_LAYER2_PRIORITY;
+        // layer 2 palette has extra priority bit in color (must be removed while mixing layers)
+        color_actual |= TBBLUE_LAYER2_PRIORITY;
     }    
 
 	//Y valor indicado, solo conservar 1 bit
@@ -1777,8 +1774,8 @@ The attribute pointer will roll over from sprite 127 to sprite 0.
 //Dice si un color de la capa de sprites es igual al color transparente ficticio inicial
 int tbblue_si_sprite_transp_ficticio(z80_int color)
 {
-        if (color==TBBLUE_SPRITE_TRANS_FICT) return 1;
-        return 0;
+    if (color==TBBLUE_SPRITE_TRANS_FICT) return 1;
+    return 0;
 }
 
 //Dice si ese color es de layer2 con priority bit
@@ -2619,17 +2616,17 @@ void tbblue_out_port_layer2_value(z80_byte value)
 	//Sincronizar bit layer2
 		
 
-			/*
-			(W) 0x69 (105) => DISPLAY CONTROL 1 REGISTER
+    /*
+    (W) 0x69 (105) => DISPLAY CONTROL 1 REGISTER
 
-			Bit	Function
-			7	Enable the Layer 2 (alias for Layer 2 Access Port ($123B) bit 1)
-			6	Enable ULA shadow (bank 7) display (alias for Memory Paging Control ($7FFD) bit 3)
-			5-0	alias for Timex Sinclair Video Mode Control ($xxFF) bits 5:0
+    Bit	Function
+    7	Enable the Layer 2 (alias for Layer 2 Access Port ($123B) bit 1)
+    6	Enable ULA shadow (bank 7) display (alias for Memory Paging Control ($7FFD) bit 3)
+    5-0	alias for Timex Sinclair Video Mode Control ($xxFF) bits 5:0
 
-			*/
-			tbblue_registers[105] &= (255-128);
-			if (value&2) tbblue_registers[105]|=128;
+    */
+    tbblue_registers[105] &= (255-128);
+    if (value&2) tbblue_registers[105]|=128;
 
 	//printf ("valor a 123b: %02XH\n",value);
     }
@@ -2806,8 +2803,8 @@ void tbblue_set_ram_page(z80_byte segment)
 
 void tbblue_set_rom_page_no_255(z80_byte segment)
 {
-        z80_byte tbblue_register=80+segment;
-        z80_byte reg_value=tbblue_registers[tbblue_register];
+    z80_byte tbblue_register=80+segment;
+    z80_byte reg_value=tbblue_registers[tbblue_register];
 
 	//Guardar el valor tal cual, antes de ver si la pagina excede el limite
 	debug_paginas_memoria_mapeadas[segment]=reg_value;			
@@ -2926,23 +2923,23 @@ altrom=0 -> ROM0
 altrom=1 -> ROM01
 */
 
-			if ( (tbblue_registers[0x8c] & 32) == 32) {
-				//printf ("ROM1\n");
-				altrom=1;
-			}
-			//128k rom
-			else if ( (tbblue_registers[0x8c] & 16) == 16) {
-				altrom=0;
-				//printf ("ROM0\n");
-			}
+    if ( (tbblue_registers[0x8c] & 32) == 32) {
+        //printf ("ROM1\n");
+        altrom=1;
+    }
+    //128k rom
+    else if ( (tbblue_registers[0x8c] & 16) == 16) {
+        altrom=0;
+        //printf ("ROM0\n");
+    }
 
-			//a 0 los dos . paginado +3.
-			else {
-				
-				z80_byte rom_entra=((puerto_32765>>4)&1);
-				altrom=rom_entra;	
-				//printf ("alt rom segun 7ffd (%d)\n",altrom);
-			}
+    //a 0 los dos . paginado +3.
+    else {
+        
+        z80_byte rom_entra=((puerto_32765>>4)&1);
+        altrom=rom_entra;	
+        //printf ("alt rom segun 7ffd (%d)\n",altrom);
+    }
 
 	return altrom;
 }
@@ -2956,12 +2953,12 @@ int tbblue_get_altrom_offset_dir(int altrom,z80_int dir)
    -- 0x01c000 - 0x01FFFF (16K)  => Alt ROM1 48k            A20:A16 = 00001,11
    */
 
-			if (altrom==1) {
-				offset=0x01c000+dir;
-			}
-			else {
-				offset=0x018000+dir;
-			}
+    if (altrom==1) {
+        offset=0x01c000+dir;
+    }
+    else {
+        offset=0x018000+dir;
+    }
 
 	return offset;
 }
@@ -3075,8 +3072,6 @@ void tbblue_mem_page_ram_rom(void)
 
 
 
-
-
 			break;
 
 		case 2:
@@ -3106,8 +3101,6 @@ void tbblue_mem_page_ram_rom(void)
 			contend_pages_actual[3]=contend_pages_128k_p2a[3];
 
 
-
-
 			break;
 
 		case 3:
@@ -3135,8 +3128,6 @@ void tbblue_mem_page_ram_rom(void)
 			contend_pages_actual[1]=contend_pages_128k_p2a[7];
 			contend_pages_actual[2]=contend_pages_128k_p2a[6];
 			contend_pages_actual[3]=contend_pages_128k_p2a[3];
-
-
 
 
 			break;
@@ -6285,49 +6276,49 @@ void tbblue_do_layer2_overlay(int linea_render)
 {
 
 
-		if (!tbblue_is_active_layer2() || tbblue_force_disable_layer_layer_two.v) return;
+    if (!tbblue_is_active_layer2() || tbblue_force_disable_layer_layer_two.v) return;
 
-		//Resolucion si 256x192x8, organizacion en scanlines, o las otras resoluciones que organizan en columnas
-		//00=256x192x8. 01=320x256x8, 10=640x256x4
-		int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
-
-
-		//Obtener offset paleta color
-		int palette_offset=tbblue_registers[112] & 15;
-
-		
-
-		//Obtener inicio pantalla layer2
-		//int tbblue_layer2_offset=tbblue_get_offset_start_layer2();
-
-        int tbblue_layer2_offset=tbblue_get_offset_start_layer2_reg(tbblue_registers[18]);
+    //Resolucion si 256x192x8, organizacion en scanlines, o las otras resoluciones que organizan en columnas
+    //00=256x192x8. 01=320x256x8, 10=640x256x4
+    int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
 
 
-		//Scroll vertical
+    //Obtener offset paleta color
+    int palette_offset=tbblue_registers[112] & 15;
+
+    
+
+    //Obtener inicio pantalla layer2
+    //int tbblue_layer2_offset=tbblue_get_offset_start_layer2();
+
+    int tbblue_layer2_offset=tbblue_get_offset_start_layer2_reg(tbblue_registers[18]);
+
+
+    //Scroll vertical
 
 /*
 (R/W) 0x17 (23) => Layer2 Offset Y
-  bits 7-0 = Y Offset (0-191)(Reset to 0 after a reset)
+bits 7-0 = Y Offset (0-191)(Reset to 0 after a reset)
 */		
-		//Mantener el offset y en 0..191
-		z80_byte tbblue_reg_23=tbblue_registers[23]; 
+    //Mantener el offset y en 0..191
+    z80_byte tbblue_reg_23=tbblue_registers[23]; 
 
 
-		int offset_scroll=tbblue_reg_23+linea_render;
+    int offset_scroll=tbblue_reg_23+linea_render;
 
-		if (layer2_resolution) {
-			offset_scroll %=256;
-			tbblue_layer2_offset +=offset_scroll;
-		}
+    if (layer2_resolution) {
+        offset_scroll %=256;
+        tbblue_layer2_offset +=offset_scroll;
+    }
 
-		else {
-			offset_scroll %=192;
-			tbblue_layer2_offset +=offset_scroll*256;
-		}
+    else {
+        offset_scroll %=192;
+        tbblue_layer2_offset +=offset_scroll*256;
+    }
 
 
 
-		//Scroll horizontal
+    //Scroll horizontal
 /*
 
 (R/W) 22 => Layer2 Offset X
@@ -6338,126 +6329,126 @@ void tbblue_do_layer2_overlay(int linea_render)
    bit 0 = MSB of scroll amount		
 */
 
-		int tbblue_reg_22=tbblue_registers[22] + (tbblue_registers[113]&1)*256;
+    int tbblue_reg_22=tbblue_registers[22] + (tbblue_registers[113]&1)*256;
 
 
 
-		//Valor final de scroll x, acotar a valores validos
-		if (layer2_resolution) {
-			tbblue_reg_22 %=320;
-		}
+    //Valor final de scroll x, acotar a valores validos
+    if (layer2_resolution) {
+        tbblue_reg_22 %=320;
+    }
 
-		else {
-			tbblue_reg_22 %=256;
-		}
-
-
-		//Para la gestión de la posicion x del pixel
-		int pos_x_origen=tbblue_reg_22;
-
-		
-
-		//Inicio de la posicion en el layer final
-		int posicion_array_layer=0;
+    else {
+        tbblue_reg_22 %=256;
+    }
 
 
-		int borde_no_escribible=screen_total_borde_izquierdo;
-		if (layer2_resolution>0) borde_no_escribible-=TBBLUE_LAYER2_12_BORDER;
+    //Para la gestión de la posicion x del pixel
+    int pos_x_origen=tbblue_reg_22;
 
-		posicion_array_layer +=borde_no_escribible*2; //doble de ancho
+    
 
-		int posx;
-
-		//Total pixeles por defecto
-		int total_x=256;
-
-		
-		int clip_min=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0];
-		int clip_max=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1];
-
-		if (layer2_resolution) {
-			total_x +=TBBLUE_LAYER2_12_BORDER*2;
-
-			//Se multiplica por 2 siempre en estas resoluciones de 320x256 y 640x256
-			clip_min *=2;
-			clip_max *=2;			
-
-		}
+    //Inicio de la posicion en el layer final
+    int posicion_array_layer=0;
 
 
-       	for (posx=0;posx<total_x;posx++) {
-				
+    int borde_no_escribible=screen_total_borde_izquierdo;
+    if (layer2_resolution>0) borde_no_escribible-=TBBLUE_LAYER2_12_BORDER;
 
-			//printf ("posx: %d pos_x_origen: %d\n",posx,pos_x_origen);
-				
-			if (posx>=clip_min && posx<=clip_max ) {
-			
-				int offset_pixel;
+    posicion_array_layer +=borde_no_escribible*2; //doble de ancho
 
-				z80_byte pixel_izq,pixel_der;
+    int posx;
 
-				if (layer2_resolution) {
-					offset_pixel=tbblue_layer2_offset+pos_x_origen*256;
-				}
+    //Total pixeles por defecto
+    int total_x=256;
 
-				else {
-					offset_pixel=tbblue_layer2_offset+pos_x_origen;
-				}
+    
+    int clip_min=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][0];
+    int clip_max=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][1];
 
+    if (layer2_resolution) {
+        total_x +=TBBLUE_LAYER2_12_BORDER*2;
 
-				offset_pixel &=0x1FFFFF;
+        //Se multiplica por 2 siempre en estas resoluciones de 320x256 y 640x256
+        clip_min *=2;
+        clip_max *=2;			
 
-
-				
-
-				z80_byte byte_leido=memoria_spectrum[offset_pixel];
-
-				if (layer2_resolution==2) {
-					pixel_izq=(byte_leido>>4) & 0xF;
-					pixel_der=(byte_leido   ) & 0xF;					
-
-				}
-
-				else {
-					pixel_izq=byte_leido;
-					pixel_der=pixel_izq;
-				}
-
-				z80_int final_color_layer2_izq=tbblue_get_palette_active_layer2(pixel_izq+palette_offset);
-
-				//Ver si color resultante es el transparente de ula, y cambiarlo por el color transparente ficticio
-				if (tbblue_si_transparent(final_color_layer2_izq)) final_color_layer2_izq=TBBLUE_SPRITE_TRANS_FICT;
+    }
 
 
-				z80_int final_color_layer2_der=tbblue_get_palette_active_layer2(pixel_der+palette_offset);
+    for (posx=0;posx<total_x;posx++) {
+            
 
-				//Ver si color resultante es el transparente de ula, y cambiarlo por el color transparente ficticio
-				if (tbblue_si_transparent(final_color_layer2_der)) final_color_layer2_der=TBBLUE_SPRITE_TRANS_FICT;		
+        //printf ("posx: %d pos_x_origen: %d\n",posx,pos_x_origen);
+            
+        if (posx>=clip_min && posx<=clip_max ) {
+        
+            int offset_pixel;
 
-				tbblue_layer_layer2[posicion_array_layer]=final_color_layer2_izq;
-				tbblue_layer_layer2[posicion_array_layer+1]=final_color_layer2_der;
+            z80_byte pixel_izq,pixel_der;
 
-			}
+            if (layer2_resolution) {
+                offset_pixel=tbblue_layer2_offset+pos_x_origen*256;
+            }
 
-			//Este incremento se tiene que hacer siempre fuera, para que se aplique siempre, se haga o no clipping
-			posicion_array_layer+=2;
+            else {
+                offset_pixel=tbblue_layer2_offset+pos_x_origen;
+            }
+
+
+            offset_pixel &=0x1FFFFF;
+
+
+            
+
+            z80_byte byte_leido=memoria_spectrum[offset_pixel];
+
+            if (layer2_resolution==2) {
+                pixel_izq=(byte_leido>>4) & 0xF;
+                pixel_der=(byte_leido   ) & 0xF;					
+
+            }
+
+            else {
+                pixel_izq=byte_leido;
+                pixel_der=pixel_izq;
+            }
+
+            z80_int final_color_layer2_izq=tbblue_get_palette_active_layer2(pixel_izq+palette_offset);
+
+            //Ver si color resultante es el transparente de ula, y cambiarlo por el color transparente ficticio
+            if (tbblue_si_transparent(final_color_layer2_izq)) final_color_layer2_izq=TBBLUE_SPRITE_TRANS_FICT;
+
+
+            z80_int final_color_layer2_der=tbblue_get_palette_active_layer2(pixel_der+palette_offset);
+
+            //Ver si color resultante es el transparente de ula, y cambiarlo por el color transparente ficticio
+            if (tbblue_si_transparent(final_color_layer2_der)) final_color_layer2_der=TBBLUE_SPRITE_TRANS_FICT;		
+
+            tbblue_layer_layer2[posicion_array_layer]=final_color_layer2_izq;
+            tbblue_layer_layer2[posicion_array_layer+1]=final_color_layer2_der;
+
+        }
+
+        //Este incremento se tiene que hacer siempre fuera, para que se aplique siempre, se haga o no clipping
+        posicion_array_layer+=2;
 
 
 
-			//else {
-			//	printf ("fuera rango\n");
-			//}
+        //else {
+        //	printf ("fuera rango\n");
+        //}
 
-						
-	
-			//Siguiente posicion
-			pos_x_origen++;
-			if (pos_x_origen>=total_x) {
-				pos_x_origen=0;
-			}
-				
+                    
 
-	    }
+        //Siguiente posicion
+        pos_x_origen++;
+        if (pos_x_origen>=total_x) {
+            pos_x_origen=0;
+        }
+            
+
+    }
 
 
 	 
@@ -6897,29 +6888,29 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
   	//En zona visible pantalla (no borde superior ni inferior)
   	if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
 
-			//int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
+        //int scanline_copia=t_scanline_draw-screen_indice_inicio_pant;
 
 
-			int tbblue_lores=tbblue_registers[0x15] & 128;
-			if (tbblue_lores) tbblue_do_ula_lores_overlay();
-		  	else {
-				if (tbblue_if_ula_is_enabled() ) {
-				  tbblue_do_ula_standard_overlay();
-				}
-			}
+        int tbblue_lores=tbblue_registers[0x15] & 128;
+        if (tbblue_lores) tbblue_do_ula_lores_overlay();
+        else {
+            if (tbblue_if_ula_is_enabled() ) {
+                tbblue_do_ula_standard_overlay();
+            }
+        }
 
-		//Overlay de layer2
-							//Capa layer2
-				/*if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
-					if (scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
-						capalayer2=1;
-					
-						tbblue_do_layer2_overlay();
-						if (tbblue_reveal_layer_layer2.v) {
-								tbblue_reveal_layer_draw(tbblue_layer_layer2);
-						}
-					}
-				}*/
+    //Overlay de layer2
+                        //Capa layer2
+            /*if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
+                if (scanline_copia>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && scanline_copia<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+                    capalayer2=1;
+                
+                    tbblue_do_layer2_overlay();
+                    if (tbblue_reveal_layer_layer2.v) {
+                            tbblue_reveal_layer_draw(tbblue_layer_layer2);
+                    }
+                }
+            }*/
 
 	}
 
@@ -6932,55 +6923,55 @@ void screen_store_scanline_rainbow_solo_display_tbblue(void)
 
 
 
-		//Overlay de layer2
-		//Capa layer2
-				if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
-					int y_layer2=t_scanline_draw; //0..63 es border (8 no visibles);
-					int border_no_visible=screen_indice_inicio_pant-TBBLUE_LAYER2_12_BORDER;
+    //Overlay de layer2
+    //Capa layer2
+    if (tbblue_is_active_layer2() && !tbblue_force_disable_layer_layer_two.v) {
+        int y_layer2=t_scanline_draw; //0..63 es border (8 no visibles);
+        int border_no_visible=screen_indice_inicio_pant-TBBLUE_LAYER2_12_BORDER;
 
 
-					int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
+        int layer2_resolution=(tbblue_registers[112]>>4) & 3; 
 
-					if (layer2_resolution>0) {
-						y_layer2 -=border_no_visible;
-					}
-					else {
-						y_layer2 -=screen_indice_inicio_pant;
-					}
+        if (layer2_resolution>0) {
+            y_layer2 -=border_no_visible;
+        }
+        else {
+            y_layer2 -=screen_indice_inicio_pant;
+        }
 
-					int dibujar=0;
-
-
-					if (layer2_resolution==0) {
-						if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
-							if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
-								dibujar=1;
-							}
-						}
-					}
-
-					else if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
-						dibujar=1;
-					}
-
-					if (dibujar) {
-						capalayer2=1;
-					
-						tbblue_do_layer2_overlay(y_layer2);
+        int dibujar=0;
 
 
-					
+        if (layer2_resolution==0) {
+            if (t_scanline_draw>=screen_indice_inicio_pant && t_scanline_draw<screen_indice_fin_pant) {
+                if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+                    dibujar=1;
+                }
+            }
+        }
 
-						if (tbblue_reveal_layer_layer2.v) {
-								tbblue_reveal_layer_draw(tbblue_layer_layer2);
-						}
-					}
+        else if (y_layer2>=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][2] && y_layer2<=clip_windows[TBBLUE_CLIP_WINDOW_LAYER2][3]) {
+            dibujar=1;
+        }
 
-								
-				}
+        if (dibujar) {
+            capalayer2=1;
+        
+            tbblue_do_layer2_overlay(y_layer2);
+
+
+        
+
+            if (tbblue_reveal_layer_layer2.v) {
+                    tbblue_reveal_layer_draw(tbblue_layer_layer2);
+            }
+        }
+
+                    
+    }
 
 		
-		//Capa de tiles. Mezclarla directamente a la capa de ula tbblue_layer_ula
+    //Capa de tiles. Mezclarla directamente a la capa de ula tbblue_layer_ula
 
 
 	if ( tbblue_if_tilemap_enabled() && tbblue_force_disable_layer_tilemap.v==0) {
@@ -7004,9 +6995,9 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 	}
 
 
-						if (tbblue_reveal_layer_ula.v) {
-								tbblue_reveal_layer_draw(tbblue_layer_ula);
-						}
+    if (tbblue_reveal_layer_ula.v) {
+            tbblue_reveal_layer_draw(tbblue_layer_ula);
+    }
 
 
 
@@ -7024,16 +7015,16 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 		capasprites=1;
 		tbsprite_do_overlay();
 
-						if (tbblue_reveal_layer_sprites.v) {
-								tbblue_reveal_layer_draw(tbblue_layer_sprites);
-						}
+        if (tbblue_reveal_layer_sprites.v) {
+                tbblue_reveal_layer_draw(tbblue_layer_sprites);
+        }
 
 	}
 
 
 
 
-  //Renderizamos las 3 capas buffer rainbow
+    //Renderizamos las 3 capas buffer rainbow
 	tbblue_render_layers_rainbow(capalayer2,capasprites);
 
 
@@ -7045,9 +7036,9 @@ the central 256×192 display. The X coordinates are internally doubled to cover 
 
 z80_byte return_tbblue_mmu_segment(z80_int dir)
 {
-        int segmento=dir/8192;
-        z80_byte reg_mmu_value=tbblue_registers[80+segmento];
-        return reg_mmu_value;
+    int segmento=dir/8192;
+    z80_byte reg_mmu_value=tbblue_registers[80+segmento];
+    return reg_mmu_value;
 }
 
 
@@ -7069,93 +7060,93 @@ int tbblue_is_writable_segment_mmu_rom_space(z80_int dir)
 void screen_tbblue_refresca_pantalla_comun_tbblue(int x,int y,unsigned int color)
 {
 
-        int dibujar=0;
+    int dibujar=0;
 
-        //if (x>255) dibujar=1;
-        //else if (y>191) dibujar=1;
-        if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
+    //if (x>255) dibujar=1;
+    //else if (y>191) dibujar=1;
+    if (scr_ver_si_refrescar_por_menu_activo(x/8,y/8)) dibujar=1;
 
-        if (dibujar) {
-		scr_putpixel_zoom(x,y,color);
-                scr_putpixel_zoom(x,y+1,color);
-                scr_putpixel_zoom(x+1,y,color);
-                scr_putpixel_zoom(x+1,y+1,color);
-        }
+    if (dibujar) {
+        scr_putpixel_zoom(x,y,color);
+        scr_putpixel_zoom(x,y+1,color);
+        scr_putpixel_zoom(x+1,y,color);
+        scr_putpixel_zoom(x+1,y+1,color);
+    }
 }
 
 
 //Refresco pantalla sin rainbow para tbblue
 void screen_tbblue_refresca_pantalla_comun(void)
 {
-        int x,y,bit;
-        z80_int direccion,dir_atributo;
-        z80_byte byte_leido;
-        int color=0;
-        int fila;
-        //int zx,zy;
+    int x,y,bit;
+    z80_int direccion,dir_atributo;
+    z80_byte byte_leido;
+    int color=0;
+    int fila;
+    //int zx,zy;
 
-        z80_byte attribute,ink,paper,bright,flash,aux;
-
-
-       z80_byte *screen=get_base_mem_pantalla();
-
-        //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-        z80_byte x_hi;
-
-        for (y=0;y<192;y++) {
-                //direccion=16384 | devuelve_direccion_pantalla(0,y);
-
-                //direccion=16384 | screen_addr_table[(y<<5)];
-                direccion=screen_addr_table[(y<<5)];
+    z80_byte attribute,ink,paper,bright,flash,aux;
 
 
-                fila=y/8;
-                dir_atributo=6144+(fila*32);
-                for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
+    z80_byte *screen=get_base_mem_pantalla();
+
+    //printf ("dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
+    z80_byte x_hi;
+
+    for (y=0;y<192;y++) {
+        //direccion=16384 | devuelve_direccion_pantalla(0,y);
+
+        //direccion=16384 | screen_addr_table[(y<<5)];
+        direccion=screen_addr_table[(y<<5)];
+
+
+        fila=y/8;
+        dir_atributo=6144+(fila*32);
+        for (x=0,x_hi=0;x<32;x++,x_hi +=8) {
 
 
 
-                                byte_leido=screen[direccion];
-                                attribute=screen[dir_atributo];
+            byte_leido=screen[direccion];
+            attribute=screen[dir_atributo];
 
 
-                                ink=attribute &7;
-                                paper=(attribute>>3) &7;
-											bright=(attribute) &64;
-                                flash=(attribute)&128;
-                                if (flash) {
-                                        //intercambiar si conviene
-                                        if (estado_parpadeo.v) {
-                                                aux=paper;
-                                                paper=ink;
-                                                ink=aux;
-                                        }
-                                }
+            ink=attribute &7;
+            paper=(attribute>>3) &7;
+                        bright=(attribute) &64;
+            flash=(attribute)&128;
+            if (flash) {
+                    //intercambiar si conviene
+                    if (estado_parpadeo.v) {
+                            aux=paper;
+                            paper=ink;
+                            ink=aux;
+                    }
+            }
 
-                                if (bright) {
-                                        ink +=8;
-                                        paper +=8;
-                                }
+            if (bright) {
+                    ink +=8;
+                    paper +=8;
+            }
 
-                                for (bit=0;bit<8;bit++) {
+            for (bit=0;bit<8;bit++) {
 
-                                        color= ( byte_leido & 128 ? ink : paper );
+                color= ( byte_leido & 128 ? ink : paper );
 
-					//Por cada pixel, hacer *2s en ancho y alto.
-					//Esto es muy simple dado que no soporta modo rainbow y solo el estandard 256x192
-					screen_tbblue_refresca_pantalla_comun_tbblue((x_hi+bit)*2,y*2,color);
-		
+                //Por cada pixel, hacer *2s en ancho y alto.
+                //Esto es muy simple dado que no soporta modo rainbow y solo el estandard 256x192
+                screen_tbblue_refresca_pantalla_comun_tbblue((x_hi+bit)*2,y*2,color);
 
-                                        byte_leido=byte_leido<<1;
-                                }
-                        
 
-     
-                        direccion++;
-                        dir_atributo++;
-                }
+                byte_leido=byte_leido<<1;
+            }
+    
 
+
+            direccion++;
+            dir_atributo++;
         }
+
+    }
 
 }
 
@@ -7170,37 +7161,37 @@ void screen_tbblue_refresca_no_rainbow_border(void)
 
 	if (scr_refresca_sin_colores.v) color=7;
 
-int x,y;
+    int x,y;
 
 
 
-       //parte superior
-        for (y=0;y<TBBLUE_TOP_BORDER;y++) {
-                for (x=0;x<TBBLUE_DISPLAY_WIDTH*zoom_x+TBBLUE_LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,y,color);
+    //parte superior
+    for (y=0;y<TBBLUE_TOP_BORDER;y++) {
+        for (x=0;x<TBBLUE_DISPLAY_WIDTH*zoom_x+TBBLUE_LEFT_BORDER*2;x++) {
+            scr_putpixel(x,y,color);
 
-
-                }
-        }
-
-        //parte inferior
-        for (y=0;y<TBBLUE_TOP_BORDER;y++) {
-                for (x=0;x<TBBLUE_DISPLAY_WIDTH*zoom_x+TBBLUE_LEFT_BORDER*2;x++) {
-                                scr_putpixel(x,TBBLUE_TOP_BORDER+y+TBBLUE_DISPLAY_HEIGHT*zoom_y,color);
-
-
-                }
-        }
-
-
-        //laterales
-        for (y=0;y<TBBLUE_DISPLAY_HEIGHT*zoom_y;y++) {
-                for (x=0;x<TBBLUE_LEFT_BORDER;x++) {
-                        scr_putpixel(x,TBBLUE_TOP_BORDER+y,color);
-                        scr_putpixel(TBBLUE_LEFT_BORDER+TBBLUE_DISPLAY_WIDTH*zoom_x+x,TBBLUE_TOP_BORDER+y,color);
-                }
 
         }
+    }
+
+    //parte inferior
+    for (y=0;y<TBBLUE_TOP_BORDER;y++) {
+        for (x=0;x<TBBLUE_DISPLAY_WIDTH*zoom_x+TBBLUE_LEFT_BORDER*2;x++) {
+            scr_putpixel(x,TBBLUE_TOP_BORDER+y+TBBLUE_DISPLAY_HEIGHT*zoom_y,color);
+
+
+        }
+    }
+
+
+    //laterales
+    for (y=0;y<TBBLUE_DISPLAY_HEIGHT*zoom_y;y++) {
+        for (x=0;x<TBBLUE_LEFT_BORDER;x++) {
+                scr_putpixel(x,TBBLUE_TOP_BORDER+y,color);
+                scr_putpixel(TBBLUE_LEFT_BORDER+TBBLUE_DISPLAY_WIDTH*zoom_x+x,TBBLUE_TOP_BORDER+y,color);
+        }
+
+    }
 
 
 
@@ -7259,10 +7250,10 @@ void screen_tbblue_refresca_rainbow(void)
 
 
 			if (dibujar==1) {
-					for (bit=0;bit<8;bit++) {
-						color_pixel=*puntero++;
-						scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
-					}
+                for (bit=0;bit<8;bit++) {
+                    color_pixel=*puntero++;
+                    scr_putpixel_zoom_rainbow(x+bit,y,color_pixel);
+                }
 			}
 			else puntero+=8;
 
@@ -7279,69 +7270,69 @@ void screen_tbblue_refresca_rainbow(void)
 
 void screen_tbblue_refresca_no_rainbow(void)
 {
-                //modo clasico. sin rainbow
-                if (rainbow_enabled.v==0) {
-                        if (border_enabled.v) {
-                                //ver si hay que refrescar border
-                                if (modificado_border.v)
-                                {
-                                        //scr_refresca_border();
-																				screen_tbblue_refresca_no_rainbow_border();
-                                        modificado_border.v=0;
-                                }
+    //modo clasico. sin rainbow
+    if (rainbow_enabled.v==0) {
+        if (border_enabled.v) {
+            //ver si hay que refrescar border
+            if (modificado_border.v)
+            {
+                //scr_refresca_border();
+                screen_tbblue_refresca_no_rainbow_border();
+                modificado_border.v=0;
+            }
 
-                        }
+        }
 
-                        screen_tbblue_refresca_pantalla_comun();
-                }
+        screen_tbblue_refresca_pantalla_comun();
+    }
 }
 
 
 void tbblue_out_port_8189(z80_byte value)
 {
-	             //Puerto tipicamente 8189
-                         // the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
-                       
-				//printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
-                                puerto_8189=value;
+    //Puerto tipicamente 8189
+    // the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
 
-				//En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
-				tbblue_registers[80]=255;
-				tbblue_registers[81]=255;
+    //printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
+    puerto_8189=value;
 
-                                tbblue_set_memory_pages();
+    //En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
+    tbblue_registers[80]=255;
+    tbblue_registers[81]=255;
+
+    tbblue_set_memory_pages();
                         
 }
 
 void tbblue_out_port_32765(z80_byte value)
 {
-				//printf ("TBBLUE changing port 32765 value=0x%02XH\n",value);
-                                puerto_32765=value;
+    //printf ("TBBLUE changing port 32765 value=0x%02XH\n",value);
+    puerto_32765=value;
 
-				//para indicar a la MMU la  pagina en los segmentos 6 y 7
-				tbblue_registers[80+6]=(value&7)*2;
-				tbblue_registers[80+7]=(value&7)*2+1;
+    //para indicar a la MMU la  pagina en los segmentos 6 y 7
+    tbblue_registers[80+6]=(value&7)*2;
+    tbblue_registers[80+7]=(value&7)*2+1;
 
-				//En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
-				tbblue_registers[80]=255;
-				tbblue_registers[81]=255;
+    //En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
+    tbblue_registers[80]=255;
+    tbblue_registers[81]=255;
 
-                tbblue_set_memory_pages();
+    tbblue_set_memory_pages();
 
-			//Sincronizar bit shadow
+    //Sincronizar bit shadow
 
 
-			/*
-			(W) 0x69 (105) => DISPLAY CONTROL 1 REGISTER
+    /*
+    (W) 0x69 (105) => DISPLAY CONTROL 1 REGISTER
 
-			Bit	Function
-			7	Enable the Layer 2 (alias for Layer 2 Access Port ($123B) bit 1)
-			6	Enable ULA shadow (bank 7) display (alias for Memory Paging Control ($7FFD) bit 3)
-			5-0	alias for Timex Sinclair Video Mode Control ($xxFF) bits 5:0
+    Bit	Function
+    7	Enable the Layer 2 (alias for Layer 2 Access Port ($123B) bit 1)
+    6	Enable ULA shadow (bank 7) display (alias for Memory Paging Control ($7FFD) bit 3)
+    5-0	alias for Timex Sinclair Video Mode Control ($xxFF) bits 5:0
 
-			*/
-			tbblue_registers[105] &= (255-64);
-			if (value&8) tbblue_registers[105]|=64;
+    */
+    tbblue_registers[105] &= (255-64);
+    if (value&8) tbblue_registers[105]|=64;
 
 }
 
