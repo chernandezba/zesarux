@@ -1854,6 +1854,11 @@ bits 7-0 = Set the index value. (0XE3 after a reset)
 		//colision
 		tbblue_port_303b |=1;
 		//printf ("set colision flag. result value: %d\n",tbblue_port_303b);
+
+        //Si invertir prioridad sprites
+        // NextReg 0x15 bit6 = rendering priority: 1 = Sprite 0 on top, 0 = Sprite 0 at bottom
+
+        if (tbblue_registers[21] & 64) return;  // keep pixel of previous sprite rendered
 	}
 	
 
