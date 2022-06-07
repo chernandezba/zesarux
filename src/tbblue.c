@@ -3244,10 +3244,10 @@ void tbblue_set_memory_pages(void)
 			tbblue_set_ram_page(7);
 
 
-		        contend_pages_actual[0]=0;
-		        contend_pages_actual[1]=contend_pages_128k_p2a[5];
-		        contend_pages_actual[2]=contend_pages_128k_p2a[2];
-		        contend_pages_actual[3]=contend_pages_128k_p2a[0];
+            contend_pages_actual[0]=0;
+            contend_pages_actual[1]=contend_pages_128k_p2a[5];
+            contend_pages_actual[2]=contend_pages_128k_p2a[2];
+            contend_pages_actual[3]=contend_pages_128k_p2a[0];
 
 
 			//tbblue_low_segment_writable.v=0;
@@ -3256,13 +3256,14 @@ void tbblue_set_memory_pages(void)
 		case 2:
                     //010 = ZX 128K
 			rom_page=(puerto_32765>>4)&1;
-                        tbblue_set_rom_page(0,rom_page*2);
+
+            tbblue_set_rom_page(0,rom_page*2);
 			tbblue_set_rom_page(1,rom_page*2+1);
 
-                        tbblue_set_ram_page(2);
+            tbblue_set_ram_page(2);
 			tbblue_set_ram_page(3);
 
-                        tbblue_set_ram_page(4);
+            tbblue_set_ram_page(4);
 			tbblue_set_ram_page(5);
 
 			//ram_page=tbblue_mem_get_ram_page();
@@ -3270,16 +3271,16 @@ void tbblue_set_memory_pages(void)
 			//tbblue_registers[80+7]=ram_page*2+1;
 
 
-                        tbblue_set_ram_page(6);
+            tbblue_set_ram_page(6);
 			tbblue_set_ram_page(7);
 
 
 
 			//tbblue_low_segment_writable.v=0;
-		        contend_pages_actual[0]=0;
-		        contend_pages_actual[1]=contend_pages_128k_p2a[5];
-		        contend_pages_actual[2]=contend_pages_128k_p2a[2];
-		        contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+            contend_pages_actual[0]=0;
+            contend_pages_actual[1]=contend_pages_128k_p2a[5];
+            contend_pages_actual[2]=contend_pages_128k_p2a[2];
+            contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
 		break;
@@ -3318,25 +3319,25 @@ void tbblue_set_memory_pages(void)
 				//printf ("rom: %d:\n",rom_page);
 
 
-                        	tbblue_set_rom_page(0,rom_page*2);
+                tbblue_set_rom_page(0,rom_page*2);
 				tbblue_set_rom_page(1,rom_page*2+1);
 
-                        	tbblue_set_ram_page(2);
+                tbblue_set_ram_page(2);
 				tbblue_set_ram_page(3);
 
-                        	tbblue_set_ram_page(4);
+                tbblue_set_ram_page(4);
 				tbblue_set_ram_page(5);
 
-                        	//ram_page=tbblue_mem_get_ram_page();
+                //ram_page=tbblue_mem_get_ram_page();
 				//tbblue_registers[80+6]=ram_page*2;
 				//tbblue_registers[80+7]=ram_page*2+1;
-                        	tbblue_set_ram_page(6);
+                tbblue_set_ram_page(6);
 				tbblue_set_ram_page(7);
 
-		        	contend_pages_actual[0]=0;
-		        	contend_pages_actual[1]=contend_pages_128k_p2a[5];
-		        	contend_pages_actual[2]=contend_pages_128k_p2a[2];
-		        	contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+                contend_pages_actual[0]=0;
+                contend_pages_actual[1]=contend_pages_128k_p2a[5];
+                contend_pages_actual[2]=contend_pages_128k_p2a[2];
+                contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
 			}
@@ -3345,27 +3346,28 @@ void tbblue_set_memory_pages(void)
 		case 4:
                     //100 = Pentagon 128K. TODO. de momento tal cual 128kb
 			rom_page=(puerto_32765>>4)&1;
-                        tbblue_set_rom_page(0,rom_page*2);
+
+            tbblue_set_rom_page(0,rom_page*2);
 			tbblue_set_rom_page(1,rom_page*2+1);
 
-                        tbblue_set_ram_page(2);
+            tbblue_set_ram_page(2);
 			tbblue_set_ram_page(3);
 
-                        tbblue_set_ram_page(4);
+            tbblue_set_ram_page(4);
 			tbblue_set_ram_page(5);
 
 			//ram_page=tbblue_mem_get_ram_page();
 			//tbblue_registers[80+6]=ram_page*2;
 			//tbblue_registers[80+7]=ram_page*2+1;
-                        tbblue_set_ram_page(6);
+            tbblue_set_ram_page(6);
 			tbblue_set_ram_page(7);
 
 
 			//tbblue_low_segment_writable.v=0;
-		        contend_pages_actual[0]=0;
-		        contend_pages_actual[1]=contend_pages_128k_p2a[5];
-		        contend_pages_actual[2]=contend_pages_128k_p2a[2];
-		        contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
+            contend_pages_actual[0]=0;
+            contend_pages_actual[1]=contend_pages_128k_p2a[5];
+            contend_pages_actual[2]=contend_pages_128k_p2a[2];
+            contend_pages_actual[3]=contend_pages_128k_p2a[contend_page_high_segment];
 
 
 		break;
@@ -3423,12 +3425,10 @@ which allows you access to all SRAM.
 			tbblue_set_ram_page(7);
 
 
-
-
-		        contend_pages_actual[0]=0; //Suponemos que esa pagina no tiene contienda
-		        contend_pages_actual[1]=contend_pages_128k_p2a[5];
-		        contend_pages_actual[2]=contend_pages_128k_p2a[2];
-		        contend_pages_actual[3]=contend_pages_128k_p2a[7];
+            contend_pages_actual[0]=0; //Suponemos que esa pagina no tiene contienda
+            contend_pages_actual[1]=contend_pages_128k_p2a[5];
+            contend_pages_actual[2]=contend_pages_128k_p2a[2];
+            contend_pages_actual[3]=contend_pages_128k_p2a[7];
 
 		break;
 	}
@@ -3774,19 +3774,19 @@ void tbblue_reset(void)
 
  */
 
-       z80_byte reg8c_low=tbblue_registers[0x8c];
+    z80_byte reg8c_low=tbblue_registers[0x8c];
 
-       //Moverlo a bits altos
-       reg8c_low = reg8c_low << 4;
+    //Moverlo a bits altos
+    reg8c_low = reg8c_low << 4;
 
-       //Quitar de origen los bits altos
+    //Quitar de origen los bits altos
 
-       tbblue_registers[0x8c] &=0xF;
+    tbblue_registers[0x8c] &=0xF;
 
-       //Y meterle los altos
+    //Y meterle los altos
 
-       tbblue_registers[0x8c] |=reg8c_low;	
- 
+    tbblue_registers[0x8c] |=reg8c_low;	
+
 
 	tbblue_reset_common();
 
@@ -3905,51 +3905,51 @@ z80_byte old_tbblue_read_port_24d5(void)
 
 void tbblue_set_timing_128k(void)
 {
-        contend_read=contend_read_128k;
-        contend_read_no_mreq=contend_read_no_mreq_128k;
-        contend_write_no_mreq=contend_write_no_mreq_128k;
+    contend_read=contend_read_128k;
+    contend_read_no_mreq=contend_read_no_mreq_128k;
+    contend_write_no_mreq=contend_write_no_mreq_128k;
 
-        ula_contend_port_early=ula_contend_port_early_128k;
-        ula_contend_port_late=ula_contend_port_late_128k;
+    ula_contend_port_early=ula_contend_port_early_128k;
+    ula_contend_port_late=ula_contend_port_late_128k;
 
 
-        screen_testados_linea=228;
-        screen_invisible_borde_superior=7;
-        screen_invisible_borde_derecho=104;
+    screen_testados_linea=228;
+    screen_invisible_borde_superior=7;
+    screen_invisible_borde_derecho=104;
 
-        port_from_ula=port_from_ula_p2a;
-        contend_pages_128k_p2a=contend_pages_p2a;
+    port_from_ula=port_from_ula_p2a;
+    contend_pages_128k_p2a=contend_pages_p2a;
 
 }
 
 
 void tbblue_set_timing_48k(void)
 {
-        contend_read=contend_read_48k;
-        contend_read_no_mreq=contend_read_no_mreq_48k;
-        contend_write_no_mreq=contend_write_no_mreq_48k;
+    contend_read=contend_read_48k;
+    contend_read_no_mreq=contend_read_no_mreq_48k;
+    contend_write_no_mreq=contend_write_no_mreq_48k;
 
-        ula_contend_port_early=ula_contend_port_early_48k;
-        ula_contend_port_late=ula_contend_port_late_48k;
+    ula_contend_port_early=ula_contend_port_early_48k;
+    ula_contend_port_late=ula_contend_port_late_48k;
 
-        screen_testados_linea=224;
-        screen_invisible_borde_superior=8;
-        screen_invisible_borde_derecho=96;
+    screen_testados_linea=224;
+    screen_invisible_borde_superior=8;
+    screen_invisible_borde_derecho=96;
 
-        port_from_ula=port_from_ula_48k;
+    port_from_ula=port_from_ula_48k;
 
-        //esto no se usara...
-        contend_pages_128k_p2a=contend_pages_128k;
+    //esto no se usara...
+    contend_pages_128k_p2a=contend_pages_128k;
 
 }
 
 void tbblue_change_timing(int timing)
 {
-        if (timing==0) tbblue_set_timing_48k();
-        else if (timing==1) tbblue_set_timing_128k();
+    if (timing==0) tbblue_set_timing_48k();
+    else if (timing==1) tbblue_set_timing_128k();
 
-        screen_set_video_params_indices();
-        inicializa_tabla_contend();
+    screen_set_video_params_indices();
+    inicializa_tabla_contend();
 
 }
 
@@ -3980,21 +3980,21 @@ void tbblue_set_emulator_setting_timing(void)
 	*/
 
 
-                //z80_byte t=(tbblue_config1 >> 6)&3;
-		z80_byte t=(tbblue_registers[3]>>4)&7;
+    //z80_byte t=(tbblue_config1 >> 6)&3;
+    z80_byte t=(tbblue_registers[3]>>4)&7;
 
-		//TODO: otros timings
+    //TODO: otros timings
 
-                if (t<=1) {
-		//48k
-				debug_printf (VERBOSE_INFO,"Apply config.timing. change:48k");
-				tbblue_change_timing(0);
-		}
-		else {
-		//128k
-				debug_printf (VERBOSE_INFO,"Apply config.timing. change:128k");
-				tbblue_change_timing(1);
-		}
+    if (t<=1) {
+    //48k
+        debug_printf (VERBOSE_INFO,"Apply config.timing. change:48k");
+        tbblue_change_timing(0);
+    }
+    else {
+    //128k
+        debug_printf (VERBOSE_INFO,"Apply config.timing. change:128k");
+        tbblue_change_timing(1);
+    }
 
 
 
@@ -4386,20 +4386,20 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 	if (index_position==3) {
 
-			//printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
+        //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
 
-            //Controlar caso especial
-            //(W) 0x03 (03) => Set machine type, only in IPL or config mode
-            //   		bits 2-0 = Machine type:
-            //      		000 = Config mode
-            z80_byte machine_type=tbblue_registers[3]&7;
+        //Controlar caso especial
+        //(W) 0x03 (03) => Set machine type, only in IPL or config mode
+        //   		bits 2-0 = Machine type:
+        //      		000 = Config mode
+        z80_byte machine_type=tbblue_registers[3]&7;
 
-            if (!(machine_type==0 || tbblue_bootrom.v)) {
-                debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
-				//printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
-                return;
-            }
+        if (!(machine_type==0 || tbblue_bootrom.v)) {
+            debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
+            //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
+            return;
         }
+    }
 
 	if (index_position==28) {
         /*
@@ -4440,23 +4440,23 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
   * Hard reset has precedence
   
 					*/
-						if (value&2) {
-							
-							tbblue_bootrom.v=1;
-							
-							tbblue_registers[3]=0;
-							
-							tbblue_set_memory_pages();
-							reg_pc=0;
-						}
+            if (value&2) {
+                
+                tbblue_bootrom.v=1;
+                
+                tbblue_registers[3]=0;
+                
+                tbblue_set_memory_pages();
+                reg_pc=0;
+            }
 
-						//Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
-						else if (value&1) {
-							reg_pc=0;
-						}
+            //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
+            else if (value&1) {
+                reg_pc=0;
+            }
 
 
-					break;
+            break;
 
 
 		break;
@@ -4482,21 +4482,21 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		*/
 
 		/*  OLD:
-				(W)		03 => Set machine type, only in bootrom or config mode:
-							A write in this register disables the bootrom mode (0000 to 3FFF are mapped to the RAM instead of the internal ROM)
-							bits 7-5 = Reserved, must be 0
-							bits 4-3 = Timing:
-								00,
-								01 = ZX 48K
-								10 = ZX 128K
-								11 = ZX +2/+3e
-							bit 2 = Reserved, must be 0
-							bits 1-0 = Machine type:
-								00 = Config mode (bootrom)
-								01 = ZX 48K
-								10 = ZX 128K
-								11 = ZX +2/+3e
-								*/
+        (W)		03 => Set machine type, only in bootrom or config mode:
+                    A write in this register disables the bootrom mode (0000 to 3FFF are mapped to the RAM instead of the internal ROM)
+                    bits 7-5 = Reserved, must be 0
+                    bits 4-3 = Timing:
+                        00,
+                        01 = ZX 48K
+                        10 = ZX 128K
+                        11 = ZX +2/+3e
+                    bit 2 = Reserved, must be 0
+                    bits 1-0 = Machine type:
+                        00 = Config mode (bootrom)
+                        01 = ZX 48K
+                        10 = ZX 128K
+                        11 = ZX +2/+3e
+                        */
 			//Pentagon not supported yet. TODO
 			//last_value=tbblue_config1;
 			tbblue_bootrom.v=0;
@@ -4637,7 +4637,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 				else screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Disabling lores video mode");
 			}
 		break;
-
 
 
 
@@ -4884,7 +4883,6 @@ Bit	Function
 		break;
 
 	
-
 
 	}
 
