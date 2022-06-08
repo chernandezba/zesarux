@@ -6,14 +6,9 @@ Para esta version:
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 
 
--ejemplos para spool, como:
-./txt_to_basic_lines.sh FAQ 3 si si no > pruebaspool2.txt
-
-
 -ZENG soporte para QL. ok aunque no envia teclas extendidas
 -ZENG para msx se leen los cursores en destino
 -ZENG colecovision no va bien
-
 
 
 -Info ZENG en FAQ: ya está en ayuda. Quizá extender mas?
@@ -31,15 +26,10 @@ Luego pulsar botón salir emulador
 Y cierra menus pero no sale
 
 
-
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
-
--mejoras accesibilidad: 
-* https://www.w3.org/TR/low-vision-needs/
-* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
 
 
 -unificar eventos joystick con eventos F-
@@ -48,11 +38,9 @@ Y cierra menus pero no sale
 
 -spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
 
-
 -reordenar secciones en experthelp, quiza por settings igual de menu
 
 -desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
-
 
 -ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
 
@@ -60,7 +48,6 @@ Y cierra menus pero no sale
 
 -quiza distinguir en la decoracion de ventana lo que es un menu propiamente y lo que es una ventana (ay registers, waveform, etc)
 
--organizar ventanas en cascada
 
 -opcion disable real joystick desde menu
 
@@ -98,24 +85,13 @@ En void zxvision_draw_window_contents(zxvision_window *w)
 Desactivar:
 if (must_return) return;
 
--Nuevo concepto para ventanas:
-Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
-Ideal para help keyboard por ejemplo
-En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
 
--Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
-Considerar algun modo de dibujado mas rapido
 
 -menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
-
--idea Para enviar sonido desde menú: Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
-
-
 -Botón del medio de ratón para enviar al fondo una ventana
 
--Doble buffer fbdev copia más ancho del que realmente ocupa. Considerar totalspectrumancho x bits pixel? 
 
 -cuelgue tecla pausa
 * ZEsarUX 10.1 on Mac: no hang after pressing pause several times
@@ -136,9 +112,8 @@ Total bytes leidos: 0
 Sector -407021264
 
 -convert a ddh: 
-*creo que no tiene sentido usar hilow_read_audio_directo_a_pista
 -linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
-
 -en windows el conteo de microsegundos se ve a veces valor negativo en hilow convert. quiza es porque es 32 bits?
+
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();

@@ -28,12 +28,28 @@ iconos que se puedan mover con raton por el zx desktop
 
 --- ZX Vision
 
+-Nuevo concepto para ventanas:
+Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
+Ideal para help keyboard por ejemplo
+En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
+
+-organizar ventanas en cascada
+
+-mejoras accesibilidad: 
+* https://www.w3.org/TR/low-vision-needs/
+* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
+
+
 -Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
 
 -Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
 
+-idea Para enviar sonido desde menú: Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
 
 -menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
+
+-Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
+Considerar algun modo de dibujado mas rapido
 
 -en ventanas con can_use_all_width=1, no se habilita la barra de scroll vertical cuando hace falta
 
