@@ -969,6 +969,8 @@ Segun MESS:
 
 --- MSX ---
 
+-expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
+
 - Msx games browser desde planetemu. Mismo sirve para coleco y sg1000. Problema: quiza planetemu no admite peticiones http simple. 
 Probado con curl y no parece funcionar
 

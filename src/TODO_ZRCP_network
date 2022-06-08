@@ -22,6 +22,7 @@ Ver si la simulación de pulsado de escape desde smartload de remote protocol no
 
 -Comandos ZRCP obtener datos sprites tsconf
 
+-Consola ZRCP desde menú. Cómo gestionar comandos de cpu step que bloquean el menú?
 
 -Comando genérico para alterar algunos settings desde ZRCP hacia settings de menú
 Quizá hacer función que mediante una string de entrada (quizá misma que command line) que pueda:

@@ -35,10 +35,36 @@ En draw window contents solo renderiza si se ha modificado o bien la capa de tex
 
 -organizar ventanas en cascada
 
+-Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
+
+-Botón del medio de ratón para enviar al fondo una ventana
+
 -mejoras accesibilidad: 
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
 
+-desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
+
+-quiza distinguir en la decoracion de ventana lo que es un menu propiamente y lo que es una ventana (ay registers, waveform, etc)
+
+-ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
+
+-unificar eventos joystick con eventos F-
+
+-funcion menu_generic_message que pueda ocupar mas de 32 caracteres de ancho
+ok?->pendiente controlar que ancho linea texto no exceda en total ancho pantalla/char_width -2
+Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longitud de la constante MAX_….?
+
+
+-Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: 
+con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
+
+-Extender ZX desktop a lo alto 
+
+->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
+En void zxvision_draw_window_contents(zxvision_window *w)
+Desactivar:
+if (must_return) return;
 
 -Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
 

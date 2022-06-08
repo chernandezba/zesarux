@@ -281,6 +281,9 @@ incluso con $NNNN
 -porque en algunos cores nested, debug_nested_core_call_previous se llama al principio y otros al final?
 
 -Convertir cintas paws
+
+-Cinta de juegos y programas zx81 pasar a digital
+
 -Otros componentes mas extraños, como "descubrir" puntuaciones actuales en un juego u otros parámetros,
 como descubrir rutinas de pintado de sprites
 *rutinas de pintado de sprites: quiza detectar cambios en pantalla al pulsar teclas. y ver desde donde se realizan esos cambios en pantalla
@@ -409,6 +412,7 @@ al final se reduce a enviar la tecla cada 20 ms por ejemplo, por tanto, es pract
 -spool: Cambio variables sistema repetición al insertar y quitar cuando acabe
 -spool: Ver si se puede hacer turbo en Ace, z88, zx80 y zx81
 -spool: poder enviar sentencia especial, tipo \s para enviar shift, o \y para enviar symbol, etc
+-spool: spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
 
 - Rasp en carcasa de spectrum
 

@@ -1,119 +1,73 @@
 Para esta version:
 
- 
--Cinta de juegos y programas zx81 pasar a digital
+--Mejoras
 
 -algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
 
-
--ZENG soporte para QL. ok aunque no envia teclas extendidas
--ZENG para msx se leen los cursores en destino
--ZENG colecovision no va bien
-
-
--Info ZENG en FAQ: ya está en ayuda. Quizá extender mas?
-
-
--Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
 -ZSF: soporte para TS2068, Sam coupe, Chloe, Prism, Chrome, MK14
 
--Consola ZRCP desde menú. Cómo gestionar comandos de cpu step que bloquean el menú?
-
--Error: Abrir menú debug cpu con tecla F
-Luego pulsar botón salir emulador
-Y cierra menus pero no sale
-
-
--revisar en menu_debug_change_registers(void),
-//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
-
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
-
--unificar eventos joystick con eventos F-
-
--select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
-
--spool file activado se comporta mal al pulsar en botones de menu. aun peor si se usa modo turbo spool
-
 -reordenar secciones en experthelp, quiza por settings igual de menu
-
--desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
-
--ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
-
--archivos de cintas que no se cierran en windows al expulsarlas
-
--quiza distinguir en la decoracion de ventana lo que es un menu propiamente y lo que es una ventana (ay registers, waveform, etc)
-
-
--opcion disable real joystick desde menu
-
--expulsar cartucho en msx, svi etc solo deberia aparecer si cartucho insertado? Pero luego como se extrae un cartucho al cargar un snapshot con cartucho? Porque en ese caso no sabe que tiene cartucho aunque esta aho
-
--kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
-
--funcion menu_generic_message que pueda ocupar mas de 32 caracteres de ancho
-ok?->pendiente controlar que ancho linea texto no exceda en total ancho pantalla/char_width -2
-Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longitud de la constante MAX_….?
-
-
--speech con caracteres con acentos no los envia, los filtra 
-
--Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
-
--Probar generic message en stdout
-
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
-
-
--fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
-
--Desactivar border hace desaparecer el joystick. Solo en cocoa?
-
-
--Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: 
-con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
-
--Extender ZX desktop a lo alto 
-
-
-->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
-En void zxvision_draw_window_contents(zxvision_window *w)
-Desactivar:
-if (must_return) return;
-
-
-
--menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
--quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
-
--Botón del medio de ratón para enviar al fondo una ventana
-
-
--cuelgue tecla pausa
-* ZEsarUX 10.1 on Mac: no hang after pressing pause several times
-* ZEsarUX 10.1 on Windows or Linux: press pause, then enter, no hang. Press pause, pause again, hangs
-
-
--snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
 -Para ZENG con más de 2 pcs:
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
 
+--Fin mejoras
 
+
+
+--Errores
+
+-Error: Abrir menú debug cpu con tecla F
+Luego pulsar botón salir emulador
+Y cierra menus pero no sale
+
+-ZENG soporte para QL. ok aunque no envia teclas extendidas
+-ZENG para msx se leen los cursores en destino
+-ZENG colecovision no va bien
+
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+-select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
+
+-speech con caracteres con acentos no los envia, los filtra 
+
+-Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+-Probar generic message en stdout. Funciona bien?
+
+-Desactivar border hace desaparecer el joystick. Solo en cocoa?
+
+-menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
+-quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
+
+-cuelgue tecla pausa
+* ZEsarUX 10.1 on Mac: no hang after pressing pause several times
+* ZEsarUX 10.1 on Windows or Linux: press pause, then enter, no hang. Press pause, pause again, hangs
+
+-snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
 -lee_hilow_audio: ultimo sector en cara B dice:
-
 Total bytes leidos: 0
 Sector -407021264
 
 -convert a ddh: 
--linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
--en windows el conteo de microsegundos se ve a veces valor negativo en hilow convert. quiza es porque es 32 bits?
-
+*linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
+*en windows el conteo de microsegundos se ve a veces valor negativo en hilow convert. quiza es porque es 64 bits?
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
+
+-fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
+
+--Fin Errores
