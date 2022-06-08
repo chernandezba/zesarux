@@ -149,6 +149,7 @@ int verbose_level=0;
 
 int remote_protocol_port=DEFAULT_REMOTE_PROTOCOL_PORT;
 z80_bit remote_protocol_enabled={0};
+char remote_prompt_command_string[REMOTE_MAX_PROMPT_LENGTH]="command";
 
 //Puerto de debug ZEsarUX activo o no
 z80_bit hardware_debug_port={0};

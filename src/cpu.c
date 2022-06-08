@@ -1486,8 +1486,9 @@ void cpu_help_expert(void)
         "--keyboardspoolfile-nodelay         Do not send delay after every key press\n"
 
 #ifdef USE_PTHREADS
-		"--enable-remoteprotocol             Enable remote protocol\n"
+		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
 		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
+        "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
 #endif
 
 		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
@@ -8019,15 +8020,20 @@ int parse_cmdline_options(void) {
 		 }
 
 		 else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-port")) {
-																siguiente_parametro_argumento();
-																int valor=atoi(argv[puntero_parametro]);
+            siguiente_parametro_argumento();
+            int valor=atoi(argv[puntero_parametro]);
 
-						 if (valor>65535 || valor<1) {
-										 printf ("Invalid port value\n");
-				 exit (1);
-			 }
+            if (valor>65535 || valor<1) {
+                printf ("Invalid port value\n");
+                exit (1);
+            }
 
-						 remote_protocol_port=valor;
+            remote_protocol_port=valor;
+		 }
+
+		 else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-prompt")) {
+            siguiente_parametro_argumento();
+            strcpy(remote_prompt_command_string,argv[puntero_parametro]);
 		 }
 
 

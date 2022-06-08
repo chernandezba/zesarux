@@ -4073,8 +4073,10 @@ int util_write_configfile(void)
                                             ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire);
 
             
-  if (remote_protocol_enabled.v)              ADD_STRING_CONFIG,"--enable-remoteprotocol");
-                                              ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
+  if (remote_protocol_enabled.v)                ADD_STRING_CONFIG,"--enable-remoteprotocol");
+                                                ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
+                                                ADD_STRING_CONFIG,"--remoteprotocol-prompt \"%s\"",remote_prompt_command_string);
+
 
   if (realjoystick_disabled.v==1)              ADD_STRING_CONFIG,"--disablerealjoystick");
 

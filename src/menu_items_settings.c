@@ -2151,6 +2151,11 @@ void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_debug_configuration_remoteproto_prompt(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("ZRCP prompt",remote_prompt_command_string,REMOTE_MAX_PROMPT_LENGTH);    
+}
+
 void menu_debug_shows_invalid_opcode(MENU_ITEM_PARAMETERS)
 {
 	debug_shows_invalid_opcode.v ^=1;
@@ -2455,6 +2460,15 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol port");
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'p');
+
+            char string_prompt[20];
+            menu_tape_settings_trunc_name(remote_prompt_command_string,string_prompt,20);
+			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_prompt,NULL,
+                "ZRCP pro~~mpt","ZRCP pro~~mpt","ZRCP pro~~mpt");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",string_prompt );
+			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol prompt");
+			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol prompt");
+			menu_add_item_menu_shortcut(array_menu_settings_debug,'m');            
 		}
 
 #endif

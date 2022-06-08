@@ -6077,9 +6077,9 @@ void *thread_remote_protocol_function(void *nada)
 			while (!remote_salir_conexion) {
 
 				char prompt[1024];
-				if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"%s","\ncommand@cpu-step> ");
+				if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
 				else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
-				else sprintf (prompt,"%s","\ncommand> ");
+				else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
 				if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
 
 				int indice_destino=0;

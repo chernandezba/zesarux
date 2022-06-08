@@ -46,6 +46,8 @@ extern int verbose_level;
 
 extern z80_bit remote_protocol_enabled;
 extern int remote_protocol_port;
+#define REMOTE_MAX_PROMPT_LENGTH 100
+extern char remote_prompt_command_string[];
 
 extern z80_bit hardware_debug_port;
 
