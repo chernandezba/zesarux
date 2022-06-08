@@ -59,7 +59,6 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: 
 con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
 
--Extender ZX desktop a lo alto 
 
 ->Quiza para version estable en zxvision_draw_window_contents que no haga caso de ese flag, por no generar algun error en version final
 En void zxvision_draw_window_contents(zxvision_window *w)
