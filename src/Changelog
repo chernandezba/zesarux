@@ -1,4 +1,4 @@
-Version 10.2 - xx edition. 14 May 2022
+Version 10.2 - xx edition. 08 June 2022
 
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068
