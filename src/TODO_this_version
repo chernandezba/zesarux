@@ -18,10 +18,6 @@ Para esta version:
 
 -Info ZENG en FAQ: ya está en ayuda. Quizá extender mas?
 
--paws Dump toda tabla procesos 
--confirmar parametros de Freehand en quill. crear grafico en illustrator y hacer las 8 posibles combinaciones
--Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)
-
 
 -Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
@@ -58,11 +54,6 @@ Y cierra menus pero no sale
 -desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
 
 
-
--Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
-
--Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
-
 -ayuda cuando habla de boton background, minimizar etc, decir que esos son botones por defecto para ZEsarUX y otros temas, pero que en otros los botones son distintos
 
 -archivos de cintas que no se cierran en windows al expulsarlas
@@ -91,18 +82,10 @@ Algun otro array de char que esté definido a 32 o 33, en vez de pillar la longi
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
 
--Text Adventure Map
-*botones rapidos para navegar norte/sur/etc?
-
-
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
+
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
-
-
--Iconos snapshot en escritorio y otros "archivos" de ramdisk
-
--menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
 -Describir en development las dos maneras de dibujar el menú y capa de máquina emulada: 
 con driver completo y mezclando píxeles, o con driver texto y poniendo capa menú siempre encima (y esta no tiene caché de putchar, solo la parte de carácter no modificado)
@@ -127,16 +110,8 @@ Considerar algun modo de dibujado mas rapido
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
 
--idea para driver pc speaker: en vez de enviar secuencias de 0/1, programar el timer del pcspeaker para generar frecuencia segun ultimo trozo de sonido recibido. Para ello, averiguar cuando empieza y acaba una nota, sacar su frecuencia, y enviar. y pausar el tiempo necesario hasta siguiente nota
-
 -idea Para enviar sonido desde menú: Buffer aparte desde donde se lee de los cores y se mezcla con la salida emulada
 
--Otra idea pc speaker y que puede servir también para reconocimiento de notas en audio piano: reconocer frecuencias sonido (notas) en un sample de audio 
-Leer y ver cuanto tarda en conmutar pulso. Ver siguiente conmutación. Si tarda lo mismo que la anterior, seguimos en misma nota. Si tarda diferente, es que ha cambiado de nota. Obtener frecuencia y duración
-Esto en pc speaker solo serviría para sonidos tipo beep o sonidos del chip ay con 1 canal y sin ruido
-Para samples no vale. Además en pc speaker implicaría lanzar ese sonido mediante el pc timer, indicando duración y frecuencia 
-
--Para un futuro: que ventanas tengan iconos en una tabla y el gestor de ventanas muestre dichos iconos
 
 -Botón del medio de ratón para enviar al fondo una ventana
 
@@ -152,10 +127,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 -Para ZENG con más de 2 pcs:
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
-
-
--hilow: 
-*iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?
 
 
 

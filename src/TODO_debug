@@ -74,3 +74,11 @@ aunque no es necesario, pues cuando se crea un elemento y el handler no apunta a
 y ademas, la funcion de debug_dump_nested_functions ya controla esos casos y no retorna nada de la lista
 
 -mostrar fecha y hora en los debug printf logs?
+
+
+-Text Adventure Map
+*botones rapidos para navegar norte/sur/etc?
+
+-paws Dump toda tabla procesos 
+-confirmar parametros de Freehand en quill. crear grafico en illustrator y hacer las 8 posibles combinaciones
+-Número gráficos limitar a maximo 256 (en quill, paws, daad, gac)

@@ -17,12 +17,23 @@
 -botones/iconos en zx desktop que puedan abrir las diferentes ventanas: waveform, debug cpu, etc. 
 iconos que se puedan mover con raton por el zx desktop
 
+-Iconos snapshot en escritorio y otros "archivos" de ramdisk
+
+-Para un futuro: que ventanas tengan iconos en una tabla y el gestor de ventanas muestre dichos iconos
+
 
 --- FIN ZX Desktop
 
 
 
 --- ZX Vision
+
+-Activar zx desktop por defecto si cabe? Si no hay configuración anterior?
+
+-Activar multitarea ventanas por defecto ? Si no hay configuración anterior?
+
+
+-menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
 -en ventanas con can_use_all_width=1, no se habilita la barra de scroll vertical cuando hace falta
 
