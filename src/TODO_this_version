@@ -155,7 +155,6 @@ Para samples no vale. Además en pc speaker implicaría lanzar ese sonido median
 
 -poder arrastrar archivos de rom en spectrum y arranca el sistema con la rom indicada
 
--permitir cambiar el prompt de ZRCP
 
 -hilow: 
 *iniciar con --enable-hilow y si hay un snapshot anterior, se desactiva hilow. esto viene de set_machine_params. Dificil de corregir?

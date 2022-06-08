@@ -4895,7 +4895,7 @@ void quickload_common_set_spectrum(void)
 int quickload_continue(char *nombre) {
 
 	//Si hay cinta realtape insertada, quitarla
-        if (realtape_inserted.v) realtape_eject();
+    if (realtape_inserted.v) realtape_eject();
 
 	//Si hay cartucho de timex insertado, expulsarlo
 	//Realmente no comprobamos si hay cartucho pues no hay ningun flag que indique insertado o no. Simplemente liberamos memoria dock
@@ -4934,181 +4934,181 @@ int quickload_continue(char *nombre) {
 		realjoystick_clear_keys_array();
 	}
 
-        if (
-                           !util_compare_file_extension(nombre,"zx")
-                        || !util_compare_file_extension(nombre,"sp")
-                        || !util_compare_file_extension(nombre,"zsf")
-                        || !util_compare_file_extension(nombre,"nex")
-                        || !util_compare_file_extension(nombre,"spg")
-                        || !util_compare_file_extension(nombre,"z80")
-                        || !util_compare_file_extension(nombre,"sna")
-                        || !util_compare_file_extension(nombre,"snx")
-                        || !util_compare_file_extension(nombre,"ace")
-                        || !util_compare_file_extension(nombre,"rzx")
-        ) {
+    if (
+            !util_compare_file_extension(nombre,"zx")
+        || !util_compare_file_extension(nombre,"sp")
+        || !util_compare_file_extension(nombre,"zsf")
+        || !util_compare_file_extension(nombre,"nex")
+        || !util_compare_file_extension(nombre,"spg")
+        || !util_compare_file_extension(nombre,"z80")
+        || !util_compare_file_extension(nombre,"sna")
+        || !util_compare_file_extension(nombre,"snx")
+        || !util_compare_file_extension(nombre,"ace")
+        || !util_compare_file_extension(nombre,"rzx")
+    ) {
 
 
-                insert_snap_cmdline(nombre);
-		snapshot_load();
+        insert_snap_cmdline(nombre);
+        snapshot_load();
 
-                return 0;
-        }
+        return 0;
+    }
 
-        //cinta de spectrum tzx, la mayoria (excepto rwa)
-        else if (
-                   !util_compare_file_extension(nombre,"tzx")
+    //cinta de spectrum tzx, la mayoria (excepto rwa)
+    else if (
+                !util_compare_file_extension(nombre,"tzx")
 
-        ) {
+    ) {
 
-		debug_printf (VERBOSE_INFO,"Smartload. Guessing if standard tzx tape or real tape");
+        debug_printf (VERBOSE_INFO,"Smartload. Guessing if standard tzx tape or real tape");
 
-		//Ver si la cinta es estandard (ver si todos los tags id tzx son reconocidos)
-		//o meterla como real tape
+        //Ver si la cinta es estandard (ver si todos los tags id tzx son reconocidos)
+        //o meterla como real tape
 
-		//Mete la cinta como standard tape. Si da error de tzx id no reconocido, la meteremos como real tape
+        //Mete la cinta como standard tape. Si da error de tzx id no reconocido, la meteremos como real tape
 
-                insert_tape_cmdline(nombre);
-                tape_init();
+        insert_tape_cmdline(nombre);
+        tape_init();
 
-		//Leer hasta final
-		char buffer_temp[65536];
-		int final=0;
-		quickload_guessing_tzx_type.v=1;
-		while (!final) {
-			z80_int cinta_longitud;
+        //Leer hasta final
+        char buffer_temp[65536];
+        int final=0;
+        quickload_guessing_tzx_type.v=1;
+        while (!final) {
+            z80_int cinta_longitud;
                         cinta_longitud=tape_block_readlength();
                         if (cinta_longitud==0) final=1;
-			else {
-				tape_block_read(buffer_temp,cinta_longitud);
-			}
-		}
+            else {
+                tape_block_read(buffer_temp,cinta_longitud);
+            }
+        }
 
-		//expulsar cinta insertada
-		eject_tape_load();
-		tapefile=NULL;
+        //expulsar cinta insertada
+        eject_tape_load();
+        tapefile=NULL;
 
-		quickload_guessing_tzx_type.v=0;
+        quickload_guessing_tzx_type.v=0;
 
-		debug_printf (VERBOSE_INFO,"Smartload. End guessing process");
+        debug_printf (VERBOSE_INFO,"Smartload. End guessing process");
 
-		if (tzx_read_returned_unknown_id.v) {
-			debug_printf (VERBOSE_INFO,"Tzx tape will be loaded as real tape");
-			quickload_real_tape(nombre);
-		}
+        if (tzx_read_returned_unknown_id.v) {
+            debug_printf (VERBOSE_INFO,"Tzx tape will be loaded as real tape");
+            quickload_real_tape(nombre);
+        }
 
-		else {
-			debug_printf (VERBOSE_INFO,"Tzx tape will be loaded as standard tape");
-			quickload_standard_tape(nombre);
-		}
+        else {
+            debug_printf (VERBOSE_INFO,"Tzx tape will be loaded as standard tape");
+            quickload_standard_tape(nombre);
+        }
 
-                return 0;
+        return 0;
+    }
+
+
+//cintas de spectrum, la mayoria (excepto rwa)
+    else if (
+                !util_compare_file_extension(nombre,"tap")
+            || !util_compare_file_extension(nombre,"rwa")
+
+    ) {
+
+        quickload_standard_tape(nombre);
+
+        return 0;
+    }
+
+//cintas de msx
+    else if (
+                !util_compare_file_extension(nombre,"cas")
+            
+
+    ) {
+
+        //Aqui el autoload da igual. cambiamos siempre a msx si conviene
+        if (!MACHINE_IS_MSX && !MACHINE_IS_SVI) {
+            current_machine_type=MACHINE_ID_MSX1;
+            set_machine(NULL);
+
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+
+            reset_cpu();
+        }                
+
+        insert_tape_cmdline(nombre);
+        tape_init();
+
+        return 0;
+    }        
+
+
+//wav, smp y pzx suponemos real audio tape Spectrum
+    else if (
+                !util_compare_file_extension(nombre,"wav")
+            || !util_compare_file_extension(nombre,"smp")
+            || !util_compare_file_extension(nombre,"pzx")
+
+    ) {
+        quickload_real_tape(nombre);
+
+        return 0;
+    }
+
+
+
+
+    //cintas de zx80, las cargamos como cintas
+    else if (
+                !util_compare_file_extension(nombre,"o")
+            || !util_compare_file_extension(nombre,"80")
+
+    ) {
+
+
+        if (noautoload.v==0) {
+        //Si no estamos en zx80, cambiar maquina
+            if (!(MACHINE_IS_ZX80)) {
+                    current_machine_type=120;
+                    set_machine(NULL);
+            }
+
+            //establecer parametros por defecto
+            set_machine_params();
         }
 
 
-	//cintas de spectrum, la mayoria (excepto rwa)
-        else if (
-                   !util_compare_file_extension(nombre,"tap")
-                || !util_compare_file_extension(nombre,"rwa")
+        insert_tape_cmdline(nombre);
+        tape_init();
 
-        ) {
+        return 0;
+    }
 
-		quickload_standard_tape(nombre);
+    //cintas de zx81, las cargamos como cintas
+    else if (
+                !util_compare_file_extension(nombre,"p")
+            || !util_compare_file_extension(nombre,"81")
+            || !util_compare_file_extension(nombre,"z81")
 
-                return 0;
-        }
+    ) {
 
-	//cintas de msx
-        else if (
-                   !util_compare_file_extension(nombre,"cas")
-              
+        if (noautoload.v==0) {
+            //Si no estamos en zx81, cambiar maquina
+            if (!(MACHINE_IS_ZX81)) {
+                    current_machine_type=121;
+                    set_machine(NULL);
+                    //el reset machine viene desde tape_init
+            }
 
-        ) {
-
-		//Aqui el autoload da igual. cambiamos siempre a msx si conviene
-                if (!MACHINE_IS_MSX && !MACHINE_IS_SVI) {
-			current_machine_type=MACHINE_ID_MSX1;
-                        set_machine(NULL);
-
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
-
-                          reset_cpu();
-                }                
-
-		insert_tape_cmdline(nombre);
-		tape_init();
-
-                return 0;
-        }        
-
-
-	//wav, smp y pzx suponemos real audio tape Spectrum
-        else if (
-                   !util_compare_file_extension(nombre,"wav")
-                || !util_compare_file_extension(nombre,"smp")
-                || !util_compare_file_extension(nombre,"pzx")
-
-        ) {
-		quickload_real_tape(nombre);
-
-                return 0;
+            //establecer parametros por defecto
+            set_machine_params();
         }
 
 
+        insert_tape_cmdline(nombre);
+        tape_init();
 
-
-        //cintas de zx80, las cargamos como cintas
-        else if (
-                   !util_compare_file_extension(nombre,"o")
-                || !util_compare_file_extension(nombre,"80")
-
-        ) {
-
-
-		if (noautoload.v==0) {
-			//Si no estamos en zx80, cambiar maquina
-        	        if (!(MACHINE_IS_ZX80)) {
-                	        current_machine_type=120;
-                        	set_machine(NULL);
-	                }
-
-                        //establecer parametros por defecto
-                        set_machine_params();
-                }
-
-
-                insert_tape_cmdline(nombre);
-                tape_init();
-
-                return 0;
-        }
-
-        //cintas de zx81, las cargamos como cintas
-        else if (
-                   !util_compare_file_extension(nombre,"p")
-                || !util_compare_file_extension(nombre,"81")
-                || !util_compare_file_extension(nombre,"z81")
-
-        ) {
-
-		if (noautoload.v==0) {
-	                //Si no estamos en zx81, cambiar maquina
-        	        if (!(MACHINE_IS_ZX81)) {
-                	        current_machine_type=121;
-                        	set_machine(NULL);
-	                        //el reset machine viene desde tape_init
-        	        }
-
-                        //establecer parametros por defecto
-                        set_machine_params();
-		}
-
-
-                insert_tape_cmdline(nombre);
-                tape_init();
-
-                return 0;
-        }
+        return 0;
+    }
 
 	//dock cartridges de Timex
 	else if (
@@ -5119,11 +5119,11 @@ int quickload_continue(char *nombre) {
 			current_machine_type=17;
 			set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                          reset_cpu();
-                }
+            reset_cpu();
+        }
 
 		timex_insert_dck_cartridge(nombre);
 
@@ -5140,15 +5140,15 @@ int quickload_continue(char *nombre) {
 			current_machine_type=MACHINE_ID_PENTAGON;
 			set_machine(NULL);
 
-                        //establecer parametros por defecto. Incluido quitar slots de memoria
-                        set_machine_params();
-                        reset_cpu();
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+            reset_cpu();
                       
                        
-                }
+        }
                                
-                betadisk_enable();
-                trd_insert_disk(nombre);
+        betadisk_enable();
+        trd_insert_disk(nombre);
 
 
 		return 0;
@@ -5165,46 +5165,43 @@ int quickload_continue(char *nombre) {
 			current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
 			set_machine(NULL);
 
-                        //establecer parametros por defecto. Incluido quitar slots de memoria
-                        set_machine_params();
-                        reset_cpu();
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
+            reset_cpu();
                       
                        
-                }
-                dsk_insert_disk(nombre);
-                //strcpy(dskplusthree_file_name,nombre);
+        }
+        dsk_insert_disk(nombre);
+        //strcpy(dskplusthree_file_name,nombre);
                 
-                dskplusthree_enable();
+        dskplusthree_enable();
 		pd765_enable();
 		plus3dos_traps.v=1;
 		
                                
-               
-                
-
 
 		return 0;
 
 	}        
 
 
-  //Archivos ay
-  else if (
-    !util_compare_file_extension(nombre,"ay")
-  ) {
-    ay_player_load_and_play(nombre);
-    return 0;
+    //Archivos ay
+    else if (
+        !util_compare_file_extension(nombre,"ay")
+    ) {
+        ay_player_load_and_play(nombre);
+        return 0;
 
-  }
+    }
 
-  else if (
-    !util_compare_file_extension(nombre,"scr")
-  ) {
-    quickload_common_set_spectrum();
-    load_screen(nombre);
-    return 0;
+    else if (
+        !util_compare_file_extension(nombre,"scr")
+    ) {
+        quickload_common_set_spectrum();
+        load_screen(nombre);
+        return 0;
 
-  }
+    }
 
 
 	//cintas de CPC
@@ -5212,21 +5209,21 @@ int quickload_continue(char *nombre) {
                 !util_compare_file_extension(nombre,"cdt")
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a cpc si conviene
-                if (!MACHINE_IS_CPC) {
-			current_machine_type=140;
-                        set_machine(NULL);
+            if (!MACHINE_IS_CPC) {
+			    current_machine_type=140;
+                set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+                    //establecer parametros por defecto. Incluido quitar slots de memoria
+                set_machine_params();
 
-                          reset_cpu();
-                }
+                reset_cpu();
+            }
 
-                realtape_name=nombre;
+            realtape_name=nombre;
 
-                realtape_insert();
+            realtape_insert();
 
-                return 0;
+            return 0;
 
         }
 
@@ -5235,45 +5232,45 @@ int quickload_continue(char *nombre) {
                 !util_compare_file_extension(nombre,"rom")
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a msx si conviene
-                if (!MACHINE_IS_MSX && !MACHINE_IS_SVI) {
+        if (!MACHINE_IS_MSX && !MACHINE_IS_SVI) {
 			current_machine_type=MACHINE_ID_MSX1;
-                        set_machine(NULL);
+            set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+                //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                          reset_cpu();
-                }
+            reset_cpu();
+        }
 
-                if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
-                if (MACHINE_IS_SVI) svi_insert_rom_cartridge(nombre);
+        if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
+        if (MACHINE_IS_SVI) svi_insert_rom_cartridge(nombre);
 
 
-                return 0;
+        return 0;
 
-        }        
+    }        
 
 	//Cartuchos de Coleco
 	else if (
-                !util_compare_file_extension(nombre,"col")
+            !util_compare_file_extension(nombre,"col")
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a coleco si conviene
-                if (!MACHINE_IS_COLECO) {
+        if (!MACHINE_IS_COLECO) {
 			current_machine_type=MACHINE_ID_COLECO;
-                        set_machine(NULL);
+            set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+                //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                          reset_cpu();
-                }
+            reset_cpu();
+        }
 
-                coleco_insert_rom_cartridge(nombre);
+        coleco_insert_rom_cartridge(nombre);
 
 
-                return 0;
+        return 0;
 
-        }           
+    }           
 
 	//Cartuchos de SG1000
 	else if (
@@ -5281,22 +5278,22 @@ int quickload_continue(char *nombre) {
              || !util_compare_file_extension(nombre,"sc")
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a sg1000 si conviene
-                if (!MACHINE_IS_SG1000 && !MACHINE_IS_SMS) {
-			current_machine_type=MACHINE_ID_SG1000;
-                        set_machine(NULL);
+        if (!MACHINE_IS_SG1000 && !MACHINE_IS_SMS) {
+            current_machine_type=MACHINE_ID_SG1000;
+            set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+                //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                          reset_cpu();
-                }
+            reset_cpu();
+        }
 
-                sg1000_insert_rom_cartridge(nombre);
+        sg1000_insert_rom_cartridge(nombre);
 
 
-                return 0;
+        return 0;
 
-        }      
+    }      
 
     //Cartuchos de SMS
 	else if (
@@ -5305,45 +5302,43 @@ int quickload_continue(char *nombre) {
              
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a sms si conviene
-                if (!MACHINE_IS_SMS) {
+        if (!MACHINE_IS_SMS) {
 			current_machine_type=MACHINE_ID_SMS;
-                        set_machine(NULL);
+            set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                           set_machine_params();
+                //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                          reset_cpu();
-                }
+            reset_cpu();
+        }
 
-                sms_insert_rom_cartridge(nombre);
+        sms_insert_rom_cartridge(nombre);
 
 
-                return 0;
+        return 0;
 
-        }           
+    }           
 
 	//eprom cards de Z88
-        else if (
-                   !util_compare_file_extension(nombre,"epr")
+    else if (
+            !util_compare_file_extension(nombre,"epr")
 		|| !util_compare_file_extension(nombre,"63")
 		|| !util_compare_file_extension(nombre,"eprom")
 
         ) {
 
 		//Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
-                //if (noautoload.v==0) {
-                        //Si no estamos en z88, cambiar maquina
-                        if (!(MACHINE_IS_Z88)) {
-                                current_machine_type=130;
-                                set_machine(NULL);
+       
+        //Si no estamos en z88, cambiar maquina
+        if (!(MACHINE_IS_Z88)) {
+            current_machine_type=130;
+            set_machine(NULL);
 
-                        	//establecer parametros por defecto. Incluido quitar slots de memoria
-	                        set_machine_params();
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-				reset_cpu();
-			}
-
-                //}
+            reset_cpu();
+        }
 
 
 		//Insertar rom en slot libre
@@ -5363,44 +5358,41 @@ int quickload_continue(char *nombre) {
 		z88_load_eprom_card(nombre,slot);
 
 
-                return 0;
-        }
+        return 0;
+    }
 
 
 	//flash cards de Z88
-        else if (
+    else if (
                    !util_compare_file_extension(nombre,"flash")
 
         ) {
 
-                //Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
-                //if (noautoload.v==0) {
-                        //Si no estamos en z88, cambiar maquina
-                        if (!(MACHINE_IS_Z88)) {
-                                current_machine_type=130;
-                                set_machine(NULL);
+        //Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
+              
+        //Si no estamos en z88, cambiar maquina
+        if (!(MACHINE_IS_Z88)) {
+            current_machine_type=130;
+            set_machine(NULL);
 
-                                //establecer parametros por defecto. Incluido quitar slots de memoria
-                                set_machine_params();
+            //establecer parametros por defecto. Incluido quitar slots de memoria
+            set_machine_params();
 
-                                reset_cpu();
-                        }
-
-                //}
-
-
-                //Insertar flash en slot 3
-                z88_load_flash_intel_card(nombre,3);
-
-
-                return 0;
+            reset_cpu();
         }
 
+        //Insertar flash en slot 3
+        z88_load_flash_intel_card(nombre,3);
+
+
+        return 0;
+    }
 
 
 
-        //Error. no reconocido
-        return 1;
+
+    //Error. no reconocido
+    return 1;
 
 }
 
