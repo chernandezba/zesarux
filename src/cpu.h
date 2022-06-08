@@ -345,8 +345,8 @@ extern int num_audio_driver_array;
 
 extern char *driver_audio;
 
-#define MAX_SCR_INIT 10
-#define MAX_AUDIO_INIT 10
+#define MAX_SCR_INIT 15
+#define MAX_AUDIO_INIT 15
 
 extern z80_bit stdout_simpletext_automatic_redraw;
 //Valores para stdout. Estan aqui porque se graban en archivo .zx, aunque no este el driver stdout compilado
