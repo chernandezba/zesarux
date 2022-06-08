@@ -268,7 +268,7 @@ driver_struct scr_driver_array[MAX_SCR_INIT];
 int num_scr_driver_array=0;
 
 //punteros a funciones de inicio para hacer fallback de audio, funciones de set
-driver_struct audio_driver_array[MAX_SCR_INIT];
+driver_struct audio_driver_array[MAX_AUDIO_INIT];
 int num_audio_driver_array=0;
 
 //Los inicializamos a cadena vacia... No poner NULL, dado que hay varios strcmp que se comparan contra esto
