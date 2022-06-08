@@ -5227,23 +5227,21 @@ int quickload_continue(char *nombre) {
 
         }
 
-	//Cartuchos de MSX o SVI
+	//Archivos .rom
 	else if (
-                !util_compare_file_extension(nombre,"rom")
+            !util_compare_file_extension(nombre,"rom")
         ) {
-		//Aqui el autoload da igual. cambiamos siempre a msx si conviene
-        if (!MACHINE_IS_MSX && !MACHINE_IS_SVI) {
-			current_machine_type=MACHINE_ID_MSX1;
-            set_machine(NULL);
+		
 
-                //establecer parametros por defecto. Incluido quitar slots de memoria
-            set_machine_params();
-
+        //En MSX o SVI, cargar la rom como un cartucho de juegos
+        if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
+        else if (MACHINE_IS_SVI) svi_insert_rom_cartridge(nombre);
+        else {
+            //En cualquier otro, cargar la rom como la rom de la maquina (como seleccionar custom machine)
+            set_machine(nombre);
+            cold_start_cpu_registers();
             reset_cpu();
         }
-
-        if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
-        if (MACHINE_IS_SVI) svi_insert_rom_cartridge(nombre);
 
 
         return 0;
