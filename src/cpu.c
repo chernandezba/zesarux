@@ -4518,7 +4518,7 @@ void set_machine(char *romfile)
 //panic
 //void rom_load_cpu_panic(char *romfilename,int leidos)
 //{
-//	cpu_panic("Error loading ROM");
+//	debug_printf(VERBOSE_ERR,"Error loading ROM");
 //}
 
 
@@ -4724,7 +4724,6 @@ void rom_load(char *romfilename)
 		}
 	}
 
-                //ptr_romfile=fopen(romfilename,"rb");
 		open_sharedfile(romfilename,&ptr_romfile);
                 if (!ptr_romfile)
                 {
@@ -4741,7 +4740,7 @@ void rom_load(char *romfilename)
 			//Inves
 			leidos=fread(&memoria_spectrum[65536],1,16384,ptr_romfile);
                                 if (leidos!=16384) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
                 }
 
@@ -4750,7 +4749,7 @@ void rom_load(char *romfilename)
 			//Spectrum 16k rom
                         	leidos=fread(memoria_spectrum,1,16384,ptr_romfile);
 				if (leidos!=16384) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 				}
 		}
 
@@ -4759,7 +4758,7 @@ void rom_load(char *romfilename)
 
                                 leidos=fread(rom_mem_table[0],1,32768,ptr_romfile);
                                 if (leidos!=32768) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 	                         }
 
 		}
@@ -4770,7 +4769,7 @@ void rom_load(char *romfilename)
 
                                 leidos=fread(rom_mem_table[0],1,65536,ptr_romfile);
                                 if (leidos!=65536) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 		}
 
@@ -4778,14 +4777,14 @@ void rom_load(char *romfilename)
 			//107 bytes rom
                         //leidos=fread(memoria_spectrum,1,56,ptr_romfile);
                         //if (leidos!=56) {
-                        //                cpu_panic("Error loading ROM");
+                        //                debug_printf(VERBOSE_ERR,"Error loading ROM");
                         //}
 
 			//Max 8kb rom
                         leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
 			//Un minimo de rom...
                         if (leidos<1) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                         }
 
 			debug_printf (VERBOSE_DEBUG,"Read %d bytes of rom file %s",leidos,romfilename);
@@ -4801,7 +4800,7 @@ void rom_load(char *romfilename)
 
                                 leidos=fread(chloe_rom_mem_table[0],1,32768,ptr_romfile);
                                 if (leidos!=32768) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
                 }
@@ -4828,7 +4827,7 @@ Total 20 pages=320 Kb
 
                                 leidos=fread(prism_rom_mem_table[0],1,320*1024,ptr_romfile);
                                 if (leidos!=320*1024) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
 
@@ -4846,14 +4845,14 @@ Total 20 pages=320 Kb
 			memcpy(&memoria_spectrum[49152],&memoria_spectrum[0],16384);
 			
                                 if (leidos!=16384) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }				
 			}
 			else {
 				leidos=fread(tbblue_fpga_rom,1,8192,ptr_romfile);
 				memcpy(&tbblue_fpga_rom[8192],tbblue_fpga_rom,8192);
                                 if (leidos!=8192) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 			}
 
@@ -4863,7 +4862,7 @@ Total 20 pages=320 Kb
 									//160 K RAM, 64 K ROM
 									leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
 									if (leidos!=65536) {
-									     cpu_panic("Error loading ROM");
+									     debug_printf(VERBOSE_ERR,"Error loading ROM");
 									}
 
 								}
@@ -4871,7 +4870,7 @@ Total 20 pages=320 Kb
 								else if (MACHINE_IS_TSCONF) {
 									leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
 									if (leidos!=512*1024) {
-											cpu_panic("Error loading ROM");
+											debug_printf(VERBOSE_ERR,"Error loading ROM");
 									}
 
 								}
@@ -4879,7 +4878,7 @@ Total 20 pages=320 Kb
 			else if (MACHINE_IS_BASECONF) {
 									leidos=fread(baseconf_rom_mem_table[0],1,512*1024,ptr_romfile);
 									if (leidos!=512*1024) {
-											cpu_panic("Error loading ROM");
+											debug_printf(VERBOSE_ERR,"Error loading ROM");
 									}
 
 								}
@@ -4889,12 +4888,12 @@ Total 20 pages=320 Kb
 
                                 leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
                                 if (leidos!=16384) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
                                 leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
                                 if (leidos!=8192) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
 
@@ -4905,7 +4904,7 @@ Total 20 pages=320 Kb
 			//coleco 8 kb rom
                         	leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
 				if (leidos!=8192) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 				}
 		}				
                 
@@ -4918,7 +4917,7 @@ Total 20 pages=320 Kb
                 else if (MACHINE_IS_SMS) {
                         	leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
 				if (leidos!=8192) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 				}
 		}	        
 
@@ -4926,7 +4925,7 @@ Total 20 pages=320 Kb
 			//msx 32 kb rom
                         	leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
 				if (leidos!=32768) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 				}
 		}
 
@@ -4935,7 +4934,7 @@ Total 20 pages=320 Kb
 			//svi 32 kb rom
                         	leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
 				if (leidos!=32768) {
-				 	cpu_panic("Error loading ROM");
+				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
 				}
 		}
 
@@ -4944,7 +4943,7 @@ Total 20 pages=320 Kb
 			//ZX80
                                 leidos=fread(memoria_spectrum,1,4096,ptr_romfile);
                                 if (leidos!=4096) {
-					cpu_panic("Error loading ROM");
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
 		}
 
@@ -4954,7 +4953,7 @@ Total 20 pages=320 Kb
 			//ZX81
                                 leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
                                 if (leidos!=8192) {
-					cpu_panic("Error loading ROM");
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
 		}
 
@@ -4963,7 +4962,7 @@ Total 20 pages=320 Kb
                         //Jupiter Ace
                                 leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
                                 if (leidos!=8192) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
                 }
 
@@ -4973,7 +4972,7 @@ Total 20 pages=320 Kb
 			//leer maximo 512 kb de ROM
 			leidos=fread(z88_puntero_memoria,1,512*1024,ptr_romfile);
                                 if (leidos<=0) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
 
 			z88_internal_rom_size=leidos-1;
@@ -4986,7 +4985,7 @@ Total 20 pages=320 Kb
 
                                 leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
                                 if (leidos!=32768) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
                 }
@@ -4997,7 +4996,7 @@ Total 20 pages=320 Kb
 
                                 leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
                                 if (leidos!=32768) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
                 }
@@ -5008,7 +5007,7 @@ Total 20 pages=320 Kb
 
 																//Minimo 16kb
                                 if (leidos<16384) {
-                                        cpu_panic("Error loading ROM");
+                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
                                  }
 
 		}
@@ -5017,7 +5016,7 @@ Total 20 pages=320 Kb
 		else if (MACHINE_IS_MK14) {
 			leidos=fread(memoria_spectrum,1,512,ptr_romfile);
 			if (leidos!=512) {
-					cpu_panic("Error loading ROM");
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
 			}
 
 		}
