@@ -12565,9 +12565,10 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_xdesktop(int ampliar_reduci
 
         //donde esta el boton
         //int yboton=screen_get_emulated_display_height_no_zoom_border_en()/8;
-        int yboton=screen_get_window_size_height_no_zoom_border_en()/8;
+        int yboton=(screen_get_emulated_display_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom()) /8;
+
         int xboton=screen_get_window_size_width_no_zoom_border_en()/8-2; //justo 2 posicion menos
-        //printf("si pulsado en boton switch zxdesktop. xboton %d yboton %d\n",xboton,yboton);
+        //printf("si pulsado en boton switch zxdesktop. xboton %d yboton %d x %d y %d\n",xboton,yboton,x,y);
 
         //Boton arriba: ampliar
         if (ampliar_reducir) {
