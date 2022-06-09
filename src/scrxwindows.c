@@ -235,13 +235,13 @@ int scrxwindows_setwindowparms(void)
 
 	//Fijamos el minimo de tamaño de la ventana
 	sizeHints->min_width = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
-	sizeHints->min_height = screen_get_window_size_height_no_zoom_border_en();
+	sizeHints->min_height = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
 
 
 	//Y se fijan los incrementos de la ventana, para que se amplie en fracciones enteras
 	if (ventana_fullscreen==0) {
 	        sizeHints->width_inc    = screen_get_window_size_width_no_zoom_border_en() + screen_get_ext_desktop_width_no_zoom();
-	        sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en();
+	        sizeHints->height_inc   = screen_get_window_size_height_no_zoom_border_en() + screen_get_ext_desktop_height_no_zoom();
 	}
 
 	else {
@@ -417,6 +417,7 @@ void scrxwindows_set_fullscreen(void)
 				widthspectrum +=(screen_get_ext_desktop_width_no_zoom()*zoom_futuro_x);
 
         heightspectrum=screen_get_window_size_height_no_zoom_border_en()*zoom_futuro_y;
+        heightspectrum +=(screen_get_ext_desktop_height_no_zoom()*zoom_futuro_y);
 
 
 
@@ -636,7 +637,7 @@ void scrxwindows_resize(int width,int height)
 
 		//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
 		zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-		zoom_y_calculado=height/screen_get_window_size_height_no_zoom_border_en();
+		zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
 	if (!zoom_x_calculado) zoom_x_calculado=1;
@@ -655,6 +656,7 @@ void scrxwindows_resize(int width,int height)
 								width+=screen_get_ext_desktop_width_zoom();
 
                 height=screen_get_window_size_height_zoom_border_en();
+                height+=screen_get_ext_desktop_height_zoom();
 
 
 		debug_printf (VERBOSE_INFO,"Calling XResizeWindow to %d X %d",width,height);
@@ -806,13 +808,17 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
 	 ancho +=screen_get_ext_desktop_width_zoom();
 
+	 int alto=screen_get_window_size_height_zoom_border_en();
+
+	 alto +=screen_get_ext_desktop_height_zoom();     
+
         if( shm_used ) {
 
 #ifdef X_USE_SHM
                 //printf ("con shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
                 //printf ("image=%x\n",image);
 
-                XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, screen_get_window_size_height_zoom_border_en(), True);
+                XShmPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto, True);
 
                 //temp probar para ver si esto detiene el uso de cpu incrementandose
                 //XSync(dpy, False);
@@ -829,7 +835,7 @@ void scrxwindows_refresca_pantalla_solo_driver(void)
 
         else {
                 //printf ("sin shm dpy=%x ventana=%x gc=%x image=%x\n",dpy,ventana,gc,image);
-                XPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, screen_get_window_size_height_zoom_border_en() );
+                XPutImage(dpy, ventana, gc, image, 0, 0, 0, 0, ancho, alto );
 
         }
 
@@ -1912,7 +1918,12 @@ int scrxwindows_get_menu_width(void)
 
 int scrxwindows_get_menu_height(void)
 {
-        int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom;
+        int max=screen_get_emulated_display_height_no_zoom_border_en();
+
+        max +=screen_get_ext_desktop_height_no_zoom();
+
+        max=max/menu_char_height/menu_gui_zoom;
+
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
                 //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
@@ -1956,6 +1967,8 @@ ancho=screen_get_window_size_width_zoom_border_en();
 ancho +=screen_get_ext_desktop_width_zoom();
 
 alto=screen_get_window_size_height_zoom_border_en();
+
+alto +=screen_get_ext_desktop_height_zoom();
 
 	ventana = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, ancho, alto,0, blackColor, blackColor);
 
@@ -2085,10 +2098,13 @@ static int try_shm (void)
 int ancho=screen_get_window_size_width_zoom_border_en();
 ancho +=screen_get_ext_desktop_width_zoom();
 
+int alto=screen_get_window_size_height_zoom_border_en();
+alto +=screen_get_ext_desktop_height_zoom();
+
 image = XShmCreateImage( dpy, xdisplay_visual,
                            xdisplay_depth, ZPixmap,
                            NULL, &shm_info,
-ancho, screen_get_window_size_height_zoom_border_en() );
+ancho, alto );
 
 
 /*

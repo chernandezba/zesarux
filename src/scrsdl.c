@@ -87,6 +87,8 @@ int scrsdl_crea_ventana(void)
 
         int alto=screen_get_window_size_height_zoom_border_en();
 
+        ancho +=screen_get_ext_desktop_height_zoom();
+
 	debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
         sdl_screen = SDL_SetVideoMode(ancho,
@@ -252,7 +254,10 @@ void scrsdl_refresca_pantalla_solo_driver(void)
         int ancho=screen_get_window_size_width_zoom_border_en();
         ancho +=screen_get_ext_desktop_width_zoom();
 
-        SDL_UpdateRect(sdl_screen, 0, 0, ancho, screen_get_window_size_height_zoom_border_en() );
+        int alto=screen_get_window_size_height_zoom_border_en();
+        alto +=screen_get_ext_desktop_height_zoom();        
+
+        SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
 
 
         /* UnLock the screen for direct access to the pixels */
@@ -1304,7 +1309,7 @@ void scrsdl_resize(int width,int height)
 
 	//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
         zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-	zoom_y_calculado=height/screen_get_window_size_height_no_zoom_border_en();
+	    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
         if (!zoom_x_calculado) zoom_x_calculado=1;
@@ -1519,7 +1524,12 @@ int scrsdl_get_menu_width(void)
 
 int scrsdl_get_menu_height(void)
 {
-        int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom;
+        int max=screen_get_emulated_display_height_no_zoom_border_en();
+
+        max +=screen_get_ext_desktop_height_no_zoom();
+
+        max=max/menu_char_height/menu_gui_zoom;
+
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
                 //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());

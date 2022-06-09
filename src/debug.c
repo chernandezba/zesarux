@@ -787,6 +787,7 @@ void cpu_panic(char *mensaje)
             //Extenderlo al zx desktop
             if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) {
                 cpu_panic_xmax +=screen_get_ext_desktop_width_zoom();
+                cpu_panic_ymax +=screen_get_ext_desktop_height_zoom();
             }
 
             //Determinar si hacemos zoom 1 o 2, segun tamanyo total ventana

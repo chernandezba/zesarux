@@ -71,7 +71,7 @@ SDL_Texture *scrsdl_texture;
 SDL_Renderer *renderer;
 
 //#define screen_get_window_size_width_zoom_border_en() screen_get_window_size_width_zoom_border_en()
-#define SDL_ALTO_VENTANA screen_get_window_size_height_zoom_border_en()
+#define screen_get_window_size_height_zoom_border_en() screen_get_window_size_height_zoom_border_en()
 
 
 
@@ -89,12 +89,13 @@ int scrsdl_crea_ventana(void)
    }
 
 
-   debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",screen_get_window_size_width_zoom_border_en(),SDL_ALTO_VENTANA );
+   debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",screen_get_window_size_width_zoom_border_en(),screen_get_window_size_height_zoom_border_en() );
 
    int ancho=screen_get_window_size_width_zoom_border_en();
    ancho +=screen_get_ext_desktop_width_zoom();
 
-   int alto=SDL_ALTO_VENTANA;
+   int alto=screen_get_window_size_height_zoom_border_en();
+   alto +=screen_get_ext_desktop_height_zoom();
 
    if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
 
@@ -114,9 +115,9 @@ int scrsdl_crea_ventana(void)
     SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
 
 
-    scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, SDL_ALTO_VENTANA);
-    //Uint32 *pixels = new Uint32[screen_get_window_size_width_zoom_border_en() * SDL_ALTO_VENTANA];
-    scrsdl_pixeles=malloc(ancho * SDL_ALTO_VENTANA*4);
+    scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, screen_get_window_size_height_zoom_border_en());
+    //Uint32 *pixels = new Uint32[screen_get_window_size_width_zoom_border_en() * screen_get_window_size_height_zoom_border_en()];
+    scrsdl_pixeles=malloc(ancho * screen_get_window_size_height_zoom_border_en()*4);
 
 
     if (scrsdl_pixeles==NULL) return 1;
@@ -1342,7 +1343,7 @@ if (ventana_fullscreen) return ; //No hacer resizes cuando este en pantalla comp
 
 	//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
         zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-	zoom_y_calculado=height/screen_get_window_size_height_no_zoom_border_en();
+	    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
         if (!zoom_x_calculado) zoom_x_calculado=1;
@@ -1566,7 +1567,12 @@ int scrsdl_get_menu_width(void)
 
 int scrsdl_get_menu_height(void)
 {
-        int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom;
+        int max=screen_get_emulated_display_height_no_zoom_border_en();
+
+        max +=screen_get_ext_desktop_height_no_zoom();
+
+        max=max/menu_char_height/menu_gui_zoom;
+
         if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
                 //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());

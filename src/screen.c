@@ -1779,7 +1779,7 @@ void clear_putpixel_cache(void)
 
 	int tamanyo_y;
 
-	tamanyo_y=screen_get_window_size_height_no_zoom_border_en();
+	tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
 
 	if (video_interlaced_mode.v) tamanyo_y *=2;
 
@@ -2288,6 +2288,8 @@ void scr_init_layers_menu(void)
 
   alto=screen_get_window_size_height_zoom_border_en();
 
+    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height*zoom_x;
+
 	scr_reallocate_layers_menu(ancho,alto);
 
 	//printf("scr_reallocate_layers_menu ancho %d alto: %d\n",ancho,alto);
@@ -2701,6 +2703,7 @@ int screen_ext_desktop_enabled=0;
 
 
 int screen_ext_desktop_width=256; //se multiplicara por zoom
+int screen_ext_desktop_height=0; //se multiplicara por zoom
 
 //valor anterior si el usuario lo ha ocultado con el boton del footer
 //int screen_ext_desktop_width_before_disabling=-1;
@@ -2717,6 +2720,23 @@ int screen_get_ext_desktop_width_zoom(void)
 {
 	return screen_get_ext_desktop_width_no_zoom()*zoom_x;
 }
+
+int screen_get_ext_desktop_height_no_zoom(void)
+{
+	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height;
+}
+
+int screen_get_ext_desktop_height_zoom(void)
+{
+	return screen_get_ext_desktop_height_no_zoom()*zoom_y;
+}
+
+//Alto total considerando zoom y zx desktop y border
+int screen_get_total_alto_ventana_zoom(void)
+{
+    return screen_get_emulated_display_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();	
+}
+
 
 int screen_get_ext_desktop_start_x(void)
 {
@@ -11473,38 +11493,41 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
 int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
 {
 
+    int alto_extdesktop=screen_get_ext_desktop_height_no_zoom();
+    
+
         if (MACHINE_IS_Z88) {
-        return SCREEN_Z88_HEIGHT;
+        return alto_extdesktop+SCREEN_Z88_HEIGHT;
         }
 
         else if (MACHINE_IS_CPC) {
-        return CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
         else if (MACHINE_IS_PRISM) {
-        return PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
 	else if (MACHINE_IS_TSCONF) {
-        return TSCONF_DISPLAY_HEIGHT;
+        return alto_extdesktop+TSCONF_DISPLAY_HEIGHT;
         }
 
 	else if (MACHINE_IS_TBBLUE) {
-        return TBBLUE_DISPLAY_HEIGHT+(TBBLUE_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+TBBLUE_DISPLAY_HEIGHT+(TBBLUE_BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
         }				
 
         else if (MACHINE_IS_SAM) {
-        return SAM_DISPLAY_HEIGHT+(SAM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+SAM_DISPLAY_HEIGHT+(SAM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
         else if (MACHINE_IS_QL) {
-        return QL_DISPLAY_HEIGHT+(QL_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+QL_DISPLAY_HEIGHT+(QL_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
 
 
         else {
-        return ALTO_PANTALLA+(BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
+        return alto_extdesktop+ALTO_PANTALLA+(BOTTOM_BORDER_NO_ZOOM)*border_enabled.v;
         }
 }
 

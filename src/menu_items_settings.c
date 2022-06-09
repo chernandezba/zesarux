@@ -9232,33 +9232,8 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
 
 }
 
-
-void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
+void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
 {
-
-	int reorganize_windows=0;
-
-	char string_width[5];
-
-	sprintf (string_width,"%d",screen_ext_desktop_width);
-
-
-	menu_ventana_scanf("Width",string_width,5);
-
-	int valor=parse_string_to_number(string_width);
-
-	if (valor<128 || valor>9999) {
-		debug_printf (VERBOSE_ERR,"Invalid value");
-		return;
-	}
-
-
-	if (valor<screen_ext_desktop_width) reorganize_windows=1;
-
-	screen_ext_desktop_width=valor;
-
-
-
 
 	debug_printf(VERBOSE_INFO,"End Screen");
 
@@ -9291,10 +9266,78 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 }
 
 
+
+void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
+{
+
+	int reorganize_windows=0;
+
+	char string_width[5];
+
+	sprintf (string_width,"%d",screen_ext_desktop_width);
+
+
+	menu_ventana_scanf("Width",string_width,5);
+
+	int valor=parse_string_to_number(string_width);
+
+	if (valor<128 || valor>9999) {
+		debug_printf (VERBOSE_ERR,"Invalid value");
+		return;
+	}
+
+
+	if (valor<screen_ext_desktop_width) reorganize_windows=1;
+
+	screen_ext_desktop_width=valor;
+
+
+    menu_ext_desk_settings_custom_width_height(reorganize_windows);
+
+
+}
+
+
+void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
+{
+
+	int reorganize_windows=0;
+
+	char string_height[5];
+
+	sprintf (string_height,"%d",screen_ext_desktop_height);
+
+
+	menu_ventana_scanf("Height",string_height,5);
+
+	int valor=parse_string_to_number(string_height);
+
+	if (valor<0 || valor>9999) {
+		debug_printf (VERBOSE_ERR,"Invalid value");
+		return;
+	}
+
+
+	if (valor<screen_ext_desktop_height) reorganize_windows=1;
+
+	screen_ext_desktop_height=valor;
+
+
+    menu_ext_desk_settings_custom_width_height(reorganize_windows);
+
+
+}
+
 void menu_ext_desk_settings_width(MENU_ITEM_PARAMETERS)
 {
 
     menu_ext_desk_settings_width_enlarge_reduce(1);
+}
+
+void menu_ext_desk_settings_height(MENU_ITEM_PARAMETERS)
+{
+
+    menu_ext_desk_settings_height_enlarge_reduce(1);
 }
 
 void menu_ext_desk_settings_filltype(MENU_ITEM_PARAMETERS)
@@ -9457,7 +9500,16 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');            
+
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_height);
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
+			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
+			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");            
+
+			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,menu_ext_desktop_cond,"C~~ustom Height");
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');   
 		
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");

@@ -3357,6 +3357,7 @@ int util_write_configfile(void)
 
   if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");   
                                               ADD_STRING_CONFIG,"--zxdesktop-width %d",screen_ext_desktop_width);  
+                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",screen_ext_desktop_height);  
 
 
 

@@ -778,7 +778,7 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 
     zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-    zoom_y_calculado=height/screen_get_window_size_height_no_zoom_border_en();
+    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
     if (!zoom_x_calculado) zoom_x_calculado=1;
@@ -799,6 +799,7 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
     pixel_screen_width += screen_get_ext_desktop_width_zoom();
 
     pixel_screen_height = screen_get_window_size_height_zoom_border_en();
+    pixel_screen_height += screen_get_ext_desktop_height_zoom();
 
     // Convert screen width & height to their backing store coordinates
     // Support Retina Display
@@ -1202,7 +1203,9 @@ int cocoa_raton_oculto=0;
 
     //0,0 en cocoa esta abajo a la izquierda
     mouse_x=locationInView.x;
-    mouse_y=screen_get_window_size_height_zoom_border_en()-locationInView.y;
+
+    int alto=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
+    mouse_y=alto-locationInView.y;
 
     kempston_mouse_x=mouse_x/zoom_x;
     kempston_mouse_y=255-mouse_y/zoom_y;
@@ -1210,7 +1213,9 @@ int cocoa_raton_oculto=0;
     //si esta dentro de la ventana y hay que ocultar puntero
 
     if (mouse_pointer_shown.v==0) {
-            if (mouse_x>=0 && mouse_y>=0 && mouse_x<=(screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom()) && mouse_y<=screen_get_window_size_height_zoom_border_en() ) {
+            if (mouse_x>=0 && mouse_y>=0 && 
+                mouse_x<=(screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom()) && 
+                mouse_y<=screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom() ) {
                     if (!cocoa_raton_oculto) {
                             debug_printf (VERBOSE_PARANOID,"Mouse inside window and not hidden. Hide it");
                             cocoa_raton_oculto=1;
@@ -2654,7 +2659,7 @@ void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
     int yorigen;
 
 
-	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
+	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/menu_char_height;
 
 
         //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
@@ -3000,7 +3005,11 @@ int scrcocoa_get_menu_width(void)
 
 int scrcocoa_get_menu_height(void)
 {
-    int max=screen_get_emulated_display_height_no_zoom_border_en()/8/menu_gui_zoom;
+    int max=screen_get_emulated_display_height_no_zoom_border_en();
+
+    max +=screen_get_ext_desktop_height_no_zoom();
+
+    max=max/menu_char_height/menu_gui_zoom;    
     if (max>OVERLAY_SCREEN_MAX_HEIGTH) max=OVERLAY_SCREEN_MAX_HEIGTH;
 
             //printf ("max y: %d %d\n",max,screen_get_emulated_display_height_no_zoom_border_en());
@@ -3082,7 +3091,7 @@ int scrcocoa_init (void) {
 
 
     pixel_screen_width = screen_get_window_size_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
-    pixel_screen_height = screen_get_window_size_height_zoom_border_en();
+    pixel_screen_height = screen_get_window_size_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
 
     // Convert screen width & height to their backing store coordinates
     // Support Retina Display

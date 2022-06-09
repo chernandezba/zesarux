@@ -70,6 +70,7 @@ extern int (*scr_get_menu_height) (void);
 extern int (*scr_driver_can_ext_desktop) (void);
 
 extern int screen_ext_desktop_width;
+extern int screen_ext_desktop_height;
 //extern int screen_ext_desktop_width_before_disabling;
 extern int screen_ext_desktop_enabled;
 
@@ -77,6 +78,11 @@ extern int if_zxdesktop_enabled_and_driver_allows(void);
 
 extern int screen_get_ext_desktop_width_no_zoom(void);
 extern int screen_get_ext_desktop_width_zoom(void);
+
+extern int screen_get_ext_desktop_height_no_zoom(void);
+extern int screen_get_ext_desktop_height_zoom(void);
+
+extern int screen_get_total_alto_ventana_zoom(void);
 
 extern void screen_init_ext_desktop(void);
 extern int screen_ext_desktop_place_menu;

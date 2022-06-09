@@ -3107,7 +3107,7 @@ void menu_clear_footer(void)
         int alto=WINDOW_FOOTER_SIZE;
         int ancho=screen_get_window_size_width_no_zoom_border_en();
 
-        int yinicial=screen_get_window_size_height_no_zoom_border_en()-alto;
+        int yinicial=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom()-alto;
 
         int x,y;
 
@@ -3588,7 +3588,7 @@ void menu_ext_desktop_lower_icons_get_geometry(int *p_ancho_boton,int *p_alto_bo
 
 	
 */
-	int alto_zx_desktop=screen_get_emulated_display_height_zoom_border_en();	
+	int alto_zx_desktop=screen_get_total_alto_ventana_zoom();
 	int yinicio=alto_zx_desktop-alto_boton;
 
 	//printf ("alto_boton: %d alto_zx_desktop: %d yinicio: %d\n",alto_boton,alto_zx_desktop,yinicio);
@@ -3874,10 +3874,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 	int alto_boton;
 
 		int xinicio=screen_get_ext_desktop_start_x();
-		//int yinicio=0;
 
-		//int ancho=screen_get_ext_desktop_width_zoom();
-		//int alto=screen_get_emulated_display_height_zoom_border_en();		
 
 	int xfinal;
 
@@ -4359,12 +4356,13 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 
 //Retorna posicion del logo de ZEsarUX en el extended desktop
+/*
 void menu_ext_desktop_get_logo_coords(int *x,int *y)
 {
 
 	int xinicio=screen_get_ext_desktop_start_x();
 	int ancho=screen_get_ext_desktop_width_zoom();
-	int alto=screen_get_emulated_display_height_zoom_border_en();
+	int alto=screen_get_ext_desktop_height_zoom();
 
 	//Agregamos logo ZEsarUX en esquina inferior derecha, con margen
 	int xfinal=xinicio+ancho-ZESARUX_ASCII_LOGO_ANCHO-ZESARUX_WATERMARK_LOGO_MARGIN;
@@ -4374,6 +4372,7 @@ void menu_ext_desktop_get_logo_coords(int *x,int *y)
 	*x=xfinal;
 	*y=yfinal;
 }
+*/
 
 
 //Tipo de rellenado de extended desktop:
@@ -4409,7 +4408,7 @@ void menu_draw_ext_desktop_footer(void)
 	// De momento solo dibujarlo en color de fondo y ya 
 	int x,y;
 	int xinicio=screen_get_ext_desktop_start_x();
-	int yinicio=screen_get_emulated_display_height_zoom_border_en();
+	int yinicio=screen_get_emulated_display_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
 
 	int ancho=screen_get_ext_desktop_width_zoom();
 	int alto=WINDOW_FOOTER_SIZE*zoom_y;
@@ -4877,7 +4876,9 @@ void menu_draw_ext_desktop(void)
     int yinicio=0;
 
     int ancho=screen_get_ext_desktop_width_zoom();
-    int alto=screen_get_emulated_display_height_zoom_border_en();
+    //int alto=screen_get_ext_desktop_height_zoom(); //screen_get_emulated_display_height_zoom_border_en();
+
+    int alto=screen_get_emulated_display_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
 
     int x,y;
 
@@ -9083,6 +9084,12 @@ int menu_get_width_characters_ext_desktop(void)
 	return screen_ext_desktop_width/menu_char_width/menu_gui_zoom;
 }
 
+//Retorna el alto en caracteres del ext desktop
+int menu_get_height_characters_ext_desktop(void)
+{
+	return screen_ext_desktop_height/menu_char_height/menu_gui_zoom;
+}
+
 int menu_get_origin_x_zxdesktop_aux(int divisor)
 {
 	//Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
@@ -9153,8 +9160,31 @@ int menu_center_x_from_width(int ancho_ventana)
     return x_ventana;
 }
 
+int menu_get_origin_y_zxdesktop_aux(int divisor)
+{
+	//Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+	int alto_total=scr_get_menu_height();
+
+	//Quitamos el tamaño maximo ventana (normalmente 32), entre 2
+
+	int restar=menu_get_height_characters_ext_desktop();
+	//printf ("restar: %d\n",restar);
+	//al menos 24 de alto para zona de menu
+	if (restar<24) restar=24;
+	int pos_y=alto_total-restar/divisor;
+
+	//Por si acaso
+	if (pos_y<0) pos_y=0;		
+	return pos_y;
+}
+
 int menu_center_y(void)
 {
+	/*if (menu_ext_desktop_enabled_place_menu()) {
+		//Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
+		return menu_get_origin_y_zxdesktop_aux(2);
+	}*/
+
 	return scr_get_menu_height()/2;
 }
 
@@ -12534,7 +12564,8 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_xdesktop(int ampliar_reduci
         //printf("si pulsado en boton switch zxdesktop. mouse_x %d mouse_y %d\n",x,y);
 
         //donde esta el boton
-        int yboton=screen_get_emulated_display_height_no_zoom_border_en()/8;
+        //int yboton=screen_get_emulated_display_height_no_zoom_border_en()/8;
+        int yboton=screen_get_window_size_height_no_zoom_border_en()/8;
         int xboton=screen_get_window_size_width_no_zoom_border_en()/8-2; //justo 2 posicion menos
         //printf("si pulsado en boton switch zxdesktop. xboton %d yboton %d\n",xboton,yboton);
 
@@ -13866,7 +13897,13 @@ void zxvision_rearrange_background_windows(void)
 	int xfinal=origen_x+ancho;
 
 
-	int alto=scr_get_menu_height();
+	int alto;
+    
+	if (menu_ext_desktop_enabled_place_menu() ) {
+		alto=menu_get_height_characters_ext_desktop();
+	}
+
+    else alto=scr_get_menu_height();
 
 	//printf ("alto: %d\n",alto);
 
@@ -14161,8 +14198,13 @@ void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resu
 
 		ancho +=screen_get_ext_desktop_width_zoom();
 
+		int alto=screen_get_window_size_height_zoom_border_en();
+
+		alto +=screen_get_ext_desktop_height_zoom();
+
+
 		if (mouse_x>=0 && mouse_y>=0
-			&& mouse_x<=ancho && mouse_y<=screen_get_window_size_height_zoom_border_en() ) {
+			&& mouse_x<=ancho && mouse_y<=alto ) {
 				//Si mouse esta dentro de la ventana del emulador
 				mouse_en_emulador=1;
 		}
@@ -14206,7 +14248,7 @@ void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resu
 	//si esta justo en los ultimos 8 pixeles, dara entre -7 y -1. al dividir entre 8, retornaria 0, diciendo erroneamente que estamos dentro de ventana
 
 	if (x<0) x-=(menu_char_width*menu_gui_zoom); //posicion entre -7 y -1 y demas, cuenta como -1, -2 al dividir entre 8
-	if (y<0) y-=(8*menu_gui_zoom);
+	if (y<0) y-=(menu_char_height*menu_gui_zoom);
 
 	//x /=menu_char_width;
 	//y /=8;
@@ -14226,64 +14268,9 @@ void menu_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_
 
 	menu_calculate_mouse_xy_absolute_interface_pixel(&x,&y);
 
-/*
-		int mouse_en_emulador=0;
-		//printf ("x: %04d y: %04d\n",mouse_x,mouse_y);
 
-		int ancho=screen_get_window_size_width_zoom_border_en();
-
-		ancho +=screen_get_ext_desktop_width_zoom();
-
-		if (mouse_x>=0 && mouse_y>=0
-			&& mouse_x<=ancho && mouse_y<=screen_get_window_size_height_zoom_border_en() ) {
-				//Si mouse esta dentro de la ventana del emulador
-				mouse_en_emulador=1;
-		}
-
-		if (  (mouse_x!=last_mouse_x || mouse_y !=last_mouse_y) && mouse_en_emulador) {
-			mouse_movido=1;
-		}
-		else mouse_movido=0;
-
-		last_mouse_x=mouse_x;
-		last_mouse_y=mouse_y;
-
-		//printf ("x: %04d y: %04d movido=%d\n",mouse_x,mouse_y,mouse_movido);
-
-		//Quitarle el zoom
-		x=mouse_x/zoom_x;
-		y=mouse_y/zoom_y;
-
-		//Considerar borde pantalla
-
-		//Todo lo que sea negativo o exceda border, nada.
-
-		//printf ("x: %04d y: %04d\n",x,y);
-
-
-
-        //margenes de zona interior de pantalla. para modo rainbow
-				int margenx_izq;
-				int margeny_arr;
-				menu_retorna_margenes_border(&margenx_izq,&margeny_arr);
-
-	//Ya no hace falta restar margenes
-	margenx_izq=margeny_arr=0;
-
-	x -=margenx_izq;
-	y -=margeny_arr;
-
-	//printf ("x: %04d y: %04d\n",x,y);
-
-	//Aqui puede dar negativo, en caso que cursor este en el border
-	//si esta justo en los ultimos 8 pixeles, dara entre -7 y -1. al dividir entre 8, retornaria 0, diciendo erroneamente que estamos dentro de ventana
-
-	if (x<0) x-=(menu_char_width*menu_gui_zoom); //posicion entre -7 y -1 y demas, cuenta como -1, -2 al dividir entre 8
-	if (y<0) y-=(8*menu_gui_zoom);
-
-*/
 	x /=menu_char_width;
-	y /=8;
+	y /=menu_char_height;
 
 	x /= menu_gui_zoom;
 	y /= menu_gui_zoom;
@@ -20915,6 +20902,88 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 	cls_menu_overlay();
 
 }
+
+//si enlarge_reduce=1, ampliar
+//si no, reducir
+void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
+{
+	debug_printf(VERBOSE_INFO,"End Screen");
+
+	//Guardar funcion de texto overlay activo, para desactivarlo temporalmente. No queremos que se salte a realloc_layers simultaneamente,
+	//mientras se hace putpixel desde otro sitio -> provocaria escribir pixel en layer que se esta reasignando
+  void (*previous_function)(void);
+  int menu_antes;
+
+	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+
+
+	int reorganize_windows=0;
+
+
+	//Cambio ancho
+	//screen_ext_desktop_width *=2;
+	//if (screen_ext_desktop_width>=2048) screen_ext_desktop_width=128;
+
+	//Incrementos de 128 hasta llegar a ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS
+	//Hacerlo multiple de 127 para evitar valores no multiples de custom width
+
+	screen_ext_desktop_height &=(65535-127);
+
+    if (enlarge_reduce) {
+
+        //Si pasa de cierto limite (1280 a la fecha de escribir este comentario), saltar a 2560, y ese es el limite
+        if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) screen_ext_desktop_height=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
+        
+        //si pasa del limite maximo, volver a tamaño pequeño
+        else if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
+            screen_ext_desktop_height=128;
+            reorganize_windows=1;
+        }
+
+        //resto de casos, simplemente incrementar
+        else screen_ext_desktop_height +=128;
+
+    }
+
+    else {
+        //Si esta entre cierto limite (1280..2560 a la fecha de escribir este comentario), saltar a 1280
+        if (screen_ext_desktop_height>ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
+            screen_ext_desktop_height=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS;
+            reorganize_windows=1;
+        }
+
+        //Si >=256, decrementar
+        else if (screen_ext_desktop_height>=256) {
+            screen_ext_desktop_height -=128;
+            reorganize_windows=1;
+        }
+
+        //resto de casos, no hacer nada, no decrementar mas alla del limite inferior
+    }
+        
+
+	screen_init_pantalla_and_others_and_realjoystick();
+
+    debug_printf(VERBOSE_INFO,"Creating Screen");
+
+	menu_init_footer();
+
+	screen_restart_pantalla_restore_overlay(previous_function,menu_antes);	
+
+
+	//Cerrar ventamas y olvidar geometria ventanas
+	//zxvision_window_delete_all_windows_and_clear_geometry();
+
+	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
+	if (reorganize_windows) zxvision_rearrange_background_windows();	
+
+	//Conveniente esto para borrar "restos" de ventanas
+	cls_menu_overlay();
+
+}
+
+
+
 
 
 char zxvision_helper_shorcuts_accumulated[MAX_ZXVISION_HELPER_SHORTCUTS_LENGTH]="";

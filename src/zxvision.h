@@ -1381,6 +1381,7 @@ extern z80_bit menu_current_drive_mmc_image;
 
 //Ancho limite hasta el que se hace incrementos de 128 desde item de menu. Luego se salta a tamaño 2560
 #define ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS 1280
+#define ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS 1280
 
 //Limite admitido desde menu
 //TODO: Esto es mayor que el maximo de overlay de menu, cosa que no tiene mucho sentido, porque se puede hacer la ventana mas grande
@@ -1392,6 +1393,7 @@ extern z80_bit menu_current_drive_mmc_image;
 //Da igual realmente que esto fuera mas grande, pues las funciones de driver de video (scrXXXX_get_menu_width)
 //ya controlan que no se pueda usar mas ancho de overlay
 #define ZXDESKTOP_MAX_WIDTH_MENU_LIMIT ((OVERLAY_SCREEN_MAX_WIDTH*8)-256)
+#define ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT ((OVERLAY_SCREEN_MAX_HEIGTH*8)-256)
 
 //Total botones a la derecha: 3 (background, minimizar, maximizar)
 #define ZXVISION_TOTAL_BUTTONS_RIGHT 3
@@ -1407,6 +1409,7 @@ extern z80_bit menu_current_drive_mmc_image;
 #define ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON (512/zoom_x)
 
 extern void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce);
+extern void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce);
 
 //mas que suficiente
 #define MAX_ZXVISION_HELPER_SHORTCUTS_LENGTH 30

@@ -1890,6 +1890,7 @@ printf (
 
 		"--enable-zxdesktop                     Enable ZX Desktop space\n"
 		"--zxdesktop-width n                    ZX Desktop width\n"
+        "--zxdesktop-height n                   ZX Desktop height\n"
 		"--zxdesktop-fill-type n                ZX Desktop fill type (0,1,2,3,4 or 5)\n"
 		"--zxdesktop-fill-primary-color n       ZX Desktop primary fill color (0-15)\n"
 		"--zxdesktop-fill-secondary-color n     ZX Desktop secondary fill color (0-15)\n"
@@ -5500,6 +5501,17 @@ int parse_cmdline_options(void) {
 				}
 				screen_ext_desktop_width=valor;
 			}		
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-height")) {
+				siguiente_parametro_argumento();
+				int valor=parse_string_to_number(argv[puntero_parametro]);
+
+				if (valor<0 || valor>9999) {
+					printf ("Invalid value for ZX Desktop height\n");
+					exit(1);
+				}
+				screen_ext_desktop_height=valor;
+			}	            
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-type")) {
 				siguiente_parametro_argumento();
