@@ -115,9 +115,9 @@ int scrsdl_crea_ventana(void)
     SDL_SetWindowTitle(window,"ZEsarUX "EMULATOR_VERSION);
 
 
-    scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, screen_get_window_size_height_zoom_border_en());
+    scrsdl_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, ancho, alto);
     //Uint32 *pixels = new Uint32[screen_get_window_size_width_zoom_border_en() * screen_get_window_size_height_zoom_border_en()];
-    scrsdl_pixeles=malloc(ancho * screen_get_window_size_height_zoom_border_en()*4);
+    scrsdl_pixeles=malloc(ancho * alto *4);
 
 
     if (scrsdl_pixeles==NULL) return 1;
