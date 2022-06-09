@@ -87,7 +87,7 @@ int scrsdl_crea_ventana(void)
 
         int alto=screen_get_window_size_height_zoom_border_en();
 
-        ancho +=screen_get_ext_desktop_height_zoom();
+        alto +=screen_get_ext_desktop_height_zoom();
 
 	debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
