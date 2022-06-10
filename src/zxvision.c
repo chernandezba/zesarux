@@ -4879,7 +4879,8 @@ void menu_draw_ext_desktop(void)
     //int ancho=screen_get_emulated_display_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
 
     int ancho_zxdesktop=screen_get_ext_desktop_width_zoom();
-    int xfinal=screen_get_emulated_display_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
+    int ancho_no_zxdesktop=screen_get_emulated_display_width_zoom_border_en();
+    int xfinal=ancho_no_zxdesktop+ancho_zxdesktop;
     //int alto=screen_get_ext_desktop_height_zoom(); //screen_get_emulated_display_height_zoom_border_en();
 
     int ystart_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
@@ -4947,6 +4948,12 @@ void menu_draw_ext_desktop(void)
 
         contador_color_rainbow=y; //Para dar un aspecto de rayado en tipos rainbow
 
+        //Si estamos en zona por arriba de donde empieza el zxdesktop vertical, "saltar" toda esa zona, para que
+        //el contador parezca que ha recorrido esa zona. Esto da continuidad en las franjas en cuanto vamos a la zona de zxdesktop vertical
+
+        if (y<ystart_zxdesktop) {
+            contador_color_rainbow +=ancho_no_zxdesktop;
+        }
 
         /*
 
