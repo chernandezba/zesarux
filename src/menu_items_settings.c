@@ -9317,6 +9317,9 @@ void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
 		return;
 	}
 
+    //Valor tiene que ser multiple de 8, si no, el footer no se ve bien
+    valor &=(65535-7);
+
 
 	if (valor<screen_ext_desktop_height) reorganize_windows=1;
 
