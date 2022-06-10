@@ -4872,11 +4872,17 @@ void menu_draw_ext_desktop(void)
         Y considerando el espacio de coordenadas x e y con zoom
     */
 
-    int xinicio=screen_get_ext_desktop_start_x();
+    int xstart_zxdesktop=screen_get_ext_desktop_start_x();
+    //int xinicio=0;
     int yinicio=0;
 
-    int ancho=screen_get_ext_desktop_width_zoom();
+    //int ancho=screen_get_emulated_display_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
+
+    int ancho_zxdesktop=screen_get_ext_desktop_width_zoom();
+    int xfinal=screen_get_emulated_display_width_zoom_border_en()+screen_get_ext_desktop_width_zoom();
     //int alto=screen_get_ext_desktop_height_zoom(); //screen_get_emulated_display_height_zoom_border_en();
+
+    int ystart_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
 
     int alto=screen_get_emulated_display_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
 
@@ -4941,12 +4947,43 @@ void menu_draw_ext_desktop(void)
 
         contador_color_rainbow=y; //Para dar un aspecto de rayado en tipos rainbow
 
-        for (x=xinicio;x<xinicio+ancho;x++) {
+
+        /*
+
+        Ventana:
+
+
+        Pantalla emulada
+        ||||||||||||||||
+        vvvvvvvvvvvvvvvv
+        xxxxxxxxxxxxxxxxxxxxxxxx
+        xxxxxxxxxxxxxxxxxxxxxxxx    <-- ZX Desktop horizontal ->
+        xxxxxxxxxxxxxxxxxxxxxxxx
+        xxxxxxxxxxxxxxxxxxxxxxxx
+
+        <-- ZX Desktop vertical --> <-- ZX Desktop horizontal ->
+
+        */
+
+        //Si estamos en la zona de arriba (aun no llega a zxdesktop vertical) saltar posicion x para no dibujar encima de la pantalla emulada
+        int xinicio;
+        if (y<ystart_zxdesktop) {
+            xinicio=xstart_zxdesktop;
+        }
+        else {
+            xinicio=0;        
+        }
+
+        for (x=xinicio;x<xfinal;x++) {
+
+
 
             //Si mostrar en esa posicion un scrfile
             int xrelative=x-xinicio;
             int yrelative=y-yinicio;
-            int color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho,alto);
+
+            //TODO fix this int color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto);
+            int color_scrfile=-1;
 
             if (color_scrfile>=0) {
                 scr_putpixel(x,y,color_scrfile);
@@ -5028,7 +5065,7 @@ void menu_draw_ext_desktop(void)
 
 	//Dibujar botones si están activados (por defecto)
 	if (menu_zxdesktop_buttons_enabled.v) {
-		menu_draw_ext_desktop_buttons(xinicio);
+		menu_draw_ext_desktop_buttons(xstart_zxdesktop);
 	}
 
 	//Dibujar footer del zxdesktop
