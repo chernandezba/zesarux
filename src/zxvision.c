@@ -13047,6 +13047,10 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			debug_printf (VERBOSE_DEBUG,"Clicked inside window. Events are not sent to emulated machine");
 			zxvision_keys_event_not_send_to_machine=1;
 			ventana_tipo_activa=1;
+            
+            //Reflejar cambio de color en recuadro alrededor de maquina emulada
+            menu_draw_ext_desktop();
+
 			zxvision_draw_window(w);
 			zxvision_draw_window_contents(w);
 		}
@@ -13058,6 +13062,10 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			debug_printf (VERBOSE_DEBUG,"Clicked outside window. Events are sent to emulated machine. X=%d Y=%d",menu_mouse_x,menu_mouse_y);
 			zxvision_keys_event_not_send_to_machine=0;
 			ventana_tipo_activa=0;
+
+            //Reflejar cambio de color en recuadro alrededor de maquina emulada
+            menu_draw_ext_desktop();
+
 			zxvision_draw_window(w);
 			zxvision_draw_window_contents(w);
 
