@@ -5086,7 +5086,7 @@ void menu_draw_ext_desktop(void)
     menu_ext_desktop_fill_rainbow_counter++;
 
     //Recuadro que envuelve maquina emulada. Solo si hay zxdesktop vertical y tiene minimo de 16
-    if (alto_zxdesktop>16) {
+    if (alto_zxdesktop>=16) {
         int grueso_recuadro=4;
 
         //linea vertical de abajo
