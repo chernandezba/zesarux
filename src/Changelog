@@ -7,7 +7,9 @@ Added ZSF support for Timex TS2068
 Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
 Improved SmartLoad & Drag-Drop: allow to load a .rom file as a custom rom file for the current machine
-Improved ZX Desktop: allow to extend ZX Desktop vertically
+Improved ZX Desktop: 
+-Allow to extend ZX Desktop vertically
+-Add frame around emulated machine
 
 
 Fixed Z80 behavior after EI or DD/FD prefixes and interrupts

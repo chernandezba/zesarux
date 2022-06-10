@@ -1408,6 +1408,9 @@ extern z80_bit menu_current_drive_mmc_image;
 #define ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON (ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS/zoom_x)
 #define ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON (512/zoom_x)
 
+//Minimo de alto para mostrar recuadro alrededor de pantalla emulada
+#define ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME 16
+
 extern void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce);
 extern void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce);
 

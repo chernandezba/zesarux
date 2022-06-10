@@ -5086,10 +5086,10 @@ void menu_draw_ext_desktop(void)
     menu_ext_desktop_fill_rainbow_counter++;
 
     //Recuadro que envuelve maquina emulada. Solo si hay zxdesktop vertical y tiene minimo de 16
-    if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=16) {
+    if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
         int grueso_recuadro=4;
 
-        int color=ESTILO_GUI_PAPEL_NORMAL;
+        int color=ESTILO_GUI_PAPEL_TITULO;
 
         if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
 
@@ -13047,7 +13047,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			debug_printf (VERBOSE_DEBUG,"Clicked inside window. Events are not sent to emulated machine");
 			zxvision_keys_event_not_send_to_machine=1;
 			ventana_tipo_activa=1;
-            
+
             //Reflejar cambio de color en recuadro alrededor de maquina emulada
             menu_draw_ext_desktop();
 

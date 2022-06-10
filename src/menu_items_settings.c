@@ -9537,11 +9537,14 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
         menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");        
 
-        menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_frame_emulated_display,NULL,
-            "Frame on emulated display","Recuadro en pantalla emulada","Requadre a la pantalla emulada");
-        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(!zxdesktop_disable_show_frame_around_display ? 'X' : ' ' ) );
-        menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
-        menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+
+        if (screen_get_ext_desktop_height_zoom()>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_frame_emulated_display,NULL,
+                "Frame on emulated display","Recuadro en pantalla emulada","Requadre a la pantalla emulada");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(!zxdesktop_disable_show_frame_around_display ? 'X' : ' ' ) );
+            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+        }
 
         if (screen_ext_desktop_enabled) {
 
