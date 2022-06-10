@@ -4953,6 +4953,13 @@ void menu_draw_ext_desktop(void)
 
         if (y<ystart_zxdesktop) {
             contador_color_rainbow +=ancho_no_zxdesktop;
+
+            //Y el modo random igual, esa zona de la izquierda generamos color random tantas veces como ancho tenga
+            if (menu_ext_desktop_fill==6) {
+                int j;
+
+                for (j=0;j<ancho_no_zxdesktop;j++) ay_randomize(0);
+            }
         }
 
         /*
