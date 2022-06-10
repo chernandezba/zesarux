@@ -21023,7 +21023,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
         
         //si pasa del limite maximo, volver a tamaño pequeño
         else if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
-            screen_ext_desktop_height=128;
+            screen_ext_desktop_height=0;
             reorganize_windows=1;
         }
 
