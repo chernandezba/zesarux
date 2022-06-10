@@ -74,4 +74,6 @@ Sector -407021264
 
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
 
+-zx desktop height tiene que ser multiple de menu_char_height o si no el footer no se ve bien
+
 --Fin Errores

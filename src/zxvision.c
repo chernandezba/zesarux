@@ -4976,16 +4976,24 @@ void menu_draw_ext_desktop(void)
 
         for (x=xinicio;x<xfinal;x++) {
 
-
-
             //Si mostrar en esa posicion un scrfile
-            int xrelative=x-xinicio;
+            int xrelative=x-xstart_zxdesktop;
             int yrelative=y-yinicio;
 
-            //TODO fix this int color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto);
-            int color_scrfile=-1;
+            int mostrar_scrfile=0;
 
-            if (color_scrfile>=0) {
+            int color_scrfile;
+
+            if (xrelative>=0) {
+                color_scrfile=menu_draw_ext_desktop_si_scrfile(xrelative,yrelative,ancho_zxdesktop,alto);
+
+                if (color_scrfile>=0) {
+                    mostrar_scrfile=1;
+                }
+            }
+
+
+            if (mostrar_scrfile) {
                 scr_putpixel(x,y,color_scrfile);
             }
 
