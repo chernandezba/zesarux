@@ -5127,12 +5127,8 @@ void menu_draw_ext_desktop(void)
 void menu_refresca_pantalla(void)
 {
 
-	//printf ("antes de all_interlace_scr_refresca_pantalla\n");
-
 	modificado_border.v=1;
     all_interlace_scr_refresca_pantalla();
-
-	//printf ("despues de all_interlace_scr_refresca_pantalla\n");
 
 	//necesario si hay efectos de darken o grayscale
 	//menu_clear_footer();
@@ -5140,12 +5136,8 @@ void menu_refresca_pantalla(void)
 	//y redibujar todo footer
 	redraw_footer();
 
-	//printf ("despues de redraw_footer\n");
-
-
+	//Y redibujar zx desktop
 	menu_draw_ext_desktop();
-
-	//printf ("despues de menu_draw_ext_desktop\n");
 
 }
 
@@ -13049,7 +13041,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			ventana_tipo_activa=1;
 
             //Reflejar cambio de color en recuadro alrededor de maquina emulada
-            menu_draw_ext_desktop();
+            menu_refresca_pantalla();
 
 			zxvision_draw_window(w);
 			zxvision_draw_window_contents(w);
@@ -13064,7 +13056,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			ventana_tipo_activa=0;
 
             //Reflejar cambio de color en recuadro alrededor de maquina emulada
-            menu_draw_ext_desktop();
+            menu_refresca_pantalla();
 
 			zxvision_draw_window(w);
 			zxvision_draw_window_contents(w);
