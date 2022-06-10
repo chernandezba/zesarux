@@ -4883,9 +4883,10 @@ void menu_draw_ext_desktop(void)
     int xfinal=ancho_no_zxdesktop+ancho_zxdesktop;
     //int alto=screen_get_ext_desktop_height_zoom(); //screen_get_emulated_display_height_zoom_border_en();
 
-    int ystart_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
+    int alto_zxdesktop=screen_get_ext_desktop_height_zoom();
+    int alto_no_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
 
-    int alto=screen_get_emulated_display_height_zoom_border_en()+screen_get_ext_desktop_height_zoom();
+    int alto=alto_no_zxdesktop+alto_zxdesktop;
 
     int x,y;
 
@@ -4951,7 +4952,7 @@ void menu_draw_ext_desktop(void)
         //Si estamos en zona por arriba de donde empieza el zxdesktop vertical, "saltar" toda esa zona, para que
         //el contador parezca que ha recorrido esa zona. Esto da continuidad en las franjas en cuanto vamos a la zona de zxdesktop vertical
 
-        if (y<ystart_zxdesktop) {
+        if (y<alto_no_zxdesktop) {
             contador_color_rainbow +=ancho_no_zxdesktop;
 
             //Y el modo random igual, esa zona de la izquierda generamos color random tantas veces como ancho tenga
@@ -4981,7 +4982,7 @@ void menu_draw_ext_desktop(void)
 
         //Si estamos en la zona de arriba (aun no llega a zxdesktop vertical) saltar posicion x para no dibujar encima de la pantalla emulada
         int xinicio;
-        if (y<ystart_zxdesktop) {
+        if (y<alto_no_zxdesktop) {
             xinicio=xstart_zxdesktop;
         }
         else {
@@ -5083,6 +5084,28 @@ void menu_draw_ext_desktop(void)
     }
 
     menu_ext_desktop_fill_rainbow_counter++;
+
+    //Recuadro que envuelve maquina emulada. Solo si hay zxdesktop vertical y tiene minimo de 16
+    if (alto_zxdesktop>16) {
+        int grueso_recuadro=4;
+
+        //linea vertical de abajo
+        for (y=alto_no_zxdesktop;y<alto_no_zxdesktop+grueso_recuadro;y++) {
+
+            //Se le suma a x el grueso, para que coincida con linea vertical
+            for (x=0;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
+                scr_putpixel(x,y,ESTILO_GUI_PAPEL_NORMAL); 
+            }
+        }
+
+        //linea vertical de derecha
+        for (x=ancho_no_zxdesktop;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
+            for (y=0;y<alto_no_zxdesktop;y++) {
+                scr_putpixel(x,y,ESTILO_GUI_PAPEL_NORMAL); 
+            }
+        }    
+
+    }
 
 
 	//Dibujar botones si están activados (por defecto)
