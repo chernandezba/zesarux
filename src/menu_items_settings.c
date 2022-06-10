@@ -9479,6 +9479,11 @@ void menu_zxdesktop_scrfile_disable_flash(MENU_ITEM_PARAMETERS)
     zxdesktop_draw_scrfile_load();
 }
 
+void menu_ext_desk_settings_frame_emulated_display(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_disable_show_frame_around_display ^=1;
+}
+
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
@@ -9500,7 +9505,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');            
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');      
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_height);
@@ -9510,6 +9515,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,menu_ext_desktop_cond,"C~~ustom Height");
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');   
+
+            menu_add_item_menu_separator(array_menu_ext_desktop_settings);      
 		
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
@@ -9529,6 +9536,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
         menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
         menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");        
+
+        menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_frame_emulated_display,NULL,
+            "Frame on emulated display","Recuadro en pantalla emulada","Requadre a la pantalla emulada");
+        menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(!zxdesktop_disable_show_frame_around_display ? 'X' : ' ' ) );
+        menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+        menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
 
         if (screen_ext_desktop_enabled) {
 

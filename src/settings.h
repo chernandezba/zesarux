@@ -108,6 +108,7 @@ extern z80_bit debug_view_basic_show_address;
 extern int gui_language;
 
 extern int zxdesktop_disable_on_full_screen;
+extern int zxdesktop_disable_show_frame_around_display;
 
 extern int audiochip_piano_zoom_x;
 extern int audiochip_piano_zoom_y;

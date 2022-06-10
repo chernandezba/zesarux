@@ -293,6 +293,10 @@ z80_bit menu_file_viewer_always_hex={0};
 //Desactivar zx desktop al pasar a full screen
 int zxdesktop_disable_on_full_screen=0;
 
+//Desactivar mostrar recuadro alrededor pantalla emulada
+int zxdesktop_disable_show_frame_around_display=0;
+
+
 
 //
 // General Settings

@@ -1888,26 +1888,27 @@ printf (
 		"\n"
 
 
-		"--enable-zxdesktop                     Enable ZX Desktop space\n"
-		"--zxdesktop-width n                    ZX Desktop width\n"
-        "--zxdesktop-height n                   ZX Desktop height\n"
-		"--zxdesktop-fill-type n                ZX Desktop fill type (0,1,2,3,4 or 5)\n"
-		"--zxdesktop-fill-primary-color n       ZX Desktop primary fill color (0-15)\n"
-		"--zxdesktop-fill-secondary-color n     ZX Desktop secondary fill color (0-15)\n"
-		"--zxdesktop-new-items                  Try to place new menu items on the ZX Desktop space\n"
-		"--zxdesktop-disable-buttons            Disable ZX Desktop direct access buttons\n"
-		"--zxdesktop-transparent-upper-buttons  Make ZX Desktop upper buttons transparent\n"
-		"--zxdesktop-transparent-lower-buttons  Make ZX Desktop lower buttons transparent\n"
-        "--zxdesktop-disable-box-upper-buttons  Disable box around ZX Desktop upper buttons\n"
-        "--zxdesktop-disable-box-lower-buttons  Disable box around ZX Desktop lower buttons\n"  
-        "--zxdesktop-disable-footer-switch      Disable ZX Desktop footer enlarge/reduce buttons\n"
-		"--zxdesktop-disable-on-fullscreen      Disable ZX Desktop when going to full screen\n"
-        "--zxdesktop-scr-file f                 Set ZX Desktop SCR background file\n"
-        "--zxdesktop-scr-enable                 Enable ZX Desktop SCR background file\n"
-        "--zxdesktop-scr-centered               Center ZX Desktop SCR background\n"
-        "--zxdesktop-scr-fillscale              Scale automatic for ZX Desktop SCR background\n"
-        "--zxdesktop-scr-scalefactor n          Scale manually for ZX Desktop SCR background\n"
-        "--zxdesktop-scr-disable-flash          Disable flash for ZX Desktop SCR background\n"        
+		"--enable-zxdesktop                          Enable ZX Desktop space\n"
+		"--zxdesktop-width n                         ZX Desktop width\n"
+        "--zxdesktop-height n                        ZX Desktop height\n"
+		"--zxdesktop-fill-type n                     ZX Desktop fill type (0,1,2,3,4 or 5)\n"
+		"--zxdesktop-fill-primary-color n            ZX Desktop primary fill color (0-15)\n"
+		"--zxdesktop-fill-secondary-color n          ZX Desktop secondary fill color (0-15)\n"
+		"--zxdesktop-new-items                       Try to place new menu items on the ZX Desktop space\n"
+		"--zxdesktop-disable-buttons                 Disable ZX Desktop direct access buttons\n"
+		"--zxdesktop-transparent-upper-buttons       Make ZX Desktop upper buttons transparent\n"
+		"--zxdesktop-transparent-lower-buttons       Make ZX Desktop lower buttons transparent\n"
+        "--zxdesktop-disable-box-upper-buttons       Disable box around ZX Desktop upper buttons\n"
+        "--zxdesktop-disable-box-lower-buttons       Disable box around ZX Desktop lower buttons\n"  
+        "--zxdesktop-disable-footer-switch           Disable ZX Desktop footer enlarge/reduce buttons\n"
+		"--zxdesktop-disable-on-fullscreen           Disable ZX Desktop when going to full screen\n"
+        "--zxdesktop-disable-frame-emulated-display  Disable showing a frame around the emulated machine display\n"
+        "--zxdesktop-scr-file f                      Set ZX Desktop SCR background file\n"
+        "--zxdesktop-scr-enable                      Enable ZX Desktop SCR background file\n"
+        "--zxdesktop-scr-centered                    Center ZX Desktop SCR background\n"
+        "--zxdesktop-scr-fillscale                   Scale automatic for ZX Desktop SCR background\n"
+        "--zxdesktop-scr-scalefactor n               Scale manually for ZX Desktop SCR background\n"
+        "--zxdesktop-scr-disable-flash               Disable flash for ZX Desktop SCR background\n"        
 
         );
 
@@ -5582,6 +5583,10 @@ int parse_cmdline_options(void) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-on-fullscreen")) {
 				zxdesktop_disable_on_full_screen=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-frame-emulated-display")) {
+				zxdesktop_disable_show_frame_around_display=1;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-enable")) {
