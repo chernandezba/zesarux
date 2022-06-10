@@ -5089,19 +5089,23 @@ void menu_draw_ext_desktop(void)
     if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=16) {
         int grueso_recuadro=4;
 
+        int color=ESTILO_GUI_PAPEL_NORMAL;
+
+        if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
+
         //linea vertical de abajo
         for (y=alto_no_zxdesktop;y<alto_no_zxdesktop+grueso_recuadro;y++) {
 
             //Se le suma a x el grueso, para que coincida con linea vertical
             for (x=0;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
-                scr_putpixel(x,y,ESTILO_GUI_PAPEL_NORMAL); 
+                scr_putpixel(x,y,color); 
             }
         }
 
         //linea vertical de derecha
         for (x=ancho_no_zxdesktop;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
             for (y=0;y<alto_no_zxdesktop;y++) {
-                scr_putpixel(x,y,ESTILO_GUI_PAPEL_NORMAL); 
+                scr_putpixel(x,y,color); 
             }
         }    
 
