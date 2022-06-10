@@ -21003,6 +21003,8 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
 	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
+    int incremento=64;
+
 
 	int reorganize_windows=0;
 
@@ -21014,21 +21016,24 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 	//Incrementos de 128 hasta llegar a ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS
 	//Hacerlo multiple de 127 para evitar valores no multiples de custom width
 
-	screen_ext_desktop_height &=(65535-127);
+	screen_ext_desktop_height &=(65535-(incremento-1));
 
     if (enlarge_reduce) {
 
         //Si pasa de cierto limite (1280 a la fecha de escribir este comentario), saltar a 2560, y ese es el limite
-        if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) screen_ext_desktop_height=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
+        /*if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) screen_ext_desktop_height=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
         
         //si pasa del limite maximo, volver a tamaño pequeño
-        else if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
+        else*/ 
+        
+            //no hacer ese salto de 1280 a 2560 que si se hace en horizontal
+        if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT ) {
             screen_ext_desktop_height=0;
             reorganize_windows=1;
         }
 
         //resto de casos, simplemente incrementar
-        else screen_ext_desktop_height +=128;
+        else screen_ext_desktop_height +=incremento;
 
     }
 
@@ -21041,7 +21046,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
         //Si >=256, decrementar
         else if (screen_ext_desktop_height>=256) {
-            screen_ext_desktop_height -=128;
+            screen_ext_desktop_height -=incremento;
             reorganize_windows=1;
         }
 
