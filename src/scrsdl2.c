@@ -70,10 +70,6 @@ SDL_Texture *scrsdl_texture;
 
 SDL_Renderer *renderer;
 
-//#define screen_get_window_size_width_zoom_border_en() screen_get_window_size_width_zoom_border_en()
-#define screen_get_window_size_height_zoom_border_en() screen_get_window_size_height_zoom_border_en()
-
-
 
 
 
@@ -89,13 +85,13 @@ int scrsdl_crea_ventana(void)
    }
 
 
-   debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",screen_get_window_size_width_zoom_border_en(),screen_get_window_size_height_zoom_border_en() );
-
    int ancho=screen_get_window_size_width_zoom_border_en();
    ancho +=screen_get_ext_desktop_width_zoom();
 
    int alto=screen_get_window_size_height_zoom_border_en();
    alto +=screen_get_ext_desktop_height_zoom();
+
+   debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
    if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
 

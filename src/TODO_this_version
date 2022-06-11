@@ -22,7 +22,7 @@ Para esta version:
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
 
--Drag drop con menú abierto? Forzar cerrar todos
+-Drag drop con menú abierto en sdl2 no parece funcionar bien
 
 --Fin mejoras
 
