@@ -9238,12 +9238,14 @@ int menu_center_x_from_width(int ancho_ventana)
     return x_ventana;
 }
 
+/*
+No usado, se agregó al implementar zx desktop en vertical, pero no se usa
 int menu_get_origin_y_zxdesktop_aux(int divisor)
 {
 	//Esta zxdesktop. Intentamos mantener ventanas localizadas ahi por defecto, si hay esa opcion activada
 	int alto_total=scr_get_menu_height();
 
-	//Quitamos el tamaño maximo ventana (normalmente 32), entre 2
+	//Quitamos el tamaño maximo ventana (normalmente 24), entre 2
 
 	int restar=menu_get_height_characters_ext_desktop();
 	//printf ("restar: %d\n",restar);
@@ -9255,6 +9257,7 @@ int menu_get_origin_y_zxdesktop_aux(int divisor)
 	if (pos_y<0) pos_y=0;		
 	return pos_y;
 }
+*/
 
 int menu_center_y(void)
 {
