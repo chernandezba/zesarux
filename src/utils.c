@@ -19273,12 +19273,29 @@ void util_drag_drop_file(char *filepath)
     //Simulamos pulsar ESC. solo si menu estaba abierto
     if (menu_abierto) {
         debug_printf(VERBOSE_INFO,"Simulating pressing ESC and closing all menus before smartloading");
-        salir_todos_menus=1;
+        //salir_todos_menus=1;
+
+        //Evento de cerrar todos menus
+        menu_pressed_close_all_menus.v=1;
+
+        //Simular ESC
         puerto_especial1 &=(255-1);
+    
+
+        //Simular F6
+    //z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
+        //puerto_especial3 &=(255-1);
+
+
         //Pausa de 0.1 segundo
         usleep(100000);
         
+        //Liberar ESC
         puerto_especial1 |=1;
+        
+        //Liberar F6
+        //puerto_especial3 |=1;
+
         menu_event_pending_drag_drop_menu_open.v=1;
     }
 

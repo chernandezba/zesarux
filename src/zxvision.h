@@ -1124,6 +1124,7 @@ extern int lowericon_realtape_frame;
 
 extern int menu_pressed_zxdesktop_lower_icon_which;
 extern int menu_pressed_zxdesktop_button_which;
+extern z80_bit menu_pressed_close_all_menus;
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 
