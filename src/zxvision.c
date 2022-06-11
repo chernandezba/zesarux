@@ -13984,13 +13984,7 @@ void zxvision_rearrange_background_windows(void)
 	int xfinal=origen_x+ancho;
 
 
-	int alto;
-    
-	if (menu_ext_desktop_enabled_place_menu() ) {
-		alto=menu_get_height_characters_ext_desktop();
-	}
-
-    else alto=scr_get_menu_height();
+	int alto=scr_get_menu_height();
 
 	//printf ("alto: %d\n",alto);
 
@@ -14033,6 +14027,7 @@ void zxvision_rearrange_background_windows(void)
 	while (ventana!=NULL) {
 
 		debug_printf (VERBOSE_DEBUG,"Setting window %s to %d,%d",ventana->window_title,x,y);
+        //printf ("Setting window %s to %d,%d\n",ventana->window_title,x,y);
 
 		ventana->x=x;
 		ventana->y=y;
