@@ -19257,3 +19257,34 @@ void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracte
     for (j=0;j<longitud;j++) buffer_linea[j]=caracter;
     buffer_linea[j]=0;
 }
+
+//Hacer drag & drop de un archivo
+//Esto solo tiene sentido lanzarlo desde un thread aparte, como el del driver cocoa
+//pues necesita que el menu se entere (si es que esta el menu abierto) de la simulacion de pulsar tecla ESC
+//TODO: no funcionara si hay un tooltip abierto
+//TODO: no hace lo esperado si estamos en una ventana en vez de un menu
+void util_drag_drop_file(char *filepath)
+{
+    debug_printf(VERBOSE_INFO,"Smartloading by drag & drop: %s",filepath);
+
+    strcpy(quickload_file,filepath);
+
+
+    //Simulamos pulsar ESC. solo si menu estaba abierto
+    if (menu_abierto) {
+        debug_printf(VERBOSE_INFO,"Simulating pressing ESC and closing all menus before smartloading");
+        salir_todos_menus=1;
+        puerto_especial1 &=(255-1);
+        //Pausa de 0.1 segundo
+        usleep(100000);
+        
+        puerto_especial1 |=1;
+        menu_event_pending_drag_drop_menu_open.v=1;
+    }
+
+
+    //printf("Decir de abrir menu para drag & drop\n");
+
+    menu_set_menu_abierto(1);
+    menu_event_drag_drop.v=1;    
+}

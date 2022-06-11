@@ -929,4 +929,6 @@ extern void *util_malloc_max_texto_browser(void);
 
 extern void util_trunc_name_right(char *texto,int max_length,int char_buffer_size);
 
+extern void util_drag_drop_file(char *filepath);
+
 #endif

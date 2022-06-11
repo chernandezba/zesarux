@@ -448,6 +448,8 @@ z80_bit menu_button_exit_emulator={0};
 
 z80_bit menu_event_drag_drop={0};
 
+z80_bit menu_event_pending_drag_drop_menu_open={0};
+
 z80_bit menu_event_new_version_show_changes={0};
 
 z80_bit menu_event_new_update={0};
@@ -19429,7 +19431,7 @@ void menu_inicio_reset_emulated_keys(void)
 void menu_inicio(void)
 {
 
-	//printf ("inicio menu_inicio pc=%XH\n",reg_pc);
+	//printf ("inicio menu_inicio\n");
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
 
@@ -19994,13 +19996,18 @@ void menu_inicio(void)
 	menu_was_open_by_left_mouse_button.v=0;
 
 
-	//printf ("salir menu\n");
-
 
 	//Volver
 	menu_inicio_pre_retorno();
 
+    //printf ("salir menu\n");
 
+    //Si se ha hecho drag & drop con el menu abierto, decir de abrir de nuevo el menu para gestionar ese drag & drop
+    if (menu_event_pending_drag_drop_menu_open.v) {
+        menu_event_pending_drag_drop_menu_open.v=0;
+        menu_event_drag_drop.v=1;
+        menu_abierto=1;
+    }
 
 }
 

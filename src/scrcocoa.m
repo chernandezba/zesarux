@@ -1094,11 +1094,9 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
         filepath = (char *)[file_URL UTF8String];
 
         if (filepath!=NULL) {
-            debug_printf(VERBOSE_INFO,"Smartloading by drag & drop: %s",filepath);
-            strcpy(quickload_file,filepath);
+            
+            util_drag_drop_file(filepath);
 
-            menu_abierto=1;
-            menu_event_drag_drop.v=1;
             return YES;
         }            
 
