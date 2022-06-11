@@ -19262,7 +19262,6 @@ void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracte
 //Esto solo tiene sentido lanzarlo desde un thread aparte, como el del driver cocoa
 //pues necesita que el menu se entere (si es que esta el menu abierto) de la simulacion de pulsar tecla ESC
 //TODO: no funcionara si hay un tooltip abierto
-//TODO: no hace lo esperado si estamos en una ventana en vez de un menu
 void util_drag_drop_file(char *filepath)
 {
     debug_printf(VERBOSE_INFO,"Smartloading by drag & drop: %s",filepath);
@@ -19276,25 +19275,51 @@ void util_drag_drop_file(char *filepath)
         //salir_todos_menus=1;
 
         //Evento de cerrar todos menus
-        menu_pressed_close_all_menus.v=1;
+        //menu_pressed_close_all_menus.v=1;
 
-        //Simular ESC
-        puerto_especial1 &=(255-1);
-    
 
-        //Simular F6
-    //z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
-        //puerto_especial3 &=(255-1);
+        //Si estamos en un menu, enviar ESC. Si tenemos background permitido y estamos en una ventana que permite background, enviar F6
+
+        //Asumimos ESC
+        int enviar_esc=1;
+
+        if (menu_allow_background_windows) {
+            if (zxvision_current_window!=NULL) {
+                if (zxvision_current_window->can_be_backgrounded) {
+                    enviar_esc=0;
+                }
+            }
+        }
+
+        //printf("Enviar ESC: %d\n",enviar_esc);
+
+        if (enviar_esc) {
+            //Simular ESC
+            salir_todos_menus=1;
+            puerto_especial1 &=(255-1);
+        }
+
+        else {
+            //Simular F6
+            menu_pressed_close_all_menus.v=1;
+            //z80_byte puerto_especial3=255; //  F10 F9 F8 F7 F6
+            puerto_especial3 &=(255-1);
+        }
 
 
         //Pausa de 0.1 segundo
         usleep(100000);
         
-        //Liberar ESC
-        puerto_especial1 |=1;
-        
-        //Liberar F6
-        //puerto_especial3 |=1;
+
+        if (enviar_esc) {
+            //Liberar ESC
+            puerto_especial1 |=1;
+        }
+
+        else {
+            //Liberar F6
+            puerto_especial3 |=1;
+        }
 
         menu_event_pending_drag_drop_menu_open.v=1;
     }
