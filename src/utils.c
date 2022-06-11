@@ -19261,7 +19261,8 @@ void util_fill_string_character(char *buffer_linea,int longitud,z80_byte caracte
 //Hacer drag & drop de un archivo
 //Esto solo tiene sentido lanzarlo desde un thread aparte, como el del driver cocoa
 //pues necesita que el menu se entere (si es que esta el menu abierto) de la simulacion de pulsar tecla ESC
-//TODO: no funcionara si hay un tooltip abierto
+//TODO: esto es todo un poco chapuza, en vez de simular pulsaciones de teclas, tendria que haber alguna manera
+//de notificar al menu y decirle que cerrase todo
 void util_drag_drop_file(char *filepath)
 {
     debug_printf(VERBOSE_INFO,"Smartloading by drag & drop: %s",filepath);
@@ -19273,9 +19274,6 @@ void util_drag_drop_file(char *filepath)
     if (menu_abierto) {
         debug_printf(VERBOSE_INFO,"Simulating pressing ESC and closing all menus before smartloading");
         //salir_todos_menus=1;
-
-        //Evento de cerrar todos menus
-        //menu_pressed_close_all_menus.v=1;
 
 
         //Si estamos en un menu, enviar ESC. Si tenemos background permitido y estamos en una ventana que permite background, enviar F6
@@ -19319,6 +19317,23 @@ void util_drag_drop_file(char *filepath)
         else {
             //Liberar F6
             puerto_especial3 |=1;
+        }
+        
+
+        //Y cerrar de nuevo por si hay algun tooltip abierto
+        if (enviar_esc) {
+            //Pausa de 0.1 segundo
+            usleep(100000);    
+
+            //Simular ESC
+            salir_todos_menus=1;
+            puerto_especial1 &=(255-1); 
+
+            //Pausa de 0.1 segundo
+            usleep(100000);      
+
+            //Liberar ESC
+            puerto_especial1 |=1;                         
         }
 
         menu_event_pending_drag_drop_menu_open.v=1;

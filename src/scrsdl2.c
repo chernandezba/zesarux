@@ -1520,14 +1520,12 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 	                menu_button_exit_emulator.v=1;
 		}
 
-                if (event.type==SDL_DROPFILE) {      // In case if dropped file
-                    //printf ("Received drag&drop file %s\n",event.drop.file);
-                        strcpy(quickload_file,event.drop.file);
-                        menu_abierto=1;
-                        menu_event_drag_drop.v=1;
+        if (event.type==SDL_DROPFILE) {      // In case if dropped file
+            //printf ("Received drag&drop file %s\n",event.drop.file);
+            util_drag_drop_file(event.drop.file);
 
-			                  SDL_free(event.drop.file);    // Free dropped_filedir memory
-               }
+            SDL_free(event.drop.file);    // Free dropped_filedir memory
+        }
 
 
 	}
