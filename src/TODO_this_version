@@ -24,6 +24,8 @@ Para esta version:
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
 
+-Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
+
 --Fin mejoras
 
 

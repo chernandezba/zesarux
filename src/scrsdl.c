@@ -1339,27 +1339,27 @@ void scrsdl_resize(int width,int height)
 void scrsdl_actualiza_tablas_teclado(void)
 {
 
-	SDL_Event event;
-	int pressrelease;
+    SDL_Event event;
+    int pressrelease;
 
 
 
 
-	while( SDL_PollEvent( &event ) ){
+    while( SDL_PollEvent( &event ) ){
 
 
 		//Si se ha dejado de redimensionar la ventana
 		if (event.type!=SDL_VIDEORESIZE) {
-                        if (scrsdl_debe_redimensionar) {
+            if (scrsdl_debe_redimensionar) {
 
 				//printf ("evento: %d\n",event.type);
 
-                                debug_printf (VERBOSE_DEBUG,"Resizing windows due to a previous pending resize");
+                debug_printf (VERBOSE_DEBUG,"Resizing windows due to a previous pending resize");
 
-                                clear_putpixel_cache();
-                                scrsdl_debe_redimensionar=0;
-                                scrsdl_crea_ventana();
-                        }
+                clear_putpixel_cache();
+                scrsdl_debe_redimensionar=0;
+                scrsdl_crea_ventana();
+            }
 		}
 
 
@@ -1399,16 +1399,16 @@ void scrsdl_actualiza_tablas_teclado(void)
 
 		//mouse motion
 		if (event.type==SDL_MOUSEMOTION) {
-                    mouse_x=event.motion.x;
-                    mouse_y=event.motion.y;
+            mouse_x=event.motion.x;
+            mouse_y=event.motion.y;
 
 
 
-                    kempston_mouse_x=mouse_x/zoom_x;
-                    kempston_mouse_y=255-mouse_y/zoom_y;
-                    //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
+            kempston_mouse_x=mouse_x/zoom_x;
+            kempston_mouse_y=255-mouse_y/zoom_y;
+            //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
 
-                        debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
+            debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
 		}
 
 
@@ -1417,59 +1417,58 @@ void scrsdl_actualiza_tablas_teclado(void)
 
 			debug_printf (VERBOSE_PARANOID,"Mouse Button Press. x=%d y=%d", event.button.x, event.button.y);
 
-                        if ( event.button.button == SDL_BUTTON_LEFT ) {
+            if ( event.button.button == SDL_BUTTON_LEFT ) {
 				//mouse_left=1;
 				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
 			}
-                        if ( event.button.button == SDL_BUTTON_RIGHT ) {
-                                //mouse_right=1;
+            if ( event.button.button == SDL_BUTTON_RIGHT ) {
+                //mouse_right=1;
 				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
-                        }
+            }
 
-                        gunstick_x=event.button.x;
-                        gunstick_y=event.button.y;
-                        gunstick_x=gunstick_x/zoom_x;
-                        gunstick_y=gunstick_y/zoom_y;
+            gunstick_x=event.button.x;
+            gunstick_y=event.button.y;
+            gunstick_x=gunstick_x/zoom_x;
+            gunstick_y=gunstick_y/zoom_y;
 
-                        debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,gunstick_x
-,gunstick_y);
+            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,gunstick_x,gunstick_y);
 
 		}
 
 		if (event.type==SDL_MOUSEBUTTONUP) {
-                        debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.button.x, event.button.y);
-                        if ( event.button.button == SDL_BUTTON_LEFT ) {
-				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
-				//mouse_left=0;
-			}
-                        if ( event.button.button == SDL_BUTTON_RIGHT ) {
-				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
-				//mouse_right=0;
-			}
+                debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.button.x, event.button.y);
+                if ( event.button.button == SDL_BUTTON_LEFT ) {
+				    util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
+				    //mouse_left=0;
+			    }
+                if ( event.button.button == SDL_BUTTON_RIGHT ) {
+			    	util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
+			    	//mouse_right=0;
+			    }
 
-                        if ( event.button.button == SDL_BUTTON_WHEELUP ) {
-                                mouse_wheel_vertical=1;
-                        }
+                if ( event.button.button == SDL_BUTTON_WHEELUP ) {
+                        mouse_wheel_vertical=1;
+                }
 
-                        if ( event.button.button == SDL_BUTTON_WHEELDOWN ) {
-                                mouse_wheel_vertical=-1;
-                        }
+                if ( event.button.button == SDL_BUTTON_WHEELDOWN ) {
+                        mouse_wheel_vertical=-1;
+                }
 
 //Parchecillo para usar scroll izquierdo y derecho. No viene por defecto en sdl 1.2
 
 #ifndef SDL_BUTTON_WHEELLEFT
 #define SDL_BUTTON_WHEELLEFT 6
 #endif
-                        if ( event.button.button == SDL_BUTTON_WHEELLEFT ) {
-                                mouse_wheel_horizontal=1;
-                        }
+                if ( event.button.button == SDL_BUTTON_WHEELLEFT ) {
+                        mouse_wheel_horizontal=1;
+                }
 
 #ifndef SDL_BUTTON_WHEELRIGHT
 #define SDL_BUTTON_WHEELRIGHT 7
 #endif
-                        if ( event.button.button == SDL_BUTTON_WHEELRIGHT ) {
-                                mouse_wheel_horizontal=-1;
-                        }                        
+                if ( event.button.button == SDL_BUTTON_WHEELRIGHT ) {
+                        mouse_wheel_horizontal=-1;
+                }                        
 
 
 		}
@@ -1477,19 +1476,15 @@ void scrsdl_actualiza_tablas_teclado(void)
 
 
 		if (event.type==SDL_QUIT) {
-	                debug_printf (VERBOSE_INFO,"Received window close event");
-        	        //Hacemos que aparezca el menu con opcion de salir del emulador
-                	menu_abierto=1;
-	                menu_button_exit_emulator.v=1;
+            debug_printf (VERBOSE_INFO,"Received window close event");
+            //Hacemos que aparezca el menu con opcion de salir del emulador
+            menu_abierto=1;
+            menu_button_exit_emulator.v=1;
 		}
 
 
 
-
-
 	}
-
-
 
 
 }
