@@ -1696,7 +1696,8 @@ clean:
 
 COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info licenses Changelog TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS ALTERNATEROMS INCLUDEDTAPES DONATE FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc speech_filters my_soft docs zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp zesarux.pdf
 
-ONLYSOURCEFILES=macos *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure generate_install_sh.sh join_tzx.sh testsound.sh txt_to_basic_lines.sh automatic_tests.sh zxuno_roms_bin_a_flash.sh *.asm benchmark_*.txt current_checklist.txt patches prism_change_boot.txt 
+ONLYSOURCEFILES=macos *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt patches prism_change_boot.txt 
+
 
 
 ONLYUNIXBINARIES=install.sh zesarux
