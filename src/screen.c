@@ -13071,7 +13071,9 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
 				}
 
                 if (MACHINE_IS_ZX81) {
-				    if (reg_pc==16) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                    //Aqui salta desde la rst16 y ademas permite mostrar numeros (cosa que la rst16 no puede)
+                    //0808 ENTER-CH
+				    if (reg_pc==0x0808) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
 					return;
 				}                
 

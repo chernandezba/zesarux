@@ -145,7 +145,7 @@ void cpu_core_loop_zx8081(void)
                 if (chardetect_detect_char_enabled.v) chardetect_detect_char();
                 if (chardetect_printchar_enabled.v) chardetect_printchar();
 
-
+        //if (reg_pc==0x0808) printf("Char: %d\n",reg_a);
 
 		//Autoload
 		//Si hay cinta insertada

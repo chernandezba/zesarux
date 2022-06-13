@@ -22,6 +22,7 @@ Fixed showing Recent Files when file name contains character %
 Fixed HiLow DataDrive emulation
 Fixed crash (stack smashing detected) when showing Debug CPU window (and compiled using -fstack-protector)
 Fixed segfault when starting ZEsarUX + disabled welcome splash message + enabled reopen windows on start setting + no window to restore
+Fixed trap print numbers on Spectrum and ZX81
 
 
 Some other minor bugfixes and improvements
