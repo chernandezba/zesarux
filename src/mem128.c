@@ -781,3 +781,31 @@ int mem_paging_is_enabled(void)
 	if ((puerto_32765 & 32)==0) return 1;
 	else return 0;
 }
+
+
+//Dice en maquina spectrum (16/48, 128/+2 o +2a) si la rom paginada es la del basic
+int if_spectrum_basic_rom_paged_in(void)
+{
+    if (MACHINE_IS_SPECTRUM_16_48) {
+
+        //maquina 16k, inves ,48k o tk
+        return 1;
+    }
+
+    if (MACHINE_IS_SPECTRUM_128_P2)  {
+
+        //maquina 128k. rom 1 mapeada
+        if ((puerto_32765 & 16) ==16) return 1;
+        else return 0;
+    }
+
+
+    if (MACHINE_IS_SPECTRUM_P2A_P3) {
+        //maquina +2A
+        if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  )) return 1;
+        else return 0;
+    }
+
+    return 0;
+
+}

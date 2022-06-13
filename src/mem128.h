@@ -57,4 +57,6 @@ extern void mem_init_memory_tables_p2a(void);
 extern void mem_set_multiplicador_128(z80_byte valor);
 extern int mem_paging_is_enabled(void);
 
+extern int if_spectrum_basic_rom_paged_in(void);
+
 #endif

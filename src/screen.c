@@ -13101,12 +13101,6 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
                                 }
 
 
-				//Para Spectrum
-				if (reg_pc==16) {
-					screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					return;
-				}
-
 
 				//Si maquina ZX-Uno, para print de la bios. Estas direcciones estan puestas a pelo, si cambian
 				//esas direcciones, no funcionara
@@ -13116,6 +13110,27 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
 				{
 					screen_text_printchar_next(reg_a,puntero_printchar_caracter);
 					return;
+				}
+
+				//Spectrum
+                if (MACHINE_IS_SPECTRUM) {
+                    //Las normales 16_48_128_p2_p2a. Esto excluye zxuno, chloe, timex, prism, tbblue, pentagon, chrome, tsconf, baseconf
+                    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+                        //Si esta la rom del basic paginada
+                        if (if_spectrum_basic_rom_paged_in() ) {
+                            //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
+                            //si capturasemos solo la rst16 no funcionan ni print numeros ni numeros de lineas
+                            //09F4: THE 'PRINT-OUT' ROUTINES
+                            if (reg_pc==0x09F4) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                        }
+					    return;
+                    }
+                    else {
+                        //Resto de spectrums: zxuno, chloe, timex... etc
+                        //TODO: en estos casos se podria determinar que la rom del basic esta paginada y entonces hacer trap a la 0x09f4
+                        if (reg_pc==16) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+					    return;
+                    }
 				}
 			}
 		//}
