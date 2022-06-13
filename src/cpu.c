@@ -3815,6 +3815,7 @@ You don't need timings for H/V sync =)
                 poke_byte=poke_byte_spectrum_128k;
                 peek_byte=peek_byte_spectrum_128k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+        poke_byte_no_time=poke_byte_no_time_spectrum_128k;
                 lee_puerto=lee_puerto_spectrum;
                 ay_chip_present.v=1;
                 break;

@@ -686,7 +686,7 @@ void tap_load_ace(void)
 
 
     if (cinta_longitud != cinta_pedido_longitud) {
-        debug_printf(VERBOSE_INFO,"Tape length is not what asked");
+        debug_printf(VERBOSE_INFO,"Tape length (%d) is not what asked (%d)",cinta_longitud,cinta_pedido_longitud);
         if (cinta_longitud>cinta_pedido_longitud) {
             debug_printf(VERBOSE_INFO,"Tape length is more than asked");
             leidos=tape_block_read(buffer_tap_read,cinta_pedido_longitud);
@@ -889,7 +889,7 @@ void tap_load(void)
 				int leidos=0;
 
 				if (cinta_longitud != cinta_pedido_longitud) {
-					debug_printf(VERBOSE_INFO,"Tape length is not what asked");
+					debug_printf(VERBOSE_INFO,"Tape length (%d) is not what asked (%d)",cinta_longitud,cinta_pedido_longitud);
 					if (cinta_longitud>cinta_pedido_longitud) {
 						debug_printf(VERBOSE_INFO,"Tape length is more than asked");
 						leidos=tape_block_read(buffer_tap_read,cinta_pedido_longitud);

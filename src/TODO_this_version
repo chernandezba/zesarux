@@ -26,6 +26,8 @@ Para esta version:
 
 -Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
 
+-Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
 --Fin mejoras
 
 

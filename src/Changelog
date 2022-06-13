@@ -16,6 +16,7 @@ Improved ZX Desktop:
 -Add frame around emulated machine
 
 
+Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed.
 Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed .Z80 Timex TS2068 snapshot loading
 Fixed showing Recent Files when file name contains character %
