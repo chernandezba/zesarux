@@ -2049,6 +2049,7 @@ printf (
 
 		"--enableprintchartrap      Enable traps for standard ROM print char calls and non standard second & third traps. On Spectrum, ZX80, ZX81 machines, standard ROM calls are those using RST10H. On Z88, are those using OS_OUT and some other functions. Note: it is enabled by default on stdout & simpletext drivers\n"
 		"--disableprintchartrap     Disable traps for ROM print char calls and second & third traps.\n"
+        "--chardetectcompatnum      Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)\n"
 		"--automaticdetectchar      Enable automatic detection & try all method to find print character routines, for games not using RST 10H\n"
 		"--secondtrapchar n         Print Char second trap address\n"
 		"--secondtrapsum32          Print Char second trap sum 32 to character\n"
@@ -6576,6 +6577,10 @@ int parse_cmdline_options(void) {
 
                 else if (!strcmp(argv[puntero_parametro],"--chardetectignorenl")) {
                         chardetect_ignore_newline.v=1;
+                }
+
+                else if (!strcmp(argv[puntero_parametro],"--chardetectcompatnum")) {
+                    chardetect_rom_compat_numbers.v=1;
                 }
 
 

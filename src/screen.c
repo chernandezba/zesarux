@@ -58,6 +58,7 @@
 #include "coleco.h"
 #include "ql_zx8302.h"
 #include "stats.h"
+#include "chardetect.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -12788,6 +12789,19 @@ int printchar_next_z88_escape_caracter=0;
 
 int printchar_next_z88_escape_caracter_longitud=0;
 
+
+
+//Retorna 16 (trap clasico) o trap final de rom (que funciona bien rom y numeros, pero no con aventuras paws por ejemplo)
+z80_int screen_text_printchar_return_trap_rom(void)
+{
+    if (chardetect_rom_compat_numbers.v) {
+        if (MACHINE_IS_SPECTRUM) return 0x09F4;
+        if (MACHINE_IS_ZX81) return 0x8080;
+    }
+
+    return 16;
+}
+
 //Pide direccion de printchar
 //Esta rutina es comun para primer trap como para second o third
 //Por tanto no tiene mucho sentido en maquinas de mas de 48k andar mirando que rom esta activa...
@@ -12796,7 +12810,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
 
     //Maquina 16/48/128/p2/p2a/p3
     if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
-        if (reg_pc!=0x09F4) puntero_printchar_caracter(caracter);
+        if (reg_pc!=screen_text_printchar_return_trap_rom() ) puntero_printchar_caracter(caracter);
 
         else {
             //Si rutina de la rom, comprobamos que la rom del basic esta activa
@@ -13053,7 +13067,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
         if (MACHINE_IS_ZX81) {
             //Aqui salta desde la rst16 y ademas permite mostrar numeros (cosa que la rst16 no puede)
             //0808 ENTER-CH
-            if (reg_pc==0x0808) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            if (reg_pc==screen_text_printchar_return_trap_rom() ) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
             return;
         }                
 
@@ -13103,7 +13117,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
                 //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
                 //si capturasemos solo la rst16 no funcionan ni print numeros ni numeros de lineas
                 //09F4: THE 'PRINT-OUT' ROUTINES
-                if (reg_pc==0x09F4) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                if (reg_pc==screen_text_printchar_return_trap_rom() ) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
 
                 return;
             }

@@ -7022,6 +7022,10 @@ void menu_chardetection_chardetect_ignore_newline(MENU_ITEM_PARAMETERS)
     chardetect_ignore_newline.v ^=1;
 }
 
+void menu_chardetection_chardetect_rom_number_compat(MENU_ITEM_PARAMETERS)
+{
+    chardetect_rom_compat_numbers.v ^=1;
+}
 
 //menu chardetection settings
 void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
@@ -7039,6 +7043,10 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
 			if (chardetect_printchar_enabled.v) {
+
+                menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_chardetect_rom_number_compat,NULL,"[%c] ROM number print compat", (chardetect_rom_compat_numbers.v==1 ? 'X' : ' ' ));     
+                menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
+                menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)");
 
 
 	                        menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_settings_second_trap,NULL,"~~Second trap address [%d]",chardetect_second_trap_char_dir);

@@ -124,6 +124,9 @@ z80_bit chardetect_detect_char_enabled={0};
 //Si hay que llamar a rutinas de impresion de caracteres: de rst16&oz rom, second trap, third trap
 z80_bit chardetect_printchar_enabled={0};
 
+//Si en vez de hacer trap en rst16, se hace trap en rutina final de rom, que va bien para escribir numeros, pero no para aventuras por ejempo de paws
+z80_bit chardetect_rom_compat_numbers={0};
+
 
 char *chardetect_char_filter_names[]={
         "None",

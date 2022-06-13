@@ -3617,6 +3617,8 @@ int util_write_configfile(void)
 
   if (chardetect_ignore_newline.v)            ADD_STRING_CONFIG,"--chardetectignorenl");
 
+  if (chardetect_rom_compat_numbers.v)        ADD_STRING_CONFIG,"--chardetectcompatnum");
+
   if (textspeech_get_stdout.v) ADD_STRING_CONFIG,"--textspeechgetstdout");
 
   if (chardetect_line_width_wait_space.v)     ADD_STRING_CONFIG,"--linewidthwaitspace");

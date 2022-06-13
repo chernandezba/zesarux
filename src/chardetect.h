@@ -80,6 +80,8 @@ extern z80_bit chardetect_detect_char_enabled;
 
 extern z80_bit chardetect_printchar_enabled;
 
+extern z80_bit chardetect_rom_compat_numbers;
+
 extern void chardetect_printchar(void);
 
 extern void chardetect_end_automatic_char_detection(void);
