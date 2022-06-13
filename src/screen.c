@@ -12794,216 +12794,198 @@ int printchar_next_z88_escape_caracter_longitud=0;
 void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_caracter) (z80_byte)  )
 {
 
+    //Maquina 16/48/128/p2/p2a/p3
+    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+        if (reg_pc!=0x09F4) puntero_printchar_caracter(caracter);
 
-                if (MACHINE_IS_SPECTRUM_16_48) {
+        else {
+            //Si rutina de la rom, comprobamos que la rom del basic esta activa
+            if (if_spectrum_basic_rom_paged_in() ) puntero_printchar_caracter(caracter);
+        }
+    }     
 
-                                //maquina 16k, inves ,48k o tk
+    if (MACHINE_IS_ACE) {
+        //Ignorar bit 7
+        puntero_printchar_caracter(caracter&127);
+    }
+
+
+    if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+        puntero_printchar_caracter(caracter&127);
+            }
+
+    if (MACHINE_IS_SAM) {
+        puntero_printchar_caracter(caracter&127);
+    }
+
+
+
+    if (MACHINE_IS_CHLOE_280SE) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+            if (chloe_type_memory_paged[0]==CHLOE_MEMORY_TYPE_ROM) {
+                //Rom mapeada. Es la 1?
+                if ((puerto_32765 & 16) ==16) puntero_printchar_caracter(caracter);
+            }
+        }
+    }
+
+    if (MACHINE_IS_CHLOE_140SE) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+            //Rom es la 1?
+            if ((puerto_32765 & 16) ==16) puntero_printchar_caracter(caracter);
+        }
+            }
+
+
+    if (MACHINE_IS_PRISM) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+            //PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
+            //Comprobamos por instrucciones que hay en la RST 16
+            //0010: C3 F2 15    JP 15F2
+
+
+            if (peek_byte_no_time(reg_pc)==0xC3 &&
+                peek_byte_no_time(reg_pc+1)==0xF2 &&
+                peek_byte_no_time(reg_pc+2)==0x15) {
+                puntero_printchar_caracter(caracter);
+            }
+        }
+    }
+
+    if (MACHINE_IS_TBBLUE) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+            //PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
+            //Comprobamos por instrucciones que hay en la RST 16
+            //0010: C3 F2 15    JP 15F2
+
+
+            if (peek_byte_no_time(reg_pc)==0xC3 &&
+                peek_byte_no_time(reg_pc+1)==0xF2 &&
+                peek_byte_no_time(reg_pc+2)==0x15) {
+                    puntero_printchar_caracter(caracter);
+            }
+        }
+    }
+
+
+
+    if (MACHINE_IS_TIMEX_TS2068) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+            if (timex_type_memory_paged[0]==CHLOE_MEMORY_TYPE_ROM) puntero_printchar_caracter(caracter);
+        }
+    }
+
+
+    if (MACHINE_IS_ZX8081) {
+        //printf ("(%x)",caracter);
+        if (caracter==118) {
+                //printf ("salto linea\n");
+                puntero_printchar_caracter(13);
+        }
+
+        else {
+                z80_bit inverse;
+                z80_byte c=da_codigo81(caracter,&inverse);
+                //printf ("zx81\n");
+                puntero_printchar_caracter(c);
+        }
+    }
+
+    if (MACHINE_IS_ZXUNO) {
+        if (reg_pc!=16) puntero_printchar_caracter(caracter);
+
+        else {
+            //Si rutina de la rom, comprobamos que rom esta activa
+
+
+            //PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
+            //Comprobamos por instrucciones que hay en la RST 16
+            //0010: C3 F2 15    JP 15F2
+
+
+            if (peek_byte_no_time(reg_pc)==0xC3 &&
+                peek_byte_no_time(reg_pc+1)==0xF2 &&
+                peek_byte_no_time(reg_pc+2)==0x15) {
+                puntero_printchar_caracter(caracter);
+            }
+
+
+            //Para rutinas de la bios. buscamos pos0, pos1, pos2 o pos3:
+            /*
+            pos0    ld      a, (ix)
+            ->      inc     ix
+                    add     a, a
+                    jr      z, posf
+            */
+
+            if (peek_byte_no_time(reg_pc)==0xDD &&
+                            peek_byte_no_time(reg_pc+1)==0x23) {
                                 puntero_printchar_caracter(caracter);
-
-                }
-
-		if (MACHINE_IS_ACE) {
-			//Ignorar bit 7
-			puntero_printchar_caracter(caracter&127);
-		}
-
-
-		if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
-			puntero_printchar_caracter(caracter&127);
-                }
-
-		if (MACHINE_IS_SAM) {
-                        puntero_printchar_caracter(caracter&127);
-                }
-
-
-                 if (MACHINE_IS_SPECTRUM_128_P2)  {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-        	                //maquina 128k. rom 1 mapeada
-                	        if ((puerto_32765 & 16) ==16) puntero_printchar_caracter(caracter);
-			}
-                }
-
-
-		if (MACHINE_IS_CHLOE_280SE) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-				if (chloe_type_memory_paged[0]==CHLOE_MEMORY_TYPE_ROM) {
-					//Rom mapeada. Es la 1?
-					if ((puerto_32765 & 16) ==16) puntero_printchar_caracter(caracter);
-				}
-			}
-		}
-
-		if (MACHINE_IS_CHLOE_140SE) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-				//Rom es la 1?
-				if ((puerto_32765 & 16) ==16) puntero_printchar_caracter(caracter);
-			}
-                }
-
-
-		if (MACHINE_IS_PRISM) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-				//PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
-				//Comprobamos por instrucciones que hay en la RST 16
-				//0010: C3 F2 15    JP 15F2
-
-
-				if (peek_byte_no_time(reg_pc)==0xC3 &&
-				  peek_byte_no_time(reg_pc+1)==0xF2 &&
-				  peek_byte_no_time(reg_pc+2)==0x15) {
-					puntero_printchar_caracter(caracter);
-				}
-			}
-		}
-
-		if (MACHINE_IS_TBBLUE) {
-                        if (reg_pc!=16) puntero_printchar_caracter(caracter);
-
-                        else {
-                                //Si rutina de la rom, comprobamos que rom esta activa
-                                //PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
-                                //Comprobamos por instrucciones que hay en la RST 16
-                                //0010: C3 F2 15    JP 15F2
-
-
-                                if (peek_byte_no_time(reg_pc)==0xC3 &&
-                                  peek_byte_no_time(reg_pc+1)==0xF2 &&
-                                  peek_byte_no_time(reg_pc+2)==0x15) {
-                                        puntero_printchar_caracter(caracter);
-                                }
                         }
-                }
+        }
+
+
+    }
 
 
 
-		if (MACHINE_IS_TIMEX_TS2068) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-				if (timex_type_memory_paged[0]==CHLOE_MEMORY_TYPE_ROM) puntero_printchar_caracter(caracter);
-			}
-		}
-
-
-
-                if (MACHINE_IS_SPECTRUM_P2A_P3) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-                                //maquina +2A
-                                if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  )) puntero_printchar_caracter(caracter);
-			}
-                }
-
-                if (MACHINE_IS_ZX8081) {
-                        //printf ("(%x)",caracter);
-                        if (caracter==118) {
-                                //printf ("salto linea\n");
-                                puntero_printchar_caracter(13);
-                        }
-
-                        else {
-                                z80_bit inverse;
-                                z80_byte c=da_codigo81(caracter,&inverse);
-                                //printf ("zx81\n");
-                                puntero_printchar_caracter(c);
-                        }
-                }
-
-		if (MACHINE_IS_ZXUNO) {
-			if (reg_pc!=16) puntero_printchar_caracter(caracter);
-
-			else {
-				//Si rutina de la rom, comprobamos que rom esta activa
-
-
-				//PC Vale 16, pero no comprobamos ram porque no sabemos que tipo de maquina esta emulando ZX-Uno.
-				//Comprobamos por instrucciones que hay en la RST 16
-				//0010: C3 F2 15    JP 15F2
-
-
-				if (peek_byte_no_time(reg_pc)==0xC3 &&
-				  peek_byte_no_time(reg_pc+1)==0xF2 &&
-				  peek_byte_no_time(reg_pc+2)==0x15) {
-					puntero_printchar_caracter(caracter);
-				}
-
-
-				//Para rutinas de la bios. buscamos pos0, pos1, pos2 o pos3:
-				/*
-				pos0    ld      a, (ix)
-				->      inc     ix
-				        add     a, a
-				        jr      z, posf
-				*/
-
-				if (peek_byte_no_time(reg_pc)==0xDD &&
-                	          peek_byte_no_time(reg_pc+1)==0x23) {
-                        	        puntero_printchar_caracter(caracter);
-	                        }
-			}
-
-
-		}
-
-
-
-                if (MACHINE_IS_Z88) {
-                        if (printchar_next_z88_escape_caracter==1) {
-                                //Ver longitud
+    if (MACHINE_IS_Z88) {
+        if (printchar_next_z88_escape_caracter==1) {
+            //Ver longitud
 /*
 Escape Sequences
 The characters SOH ($01) is used as an escape character to prefix the special character combinations. It may be followed either by a single special character, or if more than one parameter is to follow, by a count byte which specifies the number of following parameters - this may be in the form of a binary number with the top bit set, ie. count plus 128, or an ASCII code for a single decimal digit - clearly the latter is impossible for a count of more than 9. Thus the following sequences are equivalent - both move the cursor to character position (x,y):
 1, '3', '@', 32+x, 32+y 1, 128+3, '@', 32+x, 32+y
 */
-                                printchar_next_z88_escape_caracter=2;
+            printchar_next_z88_escape_caracter=2;
 
-                                if (caracter>=128) printchar_next_z88_escape_caracter_longitud=(caracter-128);
-                                else if (caracter>='0' && caracter<='9') printchar_next_z88_escape_caracter_longitud=caracter-'0';
+            if (caracter>=128) printchar_next_z88_escape_caracter_longitud=(caracter-128);
+            else if (caracter>='0' && caracter<='9') printchar_next_z88_escape_caracter_longitud=caracter-'0';
 
 
-                                else {
-                                        //Solo ocupa 1 (este byte)
-                                        //fin sentencia ESC
-                                        printchar_next_z88_escape_caracter=0;
+            else {
+                    //Solo ocupa 1 (este byte)
+                    //fin sentencia ESC
+                    printchar_next_z88_escape_caracter=0;
 
-                                        //Algunos conocidos
+                    //Algunos conocidos
 
-                                        //square
-                                        if (caracter==0x2a) puntero_printchar_caracter('S');
-                                        //diamond
-                                        else if (caracter==0x2b) puntero_printchar_caracter('D');
-                                        //vertical unbroken bar
-                                        else if (caracter==0x7d) puntero_printchar_caracter('|');
-                                }
-                                return;
-                        }
+                    //square
+                    if (caracter==0x2a) puntero_printchar_caracter('S');
+                    //diamond
+                    else if (caracter==0x2b) puntero_printchar_caracter('D');
+                    //vertical unbroken bar
+                    else if (caracter==0x7d) puntero_printchar_caracter('|');
+            }
+            return;
+        }
 
-                        if (printchar_next_z88_escape_caracter==2) {
-                                printchar_next_z88_escape_caracter_longitud--;
-                                if (printchar_next_z88_escape_caracter_longitud<=0) printchar_next_z88_escape_caracter=0;
-                                return;
-                        }
+        if (printchar_next_z88_escape_caracter==2) {
+            printchar_next_z88_escape_caracter_longitud--;
+            if (printchar_next_z88_escape_caracter_longitud<=0) printchar_next_z88_escape_caracter=0;
+            return;
+        }
 
-                        if (caracter==1) {
-                        printchar_next_z88_escape_caracter=1;
-                                return;
-                        }
+        if (caracter==1) {
+            printchar_next_z88_escape_caracter=1;
+            return;
+        }
 
-                        puntero_printchar_caracter(caracter);
-                }
+        puntero_printchar_caracter(caracter);
+    }
 
 }
 
@@ -13011,131 +12993,129 @@ The characters SOH ($01) is used as an escape character to prefix the special ch
 void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
 {
 
-		//if (stdout_simpletext_trap_rst16.v) {
+    if (MACHINE_IS_Z88) {
+        ////RST 20H, DEFB 27H
+        if (peek_byte_no_time(reg_pc)==0xE7) {
 
-			if (MACHINE_IS_Z88) {
-				////RST 20H, DEFB 27H
-				if (peek_byte_no_time(reg_pc)==0xE7) {
+            //DEFB 27H. OS_OUT
+            if (peek_byte_no_time(reg_pc+1)==0x27) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
 
-					//DEFB 27H. OS_OUT
-					if (peek_byte_no_time(reg_pc+1)==0x27) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            //DEFW 2E09H. New line
+            else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x2e) {
+                screen_text_printchar_next(13,puntero_printchar_caracter);
+            }
 
-					//DEFW 2E09H. New line
-					else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x2e) {
-						screen_text_printchar_next(13,puntero_printchar_caracter);
-					}
+            //DEFW 3A09H. GN_SOP. Imprimir desde HL hasta codigo 0
+            else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x3a) {
+                z80_int temp_reg=reg_hl;
+                while (peek_byte_no_time(temp_reg)!=0) {
+                    screen_text_printchar_next(peek_byte_no_time(temp_reg++),puntero_printchar_caracter);
+                }
+            }
 
-					//DEFW 3A09H. GN_SOP. Imprimir desde HL hasta codigo 0
-					else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x3a) {
-						z80_int temp_reg=reg_hl;
-						while (peek_byte_no_time(temp_reg)!=0) {
-							screen_text_printchar_next(peek_byte_no_time(temp_reg++),puntero_printchar_caracter);
-						}
-					}
-
-					//DEFW 3C09H. GN_SOE. Imprimir desde BHL hasta codigo 0. B es codigo de banco
-					else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x3c) {
-						z80_int temp_reg=reg_hl;
-						while (peek_byte_no_time_z88_bank_no_check_low(temp_reg,reg_b)!=0) {
-							screen_text_printchar_next( peek_byte_no_time_z88_bank_no_check_low(temp_reg++,reg_b),puntero_printchar_caracter  );
-						}
-					}
-					//DEFB 90H. OS_BOUT. Imprimir desde BHL hasta codigo 0. B es codigo de banco
-					else if (peek_byte_no_time(reg_pc+1)==0x90 ) {
-						z80_int temp_reg=reg_hl;
-						while (peek_byte_no_time_z88_bank_no_check_low(temp_reg,reg_b)!=0) {
-							screen_text_printchar_next( peek_byte_no_time_z88_bank_no_check_low(temp_reg++,reg_b),puntero_printchar_caracter  );
-						}
-					}
+            //DEFW 3C09H. GN_SOE. Imprimir desde BHL hasta codigo 0. B es codigo de banco
+            else if (peek_byte_no_time(reg_pc+1)==0x09 && peek_byte_no_time(reg_pc+2)==0x3c) {
+                z80_int temp_reg=reg_hl;
+                while (peek_byte_no_time_z88_bank_no_check_low(temp_reg,reg_b)!=0) {
+                    screen_text_printchar_next( peek_byte_no_time_z88_bank_no_check_low(temp_reg++,reg_b),puntero_printchar_caracter  );
+                }
+            }
+            //DEFB 90H. OS_BOUT. Imprimir desde BHL hasta codigo 0. B es codigo de banco
+            else if (peek_byte_no_time(reg_pc+1)==0x90 ) {
+                z80_int temp_reg=reg_hl;
+                while (peek_byte_no_time_z88_bank_no_check_low(temp_reg,reg_b)!=0) {
+                    screen_text_printchar_next( peek_byte_no_time_z88_bank_no_check_low(temp_reg++,reg_b),puntero_printchar_caracter  );
+                }
+            }
 
 
-					//DEFB 93H. OS_POUT Imprimir desde PC hasta codigo 0
-					else if (peek_byte_no_time(reg_pc+1)==0x93) {
-						z80_int temp_reg=reg_pc+2;
-						while (peek_byte_no_time(temp_reg)!=0) {
-							screen_text_printchar_next(peek_byte_no_time(temp_reg++),puntero_printchar_caracter);
-						}
-					}
+            //DEFB 93H. OS_POUT Imprimir desde PC hasta codigo 0
+            else if (peek_byte_no_time(reg_pc+1)==0x93) {
+                z80_int temp_reg=reg_pc+2;
+                while (peek_byte_no_time(temp_reg)!=0) {
+                    screen_text_printchar_next(peek_byte_no_time(temp_reg++),puntero_printchar_caracter);
+                }
+            }
 
 
-				}
-			}
+        }
+    }
 
-			else {
+    else {
 
-				//En ZX80 las llamadas a RST 16 solo son para el cursor
-				//El resto de llamadas, incluso rst16, van por la direccion 0x0560
-				if (MACHINE_IS_ZX80) {
-					if (reg_pc==0x0560) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					return;
-				}
+        //En ZX80 las llamadas a RST 16 solo son para el cursor
+        //El resto de llamadas, incluso rst16, van por la direccion 0x0560
+        if (MACHINE_IS_ZX80) {
+            if (reg_pc==0x0560) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            return;
+        }
 
-                if (MACHINE_IS_ZX81) {
-                    //Aqui salta desde la rst16 y ademas permite mostrar numeros (cosa que la rst16 no puede)
-                    //0808 ENTER-CH
-				    if (reg_pc==0x0808) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					return;
-				}                
+        if (MACHINE_IS_ZX81) {
+            //Aqui salta desde la rst16 y ademas permite mostrar numeros (cosa que la rst16 no puede)
+            //0808 ENTER-CH
+            if (reg_pc==0x0808) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            return;
+        }                
 
 
-				//Para Jupiter Ace se hace con rst 8
-				if (MACHINE_IS_ACE) {
-					if (reg_pc==8) {
-						screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					}
-                                        return;
-                                }
+        //Para Jupiter Ace se hace con rst 8
+        if (MACHINE_IS_ACE) {
+            if (reg_pc==8) {
+                screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            }
+            return;
+        }
 
-				//Para Amstrad cpc 464
-				if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
-					if (reg_pc==0xBB5A) {
-                                                screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-                                        }
-                                        return;
-                                }
+        //Para Amstrad cpc 464
+        if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+            if (reg_pc==0xBB5A) {
+                screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            }
+            return;
+        }
 
-				//Para Sam Coupe
-				if (MACHINE_IS_SAM) {
-					if (reg_pc==16) {
-                                                screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-                                        }
-                                        return;
-                                }
+        //Para Sam Coupe
+        if (MACHINE_IS_SAM) {
+            if (reg_pc==16) {
+                screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            }
+            return;
+        }
 
 
 
-				//Si maquina ZX-Uno, para print de la bios. Estas direcciones estan puestas a pelo, si cambian
-				//esas direcciones, no funcionara
-				if (MACHINE_IS_ZXUNO && (
-					reg_pc==0xad64 || reg_pc==0xad82 || reg_pc==0xadaf || reg_pc==0xaddc)
-					)
-				{
-					screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					return;
-				}
+        //Si maquina ZX-Uno, para print de la bios. Estas direcciones estan puestas a pelo, si cambian
+        //esas direcciones, no funcionara
+        if (MACHINE_IS_ZXUNO && (
+            reg_pc==0xad64 || reg_pc==0xad82 || reg_pc==0xadaf || reg_pc==0xaddc)
+            )
+        {
+            screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+            return;
+        }
 
-				//Spectrum
-                if (MACHINE_IS_SPECTRUM) {
-                    //Las normales 16_48_128_p2_p2a. Esto excluye zxuno, chloe, timex, prism, tbblue, pentagon, chrome, tsconf, baseconf
-                    if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
-                        //Si esta la rom del basic paginada
-                        if (if_spectrum_basic_rom_paged_in() ) {
-                            //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
-                            //si capturasemos solo la rst16 no funcionan ni print numeros ni numeros de lineas
-                            //09F4: THE 'PRINT-OUT' ROUTINES
-                            if (reg_pc==0x09F4) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-                        }
-					    return;
-                    }
-                    else {
-                        //Resto de spectrums: zxuno, chloe, timex... etc
-                        //TODO: en estos casos se podria determinar que la rom del basic esta paginada y entonces hacer trap a la 0x09f4
-                        if (reg_pc==16) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
-					    return;
-                    }
-				}
-			}
-		//}
+        //Spectrum
+        if (MACHINE_IS_SPECTRUM) {
+            //Las normales 16_48_128_p2_p2a. Esto excluye zxuno, chloe, timex, prism, tbblue, pentagon, chrome, tsconf, baseconf
+            if (MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
+                //Si esta la rom del basic paginada
+
+                //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
+                //si capturasemos solo la rst16 no funcionan ni print numeros ni numeros de lineas
+                //09F4: THE 'PRINT-OUT' ROUTINES
+                if (reg_pc==0x09F4) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+
+                return;
+            }
+            else {
+                //Resto de spectrums: zxuno, chloe, timex... etc
+                //TODO: en estos casos se podria determinar que la rom del basic esta paginada y entonces hacer trap a la 0x09f4
+                if (reg_pc==16) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                return;
+            }
+        }
+    }
+
 }
 
 
