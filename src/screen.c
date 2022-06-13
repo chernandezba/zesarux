@@ -12796,7 +12796,7 @@ z80_int screen_text_printchar_return_trap_rom(void)
 {
     if (chardetect_rom_compat_numbers.v) {
         if (MACHINE_IS_SPECTRUM) return 0x09F4;
-        if (MACHINE_IS_ZX81) return 0x8080;
+        if (MACHINE_IS_ZX81) return 0x0808;
     }
 
     return 16;
