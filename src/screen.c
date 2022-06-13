@@ -13070,6 +13070,11 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
 					return;
 				}
 
+                if (MACHINE_IS_ZX81) {
+				    if (reg_pc==16) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+					return;
+				}                
+
 
 				//Para Jupiter Ace se hace con rst 8
 				if (MACHINE_IS_ACE) {
@@ -13096,10 +13101,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
                                 }
 
 
-
-
-
-				//Para Spectrum, ZX81, ZX-Uno
+				//Para Spectrum
 				if (reg_pc==16) {
 					screen_text_printchar_next(reg_a,puntero_printchar_caracter);
 					return;
