@@ -24,7 +24,7 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar ./test_games.sh
 
--ejecutar ./printtrap_test.sh
+-ejecutar tests/printtrap_test.sh
 
 -probar cambio idioma menu y ver diferentes menus
 
