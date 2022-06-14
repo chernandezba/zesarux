@@ -23943,6 +23943,11 @@ void menu_about_donate(MENU_ITEM_PARAMETERS)
         menu_about_read_file("Donate","DONATE",1);
 }
 
+void menu_about_donors(MENU_ITEM_PARAMETERS)
+{
+        menu_about_read_file("Donors","DONORS",1);
+}
+
 void menu_about_faq(MENU_ITEM_PARAMETERS)
 {
         menu_about_read_file("FAQ","FAQ",1);
@@ -24542,9 +24547,12 @@ void menu_help(MENU_ITEM_PARAMETERS)
                 "A~~cknowledgements","Agrade~~cimientos","Re~~coneixements");
 			menu_add_item_menu_shortcut(array_menu_common,'c');
 
-			menu_add_item_menu(array_menu_common,"~~Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
-            menu_add_item_menu_spanish(array_menu_common,"~~Donar");
-			menu_add_item_menu_shortcut(array_menu_common,'d');
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_about_donors,NULL,
+                "~~Donors","~~Donantes","~~Donants");
+			menu_add_item_menu_shortcut(array_menu_common,'d');            
+
+			menu_add_item_menu(array_menu_common,"Donate",MENU_OPCION_NORMAL,menu_about_donate,NULL);
+            menu_add_item_menu_spanish(array_menu_common,"Donar");
 
 			menu_add_item_menu(array_menu_common,"FA~~Q",MENU_OPCION_NORMAL,menu_about_faq,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'q');

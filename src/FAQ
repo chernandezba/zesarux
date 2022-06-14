@@ -849,7 +849,7 @@ Also, there are other files that you MUST include:
 - Files README, LICENSE, LICENSES_info.
 - Folder: licenses
 
-The following are not obligatory but it would be very kind from you if you include: Files ACKNOWLEDGEMENTS, Changelog, DONATE, FAQ, FEATURES, editionnamegame.*, zesarux.ico, zesarux.mp3, zesarux.odt, zesarux.pdf, zesarux.xcf, zesarux_16.png, zesarux_256.png, zesarux_32.png, zesarux_48.png. Folder my_soft
+The following are not obligatory but it would be very kind from you if you include: Files ACKNOWLEDGEMENTS, Changelog, DONATE, DONORS, FAQ, FEATURES, editionnamegame.*, zesarux.ico, zesarux.mp3, zesarux.odt, zesarux.pdf, zesarux.xcf, zesarux_16.png, zesarux_256.png, zesarux_32.png, zesarux_48.png. Folder my_soft
 
 The rest of the files are completely optional to include them or not.
 
