@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to test print char traps for printing numbers but also rest ascii chars
 
@@ -20,6 +20,7 @@ for i in $MAQUINAS; do
 	grep 1234 $TEMPFILE
 	if [ $? != 0 ]; then
 		echo "ERROR Number"
+		exit 1
 	else
 		echo "OK Number"
 	fi
@@ -27,6 +28,7 @@ for i in $MAQUINAS; do
 	grep HOLA $TEMPFILE
 	if [ $? != 0 ]; then
 		echo "ERROR Ascii"
+		exit 1
 	else
 		echo "OK Ascii"
 	fi

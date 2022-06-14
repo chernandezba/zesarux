@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Script to test load but also print char traps for printing ascii
 
@@ -20,6 +20,7 @@ for i in $MAQUINAS; do
 	grep HOLA $TEMPFILE
 	if [ $? != 0 ]; then
 		echo "ERROR Ascii"
+		exit 1
 	else
 		echo "OK Ascii"
 	fi
