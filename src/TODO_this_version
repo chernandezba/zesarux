@@ -18,7 +18,7 @@ Para esta version:
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
--Modificar ayuda ZX desktop y faq. No solo se hace en horizontal ahora…
+-Modificar ayuda ZX desktop y faq. No solo se hace en horizontal ahora...
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
 
@@ -83,8 +83,6 @@ Sector -407021264
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
 -fileselector muestra valor negativo en tamaño de archivo > 2GB, al parecer en windows
-
--cambio zx desktop height al pulsar desde menu, que permita alto 0
 
 -revisar que sigan funcionando bien los print de traps a la rom y los autodetect char de segundas rutinas
 

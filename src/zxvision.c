@@ -14054,7 +14054,8 @@ void zxvision_rearrange_background_windows(void)
 	//Por si acaso 
 	if (!menu_allow_background_windows) return;
 
-	int origen_x=menu_origin_x();
+    //+1 para que no queden pegadas a la pantalla emulada
+	int origen_x=menu_origin_x()+1;
 
 	//printf ("origen_x: %d\n",origen_x);
 
