@@ -2749,6 +2749,12 @@ int zxvision_if_lower_button_switch_zxdesktop_visible(void)
 
 void menu_put_switch_zxdesktop_footer(void)
 {
+
+    //TODO: Estas posiciones donde estan los botones, se obtienen de manera distinta en las funciones:
+    //menu_put_switch_zxdesktop_footer
+    //zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common
+    //Aunque se obtienen de diferentes maneras pero el resultado final (en teoria) es el mismo
+
     //printf("Visibilidad boton: %d\n",switchzxdesktop_button_visible.v);
 
     //si menu abierto no mostrar el boton
@@ -12640,6 +12646,12 @@ void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada)
 //Comun para obtener posicion de raton y de botones de zxdesktop
 void zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common(int *p_x,int *p_y,int *p_xboton,int *p_yboton)
 {
+
+    //TODO: Estas posiciones donde estan los botones, se obtienen de manera distinta en las funciones:
+    //menu_put_switch_zxdesktop_footer
+    //zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_common
+    //Aunque se obtienen de diferentes maneras pero el resultado final (en teoria) es el mismo
+
     int mouse_pixel_x,mouse_pixel_y;
     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
