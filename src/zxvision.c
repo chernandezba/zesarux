@@ -2778,16 +2778,22 @@ void menu_put_switch_zxdesktop_footer(void)
         margenx_izq /=8;
 
         xorigen -=margenx_izq;
+        //xorigen contiene el origen donde van los botones de ampliar/reducir ancho
 
       
         z80_byte caracter_ampliar_ancho,caracter_reducir_ancho;
+        z80_byte caracter_ampliar_alto,caracter_reducir_alto;
         if (screen_ext_desktop_enabled) {
             caracter_ampliar_ancho='+';
             caracter_reducir_ancho='-';
+            caracter_ampliar_alto='v';
+            caracter_reducir_alto='^';            
         }
         else {
             caracter_ampliar_ancho='+';
             caracter_reducir_ancho=' ';  //Esta deshabilitado. Mostrar espacio (no boton)
+            caracter_ampliar_alto=' ';
+            caracter_reducir_alto=' ';               
         }
 
         if (screen_ext_desktop_width>=ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
@@ -2810,6 +2816,10 @@ void menu_put_switch_zxdesktop_footer(void)
         if (caracter_ampliar_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
         if (caracter_reducir_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_reducir_ancho,xorigen,yorigen+1,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+
+        if (caracter_ampliar_alto!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_alto,xorigen-1,yorigen+1,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+
+        if (caracter_reducir_alto!=' ') scr_putchar_footer_comun_zoom(caracter_reducir_alto,xorigen-1,yorigen,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
 
     }
@@ -12623,9 +12633,9 @@ void zxvision_handle_mouse_ev_switch_back_wind(zxvision_window *ventana_pulsada)
 			
 }
 
-//Si ampliar_reducir=1, dice si posicion de arriba de ampliar
-//Si no, dice posicion de abajo de reducir
-int zxvision_if_mouse_in_lower_button_enlarge_reduce_xdesktop(int ampliar_reducir)
+//Si ampliar_reducir_ancho=1, dice si posicion de arriba de ampliar ancho
+//Si no, dice posicion de abajo de reducir ancho
+int zxvision_if_mouse_in_lower_button_enlarge_reduce_xdesktop(int ampliar_reducir_ancho)
 {
 	if (zxvision_if_lower_button_switch_zxdesktop_visible() && mouse_left) {
 
@@ -12653,18 +12663,18 @@ int zxvision_if_mouse_in_lower_button_enlarge_reduce_xdesktop(int ampliar_reduci
         int xboton=screen_get_window_size_width_no_zoom_border_en()/8-2; //justo 2 posicion menos
         //printf("si pulsado en boton switch zxdesktop. xboton %d yboton %d x %d y %d\n",xboton,yboton,x,y);
 
-        //Boton arriba: ampliar
-        if (ampliar_reducir) {
+        //Boton arriba: ampliar ancho
+        if (ampliar_reducir_ancho) {
             if (x==xboton && y==yboton) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge button");
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop enlarge width button");
                 return 1;
             }
         }
 
-        //Boton abajo: ampliar
+        //Boton abajo: reducir ancho
         else {
             if (x==xboton && y==yboton+1) {
-                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce button");
+                debug_printf(VERBOSE_INFO,"Pressed on ZX Desktop reduce width button");
                 return 1;
             }            
         }
