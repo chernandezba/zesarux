@@ -2800,6 +2800,10 @@ void menu_put_switch_zxdesktop_footer(void)
             caracter_ampliar_ancho=' ';
         }
 
+        if (screen_ext_desktop_height>=ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
+            caracter_ampliar_alto=' ';
+        }        
+
         z80_bit inverse;
         inverse.v=0;
         int yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;

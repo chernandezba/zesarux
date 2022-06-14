@@ -1383,7 +1383,7 @@ extern z80_bit menu_current_drive_mmc_image;
 
 //Ancho limite hasta el que se hace incrementos de 128 desde item de menu. Luego se salta a tamaño 2560
 #define ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS 1280
-#define ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS 1280
+#define ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS 640
 
 //Limite admitido desde menu
 //TODO: Esto es mayor que el maximo de overlay de menu, cosa que no tiene mucho sentido, porque se puede hacer la ventana mas grande
