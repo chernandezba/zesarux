@@ -26,6 +26,8 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/printtrap_test.sh
 
+-ejecutar tests/load_test.sh
+
 -probar cambio idioma menu y ver diferentes menus
 
 Drivers video:
