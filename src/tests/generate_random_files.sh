@@ -18,7 +18,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Script to generate random files
+# Script to generate random files in order to test file browser and check it does not crash 
 
 
 while true; do

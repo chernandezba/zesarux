@@ -22,11 +22,13 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/machines_test.sh
 
--ejecutar tests/test_games.sh
+-ejecutar tests/games_tests.sh
 
 -ejecutar tests/printtrap_test.sh
 
 -ejecutar tests/load_test.sh
+
+-ejecutar tests/automatic_test_cycle_machines.sh
 
 -probar cambio idioma menu y ver diferentes menus
 
@@ -49,7 +51,7 @@ Drivers video:
 **en stdout, probar con modo traprst16 y modo autoredraw
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
 **probar recreated
--ejecutar ./testvideo.sh
+-ejecutar tests/videotest.sh
 
 
 -probar desactivando xextensions en configure con --disable-xext
@@ -64,7 +66,7 @@ Drivers audio:
 **ver en todos casos usos de cpu
 **probar sonido Z88, Spectrum (beep y ay), ZX80/81 (vsync sound y ay)
 **aumentar/bajar velocidad cpu
-***usar testsound.sh
+***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
 
 -probar targets:
@@ -105,7 +107,7 @@ Drivers audio:
 -probar specdrum, covox
 -probar general sound
 -probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con extras/snap_tests/teststereo.tap y demos y teststereo.h
+-probar abc/acb/bac stereo con extras/snap_tests/teststereo.tap y demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
