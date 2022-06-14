@@ -2784,8 +2784,8 @@ void menu_put_switch_zxdesktop_footer(void)
         z80_byte caracter_ampliar_ancho,caracter_reducir_ancho;
         z80_byte caracter_ampliar_alto,caracter_reducir_alto;
         if (screen_ext_desktop_enabled) {
-            caracter_ampliar_ancho='+';
-            caracter_reducir_ancho='-';
+            caracter_ampliar_ancho='>';
+            caracter_reducir_ancho='<';
             caracter_ampliar_alto='v';
             caracter_reducir_alto='^';            
         }
