@@ -2780,18 +2780,18 @@ void menu_put_switch_zxdesktop_footer(void)
         xorigen -=margenx_izq;
 
       
-        z80_byte caracter_ampliar,caracter_reducir;
+        z80_byte caracter_ampliar_ancho,caracter_reducir_ancho;
         if (screen_ext_desktop_enabled) {
-            caracter_ampliar='+';
-            caracter_reducir='-';
+            caracter_ampliar_ancho='+';
+            caracter_reducir_ancho='-';
         }
         else {
-            caracter_ampliar='+';
-            caracter_reducir=' ';  //Esta deshabilitado. Mostrar espacio (no boton)
+            caracter_ampliar_ancho='+';
+            caracter_reducir_ancho=' ';  //Esta deshabilitado. Mostrar espacio (no boton)
         }
 
         if (screen_ext_desktop_width>=ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
-            caracter_ampliar=' ';
+            caracter_ampliar_ancho=' ';
         }
 
         z80_bit inverse;
@@ -2807,9 +2807,9 @@ void menu_put_switch_zxdesktop_footer(void)
         debug_printf(VERBOSE_PARANOID,"Drawing ZX Desktop switch button");
 
 
-        if (caracter_ampliar!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar,xorigen,yorigen,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_ampliar_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
-        if (caracter_reducir!=' ') scr_putchar_footer_comun_zoom(caracter_reducir,xorigen,yorigen+1,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_reducir_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_reducir_ancho,xorigen,yorigen+1,inverse,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
 
     }
