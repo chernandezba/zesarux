@@ -1410,6 +1410,10 @@ extern z80_bit menu_current_drive_mmc_image;
 #define ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON (ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS/zoom_x)
 #define ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON (512/zoom_x)
 
+//Maximo alto permitido usando boton. Por settings de menu, en cambio, se puede agrandar
+#define ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON (ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS/zoom_y)
+#define ZXDESKTOP_MINIMUM_HEIGHT_BY_BUTTON (32/zoom_y)
+
 //Minimo de alto para mostrar recuadro alrededor de pantalla emulada
 #define ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME 16
 

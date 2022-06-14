@@ -12745,6 +12745,16 @@ int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_width(void)
     return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_width(0);  
 }
 
+int zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_height(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(1);  
+}
+
+int zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height(void)
+{
+    return zxvision_if_mouse_in_lower_button_enlarge_reduce_zxdesktop_height(0);  
+}
+
 int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 {
 
@@ -19558,7 +19568,7 @@ void menu_inicio(void)
         //Hay que ver antes pulsado_alguna_ventana_con_menu_cerrado por la misma razon que la explicada anterior con zxvision_if_mouse_in_zlogo_or_buttons_desktop
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
 
-            //Pulsado en boton de aumentar zx desktop
+            //Pulsado en boton de aumentar zx desktop en ancho
             if (zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_width()) {
 
 
@@ -19627,7 +19637,7 @@ void menu_inicio(void)
             }
 
             if (zxvision_if_mouse_in_lower_button_reduce_zxdesktop_width()) {
-                //Pulsado en boton de reducir zx desktop
+                //Pulsado en boton de reducir zx desktop en ancho
 
                 //decir que mouse no se ha movido, porque si no, nos quedariamos en bucle continuamente en menu_espera_no_tecla
                 mouse_movido=0;
@@ -19665,6 +19675,70 @@ void menu_inicio(void)
                 return;
 
             }
+
+            //Pulsado en boton de aumentar zx desktop en alto
+            if (zxvision_if_mouse_in_lower_button_enlarge_zxdesktop_height()) {
+
+
+                //decir que mouse no se ha movido, porque si no, nos quedariamos en bucle continuamente en menu_espera_no_tecla
+                mouse_movido=0;
+                menu_espera_no_tecla();
+
+            
+                //aumentar zx desktop de alto
+                
+                if (screen_ext_desktop_height<ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
+                    menu_ext_desk_settings_height_enlarge_reduce(1); 
+                }
+                
+
+                set_menu_overlay_function(normal_overlay_texto_menu);
+
+                //menu_set_menu_abierto(0);
+                menu_inicio_pre_retorno();
+
+                //Volver a escribir los botones
+                zxdesktop_make_switchbutton_visible();
+
+                //Este clear_putpixel_cache necesario, la razon no esta clara pero sucede lo mismo en zxdesktop_make_switchbutton_visible
+                clear_putpixel_cache();
+
+                return;
+
+            } 
+
+            if (zxvision_if_mouse_in_lower_button_reduce_zxdesktop_height()) {
+                //Pulsado en boton de reducir zx desktop en alto
+
+                //decir que mouse no se ha movido, porque si no, nos quedariamos en bucle continuamente en menu_espera_no_tecla
+                mouse_movido=0;
+                menu_espera_no_tecla();
+
+                //Si esta por debajo del limite, ponerlo a 0
+                if (screen_ext_desktop_height<=ZXDESKTOP_MINIMUM_HEIGHT_BY_BUTTON) {
+                    screen_ext_desktop_height=0;
+                }
+
+                //Si esta en el limite, reducir ancho
+                else {
+                    menu_ext_desk_settings_height_enlarge_reduce(0);
+                }
+                
+
+                set_menu_overlay_function(normal_overlay_texto_menu);
+
+                //menu_set_menu_abierto(0);
+                menu_inicio_pre_retorno();
+
+                //Volver a escribir los botones
+                zxdesktop_make_switchbutton_visible();
+
+                //Este clear_putpixel_cache necesario, la razon no esta clara pero sucede lo mismo en zxdesktop_make_switchbutton_visible
+                clear_putpixel_cache();
+       
+                return;
+
+            }                       
 
         }
 
@@ -21067,7 +21141,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
 	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
-    int incremento=64;
+    int incremento=32;
 
 
 	int reorganize_windows=0;
@@ -21109,12 +21183,17 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
         }
 
         //Si >=256, decrementar
-        else if (screen_ext_desktop_height>=256) {
+        else if (screen_ext_desktop_height>=incremento) {
             screen_ext_desktop_height -=incremento;
             reorganize_windows=1;
         }
 
-        //resto de casos, no hacer nada, no decrementar mas alla del limite inferior
+        else {
+            //resto de casos, pasar a 0
+            screen_ext_desktop_height=0;
+        }
+
+        
     }
         
 
