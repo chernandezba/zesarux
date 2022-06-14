@@ -28,7 +28,7 @@ Para esta version:
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
-Ddh con extended info al final, que contenga marcas de sector y labels ? 
+-Ddh con extended info al final, que contenga marcas de sector y labels ? 
 
 --Fin mejoras
 

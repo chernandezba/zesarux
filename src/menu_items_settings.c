@@ -2153,7 +2153,10 @@ void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
 
 void menu_debug_configuration_remoteproto_prompt(MENU_ITEM_PARAMETERS)
 {
-    menu_ventana_scanf("ZRCP prompt",remote_prompt_command_string,REMOTE_MAX_PROMPT_LENGTH);    
+    menu_ventana_scanf("ZRCP prompt",remote_prompt_command_string,REMOTE_MAX_PROMPT_LENGTH);
+
+    //Si se deja en blanco, restaurar por defecto
+    if (remote_prompt_command_string[0]==0) strcpy(remote_prompt_command_string,"command");
 }
 
 void menu_debug_shows_invalid_opcode(MENU_ITEM_PARAMETERS)
