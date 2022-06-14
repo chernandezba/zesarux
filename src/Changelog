@@ -1,4 +1,4 @@
-Version 10.2 - xx edition. 08 June 2022
+Version 10.2 - Hysteria edition. 14 June 2022
 
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068
@@ -14,6 +14,11 @@ Improved SmartLoad & Drag-Drop:
 Improved ZX Desktop:
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine
+
+Improved HiLow DataDrive emulation:
+-Allow to Format, Browse and Chkdsk an Hilow DataDrive image (.ddh file)
+-Allow to convert audio from a real Hilow DataDrive tape to an image file (.ddh)
+-Added technical documentation on the extras package
 
 
 Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed.
