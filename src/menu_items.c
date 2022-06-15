@@ -32439,6 +32439,7 @@ void menu_inicio_bucle_main(void)
     //Primera ayuda siempre que no se haya pulsado en botones de menu diferentes del menu principal o dispositivos
     int mostrar_first_aid_menu=1;
     if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
+    if (menu_pressed_zxdesktop_configurable_icon_which>=0) mostrar_first_aid_menu=0;
 
     //boton de menu distinto del boton de menu principal
     if (menu_pressed_zxdesktop_button_which>0) mostrar_first_aid_menu=0;
@@ -32481,6 +32482,10 @@ void menu_inicio_bucle_main(void)
 			else if (menu_pressed_zxdesktop_lower_icon_which>=0) {
 				menu_inicio_handle_lower_icon_presses();
 			}
+
+            else if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
+                menu_inicio_handle_configurable_icon_presses();
+            }
 			//printf ("despues menu_inicio_handle_button_presses\n");
 
             else if (pulsado_alguna_ventana_con_menu_cerrado) {

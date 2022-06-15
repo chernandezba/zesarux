@@ -533,6 +533,8 @@ z80_bit menu_pressed_close_all_menus={0};
 int menu_pressed_zxdesktop_button_which=-1;
 //En que lower icon se ha pulsado del menu
 int menu_pressed_zxdesktop_lower_icon_which=-1;
+//En que icono configurable se ha pulsado del menu
+int menu_pressed_zxdesktop_configurable_icon_which=-1;
 
 //Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada y
 z80_bit direct_menus_button_pressed={0};
@@ -4208,6 +4210,9 @@ void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
 {
 	if (menu_pressed_zxdesktop_button_which>=0) menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
 	if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
+    if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
+        //TODO
+    }
 }
 
 void menu_draw_ext_desktop_buttons(int xinicio)
@@ -4420,21 +4425,32 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 }
 
-
-void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
+int menu_get_ext_desktop_icons_zoom(void)
 {
-
-    //TODO: controlar si se sale de rango
-
     int zoom;
 
     //darle el nivel de zoom x o y, el que sea mayor. normalmente los dos niveles de zoom son iguales, pero por si acaso
     if (zoom_x>zoom_y) zoom=zoom_x;
     else zoom=zoom_y;
 
+    return zoom;    
+}
+
+void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
+{
+
+    //TODO: controlar si se sale de rango
+
+    int zoom=menu_get_ext_desktop_icons_zoom();
+
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
         menu_draw_ext_desktop_putpixel_bitmap,zoom,0);
 	
+}
+
+int menu_get_ext_desktop_icons_size(void)
+{
+    return ZESARUX_ASCII_LOGO_ANCHO*menu_get_ext_desktop_icons_zoom();
 }
 
 void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
@@ -4464,6 +4480,25 @@ void menu_draw_ext_desktop_icons(void)
             menu_draw_ext_desktop_one_icon(x,y,bitmap);
         }
     }
+}
+
+//Dice si posicion x,y esta dentro del icono
+int if_position_in_desktop_icons(int posicion_x,int posicion_y)
+{
+    int tamanyo=menu_get_ext_desktop_icons_size();
+
+    int i;
+    for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
+        if (zxdesktop_icons_list[i].exists) {
+            int x,y;
+            menu_get_ext_desktop_icons_position(i,&x,&y);
+
+            if (posicion_x>=x && posicion_x<x+tamanyo &&
+                posicion_y>=y && posicion_y<y+tamanyo) return i;
+        }
+    }    
+
+    return -1;
 }
 
 //Retorna posicion del logo de ZEsarUX en el extended desktop
@@ -12962,7 +12997,20 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 				}
 				
 			}	
-		}			
+		}		
+
+
+        //si pulsa en algun icono configurable	
+        printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+        int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+
+        if (icono_pulsado>=0) {
+            printf("Icono pulsado: %d\n",icono_pulsado);
+
+            menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+
+            return 1;
+        }
 	}
 	return 0;
 }
@@ -19140,6 +19188,24 @@ void menu_inicio_handle_lower_icon_presses(void)
 
 }
 
+void menu_inicio_handle_configurable_icon_presses(void)
+{
+
+    int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
+
+	//Para que no vuelva a saltar
+	menu_pressed_zxdesktop_configurable_icon_which=-1;         
+
+    int id_funcion=zxdesktop_icons_list[pulsado_boton].id_funcion;
+    menu_process_f_functions_by_action_name(id_funcion);
+
+
+    salir_todos_menus=1;
+
+
+}
+
+
 //Mira si el boton pulsado esta redefinido por el usuario y lanza accion si conviene
 int menu_inicio_handle_button_presses_userdef(int boton)
 {
@@ -19453,7 +19519,7 @@ void menu_inicio_bucle(void)
 		reopen_menu=0;
 
 		//Si se ha pulsado en algun boton de menu
-		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0) {
+		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 || menu_pressed_zxdesktop_configurable_icon_which>=0) {
 			//printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
 		}
 
