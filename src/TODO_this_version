@@ -93,3 +93,5 @@ Sector -407021264
 
 -zxdesktop configurable icons
 si cierro todas ventanas e intento arrastrar icono , se queda colgado
+
+-icono configurable de switch border, si lo pulso genera cpu_panic

@@ -591,7 +591,7 @@ extern defined_f_function defined_direct_functions_array[];
 
 
 //Identifica a un icono del escritorio
-struct s_zxdesktop_icon {
+struct s_zxdesktop_configurable_icon {
     int exists;
     int x,y;
 
@@ -601,11 +601,11 @@ struct s_zxdesktop_icon {
     //el id_funcion
 };
 
-typedef struct s_zxdesktop_icon zxdesktop_icon;
+typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
 
-#define MAX_ZXDESKTOP_ICONS 100
+#define MAX_ZXDESKTOP_CONFIGURABLE_ICONS 100
 
-extern zxdesktop_icon zxdesktop_icons_list[];
+extern zxdesktop_configurable_icon zxdesktop_configurable_icons_list[];
 
 
 extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
