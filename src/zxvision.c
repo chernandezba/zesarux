@@ -536,6 +536,10 @@ int menu_pressed_zxdesktop_lower_icon_which=-1;
 //En que icono configurable se ha pulsado del menu
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
 
+//Posicion donde se ha empezado a pulsar icono configurable. para saber si se arrastra
+int menu_pressed_zxdesktop_configurable_icon_where_x=0;
+int menu_pressed_zxdesktop_configurable_icon_where_y=0;
+
 //Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada y
 z80_bit direct_menus_button_pressed={0};
 int direct_menus_button_pressed_which=0;
@@ -13009,6 +13013,10 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
 
+            //Para saber si se arrastra
+            menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
+            menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;
+
             return 1;
         }
 	}
@@ -19193,12 +19201,54 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
     int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
+    printf("Gestionando pulsacion de icono configurable %d\n",pulsado_boton);
+
 	//Para que no vuelva a saltar
-	menu_pressed_zxdesktop_configurable_icon_which=-1;         
+	menu_pressed_zxdesktop_configurable_icon_which=-1;      
 
-    int id_funcion=zxdesktop_icons_list[pulsado_boton].id_funcion;
-    menu_process_f_functions_by_action_name(id_funcion);
 
+    //Si se ha movido
+    //mouse_movido solo se habilita si ventanas estaban cerradas
+    //por tanto buscamos otra manera
+
+    //Esto es un poco puñetero. Decir que el raton no se ha movido o nos quedariamos esperando continuamente en bucle
+    //a liberar raton en funciones de liberar tecla
+    mouse_movido=0;
+
+    int current_mouse_pixel_x,current_mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&current_mouse_pixel_x,&current_mouse_pixel_y);  
+
+    current_mouse_pixel_x *=zoom_x;  
+    current_mouse_pixel_y *=zoom_y;  
+
+    int icono_se_ha_movido=0;
+
+    //Ver si se mueve una cantidad suficiente
+    int deltax=util_get_absolute(current_mouse_pixel_x-menu_pressed_zxdesktop_configurable_icon_where_x);
+    int deltay=util_get_absolute(current_mouse_pixel_y-menu_pressed_zxdesktop_configurable_icon_where_y);
+
+    if (deltax>=5 || deltay>=5) {
+        icono_se_ha_movido=1;
+    }
+
+    if (icono_se_ha_movido) {
+        
+		int mouse_pixel_x,mouse_pixel_y;
+		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+        printf("Mover icono hasta %d %d\n",mouse_pixel_x,mouse_pixel_y);
+        //guardarlas sin zoom
+        zxdesktop_icons_list[pulsado_boton].x=mouse_pixel_x;
+        zxdesktop_icons_list[pulsado_boton].y=mouse_pixel_y;
+    }   
+
+    else {
+        int id_funcion=zxdesktop_icons_list[pulsado_boton].id_funcion;
+
+        printf("Antes procesar funcion\n");
+        menu_process_f_functions_by_action_name(id_funcion);
+        printf("Despues procesar funcion\n");
+    }
 
     salir_todos_menus=1;
 

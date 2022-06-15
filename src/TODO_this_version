@@ -89,3 +89,7 @@ Sector -407021264
 -reorganizar ventanas al cambiar de maquina solo debe hacerlo si la nueva maquina es mas pequeña de pantalla
 
 --Fin Errores
+
+
+-zxdesktop configurable icons
+si cierro todas ventanas e intento arrastrar icono , se queda colgado

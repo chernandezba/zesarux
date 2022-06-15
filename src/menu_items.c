@@ -4641,8 +4641,10 @@ zxvision_window zxvision_window_audio_waveform;
 void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 {
 
+    //printf("Inicio waveform\n");
  	menu_espera_no_tecla();
 	menu_reset_counters_tecla_repeticion();		
+    //printf("Inicio 2 waveform\n");
 
 	//zxvision_window ventana;
 
@@ -32461,9 +32463,11 @@ void menu_inicio_bucle_main(void)
 
 
 	do {
-
+        //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
         //printf("antes del if\n");
-		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 || pulsado_alguna_ventana_con_menu_cerrado) {
+		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || pulsado_alguna_ventana_con_menu_cerrado) {
+
             //printf("se cumple if: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
             //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
 
