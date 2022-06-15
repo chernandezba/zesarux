@@ -246,7 +246,7 @@ int defined_buttons_functions_array[MAX_USERDEF_BUTTONS]={
 zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONFIGURABLE_ICONS];
 
 //Indicar todos los iconos como no presentes
-void init_zxdesktop_icons(void)
+void init_zxdesktop_configurable_icons(void)
 {
     int i;
 
