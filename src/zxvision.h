@@ -595,7 +595,8 @@ struct s_zxdesktop_configurable_icon {
     int exists;
     int x,y;
 
-    enum defined_f_function_ids id_funcion;
+    //indice sobre la tabla defined_direct_functions_array
+    enum defined_f_function_ids indice_funcion;
 
     //Para obtener el bitmap, se buscara en el array defined_direct_functions_array segun
     //el id_funcion

@@ -254,36 +254,30 @@ void init_zxdesktop_configurable_icons(void)
         zxdesktop_configurable_icons_list[i].exists=0;
     }
     
-    return;
+    //return;
     //temp
     //asignamos un par de iconos
-    //60,10
-    //80,20
 
+    //reset
     zxdesktop_configurable_icons_list[0].exists=1;
     zxdesktop_configurable_icons_list[0].x=430;
     zxdesktop_configurable_icons_list[0].y=110;
-    zxdesktop_configurable_icons_list[0].id_funcion=F_FUNCION_WAVEFORM;
+    zxdesktop_configurable_icons_list[0].indice_funcion=3;
 
+    //debugcpu
     zxdesktop_configurable_icons_list[1].exists=1;
     zxdesktop_configurable_icons_list[1].x=460;
     zxdesktop_configurable_icons_list[1].y=130;
-    zxdesktop_configurable_icons_list[1].id_funcion=F_FUNCION_SMARTLOAD;
+    zxdesktop_configurable_icons_list[1].indice_funcion=6;
 
 
 }
 
 //Retorna bitmap de una accion
-//si no se encuentra retornamos bitmap undefined
-char **get_direct_function_icon_bitmap(enum defined_f_function_ids id_funcion)
+char **get_direct_function_icon_bitmap(int indice_funcion)
 {
-    int i;
 
-    for (i=0;i<MAX_F_FUNCTIONS;i++) {
-        if (defined_direct_functions_array[i].id_funcion==id_funcion) return defined_direct_functions_array[i].bitmap_button;
-    }
-
-    return bitmap_button_ext_desktop_userdefined;
+    return defined_direct_functions_array[indice_funcion].bitmap_button;
 }
 
 
@@ -4480,7 +4474,7 @@ void menu_draw_ext_desktop_icons(void)
             int x,y;
             menu_get_ext_desktop_icons_position(i,&x,&y);
 
-            char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[i].id_funcion);
+            char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[i].indice_funcion);
             menu_draw_ext_desktop_one_icon(x,y,bitmap);
         }
     }
@@ -19243,7 +19237,9 @@ void menu_inicio_handle_configurable_icon_presses(void)
     }   
 
     else {
-        int id_funcion=zxdesktop_configurable_icons_list[pulsado_boton].id_funcion;
+        int indice_funcion=zxdesktop_configurable_icons_list[pulsado_boton].indice_funcion;
+
+        int id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
 
         printf("Ejecutar funcion %d\n",id_funcion);
 

@@ -9504,14 +9504,14 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 
     int icono_seleccionado=valor_opcion;
 
-    int accion_seleccionada=zxdesktop_configurable_icons_list[icono_seleccionado].id_funcion;
+    int indice_seleccionada=zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion;
 
-    int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+    int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(indice_seleccionada);
 
     if (indice_retorno>=0) {
         //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
-        int id_funcion=defined_direct_functions_array[indice_retorno].id_funcion;
-        zxdesktop_configurable_icons_list[icono_seleccionado].id_funcion=id_funcion;
+        //int id_funcion=defined_direct_functions_array[accion_seleccionada].id_funcion;
+        zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion=indice_retorno;
 
 
         //temp
@@ -9559,8 +9559,8 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 
             int indice_tabla=defined_buttons_functions_array[i];
 
-            //tabulado todo a misma columna, agregamos un espacio con F entre 1 y 9
-            sprintf (buffer_texto,"Icon %d [%d]",i,zxdesktop_configurable_icons_list[i].id_funcion);
+            int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
+            sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
 
 
             //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
