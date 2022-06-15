@@ -16882,6 +16882,8 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Move to top or close individual windows");
         menu_add_item_menu_ayuda(array_menu_common,"Move to top or close individual windows");
 
+        menu_add_item_menu_separator(array_menu_common);
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all,NULL,
             "Reduce all windows","Reducir todas las ventanas","Reduir totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Reduce windows to maximum size 20x10");
@@ -16894,6 +16896,8 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
         menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+
+        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_reduce_all_rearrange,NULL,
             "Reduce+rearrange all windows","Reducir+reubicar todas las ventanas","Reduir+reubicar totes les finestres");

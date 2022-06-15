@@ -9222,7 +9222,7 @@ int menu_origin_x(void)
 }
 
 
-//Dice si esta habilitado el ext desktop, y si los menos se deben abrir ahi por defecto
+//Dice si esta habilitado el ext desktop, y si los menús se deben abrir ahi por defecto
 int menu_ext_desktop_enabled_place_menu(void)
 {
 	return screen_ext_desktop_place_menu && screen_ext_desktop_enabled*scr_driver_can_ext_desktop();
@@ -14054,8 +14054,7 @@ void zxvision_rearrange_background_windows(void)
 	//Por si acaso 
 	if (!menu_allow_background_windows) return;
 
-    //+1 para que no queden pegadas a la pantalla emulada
-	int origen_x=menu_origin_x()+1;
+	int origen_x=menu_origin_x();
 
 	//printf ("origen_x: %d\n",origen_x);
 
@@ -14063,9 +14062,13 @@ void zxvision_rearrange_background_windows(void)
 
 	int ancho;
 
+    //Si ZX Desktop habilitado y si los menús se abren en el ZX Desktop
 	if (menu_ext_desktop_enabled_place_menu() ) {
 		//ancho=screen_ext_desktop_width/menu_char_width/menu_gui_zoom;
 		ancho=menu_get_width_characters_ext_desktop();
+
+        //+1 para que no queden pegadas a la pantalla emulada
+        origen_x++;        
 	}
 
 	else ancho=scr_get_menu_width();
