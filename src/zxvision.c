@@ -253,21 +253,21 @@ void init_zxdesktop_icons(void)
     for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
         zxdesktop_icons_list[i].exists=0;
     }
+    
     return;
-
     //temp
     //asignamos un par de iconos
     //60,10
     //80,20
 
     zxdesktop_icons_list[0].exists=1;
-    zxdesktop_icons_list[0].x=860;
+    zxdesktop_icons_list[0].x=430;
     zxdesktop_icons_list[0].y=110;
     zxdesktop_icons_list[0].id_funcion=F_FUNCION_WAVEFORM;
 
     zxdesktop_icons_list[1].exists=1;
-    zxdesktop_icons_list[1].x=880;
-    zxdesktop_icons_list[1].y=120;
+    zxdesktop_icons_list[1].x=460;
+    zxdesktop_icons_list[1].y=130;
     zxdesktop_icons_list[1].id_funcion=F_FUNCION_SMARTLOAD;
 
 
@@ -4425,9 +4425,29 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 {
 
     //TODO: controlar si se sale de rango
+
+    int zoom;
+
+    //darle el nivel de zoom x o y, el que sea mayor. normalmente los dos niveles de zoom son iguales, pero por si acaso
+    if (zoom_x>zoom_y) zoom=zoom_x;
+    else zoom=zoom_y;
+
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
-        menu_draw_ext_desktop_putpixel_bitmap,1,0);
+        menu_draw_ext_desktop_putpixel_bitmap,zoom,0);
 	
+}
+
+void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
+{
+    int x=zxdesktop_icons_list[index].x;
+    int y=zxdesktop_icons_list[index].y;
+
+    //Posicion considerando zoom
+    x *=zoom_x;
+    y *=zoom_y;
+
+    *p_x=x;
+    *p_y=y;
 }
 
 //Dibujar los iconos configurables por el usuario
@@ -4437,8 +4457,9 @@ void menu_draw_ext_desktop_icons(void)
 
     for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
         if (zxdesktop_icons_list[i].exists) {
-            int x=zxdesktop_icons_list[i].x;
-            int y=zxdesktop_icons_list[i].y;
+            int x,y;
+            menu_get_ext_desktop_icons_position(i,&x,&y);
+
             char **bitmap=get_direct_function_icon_bitmap(zxdesktop_icons_list[i].id_funcion);
             menu_draw_ext_desktop_one_icon(x,y,bitmap);
         }
