@@ -19245,6 +19245,8 @@ void menu_inicio_handle_configurable_icon_presses(void)
     else {
         int id_funcion=zxdesktop_icons_list[pulsado_boton].id_funcion;
 
+        printf("Ejecutar funcion %d\n",id_funcion);
+
         printf("Antes procesar funcion\n");
         menu_process_f_functions_by_action_name(id_funcion);
         printf("Despues procesar funcion\n");

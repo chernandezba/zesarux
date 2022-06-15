@@ -213,6 +213,7 @@ int userdef_button_func_action_opcion_seleccionada=0;
 int zxdesktop_set_userdef_buttons_functions_opcion_seleccionada=0;
 int ext_desktop_settings_opcion_seleccionada=0;
 int cpu_settings_opcion_seleccionada=0;
+int zxdesktop_set_configurable_icons_opcion_seleccionada=0;
 
 
 //Fin opciones seleccionadas para cada menu
@@ -9498,6 +9499,103 @@ void menu_ext_desk_settings_frame_emulated_display(MENU_ITEM_PARAMETERS)
     zxdesktop_disable_show_frame_around_display ^=1;
 }
 
+void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
+{
+
+    int icono_seleccionado=valor_opcion;
+
+    int accion_seleccionada=zxdesktop_icons_list[icono_seleccionado].id_funcion;
+
+    int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+
+    if (indice_retorno>=0) {
+        //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+        int id_funcion=defined_direct_functions_array[indice_retorno].id_funcion;
+        zxdesktop_icons_list[icono_seleccionado].id_funcion=id_funcion;
+
+
+        //temp
+
+        zxdesktop_icons_list[icono_seleccionado].exists=1;
+        zxdesktop_icons_list[icono_seleccionado].x=430;
+        zxdesktop_icons_list[icono_seleccionado].y=110;        
+    }    
+
+/*
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion. Se llama a la funcion de elegir accion siempre
+            
+            //printf ("actuamos por funcion\n");
+
+            int accion_seleccionada=defined_buttons_functions_array[item_seleccionado.valor_opcion];
+
+            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+
+            if (indice_retorno>=0) {
+                //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+                defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
+            }
+            
+            
+        }
+*/
+}
+
+//Definir icono de zx desktop a accion
+void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        char buffer_texto[40];
+
+        int i;
+        for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
+
+            int indice_tabla=defined_buttons_functions_array[i];
+
+            //tabulado todo a misma columna, agregamos un espacio con F entre 1 y 9
+            sprintf (buffer_texto,"Icon %d [%d]",i,zxdesktop_icons_list[i].id_funcion);
+
+
+            //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL,buffer_texto);
+
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+        
+        }
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&zxdesktop_set_configurable_icons_opcion_seleccionada,&item_seleccionado,array_menu_common,"Set Icons" );
+
+        
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
+
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
@@ -9582,6 +9680,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
+                    "Customize icons","Personalizar iconos","Personalitzar icones");
+                menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);                
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
@@ -9931,4 +10035,5 @@ void menu_cpu_settings(MENU_ITEM_PARAMETERS)
 
 
 }
+
 

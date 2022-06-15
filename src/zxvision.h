@@ -605,6 +605,8 @@ typedef struct s_zxdesktop_icon zxdesktop_icon;
 
 #define MAX_ZXDESKTOP_ICONS 100
 
+extern zxdesktop_icon zxdesktop_icons_list[];
+
 
 extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
 
