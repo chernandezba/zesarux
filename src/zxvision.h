@@ -589,6 +589,23 @@ typedef struct s_defined_f_function defined_f_function;
 
 extern defined_f_function defined_direct_functions_array[];
 
+
+//Identifica a un icono del escritorio
+struct s_zxdesktop_icon {
+    int exists;
+    int x,y;
+
+    enum defined_f_function_ids id_funcion;
+
+    //Para obtener el bitmap, se buscara en el array defined_direct_functions_array segun
+    //el id_funcion
+};
+
+typedef struct s_zxdesktop_icon zxdesktop_icon;
+
+#define MAX_ZXDESKTOP_ICONS 100
+
+
 extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
 
 //Maximo de teclas F posibles a mapear

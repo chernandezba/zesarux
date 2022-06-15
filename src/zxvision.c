@@ -241,6 +241,52 @@ int defined_buttons_functions_array[MAX_USERDEF_BUTTONS]={
 	0
 };
 
+
+//Iconos presentes en el zx desktop
+zxdesktop_icon zxdesktop_icons_list[MAX_ZXDESKTOP_ICONS];
+
+//Indicar todos los iconos como no presentes
+void init_zxdesktop_icons(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
+        zxdesktop_icons_list[i].exists=0;
+    }
+    return;
+
+    //temp
+    //asignamos un par de iconos
+    //60,10
+    //80,20
+
+    zxdesktop_icons_list[0].exists=1;
+    zxdesktop_icons_list[0].x=860;
+    zxdesktop_icons_list[0].y=110;
+    zxdesktop_icons_list[0].id_funcion=F_FUNCION_WAVEFORM;
+
+    zxdesktop_icons_list[1].exists=1;
+    zxdesktop_icons_list[1].x=880;
+    zxdesktop_icons_list[1].y=120;
+    zxdesktop_icons_list[1].id_funcion=F_FUNCION_SMARTLOAD;
+
+
+}
+
+//Retorna bitmap de una accion
+//si no se encuentra retornamos bitmap undefined
+char **get_direct_function_icon_bitmap(enum defined_f_function_ids id_funcion)
+{
+    int i;
+
+    for (i=0;i<MAX_F_FUNCTIONS;i++) {
+        if (defined_direct_functions_array[i].id_funcion==id_funcion) return defined_direct_functions_array[i].bitmap_button;
+    }
+
+    return bitmap_button_ext_desktop_userdefined;
+}
+
+
 //Si el abrir menu (tipica F5 o tecla joystick) esta limitado. De tal manera que para poderlo abrir habra que pulsar 3 veces seguidas en menos de 1 segundo
 z80_bit menu_limit_menu_open={0};
 
@@ -255,7 +301,7 @@ z80_bit menu_limit_menu_open={0};
 */
 
 
-//3 entradas definidas de ejemplo
+//algunas entradas definidas de ejemplo
 int osd_adv_kbd_defined=9;
 char osd_adv_kbd_list[MAX_OSD_ADV_KEYB_WORDS][MAX_OSD_ADV_KEYB_TEXT_LENGTH]={
 	"~~north",
@@ -4375,7 +4421,29 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 }
 
 
+void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
+{
 
+    //TODO: controlar si se sale de rango
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
+        menu_draw_ext_desktop_putpixel_bitmap,1,0);
+	
+}
+
+//Dibujar los iconos configurables por el usuario
+void menu_draw_ext_desktop_icons(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_ICONS;i++) {
+        if (zxdesktop_icons_list[i].exists) {
+            int x=zxdesktop_icons_list[i].x;
+            int y=zxdesktop_icons_list[i].y;
+            char **bitmap=get_direct_function_icon_bitmap(zxdesktop_icons_list[i].id_funcion);
+            menu_draw_ext_desktop_one_icon(x,y,bitmap);
+        }
+    }
+}
 
 //Retorna posicion del logo de ZEsarUX en el extended desktop
 /*
@@ -5138,6 +5206,9 @@ void menu_draw_ext_desktop(void)
 	if (menu_zxdesktop_buttons_enabled.v) {
 		menu_draw_ext_desktop_buttons(xstart_zxdesktop);
 	}
+
+    //Dibujar iconos
+    menu_draw_ext_desktop_icons();
 
 	//Dibujar footer del zxdesktop
 	menu_draw_ext_desktop_footer();

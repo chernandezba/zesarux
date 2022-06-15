@@ -9085,6 +9085,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	last_filesused_clear();
 	menu_first_aid_init();
 
+    init_zxdesktop_icons();
+
 	//estos dos se inicializan para que al hacer set_emulator_speed, que se ejecuta antes de init audio,
 	//si no hay driver inicializado, no llamarlos
 	audio_end=NULL;
