@@ -2848,11 +2848,42 @@ char *bitmap_button_ext_desktop_trash[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
   	"                          ",      
 	"                          ",		
-	"                          ",		
-	"          xxxxxx          ",	
+	"          xxxxxx          ",		
+	"          x    x          ",	
 	"          x    x          ",			
-	"          x    x          ",			
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",			
 	" xxxxxxxxxxxxxxxxxxxxxxxx ", 		
+	"   x                  x   ",		
+	"   x                  x   ",			
+	"   x                  x   ",	//10		
+	"   x                  x   ", 		
+	"   x                  x   ",		
+	"   x   x   x   x   x  x   ",	
+    "   x   x   x   x   x  x   ",    		
+	"   x   x   x   x   x  x   ",		
+	"   x   x   x   x   x  x   ",		
+	"   x   x   x   x   x  x   ",		
+	"   x   x   x   x   x  x   ",		
+	"   x   x   x   x   x  x   ",		
+	"   x   x   x   x   x  x   ",    //20
+	"   x   x   x   x   x  x   ",		
+	"   x                  x   ",		
+	"   x                  x   ",		
+	"   x                  x   ",
+	"   xxxxxxxxxxxxxxxxxxxx   " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"         x                ",		
+	"        x x   xxxx        ",	
+	"       x   x x   x  x     ",			
+	"      x     x    x xx     ",			
+	"   xxxxxxxxxxxxxxxxxxxx   ", 		
 	"   x                  x   ",		
 	"   x                  x   ",			
 	"   x                  x   ",	//10		

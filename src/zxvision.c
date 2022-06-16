@@ -339,6 +339,19 @@ int zxvision_search_trash_configurable_icon(void)
     return -1;
 }
 
+int if_zxdesktop_trash_not_empty(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 void zxvision_move_configurable_icon_to_trash(int indice_icono)
 {
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
@@ -4543,6 +4556,19 @@ void menu_draw_ext_desktop_icons(void)
             menu_get_ext_desktop_icons_position(i,&x,&y);
 
             char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[i].indice_funcion);
+
+            //Si icono es papelera, decir que cambiamos si la papelera no esta vacia
+            int id_accion=zxdesktop_configurable_icons_list[i].indice_funcion;
+
+            enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_accion].id_funcion;
+
+            if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
+                //Ver si papelera no esta vacia
+                if (if_zxdesktop_trash_not_empty()) {
+                    bitmap=bitmap_button_ext_desktop_trash_not_empty;
+                }
+            }
+
             menu_draw_ext_desktop_one_icon(x,y,bitmap);
         }
     }
