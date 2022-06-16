@@ -243,6 +243,22 @@ int defined_buttons_functions_array[MAX_USERDEF_BUTTONS]={
 };
 
 
+//Retorna el indice a la tabla para una accion concreta
+int zxvision_get_id_direct_funcion_index(enum defined_f_function_ids id_funcion)
+{
+
+
+	int i;
+
+	for (i=0;i<MAX_F_FUNCTIONS;i++) {
+		if (defined_direct_functions_array[i].id_funcion==id_funcion) {
+			return i;
+		}
+	}
+
+	return -1;
+}    
+
 //Iconos configurables por el usuario presentes en el zx desktop
 zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONFIGURABLE_ICONS];
 
@@ -263,19 +279,19 @@ void init_zxdesktop_configurable_icons(void)
     zxdesktop_configurable_icons_list[0].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[0].x=430;
     zxdesktop_configurable_icons_list[0].y=110;
-    zxdesktop_configurable_icons_list[0].indice_funcion=3;
+    zxdesktop_configurable_icons_list[0].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_RESET);
 
     //debugcpu
     zxdesktop_configurable_icons_list[1].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[1].x=460;
     zxdesktop_configurable_icons_list[1].y=130;
-    zxdesktop_configurable_icons_list[1].indice_funcion=6;
+    zxdesktop_configurable_icons_list[1].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_DEBUGCPU);
 
     //trash
     zxdesktop_configurable_icons_list[2].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[2].x=460;
     zxdesktop_configurable_icons_list[2].y=230;
-    zxdesktop_configurable_icons_list[2].indice_funcion=37;    
+    zxdesktop_configurable_icons_list[2].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_TRASH);    
 
 
 }
