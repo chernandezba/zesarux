@@ -9572,7 +9572,23 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
             int indice_tabla=defined_buttons_functions_array[i];
 
             int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
-            sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
+            char estado_icono[30];
+
+            if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+                strcpy(estado_icono,"Not Exists");
+            }
+            else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+                strcpy(estado_icono,"Exists");
+            }
+            else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+                strcpy(estado_icono,"Deleted");
+            }
+            else {
+                //otros casos??
+                strcpy(estado_icono,"Unknown");
+            }
+
+            sprintf (buffer_texto,"Icon %2d %s [%s]",i,estado_icono,defined_direct_functions_array[indice_funcion].texto_funcion);
 
 
             //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
