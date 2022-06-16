@@ -2907,32 +2907,32 @@ char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_file_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "xxxxxxxxxxxxxxxxxxxxx     ",     //0
-  	"x                   xx    ",  
-	"x                   x x   ",	
-	"x                   x  x  ",      
-	"x                   x   x ",		
-	"x        bbbbbbbb   xxxxxx",		
-	"x       bbbbbbbbbb       x",	
-	"x      bbbbbbbbbbbb      x",			
-	"x     bbbbbbbbbbbbbb     x",			
-	"x  bbbbbbbbbbbbbbbbbbbb  x", 		
-	"x bbbbbbbbbbb bbbbbbbbbb x",	//10	
-	"x bbbbbbbbb    bbbbbbbbb x",		
-	"x bWWbbbbb      bbbbbbbb x",		
-	"x bWWbbbb  xx    bbbbbbb x",		
-	"x bbbbbbb x      bbbbbbb x",		
-	"x bbbbbb  x       bbbbbb x",		
-	"x bbbbbb          bbbbbb x",		
-	"x bbbbbb          bbbbbb x",		
-	"x bbbbbbb        bbbbbbb x",		
-	"x bbbbbbb        bbbbbbb x",		
-	"x bbbbbbbb      bbbbbbbb x",	//20	
-	"x bbbbbbbbb    bbbbbbbbb x",		
-	"x bbbbbbbbbb  bbbbbbbbbb x",    
-	"x bbbbbbbbbbbbbbbbbbbbbb x",		
-	"x                        x",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx"	//25	
+    " xxxxxxxxxxxxxxxxxxx      ",     //0
+  	" x                 xx     ",  
+	" x                 x x    ",	
+	" x                 x  x   ",      
+	" x                 x   x  ",		
+	" x                 xxxxxx ",		
+	" x       bbbbbbbb       x ",	
+	" x      bbbbbbbbbb      x ",			
+	" x     bbbbbbbbbbbb     x ",			
+	" x  bbbbbbbbbbbbbbbbbb  x ", 		
+	" x bbbbbbbbbbbbbbbbbbbb x ",	//10	
+	" x bbWWbbbb    bbbbbbbb x ",		
+	" x bbWWbbb      bbbbbbb x ",		
+	" x bbbbbb  xx    bbbbbb x ",		
+	" x bbbbbb x      bbbbbb x ",		
+	" x bbbbb  x       bbbbb x ",		
+	" x bbbbb          bbbbb x ",		
+	" x bbbbb          bbbbb x ",		
+	" x bbbbbb        bbbbbb x ",		
+	" x bbbbbb        bbbbbb x ",		
+	" x bbbbbbb      bbbbbbb x ",	//20	
+	" x bbbbbbbb    bbbbbbbb x ",		
+	" x bbbbbbbbbbbbbbbbbbbb x ",    
+	" x bbbbbbbbbbbbbbbbbbbb x ",		
+	" x                      x ",		
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25	
  
 	 
 };
