@@ -2848,29 +2848,29 @@ char *bitmap_button_ext_desktop_trash[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                          ",     //0
   	"                          ",      
 	"                          ",		
-	"          xxxxxx          ",		
-	"          x    x          ",	
-	"          x    x          ",			
-	" xxxxxxxxxxxxxxxxxxxxxxxx ",			
-	" xxxxxxxxxxxxxxxxxxxxxxxx ", 		
-	"   x                  x   ",		
-	"   x                  x   ",			
-	"   x                  x   ",	//10		
-	"   x                  x   ", 		
-	"   x                  x   ",		
-	"   x   x   x   x   x  x   ",	
-    "   x   x   x   x   x  x   ",    		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",    //20
-	"   x   x   x   x   x  x   ",		
-	"   x                  x   ",		
-	"   x                  x   ",		
-	"   x                  x   ",
-	"   xxxxxxxxxxxxxxxxxxxx   " 	 //25
+	"          xxxxxxx         ",		
+	"          xwwwwwx         ",	
+	"          xwwwwwx         ",			
+	"  xxxxxxxxxxxxxxxxxxxxxxx ",			
+	"  xxxxxxxxxxxxxxxxxxxxxxx ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",			
+	"    xwwwwwwwwwwwwwwwwwx   ",	//10		
+	"    xwwwwwwwwwwwwwwwwwx   ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",	
+    "    xwwwwxwwwxwwwxwwwwx   ",    		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",    //20
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",
+	"    xxxxxxxxxxxxxxxxxxx   " 	 //25
 };
 
 
@@ -2880,28 +2880,28 @@ char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
   	"                          ",      
 	"                          ",		
 	"         x                ",		
-	"        x x   xxxx        ",	
-	"       x   x x   x  x     ",			
-	"      x     x    x xx     ",			
-	"   xxxxxxxxxxxxxxxxxxxx   ", 		
-	"   x                  x   ",		
-	"   x                  x   ",			
-	"   x                  x   ",	//10		
-	"   x                  x   ", 		
-	"   x                  x   ",		
-	"   x   x   x   x   x  x   ",	
-    "   x   x   x   x   x  x   ",    		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",		
-	"   x   x   x   x   x  x   ",    //20
-	"   x   x   x   x   x  x   ",		
-	"   x                  x   ",		
-	"   x                  x   ",		
-	"   x                  x   ",
-	"   xxxxxxxxxxxxxxxxxxxx   " 	 //25
+	"        xxx   xxxx        ",	
+	"       xxxxx xxxxx  x     ",			
+	"      xxxxxxxxxxxx xx     ",			
+	"  xxxxxxxxxxxxxxxxxxxxxxx ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",			
+	"    xwwwwwwwwwwwwwwwwwx   ",	//10		
+	"    xwwwwwwwwwwwwwwwwwx   ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",	
+    "    xwwwwxwwwxwwwxwwwwx   ",    		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",    //20
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",
+	"    xxxxxxxxxxxxxxxxxxx   " 	 //25
 };
 
 
