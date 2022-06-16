@@ -19309,10 +19309,10 @@ void menu_inicio_handle_configurable_icon_presses(void)
                 //Ver si cerca
                 deltax=util_get_absolute(mouse_pixel_x-xpapelera);
                 deltay=util_get_absolute(mouse_pixel_y-ypapelera);
-                
+
                 printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
 
-                if (deltax<=10 && deltay<=10) {           
+                if (deltax<=20 && deltay<=20) {           
                     printf("Mover icono a la papelera\n");
                     mover_a_papelera=1;
                 }

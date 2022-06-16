@@ -32968,6 +32968,9 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             }
         break;
 
+		case F_FUNCION_DESKTOP_TRASH:
+			menu_zxdesktop_trash(0);
+		break;
 
 
 	}
