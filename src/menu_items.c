@@ -26161,6 +26161,15 @@ void menu_snapshot_quicksave(MENU_ITEM_PARAMETERS)
 	char final_name[PATH_MAX];
 	snapshot_quick_save(final_name);
 
+    //Crear un icono
+    int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
+    int indice_icono=zxvision_add_configurable_icon(indice_accion);
+
+    if (indice_icono>=0) {
+        //Indicarle la ruta al snapshot
+        strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,final_name);
+    }    
+
 
 	menu_generic_message_format("Quicksave","OK. Snapshot name: %s",final_name);
 
@@ -32851,17 +32860,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
 		case F_FUNCION_QUICKSAVE:
 
-			snapshot_quick_save(final_name);
-			menu_generic_message_format("Quicksave","OK. Snapshot name: %s",final_name);
-
-            //Crear un icono
-            int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
-            indice_icono=zxvision_add_configurable_icon(indice_accion);
-
-            if (indice_icono>=0) {
-                //Indicarle la ruta al snapshot
-                strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,final_name);
-            }
+			menu_snapshot_quicksave(0);
 
 		break;
 
