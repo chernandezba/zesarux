@@ -196,7 +196,10 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage}, 
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr}, 
     {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch},
-    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash}
+    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash},
+
+    //Este solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
+    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_quickload}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -269,6 +272,9 @@ void init_zxdesktop_configurable_icons(void)
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS;
+
+        //extra info en blanco
+        zxdesktop_configurable_icons_list[i].extra_info[0]=0;
     }
     
     //return;
@@ -303,7 +309,7 @@ char **get_direct_function_icon_bitmap(int indice_funcion)
     return defined_direct_functions_array[indice_funcion].bitmap_button;
 }
 
-void zxvision_add_configurable_icon(int indice_funcion)
+int zxvision_add_configurable_icon(int indice_funcion)
 {
 
     //buscar el primero disponible
@@ -325,12 +331,13 @@ void zxvision_add_configurable_icon(int indice_funcion)
             */
             zxdesktop_configurable_icons_list[i].x=430;
             zxdesktop_configurable_icons_list[i].y=110;   
-            return;    
+            return i;    
         }
     }    
 
     //no hay sitio. error
     debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+    return -1;
 
  
 }

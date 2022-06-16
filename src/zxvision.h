@@ -531,7 +531,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 38
+#define MAX_F_FUNCTIONS 39
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -572,7 +572,8 @@ enum defined_f_function_ids {
     F_FUNCION_LEFTRIGHT_JOY, //35
     F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,
     F_FUNCION_TEXT_ADVENTURE_MAP,
-    F_FUNCION_DESKTOP_TRASH
+    F_FUNCION_DESKTOP_TRASH,
+    F_FUNCION_DESKTOP_SNAPSHOT
 };
 //Nota: F_FUNCION_BACKGROUND_WINDOW no se llama de la misma manera que las otras funciones F
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window
@@ -603,9 +604,11 @@ struct s_zxdesktop_configurable_icon {
 
     //indice sobre la tabla defined_direct_functions_array
     enum defined_f_function_ids indice_funcion;
-
     //Para obtener el bitmap, se buscara en el array defined_direct_functions_array segun
     //el id_funcion
+
+    //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
+    char extra_info[PATH_MAX];
 };
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
