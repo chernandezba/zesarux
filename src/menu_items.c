@@ -248,6 +248,7 @@ int superupgrade_opcion_seleccionada=0;
 int zxuno_spi_flash_opcion_seleccionada=0;
 int betadisk_opcion_seleccionada=0;
 int menu_inicio_opcion_seleccionada=0;
+int zxdesktop_trash_opcion_seleccionada=0;
 
 
 //Fin opciones seleccionadas para cada menu
@@ -16864,6 +16865,73 @@ void menu_display_window_minimize_all_rearrange(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Minimize+rearrange all","OK. All windows minimized+rearranged");
 }
 
+
+//Papelera
+void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+
+        char buffer_texto[40];
+
+        int i;
+
+        int total_items_trash=0;
+        for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+
+
+            if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+            
+                int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
+                sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
+
+
+                //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+                //menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                total_items_trash++;
+
+            }
+
+        
+        }
+
+        if (total_items_trash==0) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Empty>");
+        }
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&zxdesktop_trash_opcion_seleccionada,&item_seleccionado,array_menu_common,"Trash" );
+
+        
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
+
+
+
+
 void menu_windows(MENU_ITEM_PARAMETERS)
 {
 
@@ -16912,6 +16980,12 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,
             "Close all windows","Cerrar todas las ventanas","Tancar totes les finestres");
 
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash,NULL,
+            "Open Trash","Abrir Papelera","Obrir Paperera)");
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -33349,6 +33423,9 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 		bitmap_lowericon_ext_desktop_hilow_active,bitmap_lowericon_ext_desktop_hilow_inactive,&zxdesktop_icon_hilow_inverse},    
 
 };
+
+
+
 
 
 //

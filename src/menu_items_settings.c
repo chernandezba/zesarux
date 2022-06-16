@@ -9569,7 +9569,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
         int i;
         for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
 
-            int indice_tabla=defined_buttons_functions_array[i];
+            //int indice_tabla=defined_buttons_functions_array[i];
 
             int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
             char estado_icono[30];
