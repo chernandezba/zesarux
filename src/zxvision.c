@@ -338,6 +338,10 @@ void zxvision_move_configurable_icon_to_trash(int indice_icono)
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
 }
 
+void zxvision_recover_configurable_icon_from_trash(int indice_icono)
+{
+    zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+}
 
 //Si el abrir menu (tipica F5 o tecla joystick) esta limitado. De tal manera que para poderlo abrir habra que pulsar 3 veces seguidas en menos de 1 segundo
 z80_bit menu_limit_menu_open={0};
@@ -19320,7 +19324,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
         }
 
         if (mover_a_papelera) {
-            zxdesktop_configurable_icons_list[pulsado_boton].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+            zxvision_move_configurable_icon_to_trash(pulsado_boton);
         }
         
         else {

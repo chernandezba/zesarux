@@ -16865,6 +16865,12 @@ void menu_display_window_minimize_all_rearrange(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Minimize+rearrange all","OK. All windows minimized+rearranged");
 }
 
+void menu_zxdesktop_trash_recover(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Recover icon")) {
+        zxvision_recover_configurable_icon_from_trash(valor_opcion);
+    }
+}
 
 //Papelera
 void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
@@ -16892,9 +16898,9 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 
 
                 //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_recover,NULL,buffer_texto);
 
-                //menu_add_item_menu_valor_opcion(array_menu_common,i);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 total_items_trash++;
 
