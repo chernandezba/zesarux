@@ -2903,3 +2903,38 @@ char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"   x                  x   ",
 	"   xxxxxxxxxxxxxxxxxxxx   " 	 //25
 };
+
+
+char *bitmap_button_ext_desktop_file_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "xxxxxxxxxxxxxxxxxxxxx     ",     //0
+  	"x                   xx    ",  
+	"x                   x x   ",	
+	"x                   x  x  ",      
+	"x                   x   x ",		
+	"x        bbbbbbbb   xxxxxx",		
+	"x       bbbbbbbbbb       x",	
+	"x      bbbbbbbbbbbb      x",			
+	"x     bbbbbbbbbbbbbb     x",			
+	"x  bbbbbbbbbbbbbbbbbbbb  x", 		
+	"x bbbbbbbbbbb bbbbbbbbbb x",	//10	
+	"x bbbbbbbbb    bbbbbbbbb x",		
+	"x bWWbbbbb      bbbbbbbb x",		
+	"x bWWbbbb  xx    bbbbbbb x",		
+	"x bbbbbbb x      bbbbbbb x",		
+	"x bbbbbb  x       bbbbbb x",		
+	"x bbbbbb          bbbbbb x",		
+	"x bbbbbb          bbbbbb x",		
+	"x bbbbbbb        bbbbbbb x",		
+	"x bbbbbbb        bbbbbbb x",		
+	"x bbbbbbbb      bbbbbbbb x",	//20	
+	"x bbbbbbbbb    bbbbbbbbb x",		
+	"x bbbbbbbbbb  bbbbbbbbbb x",    
+	"x bbbbbbbbbbbbbbbbbbbbbb x",		
+	"x                        x",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx"	//25	
+ 
+	 
+};
+
+

@@ -199,7 +199,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash},
 
     //Este solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
-    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_quickload}
+    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -287,13 +287,13 @@ void init_zxdesktop_configurable_icons(void)
     //reset
     zxdesktop_configurable_icons_list[0].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[0].x=430;
-    zxdesktop_configurable_icons_list[0].y=110;
+    zxdesktop_configurable_icons_list[0].y=150;
     zxdesktop_configurable_icons_list[0].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_QUICKSAVE);
 
     //debugcpu
     zxdesktop_configurable_icons_list[1].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-    zxdesktop_configurable_icons_list[1].x=460;
-    zxdesktop_configurable_icons_list[1].y=130;
+    zxdesktop_configurable_icons_list[1].x=480;
+    zxdesktop_configurable_icons_list[1].y=150;
     zxdesktop_configurable_icons_list[1].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_DEBUGCPU);
 
     //trash

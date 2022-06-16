@@ -75,6 +75,7 @@ extern char *bitmap_button_ext_desktop_ffwdtape[];
 extern char *bitmap_button_ext_desktop_joyleftright[];
 extern char *bitmap_button_ext_desktop_trash[];
 extern char *bitmap_button_ext_desktop_trash_not_empty[];
+extern char *bitmap_button_ext_desktop_file_snapshot[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 
