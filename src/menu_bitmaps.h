@@ -73,6 +73,7 @@ extern char *bitmap_button_ext_desktop_zengmessage[];
 extern char *bitmap_button_ext_desktop_rewindtape[];
 extern char *bitmap_button_ext_desktop_ffwdtape[];
 extern char *bitmap_button_ext_desktop_joyleftright[];
+extern char *bitmap_button_ext_desktop_trash[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 

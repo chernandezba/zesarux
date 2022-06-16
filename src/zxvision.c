@@ -196,7 +196,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage}, 
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr}, 
     {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch},
-    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_nothing}
+    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -270,6 +270,12 @@ void init_zxdesktop_configurable_icons(void)
     zxdesktop_configurable_icons_list[1].x=460;
     zxdesktop_configurable_icons_list[1].y=130;
     zxdesktop_configurable_icons_list[1].indice_funcion=6;
+
+    //trash
+    zxdesktop_configurable_icons_list[2].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+    zxdesktop_configurable_icons_list[2].x=460;
+    zxdesktop_configurable_icons_list[2].y=230;
+    zxdesktop_configurable_icons_list[2].indice_funcion=37;    
 
 
 }
