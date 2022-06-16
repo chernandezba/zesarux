@@ -195,7 +195,8 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Misc
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage}, 
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr}, 
-    {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch}
+    {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch},
+    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_nothing}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -278,6 +279,63 @@ char **get_direct_function_icon_bitmap(int indice_funcion)
 {
 
     return defined_direct_functions_array[indice_funcion].bitmap_button;
+}
+
+void zxvision_add_configurable_icon(int indice_funcion)
+{
+
+    //buscar el primero disponible
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+            zxdesktop_configurable_icons_list[i].indice_funcion=indice_funcion;
+            zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+
+            //TODO: posicion dinamica al crear
+            /*
+                Al crear un icono ubicarlo inteligentemente:
+            -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
+            -que no haya otro icono medianamente cerca
+
+            Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
+            Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+            */
+            zxdesktop_configurable_icons_list[i].x=430;
+            zxdesktop_configurable_icons_list[i].y=110;   
+            return;    
+        }
+    }    
+
+    //no hay sitio. error
+    debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+
+ 
+}
+
+//Dice si algun icono custom en el escritorio es la papelera
+//-1 si no 
+int zxvision_search_trash_configurable_icon(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            //id de la tabla de acciones
+            int id_tabla=zxdesktop_configurable_icons_list[i].indice_funcion;
+
+            enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_tabla].id_funcion;
+
+            if (id_funcion==F_FUNCION_DESKTOP_TRASH) return i;
+        }
+    }
+
+    return -1;
+}
+
+void zxvision_move_configurable_icon_to_trash(int indice_icono)
+{
+    zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
 }
 
 
@@ -4480,37 +4538,7 @@ void menu_draw_ext_desktop_icons(void)
     }
 }
 
-void zxvision_add_configurable_icon(int indice_funcion)
-{
 
-    //buscar el primero disponible
-    int i;
-
-    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
-            zxdesktop_configurable_icons_list[i].indice_funcion=indice_funcion;
-            zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-
-            //TODO: posicion dinamica al crear
-            /*
-                Al crear un icono ubicarlo inteligentemente:
-            -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
-            -que no haya otro icono medianamente cerca
-
-            Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
-            Si finalmente no se encuentra hueco, ponerlo en posición inicial 
-            */
-            zxdesktop_configurable_icons_list[i].x=430;
-            zxdesktop_configurable_icons_list[i].y=110;   
-            return;    
-        }
-    }    
-
-    //no hay sitio. error
-    debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
-
- 
-}
 
 //Dice si posicion x,y esta dentro del icono
 int if_position_in_desktop_icons(int posicion_x,int posicion_y)
@@ -13031,10 +13059,12 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 
         //si pulsa en algun icono configurable	
+        //aqui tanto entra cuando se pulsa como cuando se libera
         printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
         int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
 
-        if (icono_pulsado>=0) {
+        //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
+        if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
             printf("Icono pulsado: %d\n",icono_pulsado);
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
@@ -19262,10 +19292,43 @@ void menu_inicio_handle_configurable_icon_presses(void)
 		int mouse_pixel_x,mouse_pixel_y;
 		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
-        printf("Mover icono hasta %d %d\n",mouse_pixel_x,mouse_pixel_y);
-        //guardarlas sin zoom
-        zxdesktop_configurable_icons_list[pulsado_boton].x=mouse_pixel_x;
-        zxdesktop_configurable_icons_list[pulsado_boton].y=mouse_pixel_y;
+        //Ver si en el destino no hay cerca la papelera
+        int mover_a_papelera=0;
+        int hay_papelera=zxvision_search_trash_configurable_icon();
+        if (hay_papelera>=0) {
+            printf("hay una papelera\n");
+            //Y siempre que no sea ya una papelera este icono
+            int indice_funcion=zxdesktop_configurable_icons_list[pulsado_boton].indice_funcion;
+            enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
+
+            if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
+
+                int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].x;
+                int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].y;
+
+                //Ver si cerca
+                deltax=util_get_absolute(mouse_pixel_x-xpapelera);
+                deltay=util_get_absolute(mouse_pixel_y-ypapelera);
+                
+                printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
+
+                if (deltax<=10 && deltay<=10) {           
+                    printf("Mover icono a la papelera\n");
+                    mover_a_papelera=1;
+                }
+            }
+        }
+
+        if (mover_a_papelera) {
+            zxdesktop_configurable_icons_list[pulsado_boton].status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+        }
+        
+        else {
+            printf("Mover icono hasta %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            //guardarlas sin zoom
+            zxdesktop_configurable_icons_list[pulsado_boton].x=mouse_pixel_x;
+            zxdesktop_configurable_icons_list[pulsado_boton].y=mouse_pixel_y;
+        }
     }   
 
     else {
