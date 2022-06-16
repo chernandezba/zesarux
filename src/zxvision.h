@@ -617,6 +617,8 @@ typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
 
 extern zxdesktop_configurable_icon zxdesktop_configurable_icons_list[];
 
+extern int zxdesktop_configurable_icons_current_executing;
+
 
 extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
 

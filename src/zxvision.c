@@ -265,6 +265,9 @@ int zxvision_get_id_direct_funcion_index(enum defined_f_function_ids id_funcion)
 //Iconos configurables por el usuario presentes en el zx desktop
 zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONFIGURABLE_ICONS];
 
+//Id de icono que se esta ejecutando la accion ahora mismo
+int zxdesktop_configurable_icons_current_executing=-1;
+
 //Indicar todos los iconos como no presentes
 void init_zxdesktop_configurable_icons(void)
 {
@@ -285,7 +288,7 @@ void init_zxdesktop_configurable_icons(void)
     zxdesktop_configurable_icons_list[0].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[0].x=430;
     zxdesktop_configurable_icons_list[0].y=110;
-    zxdesktop_configurable_icons_list[0].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_RESET);
+    zxdesktop_configurable_icons_list[0].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_QUICKSAVE);
 
     //debugcpu
     zxdesktop_configurable_icons_list[1].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
@@ -19398,6 +19401,9 @@ void menu_inicio_handle_configurable_icon_presses(void)
         printf("Ejecutar funcion %d\n",id_funcion);
 
         printf("Antes procesar funcion\n");
+
+        zxdesktop_configurable_icons_current_executing=pulsado_boton;
+
         menu_process_f_functions_by_action_name(id_funcion);
         printf("Despues procesar funcion\n");
     }

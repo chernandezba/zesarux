@@ -32811,6 +32811,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
     //printf("enum: %d\n",id_funcion);
 
 	char final_name[PATH_MAX];
+    int indice_icono;
 
 	switch (id_funcion)
 	{
@@ -32855,7 +32856,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
             //Crear un icono
             int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
-            int indice_icono=zxvision_add_configurable_icon(indice_accion);
+            indice_icono=zxvision_add_configurable_icon(indice_accion);
 
             if (indice_icono>=0) {
                 //Indicarle la ruta al snapshot
@@ -32863,6 +32864,18 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             }
 
 		break;
+
+        case F_FUNCION_DESKTOP_SNAPSHOT:
+            indice_icono=zxdesktop_configurable_icons_current_executing;
+
+            if (indice_icono!=-1) {
+                strcpy(quickload_file,zxdesktop_configurable_icons_list[indice_icono].extra_info);
+
+                quickfile=quickload_file;
+
+                quickload(quickload_file);
+            }
+        break;
 
         case F_FUNCION_REWIND:
             snapshot_in_ram_rewind();
