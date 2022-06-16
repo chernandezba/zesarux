@@ -9499,6 +9499,15 @@ void menu_ext_desk_settings_frame_emulated_display(MENU_ITEM_PARAMETERS)
     zxdesktop_disable_show_frame_around_display ^=1;
 }
 
+void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
+{
+    int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(0);
+
+    if (indice_retorno>=0) {    
+        zxvision_add_configurable_icon(indice_retorno);
+    }
+}
+
 void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 {
 
@@ -9511,14 +9520,15 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
     if (indice_retorno>=0) {
         //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
         //int id_funcion=defined_direct_functions_array[accion_seleccionada].id_funcion;
+        //Asignar funcion
         zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion=indice_retorno;
 
-
-        //temp
-
-        zxdesktop_configurable_icons_list[icono_seleccionado].exists=1;
-        zxdesktop_configurable_icons_list[icono_seleccionado].x=430;
-        zxdesktop_configurable_icons_list[icono_seleccionado].y=110;        
+        //Si ya existia, conservar posicion. Si no, poner una nueva
+        if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+            zxdesktop_configurable_icons_list[icono_seleccionado].x=430;
+            zxdesktop_configurable_icons_list[icono_seleccionado].y=110;       
+            zxdesktop_configurable_icons_list[icono_seleccionado].status=ZXDESKTOP_CUSTOM_ICON_EXISTS; 
+        }
     }    
 
 /*
@@ -9551,6 +9561,8 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
     do {
 
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_add_configurable_icons,NULL,"Add next");
 
         char buffer_texto[40];
 

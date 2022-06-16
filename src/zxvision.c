@@ -251,7 +251,7 @@ void init_zxdesktop_configurable_icons(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        zxdesktop_configurable_icons_list[i].exists=0;
+        zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS;
     }
     
     //return;
@@ -259,13 +259,13 @@ void init_zxdesktop_configurable_icons(void)
     //asignamos un par de iconos
 
     //reset
-    zxdesktop_configurable_icons_list[0].exists=1;
+    zxdesktop_configurable_icons_list[0].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[0].x=430;
     zxdesktop_configurable_icons_list[0].y=110;
     zxdesktop_configurable_icons_list[0].indice_funcion=3;
 
     //debugcpu
-    zxdesktop_configurable_icons_list[1].exists=1;
+    zxdesktop_configurable_icons_list[1].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
     zxdesktop_configurable_icons_list[1].x=460;
     zxdesktop_configurable_icons_list[1].y=130;
     zxdesktop_configurable_icons_list[1].indice_funcion=6;
@@ -4470,7 +4470,7 @@ void menu_draw_ext_desktop_icons(void)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].exists) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
             int x,y;
             menu_get_ext_desktop_icons_position(i,&x,&y);
 
@@ -4480,6 +4480,38 @@ void menu_draw_ext_desktop_icons(void)
     }
 }
 
+void zxvision_add_configurable_icon(int indice_funcion)
+{
+
+    //buscar el primero disponible
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+            zxdesktop_configurable_icons_list[i].indice_funcion=indice_funcion;
+            zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+
+            //TODO: posicion dinamica al crear
+            /*
+                Al crear un icono ubicarlo inteligentemente:
+            -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
+            -que no haya otro icono medianamente cerca
+
+            Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
+            Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+            */
+            zxdesktop_configurable_icons_list[i].x=430;
+            zxdesktop_configurable_icons_list[i].y=110;   
+            return;    
+        }
+    }    
+
+    //no hay sitio. error
+    debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+
+ 
+}
+
 //Dice si posicion x,y esta dentro del icono
 int if_position_in_desktop_icons(int posicion_x,int posicion_y)
 {
@@ -4487,7 +4519,7 @@ int if_position_in_desktop_icons(int posicion_x,int posicion_y)
 
     int i;
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].exists) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
             int x,y;
             menu_get_ext_desktop_icons_position(i,&x,&y);
 

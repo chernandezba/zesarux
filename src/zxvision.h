@@ -589,10 +589,15 @@ typedef struct s_defined_f_function defined_f_function;
 
 extern defined_f_function defined_direct_functions_array[];
 
+enum zxdesktop_custom_icon_status_ids {
+    ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS,
+    ZXDESKTOP_CUSTOM_ICON_EXISTS,
+    ZXDESKTOP_CUSTOM_ICON_DELETED
+};
 
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {
-    int exists;
+    enum zxdesktop_custom_icon_status_ids status; //Existe, no existe, o borrado
     int x,y;
 
     //indice sobre la tabla defined_direct_functions_array
