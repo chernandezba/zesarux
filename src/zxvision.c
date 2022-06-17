@@ -4540,6 +4540,28 @@ void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
     *p_y=y;
 }
 
+
+void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton)
+{
+
+
+
+	int color_relleno=7;
+    int x,y;
+
+    for (y=yinicio;y<yinicio+alto_boton+2;y++) {	
+        for (x=xinicio;x<xinicio+ancho_boton+2;x++) {
+            scr_putpixel(x,y,color_relleno);	
+        }
+    }
+	
+
+	
+
+}
+
+
+
 void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 {
     int x,y;
@@ -4560,9 +4582,14 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     }
 
 	if (pulsado) {
+        //Aplicar un background si se pulsa
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size());
+
 		//desplazado 2 pixel cuando se pulsa
 		x+=2;
 		y+=2;
+
+
 	}
 
     menu_draw_ext_desktop_one_icon(x,y,bitmap);    
