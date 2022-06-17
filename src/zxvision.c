@@ -3859,19 +3859,7 @@ void menu_draw_ext_desktop_one_button_background(int contador_boton,int pulsado)
         menu_draw_ext_desktop_recuadro_button(xinicio,yinicio,ancho_boton,alto_boton,color_recuadro);
     }
 
-/*
-    //Horizontal
-	for (x=xinicio+1;x<xinicio+ancho_boton-1;x++) {
-		scr_putpixel(x,yinicio+1,color_recuadro);	
-		scr_putpixel(x,yinicio+alto_boton-2,color_recuadro);	
-	}
 
-	//Vertical
-	for (y=yinicio+1;y<yinicio+alto_boton-1;y++) {
-		scr_putpixel(xinicio+1,y,color_recuadro);	
-		scr_putpixel(xinicio+ancho_boton-2,y,color_recuadro);	
-	}
-*/
 
 	//Se rellena solo cuando se pulsa el botón o cuando no hay transparencia
 	if (pulsado || menu_ext_desktop_transparent_upper_icons.v==0) {
@@ -3933,19 +3921,7 @@ void menu_draw_ext_desktop_one_lower_icon_background(int contador_boton,int puls
     }
 
 
-/*
-    //Horizontal
-	for (x=xinicio+1;x<xinicio+ancho_boton-1;x++) {
-		scr_putpixel(x,yinicio+1,color_recuadro);	
-		scr_putpixel(x,yinicio+alto_boton-2,color_recuadro);	
-	}
 
-	//Vertical
-	for (y=yinicio+1;y<yinicio+alto_boton-1;y++) {
-		scr_putpixel(xinicio+1,y,color_recuadro);	
-		scr_putpixel(xinicio+ancho_boton-2,y,color_recuadro);	
-	}
-*/
 
 	//Se rellena solo cuando se pulsa el botón o cuando no hay transparencia
 	if (pulsado || menu_ext_desktop_transparent_lower_icons.v==0) {
