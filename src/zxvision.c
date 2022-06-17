@@ -12609,6 +12609,8 @@ int window_is_being_moved=0;
 int window_is_being_resized=0;
 int configurable_icon_is_being_moved=0;
 int configurable_icon_is_being_moved_which=-1;
+int configurable_icon_is_being_moved_previous_x=0;
+int configurable_icon_is_being_moved_previous_y=0;
 int window_mouse_x_before_move=0;
 int window_mouse_y_before_move=0;
 
@@ -13969,6 +13971,10 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             int mouse_pixel_x,mouse_pixel_y;
             menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
+            //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
+            configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
+            configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
+
             //multiplicamos por zoom
             mouse_pixel_x *=zoom_x;
             mouse_pixel_y *=zoom_y;
@@ -13979,7 +13985,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             //Si se arrastra alguno 
             if (configurable_icon_is_being_moved_which>=0) {
-                configurable_icon_is_being_moved=1;      
+                configurable_icon_is_being_moved=1;     
+
+                
             }
 
 
@@ -14020,6 +14028,51 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
 				configurable_icon_is_being_moved=0;
+
+                if (configurable_icon_is_being_moved_which>=0) {
+                    //Ver si se ha movido a la papelera
+
+
+                    int mouse_pixel_x,mouse_pixel_y;
+                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+                    //Ver si en el destino no hay cerca la papelera
+                    int mover_a_papelera=0;
+                    int hay_papelera=zxvision_search_trash_configurable_icon();
+                    if (hay_papelera>=0) {
+                        printf("hay una papelera\n");
+                        //Y siempre que no sea ya una papelera este icono
+                        int indice_funcion=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].indice_funcion;
+                        enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
+
+                        if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
+
+                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].x;
+                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].y;
+
+                            //Ver si cerca
+                            int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
+                            int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
+
+                            printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
+
+                            if (deltax<=20 && deltay<=20) {           
+                                printf("Mover icono a la papelera\n");
+
+                                //Cambiarle la posicion que tenia inicial antes de ir a la papelera
+
+                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].x=configurable_icon_is_being_moved_previous_x;
+                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].y=configurable_icon_is_being_moved_previous_y;
+                                zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
+                            }
+                        }
+                    }
+
+              
+
+
+                }
+
 			}            
 		}
 
@@ -19416,6 +19469,10 @@ void menu_inicio_handle_configurable_icon_presses(void)
     if (deltax>=5 || deltay>=5) {
         icono_se_ha_movido=1;
     }
+
+    //TODO: gestion de movimiento de iconos se hace cuando se arrastra. Esto lo desactivo
+    //TODO: quitar este codigo de abajo que no se llamara nunca
+    icono_se_ha_movido=0;
 
     if (icono_se_ha_movido) {
         
