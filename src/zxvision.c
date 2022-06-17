@@ -4564,6 +4564,34 @@ void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
     *p_y=y;
 }
 
+void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
+{
+    int x,y;
+    menu_get_ext_desktop_icons_position(index_icon,&x,&y);
+
+    char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[index_icon].indice_funcion);
+
+    //Si icono es papelera, decir que cambiamos si la papelera no esta vacia
+    int id_accion=zxdesktop_configurable_icons_list[index_icon].indice_funcion;
+
+    enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_accion].id_funcion;
+
+    if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
+        //Ver si papelera no esta vacia
+        if (if_zxdesktop_trash_not_empty()) {
+            bitmap=bitmap_button_ext_desktop_trash_not_empty;
+        }
+    }
+
+	if (pulsado) {
+		//desplazado 2 pixel cuando se pulsa
+		x+=2;
+		y+=2;
+	}
+
+    menu_draw_ext_desktop_one_icon(x,y,bitmap);    
+}
+
 //Dibujar los iconos configurables por el usuario
 void menu_draw_ext_desktop_configurable_icons(void)
 {
@@ -4571,24 +4599,7 @@ void menu_draw_ext_desktop_configurable_icons(void)
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
-            int x,y;
-            menu_get_ext_desktop_icons_position(i,&x,&y);
-
-            char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[i].indice_funcion);
-
-            //Si icono es papelera, decir que cambiamos si la papelera no esta vacia
-            int id_accion=zxdesktop_configurable_icons_list[i].indice_funcion;
-
-            enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_accion].id_funcion;
-
-            if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
-                //Ver si papelera no esta vacia
-                if (if_zxdesktop_trash_not_empty()) {
-                    bitmap=bitmap_button_ext_desktop_trash_not_empty;
-                }
-            }
-
-            menu_draw_ext_desktop_one_icon(x,y,bitmap);
+            menu_ext_desktop_draw_configurable_icon(i,0);
         }
     }
 }
@@ -4620,7 +4631,7 @@ void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
 	if (menu_pressed_zxdesktop_button_which>=0) menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
 	if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
-        //TODO
+        menu_ext_desktop_draw_configurable_icon(menu_pressed_zxdesktop_configurable_icon_which,1);
     }
 }
 
