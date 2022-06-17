@@ -4540,6 +4540,13 @@ void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
     *p_y=y;
 }
 
+//Posicion sin considerar zoom
+void menu_set_ext_desktop_icons_position(int index,int x,int y)
+{
+    zxdesktop_configurable_icons_list[index].x=x;
+    zxdesktop_configurable_icons_list[index].y=y;
+
+}
 
 void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton)
 {
@@ -4602,6 +4609,7 @@ void menu_draw_ext_desktop_configurable_icons(void)
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            //printf("Dibujando icono %d\n",i);
             menu_ext_desktop_draw_configurable_icon(i,0);
         }
     }
@@ -12599,6 +12607,8 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
 int mouse_is_dragging=0;
 int window_is_being_moved=0;
 int window_is_being_resized=0;
+int configurable_icon_is_being_moved=0;
+int configurable_icon_is_being_moved_which=-1;
 int window_mouse_x_before_move=0;
 int window_mouse_y_before_move=0;
 
@@ -13922,7 +13932,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 	if (!mouse_is_dragging) {
 		if (mouse_left && mouse_movido) {
-			//printf ("Mouse has begun to drag\n");
+			printf ("Mouse has begun to drag\n");
 
             if (auto_frameskip_even_when_movin_windows.v==0) {
                 autoframeskip_setting_before_moving_windows.v=autoframeskip.v;
@@ -13955,6 +13965,23 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 				}				
 			}
 
+            //Si estaba en un icono
+            int mouse_pixel_x,mouse_pixel_y;
+            menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+            //multiplicamos por zoom
+            mouse_pixel_x *=zoom_x;
+            mouse_pixel_y *=zoom_y;
+
+            printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+            printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+
+            //Si se arrastra alguno 
+            if (configurable_icon_is_being_moved_which>=0) {
+                configurable_icon_is_being_moved=1;      
+            }
+
 
 		}
 	}
@@ -13986,6 +14013,14 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 				window_is_being_resized=0;
 			}
+
+			if (configurable_icon_is_being_moved) {
+
+				printf("Stopped moving configurable icon\n");
+
+
+				configurable_icon_is_being_moved=0;
+			}            
 		}
 
 		else {
@@ -14015,6 +14050,22 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 					window_mouse_x_before_move=menu_mouse_x;					
 				}
 			}
+
+            if (configurable_icon_is_being_moved) {
+                printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
+                //Actualizar posicion
+                if (configurable_icon_is_being_moved_which>=0) {
+                    printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
+                    int mouse_pixel_x,mouse_pixel_y;
+                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+                    printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                    menu_set_ext_desktop_icons_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                }
+
+                //menu_draw_ext_desktop();
+                menu_refresca_pantalla();
+                //menu_draw_ext_desktop_configurable_icons();
+            }
 		}
 	}
 
