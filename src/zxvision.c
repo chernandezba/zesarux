@@ -4311,14 +4311,7 @@ void menu_draw_ext_desktop_dibujar_boton_pulsado(int boton)
 	menu_draw_ext_desktop_one_button_bitmap(boton,1,0);
 }
 
-void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
-{
-	if (menu_pressed_zxdesktop_button_which>=0) menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
-	if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
-    if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
-        //TODO
-    }
-}
+
 
 void menu_draw_ext_desktop_buttons(int xinicio)
 {
@@ -4572,7 +4565,7 @@ void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
 }
 
 //Dibujar los iconos configurables por el usuario
-void menu_draw_ext_desktop_icons(void)
+void menu_draw_ext_desktop_configurable_icons(void)
 {
     int i;
 
@@ -4619,6 +4612,16 @@ int if_position_in_desktop_icons(int posicion_x,int posicion_y)
     }    
 
     return -1;
+}
+
+
+void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
+{
+	if (menu_pressed_zxdesktop_button_which>=0) menu_draw_ext_desktop_dibujar_boton_pulsado(menu_pressed_zxdesktop_button_which);
+	if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
+    if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
+        //TODO
+    }
 }
 
 //Retorna posicion del logo de ZEsarUX en el extended desktop
@@ -5384,7 +5387,7 @@ void menu_draw_ext_desktop(void)
 	}
 
     //Dibujar iconos
-    menu_draw_ext_desktop_icons();
+    menu_draw_ext_desktop_configurable_icons();
 
 	//Dibujar footer del zxdesktop
 	menu_draw_ext_desktop_footer();

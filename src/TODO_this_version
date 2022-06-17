@@ -93,6 +93,8 @@ Sector -407021264
 
 -icono configurable de switch border, si lo pulso genera cpu_panic
 
--autoscale SCR quiza no va bien, demasiado grande
+-autoscale ZX Desktop SCR quiza no va bien, demasiado grande
 
 -quiza cursores de reducir/ampliar zxdesktop crear 4 chars nuevos (y para modos textos, usar los actuales)
+
+-arrastrar iconos que se vean al moverlos
