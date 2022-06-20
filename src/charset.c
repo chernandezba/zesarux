@@ -3835,10 +3835,10 @@ char *charset_icons_text[]={
 "w w",
  
 "   ",
-"   ",
-" w ",
+"www",
 "w w",
-" w ",
+"w w",
+"www",
  
 //112
 "   ",
