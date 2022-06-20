@@ -673,6 +673,9 @@ int menu_pressed_zxdesktop_lower_icon_which=-1;
 //En que icono configurable se ha pulsado del menu
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
 
+//Si se ha pulsado boton derecho en un icono
+int menu_pressed_zxdesktop_configurable_icon_right_button=0;
+
 //Posicion donde se ha empezado a pulsar icono configurable. para saber si se arrastra
 int menu_pressed_zxdesktop_configurable_icon_where_x=99999;
 int menu_pressed_zxdesktop_configurable_icon_where_y=99999;
@@ -14217,6 +14220,63 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 		}
 	}
 
+    if (mouse_right && menu_mouse_right_not_send_esc.v) {
+        //acciones con boton derecho    
+        printf("Pulsado boton derecho\n");
+
+
+
+        //Prueba. Decir pulsada papelera
+        //menu_pressed_zxdesktop_configurable_icon_which=2;
+
+        menu_pressed_zxdesktop_configurable_icon_right_button=1;
+
+		int mouse_pixel_x,mouse_pixel_y;
+		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+		//multiplicamos por zoom
+		mouse_pixel_x *=zoom_x;
+		mouse_pixel_y *=zoom_y;		
+
+
+        int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+
+        //Si se pulsa alguno 
+        if (icono_pulsado>=0) {
+            printf("Icono pulsado: %d\n",icono_pulsado);
+
+            menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+
+
+      //printf("pulsado en un boton desde handle mouse events. menu_abierto %d\n",menu_abierto);
+				//menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado();
+
+				menu_pressed_open_menu_while_in_menu.v=1;
+				salir_todos_menus=1;
+
+				/*
+				Estas decisiones son parecidas en casos:
+				pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
+				*/
+
+				if (!menu_allow_background_windows) {
+						mouse_pressed_close_window=1;
+				}
+
+				else {
+					//Si la ventana activa permite ir a background, mandarla a background
+					if (zxvision_current_window->can_be_backgrounded) {
+							mouse_pressed_background_window=1;
+					}
+
+					//Si la ventana activa no permite ir a background, cerrarla
+					else {
+							mouse_pressed_close_window=1;
+					}  
+                } 
+        }     
+    }
+
 	//if (mouse_left && mouse_movido) printf ("Mouse is dragging\n");
 	//return pulsado_boton_cerrar;
 }
@@ -19532,6 +19592,22 @@ void menu_inicio_handle_lower_icon_presses(void)
 
 void menu_inicio_handle_configurable_icon_presses(void)
 {
+
+    if (menu_pressed_zxdesktop_configurable_icon_right_button) {
+        menu_pressed_zxdesktop_configurable_icon_right_button=0;
+        //Acciones secundarias
+        int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
+
+        printf("Gestionando pulsacion de boton derecho de icono configurable %d\n",pulsado_boton);
+
+        menu_zxdesktop_set_configurable_icons_modify(pulsado_boton);
+
+
+        //Para que no vuelva a saltar
+        menu_pressed_zxdesktop_configurable_icon_which=-1;           
+        return;
+    }
+
 
     int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
