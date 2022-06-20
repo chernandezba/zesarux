@@ -3762,8 +3762,8 @@ char *charset_icons_text[]={
 "www",
  
 "   ",
-"   ",
 "www",
+"w  ",
 "w  ",
 "www",
  
@@ -3865,11 +3865,11 @@ char *charset_icons_text[]={
 "  w",
 "ww ",
  
-"   ",
 " w ",
 "www",
 " w ",
 " w ",
+" ww",
  
 "   ",
 "w w",
