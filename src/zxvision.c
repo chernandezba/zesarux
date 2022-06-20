@@ -562,6 +562,9 @@ z80_bit menu_hide_background_button_on_inactive={1};
 //Si se invierte sentido movimiento scroll raton
 z80_bit menu_invert_mouse_scroll={0};
 
+//Boton derecho no hace ESC
+z80_bit menu_mouse_right_not_send_esc={0};
+
 //indica que se ha pulsado ESC y por tanto debe aparecer el menu, o gestion de breakpoints, osd, etc
 //y tambien, la lectura de puertos de teclado (254) no devuelve nada
 int menu_abierto=0;

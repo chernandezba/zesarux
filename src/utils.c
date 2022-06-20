@@ -3814,6 +3814,8 @@ int util_write_configfile(void)
 
   if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
 
+  if (menu_mouse_right_not_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-not-esc");
+
   if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
   if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");
@@ -6394,9 +6396,9 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
     case UTIL_MOUSE_RIGHT_BUTTON:
       if (pressrelease) {
         mouse_right=1;
-        //Si esta menu abierto, hace como ESC
+        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_not_send_esc.v==0
 
-        if (si_menu_mouse_activado() ) {
+        if (si_menu_mouse_activado() && menu_mouse_right_not_send_esc.v==0) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
           if (menu_abierto==0) {
                   if (kempston_mouse_emulation.v==0) {
@@ -6420,8 +6422,8 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
       }
       else {
         mouse_right=0;
-        //Si esta menu abierto, hace como ESC
-        if (si_menu_mouse_activado()) {
+        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_not_send_esc.v==0
+        if (si_menu_mouse_activado()  && menu_mouse_right_not_send_esc.v==0) {
           if (menu_abierto) util_set_reset_key(UTIL_KEY_ESC,0);
         }
       }

@@ -932,6 +932,7 @@ extern z80_bit menu_hide_maximize_button;
 extern z80_bit menu_hide_close_button;
 extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;
+extern z80_bit menu_mouse_right_not_send_esc;
 
 extern z80_bit auto_frameskip_even_when_movin_windows;
 
