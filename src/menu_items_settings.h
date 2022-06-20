@@ -38,6 +38,8 @@ extern void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS);
 extern void menu_settings_snapshot(MENU_ITEM_PARAMETERS);
 extern void menu_cpu_settings(MENU_ITEM_PARAMETERS);
 
+extern void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS);
+
 extern int menu_hardware_advanced_input_value(int minimum,int maximum,char *texto,int *variable);
 
 extern int menu_inves_cond(void);
