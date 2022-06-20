@@ -26157,7 +26157,7 @@ void menu_snapshot_stop_rzx_play(MENU_ITEM_PARAMETERS)
 }
 
 
-int menu_snapshot_quicksave_contador_archivo=1;
+//int menu_snapshot_quicksave_contador_archivo=1;
 
 void menu_snapshot_quicksave(MENU_ITEM_PARAMETERS)
 {
@@ -26172,7 +26172,11 @@ void menu_snapshot_quicksave(MENU_ITEM_PARAMETERS)
         //Indicarle la ruta al snapshot
         strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,final_name);
         //Agregarle texto
-        sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
+        char name_no_dir[PATH_MAX];
+        util_get_file_no_directory(final_name,name_no_dir);
+
+        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
+        //sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
     }    
 
 

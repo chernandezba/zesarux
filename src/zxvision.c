@@ -671,8 +671,8 @@ int menu_pressed_zxdesktop_lower_icon_which=-1;
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
 
 //Posicion donde se ha empezado a pulsar icono configurable. para saber si se arrastra
-int menu_pressed_zxdesktop_configurable_icon_where_x=0;
-int menu_pressed_zxdesktop_configurable_icon_where_y=0;
+int menu_pressed_zxdesktop_configurable_icon_where_x=99999;
+int menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
 //Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada y
 z80_bit direct_menus_button_pressed={0};
@@ -14138,6 +14138,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
 				configurable_icon_is_being_moved=0;
+                //Para que cuando se vuelva a pulsar no interprete movimiento
+                menu_pressed_zxdesktop_configurable_icon_where_x=99999;
+                menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
                 zxvision_mover_icono_papelera_si_conviene();
 
@@ -19552,6 +19555,9 @@ void menu_inicio_handle_configurable_icon_presses(void)
         if (!mouse_left) {
             configurable_icon_is_being_moved=0;
             mouse_is_dragging=0;
+            //Para que cuando se vuelva a pulsar no interprete movimiento
+            menu_pressed_zxdesktop_configurable_icon_where_x=99999;
+            menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
             zxvision_mover_icono_papelera_si_conviene();
         }
