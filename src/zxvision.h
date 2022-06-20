@@ -597,20 +597,22 @@ enum zxdesktop_custom_icon_status_ids {
     ZXDESKTOP_CUSTOM_ICON_DELETED
 };
 
+#define MAX_LENGTH_TEXT_ICON 100
+
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {
     enum zxdesktop_custom_icon_status_ids status; //Existe, no existe, o borrado
     int x,y;
 
     //indice sobre la tabla defined_direct_functions_array
-    enum defined_f_function_ids indice_funcion;
+    int indice_funcion;
     //Para obtener el bitmap, se buscara en el array defined_direct_functions_array segun
     //el id_funcion
 
     //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
     char extra_info[PATH_MAX];
 
-    char text_icon[100];
+    char text_icon[MAX_LENGTH_TEXT_ICON];
 };
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;

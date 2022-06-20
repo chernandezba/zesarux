@@ -12678,6 +12678,11 @@ int configurable_icon_is_being_moved=0;
 int configurable_icon_is_being_moved_which=-1;
 int configurable_icon_is_being_moved_previous_x=0;
 int configurable_icon_is_being_moved_previous_y=0;
+
+//ultima posicion que se ha dibujado arrastrando
+int configurable_icon_is_being_moved_previous_dragged_x=0;
+int configurable_icon_is_being_moved_previous_dragged_y=0;
+
 int window_mouse_x_before_move=0;
 int window_mouse_y_before_move=0;
 
@@ -14186,11 +14191,23 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
                     printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
                     menu_set_ext_desktop_icons_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+
+                    //Refrescar pantalla si se ha movido lo suficiente
+                    
+                    int deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
+                    int deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
+
+                    configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
+                    configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;
+
+                    if (deltax>8 || deltay>8) {
+                        //menu_draw_ext_desktop();
+                        menu_refresca_pantalla();
+                        //menu_draw_ext_desktop_configurable_icons();                    
+                    }
                 }
 
-                //menu_draw_ext_desktop();
-                menu_refresca_pantalla();
-                //menu_draw_ext_desktop_configurable_icons();
+
             }
 		}
 	}

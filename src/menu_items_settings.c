@@ -9518,10 +9518,13 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
     int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(indice_seleccionada);
 
     if (indice_retorno>=0) {
-        //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+        printf("definimos boton. accion %d\n",indice_retorno);
         //int id_funcion=defined_direct_functions_array[accion_seleccionada].id_funcion;
         //Asignar funcion
         zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion=indice_retorno;
+
+        //Asignar nombre accion
+        strcpy(zxdesktop_configurable_icons_list[icono_seleccionado].text_icon,defined_direct_functions_array[indice_retorno].texto_funcion);
 
         //Si ya existia, conservar posicion. Si no, poner una nueva
         if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
@@ -9531,26 +9534,23 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
         }
     }    
 
-/*
 
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion. Se llama a la funcion de elegir accion siempre
-            
-            //printf ("actuamos por funcion\n");
-
-            int accion_seleccionada=defined_buttons_functions_array[item_seleccionado.valor_opcion];
-
-            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
-
-            if (indice_retorno>=0) {
-                //printf("definimos boton. boton %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
-                defined_buttons_functions_array[item_seleccionado.valor_opcion]=indice_retorno;
-            }
-            
-            
-        }
-*/
 }
+
+
+void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
+{
+
+    int opcion=menu_simple_two_choices("Modify icon","Do you want to","Change","Rename");
+
+    if (opcion==1) {
+        menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
+    }
+    else if (opcion==2) {
+        //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
+        menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);
+    }
+}    
 
 //Definir icono de zx desktop a accion
 void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
@@ -9592,7 +9592,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 
 
             //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL,buffer_texto);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_modify,NULL,buffer_texto);
 
             menu_add_item_menu_valor_opcion(array_menu_common,i);
 
