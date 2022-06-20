@@ -14197,13 +14197,15 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     int deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
                     int deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
 
-                    configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
-                    configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;
 
                     if (deltax>8 || deltay>8) {
                         //menu_draw_ext_desktop();
                         menu_refresca_pantalla();
                         //menu_draw_ext_desktop_configurable_icons();                    
+
+
+                        configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
+                        configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;                        
                     }
                 }
 
