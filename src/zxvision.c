@@ -14226,9 +14226,6 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
 
-        //Prueba. Decir pulsada papelera
-        //menu_pressed_zxdesktop_configurable_icon_which=2;
-
         menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
 		int mouse_pixel_x,mouse_pixel_y;
