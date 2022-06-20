@@ -101,6 +101,7 @@ Sector -407021264
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
+-boton derecho solo va con menu abierto
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 

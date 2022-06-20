@@ -19591,7 +19591,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 {
 
     if (menu_pressed_zxdesktop_configurable_icon_right_button) {
-        menu_pressed_zxdesktop_configurable_icon_right_button=0;
+        
         //Acciones secundarias
         int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
@@ -19601,7 +19601,16 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
 
         //Para que no vuelva a saltar
-        menu_pressed_zxdesktop_configurable_icon_which=-1;           
+        menu_pressed_zxdesktop_configurable_icon_which=-1;     
+        menu_pressed_zxdesktop_configurable_icon_right_button=0;
+
+
+
+        salir_todos_menus=1;
+
+        //menu_pressed_open_menu_while_in_menu.v=0;
+        //salir_todos_menus=0;
+
         return;
     }
 
