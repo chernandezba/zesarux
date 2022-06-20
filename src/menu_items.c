@@ -16894,7 +16894,8 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
             if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
             
                 int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
-                sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
+                //sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
+                sprintf (buffer_texto,"Icon %2d [%s]",i,zxdesktop_configurable_icons_list[i].text_icon);
 
 
                 //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);

@@ -102,6 +102,7 @@ Sector -407021264
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
 -boton derecho solo va con menu abierto
+-abrir menu principal, boton derecho sobre icono y se cierra menu de modificar icono
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 
