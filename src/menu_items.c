@@ -16883,7 +16883,7 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
 
-        char buffer_texto[40];
+        char buffer_texto[MAX_LENGTH_TEXT_ICON];
 
         int i;
 
@@ -16895,7 +16895,7 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
             
                 int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
                 //sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
-                sprintf (buffer_texto,"Icon %2d [%s]",i,zxdesktop_configurable_icons_list[i].text_icon);
+                strcpy (buffer_texto,zxdesktop_configurable_icons_list[i].text_icon);
 
 
                 //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
