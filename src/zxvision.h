@@ -609,6 +609,8 @@ struct s_zxdesktop_configurable_icon {
 
     //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
     char extra_info[PATH_MAX];
+
+    char text_icon[100];
 };
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
@@ -1157,6 +1159,9 @@ extern int menu_pressed_zxdesktop_lower_icon_which;
 extern int menu_pressed_zxdesktop_button_which;
 extern int menu_pressed_zxdesktop_configurable_icon_which;
 extern z80_bit menu_pressed_close_all_menus;
+
+extern int zxvision_add_configurable_icon(int indice_funcion);
+extern int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion);
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 

@@ -26156,18 +26156,23 @@ void menu_snapshot_stop_rzx_play(MENU_ITEM_PARAMETERS)
 	eject_rzx_file();
 }
 
+
+int menu_snapshot_quicksave_contador_archivo=1;
+
 void menu_snapshot_quicksave(MENU_ITEM_PARAMETERS)
 {
 	char final_name[PATH_MAX];
 	snapshot_quick_save(final_name);
 
     //Crear un icono
-    int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
-    int indice_icono=zxvision_add_configurable_icon(indice_accion);
+    //int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
+    int indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_SNAPSHOT);
 
     if (indice_icono>=0) {
         //Indicarle la ruta al snapshot
         strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,final_name);
+        //Agregarle texto
+        sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
     }    
 
 

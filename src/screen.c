@@ -4001,9 +4001,9 @@ void screen_generic_putpixel_no_rainbow_watermark(z80_int *destino GCC_UNUSED,in
 	scr_putpixel(x,y,color);
 }
 
-
-//Mete un bitmap en formato ascii en un bitmap generico
-void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso)
+//Mete un bitmap en formato ascii en un bitmap generico, y agregando un offset que salta X lineas en origen
+void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, 
+    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso,int offset_inicio_agregar)
 {
 	int fila,columna;
 
@@ -4011,7 +4011,7 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 		//int offset_fila=fila*ancho_orig;
 		char *texto;
 		
-		texto=origen[fila];
+		texto=origen[fila+offset_inicio_agregar];
 		for (columna=0;columna<ancho_orig;columna++) {
 			char caracter=texto[columna];
 
@@ -4052,6 +4052,11 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 	}
 }
 
+//Mete un bitmap en formato ascii en un bitmap generico
+void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso)
+{
+	screen_put_asciibitmap_generic_offset_inicio(origen,destino,x,y,ancho_orig,alto_orig,ancho_destino,putpixel,zoom,inverso,0);
+}
 
 
 void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) )

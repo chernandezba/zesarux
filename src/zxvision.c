@@ -268,50 +268,7 @@ zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONF
 //Id de icono que se esta ejecutando la accion ahora mismo
 int zxdesktop_configurable_icons_current_executing=-1;
 
-//Indicar todos los iconos como no presentes
-void init_zxdesktop_configurable_icons(void)
-{
-    int i;
-
-    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS;
-
-        //extra info en blanco
-        zxdesktop_configurable_icons_list[i].extra_info[0]=0;
-    }
-    
-    //return;
-    //temp
-    //asignamos un par de iconos
-
-    //reset
-    zxdesktop_configurable_icons_list[0].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-    zxdesktop_configurable_icons_list[0].x=430;
-    zxdesktop_configurable_icons_list[0].y=150;
-    zxdesktop_configurable_icons_list[0].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_QUICKSAVE);
-
-    //debugcpu
-    zxdesktop_configurable_icons_list[1].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-    zxdesktop_configurable_icons_list[1].x=480;
-    zxdesktop_configurable_icons_list[1].y=150;
-    zxdesktop_configurable_icons_list[1].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_DEBUGCPU);
-
-    //trash
-    zxdesktop_configurable_icons_list[2].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
-    zxdesktop_configurable_icons_list[2].x=460;
-    zxdesktop_configurable_icons_list[2].y=230;
-    zxdesktop_configurable_icons_list[2].indice_funcion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_TRASH);    
-
-
-}
-
-//Retorna bitmap de una accion
-char **get_direct_function_icon_bitmap(int indice_funcion)
-{
-
-    return defined_direct_functions_array[indice_funcion].bitmap_button;
-}
-
+//Agregar nuevo icono indicandole indice a tabla de acciones
 int zxvision_add_configurable_icon(int indice_funcion)
 {
 
@@ -322,6 +279,9 @@ int zxvision_add_configurable_icon(int indice_funcion)
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
             zxdesktop_configurable_icons_list[i].indice_funcion=indice_funcion;
             zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+
+            //Texto de momento el de la accion asociada
+            strcpy(zxdesktop_configurable_icons_list[i].text_icon,defined_direct_functions_array[indice_funcion].texto_funcion);
 
             //TODO: posicion dinamica al crear
             /*
@@ -344,6 +304,79 @@ int zxvision_add_configurable_icon(int indice_funcion)
 
  
 }
+
+
+//Agregar nuevo icono indicandole id de accion
+int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion)
+{
+    //Crear un icono
+    int indice_accion=zxvision_get_id_direct_funcion_index(id_funcion);
+    return zxvision_add_configurable_icon(indice_accion);
+}
+
+//Indicar todos los iconos como no presentes
+void init_zxdesktop_configurable_icons(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS;
+
+        //extra info en blanco
+        zxdesktop_configurable_icons_list[i].extra_info[0]=0;
+
+        //text icon en blanco
+        zxdesktop_configurable_icons_list[i].text_icon[0]=0;
+    }
+    
+    //return;
+    //temp
+    //asignamos un par de iconos
+
+    int indice_icono;
+
+
+    //Quicksave
+    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
+    if (indice_icono>=0) {
+        zxdesktop_configurable_icons_list[indice_icono].x=430;
+        zxdesktop_configurable_icons_list[indice_icono].y=150;     
+    }    
+
+    //debugcpu
+    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
+    if (indice_icono>=0) {
+        zxdesktop_configurable_icons_list[indice_icono].x=480;
+        zxdesktop_configurable_icons_list[indice_icono].y=150;     
+    }
+
+
+
+    //Add Trash
+    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_TRASH);
+
+    if (indice_icono>=0) {
+        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash");
+
+        //temp
+        //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+        //temp
+        //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
+        zxdesktop_configurable_icons_list[indice_icono].x=460;
+        zxdesktop_configurable_icons_list[indice_icono].y=230;        
+    }
+
+
+}
+
+//Retorna bitmap de una accion
+char **get_direct_function_icon_bitmap(int indice_funcion)
+{
+
+    return defined_direct_functions_array[indice_funcion].bitmap_button;
+}
+
+
 
 //Dice si algun icono custom en el escritorio es la papelera
 //-1 si no 
@@ -4522,6 +4555,34 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 	
 }
 
+
+//Escribir texto del icono
+void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
+{
+    //TODO: controlar si se sale de rango
+
+    int zoom=menu_get_ext_desktop_icons_zoom();
+
+    int ancho_caracter=3;
+    int alto_caracter=5;
+
+    while (*texto) {
+        unsigned char c=*texto;
+        texto++;
+        if (c>=32 && c<=126) {
+            int offset=(c-32)*alto_caracter;
+            //printf("c %d offset %d\n",c,offset);
+
+            screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
+                menu_draw_ext_desktop_putpixel_bitmap,zoom,0,offset);    
+            x +=(ancho_caracter+1)*zoom_x;     //El ancho de caracter +1 para que no queden pegados
+        }
+
+    }
+
+
+}
+
 int menu_get_ext_desktop_icons_size(void)
 {
     return ZESARUX_ASCII_LOGO_ANCHO*menu_get_ext_desktop_icons_zoom();
@@ -4600,6 +4661,12 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 	}
 
     menu_draw_ext_desktop_one_icon(x,y,bitmap);    
+
+
+    //Escribir texto del icono
+    //Pruebas
+    //menu_draw_ext_desktop_one_icon_text(x,y+ZESARUX_ASCII_LOGO_ALTO*zoom_y+1," !\"#$");
+    menu_draw_ext_desktop_one_icon_text(x,y+ZESARUX_ASCII_LOGO_ALTO*zoom_y+1,zxdesktop_configurable_icons_list[index_icon].text_icon);
 }
 
 //Dibujar los iconos configurables por el usuario
@@ -13278,6 +13345,49 @@ z80_byte zxvision_get_key_hotkey(zxvision_window *w,int x,int y)
 	return 0;
 }
 
+void zxvision_mover_icono_papelera_si_conviene(void)
+{
+     if (configurable_icon_is_being_moved_which>=0) {
+                    //Ver si se ha movido a la papelera
+
+
+                    int mouse_pixel_x,mouse_pixel_y;
+                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+                    //Ver si en el destino no hay cerca la papelera
+                    int mover_a_papelera=0;
+                    int hay_papelera=zxvision_search_trash_configurable_icon();
+                    if (hay_papelera>=0) {
+                        printf("hay una papelera\n");
+                        //Y siempre que no sea ya una papelera este icono
+                        int indice_funcion=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].indice_funcion;
+                        enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
+
+                        if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
+
+                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].x;
+                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].y;
+
+                            //Ver si cerca
+                            int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
+                            int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
+
+                            printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
+
+                            if (deltax<=20 && deltay<=20) {           
+                                printf("Mover icono a la papelera\n");
+
+                                //Cambiarle la posicion que tenia inicial antes de ir a la papelera
+
+                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].x=configurable_icon_is_being_moved_previous_x;
+                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].y=configurable_icon_is_being_moved_previous_y;
+                                zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
+                            }
+                        }
+                    }
+     }    
+}
+
 //int zxvision_mouse_events_counter=0;
 //int tempconta;
 //Retorna 1 si pulsado boton de cerrar ventana
@@ -13985,10 +14095,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             //Si se arrastra alguno 
             if (configurable_icon_is_being_moved_which>=0) {
-                configurable_icon_is_being_moved=1;     
-
-                
+                configurable_icon_is_being_moved=1;                
             }
+
 
 
 		}
@@ -13997,7 +14106,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 	if (mouse_is_dragging) {
 		//printf ("mouse is dragging\n");
 		if (!mouse_left) { 
-			//printf ("Mouse has stopped to drag\n");
+			printf ("Mouse has stopped to drag\n");
 
             if (auto_frameskip_even_when_movin_windows.v==0) {
                 autoframeskip.v=autoframeskip_setting_before_moving_windows.v;
@@ -14025,53 +14134,14 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			if (configurable_icon_is_being_moved) {
 
 				printf("Stopped moving configurable icon\n");
+                //Parece que aqui solo se llama cuando esta el menu abierto
 
 
 				configurable_icon_is_being_moved=0;
 
-                if (configurable_icon_is_being_moved_which>=0) {
-                    //Ver si se ha movido a la papelera
+                zxvision_mover_icono_papelera_si_conviene();
 
-
-                    int mouse_pixel_x,mouse_pixel_y;
-                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-
-                    //Ver si en el destino no hay cerca la papelera
-                    int mover_a_papelera=0;
-                    int hay_papelera=zxvision_search_trash_configurable_icon();
-                    if (hay_papelera>=0) {
-                        printf("hay una papelera\n");
-                        //Y siempre que no sea ya una papelera este icono
-                        int indice_funcion=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].indice_funcion;
-                        enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
-
-                        if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
-
-                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].x;
-                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].y;
-
-                            //Ver si cerca
-                            int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
-                            int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
-
-                            printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
-
-                            if (deltax<=20 && deltay<=20) {           
-                                printf("Mover icono a la papelera\n");
-
-                                //Cambiarle la posicion que tenia inicial antes de ir a la papelera
-
-                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].x=configurable_icon_is_being_moved_previous_x;
-                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].y=configurable_icon_is_being_moved_previous_y;
-                                zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
-                            }
-                        }
-                    }
-
-              
-
-
-                }
+            
 
 			}            
 		}
@@ -19470,11 +19540,23 @@ void menu_inicio_handle_configurable_icon_presses(void)
         icono_se_ha_movido=1;
     }
 
-    //TODO: gestion de movimiento de iconos se hace cuando se arrastra. Esto lo desactivo
-    //TODO: quitar este codigo de abajo que no se llamara nunca
-    icono_se_ha_movido=0;
 
     if (icono_se_ha_movido) {
+        printf("Icono se ha movido. No hacer accion pulsar\n");
+        //TODO: quitar este codigo de abajo que no se llamara nunca. Pero dejar el if else para que el else solo se haga cuando no se haya movido icono
+        //TODO: gestion de movimiento de iconos se hace cuando se arrastra. Esto lo desactivo. 
+
+        //Estos iconos son un poco particulares, no se comportan ni como botones ni como ventanas, pues se invocan al abrir menu,
+        //pero tambien se pueden arrastrar
+        //Aqui suele entrar cuando menu esta cerrado
+        if (!mouse_left) {
+            configurable_icon_is_being_moved=0;
+            mouse_is_dragging=0;
+
+            zxvision_mover_icono_papelera_si_conviene();
+        }
+
+        /*
         
 		int mouse_pixel_x,mouse_pixel_y;
 		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
@@ -19516,6 +19598,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
             zxdesktop_configurable_icons_list[pulsado_boton].x=mouse_pixel_x;
             zxdesktop_configurable_icons_list[pulsado_boton].y=mouse_pixel_y;
         }
+        */
     }   
 
     else {

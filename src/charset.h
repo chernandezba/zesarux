@@ -61,4 +61,6 @@ extern void set_user_charset(void);
 #define TOTAL_ASCII_CHARSET_ELEMENTS ((MAX_CHARSET_GRAPHIC-32+1)*8)
 
 
+extern char *charset_icons_text[];
+
 #endif

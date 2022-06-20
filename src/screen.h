@@ -905,6 +905,8 @@ extern z80_bit screen_watermark_enabled;
 
 extern void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) );
 extern void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso );
+extern void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color),int zoom,int inverso,int offset_inicio_agregar );
+
 
 #define ZESARUX_WATERMARK_LOGO_MARGIN 4
 
