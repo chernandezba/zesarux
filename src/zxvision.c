@@ -362,7 +362,7 @@ void init_zxdesktop_configurable_icons(void)
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_TRASH);
 
     if (indice_icono>=0) {
-        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash");
+        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash Can");
 
         //temp
         //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
@@ -9118,6 +9118,7 @@ z80_byte zxvision_read_keyboard(void)
 
 	//Si pulsado boton cerrar ventana, enviar ESC
 	if (mouse_pressed_close_window) {
+        //printf("Retornar ESC pues hay mouse_pressed_close_window\n");
 		return 2;
 	}
 
@@ -16973,7 +16974,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		int lineas_mover_pgup_dn;
 		int conta_mover_pgup_dn;
 
-		//printf ("tecla: %d\n",tecla);
+		//printf ("tecla en dibuja menu: %d\n",tecla);
 
 		switch (tecla) {
 			case 13:
@@ -17256,7 +17257,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		zxvision_destroy_window(ventana);
 	}
 
-	//printf ("tecla: %d\n",tecla);
+	//printf ("tecla al salir de dibuja menu: %d\n",tecla);
 
 	if (tecla==MENU_RETORNO_ESC) {
         zxvision_helper_menu_shortcut_delete_last();
@@ -19795,8 +19796,6 @@ void menu_zxdesktop_add_direct_smartload(void)
     if (ret==1) {
 
 
-        
-
         //Crear un icono. Por defecto smartload sin indicar tipo
         enum defined_f_function_ids id_funcion=F_FUNCION_DESKTOP_GENERIC_SMARTLOAD;
 
@@ -19856,6 +19855,11 @@ void menu_zxdesktop_add_direct_smartload(void)
 
 void menu_inicio_handle_right_button_background(void)
 {
+
+    //Liberar esto o se cerrara la siguiente ventana
+    //Esto estara activado si venimos de boton derecho con alguna ventana activa
+    mouse_pressed_close_window=0;
+
     if (menu_pressed_zxdesktop_right_button_background>=0) {
         menu_pressed_zxdesktop_right_button_background=-1;
 
@@ -19873,6 +19877,12 @@ void menu_inicio_handle_right_button_background(void)
 
 void menu_inicio_handle_configurable_icon_presses(void)
 {
+
+    //Liberar esto o se cerrara la siguiente ventana
+    //Esto estara activado si venimos de boton derecho con alguna ventana activa
+    mouse_pressed_close_window=0;
+
+
 
     if (menu_pressed_zxdesktop_configurable_icon_right_button) {
         

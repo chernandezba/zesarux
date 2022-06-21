@@ -101,13 +101,12 @@ Sector -407021264
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
--boton derecho solo va con menu abierto
--abrir menu principal, boton derecho sobre icono y se cierra menu de modificar icono
+
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 
 -Quizá acción botón derecho que emula esc, opción para quitar ese comportamiento (dejar así por defecto?). Y hacer que use botón derecho para propiedades de iconos por ejemplo 
 
--Poder crear también accesos directos con smartload: a cintas, snapshots etc
-
 -Fondo por defecto ZX desktop quizá no el rallado. Sino uno azul claro 
+
+minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)

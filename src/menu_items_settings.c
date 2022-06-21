@@ -9570,6 +9570,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
         //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
         menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
     }    
+
+    printf("Opcion despues de modify icon: %d\n",opcion);
+    printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
+
+    //menu_espera_no_tecla();
 }    
 
 //Definir icono de zx desktop a accion
