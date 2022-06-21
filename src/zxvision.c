@@ -19781,7 +19781,7 @@ void menu_zxdesktop_add_direct_smartload(void)
 
     //printf ("antes menu_filesel\n");
 
-    ret=menu_filesel("Smart load",filtros,ruta_a_archivo);
+    ret=menu_filesel("Select file",filtros,ruta_a_archivo);
 
     //printf ("despues menu_filesel\n");
 

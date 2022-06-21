@@ -2939,30 +2939,32 @@ char *bitmap_button_ext_desktop_file_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_file_generic_smartload[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                x         ",     //0
-  	"           x    x     x   ",      
-	"            x   x    x    ",		
-	"             x      x     ",		
-	"               xxxx       ",	
-	"             xxyyyyxx     ",			
-	"            xyyyyyyyyx    ",			
-	"            xyyyyxyyyx    ", 		
-	"           xyyyyxyyyyyx   ",		
-	"        xx xyyyxyyyyyyx xx",		
-	"           xyyxxxxxyyyx   ",	//10	
-	"           xyyyyyxyyyyx   ",		
-	"            xyyyxyyyyx    ",		
-	"            xyyxyyyyyx    ",		
-	"             xyyyyyyx     ",		
-	" xxxxx       xyyyyyyx     ",		
-	"x     x      xxyyyyxx     ",		
-	"x xxx x       xyyyyx      ",		
-	"x     x  xxxx xyyyyx      ",		
-	"x     x    xx xxxxxx      ",		
-	"x xxx x   x x             ",    //20
-	"x     x  x  x xxxxxx      ",		
-	"x     x x     xxxxxx      ",		
-	"x xxx x                   ",		
-	"x     x        xxxx       ",
-	" xxxxx         xxxx       " 	 //25
+    " xxxxxxxxxxxxxxxxxxx      ",     //0
+  	" x                 xx     ",      
+	" x        x    x   xwx    ",		
+	" x         x   x   xwwx   ",		
+	" x          x  x   xwwwx  ",	
+	" x                 xxxxxx ",			
+	" x            xxxxx     x ",
+	" x           xyyyyyx    x ",
+	" x          xyyyyxyyx   x ", 		
+	" x         xyyyyxyyyyx  x ",		
+	" x      xx xyyyxyyyyyx  x ",		
+	" x         xyyxxxxxyyx  x ",		
+	" x         xyyyyyxyyyx  x ",		
+	" x          xyyyxyyyx   x ",		
+	" x          xyyxyyyyx   x ",		
+	" x           xyyyyyx    x ",		
+	" x  xxx      xxyyyxx    x ",		
+	" x x   x      xxxxx     x ",		
+	" x x x x xxxx           x ",		
+	" x x   x   xx xxxxx     x ",		
+	" x x x x  x x xxxxx     x ",    //20
+	" x x   x x  x           x ",		
+	" x x   x       xxx      x ",		
+	" x  xxx        xxx      x ",		
+	" x                      x ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
 };
+
+
