@@ -3377,6 +3377,8 @@ int util_write_configfile(void)
 
     if (menu_ext_desktop_transparent_lower_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-transparent-lower-buttons");
 
+	if (menu_ext_desktop_transparent_configurable_icons.v)  ADD_STRING_CONFIG,"--zxdesktop-transparent-configurable-icons");
+
     if (menu_ext_desktop_disable_box_upper_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-upper-buttons");
 
     if (menu_ext_desktop_disable_box_lower_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-disable-box-lower-buttons");

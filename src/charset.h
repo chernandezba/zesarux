@@ -63,4 +63,9 @@ extern void set_user_charset(void);
 
 extern char *charset_icons_text[];
 
+//El ancho efectivo del caracter. Se escribe con 1 espacio de mas
+#define CHARSET_ICONS_ANCHO 3
+#define CHARSET_ICONS_ALTO 5
+
+
 #endif
