@@ -2938,7 +2938,7 @@ char *bitmap_button_ext_desktop_file_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 
 char *bitmap_button_ext_desktop_file_generic_smartload[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
+   //01234567890123456789012345
     " xxxxxxxxxxxxxxxxxxx      ",  //0
   	" xwwwwwwwwwwwwwwwwwxx     ",
 	" xwwwwwwwwxwwwwxwwwxwx    ",		
@@ -2968,3 +2968,32 @@ char *bitmap_button_ext_desktop_file_generic_smartload[EXT_DESKTOP_BUTTONS_ANCHO
 };
 
 
+char *bitmap_button_ext_desktop_file_tape[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    " xxxxxxxxxxxxxxxxxxx      ",//0
+  	" x                 xx     ",
+	" x                 xwx    ",	
+	" x                 xwwx   ",
+	" x                 xwwwx  ",		
+    " x                 xxxxxx ",		
+    " x                      x ",		
+    " x                      x ",		    
+	" x  xxxxxxxxxxxxxxxxxx  x ",		
+	" x xxggggggggggggggggxx x ",	
+	" x xggggggggggggggggggx x ",			
+	" x xggxxxggggggggxxxggx x ",			
+	" x xgxx xxg    gxx xxgx x ",		
+	" x xgx   xg    gx   xgx x ",		
+	" x xgxx xxg    gxx xxgx x ",		
+	" x xggxxxggggggggxxxggx x ",		
+	" x xggggggggggggggggggx x ",		
+	" x xggggggggggggggggggx x ",		
+	" x xggggxxxxxxxxxxggggx x ",		
+	" x xgggxggggggggggxgggx x ",		
+	" x xxggxggggggggggxggxx x ",		
+	" x  xxxxxxxxxxxxxxxxxx  x ",		
+	" x                      x ",	//20	
+	" x                      x ",		
+	" x                      x ",		
+	" xxxxxxxxxxxxxxxxxxxxxxxx "//25		
+};    

@@ -202,6 +202,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Para un snapshot
     {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot},
     //Para una cinta.. TODO
+    {"DirectTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape},
 
     //Para el esto
     {"DirectSmartLoad",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload}
@@ -19818,6 +19819,18 @@ void menu_zxdesktop_add_direct_smartload(void)
             id_funcion=F_FUNCION_DESKTOP_SNAPSHOT;
         }
 
+        //Si es cinta...
+        if (!util_compare_file_extension(ruta_a_archivo,"tap") ||
+            !util_compare_file_extension(ruta_a_archivo,"tzx") ||
+            !util_compare_file_extension(ruta_a_archivo,"cdt") ||
+            !util_compare_file_extension(ruta_a_archivo,"rwa") ||
+            !util_compare_file_extension(ruta_a_archivo,"smp") ||
+            !util_compare_file_extension(ruta_a_archivo,"wav") ||
+            !util_compare_file_extension(ruta_a_archivo,"pzx") ||
+            !util_compare_file_extension(ruta_a_archivo,"cas") 
+            ) {
+            id_funcion=F_FUNCION_DESKTOP_TAPE;
+        }
         
 
         int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
