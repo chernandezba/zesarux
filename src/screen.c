@@ -4001,6 +4001,81 @@ void screen_generic_putpixel_no_rainbow_watermark(z80_int *destino GCC_UNUSED,in
 	scr_putpixel(x,y,color);
 }
 
+//Mete una mascara para un bitmap en formato ascii en un bitmap generico, y agregando un offset que salta X lineas en origen
+
+/*
+void screen_put_mask_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, 
+    void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int offset_inicio_agregar,int color_pixel)
+{
+	int fila,columna;
+
+    int filainicio=9999;
+    int dibujada_linea_arriba=0;
+    int filafinal=9999;
+
+	for (fila=0;fila<alto_orig;fila++) {
+		//int offset_fila=fila*ancho_orig;
+		char *texto;
+		
+		texto=origen[fila+offset_inicio_agregar];
+
+        //Encontrar inicio y final
+        int xinicio=9999;
+        for (columna=0;columna<ancho_orig;columna++) {
+            char caracter=texto[columna];
+
+            if (caracter!=' ') {
+                xinicio=columna-1;
+
+                if (filainicio!=9999) filainicio=fila-1;
+                break;
+            }
+        }
+
+        int xfinal=9999;
+        for (columna=ancho_orig-1;columna>=0;columna--) {
+            char caracter=texto[columna];
+
+            if (caracter!=' ') {
+                xfinal=columna+1;
+                break;
+            }
+        }      
+
+        if (xinicio!=9999 && xfinal!=9999) {  
+
+            //Linea de mascara
+            for (columna=xinicio;columna<=xfinal;columna++) {
+
+
+                int zx,zy;
+                for (zx=0;zx<zoom;zx++) {
+                    for (zy=0;zy<zoom;zy++) {
+                        putpixel(destino,x+columna*zoom+zx,y+fila*zoom+zy,ancho_destino,color_pixel);
+                    }
+                }
+            }	
+
+            //Y si se habia dibujado la linea de arriba del todo
+			if (!dibujada_linea_arriba) {
+                dibujada_linea_arriba=1;
+
+                for (columna=xinicio;columna<=xfinal;columna++) {
+
+                    int zx,zy;
+                    for (zx=0;zx<zoom;zx++) {
+                        for (zy=0;zy<zoom;zy++) {
+                            putpixel(destino,x+columna*zoom+zx,y+(fila-1)*zoom+zy,ancho_destino,6);
+                        }
+                    }
+                }
+            }
+			
+		}
+	}
+}
+*/
+
 //Mete un bitmap en formato ascii en un bitmap generico, y agregando un offset que salta X lineas en origen
 void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino,int x,int y,int ancho_orig, int alto_orig, int ancho_destino, 
     void (*putpixel) (z80_int *destino,int x,int y,int ancho_destino,int color), int zoom,int inverso,int offset_inicio_agregar)

@@ -9408,6 +9408,11 @@ void menu_ext_desk_settings_lower_transparent(MENU_ITEM_PARAMETERS)
 	menu_ext_desktop_transparent_lower_icons.v ^=1;
 }
 
+void menu_ext_desk_settings_configurable_icons_transparent(MENU_ITEM_PARAMETERS)
+{
+	menu_ext_desktop_transparent_configurable_icons.v ^=1;
+}
+
 void menu_ext_desk_settings_upper_box(MENU_ITEM_PARAMETERS)
 {
 	menu_ext_desktop_disable_box_upper_icons.v ^=1;
@@ -9723,7 +9728,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
                     "Customize icons","Personalizar iconos","Personalitzar icones");
-                menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);                
+                menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);  
+
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
+                    "Transparent icons","Iconos transparentes","Icones transparents");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 

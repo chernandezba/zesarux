@@ -4570,7 +4570,10 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
     int zoom=menu_get_ext_desktop_icons_zoom();
 
     //Aplicar mascara blanca debajo
+    //screen_put_mask_asciibitmap_generic_offset_inicio(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
+    //    menu_draw_ext_desktop_putpixel_bitmap,zoom,0,7);
 
+    //Y dibujar bitmap
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
         menu_draw_ext_desktop_putpixel_bitmap,zoom,0);
 	
@@ -4672,10 +4675,12 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         }
     }
 
-	if (pulsado) {
-        //Aplicar un background si se pulsa
+	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0) {
+        //Aplicar un background si se pulsa o si hay setting de no fondo transparente
         menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size());
+    }
 
+    if (pulsado) {
 		//desplazado 2 pixel cuando se pulsa
 		x+=2;
 		y+=2;
@@ -4689,7 +4694,10 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     //Escribir texto del icono
     //Pruebas
     //menu_draw_ext_desktop_one_icon_text(x,y+ZESARUX_ASCII_LOGO_ALTO*zoom_y+1," !\"#$");
-    menu_draw_ext_desktop_one_icon_text(x,y+ZESARUX_ASCII_LOGO_ALTO*zoom_y+1,zxdesktop_configurable_icons_list[index_icon].text_icon);
+    int y_texto_icono=y+ZESARUX_ASCII_LOGO_ALTO*zoom_y+1;
+
+
+    menu_draw_ext_desktop_one_icon_text(x,y_texto_icono,zxdesktop_configurable_icons_list[index_icon].text_icon);
 }
 
 //Dibujar los iconos configurables por el usuario
@@ -4778,6 +4786,8 @@ z80_bit menu_ext_desktop_transparent_lower_icons={0};
 
 z80_bit menu_ext_desktop_disable_box_upper_icons={0};
 z80_bit menu_ext_desktop_disable_box_lower_icons={0};
+
+z80_bit menu_ext_desktop_transparent_configurable_icons={0};
 
 int menu_ext_desktop_fill_rainbow_counter;
 
