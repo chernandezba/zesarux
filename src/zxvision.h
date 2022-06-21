@@ -1161,10 +1161,12 @@ extern int lowericon_realtape_frame;
 extern int menu_pressed_zxdesktop_lower_icon_which;
 extern int menu_pressed_zxdesktop_button_which;
 extern int menu_pressed_zxdesktop_configurable_icon_which;
+extern int menu_pressed_zxdesktop_right_button_background;
 extern z80_bit menu_pressed_close_all_menus;
 
 extern void init_zxdesktop_configurable_icons(void);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
+extern void zxvision_empty_trash(void);
 extern int zxvision_add_configurable_icon(int indice_funcion);
 extern int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion);
 extern void menu_inicio_handle_configurable_icon_presses(void);

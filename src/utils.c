@@ -6396,9 +6396,9 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
     case UTIL_MOUSE_RIGHT_BUTTON:
       if (pressrelease) {
         mouse_right=1;
-        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_not_send_esc.v==0
+        //Si esta menu abierto, hace como ESC 
 
-        if (si_menu_mouse_activado() && menu_mouse_right_not_send_esc.v==0) {
+        if (si_menu_mouse_activado()) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
           if (menu_abierto==0) {
                   if (kempston_mouse_emulation.v==0) {
@@ -6408,8 +6408,8 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                   }
           }
           else {
-            //Si esta menu abierto, es como enviar ESC
-            if (zxvision_keys_event_not_send_to_machine) {
+            //Si esta menu abierto, es como enviar ESC si setting menu_mouse_right_not_send_esc.v==0
+            if (zxvision_keys_event_not_send_to_machine && menu_mouse_right_not_send_esc.v==0) {
                     //y si se pulsa dentro de ventana
                     //no ver dentro ventana
                     //if (si_menu_mouse_en_ventana() ) {

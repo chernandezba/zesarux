@@ -16872,6 +16872,13 @@ void menu_zxdesktop_trash_recover(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS)
+{
+    if (menu_confirm_yesno("Empty trash")) {
+        zxvision_empty_trash();
+    }
+}
+
 //Papelera
 void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 {
@@ -16911,10 +16918,14 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
         }
 
         if (total_items_trash==0) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Empty>");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Trash is Empty>");
+        }
+        else {
+            menu_add_item_menu_separator(array_menu_common);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_empty,NULL,"Empty Trash");
         }
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_common);
         
         menu_add_ESC_item(array_menu_common);
 
@@ -32565,7 +32576,8 @@ void menu_inicio_bucle_main(void)
         //printf("menu_pressed_zxdesktop_configurable_icon_which %d\n",menu_pressed_zxdesktop_configurable_icon_which);
         //printf("antes del if\n");
 		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 || pulsado_alguna_ventana_con_menu_cerrado) {
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0 
+            || pulsado_alguna_ventana_con_menu_cerrado) {
 
             //printf("se cumple if: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
             //    menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
@@ -32588,6 +32600,10 @@ void menu_inicio_bucle_main(void)
 
             else if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
                 menu_inicio_handle_configurable_icon_presses();
+            }
+
+            else if (menu_pressed_zxdesktop_right_button_background>=0) {
+                menu_inicio_handle_right_button_background();
             }
 			//printf ("despues menu_inicio_handle_button_presses\n");
 

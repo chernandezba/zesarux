@@ -3540,10 +3540,10 @@ char *charset_icons_text[]={
 " w ",
 "w  ",
  
-" w ",
-"w w",
+"ww ",
 "  w",
 " w ",
+"   ",
 " w ",
  
 " w ",

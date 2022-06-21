@@ -421,6 +421,17 @@ void zxvision_recover_configurable_icon_from_trash(int indice_icono)
     zxdesktop_configurable_icons_list[indice_icono].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
 }
 
+void zxvision_empty_trash(void)
+{
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+            zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS;
+        }
+    }    
+}
+
 //Si el abrir menu (tipica F5 o tecla joystick) esta limitado. De tal manera que para poderlo abrir habra que pulsar 3 veces seguidas en menos de 1 segundo
 z80_bit menu_limit_menu_open={0};
 
@@ -672,6 +683,8 @@ int menu_pressed_zxdesktop_button_which=-1;
 int menu_pressed_zxdesktop_lower_icon_which=-1;
 //En que icono configurable se ha pulsado del menu
 int menu_pressed_zxdesktop_configurable_icon_which=-1;
+//Se ha pulsado en boton derecho sobre el desktop
+int menu_pressed_zxdesktop_right_button_background=-1;
 
 //Si se ha pulsado boton derecho en un icono
 int menu_pressed_zxdesktop_configurable_icon_right_button=0;
@@ -4575,14 +4588,16 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
     while (*texto) {
         unsigned char c=*texto;
         texto++;
-        if (c>=32 && c<=126) {
-            int offset=(c-32)*alto_caracter;
-            //printf("c %d offset %d\n",c,offset);
+        if (c<32 || c>126) c='?';
+        
+        int offset=(c-32)*alto_caracter;
+        //printf("c %d offset %d\n",c,offset);
 
-            screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
-                menu_draw_ext_desktop_putpixel_bitmap,zoom,0,offset);    
-            x +=(ancho_caracter+1)*zoom_x;     //El ancho de caracter +1 para que no queden pegados
-        }
+        screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
+            menu_draw_ext_desktop_putpixel_bitmap,zoom,0,offset);    
+        
+
+        x +=(ancho_caracter+1)*zoom_x;     //El ancho de caracter +1 para que no queden pegados
 
     }
 
@@ -4716,6 +4731,9 @@ void menu_draw_ext_desktop_dibujar_boton_or_lower_icon_pulsado(void)
 	if (menu_pressed_zxdesktop_lower_icon_which>=0) menu_ext_desktop_draw_lower_icon(menu_pressed_zxdesktop_lower_icon_which,1);
     if (menu_pressed_zxdesktop_configurable_icon_which>=0) {
         menu_ext_desktop_draw_configurable_icon(menu_pressed_zxdesktop_configurable_icon_which,1);
+    }
+    if (menu_pressed_zxdesktop_right_button_background>=0) {
+
     }
 }
 
@@ -14226,7 +14244,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
 
-        menu_pressed_zxdesktop_configurable_icon_right_button=1;
+        
 
 		int mouse_pixel_x,mouse_pixel_y;
 		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
@@ -14241,6 +14259,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         //Si se pulsa alguno 
         if (icono_pulsado>=0) {
             printf("Icono pulsado: %d\n",icono_pulsado);
+
+            menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
 
@@ -14271,7 +14291,58 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 							mouse_pressed_close_window=1;
 					}  
                 } 
-        }     
+        }   
+
+        else {
+
+            //Si se pulsa boton derecho en alguna ventana
+            int absolute_mouse_x,absolute_mouse_y;
+                
+            menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
+
+            //Vamos a ver en que ventana se ha pulsado, si tenemos background activado
+            zxvision_window *ventana_pulsada;
+
+            ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
+            if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
+                printf("Pulsado boton derecho sobre ventana\n");
+
+            }	
+            else {
+                //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. TODO
+
+                //Asumimos pulsado en fondo desktop
+                printf("Pulsado en ZX desktop con boton derecho\n");
+                //menu_ext_desktop_settings(0);
+                menu_pressed_zxdesktop_right_button_background=1;
+
+				menu_pressed_open_menu_while_in_menu.v=1;
+				salir_todos_menus=1;
+
+				/*
+				Estas decisiones son parecidas en casos:
+				pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
+				*/
+
+				if (!menu_allow_background_windows) {
+						mouse_pressed_close_window=1;
+				}
+
+				else {
+					//Si la ventana activa permite ir a background, mandarla a background
+					if (zxvision_current_window->can_be_backgrounded) {
+							mouse_pressed_background_window=1;
+					}
+
+					//Si la ventana activa no permite ir a background, cerrarla
+					else {
+							mouse_pressed_close_window=1;
+					}  
+                } 
+
+
+            }          
+        }
     }
 
 	//if (mouse_left && mouse_movido) printf ("Mouse is dragging\n");
@@ -19587,6 +19658,22 @@ void menu_inicio_handle_lower_icon_presses(void)
 
 }
 
+void menu_inicio_handle_right_button_background(void)
+{
+    if (menu_pressed_zxdesktop_right_button_background>=0) {
+        menu_pressed_zxdesktop_right_button_background=-1;
+
+        //propiedades zx desktop, agregar icono
+        int opcion=menu_simple_three_choices("ZX Desktop","--Action--","New icon","ZX Desktop settings","Customize icons");
+
+        if (opcion==1) menu_zxdesktop_add_configurable_icons(0);
+        if (opcion==2) menu_ext_desktop_settings(0);
+        if (opcion==3) menu_zxdesktop_set_configurable_icons(0);
+
+        salir_todos_menus=1;
+    }
+}
+
 void menu_inicio_handle_configurable_icon_presses(void)
 {
 
@@ -20045,7 +20132,8 @@ void menu_inicio_bucle(void)
 		reopen_menu=0;
 
 		//Si se ha pulsado en algun boton de menu
-		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 || menu_pressed_zxdesktop_configurable_icon_which>=0) {
+		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 ||menu_pressed_zxdesktop_right_button_background>=0) {
 			//printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
 		}
 
