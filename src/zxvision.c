@@ -19751,91 +19751,90 @@ void menu_zxdesktop_add_direct_smartload(void)
 	filtros[37]=0;
 
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-        //Obtenemos directorio de snap
-        //si no hay directorio, vamos a rutas predefinidas
-        if (quickfile!=NULL) {
-                char directorio[PATH_MAX];
-                util_get_dir(quickfile,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos directorio de ultimo quickload
+    if (quickfile!=NULL) {
+            char directorio[PATH_MAX];
+            util_get_dir(quickfile,directorio);
+            //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-						//printf ("antes zvfs_chdir\n");
-                        zvfs_chdir(directorio);
-						//printf ("despues zvfs_chdir\n");
-                }
+            //cambiamos a ese directorio, siempre que no sea nulo
+            if (directorio[0]!=0) {
+                    debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                    //printf ("antes zvfs_chdir\n");
+                    zvfs_chdir(directorio);
+                    //printf ("despues zvfs_chdir\n");
+            }
 
 
-        }
+    }
 
 
 
     char ruta_a_archivo[PATH_MAX];
 
 
-        int ret;
+    int ret;
 
-		//printf ("antes menu_filesel\n");
+    //printf ("antes menu_filesel\n");
 
-        ret=menu_filesel("Smart load",filtros,ruta_a_archivo);
+    ret=menu_filesel("Smart load",filtros,ruta_a_archivo);
 
-		//printf ("despues menu_filesel\n");
+    //printf ("despues menu_filesel\n");
 
-        //volvemos a directorio inicial
-		
-        zvfs_chdir(directorio_actual);
-
-
-
-        if (ret==1) {
-
-
-            //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-            //reset_menu_overlay_function();
-
-
-			//if (quickload(quickload_file)) {
-			//	debug_printf (VERBOSE_ERR,"Unknown file format");
-			//}
-
-            //Crear un icono. Por defecto smartload sin indicar tipo
-            enum defined_f_function_ids id_funcion=F_FUNCION_DESKTOP_GENERIC_SMARTLOAD;
-
-
-            //Si es snapshot...
-            if (!util_compare_file_extension(ruta_a_archivo,"zsf")) {
-                id_funcion=F_FUNCION_DESKTOP_SNAPSHOT;
-            }
-
-            
-
-            int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
-
-            if (indice_icono>=0) {
-                //Indicarle la ruta al snapshot
-                strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,ruta_a_archivo);
-                //Agregarle texto
-                char name_no_dir[PATH_MAX];
-                util_get_file_no_directory(ruta_a_archivo,name_no_dir);
-
-                strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
-                //sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
-            }  
+    //volvemos a directorio inicial
+    
+    zvfs_chdir(directorio_actual);
 
 
 
-                //restauramos modo normal de texto de menu
-              //  set_menu_overlay_function(normal_overlay_texto_menu);
+    if (ret==1) {
 
-   
+
         
 
-	//printf ("tapefile: %p %s\n",tapefile,tapefile);
+        //Crear un icono. Por defecto smartload sin indicar tipo
+        enum defined_f_function_ids id_funcion=F_FUNCION_DESKTOP_GENERIC_SMARTLOAD;
+
+
+        //Si es snapshot...
+        if (!util_compare_file_extension(ruta_a_archivo,"zx") ||
+            !util_compare_file_extension(ruta_a_archivo,"sp") ||
+            !util_compare_file_extension(ruta_a_archivo,"z80") ||
+            !util_compare_file_extension(ruta_a_archivo,"sna") ||
+            !util_compare_file_extension(ruta_a_archivo,"p") ||
+            !util_compare_file_extension(ruta_a_archivo,"o") ||
+            !util_compare_file_extension(ruta_a_archivo,"80") ||
+            !util_compare_file_extension(ruta_a_archivo,"81") ||
+            !util_compare_file_extension(ruta_a_archivo,"z81") ||
+            !util_compare_file_extension(ruta_a_archivo,"zsf") ||
+            !util_compare_file_extension(ruta_a_archivo,"ace") ||
+            !util_compare_file_extension(ruta_a_archivo,"spg") ||
+            !util_compare_file_extension(ruta_a_archivo,"nex") 
+            ) {
+            id_funcion=F_FUNCION_DESKTOP_SNAPSHOT;
+        }
+
+        
+
+        int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
+
+        if (indice_icono>=0) {
+            //Indicarle la ruta al snapshot
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,ruta_a_archivo);
+            //Agregarle texto
+            char name_no_dir[PATH_MAX];
+            util_get_file_no_directory(ruta_a_archivo,name_no_dir);
+
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
+            //sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
+        }  
+
+
+
 
     }
 
@@ -19848,7 +19847,7 @@ void menu_inicio_handle_right_button_background(void)
         menu_pressed_zxdesktop_right_button_background=-1;
 
         //propiedades zx desktop, agregar icono
-        int opcion=menu_simple_four_choices("ZX Desktop","--Action--","New icon","New file smartload","ZX Desktop settings","Customize icons");
+        int opcion=menu_simple_four_choices("ZX Desktop","--Action--","New icon","New file link","ZX Desktop settings","Customize icons");
 
         if (opcion==1) menu_zxdesktop_add_configurable_icons(0);
         if (opcion==2) menu_zxdesktop_add_direct_smartload();
