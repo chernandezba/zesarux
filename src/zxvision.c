@@ -4569,6 +4569,8 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 
     int zoom=menu_get_ext_desktop_icons_zoom();
 
+    //Aplicar mascara blanca debajo
+
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 0,
         menu_draw_ext_desktop_putpixel_bitmap,zoom,0);
 	

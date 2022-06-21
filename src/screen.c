@@ -4034,18 +4034,6 @@ void screen_put_asciibitmap_generic_offset_inicio(char **origen,z80_int *destino
 			}
 
 			
-
-			//temp zoom 2
-			/*
-			printf ("fila %d columna %d\n",fila,columna);
-			
-			if (caracter!=' ') {
-				putpixel(destino,x+columna*2,y+fila*2,ancho_destino,return_color_zesarux_ascii(caracter));
-				putpixel(destino,x+columna*2+1,y+fila*2,ancho_destino,return_color_zesarux_ascii(caracter));
-				putpixel(destino,x+columna*2,y+fila*2+1,ancho_destino,return_color_zesarux_ascii(caracter));
-				putpixel(destino,x+columna*2+1,y+fila*2+1,ancho_destino,return_color_zesarux_ascii(caracter));
-			}
-			*/
 			
 			
 		}
