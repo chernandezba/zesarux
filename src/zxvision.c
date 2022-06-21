@@ -198,8 +198,13 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch},
     {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash},
 
-    //Este solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
-    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot}
+    //Estos solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
+    //Para un snapshot
+    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot},
+    //Para una cinta.. TODO
+
+    //Para el esto
+    {"DirectSmartLoad",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -19676,17 +19681,179 @@ void menu_inicio_handle_lower_icon_presses(void)
 
 }
 
+void menu_zxdesktop_add_direct_smartload(void)
+{
+    //Los mismos que smartload
+
+        char *filtros[38];
+
+        filtros[0]="zx";
+        filtros[1]="sp";
+        filtros[2]="z80";
+        filtros[3]="sna";
+
+        filtros[4]="o";
+        filtros[5]="p";
+        filtros[6]="80";
+        filtros[7]="81";
+	filtros[8]="z81";
+
+        filtros[9]="tzx";
+        filtros[10]="tap";
+
+	filtros[11]="rwa";
+	filtros[12]="smp";
+	filtros[13]="wav";
+
+	filtros[14]="epr";
+	filtros[15]="63";
+	filtros[16]="eprom";
+	filtros[17]="flash";
+
+	filtros[18]="ace";
+
+	filtros[19]="dck";
+
+	filtros[20]="cdt";
+
+	filtros[21]="ay";
+
+	filtros[22]="scr";
+
+	filtros[23]="rzx";
+
+	filtros[24]="zsf";
+
+	filtros[25]="spg";
+
+	filtros[26]="trd";
+
+	filtros[27]="nex";
+	
+	filtros[28]="dsk";
+
+	filtros[29]="pzx";
+
+	filtros[30]="rom";
+
+	filtros[31]="col";
+
+	filtros[32]="sg";
+
+	filtros[33]="cas";
+
+    filtros[34]="snx";
+
+    filtros[35]="sms";
+
+    filtros[36]="bin";
+
+	filtros[37]=0;
+
+
+        //guardamos directorio actual
+        char directorio_actual[PATH_MAX];
+        getcwd(directorio_actual,PATH_MAX);
+
+        //Obtenemos directorio de snap
+        //si no hay directorio, vamos a rutas predefinidas
+        if (quickfile!=NULL) {
+                char directorio[PATH_MAX];
+                util_get_dir(quickfile,directorio);
+                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+                //cambiamos a ese directorio, siempre que no sea nulo
+                if (directorio[0]!=0) {
+                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+						//printf ("antes zvfs_chdir\n");
+                        zvfs_chdir(directorio);
+						//printf ("despues zvfs_chdir\n");
+                }
+
+
+        }
+
+
+
+    char ruta_a_archivo[PATH_MAX];
+
+
+        int ret;
+
+		//printf ("antes menu_filesel\n");
+
+        ret=menu_filesel("Smart load",filtros,ruta_a_archivo);
+
+		//printf ("despues menu_filesel\n");
+
+        //volvemos a directorio inicial
+		
+        zvfs_chdir(directorio_actual);
+
+
+
+        if (ret==1) {
+
+
+            //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
+            //reset_menu_overlay_function();
+
+
+			//if (quickload(quickload_file)) {
+			//	debug_printf (VERBOSE_ERR,"Unknown file format");
+			//}
+
+            //Crear un icono. Por defecto smartload sin indicar tipo
+            enum defined_f_function_ids id_funcion=F_FUNCION_DESKTOP_GENERIC_SMARTLOAD;
+
+
+            //Si es snapshot...
+            if (!util_compare_file_extension(ruta_a_archivo,"zsf")) {
+                id_funcion=F_FUNCION_DESKTOP_SNAPSHOT;
+            }
+
+            
+
+            int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
+
+            if (indice_icono>=0) {
+                //Indicarle la ruta al snapshot
+                strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,ruta_a_archivo);
+                //Agregarle texto
+                char name_no_dir[PATH_MAX];
+                util_get_file_no_directory(ruta_a_archivo,name_no_dir);
+
+                strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
+                //sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
+            }  
+
+
+
+                //restauramos modo normal de texto de menu
+              //  set_menu_overlay_function(normal_overlay_texto_menu);
+
+   
+        
+
+	//printf ("tapefile: %p %s\n",tapefile,tapefile);
+
+    }
+
+
+}
+
 void menu_inicio_handle_right_button_background(void)
 {
     if (menu_pressed_zxdesktop_right_button_background>=0) {
         menu_pressed_zxdesktop_right_button_background=-1;
 
         //propiedades zx desktop, agregar icono
-        int opcion=menu_simple_three_choices("ZX Desktop","--Action--","New icon","ZX Desktop settings","Customize icons");
+        int opcion=menu_simple_four_choices("ZX Desktop","--Action--","New icon","New file smartload","ZX Desktop settings","Customize icons");
 
         if (opcion==1) menu_zxdesktop_add_configurable_icons(0);
-        if (opcion==2) menu_ext_desktop_settings(0);
-        if (opcion==3) menu_zxdesktop_set_configurable_icons(0);
+        if (opcion==2) menu_zxdesktop_add_direct_smartload();
+        if (opcion==3) menu_ext_desktop_settings(0);
+        if (opcion==4) menu_zxdesktop_set_configurable_icons(0);
 
         salir_todos_menus=1;
     }

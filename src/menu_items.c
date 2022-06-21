@@ -32891,6 +32891,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 		break;
 
         case F_FUNCION_DESKTOP_SNAPSHOT:
+        case F_FUNCION_DESKTOP_GENERIC_SMARTLOAD:
             indice_icono=zxdesktop_configurable_icons_current_executing;
 
             if (indice_icono!=-1) {
