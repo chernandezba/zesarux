@@ -2939,32 +2939,32 @@ char *bitmap_button_ext_desktop_file_snapshot[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_file_generic_smartload[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    " xxxxxxxxxxxxxxxxxxx      ",     //0
-  	" x                 xx     ",      
-	" x        x    x   xwx    ",		
-	" x         x   x   xwwx   ",		
-	" x          x  x   xwwwx  ",	
-	" x                 xxxxxx ",			
-	" x            xxxxx     x ",
-	" x           xyyyyyx    x ",
-	" x          xyyyyxyyx   x ", 		
-	" x         xyyyyxyyyyx  x ",		
-	" x      xx xyyyxyyyyyx  x ",		
-	" x         xyyxxxxxyyx  x ",		
-	" x         xyyyyyxyyyx  x ",		
-	" x          xyyyxyyyx   x ",		
-	" x          xyyxyyyyx   x ",		
-	" x           xyyyyyx    x ",		
-	" x  xxx      xxyyyxx    x ",		
-	" x x   x      xxxxx     x ",		
-	" x x x x xxxx           x ",		
-	" x x   x   xx xxxxx     x ",		
-	" x x x x  x x xxxxx     x ",    //20
-	" x x   x x  x           x ",		
-	" x x   x       xxx      x ",		
-	" x  xxx        xxx      x ",		
-	" x                      x ",
-	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+    " xxxxxxxxxxxxxxxxxxx      ",  //0
+  	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwxwwwwxwwwxwx    ",		
+	" xwwwwwwwwwxwwwxwwwxwwx   ",		
+	" xwwwwwwwwwwxwwxwwwxwwwx  ",	
+	" xwwwwwwwwwwwwwwwwwxxxxxx ",			
+	" xwwwwwwwwwwwwxxxxxwwwwwx ",
+	" xwwwwwwwwwwwxyyyyyxwwwwx ",
+	" xwwwwwwwwwwxyyyyxyyxwwwx ",	
+	" xwwwwwwwwwxyyyyxyyyyxwwx ",		
+	" xwwwwwwxxwxyyyxyyyyyxwwx ",   //10		
+	" xwwwwwwwwwxyyxxxxxyyxwwx ",		
+	" xwwwwwwwwwxyyyyyxyyyxwwx ",		
+	" xwwwwwwwwwwxyyyxyyyxwwwx ",		
+	" xwwwwwwwwwwxyyxyyyyxwwwx ",		
+	" xwwwwwwwwwwwxyyyyyxwwwwx ",		
+	" xwwxxxwwwwwwxxyyyxxwwwwx ",		
+	" xwxwwwxwwwwwwxxxxxwwwwwx ",		
+	" xwxwxwxwxxxxwwwwwwwwwwwx ",		
+	" xwxwwwxwwwxxwxxxxxwwwwwx ",		
+	" xwxwxwxwwxwxwxxxxxwwwwwx ",   //20
+	" xwxwwwxwxwwxwwwwwwwwwwwx ",		
+	" xwxwwwxwwwwwwwxxxwwwwwwx ",		
+	" xwwxxxwwwwwwwwxxxwwwwwwx ",		
+	" xwwwwwwwwwwwwwwwwwwwwwwx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx "    //25
 };
 
 
