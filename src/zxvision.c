@@ -13310,6 +13310,42 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
             return 1;
         }
+
+
+
+
+        //Si se pulsa boton derecho en alguna ventana
+        int absolute_mouse_x,absolute_mouse_y;
+            
+        menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
+
+        //Vamos a ver en que ventana se ha pulsado, si tenemos background activado
+        zxvision_window *ventana_pulsada;
+
+        ventana_pulsada=NULL;
+
+        if (zxvision_current_window!=NULL) {
+            ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
+        }
+
+        if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
+            printf("Pulsado boton derecho sobre ventana\n");
+
+        }	
+        else {
+            //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. 
+            //TODO: y cuando se cambie aqui cambiarlo tambien en zxvision_handle_mouse_events
+
+            //Asumimos pulsado en fondo desktop
+            printf("Pulsado en ZX desktop con boton derecho\n");
+            
+            menu_pressed_zxdesktop_right_button_background=1;
+
+            return 1;
+
+
+                     
+        }        
 	}
 	return 0;
 }
@@ -14358,11 +14394,12 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             }	
             else {
-                //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. TODO
+                //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. 
+                //TODO y cuando se cambie aqui cambiarlo tambien en zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button
 
                 //Asumimos pulsado en fondo desktop
                 printf("Pulsado en ZX desktop con boton derecho\n");
-                //menu_ext_desktop_settings(0);
+                
                 menu_pressed_zxdesktop_right_button_background=1;
 
 				menu_pressed_open_menu_while_in_menu.v=1;
