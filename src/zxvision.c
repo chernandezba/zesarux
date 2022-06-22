@@ -4610,6 +4610,9 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
     while (*texto) {
         unsigned char c=*texto;
         texto++;
+
+        if (ESTILO_GUI_SOLO_MAYUSCULAS) c=letra_mayuscula(c);
+
         if (c<32 || c>126) c='?';
         
         int offset=(c-32)*alto_caracter;
