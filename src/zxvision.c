@@ -200,12 +200,12 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 
     //Estos solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
     //Para un snapshot
-    {"DirectSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot},
-    //Para una cinta.. TODO
-    {"DirectTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape},
+    {"LinkToSnapshot",F_FUNCION_DESKTOP_SNAPSHOT,bitmap_button_ext_desktop_file_snapshot},
+    //Para una cinta
+    {"LinkToTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape},
 
     //Para el esto
-    {"DirectSmartLoad",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload}
+    {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -3685,7 +3685,12 @@ void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int
 	scr_putpixel(x,y,color);
 }
 
-
+//Para el texto de los iconos
+void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
+{
+    //El color es el del estilo
+	scr_putpixel(x,y,ESTILO_GUI_TINTA_NORMAL);
+}
 
 
 
@@ -4606,7 +4611,7 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
         //printf("c %d offset %d\n",c,offset);
 
         screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
-            menu_draw_ext_desktop_putpixel_bitmap,zoom,0,offset);    
+            menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset);    
         
 
         x +=(ancho_caracter+1)*zoom_x;     //El ancho de caracter +1 para que no queden pegados
@@ -4642,12 +4647,9 @@ void menu_set_ext_desktop_icons_position(int index,int x,int y)
 
 }
 
-void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton)
+void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton,int color_relleno)
 {
 
-
-
-	int color_relleno=7;
     int x,y;
 
     for (y=yinicio;y<yinicio+alto_boton+2;y++) {	
@@ -4656,9 +4658,6 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
         }
     }
 	
-
-	
-
 }
 
 
@@ -4684,7 +4683,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0) {
         //Aplicar un background si se pulsa o si hay setting de no fondo transparente
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size());
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size(),7);
     }
 
     if (pulsado) {
@@ -4705,7 +4704,8 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
         int zoom_iconos=menu_get_ext_desktop_icons_zoom();
 
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_iconos,CHARSET_ICONS_ALTO*zoom_iconos);
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_iconos,
+            CHARSET_ICONS_ALTO*zoom_iconos,ESTILO_GUI_PAPEL_NORMAL);
     }
 
 
@@ -4788,7 +4788,7 @@ void menu_ext_desktop_get_logo_coords(int *x,int *y)
 //5=Grid
 //6=Random
 //7=Degraded
-int menu_ext_desktop_fill=1;
+int menu_ext_desktop_fill=0;
 int menu_ext_desktop_fill_first_color=5;
 int menu_ext_desktop_fill_second_color=13;
 
@@ -4799,7 +4799,7 @@ z80_bit menu_ext_desktop_transparent_lower_icons={0};
 z80_bit menu_ext_desktop_disable_box_upper_icons={0};
 z80_bit menu_ext_desktop_disable_box_lower_icons={0};
 
-z80_bit menu_ext_desktop_transparent_configurable_icons={0};
+z80_bit menu_ext_desktop_transparent_configurable_icons={1};
 
 int menu_ext_desktop_fill_rainbow_counter;
 
