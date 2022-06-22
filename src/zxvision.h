@@ -1159,6 +1159,7 @@ extern z80_bit menu_ext_desktop_disable_box_upper_icons;
 extern z80_bit menu_ext_desktop_disable_box_lower_icons;
 
 extern z80_bit menu_ext_desktop_transparent_configurable_icons;
+extern z80_bit menu_ext_desktop_configurable_icons_text_background;
 
 extern int lowericon_realtape_frame;
 

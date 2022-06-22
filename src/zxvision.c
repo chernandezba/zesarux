@@ -4704,7 +4704,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     int y_texto_icono=y+(ZESARUX_ASCII_LOGO_ALTO+2)*zoom_y;
 
     //Si background para el texto
-    if (menu_ext_desktop_transparent_configurable_icons.v==0) {
+    if (menu_ext_desktop_configurable_icons_text_background.v) {
         int longitud_texto=strlen(zxdesktop_configurable_icons_list[index_icon].text_icon);
 
         int zoom_iconos=menu_get_ext_desktop_icons_zoom();
@@ -4805,6 +4805,9 @@ z80_bit menu_ext_desktop_disable_box_upper_icons={0};
 z80_bit menu_ext_desktop_disable_box_lower_icons={0};
 
 z80_bit menu_ext_desktop_transparent_configurable_icons={1};
+
+//Si se escribe el texto de los iconos con texto de fondo
+z80_bit menu_ext_desktop_configurable_icons_text_background={1};
 
 int menu_ext_desktop_fill_rainbow_counter;
 

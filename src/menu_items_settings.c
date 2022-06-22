@@ -9413,6 +9413,12 @@ void menu_ext_desk_settings_configurable_icons_transparent(MENU_ITEM_PARAMETERS)
 	menu_ext_desktop_transparent_configurable_icons.v ^=1;
 }
 
+void menu_ext_desk_settings_configurable_icons_text_background(MENU_ITEM_PARAMETERS)
+{
+	menu_ext_desktop_configurable_icons_text_background.v ^=1;
+}
+
+
 void menu_ext_desk_settings_upper_box(MENU_ITEM_PARAMETERS)
 {
 	menu_ext_desktop_disable_box_upper_icons.v ^=1;
@@ -9752,6 +9758,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
                     "Transparent icons","Iconos transparentes","Icones transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
+
+				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
+                    "Icon text background","Fondo de texto de iconos","Fons de text de icones");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
+
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
