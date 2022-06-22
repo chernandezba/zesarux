@@ -13290,6 +13290,15 @@ void zxvision_set_next_menu_position(int x,int y)
     force_next_menu_position_y=y;
 }
 
+
+void zxvision_set_next_menu_position_from_current_mouse(void)
+{
+    int absolute_mouse_x,absolute_mouse_y;
+
+    menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);
+    zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
+}
+
 int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 {
 
@@ -13310,6 +13319,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
         //aqui tanto entra cuando se pulsa como cuando se libera
         printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
         int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+        printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
 
         //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
         if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
@@ -13325,10 +13335,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
 
 
-            int absolute_mouse_x,absolute_mouse_y;
-
-            menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);    
-            zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);           
+            zxvision_set_next_menu_position_from_current_mouse();           
 
 
             return 1;
@@ -14374,6 +14381,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+
+            zxvision_set_next_menu_position_from_current_mouse();
 
 
       //printf("pulsado en un boton desde handle mouse events. menu_abierto %d\n",menu_abierto);
@@ -19902,6 +19911,7 @@ void menu_zxdesktop_add_direct_smartload(void)
             !util_compare_file_extension(ruta_a_archivo,"sp") ||
             !util_compare_file_extension(ruta_a_archivo,"z80") ||
             !util_compare_file_extension(ruta_a_archivo,"sna") ||
+            !util_compare_file_extension(ruta_a_archivo,"snx") ||
             !util_compare_file_extension(ruta_a_archivo,"p") ||
             !util_compare_file_extension(ruta_a_archivo,"o") ||
             !util_compare_file_extension(ruta_a_archivo,"80") ||
