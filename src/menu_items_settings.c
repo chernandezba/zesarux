@@ -9562,7 +9562,22 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
-    int opcion=menu_simple_four_choices("Modify icon","Do you want to","Change","Rename","Change parameters","Move to Trash Can");
+    int opcion;
+
+    //Seguro que esto se puede hacer de manera mas elegante, lo de pedir 4 o 5 opciones
+    int indice_funcion=zxdesktop_configurable_icons_list[valor_opcion].indice_funcion;
+    enum defined_f_function_ids id_funcion=menu_da_accion_direct_functions_indice(indice_funcion);
+
+    //Si el icono es enlace a archivo
+    if (id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
+        id_funcion==F_FUNCION_DESKTOP_TAPE ||
+        id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD) {
+        
+        opcion=menu_simple_five_choices("Icon properties","Do you want to","Change","Rename","Change parameters","Move to Trash Can","View");
+
+        }
+
+    else opcion=menu_simple_four_choices("Icon properties","Do you want to","Change","Rename","Change parameters","Move to Trash Can");
 
     if (opcion==1) {
         menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
@@ -9580,6 +9595,10 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     else if (opcion==4) {
         zxvision_move_configurable_icon_to_trash(valor_opcion);
     }  
+
+    else if (opcion==5) {
+        menu_file_viewer_read_file("Text file view",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+    }      
 
     printf("Opcion despues de modify icon: %d\n",opcion);
     printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
