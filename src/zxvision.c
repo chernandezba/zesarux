@@ -20118,6 +20118,8 @@ int menu_inicio_handle_button_presses_userdef(int boton)
 void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
 {
 
+    direct_menus_button_pressed.v=1;
+
     int x,y;
 
 
@@ -20146,7 +20148,7 @@ void menu_inicio_handle_button_presses(void)
 	int pulsado_boton=menu_pressed_zxdesktop_button_which;
 
 	//Avisar que se abren menus desde botones directo, para cambiar coordenada x,y
-	direct_menus_button_pressed.v=1;
+	//direct_menus_button_pressed.v=1;
 	//direct_menus_button_pressed_which=menu_pressed_zxdesktop_button_which;
     menu_inicio_handle_button_pressed_set_next_menu_position(pulsado_boton);
 
