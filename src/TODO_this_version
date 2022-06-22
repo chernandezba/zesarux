@@ -105,13 +105,8 @@ Sector -407021264
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 
--Quizá acción botón derecho que emula esc, opción para quitar ese comportamiento (dejar así por defecto?). Y hacer que use botón derecho para propiedades de iconos por ejemplo 
+-Quizá acción botón derecho que emula esc, opción para quitar ese comportamiento (dejar así por defecto?). 
 
 -Fondo por defecto ZX desktop quizá no el rallado. Sino uno azul claro 
 
 minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
-
-
-Quizá texto iconos con :
--Color de tinta el del estilo actual. Como cambiar color del bitmap? En caliente directo al char?  O función de render bitmap que permita forzar un color para aquellos píxeles no transparentes. Esto también permitiría un posible estilo monocromo… aunque para eso ya tenemos los ajustes de color 
--Color de fondo (si muestra fondo) con estilo actual 

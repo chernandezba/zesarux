@@ -9556,7 +9556,7 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
-    int opcion=menu_simple_three_choices("Modify icon","Do you want to","Change","Rename","Change parameters");
+    int opcion=menu_simple_four_choices("Modify icon","Do you want to","Change","Rename","Change parameters","Move to Trash Can");
 
     if (opcion==1) {
         menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
@@ -9569,7 +9569,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     else if (opcion==3) {
         //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
         menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
-    }    
+    }  
+
+    else if (opcion==4) {
+        zxvision_move_configurable_icon_to_trash(valor_opcion);
+    }  
 
     printf("Opcion despues de modify icon: %d\n",opcion);
     printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
