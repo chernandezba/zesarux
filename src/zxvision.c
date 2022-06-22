@@ -703,10 +703,10 @@ int menu_pressed_zxdesktop_configurable_icon_where_x=99999;
 int menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
 //Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada x,y
-z80_bit direct_menus_button_pressed={0};
-//int direct_menus_button_pressed_which=0;
-int direct_menus_button_pressed_x=0;
-int direct_menus_button_pressed_y=0;
+z80_bit force_next_menu_position={0};
+//int force_next_menu_position_which=0;
+int force_next_menu_position_x=0;
+int force_next_menu_position_y=0;
 
 z80_bit menu_zxdesktop_buttons_enabled={1};
 
@@ -13278,10 +13278,10 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 //Coordenadas en caracteres
 void zxvision_set_next_menu_position(int x,int y)
 {
-    direct_menus_button_pressed.v=1;
+    force_next_menu_position.v=1;
 
-    direct_menus_button_pressed_x=x;
-    direct_menus_button_pressed_y=y;
+    force_next_menu_position_x=x;
+    force_next_menu_position_y=y;
 }
 
 int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
@@ -13316,7 +13316,13 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
             //Para saber si se arrastra
             menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
-            menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;            
+            menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
+
+
+            int absolute_mouse_x,absolute_mouse_y;
+
+            menu_calculate_mouse_xy_absolute_interface(&absolute_mouse_x,&absolute_mouse_y);    
+            zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);           
 
 
             return 1;
@@ -14414,6 +14420,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 printf("Pulsado en ZX desktop con boton derecho\n");
                 
                 menu_pressed_zxdesktop_right_button_background=1;
+
+                zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);                
 
 				menu_pressed_open_menu_while_in_menu.v=1;
 				salir_todos_menus=1;
@@ -16630,10 +16638,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	y=menu_center_y()-alto/2;
 
 	//Si se abre desde botones de menu
-	if (direct_menus_button_pressed.v) {
+	if (force_next_menu_position.v) {
 
 		//No lo desactivamos, así todos los menus que se abran dependiendo de este menu, tambien se posicionaran debajo del boton 
-		//direct_menus_button_pressed.v=0;
+		//force_next_menu_position.v=0;
 
 		//printf ("Menu opened from direct buttons\n");
 
@@ -16648,12 +16656,12 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		//Ajustar coordenada x
 		int origen_x=menu_get_origin_x_zxdesktop_aux(1);
 
-		int offset_x=direct_menus_button_pressed_which*ancho_boton;
+		int offset_x=force_next_menu_position_which*ancho_boton;
 		int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
 		x=origen_x+(offset_x/ancho_texto);*/
 
-        x=direct_menus_button_pressed_x;
-        y=direct_menus_button_pressed_y;
+        x=force_next_menu_position_x;
+        y=force_next_menu_position_y;
 
 		//Reajustar x por si se ha salido
 		if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
@@ -19953,6 +19961,11 @@ void menu_inicio_handle_right_button_background(void)
         if (opcion==4) menu_zxdesktop_set_configurable_icons(0);
 
         salir_todos_menus=1;
+
+        //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
+        //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
+        //que se abran dependiendo del boton, queden debajo de dicho boton
+        force_next_menu_position.v=0;        
     }
 }
 
@@ -20133,7 +20146,7 @@ int menu_inicio_handle_button_presses_userdef(int boton)
 void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
 {
 
-    direct_menus_button_pressed.v=1;
+    force_next_menu_position.v=1;
 
     int x,y;
 
@@ -20153,8 +20166,8 @@ void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
     int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
     x=origen_x+(offset_x/ancho_texto);    
 
-    direct_menus_button_pressed_x=x;
-    direct_menus_button_pressed_y=y;
+    force_next_menu_position_x=x;
+    force_next_menu_position_y=y;
 }
 
 void menu_inicio_handle_button_presses(void)
@@ -20163,8 +20176,8 @@ void menu_inicio_handle_button_presses(void)
 	int pulsado_boton=menu_pressed_zxdesktop_button_which;
 
 	//Avisar que se abren menus desde botones directo, para cambiar coordenada x,y
-	//direct_menus_button_pressed.v=1;
-	//direct_menus_button_pressed_which=menu_pressed_zxdesktop_button_which;
+	//force_next_menu_position.v=1;
+	//force_next_menu_position_which=menu_pressed_zxdesktop_button_which;
     menu_inicio_handle_button_pressed_set_next_menu_position(pulsado_boton);
 
 
@@ -20243,7 +20256,7 @@ void menu_inicio_handle_button_presses(void)
 	//Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
 	//Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
 	//que se abran dependiendo del boton, queden debajo de dicho boton
-	direct_menus_button_pressed.v=0;
+	force_next_menu_position.v=0;
 
 }
 

@@ -1255,6 +1255,8 @@ extern z80_bit menu_event_open_menu;
 extern z80_bit menu_was_open_by_left_mouse_button;
 extern z80_bit menu_was_open_by_right_mouse_button;
 
+extern z80_bit force_next_menu_position;
+
 
 extern void menu_chdir_sharedfiles(void);
 

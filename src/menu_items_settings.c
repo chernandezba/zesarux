@@ -9578,6 +9578,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     printf("Opcion despues de modify icon: %d\n",opcion);
     printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
 
+    //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
+    //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
+    //que se abran dependiendo del boton, queden debajo de dicho boton
+    force_next_menu_position.v=0;    
+
     //menu_espera_no_tecla();
 }    
 
