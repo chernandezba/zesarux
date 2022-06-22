@@ -1899,6 +1899,7 @@ printf (
 		"--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent\n"
 		"--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
+        "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
         "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"  
         "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
@@ -5576,7 +5577,11 @@ int parse_cmdline_options(void) {
             //Esta opcion va al reves de otras de transparencia, porque por defecto estos iconos son transparentes
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-transparent-configurable-icons")) {
 				menu_ext_desktop_transparent_configurable_icons.v=0;
-			}            
+			}   
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-configurable-icons-text-bg")) {
+				menu_ext_desktop_configurable_icons_text_background.v=0;
+			}                       
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-box-upper-buttons")) {
 				menu_ext_desktop_disable_box_upper_icons.v=1;
