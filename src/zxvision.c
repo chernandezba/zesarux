@@ -13274,6 +13274,15 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 	return 0;
 }
 
+//Decir que el siguiente menu se abre en posicion fija
+//Coordenadas en caracteres
+void zxvision_set_next_menu_position(int x,int y)
+{
+    direct_menus_button_pressed.v=1;
+
+    direct_menus_button_pressed_x=x;
+    direct_menus_button_pressed_y=y;
+}
 
 int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 {
@@ -13339,9 +13348,11 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             //TODO: y cuando se cambie aqui cambiarlo tambien en zxvision_handle_mouse_events
 
             //Asumimos pulsado en fondo desktop
-            printf("Pulsado en ZX desktop con boton derecho\n");
+            printf("Pulsado en ZX desktop con boton derecho desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button\n");
             
             menu_pressed_zxdesktop_right_button_background=1;
+
+            zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 
             return 1;
 
@@ -16646,6 +16657,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		//Reajustar x por si se ha salido
 		if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
+
+		//Reajustar y por si se ha salido
+		if (y+alto>scr_get_menu_height()) y=scr_get_menu_height()-alto;
+
 	}
 
 	int ancho_visible=ancho;
