@@ -1952,7 +1952,7 @@ printf (
 		"--hide-menu-close-button                 Hides close button on the title window\n"
         "--show-menu-background-button            Shows background button on inactive windows\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
-        "--right-mouse-not-esc                    Right button mouse do not simulate ESC key but secondary actions\n"
+        "--right-mouse-esc                        Right button mouse simulates ESC key and not secondary actions\n"
 		"--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
 		);
@@ -7458,8 +7458,8 @@ int parse_cmdline_options(void) {
 			}
 
             
-			else if (!strcmp(argv[puntero_parametro],"--right-mouse-not-esc")) {
-                menu_mouse_right_not_send_esc.v=1;
+			else if (!strcmp(argv[puntero_parametro],"--right-mouse-esc")) {
+                menu_mouse_right_send_esc.v=1;
 			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--allow-background-windows")) {

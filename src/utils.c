@@ -3816,7 +3816,7 @@ int util_write_configfile(void)
 
   if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
 
-  if (menu_mouse_right_not_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-not-esc");
+  if (menu_mouse_right_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-esc");
 
   if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
@@ -6406,13 +6406,14 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                   if (kempston_mouse_emulation.v==0) {
                       if (mouse_menu_ignore_click_open.v==0) {
                         menu_fire_event_open_menu();
-                        menu_was_open_by_right_mouse_button.v=1;
+
+                        if (menu_mouse_right_send_esc.v==0) menu_was_open_by_right_mouse_button.v=1;
                       }
                   }
           }
           else {
-            //Si esta menu abierto, es como enviar ESC si setting menu_mouse_right_not_send_esc.v==0
-            if (zxvision_keys_event_not_send_to_machine && menu_mouse_right_not_send_esc.v==0) {
+            //Si esta menu abierto, es como enviar ESC si setting menu_mouse_right_send_esc.v
+            if (zxvision_keys_event_not_send_to_machine && menu_mouse_right_send_esc.v) {
                     //y si se pulsa dentro de ventana
                     //no ver dentro ventana
                     //if (si_menu_mouse_en_ventana() ) {
@@ -6425,8 +6426,8 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
       }
       else {
         mouse_right=0;
-        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_not_send_esc.v==0
-        if (si_menu_mouse_activado()  && menu_mouse_right_not_send_esc.v==0) {
+        //Si esta menu abierto, hace como ESC si setting menu_mouse_right_send_esc.v
+        if (si_menu_mouse_activado() && menu_mouse_right_send_esc.v) {
           if (menu_abierto) util_set_reset_key(UTIL_KEY_ESC,0);
         }
       }

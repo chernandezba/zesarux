@@ -934,7 +934,7 @@ extern z80_bit menu_hide_maximize_button;
 extern z80_bit menu_hide_close_button;
 extern z80_bit menu_hide_background_button_on_inactive;
 extern z80_bit menu_invert_mouse_scroll;
-extern z80_bit menu_mouse_right_not_send_esc;
+extern z80_bit menu_mouse_right_send_esc;
 
 extern z80_bit auto_frameskip_even_when_movin_windows;
 
@@ -1171,9 +1171,11 @@ extern z80_bit menu_pressed_close_all_menus;
 extern void init_zxdesktop_configurable_icons(void);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
+extern void zxvision_move_configurable_icon_to_trash(int indice_icono);
 extern int zxvision_add_configurable_icon(int indice_funcion);
 extern int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion);
 extern void menu_inicio_handle_configurable_icon_presses(void);
+extern void menu_inicio_handle_right_button_background(void);
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 

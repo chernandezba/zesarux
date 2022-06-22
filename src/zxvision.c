@@ -580,7 +580,7 @@ z80_bit menu_hide_background_button_on_inactive={1};
 z80_bit menu_invert_mouse_scroll={0};
 
 //Boton derecho no hace ESC
-z80_bit menu_mouse_right_not_send_esc={0};
+z80_bit menu_mouse_right_send_esc={0};
 
 //indica que se ha pulsado ESC y por tanto debe aparecer el menu, o gestion de breakpoints, osd, etc
 //y tambien, la lectura de puertos de teclado (254) no devuelve nada
@@ -14342,7 +14342,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 		}
 	}
 
-    if (mouse_right && menu_mouse_right_not_send_esc.v) {
+    if (mouse_right && menu_mouse_right_send_esc.v==0) {
         //acciones con boton derecho    
         printf("Pulsado boton derecho\n");
 
