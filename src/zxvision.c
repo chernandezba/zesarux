@@ -21014,263 +21014,263 @@ void menu_inicio(void)
 	else {
 
 
-	//Evento para generar siguiente tecla
-	if (menu_button_osd_adv_keyboard_return.v) {
-		//printf ("Debe abrir menu adventure keyboard\n");
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+        //Evento para generar siguiente tecla
+        if (menu_button_osd_adv_keyboard_return.v) {
+            //printf ("Debe abrir menu adventure keyboard\n");
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-		menu_osd_adventure_keyboard_next();
-		//menu_osd_adventure_keyboard(0);
-		cls_menu_overlay();
+            menu_osd_adventure_keyboard_next();
+            //menu_osd_adventure_keyboard(0);
+            cls_menu_overlay();
 
-	}
-
-	//Evento de abrir menu adventure text
-	if (menu_button_osd_adv_keyboard_openmenu.v) {
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-
-                menu_osd_adventure_keyboard(0);
-                cls_menu_overlay();
-						//printf ("Returning from osd keyboard\n");
         }
 
+        //Evento de abrir menu adventure text
+        if (menu_button_osd_adv_keyboard_openmenu.v) {
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-	//Gestionar pulsaciones directas de teclado o joystick
-	if (menu_button_smartload.v) {
-		//Pulsado smartload
-		//menu_button_smartload.v=0;
+                    menu_osd_adventure_keyboard(0);
+                    cls_menu_overlay();
+                            //printf ("Returning from osd keyboard\n");
+            }
 
-		//para evitar que entre con la pulsacion de teclas activa
-		//menu_espera_no_tecla_con_repeticion();
-		//menu_espera_no_tecla();
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-		menu_smartload(0);
-		cls_menu_overlay();
-	}
+        //Gestionar pulsaciones directas de teclado o joystick
+        if (menu_button_smartload.v) {
+            //Pulsado smartload
+            //menu_button_smartload.v=0;
 
-	if (menu_button_exit_emulator.v) {
-		//Pulsado salir del emulador
-        //para evitar que entre con la pulsacion de teclas activa
-        //menu_espera_no_tecla_con_repeticion();
-        //menu_espera_no_tecla();
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+            //para evitar que entre con la pulsacion de teclas activa
+            //menu_espera_no_tecla_con_repeticion();
+            //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-        menu_exit_emulator(0);
-        cls_menu_overlay();
-	}
+            menu_smartload(0);
+            cls_menu_overlay();
+        }
 
-        if (menu_event_drag_drop.v) {
-							debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
-		//Entrado drag-drop de archivo
-                //para evitar que entre con la pulsacion de teclas activa
-                //menu_espera_no_tecla_con_repeticion();
+        if (menu_button_exit_emulator.v) {
+            //Pulsado salir del emulador
+            //para evitar que entre con la pulsacion de teclas activa
+            //menu_espera_no_tecla_con_repeticion();
+            //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+            menu_exit_emulator(0);
+            cls_menu_overlay();
+        }
+
+            if (menu_event_drag_drop.v) {
+                                debug_printf(VERBOSE_INFO,"Received drag and drop event with file %s",quickload_file);
+            //Entrado drag-drop de archivo
+                    //para evitar que entre con la pulsacion de teclas activa
+                    //menu_espera_no_tecla_con_repeticion();
+                    //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+            quickfile=quickload_file;
+
+
+            last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
+
+                    if (quickload(quickload_file)) {
+                            debug_printf (VERBOSE_ERR,"Unknown file format");
+
+                //menu_generic_message("ERROR","Unknown file format");
+                    }
+            menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload
+                    cls_menu_overlay();
+            }
+
+
+        //ha saltado un breakpoint
+        if (menu_breakpoint_exception.v) {
+            //Ver tipo de accion para ese breakpoint
+            //printf ("indice breakpoint & accion : %d\n",catch_breakpoint_index);
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+
+            //Si accion nula o menu o break
+            if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+
                 //menu_espera_no_tecla();
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-		quickfile=quickload_file;
+        //desactivamos multitarea, guardando antes estado multitarea
 
 
-		last_filesused_insert(quickload_file); //Agregar a lista de archivos recientes
+                int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+                menu_emulation_paused_on_menu=1;
 
-                if (quickload(quickload_file)) {
-                        debug_printf (VERBOSE_ERR,"Unknown file format");
+                    audio_playing.v=0;
+                //printf ("pc: %d\n",reg_pc);
 
-			//menu_generic_message("ERROR","Unknown file format");
-                }
-		menu_muestra_pending_error_message(); //Si se genera un error derivado del quickload
-                cls_menu_overlay();
+                menu_breakpoint_fired(catch_breakpoint_message);
+
+
+                menu_debug_registers(0);
+
+                //restaurar estado multitarea
+
+                menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+
+        cls_menu_overlay();
+
+
+                //Y despues de un breakpoint hacer que aparezca el menu normal y no vuelva a la ejecucion
+                if (!salir_todos_menus) menu_inicio_bucle();
+            }
+
+            else {
+                //Gestion acciones
+                debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+            }
+
+
+        }
+
+        if (menu_event_remote_protocol_enterstep.v) {
+            //Entrada
+            //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+            remote_ack_enter_cpu_step.v=1; //Avisar que nos hemos enterado
+            //Mientras no se salga del modo step to step del remote protocol
+            while (menu_event_remote_protocol_enterstep.v) {
+                timer_sleep(100);
+
+                //Truco para que desde windows se pueda ejecutar el core loop desde aqui cuando zrcp lo llama
+                /*if (towindows_remote_cpu_run_loop) {
+                    remote_cpu_run_loop(towindows_remote_cpu_run_misocket,towindows_remote_cpu_run_verbose,towindows_remote_cpu_run_limite);
+                    towindows_remote_cpu_run_loop=0;
+                }*/
+    #ifdef MINGW
+                int antes_menu_abierto=menu_abierto;
+                menu_abierto=0; //Para que no aparezca en gris al refrescar
+                    scr_refresca_pantalla();
+                menu_abierto=antes_menu_abierto;
+                    scr_actualiza_tablas_teclado();
+    #endif
+
+            }
+
+            debug_printf (VERBOSE_DEBUG,"Exiting remote enter step from menu");
+
+            //Salida
+            cls_menu_overlay();
+        }
+
+        if (menu_button_f_function.v) {
+
+            //Si se reabre menu, resetear flags de teclas pulsadas especiales
+            //Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
+            menu_button_f_function.v=0;
+
+            //printf ("pulsada tecl de funcion\n");
+            //Entrada
+            //menu_espera_no_tecla();
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+            //Procesar comandos F
+
+            //Procesamos cuando se pulsa tecla F concreta desde joystick
+            if (menu_button_f_function_action==0) menu_process_f_functions();
+            else {
+                //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
+                menu_process_f_functions_by_action_name(menu_button_f_function_action);
+                menu_button_f_function_action=0;
+            }
+
+            menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
+            cls_menu_overlay();
+        }
+
+        if (menu_event_new_version_show_changes.v) {
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+            menu_event_new_version_show_changes.v=0;
+            menu_generic_message_format("Updated version","You have updated ZEsarUX :)\nPlease take a look at the changes:");
+            //No mostramos error si el Changelog es mayor de lo que puede leer el visor de text (y es mayor de 64000 desde versión 9.2)
+            menu_about_read_file("Changelog","Changelog",0);
+
+            cls_menu_overlay();
+        }
+
+        if (menu_event_new_update.v) {
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+            menu_event_new_update.v=0;
+            menu_generic_message_format("New version available","ZEsarUX version %s is available on github",stats_last_remote_version);
+
+            cls_menu_overlay();
         }
 
 
-	//ha saltado un breakpoint
-	if (menu_breakpoint_exception.v) {
-		//Ver tipo de accion para ese breakpoint
-		//printf ("indice breakpoint & accion : %d\n",catch_breakpoint_index);
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+        if (menu_event_open_menu.v) {
 
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+            
+            //Abrir menu normal
+            //printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
 
-		//Si accion nula o menu o break
-		if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+            printf("menu_event_open_menu.v\n");
 
-			//menu_espera_no_tecla();
-      //desactivamos multitarea, guardando antes estado multitarea
+            //Ver si se ha pulsado en botones de zx desktop
+            if (menu_was_open_by_left_mouse_button.v) {
+                printf("menu_was_open_by_left_mouse_button.v\n");
+                menu_was_open_by_left_mouse_button.v=0;
 
+                if (!pulsado_alguna_ventana_con_menu_cerrado) {
 
-            int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
-            menu_emulation_paused_on_menu=1;
+                    if (zxvision_if_mouse_in_zlogo_or_buttons_desktop() ) {
+                        //necesario para que no se piense que se está moviendo el raton
+                        //Esto es un poco puñetero porque si no lo pongo aqui a 0,
+                        //al lanzar por ejemplo smartload se queda al principio esperando que se 
+                        //libere el "movimiento" desde menu_espera_no_tecla desde menu_filesel
+                        //como no se llama a eventos handle_mouse pues no se pone a 0
 
-      			audio_playing.v=0;
-			//printf ("pc: %d\n",reg_pc);
+                        
+                        //Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
+                        //indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel
+                        
+                        mouse_movido=0;	
 
-			menu_breakpoint_fired(catch_breakpoint_message);
-
-
-			menu_debug_registers(0);
-
-			//restaurar estado multitarea
-
-			menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-
-      cls_menu_overlay();
-
-
-			//Y despues de un breakpoint hacer que aparezca el menu normal y no vuelva a la ejecucion
-			if (!salir_todos_menus) menu_inicio_bucle();
-		}
-
-		else {
-			//Gestion acciones
-			debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
-		}
-
-
-	}
-
-	if (menu_event_remote_protocol_enterstep.v) {
-		//Entrada
-		//menu_espera_no_tecla();
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-
-		remote_ack_enter_cpu_step.v=1; //Avisar que nos hemos enterado
-		//Mientras no se salga del modo step to step del remote protocol
-		while (menu_event_remote_protocol_enterstep.v) {
-			timer_sleep(100);
-
-			//Truco para que desde windows se pueda ejecutar el core loop desde aqui cuando zrcp lo llama
-			/*if (towindows_remote_cpu_run_loop) {
-				remote_cpu_run_loop(towindows_remote_cpu_run_misocket,towindows_remote_cpu_run_verbose,towindows_remote_cpu_run_limite);
-				towindows_remote_cpu_run_loop=0;
-			}*/
-#ifdef MINGW
-			int antes_menu_abierto=menu_abierto;
-			menu_abierto=0; //Para que no aparezca en gris al refrescar
-				scr_refresca_pantalla();
-			menu_abierto=antes_menu_abierto;
-				scr_actualiza_tablas_teclado();
-#endif
-
-		}
-
-		debug_printf (VERBOSE_DEBUG,"Exiting remote enter step from menu");
-
-		//Salida
-		cls_menu_overlay();
-	}
-
-	if (menu_button_f_function.v) {
-
-		//Si se reabre menu, resetear flags de teclas pulsadas especiales
-		//Esto evita por ejemplo que al abrir menu con F5, si se entra a submenu, se crea que hemos pulsado F5 y cierre el menu y vuelva a abrir menu principal
-		menu_button_f_function.v=0;
-
-		//printf ("pulsada tecl de funcion\n");
-		//Entrada
-		//menu_espera_no_tecla();
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-
-		//Procesar comandos F
-
-		//Procesamos cuando se pulsa tecla F concreta desde joystick
-		if (menu_button_f_function_action==0) menu_process_f_functions();
-		else {
-			//O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-			menu_process_f_functions_by_action_name(menu_button_f_function_action);
-			menu_button_f_function_action=0;
-		}
-
-		menu_muestra_pending_error_message(); //Si se genera un error derivado de funcion F
-		cls_menu_overlay();
-	}
-
-	if (menu_event_new_version_show_changes.v) {
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-		menu_event_new_version_show_changes.v=0;
-		menu_generic_message_format("Updated version","You have updated ZEsarUX :)\nPlease take a look at the changes:");
-		//No mostramos error si el Changelog es mayor de lo que puede leer el visor de text (y es mayor de 64000 desde versión 9.2)
-        menu_about_read_file("Changelog","Changelog",0);
-
-		cls_menu_overlay();
-	}
-
-	if (menu_event_new_update.v) {
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-		menu_event_new_update.v=0;
-		menu_generic_message_format("New version available","ZEsarUX version %s is available on github",stats_last_remote_version);
-
-		cls_menu_overlay();
-	}
-
-
-	if (menu_event_open_menu.v) {
-
-		osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
-		
-		//Abrir menu normal
-		//printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
-
-        printf("menu_event_open_menu.v\n");
-
-		//Ver si se ha pulsado en botones de zx desktop
-		if (menu_was_open_by_left_mouse_button.v) {
-            printf("menu_was_open_by_left_mouse_button.v\n");
-			menu_was_open_by_left_mouse_button.v=0;
-
-            if (!pulsado_alguna_ventana_con_menu_cerrado) {
-
-                if (zxvision_if_mouse_in_zlogo_or_buttons_desktop() ) {
-                    //necesario para que no se piense que se está moviendo el raton
-                    //Esto es un poco puñetero porque si no lo pongo aqui a 0,
-                    //al lanzar por ejemplo smartload se queda al principio esperando que se 
-                    //libere el "movimiento" desde menu_espera_no_tecla desde menu_filesel
-                    //como no se llama a eventos handle_mouse pues no se pone a 0
-
-                    
-                    //Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
-                    //indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel
-                    
-                    mouse_movido=0;	
-
-                    printf("Se ha pulsado en zona botones con menu cerrado\n");
-                }
-                else {
-                    printf ("No pulsado en zona botones con menu cerrado\n");
+                        printf("Se ha pulsado en zona botones con menu cerrado\n");
+                    }
+                    else {
+                        printf ("No pulsado en zona botones con menu cerrado\n");
+                    }
                 }
             }
-		}
 
-		//Ver si se ha pulsado en botones de zx desktop
-		if (menu_was_open_by_right_mouse_button.v) {
-            printf("menu_was_open_by_right_mouse_button.v\n");
-            menu_was_open_by_right_mouse_button.v=0;
+            //Ver si se ha pulsado en botones de zx desktop
+            if (menu_was_open_by_right_mouse_button.v) {
+                printf("menu_was_open_by_right_mouse_button.v\n");
+                menu_was_open_by_right_mouse_button.v=0;
 
-            if (!pulsado_alguna_ventana_con_menu_cerrado) {
+                if (!pulsado_alguna_ventana_con_menu_cerrado) {
 
-                if (zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button() ) {
-                    //necesario para que no se piense que se está moviendo el raton
-                    //Esto es un poco puñetero porque si no lo pongo aqui a 0,
-                    //al lanzar por ejemplo smartload se queda al principio esperando que se 
-                    //libere el "movimiento" desde menu_espera_no_tecla desde menu_filesel
-                    //como no se llama a eventos handle_mouse pues no se pone a 0
+                    if (zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button() ) {
+                        //necesario para que no se piense que se está moviendo el raton
+                        //Esto es un poco puñetero porque si no lo pongo aqui a 0,
+                        //al lanzar por ejemplo smartload se queda al principio esperando que se 
+                        //libere el "movimiento" desde menu_espera_no_tecla desde menu_filesel
+                        //como no se llama a eventos handle_mouse pues no se pone a 0
 
-                    
-                    //Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
-                    //indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel
-                    
-                    mouse_movido=0;	
+                        
+                        //Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
+                        //indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel
+                        
+                        mouse_movido=0;	
 
-                    printf("Se ha pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                        printf("Se ha pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                    }
+                    else {
+                        printf ("No pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                    }
                 }
-                else {
-                    printf ("No pulsado en zona botones (con boton derecho) con menu cerrado\n");
-                }
-            }
-		}        
+            }        
 
-		
+            
 
-		menu_inicio_bucle();
+            menu_inicio_bucle();
 
-	}
+        }
 
 	}
 
