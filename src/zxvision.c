@@ -13260,7 +13260,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
         if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
             printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop: %d\n",icono_pulsado);
 
-            debug_exec_show_backtrace();
+            //debug_exec_show_backtrace();
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
 
@@ -13309,7 +13309,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
         if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
             printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
 
-            debug_exec_show_backtrace();
+            //debug_exec_show_backtrace();
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
             menu_pressed_zxdesktop_configurable_icon_right_button=1;
