@@ -16629,7 +16629,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
 
 		//Ajustar coordenada y
-		int alto_texto=8*menu_gui_zoom*zoom_y;
+		int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
 		y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
 
 		//Ajustar coordenada x
