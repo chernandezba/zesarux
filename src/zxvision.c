@@ -13364,7 +13364,8 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             
             menu_pressed_zxdesktop_right_button_background=1;
 
-            zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
+            //de momento no altero posicion menu si se pulsa en background
+            //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 
             return 1;
 
@@ -14427,7 +14428,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 
                 menu_pressed_zxdesktop_right_button_background=1;
 
-                zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);                
+                //de momento no altero posicion menu si se pulsa en background
+                //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);                
 
 				menu_pressed_open_menu_while_in_menu.v=1;
 				salir_todos_menus=1;
