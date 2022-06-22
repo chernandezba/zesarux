@@ -702,9 +702,11 @@ int menu_pressed_zxdesktop_configurable_icon_right_button=0;
 int menu_pressed_zxdesktop_configurable_icon_where_x=99999;
 int menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
-//Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada y
+//Que el siguiente menu se ha abierto desde boton y por tanto hay que ajustar coordenada x,y
 z80_bit direct_menus_button_pressed={0};
-int direct_menus_button_pressed_which=0;
+//int direct_menus_button_pressed_which=0;
+int direct_menus_button_pressed_x=0;
+int direct_menus_button_pressed_y=0;
 
 z80_bit menu_zxdesktop_buttons_enabled={1};
 
@@ -16624,7 +16626,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		//printf ("Menu opened from direct buttons\n");
 
-		int alto_boton;
+		/*int alto_boton;
 		int ancho_boton;
 		menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
 
@@ -16637,7 +16639,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		int offset_x=direct_menus_button_pressed_which*ancho_boton;
 		int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
-		x=origen_x+(offset_x/ancho_texto);
+		x=origen_x+(offset_x/ancho_texto);*/
+
+        x=direct_menus_button_pressed_x;
+        y=direct_menus_button_pressed_y;
 
 		//Reajustar x por si se ha salido
 		if (x+ancho>scr_get_menu_width()) x=scr_get_menu_width()-ancho;
@@ -20110,17 +20115,40 @@ int menu_inicio_handle_button_presses_userdef(int boton)
 
 }
 
+void menu_inicio_handle_button_pressed_set_next_menu_position(int cual_boton)
+{
+
+    int x,y;
+
+
+    int alto_boton;
+    int ancho_boton;
+    menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+
+    //Ajustar coordenada y
+    int alto_texto=menu_char_height*menu_gui_zoom*zoom_y;
+    y=(alto_boton/alto_texto); //antes sumaba +1, porque? de esa manera quedaba 1 linea de separación con los botones...
+
+    //Ajustar coordenada x
+    int origen_x=menu_get_origin_x_zxdesktop_aux(1);
+
+    int offset_x=cual_boton*ancho_boton;
+    int ancho_texto=menu_char_width*menu_gui_zoom*zoom_x;
+    x=origen_x+(offset_x/ancho_texto);    
+
+    direct_menus_button_pressed_x=x;
+    direct_menus_button_pressed_y=y;
+}
 
 void menu_inicio_handle_button_presses(void)
 {
 
 	int pulsado_boton=menu_pressed_zxdesktop_button_which;
 
-
-
 	//Avisar que se abren menus desde botones directo, para cambiar coordenada x,y
 	direct_menus_button_pressed.v=1;
-	direct_menus_button_pressed_which=menu_pressed_zxdesktop_button_which;
+	//direct_menus_button_pressed_which=menu_pressed_zxdesktop_button_which;
+    menu_inicio_handle_button_pressed_set_next_menu_position(pulsado_boton);
 
 
 	//Para que no vuelva a saltar
