@@ -607,6 +607,9 @@ z80_bit menu_event_open_menu={0};
 //Si el menu se ha abierto con boton izquierdo
 z80_bit menu_was_open_by_left_mouse_button={0};
 
+//Si el menu se ha abierto con boton derecho
+z80_bit menu_was_open_by_right_mouse_button={0};
+
 //indica si hay pendiente un mensaje de error por mostrar
 int if_pending_error_message=0;
 
@@ -13186,31 +13189,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 		mouse_pixel_x *=zoom_x;
 		mouse_pixel_y *=zoom_y;		
 
-		/*
-		int xlogo,ylogo;
-		menu_ext_desktop_get_logo_coords(&xlogo,&ylogo);
-
-		
-
-
-		
-
-
-
-		//tamaño del logo
-		int ancho_logo=ZESARUX_ASCII_LOGO_ANCHO;
-		int alto_logo=ZESARUX_ASCII_LOGO_ALTO;
-
-		//printf ("mouse: %d,%d logo: %d,%d\n",mouse_pixel_x,mouse_pixel_y,xlogo,ylogo);
-
-		if (mouse_pixel_x>=xlogo && mouse_pixel_x<xlogo+ancho_logo &&
-			mouse_pixel_y>=ylogo && mouse_pixel_y<xlogo+alto_logo
-		) {
-			printf ("Pulsado en el logo del ext desktop\n");
-
-			return 1;
-		}
-		*/
+	
 
 		//Si esta en zona botones de zx desktop. Y si estan habilitados
 
@@ -13277,7 +13256,9 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
         //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
         if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
-            printf("Icono pulsado: %d\n",icono_pulsado);
+            printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop: %d\n",icono_pulsado);
+
+            debug_exec_show_backtrace();
 
             menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
 
@@ -13290,6 +13271,49 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 	}
 	return 0;
 }
+
+
+int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
+{
+
+
+	//Ver si estamos por la zona del logo en el ext desktop o de los botones
+	if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) {
+
+		int mouse_pixel_x,mouse_pixel_y;
+		menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+		//multiplicamos por zoom
+		mouse_pixel_x *=zoom_x;
+		mouse_pixel_y *=zoom_y;		
+
+		
+
+        //si pulsa en algun icono configurable	
+        //aqui tanto entra cuando se pulsa como cuando se libera
+        printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+        int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+
+        //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
+        if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
+            printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
+
+            debug_exec_show_backtrace();
+
+            menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+            menu_pressed_zxdesktop_configurable_icon_right_button=1;
+
+            //Para saber si se arrastra
+            menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
+            menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;            
+
+
+            return 1;
+        }
+	}
+	return 0;
+}
+
 
 
 z80_byte zxvision_get_char_at_position(zxvision_window *w,int x,int y,int *inverso)
@@ -14283,7 +14307,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
         //Si se pulsa alguno 
         if (icono_pulsado>=0) {
-            printf("Icono pulsado: %d\n",icono_pulsado);
+            printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
 
             menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
@@ -20340,7 +20364,7 @@ void menu_inicio_bucle(void)
 
 		//Si se ha pulsado en algun boton de menu
 		if (menu_pressed_zxdesktop_button_which>=0 || menu_pressed_zxdesktop_lower_icon_which>=0 
-            || menu_pressed_zxdesktop_configurable_icon_which>=0 ||menu_pressed_zxdesktop_right_button_background>=0) {
+            || menu_pressed_zxdesktop_configurable_icon_which>=0 || menu_pressed_zxdesktop_right_button_background>=0) {
 			//printf ("Reabrimos menu para boton pulsado %d lower icon %d\n",menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which);
 		}
 
@@ -20552,7 +20576,7 @@ void menu_inicio(void)
         //hace alterar el valor de menu_pressed_zxdesktop_button_which y por tanto estariamos diciendo que se ha pulsado en boton
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
-                //printf("Pulsado en un boton desde menu_inicio\n");
+                printf("Pulsado en un boton desde menu_inicio\n");
 
                 //Dibujamos de otro color ese boton
                 //que boton=menu_pressed_zxdesktop_button_which
@@ -21089,8 +21113,11 @@ void menu_inicio(void)
 		//Abrir menu normal
 		//printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
 
+        printf("menu_event_open_menu.v\n");
+
 		//Ver si se ha pulsado en botones de zx desktop
 		if (menu_was_open_by_left_mouse_button.v) {
+            printf("menu_was_open_by_left_mouse_button.v\n");
 			menu_was_open_by_left_mouse_button.v=0;
 
             if (!pulsado_alguna_ventana_con_menu_cerrado) {
@@ -21108,13 +21135,41 @@ void menu_inicio(void)
                     
                     mouse_movido=0;	
 
-                    //printf("Se ha pulsado en zona botones con menu cerrado\n");
+                    printf("Se ha pulsado en zona botones con menu cerrado\n");
                 }
                 else {
-                    //printf ("No pulsado en zona botones con menu cerrado\n");
+                    printf ("No pulsado en zona botones con menu cerrado\n");
                 }
             }
 		}
+
+		//Ver si se ha pulsado en botones de zx desktop
+		if (menu_was_open_by_right_mouse_button.v) {
+            printf("menu_was_open_by_right_mouse_button.v\n");
+            menu_was_open_by_right_mouse_button.v=0;
+
+            if (!pulsado_alguna_ventana_con_menu_cerrado) {
+
+                if (zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button() ) {
+                    //necesario para que no se piense que se está moviendo el raton
+                    //Esto es un poco puñetero porque si no lo pongo aqui a 0,
+                    //al lanzar por ejemplo smartload se queda al principio esperando que se 
+                    //libere el "movimiento" desde menu_espera_no_tecla desde menu_filesel
+                    //como no se llama a eventos handle_mouse pues no se pone a 0
+
+                    
+                    //Esto se ha puesto a 1 antes desde zxvision_if_mouse_in_zlogo_or_buttons_desktop,
+                    //indirectamente cuando llama a menu_calculate_mouse_xy_absolute_interface_pixel
+                    
+                    mouse_movido=0;	
+
+                    printf("Se ha pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                }
+                else {
+                    printf ("No pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                }
+            }
+		}        
 
 		
 
@@ -21126,7 +21181,7 @@ void menu_inicio(void)
 
 
 	menu_was_open_by_left_mouse_button.v=0;
-
+	menu_was_open_by_right_mouse_button.v=0;
 
 
 	//Volver

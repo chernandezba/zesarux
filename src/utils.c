@@ -6406,6 +6406,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
                   if (kempston_mouse_emulation.v==0) {
                       if (mouse_menu_ignore_click_open.v==0) {
                         menu_fire_event_open_menu();
+                        menu_was_open_by_right_mouse_button.v=1;
                       }
                   }
           }
