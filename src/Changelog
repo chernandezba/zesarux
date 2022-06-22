@@ -12,10 +12,10 @@ Improved SmartLoad & Drag-Drop:
 -Allow to Drag-Drop when menu open
 
 Improved ZX Desktop:
--Added configurable icons to the ZX Desktop
+-Added configurable icons to the ZX Desktop: icons to windows, icons to actions, file links
+-Right mouse button is used now for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine
--Allow to use right mouse button for secondary actions
 
 Improved HiLow DataDrive emulation:
 -Allow to Format, Browse and Chkdsk an Hilow DataDrive image (.ddh file)
