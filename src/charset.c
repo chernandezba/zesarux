@@ -3628,7 +3628,7 @@ char *charset_icons_text[]={
  
 "x x",
 "xxx",
-"x x",
+"xxx",
 "x x",
 "x x",
  
