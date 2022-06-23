@@ -9579,29 +9579,37 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
     else opcion=menu_simple_four_choices("Icon properties","Do you want to","Change","Rename","Change parameters","Move to Trash Can");
 
-    if (opcion==1) {
-        menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
-    }
-    else if (opcion==2) {
-        //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-        menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);
-    }
+    switch (opcion) {
+        case 1:
+            menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
+        break;
+    
+        case 2:        
+            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
+            menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);
+        break;
+    
 
-    else if (opcion==3) {
-        //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-        menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
-    }  
+        case 3:
+            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
+            menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
+        break;
+    
 
-    else if (opcion==4) {
-        zxvision_move_configurable_icon_to_trash(valor_opcion);
-    }  
+        case 4:
+            zxvision_move_configurable_icon_to_trash(valor_opcion);
+        break;
+      
 
-    else if (opcion==5) {
-        menu_file_viewer_read_file("Text file view",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
-    }    
+        case 5:
+            menu_file_viewer_read_file("Text file view",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+        break;
+    
 
-    else if (opcion==6) {
-        file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+        case 6:
+            file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+        break;
+    
     }
 
     printf("Opcion despues de modify icon: %d\n",opcion);
