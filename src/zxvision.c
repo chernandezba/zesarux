@@ -196,7 +196,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage}, 
     {"OCR",F_FUNCION_OCR,bitmap_button_ext_desktop_ocr}, 
     {"ZXUnoPrismSwitch",F_FUNCION_ZXUNO_PRISM,bitmap_button_ext_desktop_zxunoprismswitch},
-    {"Trash",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash},
+    {"TrashCan",F_FUNCION_DESKTOP_TRASH,bitmap_button_ext_desktop_trash},
 
     //Estos solo tiene sentido cuando lleva asociado la ruta en la extra info del icono
     //Para un snapshot

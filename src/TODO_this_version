@@ -127,4 +127,10 @@ Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papeler
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
-Más links: rom, … pok?
+-Más links: rom, … pok?
+
+-A veces en pulsar iconos los arrastra.. por que?
+
+-Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
+Esto puede comportar problemas por variables que no se resetean correctamente (que si se hace desde el gestor de tareas),
+se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas

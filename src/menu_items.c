@@ -16929,7 +16929,7 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
         
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&zxdesktop_trash_opcion_seleccionada,&item_seleccionado,array_menu_common,"Trash" );
+        retorno_menu=menu_dibuja_menu(&zxdesktop_trash_opcion_seleccionada,&item_seleccionado,array_menu_common,"Trash Can" );
 
         
 
@@ -17003,7 +17003,7 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash,NULL,
-            "Open Trash","Abrir Papelera","Obrir Paperera)");
+            "Open Trash Can","Abrir Papelera","Obrir Paperera)");
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
