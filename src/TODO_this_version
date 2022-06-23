@@ -115,3 +115,16 @@ Sector -407021264
 -Fondo por defecto ZX desktop quizá no el rallado. Sino uno azul claro 
 
 minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
+
+-Quizá al pulsar un icono con menú cerrado se cuelga porque no ha activado la capa de menú 
+
+-Ayuda hablar nuevo comportamiento botón derecho 
+
+-Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
+Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papelera
+
+-Gestión límites iconos en pantalla quizá igual que get scr menu height igual que cuando se ubica menú en posición cerca de botones 
+
+-Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
+
+Más links: rom, … pok?
