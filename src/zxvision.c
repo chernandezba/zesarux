@@ -2049,7 +2049,10 @@ z80_byte menu_get_pressed_key_no_modifier(void)
 	if ((puerto_especial1&1)==0) return 2;
 
 	//if (menu_pressed_background_key() && menu_allow_background_windows) return 3; //Tecla background F6
-	if (menu_if_pressed_background_button() && menu_allow_background_windows) return 3; //Tecla background F6
+	if (menu_if_pressed_background_button() && menu_allow_background_windows) {
+        //printf("Retornamos tecla 3 desde menu_get_pressed_key_no_modifier\n");
+        return 3; //Tecla background F6
+    }
 
     int pulsada_tecla_cerrar_todos_menus=0;
     if (menu_if_pressed_close_all_menus_button()) {
@@ -2175,7 +2178,8 @@ z80_byte menu_get_pressed_key(void)
 
 	if (mouse_pressed_background_window) {
 		//printf ("pulsado background en menu_get_pressed_key\n");
-		//sleep(5);		
+		//sleep(5);	
+        //printf("Retornamos tecla 3 desde menu_get_pressed_key\n");	
 		return 3; //Como F6 background
 	}	
 
@@ -9137,6 +9141,7 @@ z80_byte zxvision_read_keyboard(void)
 	if (mouse_pressed_background_window) {
 		//printf ("pulsado background en zxvision_read_keyboard\n");
 		//sleep(5);
+        printf("Retornamos tecla 3 desde zxvision_read_keyboard\n");
 		return 3;
 	}	
 
@@ -14433,7 +14438,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 //TODO y cuando se cambie aqui cambiarlo tambien en zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button
 
                 //Asumimos pulsado en fondo desktop
-                printf("Pulsado en ZX desktop con boton derecho\n");
+                printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
                 
                 menu_pressed_zxdesktop_right_button_background=1;
 
@@ -16777,7 +16782,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 && tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
-		//printf ("tecla desde bucle: %d\n",tecla);
+		printf ("tecla desde bucle: %d\n",tecla);
 		//Ajustar scroll
 		//scroll_opciones=0;
 
@@ -16875,7 +16880,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			tecla_leida=zxvision_read_keyboard();
 
-			//printf ("Despues tecla leida: %d\n",tecla_leida);
+			printf ("Despues tecla leida: %d\n",tecla_leida);
 
 			mouse_movido=antes_mouse_movido;
 
