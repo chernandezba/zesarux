@@ -19968,9 +19968,14 @@ void menu_zxdesktop_add_direct_smartload(void)
 void menu_inicio_handle_right_button_background(void)
 {
 
+    debug_exec_show_backtrace();
+
     //Liberar esto o se cerrara la siguiente ventana
     //Esto estara activado si venimos de boton derecho con alguna ventana activa
     mouse_pressed_close_window=0;
+
+    //Liberar pulsada tecla background
+    mouse_pressed_background_window=0;
 
     if (menu_pressed_zxdesktop_right_button_background>=0) {
         menu_pressed_zxdesktop_right_button_background=-1;
@@ -19999,7 +20004,8 @@ void menu_inicio_handle_configurable_icon_presses(void)
     //Esto estara activado si venimos de boton derecho con alguna ventana activa
     mouse_pressed_close_window=0;
 
-
+    //Liberar pulsada tecla background
+    mouse_pressed_background_window=0;
 
     if (menu_pressed_zxdesktop_configurable_icon_right_button) {
         
@@ -20497,7 +20503,7 @@ void menu_inicio_bucle(void)
 		if (menu_pressed_open_menu_while_in_menu.v) {
 			menu_pressed_open_menu_while_in_menu.v=0;
 			reopen_menu=1;
-			//printf ("Reabrimos menu\n");
+			printf ("Reabrimos menu\n");
 		}
 
 
