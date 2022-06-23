@@ -9575,11 +9575,11 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
         id_funcion==F_FUNCION_DESKTOP_TAPE ||
         id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD) {
         
-        opcion=menu_simple_six_choices("Icon properties","Do you want to","Change","Rename","Change parameters","Move to Trash Can","View","Info");
+        opcion=menu_simple_six_choices("Icon properties","Do you want to","Change type","Rename","Change parameters","Move to Trash Can","View","Info");
 
         }
 
-    else opcion=menu_simple_four_choices("Icon properties","Do you want to","Change","Rename","Change parameters","Move to Trash Can");
+    else opcion=menu_simple_four_choices("Icon properties","Do you want to","Change type","Rename","Change parameters","Move to Trash Can");
 
     switch (opcion) {
         case 1:

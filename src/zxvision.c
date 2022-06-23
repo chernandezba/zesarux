@@ -19965,6 +19965,7 @@ void menu_zxdesktop_add_direct_smartload(void)
 
 }
 
+//Gestionar pulsacion boton derecho sobre background
 void menu_inicio_handle_right_button_background(void)
 {
 
@@ -19997,6 +19998,7 @@ void menu_inicio_handle_right_button_background(void)
     }
 }
 
+//Gestionar pulsaciones sobre iconos, tanto si es boton derecho como izquierdo
 void menu_inicio_handle_configurable_icon_presses(void)
 {
 
@@ -20034,7 +20036,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
     int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
-    printf("Gestionando pulsacion de icono configurable %d\n",pulsado_boton);
+    printf("Gestionando pulsacion de boton izquierdo de icono configurable %d\n",pulsado_boton);
 
 	//Para que no vuelva a saltar
 	menu_pressed_zxdesktop_configurable_icon_which=-1;      
