@@ -13543,10 +13543,10 @@ void zxvision_mover_icono_papelera_si_conviene(void)
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
 
-    printf("inicio zxvision_handle_mouse_events\n");
+    //printf("inicio zxvision_handle_mouse_events\n");
 
 	if (w==NULL) {
-        printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
+        //printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
         return; // 0; 
     }
 
@@ -20963,6 +20963,13 @@ void menu_inicio(void)
     printf("0 antes liberar_teclas_y_esperar\n");
 
 	if (liberar_teclas_y_esperar) {
+        //Si se arrastra icono con menu cerrado se llega aqui,
+        //si no hay ninguna ventana abierta, el icono no se arrastra porque de eso depende zxvision_current_window que no sea NULL
+        //(en handle mouse events)
+        //Quiza abrir menu solo para que haya ventana abierta?
+        //De momento la solución es que el usuario, si quiere mover un icono desde el menu cerrado y no hay ninguna ventana abierta,
+        //tiene que abrir el menu y luego ya puede arrastrar
+
 		menu_inicio_reset_emulated_keys();
 	}
 

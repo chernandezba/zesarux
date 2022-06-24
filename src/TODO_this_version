@@ -129,6 +129,9 @@ Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papeler
 
 -Más links: rom, … pok?
 
+-Para mover iconos desde menu cerrado y sin ventanas abiertas, ver comentario en if (liberar_teclas_y_esperar) {
+al inicio del menu
+
 -A veces en pulsar iconos los arrastra.. por que?
 
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
