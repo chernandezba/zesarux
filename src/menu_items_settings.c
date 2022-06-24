@@ -46,6 +46,7 @@
 #include "zxvision.h"
 #include "menu_items.h"
 #include "menu_items_settings.h"
+#include "menu_filesel.h"
 #include "menu_file_viewer_browser.h"
 #include "screen.h"
 #include "cpu.h"

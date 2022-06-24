@@ -50,5 +50,6 @@ extern int menu_filesel_mkdir(char *directory);
 extern char menu_filesel_last_directory_seen[];
 extern z80_bit menu_filesel_posicionar_archivo;
 extern char menu_filesel_posicionar_archivo_nombre[];
+extern void file_utils_info_file(char *archivo);
 
 #endif

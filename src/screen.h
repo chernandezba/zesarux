@@ -74,6 +74,9 @@ extern int screen_ext_desktop_height;
 //extern int screen_ext_desktop_width_before_disabling;
 extern int screen_ext_desktop_enabled;
 
+extern int screen_get_total_width_window_plus_zxdesktop(void);
+extern int screen_get_total_height_window_no_footer_plus_zxdesktop(void);
+
 extern int if_zxdesktop_enabled_and_driver_allows(void);
 
 extern int screen_get_ext_desktop_width_no_zoom(void);
