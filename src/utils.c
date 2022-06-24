@@ -19151,7 +19151,7 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
   
 
     if (file_to_open[0]==0) {
-        debug_printf(VERBOSE_ERR,"Do not know how to browse this file");
+        debug_printf(VERBOSE_ERR,"Do not know how to convert this file to P/O");
         return;
     }
 

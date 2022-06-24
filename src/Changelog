@@ -31,6 +31,7 @@ Fixed HiLow DataDrive emulation
 Fixed crash (stack smashing detected) when showing Debug CPU window (and compiled using -fstack-protector)
 Fixed segfault when starting ZEsarUX + disabled welcome splash message + enabled reopen windows on start setting + no window to restore
 Fixed trap print numbers on Spectrum and ZX81 (setting --chardetectcompatnum)
+Fixed segfault when selecting an invalid file type on real tape
 
 
 Some other minor bugfixes and improvements

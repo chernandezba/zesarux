@@ -2306,7 +2306,11 @@ void realtape_insert(void)
 
 
 
-	else debug_printf (VERBOSE_ERR,"Unknown input tape type");
+	else {
+        debug_printf (VERBOSE_ERR,"Unknown input tape type");
+        realtape_eject();
+        return;
+    }
 
 
 
@@ -2338,6 +2342,7 @@ void realtape_insert(void)
     }
 
     if (visual_realtape_textbrowse[0]==0) {
+        //printf("Intentamos conversion ZX80/81\n");
         //Intentamos con conversión ZX80/81
 
         //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80 
