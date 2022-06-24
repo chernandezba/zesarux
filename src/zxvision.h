@@ -604,7 +604,7 @@ enum zxdesktop_custom_icon_status_ids {
 //Identifica a un icono del escritorio
 struct s_zxdesktop_configurable_icon {
     enum zxdesktop_custom_icon_status_ids status; //Existe, no existe, o borrado
-    int x,y;
+    int pos_x,pos_y;
 
     //indice sobre la tabla defined_direct_functions_array
     int indice_funcion;
@@ -1170,6 +1170,7 @@ extern int menu_pressed_zxdesktop_right_button_background;
 extern z80_bit menu_pressed_close_all_menus;
 
 extern void init_zxdesktop_configurable_icons(void);
+extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
 extern void zxvision_move_configurable_icon_to_trash(int indice_icono);

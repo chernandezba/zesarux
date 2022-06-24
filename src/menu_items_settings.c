@@ -9550,8 +9550,7 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 
         //Si ya existia, conservar posicion. Si no, poner una nueva
         if (zxdesktop_configurable_icons_list[icono_seleccionado].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
-            zxdesktop_configurable_icons_list[icono_seleccionado].x=430;
-            zxdesktop_configurable_icons_list[icono_seleccionado].y=110;       
+            zxvision_set_configurable_icon_position(icono_seleccionado,430,110);
             zxdesktop_configurable_icons_list[icono_seleccionado].status=ZXDESKTOP_CUSTOM_ICON_EXISTS; 
         }
     }    

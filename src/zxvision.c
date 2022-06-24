@@ -274,6 +274,13 @@ zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONF
 //Id de icono que se esta ejecutando la accion ahora mismo
 int zxdesktop_configurable_icons_current_executing=-1;
 
+//Posicion sin considerar zoom
+void zxvision_set_configurable_icon_position(int icon,int x,int y)
+{
+    zxdesktop_configurable_icons_list[icon].pos_x=x;
+    zxdesktop_configurable_icons_list[icon].pos_y=y;
+}
+
 //Agregar nuevo icono indicandole indice a tabla de acciones
 int zxvision_add_configurable_icon(int indice_funcion)
 {
@@ -298,8 +305,7 @@ int zxvision_add_configurable_icon(int indice_funcion)
             Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
             Si finalmente no se encuentra hueco, ponerlo en posición inicial 
             */
-            zxdesktop_configurable_icons_list[i].x=430;
-            zxdesktop_configurable_icons_list[i].y=110;   
+            zxvision_set_configurable_icon_position(i,430,110);
             return i;    
         }
     }    
@@ -345,15 +351,13 @@ void init_zxdesktop_configurable_icons(void)
     //Quicksave
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
     if (indice_icono>=0) {
-        zxdesktop_configurable_icons_list[indice_icono].x=430;
-        zxdesktop_configurable_icons_list[indice_icono].y=150;     
+        zxvision_set_configurable_icon_position(indice_icono,430,150);
     }    
 
     //debugcpu
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
     if (indice_icono>=0) {
-        zxdesktop_configurable_icons_list[indice_icono].x=480;
-        zxdesktop_configurable_icons_list[indice_icono].y=150;     
+        zxvision_set_configurable_icon_position(indice_icono,480,150);  
     }
 
 
@@ -364,12 +368,7 @@ void init_zxdesktop_configurable_icons(void)
     if (indice_icono>=0) {
         strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash Can");
 
-        //temp
-        //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-        //temp
-        //strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
-        zxdesktop_configurable_icons_list[indice_icono].x=460;
-        zxdesktop_configurable_icons_list[indice_icono].y=230;        
+        zxvision_set_configurable_icon_position(indice_icono,460,230);
     }
 
 
@@ -4652,8 +4651,8 @@ int menu_get_ext_desktop_icons_size(void)
 
 void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
 {
-    int x=zxdesktop_configurable_icons_list[index].x;
-    int y=zxdesktop_configurable_icons_list[index].y;
+    int x=zxdesktop_configurable_icons_list[index].pos_x;
+    int y=zxdesktop_configurable_icons_list[index].pos_y;
 
     //Posicion considerando zoom
     x *=zoom_x;
@@ -4663,13 +4662,8 @@ void menu_get_ext_desktop_icons_position(int index,int *p_x,int *p_y)
     *p_y=y;
 }
 
-//Posicion sin considerar zoom
-void menu_set_ext_desktop_icons_position(int index,int x,int y)
-{
-    zxdesktop_configurable_icons_list[index].x=x;
-    zxdesktop_configurable_icons_list[index].y=y;
 
-}
+
 
 void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton,int color_relleno)
 {
@@ -13535,8 +13529,8 @@ void zxvision_mover_icono_papelera_si_conviene(void)
 
                         if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
 
-                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].x;
-                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].y;
+                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_x;
+                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_y;
 
                             //Ver si cerca
                             int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
@@ -13548,9 +13542,7 @@ void zxvision_mover_icono_papelera_si_conviene(void)
                                 printf("Mover icono a la papelera\n");
 
                                 //Cambiarle la posicion que tenia inicial antes de ir a la papelera
-
-                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].x=configurable_icon_is_being_moved_previous_x;
-                                zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].y=configurable_icon_is_being_moved_previous_y;
+                                zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
                                 zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
                             }
                         }
@@ -14357,7 +14349,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     int mouse_pixel_x,mouse_pixel_y;
                     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
                     printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
-                    menu_set_ext_desktop_icons_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                    zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
 
                     //Refrescar pantalla si se ha movido lo suficiente
                     
