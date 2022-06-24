@@ -2371,11 +2371,11 @@ char *bitmap_button_ext_desktop_reinsertrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"wwxxxxxxxxxxxxxxxxxxxxxxww",	//10
 	"wxxggggggggggggggggggggxxw",	
 	"wxggggggggggggggggggggggxw",			
-	"wxggggxggggggggggggxggggxw",			
-	"wxggggxggg      gggxggggxw",		
-	"wxggxxxxxg      gxxxxxggxw",		
-	"wxggggxggg      gggxggggxw",		
-	"wxggggxggggggggggggxggggxw",		
+	"wxggggBggggggggggggBggggxw",			
+	"wxggggBggg      gggBggggxw",		
+	"wxggBBBBBg      gBBBBBggxw",		
+	"wxggggBggg      gggBggggxw",		
+	"wxggggBggggggggggggBggggxw",		
 	"wxggggggggggggggggggggggxw",		
 	"wxggggggggggggggggggggggxw",		
 	"wxggggggggggggggggggggggxw",	//20	
