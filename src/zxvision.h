@@ -1147,6 +1147,7 @@ extern int menu_ext_desktop_enabled_place_menu(void);
 extern int menu_get_width_characters_ext_desktop(void);
 
 extern void menu_ext_desktop_buttons_get_geometry(int *p_ancho_boton,int *p_alto_boton,int *p_total_botones,int *p_inicio_botones,int *p_xfinal_botones);
+extern void menu_ext_desktop_lower_icons_get_geometry(int *p_ancho_boton,int *p_alto_boton,int *p_total_botones,int *p_xinicio_botones,int *p_xfinal_botones,int *p_yinicio_botones);
 
 #define MENU_MAX_EXT_DESKTOP_FILL_NUMBER 7
 

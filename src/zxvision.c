@@ -339,15 +339,20 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
     int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
     //yinicial debajo de botones superiores
-	int ancho_boton;
 	int alto_boton;
-
-	menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+	menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
     alto_boton /=zoom_y;
 
 
     int yinicial=alto_boton+16;
-    int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+
+    //int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+    //Hasta tocar a botones dispositivos
+    int alto_dispositivo;
+    menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
+    alto_dispositivo /=zoom_y;
+
+    int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;
 
     int x,y;
 
@@ -378,15 +383,20 @@ void zxvision_reorder_configurable_icons(void)
     int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
     //yinicial debajo de botones superiores
-	int ancho_boton;
 	int alto_boton;
 
-	menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+	menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
     alto_boton /=zoom_y;
 
 
     int yinicial=alto_boton+16;
-    int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+    //int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+    //Hasta tocar a botones dispositivos
+    int alto_dispositivo;
+    menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
+    alto_dispositivo /=zoom_y;
+
+    int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;    
 
     int i;
 
