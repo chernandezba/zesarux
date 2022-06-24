@@ -361,17 +361,24 @@ void create_default_zxdesktop_configurable_icons(void)
 
     int indice_icono;
 
+    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+
+    //Empezar a ubicarlos con algo de margen
+    int x=inicio_x_zxdesktop+24;
+
+    int final_y=screen_get_emulated_display_height_no_zoom_border_en();
+
 
     //Quicksave
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
     if (indice_icono>=0) {
-        zxvision_set_configurable_icon_position(indice_icono,430,150);
+        zxvision_set_configurable_icon_position(indice_icono,x,128);
     }    
 
     //debugcpu
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
     if (indice_icono>=0) {
-        zxvision_set_configurable_icon_position(indice_icono,480,150);  
+        zxvision_set_configurable_icon_position(indice_icono,x+48,128);  
     }
 
 
@@ -382,7 +389,8 @@ void create_default_zxdesktop_configurable_icons(void)
     if (indice_icono>=0) {
         strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash Can");
 
-        zxvision_set_configurable_icon_position(indice_icono,460,230);
+        //La papelera queda a la posicion y que tocara casi al final de pantalla emulada
+        zxvision_set_configurable_icon_position(indice_icono,x,final_y-ZESARUX_ASCII_LOGO_ANCHO-24);
     }
 
 
