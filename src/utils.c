@@ -19155,25 +19155,11 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
         return;
     }
 
-    //ptr_mycinta_smp=fopen(file_to_open,"rb");
 
-    //if (ptr_mycinta_smp==NULL) {
-    //    debug_printf(VERBOSE_ERR,"Error opening file");
-    //}
+    tapefile=file_to_open;
 
-    //else {
+    main_leezx81(archivo_destino,texto_info_output,si_load);
 
-
-        tapefile=file_to_open;
-
-        main_leezx81(archivo_destino,texto_info_output,si_load);
-
-
-
-    //}
-
-
-    //restaurar
 
 
     tapefile=antes_tapefile;

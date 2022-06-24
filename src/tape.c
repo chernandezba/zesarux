@@ -2395,26 +2395,26 @@ void realtape_insert(void)
     }
 
 
-        //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
-        if (noautoload.v==0) { 
-                debug_printf (VERBOSE_INFO,"Restarting autoload");
-                initial_tap_load.v=1;
-                initial_tap_sequence=0;
+    //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
+    if (noautoload.v==0) { 
+        debug_printf (VERBOSE_INFO,"Restarting autoload");
+        initial_tap_load.v=1;
+        initial_tap_sequence=0;
 
 		//Inicia play en cualquier maquina menos en CPC, dado que CPC controla el motor ella sola
 		if (!MACHINE_IS_CPC) realtape_start_playing();
 
-                //si esta autoload, tambien hacer reset para que luego se haga load automaticamente
-                debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
-                reset_cpu();
+        //si esta autoload, tambien hacer reset para que luego se haga load automaticamente
+        debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+        reset_cpu();
 
 		//Activamos top speed si conviene
 		if (fast_autoload.v) {
-                        debug_printf (VERBOSE_INFO,"Set top speed");
-                        top_speed_timer.v=1;                
-                }
-
+            debug_printf (VERBOSE_INFO,"Set top speed");
+            top_speed_timer.v=1;                
         }
+
+    }
 
 
 }
@@ -2422,13 +2422,15 @@ void realtape_insert(void)
 void realtape_eject(void)
 {
 	if (realtape_inserted.v) {
-	        realtape_stop_playing();
-        	realtape_inserted.v=0;
+        realtape_stop_playing();
+        realtape_inserted.v=0;
+
 		if (ptr_realtape!=NULL) {
 			fclose (ptr_realtape);
 			ptr_realtape=NULL;
 		}
-                realtape_delete_footer();
+        
+        realtape_delete_footer();
 	}
 }
 
