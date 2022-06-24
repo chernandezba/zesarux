@@ -15466,7 +15466,7 @@ z80_byte menu_da_todas_teclas(void)
     //int pulsado_boton_cerrar=
 	zxvision_handle_mouse_events(zxvision_current_window);
 
-    if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 2: %d\n",mouse_movido);
+    //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 2: %d\n",mouse_movido);
 
     //On screen keyboard desde el propio menu. Necesita multitask
     if (menu_si_pulsada_tecla_osd() && !osd_kb_no_mostrar_desde_menu && !timer_osd_keyboard_menu && menu_multitarea) {
@@ -17038,7 +17038,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 			tecla_leida=zxvision_read_keyboard();
 
-			printf ("Despues tecla leida: %d\n",tecla_leida);
+			//printf ("Despues tecla leida: %d\n",tecla_leida);
 
 			mouse_movido=antes_mouse_movido;
 
@@ -20127,7 +20127,7 @@ void menu_zxdesktop_add_direct_smartload(void)
 void menu_inicio_handle_right_button_background(void)
 {
 
-    debug_exec_show_backtrace();
+    //debug_exec_show_backtrace();
 
     //Liberar esto o se cerrara la siguiente ventana
     //Esto estara activado si venimos de boton derecho con alguna ventana activa

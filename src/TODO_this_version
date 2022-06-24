@@ -139,3 +139,5 @@ Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papeler
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
 Esto puede comportar problemas por variables que no se resetean correctamente (que si se hace desde el gestor de tareas),
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
+
+-con menu cerrado, sin ventanas. pulsar boton derecho en fondo desktop y a veces en vez de abrir properties abre menu principal
