@@ -16940,11 +16940,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 	while (tecla!=13 && tecla!=32 && tecla!=MENU_RETORNO_ESC && tecla!=MENU_RETORNO_F1 && tecla!=MENU_RETORNO_F2 && tecla!=MENU_RETORNO_F10 && tecla!=MENU_RETORNO_BACKGROUND && redibuja_ventana==0 && menu_tooltip_counter<TOOLTIP_SECONDS) {
 
-		printf ("tecla desde bucle: %d\n",tecla);
+		//printf ("tecla desde bucle: %d\n",tecla);
+        
 		//Ajustar scroll
 		//scroll_opciones=0;
-
-
 		//desactivado en zxvision , tiene su propio scroll
 	
 
