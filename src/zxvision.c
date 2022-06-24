@@ -13540,13 +13540,15 @@ void zxvision_mover_icono_papelera_si_conviene(void)
      }    
 }
 
-//int zxvision_mouse_events_counter=0;
-//int tempconta;
-//Retorna 1 si pulsado boton de cerrar ventana
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
 
-	if (w==NULL) return; // 0; 
+    printf("inicio zxvision_handle_mouse_events\n");
+
+	if (w==NULL) {
+        printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
+        return; // 0; 
+    }
 
     menu_pressed_shift_cursor_window_doesnot_allow=0;
 
@@ -15308,7 +15310,7 @@ z80_byte menu_da_todas_teclas(void)
     //int pulsado_boton_cerrar=
 	zxvision_handle_mouse_events(zxvision_current_window);
 
-    //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 2: %d\n",mouse_movido);
+    if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 2: %d\n",mouse_movido);
 
     //On screen keyboard desde el propio menu. Necesita multitask
     if (menu_si_pulsada_tecla_osd() && !osd_kb_no_mostrar_desde_menu && !timer_osd_keyboard_menu && menu_multitarea) {
@@ -20702,7 +20704,7 @@ void menu_inicio(void)
         //hace alterar el valor de menu_pressed_zxdesktop_button_which y por tanto estariamos diciendo que se ha pulsado en boton
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
-                printf("Pulsado en un boton desde menu_inicio\n");
+                printf("Pulsado en un boton desde menu_inicio. Mouse is dragging: %d mouse_movido: %d\n",mouse_is_dragging,mouse_movido);
 
                 //Dibujamos de otro color ese boton
                 //que boton=menu_pressed_zxdesktop_button_which
@@ -20941,7 +20943,7 @@ void menu_inicio(void)
 	int liberar_teclas_y_esperar=1; //Si se liberan teclas y se espera a liberar teclado
 
 
-	
+	printf("antes breakpoint exception\n");
 
 
 	if (menu_breakpoint_exception.v) {
@@ -20958,10 +20960,13 @@ void menu_inicio(void)
 		}
 	}
 
+    printf("0 antes liberar_teclas_y_esperar\n");
+
 	if (liberar_teclas_y_esperar) {
 		menu_inicio_reset_emulated_keys();
 	}
 
+    printf("1 despues liberar_teclas_y_esperar\n");
 
 	//printf ("after menu_inicio_reset_emulated_keys\n");
 
@@ -20992,7 +20997,7 @@ void menu_inicio(void)
 		audio_playing.v=0;
 	}
 
-
+    printf("2\n");
 	//quitar splash text por si acaso
 	menu_splash_segundos=1;
 	reset_welcome_message();
@@ -21239,7 +21244,7 @@ void menu_inicio(void)
             //Abrir menu normal
             //printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
 
-            printf("menu_event_open_menu.v\n");
+            printf("menu_event_open_menu.v xx\n");
 
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_left_mouse_button.v) {
