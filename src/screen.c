@@ -2722,7 +2722,7 @@ int screen_get_ext_desktop_width_zoom(void)
 	return screen_get_ext_desktop_width_no_zoom()*zoom_x;
 }
 
-//Total ancho de ventana, contando maquina emulada + zxdesktop
+//Total ancho de ventana en pixeles, contando maquina emulada + zxdesktop
 int screen_get_total_width_window_plus_zxdesktop(void)
 {
     int ancho_no_zxdesktop=screen_get_emulated_display_width_zoom_border_en();
@@ -2731,10 +2731,30 @@ int screen_get_total_width_window_plus_zxdesktop(void)
     return ancho_no_zxdesktop+ancho_zxdesktop;
 }
 
+//Total alto de ventana en pixeles, contando maquina emulada + zxdesktop
 int screen_get_total_height_window_no_footer_plus_zxdesktop(void)
 {
     int alto_zxdesktop=screen_get_ext_desktop_height_zoom();
     int alto_no_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
+
+    return alto_no_zxdesktop+alto_zxdesktop;    
+}
+
+
+//Total ancho de ventana en pixeles pero sin zoom, contando maquina emulada + zxdesktop
+int screen_get_total_width_window_plus_zxdesktop_no_zoom(void)
+{
+    int ancho_no_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+    int ancho_zxdesktop=screen_get_ext_desktop_width_no_zoom();
+
+    return ancho_no_zxdesktop+ancho_zxdesktop;
+}
+
+//Total alto de ventana en pixeles pero sin zoom, contando maquina emulada + zxdesktop
+int screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom(void)
+{
+    int alto_zxdesktop=screen_get_ext_desktop_height_no_zoom();
+    int alto_no_zxdesktop=screen_get_emulated_display_height_no_zoom_border_en();
 
     return alto_no_zxdesktop+alto_zxdesktop;    
 }

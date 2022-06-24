@@ -9399,6 +9399,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //ajustar estilo del gui, si driver video permite ese estilo o si hay que ir al primero que permita
     menu_adjust_gui_style_to_driver();
 
+    //Crear iconos de ejemplo justo aqui despues que ya esta definido zxdesktop, los anchos de pantalla, etc etc
+    create_default_zxdesktop_configurable_icons();
+
 	scr_refresca_pantalla();
 
 

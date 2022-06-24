@@ -277,6 +277,17 @@ int zxdesktop_configurable_icons_current_executing=-1;
 //Posicion sin considerar zoom
 void zxvision_set_configurable_icon_position(int icon,int x,int y)
 {
+    //Ver si posicion valida
+    int total_width=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+    int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+
+    if (x<0 || y<0 || x>total_width || y>total_height) {
+        printf("Wanted to set Icon position %d,%d out of range (%d,%d). Do not change\n",x,y,total_width,total_height);
+        return;
+    }
+
     zxdesktop_configurable_icons_list[icon].pos_x=x;
     zxdesktop_configurable_icons_list[icon].pos_y=y;
 }
@@ -340,10 +351,13 @@ void init_zxdesktop_configurable_icons(void)
         //text icon en blanco
         zxdesktop_configurable_icons_list[i].text_icon[0]=0;
     }
-    
-    //return;
-    //temp
-    //asignamos un par de iconos
+}
+
+//Crear algunos iconos por defecto
+void create_default_zxdesktop_configurable_icons(void)
+{
+
+    //TODO: solo asignar iconos si no hay ninguno cargado de configuracion
 
     int indice_icono;
 
@@ -4755,6 +4769,8 @@ void menu_draw_ext_desktop_configurable_icons(void)
 int if_position_in_desktop_icons(int posicion_x,int posicion_y)
 {
     int tamanyo=menu_get_ext_desktop_icons_size();
+
+    printf("tamanyo icono: %d\n",tamanyo);
 
     int i;
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {

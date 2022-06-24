@@ -1170,6 +1170,7 @@ extern int menu_pressed_zxdesktop_right_button_background;
 extern z80_bit menu_pressed_close_all_menus;
 
 extern void init_zxdesktop_configurable_icons(void);
+extern void create_default_zxdesktop_configurable_icons(void);
 extern void zxvision_set_configurable_icon_position(int icon,int x,int y);
 extern void zxvision_recover_configurable_icon_from_trash(int indice_icono);
 extern void zxvision_empty_trash(void);
