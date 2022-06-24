@@ -3691,12 +3691,24 @@ void menu_set_menu_abierto(int valor)
 //Para meter el logo u otros botones en zona de extended desktop
 void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
 {
+    //Controlar si se sale de rango
+    int total_width=screen_get_total_width_window_plus_zxdesktop();
+    int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop();
+
+    if (x<0 || x>=total_width || y<0 || y>=total_height) return;
+
 	scr_putpixel(x,y,color);
 }
 
 //Para el texto de los iconos
 void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
 {
+    //Controlar si se sale de rango
+    int total_width=screen_get_total_width_window_plus_zxdesktop();
+    int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop();
+
+    if (x<0 || x>=total_width || y<0 || y>=total_height) return;
+
     //El color es el del estilo
 	scr_putpixel(x,y,ESTILO_GUI_TINTA_NORMAL);
 }
@@ -4585,7 +4597,7 @@ int menu_get_ext_desktop_icons_zoom(void)
 void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 {
 
-    //TODO: controlar si se sale de rango
+    
 
     int zoom=menu_get_ext_desktop_icons_zoom();
 
@@ -4603,7 +4615,7 @@ void menu_draw_ext_desktop_one_icon(int x,int y,char **puntero_bitmap)
 //Escribir texto del icono
 void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
 {
-    //TODO: controlar si se sale de rango
+    
 
     int zoom=menu_get_ext_desktop_icons_zoom();
 
@@ -4662,11 +4674,17 @@ void menu_set_ext_desktop_icons_position(int index,int x,int y)
 void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yinicio,int ancho_boton,int alto_boton,int color_relleno)
 {
 
+    //Controlar si se sale de rango
+    int total_width=screen_get_total_width_window_plus_zxdesktop();
+    int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop();
+
     int x,y;
 
     for (y=yinicio;y<yinicio+alto_boton+2;y++) {	
         for (x=xinicio;x<xinicio+ancho_boton+2;x++) {
-            scr_putpixel(x,y,color_relleno);	
+            if (x>=0 && x<total_width && y>=0 && y<total_height) {
+                scr_putpixel(x,y,color_relleno);	
+            }
         }
     }
 	

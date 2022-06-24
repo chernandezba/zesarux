@@ -88,6 +88,9 @@ Sector -407021264
 
 -reorganizar ventanas al cambiar de maquina solo debe hacerlo si la nueva maquina es mas pequeña de pantalla
 
+-Para mover iconos desde menu cerrado y sin ventanas abiertas, ver comentario en if (liberar_teclas_y_esperar) {
+al inicio del menu
+
 --Fin Errores
 
 
@@ -129,8 +132,7 @@ Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papeler
 
 -Más links: rom, … pok?
 
--Para mover iconos desde menu cerrado y sin ventanas abiertas, ver comentario en if (liberar_teclas_y_esperar) {
-al inicio del menu
+-Iconos los dibuja mas alla de los limites de pantalla
 
 -A veces en pulsar iconos los arrastra.. por que?
 

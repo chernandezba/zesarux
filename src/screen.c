@@ -2722,6 +2722,23 @@ int screen_get_ext_desktop_width_zoom(void)
 	return screen_get_ext_desktop_width_no_zoom()*zoom_x;
 }
 
+//Total ancho de ventana, contando maquina emulada + zxdesktop
+int screen_get_total_width_window_plus_zxdesktop(void)
+{
+    int ancho_no_zxdesktop=screen_get_emulated_display_width_zoom_border_en();
+    int ancho_zxdesktop=screen_get_ext_desktop_width_zoom();
+
+    return ancho_no_zxdesktop+ancho_zxdesktop;
+}
+
+int screen_get_total_height_window_no_footer_plus_zxdesktop(void)
+{
+    int alto_zxdesktop=screen_get_ext_desktop_height_zoom();
+    int alto_no_zxdesktop=screen_get_emulated_display_height_zoom_border_en();
+
+    return alto_no_zxdesktop+alto_zxdesktop;    
+}
+
 int screen_get_ext_desktop_height_no_zoom(void)
 {
 	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height;
