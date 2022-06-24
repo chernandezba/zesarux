@@ -126,13 +126,10 @@ minimizar a icono? entonces tendría que haber en la tabla todos los posibles ic
 -Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
 Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papelera
 
--Gestión límites iconos en pantalla quizá igual que get scr menu height igual que cuando se ubica menú en posición cerca de botones 
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
 -Más links: rom, … pok?
-
--Iconos los dibuja mas alla de los limites de pantalla
 
 -A veces en pulsar iconos los arrastra.. por que?
 

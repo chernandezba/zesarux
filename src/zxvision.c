@@ -292,6 +292,74 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
     zxdesktop_configurable_icons_list[icon].pos_y=y;
 }
 
+//Ver si hay algun icono cerca para saber si se puede posicionar uno o no
+int zxvision_si_icono_cerca(int x,int y)
+{
+    int xminimo=x-ZESARUX_ASCII_LOGO_ANCHO;
+    int xmaximo=x+ZESARUX_ASCII_LOGO_ANCHO;
+
+    int yminimo=y-ZESARUX_ASCII_LOGO_ANCHO;
+    int ymaximo=y+ZESARUX_ASCII_LOGO_ANCHO;
+
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {    
+            int icon_x=zxdesktop_configurable_icons_list[i].pos_x;
+            int icon_y=zxdesktop_configurable_icons_list[i].pos_y;
+
+            //Si hay uno cerca de ahi, volver con 1
+            if (icon_x>=xminimo && icon_x<xmaximo && icon_y>=yminimo && icon_y<ymaximo) return 1;
+
+        }
+    }
+
+    return 0;
+
+}
+
+void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
+{
+    /*
+        Al crear un icono ubicarlo inteligentemente:
+    -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
+    -que no haya otro icono medianamente cerca
+
+    Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
+    Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+    */
+
+
+    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+    
+
+    //Empezar a ubicarlos con algo de margen
+    int xinicial=inicio_x_zxdesktop+24;
+
+    int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+
+    //TODO: yinicial debajo de botones superiores
+    int yinicial=16;
+    int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+
+    int x,y;
+
+    for (y=yinicial;y<yfinal;y+=ZESARUX_ASCII_LOGO_ANCHO) {
+        for (x=xinicial;x<xfinal;x+=ZESARUX_ASCII_LOGO_ANCHO) {
+            if (!zxvision_si_icono_cerca(x,y)) {
+                *p_x=x;
+                *p_y=y;
+                return;
+            }
+        }
+    }
+
+
+    //Si no hay hueco, mala suerte... lo ponemos en posicion inicial
+    *p_x=xinicial;
+    *p_y=yinicial;
+}
+
 //Agregar nuevo icono indicandole indice a tabla de acciones
 int zxvision_add_configurable_icon(int indice_funcion)
 {
@@ -307,16 +375,12 @@ int zxvision_add_configurable_icon(int indice_funcion)
             //Texto de momento el de la accion asociada
             strcpy(zxdesktop_configurable_icons_list[i].text_icon,defined_direct_functions_array[indice_funcion].texto_funcion);
 
-            //TODO: posicion dinamica al crear
-            /*
-                Al crear un icono ubicarlo inteligentemente:
-            -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
-            -que no haya otro icono medianamente cerca
+            
+            int icon_x,icon_y;
 
-            Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
-            Si finalmente no se encuentra hueco, ponerlo en posición inicial 
-            */
-            zxvision_set_configurable_icon_position(i,430,110);
+            zxvision_get_next_free_icon_position(&icon_x,&icon_y);
+
+            zxvision_set_configurable_icon_position(i,icon_x,icon_y);
             return i;    
         }
     }    
