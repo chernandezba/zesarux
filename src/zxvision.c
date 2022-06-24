@@ -304,7 +304,7 @@ int zxvision_si_icono_cerca(int x,int y)
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {    
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {    
             int icon_x=zxdesktop_configurable_icons_list[i].pos_x;
             int icon_y=zxdesktop_configurable_icons_list[i].pos_y;
 
@@ -365,6 +365,47 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
     //Si no hay hueco, mala suerte... lo ponemos en posicion inicial
     *p_x=xinicial;
     *p_y=yinicial;
+}
+
+void zxvision_reorder_configurable_icons(void)
+{
+
+    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+
+    //Empezar a ubicarlos con algo de margen
+    int xinicial=inicio_x_zxdesktop+24;
+
+    int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+
+    //yinicial debajo de botones superiores
+	int ancho_boton;
+	int alto_boton;
+
+	menu_ext_desktop_buttons_get_geometry(&ancho_boton,&alto_boton,NULL,NULL,NULL);
+    alto_boton /=zoom_y;
+
+
+    int yinicial=alto_boton+16;
+    int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
+
+    int i;
+
+    int x=xinicial;
+    int y=yinicial;
+
+    int separacion_iconos=ZESARUX_ASCII_LOGO_ANCHO*2;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            zxvision_set_configurable_icon_position(i,x,y);
+            x +=separacion_iconos;
+            if (x>=xfinal) {
+                x=xinicial;
+                y+=separacion_iconos;
+                if (y>=yfinal) y=yinicial;
+            }
+        }
+    } 
 }
 
 //Agregar nuevo icono indicandole indice a tabla de acciones
@@ -20089,12 +20130,32 @@ void menu_inicio_handle_right_button_background(void)
         menu_pressed_zxdesktop_right_button_background=-1;
 
         //propiedades zx desktop, agregar icono
-        int opcion=menu_simple_four_choices("ZX Desktop","--Action--","New icon","New file link","ZX Desktop settings","Customize icons");
+        int opcion=menu_simple_five_choices("ZX Desktop","--Action--","New icon","New file link","ZX Desktop settings","Customize icons","Reorder icons");
 
-        if (opcion==1) menu_zxdesktop_add_configurable_icons(0);
-        if (opcion==2) menu_zxdesktop_add_direct_smartload();
-        if (opcion==3) menu_ext_desktop_settings(0);
-        if (opcion==4) menu_zxdesktop_set_configurable_icons(0);
+        switch (opcion) {
+
+        
+            case 1:
+                menu_zxdesktop_add_configurable_icons(0);
+            break;
+
+            case 2:
+                menu_zxdesktop_add_direct_smartload();
+            break;
+
+            case 3:
+                menu_ext_desktop_settings(0);
+            break;
+
+            case 4:
+                menu_zxdesktop_set_configurable_icons(0);
+            break;
+
+            case 5:
+                zxvision_reorder_configurable_icons();
+            break;
+
+        }
 
         salir_todos_menus=1;
 
