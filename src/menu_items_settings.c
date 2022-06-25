@@ -9538,7 +9538,7 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
             //Si es icono de machine selection, indicarle como parametro la maquina actual
             enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
 
-            if (accion==F_FUNCION_MACHINE_SELECTION) {
+            if (accion==F_FUNCION_SET_MACHINE) {
                 char buffer_maquina[100];
 
                 get_machine_config_name_by_number(buffer_maquina,current_machine_type);

@@ -31,6 +31,7 @@ extern char *zesarux_ascii_logo_whitebright[];
 extern char *bitmap_button_ext_desktop_smartload[];
 extern char *bitmap_button_ext_desktop_snapshot[];
 extern char *bitmap_button_ext_desktop_machine[];
+extern char *bitmap_button_ext_desktop_set_machine[];
 extern char *bitmap_button_ext_desktop_audio[];
 extern char *bitmap_button_ext_desktop_display[];
 extern char *bitmap_button_ext_desktop_storage[];

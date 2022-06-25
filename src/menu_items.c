@@ -32926,6 +32926,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 			menu_audio_new_waveform(0);
 		break;    
 
+        case F_FUNCION_SET_MACHINE:
         case F_FUNCION_MACHINE_SELECTION:
 
             //Si viene de pulsar icono, obtener parametro de icono que indica maquina a cambiar
