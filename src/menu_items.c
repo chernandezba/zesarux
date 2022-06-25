@@ -32893,6 +32893,8 @@ void menu_process_f_functions_by_action_name(int id_funcion)
         case F_FUNCION_DESKTOP_SNAPSHOT:
         case F_FUNCION_DESKTOP_TAPE:
         case F_FUNCION_DESKTOP_GENERIC_SMARTLOAD:
+
+            //Si viene de pulsar icono, obtener parametro de icono que indica cinta/snap/... a cargar
             indice_icono=zxdesktop_configurable_icons_current_executing;
 
             if (indice_icono!=-1) {
@@ -32922,7 +32924,24 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
 		case F_FUNCION_WAVEFORM:
 			menu_audio_new_waveform(0);
-		break;        
+		break;    
+
+        case F_FUNCION_MACHINE_SELECTION:
+
+            //Si viene de pulsar icono, obtener parametro de icono que indica maquina a cambiar
+            indice_icono=zxdesktop_configurable_icons_current_executing;
+
+            if (indice_icono!=-1) {
+                int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
+                if (maquina==-1) return;
+
+                menu_machine_set_machine_by_id(maquina);
+            }
+
+            else menu_machine_selection(0);
+
+
+        break;    
 
 		case F_FUNCION_ZENG_SENDMESSAGE:
 			if (menu_zeng_send_message_cond()) menu_zeng_send_message(0);

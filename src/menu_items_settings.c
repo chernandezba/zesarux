@@ -9531,7 +9531,22 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
     int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(0);
 
     if (indice_retorno>=0) {    
-        zxvision_add_configurable_icon(indice_retorno);
+        int indice_icono=zxvision_add_configurable_icon(indice_retorno);
+    
+
+        if (indice_icono>=0) {
+            //Si es icono de machine selection, indicarle como parametro la maquina actual
+            enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice_retorno);
+
+            if (accion==F_FUNCION_MACHINE_SELECTION) {
+                char buffer_maquina[100];
+
+                get_machine_config_name_by_number(buffer_maquina,current_machine_type);
+                if (buffer_maquina[0]!=0) {
+                    strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,buffer_maquina);
+                }
+            }
+        }
     }
 }
 
