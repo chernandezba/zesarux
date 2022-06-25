@@ -9544,6 +9544,10 @@ void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS)
                 get_machine_config_name_by_number(buffer_maquina,current_machine_type);
                 if (buffer_maquina[0]!=0) {
                     strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,buffer_maquina);
+
+                    //Cambiar nombre icono con la maquina en cuestión
+                    sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Set %s",get_machine_name(current_machine_type));
+
                 }
             }
         }

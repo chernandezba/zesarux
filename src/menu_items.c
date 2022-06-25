@@ -32932,12 +32932,19 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             indice_icono=zxdesktop_configurable_icons_current_executing;
 
             if (indice_icono!=-1) {
-                int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
-                if (maquina==-1) return;
+                //Si parametro icono en blanco
+                if (zxdesktop_configurable_icons_list[indice_icono].extra_info[0]==0) {
+                    menu_machine_selection(0);
+                }
+                else {
+                    int maquina=get_machine_id_by_name(zxdesktop_configurable_icons_list[indice_icono].extra_info);
+                    if (maquina==-1) return;
 
-                menu_machine_set_machine_by_id(maquina);
+                    menu_machine_set_machine_by_id(maquina);
+                }
             }
 
+            //Si no se pulsa icono
             else menu_machine_selection(0);
 
 
