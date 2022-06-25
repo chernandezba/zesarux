@@ -143,3 +143,7 @@ Esto puede comportar problemas por variables que no se resetean correctamente (q
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
 
 -con menu cerrado, sin ventanas. pulsar boton derecho en fondo desktop y a veces en vez de abrir properties abre menu principal
+
+-nuevo icono suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
+o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
+ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
