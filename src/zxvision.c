@@ -355,6 +355,16 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
     zxdesktop_configurable_icons_list[icon].pos_y=y;
 }
 
+void zxvision_set_configurable_icon_text(int indice_icono,char *texto)
+{
+    strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,texto);
+}
+
+void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info)
+{
+    strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,extra_info);
+}
+
 //Ver si hay algun icono cerca para saber si se puede posicionar uno o no
 int zxvision_si_icono_cerca(int x,int y)
 {
@@ -533,6 +543,33 @@ int zxvision_add_configurable_icon(int indice_funcion)
  
 }
 
+//Agregar nuevo icono indicandole indice a tabla de acciones, pero sin asignar x,y automatica, util para llamarse desde 
+//parseo de parametros de configuracion
+int zxvision_add_configurable_icon_no_add_position(int indice_funcion)
+{
+
+    //buscar el primero disponible
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+            zxdesktop_configurable_icons_list[i].indice_funcion=indice_funcion;
+            zxdesktop_configurable_icons_list[i].status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+
+            //Texto de momento el de la accion asociada
+            strcpy(zxdesktop_configurable_icons_list[i].text_icon,defined_direct_functions_array[indice_funcion].texto_funcion);
+
+            return i;    
+        }
+    }    
+
+    //no hay sitio. error
+    debug_printf(VERBOSE_ERR,"Can not add more icons, limit reached: %d",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+    return -1;
+
+ 
+}
+
 
 //Agregar nuevo icono indicandole id de accion
 int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion)
@@ -562,7 +599,15 @@ void init_zxdesktop_configurable_icons(void)
 void create_default_zxdesktop_configurable_icons(void)
 {
 
-    //TODO: solo asignar iconos si no hay ninguno cargado de configuracion
+    //solo asignar iconos si no hay ninguno cargado de configuracion
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+            printf("Do not create default icons as there are already at least one created\n");
+            return;
+        }
+    }
 
     int indice_icono;
 
@@ -692,6 +737,20 @@ char osd_adv_kbd_list[MAX_OSD_ADV_KEYB_WORDS][MAX_OSD_ADV_KEYB_TEXT_LENGTH]={
 	"ex~~it"
 };
 
+//Retorna indice a funcion segun su nombre en texto. -1 si no encontrado
+int get_defined_direct_functions(char *funcion)
+{
+	int i;
+
+	for (i=0;i<MAX_F_FUNCTIONS;i++) {
+		if (!strcasecmp(funcion,defined_direct_functions_array[i].texto_funcion)) {
+			//enum defined_f_function_ids id=defined_direct_functions_array[i].id_funcion;
+			return i;
+		}
+	}    
+
+    return -1;
+}
 
 //Definir una tecla a una funcion
 //Entrada: tecla: 1...15 F1...15   funcion: string correspondiente a defined_f_functions_array
@@ -704,15 +763,12 @@ int menu_define_key_function(int tecla,char *funcion)
 
 	int i;
 
-	for (i=0;i<MAX_F_FUNCTIONS;i++) {
-		if (!strcasecmp(funcion,defined_direct_functions_array[i].texto_funcion)) {
-			//enum defined_f_function_ids id=defined_direct_functions_array[i].id_funcion;
-			defined_f_functions_keys_array[tecla-1]=i;
-			return 0;
-		}
-	}
+    int indice=get_defined_direct_functions(funcion);
+    if (indice<0) return 1;
 
-	return 1;
+    defined_f_functions_keys_array[tecla-1]=indice;
+
+	return 0;
 }
 
 //Definir una boton a una funcion

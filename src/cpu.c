@@ -1915,12 +1915,20 @@ printf (
         "--zxdesktop-scr-centered                       Center ZX Desktop SCR background\n"
         "--zxdesktop-scr-fillscale                      Scale automatic for ZX Desktop SCR background\n"
         "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
-        "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"        
+        "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"   
 
-        );
+        "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
+          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");     
+     
+
+        for (i=0;i<MAX_F_FUNCTIONS;i++) {
+            printf ("%s ",defined_direct_functions_array[i].texto_funcion);
+        }
 
 
-printf (
+		printf (
+		"\n"
+
 	    "--def-button-function button action    Define Button to do an action. action can be: ");
 
 
@@ -5673,7 +5681,62 @@ int parse_cmdline_options(void) {
                 zxdesktop_draw_scrfile_disable_flash=1;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
+                //get_defined_direct_functions
+                //"--zxdesktop-add-icon x y a n e s                  Add icon to position x,y, to function f, icon name n, extra parameters e, status s\n"
+                siguiente_parametro_argumento();
+                int x=parse_string_to_number(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+                int y=parse_string_to_number(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
+                int indice_funcion=get_defined_direct_functions(argv[puntero_parametro]);
+                siguiente_parametro_argumento();
 
+                if (indice_funcion<0) {
+                    printf ("Invalid action for icon: %s\n",argv[puntero_parametro]);
+                    exit(1);
+                }
+
+                char *text_icon=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+
+                char *extra_info=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+
+                enum zxdesktop_custom_icon_status_ids status;
+
+                if (!strcasecmp("exists",argv[puntero_parametro])) {
+                    status=ZXDESKTOP_CUSTOM_ICON_EXISTS;
+                }
+
+                else if (!strcasecmp("deleted",argv[puntero_parametro])) {
+                    status=ZXDESKTOP_CUSTOM_ICON_DELETED;
+                }
+
+                else {
+                    printf("Invalid icon status %s\n",argv[puntero_parametro]);
+                    exit(1);
+                }
+
+                
+                
+                int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
+                if (indice_icono<0) {
+                    printf("Can not add more icons, limit reached: %d\n",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
+                    exit(1);
+                }
+
+                //Asignamos x,y a mano dado que aqui aun no sabemos el tamaño de la ventana y por tanto no sabemos si sale de rango
+                zxdesktop_configurable_icons_list[indice_icono].pos_x=x;
+                zxdesktop_configurable_icons_list[indice_icono].pos_y=y;
+
+                zxvision_set_configurable_icon_text(indice_icono,text_icon);
+                zxvision_set_configurable_icon_extra_info(indice_icono,extra_info);
+
+                zxdesktop_configurable_icons_list[indice_icono].status=status;
+
+
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--watermark-position")) {
 				siguiente_parametro_argumento();
@@ -9442,6 +9505,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     //Crear iconos de ejemplo justo aqui despues que ya esta definido zxdesktop, los anchos de pantalla, etc etc
     create_default_zxdesktop_configurable_icons();
+
+    //despues de leer los iconos de la config, e inicializar pantalla, ver si algun icono esta en alguna posicion que no debe y reasignar
+    zxvision_check_all_configurable_icons_positions();
 
     set_last_dimensiones_ventana();
 

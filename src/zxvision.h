@@ -583,8 +583,10 @@ enum defined_f_function_ids {
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window
 
 //Define teclas F que se pueden mapear a acciones y botones
+#define MAX_DEFINED_F_FUNCION_NAME_LENGTH 30
+
 struct s_defined_f_function {
-	char texto_funcion[30]; 
+	char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH]; 
 	enum defined_f_function_ids id_funcion;
 
     char **bitmap_button;
@@ -613,10 +615,12 @@ struct s_zxdesktop_configurable_icon {
     //Para obtener el bitmap, se buscara en el array defined_direct_functions_array segun
     //el id_funcion
 
+    //Nombre del icono
+    char text_icon[MAX_LENGTH_TEXT_ICON];    
+
     //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
     char extra_info[PATH_MAX];
 
-    char text_icon[MAX_LENGTH_TEXT_ICON];
 };
 
 typedef struct s_zxdesktop_configurable_icon zxdesktop_configurable_icon;
