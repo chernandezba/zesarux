@@ -62,10 +62,10 @@ extern void open_sharedfile(char *archivo,FILE **f);
 #define MAX_COMPILE_INFO_LENGTH 4096
 
 //2000 parametros
-#define MAX_PARAMETERS_CONFIG_FILE 2000
+#define MAX_PARAMETERS_CONFIG_FILE 8000
 
 //256 kb
-#define MAX_SIZE_CONFIG_FILE 262144
+#define MAX_SIZE_CONFIG_FILE 1048576
 
 extern void get_compile_info(char *s);
 
