@@ -303,3 +303,6 @@ int zxdesktop_disable_show_frame_around_display=0;
 //
 
 int gui_language=GUI_LANGUAGE_DEFAULT;
+
+//Ruta de guardado de descargas juegos
+char online_download_path[PATH_MAX]="";

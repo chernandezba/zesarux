@@ -14141,6 +14141,12 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 
 }
 
+char *get_online_download_path(void)
+{
+    if (online_download_path[0]!=0) return online_download_path;
+    else return get_tmpdir_base();
+}
+
 void menu_online_browse_zx81(MENU_ITEM_PARAMETERS)
 {
 
@@ -14189,7 +14195,8 @@ void menu_online_browse_zx81(MENU_ITEM_PARAMETERS)
                 	//cargar
                 	char archivo_temp[PATH_MAX];
 					//sprintf (archivo_temp,"/tmp/%s",juego);
-					sprintf (archivo_temp,"%s/%s",get_tmpdir_base(),juego);
+					//sprintf (archivo_temp,"%s/%s",get_tmpdir_base(),juego);
+                    sprintf (archivo_temp,"%s/%s",get_online_download_path(),juego);
 		
                 	
 					//usamos misma funcion thread que usa download wos y otros
@@ -15005,7 +15012,9 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
 			util_normalize_name(juego);
 			
 			char tempdir[PATH_MAX];
-			sprintf (tempdir,"%s/download",get_tmpdir_base() );
+			//sprintf (tempdir,"%s/download",get_tmpdir_base() );
+            strcpy (tempdir,get_online_download_path());
+
 			menu_filesel_mkdir(tempdir);
 			sprintf (archivo_temp,"%s/%s",tempdir,juego);
 			

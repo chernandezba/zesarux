@@ -857,6 +857,10 @@ void menu_interface_no_autoframeskip_move_windows(MENU_ITEM_PARAMETERS)
     auto_frameskip_even_when_movin_windows.v ^=1;
 }
 
+void menu_change_online_download_path(MENU_ITEM_PARAMETERS)
+{
+    menu_storage_string_root_dir(online_download_path);
+}
 
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
@@ -1033,6 +1037,17 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
 		}
+
+
+        char string_online_download_path[16];
+        menu_tape_settings_trunc_name(online_download_path,string_online_download_path,16);
+
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_online_download_path,NULL,
+        "Online Download Path","Ruta descargas online","Ruta descarregues online");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",string_online_download_path);
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder");
+
 
 	
         menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);

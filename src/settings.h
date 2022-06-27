@@ -113,5 +113,7 @@ extern int zxdesktop_disable_show_frame_around_display;
 extern int audiochip_piano_zoom_x;
 extern int audiochip_piano_zoom_y;
 
+extern char online_download_path[];
+
 #endif
 

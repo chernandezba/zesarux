@@ -147,3 +147,15 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 -nuevo icono suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
+
+-Descarga online que cree enlace. De cuando se hace smartload?
+
+-creacion de iconos no lo haga si zx desktop desactivado? aunque esto si esta en full screen sin zxdesktop y hace un quicksave, no tendra enlace al snapshot...
+u opcion poder desactivar iconos. por defecto desactivado y que se active con boton "+" al activar zx desktop?
+
+-Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
+Hacerlo cambiando el buffer border de línea a color borde xor 7
+
+-Cargar config o cambio de máquina, revisar posiciones iconos y si están fuera de rango o debajo de pantalla etc moverlos a posición libre 
+
+-Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
