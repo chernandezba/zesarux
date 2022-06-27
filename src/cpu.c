@@ -236,6 +236,10 @@ z80_byte current_machine_type;
 //Ultima maquina seleccionada desde post_set_machine
 z80_byte last_machine_type=255;
 
+//Ultimo ancho y alto de ventana desde post_set_machine_no_rom_load_reopen_window
+int last_ancho_ventana=99999;
+int last_alto_ventana=99999;
+
 
 //Tipos de CPU Z80 activa
 enum z80_cpu_types z80_cpu_current_type=Z80_TYPE_GENERIC;
@@ -4310,9 +4314,20 @@ void post_set_mach_reopen_screen(void)
 			//scr_init_pantalla();
 }
 
+void set_last_dimensiones_ventana(void)
+{
+    last_ancho_ventana=screen_get_total_width_window_plus_zxdesktop();
+    last_alto_ventana=screen_get_total_height_window_no_footer_plus_zxdesktop();
+
+    //printf("Setting antes_ancho_total %d antes_alto_total %d\n",last_ancho_ventana,last_alto_ventana);
+}
+
 //Reabrir ventana en caso de que maquina seleccionada sea diferente a la anterior
 void post_set_machine_no_rom_load_reopen_window(void)
 {
+
+    int antes_menu_gui_zoom=menu_gui_zoom;
+
 	set_menu_gui_zoom();
 
 	//printf ("last: %d current: %d\n",last_machine_type,current_machine_type);
@@ -4324,10 +4339,28 @@ void post_set_machine_no_rom_load_reopen_window(void)
 
 		//Rearrange de ventanas en segundo plano, por si la maquina actual es una ventana de ZEsarUX mas pequeña 
 		//y se saldrian las ventanas zxvision de rango
-		debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine is different and may have different window size");
-		zxvision_rearrange_background_windows();
-		return;		
-	}
+		//debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine is different and may have different window size");
+		//zxvision_rearrange_background_windows(		
+
+
+        //printf("antes_ancho_total %d antes_alto_total %d ancho actual %d alto actual %d\n",last_ancho_ventana,last_alto_ventana,
+        //    screen_get_total_width_window_plus_zxdesktop(),screen_get_total_height_window_no_footer_plus_zxdesktop() );
+
+        if (screen_get_total_width_window_plus_zxdesktop() < last_ancho_ventana || 
+            screen_get_total_height_window_no_footer_plus_zxdesktop() < last_alto_ventana ||
+            antes_menu_gui_zoom !=menu_gui_zoom
+            ) {
+
+            debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine has smaller window size or gui zoom different");
+
+            //printf ("Rearrange zxvision windows so current machine has smaller window size or gui zoom different\n");
+            zxvision_rearrange_background_windows();
+        }
+
+    }
+
+    set_last_dimensiones_ventana();
+        
 }
 
 /*
@@ -9407,6 +9440,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     //Crear iconos de ejemplo justo aqui despues que ya esta definido zxdesktop, los anchos de pantalla, etc etc
     create_default_zxdesktop_configurable_icons();
+
+    set_last_dimensiones_ventana();
 
 	scr_refresca_pantalla();
 
