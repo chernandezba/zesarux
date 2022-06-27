@@ -284,7 +284,7 @@ int zxdesktop_configurable_icons_current_executing=-1;
 //Retorna no 0 si es valido
 int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 {
-    //Ver si posicion valida
+    //Ver si posicion no se sale del rango de ventana total (sin footer)
     int total_width=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
     int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
 
@@ -328,6 +328,16 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     if (y>=yinicio_botones && x>=xinicio_botones && x<=xfinal_botones) {
         printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
         return 0;        
+    }
+
+
+    //Ver si icono en posicion de pantalla emulada
+    int ancho_maquina=screen_get_emulated_display_width_no_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
+
+    if (x<ancho_maquina && y<alto_maquina) {
+        printf("Wanted to set Icon position %d,%d on emulated machine display. Do not change\n",x,y);
+        return 0;           
     }
 
     return 1;
