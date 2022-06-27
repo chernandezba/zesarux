@@ -15050,6 +15050,8 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
 	
 				quickfile=quickload_file;
 				menu_smartload(0);
+
+                //printf("Archivo final: %s\n",quickload_file);
 		
 				return;
 			}

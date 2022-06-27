@@ -148,7 +148,8 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
--Descarga online que cree enlace. De cuando se hace smartload?
+-Descarga online que cree enlace. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
+viene descomprimido desde el /tmp
 
 -creacion de iconos no lo haga si zx desktop desactivado? aunque esto si esta en full screen sin zxdesktop y hace un quicksave, no tendra enlace al snapshot...
 u opcion poder desactivar iconos. por defecto desactivado y que se active con boton "+" al activar zx desktop?

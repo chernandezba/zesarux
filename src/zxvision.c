@@ -20258,7 +20258,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
         //pero tambien se pueden arrastrar
         //Aqui suele entrar cuando menu esta cerrado
         if (!mouse_left) {
-            configurable_icon_is_being_moved=0;
+            //configurable_icon_is_being_moved=0;
             mouse_is_dragging=0;
             //Para que cuando se vuelva a pulsar no interprete movimiento
             menu_pressed_zxdesktop_configurable_icon_where_x=99999;
@@ -20328,6 +20328,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
     }
 
     salir_todos_menus=1;
+    configurable_icon_is_being_moved=0;
 
 
 }
