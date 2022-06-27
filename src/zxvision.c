@@ -279,8 +279,10 @@ zxdesktop_configurable_icon zxdesktop_configurable_icons_list[MAX_ZXDESKTOP_CONF
 //Id de icono que se esta ejecutando la accion ahora mismo
 int zxdesktop_configurable_icons_current_executing=-1;
 
-//Posicion sin considerar zoom
-void zxvision_set_configurable_icon_position(int icon,int x,int y)
+//Dice si una posicion para un icono es valida, evitando salirse de ventana, en zonas de botones, o en zona de pantalla emulada
+//x,y en coordenadas de iconos (o sea sin zoom)
+//Retorna no 0 si es valido
+int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 {
     //Ver si posicion valida
     int total_width=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
@@ -290,7 +292,7 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
 
     if (x<0 || y<0 || x>total_width || y>total_height) {
         printf("Wanted to set Icon position %d,%d out of range (%d,%d). Do not change\n",x,y,total_width,total_height);
-        return;
+        return 0;
     }
 
     int xinicio_botones,xfinal_botones,yinicio_botones,alto_boton;
@@ -308,7 +310,7 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
 
     if (y<=alto_boton && x>=xinicio_botones && x<=xfinal_botones) {
         printf("Wanted to set Icon position %d,%d on upper buttons position. Do not change\n",x,y);
-        return;        
+        return 0;        
     }    
 
     //Ver si en posicion de iconos inferiores
@@ -325,9 +327,20 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
 
     if (y>=yinicio_botones && x>=xinicio_botones && x<=xfinal_botones) {
         printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
-        return;        
+        return 0;        
     }
 
+    return 1;
+
+}
+
+//Posicion sin considerar zoom
+void zxvision_set_configurable_icon_position(int icon,int x,int y)
+{
+
+    if (!zxvision_if_configurable_icon_on_valid_position(x,y)) return;
+
+    
     zxdesktop_configurable_icons_list[icon].pos_x=x;
     zxdesktop_configurable_icons_list[icon].pos_y=y;
 }
