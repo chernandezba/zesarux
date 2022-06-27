@@ -599,6 +599,12 @@ void init_zxdesktop_configurable_icons(void)
 void create_default_zxdesktop_configurable_icons(void)
 {
 
+    //Si no hay zx desktop , no asignar ninguno
+    if (!if_zxdesktop_enabled_and_driver_allows()) {
+        printf("Do not create default icons as we don't have zx desktop\n");
+        return;
+    }
+
     //solo asignar iconos si no hay ninguno cargado de configuracion
     int i;
 
@@ -609,6 +615,8 @@ void create_default_zxdesktop_configurable_icons(void)
         }
     }
 
+    printf("Creating default icons\n");
+
     int indice_icono;
 
     int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
@@ -616,20 +624,21 @@ void create_default_zxdesktop_configurable_icons(void)
     //Empezar a ubicarlos con algo de margen
     int x=inicio_x_zxdesktop+24;
 
-    int final_y=screen_get_emulated_display_height_no_zoom_border_en();
+    //int final_y=screen_get_emulated_display_height_no_zoom_border_en();
 
 
     //Quicksave
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
     if (indice_icono>=0) {
+        //Y posicion un tanto arbitraria
         zxvision_set_configurable_icon_position(indice_icono,x,128);
     }    
 
     //debugcpu
-    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
+    /*indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
     if (indice_icono>=0) {
         zxvision_set_configurable_icon_position(indice_icono,x+48,128);  
-    }
+    }*/
 
 
 
@@ -639,8 +648,13 @@ void create_default_zxdesktop_configurable_icons(void)
     if (indice_icono>=0) {
         strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash Can");
 
-        //La papelera queda a la posicion y que tocara casi al final de pantalla emulada
-        zxvision_set_configurable_icon_position(indice_icono,x,final_y-ZESARUX_ASCII_LOGO_ANCHO-24);
+        //La papelera queda a la posicion y algo por encima de los lower device icons
+        int yinicio_botones;
+        menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yinicio_botones);
+        yinicio_botones /=zoom_y;
+
+        printf("Y trash: %d\n",yinicio_botones);
+        zxvision_set_configurable_icon_position(indice_icono,x,yinicio_botones-ZESARUX_ASCII_LOGO_ANCHO-24);
     }
 
 

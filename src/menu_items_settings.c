@@ -9266,8 +9266,11 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
 	zxvision_window_delete_all_windows_and_clear_geometry();
 
     if (screen_ext_desktop_enabled) {
-        //Reordenar iconos
+        //Reordenar iconos por si habia alguno antes
         zxvision_reorder_configurable_icons();
+
+        //Crear iconos por defecto si hace falta
+        create_default_zxdesktop_configurable_icons();
     }
 
 	cls_menu_overlay();
