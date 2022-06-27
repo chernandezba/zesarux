@@ -1028,16 +1028,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             "~~Language","~~Lenguaje","~~Llenguatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
-
         
-        //Con driver cocoa, no permitimos cambiar a otro driver
-		if (strcmp(scr_new_driver_name,"cocoa")) {
-            menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
-                "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
-		}
-
 
         char string_online_download_path[16];
         menu_tape_settings_trunc_name(online_download_path,string_online_download_path,16);
@@ -1047,6 +1038,16 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",string_online_download_path);
         menu_add_item_menu_tooltip(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder");
+
+
+        
+        //Con driver cocoa, no permitimos cambiar a otro driver
+		if (strcmp(scr_new_driver_name,"cocoa")) {
+            menu_add_item_menu(array_menu_window_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
+                "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
+		}
 
 
 	
