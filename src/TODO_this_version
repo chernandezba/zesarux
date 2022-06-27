@@ -86,7 +86,6 @@ Sector -407021264
 
 -revisar que sigan funcionando bien los print de traps a la rom y los autodetect char de segundas rutinas
 
--reorganizar ventanas al cambiar de maquina solo debe hacerlo si la nueva maquina es mas pequeña de pantalla
 
 -Para mover iconos desde menu cerrado y sin ventanas abiertas, ver comentario en if (liberar_teclas_y_esperar) {
 al inicio del menu
