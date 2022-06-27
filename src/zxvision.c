@@ -504,6 +504,7 @@ void zxvision_check_all_configurable_icons_positions(void)
             int y=zxdesktop_configurable_icons_list[i].pos_y;
 
             if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+                printf("Reajustar icono %d porque esta en una posicion %d,%d incorrecta\n",i,x,y);
                 zxvision_get_next_free_icon_position(&x,&y);
                 zxvision_set_configurable_icon_position(i,x,y);
             }

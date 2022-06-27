@@ -1028,7 +1028,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             "~~Language","~~Lenguaje","~~Llenguatge");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%s] ",idioma);
         menu_add_item_menu_shortcut(array_menu_window_settings,'l');
-        
+
 
         char string_online_download_path[16];
         menu_tape_settings_trunc_name(online_download_path,string_online_download_path,16);
@@ -9268,7 +9268,10 @@ void menu_ext_desk_settings_enable(MENU_ITEM_PARAMETERS)
 
     if (screen_ext_desktop_enabled) {
         //Reordenar iconos por si habia alguno antes
-        zxvision_reorder_configurable_icons();
+        //zxvision_reorder_configurable_icons();
+
+        //Comprobar posiciones iconos y reajustar
+        zxvision_check_all_configurable_icons_positions();
 
         //Crear iconos por defecto si hace falta
         create_default_zxdesktop_configurable_icons();
