@@ -481,6 +481,26 @@ void zxvision_reorder_configurable_icons(void)
     } 
 }
 
+//Comprobar y reajustar posiciones (si conviene) en caso de por ejemplo cambios de maquina (de spectrum a tbblue por ejemplo)
+//donde iconos pueden ir a parar a debajo de pantalla emulada
+void zxvision_check_all_configurable_icons_positions(void)
+{
+
+    int i;
+
+    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+        if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
+            int x=zxdesktop_configurable_icons_list[i].pos_x;
+            int y=zxdesktop_configurable_icons_list[i].pos_y;
+
+            if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+                zxvision_get_next_free_icon_position(&x,&y);
+                zxvision_set_configurable_icon_position(i,x,y);
+            }
+        }
+    } 
+}
+
 //Agregar nuevo icono indicandole indice a tabla de acciones
 int zxvision_add_configurable_icon(int indice_funcion)
 {
