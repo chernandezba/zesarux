@@ -107,8 +107,6 @@ al inicio del menu
 
 -boton derecho en escritorio a veces no abre settings zx desktop
 
--La H y la N de caracteres iconos son iguales...
-
 -mover posicion menu al pulsar boton derecho quiza solo en pulsar en icono, pero no en fondo zx desktop
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
@@ -148,7 +146,7 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
--Descarga online que cree enlace. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
+-Descarga online que cree icono de enlace en el escritorio. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
 viene descomprimido desde el /tmp
 
 -creacion de iconos no lo haga si zx desktop desactivado? aunque esto si esta en full screen sin zxdesktop y hace un quicksave, no tendra enlace al snapshot...
