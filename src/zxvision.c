@@ -293,8 +293,26 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
         return;
     }
 
+    int xinicio_botones,xfinal_botones,yinicio_botones,alto_boton;
+
     //Ver si en posicion de iconos superiores
-    int xinicio_botones,xfinal_botones,yinicio_botones;
+    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,&xinicio_botones,&xfinal_botones);
+    //Posiciones menos el zoom
+    xinicio_botones /=zoom_x;
+    xfinal_botones /=zoom_x;
+    alto_boton /=zoom_y;  
+
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+    xinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
+
+
+    if (y<=alto_boton && x>=xinicio_botones && x<=xfinal_botones) {
+        printf("Wanted to set Icon position %d,%d on upper buttons position. Do not change\n",x,y);
+        return;        
+    }    
+
+    //Ver si en posicion de iconos inferiores
+    
     menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
     //Posiciones menos el zoom
     xinicio_botones /=zoom_x;
@@ -306,7 +324,7 @@ void zxvision_set_configurable_icon_position(int icon,int x,int y)
     yinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
 
     if (y>=yinicio_botones && x>=xinicio_botones && x<=xfinal_botones) {
-        printf("Wanted to set Icon position %d,%d on lower icons position. Do not change\n",x,y);
+        printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
         return;        
     }
 
