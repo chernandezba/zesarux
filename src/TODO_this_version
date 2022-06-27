@@ -154,6 +154,6 @@ u opcion poder desactivar iconos. por defecto desactivado y que se active con bo
 -Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
 Hacerlo cambiando el buffer border de línea a color borde xor 7
 
--Cargar config o cambio de máquina, revisar posiciones iconos y si están fuera de rango o debajo de pantalla etc moverlos a posición libre 
+-no dibujar icono si esta en zona de pantalla emulada. usar funcion comun zxvision_if_configurable_icon_on_valid_position ?
 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
