@@ -3272,6 +3272,42 @@ int zxvision_if_lower_button_switch_zxdesktop_visible(void)
 }
 
 
+unsigned char zxvision_retorna_caracter_flecha_izquierda(void)
+{
+    //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
+    if (si_complete_video_driver()) {
+        return 166;
+    } 
+    else return '<';
+}
+
+unsigned char zxvision_retorna_caracter_flecha_derecha(void)
+{
+    //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
+    if (si_complete_video_driver()) {
+        return 165;
+    } 
+    else return '>';
+}
+
+unsigned char zxvision_retorna_caracter_flecha_arriba(void)
+{
+    //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
+    if (si_complete_video_driver()) {
+        return 164;
+    } 
+    else return '^';
+}
+
+unsigned char zxvision_retorna_caracter_flecha_abajo(void)
+{
+    //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
+    if (si_complete_video_driver()) {
+        return 163;
+    } 
+    else return 'v';
+}
+
 void menu_put_switch_zxdesktop_footer(void)
 {
 
@@ -3311,21 +3347,11 @@ void menu_put_switch_zxdesktop_footer(void)
         xorigen -=margenx_izq;
         //xorigen contiene el origen donde van los botones de ampliar/reducir ancho
 
-        unsigned char caracter_flecha_izquierda='<';
-        unsigned char caracter_flecha_derecha='>';
-        unsigned char caracter_flecha_arriba='^';
-        unsigned char caracter_flecha_abajo='v';
-
-        //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
-        
-        if (si_complete_video_driver()) {
-            caracter_flecha_izquierda=166;
-            caracter_flecha_derecha=165;
-            caracter_flecha_arriba=164;
-            caracter_flecha_abajo=163;
-        }
-        
-
+        unsigned char caracter_flecha_izquierda=zxvision_retorna_caracter_flecha_izquierda();
+        unsigned char caracter_flecha_derecha=zxvision_retorna_caracter_flecha_derecha();
+        unsigned char caracter_flecha_arriba=zxvision_retorna_caracter_flecha_arriba();
+        unsigned char caracter_flecha_abajo=zxvision_retorna_caracter_flecha_abajo();
+      
       
         z80_byte caracter_ampliar_ancho,caracter_reducir_ancho;
         z80_byte caracter_ampliar_alto,caracter_reducir_alto;
@@ -18881,8 +18907,8 @@ void menu_ventana_draw_horizontal_perc_bar(zxvision_window *w,int x,int y,int an
 
 
 			//mostrar cursores izquierda y derecha
-		menu_ventana_draw_perc_bar_aux(w,xbase-1,y+alto-1,'<',tinta_boton_arriba,papel_boton_arriba);
-		menu_ventana_draw_perc_bar_aux(w,xbase+ancho-3,y+alto-1,'>',tinta_boton_abajo,papel_boton_abajo);
+		menu_ventana_draw_perc_bar_aux(w,xbase-1,y+alto-1,zxvision_retorna_caracter_flecha_izquierda(),tinta_boton_arriba,papel_boton_arriba);
+		menu_ventana_draw_perc_bar_aux(w,xbase+ancho-3,y+alto-1,zxvision_retorna_caracter_flecha_derecha(),tinta_boton_abajo,papel_boton_abajo);
 
 		//mostrar linea horizontal para indicar que es zona de porcentaje
 		z80_byte caracter_barra='-';
@@ -18946,10 +18972,10 @@ void menu_ventana_draw_vertical_perc_bar(zxvision_window *w,int x,int y,int anch
 
 		//mostrar cursores arriba y abajo
 		//putchar_menu_overlay(x+ancho-1,ybase-1,'^',tinta_boton_arriba,papel_boton_arriba);
-        menu_ventana_draw_perc_bar_aux(w,x+ancho-1,ybase-1,'^',tinta_boton_arriba,papel_boton_arriba);
+        menu_ventana_draw_perc_bar_aux(w,x+ancho-1,ybase-1,zxvision_retorna_caracter_flecha_arriba(),tinta_boton_arriba,papel_boton_arriba);
 
 		//putchar_menu_overlay(x+ancho-1,ybase+alto-3,'v',tinta_boton_abajo,papel_boton_abajo);
-        menu_ventana_draw_perc_bar_aux(w,x+ancho-1,ybase+alto-3,'v',tinta_boton_abajo,papel_boton_abajo);
+        menu_ventana_draw_perc_bar_aux(w,x+ancho-1,ybase+alto-3,zxvision_retorna_caracter_flecha_abajo(),tinta_boton_abajo,papel_boton_abajo);
 
 		//mostrar linea vertical para indicar que es zona de porcentaje
 		z80_byte caracter_barra='|';
