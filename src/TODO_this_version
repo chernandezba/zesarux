@@ -155,3 +155,7 @@ viene descomprimido desde el /tmp
 
 -Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
 Hacerlo cambiando el buffer border de línea a color borde xor 7
+
+-Error: Permite arrastrar un boton que esté detrás de una ventana
+
+-reopen windows on start hacerla por defecto. y setting de los dos: activado o desactivado (para compatibilidad hacia atras)
