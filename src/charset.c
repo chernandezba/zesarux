@@ -3174,7 +3174,8 @@ unsigned char char_set_beos[TOTAL_ASCII_CHARSET_ELEMENTS]={
 0,254,130,130,254,130,130,254,
 
 //Caracter restaurar - 151
-255,129,189,129,129,189,129,255,
+//255,129,189,129,129,189,129,255,
+0,254,130,186,130,186,130,254,
 
 //Caracter maximizar - 152
 //16+32+64,2+4+8+16+64,2+16+32+64,2+32,2+32,2+32,2+4+8+16+32,0  //alternativo algo mas pequeño
