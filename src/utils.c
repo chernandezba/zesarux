@@ -3405,27 +3405,30 @@ int util_write_configfile(void)
 
     if (zxdesktop_draw_scrfile_disable_flash)           ADD_STRING_CONFIG,"--zxdesktop-scr-disable-flash");
 
-
+    if (zxdesktop_configurable_icons_enabled.v==0)      ADD_STRING_CONFIG,"--zxdesktop-disable-configurable-icons");
     
-    for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
-        if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
-            char buffer_status[30];
-            //por defecto
-            strcpy(buffer_status,"exists");
 
-            if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
-                strcpy(buffer_status,"deleted");
+    if (zxdesktop_configurable_icons_enabled.v) {
+        for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
+            if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
+                char buffer_status[30];
+                //por defecto
+                strcpy(buffer_status,"exists");
+
+                if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+                    strcpy(buffer_status,"deleted");
+                }
+
+                char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH]; 
+                int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
+                strcpy(texto_funcion,defined_direct_functions_array[indice_funcion].texto_funcion);
+
+                //--zxdesktop-add-icon x y a n e s                  Add icon to position x,y, to function f, icon name n, extra parameters e, status s
+                ADD_STRING_CONFIG,"--zxdesktop-add-icon %d %d \"%s\" \"%s\" \"%s\" \"%s\"",
+                    zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
+                    texto_funcion,zxdesktop_configurable_icons_list[i].text_icon,zxdesktop_configurable_icons_list[i].extra_info,
+                    buffer_status);
             }
-
-            char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH]; 
-            int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
-            strcpy(texto_funcion,defined_direct_functions_array[indice_funcion].texto_funcion);
-
-            //--zxdesktop-add-icon x y a n e s                  Add icon to position x,y, to function f, icon name n, extra parameters e, status s
-            ADD_STRING_CONFIG,"--zxdesktop-add-icon %d %d \"%s\" \"%s\" \"%s\" \"%s\"",
-                zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
-                texto_funcion,zxdesktop_configurable_icons_list[i].text_icon,zxdesktop_configurable_icons_list[i].extra_info,
-                buffer_status);
         }
     }
 

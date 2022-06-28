@@ -1903,8 +1903,6 @@ printf (
 		"--zxdesktop-disable-buttons                    Disable ZX Desktop direct access buttons\n"
 		"--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent\n"
 		"--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent\n"
-        "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
-        "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
         "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"  
         "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
@@ -1915,7 +1913,10 @@ printf (
         "--zxdesktop-scr-centered                       Center ZX Desktop SCR background\n"
         "--zxdesktop-scr-fillscale                      Scale automatic for ZX Desktop SCR background\n"
         "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
-        "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"   
+        "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
+        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"  
+        "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
+        "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"         
 
         "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
           "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");     
@@ -5679,6 +5680,10 @@ int parse_cmdline_options(void) {
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-disable-flash")) {
                 zxdesktop_draw_scrfile_disable_flash=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-configurable-icons")) {
+                zxdesktop_configurable_icons_enabled.v=0;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {

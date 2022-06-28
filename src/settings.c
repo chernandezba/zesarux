@@ -296,6 +296,8 @@ int zxdesktop_disable_on_full_screen=0;
 //Desactivar mostrar recuadro alrededor pantalla emulada
 int zxdesktop_disable_show_frame_around_display=0;
 
+z80_bit zxdesktop_configurable_icons_enabled={1};
+
 
 
 //

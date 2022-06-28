@@ -115,5 +115,7 @@ extern int audiochip_piano_zoom_y;
 
 extern char online_download_path[];
 
+extern z80_bit zxdesktop_configurable_icons_enabled;
+
 #endif
 

@@ -9742,6 +9742,10 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
+void menu_ext_desk_settings_configurable_icons_enabled(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_configurable_icons_enabled.v ^=1;
+}
 
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
@@ -9830,20 +9834,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
-                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
-                    "Customize icons","Personalizar iconos","Personalitzar icones");
-                menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);  
-
-				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
-                    "Transparent icons","Iconos transparentes","Icones transparents");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
-
-				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
-                    "Icon text background","Fondo de texto de iconos","Fons de text de icones");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
 
 
-                menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
                     "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
@@ -9856,6 +9848,30 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 			}
 
 			menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+
+
+            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_enabled,NULL,
+                "Icons on ZX Desktop","Iconos en ZX Desktop","Icones al ZX Desktop");
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
+                
+            if (zxdesktop_configurable_icons_enabled.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
+                    "Transparent icons","Iconos transparentes","Icones transparents");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
+                    "Icon text background","Fondo de texto de iconos","Fons de text de icones");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
+
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
+                    "    Modify icons","    Modificar iconos","    Modificar icones");
+                menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);  
+
+            }
+
+            menu_add_item_menu_separator(array_menu_ext_desktop_settings);            
 			
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_SEPARADOR,NULL,NULL,
                 "--Background--","--Fondo--","--Fons--");
