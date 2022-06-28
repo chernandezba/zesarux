@@ -3311,14 +3311,29 @@ void menu_put_switch_zxdesktop_footer(void)
         xorigen -=margenx_izq;
         //xorigen contiene el origen donde van los botones de ampliar/reducir ancho
 
+        unsigned char caracter_flecha_izquierda='<';
+        unsigned char caracter_flecha_derecha='>';
+        unsigned char caracter_flecha_arriba='^';
+        unsigned char caracter_flecha_abajo='v';
+
+        //Si driver video permite caracteres redefinidos, poner los cursores "bonitos"
+        
+        if (si_complete_video_driver()) {
+            caracter_flecha_izquierda=166;
+            caracter_flecha_derecha=165;
+            caracter_flecha_arriba=164;
+            caracter_flecha_abajo=163;
+        }
+        
+
       
         z80_byte caracter_ampliar_ancho,caracter_reducir_ancho;
         z80_byte caracter_ampliar_alto,caracter_reducir_alto;
         if (screen_ext_desktop_enabled) {
-            caracter_ampliar_ancho='>';
-            caracter_reducir_ancho='<';
-            caracter_ampliar_alto='v';
-            caracter_reducir_alto='^';            
+            caracter_ampliar_ancho=caracter_flecha_derecha;
+            caracter_reducir_ancho=caracter_flecha_izquierda;
+            caracter_ampliar_alto=caracter_flecha_abajo;
+            caracter_reducir_alto=caracter_flecha_arriba;
         }
         else {
             caracter_ampliar_ancho='+';
