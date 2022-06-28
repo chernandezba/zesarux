@@ -151,9 +151,10 @@ viene descomprimido desde el /tmp
 -creacion de iconos no lo haga si zx desktop desactivado? aunque esto si esta en full screen sin zxdesktop y hace un quicksave, no tendra enlace al snapshot...
 u opcion poder desactivar iconos. por defecto desactivado y que se active con boton "+" al activar zx desktop?
 
--Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
-Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 -no dibujar icono si esta en zona de pantalla emulada. usar funcion comun zxvision_if_configurable_icon_on_valid_position ?
 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
+
+-Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
+Hacerlo cambiando el buffer border de línea a color borde xor 7
