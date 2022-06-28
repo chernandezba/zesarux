@@ -92,12 +92,12 @@ al inicio del menu
 
 --Fin Errores
 
+-Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
+Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 -icono configurable de switch border, si lo pulso genera cpu_panic
 
 -autoscale ZX Desktop SCR quiza no va bien, demasiado grande
-
--quiza cursores de reducir/ampliar zxdesktop crear 4 chars nuevos (y para modos textos, usar los actuales)
 
 -arrastrar iconos: se detiene emulacion? el refresco quiza no es el correcto
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
@@ -153,8 +153,6 @@ viene descomprimido desde el /tmp
 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
--Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
-Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 -Error: Permite arrastrar un boton que esté detrás de una ventana
 

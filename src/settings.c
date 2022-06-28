@@ -269,8 +269,8 @@ int menu_allow_background_windows=0;
 //Forzar siempre overlay_visible_when_menu_closed al cerrar el menu
 int always_force_overlay_visible_when_menu_closed=0;
 
-//Reabrir ventanas al iniciar el emulador 
-z80_bit menu_reopen_background_windows_on_start={0};
+//Reabrir ventanas al iniciar el emulador. Por defecto esto se hace siempre ya desde la version 10.2
+z80_bit menu_reopen_background_windows_on_start={1};
 
 
 //

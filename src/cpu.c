@@ -2020,7 +2020,7 @@ printf (
         //"--windowgeometry-full s x y w h wb hb m  Set window geometry, full version (old versions only kept for compatibility). "
         "--window-geometry s x y w h wb hb mn mx  Set window geometry. "
         " Parameters: window name (s), x coord, y coord, width (w), height (h), width before minimize/maximize (wb), height before minimize/maximize (hb), is minimized (mn), is maximized (mx)\n"
-		"--enable-restore-windows                 Allow restore windows on start\n"
+		"--disable-restore-windows                Disable restore windows on start\n"
         "--restorewindow s                        Restore window s on start\n"
 		"--clear-all-windowgeometry               Clear all windows geometry thay may be loaded from the configuration file\n"
         "--restore-all-known-windows              Restore all known windows on start. Use ONLY for debugging!\n"
@@ -8731,10 +8731,14 @@ int parse_cmdline_options(void) {
 				zxvision_add_all_windows_to_restore();
 			}            
 
-
+            //Mantenida por compatibilidad hacia atras. esto es ahora por defecto desde version 10.2
 			else if (!strcmp(argv[puntero_parametro],"--enable-restore-windows")) {
-				menu_reopen_background_windows_on_start.v=1;
+				//nada
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--disable-restore-windows")) {
+				menu_reopen_background_windows_on_start.v=0;
+			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--tonegenerator")) {
 				siguiente_parametro_argumento();
