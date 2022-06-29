@@ -30,6 +30,13 @@ Para esta version:
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ? 
 
+-minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
+
+-Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
+
+
+-Más links iconos: rom, … pok?
+
 --Fin mejoras
 
 
@@ -105,6 +112,9 @@ Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 
 
+
+
+
 -arrastrar iconos: se detiene emulacion? el refresco quiza no es el correcto
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
@@ -115,9 +125,9 @@ Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 
--minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
 
--Quizá al pulsar un icono con menú cerrado se cuelga porque no ha activado la capa de menú 
+Ya no pasa-al pulsar un icono con menú cerrado se cuelga 
+
 *background windows off
 *
 menu_event_open_menu.v xx
@@ -138,22 +148,19 @@ Reproducir: F5 - ESC. Pulsar icono waveform
 Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papelera
 
 
--Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
--Más links: rom, … pok?
+
 
 -A veces en pulsar iconos los arrastra.. por que?
 
--no permitir ubicar iconos en:
-*zona botones superiores
-*zona dispositivos inferiores
-*pantalla emulada 
-
--que no dibuje icono (ni permita mover) a zona de pantalla emulada
 
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
 Esto puede comportar problemas por variables que no se resetean correctamente (que si se hace desde el gestor de tareas),
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
+
+-Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
+
+
 
 -con menu cerrado, sin ventanas. pulsar boton derecho en fondo desktop y a veces en vez de abrir properties abre menu principal
 
@@ -161,10 +168,6 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
-
-
-
--Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
 -Abrir papelera desde menu window solo si hay habilitado zx desktop e iconos
 
