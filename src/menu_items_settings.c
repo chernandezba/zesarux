@@ -9608,7 +9608,7 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
-    debug_exec_show_backtrace();
+    //debug_exec_show_backtrace();
 
     int opcion;
 

@@ -5073,9 +5073,15 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         }
     }
 
-	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0) {
+	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
         //Aplicar un background si se pulsa o si hay setting de no fondo transparente
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size(),7);
+        //Color 7 blanco siempre fijo, asumimos que los iconos no usan color blanco que se puedan "fusionar" con este fondo
+        int color=7;
+
+        //Pero si se ha hecho boton derecho sobre este icono, alterar color
+        if (menu_pressed_zxdesktop_configurable_icon_which==index_icon) color=ESTILO_GUI_PAPEL_SELECCIONADO;
+        
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y,menu_get_ext_desktop_icons_size(),menu_get_ext_desktop_icons_size(),color);
     }
 
     if (pulsado) {
