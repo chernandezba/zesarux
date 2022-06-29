@@ -13691,6 +13691,56 @@ void zxvision_set_next_menu_position_from_current_mouse(void)
     zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 }
 
+//Dice si raton en zona de zxdesktop, o sea:
+//No en pantalla emulada
+//No en footer
+//No en botones superiores ni inferiores
+int zxvision_if_mouse_in_background(void)
+{
+    int mouse_pixel_x,mouse_pixel_y;
+    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+    //multiplicamos por zoom
+    mouse_pixel_x *=zoom_x;
+    mouse_pixel_y *=zoom_y;		
+
+    int total_ancho_zxdesktop=screen_get_total_width_window_plus_zxdesktop();
+    int total_alto_zxdesktop=screen_get_total_height_window_no_footer_plus_zxdesktop();
+
+    //si no esta dentro de la ventana (y excluyendo footer)
+    if (mouse_pixel_x>=total_ancho_zxdesktop || mouse_pixel_y>=total_alto_zxdesktop) {
+        return 0;
+    }
+
+    //si esta dentro de pantalla emulada
+    int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
+
+    if (mouse_pixel_x<ancho_maquina && mouse_pixel_y<alto_maquina) {
+        return 0;    
+    }
+
+    //si apunta a botones inferiores o superiores
+    int xinicio_botones,xfinal_botones,yinicio_botones,alto_boton;
+
+    //Ver si en posicion de iconos superiores
+    menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,&xinicio_botones,&xfinal_botones);
+    if (mouse_pixel_y<=alto_boton && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<=xfinal_botones) {
+        //printf("On upper buttons\n");
+        return 0;
+    }
+
+    //Ver si en posicion de iconos inferiores
+    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,&xinicio_botones,&xfinal_botones,&yinicio_botones);
+    if (mouse_pixel_y>=yinicio_botones && mouse_pixel_x>=xinicio_botones && mouse_pixel_x<xfinal_botones) {
+        //printf("On lower buttons\n");
+        return 0;
+    }    
+
+
+    return 1;
+}
+
 int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 {
 
@@ -13755,12 +13805,14 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
         }	
         else {
-            //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. 
-            //TODO: y cuando se cambie aqui cambiarlo tambien en zxvision_handle_mouse_events
+            //No se pulsa ni en icono ni en ventanas. 
 
-            //Asumimos pulsado en fondo desktop
+            //Ver si en fondo desktop
 
             if (zxdesktop_configurable_icons_enabled.v) {
+
+                if (zxvision_if_mouse_in_background()) {
+
                 printf("Pulsado en ZX desktop con boton derecho desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button\n");
                 
                 menu_pressed_zxdesktop_right_button_background=1;
@@ -13769,6 +13821,8 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
                 //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 
                 return 1;
+
+                }
 
             }
 
@@ -14832,10 +14886,13 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             }	
             else {
                 //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. 
-                //TODO y cuando se cambie aqui cambiarlo tambien en zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button
+                printf("mouse pixel x,y desde handle mouse events: %d,%d\n",mouse_pixel_x,mouse_pixel_y);
+
 
                 //Asumimos pulsado en fondo desktop
                 if (zxdesktop_configurable_icons_enabled.v) {
+
+                    if (zxvision_if_mouse_in_background() ) {
                     printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
                     
                     menu_pressed_zxdesktop_right_button_background=1;
@@ -14866,6 +14923,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                                 mouse_pressed_close_window=1;
                         }  
                     } 
+
+                    }
                 }
 
 
