@@ -128,7 +128,8 @@ int menu_overlay_activo=0;
 //indica si el menu hace zoom. valores validos: 1 en adelante
 int menu_gui_zoom=1;
 
-
+//Si se dibuja papelera abierta
+int zxvision_draw_icon_papelera_abierta=0;
 
 //Ancho de caracter de menu
 int menu_char_width=8;
@@ -5070,6 +5071,11 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         //Ver si papelera no esta vacia
         if (if_zxdesktop_trash_not_empty()) {
             bitmap=bitmap_button_ext_desktop_trash_not_empty;
+        }
+
+        //Y si papelera abierta, porque se esta arrastrando algun icono cerca
+        if (zxvision_draw_icon_papelera_abierta) {
+            bitmap=bitmap_button_ext_desktop_trash_open;
         }
     }
 
@@ -14034,6 +14040,8 @@ void zxvision_mover_icono_papelera_si_conviene(void)
             zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);            
         }
     }    
+
+    zxvision_draw_icon_papelera_abierta=0;
 }
 
 void zxvision_handle_mouse_events(zxvision_window *w)
@@ -14852,6 +14860,16 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                     if (deltax>8 || deltay>8) {
                         //menu_draw_ext_desktop();
+
+                        //Ver si icono cerca de papelera
+                        if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
+                            printf("HAY CERCA UNA PAPELERA\n");
+                            zxvision_draw_icon_papelera_abierta=1;
+                        }
+                        else {
+                            zxvision_draw_icon_papelera_abierta=0;
+                        }
+
                         menu_refresca_pantalla();
                         //menu_draw_ext_desktop_configurable_icons();                    
 

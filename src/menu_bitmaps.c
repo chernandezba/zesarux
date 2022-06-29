@@ -2902,7 +2902,48 @@ char *bitmap_button_ext_desktop_trash[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"    xwwwwwwwwwwwwwwwwwx   ",
 	"    xxxxxxxxxxxxxxxxxxx   " 	 //25
 };
+/*
+char *bitmap_button_ext_desktop_trash_open[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"          xxxxxxx         ",		
+	"          xwwwwwx         ",	
+	"          xwwwwwx         ",			
+	"  xxxxxxxxxxxxxxxxxxxxxxx ",			
+	"  xxxxxxxxxxxxxxxxxxxxxxx ", 
+*/
 
+char *bitmap_button_ext_desktop_trash_open[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"     xxxx                 ",		
+	"     xxxxxxxx             ",		
+	"         xxxxxxxx         ",	
+	"             xxxxxxxxxxx  ",			
+	"                 xxxxxxxx ",			
+	"                     xxxx ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",			
+	"    xwwwwwwwwwwwwwwwwwx   ",	//10		
+	"    xwwwwwwwwwwwwwwwwwx   ", 		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",	
+    "    xwwwwxwwwxwwwxwwwwx   ",    		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwxwwwxwwwxwwwwx   ",    //20
+	"    xwwwwxwwwxwwwxwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",		
+	"    xwwwwwwwwwwwwwwwwwx   ",
+	"    xxxxxxxxxxxxxxxxxxx   " 	 //25
+};
 
 char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
