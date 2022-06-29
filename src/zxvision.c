@@ -14599,6 +14599,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 				}				
 			}
 
+            //No esta en una ventana. Esta en un icono?
+            else {
             //Si estaba en un icono
             if (zxdesktop_configurable_icons_enabled.v) {
                 int mouse_pixel_x,mouse_pixel_y;
@@ -14621,6 +14623,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     configurable_icon_is_being_moved=1;                
                 }
 
+            }
             }
 
 
