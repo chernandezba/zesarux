@@ -4643,8 +4643,10 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 {
 
     //printf("Inicio waveform\n");
+    
  	menu_espera_no_tecla();
 	menu_reset_counters_tecla_repeticion();		
+
     //printf("Inicio 2 waveform\n");
 
 	//zxvision_window ventana;

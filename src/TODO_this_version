@@ -92,6 +92,10 @@ al inicio del menu
 
 --Fin Errores
 
+
+-Descarga online que cree icono de enlace en el escritorio. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
+viene descomprimido desde el /tmp
+
 -Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
 Hacerlo cambiando el buffer border de línea a color borde xor 7
 
@@ -99,22 +103,34 @@ Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 -autoscale ZX Desktop SCR quiza no va bien, demasiado grande
 
+
+
 -arrastrar iconos: se detiene emulacion? el refresco quiza no es el correcto
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
 
--boton derecho en escritorio a veces no abre settings zx desktop
 
 -mover posicion menu al pulsar boton derecho quiza solo en pulsar en icono, pero no en fondo zx desktop
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
 
--Quizá acción botón derecho que emula esc, opción para quitar ese comportamiento (dejar así por defecto?). 
-
-minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
+-minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
 
 -Quizá al pulsar un icono con menú cerrado se cuelga porque no ha activado la capa de menú 
+*background windows off
+*
+menu_event_open_menu.v xx
+menu_was_open_by_left_mouse_button.v
+mouse 1262 580
+tamanyo icono: 52
+No pulsado en zona botones con menu cerrado
+Gestionando pulsacion de boton izquierdo de icono configurable 19
+Ejecutar funcion 114 (F_FUNCION_WAVEFORM)
+Antes procesar funcion
+
+Reproducir: F5 - ESC. Pulsar icono waveform
+
 
 -Ayuda hablar nuevo comportamiento botón derecho 
 
@@ -145,8 +161,6 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
--Descarga online que cree icono de enlace en el escritorio. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
-viene descomprimido desde el /tmp
 
 
 

@@ -15764,6 +15764,7 @@ z80_byte menu_da_todas_teclas(void)
 {
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 1: %d\n",mouse_movido);
+
     //Inicializo a 0 para evitar warnings en el compilador
     int ancho_anterior=0;
     int alto_anterior=0;
@@ -15820,7 +15821,6 @@ z80_byte menu_da_todas_teclas(void)
 	//Boton background ventana
 	if (mouse_pressed_background_window) {
 		//printf ("pulsado background en menu_da_todas_teclas\n");
-		//sleep(5);		
 		acumulado |=1;
 	}	
 
@@ -15858,7 +15858,9 @@ z80_byte menu_da_todas_teclas(void)
 
 	//Contar también algunas teclas solo menu:
 	z80_byte valor_teclas_menus=(menu_backspace.v|menu_tab.v)^255;
+
 	//printf("valor_teclas_menus: %d\n",valor_teclas_menus);
+
 	acumulado=acumulado & valor_teclas_menus;
 
     //Si ha cambiado tamanyo ventana, notificar como si se hubiera pulsado una tecla
@@ -15883,6 +15885,7 @@ z80_byte menu_da_todas_teclas(void)
 
 	
 	//printf ("Retornamos acumulado en menu_da_todas_teclas_2: %d\n",acumulado);
+
 	return acumulado;
 
 
@@ -20534,15 +20537,18 @@ void menu_inicio_handle_configurable_icon_presses(void)
     //mouse_movido solo se habilita si ventanas estaban cerradas
     //por tanto buscamos otra manera
 
-    //Esto es un poco puñetero. Decir que el raton no se ha movido o nos quedariamos esperando continuamente en bucle
-    //a liberar raton en funciones de liberar tecla
-    mouse_movido=0;
 
     int current_mouse_pixel_x,current_mouse_pixel_y;
     menu_calculate_mouse_xy_absolute_interface_pixel(&current_mouse_pixel_x,&current_mouse_pixel_y);  
 
     current_mouse_pixel_x *=zoom_x;  
     current_mouse_pixel_y *=zoom_y;  
+
+
+    //Esto es un poco puñetero. Decir que el raton no se ha movido o nos quedariamos esperando continuamente en bucle
+    //a liberar raton en funciones de liberar tecla
+    //Y esto se puede habilitar desde menu_calculate_mouse_xy_absolute_interface_pixel, por eso va despues de esa llamada
+    mouse_movido=0;    
 
     int icono_se_ha_movido=0;
 
@@ -20625,7 +20631,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         printf("Ejecutar funcion %d\n",id_funcion);
 
-        printf("Antes procesar funcion\n");
+        printf("Antes procesar funcion. menu_overlay_activo=%d\n",menu_overlay_activo);
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
