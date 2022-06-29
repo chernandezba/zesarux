@@ -149,7 +149,6 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 viene descomprimido desde el /tmp
 
 
--no dibujar icono si esta en zona de pantalla emulada. usar funcion comun zxvision_if_configurable_icon_on_valid_position ?
 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
