@@ -13955,43 +13955,43 @@ z80_byte zxvision_get_key_hotkey(zxvision_window *w,int x,int y)
 
 void zxvision_mover_icono_papelera_si_conviene(void)
 {
-     if (configurable_icon_is_being_moved_which>=0) {
-                    //Ver si se ha movido a la papelera
+    if (configurable_icon_is_being_moved_which>=0) {
+        //Ver si se ha movido a la papelera
 
 
-                    int mouse_pixel_x,mouse_pixel_y;
-                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+        int mouse_pixel_x,mouse_pixel_y;
+        menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
-                    //Ver si en el destino no hay cerca la papelera
-                    int mover_a_papelera=0;
-                    int hay_papelera=zxvision_search_trash_configurable_icon();
-                    if (hay_papelera>=0) {
-                        printf("hay una papelera\n");
-                        //Y siempre que no sea ya una papelera este icono
-                        int indice_funcion=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].indice_funcion;
-                        enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
+        //Ver si en el destino no hay cerca la papelera
+        int mover_a_papelera=0;
+        int hay_papelera=zxvision_search_trash_configurable_icon();
+        if (hay_papelera>=0) {
+            printf("hay una papelera\n");
+            //Y siempre que no sea ya una papelera este icono
+            int indice_funcion=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].indice_funcion;
+            enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
 
-                        if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
+            if (id_funcion!=F_FUNCION_DESKTOP_TRASH) {
 
-                            int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_x;
-                            int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_y;
+                int xpapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_x;
+                int ypapelera=zxdesktop_configurable_icons_list[hay_papelera].pos_y;
 
-                            //Ver si cerca
-                            int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
-                            int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
+                //Ver si cerca
+                int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
+                int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
 
-                            printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
+                printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
 
-                            if (deltax<=20 && deltay<=20) {           
-                                printf("Mover icono a la papelera\n");
+                if (deltax<=20 && deltay<=20) {           
+                    printf("Mover icono a la papelera\n");
 
-                                //Cambiarle la posicion que tenia inicial antes de ir a la papelera
-                                zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
-                                zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
-                            }
-                        }
-                    }
-     }    
+                    //Cambiarle la posicion que tenia inicial antes de ir a la papelera
+                    zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
+                    zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);
+                }
+            }
+        }
+    }    
 }
 
 void zxvision_handle_mouse_events(zxvision_window *w)
