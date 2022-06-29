@@ -4043,6 +4043,15 @@ void menu_draw_ext_desktop_putpixel_bitmap(z80_int *destino GCC_UNUSED,int x,int
 
     if (x<0 || x>=total_width || y<0 || y>=total_height) return;
 
+    //Ver si icono en posicion de pantalla emulada
+    int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
+
+    if (x<ancho_maquina && y<alto_maquina) {
+        //printf("Retorno %d %d\n",x,y);
+        return;
+    }       
+
 	scr_putpixel(x,y,color);
 }
 
@@ -4054,6 +4063,15 @@ void menu_draw_ext_desktop_putpixel_bitmap_icon_text(z80_int *destino GCC_UNUSED
     int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop();
 
     if (x<0 || x>=total_width || y<0 || y>=total_height) return;
+
+    //Ver si icono en posicion de pantalla emulada
+    int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_zoom_border_en();
+
+    if (x<ancho_maquina && y<alto_maquina) {
+        //printf("Retorno %d %d\n",x,y);
+        return;
+    }    
 
     //El color es el del estilo
 	scr_putpixel(x,y,ESTILO_GUI_TINTA_NORMAL);
@@ -5019,11 +5037,14 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
     int total_width=screen_get_total_width_window_plus_zxdesktop();
     int total_height=screen_get_total_height_window_no_footer_plus_zxdesktop();
 
+    int ancho_maquina=screen_get_emulated_display_width_zoom_border_en();
+    int alto_maquina=screen_get_emulated_display_height_zoom_border_en();    
+
     int x,y;
 
     for (y=yinicio;y<yinicio+alto_boton+2;y++) {	
         for (x=xinicio;x<xinicio+ancho_boton+2;x++) {
-            if (x>=0 && x<total_width && y>=0 && y<total_height) {
+            if (x>=0 && x<total_width && y>=0 && y<total_height && !(x<ancho_maquina && y<alto_maquina) ) {
                 scr_putpixel(x,y,color_relleno);	
             }
         }
