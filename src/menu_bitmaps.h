@@ -77,6 +77,7 @@ extern char *bitmap_button_ext_desktop_joyleftright[];
 extern char *bitmap_button_ext_desktop_trash[];
 extern char *bitmap_button_ext_desktop_trash_not_empty[];
 extern char *bitmap_button_ext_desktop_trash_open[];
+extern char *bitmap_button_ext_desktop_trash_open_not_empty[];
 extern char *bitmap_button_ext_desktop_file_snapshot[];
 extern char *bitmap_button_ext_desktop_file_tape[];
 extern char *bitmap_button_ext_desktop_file_generic_smartload[];

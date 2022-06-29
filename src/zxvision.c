@@ -5071,11 +5071,20 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         //Ver si papelera no esta vacia
         if (if_zxdesktop_trash_not_empty()) {
             bitmap=bitmap_button_ext_desktop_trash_not_empty;
+
+            //Y si papelera abierta, porque se esta arrastrando algun icono cerca
+            if (zxvision_draw_icon_papelera_abierta) {
+              bitmap=bitmap_button_ext_desktop_trash_open_not_empty;
+            }
         }
 
-        //Y si papelera abierta, porque se esta arrastrando algun icono cerca
-        if (zxvision_draw_icon_papelera_abierta) {
-            bitmap=bitmap_button_ext_desktop_trash_open;
+        else {
+            //Papelera vacia
+            
+            //Y si papelera abierta, porque se esta arrastrando algun icono cerca
+            if (zxvision_draw_icon_papelera_abierta) {
+                bitmap=bitmap_button_ext_desktop_trash_open;
+            }
         }
     }
 
