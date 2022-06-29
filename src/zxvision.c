@@ -13776,17 +13776,17 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             //y si no habiamos pulsado ya (estamos arrastrando)
             if (menu_pressed_zxdesktop_configurable_icon_which==-1) {
 
-            //debug_exec_show_backtrace();
+                //debug_exec_show_backtrace();
 
-            menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
-            menu_pressed_zxdesktop_configurable_icon_right_button=1;
+                menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+                menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
-            //Para saber si se arrastra
-            menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
-            menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
+                //Para saber si se arrastra
+                menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
+                menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
 
 
-            zxvision_set_next_menu_position_from_current_mouse();     
+                zxvision_set_next_menu_position_from_current_mouse();     
 
             }      
 
