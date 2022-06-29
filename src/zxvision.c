@@ -13769,9 +13769,12 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
         int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
         printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
 
-        //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
-        if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1 && zxdesktop_configurable_icons_enabled.v) {
+        //Si se pulsa alguno 
+        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled.v) {
             printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
+
+            //y si no habiamos pulsado ya (estamos arrastrando)
+            if (menu_pressed_zxdesktop_configurable_icon_which==-1) {
 
             //debug_exec_show_backtrace();
 
@@ -13783,7 +13786,9 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
 
 
-            zxvision_set_next_menu_position_from_current_mouse();           
+            zxvision_set_next_menu_position_from_current_mouse();     
+
+            }      
 
 
             return 1;
