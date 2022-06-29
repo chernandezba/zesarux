@@ -14601,29 +14601,29 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             //No esta en una ventana. Esta en un icono?
             else {
-            //Si estaba en un icono
-            if (zxdesktop_configurable_icons_enabled.v) {
-                int mouse_pixel_x,mouse_pixel_y;
-                menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+                //Si estaba en un icono
+                if (zxdesktop_configurable_icons_enabled.v) {
+                    int mouse_pixel_x,mouse_pixel_y;
+                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
-                //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
-                configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
-                configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
+                    //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
+                    configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
+                    configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
 
-                //multiplicamos por zoom
-                mouse_pixel_x *=zoom_x;
-                mouse_pixel_y *=zoom_y;
+                    //multiplicamos por zoom
+                    mouse_pixel_x *=zoom_x;
+                    mouse_pixel_y *=zoom_y;
 
-                printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
-                configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-                printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+                    printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+                    configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+                    printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
 
-                //Si se arrastra alguno 
-                if (configurable_icon_is_being_moved_which>=0) {
-                    configurable_icon_is_being_moved=1;                
+                    //Si se arrastra alguno 
+                    if (configurable_icon_is_being_moved_which>=0) {
+                        configurable_icon_is_being_moved=1;                
+                    }
+
                 }
-
-            }
             }
 
 
