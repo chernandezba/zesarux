@@ -3359,3 +3359,35 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p2[EXT_DESKTOP_BUTTONS_ANCHO
 	"xxxxxxxxxxxxxxxxxxxwxwxwxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+//Icono "My machine" para un Spectrum +3
+char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrrxrxrrxxxxxxrrxxxWWxWWx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwwxxxrxrxrx",		
+	"xxxxxxxxxxxxxxxxxxxxrxrxrx",		
+	"xxwxwwxwwxwwxwwxwxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxwxxxxxxxxx",    //20
+	"xxwwxwwxwwxwwxwwwxxrrrrrrx",		
+	"xxxxxxxxxxxxxxxxxxxyyyyyyx",		
+	"xxwxwwxwwwwxwwxwwxxggggggx",		
+	"xxxxxxxxxxxxxxxxxxxbbbbbbx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
