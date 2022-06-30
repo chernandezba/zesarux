@@ -3486,3 +3486,35 @@ char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxrxwxwxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+//Icono "My machine" para SMS 
+char *bitmap_button_ext_desktop_my_machine_sms[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xx xx xx xx xx xx xx xxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxx         xxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxxxxrrrrrrrrrxxx",		
+	"xxxxxxxxxxxxxxrrwwrrrrrxxx",		
+	"xxxxxxxxxxxxxxrxrrrrrrrxxx",		
+	"xxxxxxxxxxxxxxrxxrrrxxrxxx",		
+	"xxxxxxxxxxxxxxrxrrrrrrrxxx",    //20
+	"xxxxxxxxxxxxxxrrrwwrrrrxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrrrxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxx   xxxx" 	 //25
+};
