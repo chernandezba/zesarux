@@ -5119,6 +5119,14 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         else if (MACHINE_IS_SPECTRUM_128) {
             bitmap=bitmap_button_ext_desktop_my_machine_spectrum_128_eng;
         }
+
+        else if (MACHINE_IS_SPECTRUM_P2) {
+            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
+        }
+
+        else if (MACHINE_IS_SPECTRUM_P2A) {
+            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
+        }        
     }
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {

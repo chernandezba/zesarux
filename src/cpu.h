@@ -490,6 +490,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //MACHINE_IS_SPECTRUM_P2A_P3 antes de emular el +3, era MACHINE_IS_SPECTRUM_P2A
 #define MACHINE_IS_SPECTRUM_P2A_P3 ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA) || MACHINE_IS_SPECTRUM_P3)
 
+#define MACHINE_IS_SPECTRUM_P2A ( current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA)
+
 //MACHINE_IS_SPECTRUM_128_P2_P2A_P3 era MACHINE_IS_SPECTRUM_128_P2_P2A antes de emular el +3
 #define MACHINE_IS_SPECTRUM_128_P2_P2A_P3 ( MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_SPECTRUM_P2A_P3)
 
