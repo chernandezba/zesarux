@@ -25622,9 +25622,15 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     sprintf(buf_linea,"Machine: %s\n",get_machine_name(current_machine_type));
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
-
-    //TODO
-    sprintf(buf_linea,"Total RAM:\n");
+    if (CPU_IS_MOTOROLA) {
+        strcpy(buf_linea,"CPU: Motorola 68008"); //TODO: de momento no hay otras maquinas emuladas que usen cpu diferente del 68008
+    }
+    else if (CPU_IS_SCMP) {
+        strcpy(buf_linea,"CPU: National Semiconductor SC/MP (INS8060)");
+    }
+    else {
+        strcpy(buf_linea,"CPU: Zilog Z80");
+    }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
    
 
