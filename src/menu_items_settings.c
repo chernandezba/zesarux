@@ -9677,6 +9677,8 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
             id_funcion==F_FUNCION_DESKTOP_TAPE ||
             id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD) {
 
+            menu_add_item_menu_separator(array_menu_common);
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_view,NULL,
                 "~~View","~~Ver","~~Veure");
             menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
@@ -9691,6 +9693,8 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
         //Si icono es my machine
         if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
+
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_reset_cpu,NULL,
                 "~~Reset CPU","~~Reset CPU","~~Reset CPU");
@@ -9723,7 +9727,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Icon properties" );
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Properties" );
 
         
 
