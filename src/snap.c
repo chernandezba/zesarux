@@ -3972,7 +3972,7 @@ void save_zx_snapshot(char *filename)
         }
 
 	//Si version inferior a 6, no permitir ACE ni otras
-	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_SPA) && snap_zx_version_save<6) {
+	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA) && snap_zx_version_save<6) {
 		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
                 return;
         }

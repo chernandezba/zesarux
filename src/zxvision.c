@@ -5132,7 +5132,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
             bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
         }  
 
-        else if (MACHINE_IS_SPECTRUM_48_SPA) {
+        else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) {
             bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
         }         
     }
