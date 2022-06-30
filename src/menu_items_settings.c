@@ -48,6 +48,7 @@
 #include "menu_items_settings.h"
 #include "menu_filesel.h"
 #include "menu_file_viewer_browser.h"
+#include "menu_debug_cpu.h"
 #include "screen.h"
 #include "cpu.h"
 #include "debug.h"
@@ -9666,16 +9667,152 @@ void menu_zxdesktop_set_configurable_icons_modify_my_machine(int valor_opcion)
 
 }
 
+void menu_zxdesktop_set_configurable_icons_rename(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);    
+}
+
+void menu_zxdesktop_set_configurable_icons_change_parameters(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
+}
+
+void menu_zxdesktop_set_configurable_icons_move_trash(MENU_ITEM_PARAMETERS)
+{
+    zxvision_move_configurable_icon_to_trash(valor_opcion);
+}
+
+void menu_zxdesktop_set_configurable_icons_view(MENU_ITEM_PARAMETERS)
+{
+    menu_file_viewer_read_file("Text file view",zxdesktop_configurable_icons_list[valor_opcion].extra_info);    
+}
+
+void menu_zxdesktop_set_configurable_icons_info(MENU_ITEM_PARAMETERS)
+{
+    file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
+}
+void menu_zxdesktop_set_configurable_icons_reset_cpu(MENU_ITEM_PARAMETERS)
+{
+    reset_cpu();
+}
+
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
 
-    //debug_exec_show_backtrace();
+    int indice_funcion=zxdesktop_configurable_icons_list[valor_opcion].indice_funcion;
+    enum defined_f_function_ids id_funcion=menu_da_accion_direct_functions_indice(indice_funcion);
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int opcion_seleccionada=0;
+    int retorno_menu;
+
+    //No estar en bucle
+    //do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"Change ~~type",MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL);
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Cambiar ~~tipo","Canviar ~~tipus");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'t');
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_rename,NULL,
+            "R~~ename","R~~enombrar","R~~enombrar");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'e');        
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_change_parameters,NULL,
+            "~~Parameters","~~Parámetros","~~Paràmetres");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'p');   
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_move_trash,NULL,
+            "~~Move to Trash","~~Mover a Papelera","~~Moure a Paperera");
+        menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+        menu_add_item_menu_shortcut(array_menu_common,'m');   
+
+
+        //Si el icono es enlace a archivo
+        if (id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
+            id_funcion==F_FUNCION_DESKTOP_TAPE ||
+            id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD) {
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_view,NULL,
+                "~~View","~~Ver","~~Veure");
+            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+            menu_add_item_menu_shortcut(array_menu_common,'v');            
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_info,NULL,
+                "~~Info","~~Info","~~Info");
+            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+            menu_add_item_menu_shortcut(array_menu_common,'i');              
+            
+        }  
+
+        //Si icono es my machine
+        if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_reset_cpu,NULL,
+                "~~Reset CPU","~~Reset CPU","~~Reset CPU");
+            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+            menu_add_item_menu_shortcut(array_menu_common,'r');    
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_settings,NULL,
+                "~~Hardware settings","Opciones ~~Hardware","Opcions ~~Hardware");
+            menu_add_item_menu_shortcut(array_menu_common,'h');            
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage,NULL,
+                "Storage","Almacenamiento","Emmagatzemament");
+            //menu_add_item_menu_shortcut(array_menu_common,'h');      
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
+                "Select Machine","Elige Máquina","Escull màquina");
+            //menu_add_item_menu_shortcut(array_menu_common,'h');      
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_registers,NULL,
+                "Debug CPU","Debug CPU","Debug CPU");
+            //menu_add_item_menu_shortcut(array_menu_common,'h');                     
+
+
+        }
+
+    
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Icon properties" );
+
+        
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                
+            }
+        }
+
+    //No estar en bucle
+    //} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
+    //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
+    //que se abran dependiendo del boton, queden debajo de dicho boton
+    force_next_menu_position.v=0;    
+
+    return;
 
     int opcion;
 
     //TODO: Seguro que esto se puede hacer de manera mas elegante, lo de pedir 4 o 6 opciones
-    int indice_funcion=zxdesktop_configurable_icons_list[valor_opcion].indice_funcion;
-    enum defined_f_function_ids id_funcion=menu_da_accion_direct_functions_indice(indice_funcion);
+    //int indice_funcion=zxdesktop_configurable_icons_list[valor_opcion].indice_funcion;
+    //enum defined_f_function_ids id_funcion=menu_da_accion_direct_functions_indice(indice_funcion);
 
     if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
         menu_zxdesktop_set_configurable_icons_modify_my_machine(valor_opcion);
