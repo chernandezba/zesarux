@@ -1274,6 +1274,7 @@ char *string_machines_list_description=
 							" ZX81     ZX81\n"
               " 16k      ZX Spectrum 16k\n"
               " 48k      ZX Spectrum 48k\n"
+              " 48kp     ZX Spectrum+ 48k\n"
 							" 128k     ZX Spectrum+ 128k\n"
 							" QL       QL\n"
 
@@ -1293,8 +1294,7 @@ char *string_machines_list_description=
 							" Inves    Inves Spectrum+\n"
               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
-
-                            " 48kp     ZX Spectrum+ 48k\n"
+                     
 
 					    " TK90X    Microdigital TK90X\n"
 					    " TK90XS   Microdigital TK90X (Spanish)\n"
