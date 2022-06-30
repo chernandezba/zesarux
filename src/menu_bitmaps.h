@@ -138,6 +138,7 @@ extern char *bitmap_button_ext_desktop_my_machine_zx81[];
 extern char *bitmap_button_ext_desktop_my_machine_zx80[];
 extern char *bitmap_button_ext_desktop_my_machine_ql[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[];
+extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
