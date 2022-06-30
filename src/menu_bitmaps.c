@@ -3325,6 +3325,38 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[EXT_DESKTOP_BUTTONS_A
 	"xxxxxxxxxxxxxxxxxxxxrygbxx" 	 //25
 };
 
+
+//Icono "My machine" para un Inves 
+char *bitmap_button_ext_desktop_my_machine_inves[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxrxrrxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwxwwxwwxwwxwwxwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxx",    //20
+	"xxwwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwxwwwwwwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
 //Icono "My machine" para un Spectrum 128k+ English
 char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
