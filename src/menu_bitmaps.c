@@ -3278,18 +3278,18 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[EXT_DESKTOP_BUTTONS_
     "                          ",	
 	"                          ",	//10	
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxx  ",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxrrxrxrrxrrxxxxxxxxxxxxxx",		
+	"xxrxrrxxxxxxxxxxxxxxxxxx  ",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxwwwxwwxwwxwwxwwxwwxwwxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
-	"xxwwxwwxwwxwwxwwxwwxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxwwxwxwwxwwxwwxwwxxxxrygb",		
-	"xxxxxxxxxxxxxxxxxxxxxrygbx",
-	"xxxxxxxxxxxxxxxxxxxxrygbxx" 	 //25
+	"xxxxxxxxxxxxxxxxxxxxxxxx  ",		
+	"xxwwxwwxwwxwwxwwxwwwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxx  ",		
+	"xxwxwwxwwxwwxwwxwwxwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxwxxxx  ",    //20
+	"xxwwxwwxwwxwwxwwxwwwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxx  ",		
+	"xxwxwwxwwwwwwwxwwxwwrygbxx",		
+	"xxxxxxxxxxxxxxxxxxxrygbx  ",
+	"xxxxxxxxxxxxxxxxxxrygbxxxx" 	 //25
 };
