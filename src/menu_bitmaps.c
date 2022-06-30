@@ -3453,3 +3453,36 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO
 	"xxxxxxxxxxxxxxxxxxxbbbbbbx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+
+//Icono "My machine" para un CPC
+char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwxxxxxxrgbxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrxwwxwwxwwxwwxgxxxwxwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxggxwwxwwxwwxwxbxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxbxxxxxxxxx",    //20
+	"xxgggxwwxwwxwwxbbxxrrrrrrx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxgxwwxwwwwxwwxggxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxrxwxwxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
