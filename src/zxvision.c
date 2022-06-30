@@ -639,12 +639,7 @@ void create_default_zxdesktop_configurable_icons(void)
     //int final_y=screen_get_emulated_display_height_no_zoom_border_en();
 
 
-    //Quicksave
-    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
-    if (indice_icono>=0) {
-        //Y posicion un tanto arbitraria
-        zxvision_set_configurable_icon_position(indice_icono,x+48,128);
-    }    
+
 
     //My Machine
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_MY_MACHINE);
@@ -652,9 +647,15 @@ void create_default_zxdesktop_configurable_icons(void)
         strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"My Machine");
 
         //Y posicion un tanto arbitraria
-        zxvision_set_configurable_icon_position(indice_icono,x,128);  
+        zxvision_set_configurable_icon_position(indice_icono,x,96);  
     }
 
+    //Quicksave
+    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
+    if (indice_icono>=0) {
+        //Y posicion un tanto arbitraria
+        zxvision_set_configurable_icon_position(indice_icono,x,96+ZESARUX_ASCII_LOGO_ANCHO*2);
+    }    
 
 
     //Add Trash

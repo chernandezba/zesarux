@@ -187,6 +187,8 @@ extern void menu_help(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS);
 
+extern void menu_debug_reset(MENU_ITEM_PARAMETERS);
+
 extern void menu_shortcuts_window(MENU_ITEM_PARAMETERS);
 
 extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);

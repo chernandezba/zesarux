@@ -9629,10 +9629,7 @@ void menu_zxdesktop_set_configurable_icons_info(MENU_ITEM_PARAMETERS)
 {
     file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
 }
-void menu_zxdesktop_set_configurable_icons_reset_cpu(MENU_ITEM_PARAMETERS)
-{
-    reset_cpu();
-}
+
 
 void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 {
@@ -9649,10 +9646,10 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     //No estar en bucle
     //do {
 
-        menu_add_item_menu_inicial(&array_menu_common,"Change ~~type",MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL);
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Cambiar ~~tipo","Canviar ~~tipus");
+        menu_add_item_menu_inicial(&array_menu_common,"Change type",MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_choose,NULL);
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Cambiar tipo","Canviar tipus");
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
-        menu_add_item_menu_shortcut(array_menu_common,'t');
+        //menu_add_item_menu_shortcut(array_menu_common,'t');
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_rename,NULL,
@@ -9667,9 +9664,9 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_move_trash,NULL,
-            "~~Move to Trash","~~Mover a Papelera","~~Moure a Paperera");
+            "Move to Trash","Mover a Papelera","Moure a Paperera");
         menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
-        menu_add_item_menu_shortcut(array_menu_common,'m');   
+        //menu_add_item_menu_shortcut(array_menu_common,'m');   
 
 
         //Si el icono es enlace a archivo
@@ -9696,40 +9693,37 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_separator(array_menu_common);
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons_reset_cpu,NULL,
-                "~~Reset CPU","~~Reset CPU","~~Reset CPU");
-            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
-            menu_add_item_menu_shortcut(array_menu_common,'r');    
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
+                "Select ~~Machine","Elige ~~Máquina","Escull ~~Màquina");
+            menu_add_item_menu_shortcut(array_menu_common,'m');     
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_registers,NULL,
+                "Debug ~~CPU","Debug ~~CPU","Debug ~~CPU");
+            menu_add_item_menu_shortcut(array_menu_common,'c');   
+
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_settings,NULL,
                 "~~Hardware settings","Opciones ~~Hardware","Opcions ~~Hardware");
             menu_add_item_menu_shortcut(array_menu_common,'h');            
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage,NULL,
-                "Storage","Almacenamiento","Emmagatzemament");
-            //menu_add_item_menu_shortcut(array_menu_common,'h');      
+                "S~~torage","Almacenamien~~to","Emmagatzemamen~~t");
+            menu_add_item_menu_shortcut(array_menu_common,'t');      
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_machine_selection,NULL,
-                "Select Machine","Elige Máquina","Escull màquina");
-            //menu_add_item_menu_shortcut(array_menu_common,'h');      
-
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_registers,NULL,
-                "Debug CPU","Debug CPU","Debug CPU");
-            //menu_add_item_menu_shortcut(array_menu_common,'h');                     
-
+ 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_reset,NULL,
+                "~~Reset CPU","~~Reset CPU","~~Reset CPU");
+            menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
+            menu_add_item_menu_shortcut(array_menu_common,'r');    
+                  
 
         }
 
     
 
-
         menu_add_item_menu_separator(array_menu_common);
-
         menu_add_ESC_item(array_menu_common);
-
         retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Properties" );
-
-        
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
             //llamamos por valor de funcion
