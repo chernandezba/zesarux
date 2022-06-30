@@ -181,6 +181,8 @@ extern void menu_visual_realtape(MENU_ITEM_PARAMETERS);
 
 extern void menu_machine_selection(MENU_ITEM_PARAMETERS);
 
+extern void menu_debug_machine_info(MENU_ITEM_PARAMETERS);
+
 extern void menu_help(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_input_file_keyboard(MENU_ITEM_PARAMETERS);

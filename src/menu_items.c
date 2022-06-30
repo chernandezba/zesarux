@@ -25609,7 +25609,29 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
+{
 
+    char *text_buffer=util_malloc_max_texto_generic_message("Can not allocate memory for showing stats");
+    //Empezar con cadena vacia para poder concatenar
+    text_buffer[0]=0;
+
+	//margen suficiente para que quepa una linea ...
+	char buf_linea[64];
+
+    sprintf(buf_linea,"Machine: %s\n",get_machine_name(current_machine_type));
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+
+    //TODO
+    sprintf(buf_linea,"Total RAM:\n");
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+   
+
+	menu_generic_message("Machine Information",text_buffer);
+    
+    free(text_buffer);
+}
 
 
 //menu debug
@@ -25690,7 +25712,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_debug,"Open debug window on the adventure view (view number 8)");
             }
         }
-                            
+
+        menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_machine_info,NULL,
+            "Machine Info","Información Máquina","Informació máquina");                            
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);                    
 
@@ -32922,9 +32946,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
         break;
 
         case F_FUNCION_DESKTOP_MY_MACHINE:
-            //TODO
-            //de momento esto
-            menu_hardware_settings(0);
+            menu_debug_machine_info(0);
         break;
 
         case F_FUNCION_REWIND:
