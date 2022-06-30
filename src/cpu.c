@@ -1294,6 +1294,8 @@ char *string_machines_list_description=
               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
 
+                            " 48kp     ZX Spectrum+ 48k\n"
+
 					    " TK90X    Microdigital TK90X\n"
 					    " TK90XS   Microdigital TK90X (Spanish)\n"
 					    " TK95     Microdigital TK95\n"
@@ -2662,6 +2664,8 @@ struct s_machine_names machine_names[]={
     {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
     {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
 
+    {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
+
     {"MSX1",MACHINE_ID_MSX1},
     {"ColecoVision",MACHINE_ID_COLECO},
     {"SG-1000",MACHINE_ID_SG1000},
@@ -2690,6 +2694,7 @@ struct s_machine_names machine_names[]={
 char *get_machine_name(z80_byte machine)
 {
 	int i;
+    //printf("Current machine: %d\n",machine);
 
 	for (i=0;i<99999;i++) {
 		if (machine_names[i].nombre_maquina[0]==0) {
@@ -3746,7 +3751,8 @@ You don't need timings for H/V sync =)
 		break;
 
 		case 1:
-		case 20:
+		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
+        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
 		poke_byte=poke_byte_spectrum_48k;
 		peek_byte=peek_byte_spectrum_48k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
@@ -4589,6 +4595,7 @@ void rom_load(char *romfilename)
                 break;
 
                 case 1:
+                case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
                 romfilename="48.rom";
                 break;
 

@@ -386,6 +386,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_SPECTRUM_P3_41		26
 #define MACHINE_ID_SPECTRUM_P3_SPA		27
 
+#define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
 
 #define MACHINE_ID_COLECO 100
 #define MACHINE_ID_SG1000 101
@@ -478,7 +479,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 
 #define MACHINE_IS_SPECTRUM_48_PLUS_SPA (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
-#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA )
+#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
+#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
 
 #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 

@@ -564,7 +564,7 @@ char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs tlvz";
 
 //Array de maquinas por fabricante, acabado en 255
 int array_maquinas_sinclair[]={
-	120,121,0,1,6,160,255
+	120,121,0,1,MACHINE_ID_SPECTRUM_48_PLUS_ENG,6,160,255
 };
 
 int array_maquinas_timex_sinclair[]={
@@ -752,6 +752,7 @@ int return_fabricante_maquina(int maquina)
 		case 0:
 		case 1:
 		case 6:
+        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
 		case 120:
 		case 121:
 		case 160:
@@ -10499,6 +10500,7 @@ struct s_machines_short_names_id {
 struct s_machines_short_names_id machines_short_names_id[]={
    {"16k",0},
    {"48k",1},
+   {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG},
    {"48ks",20},
    {"Inves",2},
    {"TK90X",3},

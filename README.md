@@ -96,7 +96,7 @@ __FEATURES__
     * Science of Cambridge MK14
     * Sinclair ZX80
     * Sinclair ZX81
-    * Spectrum models: 16k, 48k (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
+    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
     * Sinclair QL
     * Cambridge Z88
     * Timex TS 2068 
@@ -283,7 +283,7 @@ __FEATURES__
 
 * Text adventure debugger: On a Quill/Paws/Daad text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, Text Adventure Map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
 
-* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, trd, dsk, mdv, hdf, etc. Can also browse inside file system images (.mmc, .img, etc)
+* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, trd, dsk, mdv, hdf, ddh, etc. Can also browse inside file system images (.mmc, .img, etc)
 
 * Accessibility support: Print char traps allows to capture generated text from almost any program or game, using standard ROM calls (RST 10H) or even non standard print character routines. Can send generated text from a game to a text-to-speech program. It's ready for text to speech support for blind or visually impaired people. Menu emulator can also be read by a text-to-speech program.
 
