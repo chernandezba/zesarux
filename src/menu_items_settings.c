@@ -9605,68 +9605,6 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_zxdesktop_set_configurable_icons_modify_my_machine(int valor_opcion)
-{
-        
-    int opcion=menu_simple_nine_choices("Icon properties","--Action--","Change type","Rename","Change parameters",
-        "Move to Trash Can","Reset","Hardware Settings","Storage","Select Machine","Debug CPU");
-
-    
-    switch (opcion) {
-        case 1:
-            menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
-        break;
-    
-        case 2:        
-            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-            menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);
-        break;
-    
-
-        case 3:
-            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-            menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
-        break;
-    
-
-        case 4:
-            zxvision_move_configurable_icon_to_trash(valor_opcion);
-        break;
-      
-
-        case 5:
-            reset_cpu();
-        break;
-    
-
-        case 6:
-            menu_hardware_settings(0);
-        break;
-
-        case 7:
-            menu_storage(0);
-        break;
-
-        case 8:
-            menu_machine_selection(0);
-        break;
-
-        case 9:
-            menu_debug_registers(0);
-        break;
-    
-    }
-
-    printf("Opcion despues de modify icon: %d\n",opcion);
-    printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
-
-    //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
-    //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
-    //que se abran dependiendo del boton, queden debajo de dicho boton
-    force_next_menu_position.v=0;    
-
-}
-
 void menu_zxdesktop_set_configurable_icons_rename(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);    
@@ -9806,72 +9744,7 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
     //que se abran dependiendo del boton, queden debajo de dicho boton
     force_next_menu_position.v=0;    
 
-    return;
 
-    int opcion;
-
-    //TODO: Seguro que esto se puede hacer de manera mas elegante, lo de pedir 4 o 6 opciones
-    //int indice_funcion=zxdesktop_configurable_icons_list[valor_opcion].indice_funcion;
-    //enum defined_f_function_ids id_funcion=menu_da_accion_direct_functions_indice(indice_funcion);
-
-    if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
-        menu_zxdesktop_set_configurable_icons_modify_my_machine(valor_opcion);
-        return;
-    }
-
-    //Si el icono es enlace a archivo
-    if (id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
-        id_funcion==F_FUNCION_DESKTOP_TAPE ||
-        id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD) {
-        
-        opcion=menu_simple_six_choices("Icon properties","--Action--","Change type","Rename","Change parameters","Move to Trash Can","View","Info");
-
-        }
-
-    else opcion=menu_simple_four_choices("Icon properties","--Action--","Change type","Rename","Change parameters","Move to Trash Can");
-
-    switch (opcion) {
-        case 1:
-            menu_zxdesktop_set_configurable_icons_choose(valor_opcion);
-        break;
-    
-        case 2:        
-            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-            menu_ventana_scanf("Rename",zxdesktop_configurable_icons_list[valor_opcion].text_icon,MAX_LENGTH_TEXT_ICON);
-        break;
-    
-
-        case 3:
-            //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-            menu_ventana_scanf("Parameters",zxdesktop_configurable_icons_list[valor_opcion].extra_info,PATH_MAX);
-        break;
-    
-
-        case 4:
-            zxvision_move_configurable_icon_to_trash(valor_opcion);
-        break;
-      
-
-        case 5:
-            menu_file_viewer_read_file("Text file view",zxdesktop_configurable_icons_list[valor_opcion].extra_info);
-        break;
-    
-
-        case 6:
-            file_utils_info_file(zxdesktop_configurable_icons_list[valor_opcion].extra_info);
-        break;
-    
-    }
-
-    printf("Opcion despues de modify icon: %d\n",opcion);
-    printf("Salir todos menus: %d mouse_left: %d mouse_right: %d\n",salir_todos_menus,mouse_left,mouse_right);
-
-    //Y decir que el siguiente menu ya no se abre desde boton y por tanto no se posiciona debajo del boton
-    //Antes se quitaba el flag tambien en menu_dibuja_menu, pero ya no. Asi conseguimos que todos los menus
-    //que se abran dependiendo del boton, queden debajo de dicho boton
-    force_next_menu_position.v=0;    
-
-    //menu_espera_no_tecla();
 }    
 
 //Definir icono de zx desktop a accion
