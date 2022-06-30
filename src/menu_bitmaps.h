@@ -132,6 +132,12 @@ extern char *bitmap_lowericon_ext_desktop_zxunoflash[];
 extern char *bitmap_lowericon_ext_desktop_hilow_active[];
 extern char *bitmap_lowericon_ext_desktop_hilow_inactive[];
 
+extern char *bitmap_button_ext_desktop_my_machine_generic[];
+extern char *bitmap_button_ext_desktop_my_machine_gomas[];
+extern char *bitmap_button_ext_desktop_my_machine_zx81[];
+extern char *bitmap_button_ext_desktop_my_machine_zx80[];
+extern char *bitmap_button_ext_desktop_my_machine_ql[];
+
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
 #define EXT_DESKTOP_BUTTONS_ANCHO 26

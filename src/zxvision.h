@@ -531,7 +531,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 43
+#define MAX_F_FUNCTIONS 44
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -577,7 +577,8 @@ enum defined_f_function_ids {
     F_FUNCION_DESKTOP_TAPE,
     F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,
     F_FUNCION_MACHINE_SELECTION,
-    F_FUNCION_SET_MACHINE
+    F_FUNCION_SET_MACHINE,
+    F_FUNCION_DESKTOP_MY_MACHINE
 };
 //Nota: F_FUNCION_BACKGROUND_WINDOW no se llama de la misma manera que las otras funciones F
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window
@@ -895,6 +896,7 @@ extern int menu_simple_five_choices(char *texto_ventana,char *texto_interior,cha
 extern int menu_simple_six_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6);
 extern int menu_simple_seven_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6,char *opcion7);
 extern int menu_simple_eight_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8);
+extern int menu_simple_nine_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8,char *opcion9);
 
 extern void menu_refresca_pantalla(void);
 

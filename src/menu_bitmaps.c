@@ -581,15 +581,15 @@ char *bitmap_button_ext_desktop_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_set_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
-  	"                          ",      
-	"                          ",		
-	"                          ",		
-	"                          ",	
-	"                          ",			
-	"                          ",			
-	"                          ", 		
-	"                          ",		
-	"                          ",		
+  	"              xx          ",      		
+	"              xgx         ",		
+	"       xxxxxxxxggx        ",	
+	"       xggggggggggx       ",			
+	"       xgggggggggggx      ",			
+	"       xggggggggggx       ", 		
+	"       xxxxxxxxggx        ",		
+	"              xgx         ",	
+    "              xx          ",	
 	"                          ",	//10	
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
@@ -607,6 +607,9 @@ char *bitmap_button_ext_desktop_set_machine[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxrygbx",
 	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
+
+
+
 
 //Para lower icons
 
@@ -3097,3 +3100,164 @@ char *bitmap_button_ext_desktop_file_tape[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xwwwwwwwwwwwwwwwwwwwwwwx ",		
 	" xxxxxxxxxxxxxxxxxxxxxxxx "//25		
 };    
+
+
+//Icono "My machine" generico
+char *bitmap_button_ext_desktop_my_machine_generic[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwxry",		
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",		
+	"xxxxxxwwxwwwwwwwwxwwxxrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
+
+//Icono "My machine" para un gomas
+char *bitmap_button_ext_desktop_my_machine_gomas[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwry",		
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",		
+	"xxxwwxwwxwwxwwxwwxwwxwrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
+//Icono "My machine" para ZX81
+char *bitmap_button_ext_desktop_my_machine_zx81[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrrxrxrxrrxrxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+
+//Icono "My machine" para ZX80
+char *bitmap_button_ext_desktop_my_machine_zx80[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",	
+	"WWWWWWWWWWxxxxxxxWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWWWWWWWWxxxxxxxWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	"WWWWWWWWWWxxxxxxxWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",	
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",	//10	
+	"WWxxWxxWxxWxxWWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWyyWyWyWyyWyyWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WxxxxxxxxxxxxxxxxxxxxxxxxW",		
+	"WxbbxbbxbbxbbxbbxbbxbbxxxW",		
+	"WxxxxxxxxxxxxxxxxxxxxxxxxW",		
+	"WxxbbxbbxbbxbbxbbxbbxbbxxW",		
+	"WxxxxxxxxxxxxxxxxxxxxxxxxW",    //20
+	"WxxxbbxbbxbbxbbxbbxbbxbbxW",		
+	"WxxxxxxxxxxxxxxxxxxxxxxxxW",		
+	"WxxbbxbbxbbxbbxbbxbbxbbxxW",		
+	"WxxxxxxxxxxxxxxxxxxxxxxxxW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
+};
+
+
+
+
+//Icono "My machine" para un QL
+char *bitmap_button_ext_desktop_my_machine_ql[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xwwxxwxwwxwwxwwxwwxwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xwwxxwwwxwwxwwxwwxwxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxwxxxxxxx",    //20
+	"xwwxxwwxwwxwwxwwxwwxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xwwxxwwxwwwwwxwwxwwxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxWWxWWx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+};

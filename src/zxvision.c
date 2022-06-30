@@ -210,8 +210,10 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Para una cinta
     {"LinkToTape",F_FUNCION_DESKTOP_TAPE,bitmap_button_ext_desktop_file_tape},
 
-    //Para el esto
-    {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload}
+    //Para el resto
+    {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload},
+
+    {"MyMachine",F_FUNCION_DESKTOP_MY_MACHINE,bitmap_button_ext_desktop_my_machine_generic}
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
@@ -641,14 +643,17 @@ void create_default_zxdesktop_configurable_icons(void)
     indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
     if (indice_icono>=0) {
         //Y posicion un tanto arbitraria
-        zxvision_set_configurable_icon_position(indice_icono,x,128);
+        zxvision_set_configurable_icon_position(indice_icono,x+48,128);
     }    
 
-    //debugcpu
-    /*indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DEBUGCPU);
+    //My Machine
+    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_MY_MACHINE);
     if (indice_icono>=0) {
-        zxvision_set_configurable_icon_position(indice_icono,x+48,128);  
-    }*/
+        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"My Machine");
+
+        //Y posicion un tanto arbitraria
+        zxvision_set_configurable_icon_position(indice_icono,x,128);  
+    }
 
 
 
@@ -5067,6 +5072,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
     enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_accion].id_funcion;
 
+    //Comportamiento icono diferente para trash
     if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
         //Ver si papelera no esta vacia
         if (if_zxdesktop_trash_not_empty()) {
@@ -5086,6 +5092,24 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
                 bitmap=bitmap_button_ext_desktop_trash_open;
             }
         }
+    }
+
+    //Comportamiento icono diferente para My Machine
+    if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
+        //Para un gomas
+        if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
+            bitmap=bitmap_button_ext_desktop_my_machine_gomas;
+        }
+        else if (MACHINE_IS_ZX81) {
+            bitmap=bitmap_button_ext_desktop_my_machine_zx81;
+        }
+        else if (MACHINE_IS_ZX80) {
+            bitmap=bitmap_button_ext_desktop_my_machine_zx80;
+        }      
+
+        else if (MACHINE_IS_QL) {
+            bitmap=bitmap_button_ext_desktop_my_machine_ql;
+        }              
     }
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
@@ -19723,6 +19747,74 @@ int menu_simple_eight_choices(char *texto_ventana,char *texto_interior,char *opc
 
 
 }
+
+//retorna 1 si opcion 1
+//retorna 2 si opcion 2
+//retorna 3 si opcion 3
+//retorna 4 si opcion 4
+//retorna 5 si opcion 5
+//retorna 6 si opcion 6
+//retorna 7 si opcion 7
+//retorna 8 si opcion 8
+//retorna 9 si opcion 9
+//retorna 0 si ESC
+int menu_simple_nine_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,
+    char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8,char *opcion9)
+{
+
+
+    menu_espera_no_tecla();
+
+
+	menu_item *array_menu_simple_nine_choices;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+	//Siempre indicamos la primera opcion
+	int simple_nine_choices_opcion_seleccionada=1;
+        do {
+
+		    menu_add_item_menu_inicial_format(&array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion5);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion6);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion7);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion8);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion9);
+
+            //separador adicional para que quede mas grande la ventana y mas mono
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+            retorno_menu=menu_dibuja_menu(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    return simple_nine_choices_opcion_seleccionada;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
+
 
 
 

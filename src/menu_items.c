@@ -32921,6 +32921,12 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             }
         break;
 
+        case F_FUNCION_DESKTOP_MY_MACHINE:
+            //TODO
+            //de momento esto
+            menu_hardware_settings(0);
+        break;
+
         case F_FUNCION_REWIND:
             snapshot_in_ram_rewind();
         break;
