@@ -3633,17 +3633,49 @@ char *bitmap_button_ext_desktop_my_machine_msx[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		//10
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",				
-	"xxxxxxrxxrxxxxxx      xxxx",		
-	"xggxxxgxxgxxxxxx      xxRx",		
+	"xxxxxxxrxxrxxxx       xxxx",		
+	"xxggxxxgxxgxxxx       xxRx",		
+	"xxxxxxxxxxxxxxxRRxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwwxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxwwwxxx",		
+	"xxwxwwxwwxwwxwwxwxxwxwxwxx",		
+	"xxxxxxxxxxxxxxxxwxxwwxwwxx",    //20
+	"xxwwxwwxwwxwwxwwwxxwxwxwxx",		
+	"xxxxxxxxxxxxxxxxxxxxwwwxxx",		
+	"xxwxwwxwwwwxwwxwwxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-    " xxxxxxxxxxxxxxxxxxxxxxxx ",		
-	" xwwxwwxwwxwwxwwwxxxxxxxx ",		
-	" xxxxxxxxxxxxxxxxxxxwwwxx ",		
-	" xwxwwxwwxwwxwwxwxxwxwxwx ",		
-	" xxxxxxxxxxxxxxxwxxwwxwwx ",    //20
-	" xwwxwwxwwxwwxwwwxxwxwxwx ",		
-	" xxxxxxxxxxxxxxxxxxxwwwxx ",		
-	" xwxwwxwwwwxwwxwwxxxxxxxx ",		
-	" xxxxxxxxxxxxxxxxxxxxxxxx ",
-	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+
+//Icono "My machine" para un SVI318
+char *bitmap_button_ext_desktop_my_machine_svi318[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWwwwwwwWWWW",	
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		//10
+	"WWWWWWWWWWWWWWWWwwwwwwWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",				
+	"WWWWWWWWWWWWWWWW      WWWW",		
+	"WWxxxxWWWWWWWWWW      WWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWxxWxxWxxWxxWxxxWxxWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWxWxxWxxWxxWxxWxWWWWrrWWW",		
+	"WWWWWWWWWWWWWWWWWWWWrrrrWW",    //20
+	"WWxxWxxWxxWxxWxxxWWWrrrrWW",		
+	"WWWWWWWWWWWWWWWWWWWWWrrWWW",		
+	"WWWWxxWxxxxxxxWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
 };
