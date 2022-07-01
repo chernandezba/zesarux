@@ -3733,13 +3733,13 @@ char *bitmap_button_ext_desktop_my_machine_timex_ts2068[EXT_DESKTOP_BUTTONS_ANCH
 	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
 	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
 	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
-	"wwWWwWWwWWwWWwWWwwwwwwwwww",		
-	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
-	"wwwWWwWWwWWwWWwWWwwwwwwwww",		
-	"wwwwwwwwwwwwwwwwwwwwwwwwww",    //20
-	"wwwwWWwWWwWWwWWwWWwwwwwwww",		
-	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
-	"wrgbwwWWWWWWWWWwwwwwwwwwww",		
-	"wwwwwwwwwwwwwwwwwwwwwwwrrw",
-	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+	"wwWWwWWwWWwWWwWWwwwxxxxxxx",		
+	"wwwwwwwwwwwwwwwwwwwxwwwwww",		
+	"wwwWWwWWwWWwWWwWWwwxwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwxwwwwww",    //20
+	"wwwwWWwWWwWWwWWwWWwxwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwxwwwwww",		
+	"wrgbwwWWWWWWWWWwwwwxwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwxwwwrrw",
+	"wwwwwwwwwwwwwwwwwwwxwwwwww" 	 //25
 };
