@@ -3518,3 +3518,100 @@ char *bitmap_button_ext_desktop_my_machine_sms[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxrrrxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxx   xxxx" 	 //25
 };
+
+
+//Icono "My machine" para SG1000 
+char *bitmap_button_ext_desktop_my_machine_sg1000[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"  WWWWWWWWWWWWWWWWWWWWWW  ",		
+	" WWWWWWWWwwwwwwwwWWWWWWWW ",	
+	" WWwwwwWWw      wWWwwwwWW ",
+	" WWWWWWWWw      wWWWWWWWW ",		
+	"WWWwwwwWWwwwwwwwwWWwwwwWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",	
+	"WWWWbbbbbbbbbbbbbbbbbbWWWW",		
+	"WWWWbWWWWWWWWWWWWWWWWbWWWW",		
+	"WWWbWWWWWWWbbbbWWWWWWWbWWW",		
+	"WWWbWWWWWWWWWWWWWWWWWWbWWW",    //20
+	"WWbRRRRRRRRRRRRRRRRRRRRbWW",		
+	"WWbbbbbbbbbbbbbbbbbbbbbbWW",		
+	"WWbbbbbbbbbbbbbbbbbbbbbbWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	" WWWWWWWWWWWWWWWWWWRRWWWW ", 	 //25
+};
+
+
+
+
+//Icono "My machine" para un TK90X
+char *bitmap_button_ext_desktop_my_machine_tk90x[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+		
+//Icono "My machine" para un TK95
+char *bitmap_button_ext_desktop_my_machine_tk95[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWWxxrygbxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxcxwwxwwxwwxwwxwwxwwxcxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxccxwwxwwxwwxwwxwwxcccxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxcccxwwxwwxwwxwwxwwxccxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxccxwwxwwxwwwwwwwxccccxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};

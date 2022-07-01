@@ -25620,21 +25620,40 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
 	//margen suficiente para que quepa una linea ...
 	char buf_linea[64];
 
+    //Nombre maquina
     sprintf(buf_linea,"Machine: %s\n",get_machine_name(current_machine_type));
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
+    //CPU
     if (CPU_IS_MOTOROLA) {
-        strcpy(buf_linea,"CPU: Motorola 68008"); //TODO: de momento no hay otras maquinas emuladas que usen cpu diferente del 68008
+        strcpy(buf_linea,"CPU: Motorola 68008\n"); //TODO: de momento no hay otras maquinas emuladas que usen cpu diferente del 68008
     }
     else if (CPU_IS_SCMP) {
-        strcpy(buf_linea,"CPU: National Semiconductor SC/MP (INS8060)");
+        strcpy(buf_linea,"CPU: National Semiconductor SC/MP (INS8060)\n");
     }
     else {
-        strcpy(buf_linea,"CPU: Zilog Z80");
+        strcpy(buf_linea,"CPU: Zilog Z80\n");
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
-   
 
+    //Memoria
+    //Por defecto
+    int total_ram=48*1024;
+
+    //TODO:sumar posibles extensiones de memoria 
+    if (MACHINE_IS_SPECTRUM_16) {
+        total_ram=16*1024;
+    }
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128) {
+        total_ram=128*1024;
+    }
+    else if (MACHINE_IS_CPC_464) {
+        total_ram=64*1024;
+    }
+
+   
+    sprintf(buf_linea,"Total RAM: %d KB\n",total_ram/1024);
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 	menu_generic_message("Machine Information",text_buffer);
     
     free(text_buffer);
