@@ -3711,3 +3711,35 @@ char *bitmap_button_ext_desktop_my_machine_svi328[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
 };
+
+
+//Icono "My machine" para Timex TS 2068
+char *bitmap_button_ext_desktop_my_machine_timex_ts2068[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwBBBxxxwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWwWWwWWwWWwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwWWwWWwWWwWWwWWwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",    //20
+	"wwwwWWwWWwWWwWWwWWwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wrgbwwWWWWWWWWWwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwrrw",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+};
