@@ -3679,3 +3679,35 @@ char *bitmap_button_ext_desktop_my_machine_svi318[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
 };
+
+
+//Icono "My machine" para un SVI328
+char *bitmap_button_ext_desktop_my_machine_svi328[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWwwwwwwWWWW",	
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		//10
+	"WWWWWWWWWWWWWWWWwwwwwwWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",				
+	"WWWWWWWWWWWWWWWW      WWWW",		
+	"WWxxxxWWWWWWWWWW      WWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWxxWxxWxxWxxWxxxWxWxWxWxW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWxWxxWxxWxxWxxWxWxWxWxWxW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",    //20
+	"WWxxWxxWxxWxxWxxxWxWxWxWxW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWxW",		
+	"WWxxWxWxxxxxxxWxxWxWxWxWxW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
+};

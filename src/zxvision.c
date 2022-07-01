@@ -5171,7 +5171,11 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
         else if (MACHINE_IS_SVI_318) {
             bitmap=bitmap_button_ext_desktop_my_machine_svi318;
-        }                     
+        }      
+
+        else if (MACHINE_IS_SVI_328) {
+            bitmap=bitmap_button_ext_desktop_my_machine_svi328;
+        }                          
     }
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
