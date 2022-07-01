@@ -3743,3 +3743,37 @@ char *bitmap_button_ext_desktop_my_machine_timex_ts2068[EXT_DESKTOP_BUTTONS_ANCH
 	"wwwwwwwwwwwwwwwwwwwxwwwrrw",
 	"wwwwwwwwwwwwwwwwwwwxwwwwww" 	 //25
 };
+
+
+
+
+//Icono "My machine" para Z88
+char *bitmap_button_ext_desktop_my_machine_z88[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+    " xxxxxxxxxxxxxxxxxxxxxxxx ",	
+	"xxxxWWWxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxgggggggggggggggggggxxxx",		
+	"xxxgggggggggggggggggggxxxx",		
+	"xxxgggggggggggggggggggxxxx",	
+    "xxxwwwwwwwwwwwwwwwwwwwxxxx",	
+    "xxxwwwwwwwwwwwwwwwwwwwxxxx",    
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxx",    //20
+	"xxwwwwxwwxwwxwwxwwxwwxwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwxwxwwwwwwwwwxwxwxwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
