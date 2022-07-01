@@ -3615,3 +3615,35 @@ char *bitmap_button_ext_desktop_my_machine_tk95[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+//Icono "My machine" para un MSX
+char *bitmap_button_ext_desktop_my_machine_msx[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xWWWWxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		//10
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",				
+	"xxxxxxrxxrxxxxxx      xxxx",		
+	"xggxxxgxxgxxxxxx      xxRx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    " xxxxxxxxxxxxxxxxxxxxxxxx ",		
+	" xwwxwwxwwxwwxwwwxxxxxxxx ",		
+	" xxxxxxxxxxxxxxxxxxxwwwxx ",		
+	" xwxwwxwwxwwxwwxwxxwxwxwx ",		
+	" xxxxxxxxxxxxxxxwxxwwxwwx ",    //20
+	" xwwxwwxwwxwwxwwwxxwxwxwx ",		
+	" xxxxxxxxxxxxxxxxxxxwwwxx ",		
+	" xwxwwxwwwwxwwxwwxxxxxxxx ",		
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+};

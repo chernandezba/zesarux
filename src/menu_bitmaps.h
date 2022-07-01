@@ -148,6 +148,7 @@ extern char *bitmap_button_ext_desktop_my_machine_sms[];
 extern char *bitmap_button_ext_desktop_my_machine_sg1000[];
 extern char *bitmap_button_ext_desktop_my_machine_tk90x[];
 extern char *bitmap_button_ext_desktop_my_machine_tk95[];
+extern char *bitmap_button_ext_desktop_my_machine_msx[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
