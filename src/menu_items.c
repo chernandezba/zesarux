@@ -18789,7 +18789,8 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_SAM) strcpy(nombrebmp,"keyboard_sam.bmp");
     else if (MACHINE_IS_SG1000) strcpy(nombrebmp,"keyboard_sg1000.bmp");
     else if (MACHINE_IS_SMS) strcpy(nombrebmp,"keyboard_sms.bmp");
-    else if (MACHINE_IS_SVI) strcpy(nombrebmp,"keyboard_svi.bmp");
+    else if (MACHINE_IS_SVI_318) strcpy(nombrebmp,"keyboard_svi_318.bmp");
+    else if (MACHINE_IS_SVI_328) strcpy(nombrebmp,"keyboard_svi_328.bmp");
     else if (MACHINE_IS_TBBLUE) strcpy(nombrebmp,"keyboard_next.bmp");
     else if (MACHINE_IS_TIMEX_TS2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
     else if (MACHINE_IS_Z88) strcpy(nombrebmp,"keyboard_z88.bmp");
