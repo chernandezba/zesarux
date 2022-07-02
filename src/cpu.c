@@ -1289,8 +1289,8 @@ char *string_machines_list_description=
 							" P341     ZX Spectrum +3 (ROM v4.1)\n"
 							" P3S      ZX Spectrum +3 (Spanish)\n"							
 
-							" TS2068   Timex TS 2068\n"
                             " TC2048   Timex TC 2048\n"
+							" TS2068   Timex TS 2068\n"
 
 							" Inves    Inves Spectrum+\n"
               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
