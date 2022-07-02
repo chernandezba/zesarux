@@ -3158,7 +3158,7 @@ void set_machine_params(void)
 27=Amstrad +3 - Espa�ol
 
 28=Spectrum + English
-29 Reservado (algun otro modelo de Spectrum)
+29=Timex TC2048
 100=colecovision
 101=sega sg1000
 102=Spectravideo 318

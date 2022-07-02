@@ -659,7 +659,7 @@ En este caso es un ejemplo muy simple que es una maquina que se comporta como sp
 
 Formato diff:
 
-
+## Agregar en changelog
 diff --git a/src/Changelog b/src/Changelog
 index 38b9613..54e1043 100644
 --- a/src/Changelog
@@ -672,6 +672,8 @@ index 38b9613..54e1043 100644
  
  
  Improved ZX Spectrum Next emulation: added sprite rendering priority bit
+
+## Agregar en FEATURES
 diff --git a/src/FEATURES b/src/FEATURES
 index 49b094c..a6e5fe2 100644
 --- a/src/FEATURES
@@ -686,7 +688,7 @@ index 49b094c..a6e5fe2 100644
      * Cambridge Z88
      * Timex TS 2068 
 
-
+## Agregar ID maquina
 diff --git a/src/cpu.h b/src/cpu.h
 index 563c78c..090b532 100644
 --- a/src/cpu.h
@@ -709,7 +711,7 @@ index 563c78c..090b532 100644
  
  #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 
-
+## Agregar en listado descriptivo
 diff --git a/src/cpu.c b/src/cpu.c
 index 7771e2a..0bc9509 100644
 --- a/src/cpu.c
@@ -722,6 +724,7 @@ index 7771e2a..0bc9509 100644
  							" 128k     ZX Spectrum+ 128k\n"
  							" QL       QL\n"
  
+## Agregar en lista nombre maquinas
 @@ -2662,6 +2664,8 @@ struct s_machine_names machine_names[]={
      {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
      {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
@@ -731,14 +734,19 @@ index 7771e2a..0bc9509 100644
      {"MSX1",MACHINE_ID_MSX1},
      {"ColecoVision",MACHINE_ID_COLECO},
      {"SG-1000",MACHINE_ID_SG1000},
-@@ -2690,6 +2694,7 @@ struct s_machine_names machine_names[]={
- char *get_machine_name(z80_byte machine)
- {
- 	int i;
-+    //printf("Current machine: %d\n",machine);
- 
- 	for (i=0;i<99999;i++) {
- 		if (machine_names[i].nombre_maquina[0]==0) {
+
+## Agregar en listado ids maquinas (comentarios)
+@@ -3158,7 +3158,7 @@ void set_machine_params(void)
+ 27=Amstrad +3 - Espa�ol
+
+ 28=Spectrum + English
+-29 Reservado (algun otro modelo de Spectrum)
++29=Timex TC2048
+ 100=colecovision
+ 101=sega sg1000
+ 102=Spectravideo 318         
+
+ ## Agregar en set_machine_params, casos de maquinas y funciones lectura, escritura memoria y puertos   
 @@ -3746,7 +3751,8 @@ You don't need timings for H/V sync =)
  		break;
  
@@ -748,6 +756,8 @@ index 7771e2a..0bc9509 100644
  		poke_byte=poke_byte_spectrum_48k;
  		peek_byte=peek_byte_spectrum_48k;
  		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
+
+## Agregar en carga de ROM
 @@ -4589,6 +4595,7 @@ void rom_load(char *romfilename)
                  break;
  
