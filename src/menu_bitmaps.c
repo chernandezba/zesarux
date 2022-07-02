@@ -3744,7 +3744,36 @@ char *bitmap_button_ext_desktop_my_machine_timex_ts2068[EXT_DESKTOP_BUTTONS_ANCH
 	"wwwwwwwwwwwwwwwwwwwxwwwwww" 	 //25
 };
 
-
+//Icono "My machine" para Timex TC 2048
+char *bitmap_button_ext_desktop_my_machine_timex_tc2048[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxBBBWWWxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xrgbxxWWWWWWWWWWWWWWWxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
 
 
 //Icono "My machine" para Z88

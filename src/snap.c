@@ -3973,10 +3973,18 @@ void save_zx_snapshot(char *filename)
 
 	//Si version inferior a 6, no permitir ACE ni otras
 	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || 
-         MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG) && snap_zx_version_save<6) {
+         MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA) && snap_zx_version_save<6) {
 		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
                 return;
         }
+
+    //Otras maquinas no soportadas por formato ZX
+    //TODO: meter listado completo: MSX, SMS, etc .. y cualquier otra nueva que ya no estan soportados por snapshot de tipo .ZX
+	if (MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 ) {
+		debug_printf (VERBOSE_ERR,"Machine type not supported on ZX snapshot");
+                return;
+        }
+
 
 
 

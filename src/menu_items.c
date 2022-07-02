@@ -18793,6 +18793,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_SVI_328) strcpy(nombrebmp,"keyboard_svi_328.bmp");
     else if (MACHINE_IS_TBBLUE) strcpy(nombrebmp,"keyboard_next.bmp");
     else if (MACHINE_IS_TIMEX_TS2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
+    else if (MACHINE_IS_TIMEX_TC2048) strcpy(nombrebmp,"keyboard_tc2048.bmp");
     else if (MACHINE_IS_Z88) strcpy(nombrebmp,"keyboard_z88.bmp");
     else if (MACHINE_IS_SPECTRUM_P2) strcpy(nombrebmp,"keyboard_p2.bmp");
     else if (MACHINE_IS_SPECTRUM_P2A_P3) strcpy(nombrebmp,"keyboard_p3.bmp");

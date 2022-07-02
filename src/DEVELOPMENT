@@ -685,17 +685,31 @@ index 49b094c..a6e5fe2 100644
      * Sinclair QL
      * Cambridge Z88
      * Timex TS 2068 
-diff --git a/src/TODO_this_version b/src/TODO_this_version
-index d26da46..341d30e 100644
---- a/src/TODO_this_version
-+++ b/src/TODO_this_version
-@@ -175,5 +175,3 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
+
+
+diff --git a/src/cpu.h b/src/cpu.h
+index 563c78c..090b532 100644
+--- a/src/cpu.h
++++ b/src/cpu.h
+@@ -386,6 +386,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
+ #define MACHINE_ID_SPECTRUM_P3_41		26
+ #define MACHINE_ID_SPECTRUM_P3_SPA		27
  
- -botones ampliar zx desktop en maquina ql por ejemplo queda encima del logo
++#define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
  
--
---agregar zx spectrum 48k+
-\ No newline at end of file
+ #define MACHINE_ID_COLECO 100
+ #define MACHINE_ID_SG1000 101
+@@ -477,8 +478,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
+ 
+ 
+ 
+-#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_SPA )
++#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
++#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
+ 
+ #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
+
+
 diff --git a/src/cpu.c b/src/cpu.c
 index 7771e2a..0bc9509 100644
 --- a/src/cpu.c
@@ -708,14 +722,6 @@ index 7771e2a..0bc9509 100644
  							" 128k     ZX Spectrum+ 128k\n"
  							" QL       QL\n"
  
-@@ -1293,6 +1294,7 @@ char *string_machines_list_description=
- 							" Inves    Inves Spectrum+\n"
-               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
- 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
-+                     
- 
- 					    " TK90X    Microdigital TK90X\n"
- 					    " TK90XS   Microdigital TK90X (Spanish)\n"
 @@ -2662,6 +2664,8 @@ struct s_machine_names machine_names[]={
      {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
      {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
@@ -750,28 +756,15 @@ index 7771e2a..0bc9509 100644
                  romfilename="48.rom";
                  break;
  
-diff --git a/src/cpu.h b/src/cpu.h
-index 563c78c..090b532 100644
---- a/src/cpu.h
-+++ b/src/cpu.h
-@@ -386,6 +386,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
- #define MACHINE_ID_SPECTRUM_P3_41		26
- #define MACHINE_ID_SPECTRUM_P3_SPA		27
+
+
+
+
  
-+#define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
- 
- #define MACHINE_ID_COLECO 100
- #define MACHINE_ID_SG1000 101
-@@ -477,8 +478,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
- 
- 
- 
--#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_SPA )
-+#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
-+#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
- 
- #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
- 
+
+
+
+
 diff --git a/src/keyboard_48p.bmp b/src/keyboard_48p.bmp
 new file mode 100644
 index 0000000..3c7fcc7
@@ -842,20 +835,23 @@ index 1f3ba0d..728d9ef 100644
      else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
      else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
      else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
+
+
 diff --git a/src/snap.c b/src/snap.c
-index 175b2ea..04c4b41 100644
+index 04c4b41..2786476 100644
 --- a/src/snap.c
 +++ b/src/snap.c
-@@ -3972,7 +3972,8 @@ void save_zx_snapshot(char *filename)
-         }
- 
- 	//Si version inferior a 6, no permitir ACE ni otras
--	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA) && snap_zx_version_save<6) {
-+	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || 
-+         MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG) && snap_zx_version_save<6) {
- 		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
+@@ -3973,11 +3973,19 @@ void save_zx_snapshot(char *filename)
+
+    //Otras maquinas no soportadas por formato ZX
+    //TODO: meter listado completo: MSX, SMS, etc .. y cualquier otra nueva
+-       if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {    
++       if (MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 ) {
+                debug_printf (VERBOSE_ERR,"Machine type not supported on ZX snapshot");
                  return;
          }
+
+
 diff --git a/src/tape.c b/src/tape.c
 index 66b9e0b..98e2885 100644
 --- a/src/tape.c

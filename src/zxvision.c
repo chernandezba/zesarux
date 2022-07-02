@@ -5181,6 +5181,10 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
             bitmap=bitmap_button_ext_desktop_my_machine_timex_ts2068;
         }       
 
+        else if (MACHINE_IS_TIMEX_TC2048) {
+            bitmap=bitmap_button_ext_desktop_my_machine_timex_tc2048;
+        }           
+
         else if (MACHINE_IS_Z88) {
             bitmap=bitmap_button_ext_desktop_my_machine_z88;
         }                                   

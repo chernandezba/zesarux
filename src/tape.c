@@ -1541,6 +1541,7 @@ void gestionar_autoload_spectrum(void)
 			case MACHINE_ID_MICRODIGITAL_TK95:
             case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
             case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+            case MACHINE_ID_TIMEX_TC2048:
 				//Ver para maquinas 48k
 				gestionar_autoload_spectrum_48kmode();
 				break;

@@ -4,6 +4,7 @@ Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header 
 Added ZSF support for Timex TS2068
 Added setting for path where to download files from the speccy and zx81 online browser
 Added machine Spectrum 48k+
+Added machine TC2048
 
 
 Improved ZX Spectrum Next emulation: added sprite rendering priority bit

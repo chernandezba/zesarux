@@ -551,14 +551,15 @@ char *array_fabricantes_hotkey[]={
         "Se~~ga",
         "~~Sinclair Research",
         "Spectravideo Intl",
+        "Timex Computers",
         "~~Timex Sinclair",
         "TS ~~Labs",
         "~~VTrucco/FB Labs",
         "~~ZXUno Team"
 };
 
-//Si letra es espacio->no hay letra. spectravideo no hay letras libres
-char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs tlvz";
+//Si letra es espacio->no hay letra. spectravideo o timex computers no hay letras libres
+char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs  tlvz";
 
 
 
@@ -569,6 +570,10 @@ int array_maquinas_sinclair[]={
 
 int array_maquinas_timex_sinclair[]={
 	17,255
+};
+
+int array_maquinas_timex_computers[]={
+	MACHINE_ID_TIMEX_TC2048,255
 };
 
 int array_maquinas_cambridge_computers[]={
@@ -658,6 +663,10 @@ int *return_maquinas_fabricante(int fabricante)
 		case FABRICANTE_TIMEX_SINCLAIR:
 			return array_maquinas_timex_sinclair;
 		break;
+
+		case FABRICANTE_TIMEX_COMPUTERS:
+			return array_maquinas_timex_computers;
+		break;        
 
 		case FABRICANTE_CAMBRIDGE_COMPUTERS:
 			return array_maquinas_cambridge_computers;
@@ -792,6 +801,10 @@ int return_fabricante_maquina(int maquina)
                 case MACHINE_ID_CPC_4128:
 			return FABRICANTE_AMSTRAD;
 		break;
+
+        case MACHINE_ID_TIMEX_TC2048:
+            return FABRICANTE_TIMEX_COMPUTERS;
+        break;
 
                 case MACHINE_ID_COLECO:
 			return FABRICANTE_COLECO_INDUSTRIES;
@@ -10518,6 +10531,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"ZXUNO",14},
    {"Chloe140",15},
    {"Chloe280",16},
+   {"TC2048",MACHINE_ID_TIMEX_TC2048},
    {"TS2068",17},
    {"Prism",18},
    {"TBBlue",19},

@@ -175,3 +175,6 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
 -botones ampliar zx desktop en maquina ql por ejemplo queda encima del logo
 
+-si al iniciar carga con rom no existe, pantalla se ve mal
+Error:    Unable to open rom file tc2048.rom
+Do not create default icons as there are already at least one created

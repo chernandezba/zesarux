@@ -100,6 +100,7 @@ __FEATURES__
     * Sinclair QL
     * Cambridge Z88
     * Timex TS 2068 
+    * Timex TC 2048 
     * Sam Coupe
     * Pentagon 
     * Chloe 140 SE, 280 SE

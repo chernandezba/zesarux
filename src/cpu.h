@@ -387,6 +387,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_SPECTRUM_P3_SPA		27
 
 #define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
+#define MACHINE_ID_TIMEX_TC2048			29
 
 #define MACHINE_ID_COLECO 100
 #define MACHINE_ID_SG1000 101
@@ -429,6 +430,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CHLOE_280SE (current_machine_type==MACHINE_ID_CHLOE_280SE)
 
 #define MACHINE_IS_TIMEX_TS2068 (current_machine_type==MACHINE_ID_TIMEX_TS2068)
+#define MACHINE_IS_TIMEX_TC2048 (current_machine_type==MACHINE_ID_TIMEX_TC2048)
 
 #define MACHINE_IS_PRISM (current_machine_type==MACHINE_ID_PRISM)
 #define MACHINE_IS_TBBLUE (current_machine_type==MACHINE_ID_TBBLUE)
@@ -480,7 +482,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_SPECTRUM_48_PLUS_SPA (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
 #define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
-#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
+#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048)
 
 #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
 

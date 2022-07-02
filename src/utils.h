@@ -521,13 +521,14 @@ Science of Cambridge
 Sega
 Sinclair Research
 Spectravideo Intl
+Timex Computers
 Timex Sinclair
 TS Labs
 VTrucco/FB Labs
 ZXUno Team
 */
 
-#define TOTAL_FABRICANTES 21
+#define TOTAL_FABRICANTES 22
 
 
 #define FABRICANTE_AMSTRAD                      0
@@ -547,10 +548,11 @@ ZXUno Team
 #define FABRICANTE_SEGA                         14
 #define FABRICANTE_SINCLAIR                     15
 #define FABRICANTE_SPECTRAVIDEO_INTERNATIONAL   16
-#define FABRICANTE_TIMEX_SINCLAIR               17
-#define FABRICANTE_TSLABS                       18
-#define FABRICANTE_TBBLUE                       19
-#define FABRICANTE_ZXUNO_TEAM                   20
+#define FABRICANTE_TIMEX_COMPUTERS              17
+#define FABRICANTE_TIMEX_SINCLAIR               18
+#define FABRICANTE_TSLABS                       19
+#define FABRICANTE_TBBLUE                       20
+#define FABRICANTE_ZXUNO_TEAM                   21
 
 
 
