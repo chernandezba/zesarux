@@ -3763,6 +3763,10 @@ You don't need timings for H/V sync =)
 		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
 		lee_puerto=lee_puerto_spectrum;
 
+        if (MACHINE_IS_TIMEX_TC2048) {
+            enable_timex_video();
+        }
+
 		break;
 
                 case 2:
