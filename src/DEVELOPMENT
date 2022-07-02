@@ -650,3 +650,305 @@ Alternativamente se puede usar parametro must_clear_cache_on_draw de la ventana,
 que suele ser caracter " " y se le dice que no haga cache de ese caracter, con lo que se borra la ventana (incluido logicamente los pixeles)
 
 Aparte de todo eso, cuando no se permite background windows, habitualmente solo se tiene una ventana visible, pero se puede dar en caso de 2 a la vez, por ejemplo al pulsar F1 en algun item de menu. Es por eso que hay varias funciones que consideran cuando hay mas de 1 ventana a la vez (aunque no se permitan en background), como el redraw all windows o la función de ver si una ventana está encima de otra que se llama desde draw window contents (zxvision_coords_in_superior_windows)
+
+---
+
+Para poder agregar una maquina
+
+En este caso es un ejemplo muy simple que es una maquina que se comporta como spectrum 48.
+
+Formato diff:
+
+
+diff --git a/README.md b/README.md
+index 86d1ebe..0fabbe4 100644
+--- a/README.md
++++ b/README.md
+@@ -96,7 +96,7 @@ __FEATURES__
+     * Science of Cambridge MK14
+     * Sinclair ZX80
+     * Sinclair ZX81
+-    * Spectrum models: 16k, 48k (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
++    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
+     * Sinclair QL
+     * Cambridge Z88
+     * Timex TS 2068 
+@@ -283,7 +283,7 @@ __FEATURES__
+ 
+ * Text adventure debugger: On a Quill/Paws/Daad text adventure you can Step to Step condact, watch flags/objects, list messages (objects, user/system messages, locations, compressed tokens, vocabulary), connections, Text Adventure Map. Can also view graphics from a Quill, Paws, Daad or Gac aventure.
+ 
+-* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, trd, dsk, mdv, hdf, etc. Can also browse inside file system images (.mmc, .img, etc)
++* File utilities menu: Allowing to view, expand and convert some common file formats: tap, tzx, trd, dsk, mdv, hdf, ddh, etc. Can also browse inside file system images (.mmc, .img, etc)
+ 
+ * Accessibility support: Print char traps allows to capture generated text from almost any program or game, using standard ROM calls (RST 10H) or even non standard print character routines. Can send generated text from a game to a text-to-speech program. It's ready for text to speech support for blind or visually impaired people. Menu emulator can also be read by a text-to-speech program.
+ 
+diff --git a/src/Changelog b/src/Changelog
+index 38b9613..54e1043 100644
+--- a/src/Changelog
++++ b/src/Changelog
+@@ -3,6 +3,7 @@ Version 10.2 - Hysteria edition. 14 June 2022
+ Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
+ Added ZSF support for Timex TS2068
+ Added setting for path where to download files from the speccy and zx81 online browser
++Added machine Spectrum 48k+
+ 
+ 
+ Improved ZX Spectrum Next emulation: added sprite rendering priority bit
+diff --git a/src/FEATURES b/src/FEATURES
+index 49b094c..a6e5fe2 100644
+--- a/src/FEATURES
++++ b/src/FEATURES
+@@ -4,7 +4,7 @@
+     * Science of Cambridge MK14
+     * Sinclair ZX80
+     * Sinclair ZX81
+-    * Spectrum models: 16k, 48k (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
++    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
+     * Sinclair QL
+     * Cambridge Z88
+     * Timex TS 2068 
+diff --git a/src/TODO_this_version b/src/TODO_this_version
+index d26da46..341d30e 100644
+--- a/src/TODO_this_version
++++ b/src/TODO_this_version
+@@ -175,5 +175,3 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
+ 
+ -botones ampliar zx desktop en maquina ql por ejemplo queda encima del logo
+ 
+-
+--agregar zx spectrum 48k+
+\ No newline at end of file
+diff --git a/src/cpu.c b/src/cpu.c
+index 7771e2a..0bc9509 100644
+--- a/src/cpu.c
++++ b/src/cpu.c
+@@ -1274,6 +1274,7 @@ char *string_machines_list_description=
+ 							" ZX81     ZX81\n"
+               " 16k      ZX Spectrum 16k\n"
+               " 48k      ZX Spectrum 48k\n"
++              " 48kp     ZX Spectrum+ 48k\n"
+ 							" 128k     ZX Spectrum+ 128k\n"
+ 							" QL       QL\n"
+ 
+@@ -1293,6 +1294,7 @@ char *string_machines_list_description=
+ 							" Inves    Inves Spectrum+\n"
+               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
+ 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
++                     
+ 
+ 					    " TK90X    Microdigital TK90X\n"
+ 					    " TK90XS   Microdigital TK90X (Spanish)\n"
+@@ -2662,6 +2664,8 @@ struct s_machine_names machine_names[]={
+     {"ZX Spectrum +3 (ROM v4.1)",		MACHINE_ID_SPECTRUM_P3_41},
+     {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
+ 
++    {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
++
+     {"MSX1",MACHINE_ID_MSX1},
+     {"ColecoVision",MACHINE_ID_COLECO},
+     {"SG-1000",MACHINE_ID_SG1000},
+@@ -2690,6 +2694,7 @@ struct s_machine_names machine_names[]={
+ char *get_machine_name(z80_byte machine)
+ {
+ 	int i;
++    //printf("Current machine: %d\n",machine);
+ 
+ 	for (i=0;i<99999;i++) {
+ 		if (machine_names[i].nombre_maquina[0]==0) {
+@@ -3746,7 +3751,8 @@ You don't need timings for H/V sync =)
+ 		break;
+ 
+ 		case 1:
+-		case 20:
++		case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
++        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+ 		poke_byte=poke_byte_spectrum_48k;
+ 		peek_byte=peek_byte_spectrum_48k;
+ 		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
+@@ -4589,6 +4595,7 @@ void rom_load(char *romfilename)
+                 break;
+ 
+                 case 1:
++                case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+                 romfilename="48.rom";
+                 break;
+ 
+diff --git a/src/cpu.h b/src/cpu.h
+index 563c78c..090b532 100644
+--- a/src/cpu.h
++++ b/src/cpu.h
+@@ -373,7 +373,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
+ #define MACHINE_ID_TIMEX_TS2068			17
+ #define MACHINE_ID_PRISM			18
+ #define MACHINE_ID_TBBLUE			19
+-#define MACHINE_ID_SPECTRUM_48_SPA		20
++#define MACHINE_ID_SPECTRUM_48_PLUS_SPA		20
+ 
+ #define MACHINE_ID_PENTAGON			21
+ #define MACHINE_ID_CHROME			22
+@@ -386,6 +386,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
+ #define MACHINE_ID_SPECTRUM_P3_41		26
+ #define MACHINE_ID_SPECTRUM_P3_SPA		27
+ 
++#define MACHINE_ID_SPECTRUM_48_PLUS_ENG		28
+ 
+ #define MACHINE_ID_COLECO 100
+ #define MACHINE_ID_SG1000 101
+@@ -477,8 +478,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
+ 
+ 
+ 
+-#define MACHINE_IS_SPECTRUM_48_SPA (current_machine_type==MACHINE_ID_SPECTRUM_48_SPA)
+-#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_SPA )
++#define MACHINE_IS_SPECTRUM_48_PLUS_SPA (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
++#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
++#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG)
+ 
+ #define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
+ 
+diff --git a/src/keyboard_48p.bmp b/src/keyboard_48p.bmp
+new file mode 100644
+index 0000000..3c7fcc7
+Binary files /dev/null and b/src/keyboard_48p.bmp differ
+diff --git a/src/menu_bitmaps.c b/src/menu_bitmaps.c
+index 77ac612..a405ae3 100644
+--- a/src/menu_bitmaps.c
++++ b/src/menu_bitmaps.c
+@@ -3294,6 +3294,36 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[EXT_DESKTOP_BUTTONS_
+ 	"xxxxxxxxxxxxxxxxxxrygbxxxx" 	 //25
+ };
+ 
++//Icono "My machine" para un Spectrum 48k+ Spanish
++char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[EXT_DESKTOP_BUTTONS_ANCHO]={
++    //01234567890123456789012345
++    "                          ",     //0
++  	"                          ", 		
++	"                          ",	
++	"                          ",
++	"                          ",		
++	"                          ",
++	"                          ",
++	"                          ",
++	"                          ",
++    "                          ",	
++	"                          ",	//10	
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxrxrrxxxxxxxxxxxxxxxxxxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxwxwwxwwxwwxwwxwwxwwxwxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxwxxx",    //20
++	"xxwwwxwwxwwxwwxwwxwwxwwxxx",		
++	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
++	"xxwxwwxwwxwwwwwwxwwxwwrygb",		
++	"xxxxxxxxxxxxxxxxxxxxxrygbx",
++	"xxxxxxxxxxxxxxxxxxxxrygbxx" 	 //25
++};
+ 
+ //Icono "My machine" para un Spectrum 128k+ English
+ char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[EXT_DESKTOP_BUTTONS_ANCHO]={
+diff --git a/src/menu_bitmaps.h b/src/menu_bitmaps.h
+index d7693a9..fdb310d 100644
+--- a/src/menu_bitmaps.h
++++ b/src/menu_bitmaps.h
+@@ -141,6 +141,7 @@ extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[];
+ extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[];
+ extern char *bitmap_button_ext_desktop_my_machine_spectrum_p2[];
+ extern char *bitmap_button_ext_desktop_my_machine_spectrum_p3[];
++extern char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[];
+ 
+ #define EXT_DESKTOP_TOTAL_BUTTONS 14
+ 
+diff --git a/src/menu_items.c b/src/menu_items.c
+index 1f3ba0d..728d9ef 100644
+--- a/src/menu_items.c
++++ b/src/menu_items.c
+@@ -18796,7 +18796,8 @@ void menu_help_keyboard_load_bmp(void)
+     else if (MACHINE_IS_SPECTRUM_P2) strcpy(nombrebmp,"keyboard_p2.bmp");
+     else if (MACHINE_IS_SPECTRUM_P2A_P3) strcpy(nombrebmp,"keyboard_p3.bmp");
+     else if (MACHINE_IS_SPECTRUM_16) strcpy(nombrebmp,"keyboard_16.bmp");
+-    else if (MACHINE_IS_SPECTRUM_48_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
++    else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) strcpy(nombrebmp,"keyboard_48s.bmp");
++    else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) strcpy(nombrebmp,"keyboard_48p.bmp"); //mismo teclado que el 128, aunque dejo archivos separados
+     else if (MACHINE_IS_SPECTRUM_128) strcpy(nombrebmp,"keyboard_128.bmp");
+     else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
+     else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
+diff --git a/src/snap.c b/src/snap.c
+index 175b2ea..04c4b41 100644
+--- a/src/snap.c
++++ b/src/snap.c
+@@ -3972,7 +3972,8 @@ void save_zx_snapshot(char *filename)
+         }
+ 
+ 	//Si version inferior a 6, no permitir ACE ni otras
+-	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_SPA) && snap_zx_version_save<6) {
++	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || 
++         MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG) && snap_zx_version_save<6) {
+ 		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
+                 return;
+         }
+diff --git a/src/tape.c b/src/tape.c
+index 66b9e0b..98e2885 100644
+--- a/src/tape.c
++++ b/src/tape.c
+@@ -1539,7 +1539,7 @@ void gestionar_autoload_spectrum(void)
+ 			case MACHINE_ID_MICRODIGITAL_TK90X:
+ 			case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+ 			case MACHINE_ID_MICRODIGITAL_TK95:
+-            case MACHINE_ID_SPECTRUM_48_SPA:
++            case MACHINE_ID_SPECTRUM_48_PLUS_SPA:
+ 				//Ver para maquinas 48k
+ 				gestionar_autoload_spectrum_48kmode();
+ 				break;
+diff --git a/src/utils.c b/src/utils.c
+index a6b8c23..8e3051b 100644
+--- a/src/utils.c
++++ b/src/utils.c
+@@ -564,7 +564,7 @@ char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs tlvz";
+ 
+ //Array de maquinas por fabricante, acabado en 255
+ int array_maquinas_sinclair[]={
+-	120,121,0,1,6,160,255
++	120,121,0,1,MACHINE_ID_SPECTRUM_48_PLUS_ENG,6,160,255
+ };
+ 
+ int array_maquinas_timex_sinclair[]={
+@@ -752,6 +752,7 @@ int return_fabricante_maquina(int maquina)
+ 		case 0:
+ 		case 1:
+ 		case 6:
++        case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+ 		case 120:
+ 		case 121:
+ 		case 160:
+@@ -10499,6 +10500,7 @@ struct s_machines_short_names_id {
+ struct s_machines_short_names_id machines_short_names_id[]={
+    {"16k",0},
+    {"48k",1},
++   {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG},
+    {"48ks",20},
+    {"Inves",2},
+    {"TK90X",3},
+diff --git a/src/zxvision.c b/src/zxvision.c
+index 363164e..23697c6 100644
+--- a/src/zxvision.c
++++ b/src/zxvision.c
+@@ -5130,6 +5130,14 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
+ 
+         else if (MACHINE_IS_SPECTRUM_P3) {
+             bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
++        }  
++
++        else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) {
++            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
++        }      
++
++        else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
++            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
+         }            
+     }
+ 
