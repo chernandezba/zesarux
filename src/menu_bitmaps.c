@@ -3551,7 +3551,36 @@ char *bitmap_button_ext_desktop_my_machine_sg1000[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" WWWWWWWWWWWWWWWWWWRRWWWW ", 	 //25
 };
 
-
+//Icono "My machine" para Colecoo 
+char *bitmap_button_ext_desktop_my_machine_coleco[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxx x x x x x x",	
+	"xxwwxxwxwxwxwx x x x x x x",	//10	
+	"xwwwwxxxxxxxxx x x x x x x",		
+	"xwwwwxwxwxwxwxxxxxxxxxxxxx",		
+	"xxwwxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxxwxwxwxwxxxxxxxxxxxxx",		
+	"xwwwwxxxxxxxxxxxxxxxxxxxxx",		
+	"xwwwwxwxwxwxwxxxxxxxxxxxxx",			
+	"xxwwxxxxxxxxxxxxxxxxxxxxxx",    
+	"xxxxxxxxxxxxxxxxwwwwwwxxxx",		
+	"xxxxxxxxxxxxxxxxwwwwwwxxxx",		
+	"x x x x x xxxxwwwwwwwwwxxx",		
+	"x x x x x xxxxwwwwwwwwwxxx",
+    "x x x x x xxxxrrxxxxxrrxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
 
 
 //Icono "My machine" para un TK90X

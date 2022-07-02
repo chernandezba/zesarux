@@ -5156,6 +5156,10 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
             bitmap=bitmap_button_ext_desktop_my_machine_sg1000;
         }  
 
+        else if (MACHINE_IS_COLECO) {
+            bitmap=bitmap_button_ext_desktop_my_machine_coleco;
+        }          
+
         else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
             bitmap=bitmap_button_ext_desktop_my_machine_tk90x;
         }
