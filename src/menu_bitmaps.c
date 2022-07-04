@@ -3964,3 +3964,35 @@ char *bitmap_button_ext_desktop_my_machine_pentagon[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+//Icono "My machine" para un Spectrum Next
+char *bitmap_button_ext_desktop_my_machine_spectrum_next[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrxrrxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwwxxxrrr",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwxwwxwwxwwxwxxxyyy",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxwwwxwwxwwxwwxwwxwwxxxggg",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwwwwwwxwwxwwxxxBBB",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	" xxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
