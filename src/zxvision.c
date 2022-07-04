@@ -14993,13 +14993,13 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             //AQUI MOVER ICONO
             if (configurable_icon_is_being_moved) {
-                printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
+                //printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
                 //Actualizar posicion
                 if (configurable_icon_is_being_moved_which>=0) {
-                    printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
+                    //printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
                     int mouse_pixel_x,mouse_pixel_y;
                     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-                    printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                    //printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
                     zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
 
                     //Refrescar pantalla si se ha movido lo suficiente
@@ -15008,7 +15008,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     int deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
 
 
-                    if (deltax>8 || deltay>8) {
+                    if (deltax>=8 || deltay>=8) {
                         //menu_draw_ext_desktop();
 
                         //Ver si icono cerca de papelera
