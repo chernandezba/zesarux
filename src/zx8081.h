@@ -145,6 +145,8 @@ extern z80_int get_ramtop_with_rampacks(void);
 
 extern void set_ramtop_with_rampacks(void);
 
+extern z80_int zx8081_get_total_ram_with_rampacks(void);
+
 extern int da_amplitud_speaker_zx8081(void);
 
 extern int inicio_pulso_vsync_t_estados;

@@ -645,7 +645,7 @@ extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
 extern int defined_f_functions_keys_array[];
 
 extern int defined_buttons_functions_array[];
-
+extern int get_defined_direct_functions(char *funcion);
 
 extern int menu_define_key_function(int tecla,char *funcion);
 extern int menu_define_button_function(int tecla,char *funcion);
@@ -1191,6 +1191,10 @@ extern int zxvision_add_configurable_icon(int indice_funcion);
 extern int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_funcion);
 extern void menu_inicio_handle_configurable_icon_presses(void);
 extern void menu_inicio_handle_right_button_background(void);
+extern void zxvision_check_all_configurable_icons_positions(void);
+extern int zxvision_add_configurable_icon_no_add_position(int indice_funcion);
+extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
+extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 

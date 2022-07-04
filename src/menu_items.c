@@ -25653,6 +25653,10 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         total_ram=64*1024;
     }
 
+    else if (MACHINE_IS_ZX8081) {
+        total_ram=zx8081_get_total_ram_with_rampacks()*1024;
+    }
+
    
     sprintf(buf_linea,"Total RAM: %d KB\n",total_ram/1024);
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);

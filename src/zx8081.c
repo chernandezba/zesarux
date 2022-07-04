@@ -321,6 +321,18 @@ z80_int zx8081_get_standard_ram(void)
   return (ramtop_zx8081-16383)/1024;
 }
 
+z80_int zx8081_get_total_ram_with_rampacks(void)
+{
+    z80_int total_ram=zx8081_get_standard_ram();
+
+    if (ram_in_8192.v) total_ram +=8;
+    if (ram_in_49152.v==1) total_ram +=16;
+    if (ram_in_32768.v==1) total_ram +=16;
+
+    return total_ram;
+
+}
+
 z80_int get_ramtop_with_rampacks(void)
 {
 	//retorna la ramtop teniendo en cuenta los rampack
