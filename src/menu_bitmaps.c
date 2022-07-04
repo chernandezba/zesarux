@@ -3900,3 +3900,35 @@ char *bitmap_button_ext_desktop_my_machine_zxuno[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxxxx",
 	" xxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+//Icono "My machine" para un MK14
+char *bitmap_button_ext_desktop_my_machine_mk14[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "   gxgxgxgxgxgxgxgxgxgg   ",     //0
+  	"   gxgxgxgxgxgxgxgxgxgg   ",
+	"   ggggggBBBBBgggxxxggg   ",
+	"   gxxxggBBBBBgggxxxggg   ",
+	"   gxxxggBBBBBggggggggg   ",
+	"   gggggggggggggxxxgggg   ",
+	"   ggggxxxxxxxggxxxgggg   ",
+	"   ggggxxxxxxxggggggggg   ",
+	"   ggggxxxxxxxgggxxxggg   ",
+    "   ggggggggggggggxxxggg   ",
+	"   ggxxxggggggggggggggg   ",	//10	
+	"   ggxxxggggggggggxxxgg   ",		
+	"   ggggggwwwwwwwggxxxgg   ",		
+	"   ggggggwwwwwwwggggggg   ",		
+	"   gggggggggggggggggggg   ",		
+	"   gggxxxxwwwwwxxxxgggg   ",		
+	"   gggxxxxxxxxxxxxxgggg   ",		
+	"   gggxwwxwwxwwxwwxgrrg   ",		
+	"   gggxxxxxxxxxxxxxgrrg   ",		
+	"   gggxwwxwwxwwxwwxgggg   ",		
+	"   gggxxxxxxxxxxxxxggxx   ",    //20
+	"   gggxwwxwwxwwxwwxgggg   ",		
+	"   gggxxxxxxxxxxxxxggxx   ",		
+	"   gggxwwxwwxwwxwwxgggg   ",		
+	"   gggxxxxxxxxxxxxxggxx   ",
+	"   gggxxxxwwwwwxxxxgggg   " 	 //25
+};

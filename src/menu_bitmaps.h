@@ -157,6 +157,7 @@ extern char *bitmap_button_ext_desktop_my_machine_timex_ts2068[];
 extern char *bitmap_button_ext_desktop_my_machine_timex_tc2048[];
 extern char *bitmap_button_ext_desktop_my_machine_z88[];
 extern char *bitmap_button_ext_desktop_my_machine_zxuno[];
+extern char *bitmap_button_ext_desktop_my_machine_mk14[];
 
 #define EXT_DESKTOP_TOTAL_BUTTONS 14
 
