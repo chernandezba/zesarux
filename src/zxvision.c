@@ -13298,6 +13298,10 @@ int configurable_icon_is_being_moved_previous_y=0;
 int configurable_icon_is_being_moved_previous_dragged_x=0;
 int configurable_icon_is_being_moved_previous_dragged_y=0;
 
+//Para evitar que se mueva un icono sin querer si pulsamos y movemos un poco el raton
+int zxvision_posicion_inicial_mover_icono_x=0;
+int zxvision_posicion_inicial_mover_icono_y=0;
+
 int window_mouse_x_before_move=0;
 int window_mouse_y_before_move=0;
 
@@ -14909,7 +14913,13 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                     //Si se arrastra alguno 
                     if (configurable_icon_is_being_moved_which>=0) {
-                        configurable_icon_is_being_moved=1;                
+                        configurable_icon_is_being_moved=1;           
+
+                        //Indicar posicion inicial donde empieza a moverse, para evitar pulsaciones con ligero movimiento de raton
+                        //que provoca mover el icono
+                        zxvision_posicion_inicial_mover_icono_x=mouse_pixel_x;
+                        zxvision_posicion_inicial_mover_icono_y=mouse_pixel_y;
+
                     }
 
                 }
@@ -14994,7 +15004,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 				}
 			}
 
-            //AQUI MOVER ICONO
+            //AQUI MOVER ICONO 
             if (configurable_icon_is_being_moved) {
                 //printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
                 //Actualizar posicion
@@ -15003,12 +15013,33 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     int mouse_pixel_x,mouse_pixel_y;
                     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
                     //printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
-                    zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+
+                    //Ver si se ha movido lo suficiente, al menos 10 pixeles
+                    //TODO: esto provoca que si queremos desplazar un icono menos de 10 pixeles, hay que hacerlo en dos veces:
+                    //1: moverlo lejos mas de 10 pixeles
+                    //2: moverlo hacia atras donde queriamos
+                    //Aunque hay que tener en cuenta que el icono se mueve a donde apunta el raton, por tanto, si apuntamos en medio del icono
+                    //y arrastramos mas de 10 pixeles, el icono saltara bastante mas de 10 pixeles, o sea, saltara 10 pixeles + 
+                    //la distancia entre la esquina superior izquierda del icono y la posicion del raton
+
+                    //multiplicamos por zoom
+                    int mouse_pixel_x_zoom=mouse_pixel_x*zoom_x;
+                    int mouse_pixel_y_zoom=mouse_pixel_y*zoom_y;
+
+                    int deltax=util_abs(zxvision_posicion_inicial_mover_icono_x-mouse_pixel_x_zoom);
+                    int deltay=util_abs(zxvision_posicion_inicial_mover_icono_y-mouse_pixel_y_zoom);
+                    
+                    if (deltax>10 || deltay>10) {
+                        zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                    }
+                    else {
+                        printf("No cambiar posicion icono porque no se ha movido lo suficiente\n");
+                    }
 
                     //Refrescar pantalla si se ha movido lo suficiente
                     
-                    int deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
-                    int deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
+                    deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
+                    deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
 
 
                     if (deltax>0 || deltay>0) {
