@@ -113,9 +113,6 @@ Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 
 
-
-
--arrastrar iconos: se detiene emulacion? el refresco quiza no es el correcto
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
