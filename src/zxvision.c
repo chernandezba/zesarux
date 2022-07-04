@@ -5059,7 +5059,116 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
 	
 }
 
+char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
+{
+    
+    char **bitmap;
 
+    //Por defecto
+    bitmap=bitmap_button_ext_desktop_my_machine_generic;
+
+    //Para un gomas
+    if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
+        bitmap=bitmap_button_ext_desktop_my_machine_gomas;
+    }
+    else if (MACHINE_IS_ZX81) {
+        bitmap=bitmap_button_ext_desktop_my_machine_zx81;
+    }
+    else if (MACHINE_IS_ZX80) {
+        bitmap=bitmap_button_ext_desktop_my_machine_zx80;
+    }      
+
+    else if (MACHINE_IS_QL) {
+        bitmap=bitmap_button_ext_desktop_my_machine_ql;
+    }     
+
+    else if (MACHINE_IS_SPECTRUM_128_SPA) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_128_spa;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_128) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_128_eng;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_P2) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_P2A) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
+    }        
+
+    else if (MACHINE_IS_SPECTRUM_P3) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
+    }  
+
+    else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
+    }      
+
+    else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
+    }   
+
+    else if (MACHINE_IS_INVES) {
+        bitmap=bitmap_button_ext_desktop_my_machine_inves;
+    }  
+
+    else if (MACHINE_IS_CPC) {
+        bitmap=bitmap_button_ext_desktop_my_machine_cpc;
+    }      
+
+    else if (MACHINE_IS_SMS) {
+        bitmap=bitmap_button_ext_desktop_my_machine_sms;
+    }   
+
+    else if (MACHINE_IS_SG1000) {
+        bitmap=bitmap_button_ext_desktop_my_machine_sg1000;
+    }  
+
+    else if (MACHINE_IS_COLECO) {
+        bitmap=bitmap_button_ext_desktop_my_machine_coleco;
+    }          
+
+    else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tk90x;
+    }
+
+    else if (MACHINE_IS_MICRODIGITAL_TK95) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tk95;
+    } 
+
+
+    else if (MACHINE_IS_MSX) {
+        bitmap=bitmap_button_ext_desktop_my_machine_msx;
+    }     
+
+    else if (MACHINE_IS_SVI_318) {
+        bitmap=bitmap_button_ext_desktop_my_machine_svi318;
+    }      
+
+    else if (MACHINE_IS_SVI_328) {
+        bitmap=bitmap_button_ext_desktop_my_machine_svi328;
+    }   
+
+    else if (MACHINE_IS_TIMEX_TS2068) {
+        bitmap=bitmap_button_ext_desktop_my_machine_timex_ts2068;
+    }       
+
+    else if (MACHINE_IS_TIMEX_TC2048) {
+        bitmap=bitmap_button_ext_desktop_my_machine_timex_tc2048;
+    }           
+
+    else if (MACHINE_IS_Z88) {
+        bitmap=bitmap_button_ext_desktop_my_machine_z88;
+    }    
+
+    else if (MACHINE_IS_ZXUNO) {
+        bitmap=bitmap_button_ext_desktop_my_machine_zxuno;
+    }                                         
+
+    return bitmap;
+}
 
 void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 {
@@ -5097,105 +5206,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
     //Comportamiento icono diferente para My Machine
     if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
-        //Para un gomas
-        if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48) {
-            bitmap=bitmap_button_ext_desktop_my_machine_gomas;
-        }
-        else if (MACHINE_IS_ZX81) {
-            bitmap=bitmap_button_ext_desktop_my_machine_zx81;
-        }
-        else if (MACHINE_IS_ZX80) {
-            bitmap=bitmap_button_ext_desktop_my_machine_zx80;
-        }      
-
-        else if (MACHINE_IS_QL) {
-            bitmap=bitmap_button_ext_desktop_my_machine_ql;
-        }     
-
-        else if (MACHINE_IS_SPECTRUM_128_SPA) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_128_spa;
-        }
-
-        else if (MACHINE_IS_SPECTRUM_128) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_128_eng;
-        }
-
-        else if (MACHINE_IS_SPECTRUM_P2) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
-        }
-
-        else if (MACHINE_IS_SPECTRUM_P2A) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
-        }        
-
-        else if (MACHINE_IS_SPECTRUM_P3) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;
-        }  
-
-        else if (MACHINE_IS_SPECTRUM_48_PLUS_SPA) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
-        }      
-
-        else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
-            bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
-        }   
-
-        else if (MACHINE_IS_INVES) {
-            bitmap=bitmap_button_ext_desktop_my_machine_inves;
-        }  
-
-        else if (MACHINE_IS_CPC) {
-            bitmap=bitmap_button_ext_desktop_my_machine_cpc;
-        }      
-
-        else if (MACHINE_IS_SMS) {
-            bitmap=bitmap_button_ext_desktop_my_machine_sms;
-        }   
-
-        else if (MACHINE_IS_SG1000) {
-            bitmap=bitmap_button_ext_desktop_my_machine_sg1000;
-        }  
-
-        else if (MACHINE_IS_COLECO) {
-            bitmap=bitmap_button_ext_desktop_my_machine_coleco;
-        }          
-
-        else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) {
-            bitmap=bitmap_button_ext_desktop_my_machine_tk90x;
-        }
-
-        else if (MACHINE_IS_MICRODIGITAL_TK95) {
-            bitmap=bitmap_button_ext_desktop_my_machine_tk95;
-        } 
-
-
-        else if (MACHINE_IS_MSX) {
-            bitmap=bitmap_button_ext_desktop_my_machine_msx;
-        }     
-
-        else if (MACHINE_IS_SVI_318) {
-            bitmap=bitmap_button_ext_desktop_my_machine_svi318;
-        }      
-
-        else if (MACHINE_IS_SVI_328) {
-            bitmap=bitmap_button_ext_desktop_my_machine_svi328;
-        }   
-
-        else if (MACHINE_IS_TIMEX_TS2068) {
-            bitmap=bitmap_button_ext_desktop_my_machine_timex_ts2068;
-        }       
-
-        else if (MACHINE_IS_TIMEX_TC2048) {
-            bitmap=bitmap_button_ext_desktop_my_machine_timex_tc2048;
-        }           
-
-        else if (MACHINE_IS_Z88) {
-            bitmap=bitmap_button_ext_desktop_my_machine_z88;
-        }    
-
-        else if (MACHINE_IS_ZXUNO) {
-            bitmap=bitmap_button_ext_desktop_my_machine_zxuno;
-        }                                         
+        bitmap=menu_ext_desktop_draw_configurable_icon_return_machine_icon();               
     }
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
