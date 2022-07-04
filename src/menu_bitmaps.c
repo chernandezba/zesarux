@@ -3420,8 +3420,7 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[EXT_DESKTOP_BUTTONS_
 
 
 
-//Icono "My machine" para un Spectrum +2 o +2A
-//TODO: el +2 es gris, pero no tengo gris en mi paleta de colores reducida, por eso ambos son negros
+//Icono "My machine" para un Spectrum +2 
 char *bitmap_button_ext_desktop_my_machine_spectrum_p2[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
@@ -3435,8 +3434,39 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p2[EXT_DESKTOP_BUTTONS_ANCHO
 	"                          ",
     "                          ",	
 	"                          ",	//10	
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwrrwrwrrwwwwwwrrwwWWwWWww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWwWWwWWwWWWwwwWwWwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWwWWwWWwWWwWWwWwwrrrrrrw",		
+	"wwwwwwwwwwwwwwwwWwwyyyyyyw",    //20
+	"wwWWwWWwWWwWWwWWWwwggggggw",		
+	"wwwwwwwwwwwwwwwwwwwbbbbbbw",		
+	"wwWwWWwWWWWwWWwWWwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwrwWwWww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+};
+
+//Icono "My machine" para un Spectrum +2A
+char *bitmap_button_ext_desktop_my_machine_spectrum_p2a[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxrrxrxrrxxxxxxrrxxxWWxWWx",		
+	"xxrrxrxrrxxxxxxrrxxWWxWWxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
@@ -3448,10 +3478,9 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p2[EXT_DESKTOP_BUTTONS_ANCHO
 	"xxwwxwwxwwxwwxwwwxxggggggx",		
 	"xxxxxxxxxxxxxxxxxxxbbbbbbx",		
 	"xxwxwwxwwwwxwwxwwxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxwxwxwxx",
+	"xxxxxxxxxxxxxxxxxxxrxwxwxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
-
 
 //Icono "My machine" para un Spectrum +3
 char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -3468,7 +3497,7 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO
     "                          ",	
 	"                          ",	//10	
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxrrxrxrrxxxxxxrrxxxWWxWWx",		
+	"xxrrxrxrrxxxxxxrrxxWWxWWxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		

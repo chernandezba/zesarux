@@ -5103,7 +5103,7 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     }
 
     else if (MACHINE_IS_SPECTRUM_P2A) {
-        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2;
+        bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p2a;
     }        
 
     else if (MACHINE_IS_SPECTRUM_P3) {

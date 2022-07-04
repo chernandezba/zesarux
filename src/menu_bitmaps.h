@@ -141,6 +141,7 @@ extern char *bitmap_button_ext_desktop_my_machine_ql[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_eng[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_p2[];
+extern char *bitmap_button_ext_desktop_my_machine_spectrum_p2a[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_p3[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[];
 extern char *bitmap_button_ext_desktop_my_machine_inves[];
