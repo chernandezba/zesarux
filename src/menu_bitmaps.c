@@ -3996,3 +3996,38 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_next[EXT_DESKTOP_BUTTONS_ANC
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	" xxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+
+
+
+//Icono "My machine" para un Sam Coupe
+char *bitmap_button_ext_desktop_my_machine_sam[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",			
+	"W W W W W W W W W W W W WW",				
+	"W W W W W W W W W W W W WW",		
+	"WWWWWWWWWWWWWWWWWWWWWWbbbW",		
+	"WWwwWwwWwwWwwWwwWwwwWWwWwW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWwWwwWwwWwwWwwWwwWwWWwWwW",		
+	"WWWWWWWWWWWWWWWWWWWwWWWWWW",    
+	"WWwwwWwwWwwWwwWwwWwwWWwWwW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWwWwwWwwwwwwwWwwWwwWWwWwW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",	
+    "WWbbbrrWWWWWWWWWWWWWWWWWWW",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
+};
