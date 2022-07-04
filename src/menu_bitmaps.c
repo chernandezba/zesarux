@@ -2980,13 +2980,13 @@ char *bitmap_button_ext_desktop_trash_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_trash_open_not_empty[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                 x        ",     //0
-  	"         x     xxxxx      ",      
-	"        xxx   xxxxxx      ",		
-	"       xxxxx  xxxxxx x    ",		
-	"      xxxxxxx xxxxx xxx   ",	
-	"     xxxxxxx xxxxxxxxxx   ",			
-	"    xxxxxxxxxxxxxxxxxxx   ",			
+    "         x       xx       ",     //0
+  	"        xx     xxxxx      ",      
+	"       xxxx   xxxxxx  x   ",		
+	"      xxxxxx  xxxxxx xx   ",		
+	"     xxxxxxxx xxxxx xxx   ",	
+	"    xxxxxxxx xxxxxxxxxxx  ",			
+	"   xxxxxxxxxxxxxxxxxxxxx  ",			
 	"  xxxxxxxxxxxxxxxxxxxxxxx ", 		
 	"    xwwwwwwwwwwwwwwwwwx   ",		
 	"    xwwwwwwwwwwwwwwwwwx   ",			
