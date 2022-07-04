@@ -15008,7 +15008,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     int deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
 
 
-                    if (deltax>=8 || deltay>=8) {
+                    if (deltax>0 || deltay>0) {
                         //menu_draw_ext_desktop();
 
                         //Ver si icono cerca de papelera
