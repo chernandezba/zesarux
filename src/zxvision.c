@@ -5116,7 +5116,11 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 
     else if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {
         bitmap=bitmap_button_ext_desktop_my_machine_spectrum_48_spa;
-    }   
+    } 
+
+    else if (MACHINE_IS_PENTAGON) {
+        bitmap=bitmap_button_ext_desktop_my_machine_pentagon;
+    }      
 
     else if (MACHINE_IS_INVES) {
         bitmap=bitmap_button_ext_desktop_my_machine_inves;

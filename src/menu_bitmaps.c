@@ -3932,3 +3932,35 @@ char *bitmap_button_ext_desktop_my_machine_mk14[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"   gggxxxxxxxxxxxxxggxx   ",
 	"   gggxxxxwwwwwxxxxgggg   " 	 //25
 };
+
+
+//Icono "My machine" para un Pentagon
+char *bitmap_button_ext_desktop_my_machine_pentagon[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xx x x x x x x x x x x xxx",		
+	"xx x x x x x x x x x x xxx",		
+	"xx x x x x x x x x x x xxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxwwxwwxwwxwwxwwxwwxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxxwwxwwxwwxwwxwwxwwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxwwxwwxwwxwwxwwxwwxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
