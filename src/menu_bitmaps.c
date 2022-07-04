@@ -3229,6 +3229,36 @@ char *bitmap_button_ext_desktop_my_machine_zx80[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+//Icono "My machine" para Jupiter ACE
+char *bitmap_button_ext_desktop_my_machine_ace[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"WWWWWWWWWWWWWWWWrrrWWWWWWW",
+	"WWxWxxWxxWxWxWWWWWWWWWWWWW",		
+	"WWxWxxWxxWxWxWWrrrrrrrrrrW",
+	"WxxWxxWxxWxWxWWWWWWWWWWWWW",
+	"WWWWWWWWWWWWWWrrrWWWWWWWWW",
+	"WWWWWWWxxxxWWWWWWWWWWWWWWW",
+    "WWWWWWWxxxxWWrrrWWWWWWWWWW",	
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",	//10	
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWWWWWWWWWrrrWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWWWWWWWWrrrWWWWWWWWWWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWxxWxxWxxWxxWxxWxxWxxWWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWxxWxxWxxWxxWxxWxxWxxWWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",    //20
+	"WWWWxxWxxWxxWxxWxxWxxWxxWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",		
+	"WWWxxWxxWxxWxxWxxWxxWxxxWW",		
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
+};
 
 
 //Icono "My machine" para un QL

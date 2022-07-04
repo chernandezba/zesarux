@@ -5076,6 +5076,10 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     }
     else if (MACHINE_IS_ZX80) {
         bitmap=bitmap_button_ext_desktop_my_machine_zx80;
+    }    
+
+    else if (MACHINE_IS_ACE) {
+        bitmap=bitmap_button_ext_desktop_my_machine_ace;
     }      
 
     else if (MACHINE_IS_QL) {
