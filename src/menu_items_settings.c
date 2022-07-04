@@ -528,6 +528,8 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 
 	debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing border settings");
 	zxvision_rearrange_background_windows();
+
+    zxvision_check_all_configurable_icons_positions();
 	
 }
 

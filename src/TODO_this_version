@@ -106,8 +106,6 @@ viene descomprimido desde el /tmp
 -Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
 Hacerlo cambiando el buffer border de línea a color borde xor 7
 
--icono configurable de switch border, si lo pulso genera cpu_panic
-
 -autoscale ZX Desktop SCR quiza no va bien, demasiado grande
 
 

@@ -499,6 +499,9 @@ void zxvision_reorder_configurable_icons(void)
 void zxvision_check_all_configurable_icons_positions(void)
 {
 
+    //Si desactivado
+    if (zxdesktop_configurable_icons_enabled.v==0) return;    
+
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
