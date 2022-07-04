@@ -3835,3 +3835,38 @@ char *bitmap_button_ext_desktop_my_machine_z88[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
+
+
+
+
+
+//Icono "My machine" para un ZX-Uno
+char *bitmap_button_ext_desktop_my_machine_zxuno[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"            www           ",
+	"            www           ",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	//10	
+	"xxxxxxxxxxxxxxxxxxxxx   xx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xWWWWxWxWxxxxWxxWWxxWWWWxx",		
+	"xxxWxxxWxxWWxWxxWxWxWxxxWx",		
+	"xxWxxxWxWxxxxWxxWxxWWxWxWx",		
+	"xWWWWWxxxWxxxxWWxxxxWxxWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xrrxyyxggxBBxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	" xxxxxxxxxxxxxxxxxxxxxxxxx",		
+	" xxxxxxxxxxxxxxxxxxxxxxxxx",
+	" xxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
