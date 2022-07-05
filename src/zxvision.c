@@ -500,7 +500,7 @@ void zxvision_check_all_configurable_icons_positions(void)
 {
 
     //Si desactivado
-    if (zxdesktop_configurable_icons_enabled.v==0) return;    
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return;    
 
     int i;
 
@@ -523,7 +523,7 @@ int zxvision_add_configurable_icon(int indice_funcion)
 {
 
     //Si desactivado
-    if (zxdesktop_configurable_icons_enabled.v==0) return -1;
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return -1;
 
     //buscar el primero disponible
     int i;
@@ -559,7 +559,7 @@ int zxvision_add_configurable_icon_no_add_position(int indice_funcion)
 {
 
     //Si desactivado
-    if (zxdesktop_configurable_icons_enabled.v==0) return -1;
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return -1;
 
 
     //buscar el primero disponible
@@ -610,13 +610,22 @@ void init_zxdesktop_configurable_icons(void)
     }
 }
 
+//Si estan habilitados los iconos y ademas esta zx desktop activo (y por tanto se ven)
+int zxdesktop_configurable_icons_enabled_and_visible(void)
+{
+    if (zxdesktop_configurable_icons_enabled.v==0) return 0;
+
+    if (!if_zxdesktop_enabled_and_driver_allows()) return 0;
+
+    return 1;
+}
+
 //Crear algunos iconos por defecto
 void create_default_zxdesktop_configurable_icons(void)
 {
 
-    //Si no hay zx desktop , no asignar ninguno
-    if (!if_zxdesktop_enabled_and_driver_allows()) {
-        printf("Do not create default icons as we don't have zx desktop\n");
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) {
+        printf("Do not create default icons as icons on zx desktop are disabled or zx desktop disabled\n");
         return;
     }
 
@@ -5273,7 +5282,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 void menu_draw_ext_desktop_configurable_icons(void)
 {
 
-    if (zxdesktop_configurable_icons_enabled.v==0) return;
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
 
     int i;
 
@@ -13817,7 +13826,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
 
 
         //si pulsa en algun icono configurable	
-        if (zxdesktop_configurable_icons_enabled.v) {
+        if (zxdesktop_configurable_icons_enabled_and_visible()) {
             //aqui tanto entra cuando se pulsa como cuando se libera
             printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
             int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
@@ -13933,7 +13942,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
         printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
 
         //Si se pulsa alguno 
-        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled.v) {
+        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
             printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
 
             //y si no habiamos pulsado ya (estamos arrastrando)
@@ -13983,7 +13992,7 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
             //Ver si en fondo desktop
 
-            if (zxdesktop_configurable_icons_enabled.v) {
+            if (zxdesktop_configurable_icons_enabled_and_visible()) {
 
                 if (zxvision_if_mouse_in_background()) {
 
@@ -14895,7 +14904,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             //No esta en una ventana. Esta en un icono?
             else {
                 //Si estaba en un icono
-                if (zxdesktop_configurable_icons_enabled.v) {
+                if (zxdesktop_configurable_icons_enabled_and_visible()) {
                     int mouse_pixel_x,mouse_pixel_y;
                     menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
@@ -15087,7 +15096,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
 
         //Si se pulsa alguno 
-        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled.v) {
+        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
             printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
 
             menu_pressed_zxdesktop_configurable_icon_right_button=1;
@@ -15146,7 +15155,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 
                 //Asumimos pulsado en fondo desktop
-                if (zxdesktop_configurable_icons_enabled.v) {
+                if (zxdesktop_configurable_icons_enabled_and_visible()) {
 
                     if (zxvision_if_mouse_in_background() ) {
                     printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");

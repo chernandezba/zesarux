@@ -9821,6 +9821,11 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 void menu_ext_desk_settings_configurable_icons_enabled(MENU_ITEM_PARAMETERS)
 {
     zxdesktop_configurable_icons_enabled.v ^=1;
+
+    if (zxdesktop_configurable_icons_enabled.v) {
+        //Crear iconos por defecto si hace falta
+        create_default_zxdesktop_configurable_icons();    
+    }
 }
 
 
