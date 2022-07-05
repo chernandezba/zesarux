@@ -3921,19 +3921,24 @@ void save_zx_generic_block_16kb(FILE *ptr_zxfile,z80_byte *buffer_generic_save,z
 void save_zx_snapshot(char *filename)
 {
 
-
+    //Maquinas no soportadas en ninguna version de .ZX
+    z80_byte maquina_soportada=get_maquina_header();
+    if (maquina_soportada==255) {
+        debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot",get_machine_name(current_machine_type));
+        return;
+    }
 
 	z80_byte header[ZX_HEADER_SIZE];
 
 	//Inicializar todos los valores a 255, asi los que no se usan tendran ese valor
-        int i;
-        for (i=0;i<=293;i++) header[i]=255;
+    int i;
+    for (i=0;i<=293;i++) header[i]=255;
 
 
 
 
 
-       FILE *ptr_zxfile;
+    FILE *ptr_zxfile;
 
 
 	//Create header
@@ -3951,41 +3956,34 @@ void save_zx_snapshot(char *filename)
 	//Version 1 solo soporta 48k
 	if (snap_zx_version_save==1) {
 		if (!MACHINE_IS_SPECTRUM_48) {
-			debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
-	                return;
+			debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
+            return;
 		}
-        }
+    }
 
 
 
-        //Si version 2, no permitir zx80, 81
-        //resto de maquinas spectrum se grabaran como 48k o 128k, al igual que se hacia en ZXSpectr
-        if (MACHINE_IS_ZX8081 && snap_zx_version_save<3) {
-		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
+    //Si version 2, solo permitir spectrums (no todos) de 48k, 128k
+    if (!(MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A) && snap_zx_version_save<3) {
+		debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
 		return;
 	}
 
-	//Si version inferior a 5, no permitir z88
-	if ((MACHINE_IS_Z88) && snap_zx_version_save<5) {
-		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
-                return;
+	//Si version inferior a 5
+	if (!(MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A ||
+         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK || MACHINE_IS_ZX8081) 
+         && snap_zx_version_save<5) {
+		debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
+            return;
         }
 
-	//Si version inferior a 6, no permitir ACE ni otras
-	if ((MACHINE_IS_ACE || MACHINE_IS_CPC || MACHINE_IS_ZXUNO || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || MACHINE_IS_CHLOE || 
-         MACHINE_IS_PRISM || MACHINE_IS_SPECTRUM_48_PLUS_SPA) && snap_zx_version_save<6) {
-		debug_printf (VERBOSE_ERR,"Machine type not supported on snapshot version %d",snap_zx_version_save);
-                return;
+	//Si version inferior a 6
+	if (!(MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A ||
+         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK || MACHINE_IS_ZX8081 || MACHINE_IS_Z88) 
+         && snap_zx_version_save<6) {
+		debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
+            return;
         }
-
-    //Otras maquinas no soportadas por formato ZX
-    //TODO: meter listado completo: MSX, SMS, etc .. y cualquier otra nueva que ya no estan soportados por snapshot de tipo .ZX
-	if (MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 ) {
-		debug_printf (VERBOSE_ERR,"Machine type not supported on ZX snapshot");
-                return;
-        }
-
-
 
 
 	header[38]=snap_zx_version_save;
@@ -3993,22 +3991,22 @@ void save_zx_snapshot(char *filename)
 	save_zxsp_snapshot_registers(header);
 
 
-        //Valores para zx version>=1
-        if (snap_zx_version_save>=1) {
-	        //brillo
-	        header[44]=0;
+    //Valores para zx version>=1
+    if (snap_zx_version_save>=1) {
+        //brillo
+        header[44]=0;
 
-        	//sonido
-	        header[46]=1;
+        //sonido
+        header[46]=1;
 
-		//disparador automatico
-		z80_byte bits_estado0=0;
-		if (joystick_autofire_frequency!=0) bits_estado0=bits_estado0 | 64;
-		header[47]=bits_estado0;
+        //disparador automatico
+        z80_byte bits_estado0=0;
+        if (joystick_autofire_frequency!=0) bits_estado0=bits_estado0 | 64;
+        header[47]=bits_estado0;
 
-                //disparador frecuencia. Si es 0, no meter un 0. Para compatibilidad con ZXSpectr
-                if (joystick_autofire_frequency!=0) header[45]=joystick_autofire_frequency;
-                else header[45]=1;
+        //disparador frecuencia. Si es 0, no meter un 0. Para compatibilidad con ZXSpectr
+        if (joystick_autofire_frequency!=0) header[45]=joystick_autofire_frequency;
+        else header[45]=1;
 
 	}
 
@@ -4044,8 +4042,8 @@ void save_zx_snapshot(char *filename)
 	}
 
 
-        //Valores para zx version>=3
-        if (snap_zx_version_save>=3) {
+    //Valores para zx version>=3
+    if (snap_zx_version_save>=3) {
         	z80_byte maquina_header;
 
 	        maquina_header=get_maquina_header();
@@ -4059,7 +4057,7 @@ void save_zx_snapshot(char *filename)
 	}
 
 	//Valores para zx version>=4
-        if (snap_zx_version_save>=4) {
+    if (snap_zx_version_save>=4) {
 
 		//Generar bits_estado2
         	//z80_byte bits_estado2=header[72];
@@ -4141,8 +4139,8 @@ void save_zx_snapshot(char *filename)
 	}
 
 
-        //Valores para zx version>=5
-        if (snap_zx_version_save>=5) {
+    //Valores para zx version>=5
+    if (snap_zx_version_save>=5) {
 		header[92]=(z88_internal_rom_size+1)/16384;
 		header[93]=(z88_internal_ram_size+1)/16384;
 
@@ -4189,8 +4187,8 @@ void save_zx_snapshot(char *filename)
 		header[105]=value_16_to_8h(blink_pixel_base[3]);
 
 		//z80_int blink_sbr;
-                header[106]=value_16_to_8l(blink_sbr);
-                header[107]=value_16_to_8h(blink_sbr);
+        header[106]=value_16_to_8l(blink_sbr);
+        header[107]=value_16_to_8h(blink_sbr);
 
 		header[108]=blink_com;
 		header[109]=blink_int;
@@ -4225,18 +4223,18 @@ void save_zx_snapshot(char *filename)
 	}
 
 	 //Valores para zx version>=6
-        if (snap_zx_version_save>=6) {
+    if (snap_zx_version_save>=6) {
 
-                //ace ram
+        //ace ram
 		z80_byte ram_ace=((ramtop_ace-16383)/1024)+3;
-                header[130]=ram_ace;
+        header[130]=ram_ace;
 
 
 		header[131]=timex_port_f4;
 		header[132]=timex_port_ff;
 
-                //Generar bits_estado4
-                z80_byte bits_estado4=0;
+        //Generar bits_estado4
+        z80_byte bits_estado4=0;
 
 		bits_estado4=(ulaplus_presente.v) | (ulaplus_enabled.v <<1) | (timex_video_emulation.v<<2);
 
@@ -4253,9 +4251,9 @@ void save_zx_snapshot(char *filename)
 	}
 
 
-        //Save header File
-        ptr_zxfile=fopen(filename,"wb");
-        if (!ptr_zxfile) {
+    //Save header File
+    ptr_zxfile=fopen(filename,"wb");
+    if (!ptr_zxfile) {
 		debug_printf (VERBOSE_ERR,"Error writing snapshot file %s",filename);
 		return;
 	}
@@ -4279,13 +4277,13 @@ void save_zx_snapshot(char *filename)
                 save_zx_snapshot_bytes_48k_128k(ptr_zxfile,direccion,0,0);
 	}
 
-        else if (MACHINE_IS_ACE) {
+    else if (MACHINE_IS_ACE) {
                 //Escritura de ace
                 int direccion=8192;
 
                 debug_printf (VERBOSE_INFO,"Saving %d kb block beginning from %d",(65536-direccion)/1024,direccion);
                 save_zx_snapshot_bytes_48k_128k(ptr_zxfile,direccion,0,0);
-        }
+    }
 
 	else if (MACHINE_IS_Z88) {
 
@@ -4396,7 +4394,7 @@ void save_zx_snapshot(char *filename)
                 }
 
 
-        }
+    }
 
 	else if (MACHINE_IS_CHLOE_140SE) {
 		z80_byte *buffer_chloe_save=malloc(20000);
@@ -4413,7 +4411,7 @@ void save_zx_snapshot(char *filename)
                 }
 	}
 
-        else if (MACHINE_IS_CHLOE_280SE) {
+    else if (MACHINE_IS_CHLOE_280SE) {
                 z80_byte *buffer_chloe_save=malloc(20000);
                 if (buffer_chloe_save==NULL) {
                         debug_printf (VERBOSE_ERR,"Error allocating memory buffer on save");
@@ -4435,7 +4433,7 @@ void save_zx_snapshot(char *filename)
                 for (i=0;i<8;i++) {
                         save_zx_generic_block_16kb(ptr_zxfile,buffer_chloe_save,chloe_home_ram_mem_table[i],i+16);
                 }
-        }
+    }
 
 	else if (MACHINE_IS_PRISM) {
 		//Grabar bytes estado
@@ -4480,7 +4478,7 @@ void save_zx_snapshot(char *filename)
 
 
 
-        else if (MACHINE_IS_ZXUNO) {
+    else if (MACHINE_IS_ZXUNO) {
 		//Guardar bytes estado
 		fwrite(&last_port_FC3B,1,1,ptr_zxfile);
 		fwrite(zxuno_ports,1,256,ptr_zxfile);
@@ -4518,7 +4516,7 @@ void save_zx_snapshot(char *filename)
                 }
 
 
-        }
+    }
 
 
 

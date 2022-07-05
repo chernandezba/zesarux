@@ -847,20 +847,6 @@ index 1f3ba0d..728d9ef 100644
      else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
 
 
-diff --git a/src/snap.c b/src/snap.c
-index 04c4b41..2786476 100644
---- a/src/snap.c
-+++ b/src/snap.c
-@@ -3973,11 +3973,19 @@ void save_zx_snapshot(char *filename)
-
-    //Otras maquinas no soportadas por formato ZX
-    //TODO: meter listado completo: MSX, SMS, etc .. y cualquier otra nueva
--       if (MACHINE_IS_SPECTRUM_48_PLUS_ENG) {    
-+       if (MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 ) {
-                debug_printf (VERBOSE_ERR,"Machine type not supported on ZX snapshot");
-                 return;
-         }
-
 
 diff --git a/src/tape.c b/src/tape.c
 index 66b9e0b..98e2885 100644
