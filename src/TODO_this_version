@@ -34,8 +34,10 @@ Para esta version:
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
-
 -Más links iconos: rom, … pok?
+
+-Fondo zx desktop con game of life 
+
 
 --Fin mejoras
 
@@ -97,6 +99,8 @@ Sector -407021264
 -Para mover iconos desde menu cerrado y sin ventanas abiertas, ver comentario en if (liberar_teclas_y_esperar) {
 al inicio del menu
 
+-al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
+
 --Fin Errores
 
 
@@ -112,16 +116,10 @@ Hacerlo cambiando el buffer border de línea a color borde xor 7
 *en arrastrar: no salta por deteccion de inicio arrastre
 
 
--mover posicion menu al pulsar boton derecho quiza solo en pulsar en icono, pero no en fondo zx desktop
-
--No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
-
-
 -Ayuda hablar nuevo comportamiento botón derecho 
 
 -Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
 Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papelera
-
 
 
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
@@ -147,4 +145,3 @@ Do not create default icons as there are already at least one created
 
 -iconos de dispositivos mmc/ide en escritorio? Quiza al pulsar que muestren el contenido, montando en 0:/
 
--Fondo zx desktop con game of life 
