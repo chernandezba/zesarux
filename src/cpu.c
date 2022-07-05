@@ -9103,6 +9103,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	border_enabled.v=1;
 
 	scr_putpixel=NULL;
+    scr_driver_can_ext_desktop=NULL;
 	//scr_putpixel_final=NULL;
 
 	simulate_screen_zx8081.v=0;

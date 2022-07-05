@@ -614,14 +614,18 @@ int zxdesktop_configurable_icons_enabled_and_visible(void)
 {
     if (zxdesktop_configurable_icons_enabled.v==0) return 0;
 
-    //TODO: realmente deberia llamar a if_zxdesktop_enabled_and_driver_allows() pero esa llamada depende del driver de video
+    //Fixed: TODO: realmente deberia llamar a if_zxdesktop_enabled_and_driver_allows() pero esa llamada depende del driver de video
     //y al iniciar el emulador hay algun punto en que aun no hay driver de video y esta llamada petaria
     //por tanto esto podria dar un falso positivo: el zx desktop esta habilitado aunque el driver no lo permite,
     //por ejemplo si lo tenemos habilitado con driver Xwindow o cocoa, pero luego arrancamos curses (donde no se permite zx desktop)
     //Tampoco es un gran problema porque al no estar zx desktop permitido en curses, no se intentarian dibujar los iconos, y aunque se intentasen
     //dibujar, las funciones de putpixel no hacen nada. Lo unico que podria intentarse gestionar los eventos de raton si se elige algun icono,
     //pero tampoco tampoco se gestionarian al no poderse usar el raton en driver curses
-    if (!screen_ext_desktop_enabled) return 0;
+    //if (!screen_ext_desktop_enabled) return 0;
+
+
+    if (!if_zxdesktop_enabled_and_driver_allows()) return 0;
+    
 
     return 1;
 }
