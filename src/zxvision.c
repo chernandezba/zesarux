@@ -20766,7 +20766,7 @@ void menu_inicio_handle_right_button_background(void)
         menu_pressed_zxdesktop_right_button_background=-1;
 
         //propiedades zx desktop, agregar icono
-        int opcion=menu_simple_five_choices("ZX Desktop","--Action--","New icon","New file link","ZX Desktop settings","Customize icons","Reorder icons");
+        int opcion=menu_simple_five_choices("ZX Desktop","--Action--","New icon","New file link","Customize icons","Reorder icons","ZX Desktop settings");
 
         switch (opcion) {
 
@@ -20780,16 +20780,16 @@ void menu_inicio_handle_right_button_background(void)
             break;
 
             case 3:
-                menu_ext_desktop_settings(0);
-            break;
-
-            case 4:
                 menu_zxdesktop_set_configurable_icons(0);
             break;
 
-            case 5:
+            case 4:
                 zxvision_reorder_configurable_icons();
             break;
+
+            case 5:
+                menu_ext_desktop_settings(0);
+            break;            
 
         }
 

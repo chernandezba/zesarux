@@ -106,35 +106,15 @@ viene descomprimido desde el /tmp
 -Opción en debug para indicar cuando se ha ejecutado un halt, meter línea en border 
 Hacerlo cambiando el buffer border de línea a color borde xor 7
 
--autoscale ZX Desktop SCR quiza no va bien, demasiado grande
-
-
 
 
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
-*en pulsar: a veces se cuelga (quiza porque menu esta cerrado?)
 *en arrastrar: no salta por deteccion de inicio arrastre
 
 
 -mover posicion menu al pulsar boton derecho quiza solo en pulsar en icono, pero no en fondo zx desktop
 
 -No poder arrastrar  o interactuar con iconos si ZX desktop está desactivado 
-
-
-Ya no pasa-al pulsar un icono con menú cerrado se cuelga 
-
-*background windows off
-*
-menu_event_open_menu.v xx
-menu_was_open_by_left_mouse_button.v
-mouse 1262 580
-tamanyo icono: 52
-No pulsado en zona botones con menu cerrado
-Gestionando pulsacion de boton izquierdo de icono configurable 19
-Ejecutar funcion 114 (F_FUNCION_WAVEFORM)
-Antes procesar funcion
-
-Reproducir: F5 - ESC. Pulsar icono waveform
 
 
 -Ayuda hablar nuevo comportamiento botón derecho 
@@ -147,9 +127,7 @@ Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papeler
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
 Esto puede comportar problemas por variables que no se resetean correctamente (que si se hace desde el gestor de tareas),
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
-
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
-
 
 
 -con menu cerrado, sin ventanas. pulsar boton derecho en fondo desktop y a veces en vez de abrir properties abre menu principal
@@ -162,8 +140,6 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 -Abrir papelera desde menu window solo si hay habilitado zx desktop e iconos
 
 -boton derecho icono. boton derecho icono. y en vez de propiedades icono abre menu inicio
-
--botones ampliar zx desktop en maquina ql por ejemplo queda encima del logo
 
 -si al iniciar carga con rom no existe, pantalla se ve mal
 Error:    Unable to open rom file tc2048.rom
