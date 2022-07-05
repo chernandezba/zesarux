@@ -3739,24 +3739,24 @@ void menu_clear_footer(void)
         int xlogo=0;
 
         if (MACHINE_IS_Z88) {
-            //Pegado a la derecha casi, dejando espacio a la derecha del todo para el boton de switch zxdesktop
-            xlogo=zoom_x*(SCREEN_Z88_WIDTH-ZESARUX_ASCII_LOGO_ANCHO-8*2);
+            //Pegado a la derecha casi, dejando espacio a la derecha del todo para los botones de switch zxdesktop
+            xlogo=zoom_x*(SCREEN_Z88_WIDTH-ZESARUX_ASCII_LOGO_ANCHO-8*3);
 
             //engañamos para decir que si que dibuje el logo
             margenx_izq=1;
         }
 
         if (MACHINE_IS_TSCONF) {
-            //Pegado a la derecha casi, dejando espacio a la derecha del todo para el boton de switch zxdesktop
-            xlogo=zoom_x*(TSCONF_DISPLAY_WIDTH-ZESARUX_ASCII_LOGO_ANCHO-8*2);
+            //Pegado a la derecha casi, dejando espacio a la derecha del todo para los botones de switch zxdesktop
+            xlogo=zoom_x*(TSCONF_DISPLAY_WIDTH-ZESARUX_ASCII_LOGO_ANCHO-8*3);
 
             //engañamos para decir que si que dibuje el logo
             margenx_izq=1;
         }        
 
         if (MACHINE_IS_QL) {
-            //Pegado a la derecha casi, dejando espacio a la derecha del todo para el boton de switch zxdesktop
-            xlogo=zoom_x*(QL_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*2);
+            //Pegado a la derecha casi, dejando espacio a la derecha del todo para los botones de switch zxdesktop
+            xlogo=zoom_x*(QL_DISPLAY_WIDTH+(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*3);
 
             //engañamos para decir que si que dibuje el logo
             margenx_izq=1;
