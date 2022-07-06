@@ -3241,7 +3241,6 @@ void menu_tape_browser_show(char *filename)
 
 void menu_hilow_datadrive_browser_aux_get_label(z80_byte *orig,char *dest)
 {
-    char buffer_file_label[10];
     memcpy(dest,orig,9);
     dest[9]=0;    
 }
@@ -3516,9 +3515,9 @@ Maximo sectores por archivo: 25
             //hasta 27 sectores (HILOW_MAX_SECTORS_PER_FILE)
             int sectores[HILOW_MAX_SECTORS_PER_FILE];
             //cada sector: 000 -> 4 caracteres
-            #define HILOW_BUFFER_SECTORS (HILOW_MAX_SECTORS_PER_FILE*4)
+            //#define HILOW_BUFFER_SECTORS (HILOW_MAX_SECTORS_PER_FILE*4)
 
-            char buffer_sectors[HILOW_BUFFER_SECTORS*2]; //mas que suficiente (espero)
+            //char buffer_sectors[HILOW_BUFFER_SECTORS*2]; //mas que suficiente (espero)
 
             int total_sectores=menu_hilow_datadrive_browser_get_sectors_file(current_file,puntero_memoria,sectores);  
 

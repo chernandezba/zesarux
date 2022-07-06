@@ -745,7 +745,7 @@ void hilow_create_sector_table(int si_escribir_en_ram,int si_escribir_en_device)
 {
 
     debug_printf(VERBOSE_DEBUG,"HiLow: Creating free sectors table");
-    int i;
+    //int i;
 
     int id_sector_tabla;
 
@@ -1531,7 +1531,7 @@ void hilow_reset(void)
 }
 
 
-void hilow_write_port_ff(z80_int port,z80_byte value)
+void hilow_write_port_ff(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
 {
     hilow_footer_operating();
 /*
@@ -1555,7 +1555,7 @@ Puede que esos comandos sea combinacion de bits
 }
 
 
-z80_byte hilow_read_port_ff(z80_int puerto)
+z80_byte hilow_read_port_ff(z80_int puerto GCC_UNUSED)
 {
 
     hilow_footer_operating();
@@ -1767,14 +1767,14 @@ void hilow_util_get_sector(int sector,z80_byte *puntero_memoria,z80_byte *destin
 void hilow_util_get_file_contents(int sector_dir,z80_byte *puntero_memoria,int indice_archivo,z80_byte *destino_memoria)
 {
 
-    int offset_archivo=hilow_util_get_file_offset(indice_archivo);
+    //int offset_archivo=hilow_util_get_file_offset(indice_archivo);
 
     z80_int longitud=hilow_util_get_file_length(sector_dir,puntero_memoria,indice_archivo);
 
 
     int sectores[HILOW_MAX_SECTORS_PER_FILE];
 
-    int total_sectores=hilow_util_get_sectors_file(sector_dir,indice_archivo,puntero_memoria,sectores);
+    hilow_util_get_sectors_file(sector_dir,indice_archivo,puntero_memoria,sectores);
 
     int indice_sector=0;
 

@@ -813,7 +813,7 @@ int menu_define_key_function(int tecla,char *funcion)
 
 	//Buscar en todos los strings de funciones cual es
 
-	int i;
+	//int i;
 
     int indice=get_defined_direct_functions(funcion);
     if (indice<0) return 1;
@@ -14138,7 +14138,7 @@ z80_byte zxvision_get_key_hotkey(zxvision_window *w,int x,int y)
 //x,y en coordenadas sin zoom, de la posicion del cursor
 int zxvision_si_icono_cerca_de_papelera(int icono,int mouse_pixel_x,int mouse_pixel_y)
 {
-    int mover_a_papelera=0;
+    //int mover_a_papelera=0;
     int hay_papelera=zxvision_search_trash_configurable_icon();
     if (hay_papelera>=0) {
         printf("hay una papelera\n");

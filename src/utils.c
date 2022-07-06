@@ -14661,7 +14661,7 @@ int util_extract_ddh(char *filename,char *tempdir)
 
 	char buffer_texto[32*4]; //4 lineas mas que suficiente
 
-	int longitud_bloque;
+	//int longitud_bloque;
 
 
     int id_archivo;

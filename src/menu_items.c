@@ -16913,7 +16913,7 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
 
             if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
             
-                int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
+                //int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
                 //sprintf (buffer_texto,"Icon %2d [%s]",i,defined_direct_functions_array[indice_funcion].texto_funcion);
                 strcpy (buffer_texto,zxdesktop_configurable_icons_list[i].text_icon);
 
@@ -29737,7 +29737,7 @@ int menu_hilow_convert_audio_just_read_byte=0;
 int menu_hilow_convert_mostrar_probable_error=0;
 
 //Callback llamado desde la rutina de conversion al leer un bit
-void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion)
+void menu_hilow_convert_audio_write_bit_callback(int valor,int posicion GCC_UNUSED)
 {
     //printf("bit: %d\n",valor);
 
@@ -29773,7 +29773,7 @@ int menu_hilow_convert_audio_sector=0;
 
 
 //Callback llamado desde la rutina de conversion al leer un byte
-void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion)
+void menu_hilow_convert_audio_write_byte_callback(int valor,int posicion GCC_UNUSED)
 {
     //printf("byte: %02XH\n",valor);
 
@@ -29951,7 +29951,7 @@ void menu_hilow_convert_audio_callback(int valor,int posicion)
     char char_valor_final;
 
 
-    int valor_hilow=menu_hilow_convert_audio_last_audio_sample;
+    //int valor_hilow=menu_hilow_convert_audio_last_audio_sample;
     valor_final -=128;
 
     char_valor_final=valor_final;
@@ -30137,7 +30137,7 @@ int menu_hilow_convert_audio_read_hilow_ddh_file(char *archivo)
 //Escribir de la memoria a archivo ddh
 void menu_hilow_convert_audio_write_hilow_ddh_file(char *archivo)
 {
-    z80_byte *puntero;
+    //z80_byte *puntero;
 
     int tamanyo=HILOW_DEVICE_SIZE;
 
@@ -30750,7 +30750,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
                 }
 
-                int tinta=ESTILO_GUI_TINTA_NORMAL;
+                //int tinta=ESTILO_GUI_TINTA_NORMAL;
 
                
 
@@ -32915,7 +32915,7 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
     //printf("enum: %d\n",id_funcion);
 
-	char final_name[PATH_MAX];
+	//char final_name[PATH_MAX];
     int indice_icono;
 
 	switch (id_funcion)
