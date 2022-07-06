@@ -5717,12 +5717,14 @@ void screen_store_scanline_rainbow_border_comun(z80_int *puntero_buf_rainbow,int
 			if ( (indice_border<inicio_retrace_horiz || indice_border>=final_retrace_horiz) ) {
 				//Por cada t_estado van 2 pixeles normalmente
 					int jj;
+                    z80_int color_final_border=color_border;
+
 					for (jj=0;jj<t_estados_por_pixel;jj++) {
-						store_value_rainbow(puntero_buf_rainbow,color_border);
+						store_value_rainbow(puntero_buf_rainbow,color_final_border);
 						if (MACHINE_IS_TBBLUE) {
-							puntero_buf_rainbow[ancho_rainbow]=color_border; //pixel de abajo a la derecha
-							puntero_buf_rainbow[ancho_rainbow-1]=color_border; //pixel de abajo 
-							store_value_rainbow(puntero_buf_rainbow,color_border); //pixel de derecha y incrementamos
+							puntero_buf_rainbow[ancho_rainbow]=color_final_border; //pixel de abajo a la derecha
+							puntero_buf_rainbow[ancho_rainbow-1]=color_final_border; //pixel de abajo 
+							store_value_rainbow(puntero_buf_rainbow,color_final_border); //pixel de derecha y incrementamos
 						}
 							
 

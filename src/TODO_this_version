@@ -111,7 +111,6 @@ viene descomprimido desde el /tmp
 Hacerlo cambiando el buffer border de línea a color borde xor 7
 
 
-
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en arrastrar: no salta por deteccion de inicio arrastre
 
