@@ -27,6 +27,7 @@
 #include "cpu.h"
 #include "operaciones.h"
 #include "debug.h"
+#include "settings.h"
 
 #include "contend.h"
 #include "utils.h"
@@ -1186,7 +1187,8 @@ void instruccion_118()
 
 	if (MACHINE_IS_Z88) z88_enable_coma();
 
-
+    //Indicar en que scanline se ha producido un halt
+    if (debug_settings_show_fired_halt.v) core_spectrum_executed_halt_in_this_scanline=1;
 }
 
 void instruccion_119()

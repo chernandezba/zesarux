@@ -119,6 +119,9 @@
 
 z80_bit menu_debug_registers_if_showscan={0};
 
+//Si muestra en que scanline se ha disparado un halt
+z80_bit debug_settings_show_fired_halt={0};
+
 //Si borra el menu a cada pulsacion y muestra la pantalla de la maquina emulada debajo
 z80_bit debug_settings_show_screen={0};
 

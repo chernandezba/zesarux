@@ -134,6 +134,7 @@ extern void breakpoints_disable(void);
 //#define CPU_CORE_SPECTRUM 1
 //#define CPU_CORE_ZX8081 2
 
+extern int core_spectrum_executed_halt_in_this_scanline;
 
 #define VERBOSE_ERR   0
 #define VERBOSE_WARN  1

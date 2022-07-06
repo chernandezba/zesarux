@@ -1258,7 +1258,7 @@ codprddfd.o: codprddfd.c cpu.h operaciones.h debug.h contend.h utils.h compileop
 codpred.o: codpred.c cpu.h operaciones.h debug.h contend.h zxuno.h tbblue.h screen.h settings.h samram.h
 	\$(CC) \$(CFLAGS) -c codpred.c
 
-codsinpr.o: codsinpr.c cpu.h operaciones.h debug.h contend.h utils.h compileoptions.h z88.h snap_rzx.h esxdos_handler.h
+codsinpr.o: codsinpr.c cpu.h operaciones.h debug.h contend.h utils.h compileoptions.h z88.h snap_rzx.h esxdos_handler.h settings.h
 	\$(CC) \$(CFLAGS) -c codsinpr.c
 
 operaciones.o: operaciones.c cpu.h operaciones.h debug.h audio.h tape.h ay38912.h mem128.h chloe.h prism.h tbblue.h timex.h zx8081.h zxvision.h screen.h compileoptions.h contend.h joystick.h ula.h utils.h printers.h disassemble.h z88.h ulaplus.h zxuno.h chardetect.h mmc.h ide.h divmmc.h divide.h diviface.h zxpand.h spectra.h spritechip.h jupiterace.h cpc.h sam.h if1.h timer.h pd765.h superupgrade.h snap_rzx.h multiface.h chrome.h zxevo.h tsconf.h baseconf.h ds1307.h mk14.h settings.h saa_simul.h datagear.h hilow.h msx.h coleco.h sg1000.h sms.h svi.h vdp_9918a.h gs.h samram.h vdp_9918a_sms.h

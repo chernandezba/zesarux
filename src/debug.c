@@ -241,6 +241,8 @@ char catch_breakpoint_message[MAX_MESSAGE_CATCH_BREAKPOINT];
 //Si -1, no ha saltado por indice, quiza por un membreakpoint
 int catch_breakpoint_index=0;
 
+//Dice si para el core de spectrum en ese scanline se ha disparado interrupcion, para mostrarlo en el boder
+int core_spectrum_executed_halt_in_this_scanline=0;
 
 //Core loop actual
 int cpu_core_loop_active;

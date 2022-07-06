@@ -2327,6 +2327,11 @@ void menu_debug_settings_show_address_basic(MENU_ITEM_PARAMETERS)
     debug_view_basic_show_address.v ^=1;
 }
 
+void menu_debug_settings_show_fired_halt(MENU_ITEM_PARAMETERS)
+{
+    debug_settings_show_fired_halt.v ^=1;
+}
+
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
 {
@@ -2371,6 +2376,15 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( menu_debug_registers_if_showscan.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows TV electron position when debugging, using a coloured line. Requires real video");
+
+        
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_settings_show_fired_halt,NULL,
+                "Show on border fired Halt","Mostrar en border Halt ejecutado","Mostrar al border Halt executat");
+            menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%c] ",( debug_settings_show_fired_halt.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_debug,"Shows on which scanline has been executed a Halt, inverting border color. Requires real video");
+            menu_add_item_menu_ayuda(array_menu_settings_debug,"Shows on which scanline has been executed a Halt, inverting border color. Requires real video");
+        }
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_breakpoints_condition_behaviour,NULL,
