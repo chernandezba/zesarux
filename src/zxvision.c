@@ -22082,7 +22082,21 @@ void menu_inicio(void)
 
 
                 //Y despues de un breakpoint hacer que aparezca el menu normal y no vuelva a la ejecucion
+                //if (!salir_todos_menus) menu_inicio_bucle();
+
+                /*Lo habitual aqui seria:
                 if (!salir_todos_menus) menu_inicio_bucle();
+
+                Pero, si se conmutase a otra ventana, se activa salir_todos_menus y acabariamos cerrando todas las ventanas
+
+                En cambio lo que hacemos es que, Despues de un breakpoint y al salir de debug cpu, abrir menu. Independientemente de si se cierra ventana con ESC,
+                si se intenta conmutar a otra ventana, o si se pulsa tecla de cerrar todos menus
+                Con esto conseguimos que si estamos en modo step, 
+                se conserve modo step en el menu. De otra manera, si cuando se conmuta a otra ventana,
+                esto activa salir_todos_menus
+                aqui se saldria y no entraria en en bucle de gestion de multitarea
+                */
+                menu_inicio_bucle();
             }
 
             else {
