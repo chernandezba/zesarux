@@ -222,6 +222,9 @@ extern z80_bit menu_desactivado;
 extern z80_bit menu_desactivado_andexit;
 extern z80_bit menu_desactivado_file_utilities;
 
+extern int zxvision_switch_to_window_on_open_menu;
+extern char zxvision_switch_to_window_on_open_menu_name[];
+
 extern void set_menu_overlay_function(void (*funcion)(void) );
 extern void reset_menu_overlay_function(void);
 extern void pruebas_texto_menu(void);

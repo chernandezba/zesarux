@@ -116,7 +116,8 @@
 
 
 
-
+int zxvision_switch_to_window_on_open_menu=0;
+char zxvision_switch_to_window_on_open_menu_name[MAX_NAME_WINDOW_GEOMETRY];
 
 
 //si se pulsa tecla mientras se lee el menu
@@ -21576,6 +21577,22 @@ void menu_inicio(void)
 	//printf ("inicio menu_inicio\n");
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
+    /*
+    if (zxvision_switch_to_window_on_open_menu) {
+        //TODO: si no existe ventana, crearla
+        zxvision_window *ventana_debug_cpu=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
+
+        if (ventana_debug_cpu!=NULL) {
+            printf("restoring window %s\n",zxvision_switch_to_window_on_open_menu_name);
+            zxvision_handle_mouse_ev_switch_back_wind(ventana_debug_cpu);
+            pulsado_alguna_ventana_con_menu_cerrado=1;
+        }
+
+        zxvision_switch_to_window_on_open_menu=0;
+
+
+    }
+    */
 
 	//Comprobar si se ha pulsado un boton para colorearlo
 	if (mouse_left) {

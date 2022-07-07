@@ -6807,6 +6807,11 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
       menu_button_f_function_index=indice;
       menu_abierto=1;
 
+/* Pruebas abrir ventana directa
+zxvision_switch_to_window_on_open_menu=1;
+strcpy(zxvision_switch_to_window_on_open_menu_name,"debugcpu");
+menu_event_open_menu.v=1;
+*/
 
     }
     return 1;
