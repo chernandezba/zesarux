@@ -1340,13 +1340,11 @@ z80_byte lee_puerto_debug(z80_byte puerto_h,z80_byte puerto_l)
 //Mostrar mensaje que ha hecho saltar el breakpoint y ejecutar accion (por defecto abrir menu)
 void cpu_core_loop_debug_breakpoint(char *message)
 {
-	menu_abierto=1;
+	//menu_abierto=1;
 	do_breakpoint_exception(message);
 
 
-    //Simular accion joystick de debug cpu. Pruebas
-    //menu_button_f_function.v=1;
-    //menu_button_f_function_action=F_FUNCION_DEBUGCPU;
+    zxvision_open_menu_with_window("debugcpu");
 
 }
 

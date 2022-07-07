@@ -7022,9 +7022,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 	//Ver si hemos entrado desde un breakpoint
-	if (menu_breakpoint_exception.v) menu_debug_registers_gestiona_breakpoint();
+	/*if (menu_breakpoint_exception.v) menu_debug_registers_gestiona_breakpoint();
 
-	else menu_espera_no_tecla();
+	else menu_espera_no_tecla();*/
 
     //printf("despues de menu_espera_no_tecla\n");
 
@@ -7075,6 +7075,49 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                 return;
         }	
+
+
+
+        if (menu_breakpoint_exception.v) {
+            menu_debug_registers_gestiona_breakpoint();
+            //Ver tipo de accion para ese breakpoint
+            //printf ("indice breakpoint & accion : %d\n",catch_breakpoint_index);
+            osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
+
+            printf("hay menu_breakpoint_exception\n");
+
+            //Si accion nula o menu o break
+            if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+
+                printf("mostrar breakpoint\n");
+
+
+                int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+                menu_emulation_paused_on_menu=1;
+
+                    audio_playing.v=0;
+                //printf ("pc: %d\n",reg_pc);
+
+          
+                menu_breakpoint_fired(catch_breakpoint_message);
+
+                //restaurar estado multitarea
+
+                menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;                
+
+
+            }
+
+            else {
+                //TODO: Gestion acciones
+                debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+            }
+
+        }
+
+
+
+
 
 
 	do {

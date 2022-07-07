@@ -8693,6 +8693,16 @@ void zxvision_add_all_windows_to_restore(void)
 	
 }
 
+
+//Decir que hay que abrir menu con una ventana concreta
+void zxvision_open_menu_with_window(char *geometry_name)
+{
+    zxvision_switch_to_window_on_open_menu=1;
+    strcpy(zxvision_switch_to_window_on_open_menu_name,geometry_name);
+    menu_event_open_menu.v=1;    
+    menu_abierto=1;
+}
+
 void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
 {
     //Lanzar funcion que la crea
@@ -8716,7 +8726,7 @@ void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
 //Restaurar una sola ventana. Funcion utilizada en otros sitios y no desde la restauracion en startup
 //De momento no usada
 
-/*
+
 void zxvision_restore_one_window(char *ventana_a_restaurar)
 {
 	if (!menu_allow_background_windows) return;
@@ -8767,7 +8777,7 @@ void zxvision_restore_one_window(char *ventana_a_restaurar)
 	}
 
 }
-*/
+
 
 void zxvision_restore_windows_on_startup(void)
 {
@@ -21577,22 +21587,56 @@ void menu_inicio(void)
 	//printf ("inicio menu_inicio\n");
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
-    /*
+    int indice_abrir_ventana_sin_multitarea=-1;
+
+    
     if (zxvision_switch_to_window_on_open_menu) {
-        //TODO: si no existe ventana, crearla
-        zxvision_window *ventana_debug_cpu=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
-
-        if (ventana_debug_cpu!=NULL) {
-            printf("restoring window %s\n",zxvision_switch_to_window_on_open_menu_name);
-            zxvision_handle_mouse_ev_switch_back_wind(ventana_debug_cpu);
-            pulsado_alguna_ventana_con_menu_cerrado=1;
-        }
-
         zxvision_switch_to_window_on_open_menu=0;
 
+        printf ("0 salir_todos_menus: %d\n",salir_todos_menus);
+        printf("menu_breakpoint_exception.v : %d\n",menu_breakpoint_exception.v);
 
+        if (!menu_allow_background_windows /*|| !menu_multitarea*/) {
+            //abrirla tal cual sin mas
+            indice_abrir_ventana_sin_multitarea=zxvision_find_known_window(zxvision_switch_to_window_on_open_menu_name);
+            //se abre un poco mas adelante
+
+            
+        }
+
+        else {
+
+
+            //TODO: si no existe ventana, crearla
+            zxvision_window *ventana_abrir=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
+
+            if (ventana_abrir==NULL) {
+                zxvision_restore_one_window(zxvision_switch_to_window_on_open_menu_name);
+                //buscarla de nuevo
+                ventana_abrir=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
+            }
+
+            if (ventana_abrir!=NULL) {
+                printf("restoring window %s\n",zxvision_switch_to_window_on_open_menu_name);
+                zxvision_handle_mouse_ev_switch_back_wind(ventana_abrir);
+                pulsado_alguna_ventana_con_menu_cerrado=1;
+
+                //Esto se ha habilitado desde zxvision_handle_mouse_ev_switch_back_wind porque esta pensado para ejecutarse con el menu abierto
+                salir_todos_menus=0;
+
+                //Idem para esto
+                mouse_pressed_background_window=0;
+            }
+
+        }
+
+        printf ("1 salir_todos_menus: %d\n",salir_todos_menus);
+
+
+
+        
     }
-    */
+    
 
 	//Comprobar si se ha pulsado un boton para colorearlo
 	if (mouse_left) {
@@ -21857,7 +21901,7 @@ void menu_inicio(void)
 		return;
 	}
 
-    //printf("XX1\n");
+    printf("XX1 menu_breakpoint_exception.v %d\n",menu_breakpoint_exception.v);
 
 	//Menu desactivado y salida del emulador
 	if (menu_desactivado_andexit.v) end_emulator_autosave_snapshot();
@@ -21973,6 +22017,11 @@ void menu_inicio(void)
     menu_mostrar_boton_close_all_menus.v=1;
 
 
+    if (indice_abrir_ventana_sin_multitarea>=0) {
+        printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
+        zxvision_known_window_names_array[indice_abrir_ventana_sin_multitarea].start(0);
+    }
+
 	//Si first aid al inicio
 	if (menu_first_aid_must_show_startup) {
 		menu_first_aid_must_show_startup=0;
@@ -22067,6 +22116,8 @@ void menu_inicio(void)
 
 
         //ha saltado un breakpoint
+        //esto ahora se gestiona diferente, abriendo la ventana directamente por el gestor multitarea
+        /*
         if (menu_breakpoint_exception.v) {
             //Ver tipo de accion para ese breakpoint
             //printf ("indice breakpoint & accion : %d\n",catch_breakpoint_index);
@@ -22104,18 +22155,18 @@ void menu_inicio(void)
                 //Y despues de un breakpoint hacer que aparezca el menu normal y no vuelva a la ejecucion
                 //if (!salir_todos_menus) menu_inicio_bucle();
 
-                /*Lo habitual aqui seria:
-                if (!salir_todos_menus) menu_inicio_bucle();
+                //Lo habitual aqui seria:
+                //if (!salir_todos_menus) menu_inicio_bucle();
 
-                Pero, si se conmutase a otra ventana, se activa salir_todos_menus y acabariamos cerrando todas las ventanas
+                //Pero, si se conmutase a otra ventana, se activa salir_todos_menus y acabariamos cerrando todas las ventanas
 
-                En cambio lo que hacemos es que, Despues de un breakpoint y al salir de debug cpu, abrir menu. Independientemente de si se cierra ventana con ESC,
-                si se intenta conmutar a otra ventana, o si se pulsa tecla de cerrar todos menus
-                Con esto conseguimos que si estamos en modo step, 
-                se conserve modo step en el menu. De otra manera, si cuando se conmuta a otra ventana,
-                esto activa salir_todos_menus
-                aqui se saldria y no entraria en en bucle de gestion de multitarea
-                */
+                //En cambio lo que hacemos es que, Despues de un breakpoint y al salir de debug cpu, abrir menu. Independientemente de si se cierra ventana con ESC,
+                //si se intenta conmutar a otra ventana, o si se pulsa tecla de cerrar todos menus
+                //Con esto conseguimos que si estamos en modo step, 
+                //se conserve modo step en el menu. De otra manera, si cuando se conmuta a otra ventana,
+                //esto activa salir_todos_menus
+                //aqui se saldria y no entraria en en bucle de gestion de multitarea
+                
 
                 //TODO: idealmente aqui habria que mirarse si:
                 //si se ha pulsado en otra ventana, conmutar a ella. Esto habitualmente se mira con el menu cerrado y justo se abre,
@@ -22135,7 +22186,8 @@ void menu_inicio(void)
             }
 
 
-        }    
+        }
+        */    
 
         if (menu_event_remote_protocol_enterstep.v) {
             //Entrada

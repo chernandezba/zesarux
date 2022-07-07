@@ -13,6 +13,7 @@ Improved Debugging:
 -Added a setting to show on which scanline has been executed a Halt, inverting border color
 -When enabling step mode, emulation is paused on all menus
 -Preserve step mode when exiting debug cpu that was opened by breakpoint
+-When a breakpoint is fired, step mode is kept on all menus
 
 Improved SmartLoad & Drag-Drop: 
 -Allow to load a .rom file as a custom rom file for the current machine
