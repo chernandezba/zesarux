@@ -21424,11 +21424,12 @@ void menu_inicio_bucle(void)
 		if (menu_pressed_open_menu_while_in_menu.v) {
 			menu_pressed_open_menu_while_in_menu.v=0;
 			reopen_menu=1;
-			printf ("Reabrimos menu\n");
+			//printf ("Reabrimos menu\n");
 		}
 
-
+        //printf("antes zxvision_simple_window_manager\n");
         reopen_menu=zxvision_simple_window_manager(reopen_menu);
+        //printf("despues zxvision_simple_window_manager\n");
 
 
 		which_window_clicked_on_background=NULL;
@@ -21838,6 +21839,8 @@ void menu_inicio(void)
     	menu_set_menu_abierto(0);		
 		return;
 	}
+
+    //printf("XX1\n");
 
 	//Menu desactivado y salida del emulador
 	if (menu_desactivado_andexit.v) end_emulator_autosave_snapshot();

@@ -32617,7 +32617,7 @@ void menu_inicio_bucle_main(void)
     //printf("menu_inicio_bucle_main: menu_pressed_zxdesktop_button_which %d menu_pressed_zxdesktop_lower_icon_which %d pulsado_alguna_ventana_con_menu_cerrado %d\n",
     //            menu_pressed_zxdesktop_button_which,menu_pressed_zxdesktop_lower_icon_which,pulsado_alguna_ventana_con_menu_cerrado);
 
-
+    //printf("menu_inicio_bucle_main pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
     //Primera ayuda siempre que no se haya pulsado en botones de menu diferentes del menu principal o dispositivos
     int mostrar_first_aid_menu=1;
     if (menu_pressed_zxdesktop_lower_icon_which>=0) mostrar_first_aid_menu=0;
