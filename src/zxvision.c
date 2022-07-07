@@ -22096,6 +22096,16 @@ void menu_inicio(void)
                 esto activa salir_todos_menus
                 aqui se saldria y no entraria en en bucle de gestion de multitarea
                 */
+
+                //TODO: idealmente aqui habria que mirarse si:
+                //si se ha pulsado en otra ventana, conmutar a ella. Esto habitualmente se mira con el menu cerrado y justo se abre,
+                //y desde el zxvision_simple_window_manager. Ambas funciones son innaccesibles desde aqui, y por tanto es uyn poco liado
+                //tambien habria que ver si se cierran todas las ventanas, no llamar a menu_inicio_bucle
+                //Otra manera de lanzar breakpoint seria que cuando hay un breakpoint se lanzase un comando de:
+                //abre ventana debug cpu, pero esto no deberia abrirse como una pulsacion de tecla F, pues ahi no entra tampoco 
+                //en el zxvision_simple_window_manager, sino que tendria que haber una manera que, desde el menu cerrado, saltase a 
+                //zxvision_simple_window_manager con una ventana concreta
+                //printf("pulsado_alguna_ventana_con_menu_cerrado: %d\n",pulsado_alguna_ventana_con_menu_cerrado);
                 menu_inicio_bucle();
             }
 
