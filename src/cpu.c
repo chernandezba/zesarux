@@ -5969,12 +5969,6 @@ int parse_cmdline_options(void) {
 				scrfile=argv[puntero_parametro];
 			}
 
-			/*
-			else if (!strcmp(argv[puntero_parametro],"--step")) {
-				cpu_step_mode.v=1;
-			}
-			*/
-
 
 
 			else if (!strcmp(argv[puntero_parametro],"--tape")) {

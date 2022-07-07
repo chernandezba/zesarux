@@ -141,3 +141,12 @@ Do not create default icons as there are already at least one created
 
 -iconos de dispositivos mmc/ide en escritorio? Quiza al pulsar que muestren el contenido, montando en 0:/
 
+
+
+ok -  Debug con emulación pausada en menú tiene que estar siempre pausada
+
+Y probar además en modo step que se mantenga siempre pausado , incluso al cambiar de ventana? Si. Eso permite en modo step por ejemplo it a hex editor sin que continúe la emulación 
+
+Y accion de pause deberia dejar pause siempre, poder volver a emulacion pero pausado
+
+Step mode que se conserve si está activo en el menú y se cierra el emulador, que se quede en pausa 
