@@ -6803,6 +6803,7 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
     if (pressrelease) {
       //Activar funcion f en menu
       menu_button_f_function.v=1;
+      //printf("Indice accion: %d\n",indice);
       menu_button_f_function_index=indice;
       menu_abierto=1;
 

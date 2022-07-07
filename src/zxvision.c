@@ -21425,6 +21425,7 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
     //}
 
     //Quitar pausado de emulacion que se pueda haber activado desde un step mode de debug cpu
+    printf("Desactivar menu_emulation_paused_on_menu_by_debug_step_mode al cerrar menu\n");
     menu_emulation_paused_on_menu_by_debug_step_mode=0;	    
 
 }
@@ -21983,6 +21984,9 @@ void menu_inicio(void)
 
                 menu_debug_registers(0);
 
+
+                //printf("Despues de debug cpu, menu_emulation_paused_on_menu_by_debug_step_mode=%d\n",menu_emulation_paused_on_menu_by_debug_step_mode);
+
                 //restaurar estado multitarea
 
                 menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
@@ -22000,7 +22004,7 @@ void menu_inicio(void)
             }
 
 
-        }
+        }    
 
         if (menu_event_remote_protocol_enterstep.v) {
             //Entrada

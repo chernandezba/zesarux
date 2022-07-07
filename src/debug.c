@@ -1342,6 +1342,12 @@ void cpu_core_loop_debug_breakpoint(char *message)
 {
 	menu_abierto=1;
 	do_breakpoint_exception(message);
+
+
+    //Simular accion joystick de debug cpu. Pruebas
+    //menu_button_f_function.v=1;
+    //menu_button_f_function_action=F_FUNCION_DEBUGCPU;
+
 }
 
 
