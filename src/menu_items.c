@@ -33075,6 +33075,14 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
 		case F_FUNCION_DEBUGCPU:
 			menu_debug_registers(0);
+            /*zxvision_restore_one_window("debugcpu");
+            
+
+            zxvision_window *ventana_debug_cpu=zxvision_find_window_in_background("debugcpu");
+
+            if (ventana_debug_cpu!=NULL) zxvision_handle_mouse_ev_switch_back_wind(ventana_debug_cpu);
+
+            menu_abierto=1;*/
 		break;
 
 		case F_FUNCION_DEBUGCPU_VIEW_ADVENTURE:

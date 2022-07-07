@@ -8692,6 +8692,82 @@ void zxvision_add_all_windows_to_restore(void)
 	
 }
 
+void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
+{
+    //Lanzar funcion que la crea
+    zxvision_known_window_names_array[indice].start(0);
+
+    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background,
+    //siempre que no sea la de normal overlay o null
+    zxvision_set_window_overlay_from_current(zxvision_current_window);
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+    /*
+    Esa ventana ya viene de background por tanto no hay que guardar nada en la ventana., 
+    es más, si estamos aquí es que se ha salido de la ventana con escape (y la current window ya no estará) 
+    o con f6. Total que no hay que guardar nada. 
+    Pero si que conviene dejar el overlay como estaba antes 
+    */    
+}
+
+//Restaurar una sola ventana. Funcion utilizada en otros sitios y no desde la restauracion en startup
+//De momento no usada
+
+/*
+void zxvision_restore_one_window(char *ventana_a_restaurar)
+{
+	if (!menu_allow_background_windows) return;
+
+	//Si no hay multitask, no restaurar, porque esto puede implicar que se abran ventanas que necesitan multitask, 
+	//y se quejen con "This window needs multitask enabled", y ese mensaje no se ve el error, y espera una tecla
+	if (!menu_multitarea) return;
+
+	//indicar que estamos restaurando ventanas y por tanto las funciones que las crean tienen que volver nada mas entrar
+	zxvision_currently_restoring_windows_on_start=1;
+
+
+	menu_speech_tecla_pulsada=1; //Si no, envia continuamente los textos de las ventanas a speech
+
+
+	//Guardar valores funciones anteriores
+	int antes_menu_overlay_activo=menu_overlay_activo;
+
+
+    printf ("Restoring window %s\n",ventana_a_restaurar);
+
+    int indice=zxvision_find_known_window(ventana_a_restaurar);
+
+    if (indice<0) {
+        //Si hay error con alguna ventana desconocida, nos guardamos el error para el final
+        //si no, en medio de la restauracion salta esta ventana y ademas no se redimensiona a zxdesktop
+        //error_restoring_window=1;
+        //error_restoring_window_index=i;
+        //debug_printf (VERBOSE_ERR,"Unknown window to restore: %s",restore_window_array[i]);
+    }
+
+    else {
+        //Lanzar funcion que la crea
+        zxvision_restore_windows_on_startup_aux_launch_window(indice);
+    }
+
+	
+
+	zxvision_currently_restoring_windows_on_start=0;
+
+	//Si antes no estaba activo, ponerlo a 0. El cambio a normal_overlay_texto_menu que se hace en el bucle
+	//no lo desactiva
+	//Si no hicieramos esto, al restaurar ventanas y, no siempre, se quedan las ventanas abiertas,
+	//sin dibujar el contenido, pero con los marcos y titulo visible, aunque el menu está cerrado
+	//quiza sucede cuando la maquina al arrancar es tsconf o cualquier otra que no tiene el tamaño de ventana standard de spectrum
+	if (!antes_menu_overlay_activo) {
+		menu_overlay_activo=0;
+	}
+
+}
+*/
+
 void zxvision_restore_windows_on_startup(void)
 {
 	if (!menu_allow_background_windows) return;
@@ -8734,22 +8810,8 @@ void zxvision_restore_windows_on_startup(void)
 		}
 
 		else {
-		//Lanzar funcion que la crea
-			zxvision_known_window_names_array[indice].start(0);
-
-			//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background,
-			//siempre que no sea la de normal overlay o null
-			zxvision_set_window_overlay_from_current(zxvision_current_window);
-
-			//restauramos modo normal de texto de menu
-    		set_menu_overlay_function(normal_overlay_texto_menu);
-
-			/*
-			Esa ventana ya viene de background por tanto no hay que guardar nada en la ventana., 
-			es más, si estamos aquí es que se ha salido de la ventana con escape (y la current window ya no estará) 
-			o con f6. Total que no hay que guardar nada. 
-			Pero si que conviene dejar el overlay como estaba antes 
-			*/
+		    //Lanzar funcion que la crea
+			zxvision_restore_windows_on_startup_aux_launch_window(indice);
 		}
 
 	}
@@ -12027,6 +12089,31 @@ int zxvision_coords_in_superior_windows(zxvision_window *w,int x,int y)
 
 }
 
+//Buscar una ventana entre las activas que corresponda al geometry name
+zxvision_window *zxvision_find_window_in_background(char *geometry_name)
+{
+	if (!menu_allow_background_windows) return NULL;
+
+    zxvision_window *w;
+    w=zxvision_current_window;
+
+	//Empezamos de arriba hacia abajo
+
+	while (w!=NULL) {
+
+        if (!strcmp(w->geometry_name,geometry_name)) return w;
+
+		zxvision_window *lower_window;
+
+		lower_window=w->previous_window;
+
+		w=lower_window;
+
+	}
+
+	return NULL;
+
+}
 
 
 //Dice si las coordenadas indicadas coinciden con cualquiera de las ventanas que estén en las ventanas de debajo de la indicada
