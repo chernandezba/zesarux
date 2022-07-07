@@ -928,6 +928,7 @@ extern void menu_footer_clear_bottom_line(void);
 extern void cls_menu_overlay(void);
 extern int menu_multitarea;
 extern int menu_emulation_paused_on_menu;
+extern int menu_emulation_paused_on_menu_by_debug_step_mode;
 extern int menu_abierto;
 extern int footer_last_cpu_use;
 

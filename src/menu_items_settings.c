@@ -1791,7 +1791,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_multitarea) {
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_menu_emulation_paused,NULL,
-                "Sto~~p emulation on menu","Sto~~p emulacion en menu","Sto~~p emulacio al menu");
+                "Sto~~p emulation on menu","Sto~~p emulación en menu","Sto~~p emulació al menu");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_emulation_paused_on_menu ? 'X' : ' ' ));
 
             menu_add_item_menu_shortcut(array_menu_common,'p');

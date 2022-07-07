@@ -150,3 +150,13 @@ Y probar además en modo step que se mantenga siempre pausado , incluso al cambi
 Y accion de pause deberia dejar pause siempre, poder volver a emulacion pero pausado
 
 Step mode que se conserve si está activo en el menú y se cierra el emulador, que se quede en pausa 
+
+
+-menu_emulation_paused_on_menu: setting general
+-cpu_step_mode.v : solo tiene sentido dentro de debug cpu. si sale de menu debug cpu y cpu_step_mode esta activado:
+ok*si cierra ventana, se pierde step mode y menu_emulation_paused_on_menu_by_debug_step_mode=0
+ok*si va a background, deberia activar setting de menu_emulation_paused_on_menu_by_debug_step_mode para que diga que no tiene que avanzar la emulacion
+
+-si se cierra menu, menu_emulation_paused_on_menu_by_debug_step_mode=0
+
+Quiza setting adicional menu_emulation_paused_on_menu_by_debug_step_mode 

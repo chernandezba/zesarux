@@ -891,6 +891,10 @@ int menu_multitarea=1;
 //emulacion en menu esta pausada
 int menu_emulation_paused_on_menu=0;
 
+//emulacion en menu esta pausada debido a que Debug cpu se ha puesto en step mode
+int menu_emulation_paused_on_menu_by_debug_step_mode=0;
+
+
 //Si se oculta la barra vertical en la zona de porcentaje de ventanas de texto o selector de archivos
 z80_bit menu_hide_vertical_percentaje_bar={0};
 
@@ -15751,7 +15755,7 @@ void menu_cpu_core_loop(void)
 {
     if (menu_multitarea==1) {
         //multitarea en menu y emulacion en menu
-        if (!menu_emulation_paused_on_menu) {
+        if (!menu_emulation_paused_on_menu && !menu_emulation_paused_on_menu_by_debug_step_mode) {
             cpu_core_loop();
         }
 
@@ -15805,6 +15809,7 @@ int menu_if_emulation_paused(void)
 {
     if (!menu_multitarea) return 1;
     if (menu_emulation_paused_on_menu) return 1;
+    if (menu_emulation_paused_on_menu_by_debug_step_mode) return 1;
 
     return 0;
 }
@@ -21418,6 +21423,9 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
     //if (snapshot_in_ram_pending_message_footer) {
     //   generic_footertext_print_operating("REWIND"); 
     //}
+
+    //Quitar pausado de emulacion que se pueda haber activado desde un step mode de debug cpu
+    menu_emulation_paused_on_menu_by_debug_step_mode=0;	    
 
 }
 

@@ -7031,7 +7031,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	char buffer_mensaje[64];
 
 	//Si no esta multitarea activa o pause emulation en menu, modo por defecto es step to step
-	if (menu_multitarea==0 || menu_emulation_paused_on_menu) cpu_step_mode.v=1;
+	if (menu_multitarea==0 || menu_emulation_paused_on_menu || menu_emulation_paused_on_menu_by_debug_step_mode) cpu_step_mode.v=1;
 
 
 	//zxvision_window ventana;
@@ -7499,7 +7499,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				//Si tecla no es ESC o background, no salir
 				if (tecla!=2 && tecla!=3) acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 
-
+                if (tecla==3) {
+                    //No mantener emulacion pausada ya que no estamos en step mode
+                    //printf("Desactivar menu_emulation_paused_on_menu_by_debug_step_mode\n");
+                    menu_emulation_paused_on_menu_by_debug_step_mode=0;
+                }
 
 			}
 
@@ -8208,6 +8212,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				}
 
 				if (tecla==3) { //background
+                    
+                    //Mantener emulacion pausada fuera de aqui, ya que estamos en step mode
+                    debug_printf(VERBOSE_DEBUG,"Keep emulation paused out of debug cpu as we are in step mode");
+                    menu_emulation_paused_on_menu_by_debug_step_mode=1;
+                
 					cpu_step_mode.v=0;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
@@ -8347,7 +8356,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	}
 
 	else {
-		zxvision_destroy_window(ventana);		
+		zxvision_destroy_window(ventana);	
+        //Se sale de ventana. quitar pausado de emulacion
+        menu_emulation_paused_on_menu_by_debug_step_mode=0;	
  	}	
 
 
