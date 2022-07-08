@@ -3827,142 +3827,137 @@ void menu_filesel_overlay_draw_preview(void)
 	if (menu_filesel_overlay_last_preview_width<=0 || menu_filesel_overlay_last_preview_height<=0) return;
 
 
-		//printf("putpixel preview\n");
+    //printf("putpixel preview\n");
 
-        int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
+    int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
 
-		int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
-
-
-		//Preview pegar a la derecha
-		int xorigen=ancho_ventana-menu_filesel_overlay_last_preview_width/menu_char_width;
-
-		//Restar barra desplazamiento, texto <dir> y mas margen
-        int margen_x_coord=7;
-		xorigen=xorigen-margen_x_coord;
+    int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
 
 
-		int yorigen;
+    //Preview pegar a la derecha
+    int xorigen=ancho_ventana-menu_filesel_overlay_last_preview_width/menu_char_width;
+
+    //Restar barra desplazamiento, texto <dir> y mas margen
+    int margen_x_coord=7;
+    xorigen=xorigen-margen_x_coord;
 
 
-		/*
-		int zxvision_get_filesel_alto_dir(zxvision_window *ventana)
-{
-	return ventana->visible_height - ventana->upper_margin - ventana->lower_margin - 2;
-}
-
-cursor:
-filesel_linea_seleccionada   
-
-alto:
-zxvision_get_filesel_alto_dir(ventana)-1
-		*/
-
-		//Con esto se clavaria justo en el cursor
-		//yorigen=menu_filesel_overlay_window->upper_margin+filesel_linea_seleccionada;
-
-		int alto_zona_dir=zxvision_get_filesel_alto_dir(menu_filesel_overlay_window)-1;
-
-		//Si cursor esta por arriba
-		if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
-			//El preview esta abajo
-			yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
-		}
-
-		else {
-			//Si no, arriba
-			yorigen=0;
-		}
+    int yorigen;
 
 
-		//Sumar zona de cabeceras
-		yorigen +=menu_filesel_overlay_window->upper_margin;
+    //Con esto se clavaria justo en el cursor
+    //yorigen=menu_filesel_overlay_window->upper_margin+filesel_linea_seleccionada;
 
-		//Y ver que no se salga por la izquierda por ejemplo
-		if (xorigen<0 || yorigen<0) return;
+    int alto_zona_dir=zxvision_get_filesel_alto_dir(menu_filesel_overlay_window)-1;
 
-		//ver que haya un tamaño suficiente de ventana
-        //printf("ventana ancho %d alto %d\n",ancho_ventana,alto_ventana);
+    //Si cursor esta por arriba
+    if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
+        //El preview esta abajo
+        yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
+    }
 
-        if (ancho_ventana<31) {
-            //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
-            return;
-        }
+    else {
+        //Si no, arriba
+        yorigen=0;
+    }
 
-        //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
-        if (ancho_ventana<38) {
-            //debug_printf(VERBOSE_DEBUG,"Setting preview to the right as we have a small window");
-            xorigen=xorigen+margen_x_coord-1; //-1 de la barra de progreso
-        }
+
+    //Sumar zona de cabeceras
+    yorigen +=menu_filesel_overlay_window->upper_margin;
+
+    //Y ver que no se salga por la izquierda por ejemplo
+    if (xorigen<0 || yorigen<0) return;
+
+    //ver que haya un tamaño suficiente de ventana
+    //printf("ventana ancho %d alto %d\n",ancho_ventana,alto_ventana);
+
+    if (ancho_ventana<31) {
+        //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
+        return;
+    }
+
+    //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
+    if (ancho_ventana<38) {
+        //debug_printf(VERBOSE_DEBUG,"Setting preview to the right as we have a small window");
+        xorigen=xorigen+margen_x_coord-1; //-1 de la barra de progreso
+    }
         
 
-		//Sumar scroll ventana
-		xorigen +=menu_filesel_overlay_window->offset_x;
-		yorigen +=menu_filesel_overlay_window->offset_y;
+    //Sumar scroll ventana
+    xorigen +=menu_filesel_overlay_window->offset_x;
+    yorigen +=menu_filesel_overlay_window->offset_y;
 
 
-		ancho_ventana *=menu_char_width;
-		alto_ventana *=menu_char_height;
-		xorigen *=menu_char_width;
-		yorigen *=menu_char_height;
+    ancho_ventana *=menu_char_width;
+    alto_ventana *=menu_char_height;
+    xorigen *=menu_char_width;
+    yorigen *=menu_char_height;
 
 
-		int x,y;
-		int contador=0;
+    int x,y;
+    int contador=0;
 
-		for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
-			for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
-			
-				int color=menu_filesel_overlay_last_preview_memory[contador].color;
-				contador++;
+    for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
+        for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
+        
+            int color=menu_filesel_overlay_last_preview_memory[contador].color;
+            contador++;
 
-				//Por si acaso comprobar rangos
-				if (color<0 || color>=EMULATOR_TOTAL_PALETTE_COLOURS) color=0;
-				zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+y,color);
-			}
-		}
+            //Por si acaso comprobar rangos
+            if (color<0 || color>=EMULATOR_TOTAL_PALETTE_COLOURS) color=0;
+            zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+y,color);
+        }
+    }
 
-		//Le pongo recuadro en el mismo tamaño del preview
-		int color_recuadro=ESTILO_GUI_PAPEL_TITULO;
+    //Le pongo recuadro en el mismo tamaño del preview
+    int color_recuadro=ESTILO_GUI_PAPEL_TITULO;
 
-		//Horizontal
-		for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
-			zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen,color_recuadro);
-			zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+menu_filesel_overlay_last_preview_height-1,color_recuadro);
-		}
+    //Horizontal
+    for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen,color_recuadro);
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+menu_filesel_overlay_last_preview_height-1,color_recuadro);
+    }
 
-		//Vertical
-		for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
-			zxvision_putpixel(menu_filesel_overlay_window,xorigen,yorigen+y,color_recuadro);
-			zxvision_putpixel(menu_filesel_overlay_window,xorigen+menu_filesel_overlay_last_preview_width-1,yorigen+y,color_recuadro);
-		}
+    //Vertical
+    for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen,yorigen+y,color_recuadro);
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen+menu_filesel_overlay_last_preview_width-1,yorigen+y,color_recuadro);
+    }
 
-		//ponerle sombreado
+    //ponerle sombreado
 
-		int offset_sombra=4;
+    int offset_sombra=4;
 
-		int grosor_sombra=4;
+    int grosor_sombra=4;
 
-		int color_sombra=7;
-		//TODO: quizar buscar mejor color o hacerlo dependiendo del tema
+    int color_sombra=ESTILO_GUI_TINTA_NORMAL;
+    int color_sombra_no=ESTILO_GUI_PAPEL_NORMAL;
 
-		//Vertical
-		for (y=offset_sombra;y<menu_filesel_overlay_last_preview_height+grosor_sombra;y++) {
-			int i;
-			for (i=0;i<grosor_sombra;i++) 
-			{
-				zxvision_putpixel(menu_filesel_overlay_window,xorigen+menu_filesel_overlay_last_preview_width+i,yorigen+y,color_sombra);
-			}
-		}
+    //Vertical
+    for (y=offset_sombra;y<menu_filesel_overlay_last_preview_height+grosor_sombra;y++) {
+        int i;
+        for (i=0;i<grosor_sombra;i++) 
+        {
+            int xfinal=xorigen+menu_filesel_overlay_last_preview_width+i;
+            int yfinal=yorigen+y;
+            int sombra_si=(xfinal+yfinal) % 2;
+            int color=(sombra_si ? color_sombra : color_sombra_no);
+            zxvision_putpixel(menu_filesel_overlay_window,xfinal,yfinal,color);
+        }
+    }
 
-		//Horizontal
-		for (x=offset_sombra;x<menu_filesel_overlay_last_preview_width+grosor_sombra;x++) {
-			int i;
-			for (i=0;i<grosor_sombra;i++) 
-			{
-				zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+menu_filesel_overlay_last_preview_height+i,color_sombra);
-			}
-		}		
+    //Horizontal
+    for (x=offset_sombra;x<menu_filesel_overlay_last_preview_width+grosor_sombra;x++) {
+        int i;
+        for (i=0;i<grosor_sombra;i++) 
+        {
+            int xfinal=xorigen+x;
+            int yfinal=yorigen+menu_filesel_overlay_last_preview_height+i;
+            int sombra_si=(xfinal+yfinal) % 2;
+            int color=(sombra_si ? color_sombra : color_sombra_no);            
+            zxvision_putpixel(menu_filesel_overlay_window,xfinal,yfinal,color);
+        }
+    }		
 }
 
 
