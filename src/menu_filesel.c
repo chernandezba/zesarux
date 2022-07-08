@@ -3866,7 +3866,7 @@ zxvision_get_filesel_alto_dir(ventana)-1
 		//Si cursor esta por arriba
 		if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
 			//El preview esta abajo
-			yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/8+1;
+			yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
 		}
 
 		else {
