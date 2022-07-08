@@ -3829,8 +3829,6 @@ void menu_filesel_overlay_draw_preview(void)
 
 		//printf("putpixel preview\n");
 
-		//zxvision_putpixel
-        //Ancho de zona waveform variable segun el tamanyo de ventana
         int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
 
 		int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
@@ -3904,9 +3902,9 @@ zxvision_get_filesel_alto_dir(ventana)-1
 
 
 		ancho_ventana *=menu_char_width;
-		alto_ventana *=8;
+		alto_ventana *=menu_char_height;
 		xorigen *=menu_char_width;
-		yorigen *=8;
+		yorigen *=menu_char_height;
 
 
 		int x,y;
