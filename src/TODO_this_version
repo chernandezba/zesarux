@@ -24,7 +24,7 @@ Para esta version:
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
 
--Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
+
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
@@ -150,3 +150,6 @@ Do not create default icons as there are already at least one created
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
 -funcion edicion linea texto, si se edita y hay mas de lo que cabe en pantalla, inicia con cursor no visible
+
+
+en preparacion-Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
