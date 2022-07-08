@@ -53,6 +53,7 @@ Fixed segfault when selecting an invalid file type on real tape
 Fixed Keyboard Help image for Spectravideo 318
 Fixed allowed machines when saving snapshots .ZX
 Fixed Breakpoints actions: now are executed everywhere (even in the menu)
+Fixed pressing key c (continuous mode) on debug cpu (emulation was unpaused temporarily)
 
 
 Some other minor bugfixes and improvements

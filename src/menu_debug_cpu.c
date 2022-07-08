@@ -8291,7 +8291,16 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) != MENU_PUERTO_TECLADO_NINGUNA) {
 
 					//tecla=menu_get_pressed_key();
-					tecla=zxvision_common_getkey_refresh();
+
+                	//Detener emulacion porque si no la funcion de leer teclado avanzara en la emulacion
+					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+					menu_emulation_paused_on_menu=1;
+
+                    tecla=zxvision_common_getkey_refresh();
+
+					//Restaurar estado pausa emulacion
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+
 
 					if (tecla=='c') {
 						menu_debug_registers_next_cont_speed();
