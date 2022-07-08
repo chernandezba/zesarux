@@ -1915,6 +1915,7 @@ printf (
         "--zxdesktop-scr-enable                         Enable ZX Desktop SCR background file\n"
         "--zxdesktop-scr-centered                       Center ZX Desktop SCR background\n"
         "--zxdesktop-scr-fillscale                      Scale automatic for ZX Desktop SCR background\n"
+        "--zxdesktop-scr-mixbackground                  Mix SCR image with background\n"
         "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
         "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
         "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"  
@@ -5683,6 +5684,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-fillscale")) {
 				zxdesktop_draw_scrfile_fill_scale=1;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-mixbackground")) {
+				zxdesktop_draw_scrfile_mix_background=1;
+			}            
 
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-scalefactor")) {

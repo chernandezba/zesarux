@@ -5681,6 +5681,9 @@ int zxdesktop_draw_scrfile_scale_factor=2;
 //Si desactivar flash en scr file
 int zxdesktop_draw_scrfile_disable_flash=0;
 
+//Si mezclar scr file con el fondo
+int zxdesktop_draw_scrfile_mix_background=0;
+
 z80_byte *zxdesktop_draw_scrfile_pointer=NULL;
 
 //cache para el caso de parpadeo normal
@@ -6002,8 +6005,15 @@ void menu_draw_ext_desktop(void)
                 }
             }
 
+            if (mostrar_scrfile && zxdesktop_draw_scrfile_mix_background) {
+                //aplicar tramado con el fondo
+                int desactivado=(x+y)%2;    
 
-            if (mostrar_scrfile) {
+                if (desactivado) mostrar_scrfile=0;
+            }        
+
+
+            if (mostrar_scrfile) {                
                 scr_putpixel(x,y,color_scrfile);
             }
 

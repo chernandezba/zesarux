@@ -3415,6 +3415,8 @@ int util_write_configfile(void)
 
     if (zxdesktop_draw_scrfile_fill_scale)              ADD_STRING_CONFIG,"--zxdesktop-scr-fillscale");
 
+    if (zxdesktop_draw_scrfile_mix_background)          ADD_STRING_CONFIG,"--zxdesktop-scr-mixbackground");
+
                                                         ADD_STRING_CONFIG,"--zxdesktop-scr-scalefactor %d",zxdesktop_draw_scrfile_scale_factor);
 
     if (zxdesktop_draw_scrfile_disable_flash)           ADD_STRING_CONFIG,"--zxdesktop-scr-disable-flash");

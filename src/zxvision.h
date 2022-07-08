@@ -1429,6 +1429,7 @@ extern int zxdesktop_draw_scrfile_centered;
 extern int zxdesktop_draw_scrfile_fill_scale;
 extern int zxdesktop_draw_scrfile_scale_factor;
 extern int zxdesktop_draw_scrfile_disable_flash;
+extern int zxdesktop_draw_scrfile_mix_background;
 
 
 struct s_zxdesktop_lowericons_info {

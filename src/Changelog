@@ -33,6 +33,7 @@ Improved ZX Desktop:
 -Right mouse button is used now for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine
+-Added setting to mix scr image with background
 
 Improved HiLow DataDrive emulation:
 -Allow to Format, Browse and Chkdsk an Hilow DataDrive image (.ddh file)

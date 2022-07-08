@@ -9543,6 +9543,11 @@ void menu_zxdesktop_scrfile_fillscale(MENU_ITEM_PARAMETERS)
     zxdesktop_draw_scrfile_fill_scale ^=1;
 }
 
+void menu_zxdesktop_scrfile_mix_background(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_draw_scrfile_mix_background ^=1;
+}
+
 void menu_zxdesktop_scrfile_scalefactor(MENU_ITEM_PARAMETERS)
 {
     menu_ventana_scanf_numero_enhanced("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
@@ -10070,6 +10075,10 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                         "SCR autoscale","SCR autoescalar","SCR autoescalar");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_fill_scale ? 'X' : ' ' ));
 
+
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
+                        "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
 
 
                     if (!zxdesktop_draw_scrfile_fill_scale) {
