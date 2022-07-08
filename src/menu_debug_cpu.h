@@ -161,14 +161,14 @@ extern int map_adventure_offset_y;
 "menu or break or empty string: Breaks current execution of program\n" \
 "call address: Calls memory address, address is an expression\n" \
 "disassemble address: Dissassemble address, address is an expression\n" \
-"printc c: Print character c to console\n" \
+"printc expression: Print ascii character to console\n" \
 "printe expression: Print expression following the same syntax as breakpoints and evaluate expression\n" \
 "printregs: Print registers\n" \
 "prints string: Prints string to console\n" \
 "putv expression: Adds expression result value in the Debug Memory Zone. Result is always treated as a 8-bit value. Zone is cleared when running Reset\n" \
 "quicksave: Saves a quick snapshot\n" \
 "reset-tstatp: Resets t-states partial counter\n" \
-"set-register string: Sets register indicated on string. Example: set-register PC=32768\n" \
+"set-register expression: Sets register indicated on expression. Example: set-register PC=BC+10\n" \
 "start-transaction-log: Starts the transaction log, require that you define the log file before\n" \
 "stop-transaction-log: Stops the transaction log\n" \
 "write address value: Write memory address with indicated value, address and value are expressions\n" \

@@ -4279,8 +4279,9 @@ int debug_change_register(char *texto)
 
 	if (texto[i]==0) return 2; //No hay nada despues del igual
 
-	//Parsear valor
-	valor_registro=parse_string_to_number(&texto[i]);
+	//Parsear valor, es una expresion tal cual
+	//valor_registro=parse_string_to_number(&texto[i]);
+    valor_registro=exp_par_evaluate_expression_to_number(&texto[i]);
 
   if (CPU_IS_SCMP) {
 
@@ -5781,7 +5782,7 @@ int i;
       else {
         unsigned int caracter;
 
-        caracter=parse_string_to_number(breakpoint_action_command_argv[0]);
+        caracter=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[0]);
 
         debug_printf (VERBOSE_DEBUG,"Running printc command character: %d",caracter);
 

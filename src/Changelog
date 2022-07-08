@@ -14,8 +14,7 @@ Improved Debugging:
 -When enabling step mode, emulation is paused on all menus
 -Preserve step mode when exiting debug cpu that was opened by breakpoint
 -When a breakpoint is fired, step mode is kept on all menus
--Breakpoints actions are now fired elsewhere (even in the menu)
--Breakpoints actions "call" and "write" can now use expressions instead of fixed values
+-Breakpoints actions "call", "printc", "set-register" and "write" can now use expressions instead of fixed values
 -Added breakpoint actions: "disassemble", "printregs"
 -Warn on footer when step mode
 
@@ -52,6 +51,7 @@ Fixed trap print numbers on Spectrum and ZX81 (setting --chardetectcompatnum)
 Fixed segfault when selecting an invalid file type on real tape
 Fixed Keyboard Help image for Spectravideo 318
 Fixed allowed machines when saving snapshots .ZX
+Fixed Breakpoints actions: now are executed everywhere (even in the menu)
 
 
 Some other minor bugfixes and improvements
