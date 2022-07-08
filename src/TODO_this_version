@@ -152,4 +152,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -funcion edicion linea texto, si se edita y hay mas de lo que cabe en pantalla, inicia con cursor no visible
 
 
-en preparacion-Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
+en preparacion-Miniatura de pantalla de file selector, permitir tamaño real si hay suficiente espacio 
+(y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
+previews quiza hay que preparar siempre los dos: tamaño real y escalado mitad
+y segun tamaño ventana, mostrar uno u otro
