@@ -2698,6 +2698,7 @@ int if_zxdesktop_enabled_and_driver_allows(void)
 
     //Si driver video aun no inicializado. No deberia suceder, pero por si acaso
     if (scr_driver_can_ext_desktop==NULL) {
+        debug_printf(VERBOSE_WARN,"scr_driver_can_ext_desktop is NULL, it should only happen before initializing video driver");
         return screen_ext_desktop_enabled;
     }
 

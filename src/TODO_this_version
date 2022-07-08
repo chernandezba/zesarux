@@ -198,8 +198,6 @@ y luego hacer que acabe entrando en zxvision_simple_window_manager con esa venta
 -en comando "set-register" que tambien lo acepte
 
 
--Scr driver can ext si es null que avise con un warning por consola
-
 -En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan 
 
 -Probar debug cpu paws
