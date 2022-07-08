@@ -3056,6 +3056,8 @@ void menu_debug_registers_set_title(zxvision_window *w)
                     if (indice_debug_cpu_backwards_history) sprintf (titulo,"Debug CPU (bckstep) V%d",menu_debug_registers_current_view);
                                         //0123456789012345678901
                     else sprintf (titulo,"Debug CPU (step)    V%d",menu_debug_registers_current_view);
+
+                    menu_footer_activity("STEP");
                 }
                 //printf ("no breakpoint pending show\n");
         }

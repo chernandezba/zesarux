@@ -17,6 +17,7 @@ Improved Debugging:
 -Breakpoints actions are now fired elsewhere (even in the menu)
 -Breakpoints actions "call" and "write" can now use expressions instead of fixed values
 -Added breakpoint actions: "disassemble", "printregs"
+-Warn on footer when step mode
 
 Improved SmartLoad & Drag-Drop: 
 -Allow to load a .rom file as a custom rom file for the current machine
