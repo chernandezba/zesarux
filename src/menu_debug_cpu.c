@@ -3030,7 +3030,7 @@ void menu_debug_registers_zxvision_ventana_set_height(zxvision_window *w)
 
 void menu_debug_registers_set_title(zxvision_window *w)
 {
-        char titulo[33];
+    char titulo[33];
 
 	//En vista daad, meter otro titulo
 	if (menu_debug_registers_current_view==8) {
@@ -3038,32 +3038,32 @@ void menu_debug_registers_set_title(zxvision_window *w)
 		return;
 	}
 
-        //menu_debug_registers_current_view
+    //menu_debug_registers_current_view
 
-        //Por defecto
+    //Por defecto
+                    //0123456789012345678901
+    sprintf (titulo,"Debug CPU           V%d",menu_debug_registers_current_view);
+
+    if (menu_breakpoint_exception_pending_show.v==1 || menu_breakpoint_exception.v) {
                        //0123456789012345678901
-        sprintf (titulo,"Debug CPU           V%d",menu_debug_registers_current_view);
+        sprintf (titulo,"Debug CPU (brk cnd) V%d",menu_debug_registers_current_view);
+        //printf ("breakpoint pending show\n");
+    }
+    else {
 
-        if (menu_breakpoint_exception_pending_show.v==1 || menu_breakpoint_exception.v) {
-                               //0123456789012345678901
-                sprintf (titulo,"Debug CPU (brk cnd) V%d",menu_debug_registers_current_view);
-                //printf ("breakpoint pending show\n");
+        if (cpu_step_mode.v) {
+                                                                    //0123456789012345678901
+            if (indice_debug_cpu_backwards_history) sprintf (titulo,"Debug CPU (bckstep) V%d",menu_debug_registers_current_view);
+                                //0123456789012345678901
+            else sprintf (titulo,"Debug CPU (step)    V%d",menu_debug_registers_current_view);
+
+            menu_footer_activity("STEP");
         }
-        else {
+        //printf ("no breakpoint pending show\n");
+    }
 
-                if (cpu_step_mode.v) {
-                                                                           //0123456789012345678901
-                    if (indice_debug_cpu_backwards_history) sprintf (titulo,"Debug CPU (bckstep) V%d",menu_debug_registers_current_view);
-                                        //0123456789012345678901
-                    else sprintf (titulo,"Debug CPU (step)    V%d",menu_debug_registers_current_view);
-
-                    menu_footer_activity("STEP");
-                }
-                //printf ("no breakpoint pending show\n");
-        }
-
-        //Poner numero de vista siempre en posicion 23
-        //sprintf (&titulo[23],"%d",menu_debug_registers_current_view);
+    //Poner numero de vista siempre en posicion 23
+    //sprintf (&titulo[23],"%d",menu_debug_registers_current_view);
 
 	strcpy(w->window_title,titulo);
 }
