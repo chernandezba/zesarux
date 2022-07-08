@@ -7109,8 +7109,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
             }
 
             else {
-                //TODO: Gestion acciones
-                debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+                //Gestion acciones. Se gestionan desde el mismo core de debug y aqui no deberian escalarse nunca
+                //debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
             }
 
         }
@@ -7224,9 +7224,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				}
 
 				else {
-					menu_breakpoint_exception.v=0;
-					//Gestion acciones
-					debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+					//menu_breakpoint_exception.v=0;
+                    //Gestion acciones. Se gestionan desde el mismo core de debug y aqui no deberian escalarse nunca
+					//debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
 				}
 			}
 
@@ -8355,9 +8355,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				}
 
 				else {
-					menu_breakpoint_exception.v=0;
-					//Gestion acciones
-					debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+					//menu_breakpoint_exception.v=0;
+                    //Gestion acciones. Se gestionan desde el mismo core de debug y aqui no deberian escalarse nunca
+					//debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
 				}
 			}
 

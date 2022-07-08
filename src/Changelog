@@ -14,6 +14,9 @@ Improved Debugging:
 -When enabling step mode, emulation is paused on all menus
 -Preserve step mode when exiting debug cpu that was opened by breakpoint
 -When a breakpoint is fired, step mode is kept on all menus
+-Breakpoints actions are now fired elsewhere (even in the menu)
+-Breakpoints actions "call" and "write" can now use expressions instead of fixed values
+-Added breakpoint actions: "disassemble", "printregs"
 
 Improved SmartLoad & Drag-Drop: 
 -Allow to load a .rom file as a custom rom file for the current machine

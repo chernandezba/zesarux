@@ -8673,7 +8673,7 @@ int zxvision_find_known_window(char *nombre)
 
 	for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++) {
 
-		 if (!strcmp(zxvision_known_window_names_array[i].nombre,nombre)) return i;
+		 if (!strcasecmp(zxvision_known_window_names_array[i].nombre,nombre)) return i;
 
 	}
 	return -1;
@@ -12112,7 +12112,7 @@ zxvision_window *zxvision_find_window_in_background(char *geometry_name)
 
 	while (w!=NULL) {
 
-        if (!strcmp(w->geometry_name,geometry_name)) return w;
+        if (!strcasecmp(w->geometry_name,geometry_name)) return w;
 
 		zxvision_window *lower_window;
 
@@ -22181,8 +22181,8 @@ void menu_inicio(void)
             }
 
             else {
-                //Gestion acciones
-                debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+                //Gestion acciones. Se gestionan desde el mismo core de debug y aqui no deberian escalarse nunca
+                //debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
             }
 
 

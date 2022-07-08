@@ -194,4 +194,5 @@ con el nombre de la ventana, puede saber si existe y si no, crearla. esto hacerl
 y luego hacer que acabe entrando en zxvision_simple_window_manager con esa ventana activa
 
 
--Gestion de acciones de debug breakpoint
+-set register que permita expresion como valor
+-en comando "set-register" que tambien lo acepte

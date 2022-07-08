@@ -1343,8 +1343,19 @@ void cpu_core_loop_debug_breakpoint(char *message)
 	//menu_abierto=1;
 	do_breakpoint_exception(message);
 
+    if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+        zxvision_open_menu_with_window("debugcpu");
+    }
 
-    zxvision_open_menu_with_window("debugcpu");
+    
+    else {
+        //Gestionar acciones. Se gestionan desde aqui mismo y ya no escalan a menu
+        menu_breakpoint_exception.v=0;
+        //Gestion acciones
+        //printf("Handling action %s\n",debug_breakpoints_actions_array[catch_breakpoint_index]);
+        debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
+    }    
+
 
 }
 
@@ -5708,12 +5719,13 @@ int i;
         unsigned int direccion;
         z80_byte valor;
 
-        direccion=parse_string_to_number(breakpoint_action_command_argv[0]);
-        valor=parse_string_to_number(breakpoint_action_command_argv[1]);
+        direccion=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[0]);
+        valor=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[1]);
 
         debug_printf (VERBOSE_DEBUG,"Running write command address %d value %d",direccion,valor);
 
-        poke_byte_z80_moto(direccion,valor);
+        poke_byte_z80_moto(direccion,valor);              
+
       }
     }
 
@@ -5723,7 +5735,7 @@ int i;
       else {
         unsigned int direccion;
 
-        direccion=parse_string_to_number(breakpoint_action_command_argv[0]);
+        direccion=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[0]);
 
         debug_printf (VERBOSE_DEBUG,"Running call command address : %d",direccion);
         if (CPU_IS_MOTOROLA) debug_printf (VERBOSE_DEBUG,"Unimplemented call command for motorola");
@@ -5733,6 +5745,34 @@ int i;
         }
       }
     }
+
+
+    else if (!strcmp(comando_sin_parametros,"disassemble")) {
+      breakpoint_action_parse_commands_argvc(parametros);
+      if (breakpoint_action_command_argc<1) debug_printf (VERBOSE_DEBUG,"Command needs one parameter");
+      else {
+        unsigned int direccion;
+
+        direccion=exp_par_evaluate_expression_to_number(breakpoint_action_command_argv[0]);
+
+
+        char string_direccion[10];
+
+        menu_debug_print_address_memory_zone(string_direccion, direccion);                                  
+
+        size_t longitud_opcode;
+        char buffer[100];
+
+
+        debugger_disassemble(buffer,99,&longitud_opcode,direccion);    
+
+        printf("%s %s\n",string_direccion,buffer);    
+
+      
+      }
+    }
+
+
 
     else if (!strcmp(comando_sin_parametros,"printc")) {
       breakpoint_action_parse_commands_argvc(parametros);
@@ -5762,6 +5802,15 @@ int i;
         printf ("%s\n",salida);
       }
     }
+
+
+    else if (!strcmp(comando_sin_parametros,"printregs")) {
+        char buffer[2048];
+        print_registers(buffer);
+
+        printf ("%s\n",buffer);
+    }
+
 
     else if (!strcmp(comando_sin_parametros,"prints")) {
       if (parametros[0]==0) debug_printf (VERBOSE_DEBUG,"Command needs one parameter");
