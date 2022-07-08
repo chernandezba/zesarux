@@ -4083,6 +4083,32 @@ void menu_filesel_preview_reduce_scr_color(int *buffer_intermedio,int ancho, int
 
 }
 
+
+//Copia imagen preview sin reducir
+void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int alto)
+{
+
+
+	int x,y;
+
+	int offset_final=0;
+    int offset_orig=0;
+
+
+	for (y=0;y<alto;y++) {
+		for (x=0;x<ancho;x++) {
+
+			int color_final=buffer_intermedio[offset_orig++];
+
+
+			menu_filesel_overlay_last_preview_memory[offset_final++].color=color_final;            
+        }
+
+	}
+
+
+}
+
 void menu_filesel_preview_render_scr(char *archivo_scr)
 {
 			//printf("es pantalla\n");
@@ -4196,12 +4222,25 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 		free(buf_pantalla);
 
-		//Reducir a 128x96
-		menu_filesel_overlay_assign_memory_preview(128,96);							
+        //TODO: detectar esto en base al tamaño ventana (ancho y alto)
+        int reducir_mitad=1;
 
-		//menu_filesel_preview_reduce_monochome(buffer_intermedio,256,192);
 
-		menu_filesel_preview_reduce_scr_color(buffer_intermedio,256,192);
+        if (reducir_mitad) {
+		    //Reducir a 128x96
+		    menu_filesel_overlay_assign_memory_preview(128,96);
+
+		    //menu_filesel_preview_reduce_monochome(buffer_intermedio,256,192);
+
+		    menu_filesel_preview_reduce_scr_color(buffer_intermedio,256,192);
+        }
+
+        else {
+		    //No reducir, tal cual a 256x192
+		    menu_filesel_overlay_assign_memory_preview(256,192);
+
+		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);            
+        }
 
 		free(buffer_intermedio);
 
