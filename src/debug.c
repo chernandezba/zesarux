@@ -101,6 +101,7 @@
 #include "mmc.h"
 #include "esxdos_handler.h"
 #include "sms.h"
+#include "menu_debug_cpu.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;

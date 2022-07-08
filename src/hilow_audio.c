@@ -163,7 +163,7 @@ int hilow_read_audio_duracion_onda(int posicion,int *duracion_flanco_bajada)
 
     *duracion_flanco_bajada=0;
 
-    int duracion_variacion=0;
+    //int duracion_variacion=0;
 
     int flag_menor=0;
     int flag_mayor=0;
@@ -332,7 +332,7 @@ int hilow_read_audio_buscar_dos_sync_bits(int posicion)
 
 
 
-    int final_posicion;
+    //int final_posicion;
 
     //Antes la segunda onda no se detectaba bien. Descomentar estas lineas si vuelve a suceder    
     //final_posicion=posicion+HILOW_READ_AUDIO_LONGITUD_ONDA_INICIO_BITS;
