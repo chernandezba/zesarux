@@ -848,10 +848,15 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 
         for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			char string_condition_shown[23];
-			char string_action_shown[7];
+            #define LENGTH_STRING_CONDITION_SHOWN 23
+			char string_condition_shown[LENGTH_STRING_CONDITION_SHOWN];
 
-			char string_condition_action[33];
+            #define LENGTH_STRING_ACTION_SHOWN 7
+			char string_action_shown[LENGTH_STRING_ACTION_SHOWN];
+
+            //sumar los dos, agregar caracteres ->
+            #define LENGTH_STRING_CONDITION_ACTION (LENGTH_STRING_CONDITION_SHOWN+LENGTH_STRING_ACTION_SHOWN+3)
+			char string_condition_action[LENGTH_STRING_CONDITION_ACTION];
 
 			
 
@@ -862,11 +867,11 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 				exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp_breakpoint,MAX_PARSER_TOKENS_NUM);
 
 
-				menu_tape_settings_trunc_name(buffer_temp_breakpoint,string_condition_shown,23);
+				menu_tape_settings_trunc_name(buffer_temp_breakpoint,string_condition_shown,LENGTH_STRING_CONDITION_SHOWN);
 				
 				//printf ("brkp %d [%s]\n",i,string_condition_shown);
 
-				menu_tape_settings_trunc_name(debug_breakpoints_actions_array[i],string_action_shown,7);
+				menu_tape_settings_trunc_name(debug_breakpoints_actions_array[i],string_action_shown,LENGTH_STRING_ACTION_SHOWN);
 				if (debug_breakpoints_actions_array[i][0]) sprintf (string_condition_action,"%s->%s",string_condition_shown,string_action_shown);
 
 				//Si accion es menu, no escribir, para que quepa bien en pantalla
@@ -877,8 +882,9 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 				sprintf(string_condition_action,"None");
 			}
 
-			char string_condition_action_shown[23];
-			menu_tape_settings_trunc_name(string_condition_action,string_condition_action_shown,23);
+            #define LENGTH_STRING_CONDITION_ACTION_SHOWN 23
+			char string_condition_action_shown[LENGTH_STRING_CONDITION_ACTION_SHOWN];
+			menu_tape_settings_trunc_name(string_condition_action,string_condition_action_shown,LENGTH_STRING_CONDITION_ACTION_SHOWN);
 
 																																																										//0123456789012345678901234567890
 			if (debug_breakpoints_conditions_enabled[i]==0 || debug_breakpoints_enabled.v==0) {														//Di 12345678901234: 12345678
