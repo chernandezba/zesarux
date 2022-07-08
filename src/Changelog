@@ -17,6 +17,7 @@ Improved Debugging:
 -Breakpoints actions "call", "printc", "set-register" and "write" can now use expressions instead of fixed values
 -Added breakpoint actions: "disassemble", "printregs"
 -Warn on footer when step mode
+-Enlarge width of breakpoints list
 
 Improved SmartLoad & Drag-Drop: 
 -Allow to load a .rom file as a custom rom file for the current machine

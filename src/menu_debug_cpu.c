@@ -848,10 +848,10 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 
 
         for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-            #define LENGTH_STRING_CONDITION_SHOWN 23
+            #define LENGTH_STRING_CONDITION_SHOWN 30
 			char string_condition_shown[LENGTH_STRING_CONDITION_SHOWN];
 
-            #define LENGTH_STRING_ACTION_SHOWN 7
+            #define LENGTH_STRING_ACTION_SHOWN 20
 			char string_action_shown[LENGTH_STRING_ACTION_SHOWN];
 
             //sumar los dos, agregar caracteres ->
@@ -882,7 +882,7 @@ void menu_breakpoints(MENU_ITEM_PARAMETERS)
 				sprintf(string_condition_action,"None");
 			}
 
-            #define LENGTH_STRING_CONDITION_ACTION_SHOWN 23
+            #define LENGTH_STRING_CONDITION_ACTION_SHOWN 40
 			char string_condition_action_shown[LENGTH_STRING_CONDITION_ACTION_SHOWN];
 			menu_tape_settings_trunc_name(string_condition_action,string_condition_action_shown,LENGTH_STRING_CONDITION_ACTION_SHOWN);
 
