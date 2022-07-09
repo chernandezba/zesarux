@@ -4013,16 +4013,14 @@ void menu_filesel_overlay_draw_preview(void)
     //Y si se permite full size previews
     else if (menu_filesel_show_previews_reduce.v==0) {
 
+        reducir=0;
+
         if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
             //Tamaño entero pero pegado a la derecha
-            reducir=0;
             margen_x_coord=1; //1 de la barra de progreso
         }
 
-        else {
-            //Tamaño entero y sin pegar a la derecha
-            reducir=0;
-        }
+        //Cualquier otro tamaño, es tamaño entero y con margen por la derecha
 
     }
 
