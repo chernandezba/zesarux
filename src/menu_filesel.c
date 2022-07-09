@@ -3971,7 +3971,7 @@ void menu_filesel_overlay_draw_preview(void)
 
     int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
 
-    int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
+    //int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
 
     //Restar barra desplazamiento, texto <dir> y mas margen
     int margen_x_coord=7;
@@ -4049,7 +4049,7 @@ void menu_filesel_overlay_draw_preview(void)
     //Si cursor esta por arriba
     if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
         //El preview esta abajo
-        yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
+        yorigen=alto_zona_dir-alto_miniatura/menu_char_height+1;
     }
 
     else {
