@@ -156,3 +156,5 @@ en preparacion-Miniatura de pantalla de file selector, permitir tamaño real si 
 (y/o hacer miniatura a x1 y con putpixel de 1, sin zoom de menu)
 previews quiza hay que preparar siempre los dos: tamaño real y escalado mitad
 y segun tamaño ventana, mostrar uno u otro
+
+-recuperar archivos .o de zesarux-extras/extras/media/zx80 -> estan en gitignore
