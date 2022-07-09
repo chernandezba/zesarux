@@ -3817,6 +3817,87 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 	menu_filesel_overlay_last_preview_height=height;
 }
 
+void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int alto,int reducir)
+{   int x,y;
+    int contador=0;
+
+    int incremento=1;
+
+    if (reducir) incremento=2;
+
+    for (y=0;y<alto;y+=incremento) {
+        for (x=0;x<ancho;x+=incremento) {
+
+            int color_final;
+            int xdestino,ydestino;
+
+            if (reducir) {
+                int colores_cuadricula[4];
+
+                //Sacar los 4 colores de la cuadricula de 2x2
+                int offset_orig;
+                offset_orig=y*ancho+x;
+                colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+
+                offset_orig=y*ancho+x+1;
+                colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+
+                offset_orig=(y*ancho+1)+x;
+                colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+
+                offset_orig=(y*ancho+1)+x+1;
+                colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+
+
+
+                //Dado que partimos de una pantalla de spectrum, en una cuadricula de 2x2 habran como mucho 2 colores diferentes
+                //Ver cual de los dos se repite mas
+
+                //Asumimos el primer color, para simplificar la comparacion mas abajo
+                int color_final1=colores_cuadricula[0];
+                //Segundo color inicialmente a nada valido
+                int color_final2=-1;
+
+                int veces_color_final1=0;
+                int veces_color_final2=0;		
+
+                int i;
+
+                for (i=0;i<3;i++) {	
+
+                    if (colores_cuadricula[i]==color_final1) {
+                        veces_color_final1++;
+                    }
+                    else {
+                        color_final2=colores_cuadricula[i];
+                        veces_color_final2++;
+                    }
+
+                }
+                                        
+
+
+                if (veces_color_final1>veces_color_final2) color_final=color_final1;
+                else color_final=color_final2;
+
+                xdestino=x/2;
+                ydestino=y/2;
+
+            }
+
+            else {
+                color_final=menu_filesel_overlay_last_preview_memory[contador].color;
+                contador++;
+                xdestino=x;
+                ydestino=y;
+            }
+
+            //Por si acaso comprobar rangos
+            if (color_final<0 || color_final>=EMULATOR_TOTAL_PALETTE_COLOURS) color_final=0;
+            zxvision_putpixel(menu_filesel_overlay_window,xorigen+xdestino,yorigen+ydestino,color_final);
+        }
+    }
+}
 
 void menu_filesel_overlay_draw_preview(void)
 {
@@ -3833,12 +3914,63 @@ void menu_filesel_overlay_draw_preview(void)
 
     int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
 
-
-    //Preview pegar a la derecha
-    int xorigen=ancho_ventana-menu_filesel_overlay_last_preview_width/menu_char_width;
-
     //Restar barra desplazamiento, texto <dir> y mas margen
     int margen_x_coord=7;
+
+    //asumimos imagen miniatura
+    int reducir=1;
+
+    int minimo_ancho=31;
+
+    if (ancho_ventana<minimo_ancho) {
+        //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
+        return;
+    }       
+
+    //Segun el ancho de ventana, metemos una miniatura de tamaño real o dividida a la mitad, y pegada a la derecha o con margen por la derecha
+
+    int ancho_miniatura;
+    int alto_miniatura;
+
+    printf("%d\n",ancho_ventana);
+
+    //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
+    if (ancho_ventana<minimo_ancho+margen_x_coord) {
+        //Tamaño reducido pegado a la derecha
+        margen_x_coord=1; //1 de la barra de progreso
+    }
+
+    else if (ancho_ventana<60) {
+        //Tamaño reducido no pegado a la derecha
+    }    
+
+    else if (ancho_ventana<67) {  //31+32
+        //Tamaño entero pero pegado a la derecha
+        reducir=0;
+        margen_x_coord=1; //1 de la barra de progreso
+    }
+
+    else {
+        //Tamaño entero y sin pegar a la derecha
+        reducir=0;
+    }
+
+
+
+    ancho_miniatura=menu_filesel_overlay_last_preview_width;
+    alto_miniatura=menu_filesel_overlay_last_preview_height;    
+
+    if (reducir) {
+        ancho_miniatura /=2;
+        alto_miniatura /=2;
+    }
+
+
+
+    //Preview pegar a la derecha
+    int xorigen=ancho_ventana-ancho_miniatura/menu_char_width;
+
+
     xorigen=xorigen-margen_x_coord;
 
 
@@ -3868,20 +4000,7 @@ void menu_filesel_overlay_draw_preview(void)
     //Y ver que no se salga por la izquierda por ejemplo
     if (xorigen<0 || yorigen<0) return;
 
-    //ver que haya un tamaño suficiente de ventana
-    //printf("ventana ancho %d alto %d\n",ancho_ventana,alto_ventana);
 
-    if (ancho_ventana<31) {
-        //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
-        return;
-    }
-
-    //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
-    if (ancho_ventana<38) {
-        //debug_printf(VERBOSE_DEBUG,"Setting preview to the right as we have a small window");
-        xorigen=xorigen+margen_x_coord-1; //-1 de la barra de progreso
-    }
-        
 
     //Sumar scroll ventana
     xorigen +=menu_filesel_overlay_window->offset_x;
@@ -3895,8 +4014,12 @@ void menu_filesel_overlay_draw_preview(void)
 
 
     int x,y;
-    int contador=0;
+    
+    menu_filesel_overlay_draw_preview_scr(xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
 
+
+    /*
+    int contador=0;
     for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
         for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
         
@@ -3908,20 +4031,21 @@ void menu_filesel_overlay_draw_preview(void)
             zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+y,color);
         }
     }
+    */
 
     //Le pongo recuadro en el mismo tamaño del preview
     int color_recuadro=ESTILO_GUI_PAPEL_TITULO;
 
     //Horizontal
-    for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
+    for (x=0;x<ancho_miniatura;x++) {
         zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen,color_recuadro);
-        zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+menu_filesel_overlay_last_preview_height-1,color_recuadro);
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+alto_miniatura-1,color_recuadro);
     }
 
     //Vertical
-    for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
+    for (y=0;y<alto_miniatura;y++) {
         zxvision_putpixel(menu_filesel_overlay_window,xorigen,yorigen+y,color_recuadro);
-        zxvision_putpixel(menu_filesel_overlay_window,xorigen+menu_filesel_overlay_last_preview_width-1,yorigen+y,color_recuadro);
+        zxvision_putpixel(menu_filesel_overlay_window,xorigen+ancho_miniatura-1,yorigen+y,color_recuadro);
     }
 
     //ponerle sombreado
@@ -3934,11 +4058,11 @@ void menu_filesel_overlay_draw_preview(void)
     int color_sombra_no=ESTILO_GUI_PAPEL_NORMAL;
 
     //Vertical
-    for (y=offset_sombra;y<menu_filesel_overlay_last_preview_height+grosor_sombra;y++) {
+    for (y=offset_sombra;y<alto_miniatura+grosor_sombra;y++) {
         int i;
         for (i=0;i<grosor_sombra;i++) 
         {
-            int xfinal=xorigen+menu_filesel_overlay_last_preview_width+i;
+            int xfinal=xorigen+ancho_miniatura+i;
             int yfinal=yorigen+y;
             int sombra_si=(xfinal+yfinal) % 2;
             int color=(sombra_si ? color_sombra : color_sombra_no);
@@ -3947,12 +4071,12 @@ void menu_filesel_overlay_draw_preview(void)
     }
 
     //Horizontal
-    for (x=offset_sombra;x<menu_filesel_overlay_last_preview_width+grosor_sombra;x++) {
+    for (x=offset_sombra;x<ancho_miniatura+grosor_sombra;x++) {
         int i;
         for (i=0;i<grosor_sombra;i++) 
         {
             int xfinal=xorigen+x;
-            int yfinal=yorigen+menu_filesel_overlay_last_preview_height+i;
+            int yfinal=yorigen+alto_miniatura+i;
             int sombra_si=(xfinal+yfinal) % 2;
             int color=(sombra_si ? color_sombra : color_sombra_no);            
             zxvision_putpixel(menu_filesel_overlay_window,xfinal,yfinal,color);
@@ -3964,6 +4088,7 @@ void menu_filesel_overlay_draw_preview(void)
 //Reduce una imagen de un buffer , monocroma, a la mitad con destino en preview
 //Entrada: colores son 0  o 1
 //Salida: colores son 7 o 0
+//No usado
 void menu_filesel_preview_reduce_monochome(int *buffer_intermedio,int ancho, int alto)
 {
 
@@ -4007,7 +4132,7 @@ void menu_filesel_preview_reduce_monochome(int *buffer_intermedio,int ancho, int
 }
 
 
-//Reduce una imagen de un buffer , color, a la mitad con destino en preview
+//Reduce una imagen de un buffer , color, a la mitad con destino en preview. No usado
 void menu_filesel_preview_reduce_scr_color(int *buffer_intermedio,int ancho, int alto)
 {
 
@@ -4218,7 +4343,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 		free(buf_pantalla);
 
         //TODO: detectar esto en base al tamaño ventana (ancho y alto)
-        int reducir_mitad=1;
+        /*int reducir_mitad=1;
 
 
         if (reducir_mitad) {
@@ -4235,7 +4360,11 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 		    menu_filesel_overlay_assign_memory_preview(256,192);
 
 		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);            
-        }
+        }*/
+
+		    menu_filesel_overlay_assign_memory_preview(256,192);
+
+		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);           
 
 		free(buffer_intermedio);
 
