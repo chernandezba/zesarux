@@ -211,7 +211,6 @@ int windows_opcion_seleccionada=0;
 int zxpand_opcion_seleccionada=0;
 int ql_mdv_flp_opcion_seleccionada=0;
 int i8049_mixer_opcion_seleccionada=0;
-int fileselector_settings_opcion_seleccionada=0;
 int midi_output_instrument_opcion_seleccionada=0;
 int snapshot_rewind_opcion_seleccionada=0;
 int find_opcion_seleccionada=0;
@@ -20455,98 +20454,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 	//free(new_about_window_bmp_file_mem);	
 
 
-
-}
-
-
-void menu_setting_filesel_no_show_dirs(MENU_ITEM_PARAMETERS)
-{
-	menu_filesel_hide_dirs.v ^=1;
-}
-
-void menu_setting_filesel_no_show_size(MENU_ITEM_PARAMETERS)
-{
-	menu_filesel_hide_size.v ^=1;
-}
-
-void menu_setting_filesel_previews(MENU_ITEM_PARAMETERS)
-{
-	menu_filesel_show_previews.v ^=1;
-}
-
-void menu_setting_fileviewer_hex(MENU_ITEM_PARAMETERS)
-{
-    menu_file_viewer_always_hex.v ^=1;
-}
-
-void menu_setting_filesel_allow_delete_folders(MENU_ITEM_PARAMETERS)
-{
-    menu_filesel_utils_allow_folder_delete.v ^=1;
-}
-
-void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
-{
-    menu_item *array_menu_common;
-    menu_item item_seleccionado;
-    int retorno_menu;
-    do {
-
-
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_dirs,NULL,"[%c] Show ~~directories",
-            (menu_filesel_hide_dirs.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'d');	
-        menu_add_item_menu_tooltip(array_menu_common,"Hide directories from file browser menus");
-        menu_add_item_menu_ayuda(array_menu_common,"Hide directories from file browser menus. "
-                                "Useful on demo environments and you don't want the user to be able to navigate the filesystem");
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_size,NULL,"[%c] Show file ~~size",
-            (menu_filesel_hide_size.v==0 ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'s');    
-        menu_add_item_menu_tooltip(array_menu_common,"Hide file size from file selector menus");
-        menu_add_item_menu_ayuda(array_menu_common,"Hide file size from file browser menus");      
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews,NULL,"[%c] Show file ~~previews",
-            (menu_filesel_show_previews.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_tooltip(array_menu_common,"Show file previews in the file selector");
-        menu_add_item_menu_ayuda(array_menu_common,"Show file previews for .scr, .tap, .tzx, etc...\n"
-                            "Note that the fileselector window must be big enough to hold that preview, if not, it will not be shown");
-
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,"[%c] ~~Hexadecimal file viewer",
-            (menu_file_viewer_always_hex.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'h');
-        menu_add_item_menu_tooltip(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
-        menu_add_item_menu_ayuda(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
-
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_allow_delete_folders,NULL,"[%c] Allow ~~folder delete",
-            (menu_filesel_utils_allow_folder_delete.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'f');
-        menu_add_item_menu_tooltip(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
-        menu_add_item_menu_ayuda(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
-
-                   
-
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        menu_add_ESC_item(array_menu_common);
-
-        retorno_menu=menu_dibuja_menu(&fileselector_settings_opcion_seleccionada,&item_seleccionado,array_menu_common,"File Browser Settings" );
-
-                
-
-        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion
-            if (item_seleccionado.menu_funcion!=NULL) {
-                //printf ("actuamos por funcion\n");
-                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                
-            }
-        }
-
-    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
