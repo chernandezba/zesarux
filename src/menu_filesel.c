@@ -3920,7 +3920,11 @@ void menu_filesel_overlay_draw_preview(void)
     //asumimos imagen miniatura
     int reducir=1;
 
-    int minimo_ancho=31;
+    int minimo_caracteres_a_mostrar=15;
+
+    int caracter_ancho_miniatura=256/menu_char_width;
+
+    int minimo_ancho=minimo_caracteres_a_mostrar+caracter_ancho_miniatura/2;
 
     if (ancho_ventana<minimo_ancho) {
         //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
@@ -3932,7 +3936,7 @@ void menu_filesel_overlay_draw_preview(void)
     int ancho_miniatura;
     int alto_miniatura;
 
-    printf("%d\n",ancho_ventana);
+    //printf("%d\n",ancho_ventana);
 
     //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
     if (ancho_ventana<minimo_ancho+margen_x_coord) {
@@ -3940,11 +3944,11 @@ void menu_filesel_overlay_draw_preview(void)
         margen_x_coord=1; //1 de la barra de progreso
     }
 
-    else if (ancho_ventana<60) {
+    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura) {
         //Tamaño reducido no pegado a la derecha
     }    
 
-    else if (ancho_ventana<67) {  //31+32
+    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
         //Tamaño entero pero pegado a la derecha
         reducir=0;
         margen_x_coord=1; //1 de la barra de progreso
@@ -3966,12 +3970,9 @@ void menu_filesel_overlay_draw_preview(void)
     }
 
 
-
-    //Preview pegar a la derecha
-    int xorigen=ancho_ventana-ancho_miniatura/menu_char_width;
+    int xorigen=ancho_ventana-margen_x_coord-ancho_miniatura/menu_char_width;
 
 
-    xorigen=xorigen-margen_x_coord;
 
 
     int yorigen;
