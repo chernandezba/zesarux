@@ -3980,7 +3980,7 @@ void menu_filesel_overlay_draw_preview(void)
     int minimo_caracteres_a_mostrar=15;
 
     //Lo que ocupa en caracteres en ancho un preview entero
-    int caracter_ancho_miniatura=256/menu_char_width;
+    int caracter_ancho_miniatura=menu_filesel_overlay_last_preview_width/menu_char_width;
 
     //Minimo de ancho ventana para que se empiece a mostrar la miniatura (en este caso seria para mitad de scr)
     int minimo_ancho=minimo_caracteres_a_mostrar+caracter_ancho_miniatura/2;
@@ -4354,9 +4354,12 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);            
         }*/
 
-		    menu_filesel_overlay_assign_memory_preview(256,192);
 
-		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);           
+        //Ahora siempre se lee el preview a tamaño completo,
+        //y si hay que reducirlo se hace sobre la marcha en la funcion de overlay
+        menu_filesel_overlay_assign_memory_preview(256,192);
+
+        menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);           
 
 		free(buffer_intermedio);
 
