@@ -111,6 +111,9 @@ z80_bit menu_filesel_drives_allow_fatfs={0};
 //Si mostrar en filesel previews de archivos
 z80_bit menu_filesel_show_previews={1};
 
+//Si reducir previews a la mitad
+z80_bit menu_filesel_show_previews_reduce={0};
+
 //Si no caben todos los archivos en pantalla y por tanto se muestra "*" a la derecha
 int filesel_no_cabe_todo;
 
@@ -4007,15 +4010,20 @@ void menu_filesel_overlay_draw_preview(void)
         //Tamaño reducido no pegado a la derecha
     }    
 
-    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
-        //Tamaño entero pero pegado a la derecha
-        reducir=0;
-        margen_x_coord=1; //1 de la barra de progreso
-    }
+    //Y si se permite full size previews
+    else if (menu_filesel_show_previews_reduce.v==0) {
 
-    else {
-        //Tamaño entero y sin pegar a la derecha
-        reducir=0;
+        if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
+            //Tamaño entero pero pegado a la derecha
+            reducir=0;
+            margen_x_coord=1; //1 de la barra de progreso
+        }
+
+        else {
+            //Tamaño entero y sin pegar a la derecha
+            reducir=0;
+        }
+
     }
 
 

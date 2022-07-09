@@ -37,6 +37,7 @@ extern void menu_settings_tape(MENU_ITEM_PARAMETERS);
 extern void menu_interface_change_gui_style_apply(MENU_ITEM_PARAMETERS);
 extern void menu_settings_snapshot(MENU_ITEM_PARAMETERS);
 extern void menu_cpu_settings(MENU_ITEM_PARAMETERS);
+extern void menu_fileselector_settings(MENU_ITEM_PARAMETERS);
 
 extern void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS);
 extern void menu_zxdesktop_add_configurable_icons(MENU_ITEM_PARAMETERS);

@@ -10341,6 +10341,11 @@ void menu_setting_filesel_allow_delete_folders(MENU_ITEM_PARAMETERS)
     menu_filesel_utils_allow_folder_delete.v ^=1;
 }
 
+void menu_setting_filesel_previews_reduce(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_show_previews_reduce.v ^=1;
+}
+
 void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -10369,6 +10374,14 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Show file previews in the file selector");
         menu_add_item_menu_ayuda(array_menu_common,"Show file previews for .scr, .tap, .tzx, etc...\n"
                             "Note that the fileselector window must be big enough to hold that preview, if not, it will not be shown");
+
+        if (menu_filesel_show_previews.v) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_reduce,NULL,"[%c] Red~~uce previews to half size",
+                (menu_filesel_show_previews_reduce.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_common,'u');
+            menu_add_item_menu_tooltip(array_menu_common,"Reduce previews to half size instead of full size");
+            menu_add_item_menu_ayuda(array_menu_common,"Reduce previews to half size instead of full size");
+        }
 
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,"[%c] ~~Hexadecimal file viewer",

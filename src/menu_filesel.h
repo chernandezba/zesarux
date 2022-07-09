@@ -44,6 +44,7 @@ extern z80_bit menu_filesel_hide_dirs;
 extern z80_bit menu_filesel_hide_size;
 extern z80_bit menu_filesel_utils_allow_folder_delete;
 extern z80_bit menu_filesel_show_previews;
+extern z80_bit menu_filesel_show_previews_reduce;
 extern z80_bit menu_filesel_show_utils;
 
 extern int menu_filesel_mkdir(char *directory);
