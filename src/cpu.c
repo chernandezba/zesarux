@@ -1816,6 +1816,7 @@ printf (
         "--filebrowser-allow-folder-delete  Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK\n"
         "--fileviewer-hex                   File viewer always shows file contents in hexadecimal+ascii\n"
 		"--no-file-previews                 Do not show file previews on file selector menus\n"
+        "--reduce-file-previews             Reduce file previews to half size\n"
 
 
 		"\n"
@@ -6251,6 +6252,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--no-file-previews")) {
 				menu_filesel_show_previews.v=0;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--reduce-file-previews")) {
+				menu_filesel_show_previews_reduce.v=1;
+			}            
 
 
 			else if (!strcmp(argv[puntero_parametro],"--disablemenumouse")) {

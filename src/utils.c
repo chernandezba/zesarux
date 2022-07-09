@@ -3987,6 +3987,8 @@ int util_write_configfile(void)
   if (menu_file_viewer_always_hex.v)            ADD_STRING_CONFIG,"--fileviewer-hex");
 				
   if (menu_filesel_show_previews.v==0)         ADD_STRING_CONFIG,"--no-file-previews");
+
+  if (menu_filesel_show_previews_reduce.v)      ADD_STRING_CONFIG,"--reduce-file-previews");
 			
   if (menu_desactivado.v)                     ADD_STRING_CONFIG,"--disablemenu");
 
