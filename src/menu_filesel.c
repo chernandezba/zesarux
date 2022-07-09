@@ -4019,20 +4019,6 @@ void menu_filesel_overlay_draw_preview(void)
     menu_filesel_overlay_draw_preview_scr(xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
 
 
-    /*
-    int contador=0;
-    for (y=0;y<menu_filesel_overlay_last_preview_height;y++) {
-        for (x=0;x<menu_filesel_overlay_last_preview_width;x++) {
-        
-            int color=menu_filesel_overlay_last_preview_memory[contador].color;
-            contador++;
-
-            //Por si acaso comprobar rangos
-            if (color<0 || color>=EMULATOR_TOTAL_PALETTE_COLOURS) color=0;
-            zxvision_putpixel(menu_filesel_overlay_window,xorigen+x,yorigen+y,color);
-        }
-    }
-    */
 
     //Le pongo recuadro en el mismo tamaño del preview
     int color_recuadro=ESTILO_GUI_PAPEL_TITULO;
