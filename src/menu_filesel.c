@@ -3899,126 +3899,10 @@ void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int
     }
 }
 
-void menu_filesel_overlay_draw_preview(void)
+void menu_filesel_overlay_draw_preview_sombra_recuadro(int xorigen,int yorigen,int ancho_miniatura,int alto_miniatura)
 {
-	//No hay imagen asignada?
-	if (menu_filesel_overlay_last_preview_memory==NULL) return;	
-
-	//Pero tiene tamanyo?
-	if (menu_filesel_overlay_last_preview_width<=0 || menu_filesel_overlay_last_preview_height<=0) return;
-
-
-    //printf("putpixel preview\n");
-
-    int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
-
-    int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
-
-    //Restar barra desplazamiento, texto <dir> y mas margen
-    int margen_x_coord=7;
-
-    //asumimos imagen miniatura
-    int reducir=1;
-
-    int minimo_caracteres_a_mostrar=15;
-
-    int caracter_ancho_miniatura=256/menu_char_width;
-
-    int minimo_ancho=minimo_caracteres_a_mostrar+caracter_ancho_miniatura/2;
-
-    if (ancho_ventana<minimo_ancho) {
-        //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
-        return;
-    }       
-
-    //Segun el ancho de ventana, metemos una miniatura de tamaño real o dividida a la mitad, y pegada a la derecha o con margen por la derecha
-
-    int ancho_miniatura;
-    int alto_miniatura;
-
-    //printf("%d\n",ancho_ventana);
-
-    //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
-    if (ancho_ventana<minimo_ancho+margen_x_coord) {
-        //Tamaño reducido pegado a la derecha
-        margen_x_coord=1; //1 de la barra de progreso
-    }
-
-    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura) {
-        //Tamaño reducido no pegado a la derecha
-    }    
-
-    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
-        //Tamaño entero pero pegado a la derecha
-        reducir=0;
-        margen_x_coord=1; //1 de la barra de progreso
-    }
-
-    else {
-        //Tamaño entero y sin pegar a la derecha
-        reducir=0;
-    }
-
-
-
-    ancho_miniatura=menu_filesel_overlay_last_preview_width;
-    alto_miniatura=menu_filesel_overlay_last_preview_height;    
-
-    if (reducir) {
-        ancho_miniatura /=2;
-        alto_miniatura /=2;
-    }
-
-
-    int xorigen=ancho_ventana-margen_x_coord-ancho_miniatura/menu_char_width;
-
-
-
-
-    int yorigen;
-
-
-    //Con esto se clavaria justo en el cursor
-    //yorigen=menu_filesel_overlay_window->upper_margin+filesel_linea_seleccionada;
-
-    int alto_zona_dir=zxvision_get_filesel_alto_dir(menu_filesel_overlay_window)-1;
-
-    //Si cursor esta por arriba
-    if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
-        //El preview esta abajo
-        yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
-    }
-
-    else {
-        //Si no, arriba
-        yorigen=0;
-    }
-
-
-    //Sumar zona de cabeceras
-    yorigen +=menu_filesel_overlay_window->upper_margin;
-
-    //Y ver que no se salga por la izquierda por ejemplo
-    if (xorigen<0 || yorigen<0) return;
-
-
-
-    //Sumar scroll ventana
-    xorigen +=menu_filesel_overlay_window->offset_x;
-    yorigen +=menu_filesel_overlay_window->offset_y;
-
-
-    ancho_ventana *=menu_char_width;
-    alto_ventana *=menu_char_height;
-    xorigen *=menu_char_width;
-    yorigen *=menu_char_height;
-
 
     int x,y;
-    
-    menu_filesel_overlay_draw_preview_scr(xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
-
-
 
     //Le pongo recuadro en el mismo tamaño del preview
     int color_recuadro=ESTILO_GUI_PAPEL_TITULO;
@@ -4068,7 +3952,128 @@ void menu_filesel_overlay_draw_preview(void)
             int color=(sombra_si ? color_sombra : color_sombra_no);            
             zxvision_putpixel(menu_filesel_overlay_window,xfinal,yfinal,color);
         }
-    }		
+    }	    
+}
+
+void menu_filesel_overlay_draw_preview(void)
+{
+	//No hay imagen asignada?
+	if (menu_filesel_overlay_last_preview_memory==NULL) return;	
+
+	//Pero tiene tamanyo?
+	if (menu_filesel_overlay_last_preview_width<=0 || menu_filesel_overlay_last_preview_height<=0) return;
+
+
+    //printf("putpixel preview\n");
+
+    int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
+
+    int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
+
+    //Restar barra desplazamiento, texto <dir> y mas margen
+    int margen_x_coord=7;
+
+    //asumimos imagen miniatura
+    int reducir=1;
+
+    //Minimo de caracteres a la izquierda en la ventana que queremos que se vean
+    int minimo_caracteres_a_mostrar=15;
+
+    //Lo que ocupa en caracteres en ancho un preview entero
+    int caracter_ancho_miniatura=256/menu_char_width;
+
+    //Minimo de ancho ventana para que se empiece a mostrar la miniatura (en este caso seria para mitad de scr)
+    int minimo_ancho=minimo_caracteres_a_mostrar+caracter_ancho_miniatura/2;
+
+    if (ancho_ventana<minimo_ancho) {
+        //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
+        return;
+    }       
+
+    //Segun el ancho de ventana, metemos una miniatura de tamaño real o dividida a la mitad, y pegada a la derecha o con margen por la derecha
+
+    int ancho_miniatura;
+    int alto_miniatura;
+
+    //printf("%d\n",ancho_ventana);
+
+    //En caso de tener un ancho no muy grande, desplazamos el preview a la derecha quitando el margen
+    if (ancho_ventana<minimo_ancho+margen_x_coord) {
+        //Tamaño reducido pegado a la derecha
+        margen_x_coord=1; //1 de la barra de progreso
+    }
+
+    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura) {
+        //Tamaño reducido no pegado a la derecha
+    }    
+
+    else if (ancho_ventana<minimo_caracteres_a_mostrar+caracter_ancho_miniatura+margen_x_coord) {  
+        //Tamaño entero pero pegado a la derecha
+        reducir=0;
+        margen_x_coord=1; //1 de la barra de progreso
+    }
+
+    else {
+        //Tamaño entero y sin pegar a la derecha
+        reducir=0;
+    }
+
+
+
+    ancho_miniatura=menu_filesel_overlay_last_preview_width;
+    alto_miniatura=menu_filesel_overlay_last_preview_height;    
+
+    if (reducir) {
+        ancho_miniatura /=2;
+        alto_miniatura /=2;
+    }
+
+
+    int xorigen=ancho_ventana-margen_x_coord-ancho_miniatura/menu_char_width;
+
+
+    int yorigen;
+
+
+    //Con esto se clavaria justo en el cursor
+    //yorigen=menu_filesel_overlay_window->upper_margin+filesel_linea_seleccionada;
+
+    int alto_zona_dir=zxvision_get_filesel_alto_dir(menu_filesel_overlay_window)-1;
+
+    //Si cursor esta por arriba
+    if (filesel_linea_seleccionada<=alto_zona_dir/2+1) {
+        //El preview esta abajo
+        yorigen=alto_zona_dir-menu_filesel_overlay_last_preview_height/menu_char_height+1;
+    }
+
+    else {
+        //Si no, arriba
+        yorigen=0;
+    }
+
+
+    //Sumar zona de cabeceras
+    yorigen +=menu_filesel_overlay_window->upper_margin;
+
+    //Y ver que no se salga por la izquierda por ejemplo
+    if (xorigen<0 || yorigen<0) return;
+
+
+
+    //Sumar scroll ventana
+    xorigen +=menu_filesel_overlay_window->offset_x;
+    yorigen +=menu_filesel_overlay_window->offset_y;
+
+
+    xorigen *=menu_char_width;
+    yorigen *=menu_char_height;
+
+    
+    menu_filesel_overlay_draw_preview_scr(xorigen,yorigen,menu_filesel_overlay_last_preview_width,menu_filesel_overlay_last_preview_height,reducir);
+
+    menu_filesel_overlay_draw_preview_sombra_recuadro(xorigen,yorigen,ancho_miniatura,alto_miniatura);
+
+
 }
 
 
