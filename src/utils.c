@@ -14878,6 +14878,18 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
                         longitud_bloque=puntero_lectura[15]+256*puntero_lectura[16]+65536*puntero_lectura[17];
                         puntero_lectura+=18;
+
+                        //bloque simulado para poder obtener nombre del bloque
+                        //39 bytes: 2 de longitud, 1 de flag, y 36 de maximo cabecera tipo sped
+                        z80_byte buffer_temp_cabecera[39];
+
+                        //2 primeros bytes de longitud
+                        buffer_temp_cabecera[0]=longitud_bloque % 0xFF;
+                        buffer_temp_cabecera[1]=(longitud_bloque % 0xFF00)>>8;
+                        util_memcpy_protect_origin(&buffer_temp_cabecera[2], puntero_lectura, 37, 0, 37);
+
+                        util_tape_tap_get_info(buffer_temp_cabecera,buffer_texto,0);
+
                 }
 
                 else {
