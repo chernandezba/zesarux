@@ -503,6 +503,8 @@ void zxvision_check_all_configurable_icons_positions(void)
     //Si desactivado
     if (!zxdesktop_configurable_icons_enabled_and_visible()) return;    
 
+    printf("zxvision_check_all_configurable_icons_positions\n");
+
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
@@ -23343,7 +23345,12 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 	//zxvision_window_delete_all_windows_and_clear_geometry();
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
-	if (reorganize_windows) zxvision_rearrange_background_windows();	
+	if (reorganize_windows) {
+        zxvision_rearrange_background_windows();	
+
+        //Comprobar posiciones iconos y reajustar
+        zxvision_check_all_configurable_icons_positions();
+    }
 
 	//Conveniente esto para borrar "restos" de ventanas
 	cls_menu_overlay();
@@ -23432,7 +23439,13 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 	//zxvision_window_delete_all_windows_and_clear_geometry();
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
-	if (reorganize_windows) zxvision_rearrange_background_windows();	
+	if (reorganize_windows) {
+        zxvision_rearrange_background_windows();	
+
+        //Comprobar posiciones iconos y reajustar
+        zxvision_check_all_configurable_icons_positions();
+
+    }        
 
 	//Conveniente esto para borrar "restos" de ventanas
 	cls_menu_overlay();

@@ -33,6 +33,11 @@ sleep 4
 ./zesarux --noconfigfile --machine zx81 --realvideo --chroma81 extras/media/zx81/Chroma_81/wall-expanded.p
 ./zesarux --noconfigfile --machine zx81 --realvideo --chroma81 extras/media/zx81/Chroma_81/rebound/Rebound.p
 
+echo "Pruebas basicas zx80"
+sleep 4
+./zesarux --noconfigfile --machine zx80 extras/media/zx80/dstar.o
+./zesarux --noconfigfile --machine zx80 extras/media/zx80/QS\ Defenda\ \(Quicksilva\ 1981\)\ Reconstruction.o
+./zesarux --noconfigfile --machine zx80 extras/media/zx80/Hangman.z81
 
 
 echo "Probar spool file, con modo turbo y sin"
