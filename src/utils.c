@@ -14872,7 +14872,10 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
                 //ID 11 - Turbo Speed Data Block
 
                 if (tzx_id==0x11) {
-                        copia_puntero=puntero_lectura;
+                        copia_puntero=puntero_lectura+16; 
+                        //copia_puntero hay que dejarlo justo donde quedan 2 bytes de la longitud y luego el siguiente es el flag
+                        //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
+
                         longitud_bloque=puntero_lectura[15]+256*puntero_lectura[16]+65536*puntero_lectura[17];
                         puntero_lectura+=18;
                 }
