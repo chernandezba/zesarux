@@ -3974,7 +3974,7 @@ void menu_filesel_overlay_draw_preview(void)
     //int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
 
     //Restar barra desplazamiento, texto <dir> y mas margen
-    int margen_x_coord=7;
+    int margen_x_coord=9;
 
     //asumimos imagen miniatura
     int reducir=1;
