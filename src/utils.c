@@ -15613,6 +15613,12 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
 
                 int i;
 
+                //TODO: En el caso de snapshots .sna de 128k, y con juegos que usan la pagina 7 para pantalla, no se vera esa ram 7,
+                //porque asumimos siempre la ram 5 (que es lo primero que se lee en el snapshot)
+                //debido al poco uso de estos snapshots y la poca posibilidad que use ram 7 (ejemplo con Abadia del crimen)
+                //esto se queda pendiente
+                //La ordenacion de paginas ram en 128k en este formato es terrible y no me merece el esfuerzo corregirlo
+
                 for (i=0;i<6912;i++) {
                         z80_byte byte_leido;
 
