@@ -16903,29 +16903,29 @@ void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoext
 		caracter=*origen;
 
 		
-			origen++;
-			if (caracter<32 || caracter>126) {
-				//Primer caracter si fuera de rango siempre sera ?
-                if (i==0) caracter='?';
-				else {
-                    //meterlo en el rango valido de 32...127
-                    caracter &=127;
+        origen++;
+        if (caracter<32 || caracter>126) {
+            //Primer caracter si fuera de rango siempre sera ?
+            if (i==0) caracter='?';
+            else {
+                //meterlo en el rango valido de 32...127
+                caracter &=127;
 
-                    if (caracter==127) caracter=126;
+                if (caracter==127) caracter=126;
 
-                    if (caracter<32) caracter=32+caracter;
-                    
-                }
-			}
-
-			
-            *destino=caracter;
-            destino++;
-        
-            if (sipuntoextension && i==7) {
-                *destino='.';
-                destino++;
+                if (caracter<32) caracter=32+caracter;
+                
             }
+        }
+
+        
+        *destino=caracter;
+        destino++;
+    
+        if (sipuntoextension && i==7) {
+            *destino='.';
+            destino++;
+        }
         
 		
 	}
