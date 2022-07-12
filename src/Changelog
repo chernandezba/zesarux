@@ -9,7 +9,11 @@ Added machine Timex TC2048
 
 Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
-Improve File selector: allow to have a full screen preview if window is big enough
+
+Improved File selector: 
+-Allow to have a full screen preview if window is big enough
+-Better legend key explanation
+
 Improved Debugging: 
 -Added a setting to show on which scanline has been executed a Halt, inverting border color
 -When enabling step mode, emulation is paused on all menus
