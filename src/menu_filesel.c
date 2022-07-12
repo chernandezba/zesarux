@@ -3971,7 +3971,7 @@ void menu_filesel_overlay_draw_preview(void)
 
     int ancho_ventana=menu_filesel_overlay_window->visible_width-1;
 
-    //int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
+    int alto_ventana=menu_filesel_overlay_window->visible_height-2;		
 
     //Restar barra desplazamiento, texto <dir> y mas margen
     int margen_x_coord=9;
@@ -3991,7 +3991,20 @@ void menu_filesel_overlay_draw_preview(void)
     if (ancho_ventana<minimo_ancho) {
         //debug_printf(VERBOSE_DEBUG,"Fileselector width size too small: %d",ancho_ventana);
         return;
-    }       
+    }     
+
+    //Lo que ocupa en caracteres en ancho un preview entero
+    int caracter_alto_miniatura=menu_filesel_overlay_last_preview_height/menu_char_height;
+
+    //Minimo de alto ventana para que se empiece a mostrar la miniatura (en este caso seria para mitad de scr), mas un margen
+    int minimo_alto=5+caracter_alto_miniatura/2;
+
+    //printf("minimo alto %d alto_ventana %d\n",minimo_alto,alto_ventana);
+
+    if (alto_ventana<minimo_alto) {
+        //debug_printf(VERBOSE_DEBUG,"Fileselector height size too small: %d",alto_ventana);
+        return;
+    }         
 
     //Segun el ancho de ventana, metemos una miniatura de tamaño real o dividida a la mitad, y pegada a la derecha o con margen por la derecha
 
@@ -4011,7 +4024,9 @@ void menu_filesel_overlay_draw_preview(void)
     }    
 
     //Y si se permite full size previews
-    else if (menu_filesel_show_previews_reduce.v==0) {
+    //Ver que el alto sea un minimo que permite un preview con tamaño razonable
+    //Esto depende tambien del if posterior : if (xorigen<0 || yorigen<0) {
+    else if (menu_filesel_show_previews_reduce.v==0 && alto_ventana>caracter_alto_miniatura+3) {
 
         reducir=0;
 
@@ -4062,7 +4077,10 @@ void menu_filesel_overlay_draw_preview(void)
     yorigen +=menu_filesel_overlay_window->upper_margin;
 
     //Y ver que no se salga por la izquierda por ejemplo
-    if (xorigen<0 || yorigen<0) return;
+    if (xorigen<0 || yorigen<0) {
+        //printf("Fuera de rango: x %d y %d\n",xorigen,yorigen);
+        return;
+    }
 
 
 
