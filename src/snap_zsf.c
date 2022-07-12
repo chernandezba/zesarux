@@ -841,9 +841,16 @@ void load_zsf_snapshot_block_data_addr(z80_byte *block_data,z80_byte *destino,in
   
   //printf ("load_zsf_snapshot_block_data_addr block_lenght: %d longitud_original: %d si_comprimido: %d\n",block_lenght,longitud_original,si_comprimido);
 
+  
   if (si_comprimido) {
     //Comprimido
-    util_uncompress_data_repetitions(block_data,destino,longitud_original,0xDD);
+    int longitud_descomprimido=util_uncompress_data_repetitions(block_data,destino,longitud_original,0xDD);
+
+    if (longitud_descomprimido!=block_lenght) {
+        debug_printf(VERBOSE_ERR,"Length uncompressed (%d) is not expected length (%d). It should not happen!",longitud_descomprimido,block_lenght);
+    }
+
+
   }
 
 

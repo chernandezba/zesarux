@@ -14088,12 +14088,19 @@ int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longit
 			//Si repeticiones > 256, trocear
 			while (repeticiones>0) {
 				if (antes_es_magic_aislado) {
+                    antes_es_magic_aislado=0;
+
+                    //Antes hay un DD. Convertirlo en DD DD DD 01
 					destino[0]=magic_byte;
 					destino[1]=magic_byte;
 					destino[2]=1;
 
 					destino +=3;
 					longitud_destino +=3;
+
+                    //printf("antes_es_magic_aislado\n");
+
+                    //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",magic_byte,1);
 				}
 
 				destino[0]=magic_byte;
@@ -14107,13 +14114,15 @@ int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longit
 
 				//printf ("%d %02X %02X %02X %02X\n",longitud,magic_byte,magic_byte,byte_repetido,brep);
 
+                //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",byte_repetido,(brep==0 ? 256 : brep));
+
 				destino +=4;
 				longitud_destino +=4;
 
 				repeticiones -=256;
 			}
 
-			antes_es_magic_aislado=0;
+			//antes_es_magic_aislado=0;
 		}
 
 		else {
@@ -14152,6 +14161,7 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
         int longitud_destino=0;
 
         while (longitud) {
+            //printf("util_uncompress_data_repetitions. longitud %d longitud_destino %d\n",longitud,longitud_destino);
 		//Si primer y segundo byte son el byte magic
 		int repeticion=0;
 		if (longitud>=4) {
@@ -14165,6 +14175,13 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
 
 				if (longitud_repeticion==0) longitud_repeticion=256;
 
+                //printf("Read %02X\n",origen[0]);
+                //printf("Read %02X\n",origen[1]);
+                //printf("Read %02X\n",origen[2]);
+                //printf("Read %02X\n",origen[3]);
+
+                //printf("--Repeticion byte_a_repetir %d longitud_repeticion %d\n",byte_a_repetir,longitud_repeticion);
+
 				util_write_repeated_byte(destino,byte_a_repetir,longitud_repeticion);
 
 				origen+=4;
@@ -14176,7 +14193,10 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
 		}
 
 		if (!repeticion) {
+            //printf("Read %02X\n",*origen);
+            //printf("Antes de escribir en destino %p (memoria_spectrum: %p)\n",destino,memoria_spectrum);
 			*destino=*origen;
+            //printf("Despues de escribir en destino\n");
 			
 			origen++;
 			longitud--;
