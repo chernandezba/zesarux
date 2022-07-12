@@ -17353,6 +17353,21 @@ int menu_calcular_ancho_string_item(char *texto)
 	return ancho_calculado;
 }
 
+//Para una leyenda de ventana, retornar texto corto o largo segun si cabe on no en la ventana
+void menu_get_legend_short_long(char *destination_string,int ancho_visible,char *short_string,char *long_string)
+{
+
+	int longitud_largo=menu_calcular_ancho_string_item(long_string);
+
+	//Texto mas largo cuando tenemos mas ancho
+
+	//+2 por contar 1 espacio a la izquierda y otro a la derecha
+	if (ancho_visible>=longitud_largo+2) strcpy(destination_string,long_string);
+
+
+	else strcpy(destination_string,short_string);	
+}
+
 //Decir si usamos hasta la ultima columna, pues no se muestra barra scroll,
 //o bien se muestra barra scroll y no usamos hasta ultima columna
 //Si hemos cambiado la ventana, retornar no 0

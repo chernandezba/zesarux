@@ -1164,16 +1164,27 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
     if (menu_filesel_show_utils.v) {
 
-        char buffer_temporal[100];
+
+        int ancho_visible=ventana->visible_width;
+
+        char buffer_file_actions_short[OVERLAY_SCREEN_MAX_WIDTH+1];
+        char buffer_file_actions_long[OVERLAY_SCREEN_MAX_WIDTH+1];
 
 
         //                         01234  567890  12345  678901  2345678901
-        sprintf(buffer_temporal,"%sM~^Kdr ~^Inf",
+        sprintf(buffer_file_actions_short,"%sM~^Kdr ~^Inf",
                 (es_directorio ? "" : "~^View ~^Trunc C~^Onv ~^Filemem ")
         );
 
+        sprintf(buffer_file_actions_long,"%sMa~^Kedir ~^Info",
+                (es_directorio ? "" : "~^View ~^Truncate C~^Onvert ~^Filemem ")
+        );        
+
+        char buffer_linea[OVERLAY_SCREEN_MAX_WIDTH+1];
+
+        menu_get_legend_short_long(buffer_linea,ancho_visible,buffer_file_actions_short,buffer_file_actions_long);
                                                         
-        zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros-1,buffer_temporal);
+        zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros-1,buffer_linea);
 
 
         char buffer_sync[32];
@@ -1186,15 +1197,15 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
         }
 
         /*
-        sprintf(buffer_temporal,"%sD~^El Re~^N ~^Paste ~^Copy %s",
+        sprintf(buffer_linea,"%sD~^El Re~^N ~^Paste ~^Copy %s",
             //move, de momento  solo para archivos
             (es_directorio ? "" : "~^Move "),
             buffer_sync);
         */
 
-        sprintf(buffer_temporal,"%sD~^El Re~^N ~^Paste ~^Copy ~^Move",buffer_sync);
+        sprintf(buffer_linea,"%sD~^El Re~^N ~^Paste ~^Copy ~^Move",buffer_sync);
 
-        zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros,buffer_temporal);
+        zxvision_print_string_defaults_fillspc(ventana,1,posicion_filtros,buffer_linea);
 
     }
 

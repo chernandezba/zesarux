@@ -3935,19 +3935,8 @@ void menu_debug_add_daad_special_breakpoint(void)
 	//Y salir
 }*/
 
-void menu_debug_get_legend_short_long(char *destination_string,int ancho_visible,char *short_string,char *long_string)
-{
-
-	int longitud_largo=menu_calcular_ancho_string_item(long_string);
-
-	//Texto mas largo cuando tenemos mas ancho
-
-	//+2 por contar 1 espacio a la izquierda y otro a la derecha
-	if (ancho_visible>=longitud_largo+2) strcpy(destination_string,long_string);
 
 
-	else strcpy(destination_string,short_string);	
-}
 
 
 int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
@@ -3987,7 +3976,7 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 
 
 
-								menu_debug_get_legend_short_long(buffer_mensaje,w->visible_width,buffer_mensaje_short,buffer_mensaje_long);
+								menu_get_legend_short_long(buffer_mensaje,w->visible_width,buffer_mensaje_short,buffer_mensaje_long);
 
 
 								//sprintf(buffer_mensaje,"P~~tr:%sH ~~FlwPC:%s ~~1-~~%c:View",
@@ -4048,7 +4037,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			if (cpu_step_mode.v) {
 				if (menu_debug_registers_current_view==1) {
 
-					menu_debug_get_legend_short_long(s,ancho_visible,
+					menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// StM DAsm En:Stp StOvr CntSt Md	
 							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt ~~Md",
@@ -4065,7 +4054,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 				else {
 
-					menu_debug_get_legend_short_long(s,ancho_visible,
+					menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// StpM DAsm Ent:Stp Stovr ContSt
 							"~~StpM ~~D~~Asm ~~E~~n~~t:Stp St~~Ovr ~~ContSt",
@@ -4084,7 +4073,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			else {
 				if (menu_debug_registers_current_view==1) {
 
-					menu_debug_get_legend_short_long(s,ancho_visible,
+					menu_get_legend_short_long(s,ancho_visible,
 
 							//01234567890123456789012345678901
 							// Stepmode Disassem Assem Mode
@@ -4121,7 +4110,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 			if (menu_debug_registers_current_view==1) {
 
-				menu_debug_get_legend_short_long(s,ancho_visible,
+				menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// Chr brk wtch Togl Run Runto Ret	
 							  "Ch~~r ~~brk ~~wtch Tog~~l Ru~~n R~~unto R~~et",
@@ -4134,7 +4123,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 			else {
 
-				menu_debug_get_legend_short_long(s,ancho_visible,
+				menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// changeReg Breakpoints Watches					
 							  "Change~~reg ~~breakpoints ~~watches",
@@ -4188,7 +4177,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite ~~ViewScreen %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
 
 
-				menu_debug_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
+				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
 			}
 			else {
 							//01234567890123456789012345678901
@@ -4199,7 +4188,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 							// ClearTstatesPartial Write MemoryZone 99	
 				sprintf (buffer_intermedio_long,"ClearTstates~~Partial Wr~~ite %sMemory~~Zone %d",buffer_temp_gac_long,menu_debug_memory_zone);
 
-				menu_debug_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
+				menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
 
 			}
 		break;
@@ -4251,7 +4240,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 );
 
 
-                menu_debug_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
+                menu_get_legend_short_long(s,ancho_visible,buffer_intermedio_short,buffer_intermedio_long);
             }
         break;
 	}

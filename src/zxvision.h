@@ -1025,6 +1025,7 @@ extern int osd_adv_kbd_defined;
 extern char osd_adv_kbd_list[MAX_OSD_ADV_KEYB_WORDS][MAX_OSD_ADV_KEYB_TEXT_LENGTH];
 
 extern int menu_calcular_ancho_string_item(char *texto);
+extern void menu_get_legend_short_long(char *destination_string,int ancho_visible,char *short_string,char *long_string);
 
 
 extern int menu_contador_teclas_repeticion;
