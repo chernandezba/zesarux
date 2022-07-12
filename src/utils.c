@@ -16392,186 +16392,166 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 	//Cabecera de cada bloque de datos en version 2 o 3
 	z80_byte z80_header_bloque[3];
 
-        z80_byte *buffer_lectura;
-        buffer_lectura=malloc(1024*1024); //1 MB, mas que suficiente
-        if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot read");
+    z80_byte *buffer_lectura;
+    buffer_lectura=malloc(1024*1024); //1 MB, mas que suficiente
+    if (buffer_lectura==NULL) cpu_panic("Can not allocate memory for snapshot read");
 
-        z80_byte *buffer_destino;
-        buffer_destino=malloc(1024*1024); //1 MB, mas que suficiente
-        if (buffer_destino==NULL) cpu_panic("Can not allocate memory for snapshot read");
-
-
-        FILE *ptr_z80file;
-
-        z80_int direccion_destino;
+    z80_byte *buffer_destino;
+    buffer_destino=malloc(1024*1024); //1 MB, mas que suficiente
+    if (buffer_destino==NULL) cpu_panic("Can not allocate memory for snapshot read");
 
 
+    FILE *ptr_z80file;
 
-        int leidos;
-
-        //Soporte para FatFS
-        FIL fil;        /* File object */
-        //FRESULT fr;     /* FatFs return code */
-
-        int in_fatfs;
+    z80_int direccion_destino;
 
 
-        if (zvfs_fopen_read(filename,&in_fatfs,&ptr_z80file,&fil)<0) {
-                    debug_printf(VERBOSE_ERR,"Error opening %s",filename);
-                    return 1;
-        }
+
+    int leidos;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
 
 
-    /*
-        //Load File
-        ptr_z80file=fopen(filename,"rb");
-        if (ptr_z80file==NULL) {
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_z80file,&fil)<0) {
                 debug_printf(VERBOSE_ERR,"Error opening %s",filename);
                 return 1;
-        }
-    */
-
-        leidos=zvfs_fread(in_fatfs,z80_header,Z80_MAIN_HEADER_SIZE,ptr_z80file,&fil);
-        //leidos=fread(z80_header,1,Z80_MAIN_HEADER_SIZE,ptr_z80file);
-        
+    }
 
 
-        int pagina_pantalla=5;
+
+    leidos=zvfs_fread(in_fatfs,z80_header,Z80_MAIN_HEADER_SIZE,ptr_z80file,&fil);
 
 
-        int comprimido;
-        comprimido=(z80_header[12]>>5)&1;
+    int pagina_pantalla=5;
 
-        if (z80_header[6]==0 && z80_header[7]==0) {
+
+    int comprimido;
+    comprimido=(z80_header[12]>>5)&1;
+
+    if (z80_header[6]==0 && z80_header[7]==0) {
                 
 
-                //Z80 version 2 o 3
+        //Z80 version 2 o 3
 
-                //leemos longitud de la cabecera adicional
-                leidos=zvfs_fread(in_fatfs,z80_header_adicional,2,ptr_z80file,&fil);
-                //leidos=fread(z80_header_adicional,1,2,ptr_z80file);
-                z80_int long_cabecera_adicional=value_8_to_16(z80_header_adicional[1],z80_header_adicional[0]);
-                if (long_cabecera_adicional!= 23 && long_cabecera_adicional!= 54 && long_cabecera_adicional!= 55) {
-                        debug_printf(VERBOSE_DEBUG,"Header with %d bytes unknown",long_cabecera_adicional);
-                        //printf("Header with %d bytes unknown\n",long_cabecera_adicional);
-                        return 1;
-                        
-                }       
-
-                else {
-                        /*if (long_cabecera_adicional==23) {
-                                printf(".Z80 version 2 detected\n");
-                                //z80_version=2;
-                        }
-                        else {
-                                printf(".Z80 version 3 detected\n");
-                                //z80_version=3;
-                        }
-                        */
-
-                        //leemos esa cabecera adicional
-                        debug_printf(VERBOSE_DEBUG,"Reading %d bytes of additional header",long_cabecera_adicional);
-                        leidos=zvfs_fread(in_fatfs,&z80_header_adicional[2],long_cabecera_adicional,ptr_z80file,&fil);
-                        //leidos=fread(&z80_header_adicional[2],1,long_cabecera_adicional,ptr_z80file);                                
-                        
-                        //Ver si snapshot de 128k y obtener pagina activa (5 o 7) de pantalla
-                        int es_128k=0;
-                        z80_byte snap_machine_type=z80_header_adicional[4];
-                        //printf("machine type: %d\n",snap_machine_type);
-                        //Asumimos version 2
-                        int version_file=2;
-                        if (long_cabecera_adicional==54 || long_cabecera_adicional==55) version_file=3;
-
-                        if (version_file==2) {
-                            //V2
-                            if (snap_machine_type==3 || snap_machine_type==4) es_128k=1;
-                        }
-                        else {
-                            //V3
-                            if (snap_machine_type==4 || snap_machine_type==5 || snap_machine_type==6) es_128k=1;
-                        }
-
-                        if (snap_machine_type==7 || snap_machine_type==9 || snap_machine_type==12 || snap_machine_type==13) es_128k=1;
-
-                        if (es_128k) {
-                            z80_byte snap_puerto_32765=z80_header_adicional[5];
-                            if (snap_puerto_32765 & 8) pagina_pantalla=7;
-                        }
-
-                        //printf("pagina pantalla: %d\n",pagina_pantalla);
-
-                        int salir=0;
-
-                        z80_byte numerobloque;
-                        //z80_byte valor_puerto_32765;
-                        z80_int longitudbloque;                        
-
-                        do {
-
-                        //leer datos
-                        //cabecera del bloque de 16kb
-                        leidos=zvfs_fread(in_fatfs,z80_header_bloque,3,ptr_z80file,&fil);
-                        //leidos=fread(z80_header_bloque,1,3,ptr_z80file);
-
-                        comprimido=1;
-                        //printf("leidos: %d\n",leidos);
-                        if (leidos>0) {
-                                numerobloque=z80_header_bloque[2];
-                                longitudbloque=value_8_to_16(z80_header_bloque[1],z80_header_bloque[0]);
-                                if (longitudbloque==65535) {
-                                        //If length=0xffff, data is 16384 bytes long and not compressed
-                                        longitudbloque=16384;
-                                        comprimido=0;
-                                }
-
-                                
-                                debug_printf(VERBOSE_DEBUG,"Reading %d bytes of data block %d",longitudbloque,numerobloque);
-                                leidos=zvfs_fread(in_fatfs,buffer_lectura,longitudbloque,ptr_z80file,&fil);
-                                //leidos=fread(buffer_lectura,1,longitudbloque,ptr_z80file);
-
-                                direccion_destino=0;
-                                load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);
-
-
-
-                                if (numerobloque==pagina_pantalla+3) {
-                                        //Pagina de la pantalla. No hace falta leer mas
-                                        salir=1;
-                                }
-                        }
-
-                        } while (leidos>0 && !salir);
-                }
-
-        }
+        //leemos longitud de la cabecera adicional
+        leidos=zvfs_fread(in_fatfs,z80_header_adicional,2,ptr_z80file,&fil);
+        //leidos=fread(z80_header_adicional,1,2,ptr_z80file);
+        z80_int long_cabecera_adicional=value_8_to_16(z80_header_adicional[1],z80_header_adicional[0]);
+        if (long_cabecera_adicional!= 23 && long_cabecera_adicional!= 54 && long_cabecera_adicional!= 55) {
+                debug_printf(VERBOSE_DEBUG,"Header with %d bytes unknown",long_cabecera_adicional);
+                //printf("Header with %d bytes unknown\n",long_cabecera_adicional);
+                return 1;
+                
+        }       
 
         else {
-                leidos=zvfs_fread(in_fatfs,buffer_lectura,65536,ptr_z80file,&fil);
-                //leidos=fread(buffer_lectura,1,65536,ptr_z80file);
-                //printf ("despues de carga\n");
-                debug_printf(VERBOSE_DEBUG,"Read %d bytes of data",leidos);
-                //printf ("despues de debug_printf\n");
+                
 
-                //z80_byte byte_leido;
+            //leemos esa cabecera adicional
+            debug_printf(VERBOSE_DEBUG,"Reading %d bytes of additional header",long_cabecera_adicional);
+            leidos=zvfs_fread(in_fatfs,&z80_header_adicional[2],long_cabecera_adicional,ptr_z80file,&fil);
+            //leidos=fread(&z80_header_adicional[2],1,long_cabecera_adicional,ptr_z80file);                                
+            
+            //Ver si snapshot de 128k y obtener pagina activa (5 o 7) de pantalla
+            int es_128k=0;
+            z80_byte snap_machine_type=z80_header_adicional[4];
+            //printf("machine type: %d\n",snap_machine_type);
+            //Asumimos version 2
+            int version_file=2;
+            if (long_cabecera_adicional==54 || long_cabecera_adicional==55) version_file=3;
 
-                direccion_destino=0;
+            if (version_file==2) {
+                //V2
+                if (snap_machine_type==3 || snap_machine_type==4) es_128k=1;
+            }
+            else {
+                //V3
+                if (snap_machine_type==4 || snap_machine_type==5 || snap_machine_type==6) es_128k=1;
+            }
 
-                load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);                
+            if (snap_machine_type==7 || snap_machine_type==9 || snap_machine_type==12 || snap_machine_type==13) es_128k=1;
+
+            if (es_128k) {
+                z80_byte snap_puerto_32765=z80_header_adicional[5];
+                if (snap_puerto_32765 & 8) pagina_pantalla=7;
+            }
+
+            //printf("pagina pantalla: %d\n",pagina_pantalla);
+
+            int salir=0;
+
+            z80_byte numerobloque;
+            //z80_byte valor_puerto_32765;
+            z80_int longitudbloque;                        
+
+            do {
+
+                //leer datos
+                //cabecera del bloque de 16kb
+                leidos=zvfs_fread(in_fatfs,z80_header_bloque,3,ptr_z80file,&fil);
+                //leidos=fread(z80_header_bloque,1,3,ptr_z80file);
+
+                comprimido=1;
+                //printf("leidos: %d\n",leidos);
+                if (leidos>0) {
+                    numerobloque=z80_header_bloque[2];
+                    longitudbloque=value_8_to_16(z80_header_bloque[1],z80_header_bloque[0]);
+                    if (longitudbloque==65535) {
+                            //If length=0xffff, data is 16384 bytes long and not compressed
+                            longitudbloque=16384;
+                            comprimido=0;
+                    }
+
+                    
+                    debug_printf(VERBOSE_DEBUG,"Reading %d bytes of data block %d",longitudbloque,numerobloque);
+                    leidos=zvfs_fread(in_fatfs,buffer_lectura,longitudbloque,ptr_z80file,&fil);
+                    //leidos=fread(buffer_lectura,1,longitudbloque,ptr_z80file);
+
+                    direccion_destino=0;
+                    load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);
+
+
+
+                    if (numerobloque==pagina_pantalla+3) {
+                            //Pagina de la pantalla. No hace falta leer mas
+                            salir=1;
+                    }
+                }
+
+            } while (leidos>0 && !salir);
         }
 
+    }
+
+    else {
+        leidos=zvfs_fread(in_fatfs,buffer_lectura,65536,ptr_z80file,&fil);
+        //leidos=fread(buffer_lectura,1,65536,ptr_z80file);
+        //printf ("despues de carga\n");
+        debug_printf(VERBOSE_DEBUG,"Read %d bytes of data",leidos);
+        //printf ("despues de debug_printf\n");
+
+        //z80_byte byte_leido;
+
+        direccion_destino=0;
+
+        load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);                
+    }
 
 
+    //Grabar 6912 bytes a archivo destino
+    util_save_file(buffer_destino,6912,archivo_destino);
 
-        //Grabar 6912 bytes a archivo destino
-        util_save_file(buffer_destino,6912,archivo_destino);
+    zvfs_fclose(in_fatfs,ptr_z80file,&fil);
+    //fclose(ptr_z80file);
 
-        zvfs_fclose(in_fatfs,ptr_z80file,&fil);
-        //fclose(ptr_z80file);
+    free(buffer_lectura);
+    free(buffer_destino);
 
-        free(buffer_lectura);
-        free(buffer_destino);
-
-        return 0;
+    return 0;
 
 }
 
