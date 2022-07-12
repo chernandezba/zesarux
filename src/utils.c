@@ -15959,6 +15959,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
+                //Paginas 5 o 7 de RAM
                 if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
@@ -16126,8 +16127,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
-                //Paginas 5 de RAM
-                if (ram_page==5) {
+                //Paginas 5 o 7 de RAM
+                if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
 
