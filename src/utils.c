@@ -16381,7 +16381,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
 
 int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 {
-        //snapshot z80 a SCR
+    //snapshot z80 a SCR
 
 	z80_byte z80_header[Z80_MAIN_HEADER_SIZE];
 
@@ -16436,7 +16436,8 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
         
 
 
-  
+        int pagina_pantalla=5;
+
 
         int comprimido;
         comprimido=(z80_header[12]>>5)&1;
@@ -16473,6 +16474,31 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
                         leidos=zvfs_fread(in_fatfs,&z80_header_adicional[2],long_cabecera_adicional,ptr_z80file,&fil);
                         //leidos=fread(&z80_header_adicional[2],1,long_cabecera_adicional,ptr_z80file);                                
                         
+                        //Ver si snapshot de 128k y obtener pagina activa (5 o 7) de pantalla
+                        int es_128k=0;
+                        z80_byte snap_machine_type=z80_header_adicional[4];
+                        //printf("machine type: %d\n",snap_machine_type);
+                        //Asumimos version 2
+                        int version_file=2;
+                        if (long_cabecera_adicional==54 || long_cabecera_adicional==55) version_file=3;
+
+                        if (version_file==2) {
+                            //V2
+                            if (snap_machine_type==3 || snap_machine_type==4) es_128k=1;
+                        }
+                        else {
+                            //V3
+                            if (snap_machine_type==4 || snap_machine_type==5 || snap_machine_type==6) es_128k=1;
+                        }
+
+                        if (snap_machine_type==7 || snap_machine_type==9 || snap_machine_type==12 || snap_machine_type==13) es_128k=1;
+
+                        if (es_128k) {
+                            z80_byte snap_puerto_32765=z80_header_adicional[5];
+                            if (snap_puerto_32765 & 8) pagina_pantalla=7;
+                        }
+
+                        //printf("pagina pantalla: %d\n",pagina_pantalla);
 
                         int salir=0;
 
@@ -16508,8 +16534,8 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 
 
 
-                                if (numerobloque==5+3) {
-                                        //Pagina 5. La de la pantalla. No hace falta leer mas
+                                if (numerobloque==pagina_pantalla+3) {
+                                        //Pagina de la pantalla. No hace falta leer mas
                                         salir=1;
                                 }
                         }

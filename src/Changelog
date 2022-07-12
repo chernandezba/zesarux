@@ -56,7 +56,8 @@ Fixed allowed machines when saving snapshots .ZX
 Fixed Breakpoints actions: now are executed everywhere (even in the menu)
 Fixed pressing key c (continuous mode) on debug cpu (emulation was unpaused temporarily)
 Fixed TZX turbo files extract (including screen previews), convert & file info
-Fixed saving .ZSF snapshots when a byte DD is found just before a byte is repeated more than 256 times
+Fixed .Z80 screen previews when using 128k screen page 7
+Fixed crash when saving .ZSF snapshots when a byte DD is found just before a byte is repeated more than 256 times
 
 
 Some other minor bugfixes and improvements
