@@ -16894,6 +16894,45 @@ int util_extract_trd(char *filename,char *tempdir)
 
 }
 
+void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoextension,int longitud)
+{
+	int i;
+	
+	for (i=0;i<longitud;i++) {
+		char caracter;
+		caracter=*origen;
+
+		
+			origen++;
+			if (caracter<32 || caracter>126) {
+				//Primer caracter si fuera de rango siempre sera ?
+                if (i==0) caracter='?';
+				else {
+                    //meterlo en el rango valido de 32...127
+                    caracter &=127;
+
+                    if (caracter==127) caracter=126;
+
+                    if (caracter<32) caracter=32+caracter;
+                    
+                }
+			}
+
+			
+            *destino=caracter;
+            destino++;
+        
+            if (sipuntoextension && i==7) {
+                *destino='.';
+                destino++;
+            }
+        
+		
+	}
+
+	*destino=0;
+}
+
 
 int util_extract_dsk(char *filename,char *tempdir)  {
 
@@ -17092,9 +17131,21 @@ en que empieza en 1300H. Porque??
         //printf("before menu_file_mmc_browser_show_file\n");
         z80_byte buffer_nombre[12];
         util_memcpy_protect_origin(buffer_nombre,dsk_file_memory,longitud_dsk,puntero,11);
-		menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,11);
+		//menu_file_mmc_browser_show_file(buffer_nombre,buffer_texto,1,11);
+
+        //Emilio Butragueno Futbol.dsk tiene 4 archivos llamados BUITRE.XXX donde XXX son caracteres no validos
+        //Si no se muestran esos XXX, se cambian por espacios, y entonces hay 4 archivos todos iguales , y uno de ellos es la pantalla
+        //y por tanto no se muestra la pantalla
+        //por tanto hacemos que esos XXX sean caracteres visibles
+        util_extract_dsk_get_filename(buffer_nombre,buffer_texto,1,11);
 
         //printf("after menu_file_mmc_browser_show_file\n");
+        /*printf("nombre orig: [");
+        int kk;
+        for (kk=0;kk<11;kk++) printf("%02X ",buffer_nombre[kk]);
+        printf("]\n");
+        printf("nombre final: [%s]\n",buffer_texto);*/
+
 
 		if (buffer_texto[0]!='?') {
 
@@ -17227,6 +17278,9 @@ Byte 12
                     //En este caso, se ha grabado el archivo inicial y se sabe la longitud real segun cabecera plus3dos
                     //si resulta que la longitud en bloques a guardar ahora es mayor que la cabecera, reducir
                     if (longitud_final>longitud_real_archivo) longitud_final=longitud_real_archivo;
+
+                    //printf("longitud_final despues ajustar: %d\n",longitud_final);
+
                     debug_printf (VERBOSE_DEBUG,"File entry is the first. Saving %d bytes on file",longitud_final);
                     util_save_file(buffer_temp,longitud_final,buffer_nombre_destino);
 
