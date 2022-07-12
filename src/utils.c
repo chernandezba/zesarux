@@ -15791,6 +15791,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
     int salir=0;
 
+    //La pagina habitual de pantalla
+    int pagina_pantalla=5;    
+
     
     while (!zvfs_feof(in_fatfs,ptr_zsf_file,&fil) && !salir) {
         //Read header block
@@ -15853,6 +15856,25 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
         int i;
 
         switch(block_id) {
+            case ZSF_SPEC128_MEMCONF:
+                    /*
+
+                -Block ID 5: ZSF_SPEC128_MEMCONF
+                Byte Fields:
+                0: Port 32765 contents
+                1: Port 8189 contents
+                2: Total memory multiplier: 1 for 128kb ram, 2 for 256 kb ram, 4 for 512 kb ram                
+                    */
+
+                //Ver si usa pantalla en RAM 7
+                if (block_data[0] & 8) {
+                    pagina_pantalla=7;
+                }
+            break;
+
+
+
+
             case ZSF_RAMBLOCK:
                 /*
                 A ram binary block
@@ -15937,7 +15959,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
-                if (ram_page==5) {
+                if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
 
@@ -15995,7 +16017,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 i++;
 
                 //Paginas de RAM en Next empiezan en offset 0x040000. 0x040000 / 16384 = 16. 16 + 5 = 21 (el 5 es de pagina 5 de ram)
-                if (ram_page==21) {
+                if (ram_page==16+pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
 
@@ -16050,8 +16072,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 ram_page=block_data[i];
                 i++;
 
-                //Paginas 5 de RAM
-                if (ram_page==5) {
+                //Paginas 5 o 7 de RAM
+                if (ram_page==pagina_pantalla) {
                     //Ya tenemos pantalla
                     salir=1;
 
