@@ -2138,32 +2138,32 @@ extern int convert_p_to_rwa_tmpdir(char *origen, char *destino);
 //Cargar archivo en memory zone
 void file_utils_file_mem_load(char *archivo)
 {
-		int tamanyo=get_file_size(archivo);
-		//Asignar memoria si no estaba asignada
+    int tamanyo=get_file_size(archivo);
+    //Asignar memoria si no estaba asignada
 
-		int error_limite=0;
+    int error_limite=0;
 
-		//Max 16 mb  (0x1000000), para no usar mas de 6 digitos al mostrar la direccion
-		if (tamanyo>0x1000000) {
-			tamanyo=0x1000000;
-			error_limite=1;
-		}
+    //Max 16 mb  (0x1000000), para no usar mas de 6 digitos al mostrar la direccion
+    if (tamanyo>0x1000000) {
+        tamanyo=0x1000000;
+        error_limite=1;
+    }
 
-		//liberar si habia algo
-		if (memory_zone_by_file_size>0) {
-			debug_printf(VERBOSE_DEBUG,"Freeing previous file memory zone");
-			free(memory_zone_by_file_pointer);
-		}
+    //liberar si habia algo
+    if (memory_zone_by_file_size>0) {
+        debug_printf(VERBOSE_DEBUG,"Freeing previous file memory zone");
+        free(memory_zone_by_file_pointer);
+    }
 
-		debug_printf(VERBOSE_DEBUG,"Allocating %d bytes for file memory zone",tamanyo);
-		memory_zone_by_file_pointer=malloc(tamanyo);
-		if (memory_zone_by_file_pointer==NULL) {
-			cpu_panic("Can not allocate memory for file read");
-		}
+    debug_printf(VERBOSE_DEBUG,"Allocating %d bytes for file memory zone",tamanyo);
+    memory_zone_by_file_pointer=malloc(tamanyo);
+    if (memory_zone_by_file_pointer==NULL) {
+        cpu_panic("Can not allocate memory for file read");
+    }
 
-		memory_zone_by_file_size=tamanyo;
+    memory_zone_by_file_size=tamanyo;
 
-                FILE *ptr_load;
+    FILE *ptr_load;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -2192,24 +2192,24 @@ extern z80_byte *memory_zone_by_file_pointer;
 extern int memory_zone_by_file_size;
 */
 
-		//Copiamos el nombre del archivo aunque de momento no lo uso
-		strcpy(memory_zone_by_file_name,archivo);
+    //Copiamos el nombre del archivo aunque de momento no lo uso
+    strcpy(memory_zone_by_file_name,archivo);
 
 
-                int leidos;
+    int leidos;
 
-                leidos=zvfs_fread(in_fatfs,memory_zone_by_file_pointer,tamanyo,ptr_load,&fil);
-                
-                //leidos=fread(memory_zone_by_file_pointer,1,tamanyo,ptr_load);
-                if (leidos!=tamanyo) {
-                        debug_printf (VERBOSE_ERR,"Error reading file. Bytes read: %d bytes",leidos);
-                }
+    leidos=zvfs_fread(in_fatfs,memory_zone_by_file_pointer,tamanyo,ptr_load,&fil);
+    
+    //leidos=fread(memory_zone_by_file_pointer,1,tamanyo,ptr_load);
+    if (leidos!=tamanyo) {
+            debug_printf (VERBOSE_ERR,"Error reading file. Bytes read: %d bytes",leidos);
+    }
 
-        zvfs_fclose(in_fatfs,ptr_load,&fil);
-		//fclose(ptr_load);
+    zvfs_fclose(in_fatfs,ptr_load,&fil);
+    //fclose(ptr_load);
 
-		if (error_limite) menu_warn_message("File too big. Reading first 16 Mb");
-		else menu_generic_message_splash("File memory zone","File loaded to File memory zone");
+    if (error_limite) menu_warn_message("File too big. Reading first 16 Mb");
+    else menu_generic_message_splash("File memory zone","File loaded to File memory zone");
 }
 
 //Indica con un flag que esta copiando recursivamente
