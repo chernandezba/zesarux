@@ -15926,26 +15926,15 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 			"tells if these changes are written to disk or not."
 			);
 
-            /* No tiene sentido este viewer aqui, mucho mejor el browser
-  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_viewer,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'v');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Viewer");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Viewer");
-            */
-
-
-  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                        
-
-
 			if (mmc_enabled.v) {
 				menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,"Reload MMC file");
 				menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
 				menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
 																								"outside the emulator, and reload its contents without having to disable and enable MM.");
-			}
+			}            
+
+                     
+
 
 
 			menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -16002,6 +15991,21 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
                         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
 
+
+            menu_add_item_menu_separator(array_menu_mmc_divmmc);
+
+            /* No tiene sentido este viewer aqui, mucho mejor el browser
+  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_viewer,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'v');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Viewer");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Viewer");
+            */
+
+
+  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
+            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                   
 
 
 				menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -16283,18 +16287,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 			"tells if these changes are written to disk or not."
 			);
 
-            /* No tiene sentido este viewer aqui, mucho mejor el browser
-			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_viewer,menu_storage_ide_emulation_cond,"IDE ~~Viewer");
-                        menu_add_item_menu_shortcut(array_menu_ide_divide,'v');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Viewer");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Viewer");
-            */
-
-
-			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,"IDE ~~Browser");
-                        menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");                        
+                     
 
 
 												if (ide_enabled.v) {
@@ -16364,6 +16357,23 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_ayuda(array_menu_ide_divide,"Enable Atom Lite");
                 }
 
+
+
+            menu_add_item_menu_separator(array_menu_ide_divide);
+
+
+            /* No tiene sentido este viewer aqui, mucho mejor el browser
+			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_viewer,menu_storage_ide_emulation_cond,"IDE ~~Viewer");
+            menu_add_item_menu_shortcut(array_menu_ide_divide,'v');
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Viewer");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Viewer");
+            */
+
+
+			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,"IDE ~~Browser");
+            menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");   
 
 
                                 menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);

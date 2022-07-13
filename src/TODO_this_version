@@ -136,7 +136,7 @@ Error:    Unable to open rom file tc2048.rom
 Do not create default icons as there are already at least one created
 
 
--iconos de dispositivos mmc/ide en escritorio? Quiza al pulsar que muestren el contenido, montando en 0:/
+-iconos de dispositivos mmc/ide en escritorio? 
 
 
 -En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan 
