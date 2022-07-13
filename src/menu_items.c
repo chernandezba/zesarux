@@ -15936,8 +15936,8 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
   			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
                         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browse");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browse");                        
+                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
+                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                        
 
 
 			if (mmc_enabled.v) {
