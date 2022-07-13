@@ -16331,9 +16331,6 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
 
 
-        }
-
-        if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
             
             menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,"[%c] 8-bit simple IDE",(eight_bit_simple_ide_enabled.v ? 'X' : ' ') );
