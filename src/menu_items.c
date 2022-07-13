@@ -15881,150 +15881,147 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 //menu MMC/Divmmc
 void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_mmc_divmmc;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_mmc_divmmc;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
-                char string_mmc_file_shown[17];
-								char string_divmmc_rom_file_shown[10];
-
-
-                        menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
-                        menu_add_item_menu_inicial_format(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,"~~MMC File [%s]",string_mmc_file_shown);
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
+        char string_mmc_file_shown[17];
+        char string_divmmc_rom_file_shown[10];
 
 
-  if (MACHINE_IS_TBBLUE) {
-  
-  menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,"Autoconfigure Next SD");
-  
-  }
+        menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
+        menu_add_item_menu_inicial_format(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,"~~MMC File [%s]",string_mmc_file_shown);
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
 
 
-
-                        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,"[%c] MMC ~~Emulation", (mmc_enabled.v ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
+        if (MACHINE_IS_TBBLUE) {
+        
+            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,"Autoconfigure Next SD");
+        
+        }
 
 
 
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,"[%c] MMC ~~Emulation", (mmc_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
 
-                        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,"[%c] ~~Write protect", (mmc_write_protection.v ? 'X' : ' '));
-			menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'w');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
 
 
-			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,"[%c] Persistent Writes",(mmc_persistent_writes.v ? 'X' : ' ') );
-			menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk");
-			menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk. "
-			"Note: all writing operations to MMC are always saved to internal memory (unless you disable write permission), but this setting "
-			"tells if these changes are written to disk or not."
-			);
 
-			if (mmc_enabled.v) {
-				menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,"Reload MMC file");
-				menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
-				menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
-																								"outside the emulator, and reload its contents without having to disable and enable MM.");
-			}            
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,"[%c] ~~Write protect", (mmc_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'w');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
+
+
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,"[%c] Persistent Writes",(mmc_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk. "
+        "Note: all writing operations to MMC are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );
+
+        if (mmc_enabled.v) {
+            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,"Reload MMC file");
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
+                                                                                            "outside the emulator, and reload its contents without having to disable and enable MM.");
+        }            
 
                      
 
+        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface,NULL,"[%c] ~~DIVMMC paging",(divmmc_diviface_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'d');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
+
+        if (divmmc_diviface_enabled.v) {
+            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVMMC RAM [%d KB]",get_diviface_total_ram() );
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
 
 
-			menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        }
 
-			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface,NULL,"[%c] ~~DIVMMC paging",(divmmc_diviface_enabled.v ? 'X' : ' ') );
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'d');
-			menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
-			menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
+        //En tbblue y zxuno no tiene sentido mostrar estas opciones, no las usa
+        //incluso la anterior de divmmc ram, las dos maquinas tienen 128kb de divmmc ram por defecto,
+        //esta opcion si que la leen esas máquinas aunque alterar ese valor puede tener efectos indeseados
+        if (!MACHINE_IS_ZXUNO && !MACHINE_IS_TBBLUE) {            
 
-			if (divmmc_diviface_enabled.v) {
-				menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVMMC RAM [%d KB]",get_diviface_total_ram() );
-				menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
-				menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
+            if (divmmc_rom_name[0]==0) sprintf (string_divmmc_rom_file_shown,"Default");
+            else menu_tape_settings_trunc_name(divmmc_rom_name, string_divmmc_rom_file_shown,10);
+            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,"DIVMMC EPROM File [%s]", string_divmmc_rom_file_shown);
 
-
-			}
-
-            //En tbblue y zxuno no tiene sentido mostrar estas opciones, no las usa
-            //incluso la anterior de divmmc ram, las dos maquinas tienen 128kb de divmmc ram por defecto,
-            //esta opcion si que la leen esas máquinas aunque alterar ese valor puede tener efectos indeseados
-            if (!MACHINE_IS_ZXUNO && !MACHINE_IS_TBBLUE) {            
-
-                if (divmmc_rom_name[0]==0) sprintf (string_divmmc_rom_file_shown,"Default");
-                else menu_tape_settings_trunc_name(divmmc_rom_name, string_divmmc_rom_file_shown,10);
-                menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,"DIVMMC EPROM File [%s]", string_divmmc_rom_file_shown);
-
-                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
-                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
+            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
+            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
 
 
-                if (divmmc_diviface_enabled.v) {
-                    menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
-                    (diviface_eprom_write_jumper.v ? 'X' : ' ') );
-                    menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom");
-                    menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
-                }
-
+            if (divmmc_diviface_enabled.v) {
+                menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
+                (diviface_eprom_write_jumper.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom");
+                menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
             }
 
+        }
 
 
 
-                        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,menu_storage_mmc_if_enabled_cond,"[%c] DIVMMC ~~ports",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'p');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC access ports");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,menu_storage_mmc_if_enabled_cond,"[%c] DIVMMC ~~ports",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'p');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC access ports");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
 
 
-                        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,"[%c] ~~ZXMMC Enabled",(zxmmc_emulation.v ? 'X' : ' ') );
-                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
-                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
-                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,"[%c] ~~ZXMMC Enabled",(zxmmc_emulation.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
 
 
-            menu_add_item_menu_separator(array_menu_mmc_divmmc);
+        menu_add_item_menu_separator(array_menu_mmc_divmmc);
 
-            /* No tiene sentido este viewer aqui, mucho mejor el browser
-  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_viewer,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
-            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'v');
-            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Viewer");
-            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Viewer");
-            */
-
-
-  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
-            menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
-            menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
-            menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                   
+        /* No tiene sentido este viewer aqui, mucho mejor el browser
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_viewer,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'v');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Viewer");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Viewer");
+        */
 
 
-				menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_mmc_divmmc,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_mmc_divmmc);
+        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
+        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
+        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                   
 
-                retorno_menu=menu_dibuja_menu(&mmc_divmmc_opcion_seleccionada,&item_seleccionado,array_menu_mmc_divmmc,"MMC" );
+
+        menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_mmc_divmmc,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_mmc_divmmc);
+
+        retorno_menu=menu_dibuja_menu(&mmc_divmmc_opcion_seleccionada,&item_seleccionado,array_menu_mmc_divmmc,"MMC" );
 
                 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
