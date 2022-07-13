@@ -191,6 +191,8 @@ extern void menu_shortcuts_window(MENU_ITEM_PARAMETERS);
 
 extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
 
+extern void menu_debug_file_utils(MENU_ITEM_PARAMETERS);
+
 extern void menu_process_f_functions_by_action_name(int id_funcion);
 
 extern char menu_hilow_convert_audio_last_audio_sample;

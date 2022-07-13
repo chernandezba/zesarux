@@ -1652,8 +1652,8 @@ void menu_filesel_guardar_cwd_antes_mounted(char *siguiente_directorio)
 }
 
 
-
-void file_utils_mount_mmc_image(char *fullpath)
+//Retorna 0 si ok
+int file_utils_mount_mmc_image(char *fullpath)
 {
     debug_printf(VERBOSE_INFO,"Mounting %s",fullpath);
 
@@ -1672,7 +1672,7 @@ void file_utils_mount_mmc_image(char *fullpath)
 
     if (resultado!=FR_OK) {
         debug_printf(VERBOSE_ERR,"Error %d mounting image %s: %s",resultado,fullpath,zvfs_get_strerror(resultado));
-        return;
+        return 1;
     }
 
     menu_mmc_image_montada=1;
@@ -1680,13 +1680,13 @@ void file_utils_mount_mmc_image(char *fullpath)
 
 
 
-    menu_first_aid("mount_mmc_fileutils");
 
-    menu_generic_message_splash("Mount Image","Ok image has been mounted on 0:/");
 
     //Y cambiar a dicho directorio
     menu_filesel_guardar_cwd_antes_mounted("0:/");
     zvfs_chdir("0:/");
+
+    return 0;
 
 }    
 
@@ -5447,7 +5447,10 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                                         //Si no es directorio
                                         if (tipo_archivo_seleccionado!=2) {
                                             //printf("Mount\n");
-                                            file_utils_mount_mmc_image(file_utils_file_selected);
+                                            if (!file_utils_mount_mmc_image(file_utils_file_selected)) {
+                                                menu_first_aid("mount_mmc_fileutils");
+                                                menu_generic_message_splash("Mount Image","Ok image has been mounted on 0:/");
+                                            }
                                         }
                                     }
 										

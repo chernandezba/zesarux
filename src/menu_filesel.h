@@ -48,6 +48,8 @@ extern z80_bit menu_filesel_show_previews_reduce;
 extern z80_bit menu_filesel_show_utils;
 
 extern int menu_filesel_mkdir(char *directory);
+extern int file_utils_mount_mmc_image(char *fullpath);
+extern void file_utils_umount_mmc_image(void);
 extern char menu_filesel_last_directory_seen[];
 extern z80_bit menu_filesel_posicionar_archivo;
 extern char menu_filesel_posicionar_archivo_nombre[];

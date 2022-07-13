@@ -15514,10 +15514,18 @@ void menu_storage_mmc_persistent_writes(MENU_ITEM_PARAMETERS)
 	mmc_persistent_writes.v ^=1;
 }
 
-void menu_storage_mmc_browser(MENU_ITEM_PARAMETERS)
+void menu_storage_mmc_viewer(MENU_ITEM_PARAMETERS)
 {
 	//menu_file_mmc_browser_show(mmc_file_name,"MMC");
 	menu_file_viewer_read_file("MMC file viewer",mmc_file_name);
+}
+
+
+void menu_storage_mmc_browser(MENU_ITEM_PARAMETERS)
+{
+	file_utils_mount_mmc_image(mmc_file_name);
+    menu_debug_file_utils(0);
+    file_utils_umount_mmc_image();
 }
 
 void menu_storage_mmc_emulation(MENU_ITEM_PARAMETERS)
@@ -15911,10 +15919,16 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 			"tells if these changes are written to disk or not."
 			);
 
-  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
+  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_viewer,menu_storage_mmc_emulation_cond,"MMC ~~Viewer");
                         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'v');
                         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Viewer");
                         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Viewer");
+
+
+  			menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
+                        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
+                        menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browse");
+                        menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browse");                        
 
 
 			if (mmc_enabled.v) {
