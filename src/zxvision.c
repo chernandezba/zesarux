@@ -595,6 +595,25 @@ int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_f
     return zxvision_add_configurable_icon(indice_accion);
 }
 
+//Crear un icono con parametros "nombre" y de nombre del icono obtener ese nombre sin path
+//usado especialmente en creacion de iconos de tipo file link
+void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre)
+{
+    if (if_zxdesktop_enabled_and_driver_allows() ) {
+        int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
+
+        if (indice_icono>=0) {
+            //Indicarle la ruta al snapshot
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,nombre);
+            //Agregarle texto
+            char name_no_dir[PATH_MAX];
+            util_get_file_no_directory(nombre,name_no_dir);
+
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
+        }    
+    }    
+}
+
 //Indicar todos los iconos como no presentes
 //Se inicializan incluso aunque no tengamos habilitado iconos en el zx desktop
 void init_zxdesktop_configurable_icons(void)

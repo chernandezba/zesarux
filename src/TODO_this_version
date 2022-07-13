@@ -101,9 +101,6 @@ al inicio del menu
 --Fin Errores
 
 
--Descarga online que cree icono de enlace en el escritorio. De cuando se hace smartload? pero son zip lo que descarga, el archivo final a descargar
-viene descomprimido desde el /tmp
-
 
 -arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
 *en arrastrar: no salta por deteccion de inicio arrastre

@@ -15046,9 +15046,12 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
                     menu_first_aid("download_spectrumcomputing");
                 }
 
-				//y abrimos menu de smartload
-				strcpy(quickload_file,archivo_temp);
-	
+                strcpy(quickload_file,archivo_temp);
+
+                //Creamos enlace directo en escritorio
+                zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,quickload_file);
+                             
+                //y abrimos menu de smartload
 				quickfile=quickload_file;
 				menu_smartload(0);
 
@@ -26188,21 +26191,7 @@ void menu_snapshot_quicksave(MENU_ITEM_PARAMETERS)
 	snapshot_quick_save(final_name);
 
     //Crear un icono siempre que zx desktop este visible
-    if (if_zxdesktop_enabled_and_driver_allows() ) {
-        //int indice_accion=zxvision_get_id_direct_funcion_index(F_FUNCION_DESKTOP_SNAPSHOT);
-        int indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_SNAPSHOT);
-
-        if (indice_icono>=0) {
-            //Indicarle la ruta al snapshot
-            strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,final_name);
-            //Agregarle texto
-            char name_no_dir[PATH_MAX];
-            util_get_file_no_directory(final_name,name_no_dir);
-
-            strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
-            //sprintf(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Snap%03d",menu_snapshot_quicksave_contador_archivo++);
-        }    
-    }
+    zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_SNAPSHOT,final_name);
 
 
 	menu_generic_message_format("Quicksave","OK. Snapshot name: %s",final_name);
@@ -32905,11 +32894,20 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             indice_icono=zxdesktop_configurable_icons_current_executing;
 
             if (indice_icono!=-1) {
-                strcpy(quickload_file,zxdesktop_configurable_icons_list[indice_icono].extra_info);
+
+                char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+                strcpy(quickload_file,nombre);
 
                 quickfile=quickload_file;
 
-                quickload(quickload_file);
+                //Ver si es un zip que viene de una descarga online por ejemplo
+                if (!util_compare_file_extension(nombre,"zip")) {
+                    menu_smartload(0);
+                }
+
+                else {
+                    quickload(quickload_file);
+                }
             }
         break;
 
