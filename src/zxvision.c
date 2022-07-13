@@ -9991,7 +9991,12 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 	int pos_cursor_x; //Donde esta el cursor
 
 	pos_cursor_x=j;
-	if (pos_cursor_x>max_length_shown-1) pos_cursor_x=max_length_shown;
+
+    //printf("pos_cursor_x before %d\n",pos_cursor_x);
+
+	if (pos_cursor_x>max_length_shown-1) pos_cursor_x=max_length_shown-1;
+
+    //printf("pos_cursor_x after %d\n",pos_cursor_x);
 
 
 	//max_length ancho maximo del texto, sin contar caracter 0

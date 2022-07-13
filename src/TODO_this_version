@@ -146,8 +146,6 @@ Do not create default icons as there are already at least one created
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
--funcion edicion linea texto, si se edita y hay mas de lo que cabe en pantalla, inicia con cursor no visible
-
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
@@ -158,5 +156,3 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -Al Redimensionar ventana ZEsarUX que refresque ZX desktop
 
 -Quizá un modo básico con muchas opciones del menú no visibles 
-
--Leyenda de file útils hacerla más extensa si ancho suficiente. Reusar funciones de debug cpu 
