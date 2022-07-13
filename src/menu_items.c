@@ -16246,150 +16246,145 @@ void menu_storage_ide_browser(MENU_ITEM_PARAMETERS)
 //menu IDE/Divide
 void menu_ide_divide(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_ide_divide;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_ide_divide;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
-                char string_ide_file_shown[17];
-								char string_divide_rom_file_shown[10];
-
-
+        char string_ide_file_shown[17];
+        char string_divide_rom_file_shown[10];
 
 
-
-                        menu_tape_settings_trunc_name(ide_file_name,string_ide_file_shown,17);
-                        menu_add_item_menu_inicial_format(&array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_file,NULL,"~~IDE File [%s]",string_ide_file_shown);
-                        menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation file");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation file");
-
-
-                        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_emulation,menu_storage_ide_emulation_cond,"[%c] IDE ~~Emulation", (ide_enabled.v ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_ide_divide,'e');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation");
+        menu_tape_settings_trunc_name(ide_file_name,string_ide_file_shown,17);
+        menu_add_item_menu_inicial_format(&array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_file,NULL,"~~IDE File [%s]",string_ide_file_shown);
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation file");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation file");
 
 
-                        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_write_protect,NULL,"[%c] ~~Write protect", (ide_write_protection.v ? 'X' : ' '));
-			menu_add_item_menu_shortcut(array_menu_ide_divide,'w');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"If IDE disk is write protected");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"If IDE disk is write protected");
+        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_emulation,menu_storage_ide_emulation_cond,"[%c] IDE ~~Emulation", (ide_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'e');
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation");
 
 
-			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_persistent_writes,NULL,"[%c] Persistent Writes",(ide_persistent_writes.v ? 'X' : ' ') );
-			menu_add_item_menu_tooltip(array_menu_ide_divide,"Tells if IDE writes are saved to disk");
-			menu_add_item_menu_ayuda(array_menu_ide_divide,"Tells if IDE writes are saved to disk. "
-			"Note: all writing operations to IDE are always saved to internal memory (unless you disable write permission), but this setting "
-			"tells if these changes are written to disk or not."
-			);
+        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_write_protect,NULL,"[%c] ~~Write protect", (ide_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'w');
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"If IDE disk is write protected");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"If IDE disk is write protected");
+
+
+        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_persistent_writes,NULL,"[%c] Persistent Writes",(ide_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"Tells if IDE writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"Tells if IDE writes are saved to disk. "
+        "Note: all writing operations to IDE are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );
 
                      
 
 
-												if (ide_enabled.v) {
-												menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_reload,NULL,"Reload IDE file");
-												menu_add_item_menu_tooltip(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory");
-												menu_add_item_menu_ayuda(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory. You can modify the IDE file "
-												                        "outside the emulator, and reload its contents without having to disable and enable IDE");
-												}
+        if (ide_enabled.v) {
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_reload,NULL,"Reload IDE file");
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory. You can modify the IDE file "
+                                    "outside the emulator, and reload its contents without having to disable and enable IDE");
+        }
 
 			
 
 
-			if (MACHINE_IS_SPECTRUM) {
+        if (MACHINE_IS_SPECTRUM) {
 
-				menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-	                       menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_diviface,NULL,"[%c] ~~DIVIDE paging",(divide_diviface_enabled.v ? 'X' : ' ') );
-        	                menu_add_item_menu_shortcut(array_menu_ide_divide,'d');
-        	                menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
-        	                menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_diviface,NULL,"[%c] ~~DIVIDE paging",(divide_diviface_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_ide_divide,'d');
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
 
-	                        if (divide_diviface_enabled.v) {
-	                                menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVIDE RAM [%d KB]",get_diviface_total_ram() );
-        	                        menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE RAM");
-                	                menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE RAM");
+            if (divide_diviface_enabled.v) {
+                menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVIDE RAM [%d KB]",get_diviface_total_ram() );
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE RAM");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE RAM");
+            }
 
+            if (divide_rom_name[0]==0) sprintf (string_divide_rom_file_shown,"Default");
+            else menu_tape_settings_trunc_name(divide_rom_name, string_divide_rom_file_shown,10);
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,"DIVIDE EPROM File [%s]", string_divide_rom_file_shown);
 
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
 
-               		         }
-													 if (divide_rom_name[0]==0) sprintf (string_divide_rom_file_shown,"Default");
-													 else menu_tape_settings_trunc_name(divide_rom_name, string_divide_rom_file_shown,10);
-													 menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,"DIVIDE EPROM File [%s]", string_divide_rom_file_shown);
-
-													 menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
-													 menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
-
-													 if (divide_diviface_enabled.v) {
-										 				menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
-										 				(diviface_eprom_write_jumper.v ? 'X' : ' ') );
-										 				menu_add_item_menu_tooltip(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom");
-										 				menu_add_item_menu_ayuda(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
-										 			}
+            if (divide_diviface_enabled.v) {
+                menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
+                (diviface_eprom_write_jumper.v ? 'X' : ' ') );
+                menu_add_item_menu_tooltip(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom");
+                menu_add_item_menu_ayuda(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
+            }
 
 
 
-	                        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,menu_storage_ide_if_enabled_cond,"[%c] DIVIDE ~~ports",(divide_ide_ports_enabled.v ? 'X' : ' ') );
-        	                menu_add_item_menu_shortcut(array_menu_ide_divide,'p');
-                	        menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
-                        	menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,menu_storage_ide_if_enabled_cond,"[%c] DIVIDE ~~ports",(divide_ide_ports_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_shortcut(array_menu_ide_divide,'p');
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
 
 
-			}
+        }
 
-			if (MACHINE_IS_SPECTRUM) {
-				menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-				
-				menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,"[%c] 8-bit simple IDE",(eight_bit_simple_ide_enabled.v ? 'X' : ' ') );
-			}
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,"[%c] 8-bit simple IDE",(eight_bit_simple_ide_enabled.v ? 'X' : ' ') );
+        }
 
 
         if (MACHINE_IS_SAM) {
-        		menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_atomlite_enable,NULL,"[%c] ~~Atom Lite",(atomlite_enabled.v ? 'X' : ' ' ) );
-                        menu_add_item_menu_shortcut(array_menu_ide_divide,'a');
-                        menu_add_item_menu_tooltip(array_menu_ide_divide,"Enable Atom Lite");
-                        menu_add_item_menu_ayuda(array_menu_ide_divide,"Enable Atom Lite");
-                }
-
-
-
-            menu_add_item_menu_separator(array_menu_ide_divide);
+            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_atomlite_enable,NULL,"[%c] ~~Atom Lite",(atomlite_enabled.v ? 'X' : ' ' ) );
+            menu_add_item_menu_shortcut(array_menu_ide_divide,'a');
+            menu_add_item_menu_tooltip(array_menu_ide_divide,"Enable Atom Lite");
+            menu_add_item_menu_ayuda(array_menu_ide_divide,"Enable Atom Lite");
+        }
 
 
-            /* No tiene sentido este viewer aqui, mucho mejor el browser
-			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_viewer,menu_storage_ide_emulation_cond,"IDE ~~Viewer");
-            menu_add_item_menu_shortcut(array_menu_ide_divide,'v');
-            menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Viewer");
-            menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Viewer");
-            */
+
+        menu_add_item_menu_separator(array_menu_ide_divide);
 
 
-			menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,"IDE ~~Browser");
-            menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
-            menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
-            menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");   
+        /* No tiene sentido este viewer aqui, mucho mejor el browser
+        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_viewer,menu_storage_ide_emulation_cond,"IDE ~~Viewer");
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'v');
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Viewer");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Viewer");
+        */
 
 
-                                menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_ide_divide,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_ide_divide);
+        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,"IDE ~~Browser");
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
+        menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
+        menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");   
 
-                retorno_menu=menu_dibuja_menu(&ide_divide_opcion_seleccionada,&item_seleccionado,array_menu_ide_divide,"IDE" );
 
+        menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_ide_divide,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_ide_divide);
+
+        retorno_menu=menu_dibuja_menu(&ide_divide_opcion_seleccionada,&item_seleccionado,array_menu_ide_divide,"IDE" );
+
+        
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
