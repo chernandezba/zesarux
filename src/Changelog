@@ -5,7 +5,7 @@ Added ZSF support for Timex TS2068
 Added setting for path where to download files from the speccy and zx81 online browser
 Added machine Spectrum 48k+
 Added machine Timex TC2048
-Added image browsing from storage MMC/IDE menus
+Added disk image browsing from storage MMC/IDE menus
 
 
 Improved ZX Spectrum Next emulation: added sprite rendering priority bit

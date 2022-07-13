@@ -1634,6 +1634,8 @@ void file_utils_umount_mmc_image(void)
         debug_printf(VERBOSE_ERR,"Error desmontando imagen : %d\n",resultado);
         return;
     }    
+
+    menu_first_aid("mount_mmc_fileutils");
 }
 
 //Directorio anterior en el local filesystem antes de ir a ruta de imagen montada
@@ -5448,7 +5450,6 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                                         if (tipo_archivo_seleccionado!=2) {
                                             //printf("Mount\n");
                                             if (!file_utils_mount_mmc_image(file_utils_file_selected)) {
-                                                menu_first_aid("mount_mmc_fileutils");
                                                 menu_generic_message_splash("Mount Image","Ok image has been mounted on 0:/");
                                             }
                                         }
