@@ -31241,10 +31241,7 @@ menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
 
 
 
-                        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,"TRD ~~Viewer");
-                        menu_add_item_menu_shortcut(array_menu_betadisk,'v');
-                        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
-                        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
+
 
 
 
@@ -31262,9 +31259,12 @@ menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
                         menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
                         menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
-                        
+            menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);                        
 
-
+                        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,"TRD ~~Viewer");
+                        menu_add_item_menu_shortcut(array_menu_betadisk,'v');
+                        menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
+                        menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
                         
                                 menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
