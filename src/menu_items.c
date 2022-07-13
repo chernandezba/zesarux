@@ -16390,7 +16390,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 void menu_view_screen(MENU_ITEM_PARAMETERS)
 {
-        menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
 	//para que no se vea oscuro
 	menu_set_menu_abierto(0);
@@ -16399,7 +16399,7 @@ void menu_view_screen(MENU_ITEM_PARAMETERS)
 	menu_cls_refresh_emulated_screen();
 
 	//menu_refresca_pantalla();
-        menu_espera_tecla();
+    menu_espera_tecla();
 	menu_set_menu_abierto(1);
 	menu_espera_no_tecla();
 	modificado_border.v=1;
@@ -16408,20 +16408,20 @@ void menu_view_screen(MENU_ITEM_PARAMETERS)
 void menu_display_load_screen(MENU_ITEM_PARAMETERS)
 {
 
-char screen_load_file[PATH_MAX];
+    char screen_load_file[PATH_MAX];
 
-  char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="scr";
-        filtros[1]=0;
+    filtros[0]="scr";
+    filtros[1]=0;
 
 
-        if (menu_filesel("Select Screen File",filtros,screen_load_file)==1) {
-		load_screen(screen_load_file);
-                //Y salimos de todos los menus
-                salir_todos_menus=1;
+    if (menu_filesel("Select Screen File",filtros,screen_load_file)==1) {
+    load_screen(screen_load_file);
+            //Y salimos de todos los menus
+            salir_todos_menus=1;
 
-        }
+    }
 
 }
 
