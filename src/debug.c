@@ -5663,49 +5663,49 @@ void breakpoint_action_parse_commands_argvc(char *texto)
 
 void debug_run_action_breakpoint(char *comando)
 {
-                                //Gestion acciones
-                        debug_printf (VERBOSE_DEBUG,"Full command: %s",comando);
+    //Gestion acciones
+    debug_printf (VERBOSE_DEBUG,"Full command: %s",comando);
 
-int i;
+    int i;
 
-                                                                //Interpretar comando hasta espacio o final de linea
-                                                                char comando_sin_parametros[1024];
+    //Interpretar comando hasta espacio o final de linea
+    char comando_sin_parametros[1024];
 
-                                                                for (i=0;comando[i] && comando[i]!=' ' && comando[i]!='\n' && comando[i]!='\r';i++) {
-                                                                        comando_sin_parametros[i]=comando[i];
-                                                                }
+    for (i=0;comando[i] && comando[i]!=' ' && comando[i]!='\n' && comando[i]!='\r';i++) {
+            comando_sin_parametros[i]=comando[i];
+    }
 
-                                                                comando_sin_parametros[i]=0;
+    comando_sin_parametros[i]=0;
 
-        debug_printf (VERBOSE_DEBUG,"Command without parameters: [%s]",comando_sin_parametros);
-
-
-        char parametros[1024];
-        parametros[0]=0;
-        int pindex=0;
-        if (comando[i]==' ') {
-                i++;
-                for (;comando[i] && comando[i]!='\n' && comando[i]!='\r';i++,pindex++) {
-                        parametros[pindex]=comando[i];
-                }
-        }
-
-        parametros[pindex]=0;
+    debug_printf (VERBOSE_DEBUG,"Command without parameters: [%s]",comando_sin_parametros);
 
 
-        debug_printf (VERBOSE_DEBUG,"Action parameters: [%s]",parametros);
+    char parametros[1024];
+    parametros[0]=0;
+    int pindex=0;
+    if (comando[i]==' ') {
+            i++;
+            for (;comando[i] && comando[i]!='\n' && comando[i]!='\r';i++,pindex++) {
+                    parametros[pindex]=comando[i];
+            }
+    }
 
-        //A partir de aqui se tiene:
-        //variable comando_sin_parametros: comando tal cual inicial, sin parametros
-        //variable parametros: todos los comandos tal cual se han escrito, son sus espacios y todos
-
-        //Luego los comandos que necesiten parsear parametros pueden hacer:
-        //llamar a breakpoint_action_parse_commands_argvc para los comandos de 1 o mas parametros
-        //comandos de 1 solo parametro pueden usar tal cual la variable parametros. Util tambien para 1 solo parametro con espacios
+    parametros[pindex]=0;
 
 
-        //Separar parametros
-	       //breakpoint_action_parse_commands_argvc(parametros);
+    debug_printf (VERBOSE_DEBUG,"Action parameters: [%s]",parametros);
+
+    //A partir de aqui se tiene:
+    //variable comando_sin_parametros: comando tal cual inicial, sin parametros
+    //variable parametros: todos los comandos tal cual se han escrito, son sus espacios y todos
+
+    //Luego los comandos que necesiten parsear parametros pueden hacer:
+    //llamar a breakpoint_action_parse_commands_argvc para los comandos de 1 o mas parametros
+    //comandos de 1 solo parametro pueden usar tal cual la variable parametros. Util tambien para 1 solo parametro con espacios
+
+
+    //Separar parametros
+    //breakpoint_action_parse_commands_argvc(parametros);
 
 	//debug_printf (VERBOSE_DEBUG,"Total parameters: %d",breakpoint_action_command_argc);
 
