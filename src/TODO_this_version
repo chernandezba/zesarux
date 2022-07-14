@@ -168,3 +168,7 @@ Etc…
 -borrar pzx_file_header_additional y similares no usados al convertir a pzx
 
 -pzx como standard tape load
+
+-probar de nuevo pzx standard tape output
+
+-funciones escribir pzx bloque y cabecera deberian permitir usar descriptores de archivo zvfs
