@@ -15250,6 +15250,8 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
             puntero_lectura +=4;
 
+            //printf("PZX TAG: [%s]\n",tag_name);
+
 
             z80_long_int block_size;
 
@@ -19549,3 +19551,121 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 	//filesystem[5]=0;
 	//if (!strcmp(filesystem,"FAT16")) {    
 }
+
+
+//Para conversion a PZX
+/*
+PZX (Perfect ZX Tape) file format version 1.0
+=============================================
+
+The PZX file format consists of a sequence of blocks. Each block has the
+following uniform structure:
+
+offset type     name   meaning
+0      u32      tag    unique identifier for the block type.
+4      u32      size   size of the block in bytes, excluding the tag and size fields themselves.
+8      u8[size] data   arbitrary amount of block data.
+*/
+
+
+/*
+PULS - Pulse sequence
+---------------------
+
+offset type   name      meaning
+0      u16    count     bits 0-14 optional repeat count (see bit 15), always greater than zero
+                        bit 15 repeat count present: 0 not present 1 present
+2      u16    duration1 bits 0-14 low/high (see bit 15) pulse duration bits
+                        bit 15 duration encoding: 0 duration1 1 ((duration1<<16)+duration2)
+4      u16    duration2 optional low bits of pulse duration (see bit 15 of duration1) 
+6      ...    ...       ditto repeated until the end of the block
+
+...
+
+For example, the standard pilot tone of Spectrum header block (leader < 128)
+may be represented by following sequence:
+
+0x8000+8063,2168,667,735
+
+The standard pilot tone of Spectrum data block (leader >= 128) would be:
+
+0x8000+3223,2168,667,735
+*/
+
+//Tono guia de un flag <128 (largo)
+z80_byte pzx_pulses_flag_long[16]= {'P','U','L','S',0x08,0x00,0x00,0x00,0x7f,0x9f,0x78,0x08,0x9b,0x02,0xdf,0x02};
+
+//Tono guia de un flag >=128 (corto)
+z80_byte pzx_pulses_flag_short[16]={'P','U','L','S',0x08,0x00,0x00,0x00,0x97,0x8c,0x78,0x08,0x9b,0x02,0xdf,0x02};
+
+//Bloque de tipo DATA para PZX. 
+//Los 3 bytes de 0xff son los que hay que modificar con la longitud del bloque de datos (en bits)
+//Realmente seria el 4 byte tambien (el 0x80, que tiene bit 7 alzado) pero dado que nuestro bloque mayor
+//al convertir de tap es de 65536, eso *8 = 524288 = 0x80000, y con 3 bytes es suficiente para mostrarlo
+/*
+DATA - Data block
+-----------------
+
+offset      type             name  meaning
+0           u32              count bits 0-30 number of bits in the data stream
+                                   bit 31 initial pulse level: 0 low 1 high
+4           u16              tail  duration of extra pulse after last bit of the block
+6           u8               p0    number of pulses encoding bit equal to 0.
+7           u8               p1    number of pulses encoding bit equal to 1.
+8           u16[p0]          s0    sequence of pulse durations encoding bit equal to 0.
+8+2*p0      u16[p1]          s1    sequence of pulse durations encoding bit equal to 1.
+8+2*(p0+p1) u8[ceil(bits/8)] data  data stream, see below.
+
+This block is used to represent binary data using specified sequences of
+pulses. The data bytes are processed bit by bit, most significant bits first.
+Each bit of the data is represented by one of the sequences, s0 if its value
+is 0 and s1 if its value is 1, respectively. Each sequence consists of
+pulses of specified durations, p0 pulses for sequence s0 and p1 pulses for
+sequence s1, respectively.
+
+The initial pulse level is specified by bit 31 of the count field. For data
+saved with standard ROM routines, it should be always set to high, as
+mentioned in PULS description above. Also note that pulse of zero duration
+may be used to invert the pulse level at start and/or the end of the
+sequence. It would be also possible to use it for pulses longer than 65535 T
+cycles in the middle of the sequence, if it was ever necessary.
+
+For example, the sequences for standard ZX Spectrum bit encoding are:
+(initial pulse level is high):
+
+bit 0: 855,855
+bit 1: 1710,1710
+*/
+z80_byte pzx_data_block[]={'D','A','T','A',0x23,0x00,0x00,0x00, 0xff,0xff,0xff, 0x80,0xb1,0x03,0x02,0x02,0x57,0x03,0x57,0x03,0xae,0x06,0xae,0x06};
+
+
+//Cabecera inicial para los pzx generados
+//Los 4 0,0,0,0 deben contener la longitud de los bytes siguientes, que son al menos esos 2 bytes + texto adicional(e incluyendo el 0 final del texto)
+/*
+PZXT - PZX header block
+-----------------------
+
+offset type     name   meaning
+0      u8       major  major version number (currently 1).
+1      u8       minor  minor version number (currently 0).
+2      u8[?]    info   tape info, see below.
+
+...
+
+The additional information consists of sequence of strings, each terminated
+either by character 0x00 or end of the block, whichever comes first.
+This means the last string in the sequence may or may not be terminated.
+*/
+z80_byte pzx_file_header[]={'P','Z','X','T',0,0,0,0,0x01,0x00};
+
+char *pzx_file_header_additional="Created by ZEsarUX emulator";
+
+/*
+Proceso conversion de TAP a PZX:
+
+Meter cabecera inicial junto con comentario de creacion
+
+Para cada bloque TAP:
+-meter bloque PULS que corresponda (flag menor que 128 o mayor igual)
+-meter bloque DATA correspondiente a ese bloque TAP
+*/
