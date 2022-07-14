@@ -3111,7 +3111,7 @@ The standard pilot tone of Spectrum data block (leader >= 128) would be:
 	
 
         //Escribir bloque PULS
-        fwrite(block_buffer, 1, 16, ptr_mycinta_pzx_out);
+        fwrite(block_buffer, 1, 16, ptr_archivo);
 
 
 

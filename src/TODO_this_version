@@ -164,3 +164,7 @@ Etc…
 
 -completar info maquina al pulsa icono en my machine
 * ram ok en todas maquinas
+
+-borrar pzx_file_header_additional y similares no usados al convertir a pzx
+
+-pzx como standard tape load
