@@ -717,6 +717,7 @@ extern int util_extract_mdv(char *mdvname, char *dest_dir);
 extern int util_extract_hdf(char *hdfname, char *dest_dir);
 
 extern void util_save_file(z80_byte *origin, long int tamanyo_origen, char *destination_file);
+extern void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
 
 extern void util_string_replace_char(char *s,char orig,char dest);
 
@@ -932,5 +933,8 @@ extern void *util_malloc_max_texto_browser(void);
 extern void util_trunc_name_right(char *texto,int max_length,int char_buffer_size);
 
 extern void util_drag_drop_file(char *filepath);
+
+extern int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size);
+extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 
 #endif

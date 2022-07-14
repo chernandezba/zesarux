@@ -1533,7 +1533,7 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 
 	//  menu_generic_message_tooltip("DSK file browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("DSK file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("DSK file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 
 	free(dsk_file_memory);
@@ -1865,11 +1865,12 @@ void menu_file_mmc_browser_show(char *filename,char *tipo_imagen)
 00010080  00 50 33 33 45 4d 4d 43  30 52 4f 4d 00 00 00 80  |.P33EMMC0ROM....|
 */
 
-	char filesystem[32];
-	memcpy(filesystem,&mmc_file_memory[0x100036],5);
+	//char filesystem[32];
+	//memcpy(filesystem,&mmc_file_memory[0x100036],5);
 
-	filesystem[5]=0;
-	if (!strcmp(filesystem,"FAT16")) {
+	//filesystem[5]=0;
+	//if (!strcmp(filesystem,"FAT16")) {
+    if (util_if_filesystem_fat16(mmc_file_memory,leidos)) {
 
 
         sprintf(buffer_texto,"Filesystem: FAT16");
@@ -1924,10 +1925,13 @@ Bytes   Content
 		}
 	}
 
-	memcpy(filesystem,&mmc_file_memory[0],10);
+    
 
-	filesystem[10]=0;
-	if (!strcmp(filesystem,"PLUSIDEDOS")) {
+	//memcpy(filesystem,&mmc_file_memory[0],10);
+
+	//filesystem[10]=0;
+	//if (!strcmp(filesystem,"PLUSIDEDOS")) {
+    if (util_if_filesystem_plusidedos(mmc_file_memory,leidos)) {
 
 		sprintf(buffer_texto,"Filesystem: PLUSIDEDOS");
         	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
@@ -2489,7 +2493,7 @@ void menu_file_cas_browser_show(char *filename)
 	//fclose(ptr_file_cas_browser);
 	
 	texto_browser[indice_buffer]=0;
-	zxvision_generic_message_tooltip("CAS file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("CAS file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
     free(texto_browser);
 
@@ -2846,7 +2850,7 @@ void menu_file_pzx_browser_show(char *filename)
 
 
 	texto_browser[indice_buffer]=0;
-	zxvision_generic_message_tooltip("PZX file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("PZX file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 	free(pzx_file_mem);
 
@@ -3090,7 +3094,7 @@ void menu_file_tzx_browser_show(char *filename)
 
 	texto_browser[indice_buffer]=0;
 	//menu_generic_message_tooltip("TZX file browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("TZX file browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("TZX file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 	free(tzx_file_mem);
     free(texto_browser);
@@ -3230,7 +3234,7 @@ void menu_tape_browser_show(char *filename)
 
 	texto_browser[indice_buffer]=0;
 	//menu_generic_message_tooltip("Tape browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("Tape browser" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+	zxvision_generic_message_tooltip("Tape viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 
 

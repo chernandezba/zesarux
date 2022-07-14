@@ -13487,7 +13487,7 @@ void util_save_file(z80_byte *origin, long int tamanyo_origen, char *destination
 {
 
 
-        FILE *ptr_destination_file;
+    FILE *ptr_destination_file;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -13500,34 +13500,41 @@ void util_save_file(z80_byte *origin, long int tamanyo_origen, char *destination
         return;
     }    
 
-    /*
-        ptr_destination_file=fopen(destination_file,"wb");
-
-                if (!ptr_destination_file) {
-                        debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
-                        return;
-        }
-    */
 
     zvfs_fwrite(in_fatfs,origin,tamanyo_origen,ptr_destination_file,&fil);
 
-    /*
-        //Escribir byte a byte... Si, es poco eficiente
-        while (tamanyo_origen) {
-
-            zvfs_fwrite(in_fatfs,origin,1,ptr_destination_file,&fil);
-
-        	//fwrite(origin,1,1,ptr_destination_file);
-
-                origin++;
-        	tamanyo_origen--;
-	}
-    */
-
-   zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
+    zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
         
-        //fclose(ptr_destination_file);
 
+}
+
+//Leer hasta numero de bytes concreto
+void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
+{
+    FILE *ptr_tapebrowser;
+
+    //Soporte para FatFS
+    FIL fil;        /* File object */
+    //FRESULT fr;     /* FatFs return code */
+
+    int in_fatfs;
+
+
+    if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
+        debug_printf(VERBOSE_ERR,"Can not open %s",filename);
+        return;
+    }
+
+       
+    int leidos=zvfs_fread(in_fatfs,taperead,total_leer,ptr_tapebrowser,&fil);
+        
+
+	if (leidos==0) {
+        debug_printf(VERBOSE_ERR,"Error reading tape");
+        return;
+    }
+
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);    
 }
 
 
@@ -13554,19 +13561,8 @@ void util_copy_file(char *source_file, char *destination_file)
 
 
 
-    /*
-        ptr_source_file=fopen(source_file,"rb");
-        if (!ptr_source_file) {
-                        debug_printf (VERBOSE_ERR,"Can not open %s",source_file);
-                        return;
-        }
-    */
 
-
-
-
-
-        FILE *ptr_destination_file;
+    FILE *ptr_destination_file;
 
 
     //Soporte para FatFS
@@ -13582,15 +13578,6 @@ void util_copy_file(char *source_file, char *destination_file)
     }
 
 
-
-/*
-        ptr_destination_file=fopen(destination_file,"wb");
-
-                if (!ptr_destination_file) {
-                        debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
-                        return;
-        }
-*/
 
         z80_byte byte_buffer;
 
@@ -13613,8 +13600,7 @@ void util_copy_file(char *source_file, char *destination_file)
     zvfs_fclose(in_fatfs_source,ptr_source_file,&fil_source);
     zvfs_fclose(in_fatfs_destination,ptr_destination_file,&fil_destination);
 
-        //fclose(ptr_source_file);
-        //fclose(ptr_destination_file);
+
 
 
 }
@@ -19523,4 +19509,43 @@ void util_drag_drop_file(char *filepath)
 
     menu_set_menu_abierto(1);
     menu_event_drag_drop.v=1;    
+}
+
+//Dice si un filesystem es de tipo plusidedos (los usados en roms de +3e)
+//total_size debe contener tamanyo total de buffer de memoria
+int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size)
+{
+    char filesystem[11];
+
+    util_memcpy_protect_origin((z80_byte *) filesystem,memoria,total_size,0,10);
+
+	filesystem[10]=0;
+	if (!strcmp(filesystem,"PLUSIDEDOS")) {
+        //printf("es plusidedos\n");
+        return 1;
+    }
+    else return 0;
+}
+
+
+//Dice si un filesystem es de tipo fat16
+//total_size debe contener tamanyo total de buffer de memoria
+int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
+{
+    char filesystem[6];
+
+    util_memcpy_protect_origin((z80_byte *) filesystem,memoria,total_size,0x100036,5);
+
+	filesystem[5]=0;
+	if (!strcmp(filesystem,"FAT16")){
+        //printf("es fat16\n");
+        return 1;
+    }
+    else return 0;
+
+
+	//memcpy(filesystem,&mmc_file_memory[0x100036],5);
+
+	//filesystem[5]=0;
+	//if (!strcmp(filesystem,"FAT16")) {    
 }

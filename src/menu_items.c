@@ -15527,9 +15527,25 @@ void menu_storage_mmc_viewer(MENU_ITEM_PARAMETERS)
 
 void menu_storage_mmc_ide_browser(char *file_image)
 {
-	if (!file_utils_mount_mmc_image(file_image)) {
-        menu_debug_file_utils(0);
-        file_utils_umount_mmc_image();
+
+    //Ver si es tipo plusidedos
+    //Con los primeros 10 bytes es suficiente
+    z80_byte buffer[10];
+
+    util_load_file_bytes(buffer,file_image,10);
+
+    if (util_if_filesystem_plusidedos(buffer,10)) {
+        //printf("Es plusidedos\n");
+        menu_file_mmc_browser_show(file_image,"PLUSIDEDOS Image");
+    }
+
+    else {
+        //printf("Puede que sea fat\n");
+
+	    if (!file_utils_mount_mmc_image(file_image)) {
+            menu_debug_file_utils(0);
+            file_utils_umount_mmc_image();
+        }
     }
 }
 
@@ -26806,10 +26822,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
                         );
 
 
-                        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,menu_storage_dskplusthree_emulation_cond,"DSK ~~Browser");
-                        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'b');
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Browser");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Browser");
+
 
                                
 			menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -26824,6 +26837,13 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,"PD765 enabled: %s",(pd765_enabled.v ? "Yes" : "No") );
 
 
+                menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+                menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,menu_storage_dskplusthree_emulation_cond,"DSK ~~Viewer");
+                menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
+                menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Viewer");
+                menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Viewer");
                         
                                 menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -28526,8 +28546,8 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_input_insert,menu_tape_input_insert_cond,
             "[%c] Input tape inserted",(is_tape_inserted() ? 'X' : ' '));
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser,menu_tape_input_insert_cond,"Tape ~~Browser");
-		menu_add_item_menu_shortcut(array_menu_tape_settings,'b');
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser,menu_tape_input_insert_cond,"Tape Vi~~ewer");
+		menu_add_item_menu_shortcut(array_menu_tape_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Input tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Input tape");
 
@@ -28545,7 +28565,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_output_insert,menu_tape_output_insert_cond,
             "[%c] Output tape inserted",((tape_loadsave_inserted & TAPE_SAVE_INSERTED)!=0 ? 'X' : ' '));
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_output,menu_tape_output_insert_cond,"Tape B~~rowser");
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_output,menu_tape_output_insert_cond,"Tape Viewe~~r");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Output tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Output tape");				
@@ -28588,7 +28608,7 @@ void menu_storage_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Start playing the audio tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Start playing the audio tape");
 
-		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Bro~~wser");
+		menu_add_item_menu_format(array_menu_tape_settings,MENU_OPCION_NORMAL,menu_tape_browser_real,menu_realtape_cond,"Tape Vie~~wer");
 		menu_add_item_menu_shortcut(array_menu_tape_settings,'w');
 		menu_add_item_menu_tooltip(array_menu_tape_settings,"Browse Real tape");
 		menu_add_item_menu_ayuda(array_menu_tape_settings,"Browse Real tape");				
