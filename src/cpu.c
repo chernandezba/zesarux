@@ -2304,6 +2304,16 @@ printf (
         printf(
 		"\n\n"
 
+		"One-time actions\n"
+		"----------------\n"
+		"\n"
+        "The following are actions that are executed from the console and don't start ZEsarUX:"
+        "\n\n"
+        "--convert-tap-tzx source destination     Convert tap source file to destination tzx\n"
+
+
+        "\n\n"        
+
 	);
 
 }
@@ -8832,7 +8842,24 @@ int parse_cmdline_options(void) {
 
                 menu_debug_view_sensors_list_sensors[numero_sensor].valor_en_vez_de_perc=1;
 
-			}                    
+			}      
+
+            else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx")) {
+                siguiente_parametro_argumento();
+                char *origen=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+                char *destino=argv[puntero_parametro];
+
+                printf("Converting from TAP file %s to TZX file %s\n",origen,destino);
+
+                if (util_extract_tap(origen,NULL,destino)) {
+                    printf("ERROR\n");
+                    exit(1);
+                }
+
+                printf("Convert finished. Exiting\n");
+                exit(0);
+            }
 
 
 			//autodetectar que el parametro es un snap o cinta. Esto tiene que ser siempre el ultimo else if
