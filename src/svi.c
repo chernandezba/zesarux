@@ -101,7 +101,7 @@ int svi_return_offset_ram_page(int ram_number,z80_int direccion)
 {
 
     //Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb, en SVI328.
-    //En 318, solo 1 pagina de 32 kb ram
+    //En 318, solo 1 pagina de 16 kb ram?
 
     int offset=32768*ram_number;
 

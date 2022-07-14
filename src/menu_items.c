@@ -25622,7 +25622,7 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         total_ram=8192;
     }
 
-    else if (MACHINE_IS_SPECTRUM_16) {
+    else if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SVI_318) {
         total_ram=16*1024;
     }
 
@@ -25632,6 +25632,12 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128 | MACHINE_IS_CHLOE_140SE) {
         total_ram=128*1024;
+    }
+
+    else if (MACHINE_IS_SVI_328) {
+        //Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb, en SVI328.
+        //En 318, solo 1 pagina de 16 kb ram?
+        total_ram=5*32*1024;
     }
 
     //TODO: posibles cartuchos de RAM?
@@ -25647,8 +25653,12 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         total_ram=256*1024;
     }
 
-    else if (MACHINE_IS_PRISM) {
+    else if (MACHINE_IS_PRISM || MACHINE_IS_ZXUNO) {
         total_ram=512*1024;
+    }
+
+    else if (MACHINE_IS_TBBLUE) {
+        total_ram=tbblue_get_current_ram()*1024;
     }
 
     else if (MACHINE_IS_ZXEVO) {
