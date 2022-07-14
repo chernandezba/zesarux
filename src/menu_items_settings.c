@@ -4139,7 +4139,7 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SAM) {
-			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_sam_ram,NULL,"Sam Coupe RAM [%d KB]",(sam_memoria_total_mascara==15 ? 256 : 512) );
+			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_sam_ram,NULL,"Sam Coupe RAM [%d KB]",get_sam_ram() );
 		}
 
 

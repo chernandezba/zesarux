@@ -267,3 +267,8 @@ void sam_splash_videomode_change(void) {
 
 }
 
+//retorna en kb la ram
+int get_sam_ram(void)
+{
+    return (sam_memoria_total_mascara==15 ? 256 : 512);
+}

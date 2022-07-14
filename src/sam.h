@@ -74,4 +74,6 @@ extern z80_byte puerto_teclado_sam_7ff9;
 
 extern void sam_splash_videomode_change(void);
 
+extern int get_sam_ram(void);
+
 #endif

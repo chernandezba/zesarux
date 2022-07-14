@@ -25598,7 +25598,10 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         strcpy(buf_linea,"CPU: National Semiconductor SC/MP (INS8060)\n");
     }
     else {
-        sprintf(buf_linea,"CPU: Zilog Z80 (%s)\n",z80_cpu_types_strings[z80_cpu_current_type]);
+        if (MACHINE_IS_ZXUNO || MACHINE_IS_TBBLUE || MACHINE_IS_PRISM ) {
+            sprintf(buf_linea,"CPU: Zilog Z80 compatible (FPGA)\n");
+        }
+        else sprintf(buf_linea,"CPU: Zilog Z80 (%s)\n",z80_cpu_types_strings[z80_cpu_current_type]);
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
@@ -25607,8 +25610,16 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     int total_ram=48*1024;
 
     //TODO:sumar posibles extensiones de memoria en spectrum
-    if (MACHINE_IS_COLECO) {
+    if (MACHINE_IS_MK14) {
+        total_ram=256;
+    }
+
+    else if (MACHINE_IS_COLECO || MACHINE_IS_SG1000) {
         total_ram=1024;
+    }
+
+    else if (MACHINE_IS_SMS) {
+        total_ram=8192;
     }
 
     else if (MACHINE_IS_SPECTRUM_16) {
@@ -25636,6 +25647,18 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         total_ram=256*1024;
     }
 
+    else if (MACHINE_IS_PRISM) {
+        total_ram=512*1024;
+    }
+
+    else if (MACHINE_IS_ZXEVO) {
+        total_ram=4*1024*1024;
+    }
+
+    else if (MACHINE_IS_SAM) {
+        total_ram=get_sam_ram()*1024;
+    }
+
     else if (MACHINE_IS_Z88) {
         total_ram=z88_get_total_ram();
     }
@@ -25648,8 +25671,12 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         total_ram=get_ram_ace()*1024;
     }
 
-   
-    sprintf(buf_linea,"Total RAM: %d KB\n",total_ram/1024);
+    if (total_ram>=1024) {
+        sprintf(buf_linea,"Total RAM: %d KB\n",total_ram/1024);
+    }
+    else {
+        sprintf(buf_linea,"Total RAM: %d B\n",total_ram);
+    }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 	menu_generic_message("Machine Information",text_buffer);
     
