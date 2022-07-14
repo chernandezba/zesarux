@@ -3157,3 +3157,20 @@ int z88_return_card_type (int slot)
 
 	return -1;
 }
+
+//Dice la cantidad de ram total de la maquina, contando memoria interna y cartuchos
+int z88_get_total_ram(void)
+{
+    int total_ram=z88_internal_ram_size+1;
+
+    int i;
+
+    for (i=1;i<=3;i++) {
+
+        if (z88_memory_slots[i].type==0) {
+    	    total_ram +=z88_memory_slots[i].size+1;
+        }
+	}
+
+    return total_ram;
+}

@@ -25598,7 +25598,7 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         strcpy(buf_linea,"CPU: National Semiconductor SC/MP (INS8060)\n");
     }
     else {
-        strcpy(buf_linea,"CPU: Zilog Z80\n");
+        sprintf(buf_linea,"CPU: Zilog Z80 (%s)\n",z80_cpu_types_strings[z80_cpu_current_type]);
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
@@ -25606,19 +25606,46 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     //Por defecto
     int total_ram=48*1024;
 
-    //TODO:sumar posibles extensiones de memoria 
-    if (MACHINE_IS_SPECTRUM_16) {
+    //TODO:sumar posibles extensiones de memoria en spectrum
+    if (MACHINE_IS_COLECO) {
+        total_ram=1024;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_16) {
         total_ram=16*1024;
     }
-    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128) {
-        total_ram=128*1024;
-    }
+
     else if (MACHINE_IS_CPC_464) {
         total_ram=64*1024;
     }
 
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128 | MACHINE_IS_CHLOE_140SE) {
+        total_ram=128*1024;
+    }
+
+    //TODO: posibles cartuchos de RAM?
+    else if (MACHINE_IS_MSX) {
+        total_ram=128*1024;
+    }    
+
+    else if (MACHINE_IS_CHROME) {
+        total_ram=160*1024;
+    }    
+
+    else if (MACHINE_IS_CHLOE_280SE) {
+        total_ram=256*1024;
+    }
+
+    else if (MACHINE_IS_Z88) {
+        total_ram=z88_get_total_ram();
+    }
+
     else if (MACHINE_IS_ZX8081) {
         total_ram=zx8081_get_total_ram_with_rampacks()*1024;
+    }    
+
+    else if (MACHINE_IS_ACE) {
+        total_ram=get_ram_ace()*1024;
     }
 
    

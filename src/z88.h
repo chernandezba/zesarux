@@ -305,6 +305,8 @@ extern int z88_return_card_type (int slot);
 
 extern int z88_eprom_new_ptr_flash_find_next(z80_byte **ptr_dir,z88_eprom_flash_file *file);
 
+extern int z88_get_total_ram(void);
+
 
 #define BM_INTKWAIT 0x80
 // Bit 7, If set, reading the keyboard will Snooze
