@@ -14209,6 +14209,9 @@ void menu_online_browse_zx81(MENU_ITEM_PARAMETERS)
   						strcpy(quickload_file,archivo_temp);
  
 						quickfile=quickload_file;
+
+                        //Creamos enlace directo en escritorio
+                        zxvision_create_configurable_icon_file_type(F_FUNCION_DESKTOP_SNAPSHOT,quickload_file);                        
         
 						if (quickload(quickload_file)) {
 							debug_printf (VERBOSE_ERR,"Unknown file format");
