@@ -2310,6 +2310,7 @@ printf (
         "The following are actions that are executed from the console and don't start ZEsarUX:"
         "\n\n"
         "--convert-tap-tzx source destination     Convert tap source file to destination tzx\n"
+        "--convert-tap-pzx source destination     Convert tap source file to destination pzx\n"
         "--convert-tzx-tap source destination     Convert tzx source file to destination tap\n"
         "--convert-pzx-tap source destination     Convert pzx source file to destination tap\n"
 
@@ -8862,6 +8863,23 @@ int parse_cmdline_options(void) {
                 printf("Conversion finished. Exiting\n");
                 exit(0);
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--convert-tap-pzx")) {
+                siguiente_parametro_argumento();
+                char *origen=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+                char *destino=argv[puntero_parametro];
+
+                printf("Converting from TAP file %s to PZX file %s\n",origen,destino);
+
+                if (util_extract_tap(origen,NULL,destino)) {
+                    printf("Error executing conversion\n");
+                    exit(1);
+                }
+
+                printf("Conversion finished. Exiting\n");
+                exit(0);
+            }            
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tzx-tap")) {
                 siguiente_parametro_argumento();

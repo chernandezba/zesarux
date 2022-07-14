@@ -3023,12 +3023,9 @@ int tape_block_pzx_save(void *dir,int longitud)
 }
 
 
-void tape_block_pzx_begin_save(int longitud,z80_byte flag)
+void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag)
 {
-       
-        //Escribir cabecera pzx si conviene
-        tape_write_pzx_header();
-	
+
 
 
 
@@ -3202,10 +3199,21 @@ bit 1: 1710,1710
         block_buffer[23]=value_16_to_8h(1710);   
 
         //Escribir bloque DATA
-        fwrite(block_buffer, 1, 24, ptr_mycinta_pzx_out);        
+        fwrite(block_buffer, 1, 24, ptr_archivo);        
 
         //Y a partir de aqui ya vienen los datos, que los escribe desde tape_block_pzx_save     
 
+}
+
+
+void tape_block_pzx_begin_save(int longitud,z80_byte flag)
+{
+       
+    //Escribir cabecera pzx si conviene
+    tape_write_pzx_header();
+	
+
+    tape_block_pzx_begin_save_ptr(ptr_mycinta_pzx_out,longitud,flag);
 }
 
 
