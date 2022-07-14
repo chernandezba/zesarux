@@ -172,3 +172,5 @@ Etc…
 -probar de nuevo pzx standard tape output
 
 -funciones escribir pzx bloque y cabecera deberian permitir usar descriptores de archivo zvfs
+
+-probar convertir tap a tzx
