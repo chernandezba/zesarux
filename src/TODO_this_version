@@ -171,14 +171,16 @@ Etc…
 
 -Funciones de utils no deberían involucrar nada del menú
 
--Probar con pzx de carga no estándar
 
--Smartload con pzx debería leer si es standard, cargarlo como standard tape. Y si  hay algo diferente, cargarlo como real tape
+
+ok-Probar con pzx de carga no estándar
+
+ok-Smartload con pzx debería leer si es standard, cargarlo como standard tape. Y si  hay algo diferente, cargarlo como real tape
 Ese diferente pueden ser los valores de pulse y data diferente de los de spectrum 
 
--pzx como standard tape load
+ok-pzx como standard tape load
 
--probar de nuevo pzx standard tape output
+ok-probar convertir tap a tzx
 
--probar convertir tap a tzx
+ok -probar de nuevo pzx standard tape output -> grabar a pzx 
 
