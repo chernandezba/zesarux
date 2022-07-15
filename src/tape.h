@@ -24,6 +24,7 @@
 
 #include "cpu.h"
 #include "mem128.h"
+#include "zvfs.h"
 
 extern int tap_open(void);
 extern int tap_close(void);
@@ -150,12 +151,8 @@ extern void realtape_print_footer(void);
 extern long int realtape_file_size;
 extern long int realtape_file_size_counter;
 
-extern int tape_out_block_pzx_open(void);
-extern int tape_out_block_pzx_close(void);
-extern int tape_block_pzx_save(void *dir,int longitud);
-extern void tape_block_pzx_begin_save(int longitud,z80_byte flag);
-extern void tape_write_pzx_header_ptr(FILE *ptr_archivo);
-extern void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag);
+
+
 extern void realtape_pause_unpause(void);
 extern int realtape_get_current_bit_playing(void);
 extern int realtape_algorithm_new_noise_reduction;

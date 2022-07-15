@@ -156,8 +156,11 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 -descargas imagenes oficiales mmc de tbblue ahora vienen por https. En Mac no hay soporte ssl. Por tanto solo habria la opcion de usar el tbblue.mmc incluido
 
--Desde línea de comandos poder hacer acciones como
+-Splash messages en overlay no deberían borrar las ventanas cuando opción de background windows even with menú closed 
 
+-Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
+
+-Desde línea de comandos poder hacer acciones como
 -convertir tap a tzx
 -convertir tzx a wav
 Etc…
@@ -165,12 +168,17 @@ Etc…
 -completar info maquina al pulsa icono en my machine
 * ram ok en todas maquinas
 
--borrar pzx_file_header_additional y similares no usados al convertir a pzx
+
+-Funciones de utils no deberían involucrar nada del menú
+
+-Probar con pzx de carga no estándar
+
+-Smartload con pzx debería leer si es standard, cargarlo como standard tape. Y si  hay algo diferente, cargarlo como real tape
+Ese diferente pueden ser los valores de pulse y data diferente de los de spectrum 
 
 -pzx como standard tape load
 
 -probar de nuevo pzx standard tape output
 
--funciones escribir pzx bloque y cabecera deberian permitir usar descriptores de archivo zvfs
-
 -probar convertir tap a tzx
+
