@@ -6,6 +6,7 @@ Added setting for path where to download files from the speccy and zx81 online b
 Added machine Spectrum 48k+
 Added machine Timex TC2048
 Added disk image browsing from storage MMC/IDE menus
+Added PZX load support as standard tape
 Added TAP to PZX converter
 Added some actions than can be fired from command line and don't start ZEsarUX:
 --convert-tap-tzx, --convert-tap-pzx , --convert-tzx-tap, --convert-pzx-tap

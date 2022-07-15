@@ -85,13 +85,16 @@ void pzx_read_id(void)
     fread(pzx_last_block_id_name,1,4,ptr_mycinta_pzx);
     pzx_last_block_id_name[4]=0;
 
-    char buffer_longitud[4];
+    z80_byte buffer_longitud[4];
     fread(buffer_longitud,1,4,ptr_mycinta_pzx);
 
     pzx_last_block_id_length=   buffer_longitud[0]+
                             (buffer_longitud[1]*256)+
                             (buffer_longitud[2]*65536)+
-                            ((buffer_longitud[3]&127)*16777216);
+                            (buffer_longitud[3]*16777216);
+
+    printf("pzx read id. name: %02XH %02XH %02XH %02XH\n",
+        pzx_last_block_id_name[0],pzx_last_block_id_name[1],pzx_last_block_id_name[2],pzx_last_block_id_name[3]);
 
     pzx_begin_of_id=1;
 
@@ -129,11 +132,18 @@ int tape_block_pzx_read(void *dir,int longitud)
         return 0;
     }
 
-
+    printf("bloque leido:\n");
+    int i;
+    for (i=0;i<longitud;i++) {
+        z80_byte caracter=((char *)dir)[i];
+        if (caracter>=32 && caracter<=126) printf("%c",caracter);
+        else printf(" %02XH ",caracter);
+    }
+    printf("\n");
 
     last_length_read -=longitud;
     debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",last_length_read);
-    if (last_length_read==0) pzx_read_id();
+    //if (last_length_read==0) pzx_read_id();
     //tzx_read_id();
 
 
@@ -158,8 +168,12 @@ void tape_pzx_seek_data_block(void)
 	}
 
 	do {
+        //sleep(1);
+        if (tape_block_pzx_feof()) return;
 
         pzx_read_id();
+
+        printf("Bloque %s\n",pzx_last_block_id_name);
         
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
 
@@ -189,6 +203,11 @@ int tape_block_pzx_readlength(void)
 
     tape_pzx_seek_data_block();
 
+    if (tape_block_pzx_feof()) {
+        printf("End of tape\n");
+        return 0;
+    }
+
 	/*
         offset      type             name  meaning
 0           u32              count bits 0-30 number of bits in the data stream
@@ -202,7 +221,7 @@ int tape_block_pzx_readlength(void)
         */     
 
         //leemos longitud
-        char buffer_longitud[4];
+        z80_byte buffer_longitud[4];
         fread(buffer_longitud,1,4,ptr_mycinta_pzx);
 
         int longitud_bits=   buffer_longitud[0]+
@@ -210,14 +229,29 @@ int tape_block_pzx_readlength(void)
                                 (buffer_longitud[2]*65536)+
                                 ((buffer_longitud[3]&127)*16777216);      
 
-
+        printf("longitud bits: %d\n",longitud_bits);
 		last_length_read=longitud_bits/8;
-		
 
-		
+
+        //De momento saltar secuencias de pulsos
+        z80_byte buffer_nada[2];
+
+		fread(buffer_nada,1,2,ptr_mycinta_pzx);
+
+        z80_byte pulsos_cero,pulsos_uno;
+        fread(&pulsos_cero,1,1,ptr_mycinta_pzx);
+        fread(&pulsos_uno,1,1,ptr_mycinta_pzx);
+
+        printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
+
+        for(;pulsos_cero;pulsos_cero--) fread(buffer_nada,1,2,ptr_mycinta_pzx);
+        for(;pulsos_uno;pulsos_uno--) fread(buffer_nada,1,2,ptr_mycinta_pzx);
+
+
+        printf("PZX Data Block length: %d\n",last_length_read);
 
 		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",last_length_read);
-	//	sleep(1);
+		//sleep(2);
 		return last_length_read;
 }
 
