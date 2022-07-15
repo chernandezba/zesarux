@@ -82,15 +82,17 @@ void tape_block_pzx_rewindbegin(void)
     //last_id_read=0xFF;
 }
 
-void pzx_read_id(void)
+int pzx_read_id(void)
 {
     //Lee el id de bloque  (los 4 bytes) acabando con 0, y lee la longitud del bloque
 
-    fread(pzx_last_block_id_name,1,4,ptr_mycinta_pzx);
+    int leidos=fread(pzx_last_block_id_name,1,4,ptr_mycinta_pzx);
+    if (!leidos) return 0;
     pzx_last_block_id_name[4]=0;
 
     z80_byte buffer_longitud[4];
-    fread(buffer_longitud,1,4,ptr_mycinta_pzx);
+    leidos=fread(buffer_longitud,1,4,ptr_mycinta_pzx);
+    if (!leidos) return 0;
 
     pzx_last_block_id_length=   buffer_longitud[0]+
                             (buffer_longitud[1]*256)+
@@ -101,6 +103,7 @@ void pzx_read_id(void)
         pzx_last_block_id_name[0],pzx_last_block_id_name[1],pzx_last_block_id_name[2],pzx_last_block_id_name[3]);
 
     //pzx_begin_of_id=1;
+    return 1;
 
 }
 
@@ -186,6 +189,105 @@ void tape_pzx_seek_data_block(void)
             pzx_jump_block();
         } 
     } while(1);   
+}
+
+int tape_pzx_see_if_standard_tape(void)
+{
+	if (!ptr_mycinta_pzx) {
+		debug_printf (VERBOSE_ERR,"Tape uninitialized");
+		return 1;
+	}
+
+	do {
+        if (tape_block_pzx_feof()) return 1;
+
+        if (!pzx_read_id()) return 1;
+
+        printf("tape_pzx_see_if_standard_tape. Bloque %s\n",pzx_last_block_id_name);
+        
+        if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
+
+            
+
+            
+            //saltar los 6 bytes que indican longitud en bits y la duracion del tail
+            char buffer_nada[6];
+            fread(buffer_nada,1,6,ptr_mycinta_pzx);
+
+            //Bloque datos standard para spectrum
+            /*
+            6           u8               p0    number of pulses encoding bit equal to 0.
+7           u8               p1    number of pulses encoding bit equal to 1.
+8           u16[p0]          s0    sequence of pulse durations encoding bit equal to 0.
+8+2*p0      u16[p1]          s1    sequence of pulse durations encoding bit equal to 1.
+
+            bit 0: 855,855
+            bit 1: 1710,1710
+            */
+            z80_byte pzx_data_block[10]={0x02,0x02,0x57,0x03,0x57,0x03,0xae,0x06,0xae,0x06};
+
+
+            z80_byte buffer_data[10];
+
+		    fread(buffer_data,1,10,ptr_mycinta_pzx);
+
+            
+
+            if (memcmp(pzx_data_block,buffer_data,10)) return 0;
+
+            pzx_last_block_id_length -=(6+10);
+
+
+            pzx_jump_block();
+        }
+
+        else if (!strcasecmp(pzx_last_block_id_name,"PULS")) {
+
+            //TODO restar de pzx_last_block_id_length bytes leidos    
+
+            //Si longitud no es 8, seguro que no es un pulso estandard
+            if (pzx_last_block_id_length!=8) return 0;  
+
+            //Tono guia de un flag <128 (largo)
+            z80_byte pzx_pulses_flag_long[8]= {0x7f,0x9f,0x78,0x08,0x9b,0x02,0xdf,0x02};
+
+            //Tono guia de un flag >=128 (corto)
+            z80_byte pzx_pulses_flag_short[8]={0x97,0x8c,0x78,0x08,0x9b,0x02,0xdf,0x02};
+
+            //Comparar los 8 bytes siguientes con los dos tipos de pulsos habituales
+            //TODO: si el flag no es 0 o 255, aun asi podria ser una carga estandard, pero directamente
+            //decimos que no lo es
+
+            z80_byte buffer_pulsos[8];
+
+		    fread(buffer_pulsos,1,8,ptr_mycinta_pzx);
+
+            int pulso_valido=0;
+
+            printf("Pulso a comparar: ");
+            int i;
+            for (i=0;i<8;i++) printf("%02XH ",buffer_pulsos[i]);
+
+            printf("\n");
+
+            if (!memcmp(pzx_pulses_flag_long,buffer_pulsos,8)) pulso_valido=1;
+
+            if (!pulso_valido) {
+                if (!memcmp(pzx_pulses_flag_short,buffer_pulsos,8)) pulso_valido=1;
+            }
+
+            if (!pulso_valido) return 0;
+
+            pzx_last_block_id_length -=8;
+
+            pzx_jump_block();
+        }        
+
+        else {
+            //Cualquier otra cosa ignorarla
+            pzx_jump_block();
+        } 
+    } while(1);       
 }
 
 int tape_block_pzx_readlength(void)

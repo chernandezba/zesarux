@@ -5063,6 +5063,44 @@ int quickload_continue(char *nombre) {
         return 0;
     }
 
+    //cinta de spectrum pzx
+    else if (
+                !util_compare_file_extension(nombre,"pzx")
+
+    ) {
+
+        debug_printf (VERBOSE_INFO,"Smartload. Guessing if standard pzx tape or real tape");
+
+        //Ver si la cinta es estandard 
+        //o meterla como real tape
+
+        
+
+        insert_tape_cmdline(nombre);
+        tape_init();
+
+        int es_cinta_estandard=tape_pzx_see_if_standard_tape();
+
+        //expulsar cinta insertada
+        eject_tape_load();
+        tapefile=NULL;        
+
+
+        if (!es_cinta_estandard) {
+            debug_printf (VERBOSE_INFO,"PZX tape will be loaded as real tape");
+            //printf ("PZX tape will be loaded as real tape\n");
+            quickload_real_tape(nombre);
+        }
+
+        else {
+            debug_printf (VERBOSE_INFO,"PZX tape will be loaded as standard tape");
+            //printf("PZX tape will be loaded as standard tape\n");
+            quickload_standard_tape(nombre);
+        }
+
+        return 0;
+    }    
+
 
 //cintas de spectrum, la mayoria (excepto rwa)
     else if (

@@ -28457,10 +28457,11 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
 	else {
         filtros[0]="tzx";
         filtros[1]="tap";
-        filtros[2]="rwa";
-        filtros[3]="smp";
-        filtros[4]="wav";
-        filtros[5]=0;
+        filtros[2]="pzx";
+        filtros[3]="rwa";
+        filtros[4]="smp";
+        filtros[5]="wav";
+        filtros[6]=0;
 	}
 
 
