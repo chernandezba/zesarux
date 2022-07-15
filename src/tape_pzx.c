@@ -41,6 +41,10 @@
 
 //
 //Para PZX load
+//TODO: Es un poco chapuza el codigo, asume que los bloques DATA tienen correctamente indicado la longitud en bits,
+//por lo que al leer todos los datos que supuestamente hay ahi, ya nos ubicamos en el siguiente bloque
+//esto no tiene por que ser asi y fallar en algun pzx corrupto?
+//Este codigo esta basado en parte en el de TZX, el cual ya era un poco chapuza, y no estoy contento con el resultado pero... funciona
 //
 
 
@@ -51,7 +55,7 @@ char pzx_last_block_id_name[5]=""; //Inicializado a cadena vacia
 
 z80_long_int pzx_last_block_id_length;
 
-int pzx_begin_of_id=0;
+//int pzx_begin_of_id=0;
 
 int tape_block_pzx_open(void)
 {
@@ -96,7 +100,7 @@ void pzx_read_id(void)
     printf("pzx read id. name: %02XH %02XH %02XH %02XH\n",
         pzx_last_block_id_name[0],pzx_last_block_id_name[1],pzx_last_block_id_name[2],pzx_last_block_id_name[3]);
 
-    pzx_begin_of_id=1;
+    //pzx_begin_of_id=1;
 
 }
 
@@ -143,11 +147,6 @@ int tape_block_pzx_read(void *dir,int longitud)
 
     last_length_read -=longitud;
     debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",last_length_read);
-    //if (last_length_read==0) pzx_read_id();
-    //tzx_read_id();
-
-
-
     
 
     return leidos;
@@ -260,18 +259,18 @@ int tape_block_pzx_readlength(void)
 int tape_block_pzx_seek(int longitud,int direccion)
 {
 
-if (!ptr_mycinta_pzx) {
-        debug_printf (VERBOSE_ERR,"Tape uninitialized");
-        return -1;
-}
+    if (!ptr_mycinta_pzx) {
+            debug_printf (VERBOSE_ERR,"Tape uninitialized");
+            return -1;
+    }
 
-int ret;
-debug_printf(VERBOSE_DEBUG,"PZX Seek %d bytes",longitud);
-ret=fseek(ptr_mycinta_pzx,longitud,direccion);
-last_length_read -=longitud;
-if (last_length_read==0) pzx_read_id();
+    int ret;
+    debug_printf(VERBOSE_DEBUG,"PZX Seek %d bytes",longitud);
+    ret=fseek(ptr_mycinta_pzx,longitud,direccion);
+    last_length_read -=longitud;
+    //if (last_length_read==0) pzx_read_id();
 
-return ret;
+    return ret;
 }
 
 int tape_block_pzx_feof(void)
