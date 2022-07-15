@@ -87,20 +87,26 @@ int pzx_read_id(void)
     //Lee el id de bloque  (los 4 bytes) acabando con 0, y lee la longitud del bloque
 
     int leidos=fread(pzx_last_block_id_name,1,4,ptr_mycinta_pzx);
-    if (!leidos) return 0;
+    if (!leidos) {
+        debug_printf(VERBOSE_DEBUG,"End of PZX file");
+        return 0;
+    }
     pzx_last_block_id_name[4]=0;
 
     z80_byte buffer_longitud[4];
     leidos=fread(buffer_longitud,1,4,ptr_mycinta_pzx);
-    if (!leidos) return 0;
+    if (!leidos) {
+        debug_printf(VERBOSE_DEBUG,"End of PZX file");
+        return 0;
+    }
 
     pzx_last_block_id_length=   buffer_longitud[0]+
                             (buffer_longitud[1]*256)+
                             (buffer_longitud[2]*65536)+
                             (buffer_longitud[3]*16777216);
 
-    printf("pzx read id. name: %02XH %02XH %02XH %02XH\n",
-        pzx_last_block_id_name[0],pzx_last_block_id_name[1],pzx_last_block_id_name[2],pzx_last_block_id_name[3]);
+    //printf("pzx read id. name: %02XH %02XH %02XH %02XH\n",
+    //    pzx_last_block_id_name[0],pzx_last_block_id_name[1],pzx_last_block_id_name[2],pzx_last_block_id_name[3]);
 
     //pzx_begin_of_id=1;
     return 1;
@@ -139,14 +145,14 @@ int tape_block_pzx_read(void *dir,int longitud)
         return 0;
     }
 
-    printf("bloque leido:\n");
+    /*printf("bloque leido:\n");
     int i;
     for (i=0;i<longitud;i++) {
         z80_byte caracter=((char *)dir)[i];
         if (caracter>=32 && caracter<=126) printf("%c",caracter);
         else printf(" %02XH ",caracter);
     }
-    printf("\n");
+    printf("\n");*/
 
     last_length_read -=longitud;
     debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",last_length_read);
@@ -173,15 +179,56 @@ void tape_pzx_seek_data_block(void)
         //sleep(1);
         if (tape_block_pzx_feof()) return;
 
-        pzx_read_id();
+        if (!pzx_read_id()) return;
 
-        printf("Bloque %s\n",pzx_last_block_id_name);
+        debug_printf(VERBOSE_INFO,"PZX Read Block type: [%s]",pzx_last_block_id_name);
         
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
 
 		           
 
             return;
+        }
+
+        else if (!strcasecmp(pzx_last_block_id_name,"PZXT")) {
+            //Si es texto, mostrarlo como info de debug
+
+            //Leer mayor y minor
+            z80_byte buffer_version[2];
+            fread(buffer_version,1,2,ptr_mycinta_pzx);
+            pzx_last_block_id_length -=2;
+
+            debug_printf(VERBOSE_INFO,"PZX PZXT block. Version %d.%d",buffer_version[0],buffer_version[1]);
+		           
+            //asigna memoria
+            z80_byte *info_bloque;
+            info_bloque=util_malloc(pzx_last_block_id_length,"Can not allocate for PZXT block");
+
+            //Copiar el contenido
+            fread(info_bloque,1,pzx_last_block_id_length,ptr_mycinta_pzx);
+
+            //Mostrar las cadenas de texto cada una separadas por espacio
+            int longitud_textos=pzx_last_block_id_length;
+
+            //Puntero que vamos moviendo a cada string
+            z80_byte *puntero_strings;
+
+            puntero_strings=info_bloque;
+
+            while (longitud_textos>0) {
+                debug_printf(VERBOSE_INFO,"PZX PZXT block. Tape info: %s",puntero_strings);
+                int longitud_string=strlen((char *)puntero_strings);
+
+                puntero_strings +=longitud_string+1; //saltar incluso el 0 final
+
+                //Y restar de la longitud total
+                longitud_textos -=(longitud_string+1); 
+            }
+
+            free(info_bloque);
+
+
+            //Y no se llama a pzx_jump_block porque estamos justo en el siguiente bloque
         }
 
         else {
@@ -203,7 +250,7 @@ int tape_pzx_see_if_standard_tape(void)
 
         if (!pzx_read_id()) return 1;
 
-        printf("tape_pzx_see_if_standard_tape. Bloque %s\n",pzx_last_block_id_name);
+        //printf("tape_pzx_see_if_standard_tape. Bloque %s\n",pzx_last_block_id_name);
         
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
 
@@ -264,11 +311,11 @@ int tape_pzx_see_if_standard_tape(void)
 
             int pulso_valido=0;
 
-            printf("Pulso a comparar: ");
+            /*printf("Pulso a comparar: ");
             int i;
             for (i=0;i<8;i++) printf("%02XH ",buffer_pulsos[i]);
 
-            printf("\n");
+            printf("\n");*/
 
             if (!memcmp(pzx_pulses_flag_long,buffer_pulsos,8)) pulso_valido=1;
 
@@ -305,7 +352,7 @@ int tape_block_pzx_readlength(void)
     tape_pzx_seek_data_block();
 
     if (tape_block_pzx_feof()) {
-        printf("End of tape\n");
+        //printf("End of tape\n");
         return 0;
     }
 
@@ -330,7 +377,7 @@ int tape_block_pzx_readlength(void)
                                 (buffer_longitud[2]*65536)+
                                 ((buffer_longitud[3]&127)*16777216);      
 
-        printf("longitud bits: %d\n",longitud_bits);
+        //printf("longitud bits: %d\n",longitud_bits);
 		last_length_read=longitud_bits/8;
 
 
@@ -343,13 +390,13 @@ int tape_block_pzx_readlength(void)
         fread(&pulsos_cero,1,1,ptr_mycinta_pzx);
         fread(&pulsos_uno,1,1,ptr_mycinta_pzx);
 
-        printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
+        //printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
 
         for(;pulsos_cero;pulsos_cero--) fread(buffer_nada,1,2,ptr_mycinta_pzx);
         for(;pulsos_uno;pulsos_uno--) fread(buffer_nada,1,2,ptr_mycinta_pzx);
 
 
-        printf("PZX Data Block length: %d\n",last_length_read);
+        //printf("PZX Data Block length: %d\n",last_length_read);
 
 		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",last_length_read);
 		//sleep(2);
