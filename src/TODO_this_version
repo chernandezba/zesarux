@@ -184,3 +184,5 @@ ok-probar convertir tap a tzx
 
 ok -probar de nuevo pzx standard tape output -> grabar a pzx 
 
+-lectura bloques pzx y datos que se haga en un buffer de memoria aparte
+
