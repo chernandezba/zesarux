@@ -300,6 +300,16 @@ void tape_init(void)
                                         tape_block_rewindbegin=tape_block_tzx_rewindbegin;
                                 }
 
+                        else if (!util_compare_file_extension(tapefile,"pzx") ) {
+                                        debug_printf (VERBOSE_INFO,"PZX file detected");
+                                        tape_block_open=tape_block_pzx_open; 
+                                        tape_block_read=tape_block_pzx_read; 
+                                        tape_block_readlength=tape_block_pzx_readlength; 
+                                        tape_block_seek=tape_block_pzx_seek; 
+                                        tape_block_feof=tape_block_pzx_feof; 
+                                        tape_block_rewindbegin=tape_block_pzx_rewindbegin; 
+                                }                                
+
 
                         else if (!util_compare_file_extension(tapefile,"o") || !util_compare_file_extension(tapefile,"80") ) {
                                         debug_printf (VERBOSE_INFO,"ZX80 Tape file detected");

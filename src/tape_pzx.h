@@ -25,6 +25,13 @@
 #include "cpu.h"
 #include "zvfs.h"
 
+extern int tape_block_pzx_open(void);
+extern int tape_block_pzx_read(void *dir,int longitud);
+extern int tape_block_pzx_readlength(void);
+extern int tape_block_pzx_seek(int longitud,int direccion);
+extern int tape_block_pzx_feof(void);
+extern void tape_block_pzx_rewindbegin(void);
+
 extern int tape_out_block_pzx_open(void);
 extern int tape_out_block_pzx_close(void);
 extern int tape_block_pzx_save(void *dir,int longitud);

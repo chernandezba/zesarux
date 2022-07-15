@@ -43,6 +43,209 @@
 //Para PZX load
 //
 
+
+FILE *ptr_mycinta_pzx;
+z80_int last_length_read;
+
+char pzx_last_block_id_name[5]=""; //Inicializado a cadena vacia
+
+z80_long_int pzx_last_block_id_length;
+
+int pzx_begin_of_id=0;
+
+int tape_block_pzx_open(void)
+{
+
+    ptr_mycinta_pzx=fopen(tapefile,"rb");
+
+    if (!ptr_mycinta_pzx)
+    {
+        debug_printf(VERBOSE_ERR,"Unable to open input file %s",tapefile);
+        tapefile=0;
+        return 1;
+    }
+
+    //last_id_read=0xFF;
+
+    return 0;
+
+}
+
+void tape_block_pzx_rewindbegin(void)
+{
+    fseek(ptr_mycinta_pzx,0, SEEK_SET);
+
+    //last_id_read=0xFF;
+}
+
+void pzx_read_id(void)
+{
+    //Lee el id de bloque  (los 4 bytes) acabando con 0, y lee la longitud del bloque
+
+    fread(pzx_last_block_id_name,1,4,ptr_mycinta_pzx);
+    pzx_last_block_id_name[4]=0;
+
+    char buffer_longitud[4];
+    fread(buffer_longitud,1,4,ptr_mycinta_pzx);
+
+    pzx_last_block_id_length=   buffer_longitud[0]+
+                            (buffer_longitud[1]*256)+
+                            (buffer_longitud[2]*65536)+
+                            ((buffer_longitud[3]&127)*16777216);
+
+    pzx_begin_of_id=1;
+
+}
+
+void pzx_jump_block(void)
+{
+    fseek(ptr_mycinta_pzx,pzx_last_block_id_length,SEEK_CUR);
+
+    pzx_last_block_id_name[0]=0;
+}
+
+
+
+
+int tape_block_pzx_read(void *dir,int longitud)
+{
+
+	//pzx_read_returned_unknown_id.v=0;
+    //Asumimos que estamos en un bloque DATA
+
+	if (!ptr_mycinta_pzx) {
+		debug_printf (VERBOSE_ERR,"Tape uninitialized");
+		return 0;
+	}
+
+
+
+
+				
+    debug_printf(VERBOSE_DEBUG,"Reading %d bytes.",longitud);
+    int leidos=fread(dir,1,longitud,ptr_mycinta_pzx);
+    if (leidos==0) {
+        //if (!quickload_guessing_tzx_type.v) debug_printf(VERBOSE_INFO,"Error reading TZX tape");
+        return 0;
+    }
+
+
+
+    last_length_read -=longitud;
+    debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",last_length_read);
+    if (last_length_read==0) pzx_read_id();
+    //tzx_read_id();
+
+
+
+    
+
+    return leidos;
+
+
+
+}
+
+
+void tape_pzx_seek_data_block(void)
+{
+
+	//pzx_read_returned_unknown_id.v=0;
+
+	if (!ptr_mycinta_pzx) {
+		debug_printf (VERBOSE_ERR,"Tape uninitialized");
+		return;
+	}
+
+	do {
+
+        pzx_read_id();
+        
+        if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
+
+		           
+
+            return;
+        }
+
+        else {
+            //Cualquier otra cosa ignorarla
+            pzx_jump_block();
+        } 
+    } while(1);   
+}
+
+int tape_block_pzx_readlength(void)
+{
+
+	if (!ptr_mycinta_pzx) {
+        	debug_printf (VERBOSE_ERR,"Tape uninitialized");
+	        return 0;
+	}
+
+    debug_printf(VERBOSE_DEBUG,"PZX Read length");
+    //if (last_id_read!=0xFF) pzx_read_id();
+
+
+    tape_pzx_seek_data_block();
+
+	/*
+        offset      type             name  meaning
+0           u32              count bits 0-30 number of bits in the data stream
+                                   bit 31 initial pulse level: 0 low 1 high
+4           u16              tail  duration of extra pulse after last bit of the block
+6           u8               p0    number of pulses encoding bit equal to 0.
+7           u8               p1    number of pulses encoding bit equal to 1.
+8           u16[p0]          s0    sequence of pulse durations encoding bit equal to 0.
+8+2*p0      u16[p1]          s1    sequence of pulse durations encoding bit equal to 1.
+8+2*(p0+p1) u8[ceil(bits/8)] data  data stream, see below.
+        */     
+
+        //leemos longitud
+        char buffer_longitud[4];
+        fread(buffer_longitud,1,4,ptr_mycinta_pzx);
+
+        int longitud_bits=   buffer_longitud[0]+
+                                (buffer_longitud[1]*256)+
+                                (buffer_longitud[2]*65536)+
+                                ((buffer_longitud[3]&127)*16777216);      
+
+
+		last_length_read=longitud_bits/8;
+		
+
+		
+
+		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",last_length_read);
+	//	sleep(1);
+		return last_length_read;
+}
+
+
+
+int tape_block_pzx_seek(int longitud,int direccion)
+{
+
+if (!ptr_mycinta_pzx) {
+        debug_printf (VERBOSE_ERR,"Tape uninitialized");
+        return -1;
+}
+
+int ret;
+debug_printf(VERBOSE_DEBUG,"PZX Seek %d bytes",longitud);
+ret=fseek(ptr_mycinta_pzx,longitud,direccion);
+last_length_read -=longitud;
+if (last_length_read==0) pzx_read_id();
+
+return ret;
+}
+
+int tape_block_pzx_feof(void)
+{
+    return feof(ptr_mycinta_pzx);
+}
+
+
 //
 //Para PZX save
 //
