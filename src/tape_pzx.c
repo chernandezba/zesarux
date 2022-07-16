@@ -45,6 +45,9 @@
 
 
 FILE *ptr_mycintanew_pzx;
+
+//El hecho de definir esta variable aqui solo tiene sentido para escribir info desde tape_block_pzx_read, pero no tiene ningun uso real
+//Esto al final es una variable heredada de copiar el codigo de tzx a pzx
 z80_int last_length_read;
 
 char pzx_last_block_id_name[5]=""; //Inicializado a cadena vacia
@@ -172,17 +175,6 @@ int pzx_read_id(void)
 
 }
 
-void pzx_jump_block(void)
-{
-
-    //esto ya no hace nada?
-
-    //fseek(ptr_mycinta_pzx,pzx_last_block_id_length,SEEK_CUR);
-
-    //pzx_last_block_id_name[0]=0;
-}
-
-
 
 
 int tape_block_pzx_read(void *dir,int longitud)
@@ -289,13 +281,10 @@ int tape_pzx_seek_data_block(void)
             free(info_bloque);
 
 
-            //Y no se llama a pzx_jump_block porque estamos justo en el siguiente bloque
+            
         }
 
-        else {
-            //Cualquier otra cosa ignorarla
-            pzx_jump_block();
-        } 
+
     } while(1);   
 }
 
@@ -353,7 +342,7 @@ int tape_pzx_see_if_standard_tape(void)
             //pzx_last_block_id_length -=(6+10);
 
 
-            //pzx_jump_block();
+            
         }
 
         else if (!strcasecmp(pzx_last_block_id_name,"PULS")) {
@@ -401,13 +390,10 @@ int tape_pzx_see_if_standard_tape(void)
 
             //pzx_last_block_id_length -=8;
 
-            //pzx_jump_block();
+           
         }        
 
-        else {
-            //Cualquier otra cosa ignorarla
-            //pzx_jump_block();
-        } 
+
     } while(1); 
     
 }
