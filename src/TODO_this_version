@@ -161,8 +161,8 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
 
 -Desde línea de comandos poder hacer acciones como
--convertir tap a tzx
--convertir tzx a wav
+ok-convertir tap a tzx
+ok-convertir tzx a wav
 Etc…
 
 -completar info maquina al pulsa icono en my machine
