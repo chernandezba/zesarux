@@ -41,10 +41,6 @@
 
 //
 //Para PZX load
-//TODO: Es un poco chapuza el codigo, asume que los bloques DATA tienen correctamente indicado la longitud en bits,
-//por lo que al leer todos los datos que supuestamente hay ahi, ya nos ubicamos en el siguiente bloque
-//esto no tiene por que ser asi y fallar en algun pzx corrupto?
-//Este codigo esta basado en parte en el de TZX, el cual ya era un poco chapuza, y no estoy contento con el resultado pero... funciona
 //
 
 
@@ -269,7 +265,7 @@ int tape_pzx_seek_data_block(void)
             info_bloque=util_malloc(pzx_last_blockmem_length-2,"Can not allocate for PZXT block");
 
             //Copiar el contenido
-            printf("pzx_last_blockmem_length-2: %d\n",pzx_last_blockmem_length-2);
+            //printf("pzx_last_blockmem_length-2: %d\n",pzx_last_blockmem_length-2);
             tape_block_pzx_blockmem_fread(info_bloque,pzx_last_blockmem_length-2);
 
             //Mostrar las cadenas de texto cada una separadas por espacio
@@ -446,17 +442,17 @@ int tape_block_pzx_readlength(void)
         */     
 
         //leemos longitud
-        printf("Antes leer longitud\n");
+        //printf("Antes leer longitud\n");
         z80_byte buffer_longitud[4];
         tape_block_pzx_blockmem_fread(buffer_longitud,4);
-        printf("Despues leer longitud\n");
+        //printf("Despues leer longitud\n");
 
         int longitud_bits=   buffer_longitud[0]+
                                 (buffer_longitud[1]*256)+
                                 (buffer_longitud[2]*65536)+
                                 ((buffer_longitud[3]&127)*16777216);      
 
-        printf("longitud bits: %d\n",longitud_bits);
+        //printf("longitud bits: %d\n",longitud_bits);
 		last_length_read=longitud_bits/8;
 
 
@@ -469,7 +465,7 @@ int tape_block_pzx_readlength(void)
         tape_block_pzx_blockmem_fread(&pulsos_cero,1);
         tape_block_pzx_blockmem_fread(&pulsos_uno,1);
 
-        printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
+        //printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
 
         for(;pulsos_cero;pulsos_cero--) tape_block_pzx_blockmem_fread(buffer_nada,2);
         for(;pulsos_uno;pulsos_uno--) tape_block_pzx_blockmem_fread(buffer_nada,2);
