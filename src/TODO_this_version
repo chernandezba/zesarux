@@ -15,7 +15,7 @@ Para esta version:
 
 
 
--Modificar ayuda ZX desktop y faq. No solo se hace en horizontal ahora...
+-Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
 
@@ -109,7 +109,6 @@ al inicio del menu
 -Ayuda hablar nuevo comportamiento botón derecho 
 
 -Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
-Con esto hacer que si al iniciar no hay iconos, automáticamente cree la papelera
 
 
 -Acciones boton derecho sobre escritorio y sobre iconos, genera unas pseudotareas, aunque no son tareas del gestor de tareas propiamente
@@ -171,4 +170,5 @@ Etc…
 
 -Funciones de utils no deberían involucrar nada del menú
 
+-conversion de tap a tzx turbo
 
