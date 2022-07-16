@@ -75,8 +75,8 @@ void tape_block_pzx_blockmem_free(void)
 //Retorna un byte del bloque de memoria
 z80_byte tape_block_pzx_blockmem_get(z80_long_int offset)
 {
-    if (offset<0 || offset>pzx_last_blockmem_length) {
-        debug_printf(VERBOSE_ERR,"Trying to read beyond pzx block");
+    if (offset>pzx_last_blockmem_length) {
+        debug_printf(VERBOSE_ERR,"Trying to read beyond pzx block: %d",pzx_last_blockmem_length);
         return 0;
     }
 
@@ -98,6 +98,7 @@ int tape_block_pzx_blockmem_fread(z80_byte *puntero_memoria,int leer)
     while (leer>0) {
         *puntero_memoria=tape_block_pzx_blockmem_getnext();
         puntero_memoria++;
+        leer--;
     } 
 
     return leer_orig;
@@ -131,6 +132,7 @@ void tape_block_pzx_rewindbegin(void)
 int pzx_read_id(void)
 {
     //Lee el id de bloque  (los 4 bytes) acabando con 0, y lee la longitud del bloque
+    tape_block_pzx_blockmem_free();
 
     int leidos=fread(pzx_last_block_id_name,1,4,ptr_mycintanew_pzx);
     if (!leidos) {
@@ -159,7 +161,7 @@ int pzx_read_id(void)
     //pzx_begin_of_id=1;
 
     //Leer el contenido del bloque en memoria
-    tape_block_pzx_blockmem_free();
+    
 
     pzx_blockmem_pointer=util_malloc(pzx_last_blockmem_length,"Can not allocate memory for PZX read");
     leidos=fread(pzx_blockmem_pointer,1,pzx_last_blockmem_length,ptr_mycintanew_pzx);
@@ -169,7 +171,7 @@ int pzx_read_id(void)
         return 0;
     }
       
-
+    pzx_blockmem_position=0;
     return 1;
 
 }
@@ -264,9 +266,10 @@ int tape_pzx_seek_data_block(void)
 		           
             //asigna memoria
             z80_byte *info_bloque;
-            info_bloque=util_malloc(pzx_last_blockmem_length,"Can not allocate for PZXT block");
+            info_bloque=util_malloc(pzx_last_blockmem_length-2,"Can not allocate for PZXT block");
 
             //Copiar el contenido
+            printf("pzx_last_blockmem_length-2: %d\n",pzx_last_blockmem_length-2);
             tape_block_pzx_blockmem_fread(info_bloque,pzx_last_blockmem_length-2);
 
             //Mostrar las cadenas de texto cada una separadas por espacio
@@ -435,15 +438,17 @@ int tape_block_pzx_readlength(void)
         */     
 
         //leemos longitud
+        printf("Antes leer longitud\n");
         z80_byte buffer_longitud[4];
         tape_block_pzx_blockmem_fread(buffer_longitud,4);
+        printf("Despues leer longitud\n");
 
         int longitud_bits=   buffer_longitud[0]+
                                 (buffer_longitud[1]*256)+
                                 (buffer_longitud[2]*65536)+
                                 ((buffer_longitud[3]&127)*16777216);      
 
-        //printf("longitud bits: %d\n",longitud_bits);
+        printf("longitud bits: %d\n",longitud_bits);
 		last_length_read=longitud_bits/8;
 
 
@@ -456,7 +461,7 @@ int tape_block_pzx_readlength(void)
         tape_block_pzx_blockmem_fread(&pulsos_cero,1);
         tape_block_pzx_blockmem_fread(&pulsos_uno,1);
 
-        //printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
+        printf("Pulsos cero: %d Pulsos uno: %d\n",pulsos_cero,pulsos_uno);
 
         for(;pulsos_cero;pulsos_cero--) tape_block_pzx_blockmem_fread(buffer_nada,2);
         for(;pulsos_uno;pulsos_uno--) tape_block_pzx_blockmem_fread(buffer_nada,2);
