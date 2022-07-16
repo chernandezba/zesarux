@@ -306,30 +306,29 @@ int tape_pzx_seek_data_block(void)
 int tape_pzx_see_if_standard_tape(void)
 {
 
-    //TODO
-    return 1;
-    /*
 
-	if (!ptr_mycinta_pzx) {
+
+	if (!ptr_mycintanew_pzx) {
 		debug_printf (VERBOSE_ERR,"Tape uninitialized");
 		return 1;
 	}
 
 	do {
-        if (tape_block_pzx_feof()) return 1;
+        //if (tape_block_pzx_feof()) return 1;
 
-        if (!pzx_read_id()) return 1;
+        if (!pzx_read_id()) {
+            debug_printf(VERBOSE_DEBUG,"PZX seems to be a ZX Spectrum standard tape");
+            return 1;
+        }
 
         //printf("tape_pzx_see_if_standard_tape. Bloque %s\n",pzx_last_block_id_name);
         
         if (!strcasecmp(pzx_last_block_id_name,"DATA")) {
 
             
-
-            
             //saltar los 6 bytes que indican longitud en bits y la duracion del tail
-            char buffer_nada[6];
-            fread(buffer_nada,1,6,ptr_mycinta_pzx);
+            z80_byte buffer_nada[6];
+            tape_block_pzx_blockmem_fread(buffer_nada,6);
 
             //Bloque datos standard para spectrum
             //
@@ -346,16 +345,19 @@ int tape_pzx_see_if_standard_tape(void)
 
             z80_byte buffer_data[10];
 
-		    fread(buffer_data,1,10,ptr_mycinta_pzx);
+		    tape_block_pzx_blockmem_fread(buffer_data,10);
 
             
 
-            if (memcmp(pzx_data_block,buffer_data,10)) return 0;
+            if (memcmp(pzx_data_block,buffer_data,10)) {
+                debug_printf(VERBOSE_DEBUG,"PZX is not standard tape: DATA block with different pulse parameters than ZX Spectrum");
+                return 0;
+            }
 
-            pzx_last_block_id_length -=(6+10);
+            //pzx_last_block_id_length -=(6+10);
 
 
-            pzx_jump_block();
+            //pzx_jump_block();
         }
 
         else if (!strcasecmp(pzx_last_block_id_name,"PULS")) {
@@ -363,7 +365,10 @@ int tape_pzx_see_if_standard_tape(void)
             //TODO restar de pzx_last_block_id_length bytes leidos    
 
             //Si longitud no es 8, seguro que no es un pulso estandard
-            if (pzx_last_block_id_length!=8) return 0;  
+            if (pzx_last_blockmem_length!=8) {
+                debug_printf(VERBOSE_DEBUG,"PZX is not standard tape: PULS block with length != 8");
+                return 0;  
+            }
 
             //Tono guia de un flag <128 (largo)
             z80_byte pzx_pulses_flag_long[8]= {0x7f,0x9f,0x78,0x08,0x9b,0x02,0xdf,0x02};
@@ -377,7 +382,7 @@ int tape_pzx_see_if_standard_tape(void)
 
             z80_byte buffer_pulsos[8];
 
-		    fread(buffer_pulsos,1,8,ptr_mycinta_pzx);
+		    tape_block_pzx_blockmem_fread(buffer_pulsos,8);
 
             int pulso_valido=0;
 
@@ -393,19 +398,22 @@ int tape_pzx_see_if_standard_tape(void)
                 if (!memcmp(pzx_pulses_flag_short,buffer_pulsos,8)) pulso_valido=1;
             }
 
-            if (!pulso_valido) return 0;
+            if (!pulso_valido) {
+                debug_printf(VERBOSE_DEBUG,"PZX is not standard tape: PULS block with different pulse parameters than flag 0 or 255 on ZX Spectrum");
+                return 0;
+            }
 
-            pzx_last_block_id_length -=8;
+            //pzx_last_block_id_length -=8;
 
-            pzx_jump_block();
+            //pzx_jump_block();
         }        
 
         else {
             //Cualquier otra cosa ignorarla
-            pzx_jump_block();
+            //pzx_jump_block();
         } 
     } while(1); 
-    */      
+    
 }
 
 int tape_block_pzx_readlength(void)
