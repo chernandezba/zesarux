@@ -172,19 +172,3 @@ Etc…
 -Funciones de utils no deberían involucrar nada del menú
 
 
-
-ok-Probar con pzx de carga no estándar
-
-ok-Smartload con pzx debería leer si es standard, cargarlo como standard tape. Y si  hay algo diferente, cargarlo como real tape
-Ese diferente pueden ser los valores de pulse y data diferente de los de spectrum 
-
-ok-pzx como standard tape load
-
-ok-probar convertir tap a tzx
-
-ok -probar de nuevo pzx standard tape output -> grabar a pzx 
-
--lectura bloques pzx y datos que se haga en un buffer de memoria aparte
-Read length: genera leer siguiente bloque data
-Read bytes y seek leen de buffer bloque
-Seek al principio usa fseek igual que ahora 
