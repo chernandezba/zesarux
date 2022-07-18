@@ -46,6 +46,7 @@ extern char *bitmap_button_ext_desktop_exit[];
 extern char *bitmap_button_ext_desktop_userdefined[];
 extern char *bitmap_button_ext_desktop_fullscreen[];
 extern char *bitmap_button_ext_desktop_waveform[];
+extern char *bitmap_button_ext_desktop_audioregisters[];
 extern char *bitmap_button_ext_desktop_reset[];
 extern char *bitmap_button_ext_desktop_hardreset[];
 extern char *bitmap_button_ext_desktop_reloadmmc[];

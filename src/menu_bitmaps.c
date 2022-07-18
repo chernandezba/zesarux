@@ -2016,6 +2016,37 @@ char *bitmap_button_ext_desktop_waveform[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_audioregisters[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+
+    "         xxxxxx           ", 
+    "         x    xxxxx       ",  
+    "         x        x       ",
+    "         xxxxxx   x       ",
+	"         x    xxxxx       ",
+	"         x        x       ",
+	"         x        x       ",
+	"       xxx        x       ",
+	"      xxxx        x       ",
+	"      xxxx      xxx       ", 		
+	"       xx      xxxx       ",		
+	"               xxxx       ",	
+    "                xx        ",    
+	"  x   x   x   x   x   x   ",	
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxwwwwxxxwwwxxxxxxxx",		
+	"xwxxxxxwxxxxxxxxwxxxxxxxxx",		
+	"xwwxxxxwxxwwxxxxwxxxxxxxxx",		
+	"xwxxxxxwxxxwxxxxwxxxxxxxxx",		
+	"xxxxxxxxwwwxxxxwwwxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   "    
+};
+
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "             RRRRR        ",     //0
