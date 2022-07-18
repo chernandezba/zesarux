@@ -423,16 +423,23 @@ int tape_out_block_tzx_close(void)
 void tape_write_tzx_header_ptr(FILE *ptr_archivo, int in_fatfs, FIL *fil_tzxfile)
 {
 	//"ZXTape!",0x1a,version 1,subversion 20
-	//30, longitud, "Created by ZEsarUX emulator"
-	char cabecera[]={0x5a,0x58,0x54, 0x61, 0x70, 0x65, 0x21, 0x1a, 0x01, 0x14,
-	0x30,27,
-	0x43,0x72,0x65,0x61,0x74,0x65,0x64,0x20,0x62,0x79,0x20,0x5a,0x45,0x73,  
-        0x61,0x72,0x55,0x58,0x20,0x65,0x6d,0x75,0x6c,0x61,0x74,0x6f,0x72 
-	};
-
-	//no contamos el 0 del final
+	char cabecera[]={0x5a,0x58,0x54, 0x61, 0x70, 0x65, 0x21, 0x1a, 0x01, 0x14};
     zvfs_fwrite(in_fatfs,(z80_byte *)cabecera,sizeof(cabecera),ptr_archivo,fil_tzxfile);
-	//fwrite(cabecera, 1, sizeof(cabecera), ptr_archivo);	
+    
+
+
+    char time_string[40];
+    snapshot_get_date_time_string_human(time_string);
+    char texto_description[256];
+    sprintf(texto_description,"Created by ZEsarUX emulator " EMULATOR_VERSION " on %s",time_string);
+
+    //ID 30 - Text description
+    z80_byte block_id=0x30;
+    zvfs_fwrite(in_fatfs,(z80_byte *)&block_id,1,ptr_archivo,fil_tzxfile);
+    z80_byte longitud_texto=strlen(texto_description);
+    zvfs_fwrite(in_fatfs,(z80_byte *)&longitud_texto,1,ptr_archivo,fil_tzxfile);
+
+    zvfs_fwrite(in_fatfs,(z80_byte *)texto_description,longitud_texto,ptr_archivo,fil_tzxfile);
 }
 
 void tape_write_tzx_header(void)

@@ -19680,3 +19680,16 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 	//if (!strcmp(filesystem,"FAT16")) {    
 }
 
+
+
+void snapshot_get_date_time_string(char *texto)
+{
+	//Para formatos de quicksave y dump zsf en panic. Todo guiones
+	snapshot_get_date_time_string_common(texto,1);
+}
+
+void snapshot_get_date_time_string_human(char *texto)
+{
+	//Para formatos de texto incluidos por ejemplo en cabecera pzx
+	snapshot_get_date_time_string_common(texto,0);
+}

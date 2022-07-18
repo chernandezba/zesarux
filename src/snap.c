@@ -5402,17 +5402,7 @@ struct timeval tv;
 }
 
 
-void snapshot_get_date_time_string(char *texto)
-{
-	//Para formatos de quicksave y dump zsf en panic. Todo guiones
-	snapshot_get_date_time_string_common(texto,1);
-}
 
-void snapshot_get_date_time_string_human(char *texto)
-{
-	//Para formatos de texto incluidos por ejemplo en cabecera pzx
-	snapshot_get_date_time_string_common(texto,0);
-}
 
 //Realiza quicksave y retorna nombre en char nombre, siempre que no sea NULL
 void snapshot_quick_save(char *nombre)

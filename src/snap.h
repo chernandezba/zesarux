@@ -69,11 +69,10 @@ extern char *z80file_machines_id[];
 
 #define AUTOSAVE_NAME "zesarux_autosave.zsf"
 
-extern void snapshot_get_date_time_string(char *texto);
+
 
 extern void snap_dump_zsf_on_cpu_panic(void);
 
-extern void snapshot_get_date_time_string_human(char *texto);
 
 extern void load_z80_snapshot_bytes(z80_byte *buffer_lectura,int leidos,z80_int direccion_destino,int comprimido,z80_byte *puntero_memoria);
 

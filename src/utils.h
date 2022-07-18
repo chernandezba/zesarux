@@ -813,6 +813,10 @@ extern void util_clear_final_spaces(char *orig,char *destination);
 
 extern int util_concat_string(char *original,char *string_to_add,int limite);
 
+extern void snapshot_get_date_time_string_human(char *texto);
+extern void snapshot_get_date_time_string(char *texto);
+
+
 #define MEMORY_ZONE_NUM_FILE_ZONE 16
 #define MEMORY_ZONE_NUM_TBBLUE_COPPER 17 
 #define MEMORY_ZONE_NUM_TIMEX_EX 18
