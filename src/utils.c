@@ -14651,37 +14651,82 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
                             else {
 
-                                //Generar bloque con datos. TZX ID 10h, word pausa de 500ms, longitud
-                                z80_byte buffer_tzx[5];
-                                buffer_tzx[0]=0x10;
-                                buffer_tzx[1]=244;
-                                buffer_tzx[2]=1;
 
+                                if (tzx_turbo_rg) {
+                                    //Bloque turbo de 4000 bauds para usar con roms de Rodolfo Guerra
+                                    z80_byte buffer_tzx[19];
+                                    buffer_tzx[0]=0x11;
 
+                                    buffer_tzx[1]=value_16_to_8l(1408);
+                                    buffer_tzx[2]=value_16_to_8h(1408);
 
+                                    buffer_tzx[3]=value_16_to_8l(397);
+                                    buffer_tzx[4]=value_16_to_8h(397);
 
+                                    buffer_tzx[5]=value_16_to_8l(317);
+                                    buffer_tzx[6]=value_16_to_8h(317);
 
-                                zvfs_fwrite(in_fatfs_tzxfile,buffer_tzx,3,ptr_tzxfile,&fil_tzxfile);
+                                    buffer_tzx[7]=value_16_to_8l(325);
+                                    buffer_tzx[8]=value_16_to_8h(325);
+
+                                    buffer_tzx[9]=value_16_to_8l(649);
+                                    buffer_tzx[10]=value_16_to_8h(649);
+
+                                    buffer_tzx[11]=value_16_to_8l(4835);
+                                    buffer_tzx[12]=value_16_to_8h(4835);
+
+                                    buffer_tzx[13]=8;
+
+                                    buffer_tzx[14]=value_16_to_8l(318);
+                                    buffer_tzx[15]=value_16_to_8h(318);
+
+                                    //Length of data that follow. 3 bytes
+                                    buffer_tzx[16]=value_16_to_8l(longitud_bloque-2); //Sin contar propiamente los 2 bytes iniciales del bloque tap
+                                    buffer_tzx[17]=value_16_to_8h(longitud_bloque-2); //Sin contar propiamente los 2 bytes iniciales del bloque tap
+                                    buffer_tzx[18]=0; //Valor de 24 bits. Byte mas alto a 0
+
+                                    zvfs_fwrite(in_fatfs_tzxfile,buffer_tzx,19,ptr_tzxfile,&fil_tzxfile);
+
+                                    //Generamos bloque temporal para evitar segfaults en archivos corruptos
+                                    z80_byte *temp_save_mem=malloc(longitud_bloque-2);
+                                    if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
+                                    util_memcpy_protect_origin(temp_save_mem,&taperead[2],total_file_size,nuevo_copia_puntero,longitud_bloque-2);
 
                             
+                                    zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque-2,ptr_tzxfile,&fil_tzxfile);
+                                    
 
-                                //fwrite(buffer_tzx,1,3,ptr_tzxfile);
+                                    free(temp_save_mem);                                    
+                                }
 
-                                //Meter datos tal cual de tap: longitud, flag, datos, crc
+                                else {
+                                    //Generar bloque con datos. TZX ID 10h, word pausa de 500ms, longitud
+                                    z80_byte buffer_tzx[5];
+                                    buffer_tzx[0]=0x10;
+                                    buffer_tzx[1]=244;
+                                    buffer_tzx[2]=1;
 
-                               //Generar bloque con datos, saltando los dos de cabecera y el flag
-
-
-                                //Generamos bloque temporal para evitar segfaults en archivos corruptos
-                                z80_byte *temp_save_mem=malloc(longitud_bloque);
-                                if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
-                                util_memcpy_protect_origin(temp_save_mem,taperead,total_file_size,nuevo_copia_puntero,longitud_bloque);
-
-                          
-                                zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque,ptr_tzxfile,&fil_tzxfile);
+                                    zvfs_fwrite(in_fatfs_tzxfile,buffer_tzx,3,ptr_tzxfile,&fil_tzxfile);
                                 
+                            
 
-                                free(temp_save_mem);
+                                    //Meter datos tal cual de tap: longitud, flag, datos, crc
+
+                                    //Generar bloque con datos, saltando los dos de cabecera y el flag
+
+
+                                    //Generamos bloque temporal para evitar segfaults en archivos corruptos
+                                    z80_byte *temp_save_mem=malloc(longitud_bloque);
+                                    if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
+                                    util_memcpy_protect_origin(temp_save_mem,taperead,total_file_size,nuevo_copia_puntero,longitud_bloque);
+
+                            
+                                    zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque,ptr_tzxfile,&fil_tzxfile);
+                                    
+
+                                    free(temp_save_mem);
+
+                                }
 
                             }
 

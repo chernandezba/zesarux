@@ -2309,10 +2309,11 @@ printf (
 		"\n"
         "The following are actions that are executed from the console and don't start ZEsarUX:"
         "\n\n"
-        "--convert-tap-tzx source destination     Convert tap source file to destination tzx\n"
-        "--convert-tap-pzx source destination     Convert tap source file to destination pzx\n"
-        "--convert-tzx-tap source destination     Convert tzx source file to destination tap\n"
-        "--convert-pzx-tap source destination     Convert pzx source file to destination tap\n"
+        "--convert-tap-tzx source destination           Convert tap source file to destination tzx\n"
+        "--convert-tap-tzx-turbo-rg source destination  Convert tap source file to destination tzx turbo (4000 bauds) for use with Rodolfo Guerra ROMS\n"
+        "--convert-tap-pzx source destination           Convert tap source file to destination pzx\n"
+        "--convert-tzx-tap source destination           Convert tzx source file to destination tap\n"
+        "--convert-pzx-tap source destination           Convert pzx source file to destination tap\n"
 
 
         "\n\n"        
@@ -8863,6 +8864,23 @@ int parse_cmdline_options(void) {
                 printf("Conversion finished. Exiting\n");
                 exit(0);
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx-turbo-rg")) {
+                siguiente_parametro_argumento();
+                char *origen=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+                char *destino=argv[puntero_parametro];
+
+                printf("Converting from TAP file %s to TZX Rodolfo Guerra Turbo file %s\n",origen,destino);
+
+                if (util_extract_tap(origen,NULL,destino,1)) {
+                    printf("Error executing conversion\n");
+                    exit(1);
+                }
+
+                printf("Conversion finished. Exiting\n");
+                exit(0);
+            }            
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-pzx")) {
                 siguiente_parametro_argumento();
