@@ -1712,6 +1712,7 @@ void file_utils_file_convert(char *fullpath)
 	if (!util_compare_file_extension(archivo,"tap")) {
 		char *opciones[]={
 			"TAP to TZX",
+            "TAP to TZX Turbo (4000 bauds)",
             "TAP to PZX",
 			"TAP to RWA",
 			"TAP to WAV",
@@ -1730,16 +1731,21 @@ void file_utils_file_convert(char *fullpath)
 			break;	
 
 			case 1:
+				sprintf(archivo_destino,"%s/%s.tzx",directorio,archivo);
+				util_extract_tap(fullpath,NULL,archivo_destino,1);
+			break;	            
+
+			case 2:
 				sprintf(archivo_destino,"%s/%s.pzx",directorio,archivo);
 				util_extract_tap(fullpath,NULL,archivo_destino,0);
 			break;	            
 
-			case 2:
+			case 3:
 				sprintf(archivo_destino,"%s/%s.rwa",directorio,archivo);
 				convert_tap_to_rwa(fullpath,archivo_destino);
 			break;
 
-			case 3:
+			case 4:
 				sprintf(archivo_destino,"%s/%s.wav",directorio,archivo);
 				convert_any_to_wav(fullpath,archivo_destino);
 			break;
