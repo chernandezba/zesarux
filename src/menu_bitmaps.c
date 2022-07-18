@@ -2049,32 +2049,32 @@ char *bitmap_button_ext_desktop_audioregisters[EXT_DESKTOP_BUTTONS_ANCHO]={
 char *bitmap_button_ext_desktop_audiosheet[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 
-    "      x                   ", //0
-    "     xxx                  ", 
-    "     x  x                 ", 
-    "    xx  x   xxxxxxxxxxxxxx", 
-	"    x   x                 ", 
-	"    x  xx                 ", 
-	"     x x                  ", 
-	"     xxx    xxxxxxxxxxxxxx", 
-	"    xxx                   ", 
-	"   xxx                    ", 
-	"  xxxx                    ", //10
-	" xxx  x     xxxxxxxxxxxxxx", 
-    " xx   x                   ", 
-	"xx  xxxxx                 ", 
-	"xx x  x xx                ", 
-	"xx x  x  xx xxxxxxxxxxxxxx", 
-	" x x   x  x               ", 
-	" x  x  x  x               ", 
-	"  x    x x                ", 
-	"   xxxxxx   xxxxxxxxxxxxxx", 
-	"       x                  ", //20
-	"        x                 ", 
-	"   xx   x                 ", 
-	"  xxxx  x                 ", 
-	"   xx   x                 ", 
-	"    xxxx                  " //25
+    "WWWWWWxWWWWWWWWWWWWWWWWWWW",//0
+    "WWWWWxxxWWWWWWWWWWWWWWWWWW",
+    "WWWWWxWWxWWWWWWWWWWWWxWWWW",
+    "WWWWxxWWxWWWxxxxxxxxxxxxxx",
+	"WWWWxWWWxWWWWWWWWWWWWxWWWW",
+	"WWWWxWWxxWWWWWWWWWWWWxWWWW",
+	"WWWWWxWxWWWWWWWWWWWWWxWWWW",
+	"WWWWWxxxWWWWxxxxxxxxxxxxxx",
+	"WWWWxxxWWWWWWWWWWWWWWxWWWW",
+	"WWWxxxWWWWWWWWWWWWWWWxWWWW",
+	"WWxxxxWWWWWWWWWWWWWWWxWWWW",//10
+	"WxxxWWxWWWWWxxxxxxxxxxxxxx",
+    "WxxWWWxWWWWWWWWWWWWWWxWWWW",
+	"xxWWxxxxxWWWWWWWWWWxxxWWWW",
+	"xxWxWWxWxxWWWWWWWWxxxxWWWW",
+	"xxWxWWxWWxxWxxxxxxxxxxxxxx",
+	"WxWxWWWxWWxWWWWWWWxxxxWWWW",
+	"WxWWxWWxWWxWWWWWWWWxxWWWWW",
+	"WWxWWWWxWxWWWWWWWWWWWWWWWW",
+	"WWWxxxxxxWWWxxxxxxxxxxxxxx",
+	"WWWWWWWxWWWWWWWWWWWWWWWWWW",//20
+	"WWWWWWWWxWWWWWWWWWWWWWWWWW",
+	"WWWxxWWWxWWWWWWWWWWWWWWWWW",
+	"WWxxxxWWxWWWWWWWWWWWWWWWWW",
+	"WWWxxWWWxWWWWWWWWWWWWWWWWW",
+	"WWWWxxxxWWWWWWWWWWWWWWWWWW"//25
 };
 
 char *bitmap_button_ext_desktop_audiopiano[EXT_DESKTOP_BUTTONS_ANCHO]={
