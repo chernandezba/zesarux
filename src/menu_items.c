@@ -17431,11 +17431,11 @@ Altura, para 2 chips de sonido (6 canales), tenemos maximo 192/6=32
 
 	int ybase=scale_y_chip(separacion_y_entre_teclados)*canal;
 
-	//Recuadro en blanco
+	//Recuadro en blanco con brillo
 	int x,y;
 	for (x=0;x<AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA;x++) {
 		for (y=ybase;y<ybase+scale_y_chip(8);y++) {
-			menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(ventana,x+offset_x,y,7);
+			menu_ay_pianokeyboard_draw_graphical_piano_draw_pixel_zoom(ventana,x+offset_x,y,7+8);
 		}
 	}
 
