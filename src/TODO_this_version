@@ -172,6 +172,3 @@ Etc…
 
 -conversion de tap a tzx turbo
 
--al descargar online a /tmp/zesarux-501 deja el archivo .zip tal cual
-al expandir el .zip intenta crear una carpeta de igual nombre al .zip y no va
-antiguamente se tenia una subcarpeta de downloads, habria que dejarlo en  una subcarpeta downloads/ siempre que la config de la ruta descargas online este vacia

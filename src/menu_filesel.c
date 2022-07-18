@@ -1726,12 +1726,12 @@ void file_utils_file_convert(char *fullpath)
 		switch (opcion) {
 			case 0:
 				sprintf(archivo_destino,"%s/%s.tzx",directorio,archivo);
-				util_extract_tap(fullpath,NULL,archivo_destino);
+				util_extract_tap(fullpath,NULL,archivo_destino,0);
 			break;	
 
 			case 1:
 				sprintf(archivo_destino,"%s/%s.pzx",directorio,archivo);
-				util_extract_tap(fullpath,NULL,archivo_destino);
+				util_extract_tap(fullpath,NULL,archivo_destino,0);
 			break;	            
 
 			case 2:
@@ -2907,7 +2907,7 @@ int menu_filesel_expand(char *archivo,char *tmpdir)
 
         else if (!util_compare_file_extension(archivo,"tap") ) {
                 debug_printf (VERBOSE_DEBUG,"Is a tap file");
-        	return util_extract_tap(archivo,tmpdir,NULL);
+        	return util_extract_tap(archivo,tmpdir,NULL,0);
         }
 
         else if (!util_compare_file_extension(archivo,"ddh") ) {
@@ -4495,7 +4495,7 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 
 			if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tap") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a tap file");
-					retorno=util_extract_tap(filesel_nombre_archivo_seleccionado,tmpdir,NULL);
+					retorno=util_extract_tap(filesel_nombre_archivo_seleccionado,tmpdir,NULL,0);
 			}
 
 			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tzx") ) {

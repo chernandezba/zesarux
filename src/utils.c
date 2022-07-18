@@ -14384,7 +14384,8 @@ int util_get_sign(int valor)
 
 //Rutina para extraer TAP pero tambien para convertir a TZX o PZX
 //Si tzxfile !=NULL, lo convierte a tzx o pzx, en vez de expandir
-int util_extract_tap(char *filename,char *tempdir,char *tzxfile)
+//Si tzx_turbo_rg, convierte a tzx turbo de Rodolfo Guerra (4000 bauds)
+int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg)
 {
 
 	
