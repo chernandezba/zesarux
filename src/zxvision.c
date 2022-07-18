@@ -167,9 +167,9 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary}, 
 	{"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary}, 
     {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform},
-    {"AudioRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters},
-    {"AudioSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet},
-    {"AudioPiano",F_FUNCION_AUDIO_PIANO,bitmap_button_ext_desktop_audiopiano},
+    {"AudioChipRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters},
+    {"AudioChipSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet},
+    {"AudioChipPiano",F_FUNCION_AUDIO_PIANO,bitmap_button_ext_desktop_audiopiano},
 
     //Realmente las dos siguientes actuan igual, solo les diferencia el bitmap,
     //y que cuando se crea SetMachine desde "New Icon" se asigna SetMachine con la maquina actual
