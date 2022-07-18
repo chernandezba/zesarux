@@ -38,7 +38,7 @@ extern int tape_block_pzx_save(void *dir,int longitud);
 extern void tape_block_pzx_begin_save(int longitud,z80_byte flag);
 extern void tape_write_pzx_header_ptr(FILE *ptr_archivo, int in_fatfs, FIL *fil_tzxfile);
 extern void tape_block_pzx_begin_save_ptr(FILE *ptr_archivo,int longitud,z80_byte flag,int in_fatfs, FIL *fil_tzxfile);
-
+extern int tape_pzx_see_if_standard_tape(void);
 
 
 #endif

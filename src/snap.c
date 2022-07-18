@@ -5372,34 +5372,7 @@ void snapshot_load(void)
 	snapshot_load_name(snapfile);
 }
 
-//Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
-//texto tiene que tener tamanyo 40, aunque cabe con menos, pero mejor asi  .   char time_string[40];
-void snapshot_get_date_time_string_common(char *texto,int todos_guiones)
-{
-struct timeval tv;
-  struct tm* ptm;
-  //long microseconds;
 
-
-                    // 2015/01/01 11:11:11.999999 "
-                    // 123456789012345678901234567
-  //const int longitud_timestamp=27;
-
-  /* Obtain the time of day, and convert it to a tm struct. */
-  gettimeofday (&tv, NULL);
-  ptm = localtime (&tv.tv_sec);
-  /* Format the date and time, down to a single second. */
-  char time_string[40];
-
-  //buffer temporal para poderle indicar el sizeof
-  if (todos_guiones) strftime (time_string, sizeof(time_string), "%Y-%m-%d-%H-%M-%S", ptm);
-  else strftime (time_string, sizeof(time_string), "%Y/%m/%d %H:%M:%S", ptm);
-
-  //copiar a texto final
-  strcpy(texto,time_string);
-
-  //printf ("texto fecha: %s\n",texto);
-}
 
 
 
