@@ -2066,13 +2066,13 @@ char *bitmap_button_ext_desktop_audiosheet[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xx x  x xx                ", 
 	"xx x  x  xx xxxxxxxxxxxxxx", 
 	" x x   x  x               ", 
-	" x  xx x  x               ", 
+	" x  x  x  x               ", 
 	"  x    x x                ", 
 	"   xxxxxx   xxxxxxxxxxxxxx", 
 	"       x                  ", //20
 	"        x                 ", 
-	"   xxx  x                 ", 
-	"   xxx  x                 ", 
+	"   xx   x                 ", 
+	"  xxxx  x                 ", 
 	"   xx   x                 ", 
 	"    xxxx                  ", //25
 };
