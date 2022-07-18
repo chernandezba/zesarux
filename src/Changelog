@@ -15,6 +15,7 @@ Added some actions than can be fired from command line and don't start ZEsarUX:
 
 Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
+Improved generated TZX and PZX files: include date and ZEsarUX version in header
 
 Improved File selector: 
 -Allow to have a full screen preview if window is big enough
