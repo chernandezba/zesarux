@@ -2074,7 +2074,39 @@ char *bitmap_button_ext_desktop_audiosheet[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"   xx   x                 ", 
 	"  xxxx  x                 ", 
 	"   xx   x                 ", 
-	"    xxxx                  ", //25
+	"    xxxx                  " //25
+};
+
+char *bitmap_button_ext_desktop_audiopiano[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"                          ",		
+	"                          ",    
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"x xxx xxx x xxx xxx xxx x ", 
+	"x xxx xxx x xxx xxx xxx x ", 
+	"x xxx xxx x xxx xxx xxx x ",
+	"x xxx xxx x xxx xxx xxx x ",
+	"x  x   x  x  x   x   x  x ",
+	"x  x   x  x  x   x   x  x ",
+    "x  x   x  x  x   x   x  x ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ", 
+	"                          ",	
+    "                          ",  
+	"  x   x   x   x   x   x   ",	
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxwwwwxxxwwwxxxxxxxx",		
+	"xwxxxxxwxxxxxxxxwxxxxxxxxx",		
+	"xwwxxxxwxxwwxxxxwxxxxxxxxx",		
+	"xwxxxxxwxxxwxxxxwxxxxxxxxx",		
+	"xxxxxxxxwwwxxxxwwwxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   "  
+
+
 };
 
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={

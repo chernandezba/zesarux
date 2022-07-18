@@ -33033,7 +33033,11 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 
 		case F_FUNCION_AUDIO_SHEET:
 			menu_ay_partitura(0); 
-		break;               
+		break;  
+
+		case F_FUNCION_AUDIO_PIANO:
+			menu_ay_pianokeyboard(0); 
+		break;                     
 
         case F_FUNCION_SET_MACHINE:
         case F_FUNCION_MACHINE_SELECTION:
