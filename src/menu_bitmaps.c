@@ -2139,8 +2139,37 @@ char *bitmap_button_ext_desktop_wavepiano[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"        b      b b        ",    
 	"               b b        ",		
 	"                b         "
+};
 
 
+char *bitmap_button_ext_desktop_aymixer[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "   xxx      xxx      xxx  ",     //0
+	"   xxx      xxx      xxx  ",			
+	"            xxx      xxx  ", 		
+	" xxxxxxx    xxx      xxx  ",		
+	" xxxxxxx    xxx           ",		
+	"            xxx    xxxxxxx",		
+	"   xxx             xxxxxxx",		
+	"   xxx    xxxxxxx         ",		
+	"   xxx    xxxxxxx    xxx  ",		
+	"   xxx               xxx  ",		
+	"   xxx      xxx      xxx  ",		
+	"   xxx      xxx      xxx  ",
+    "                          ",
+    "  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxwwwwxxxwwwxxxxxxxx",		
+	"xwxxxxxwxxxxxxxxwxxxxxxxxx",		
+	"xwwxxxxwxxwwxxxxwxxxxxxxxx",		
+	"xwxxxxxwxxxwxxxxwxxxxxxxxx",		
+	"xxxxxxxxwwwxxxxwwwxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  
+	"  x   x   x   x   x   x   ",		
+    "  x   x   x   x   x   x   ",		
 };
 	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
