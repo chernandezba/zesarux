@@ -10089,17 +10089,17 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_fill_scale ? 'X' : ' ' ));
 
 
-                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
-                        "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
-                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
-
-
                     if (!zxdesktop_draw_scrfile_fill_scale) {
                         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_scalefactor,NULL,
                             "SCR scale factor","SCR factor de escala","SCR factor d'escala");
                         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%d] ",zxdesktop_draw_scrfile_scale_factor);
 
                     }
+
+                    menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
+                        "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
+                    menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
+
 
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
                         "SCR allow flash","SCR permitir parpadeo","SCR permetre parpelleig");
