@@ -10054,7 +10054,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
             if (menu_ext_desktop_fill==7) {
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_degraded_inverted,NULL,
-                    "Degraded inverted","Degradado invertido","Degradat invertit");
+                    "Inverted Degraded","Degradado invertido","Degradat invertit");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));                
             }
 
