@@ -3380,8 +3380,8 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--zxdesktop-fill-type %d",menu_ext_desktop_fill);
                                               ADD_STRING_CONFIG,"--zxdesktop-fill-primary-color %d",menu_ext_desktop_fill_first_color);
                                               ADD_STRING_CONFIG,"--zxdesktop-fill-secondary-color %d",menu_ext_desktop_fill_second_color);
-				
 
+    if (menu_ext_desktop_degraded_inverted.v)	  ADD_STRING_CONFIG,"--zxdesktop-fill-degraded-inverted");
 
                           
     if (screen_ext_desktop_place_menu)          ADD_STRING_CONFIG,"--zxdesktop-new-items");                   

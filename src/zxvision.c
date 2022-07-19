@@ -5935,7 +5935,6 @@ void menu_draw_ext_desktop(void)
 
     for (y=yinicio;y<yinicio+alto;y++) {
 
-
 		//Este bloque solo para degraded, se calcula en cada posicion y
 		if (menu_ext_desktop_fill==7) {
 

@@ -1903,6 +1903,7 @@ printf (
 		"--zxdesktop-fill-type n                        ZX Desktop fill type (0,1,2,3,4 or 5)\n"
 		"--zxdesktop-fill-primary-color n               ZX Desktop primary fill color (0-15)\n"
 		"--zxdesktop-fill-secondary-color n             ZX Desktop secondary fill color (0-15)\n"
+        "--zxdesktop-fill-degraded-inverted             ZX Desktop inverted colours on degraded fill type\n"
 		"--zxdesktop-new-items                          Try to place new menu items on the ZX Desktop space\n"
 		"--zxdesktop-disable-buttons                    Disable ZX Desktop direct access buttons\n"
 		"--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent\n"
@@ -5636,7 +5637,9 @@ int parse_cmdline_options(void) {
 				menu_ext_desktop_fill_second_color=valor;
 			}						
 
-
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-degraded-inverted")) {
+                menu_ext_desktop_degraded_inverted.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-new-items")) {
 				screen_ext_desktop_place_menu=1;
