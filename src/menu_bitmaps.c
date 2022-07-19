@@ -2575,29 +2575,29 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "  xxxxxxxxxxxxxxxxxxxxxx  ",     //0
-  	"  xxxxxWWWWW              ",      
-	"      WW  WWW             ",		
-	"     W WWW W WWW          ",		
-	"     W WWW  WW            ",	
-	"     W W  WW              ",			
-	"     W  WW  W             ",			
-	"     WWW  WW WW           ", 		
-	"    WW  WWWWWWW           ",		
-	"       WWWWWW             ",		
-	"    W                     ",	//10	
-	"   WWW W   W              ",		
-	"    W  W  WWW             ",		
-	"    W WW   WW             ",		
-	"    W WWW                 ",		
-	"    W     W               ",		
-	"    W WWWWWWW             ",		
-	"    W  WWW W              ",		
-	"      WWW WWW             ",		
-	"     W        W           ",		
-	"     WWW   WWWW           ",    //20
-	"      WWW  WWW            ",		
-	"                          ",		
+    "  xxxxxxxxxxxxxxx         ",     //0
+  	"  xxxxxWWWWWxxxxx         ",      
+	"  xxxxWWxxWWWxxxx         ",		
+	"  xxxWxWWWxWxWWWx         ",		
+	"  xxxWxWWWxxWWxxx         ",	
+	"  xxxWxWxxWWxxxxx         ",			
+	"  xxxWxxWWxxWxxxx         ",			
+	"  xxxWWWxxWWxWWxx         ", 		
+	"  xxWWxxWWWWWWWxx         ",		
+	"  xxxxxWWWWWWxxxx         ",		
+	"  xxWxxxxxxxxxxxx         ",	//10	
+	"  xWWWxWxxxWxxxxx         ",		
+	"  xxWxxWxxWWWxxxx         ",		
+	"  xxWxWWxxxWWxxxx         ",		
+	"  xxWxWWWxxxxxxxx         ",		
+	"  xxWxxxxxWxxxxxx         ",		
+	"  xxWxWWWWWWWxxxx         ",		
+	"  xxWxxWWWxWxxxxx         ",		
+	"  xxxxWWWxWWWxxxx         ",		
+	"  xxxWxxxxxxxxWxx         ",		
+	"  xxxWWWxxxWWWWxx         ",    //20
+	"  xxxxWWWxxWWWxxx         ",		
+	"  xxxxxxxxxxxxxxx         ",		
 	"                          ",		
 	"                          ",
 	"                          " 	 //25
