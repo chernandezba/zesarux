@@ -2541,6 +2541,35 @@ char *bitmap_button_ext_desktop_text_adventure_map[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  xxxxxxxxxxxxxxxxxxxxxx  "  //25		
 };
 
+char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "             r            ",     //0
+  	"            rrr           ",      
+	"           xYrrr          ",		
+	"          xYYYrrr         ",		
+	"         xYYYYYr          ",	
+	"        xYYYYYx           ",	 
+	"       xYYYYYx            ",			
+	"      xYYYYYx             ",			
+	"     xYYYYYx              ", 		
+	"     xxYYYx               ",		
+	"     xxxYx                ",		
+	"     xxxx                 ",		
+    "                          ",    
+	" xxxxxxxxxxxxxxxxxxxxxxx  ",		
+	" xcccccccccccccccccccccx  ",		
+	" xccxxcxxxcxxxccxxcxxxcx  ",		
+	" xcxcxcxcxcxcxcxcxcxcxcx  ",		
+	" xcccxcxcxcxcxcccxcxcxcx  ",		
+	" xcccxcxxxcxxxcccxcxxxcx  ",		
+	" xcccccccccccccccccccccx  ",		
+	" xcxxxcxxxcxxxccxxccxxcx  ",		
+	" xcxcxcxcxcxcxcxcxcxcxcx  ",		
+	" xcxcxcxcxcxcxcccxcccxcx  ",   
+	" xcxxxcxxxcxxxcccxcccxcx  ",		
+	" xcccccccccccccccccccccx  ",		
+	" xxxxxxxxxxxxxxxxxxxxxxx  "		
+};
 
 char *bitmap_button_ext_desktop_pauseunpausetape[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
