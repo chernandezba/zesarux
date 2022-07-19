@@ -173,6 +173,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform},
     {"AYMixer",F_FUNCION_AYMIXER,bitmap_button_ext_desktop_aymixer},
     {"AYPlayer",F_FUNCION_AYPLAYER,bitmap_button_ext_desktop_ayplayer},
+    {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes},
 
     //Realmente las dos siguientes actuan igual, solo les diferencia el bitmap,
     //y que cuando se crea SetMachine desde "New Icon" se asigna SetMachine con la maquina actual

@@ -52,6 +52,7 @@ extern char *bitmap_button_ext_desktop_audiopiano[];
 extern char *bitmap_button_ext_desktop_wavepiano[];
 extern char *bitmap_button_ext_desktop_aymixer[];
 extern char *bitmap_button_ext_desktop_ayplayer[];
+extern char *bitmap_button_ext_desktop_colour_palettes[];
 extern char *bitmap_button_ext_desktop_reset[];
 extern char *bitmap_button_ext_desktop_hardreset[];
 extern char *bitmap_button_ext_desktop_reloadmmc[];

@@ -2203,6 +2203,36 @@ char *bitmap_button_ext_desktop_ayplayer[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"     xWWWWWWWWWWWWWWx     ",
     "      xxxxxxxxxxxxxx      ",
 };
+
+char *bitmap_button_ext_desktop_colour_palettes[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+  	"        xxxxxxxx          ",      
+	"       x        x         ",		
+	"     xx   bb     xx       ",		
+	"    x    bbbb      x      ",	
+	"   x     bbbb   rr  x     ",			
+	"  x       bb   rrrr  x    ",			
+	"  x  xx        rrrr  x    ", 		
+	" x  xxxx        rr    x   ",		
+	" x  xxxx              x   ",		
+	"x    xx           mm   x  ",		
+	"x                mmmm  x  ",		
+	"x   xxxx         mmmm  x  ",		
+	" xxx    x         mm   x  ",		
+	"        x              x  ",		
+	"       x          gg   x  ",		
+	"       x         gggg  x  ",		
+	"    xxx          gggg  x  ",		
+	"  xx              gg  x   ",		
+	" x   WW               x   ",		
+	" x  WWWW       cc    x    ",    
+	"  x WWWW  yy  cccc   x    ",		
+	"   x WW  yyyy cccc  x     ",		
+	"    x    yyyy  cc  x      ",		
+	"     xx   yy     xx       ",
+	"       x        x         ",
+    "        xxxxxxxx          ",    //25 
+};
 	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
