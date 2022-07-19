@@ -166,6 +166,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"Quicksave",F_FUNCION_QUICKSAVE,bitmap_button_ext_desktop_quicksave}, 
 	{"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary}, 
 	{"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary}, 
+    //menu audio
     {"AudioChipRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters},
     {"AudioChipSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet},
     {"AudioChipPiano",F_FUNCION_AUDIO_PIANO,bitmap_button_ext_desktop_audiopiano},
@@ -173,16 +174,15 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"Waveform",F_FUNCION_WAVEFORM,bitmap_button_ext_desktop_waveform},
     {"AYMixer",F_FUNCION_AYMIXER,bitmap_button_ext_desktop_aymixer},
     {"AYPlayer",F_FUNCION_AYPLAYER,bitmap_button_ext_desktop_ayplayer},
+    //menu display
     {"ColourPalettes",F_FUNCION_COLOUR_PALETTES,bitmap_button_ext_desktop_colour_palettes},
+	{"OSDKeyboard",F_FUNCION_OSDKEYBOARD,bitmap_button_ext_desktop_osdkeyboard}, 
+	{"OSDTextKeyboard",F_FUNCION_OSDTEXTKEYBOARD,bitmap_button_ext_desktop_osdadvkeyboard},     
 
     //Realmente las dos siguientes actuan igual, solo les diferencia el bitmap,
     //y que cuando se crea SetMachine desde "New Icon" se asigna SetMachine con la maquina actual
     {"MachineSelection",F_FUNCION_MACHINE_SELECTION,bitmap_button_ext_desktop_machine},
     {"SetMachine",F_FUNCION_SET_MACHINE,bitmap_button_ext_desktop_set_machine},
-
-    //teclados
-	{"OSDKeyboard",F_FUNCION_OSDKEYBOARD,bitmap_button_ext_desktop_osdkeyboard}, 
-	{"OSDTextKeyboard",F_FUNCION_OSDTEXTKEYBOARD,bitmap_button_ext_desktop_osdadvkeyboard}, 
 
     //joystick
     {"JoyLeftRight",F_FUNCION_LEFTRIGHT_JOY,bitmap_button_ext_desktop_joyleftright},
