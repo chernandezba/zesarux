@@ -2171,6 +2171,38 @@ char *bitmap_button_ext_desktop_aymixer[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  x   x   x   x   x   x   ",		
     "  x   x   x   x   x   x   ",		
 };
+
+
+
+char *bitmap_button_ext_desktop_ayplayer[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "      xxxxxxxxxxxxxx      ",
+	"     xWWWWWWWWWWWWWWx     ",
+	"     xWxxxxxxxxxxxxWx     ",
+	"     xWxWWWWWWWWWWxWx     ",
+	"     xWxWWxxWWxWxWxWx     ",
+	"     xWxWxWWxWxWxWxWx     ",
+	"     xWxWxWWxWxWxWxWx     ",
+	"     xWxWxxxxWWxWWxWx     ",
+	"     xWxWxWWxWWxWWxWx     ",
+	"     xWxWxWWxWWxWWxWx     ",
+	"     xWxWWWWWWWWWWxWx     ",
+	"     xWxxxxxxxxxxxxWx     ",
+    "     xWWWWWWWWWWWWWWx     ",
+    "     xWWWWWWWWWWWWWWx     ",
+	"     xWWWWxxxxxxWWWWx     ",
+	"     xWWWxWWWWWWxWWWx     ",
+	"     xWWxWWWxxWWWxWWx     ",
+	"     xWWxWWxWWxWWxWWx     ",
+	"     xWWxWxWWWWxWxWWx     ",
+	"     xWWxWxWWWWxWxWWx     ",
+	"     xWWxWWxWWxWWxWWx     ",
+	"     xWWxWWWxxWWWxWWx     ",
+	"     xWWWxWWWWWWxWWWx     ",
+	"     xWWWWxxxxxxWWWWx     ",
+	"     xWWWWWWWWWWWWWWx     ",
+    "      xxxxxxxxxxxxxx      ",
+};
 	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
