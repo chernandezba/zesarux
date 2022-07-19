@@ -65,6 +65,7 @@ extern char *bitmap_button_ext_desktop_debugcpu[];
 extern char *bitmap_button_ext_desktop_debugcpu_view_adventure[];
 extern char *bitmap_button_ext_desktop_text_adventure_map[];
 extern char *bitmap_button_ext_desktop_hexeditor[];
+extern char *bitmap_button_ext_desktop_viewsprites[];
 extern char *bitmap_button_ext_desktop_pauseunpausetape[];
 extern char *bitmap_button_ext_desktop_reinserttape[];
 extern char *bitmap_button_ext_desktop_reinsertrealtape[];

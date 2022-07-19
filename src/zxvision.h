@@ -535,7 +535,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 52
+#define MAX_F_FUNCTIONS 53
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -562,6 +562,7 @@ enum defined_f_function_ids {
     F_FUNCION_AYPLAYER,
     F_FUNCION_COLOUR_PALETTES,
     F_FUNCION_HEX_EDITOR,
+    F_FUNCION_VIEW_SPRITES,
 	F_FUNCION_ZENG_SENDMESSAGE, 
 	F_FUNCION_OSDKEYBOARD,
 	F_FUNCION_OSDTEXTKEYBOARD,

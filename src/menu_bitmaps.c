@@ -2571,6 +2571,39 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxx  "	//25
 };
 
+
+
+char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  xxxxxxxxxxxxxxxxxxxxxx  ",     //0
+  	"  xxxxxWWWWW              ",      
+	"      WW  WWW             ",		
+	"     W  WWW W WWW         ",		
+	"                          ",	
+	"                          ",			
+	"                          ",			
+	"                          ", 		
+	"                          ",		
+	"                          ",		
+	"                          ",	//10	
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",    //20
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",
+	"                          " 	 //25
+};
+
+
 char *bitmap_button_ext_desktop_pauseunpausetape[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
   	"         bbb   bbb        ",   //0    
