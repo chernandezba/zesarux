@@ -9853,6 +9853,10 @@ void menu_ext_desk_settings_configurable_icons_enabled(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_zxdesktop_degraded_inverted(MENU_ITEM_PARAMETERS)
+{
+    menu_ext_desktop_degraded_inverted.v ^=1;
+}
 
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
@@ -10047,6 +10051,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                         "Primary Fill Color","Color primario relleno","Color primari de farciment");
 				menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%s] ",spectrum_colour_names[color_primario]);
 			}
+
+            if (menu_ext_desktop_fill==7) {
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_degraded_inverted,NULL,
+                    "Degraded inverted","Degradado invertido","Degradat invertit");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));                
+            }
 
 			if (seleccion_secondary) {
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_fillcolor_second,NULL,

@@ -5407,6 +5407,8 @@ int menu_ext_desktop_fill=0;
 int menu_ext_desktop_fill_first_color=5;
 int menu_ext_desktop_fill_second_color=13;
 
+z80_bit menu_ext_desktop_degraded_inverted={0};
+
 
 z80_bit menu_ext_desktop_transparent_upper_icons={0};
 z80_bit menu_ext_desktop_transparent_lower_icons={0};
@@ -5939,6 +5941,9 @@ void menu_draw_ext_desktop(void)
 
             //usamos esa paleta de colores de 5 bits por componente, por tanto, 32 colores maximo por componente
             int offset_y=y-yinicio;
+
+            if (menu_ext_desktop_degraded_inverted.v) offset_y=alto-offset_y-1;
+
             //dividir alto total en 32 segmentos
             int divisor=alto/32;
 

@@ -1177,6 +1177,8 @@ extern int menu_ext_desktop_fill;
 extern int menu_ext_desktop_fill_first_color;
 extern int menu_ext_desktop_fill_second_color;
 
+extern z80_bit menu_ext_desktop_degraded_inverted;
+
 extern z80_bit menu_ext_desktop_transparent_lower_icons;
 extern z80_bit menu_ext_desktop_transparent_upper_icons;
 
