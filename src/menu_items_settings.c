@@ -9724,25 +9724,22 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
                 "Select ~~Machine","Elige ~~Máquina","Escull ~~Màquina");
             menu_add_item_menu_shortcut(array_menu_common,'m');     
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_registers,NULL,
-                "Debug ~~CPU","Debug ~~CPU","Debug ~~CPU");
-            menu_add_item_menu_shortcut(array_menu_common,'c');   
-
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage,NULL,
+                "S~~torage","Almacenamien~~to","Emmagatzemamen~~t");
+            menu_add_item_menu_shortcut(array_menu_common,'t');      
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_settings,NULL,
                 "~~Hardware settings","Opciones ~~Hardware","Opcions ~~Hardware");
             menu_add_item_menu_shortcut(array_menu_common,'h');            
 
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_storage,NULL,
-                "S~~torage","Almacenamien~~to","Emmagatzemamen~~t");
-            menu_add_item_menu_shortcut(array_menu_common,'t');      
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_registers,NULL,
+                "Debug ~~CPU","Debug ~~CPU","Debug ~~CPU");
+            menu_add_item_menu_shortcut(array_menu_common,'c');   
 
- 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_debug_reset,NULL,
                 "~~Reset CPU","~~Reset CPU","~~Reset CPU");
             menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion);
             menu_add_item_menu_shortcut(array_menu_common,'r');    
-                  
 
         }
 

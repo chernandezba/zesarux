@@ -171,9 +171,9 @@ Etc…
 -Funciones de utils no deberían involucrar nada del menú
 
 
--Icono audio chip piano, wave piano
 
 -en tests, convertir un tap a tzx y luego de vuelta a tap. comprobar suma md5 de tap inicial y final (ver si md5sum o md5 segun si mac o linux)
 -en tests, convertir un tap a pzx y luego de vuelta a tap. comprobar suma md5 de tap inicial y final (ver si md5sum o md5 segun si mac o linux)
 
--degraded fondo zx desktop al reves (de color normal a oscuro)
+-al pulsar un icono, si se hace desde una ventana, el icono se mantiene pulsado como es de esperar
+Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y apenas se aprecia el efecto de pulsado
