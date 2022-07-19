@@ -2110,6 +2110,39 @@ char *bitmap_button_ext_desktop_audiopiano[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 };
 
+
+char *bitmap_button_ext_desktop_wavepiano[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"                          ",		
+	"                          ",    
+	" xxxxxxxxxxxxxxxxxxxxxxxxx",
+	" xWxxxWxxxWxWxxxWxxxWxxxWx",
+	" xWxxxWxxxWxWxxxWxxxWxxxWx",
+	" xWxxxWxxxWxWxxxWxxxWxxxWx",
+	" xWxxxWxxxWxWxxxWxxxWxxxWx",
+	" xWWxWWWxWWxWWxWWWxWWWxWWx",
+	" xWWxWWWxWWxWWxWWWxWWWxWWx",
+    " xWWxWWWxWWxWWxWWWxWWWxWWx",
+	" xxxxxxxxxxxxxxxxxxxxxxxxx",
+	"                          ",	
+	"            bb            ",   
+	"           b  b           ",   
+	"           b  b           ",    
+	"          b   b    b      ",    
+	"   b      b   b   b b     ",	
+	"  b b     b   b   b  b    ",			
+	" b   b    b   b   b  b    ",    
+	" b    b   b   b   b  b  b ",   
+	"      b   b    b  b  b b  ",    
+	"      b   b    b  b   b   ",      
+	"       b b     b  b       ",   
+	"        b      b b        ",    
+	"               b b        ",		
+	"                b         "
+
+
+};
+	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
     "             RRRRR        ",     //0
