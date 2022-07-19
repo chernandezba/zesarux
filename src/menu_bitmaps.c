@@ -2574,31 +2574,31 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 
 char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
-    //01234567890123456789012345
-    "  xxxxxxxxxxxxxxx         ",     //0
-  	"  xxxxxWWWWWxxxxx         ",      
-	"  xxxxWWxxWWWxxxx         ",		
-	"  xxxWxWWWxWxWWWx         ",		
-	"  xxxWxWWWxxWWxxx         ",	
-	"  xxxWxWxxWWxxxxx         ",			
-	"  xxxWxxWWxxWxxxx         ",			
-	"  xxxWWWxxWWxWWxx         ", 		
-	"  xxWWxxWWWWWWWxx         ",		
-	"  xxxxxWWWWWWxxxx         ",		
-	"  xxWxxxxxxxxxxxx         ",	//10	
-	"  xWWWxWxxxWxxxxx         ",		
-	"  xxWxxWxxWWWxxxx         ",		
-	"  xxWxWWxxxWWxxxx         ",		
-	"  xxWxWWWxxxxxxxx         ",		
-	"  xxWxxxxxWxxxxxx         ",		
-	"  xxWxWWWWWWWxxxx         ",		
-	"  xxWxxWWWxWxxxxx         ",		
-	"  xxxxWWWxWWWxxxx         ",		
-	"  xxxWxxxxxxxxWxx         ",		
-	"  xxxWWWxxxWWWWxx         ",    //20
-	"  xxxxWWWxxWWWxxx         ",		
-	"  xxxxxxxxxxxxxxx         ",		
-	"                          ",		
+   //01234567890123456789012345
+    "                          ",	//0	
+    "      xxxxxxxxxxxxxxx     ",     
+  	"      xxxxxWWWWWxxxxx     ",      
+	"      xxxxWWxxWWWxxxx     ",		
+	"      xxxWxWWWxWxWWWx     ",		
+	"      xxxWxWWWxxWWxxx     ",	
+	"      xxxWxWxxWWxxxxx     ",			
+	"      xxxWxxWWxxWxxxx     ",			
+	"      xxxWWWxxWWxWWxx     ", 		
+	"      xxWWxxWWWWWWWxx     ",		
+	"      xxxxxWWWWWWxxxx     ",	//10	
+	"      xxWxxxxxxxxxxxx     ",		
+	"      xWWWxWxxxWxxxxx     ",		
+	"      xxWxxWxxWWWxxxx     ",		
+	"      xxWxWWxxxWWxxxx     ",		
+	"      xxWxWWWxxxxxxxx     ",		
+	"      xxWxxxxxWxxxxxx     ",		
+	"      xxWxWWWWWWWxxxx     ",		
+	"      xxWxxWWWxWxxxxx     ",		
+	"      xxxxWWWxWWWxxxx     ",		
+	"      xxxWxxxxxxxxWxx     ",	//20	
+	"      xxxWWWxxxWWWWxx     ",    
+	"      xxxxWWWxxWWWxxx     ",		
+	"      xxxxxxxxxxxxxxx     ",		
 	"                          ",
 	"                          " 	 //25
 };
