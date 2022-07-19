@@ -2546,14 +2546,14 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
     "             r            ",     //0
   	"            rrr           ",      
 	"           YYrrr          ",		
-	"          YYYYrrr         ",		
+	"          YYxYrrr         ",		
 	"         YYxYYYr          ",	
 	"        YYxYYYY           ",	 
 	"       YYxYYYY            ",			
 	"      YYxYYYY             ",			
-	"     xYYYYYY              ", 		
+	"     xYxYYYY              ", 		
 	"     xxYYYY               ",		
-	"     xxxYY                ",		
+	"     xxxYY                ",	//10	
 	"     xxxx                 ",		
     "                          ",    
 	" xxxxxxxxxxxxxxxxxxxxxxx  ",		
@@ -2563,12 +2563,12 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xcccxcxcxcxcxcccxcxcxcx  ",		
 	" xcccxcxxxcxxxcccxcxxxcx  ",		
 	" xcccccccccccccccccccccx  ",		
-	" xcxxxcxxxcxxxccxxccxxcx  ",		
+	" xcxxxcxxxcxxxccxxccxxcx  ",	//20
 	" xcxcxcxcxcxcxcxcxcxcxcx  ",		
 	" xcxcxcxcxcxcxcccxcccxcx  ",   
 	" xcxxxcxxxcxxxcccxcccxcx  ",		
 	" xcccccccccccccccccccccx  ",		
-	" xxxxxxxxxxxxxxxxxxxxxxx  "		
+	" xxxxxxxxxxxxxxxxxxxxxxx  "	//25
 };
 
 char *bitmap_button_ext_desktop_pauseunpausetape[EXT_DESKTOP_BUTTONS_ANCHO]={
