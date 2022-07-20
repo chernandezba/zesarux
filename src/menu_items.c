@@ -25312,15 +25312,13 @@ void menu_debug_save_binary(MENU_ITEM_PARAMETERS)
 void menu_debug_file_utils(MENU_ITEM_PARAMETERS)
 {
 
+    int ret=1;
 
-	int ret=1;
+    while (ret!=0) {
+        char *filtros[2];
 
-	while (ret!=0) {
-			char *filtros[2];
-
-			filtros[0]="";
-			filtros[1]=0;
-
+        filtros[0]="";
+        filtros[1]=0;
 
         //guardamos directorio actual
         char directorio_actual[PATH_MAX];
@@ -25329,15 +25327,15 @@ void menu_debug_file_utils(MENU_ITEM_PARAMETERS)
 
         //Obtenemos ultimo directorio visitado
         if (file_utils_file_name[0]!=0) {
-                char directorio[PATH_MAX];
-                util_get_dir(file_utils_file_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+            char directorio[PATH_MAX];
+            util_get_dir(file_utils_file_name,directorio);
+            //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+            //cambiamos a ese directorio, siempre que no sea nulo
+            if (directorio[0]!=0) {
+                    debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                    zvfs_chdir(directorio);
+            }
         }
 
         menu_filesel_show_utils.v=1;
@@ -25346,16 +25344,7 @@ void menu_debug_file_utils(MENU_ITEM_PARAMETERS)
 
         //volvemos a directorio inicial
         zvfs_chdir(directorio_actual);
-
-        if (ret==1) {
-
-						
-						//menu_file_utils_read_file("File view",file_utils_file_name);
-				}
-
     }
-
-
 
 }
 
