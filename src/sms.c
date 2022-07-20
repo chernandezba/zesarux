@@ -414,6 +414,11 @@ void sms_insert_rom_cartridge(char *filename)
 
 	debug_printf(VERBOSE_INFO,"Inserting sms rom cartridge %s",filename);
 
+    if (!si_existe_archivo(filename)) {
+        debug_printf(VERBOSE_ERR,"File %s not found",filename);
+        return;
+    }        
+
     long tamanyo_archivo=get_file_size(filename);
 
 

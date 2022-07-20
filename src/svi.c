@@ -566,6 +566,11 @@ void svi_insert_rom_cartridge(char *filename)
 
 	debug_printf(VERBOSE_INFO,"Inserting svi rom cartridge %s",filename);
 
+    if (!si_existe_archivo(filename)) {
+        debug_printf(VERBOSE_ERR,"File %s not found",filename);
+        return;
+    }        
+
     long tamanyo_archivo=get_file_size(filename);
 
     if (tamanyo_archivo!=2048 && tamanyo_archivo!=4096 && tamanyo_archivo!=8192 && tamanyo_archivo!=16384 && tamanyo_archivo!=32768) {

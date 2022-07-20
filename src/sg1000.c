@@ -197,6 +197,11 @@ void sg1000_insert_rom_cartridge(char *filename)
 
 	debug_printf(VERBOSE_INFO,"Inserting sg1000 rom cartridge %s",filename);
 
+    if (!si_existe_archivo(filename)) {
+        debug_printf(VERBOSE_ERR,"File %s not found",filename);
+        return;
+    }        
+
     long tamanyo_archivo=get_file_size(filename);
 
     if (tamanyo_archivo>49152) {
