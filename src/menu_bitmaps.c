@@ -2620,16 +2620,16 @@ char *bitmap_button_ext_desktop_fileutils[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xwwbbbbwwwbbbbbwwwwwwwwx ",
 	" xwwbbbbbwwwbbbwwwwwwwwwx ",
 	" xwwbbbbbbwbbbbbwwwwwwwwx ",
-	" xwwwbbbbbbbbbbbbwwwwwwwx ",
-	" xwwwwbbbbbbbbbbbbwwwwwwx ",
-	" xwwwwwwbbbbbbbbbbbwwwwwx ",
-	" xwwwwwwwwwbbbbbbbbbwwwwx ",
-	" xwwwwwwwwwwbbbbbbbbbwwwx ",
-	" xwwwwwwwwwwwbbbbbbbbbwwx ",		
-	" xwwwwwwwwwwwwbbbbbbbwwwx ",	//20	
-	" xwwwwwwwwwwwwwbbbbbwwwwx ",		
-	" xwwwwwwwwwwwwwwbbbwwwwwx ",
-	" xwwwwwwwwwwwwwwwbwwwwwwx ",
+	" xwwwbbbbbbbbbbbwwwwwwwwx ",
+	" xwwwwbbbbbbbbbbbwwwwwwwx ",
+	" xwwwwwwbbbbbbbbbbwwwwwwx ",
+	" xwwwwwwwwwwbbbbbbbwwwwwx ",
+	" xwwwwwwwwwwwbbbbbbbwwwwx ",
+	" xwwwwwwwwwwwwbbbbbbbwwwx ",		
+	" xwwwwwwwwwwwwwbbbbbbbwwx ",	//20	
+	" xwwwwwwwwwwwwwwbbbbbwwwx ",		
+	" xwwwwwwwwwwwwwwwbbbwwwwx ",
+	" xwwwwwwwwwwwwwwwwbwwwwwx ",
 	" xwwwwwwwwwwwwwwwwwwwwwwx ",		
 	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25	
 };
