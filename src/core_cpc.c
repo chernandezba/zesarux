@@ -279,6 +279,8 @@ void core_cpc_handle_interrupts(void)
 
     debug_fired_interrupt=1;
 
+    z80_adjust_flags_interrupt_block_opcode();
+
 
 
     //if (interrupts.v==1) {   //esto ya no se mira. si se ha producido interrupcion es porque estaba en ei o es una NMI
@@ -464,7 +466,7 @@ void cpu_core_loop_cpc(void)
 
             reg_r++;
 
-				
+			z80_no_ejecutado_block_opcodes();	
             codsinpr[byte_leido_core_cpc]  () ;
 
 

@@ -225,6 +225,7 @@ void cpu_core_loop_zx8081(void)
 				
 				reg_r++;
 
+                        z80_no_ejecutado_block_opcodes();
 	                	codsinpr[byte_leido_core_zx8081]  () ;
 
 
@@ -440,6 +441,8 @@ void cpu_core_loop_zx8081(void)
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
 			debug_fired_interrupt=1;
+
+            z80_adjust_flags_interrupt_block_opcode();
 
                         //ver si esta en HALT
                         if (z80_halt_signal.v) {

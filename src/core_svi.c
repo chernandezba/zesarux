@@ -349,6 +349,8 @@ void core_svi_handle_interrupts(void)
 {
 		debug_fired_interrupt=1;
 
+        z80_adjust_flags_interrupt_block_opcode();
+
 			//printf ("Generada interrupcion Z80\n");
 
 			
@@ -539,6 +541,7 @@ void core_svi_ciclo_fetch(void)
 				scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
 
+                z80_no_ejecutado_block_opcodes();
 	            codsinpr[byte_leido_core_svi]  () ;
 
 

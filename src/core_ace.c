@@ -146,6 +146,7 @@ void cpu_core_loop_ace(void)
 				
 				reg_r++;
 
+                        z80_no_ejecutado_block_opcodes();
 	                	codsinpr[byte_leido_core_ace]  () ;
 
 
@@ -336,6 +337,8 @@ void cpu_core_loop_ace(void)
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
 			debug_fired_interrupt=1;
+
+            z80_adjust_flags_interrupt_block_opcode();
 
                         //ver si esta en HALT
                         if (z80_halt_signal.v) {

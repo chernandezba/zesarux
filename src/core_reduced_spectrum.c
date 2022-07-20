@@ -143,7 +143,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 
 
-
+                z80_no_ejecutado_block_opcodes();
 				codsinpr[byte_leido_core_spectrum]  () ;
 
 				//printf ("t_estados:%d\n",t_estados);
@@ -377,7 +377,7 @@ void cpu_core_loop_reduced_spectrum(void)
 
 			//printf ("Generada interrupcion Z80\n");
 
-			
+			z80_adjust_flags_interrupt_block_opcode();
 
 			//if (interrupcion_non_maskable_generada.v) printf ("generada nmi\n");
 

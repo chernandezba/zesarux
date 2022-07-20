@@ -242,6 +242,7 @@ extern void set_flags_carry_16_suma(z80_int antes,z80_int result);
 extern void set_flags_carry_16_resta(z80_int antes,z80_int result);
 
 extern void z80_adjust_flags_interrupt_block_opcode(void);
+extern void z80_no_ejecutado_block_opcodes(void);
 extern void reset_cpu(void);
 extern void cold_start_cpu_registers(void);
 

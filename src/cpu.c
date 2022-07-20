@@ -836,7 +836,11 @@ cpu: X08 tiempo: 438 us
 
 }
 
-
+void z80_no_ejecutado_block_opcodes(void)
+{
+    z80_ejecutada_instruccion_bloque_ld_cp=0;
+    z80_ejecutada_instruccion_bloque_ot_in=0;    
+}
 
 void z80_adjust_flags_interrupt_block_opcode(void)
 {

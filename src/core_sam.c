@@ -146,6 +146,7 @@ void cpu_core_loop_sam(void)
 
 				reg_r++;
 
+                        z80_no_ejecutado_block_opcodes();
 	                	codsinpr[byte_leido_core_sam]  () ;
 
 				//printf ("t_estados:%d\n",t_estados);
@@ -362,6 +363,8 @@ void cpu_core_loop_sam(void)
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
 			debug_fired_interrupt=1;
+
+            z80_adjust_flags_interrupt_block_opcode();
 
 			//printf ("Generada interrupcion Z80\n");
 

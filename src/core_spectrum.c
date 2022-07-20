@@ -584,7 +584,7 @@ void core_spectrum_handle_interrupts(void)
 {
     debug_fired_interrupt=1;
 
-
+    z80_adjust_flags_interrupt_block_opcode();
 
     //ver si esta en HALT
     if (z80_halt_signal.v) {
@@ -594,7 +594,7 @@ void core_spectrum_handle_interrupts(void)
     //ver si estaba en halt el copper
     //if (MACHINE_IS_TBBLUE) tbblue_if_copper_halt();
 
-    z80_adjust_flags_interrupt_block_opcode();
+    
     
 
     if (interrupcion_non_maskable_generada.v) {
@@ -862,9 +862,7 @@ void core_spectrum_ciclo_fetch(void)
     scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
 
-    z80_ejecutada_instruccion_bloque_ld_cp=0;
-    z80_ejecutada_instruccion_bloque_ot_in=0;
-
+    z80_no_ejecutado_block_opcodes();
     codsinpr[byte_leido_core_spectrum]  () ;
 
 
