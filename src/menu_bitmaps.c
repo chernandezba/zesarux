@@ -2604,6 +2604,37 @@ char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_fileutils[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    " xxxxxxxxxxxxxxxxxxx      ",   //0
+	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwwwwwwwwwwxwx    ",	
+	" xwwwwwwwwwwwwwwwwwxwwx   ",
+	" xwwwwwwwwwwwwwwwwwxwwwx  ",		
+	" xwwwwwwwwwwwwwwwwwxxxxxx ",		
+	" xw                    wx ",	
+	" xw      xxx           wx ",
+	" xw     xxxxxx         wx ",
+	" xw      xxxxxx        wx ",
+	" xwwwbb   xxxxxx       wx ",	//10	
+	" xwwbbbb   xxxxx       wx ",
+	" xwwbbbbb   xxx        wx ",
+	" xwwbbbbbb xxxxx       wx ",
+	" xwwwbbbbbbbbbbbb      wx ",
+	" xw   xxxxxxxxxxxx     wx ",
+	" xw     xxxxxxxxxxx    wx ",
+	" xw        xxxxxxxxx   wx ",
+	" xw         x       x  wx ",
+	" xw          x       x wx ",		
+	" xw           x     x  wx ",	//20	
+	" xw            x   x   wx ",		
+	" xw             x x    wx ",
+	" xw              x     wx ",
+	" xwwwwwwwwwwwwwwwwwwwwwwx ",		
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25	
+};
+
+
 char *bitmap_button_ext_desktop_pauseunpausetape[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
   	"         bbb   bbb        ",   //0    

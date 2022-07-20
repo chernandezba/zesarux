@@ -155,6 +155,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"TextAdventureMap",F_FUNCION_TEXT_ADVENTURE_MAP,bitmap_button_ext_desktop_text_adventure_map},
     {"HexEditor",F_FUNCION_HEX_EDITOR,bitmap_button_ext_desktop_hexeditor},
     {"ViewSprites",F_FUNCION_VIEW_SPRITES,bitmap_button_ext_desktop_viewsprites},
+    {"FileUtils",F_FUNCION_FILE_UTILITIES,bitmap_button_ext_desktop_fileutils},
 	{"Pause",F_FUNCION_PAUSE,bitmap_button_ext_desktop_pause}, 
 	{"TopSpeed",F_FUNCION_TOPSPEED,bitmap_button_ext_desktop_topspeed},     
 
