@@ -941,4 +941,6 @@ extern void util_drag_drop_file(char *filepath);
 extern int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size);
 extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 
+extern int util_parity(z80_byte value);
+
 #endif

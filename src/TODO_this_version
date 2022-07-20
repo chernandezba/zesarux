@@ -177,3 +177,8 @@ Etc…
 
 -al pulsar un icono, si se hace desde una ventana, el icono se mantiene pulsado como es de esperar
 Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y apenas se aprecia el efecto de pulsado
+
+
+-ajustes de z80_ejecutada_instruccion_bloque_ld_cp y ot_in para todos los cores de z80
+
+-ver que al agregar z80_adjust_flags_interrupt_block_opcode no haga petar ninguna rutina de interrupciones

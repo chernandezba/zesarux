@@ -498,6 +498,9 @@ z80_int memptr;
 z80_byte scf_ccf_undoc_flags_before;
 int scf_ccf_undoc_flags_after_changed;
 
+int z80_ejecutada_instruccion_bloque_ld_cp=0;
+int z80_ejecutada_instruccion_bloque_ot_in=0;
+z80_byte z80_last_data_transferred_ot_in;
 
 //Emulacion de refresco de memoria.
 int machine_emulate_memory_refresh=0;
@@ -834,6 +837,85 @@ cpu: X08 tiempo: 438 us
 }
 
 
+
+void z80_adjust_flags_interrupt_block_opcode(void)
+{
+
+	//Si estabamos en una instruccion de bloque
+    /*
+    Basado en info de: https://github.com/hoglet67/Z80Decoder/wiki/Undocumented-Flags
+    */
+    //Esto comun para ld_cp ot_in
+    if (z80_ejecutada_instruccion_bloque_ld_cp || z80_ejecutada_instruccion_bloque_ot_in) {
+        /*
+        LDxR / CPxR interrupted
+
+        When LDxR / CPxR is interrupted, the following flags are modified compared to the non-interrupted LDx / CPx:
+
+        INxR / OTxR interrupted
+
+        When INxR / OTxR is interrupted, the following flags are modified compared to the non-interrupted INx / OUTx:
+
+
+        YF (flag 5)= PC.13  
+        XF (flag 3)= PC.11
+        */
+        Z80_FLAGS &=(255-FLAG_3-FLAG_5);
+
+        z80_byte high_pc=(reg_pc>>8);
+        z80_byte final_35=high_pc & (8+32);
+        Z80_FLAGS |=final_35;
+
+    }		
+
+    if (z80_ejecutada_instruccion_bloque_ot_in) {
+        /*
+        INxR / OTxR interrupted
+
+        When INxR / OTxR is interrupted, the following flags are modified compared to the non-interrupted INx / OUTx:
+
+        YF = PC.13
+        XF = PC.11
+        if (CF) {
+        if (data & 0x80) {
+            PF = PF ^ Parity((B - 1) & 0x7) ^ 1;
+            HF = (B & 0x0F) == 0x00;
+        } else {
+            PF = PF ^ Parity((B + 1) & 0x7) ^ 1;
+            HF = (B & 0x0F) == 0x0F;
+        }
+        } else {
+        PF = PF ^ Parity(B & 0x7) ^ 1;
+        }
+        where PC is the address of the start of the instruction (i.e. the 0xED prefix)
+    */
+
+
+        z80_byte PF,HF;
+
+        PF=(Z80_FLAGS & FLAG_PV ? 1 : 0);
+        HF=(Z80_FLAGS & FLAG_H ? 1 : 0);
+
+        Z80_FLAGS &=(255-FLAG_PV-FLAG_H);
+
+        if (Z80_FLAGS & FLAG_C) {
+            if (z80_last_data_transferred_ot_in & 0x80) {
+                PF = PF ^ util_parity((reg_b - 1) & 0x7) ^ 1;
+                HF = (reg_b & 0x0F) == 0x00;
+            } else {
+                PF = PF ^ util_parity((reg_b + 1) & 0x7) ^ 1;
+                HF = (reg_b & 0x0F) == 0x0F;
+            }
+        } else {
+            PF = PF ^ util_parity(reg_b & 0x7) ^ 1;
+        }        
+
+        if (PF) Z80_FLAGS |=FLAG_PV;
+        if (HF) Z80_FLAGS |=FLAG_H;
+
+    }	
+
+}
 
 //Establecer la mayoria de registros a valores indefinidos (a 255), que asi se establecen al arrancar una maquina
 //al pulsar el boton de reset aqui no se llama

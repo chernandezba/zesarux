@@ -19721,3 +19721,31 @@ void snapshot_get_date_time_string_human(char *texto)
 	//Para formatos de texto incluidos por ejemplo en cabecera pzx
 	snapshot_get_date_time_string_common(texto,0);
 }
+
+//Retorna la paridad de un valor, o sea la cantidad de 0
+/*
+Parity:
+
+If a byte has an even number of 1 digits then it has "even parity", and if the byte has an odd number of 1 digits then it has "odd parity".
+
+The Parity Overflow is set to 1 when the byte has even parity, and set to 0 if the byte has odd parity.
+*/
+int util_parity(z80_byte value)
+{
+    //printf("util_parity: value %d\n",value);
+
+    int i;
+
+    int cantidad_unos=1; //Inicial indica paridad par
+
+    for(i=0;i<8;i++) {
+        if (value & 1) cantidad_unos++;
+
+        value=value>>1;
+    }
+
+    int paridad=cantidad_unos & 1;
+
+    //printf("util_parity: paridad %d\n",paridad);
+    return paridad;
+}

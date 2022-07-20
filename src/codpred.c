@@ -1812,6 +1812,8 @@ void instruccion_ed_163 ()
 
         value=peek_byte(HL);
 
+        z80_last_data_transferred_ot_in=value;
+
 
         reg_b--;
 
@@ -1995,6 +1997,8 @@ void instruccion_ed_171 ()
 
         value=peek_byte(HL);
 
+        z80_last_data_transferred_ot_in=value;
+
         reg_b--;
 
 #ifdef EMULATE_MEMPTR
@@ -2146,6 +2150,8 @@ void instruccion_ed_176 ()
 	  contend_write_no_mreq( DE, 1 );
           contend_write_no_mreq( DE, 1 );
           reg_pc -=2;
+
+          z80_ejecutada_instruccion_bloque_ld_cp=1;
         }
         HL++; DE++;
 
@@ -2180,6 +2186,8 @@ void instruccion_ed_177 ()
 #endif
 
         reg_pc -=2;
+
+        z80_ejecutada_instruccion_bloque_ld_cp=1;
 	HL++;
 
 }
@@ -2196,6 +2204,7 @@ void instruccion_ed_178 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+        z80_last_data_transferred_ot_in=value;
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
         set_memptr( BC+1  );
@@ -2224,6 +2233,8 @@ void instruccion_ed_178 ()
 	  contend_write_no_mreq( HL, 1 );
           contend_write_no_mreq( HL, 1 );
           reg_pc -= 2;
+
+          z80_ejecutada_instruccion_bloque_ot_in=1;
         }
 
 
@@ -2244,6 +2255,8 @@ void instruccion_ed_179 ()
 	  contend_read_no_mreq( BC, 1 );
           contend_read_no_mreq( BC, 1 );
           reg_pc -= 2;
+
+          z80_ejecutada_instruccion_bloque_ot_in=1;
         }
 
 
@@ -2422,6 +2435,8 @@ void instruccion_ed_184 ()
 	  contend_write_no_mreq( DE, 1 );
           contend_write_no_mreq( DE, 1 );
           reg_pc -=2;
+
+          z80_ejecutada_instruccion_bloque_ld_cp=1;
         }
         HL--; DE--;
 
@@ -2456,6 +2471,8 @@ void instruccion_ed_185 ()
 #endif
 
         reg_pc -=2;
+
+        z80_ejecutada_instruccion_bloque_ld_cp=1;
 	HL--;
 
 }
@@ -2471,6 +2488,7 @@ void instruccion_ed_186 ()
 
 
         value=lee_puerto(reg_b,reg_c);
+        z80_last_data_transferred_ot_in=value;
         poke_byte(HL,value);
 #ifdef EMULATE_MEMPTR
         set_memptr( BC-1  );
@@ -2500,6 +2518,8 @@ void instruccion_ed_186 ()
 	  contend_write_no_mreq( HL, 1 );
           contend_write_no_mreq( HL, 1 );
           reg_pc -= 2;
+
+          z80_ejecutada_instruccion_bloque_ot_in=1;
         }
 
         HL--;
@@ -2519,6 +2539,8 @@ void instruccion_ed_187 ()
 	  contend_read_no_mreq( BC, 1 );
           contend_read_no_mreq( BC, 1 );
           reg_pc -= 2;
+
+          z80_ejecutada_instruccion_bloque_ot_in=1;
         }
 
 }

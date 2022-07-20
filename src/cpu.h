@@ -163,6 +163,10 @@ extern z80_int memptr;
 extern z80_byte scf_ccf_undoc_flags_before;
 extern int scf_ccf_undoc_flags_after_changed;
 
+extern int z80_ejecutada_instruccion_bloque_ld_cp;
+extern int z80_ejecutada_instruccion_bloque_ot_in;
+extern z80_byte z80_last_data_transferred_ot_in;
+
 extern z80_bit iff1,iff2;
 
 extern z80_bit interrupcion_pendiente;
@@ -237,6 +241,7 @@ extern void set_flags_carry_resta(z80_byte antes,z80_byte result);
 extern void set_flags_carry_16_suma(z80_int antes,z80_int result);
 extern void set_flags_carry_16_resta(z80_int antes,z80_int result);
 
+extern void z80_adjust_flags_interrupt_block_opcode(void);
 extern void reset_cpu(void);
 extern void cold_start_cpu_registers(void);
 
