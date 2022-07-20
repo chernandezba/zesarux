@@ -24,6 +24,8 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -ejecutar tests/games_tests.sh
 
+-ejecutar tests/convert_tests.sh
+
 -ejecutar tests/printtrap_test.sh
 
 -ejecutar tests/load_test.sh
