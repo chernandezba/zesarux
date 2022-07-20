@@ -12,13 +12,13 @@ echo "Test CPC"
 ./zesarux $OPTIONS --machine cpc464 --zoom 1 --zxdesktop-width 512 extras/media/cpc/zynaps.cdt
 
 echo "Test MSX"
-./zesarux $OPTIONS --machine msx1 ../../aux_zesarux/msx/Road\ Fighter\ \(1985\)\(Konami\)\[a\]\[RC-730\].rom
+./zesarux $OPTIONS --machine msx1 ../../../soft_retro/msx/Road\ Fighter\ \(1985\)\(Konami\)\[a\]\[RC-730\].rom
 
 echo "Test SG1000"
 ./zesarux $OPTIONS --machine sg1000 "extras/media/sg1000/Girl's Garden (Japan).sg"
 
 echo "Test Master System"
-./zesarux $OPTIONS --machine sms ../../aux_zesarux/mastersystem/Sonic\ The\ Hedgehog\ \(USA\,\ Europe\).sms
+./zesarux $OPTIONS --machine sms ../../../soft_retro/mastersystem/Sonic\ The\ Hedgehog\ \(USA\,\ Europe\).sms
 
 echo "Test SVI"
 ./zesarux $OPTIONS --machine svi328 extras/media/spectravideo/force.rom
@@ -30,4 +30,4 @@ echo "Test TSConf"
 ./zesarux $OPTIONS --machine cpc464 --zoom 1 --zxdesktop-width 512 extras/media/spectrum/tsconf/fast.spg
 
 echo "Test Inves"
-./zesarux $OPTIONS --machine inves ../../aux_zesarux/LEMMIN48.TAP
+./zesarux $OPTIONS --machine inves ../../../soft_retro/spectrum/LEMMIN48.TAP
