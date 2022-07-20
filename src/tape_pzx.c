@@ -48,7 +48,7 @@ FILE *ptr_mycintanew_pzx;
 
 //El hecho de definir esta variable aqui solo tiene sentido para escribir info desde tape_block_pzx_read, pero no tiene ningun uso real
 //Esto al final es una variable heredada de copiar el codigo de tzx a pzx
-z80_int last_length_read;
+z80_int pzx_last_length_read;
 
 char pzx_last_block_id_name[5]=""; //Inicializado a cadena vacia
 
@@ -201,8 +201,8 @@ int tape_block_pzx_read(void *dir,int longitud)
 
 
 
-    last_length_read -=longitud;
-    debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",last_length_read);
+    pzx_last_length_read -=longitud;
+    debug_printf(VERBOSE_DEBUG,"Remaining bytes in block: %d",pzx_last_length_read);
     
 
     return leidos;
@@ -418,7 +418,7 @@ int tape_block_pzx_readlength(void)
                                 ((buffer_longitud[3]&127)*16777216);      
 
         //printf("longitud bits: %d\n",longitud_bits);
-		last_length_read=longitud_bits/8;
+		pzx_last_length_read=longitud_bits/8;
 
 
         //De momento saltar secuencias de pulsos
@@ -438,9 +438,9 @@ int tape_block_pzx_readlength(void)
 
         
 
-		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",last_length_read);
+		debug_printf(VERBOSE_DEBUG,"PZX Data Block length: %d",pzx_last_length_read);
 		
-		return last_length_read;
+		return pzx_last_length_read;
 }
 
 
@@ -463,7 +463,7 @@ int tape_block_pzx_seek(int longitud,int direccion)
 
     pzx_blockmem_position +=longitud;
     
-    last_length_read -=longitud;
+    pzx_last_length_read -=longitud;
     
 
     return 0;
