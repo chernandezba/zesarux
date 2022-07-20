@@ -7,7 +7,7 @@ OPTIONS="--noconfigfile"
 ORIGFILE=../../../soft_retro/spectrum/LEMMIN48.TAP
 PZXFILE=`mktemp`.pzx
 TZXFILE=`mktemp`.tzx
-TAPFILE=`mtemp`.tap
+TAPFILE=`mktemp`.tap
 
 SISTEMA=`uname -o 2>/dev/null`
 if [ $? != 0 ]; then
