@@ -2617,7 +2617,7 @@ char *bitmap_button_ext_desktop_fileutils[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xwwbbwwwbbbbbbwwwwwwwwwx ",		
 	" xwbbbbwwwbbbbbwwwwwwwwwx ",
 	" xwbbbbbwwwbbbwwwwwwwwwwx ",
-	" xwbbbbbbwbbbbbwwwwwwwwwx ",
+	" xwbbbbbbwbbbbwwwwwwwwwwx ",
 	" xwwbbbbbbbbbbbwwwwwwwwwx ",
 	" xwwwbbbbbbbbbbbwwwwwwwwx ",
 	" xwwwwwbbbbbbbbbbwwwwwwwx ",
