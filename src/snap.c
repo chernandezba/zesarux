@@ -998,7 +998,7 @@ void load_zx_snapshot(char *archivo)
 
 			//Timex TS 2068
 			case 19:
-				current_machine_type=17;
+				current_machine_type=MACHINE_ID_TIMEX_TS2068;
 			break;
 
 			//ZX-Uno
@@ -3741,7 +3741,7 @@ z80_byte get_maquina_header(void)
 		break;
 
 		//17=Timex TS2068
-		case 17:
+		case MACHINE_ID_TIMEX_TS2068:
 			maquina_header=19;
 		break;
 

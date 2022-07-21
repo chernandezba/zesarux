@@ -1376,6 +1376,7 @@ char *string_machines_list_description=
 							" P3S      ZX Spectrum +3 (Spanish)\n"							
 
                             " TC2048   Timex TC 2048\n"
+                            " TC2068   Timex TC 2068\n"
 							" TS2068   Timex TS 2068\n"
 
 							" Inves    Inves Spectrum+\n"
@@ -2770,6 +2771,7 @@ struct s_machine_names machine_names[]={
 
     {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
     {"Timex TC2048",   			MACHINE_ID_TIMEX_TC2048},
+    {"Timex TC2068",   			MACHINE_ID_TIMEX_TC2068},
 
     {"MSX1",MACHINE_ID_MSX1},
     {"ColecoVision",MACHINE_ID_COLECO},
@@ -3262,7 +3264,8 @@ void set_machine_params(void)
 
 28=Spectrum + English
 29=Timex TC2048
-30-39=Reservadas otras Spectrum
+30=Timex TC2068
+31-39=Reservadas otras Spectrum
 100=colecovision
 101=sega sg1000
 102=Spectravideo 318
@@ -4025,7 +4028,8 @@ You don't need timings for H/V sync =)
 
                 break;
 
-                case 17:
+                case MACHINE_ID_TIMEX_TS2068:
+                case MACHINE_ID_TIMEX_TC2068:
                 poke_byte=poke_byte_timex;
                 peek_byte=peek_byte_timex;
                 peek_byte_no_time=peek_byte_no_time_timex;
@@ -4781,7 +4785,8 @@ void rom_load(char *romfilename)
 		break;
 
 
-		case 17:
+		case MACHINE_ID_TIMEX_TS2068:
+        case MACHINE_ID_TIMEX_TC2068:
 		romfilename="ts2068.rom";
 		break;
 

@@ -571,11 +571,11 @@ int array_maquinas_sinclair[]={
 };
 
 int array_maquinas_timex_sinclair[]={
-	17,255
+	MACHINE_ID_TIMEX_TS2068,255
 };
 
 int array_maquinas_timex_computers[]={
-	MACHINE_ID_TIMEX_TC2048,255
+	MACHINE_ID_TIMEX_TC2048,MACHINE_ID_TIMEX_TC2068,255
 };
 
 int array_maquinas_cambridge_computers[]={
@@ -770,7 +770,7 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_SINCLAIR;
 		break;
 
-		case 17:
+		case MACHINE_ID_TIMEX_TS2068:
 			return FABRICANTE_TIMEX_SINCLAIR;
 		break;
 
@@ -805,6 +805,7 @@ int return_fabricante_maquina(int maquina)
 		break;
 
         case MACHINE_ID_TIMEX_TC2048:
+        case MACHINE_ID_TIMEX_TC2068:
             return FABRICANTE_TIMEX_COMPUTERS;
         break;
 
@@ -3080,8 +3081,8 @@ int get_rom_size(int machine)
 	//Chloe 280SE
 	else if (machine==16) return 32768;
 
-	//Timex TS2068
-	else if (machine==17) return 24576;
+	//Timex TS2068/TC2068
+	else if (MACHINE_IS_TIMEX_T2068) return 24576;
 
 	//Prism
 	else if (machine==18) return 320*1024;
@@ -3116,11 +3117,13 @@ int get_rom_size(int machine)
   //QL
   else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
 
-	else cpu_panic("Unknown machine on get_rom_size");
+    else return 16384; //cualquier otra cosa, 16kb
+
+	//else cpu_panic("Unknown machine on get_rom_size");
 
 
 	//Aqui no se llegara nunca. Solo para que no salte warning al compilar
-	return 0;
+	//return 0;
 }
 
 
@@ -5214,7 +5217,7 @@ int quickload_continue(char *nombre) {
 	) {
 		//Aqui el autoload da igual. cambiamos siempre a timex si conviene
 		if (!MACHINE_IS_TIMEX_T2068) {
-			current_machine_type=17;
+			current_machine_type=MACHINE_ID_TIMEX_TS2068;
 			set_machine(NULL);
 
             //establecer parametros por defecto. Incluido quitar slots de memoria
@@ -10582,7 +10585,8 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Chloe140",15},
    {"Chloe280",16},
    {"TC2048",MACHINE_ID_TIMEX_TC2048},
-   {"TS2068",17},
+   {"TC2068",MACHINE_ID_TIMEX_TC2068},
+   {"TS2068",MACHINE_ID_TIMEX_TS2068},
    {"Prism",18},
    {"TBBlue",19},
 

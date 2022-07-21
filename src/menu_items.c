@@ -23361,7 +23361,7 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 		case 9:
 			//Timex TS2068
-			next_machine_type=17;
+			next_machine_type=MACHINE_ID_TIMEX_TS2068;
 		break;
 
 		case 10:

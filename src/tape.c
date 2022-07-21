@@ -1694,7 +1694,8 @@ void gestionar_autoload_spectrum(void)
 			
 
 
-			case 17:
+			case MACHINE_ID_TIMEX_TS2068:
+            case MACHINE_ID_TIMEX_TC2068:
 				//Para Timex
 
 				//Si rom mapeada en segmento bajo
