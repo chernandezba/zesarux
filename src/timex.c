@@ -478,7 +478,7 @@ void set_timex_port_ff(z80_byte value)
 
 		if (MACHINE_IS_CHLOE_280SE) chloe_set_memory_pages();
 		if (MACHINE_IS_PRISM) prism_set_memory_pages();
-		if (MACHINE_IS_TIMEX_TS2068) timex_set_memory_pages();
+		if (MACHINE_IS_TIMEX_T2068) timex_set_memory_pages();
 		if (is_zxuno_chloe_mmu() ) zxuno_set_memory_pages();
 		if (MACHINE_IS_TBBLUE) {
 			//Sincronizar los 5 bits bajos a registro tbblue			

@@ -5221,7 +5221,7 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_svi328;
     }   
 
-    else if (MACHINE_IS_TIMEX_TS2068) {
+    else if (MACHINE_IS_TIMEX_T2068) {
         bitmap=bitmap_button_ext_desktop_my_machine_timex_ts2068;
     }       
 

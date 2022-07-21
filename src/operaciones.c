@@ -7060,7 +7060,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         //Puerto ULA, cualquier puerto par. En un Spectrum normal, esto va al final
 	//En un Inves, deberia ir al principio, pues el inves hace un AND con el valor de los perifericos que retornan valor en el puerto leido
-        if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS2068) && !(MACHINE_IS_PRISM) ) {
+        if ( (puerto_l & 1)==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_T2068) && !(MACHINE_IS_PRISM) ) {
 
 		return lee_puerto_spectrum_ula(puerto_h);
 
@@ -7068,7 +7068,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 
         //Puerto 254 solamente, para chloe y timex y prism
-        if ( puerto_l==254 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM) ) {
+        if ( puerto_l==254 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_PRISM) ) {
 		return lee_puerto_spectrum_ula(puerto_h);
         }
 
@@ -7085,14 +7085,14 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
         }
 
 	//Puerto Timex Paginacion
-        if (puerto_l==0xf4 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || is_zxuno_chloe_mmu() ) ) {
+        if (puerto_l==0xf4 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_PRISM || is_zxuno_chloe_mmu() ) ) {
 		return timex_port_f4;
 
         }
 
 
 	//Puerto Chip AY para Timex y Chloe
-        if (puerto_l==0xF6 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068) ) {
+        if (puerto_l==0xF6 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068) ) {
                         activa_ay_chip_si_conviene();
                         if (ay_chip_present.v==1) return in_port_ay(0xFF);
 	}
@@ -8515,7 +8515,7 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
         //super wonder boy usa puerto 1fe
         //paperboy usa puertos xxfe
 	//Puerto 254 realmente es cualquier puerto par
-       	if ( (puerto & 1 )==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_TS2068) && !(MACHINE_IS_PRISM) ) {
+       	if ( (puerto & 1 )==0 && !(MACHINE_IS_CHLOE) && !(MACHINE_IS_TIMEX_T2068) && !(MACHINE_IS_PRISM) ) {
 
 		out_port_spectrum_border(puerto,value);
 
@@ -8523,7 +8523,7 @@ void out_port_spectrum_no_time(z80_int puerto,z80_byte value)
 
 
 	//Puerto 254 solamente, para chloe y timex
-	if ( puerto_l==254 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM) ) {
+	if ( puerto_l==254 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_PRISM) ) {
 		out_port_spectrum_border(puerto,value);
 
         }
@@ -9280,7 +9280,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 
 
 	//Puerto Timex Paginacion
-	if (puerto_l==0xf4 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_PRISM || is_zxuno_chloe_mmu()) ) {
+	if (puerto_l==0xf4 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_PRISM || is_zxuno_chloe_mmu()) ) {
 
 		//Si prism y puerto f4 desactivado
 		if (MACHINE_IS_PRISM) {
@@ -9298,7 +9298,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 
 		if (MACHINE_IS_CHLOE_280SE) chloe_set_memory_pages();
 		if (MACHINE_IS_PRISM) prism_set_memory_pages();
-		if (MACHINE_IS_TIMEX_TS2068) timex_set_memory_pages();
+		if (MACHINE_IS_TIMEX_T2068) timex_set_memory_pages();
 		if (is_zxuno_chloe_mmu() ) zxuno_set_memory_pages();
 
         }
@@ -9306,7 +9306,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 
 	//Puertos AY para Timex y Chloe
 	if (puerto_l==0xf5 || puerto_l==0xf6) {
-		if (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS2068) {
+		if (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068) {
 									z80_int puerto_final=puerto;
                 	if (puerto_l==0xf5) puerto_final=65533;
 									else puerto_final=49149;

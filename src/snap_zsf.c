@@ -1511,7 +1511,7 @@ void load_zsf_timex(z80_byte *header)
   timex_port_f4=header[0];
   timex_port_ff=header[1];
 
-  if (MACHINE_IS_TIMEX_TS2068) timex_set_memory_pages();
+  if (MACHINE_IS_TIMEX_T2068) timex_set_memory_pages();
 }
 
 
@@ -2897,7 +2897,7 @@ Byte fields:
 
 
   //Maquinas Spectrum de 48kb y zx80/81 y Ace
-  if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE || MACHINE_IS_TIMEX_TS2068) {
+  if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE || MACHINE_IS_TIMEX_T2068) {
 
 	  int inicio_ram=16384;
 	  int longitud_ram=49152;
@@ -2954,7 +2954,7 @@ Byte fields:
   }
 
   //Cartucho timex en DOCK
-  if (MACHINE_IS_TIMEX_TS2068 && timex_cartridge_inserted.v) {
+  if (MACHINE_IS_TIMEX_T2068 && timex_cartridge_inserted.v) {
 
    int longitud_dock_rom=65536;
 

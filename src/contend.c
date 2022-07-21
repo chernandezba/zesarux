@@ -1592,7 +1592,7 @@ z80_byte *contend_table_no_mreq;
 
 
 	//TODO timex. Hacemos como 48k
-	 if (MACHINE_IS_TIMEX_TS2068) {
+	 if (MACHINE_IS_TIMEX_T2068) {
                 //Timex
                 timings=contend_patron_65432100;
                 offset_time=1;

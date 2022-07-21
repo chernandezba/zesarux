@@ -1292,7 +1292,7 @@ util_stats_init();
 		ds1307_reset();
 	}
 
-	if (MACHINE_IS_TIMEX_TS2068) timex_set_memory_pages();
+	if (MACHINE_IS_TIMEX_T2068) timex_set_memory_pages();
 
 	if (MACHINE_IS_CPC) {
         cpc_reset();
@@ -3092,7 +3092,7 @@ void malloc_mem_machine(void) {
 						}
 
 
-          else if (MACHINE_IS_TIMEX_TS2068) {
+          else if (MACHINE_IS_TIMEX_T2068) {
 
                 //Necesita 192KB de memoria (EX 64, DOCK 64, HOME 48, ROM 16)
 
@@ -3709,7 +3709,7 @@ You don't need timings for H/V sync =)
 							
 				}
 
-               else if (MACHINE_IS_TIMEX_TS2068) {
+               else if (MACHINE_IS_TIMEX_T2068) {
                         contend_read=contend_read_timex;
                         contend_read_no_mreq=contend_read_no_mreq_timex;
                         contend_write_no_mreq=contend_write_no_mreq_timex;
@@ -5058,7 +5058,7 @@ Total 20 pages=320 Kb
 								}
 
 
-              else if (MACHINE_IS_TIMEX_TS2068) {
+              else if (MACHINE_IS_TIMEX_T2068) {
 
                                 leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
                                 if (leidos!=16384) {

@@ -435,7 +435,11 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CHLOE_140SE (current_machine_type==MACHINE_ID_CHLOE_140SE)
 #define MACHINE_IS_CHLOE_280SE (current_machine_type==MACHINE_ID_CHLOE_280SE)
 
-#define MACHINE_IS_TIMEX_TS2068 (current_machine_type==MACHINE_ID_TIMEX_TS2068)
+//MACHINE_IS_TIMEX_T2068 engloba la TS2068 (Timex Sinclair 2068) y TC2068 (Timex Computer 2048) que son iguales practicamente
+
+#define MACHINE_IS_TIMEX_T2068 (current_machine_type==MACHINE_ID_TIMEX_TS2068)
+
+
 #define MACHINE_IS_TIMEX_TC2048 (current_machine_type==MACHINE_ID_TIMEX_TC2048)
 
 #define MACHINE_IS_PRISM (current_machine_type==MACHINE_ID_PRISM)
