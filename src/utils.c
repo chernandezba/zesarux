@@ -3072,13 +3072,13 @@ int get_rom_size(int machine)
 
 	//Maquina ZX-Uno
   //Aunque rom actual es 8126, la antigua era de 214
-	else if (machine==14) return 214;
+	else if (machine==MACHINE_ID_ZXUNO) return 214;
 
 	//Chloe 140SE
-	else if (machine==15) return 32768;
+	else if (machine==MACHINE_ID_CHLOE_140SE) return 32768;
 
 	//Chloe 280SE
-	else if (machine==16) return 32768;
+	else if (machine==MACHINE_ID_CHLOE_280SE) return 32768;
 
 	//Timex TS2068
 	else if (machine==MACHINE_ID_TIMEX_TS2068) return 24576;
@@ -3087,25 +3087,25 @@ int get_rom_size(int machine)
     else if (machine==MACHINE_ID_TIMEX_TC2068) return 24576;
 
 	//Prism
-	else if (machine==18) return 320*1024;
+	else if (machine==MACHINE_ID_PRISM) return 320*1024;
 
 	//TBBLUE
-	else if (machine==19) return 8192;
+	else if (machine==MACHINE_ID_TBBLUE) return 8192;
 
     //Spectrum +3
     else if (machine==MACHINE_ID_SPECTRUM_P3_40 || machine==MACHINE_ID_SPECTRUM_P3_41 || machine==MACHINE_ID_SPECTRUM_P3_SPA) return 65536;
 
-        //ZX80
-        else if (machine==120) return 4096;
+    //ZX80
+    else if (machine==MACHINE_ID_ZX80) return 4096;
 
 	//ZX81
-	else if (machine==121) return 8192;
+	else if (machine==MACHINE_ID_ZX81) return 8192;
 
 	//Jupiter Ace
-	else if (machine==122) return 8192;
+	else if (machine==MACHINE_ID_ACE) return 8192;
 
 	//Z88
-	else if (machine==130) return 131072;
+	else if (machine==MACHINE_ID_Z88) return 131072;
 
 	//CPC 464
 	else if (machine==MACHINE_ID_CPC_464) return 32768;
@@ -3114,10 +3114,10 @@ int get_rom_size(int machine)
 	else if (machine==MACHINE_ID_CPC_4128) return 32768;        
 
 	//SAM
-	else if (machine==150) return 32768;
+	else if (machine==MACHINE_ID_SAM) return 32768;
 
-  //QL
-  else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
+    //QL
+    else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
 
     else return 16384; //cualquier otra cosa, 16kb
 
