@@ -3262,6 +3262,7 @@ void set_machine_params(void)
 
 28=Spectrum + English
 29=Timex TC2048
+30-39=Reservadas otras Spectrum
 100=colecovision
 101=sega sg1000
 102=Spectravideo 318

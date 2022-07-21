@@ -486,7 +486,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 
 //Combinadas
-#define MACHINE_IS_SPECTRUM (current_machine_type<30)
+#define MACHINE_IS_SPECTRUM (current_machine_type<40)
 
 
 
