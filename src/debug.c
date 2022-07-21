@@ -1653,6 +1653,9 @@ void cpu_core_loop_debug_check_breakpoints(void)
 					if ( se_cumple_breakpoint ) {
 						//Si condicion pasa de false a true o bien el comportamiento por defecto es saltar siempre
 						if (debug_breakpoints_cond_behaviour.v==0 || debug_breakpoints_conditions_saltado[i]==0) {
+                            //printf("breakpoint saltado\n");
+                            //printf("PC=%04XH\n",reg_pc);
+
 							debug_breakpoints_conditions_saltado[i]=1;
 
 							char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];

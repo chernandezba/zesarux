@@ -3678,7 +3678,10 @@ int debug_show_fired_breakpoints_type=0;
 		if ( (debug_stepping_daad.v || debug_stepping_daad_runto_parse.v) && esta_en_parser ) {
 
 		}
-		else menu_generic_message_format("Breakpoint","Breakpoint fired: %s",catch_breakpoint_message);
+		else {
+            //printf("PC=%04XH\n",reg_pc);
+            menu_generic_message_format("Breakpoint","Breakpoint fired: %s",catch_breakpoint_message);
+        }
 	}
 
 	//Forzar follow pc
@@ -7092,7 +7095,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
                 menu_emulation_paused_on_menu=1;
 
-                    audio_playing.v=0;
+                audio_playing.v=0;
                 //printf ("pc: %d\n",reg_pc);
 
           

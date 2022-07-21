@@ -16193,7 +16193,9 @@ z80_byte menu_da_todas_teclas(void)
 
 	//Ver tambien eventos de mouse de zxvision
     //int pulsado_boton_cerrar=
+    //if (mouse_movido) printf("menu_da_todas_teclas. mouse movido antes de zxvision_handle_mouse_events: %d\n",mouse_movido);
 	zxvision_handle_mouse_events(zxvision_current_window);
+    //if (mouse_movido) printf("menu_da_todas_teclas. mouse movido despues de zxvision_handle_mouse_events: %d\n",mouse_movido);
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 2: %d\n",mouse_movido);
 
@@ -16669,6 +16671,37 @@ void menu_espera_no_tecla(void)
 
         do {
 		acumulado=menu_da_todas_teclas();
+		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
+			salir=1;
+		}
+
+		else {
+			menu_cpu_core_loop();
+		}
+
+	//printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
+
+	} while (!salir);
+
+}
+
+//Igual que menu_espera_no_tecla pero si se mueve el mouse no considera que eso haya sido una pulsacion y no haya que esperar
+void menu_espera_no_tecla_no_mouse_movido(void)
+{
+
+    //Esperar a liberar teclas. No ejecutar ni una instruccion cpu si la tecla esta liberada
+	//con eso evitamos que cuando salte un breakpoint, que llama aqui, no se ejecute una instruccion y el registro PC apunte a la siguiente instruccion
+    z80_byte acumulado;
+	int salir=0;
+
+    do {
+		acumulado=menu_da_todas_teclas();
+        //printf("menu_espera_no_tecla_no_mouse_movido: acumulado %02XH MENU_PUERTO_TECLADO_NINGUNA %02XH\n",acumulado,MENU_PUERTO_TECLADO_NINGUNA);
+        //printf("menu_espera_no_tecla_no_mouse_movido: mouse movido: %d\n",mouse_movido);
+        if (mouse_movido) {
+            //printf("menu_espera_no_tecla_no_mouse_movido: ignorar mouse_movido\n");
+            acumulado |=1; //como si no se hubiera movido
+        }
 		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
 			salir=1;
 		}
@@ -21642,7 +21675,7 @@ void menu_inicio_reset_emulated_keys(void)
 	//Desactivar fire, por si esta disparador automatico
 	joystick_release_fire(1);	
 
-	menu_espera_no_tecla();
+	menu_espera_no_tecla_no_mouse_movido();
 }
 
 //menu principal
@@ -22011,6 +22044,7 @@ void menu_inicio(void)
 	}
 
     printf("0 antes liberar_teclas_y_esperar\n");
+    //printf("PC=%04XH\n",reg_pc);
 
 	if (liberar_teclas_y_esperar) {
         //Si se arrastra icono con menu cerrado se llega aqui,
@@ -22024,6 +22058,7 @@ void menu_inicio(void)
 	}
 
     printf("1 despues liberar_teclas_y_esperar\n");
+    //printf("PC=%04XH\n",reg_pc);
 
 	//printf ("after menu_inicio_reset_emulated_keys\n");
 
