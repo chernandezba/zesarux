@@ -127,6 +127,7 @@ extern struct x_tabla_teclado ql_tabla_teclado_letras[];
 extern struct x_tabla_teclado ql_tabla_teclado_numeros[];
 
 extern int get_rom_size(int machine);
+extern int get_ram_size(void);
 extern void configfile_parse(void);
 extern char *configfile_argv[];
 extern int configfile_argc;

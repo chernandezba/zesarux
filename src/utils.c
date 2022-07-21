@@ -3058,7 +3058,6 @@ void input_file_keyboard_get_key(void)
 
 }
 
-
 //Devuelve tamanyo minimo de ROM para el tipo de maquina indicado
 int get_rom_size(int machine)
 {
@@ -3081,8 +3080,11 @@ int get_rom_size(int machine)
 	//Chloe 280SE
 	else if (machine==16) return 32768;
 
-	//Timex TS2068/TC2068
-	else if (MACHINE_IS_TIMEX_T2068) return 24576;
+	//Timex TS2068
+	else if (machine==MACHINE_ID_TIMEX_TS2068) return 24576;
+
+    //Timex TC2068
+    else if (machine==MACHINE_ID_TIMEX_TC2068) return 24576;
 
 	//Prism
 	else if (machine==18) return 320*1024;
@@ -3127,6 +3129,88 @@ int get_rom_size(int machine)
 }
 
 
+//Retorna la cantidad de ram para la maquina en curso
+int get_ram_size(void)
+{
+    //Memoria
+    //Por defecto
+    int total_ram=48*1024;
+
+    //TODO:sumar posibles extensiones de memoria en spectrum
+    if (MACHINE_IS_MK14) {
+        total_ram=256;
+    }
+
+    else if (MACHINE_IS_COLECO || MACHINE_IS_SG1000) {
+        total_ram=1024;
+    }
+
+    else if (MACHINE_IS_SMS) {
+        total_ram=8192;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SVI_318) {
+        total_ram=16*1024;
+    }
+
+    else if (MACHINE_IS_CPC_464) {
+        total_ram=64*1024;
+    }
+
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128 | MACHINE_IS_CHLOE_140SE) {
+        total_ram=128*1024;
+    }
+
+    else if (MACHINE_IS_SVI_328) {
+        //Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb, en SVI328.
+        //En 318, solo 1 pagina de 16 kb ram?
+        total_ram=5*32*1024;
+    }
+
+    //TODO: posibles cartuchos de RAM?
+    else if (MACHINE_IS_MSX) {
+        total_ram=128*1024;
+    }    
+
+    else if (MACHINE_IS_CHROME) {
+        total_ram=160*1024;
+    }    
+
+    else if (MACHINE_IS_CHLOE_280SE) {
+        total_ram=256*1024;
+    }
+
+    else if (MACHINE_IS_PRISM || MACHINE_IS_ZXUNO) {
+        total_ram=512*1024;
+    }
+
+    else if (MACHINE_IS_TBBLUE) {
+        total_ram=tbblue_get_current_ram()*1024;
+    }
+
+    else if (MACHINE_IS_ZXEVO) {
+        total_ram=4*1024*1024;
+    }
+
+    else if (MACHINE_IS_SAM) {
+        total_ram=get_sam_ram()*1024;
+    }
+
+    else if (MACHINE_IS_Z88) {
+        total_ram=z88_get_total_ram();
+    }
+
+    else if (MACHINE_IS_ZX8081) {
+        total_ram=zx8081_get_total_ram_with_rampacks()*1024;
+    }    
+
+    else if (MACHINE_IS_ACE) {
+        total_ram=get_ram_ace()*1024;
+    }
+
+    return total_ram;
+
+}
 
 //1 si ok
 //0 si error

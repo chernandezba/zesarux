@@ -25598,81 +25598,9 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
-    //Memoria
-    //Por defecto
-    int total_ram=48*1024;
+    //Memoria RAM
+    int total_ram=get_ram_size();
 
-    //TODO:sumar posibles extensiones de memoria en spectrum
-    if (MACHINE_IS_MK14) {
-        total_ram=256;
-    }
-
-    else if (MACHINE_IS_COLECO || MACHINE_IS_SG1000) {
-        total_ram=1024;
-    }
-
-    else if (MACHINE_IS_SMS) {
-        total_ram=8192;
-    }
-
-    else if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SVI_318) {
-        total_ram=16*1024;
-    }
-
-    else if (MACHINE_IS_CPC_464) {
-        total_ram=64*1024;
-    }
-
-    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128 | MACHINE_IS_CHLOE_140SE) {
-        total_ram=128*1024;
-    }
-
-    else if (MACHINE_IS_SVI_328) {
-        //Total:  3 ROMS de 32 kb, 5 RAMS de 32 kb, en SVI328.
-        //En 318, solo 1 pagina de 16 kb ram?
-        total_ram=5*32*1024;
-    }
-
-    //TODO: posibles cartuchos de RAM?
-    else if (MACHINE_IS_MSX) {
-        total_ram=128*1024;
-    }    
-
-    else if (MACHINE_IS_CHROME) {
-        total_ram=160*1024;
-    }    
-
-    else if (MACHINE_IS_CHLOE_280SE) {
-        total_ram=256*1024;
-    }
-
-    else if (MACHINE_IS_PRISM || MACHINE_IS_ZXUNO) {
-        total_ram=512*1024;
-    }
-
-    else if (MACHINE_IS_TBBLUE) {
-        total_ram=tbblue_get_current_ram()*1024;
-    }
-
-    else if (MACHINE_IS_ZXEVO) {
-        total_ram=4*1024*1024;
-    }
-
-    else if (MACHINE_IS_SAM) {
-        total_ram=get_sam_ram()*1024;
-    }
-
-    else if (MACHINE_IS_Z88) {
-        total_ram=z88_get_total_ram();
-    }
-
-    else if (MACHINE_IS_ZX8081) {
-        total_ram=zx8081_get_total_ram_with_rampacks()*1024;
-    }    
-
-    else if (MACHINE_IS_ACE) {
-        total_ram=get_ram_ace()*1024;
-    }
 
     if (total_ram>=1024) {
         sprintf(buf_linea,"Total RAM: %d KB\n",total_ram/1024);
@@ -25681,6 +25609,13 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
         sprintf(buf_linea,"Total RAM: %d B\n",total_ram);
     }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+
+    //Memoria ROM
+    int total_rom=get_rom_size(current_machine_type);
+    sprintf(buf_linea,"Total ROM: %d KB\n",total_rom/1024);
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
 	menu_generic_message("Machine Information",text_buffer);
     
     free(text_buffer);
