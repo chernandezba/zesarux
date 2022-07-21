@@ -5046,7 +5046,7 @@ int quickload_continue(char *nombre) {
 
 	//Si hay cartucho de timex insertado, expulsarlo
 	//Realmente no comprobamos si hay cartucho pues no hay ningun flag que indique insertado o no. Simplemente liberamos memoria dock
-	if (MACHINE_IS_TIMEX_T2068) {
+	if (MACHINE_IS_TIMEX_TS_TC_2068) {
 		timex_empty_dock_space();
 	}
 
@@ -5300,7 +5300,7 @@ int quickload_continue(char *nombre) {
 		!util_compare_file_extension(nombre,"dck")
 	) {
 		//Aqui el autoload da igual. cambiamos siempre a timex si conviene
-		if (!MACHINE_IS_TIMEX_T2068) {
+		if (!MACHINE_IS_TIMEX_TS_TC_2068) {
 			current_machine_type=MACHINE_ID_TIMEX_TS2068;
 			set_machine(NULL);
 
@@ -12532,7 +12532,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     break;          
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         *readwrite=1;
         size=8192;
       }
@@ -12543,7 +12543,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     break;      
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         *readwrite=1;
         size=65536;
       }
@@ -12921,7 +12921,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     break;      
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         z80_byte *start=timex_ex_rom_mem_table[0];
         p=&start[address];              
       }
@@ -12932,7 +12932,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
     break;      
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         z80_byte *start=timex_dock_rom_mem_table[0];
         p=&start[address];              
       }
@@ -13371,7 +13371,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     break;   
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         strcpy(name,"Timex EXROM");             
       }
 	
@@ -13382,7 +13382,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     break;      
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
-      if (MACHINE_IS_TIMEX_T2068) {
+      if (MACHINE_IS_TIMEX_TS_TC_2068) {
         strcpy(name,"Timex Dock");               
       }
       if (MACHINE_IS_CHLOE_280SE) {

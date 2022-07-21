@@ -18852,7 +18852,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_SVI_318) strcpy(nombrebmp,"keyboard_svi_318.bmp");
     else if (MACHINE_IS_SVI_328) strcpy(nombrebmp,"keyboard_svi_328.bmp");
     else if (MACHINE_IS_TBBLUE) strcpy(nombrebmp,"keyboard_next.bmp");
-    else if (MACHINE_IS_TIMEX_T2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
+    else if (MACHINE_IS_TIMEX_TS_TC_2068) strcpy(nombrebmp,"keyboard_ts2068.bmp");
     else if (MACHINE_IS_TIMEX_TC2048) strcpy(nombrebmp,"keyboard_tc2048.bmp");
     else if (MACHINE_IS_Z88) strcpy(nombrebmp,"keyboard_z88.bmp");
     else if (MACHINE_IS_SPECTRUM_P2) strcpy(nombrebmp,"keyboard_p2.bmp");
@@ -23020,7 +23020,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 			}
 
 			//Diferentes maquinas que solo pueden saltar a spectrum 48k
-			if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+			if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
 								hotswap_machine_opcion_seleccionada=0;
 								menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,NULL,NULL);
 			}
@@ -23230,7 +23230,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 					return; //Para evitar saltar a otro if
 				}
 
-				if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_T2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+				if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
 					hotswap_any_machine_to_spec48();
                     salir_todos_menus=1;
 					return; //Para evitar saltar a otro if
@@ -23497,7 +23497,7 @@ int menu_hotswap_machine_cond(void) {
 	if (MACHINE_IS_ZX8081)  return 1;
 	if (MACHINE_IS_CHLOE)  return 1;
 	if (MACHINE_IS_PRISM)  return 1;
-	if (MACHINE_IS_TIMEX_T2068)  return 1;
+	if (MACHINE_IS_TIMEX_TS_TC_2068)  return 1;
 	if (MACHINE_IS_TBBLUE)  return 1;
 	if (MACHINE_IS_CHROME)  return 1;
 	if (MACHINE_IS_ZXEVO)  return 1;
@@ -31650,7 +31650,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}
 
 
-		if (MACHINE_IS_TIMEX_T2068) {
+		if (MACHINE_IS_TIMEX_TS_TC_2068) {
 			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_timexcart,NULL,"Timex ~~Cartridge");
 			menu_add_item_menu_shortcut(array_menu_storage,'c');
 			menu_add_item_menu_tooltip(array_menu_storage,"Timex Cartridge Settings");
@@ -33266,7 +33266,7 @@ void zxdesktop_lowericon_zxpand_accion(void)
 
 int zxdesktop_lowericon_cart_timex_is_visible(void)
 {
-	if (MACHINE_IS_TIMEX_T2068) return 1;
+	if (MACHINE_IS_TIMEX_TS_TC_2068) return 1;
 
 	else return 0;
 }

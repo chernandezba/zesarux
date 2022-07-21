@@ -1620,7 +1620,7 @@ void load_zx_snapshot(char *archivo)
 
         }
 
-	else if (MACHINE_IS_TIMEX_T2068) {
+	else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 		//Paginamos
 		timex_set_memory_pages();
 
@@ -3211,7 +3211,7 @@ if (long_cabecera_adicional>25) {
 
                 debug_printf(VERBOSE_DEBUG,"Z80 block number %d length %d compressed: %d",numerobloque,longitudbloque,comprimido);
 
-				if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_TIMEX_T2068) {
+				if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_TIMEX_TS_TC_2068) {
 					//gestionar maquinas de 48 k
 					switch (numerobloque) {
 						case 4:
@@ -4379,7 +4379,7 @@ void save_zx_snapshot(char *filename)
 
 	}
 
-	else if (MACHINE_IS_TIMEX_T2068) {
+	else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 		z80_byte *buffer_timex_save=malloc(20000);
                 if (buffer_timex_save==NULL) {
                         debug_printf (VERBOSE_ERR,"Error allocating memory buffer on save");

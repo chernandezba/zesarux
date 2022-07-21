@@ -289,7 +289,7 @@ void cpu_core_loop_reduced_spectrum(void)
 					interrupcion_maskable_generada.v=1;
 
 					//En Timex, ver bit 6 de puerto FF
-					if ( MACHINE_IS_TIMEX_T2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
+					if ( MACHINE_IS_TIMEX_TS_TC_2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
 
 					//TSConf lo gestiona mediante interrupciones de frame
 					if (MACHINE_IS_TSCONF) interrupcion_maskable_generada.v=0;

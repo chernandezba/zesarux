@@ -5278,7 +5278,7 @@ void debug_get_ioports(char *stats_buffer)
 
   	}
 
-  	if (MACHINE_IS_TIMEX_T2068 || MACHINE_IS_CHLOE_280SE || MACHINE_IS_PRISM) {
+  	if (MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_CHLOE_280SE || MACHINE_IS_PRISM) {
   		sprintf (buf_linea,"Timex F4 port: %02X\n",timex_port_f4);
                   sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
           }
@@ -6539,7 +6539,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
   			}
 
   			  //Paginas RAM en TIMEX
-                          if (MACHINE_IS_TIMEX_T2068) {
+                          if (MACHINE_IS_TIMEX_TS_TC_2068) {
                           		segmentos_totales=8;        
                                   //char texto_paginas[8][3];
                                   //char tipo_memoria;

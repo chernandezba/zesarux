@@ -886,7 +886,7 @@ void tap_load(void)
                                 tape_block_read(&checksum,1);
 				//volver a cargar
 				if (MACHINE_IS_ZXUNO) reg_pc=zxuno_punto_entrado_load;
-				else if (MACHINE_IS_TIMEX_T2068) reg_pc=255;
+				else if (MACHINE_IS_TIMEX_TS_TC_2068) reg_pc=255;
                                 else reg_pc=1378;
 
 			}
@@ -1148,7 +1148,7 @@ int tap_load_detect(void)
 
 
 		//Para Timex
-		else if (MACHINE_IS_TIMEX_T2068) {
+		else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 			if (reg_pc!=255) return 0;
 		}
 
@@ -1193,7 +1193,7 @@ int tap_load_detect(void)
 
 
                 //Para Timex
-		if (MACHINE_IS_TIMEX_T2068) {
+		if (MACHINE_IS_TIMEX_TS_TC_2068) {
                         //Si rom EX mapeada
                         if ( (timex_port_f4 &1) == 0) return 0; //Home mapeada , volver
                         if ( (timex_port_ff&128) == 0 ) return 0; //Dock mapeada, volver
@@ -1317,7 +1317,7 @@ int tap_save_detect(void)
 {
 
 		//Para Timex
-                if (MACHINE_IS_TIMEX_T2068) {
+                if (MACHINE_IS_TIMEX_TS_TC_2068) {
                         if (reg_pc!=108) return 0;
                 }
 
@@ -1364,7 +1364,7 @@ int tap_save_detect(void)
 
 
 		//Para Timex
-                if (MACHINE_IS_TIMEX_T2068) {
+                if (MACHINE_IS_TIMEX_TS_TC_2068) {
                         //Si rom EX mapeada
                         if ( (timex_port_f4 &1) == 0) return 0; //Home mapeada , volver
                         if ( (timex_port_ff&128) == 0 ) return 0; //Dock mapeada, volver

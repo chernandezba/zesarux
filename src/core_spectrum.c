@@ -350,7 +350,7 @@ void core_spectrum_fin_frame_pantalla(void)
         testados_desde_inicio_pulso_interrupcion=t_estados;
 
         //En Timex, ver bit 6 de puerto FF
-        if ( MACHINE_IS_TIMEX_T2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
+        if ( MACHINE_IS_TIMEX_TS_TC_2068 && ( timex_port_ff & 64) ) interrupcion_maskable_generada.v=0;
 
         //En ZXuno, ver bit disvint
         if (MACHINE_IS_ZXUNO || MACHINE_IS_TBBLUE) {

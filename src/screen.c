@@ -1211,7 +1211,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 		return caracter;
 	}
 
-	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_T2068) {
+	if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO_BOOTM_DISABLED || MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068) {
 		z80_byte *offset_ram_5;
 
 		//Si zxuno sin bootm
@@ -1223,7 +1223,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 			offset_ram_5=chloe_home_ram_mem_table[5];
 		}
 
-		else if (MACHINE_IS_TIMEX_T2068) {
+		else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 			offset_ram_5=timex_home_ram_mem_table[0];
 		}
 
@@ -1262,7 +1262,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 				puntero=chloe_rom_mem_table[1]+dir;
 			}
 
-			else if (MACHINE_IS_TIMEX_T2068) {
+			else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 				//ROM
 				puntero=timex_rom_mem_table[0]+dir;
 			}
@@ -1294,7 +1294,7 @@ z80_byte compare_char_step(z80_byte *origen,z80_byte *inverse,int step)
 
 
 			//Segmentos de 8kb
-			if (MACHINE_IS_TIMEX_T2068) {
+			if (MACHINE_IS_TIMEX_TS_TC_2068) {
 				segmento=dir_orig / 8192;
 				dir = dir_orig & 8191;
 				puntero=timex_memory_paged[segmento];
@@ -13010,7 +13010,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
 
 
 
-    if (MACHINE_IS_TIMEX_T2068) {
+    if (MACHINE_IS_TIMEX_TS_TC_2068) {
         if (reg_pc!=16) puntero_printchar_caracter(caracter);
 
         else {

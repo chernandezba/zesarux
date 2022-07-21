@@ -287,7 +287,7 @@ z80_byte *get_base_mem_pantalla_continue(void)
         }
 
 
-	if (MACHINE_IS_TIMEX_T2068) {
+	if (MACHINE_IS_TIMEX_TS_TC_2068) {
 		return timex_home_ram_mem_table[0];
 	}
 
