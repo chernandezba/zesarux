@@ -257,7 +257,7 @@ int scrstdout_init (void){
 
         scr_get_menu_width=scrstdout_get_menu_width;
         scr_get_menu_height=scrstdout_get_menu_height;
-	scr_driver_can_ext_desktop=scrstdout_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrstdout_driver_can_ext_desktop;
 	
 	
 	scr_set_fullscreen=scrstdout_set_fullscreen;

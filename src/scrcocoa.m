@@ -1201,7 +1201,7 @@ int cocoa_raton_oculto=0;
     //y mientras arranca se mueve el ratón, salta aquí antes de haber pasado por scrcocoa_init
     //Entonces se intenta usar la funcion que llama a screen_get_ext_desktop_height_zoom, y esta a su vez llama a 
     //scr_driver_can_ext_desktop, y al ser NULL, peta todo
-    if (scr_driver_can_ext_desktop==NULL) return;
+    //if (scr_driver_can_ext_desktop==NULL) return;
 
     //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
 
@@ -3074,7 +3074,7 @@ int scrcocoa_init (void) {
 
     scr_get_menu_width=scrcocoa_get_menu_width;
     scr_get_menu_height=scrcocoa_get_menu_height;
-    scr_driver_can_ext_desktop=scrcocoa_driver_can_ext_desktop;
+    //scr_driver_can_ext_desktop=scrcocoa_driver_can_ext_desktop;
 
     scr_putchar_zx8081=scrcocoa_putchar_zx8081;
     scr_debug_registers=scrcocoa_debug_registers;

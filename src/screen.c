@@ -133,7 +133,7 @@ void (*scr_putpixel_final) (int x,int y,unsigned int color);
 int (*scr_get_menu_width) (void);
 int (*scr_get_menu_height) (void);
 
-int (*scr_driver_can_ext_desktop) (void);
+//int (*scr_driver_can_ext_desktop) (void);
 
 
 void (*scr_z88_cpc_load_keymap) (void);
@@ -215,6 +215,13 @@ int putpixel_min_y=99999;
 //Valores seleccionables: 50, 25, 10, 5, 2,1
 // -> 1,2,5,10,25,1
 int scrstdout_simpletext_refresh_factor=5;
+
+int screen_este_driver_permite_ext_desktop=0;
+
+int scr_driver_can_ext_desktop (void)
+{
+    return screen_este_driver_permite_ext_desktop;
+}
 
 //Usado en varias rutinas
 char screen_common_caracteres_artisticos[]=" ''\".|/r.\\|7_LJ#";
@@ -2689,7 +2696,7 @@ int scrgeneric_driver_can_ext_desktop(void)
 
 void screen_init_ext_desktop(void)
 {
-	scr_driver_can_ext_desktop=scrgeneric_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrgeneric_driver_can_ext_desktop;
 }
 
 //Si la opcion esta habilitada y el driver lo permite. o sea a efectos practicos, que la interfaz muestra zxdesktop
@@ -2697,10 +2704,10 @@ int if_zxdesktop_enabled_and_driver_allows(void)
 {
 
     //Si driver video aun no inicializado. No deberia suceder, pero por si acaso
-    if (scr_driver_can_ext_desktop==NULL) {
+    /*if (scr_driver_can_ext_desktop==NULL) {
         debug_printf(VERBOSE_WARN,"scr_driver_can_ext_desktop is NULL, it should only happen before initializing video driver");
         return screen_ext_desktop_enabled;
-    }
+    }*/
 
     if (screen_ext_desktop_enabled && scr_driver_can_ext_desktop() ) return 1;
     else return 0;
@@ -8752,6 +8759,8 @@ void screen_reset_scr_driver_params(void)
 	scr_messages_debug=NULL;
 
 	esc_key_message="ESC";
+
+    screen_este_driver_permite_ext_desktop=0;
 }
 
 void screen_set_colour_normal(int index, int colour)

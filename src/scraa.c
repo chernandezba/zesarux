@@ -772,7 +772,7 @@ scr_putchar_footer=scraa_putchar_footer;
 
         scr_get_menu_width=scraa_get_menu_width;
         scr_get_menu_height=scraa_get_menu_height;
-	scr_driver_can_ext_desktop=scraa_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scraa_driver_can_ext_desktop;
 
 rparams = aa_getrenderparams();
 aa_resizehandler(context, scraaresize);

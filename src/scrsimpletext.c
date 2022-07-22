@@ -181,7 +181,7 @@ int scrsimpletext_init (void){
 
         scr_get_menu_width=scrsimpletext_get_menu_width;
         scr_get_menu_height=scrsimpletext_get_menu_height;
-	scr_driver_can_ext_desktop=scrsimpletext_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrsimpletext_driver_can_ext_desktop;
 	
 	
 	scr_set_fullscreen=scrsimpletext_set_fullscreen;

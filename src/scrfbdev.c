@@ -1883,7 +1883,7 @@ int scrfbdev_init (void){
 
         scr_get_menu_width=scrfbdev_get_menu_width;
         scr_get_menu_height=scrfbdev_get_menu_height;	
-	scr_driver_can_ext_desktop=scrfbdev_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrfbdev_driver_can_ext_desktop;
 
 
 	scr_set_fullscreen=scrfbdev_set_fullscreen;

@@ -1959,7 +1959,7 @@ int scrxwindows_init (void) {
 	// Create the window
 
 	//Esto asignarlo antes para que el driver vea correctamente el tamaño
-	scr_driver_can_ext_desktop=scrxwindows_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrxwindows_driver_can_ext_desktop;
 
 int ancho,alto;
 ancho=screen_get_window_size_width_zoom_border_en();

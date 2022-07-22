@@ -1591,7 +1591,7 @@ int scrsdl_init (void) {
 
         scr_get_menu_width=scrsdl_get_menu_width;
         scr_get_menu_height=scrsdl_get_menu_height;              
-	scr_driver_can_ext_desktop=scrsdl_driver_can_ext_desktop;
+	//scr_driver_can_ext_desktop=scrsdl_driver_can_ext_desktop;
 
         scr_putchar_zx8081=scrsdl_putchar_zx8081;
         scr_debug_registers=scrsdl_debug_registers;

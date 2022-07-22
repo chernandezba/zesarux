@@ -67,7 +67,10 @@ extern void (*scr_putpixel_final) (int x,int y,unsigned int color);
 extern int (*scr_get_menu_width) (void);
 extern int (*scr_get_menu_height) (void);
 
-extern int (*scr_driver_can_ext_desktop) (void);
+//extern int (*scr_driver_can_ext_desktop) (void);
+extern int scr_driver_can_ext_desktop (void);
+
+extern int screen_este_driver_permite_ext_desktop;
 
 extern int screen_ext_desktop_width;
 extern int screen_ext_desktop_height;

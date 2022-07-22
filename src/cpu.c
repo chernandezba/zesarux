@@ -2419,6 +2419,7 @@ int set_scrdriver_cocoa(void)
                         scr_end_pantalla=scrcocoa_end;
                         scr_lee_puerto=scrcocoa_lee_puerto;
                         scr_actualiza_tablas_teclado=scrcocoa_actualiza_tablas_teclado;
+                        screen_este_driver_permite_ext_desktop=1;
         return 0;
 }
 
@@ -2434,6 +2435,7 @@ int set_scrdriver_xwindows(void)
                         scr_end_pantalla=scrxwindows_end;
                         scr_lee_puerto=scrxwindows_lee_puerto;
                         scr_actualiza_tablas_teclado=scrxwindows_actualiza_tablas_teclado;
+                        screen_este_driver_permite_ext_desktop=1;
                         //scr_debug_registers=scrxwindows_debug_registers;
 			//scr_messages_debug=scrxwindows_messages_debug;
 	return 0;
@@ -2450,6 +2452,7 @@ int set_scrdriver_sdl(void)
                         scr_end_pantalla=scrsdl_end;
                         scr_lee_puerto=scrsdl_lee_puerto;
                         scr_actualiza_tablas_teclado=scrsdl_actualiza_tablas_teclado;
+                        screen_este_driver_permite_ext_desktop=1;
         return 0;
 }
 
@@ -5325,6 +5328,9 @@ void main_init_video(void)
 {
 		//Video init
                 debug_printf (VERBOSE_INFO,"Initializing Video Driver");
+
+                //Asumimos video driver no soporta ext desktop
+                screen_este_driver_permite_ext_desktop=0;
 
                 //gestion de fallback y con driver indicado
 
@@ -9301,7 +9307,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	border_enabled.v=1;
 
 	scr_putpixel=NULL;
-    scr_driver_can_ext_desktop=NULL;
+    //scr_driver_can_ext_desktop=NULL;
 	//scr_putpixel_final=NULL;
 
 	simulate_screen_zx8081.v=0;
