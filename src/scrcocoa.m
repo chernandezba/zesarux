@@ -1196,6 +1196,11 @@ int cocoa_raton_oculto=0;
 - (void)mouseMoved:(NSEvent *)event
 {
 
+    //Si no esta aun inicializado, no hacer nada
+    if (scr_driver_can_ext_desktop==NULL) return;
+
+    //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
+
     NSPoint locationInView = [self convertPoint:[event locationInWindow]
                                     fromView:nil];
 
