@@ -30596,6 +30596,52 @@ void menu_hilow_convert_audio_input_file(void)
 }
 
 
+void menu_hilow_convert_audio_output_file(void)
+{
+
+    char *filtros[2];
+
+
+    filtros[0]="ddh";
+    filtros[1]=0;
+
+
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
+
+	int ret;
+
+	//Obtenemos ultimo directorio visitado
+	if (menu_hilow_convert_audio_output_ddh[0]!=0) {
+		char directorio[PATH_MAX];
+		util_get_dir(menu_hilow_convert_audio_output_ddh,directorio);
+		//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+		//cambiamos a ese directorio, siempre que no sea nulo
+		if (directorio[0]!=0) {
+				debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+				zvfs_chdir(directorio);
+		}
+	}
+
+
+    char buffer_load_file[PATH_MAX];
+
+    ret=menu_filesel("Select Output ddh File",filtros,buffer_load_file);
+
+	//volvemos a directorio inicial
+	zvfs_chdir(directorio_actual);    
+
+    if (ret) {
+        strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
+    }   
+
+    //Se pierde el overlay cada vez que se abre file selector
+    set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
+
+}
+
 
 
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
@@ -30670,9 +30716,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
     menu_hilow_convert_audio_has_been_opened=1;
 
-    char buffer_load_file[PATH_MAX];
+    //char buffer_load_file[PATH_MAX];
 
-    char *filtros[3];
+    //char *filtros[3];
 
     do {
 
@@ -30935,15 +30981,8 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'o':
 
-                filtros[0]="ddh";
-                filtros[1]=0;
+                menu_hilow_convert_audio_output_file();
 
-                if (menu_filesel("Select Output ddh File",filtros,buffer_load_file)==1) {
-                    strcpy(menu_hilow_convert_audio_output_ddh,buffer_load_file);
-                }   
-
-                //Se pierde el overlay cada vez que se abre file selector
-                set_menu_overlay_function(menu_hilow_convert_audio_overlay);                             
             break;  
 
 
