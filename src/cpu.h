@@ -42,8 +42,8 @@ Examples
 */
 
 
-#define EMULATOR_VERSION "10.2-SN"
-//#define EMULATOR_VERSION "10.2-RC1"
+//#define EMULATOR_VERSION "10.2-SN"
+#define EMULATOR_VERSION "10.2-RC1"
 //#define EMULATOR_VERSION "10.2-RC"
 //#define EMULATOR_VERSION "10.2"
 #define SNAPSHOT_VERSION
