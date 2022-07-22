@@ -216,6 +216,7 @@ int putpixel_min_y=99999;
 // -> 1,2,5,10,25,1
 int scrstdout_simpletext_refresh_factor=5;
 
+//Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
 int screen_este_driver_permite_ext_desktop=0;
 
 int scr_driver_can_ext_desktop (void)
