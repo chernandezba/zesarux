@@ -1197,6 +1197,10 @@ int cocoa_raton_oculto=0;
 {
 
     //Si no esta aun inicializado, no hacer nada
+    //Esto es un poco puñetero porque si al iniciar la aplicación, sobre todo desde el icono de la app,
+    //y mientras arranca se mueve el ratón, salta aquí antes de haber pasado por scrcocoa_init
+    //Entonces se intenta usar la funcion que llama a screen_get_ext_desktop_height_zoom, y esta a su vez llama a 
+    //scr_driver_can_ext_desktop, y al ser NULL, peta todo
     if (scr_driver_can_ext_desktop==NULL) return;
 
     //printf("mouse moved. scr_driver_can_ext_desktop=%p\n",scr_driver_can_ext_desktop);
