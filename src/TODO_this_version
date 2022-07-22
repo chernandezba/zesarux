@@ -176,4 +176,5 @@ Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y 
 
 -Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ?
 
--Cuando se dispara un breakpoint, a veces el registro PC ha ejecutado una instruccion de mas
+-quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
+usar la que si considera movimiento raton
