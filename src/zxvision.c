@@ -14099,13 +14099,13 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
         //si pulsa en algun icono configurable	
         //aqui tanto entra cuando se pulsa como cuando se libera
-        printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+        //printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
         int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-        printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
+        //printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
 
         //Si se pulsa alguno 
         if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
-            printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
+            //printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
 
             //y si no habiamos pulsado ya (estamos arrastrando)
             if (menu_pressed_zxdesktop_configurable_icon_which==-1) {
@@ -14158,14 +14158,14 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
                 if (zxvision_if_mouse_in_background()) {
 
-                printf("Pulsado en ZX desktop con boton derecho desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button\n");
-                
-                menu_pressed_zxdesktop_right_button_background=1;
+                    //printf("Pulsado en ZX desktop con boton derecho desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button\n");
+                    
+                    menu_pressed_zxdesktop_right_button_background=1;
 
-                //de momento no altero posicion menu si se pulsa en background
-                //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
+                    //de momento no altero posicion menu si se pulsa en background
+                    //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);
 
-                return 1;
+                    return 1;
 
                 }
 
@@ -15257,7 +15257,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
     if (mouse_right && menu_mouse_right_send_esc.v==0) {
         //acciones con boton derecho    
-        printf("Pulsado boton derecho\n");
+        //printf("Pulsado boton derecho\n");
 
 
 
@@ -15275,7 +15275,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
         //Si se pulsa alguno 
         if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
-            printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
+            //printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
 
             menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
@@ -15324,48 +15324,48 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
             if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
-                printf("Pulsado boton derecho sobre ventana\n");
+                //printf("Pulsado boton derecho sobre ventana\n");
 
             }	
             else {
                 //No se pulsa ni en icono ni en ventanas. Quedaria ver si en botones de menu superior o en botones de dispositivo inferior. 
-                printf("mouse pixel x,y desde handle mouse events: %d,%d\n",mouse_pixel_x,mouse_pixel_y);
+                //printf("mouse pixel x,y desde handle mouse events: %d,%d\n",mouse_pixel_x,mouse_pixel_y);
 
 
                 //Asumimos pulsado en fondo desktop
                 if (zxdesktop_configurable_icons_enabled_and_visible()) {
 
                     if (zxvision_if_mouse_in_background() ) {
-                    printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
-                    
-                    menu_pressed_zxdesktop_right_button_background=1;
+                        //printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
+                        
+                        menu_pressed_zxdesktop_right_button_background=1;
 
-                    //de momento no altero posicion menu si se pulsa en background
-                    //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);                
+                        //de momento no altero posicion menu si se pulsa en background
+                        //zxvision_set_next_menu_position(absolute_mouse_x,absolute_mouse_y);                
 
-                    menu_pressed_open_menu_while_in_menu.v=1;
-                    salir_todos_menus=1;
+                        menu_pressed_open_menu_while_in_menu.v=1;
+                        salir_todos_menus=1;
 
-                    /*
-                    Estas decisiones son parecidas en casos:
-                    pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
-                    */
+                        /*
+                        Estas decisiones son parecidas en casos:
+                        pulsar tecla menu cuando menu activo (menu_if_pressed_menu_button en menu_get_pressed_key_no_modifier), conmutar ventana, pulsar logo ZEsarUX en ext desktop
+                        */
 
-                    if (!menu_allow_background_windows) {
-                            mouse_pressed_close_window=1;
-                    }
-
-                    else {
-                        //Si la ventana activa permite ir a background, mandarla a background
-                        if (zxvision_current_window->can_be_backgrounded) {
-                                mouse_pressed_background_window=1;
+                        if (!menu_allow_background_windows) {
+                                mouse_pressed_close_window=1;
                         }
 
-                        //Si la ventana activa no permite ir a background, cerrarla
                         else {
-                                mouse_pressed_close_window=1;
-                        }  
-                    } 
+                            //Si la ventana activa permite ir a background, mandarla a background
+                            if (zxvision_current_window->can_be_backgrounded) {
+                                    mouse_pressed_background_window=1;
+                            }
+
+                            //Si la ventana activa no permite ir a background, cerrarla
+                            else {
+                                    mouse_pressed_close_window=1;
+                            }  
+                        } 
 
                     }
                 }
@@ -21054,7 +21054,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
         //Acciones secundarias
         int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
-        printf("Gestionando pulsacion de boton derecho de icono configurable %d\n",pulsado_boton);
+        debug_printf(VERBOSE_DEBUG,"Handling right button press on a configurable icon (%d)",pulsado_boton);
 
         menu_zxdesktop_set_configurable_icons_modify(pulsado_boton);
 
