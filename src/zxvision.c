@@ -305,7 +305,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
 
     if (x<0 || y<0 || x>total_width || y>total_height) {
-        printf("Wanted to set Icon position %d,%d out of range (%d,%d). Do not change\n",x,y,total_width,total_height);
+        //printf("Wanted to set Icon position %d,%d out of range (%d,%d). Do not change\n",x,y,total_width,total_height);
         return 0;
     }
 
@@ -323,7 +323,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 
 
     if (y<=alto_boton && x>=xinicio_botones && x<=xfinal_botones) {
-        printf("Wanted to set Icon position %d,%d on upper buttons position. Do not change\n",x,y);
+        //printf("Wanted to set Icon position %d,%d on upper buttons position. Do not change\n",x,y);
         return 0;        
     }    
 
@@ -340,7 +340,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     yinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
 
     if (y>=yinicio_botones && x>=xinicio_botones && x<=xfinal_botones) {
-        printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
+        //printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
         return 0;        
     }
 
@@ -350,7 +350,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
 
     if (x<ancho_maquina && y<alto_maquina) {
-        printf("Wanted to set Icon position %d,%d on emulated machine display. Do not change\n",x,y);
+        //printf("Wanted to set Icon position %d,%d on emulated machine display. Do not change\n",x,y);
         return 0;           
     }
 
@@ -513,7 +513,7 @@ void zxvision_check_all_configurable_icons_positions(void)
     //Si desactivado
     if (!zxdesktop_configurable_icons_enabled_and_visible()) return;    
 
-    printf("zxvision_check_all_configurable_icons_positions\n");
+    //printf("zxvision_check_all_configurable_icons_positions\n");
 
     int i;
 
@@ -523,7 +523,7 @@ void zxvision_check_all_configurable_icons_positions(void)
             int y=zxdesktop_configurable_icons_list[i].pos_y;
 
             if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
-                printf("Reajustar icono %d porque esta en una posicion %d,%d incorrecta\n",i,x,y);
+                debug_printf(VERBOSE_DEBUG,"Relocate icon %d because it is on an invalid position %d,%d",i,x,y);
                 zxvision_get_next_free_icon_position(&x,&y);
                 zxvision_set_configurable_icon_position(i,x,y);
             }
@@ -667,7 +667,7 @@ void create_default_zxdesktop_configurable_icons(void)
 {
 
     if (!zxdesktop_configurable_icons_enabled_and_visible()) {
-        printf("Do not create default icons as icons on zx desktop are disabled or zx desktop disabled\n");
+        debug_printf(VERBOSE_INFO,"Do not create default icons because icons on zx desktop are disabled or zx desktop disabled");
         return;
     }
 
@@ -676,7 +676,7 @@ void create_default_zxdesktop_configurable_icons(void)
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
-            printf("Do not create default icons as there are already at least one created\n");
+            debug_printf(VERBOSE_INFO,"Do not create default icons as there are already at least one created");
             return;
         }
     }
@@ -5347,7 +5347,7 @@ int if_position_in_desktop_icons(int posicion_x,int posicion_y)
 {
     int tamanyo=menu_get_ext_desktop_icons_size();
 
-    printf("tamanyo icono: %d\n",tamanyo);
+    //printf("tamanyo icono: %d\n",tamanyo);
 
     int i;
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
@@ -13990,12 +13990,12 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop(void)
         //si pulsa en algun icono configurable	
         if (zxdesktop_configurable_icons_enabled_and_visible()) {
             //aqui tanto entra cuando se pulsa como cuando se libera
-            printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            //printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
             int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
 
             //Si se pulsa alguno y si no habiamos pulsado ya (estamos arrastrando)
             if (icono_pulsado>=0 && menu_pressed_zxdesktop_configurable_icon_which==-1) {
-                printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop: %d\n",icono_pulsado);
+                debug_printf(VERBOSE_DEBUG,"Icon %d pressed",icono_pulsado);
 
                 //debug_exec_show_backtrace();
 
@@ -14293,7 +14293,7 @@ int zxvision_si_icono_cerca_de_papelera(int icono,int mouse_pixel_x,int mouse_pi
     //int mover_a_papelera=0;
     int hay_papelera=zxvision_search_trash_configurable_icon();
     if (hay_papelera>=0) {
-        printf("hay una papelera\n");
+        //printf("hay una papelera\n");
         //Y siempre que no sea ya una papelera este icono
         int indice_funcion=zxdesktop_configurable_icons_list[icono].indice_funcion;
         enum defined_f_function_ids id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
@@ -14307,7 +14307,7 @@ int zxvision_si_icono_cerca_de_papelera(int icono,int mouse_pixel_x,int mouse_pi
             int deltax=util_get_absolute(mouse_pixel_x-xpapelera);
             int deltay=util_get_absolute(mouse_pixel_y-ypapelera);
 
-            printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
+            //printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
 
             if (deltax<=20 && deltay<=20) {           
                 return 1;
@@ -14361,7 +14361,9 @@ void zxvision_mover_icono_papelera_si_conviene(void)
 
         //Ver si el icono se mueve a la papelera
         if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
-            printf("Mover icono a la papelera\n");
+            debug_printf(VERBOSE_DEBUG,"Move icon to the Trash");
+
+            printf("Mover icono a la papelera -- xx\n");
 
             //Cambiarle la posicion que tenia inicial antes de ir a la papelera
             zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
@@ -15030,7 +15032,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 	if (!mouse_is_dragging) {
 		if (mouse_left && mouse_movido) {
-			printf ("Mouse has begun to drag\n");
+			debug_printf (VERBOSE_DEBUG,"Mouse has begun to drag");
 
             if (auto_frameskip_even_when_movin_windows.v==0) {
                 autoframeskip_setting_before_moving_windows.v=autoframeskip.v;
@@ -15078,9 +15080,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                     mouse_pixel_x *=zoom_x;
                     mouse_pixel_y *=zoom_y;
 
-                    printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+                    //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
                     configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-                    printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+                    //printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
 
                     //Si se arrastra alguno 
                     if (configurable_icon_is_being_moved_which>=0) {
@@ -15104,7 +15106,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 	if (mouse_is_dragging) {
 		//printf ("mouse is dragging\n");
 		if (!mouse_left) { 
-			printf ("Mouse has stopped to drag\n");
+			debug_printf (VERBOSE_DEBUG,"Mouse has stopped to drag");
 
             if (auto_frameskip_even_when_movin_windows.v==0) {
                 autoframeskip.v=autoframeskip_setting_before_moving_windows.v;
@@ -15131,7 +15133,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 			if (configurable_icon_is_being_moved) {
 
-				printf("Stopped moving configurable icon\n");
+				debug_printf(VERBOSE_DEBUG,"Stopped moving configurable icon");
                 //Parece que aqui solo se llama cuando esta el menu abierto
 
 
@@ -15204,7 +15206,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                         zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
                     }
                     else {
-                        printf("No cambiar posicion icono porque no se ha movido lo suficiente\n");
+                        debug_printf(VERBOSE_DEBUG,"Do not change icon position because it has not been moved enough");
                     }
 
                     //Refrescar pantalla si se ha movido lo suficiente
@@ -15218,7 +15220,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                         //Ver si icono cerca de papelera
                         if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
-                            printf("HAY CERCA UNA PAPELERA\n");
+                            debug_printf(VERBOSE_DEBUG,"There is a Trash near the moved icon");
                             zxvision_draw_icon_papelera_abierta=1;
                         }
                         else {
@@ -21060,7 +21062,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
     int pulsado_boton=menu_pressed_zxdesktop_configurable_icon_which;
 
-    printf("Gestionando pulsacion de boton izquierdo de icono configurable %d\n",pulsado_boton);
+    debug_printf(VERBOSE_DEBUG,"Handling left button press on a configurable icon (%d)",pulsado_boton);
 
 	//Para que no vuelva a saltar
 	menu_pressed_zxdesktop_configurable_icon_which=-1;      
@@ -21095,7 +21097,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
 
     if (icono_se_ha_movido) {
-        printf("Icono se ha movido. No hacer accion pulsar\n");
+        debug_printf(VERBOSE_DEBUG,"Icon has been moved. Do not execute icon action");
         //TODO: quitar este codigo de abajo que no se llamara nunca. Pero dejar el if else para que el else solo se haga cuando no se haya movido icono
         //TODO: gestion de movimiento de iconos se hace cuando se arrastra. Esto lo desactivo. 
 
@@ -21162,14 +21164,14 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         int id_funcion=defined_direct_functions_array[indice_funcion].id_funcion;
 
-        printf("Ejecutar funcion %d\n",id_funcion);
+        debug_printf(VERBOSE_DEBUG,"Executing function %d",id_funcion);
 
-        printf("Antes procesar funcion. menu_overlay_activo=%d\n",menu_overlay_activo);
+        //printf("Antes procesar funcion. menu_overlay_activo=%d\n",menu_overlay_activo);
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
         menu_process_f_functions_by_action_name(id_funcion);
-        printf("Despues procesar funcion\n");
+        //printf("Despues procesar funcion\n");
     }
 
     salir_todos_menus=1;
@@ -21622,7 +21624,7 @@ menu_init_footer hace falta pues el layer de menu se borra y se queda negro en l
     //}
 
     //Quitar pausado de emulacion que se pueda haber activado desde un step mode de debug cpu
-    printf("Desactivar menu_emulation_paused_on_menu_by_debug_step_mode al cerrar menu\n");
+    //printf("Desactivar menu_emulation_paused_on_menu_by_debug_step_mode al cerrar menu\n");
     menu_emulation_paused_on_menu_by_debug_step_mode=0;	    
 
 }
@@ -21785,7 +21787,7 @@ void menu_inicio(void)
         //hace alterar el valor de menu_pressed_zxdesktop_button_which y por tanto estariamos diciendo que se ha pulsado en boton
         if (!pulsado_alguna_ventana_con_menu_cerrado) {
             if (zxvision_if_mouse_in_zlogo_or_buttons_desktop()) {
-                printf("Pulsado en un boton desde menu_inicio. Mouse is dragging: %d mouse_movido: %d\n",mouse_is_dragging,mouse_movido);
+                debug_printf(VERBOSE_DEBUG,"Pressed in a button from menu_inicio. Mouse is dragging: %d mouse_movido: %d",mouse_is_dragging,mouse_movido);
 
                 //Dibujamos de otro color ese boton
                 //que boton=menu_pressed_zxdesktop_button_which
@@ -21999,7 +22001,7 @@ void menu_inicio(void)
 		return;
 	}
 
-    printf("XX1 menu_breakpoint_exception.v %d\n",menu_breakpoint_exception.v);
+    //printf("XX1 menu_breakpoint_exception.v %d\n",menu_breakpoint_exception.v);
 
 	//Menu desactivado y salida del emulador
 	if (menu_desactivado_andexit.v) end_emulator_autosave_snapshot();
@@ -22026,7 +22028,7 @@ void menu_inicio(void)
 	int liberar_teclas_y_esperar=1; //Si se liberan teclas y se espera a liberar teclado
 
 
-	printf("antes breakpoint exception\n");
+	//printf("antes breakpoint exception\n");
 
 
 	if (menu_breakpoint_exception.v) {
@@ -22043,7 +22045,7 @@ void menu_inicio(void)
 		}
 	}
 
-    printf("0 antes liberar_teclas_y_esperar\n");
+    //printf("0 antes liberar_teclas_y_esperar\n");
     //printf("PC=%04XH\n",reg_pc);
 
 	if (liberar_teclas_y_esperar) {
@@ -22057,7 +22059,7 @@ void menu_inicio(void)
 		menu_inicio_reset_emulated_keys();
 	}
 
-    printf("1 despues liberar_teclas_y_esperar\n");
+    //printf("1 despues liberar_teclas_y_esperar\n");
     //printf("PC=%04XH\n",reg_pc);
 
 	//printf ("after menu_inicio_reset_emulated_keys\n");
@@ -22089,7 +22091,7 @@ void menu_inicio(void)
 		audio_playing.v=0;
 	}
 
-    printf("2\n");
+    //printf("2\n");
 	//quitar splash text por si acaso
 	menu_splash_segundos=1;
 	reset_welcome_message();
@@ -22371,11 +22373,11 @@ void menu_inicio(void)
             //Abrir menu normal
             //printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
 
-            printf("menu_event_open_menu.v xx\n");
+            //printf("menu_event_open_menu.v xx\n");
 
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_left_mouse_button.v) {
-                printf("menu_was_open_by_left_mouse_button.v\n");
+                debug_printf(VERBOSE_DEBUG,"Menu was open by left mouse button");
                 menu_was_open_by_left_mouse_button.v=0;
 
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
@@ -22393,17 +22395,17 @@ void menu_inicio(void)
                         
                         mouse_movido=0;	
 
-                        printf("Se ha pulsado en zona botones con menu cerrado\n");
+                        debug_printf(VERBOSE_DEBUG,"Pressed on buttons zone with menu closed");
                     }
                     else {
-                        printf ("No pulsado en zona botones con menu cerrado\n");
+                        debug_printf(VERBOSE_DEBUG,"Not pressed on buttons zone with menu closed");
                     }
                 }
             }
 
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_right_mouse_button.v) {
-                printf("menu_was_open_by_right_mouse_button.v\n");
+                debug_printf(VERBOSE_DEBUG,"Menu was open by right mouse button");
                 menu_was_open_by_right_mouse_button.v=0;
 
                 if (!pulsado_alguna_ventana_con_menu_cerrado) {
@@ -22421,10 +22423,10 @@ void menu_inicio(void)
                         
                         mouse_movido=0;	
 
-                        printf("Se ha pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                        debug_printf(VERBOSE_DEBUG,"Pressed on buttons zone (right button) with menu closed");
                     }
                     else {
-                        printf ("No pulsado en zona botones (con boton derecho) con menu cerrado\n");
+                        debug_printf(VERBOSE_DEBUG,"Not pressed on buttons zone (right button) with menu closed");
                     }
                 }
             }        

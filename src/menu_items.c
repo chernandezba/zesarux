@@ -32698,7 +32698,7 @@ void menu_inicio_bucle_main(void)
 			//printf ("despues menu_inicio_handle_button_presses\n");
 
             else if (pulsado_alguna_ventana_con_menu_cerrado) {
-                printf("menu_inicio_bucle_main. pulsado en alguna ventana con menu cerrado\n");
+                debug_printf(VERBOSE_DEBUG,"Pressed on a window with menu closed from menu_inicio_bucle_main");
                 pulsado_alguna_ventana_con_menu_cerrado=0;
                 salir_menu=1;
             }
