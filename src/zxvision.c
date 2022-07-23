@@ -9832,7 +9832,7 @@ z80_byte zxvision_read_keyboard(void)
 	if (mouse_pressed_background_window) {
 		//printf ("pulsado background en zxvision_read_keyboard\n");
 		//sleep(5);
-        printf("Retornamos tecla 3 desde zxvision_read_keyboard\n");
+        //printf("Retornamos tecla 3 desde zxvision_read_keyboard\n");
 		return 3;
 	}	
 
@@ -23086,6 +23086,8 @@ int first_aid_no_hilow_format=0;
 char *first_aid_string_hilow_format="You can also format the Data Drive using the command SAVE \"FORMAT name\" on the Basic prompt.";
 
 
+int first_aid_no_hilow_convert_bside=0;
+char *first_aid_string_hilow_convert_bside="When changing b-size flag, you must stop and start conversion again in order to read again the input file.";
 //Items que se disparan en startup
 
 
@@ -23200,6 +23202,7 @@ void menu_first_aid_init(void)
     menu_first_aid_add("language",&first_aid_no_language,first_aid_string_language,0);
     menu_first_aid_add("snapshot_save_zsf",&first_aid_no_snapshot_save_zsf,first_aid_string_snapshot_save_zsf,0);
     menu_first_aid_add("hilow_format",&first_aid_no_hilow_format,first_aid_string_hilow_format,0);
+    menu_first_aid_add("hilow_convert_bside",&first_aid_no_hilow_convert_bside,first_aid_string_hilow_convert_bside,0);
     
 
 

@@ -30971,6 +30971,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
             case 'b':
                 hilow_read_audio_leer_cara_dos ^=1;
+                if (hilow_convert_audio_thread_running) menu_first_aid("hilow_convert_bside");
             break;
 
             case 'i':
