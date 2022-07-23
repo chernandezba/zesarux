@@ -14363,11 +14363,22 @@ void zxvision_mover_icono_papelera_si_conviene(void)
         if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
             debug_printf(VERBOSE_DEBUG,"Move icon to the Trash");
 
-            printf("Mover icono a la papelera -- xx\n");
+            //printf("Mover icono a la papelera -- xx\n");
 
-            //Cambiarle la posicion que tenia inicial antes de ir a la papelera
-            zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
-            zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);            
+            //Si ya estaba en la papelera. Esto pasa en determinadas combinaciones al arrastrar icono, primero detecta arrastre y envia a la papelera,
+            //pero luego gestiona pulsacion y detecta arrastre e intenta enviar a la papelera de nuevo
+            int estado_icono=zxdesktop_configurable_icons_list[configurable_icon_is_being_moved_which].status;
+
+            if (estado_icono==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+                debug_printf(VERBOSE_DEBUG,"Icon was already on the Trash, this may happen, it's pretty normal");
+            }
+
+            else {
+
+                //Cambiarle la posicion que tenia inicial antes de ir a la papelera
+                zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,configurable_icon_is_being_moved_previous_x,configurable_icon_is_being_moved_previous_y);
+                zxvision_move_configurable_icon_to_trash(configurable_icon_is_being_moved_which);            
+            }
         }
     }    
 
@@ -15141,6 +15152,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 //Para que cuando se vuelva a pulsar no interprete movimiento
                 menu_pressed_zxdesktop_configurable_icon_where_x=99999;
                 menu_pressed_zxdesktop_configurable_icon_where_y=99999;
+
+                //printf("zxvision_mover_icono_papelera_si_conviene 1\n");
+                //debug_exec_show_backtrace();
 
                 zxvision_mover_icono_papelera_si_conviene();
 
@@ -21111,7 +21125,15 @@ void menu_inicio_handle_configurable_icon_presses(void)
             menu_pressed_zxdesktop_configurable_icon_where_x=99999;
             menu_pressed_zxdesktop_configurable_icon_where_y=99999;
 
+            //printf("zxvision_mover_icono_papelera_si_conviene 2\n");
+            //debug_exec_show_backtrace();
+
+            //int estado_icono=zxdesktop_configurable_icons_list[pulsado_boton].indice_funcion;
+
+
             zxvision_mover_icono_papelera_si_conviene();
+
+            //configurable_icon_is_being_moved_which
         }
 
         /*
