@@ -2413,16 +2413,16 @@ printf (
 #ifdef USE_COCOA
 int set_scrdriver_cocoa(void)
 {
-                        scr_refresca_pantalla=scrcocoa_refresca_pantalla;
-												scr_refresca_pantalla_solo_driver=scrcocoa_refresca_pantalla_solo_driver;
-                        scr_init_pantalla=scrcocoa_init;
-                        scr_end_pantalla=scrcocoa_end;
-                        scr_lee_puerto=scrcocoa_lee_puerto;
-                        scr_actualiza_tablas_teclado=scrcocoa_actualiza_tablas_teclado;
+    scr_refresca_pantalla=scrcocoa_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrcocoa_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrcocoa_init;
+    scr_end_pantalla=scrcocoa_end;
+    scr_lee_puerto=scrcocoa_lee_puerto;
+    scr_actualiza_tablas_teclado=scrcocoa_actualiza_tablas_teclado;
 
-                        //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-                        screen_este_driver_permite_ext_desktop=1;
-        return 0;
+    //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
+    screen_este_driver_permite_ext_desktop=1;
+    return 0;
 }
 
 #endif
@@ -2431,18 +2431,18 @@ int set_scrdriver_cocoa(void)
 #ifdef COMPILE_XWINDOWS
 int set_scrdriver_xwindows(void)
 {
-                        scr_refresca_pantalla=scrxwindows_refresca_pantalla;
-												scr_refresca_pantalla_solo_driver=scrxwindows_refresca_pantalla_solo_driver;
-                        scr_init_pantalla=scrxwindows_init;
-                        scr_end_pantalla=scrxwindows_end;
-                        scr_lee_puerto=scrxwindows_lee_puerto;
-                        scr_actualiza_tablas_teclado=scrxwindows_actualiza_tablas_teclado;
+    scr_refresca_pantalla=scrxwindows_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrxwindows_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrxwindows_init;
+    scr_end_pantalla=scrxwindows_end;
+    scr_lee_puerto=scrxwindows_lee_puerto;
+    scr_actualiza_tablas_teclado=scrxwindows_actualiza_tablas_teclado;
 
-                        //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-                        screen_este_driver_permite_ext_desktop=1;
-                        //scr_debug_registers=scrxwindows_debug_registers;
-			//scr_messages_debug=scrxwindows_messages_debug;
-	return 0;
+    //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
+    screen_este_driver_permite_ext_desktop=1;
+    //scr_debug_registers=scrxwindows_debug_registers;
+    //scr_messages_debug=scrxwindows_messages_debug;
+    return 0;
 }
 
 #endif
@@ -2450,16 +2450,16 @@ int set_scrdriver_xwindows(void)
 #ifdef COMPILE_SDL
 int set_scrdriver_sdl(void)
 {
-                        scr_refresca_pantalla=scrsdl_refresca_pantalla;
-												scr_refresca_pantalla_solo_driver=scrsdl_refresca_pantalla_solo_driver;
-                        scr_init_pantalla=scrsdl_init;
-                        scr_end_pantalla=scrsdl_end;
-                        scr_lee_puerto=scrsdl_lee_puerto;
-                        scr_actualiza_tablas_teclado=scrsdl_actualiza_tablas_teclado;
+    scr_refresca_pantalla=scrsdl_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrsdl_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrsdl_init;
+    scr_end_pantalla=scrsdl_end;
+    scr_lee_puerto=scrsdl_lee_puerto;
+    scr_actualiza_tablas_teclado=scrsdl_actualiza_tablas_teclado;
 
-                        //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-                        screen_este_driver_permite_ext_desktop=1;
-        return 0;
+    //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
+    screen_este_driver_permite_ext_desktop=1;
+    return 0;
 }
 
 #endif
@@ -2469,17 +2469,17 @@ int set_scrdriver_sdl(void)
 #ifdef COMPILE_FBDEV
 int set_scrdriver_fbdev(void)
 {
-                        scr_refresca_pantalla=scrfbdev_refresca_pantalla;
-												scr_refresca_pantalla_solo_driver=scrfbdev_refresca_pantalla_solo_driver;
-                        scr_init_pantalla=scrfbdev_init;
-                        scr_end_pantalla=scrfbdev_end;
-                        scr_lee_puerto=scrfbdev_lee_puerto;
+    scr_refresca_pantalla=scrfbdev_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrfbdev_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrfbdev_init;
+    scr_end_pantalla=scrfbdev_end;
+    scr_lee_puerto=scrfbdev_lee_puerto;
 
-			//la rutina de tabla teclado la establecemos en el init... pues se cambia segun si modo raw o no
-                        //scr_actualiza_tablas_teclado=scrfbdev_actualiza_tablas_teclado;
-                        //scr_debug_registers=scrfbdev_debug_registers;
-                        //scr_messages_debug=scrfbdev_messages_debug;
-        return 0;
+    //la rutina de tabla teclado la establecemos en el init... pues se cambia segun si modo raw o no
+    //scr_actualiza_tablas_teclado=scrfbdev_actualiza_tablas_teclado;
+    //scr_debug_registers=scrfbdev_debug_registers;
+    //scr_messages_debug=scrfbdev_messages_debug;
+    return 0;
 }
 
 #endif
@@ -2488,95 +2488,98 @@ int set_scrdriver_fbdev(void)
 #ifdef COMPILE_CURSES
 int set_scrdriver_curses(void)
 {
-//asignar pantalla curses
-scr_refresca_pantalla=scrcurses_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scrcurses_refresca_pantalla_solo_driver;
-scr_init_pantalla=scrcurses_init;
-scr_end_pantalla=scrcurses_end;
-scr_lee_puerto=scrcurses_lee_puerto;
-scr_actualiza_tablas_teclado=scrcurses_actualiza_tablas_teclado;
-//scr_debug_registers=scrcurses_debug_registers;
-//			scr_messages_debug=scrcurses_messages_debug;
-	return 0;
+    //asignar pantalla curses
+    scr_refresca_pantalla=scrcurses_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrcurses_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrcurses_init;
+    scr_end_pantalla=scrcurses_end;
+    scr_lee_puerto=scrcurses_lee_puerto;
+    scr_actualiza_tablas_teclado=scrcurses_actualiza_tablas_teclado;
+    //scr_debug_registers=scrcurses_debug_registers;
+    //			scr_messages_debug=scrcurses_messages_debug;
+    return 0;
 }
 #endif
 
 #ifdef COMPILE_AA
 int set_scrdriver_aa(void)
 {
-//asignar pantalla aa
-scr_refresca_pantalla=scraa_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scraa_refresca_pantalla_solo_driver;
-scr_init_pantalla=scraa_init;
-scr_end_pantalla=scraa_end;
-scr_lee_puerto=scraa_lee_puerto;
-scr_actualiza_tablas_teclado=scraa_actualiza_tablas_teclado;
+    //asignar pantalla aa
+    scr_refresca_pantalla=scraa_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scraa_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scraa_init;
+    scr_end_pantalla=scraa_end;
+    scr_lee_puerto=scraa_lee_puerto;
+    scr_actualiza_tablas_teclado=scraa_actualiza_tablas_teclado;
 
 
-//scr_debug_registers=scraa_debug_registers;
-//scr_messages_debug=scraa_messages_debug;
-	return 0;
+    //scr_debug_registers=scraa_debug_registers;
+    //scr_messages_debug=scraa_messages_debug;
+    return 0;
 }
 #endif
 
 #ifdef COMPILE_CACA
 int set_scrdriver_caca(void)
 {
-//asignar pantalla caca
-scr_refresca_pantalla=scrcaca_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scrcaca_refresca_pantalla_solo_driver;
-scr_init_pantalla=scrcaca_init;
-scr_end_pantalla=scrcaca_end;
-scr_lee_puerto=scrcaca_lee_puerto;
-scr_actualiza_tablas_teclado=scrcaca_actualiza_tablas_teclado;
-//scr_debug_registers=scrcaca_debug_registers;
-//			scr_messages_debug=scrcaca_messages_debug;
-	return 0;
+    //asignar pantalla caca
+    scr_refresca_pantalla=scrcaca_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrcaca_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrcaca_init;
+    scr_end_pantalla=scrcaca_end;
+    scr_lee_puerto=scrcaca_lee_puerto;
+    scr_actualiza_tablas_teclado=scrcaca_actualiza_tablas_teclado;
+    //scr_debug_registers=scrcaca_debug_registers;
+    //			scr_messages_debug=scrcaca_messages_debug;
+    return 0;
 }
 #endif
 
 
 
 
-int set_scrdriver_null(void) {
-scr_refresca_pantalla=scrnull_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scrnull_refresca_pantalla_solo_driver;
-scr_init_pantalla=scrnull_init;
-scr_end_pantalla=scrnull_end;
-scr_lee_puerto=scrnull_lee_puerto;
-scr_actualiza_tablas_teclado=scrnull_actualiza_tablas_teclado;
-//scr_debug_registers=scrnull_debug_registers;
-//			scr_messages_debug=scrnull_messages_debug;
-	return 0;
+int set_scrdriver_null(void) 
+{
+    scr_refresca_pantalla=scrnull_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrnull_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrnull_init;
+    scr_end_pantalla=scrnull_end;
+    scr_lee_puerto=scrnull_lee_puerto;
+    scr_actualiza_tablas_teclado=scrnull_actualiza_tablas_teclado;
+    //scr_debug_registers=scrnull_debug_registers;
+    //			scr_messages_debug=scrnull_messages_debug;
+    return 0;
 }
 
 #ifdef COMPILE_STDOUT
 
-int set_scrdriver_stdout(void) {
-scr_refresca_pantalla=scrstdout_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scrstdout_refresca_pantalla_solo_driver;
-scr_init_pantalla=scrstdout_init;
-scr_end_pantalla=scrstdout_end;
-scr_lee_puerto=scrstdout_lee_puerto;
-scr_actualiza_tablas_teclado=scrstdout_actualiza_tablas_teclado;
-//scr_debug_registers=scrstdout_debug_registers;
-//                      scr_messages_debug=scrstdout_messages_debug;
-        return 0;
+int set_scrdriver_stdout(void) 
+{
+    scr_refresca_pantalla=scrstdout_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrstdout_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrstdout_init;
+    scr_end_pantalla=scrstdout_end;
+    scr_lee_puerto=scrstdout_lee_puerto;
+    scr_actualiza_tablas_teclado=scrstdout_actualiza_tablas_teclado;
+    //scr_debug_registers=scrstdout_debug_registers;
+    //                      scr_messages_debug=scrstdout_messages_debug;
+    return 0;
 }
 
 #endif
 
 #ifdef COMPILE_SIMPLETEXT
 
-int set_scrdriver_simpletext(void) {
-scr_refresca_pantalla=scrsimpletext_refresca_pantalla;
-scr_refresca_pantalla_solo_driver=scrsimpletext_refresca_pantalla_solo_driver;
-scr_init_pantalla=scrsimpletext_init;
-scr_end_pantalla=scrsimpletext_end;
-scr_lee_puerto=scrsimpletext_lee_puerto;
-scr_actualiza_tablas_teclado=scrsimpletext_actualiza_tablas_teclado;
+int set_scrdriver_simpletext(void) 
+{
+    scr_refresca_pantalla=scrsimpletext_refresca_pantalla;
+    scr_refresca_pantalla_solo_driver=scrsimpletext_refresca_pantalla_solo_driver;
+    scr_init_pantalla=scrsimpletext_init;
+    scr_end_pantalla=scrsimpletext_end;
+    scr_lee_puerto=scrsimpletext_lee_puerto;
+    scr_actualiza_tablas_teclado=scrsimpletext_actualiza_tablas_teclado;
 
-        return 0;
+    return 0;
 }
 
 #endif
@@ -2584,80 +2587,86 @@ scr_actualiza_tablas_teclado=scrsimpletext_actualiza_tablas_teclado;
 
 
 #ifdef COMPILE_DSP
-int set_audiodriver_dsp(void) {
-                        audio_init=audiodsp_init;
-                        audio_send_frame=audiodsp_send_frame;
-			audio_thread_finish=audiodsp_thread_finish;
-			audio_end=audiodsp_end;
-			audio_get_buffer_info=audiodsp_get_buffer_info;
-			return 0;
+int set_audiodriver_dsp(void) 
+{
+    audio_init=audiodsp_init;
+    audio_send_frame=audiodsp_send_frame;
+    audio_thread_finish=audiodsp_thread_finish;
+    audio_end=audiodsp_end;
+    audio_get_buffer_info=audiodsp_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 
 #ifdef COMPILE_ONEBITSPEAKER
-int set_audiodriver_onebitspeaker(void) {
-                        audio_init=audioonebitspeaker_init;
-                        audio_send_frame=audioonebitspeaker_send_frame;
-			audio_thread_finish=audioonebitspeaker_thread_finish;
-			audio_end=audioonebitspeaker_end;
-			audio_get_buffer_info=audioonebitspeaker_get_buffer_info;
-			return 0;
+int set_audiodriver_onebitspeaker(void) 
+{
+    audio_init=audioonebitspeaker_init;
+    audio_send_frame=audioonebitspeaker_send_frame;
+    audio_thread_finish=audioonebitspeaker_thread_finish;
+    audio_end=audioonebitspeaker_end;
+    audio_get_buffer_info=audioonebitspeaker_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 
 
 #ifdef COMPILE_SDL
-int set_audiodriver_sdl(void) {
-                        audio_init=audiosdl_init;
-                        audio_send_frame=audiosdl_send_frame;
-                        audio_thread_finish=audiosdl_thread_finish;
-                        audio_end=audiosdl_end;
-												audio_get_buffer_info=audiosdl_get_buffer_info;
-                        return 0;
+int set_audiodriver_sdl(void) 
+{
+    audio_init=audiosdl_init;
+    audio_send_frame=audiosdl_send_frame;
+    audio_thread_finish=audiosdl_thread_finish;
+    audio_end=audiosdl_end;
+    audio_get_buffer_info=audiosdl_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 
 #ifdef COMPILE_ALSA
-int set_audiodriver_alsa(void) {
-                        audio_init=audioalsa_init;
-                        audio_send_frame=audioalsa_send_frame;
-			audio_thread_finish=audioalsa_thread_finish;
-			audio_end=audioalsa_end;
-			audio_get_buffer_info=audioalsa_get_buffer_info;
-			return 0;
+int set_audiodriver_alsa(void) 
+{
+    audio_init=audioalsa_init;
+    audio_send_frame=audioalsa_send_frame;
+    audio_thread_finish=audioalsa_thread_finish;
+    audio_end=audioalsa_end;
+    audio_get_buffer_info=audioalsa_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 #ifdef COMPILE_PULSE
-int set_audiodriver_pulse(void) {
-                        audio_init=audiopulse_init;
-                        audio_send_frame=audiopulse_send_frame;
-                        audio_thread_finish=audiopulse_thread_finish;
-			audio_end=audiopulse_end;
-			audio_get_buffer_info=audiopulse_get_buffer_info;
-                        return 0;
+int set_audiodriver_pulse(void) 
+{
+    audio_init=audiopulse_init;
+    audio_send_frame=audiopulse_send_frame;
+    audio_thread_finish=audiopulse_thread_finish;
+    audio_end=audiopulse_end;
+    audio_get_buffer_info=audiopulse_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 
 #ifdef COMPILE_COREAUDIO
-int set_audiodriver_coreaudio(void) {
-                        audio_init=audiocoreaudio_init;
-                        audio_send_frame=audiocoreaudio_send_frame;
-                        audio_thread_finish=audiocoreaudio_thread_finish;
-			audio_end=audiocoreaudio_end;
-			audio_get_buffer_info=audiocoreaudio_get_buffer_info;
-                        return 0;
+int set_audiodriver_coreaudio(void) 
+{
+    audio_init=audiocoreaudio_init;
+    audio_send_frame=audiocoreaudio_send_frame;
+    audio_thread_finish=audiocoreaudio_thread_finish;
+    audio_end=audiocoreaudio_end;
+    audio_get_buffer_info=audiocoreaudio_get_buffer_info;
+    return 0;
 
-                }
+}
 #endif
 
 //Randomize Usando segundos del reloj
@@ -5332,107 +5341,107 @@ void floatingpoint_signal_handler(int sig)
 
 void main_init_video(void)
 {
-		//Video init
-                debug_printf (VERBOSE_INFO,"Initializing Video Driver");
+    //Video init
+    debug_printf (VERBOSE_INFO,"Initializing Video Driver");
 
-                //Asumimos video driver no soporta ext desktop
-                screen_este_driver_permite_ext_desktop=0;
+    //Asumimos video driver no soporta ext desktop
+    screen_este_driver_permite_ext_desktop=0;
 
-                //gestion de fallback y con driver indicado
+    //gestion de fallback y con driver indicado
 
-                //scr_init_pantalla=NULL;
+    //scr_init_pantalla=NULL;
 
 #ifdef USE_COCOA
-                add_scr_init_array("cocoa",scrcocoa_init,set_scrdriver_cocoa);
-                if (!strcmp(driver_screen,"cocoa")) {
-                        set_scrdriver_cocoa();
-                }
+    add_scr_init_array("cocoa",scrcocoa_init,set_scrdriver_cocoa);
+    if (!strcmp(driver_screen,"cocoa")) {
+            set_scrdriver_cocoa();
+    }
 #endif
 
 
 #ifdef COMPILE_XWINDOWS
-                add_scr_init_array("xwindows",scrxwindows_init,set_scrdriver_xwindows);
-                if (!strcmp(driver_screen,"xwindows")) {
-                        set_scrdriver_xwindows();
-                }
+    add_scr_init_array("xwindows",scrxwindows_init,set_scrdriver_xwindows);
+    if (!strcmp(driver_screen,"xwindows")) {
+            set_scrdriver_xwindows();
+    }
 #endif
 
 
 #ifdef COMPILE_SDL
-                add_scr_init_array("sdl",scrsdl_init,set_scrdriver_sdl);
-                if (!strcmp(driver_screen,"sdl")) {
-                        set_scrdriver_sdl();
-                }
+    add_scr_init_array("sdl",scrsdl_init,set_scrdriver_sdl);
+    if (!strcmp(driver_screen,"sdl")) {
+            set_scrdriver_sdl();
+    }
 #endif
 
 
 
 #ifdef COMPILE_FBDEV
-		add_scr_init_array("fbdev",scrfbdev_init,set_scrdriver_fbdev);
-                if (!strcmp(driver_screen,"fbdev")) {
-                        set_scrdriver_fbdev();
-		}
+    add_scr_init_array("fbdev",scrfbdev_init,set_scrdriver_fbdev);
+            if (!strcmp(driver_screen,"fbdev")) {
+                    set_scrdriver_fbdev();
+    }
 #endif
 
 #ifdef COMPILE_CACA
-                add_scr_init_array("caca",scrcaca_init,set_scrdriver_caca);
-                if (!strcmp(driver_screen,"caca")) {
-                        set_scrdriver_caca();
-                }
+    add_scr_init_array("caca",scrcaca_init,set_scrdriver_caca);
+    if (!strcmp(driver_screen,"caca")) {
+            set_scrdriver_caca();
+    }
 #endif
 
 #ifdef COMPILE_AA
-                add_scr_init_array("aa",scraa_init,set_scrdriver_aa);
-                if (!strcmp(driver_screen,"aa")) {
-                        set_scrdriver_aa();
-                }
+    add_scr_init_array("aa",scraa_init,set_scrdriver_aa);
+    if (!strcmp(driver_screen,"aa")) {
+            set_scrdriver_aa();
+    }
 #endif
 
 
 #ifdef COMPILE_CURSES
-                add_scr_init_array("curses",scrcurses_init,set_scrdriver_curses);
+    add_scr_init_array("curses",scrcurses_init,set_scrdriver_curses);
 
-                if (!strcmp(driver_screen,"curses")) {
-                        set_scrdriver_curses();
-                }
+    if (!strcmp(driver_screen,"curses")) {
+            set_scrdriver_curses();
+    }
 #endif
 
 #ifdef COMPILE_STDOUT
-                add_scr_init_array("stdout",scrstdout_init,set_scrdriver_stdout);
-                if (!strcmp(driver_screen,"stdout")) {
-                        set_scrdriver_stdout();
-                }
+    add_scr_init_array("stdout",scrstdout_init,set_scrdriver_stdout);
+    if (!strcmp(driver_screen,"stdout")) {
+            set_scrdriver_stdout();
+    }
 #endif
 
 #ifdef COMPILE_SIMPLETEXT
-                add_scr_init_array("simpletext",scrsimpletext_init,set_scrdriver_simpletext);
-                if (!strcmp(driver_screen,"simpletext")) {
-                        set_scrdriver_simpletext();
-                }
+    add_scr_init_array("simpletext",scrsimpletext_init,set_scrdriver_simpletext);
+    if (!strcmp(driver_screen,"simpletext")) {
+            set_scrdriver_simpletext();
+    }
 #endif
 
 
-                //Y finalmente null video driver
-                add_scr_init_array("null",scrnull_init,set_scrdriver_null);
-                if (!strcmp(driver_screen,"null")) {
-                        set_scrdriver_null();
-                }
+    //Y finalmente null video driver
+    add_scr_init_array("null",scrnull_init,set_scrdriver_null);
+    if (!strcmp(driver_screen,"null")) {
+            set_scrdriver_null();
+    }
 
 
 
-                if (try_fallback_video.v==1) {
-                        //probar drivers de video
-                        do_fallback_video();
-                }
+    if (try_fallback_video.v==1) {
+            //probar drivers de video
+            do_fallback_video();
+    }
 
-                //no probar. Inicializar driver indicado. Si falla, fallback a null
-                else {
-                        if (screen_init_pantalla_and_others() ) {
-                                debug_printf (VERBOSE_ERR,"Error using video output driver %s. Fallback to null",driver_screen);
-				set_scrdriver_null();
-				screen_init_pantalla_and_others();
-                        }
-                }
+    //no probar. Inicializar driver indicado. Si falla, fallback a null
+    else {
+            if (screen_init_pantalla_and_others() ) {
+                    debug_printf (VERBOSE_ERR,"Error using video output driver %s. Fallback to null",driver_screen);
+    set_scrdriver_null();
+    screen_init_pantalla_and_others();
+            }
+    }
 
 
 }
