@@ -23424,21 +23424,19 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 	//Ver tamanyo archivo rom
 	minimum_size=get_rom_size(next_machine_type);
 
-	struct stat buf_stat;
+    if (!si_existe_archivo(custom_romfile)) {
+        debug_printf(VERBOSE_ERR,"Unable to find rom file %s",custom_romfile);
+        return;
+    }
 
-
-                if (stat(custom_romfile, &buf_stat)!=0) {
-                        debug_printf(VERBOSE_ERR,"Unable to find rom file %s",custom_romfile);
-			return;
-                }
-
-                else {
-                        //Tamaño del archivo es >=minimum_size
-                        if (buf_stat.st_size<minimum_size) {
-				debug_printf(VERBOSE_ERR,"ROM file must be at least %d bytes length",minimum_size);
-                                return;
-                        }
-                }
+    else {
+        //Tamaño del archivo es >=minimum_size
+        long int tamanyo_archivo=get_file_size(custom_romfile);
+        if (tamanyo_archivo<minimum_size) {
+            debug_printf(VERBOSE_ERR,"ROM file must be at least %d bytes length",minimum_size);
+            return;
+        }
+    }
 
 	current_machine_type=next_machine_type;
 	set_machine(custom_romfile);
