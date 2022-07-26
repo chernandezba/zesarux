@@ -1230,7 +1230,7 @@ int find_sharedfile(char *archivo,char *ruta_final)
 	int existe;
 
         //ruta actual
-        debug_printf(VERBOSE_INFO,"Looking for file %s at current dir",buffer_nombre);
+        debug_printf(VERBOSE_INFO,"Looking for file %s from current dir",buffer_nombre);
         existe=si_existe_archivo(buffer_nombre);
 
         //sino, en ../Resources

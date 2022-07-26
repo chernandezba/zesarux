@@ -23440,11 +23440,11 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 	current_machine_type=next_machine_type;
 
-    printf("antes set machine\n\n");
+    //printf("antes set machine\n\n");
 
 	set_machine(custom_romfile);
 
-    printf("despues set machine\n\n");
+    //printf("despues set machine\n\n");
 	cold_start_cpu_registers();
 	reset_cpu();
 
