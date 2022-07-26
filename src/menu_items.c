@@ -23255,6 +23255,7 @@ static char *custom_machine_names[]={
 
                 "Spectrum 128k/+2",
                 "Spectrum +2A",
+                "Spectrum +2E MMC",
                 "Spectrum +3",
 		"ZX-Uno",
 
@@ -23298,8 +23299,10 @@ void menu_custom_machine_romfile(MENU_ITEM_PARAMETERS)
 void menu_custom_machine_change(MENU_ITEM_PARAMETERS)
 {
 	custom_machine_type++;
-	if (custom_machine_type==18) custom_machine_type=0;
+	if (custom_machine_type==19) custom_machine_type=0;
 }
+
+#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
 
 void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 {
@@ -23335,80 +23338,84 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 			next_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
 		break;
 
-        //Spectrum +3
+        //Spectrum +2E MMC
 		case 5:
+			next_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
+
+	        find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
+
+		break;        
+
+        //Spectrum +3
+		case 6:
 			next_machine_type=MACHINE_ID_SPECTRUM_P3_40;
 		break;        
 
-		case 6:
+		case 7:
 			//ZX-Uno
 			next_machine_type=MACHINE_ID_ZXUNO;
 		break;
 
 
-
-
-
-		case 7:
+		case 8:
 			//Chloe 140SE
 			next_machine_type=MACHINE_ID_CHLOE_140SE;
 		break;
 
-		case 8:
+		case 9:
 			//Chloe 280SE
 			next_machine_type=MACHINE_ID_CHLOE_280SE;
 		break;
 
-		case 9:
+		case 10:
 			//Timex TS2068
 			next_machine_type=MACHINE_ID_TIMEX_TS2068;
 		break;
 
-		case 10:
+		case 11:
 			//Prism
 			next_machine_type=MACHINE_ID_PRISM;
 		break;
 
 
 
-		case 11:
+		case 12:
 			//ZX-80
 			next_machine_type=MACHINE_ID_ZX80;
 		break;
 
-		case 12:
+		case 13:
 			//ZX-81
 			next_machine_type=MACHINE_ID_ZX81;
 		break;
 
-		case 13:
+		case 14:
 			//ACE
 			next_machine_type=MACHINE_ID_ACE;
 		break;
 
-		case 14:
+		case 15:
 			//Z88
 			next_machine_type=MACHINE_ID_Z88;
 		break;
 
-		case 15:
+		case 16:
 			//Amstrad CPC 464
 			next_machine_type=MACHINE_ID_CPC_464;
 		break;
 
-		case 16:
+		case 17:
 			//Sam Coupe
 			next_machine_type=MACHINE_ID_SAM;
 		break;
 
-		case 17:
+		case 18:
 			//QL
 			next_machine_type=MACHINE_ID_QL_STANDARD;
 		break;
 
 		default:
-			cpu_panic("Custom machine type unknown");
-			//este return no hace falta, solo es para silenciar los warning de variable next_machine_type no inicializada
+			debug_printf(VERBOSE_ERR,"Custom machine type unknown");
 			return;
 		break;
 
@@ -23443,6 +23450,11 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 }
 
+int menu_custom_machine_rom_disabled_cond(void)
+{
+    return 0;
+}
+
 void menu_custom_machine(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_custom_machine;
@@ -23453,10 +23465,18 @@ void menu_custom_machine(MENU_ITEM_PARAMETERS)
     do {
         menu_add_item_menu_inicial_format(&array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_change,NULL,"Machine Type: %s",custom_machine_names[custom_machine_type] );
 
-        char string_romfile_shown[16];
-        menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,16);
+        char string_romfile_shown[20];
+        menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
 
-        menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL,"Rom File: %s",string_romfile_shown);
+        //En el caso de Spectrum +2E MMC es una rom conocida
+        if (custom_machine_type!=5) {
+            menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL,"Rom File: %s",string_romfile_shown);
+        }
+        else {
+            //Solo para que el usuario lo vea aunque deshabilitado
+            menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_romfile,
+                menu_custom_machine_rom_disabled_cond,"Rom File: " CUSTOM_MACHINE_2E_MMC_ROM_FILE);
+        }
 
         menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_run,NULL,"Run machine");
 
