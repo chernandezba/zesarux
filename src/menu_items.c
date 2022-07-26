@@ -23442,6 +23442,10 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
     //printf("antes set machine\n\n");
 
+    //Info: este custom_romfile se lo pasamos con el path completo, sin embargo la funcion de set_machine
+    //acaba buscando el archivo desde la ruta actual pero tambien desde otras rutas de instalacion por defecto
+    //porque esta pensado para buscar nombre de rom sin path entero, aunque se lo pasamos con path entero
+    //Esto no es un problema en si mismo, pero lo dejo como comentario aqui para mi yo del futuro que lo vea...
 	set_machine(custom_romfile);
 
     //printf("despues set machine\n\n");

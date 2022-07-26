@@ -4622,11 +4622,11 @@ void post_set_machine_no_rom_load(void)
 void post_set_machine(char *romfile)
 {
 
-                //leer rom
-                debug_printf (VERBOSE_INFO,"Loading ROM");
-                rom_load(romfile);
+    //leer rom
+    debug_printf (VERBOSE_INFO,"Loading ROM");
+    rom_load(romfile);
 
-		post_set_machine_no_rom_load();
+    post_set_machine_no_rom_load();
 }
 
 
@@ -4672,225 +4672,225 @@ void set_machine(char *romfile)
 
 void rom_load(char *romfilename)
 {
-                FILE *ptr_romfile;
-		int leidos;
+    FILE *ptr_romfile;
+    int leidos;
 
 	char mensaje_error[200];
 
 
 	if (romfilename==NULL) {
 		switch (current_machine_type) {
-                case 0:
-                romfilename="48.rom";
-                break;
+            case 0:
+            romfilename="48.rom";
+            break;
 
-                case 1:
-                case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
-                romfilename="48.rom";
-                break;
+            case 1:
+            case MACHINE_ID_SPECTRUM_48_PLUS_ENG:
+            romfilename="48.rom";
+            break;
 
-                case 2:
-                romfilename="inves.rom";
-                break;
+            case 2:
+            romfilename="inves.rom";
+            break;
 
-                case MACHINE_ID_MICRODIGITAL_TK90X:
-                romfilename="tk90x.rom";
-                break;
+            case MACHINE_ID_MICRODIGITAL_TK90X:
+            romfilename="tk90x.rom";
+            break;
 
-                case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
-                romfilename="tk90xs.rom";
-                break;
+            case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+            romfilename="tk90xs.rom";
+            break;
 
-                case MACHINE_ID_MICRODIGITAL_TK95:
-                romfilename="tk95.rom";
-                break;
+            case MACHINE_ID_MICRODIGITAL_TK95:
+            romfilename="tk95.rom";
+            break;
 
-                case MACHINE_ID_MICRODIGITAL_TK95_SPA:
-                romfilename="tk95es.rom";
-                break;
-
-
-
-                case 6:
-                romfilename="128.rom";
-                break;
-
-                case 7:
-                romfilename="128s.rom";
-                break;
+            case MACHINE_ID_MICRODIGITAL_TK95_SPA:
+            romfilename="tk95es.rom";
+            break;
 
 
 
+            case 6:
+            romfilename="128.rom";
+            break;
 
-                case 8:
-                romfilename="p2.rom";
-                break;
-
-                case 9:
-                romfilename="p2f.rom";
-                break;
-
-                case 10:
-                romfilename="p2s.rom";
-                break;
+            case 7:
+            romfilename="128s.rom";
+            break;
 
 
 
-                case 11:
-                case MACHINE_ID_SPECTRUM_P3_40:
-                romfilename="p2a40.rom";
-                break;
 
-                case MACHINE_ID_SPECTRUM_P3_41:
-                case 12:
-                romfilename="p2a41.rom";
-                break;
+            case 8:
+            romfilename="p2.rom";
+            break;
 
-                case MACHINE_ID_SPECTRUM_P3_SPA:
-                case 13:
-                romfilename="p2as.rom";
-                break;
+            case 9:
+            romfilename="p2f.rom";
+            break;
+
+            case 10:
+            romfilename="p2s.rom";
+            break;
 
 
-		case 14:
-		romfilename="zxuno_bootloader.rom";
-		break;
 
-		case 15:
-		case 16:
-		romfilename="se.rom";
-		break;
+            case 11:
+            case MACHINE_ID_SPECTRUM_P3_40:
+            romfilename="p2a40.rom";
+            break;
 
+            case MACHINE_ID_SPECTRUM_P3_41:
+            case 12:
+            romfilename="p2a41.rom";
+            break;
 
-		case MACHINE_ID_TIMEX_TS2068:
-        case MACHINE_ID_TIMEX_TC2068:
-		romfilename="ts2068.rom";
-		break;
-
-		case 18:
-		romfilename="prism.rom";
-		break;
-
-		case 19:
-		if (tbblue_fast_boot_mode.v) romfilename="48.rom";
-		else romfilename="tbblue_loader.rom";
-		break;
-
-                case 20:
-                romfilename="48es.rom";
-                break;
-
-                case 21:
-                romfilename="pentagon.rom";
-                break;
-
-                case MACHINE_ID_COLECO:
-                romfilename="coleco.rom";
-                break;	
-
-                case MACHINE_ID_SG1000:
-                romfilename="sg1000.rom"; 
-                break;		
-
-                case MACHINE_ID_SMS:
-                romfilename="sms.rom"; 
-                break;	                					
-                
-                case MACHINE_ID_MSX1:
-                romfilename="msx.rom";
-                break;
-
-                case MACHINE_ID_SVI_318:
-				case MACHINE_ID_SVI_328:
-                romfilename="svi.rom";
-                break;				
-
-								case MACHINE_ID_CHROME:
-								romfilename="chrome.rom";
-								break;
-
-								case MACHINE_ID_TSCONF:
-								romfilename="zxevo_tsconf.rom";
-								break;
-
-								case MACHINE_ID_BASECONF:
-								romfilename="zxevo_baseconf.rom";
-								break;
-
-                case MACHINE_ID_TIMEX_TC2048:
-                romfilename="tc2048.rom";
-                break;
-
-                case 120:
-                romfilename="zx80.rom";
-
-                break;
-
-                case 121:
-
-                romfilename="zx81.rom";
-
-		break;
-
-                case 122:
-
-                romfilename="ace.rom";
-
-                break;
-
-		case 130:
-
-		romfilename="Z88OZ47.rom";
+            case MACHINE_ID_SPECTRUM_P3_SPA:
+            case 13:
+            romfilename="p2as.rom";
+            break;
 
 
-		break;
+            case 14:
+            romfilename="zxuno_bootloader.rom";
+            break;
+
+            case 15:
+            case 16:
+            romfilename="se.rom";
+            break;
 
 
-		case MACHINE_ID_CPC_464:
-		romfilename="cpc464.rom";
-		break;
+            case MACHINE_ID_TIMEX_TS2068:
+            case MACHINE_ID_TIMEX_TC2068:
+            romfilename="ts2068.rom";
+            break;
 
-		case MACHINE_ID_CPC_4128:
-		romfilename="cpc464.rom";
-		break;		
+            case 18:
+            romfilename="prism.rom";
+            break;
 
-		case 150:
-		if (atomlite_enabled.v) romfilename="atomlite.rom";
-		else romfilename="samcoupe.rom";
-		break;
+            case 19:
+            if (tbblue_fast_boot_mode.v) romfilename="48.rom";
+            else romfilename="tbblue_loader.rom";
+            break;
 
-		case MACHINE_ID_QL_STANDARD:
-		romfilename="ql_js.rom";
+            case 20:
+            romfilename="48es.rom";
+            break;
 
-		//romfilename="MIN189.rom";
-		//romfilename="ql_jm.rom";
-		break;
+            case 21:
+            romfilename="pentagon.rom";
+            break;
 
-		case MACHINE_ID_MK14_STANDARD:
-		romfilename="mk14.rom";
-		break;
+            case MACHINE_ID_COLECO:
+            romfilename="coleco.rom";
+            break;	
 
-                        default:
-                                //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
-                                sprintf (mensaje_error,"ROM for Machine id %d not supported. Exiting",current_machine_type);
-				cpu_panic(mensaje_error);
-                        break;
+            case MACHINE_ID_SG1000:
+            romfilename="sg1000.rom"; 
+            break;		
+
+            case MACHINE_ID_SMS:
+            romfilename="sms.rom"; 
+            break;	                					
+            
+            case MACHINE_ID_MSX1:
+            romfilename="msx.rom";
+            break;
+
+            case MACHINE_ID_SVI_318:
+            case MACHINE_ID_SVI_328:
+            romfilename="svi.rom";
+            break;				
+
+            case MACHINE_ID_CHROME:
+            romfilename="chrome.rom";
+            break;
+
+            case MACHINE_ID_TSCONF:
+            romfilename="zxevo_tsconf.rom";
+            break;
+
+            case MACHINE_ID_BASECONF:
+            romfilename="zxevo_baseconf.rom";
+            break;
+
+            case MACHINE_ID_TIMEX_TC2048:
+            romfilename="tc2048.rom";
+            break;
+
+            case 120:
+            romfilename="zx80.rom";
+
+            break;
+
+            case 121:
+
+            romfilename="zx81.rom";
+
+		    break;
+
+            case 122:
+
+            romfilename="ace.rom";
+
+            break;
+
+            case 130:
+
+            romfilename="Z88OZ47.rom";
+
+
+            break;
+
+
+            case MACHINE_ID_CPC_464:
+            romfilename="cpc464.rom";
+            break;
+
+            case MACHINE_ID_CPC_4128:
+            romfilename="cpc464.rom";
+            break;		
+
+            case 150:
+            if (atomlite_enabled.v) romfilename="atomlite.rom";
+            else romfilename="samcoupe.rom";
+            break;
+
+            case MACHINE_ID_QL_STANDARD:
+            romfilename="ql_js.rom";
+
+            //romfilename="MIN189.rom";
+            //romfilename="ql_jm.rom";
+            break;
+
+            case MACHINE_ID_MK14_STANDARD:
+            romfilename="mk14.rom";
+            break;
+
+            default:
+            //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
+            sprintf (mensaje_error,"ROM for Machine id %d not supported. Exiting",current_machine_type);
+            cpu_panic(mensaje_error);
+            break;
 
 
 
 		}
 	}
 
-		open_sharedfile(romfilename,&ptr_romfile);
-                if (!ptr_romfile)
-                {
-                    debug_printf(VERBOSE_ERR,"Unable to open rom file %s",romfilename);
+    open_sharedfile(romfilename,&ptr_romfile);
+    if (!ptr_romfile)
+    {
+        debug_printf(VERBOSE_ERR,"Unable to open rom file %s",romfilename);
 
-					//No hacemos mas un panic por esto. Ayuda a debugar posibles problemas con el path de inicio
-					//cpu_panic("Unable to open rom file");
+        //No hacemos mas un panic por esto. Ayuda a debugar posibles problemas con el path de inicio
+        //cpu_panic("Unable to open rom file");
 
-					return;
-                }
+        return;
+    }
 
 		//Caso Inves. ROM esta en el final de la memoria asignada
 		if (MACHINE_IS_INVES) {
