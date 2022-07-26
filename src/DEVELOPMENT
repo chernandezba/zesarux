@@ -7,7 +7,7 @@
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
 * Cambiar EMULATOR_VERSION en archivo configure 
 * Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
-* Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx
+* Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
 * Ajustar EMULATOR_GAME_EDITION
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
 * sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:
