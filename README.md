@@ -17,13 +17,14 @@ It's a ZX Machines Emulator for UNIX based operating systems (and Windows), incl
 And also:
 
 * Timex TS 2068
+* Timex TC 2048, TC 2068
 * Sam Coupe
 * Pentagon 
 * Chloe 140 SE, 280 SE
 * Chrome
 * Prism
 * ZX-Uno
-* ZX-Evolution BaseConf
+* ZX-Evolution BaseConf (beta)
 * ZX-Evolution TS-Conf
 * ZX Spectrum Next
 * Jupiter Ace
@@ -96,11 +97,11 @@ __FEATURES__
     * Science of Cambridge MK14
     * Sinclair ZX80
     * Sinclair ZX81
-    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 
+    * Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Inves Spectrum +, Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish), Microdigital TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
     * Sinclair QL
     * Cambridge Z88
     * Timex TS 2068 
-    * Timex TC 2048 
+    * Timex TC 2048, TC 2068
     * Sam Coupe
     * Pentagon 
     * Chloe 140 SE, 280 SE

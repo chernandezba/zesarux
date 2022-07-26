@@ -2753,10 +2753,10 @@ void random_ram_inves(z80_byte *puntero,int longitud)
 }
 
 
-
+//Esta lista no tiene por que estar ordenada por id ni por nombre
+//puede estar desordenada
+//Pero la mantengo ordenada por id de maquina solo por motivo estetico
 struct s_machine_names machine_names[]={
-
-//char *machine_names[]={
     {"ZX Spectrum 16k",              	0},
     {"ZX Spectrum 48k", 			1},
     {"Inves Spectrum+",			2},
