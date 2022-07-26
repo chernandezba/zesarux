@@ -663,6 +663,16 @@ Para poder agregar una maquina
 
 En este caso es un ejemplo muy simple que es una maquina que se comporta como spectrum 48, agregamos maquina MACHINE_ID_SPECTRUM_48_PLUS_ENG
 
+
+## Agregar en README, si conviene:
+
+
+--It's a ZX Machines Emulator for UNIX based operating systems (and Windows), including all the Sinclair computers:
+...
+--And also:
+...
+
+
 Formato diff:
 
 ## Agregar en changelog
