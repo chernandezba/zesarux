@@ -5015,22 +5015,22 @@ Total 20 pages=320 Kb
 
                 }
 
-								else if (MACHINE_IS_CHROME) {
-									//160 K RAM, 64 K ROM
-									leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
-									if (leidos!=65536) {
-									     debug_printf(VERBOSE_ERR,"Error loading ROM");
-									}
+                else if (MACHINE_IS_CHROME) {
+                    //160 K RAM, 64 K ROM
+                    leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
+                    if (leidos!=65536) {
+                            debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
 
-								}
+                }
 
-								else if (MACHINE_IS_TSCONF) {
-									leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
-									if (leidos!=512*1024) {
-											debug_printf(VERBOSE_ERR,"Error loading ROM");
-									}
+                else if (MACHINE_IS_TSCONF) {
+                    leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
+                    if (leidos!=512*1024) {
+                            debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
 
-								}
+                }
 
 			else if (MACHINE_IS_BASECONF) {
 									leidos=fread(baseconf_rom_mem_table[0],1,512*1024,ptr_romfile);
@@ -5043,15 +5043,15 @@ Total 20 pages=320 Kb
 
               else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 
-                                leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
-                                if (leidos!=16384) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+                    leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
+                    if (leidos!=16384) {
+                            debug_printf(VERBOSE_ERR,"Error loading ROM");
+                        }
 
-                                leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
-                                if (leidos!=8192) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+                    leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
+                    if (leidos!=8192) {
+                            debug_printf(VERBOSE_ERR,"Error loading ROM");
+                        }
 
 
 
@@ -5138,12 +5138,12 @@ Total 20 pages=320 Kb
 
 
 	      else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
-                        //32k rom
+                //32k rom
 
-                                leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
-                                if (leidos!=32768) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+                        leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
+                        if (leidos!=32768) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
 
                 }
 
@@ -5151,10 +5151,10 @@ Total 20 pages=320 Kb
               else if (MACHINE_IS_SAM) {
                         //32k rom
 
-                                leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
-                                if (leidos!=32768) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+                        leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
+                        if (leidos!=32768) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
 
                 }
 
@@ -5162,10 +5162,10 @@ Total 20 pages=320 Kb
 			//minimo 16kb,maximo 128k
 			        leidos=fread(memoria_ql,1,131072,ptr_romfile);
 
-																//Minimo 16kb
-                                if (leidos<16384) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+                //Minimo 16kb
+                if (leidos<16384) {
+                        debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
 
 		}
 
@@ -5179,7 +5179,7 @@ Total 20 pages=320 Kb
 		}
 
 
-                fclose(ptr_romfile);
+    fclose(ptr_romfile);
 
 }
 
