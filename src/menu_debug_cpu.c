@@ -7084,12 +7084,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
             //printf ("indice breakpoint & accion : %d\n",catch_breakpoint_index);
             osd_kb_no_mostrar_desde_menu=0; //Volver a permitir aparecer teclado osd
 
-            printf("hay menu_breakpoint_exception\n");
+            debug_printf(VERBOSE_DEBUG,"There is a menu breakpoint exception");
 
             //Si accion nula o menu o break
             if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
 
-                printf("mostrar breakpoint\n");
+                debug_printf(VERBOSE_DEBUG,"Show breakpoint");
 
 
                 int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;

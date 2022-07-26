@@ -21758,8 +21758,8 @@ void menu_inicio(void)
     if (zxvision_switch_to_window_on_open_menu) {
         zxvision_switch_to_window_on_open_menu=0;
 
-        printf ("0 salir_todos_menus: %d\n",salir_todos_menus);
-        printf("menu_breakpoint_exception.v : %d\n",menu_breakpoint_exception.v);
+        //printf ("0 salir_todos_menus: %d\n",salir_todos_menus);
+        //printf("menu_breakpoint_exception.v : %d\n",menu_breakpoint_exception.v);
 
         if (!menu_allow_background_windows /*|| !menu_multitarea*/) {
             //abrirla tal cual sin mas
@@ -21782,7 +21782,7 @@ void menu_inicio(void)
             }
 
             if (ventana_abrir!=NULL) {
-                printf("restoring window %s\n",zxvision_switch_to_window_on_open_menu_name);
+                debug_printf(VERBOSE_DEBUG,"Restoring window %s",zxvision_switch_to_window_on_open_menu_name);
                 zxvision_handle_mouse_ev_switch_back_wind(ventana_abrir);
                 pulsado_alguna_ventana_con_menu_cerrado=1;
 
@@ -21795,7 +21795,7 @@ void menu_inicio(void)
 
         }
 
-        printf ("1 salir_todos_menus: %d\n",salir_todos_menus);
+        //printf ("1 salir_todos_menus: %d\n",salir_todos_menus);
 
 
 
