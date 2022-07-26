@@ -681,7 +681,7 @@ void create_default_zxdesktop_configurable_icons(void)
         }
     }
 
-    printf("Creating default icons\n");
+    debug_printf(VERBOSE_INFO,"Creating default icons");
 
     int indice_icono;
 
@@ -723,7 +723,7 @@ void create_default_zxdesktop_configurable_icons(void)
         menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yinicio_botones);
         yinicio_botones /=zoom_y;
 
-        printf("Y trash: %d\n",yinicio_botones);
+        //printf("Y trash: %d\n",yinicio_botones);
         zxvision_set_configurable_icon_position(indice_icono,x,yinicio_botones-ZESARUX_ASCII_LOGO_ANCHO-24);
     }
 
