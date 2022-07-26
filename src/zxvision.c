@@ -16193,7 +16193,8 @@ void menu_calculate_mouse_xy(void)
 int osd_kb_no_mostrar_desde_menu=0;
 int timer_osd_keyboard_menu=0;
 
-z80_byte menu_da_todas_teclas(void)
+//reset_mouse_movido dice que el movimiento de mouse no se considera
+z80_byte menu_da_todas_teclas_si_reset_mouse_movido(int reset_mouse_movido)
 {
 
     //if (mouse_movido) printf("mouse movido en menu_da_todas_teclas 1: %d\n",mouse_movido);
@@ -16284,7 +16285,11 @@ z80_byte menu_da_todas_teclas(void)
 
 		//printf("mouse left %d mouse_right %d mouse_movido %d\n",mouse_left,mouse_right,mouse_movido);
 
-		z80_byte valor_botones_mouse=(mouse_left | mouse_right | mouse_movido)^255;
+        int valor_mouse_movido=mouse_movido;
+
+        if (reset_mouse_movido) valor_mouse_movido=0;
+
+		z80_byte valor_botones_mouse=(mouse_left | mouse_right | valor_mouse_movido)^255;
 		acumulado=acumulado & valor_botones_mouse;
 	}
 
@@ -16324,6 +16329,12 @@ z80_byte menu_da_todas_teclas(void)
 	return acumulado;
 
 
+}
+
+
+z80_byte menu_da_todas_teclas(void)
+{
+    return menu_da_todas_teclas_si_reset_mouse_movido(0);    
 }
 
 int menu_si_tecla_pulsada(void)
@@ -16702,7 +16713,7 @@ void menu_espera_no_tecla(void)
 }
 
 //Igual que menu_espera_no_tecla pero si se mueve el mouse no considera que eso haya sido una pulsacion y no haya que esperar
-void menu_espera_no_tecla_no_mouse_movido(void)
+void old_menu_espera_no_tecla_no_mouse_movido(void)
 {
 
     //Esperar a liberar teclas. No ejecutar ni una instruccion cpu si la tecla esta liberada
@@ -16714,10 +16725,37 @@ void menu_espera_no_tecla_no_mouse_movido(void)
 		acumulado=menu_da_todas_teclas();
         //printf("menu_espera_no_tecla_no_mouse_movido: acumulado %02XH MENU_PUERTO_TECLADO_NINGUNA %02XH\n",acumulado,MENU_PUERTO_TECLADO_NINGUNA);
         //printf("menu_espera_no_tecla_no_mouse_movido: mouse movido: %d\n",mouse_movido);
-        if (mouse_movido) {
+
+        //Si se mueve y no hay mouse pulsado
+        if (mouse_movido && !mouse_left && !mouse_right) {
             //printf("menu_espera_no_tecla_no_mouse_movido: ignorar mouse_movido\n");
             acumulado |=1; //como si no se hubiera movido
         }
+		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
+			salir=1;
+		}
+
+		else {
+			menu_cpu_core_loop();
+		}
+
+	//printf ("menu_espera_no_tecla acumulado: %d\n",acumulado);
+
+	} while (!salir);
+
+}
+
+void menu_espera_no_tecla_no_mouse_movido(void)
+{
+
+        //Esperar a liberar teclas. No ejecutar ni una instruccion cpu si la tecla esta liberada
+	//con eso evitamos que cuando salte un breakpoint, que llama aqui, no se ejecute una instruccion y el registro PC apunte a la siguiente instruccion
+        z80_byte acumulado;
+	int salir=0;
+
+        do {
+            //no tener en cuenta que se mueva mouse
+		acumulado=menu_da_todas_teclas_si_reset_mouse_movido(1);
 		if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) == MENU_PUERTO_TECLADO_NINGUNA) {
 			salir=1;
 		}
@@ -21699,7 +21737,12 @@ void menu_inicio_reset_emulated_keys(void)
 	//Desactivar fire, por si esta disparador automatico
 	joystick_release_fire(1);	
 
+    //printf("menu_inicio_reset_emulated_keys antes menu_espera_no_tecla\n");
+
 	menu_espera_no_tecla_no_mouse_movido();
+    //menu_espera_no_tecla();
+
+    //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
 
 //menu principal
