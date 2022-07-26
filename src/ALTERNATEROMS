@@ -92,8 +92,6 @@ tk90x_v1br.rom: Brasilian
 tk90x_v2es.rom: Fixed tk90x rom
 
 
-tk95es.rom:  Microdigital TK95 Spanish ROM
-
 tk95es_modif.rom: Microdigital TK95 Spanish ROM with modifications by Rodolfo Edison Guerra:
 * Fixed messages:
 "Variable inexiste" to "Variable incierta"

@@ -18841,7 +18841,7 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_INVES) strcpy(nombrebmp,"keyboard_inves.bmp");
     else if (MACHINE_IS_ACE) strcpy(nombrebmp,"keyboard_ace.bmp");
     else if (MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA) strcpy(nombrebmp,"keyboard_tk90x.bmp");
-    else if (MACHINE_IS_MICRODIGITAL_TK95) strcpy(nombrebmp,"keyboard_tk95.bmp");
+    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) strcpy(nombrebmp,"keyboard_tk95.bmp");
     else if (MACHINE_IS_MK14) strcpy(nombrebmp,"keyboard_mk14.bmp");
     else if (MACHINE_IS_MSX) strcpy(nombrebmp,"keyboard_msx.bmp");
     else if (MACHINE_IS_PENTAGON) strcpy(nombrebmp,"keyboard_pentagon.bmp");

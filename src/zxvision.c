@@ -5204,7 +5204,7 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_tk90x;
     }
 
-    else if (MACHINE_IS_MICRODIGITAL_TK95) {
+    else if (MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_MICRODIGITAL_TK95_SPA) {
         bitmap=bitmap_button_ext_desktop_my_machine_tk95;
     } 
 

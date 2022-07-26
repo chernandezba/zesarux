@@ -587,7 +587,7 @@ int array_maquinas_investronica[]={
 };
 
 int array_maquinas_microdigital_electronica[]={
-	3,4,5,255
+	MACHINE_ID_MICRODIGITAL_TK90X,MACHINE_ID_MICRODIGITAL_TK90X_SPA,MACHINE_ID_MICRODIGITAL_TK95,MACHINE_ID_MICRODIGITAL_TK95_SPA,255
 };
 
 int array_maquinas_ascii_corp[]={
@@ -784,9 +784,10 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_INVESTRONICA;
 		break;
 
-		case 3:
-		case 4:
-		case 5:
+		case MACHINE_ID_MICRODIGITAL_TK90X:
+		case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+		case MACHINE_ID_MICRODIGITAL_TK95:
+        case MACHINE_ID_MICRODIGITAL_TK95_SPA:
 			return FABRICANTE_MICRODIGITAL_ELECTRONICA;
 		break;
 
@@ -10653,9 +10654,10 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG},
    {"48ks",20},
    {"Inves",2},
-   {"TK90X",3},
-   {"TK90XS",4},
-   {"TK95",5},
+   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X},
+   {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA},
+   {"TK95",MACHINE_ID_MICRODIGITAL_TK95},
+   {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA},
    {"128k",6},
    {"128ks",7},
    {"P2",8},

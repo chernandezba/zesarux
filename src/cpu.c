@@ -1387,6 +1387,7 @@ char *string_machines_list_description=
 					    " TK90X    Microdigital TK90X\n"
 					    " TK90XS   Microdigital TK90X (Spanish)\n"
 					    " TK95     Microdigital TK95\n"
+                        " TK95S    Microdigital TK95 (Spanish)\n"
 
 							" Z88      Cambridge Z88\n"
 
@@ -2790,6 +2791,7 @@ struct s_machine_names machine_names[]={
     {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
     {"Timex TC2048",   			MACHINE_ID_TIMEX_TC2048},
     {"Timex TC2068",   			MACHINE_ID_TIMEX_TC2068},
+    {"Microdigital TK95 (Spanish)",		MACHINE_ID_MICRODIGITAL_TK95_SPA},
 
     {"MSX1",MACHINE_ID_MSX1},
     {"ColecoVision",MACHINE_ID_COLECO},
@@ -3283,7 +3285,8 @@ void set_machine_params(void)
 28=Spectrum + English
 29=Timex TC2048
 30=Timex TC2068
-31-39=Reservadas otras Spectrum
+31=tk95s
+32-39=Reservadas otras Spectrum
 100=colecovision
 101=sega sg1000
 102=Spectravideo 318
@@ -3902,7 +3905,10 @@ You don't need timings for H/V sync =)
 		lee_puerto=lee_puerto_spectrum;
                 break;
 
-                case 3:
+                case MACHINE_ID_MICRODIGITAL_TK90X:
+                case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
+                case MACHINE_ID_MICRODIGITAL_TK95:
+                case MACHINE_ID_MICRODIGITAL_TK95_SPA:
                 poke_byte=poke_byte_spectrum_48k;
                 peek_byte=peek_byte_spectrum_48k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
@@ -3910,26 +3916,9 @@ You don't need timings for H/V sync =)
                 lee_puerto=lee_puerto_spectrum;
                 break;
 
-                case 4:
-                poke_byte=poke_byte_spectrum_48k;
-                peek_byte=peek_byte_spectrum_48k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
-                lee_puerto=lee_puerto_spectrum;
-                break;
-
-                case 5:
-                poke_byte=poke_byte_spectrum_48k;
-                peek_byte=peek_byte_spectrum_48k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
-                lee_puerto=lee_puerto_spectrum;
-                break;
-
-
-
-
-                case 6:
+                
+              
+                case MACHINE_ID_SPECTRUM_128:
                 poke_byte=poke_byte_spectrum_128k;
                 peek_byte=peek_byte_spectrum_128k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
@@ -3938,7 +3927,7 @@ You don't need timings for H/V sync =)
 		ay_chip_present.v=1;
                 break;
 
-                case 7:
+                case MACHINE_ID_SPECTRUM_128_SPA:
                 poke_byte=poke_byte_spectrum_128k;
                 peek_byte=peek_byte_spectrum_128k;
 		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
@@ -3950,38 +3939,23 @@ You don't need timings for H/V sync =)
 
 
 
-                case 8:
+                case MACHINE_ID_SPECTRUM_P2:
+                case MACHINE_ID_SPECTRUM_P2_FRE:
+                case MACHINE_ID_SPECTRUM_P2_SPA:
                 poke_byte=poke_byte_spectrum_128k;
                 peek_byte=peek_byte_spectrum_128k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128k;
+		        peek_byte_no_time=peek_byte_no_time_spectrum_128k;
+		        poke_byte_no_time=poke_byte_no_time_spectrum_128k;
                 lee_puerto=lee_puerto_spectrum;
                 ay_chip_present.v=1;
                 break;
 
-                case 9:
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
-
-                case 10:
-                poke_byte=poke_byte_spectrum_128k;
-                peek_byte=peek_byte_spectrum_128k;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128k;
-        poke_byte_no_time=poke_byte_no_time_spectrum_128k;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
 
 
                 //11=Amstrad +2A (ROM v4.0
-                case 11:
-                case 12:
-                case 13:
+                case MACHINE_ID_SPECTRUM_P2A_40:
+                case MACHINE_ID_SPECTRUM_P2A_41:
+                case MACHINE_ID_SPECTRUM_P2A_SPA:
                 case MACHINE_ID_SPECTRUM_P3_40:
                 case MACHINE_ID_SPECTRUM_P3_41:
                 case MACHINE_ID_SPECTRUM_P3_SPA:
@@ -3993,28 +3967,10 @@ You don't need timings for H/V sync =)
                 ay_chip_present.v=1;
                 break;
 
-                //12=Amstrad +2A (ROM v4.1)
-                /*case 12:
-                poke_byte=poke_byte_spectrum_128kp2a;
-                peek_byte=peek_byte_spectrum_128kp2a;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128kp2a;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128kp2a;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;
-
-                //13=Amstrad +2A - Espa�ol
-                case 13:
-                poke_byte=poke_byte_spectrum_128kp2a;
-                peek_byte=peek_byte_spectrum_128kp2a;
-		peek_byte_no_time=peek_byte_no_time_spectrum_128kp2a;
-		poke_byte_no_time=poke_byte_no_time_spectrum_128kp2a;
-                lee_puerto=lee_puerto_spectrum;
-                ay_chip_present.v=1;
-                break;*/
+           
 
 
-                case 14:
+                case MACHINE_ID_ZXUNO:
                 poke_byte=poke_byte_zxuno;
                 peek_byte=peek_byte_zxuno;
                 peek_byte_no_time=peek_byte_no_time_zxuno;
@@ -4737,18 +4693,21 @@ void rom_load(char *romfilename)
                 romfilename="inves.rom";
                 break;
 
-                case 3:
+                case MACHINE_ID_MICRODIGITAL_TK90X:
                 romfilename="tk90x.rom";
                 break;
 
-                case 4:
+                case MACHINE_ID_MICRODIGITAL_TK90X_SPA:
                 romfilename="tk90xs.rom";
                 break;
 
-                case 5:
+                case MACHINE_ID_MICRODIGITAL_TK95:
                 romfilename="tk95.rom";
                 break;
 
+                case MACHINE_ID_MICRODIGITAL_TK95_SPA:
+                romfilename="tk95es.rom";
+                break;
 
 
 
