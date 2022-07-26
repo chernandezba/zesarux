@@ -13244,7 +13244,11 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
                 //Aqui es donde salta la rst16, ademas esto ahora funciona tambien al print numeros y numeros de lineas
                 //si capturasemos solo la rst16 no funcionan ni print numeros ni numeros de lineas
                 //09F4: THE 'PRINT-OUT' ROUTINES
-                if (reg_pc==screen_text_printchar_return_trap_rom() ) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                //printf("%d\n",screen_text_printchar_return_trap_rom());
+                if (reg_pc==screen_text_printchar_return_trap_rom() ) {
+                    //printf("escribe\n");
+                    screen_text_printchar_next(reg_a,puntero_printchar_caracter);
+                }
 
                 return;
             }
