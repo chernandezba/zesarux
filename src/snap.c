@@ -3971,7 +3971,8 @@ void save_zx_snapshot(char *filename)
 
 	//Si version inferior a 5
 	if (!(MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A ||
-         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK || MACHINE_IS_ZX8081) 
+         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA || 
+         MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_ZX8081) 
          && snap_zx_version_save<5) {
 		debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
             return;
@@ -3979,7 +3980,8 @@ void save_zx_snapshot(char *filename)
 
 	//Si version inferior a 6
 	if (!(MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SPECTRUM_48 || MACHINE_IS_SPECTRUM_128 || MACHINE_IS_SPECTRUM_P2 || MACHINE_IS_SPECTRUM_P2A ||
-         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK || MACHINE_IS_ZX8081 || MACHINE_IS_Z88) 
+         MACHINE_IS_INVES || MACHINE_IS_SPECTRUM_128_SPA || MACHINE_IS_MICRODIGITAL_TK90X || MACHINE_IS_MICRODIGITAL_TK90X_SPA || 
+         MACHINE_IS_MICRODIGITAL_TK95 || MACHINE_IS_ZX8081 || MACHINE_IS_Z88) 
          && snap_zx_version_save<6) {
 		debug_printf (VERBOSE_ERR,"Machine %s not supported on ZX snapshot version %d",get_machine_name(current_machine_type),snap_zx_version_save);
             return;
