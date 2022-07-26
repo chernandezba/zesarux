@@ -23312,27 +23312,27 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
   
         //Spectrum 16k
 		case 0:
-			next_machine_type=0;
+			next_machine_type=MACHINE_ID_SPECTRUM_16;
 		break;
 
         //Spectrum 48k
 		case 1:
-			next_machine_type=1;
+			next_machine_type=MACHINE_ID_SPECTRUM_48;
 		break;
 
         //TK90X/95
 		case 2:
-			next_machine_type=3;
+			next_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
 		break;
 
         //Spectrum 128k/+2
 		case 3:
-			next_machine_type=6;
+			next_machine_type=MACHINE_ID_SPECTRUM_128;
 		break;
 
         //Spectrum +2A
 		case 4:
-			next_machine_type=11;
+			next_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
 		break;
 
         //Spectrum +3
@@ -23342,7 +23342,7 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 		case 6:
 			//ZX-Uno
-			next_machine_type=14;
+			next_machine_type=MACHINE_ID_ZXUNO;
 		break;
 
 
@@ -23351,12 +23351,12 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 		case 7:
 			//Chloe 140SE
-			next_machine_type=15;
+			next_machine_type=MACHINE_ID_CHLOE_140SE;
 		break;
 
 		case 8:
 			//Chloe 280SE
-			next_machine_type=16;
+			next_machine_type=MACHINE_ID_CHLOE_280SE;
 		break;
 
 		case 9:
@@ -23366,39 +23366,39 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 		case 10:
 			//Prism
-			next_machine_type=18;
+			next_machine_type=MACHINE_ID_PRISM;
 		break;
 
 
 
 		case 11:
 			//ZX-80
-			next_machine_type=120;
+			next_machine_type=MACHINE_ID_ZX80;
 		break;
 
 		case 12:
 			//ZX-81
-			next_machine_type=121;
+			next_machine_type=MACHINE_ID_ZX81;
 		break;
 
 		case 13:
 			//ACE
-			next_machine_type=122;
+			next_machine_type=MACHINE_ID_ACE;
 		break;
 
 		case 14:
 			//Z88
-			next_machine_type=130;
+			next_machine_type=MACHINE_ID_Z88;
 		break;
 
 		case 15:
 			//Amstrad CPC 464
-			next_machine_type=140;
+			next_machine_type=MACHINE_ID_CPC_464;
 		break;
 
 		case 16:
 			//Sam Coupe
-			next_machine_type=150;
+			next_machine_type=MACHINE_ID_SAM;
 		break;
 
 		case 17:
