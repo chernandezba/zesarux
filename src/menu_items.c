@@ -23342,7 +23342,8 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 		case 5:
 			next_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
 
-	        find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
+            //No hace falta darle la ruta entera porque ya la buscara al hacer set_machine
+	        strcpy(custom_romfile,CUSTOM_MACHINE_2E_MMC_ROM_FILE);
 
 		break;        
 
