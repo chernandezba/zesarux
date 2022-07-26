@@ -23445,45 +23445,41 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
 void menu_custom_machine(MENU_ITEM_PARAMETERS)
 {
-   menu_item *array_menu_custom_machine;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_custom_machine;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-	//Tipo de maquina: 16k,48k,128k/+2,+2a,zx80,zx81,ace,z88
-	//Archivo ROM
 
-	//sprintf(custom_romfile,"%s","alternaterom_plus2b.rom");
+    do {
+        menu_add_item_menu_inicial_format(&array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_change,NULL,"Machine Type: %s",custom_machine_names[custom_machine_type] );
 
-        do {
-                menu_add_item_menu_inicial_format(&array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_change,NULL,"Machine Type: %s",custom_machine_names[custom_machine_type] );
+        char string_romfile_shown[16];
+        menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,16);
 
-		char string_romfile_shown[16];
-                menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,16);
+        menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL,"Rom File: %s",string_romfile_shown);
 
-                menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL,"Rom File: %s",string_romfile_shown);
-
-		menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_run,NULL,"Run machine");
+        menu_add_item_menu_format(array_menu_custom_machine,MENU_OPCION_NORMAL,menu_custom_machine_run,NULL,"Run machine");
 
 
 
-                menu_add_item_menu(array_menu_custom_machine,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_custom_machine,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_ESC_item(array_menu_custom_machine);
+        menu_add_ESC_item(array_menu_custom_machine);
 
-                retorno_menu=menu_dibuja_menu(&custom_machine_opcion_seleccionada,&item_seleccionado,array_menu_custom_machine,"Custom Machine" );
+        retorno_menu=menu_dibuja_menu(&custom_machine_opcion_seleccionada,&item_seleccionado,array_menu_custom_machine,"Custom Machine" );
 
-                
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
 
