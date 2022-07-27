@@ -14408,7 +14408,31 @@ void zxvision_mover_icono_papelera_si_conviene(void)
 
 void zxvision_handle_mouse_events_start_drag_icon(void)
 {
+            int mouse_pixel_x,mouse_pixel_y;
+            menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
 
+            //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
+            configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
+            configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
+
+            //multiplicamos por zoom
+            mouse_pixel_x *=zoom_x;
+            mouse_pixel_y *=zoom_y;
+
+            //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+            printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+
+            //Si se arrastra alguno 
+            if (configurable_icon_is_being_moved_which>=0) {
+                configurable_icon_is_being_moved=1;           
+
+                //Indicar posicion inicial donde empieza a moverse, para evitar pulsaciones con ligero movimiento de raton
+                //que provoca mover el icono
+                zxvision_posicion_inicial_mover_icono_x=mouse_pixel_x;
+                zxvision_posicion_inicial_mover_icono_y=mouse_pixel_y;
+
+            }
 }
 
 void zxvision_handle_mouse_events_drag_icon(void)
@@ -14510,35 +14534,7 @@ void zxvision_handle_mouse_events_on_icons(void)
          
             //Si estaba en un icono
 
-            int mouse_pixel_x,mouse_pixel_y;
-            menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-
-            //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
-            configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
-            configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
-
-            //multiplicamos por zoom
-            mouse_pixel_x *=zoom_x;
-            mouse_pixel_y *=zoom_y;
-
-            //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
-            configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-            printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
-
-            //Si se arrastra alguno 
-            if (configurable_icon_is_being_moved_which>=0) {
-                configurable_icon_is_being_moved=1;           
-
-                //Indicar posicion inicial donde empieza a moverse, para evitar pulsaciones con ligero movimiento de raton
-                //que provoca mover el icono
-                zxvision_posicion_inicial_mover_icono_x=mouse_pixel_x;
-                zxvision_posicion_inicial_mover_icono_y=mouse_pixel_y;
-
-            }
-
-                
-            
-
+            zxvision_handle_mouse_events_start_drag_icon();
 
 
 		}
@@ -15289,31 +15285,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
             else {
                 //Si estaba en un icono
                 if (zxdesktop_configurable_icons_enabled_and_visible()) {
-                    int mouse_pixel_x,mouse_pixel_y;
-                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-
-                    //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
-                    configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
-                    configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
-
-                    //multiplicamos por zoom
-                    mouse_pixel_x *=zoom_x;
-                    mouse_pixel_y *=zoom_y;
-
-                    //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
-                    configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-                    printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
-
-                    //Si se arrastra alguno 
-                    if (configurable_icon_is_being_moved_which>=0) {
-                        configurable_icon_is_being_moved=1;           
-
-                        //Indicar posicion inicial donde empieza a moverse, para evitar pulsaciones con ligero movimiento de raton
-                        //que provoca mover el icono
-                        zxvision_posicion_inicial_mover_icono_x=mouse_pixel_x;
-                        zxvision_posicion_inicial_mover_icono_y=mouse_pixel_y;
-
-                    }
+                    zxvision_handle_mouse_events_start_drag_icon();
 
                 }
             }
