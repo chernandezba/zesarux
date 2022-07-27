@@ -14497,7 +14497,7 @@ void zxvision_handle_mouse_events_drag_icon(void)
 
 
             if (deltax>0 || deltay>0) {
-                //menu_draw_ext_desktop();
+                
 
                 //Ver si icono cerca de papelera
                 if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
@@ -14508,7 +14508,8 @@ void zxvision_handle_mouse_events_drag_icon(void)
                     zxvision_draw_icon_papelera_abierta=0;
                 }
 
-                //Necesario esto???
+                //Necesario para que veamos moverse el icono
+                printf("Refrescar\n");
                 menu_refresca_pantalla();
                 //menu_draw_ext_desktop_configurable_icons();                    
 
@@ -14529,10 +14530,10 @@ void zxvision_handle_mouse_events_drag_icon(void)
 void zxvision_handle_mouse_events_on_icons(void)
 {
 
-    printf("zxvision_handle_mouse_events_on_icons\n");
+    //printf("zxvision_handle_mouse_events_on_icons\n");
     if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
 
-    printf("zxvision_handle_mouse_events_on_icons. icons enabled\n");
+    //printf("zxvision_handle_mouse_events_on_icons. icons enabled\n");
 
     if (!si_menu_mouse_activado()) return;
 
@@ -14583,6 +14584,8 @@ void zxvision_handle_mouse_events_on_icons(void)
 
 }
 
+
+//TODO: tiene sentido pasarle el parametro de ventana w, si siempre que llamamos aqui es con el mismo parametro? (zxvision_current_window)
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
 
@@ -21837,12 +21840,12 @@ void menu_inicio_reset_emulated_keys(void)
 	//Desactivar fire, por si esta disparador automatico
 	joystick_release_fire(1);	
 
-    printf("menu_inicio_reset_emulated_keys antes menu_espera_no_tecla\n");
+    //printf("menu_inicio_reset_emulated_keys antes menu_espera_no_tecla\n");
 
 	menu_espera_no_tecla_no_mouse_movido();
     //menu_espera_no_tecla();
 
-    printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
+    //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
 
 //menu principal

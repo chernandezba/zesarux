@@ -180,8 +180,6 @@ usar la que si considera movimiento raton
 -revisar llamadas a funciones, como en mousemoved, de drivers de video que necesitan cosas como scr_driver_can_ext_desktop que estan a NULL
 inicialmente. Igual darle una vuelta para no tener que usar eso desde principio, o que detecten si es NULL para no llamarlo...
 
-ok-a veces al arrastrar icono, se abre menu inicio al detener arrastre: el problema viene de menu_inicio_reset_emulated_keys y la llamada 
-a menu_espera_no_tecla_no_mouse_movido
 
 ok-can_ext_desktop: cocoa, sdl, sdl2, xwindows
 -eliminar funciones can_ext_desktop de diferentes drivers

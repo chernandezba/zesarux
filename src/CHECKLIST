@@ -56,6 +56,9 @@ Drivers video:
 -ejecutar tests/videotest.sh
 
 
+-iniciar con ./zesarux --noconfigfile
+habilitar zxdesktop, mover iconos, pulsar iconos
+
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
