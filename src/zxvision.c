@@ -14510,9 +14510,9 @@ void zxvision_handle_mouse_events_drag_icon(void)
 
                 //Necesario para que veamos moverse el icono
                 printf("Refrescar\n");
-                menu_refresca_pantalla();
-                //menu_draw_ext_desktop_configurable_icons();                    
+                //menu_refresca_pantalla();
 
+                menu_draw_ext_desktop();
 
                 configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
                 configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;                        
