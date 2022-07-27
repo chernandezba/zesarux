@@ -14406,6 +14406,29 @@ void zxvision_mover_icono_papelera_si_conviene(void)
     zxvision_draw_icon_papelera_abierta=0;
 }
 
+void zxvision_handle_mouse_events_stop_drag_icon(void)
+{
+    if (configurable_icon_is_being_moved) {
+
+				debug_printf(VERBOSE_DEBUG,"Stopped moving configurable icon");
+                //Parece que aqui solo se llama cuando esta el menu abierto
+
+
+				configurable_icon_is_being_moved=0;
+                //Para que cuando se vuelva a pulsar no interprete movimiento
+                menu_pressed_zxdesktop_configurable_icon_where_x=99999;
+                menu_pressed_zxdesktop_configurable_icon_where_y=99999;
+
+                //printf("zxvision_mover_icono_papelera_si_conviene 1\n");
+                //debug_exec_show_backtrace();
+
+                zxvision_mover_icono_papelera_si_conviene();
+
+            
+
+    }
+}
+
 void zxvision_handle_mouse_events_start_drag_icon(void)
 {
             int mouse_pixel_x,mouse_pixel_y;
@@ -14552,27 +14575,9 @@ void zxvision_handle_mouse_events_on_icons(void)
 			mouse_is_dragging=0;
 			mouse_is_clicking=0; //Cuando se deja de arrastrar decir que se deja de pulsar tambien
 			
-            
+            zxvision_handle_mouse_events_stop_drag_icon();
 
-			if (configurable_icon_is_being_moved) {
-
-				debug_printf(VERBOSE_DEBUG,"Stopped moving configurable icon");
-                //Parece que aqui solo se llama cuando esta el menu abierto
-
-
-				configurable_icon_is_being_moved=0;
-                //Para que cuando se vuelva a pulsar no interprete movimiento
-                menu_pressed_zxdesktop_configurable_icon_where_x=99999;
-                menu_pressed_zxdesktop_configurable_icon_where_y=99999;
-
-                //printf("zxvision_mover_icono_papelera_si_conviene 1\n");
-                //debug_exec_show_backtrace();
-
-                zxvision_mover_icono_papelera_si_conviene();
-
-            
-
-			}            
+			            
 		}
 
 		else {
@@ -15323,25 +15328,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 				window_is_being_resized=0;
 			}
 
-			if (configurable_icon_is_being_moved) {
-
-				debug_printf(VERBOSE_DEBUG,"Stopped moving configurable icon");
-                //Parece que aqui solo se llama cuando esta el menu abierto
-
-
-				configurable_icon_is_being_moved=0;
-                //Para que cuando se vuelva a pulsar no interprete movimiento
-                menu_pressed_zxdesktop_configurable_icon_where_x=99999;
-                menu_pressed_zxdesktop_configurable_icon_where_y=99999;
-
-                //printf("zxvision_mover_icono_papelera_si_conviene 1\n");
-                //debug_exec_show_backtrace();
-
-                zxvision_mover_icono_papelera_si_conviene();
-
-            
-
-			}            
+			zxvision_handle_mouse_events_stop_drag_icon();           
 		}
 
 		else {
