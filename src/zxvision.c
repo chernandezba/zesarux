@@ -14161,9 +14161,9 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
             ventana_pulsada=zxvision_coords_in_any_window(absolute_mouse_x,absolute_mouse_y);
         }
 
-        printf("Pulsado boton derecho. zxvision_current_window %p ventana_pulsada: %p si_menu_mouse_en_ventana: %d"
-        " menu_mouse_x %d menu_mouse_y %d current_win_ancho %d current_win_alto %d\n",
-        zxvision_current_window,ventana_pulsada,si_menu_mouse_en_ventana(),menu_mouse_x,menu_mouse_y,current_win_ancho,current_win_alto);        
+        //printf("Pulsado boton derecho. zxvision_current_window %p ventana_pulsada: %p si_menu_mouse_en_ventana: %d"
+        //        " menu_mouse_x %d menu_mouse_y %d current_win_ancho %d current_win_alto %d\n",
+        //        zxvision_current_window,ventana_pulsada,si_menu_mouse_en_ventana(),menu_mouse_x,menu_mouse_y,current_win_ancho,current_win_alto);        
 
         //if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
         if (ventana_pulsada!=NULL) {            
