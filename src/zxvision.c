@@ -12207,6 +12207,21 @@ zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y
 
 }
 
+
+//Dice si las coordenadas indicadas coinciden con cualquiera de las ventanas
+//Retorna la ventana implicada, o NULL si no
+zxvision_window *zxvision_coords_in_any_window(int x,int y)
+{
+    //Si no hay current, no hay ventanas
+    if (zxvision_current_window==NULL) return NULL;
+
+    //Si apunta a la current
+    if (zxvision_coords_in_window(zxvision_current_window,x,y)) return zxvision_current_window;
+
+    //Si apunta a cualquiera de las que hay por debajo de la current
+    return zxvision_coords_in_below_windows(zxvision_current_window,x,y);
+}
+
 //Dice si las coordenadas de ventana indicada coinciden con la zona ocupada por la ventana current
 //esto se usa cuando está activado background window, para que las ventanas por detrás no tapen a la ventana actual
 //Realmente es un poco chapuza, aunque efectivo. Lo ideal seria que las ventanas en background no se redibujasen
@@ -14142,10 +14157,16 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
         ventana_pulsada=NULL;
 
         if (zxvision_current_window!=NULL) {
-            ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
+            //ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
+            ventana_pulsada=zxvision_coords_in_any_window(absolute_mouse_x,absolute_mouse_y);
         }
 
-        if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
+        printf("Pulsado boton derecho. zxvision_current_window %p ventana_pulsada: %p si_menu_mouse_en_ventana: %d"
+        " menu_mouse_x %d menu_mouse_y %d current_win_ancho %d current_win_alto %d\n",
+        zxvision_current_window,ventana_pulsada,si_menu_mouse_en_ventana(),menu_mouse_x,menu_mouse_y,current_win_ancho,current_win_alto);        
+
+        //if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
+        if (ventana_pulsada!=NULL) {            
             printf("Pulsado boton derecho sobre ventana\n");
 
         }	
@@ -15324,6 +15345,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
             if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
+                //Se pulsa en ventana de abajo o bien en la ventana actual
                 //printf("Pulsado boton derecho sobre ventana\n");
 
             }	
