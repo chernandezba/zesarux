@@ -14524,9 +14524,9 @@ void zxvision_handle_mouse_events_drag_icon(void)
 }
 
 //Gestionar arrastre de iconos
-//temporalmente esto solo lo llamo desde zxvision_handle_mouse_events cuando no hay ventanas abiertas
-//La idea es que aqui al final se llame siempre, tanto si hay ventanas como si no 
-
+//esto solo lo llamo desde zxvision_handle_mouse_events cuando no hay ventanas abiertas
+//Al final hay una pequeña gestion de activar mouse_is_dragging etc al igual que en zxvision_handle_mouse_events
+//TODO: la idea es que solo hubiera una funcion zxvision_handle_mouse_events y que funcionase tanto si hubiera ventanas abiertas como si no
 void zxvision_handle_mouse_events_on_icons(void)
 {
 
@@ -14550,15 +14550,11 @@ void zxvision_handle_mouse_events_on_icons(void)
             }
             
 			mouse_is_dragging=1;
+		
 
-			
-
-            //Esta en un icono?
-         
+            //Esta en un icono?         
             //Si estaba en un icono
-
             zxvision_handle_mouse_events_start_drag_icon();
-
 
 		}
 	}
@@ -14581,12 +14577,8 @@ void zxvision_handle_mouse_events_on_icons(void)
 		}
 
 		else {
-			
-
             //AQUI MOVER ICONO 
             zxvision_handle_mouse_events_drag_icon();
-           
-
 		}
 	}
 
@@ -14600,7 +14592,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 	if (w==NULL) {
         //printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
 
-        //Pero llamamos a gestion movimiento iconos
+        //Pero llamamos a gestion movimiento iconos, que no son dependientes de la ventana
         zxvision_handle_mouse_events_on_icons();
         return; // 0; 
     }
@@ -15291,7 +15283,6 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 //Si estaba en un icono
                 if (zxdesktop_configurable_icons_enabled_and_visible()) {
                     zxvision_handle_mouse_events_start_drag_icon();
-
                 }
             }
 
@@ -15323,7 +15314,6 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 				//printf ("Handle resized window\n");
 				zxvision_handle_mouse_resize_aux(w);
-
 
 				window_is_being_resized=0;
 			}
