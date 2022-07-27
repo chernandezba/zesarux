@@ -14508,11 +14508,16 @@ void zxvision_handle_mouse_events_drag_icon(void)
                     zxvision_draw_icon_papelera_abierta=0;
                 }
 
-                //Necesario para que veamos moverse el icono
-                printf("Refrescar\n");
-                //menu_refresca_pantalla();
+                
+                //printf("Refrescar %d\n",contador_segundo);
 
+                //Necesario para que veamos moverse el icono
                 menu_draw_ext_desktop();
+
+                if (!menu_multitarea) {
+                    //printf ("refresca pantalla\n");
+                    menu_refresca_pantalla();
+                }                
 
                 configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
                 configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;                        

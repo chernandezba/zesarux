@@ -100,10 +100,6 @@ Sector -407021264
 
 
 
--arrastrar iconos/pulsar iconos: problema si no hay alguna ventana abierta:
-*en arrastrar: no salta por deteccion de inicio arrastre
-
-
 -Ayuda hablar nuevo comportamiento botón derecho 
 
 -Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
@@ -115,15 +111,10 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
 
--con menu cerrado, sin ventanas. pulsar boton derecho en fondo desktop y a veces en vez de abrir properties abre menu principal
-
 -nuevo icono suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
-
-
--boton derecho icono. boton derecho icono. y en vez de propiedades icono abre menu inicio
 
 -si al iniciar carga con rom no existe, pantalla se ve mal
 Error:    Unable to open rom file tc2048.rom
