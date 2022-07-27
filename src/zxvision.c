@@ -14406,6 +14406,180 @@ void zxvision_mover_icono_papelera_si_conviene(void)
     zxvision_draw_icon_papelera_abierta=0;
 }
 
+//Gestionar arrastre de iconos
+//temporalmente esto solo lo llamo desde zxvision_handle_mouse_events cuando no hay ventanas abiertas
+//La idea es que aqui al final se llame siempre, tanto si hay ventanas como si no 
+
+void zxvision_handle_mouse_events_on_icons(void)
+{
+
+    printf("zxvision_handle_mouse_events_on_icons\n");
+    if (!zxdesktop_configurable_icons_enabled_and_visible()) return;
+
+    printf("zxvision_handle_mouse_events_on_icons. icons enabled\n");
+
+    if (!si_menu_mouse_activado()) return;
+
+    menu_calculate_mouse_xy();
+
+	if (!mouse_is_dragging) {
+		if (mouse_left && mouse_movido) {
+			debug_printf (VERBOSE_DEBUG,"Mouse has begun to drag");
+
+            if (auto_frameskip_even_when_movin_windows.v==0) {
+                autoframeskip_setting_before_moving_windows.v=autoframeskip.v;
+                debug_printf(VERBOSE_DEBUG,"Disabling autoframeskip while moving or resizing window");
+                autoframeskip.v=0;
+            }
+            
+			mouse_is_dragging=1;
+
+			
+
+            //Esta en un icono?
+         
+                //Si estaba en un icono
+
+            int mouse_pixel_x,mouse_pixel_y;
+            menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+
+            //Conservar posicion inicial por si se mueve a la papelera, cuando se saque que retorne a dicha posicion 
+            configurable_icon_is_being_moved_previous_x=mouse_pixel_x;
+            configurable_icon_is_being_moved_previous_y=mouse_pixel_y;
+
+            //multiplicamos por zoom
+            mouse_pixel_x *=zoom_x;
+            mouse_pixel_y *=zoom_y;
+
+            //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+            printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+
+            //Si se arrastra alguno 
+            if (configurable_icon_is_being_moved_which>=0) {
+                configurable_icon_is_being_moved=1;           
+
+                //Indicar posicion inicial donde empieza a moverse, para evitar pulsaciones con ligero movimiento de raton
+                //que provoca mover el icono
+                zxvision_posicion_inicial_mover_icono_x=mouse_pixel_x;
+                zxvision_posicion_inicial_mover_icono_y=mouse_pixel_y;
+
+            }
+
+                
+            
+
+
+
+		}
+	}
+
+	if (mouse_is_dragging) {
+		//printf ("mouse is dragging\n");
+		if (!mouse_left) { 
+			debug_printf (VERBOSE_DEBUG,"Mouse has stopped to drag");
+
+            if (auto_frameskip_even_when_movin_windows.v==0) {
+                autoframeskip.v=autoframeskip_setting_before_moving_windows.v;
+            }
+
+			mouse_is_dragging=0;
+			mouse_is_clicking=0; //Cuando se deja de arrastrar decir que se deja de pulsar tambien
+			
+            
+
+			if (configurable_icon_is_being_moved) {
+
+				debug_printf(VERBOSE_DEBUG,"Stopped moving configurable icon");
+                //Parece que aqui solo se llama cuando esta el menu abierto
+
+
+				configurable_icon_is_being_moved=0;
+                //Para que cuando se vuelva a pulsar no interprete movimiento
+                menu_pressed_zxdesktop_configurable_icon_where_x=99999;
+                menu_pressed_zxdesktop_configurable_icon_where_y=99999;
+
+                //printf("zxvision_mover_icono_papelera_si_conviene 1\n");
+                //debug_exec_show_backtrace();
+
+                zxvision_mover_icono_papelera_si_conviene();
+
+            
+
+			}            
+		}
+
+		else {
+			
+
+			
+
+            //AQUI MOVER ICONO 
+            if (configurable_icon_is_being_moved) {
+                printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
+                //Actualizar posicion
+                if (configurable_icon_is_being_moved_which>=0) {
+                    //printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
+                    int mouse_pixel_x,mouse_pixel_y;
+                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
+                    //printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+
+                    //Ver si se ha movido lo suficiente, al menos 10 pixeles
+                    //TODO: esto provoca que si queremos desplazar un icono menos de 10 pixeles, hay que hacerlo en dos veces:
+                    //1: moverlo lejos mas de 10 pixeles
+                    //2: moverlo hacia atras donde queriamos
+                    //Aunque hay que tener en cuenta que el icono se mueve a donde apunta el raton, por tanto, si apuntamos en medio del icono
+                    //y arrastramos mas de 10 pixeles, el icono saltara bastante mas de 10 pixeles, o sea, saltara 10 pixeles + 
+                    //la distancia entre la esquina superior izquierda del icono y la posicion del raton
+
+                    //multiplicamos por zoom
+                    int mouse_pixel_x_zoom=mouse_pixel_x*zoom_x;
+                    int mouse_pixel_y_zoom=mouse_pixel_y*zoom_y;
+
+                    int deltax=util_abs(zxvision_posicion_inicial_mover_icono_x-mouse_pixel_x_zoom);
+                    int deltay=util_abs(zxvision_posicion_inicial_mover_icono_y-mouse_pixel_y_zoom);
+                    
+                    if (deltax>10 || deltay>10) {
+                        zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
+                    }
+                    else {
+                        debug_printf(VERBOSE_DEBUG,"Do not change icon position because it has not been moved enough");
+                    }
+
+                    //Refrescar pantalla si se ha movido lo suficiente
+                    
+                    deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
+                    deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
+
+
+                    if (deltax>0 || deltay>0) {
+                        //menu_draw_ext_desktop();
+
+                        //Ver si icono cerca de papelera
+                        if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
+                            debug_printf(VERBOSE_DEBUG,"There is a Trash near the moved icon");
+                            zxvision_draw_icon_papelera_abierta=1;
+                        }
+                        else {
+                            zxvision_draw_icon_papelera_abierta=0;
+                        }
+
+                        menu_refresca_pantalla();
+                        //menu_draw_ext_desktop_configurable_icons();                    
+
+
+                        configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
+                        configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;                        
+                    }
+                }
+
+
+            }
+		}
+	}
+
+}
+
 void zxvision_handle_mouse_events(zxvision_window *w)
 {
 
@@ -14413,6 +14587,9 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
 	if (w==NULL) {
         //printf("Retorno de zxvision_handle_mouse_events porque w=NULL\n");
+
+        //Pero llamamos a gestion movimiento iconos
+        zxvision_handle_mouse_events_on_icons();
         return; // 0; 
     }
 
@@ -15114,7 +15291,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                     //printf("arrastrando mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
                     configurable_icon_is_being_moved_which=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-                    //printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
+                    printf("Icono arrastrando: %d\n",configurable_icon_is_being_moved_which);  
 
                     //Si se arrastra alguno 
                     if (configurable_icon_is_being_moved_which>=0) {
@@ -15214,7 +15391,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
             //AQUI MOVER ICONO 
             if (configurable_icon_is_being_moved) {
-                //printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
+                printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
                 //Actualizar posicion
                 if (configurable_icon_is_being_moved_which>=0) {
                     //printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
@@ -21759,12 +21936,12 @@ void menu_inicio_reset_emulated_keys(void)
 	//Desactivar fire, por si esta disparador automatico
 	joystick_release_fire(1);	
 
-    //printf("menu_inicio_reset_emulated_keys antes menu_espera_no_tecla\n");
+    printf("menu_inicio_reset_emulated_keys antes menu_espera_no_tecla\n");
 
 	menu_espera_no_tecla_no_mouse_movido();
     //menu_espera_no_tecla();
 
-    //printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
+    printf("menu_inicio_reset_emulated_keys despues menu_espera_no_tecla\n");
 }
 
 //menu principal
