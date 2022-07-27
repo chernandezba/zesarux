@@ -14406,6 +14406,11 @@ void zxvision_mover_icono_papelera_si_conviene(void)
     zxvision_draw_icon_papelera_abierta=0;
 }
 
+void zxvision_handle_mouse_events_start_drag_icon(void)
+{
+
+}
+
 void zxvision_handle_mouse_events_drag_icon(void)
 {
       //AQUI MOVER ICONO 
@@ -14503,7 +14508,7 @@ void zxvision_handle_mouse_events_on_icons(void)
 
             //Esta en un icono?
          
-                //Si estaba en un icono
+            //Si estaba en un icono
 
             int mouse_pixel_x,mouse_pixel_y;
             menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
@@ -15396,66 +15401,8 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 			}
 
             //AQUI MOVER ICONO 
-            if (configurable_icon_is_being_moved) {
-                printf("Icon %d being moved\n",configurable_icon_is_being_moved_which);
-                //Actualizar posicion
-                if (configurable_icon_is_being_moved_which>=0) {
-                    //printf("Moving icon %d\n",configurable_icon_is_being_moved_which);
-                    int mouse_pixel_x,mouse_pixel_y;
-                    menu_calculate_mouse_xy_absolute_interface_pixel(&mouse_pixel_x,&mouse_pixel_y);
-                    //printf("Moving icon %d to %d,%d\n",configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
-
-                    //Ver si se ha movido lo suficiente, al menos 10 pixeles
-                    //TODO: esto provoca que si queremos desplazar un icono menos de 10 pixeles, hay que hacerlo en dos veces:
-                    //1: moverlo lejos mas de 10 pixeles
-                    //2: moverlo hacia atras donde queriamos
-                    //Aunque hay que tener en cuenta que el icono se mueve a donde apunta el raton, por tanto, si apuntamos en medio del icono
-                    //y arrastramos mas de 10 pixeles, el icono saltara bastante mas de 10 pixeles, o sea, saltara 10 pixeles + 
-                    //la distancia entre la esquina superior izquierda del icono y la posicion del raton
-
-                    //multiplicamos por zoom
-                    int mouse_pixel_x_zoom=mouse_pixel_x*zoom_x;
-                    int mouse_pixel_y_zoom=mouse_pixel_y*zoom_y;
-
-                    int deltax=util_abs(zxvision_posicion_inicial_mover_icono_x-mouse_pixel_x_zoom);
-                    int deltay=util_abs(zxvision_posicion_inicial_mover_icono_y-mouse_pixel_y_zoom);
-                    
-                    if (deltax>10 || deltay>10) {
-                        zxvision_set_configurable_icon_position(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y);
-                    }
-                    else {
-                        debug_printf(VERBOSE_DEBUG,"Do not change icon position because it has not been moved enough");
-                    }
-
-                    //Refrescar pantalla si se ha movido lo suficiente
-                    
-                    deltax=util_abs(configurable_icon_is_being_moved_previous_dragged_x-mouse_pixel_x);
-                    deltay=util_abs(configurable_icon_is_being_moved_previous_dragged_y-mouse_pixel_y);
-
-
-                    if (deltax>0 || deltay>0) {
-                        //menu_draw_ext_desktop();
-
-                        //Ver si icono cerca de papelera
-                        if (zxvision_si_icono_cerca_de_papelera(configurable_icon_is_being_moved_which,mouse_pixel_x,mouse_pixel_y)) {
-                            debug_printf(VERBOSE_DEBUG,"There is a Trash near the moved icon");
-                            zxvision_draw_icon_papelera_abierta=1;
-                        }
-                        else {
-                            zxvision_draw_icon_papelera_abierta=0;
-                        }
-
-                        menu_refresca_pantalla();
-                        //menu_draw_ext_desktop_configurable_icons();                    
-
-
-                        configurable_icon_is_being_moved_previous_dragged_x=mouse_pixel_x;
-                        configurable_icon_is_being_moved_previous_dragged_y=mouse_pixel_y;                        
-                    }
-                }
-
-
-            }
+            zxvision_handle_mouse_events_drag_icon();
+           
 		}
 	}
 
