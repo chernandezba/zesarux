@@ -197,3 +197,7 @@ suma de control=0;
 for (i=0; i<=14; CheckSum = CheckSum + (header[i] * 257) + i, i++);
 
 Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Los archivos binarios (con la extensión .$C) en este formato se pueden iniciar directamente desde dispositivos FAT (como HDD o tarjeta SD) mediante el shell de Evo Reset Service integrado.
+
+
+
+-view variables desde ay3demo cuelga el emulador
