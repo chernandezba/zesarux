@@ -4371,3 +4371,35 @@ char *bitmap_button_ext_desktop_my_machine_sam[EXT_DESKTOP_BUTTONS_ANCHO]={
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 	 //25
 };
+
+
+
+char *bitmap_button_ext_desktop_speccy_online[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "            xxx           ",     //0
+  	"            xxx           ",
+	"            xxx           ",
+	"            xxx           ",
+	"          xxxxxxx         ",
+	"           xxxxx          ",
+	"            xxx           ",
+	"    x        x        x   ", 		
+	"    x                 x   ",		
+	"    xxxxxxxxxxxxxxxxxxx   ",		
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwxry",		
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",		
+	"xxxxxxwwxwwwwwwwwxwwxxrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};

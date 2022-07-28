@@ -33122,6 +33122,11 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 			if (menu_zeng_send_message_cond()) menu_zeng_send_message(0);
 		break;
 
+        case F_FUNCION_ONLINE_SPECCY:
+            menu_online_browse_zxinfowos(0);
+        break;
+
+
 		case F_FUNCION_OSDKEYBOARD:
 			menu_onscreen_keyboard(0);
 		break;
