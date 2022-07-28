@@ -4403,3 +4403,34 @@ char *bitmap_button_ext_desktop_speccy_online[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxrygbx",
 	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
 };
+
+
+char *bitmap_button_ext_desktop_zx81_online[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "            xxx           ",     //0
+  	"            xxx           ",
+	"            xxx           ",
+	"            xxx           ",
+	"          xxxxxxx         ",
+	"           xxxxx          ",
+	"            xxx           ",
+	"    x        x        x   ", 		
+	"    x                 x   ",		
+	"    xxxxxxxxxxxxxxxxxxx   ",		
+	"                          ",	//10			
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx", //11		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxrrxrxrxrrxrxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};

@@ -14151,6 +14151,13 @@ void get_online_download_path(char *ruta)
 void menu_online_browse_zx81(MENU_ITEM_PARAMETERS)
 {
 
+#ifdef NETWORKING_DISABLED
+    //En caso que no haya soporte de red compilado
+    //Aqui se puede llegar desde acceso directo de icono
+    menu_error_message("You need to have networking compiled to browse zx81 speccy games");
+    return;
+#endif
+
 
 	do {
 		//char oldletra=s_online_browse_zx81_letra[0];
@@ -14908,12 +14915,19 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
 {
 
 #ifndef COMPILE_SSL
-
     menu_error_message("You need to have SSL compiled to browse online speccy games");
     return;
 
     //Este first aid ya no se usa
 	//menu_first_aid("no_ssl_wos");	
+#endif
+
+
+#ifdef NETWORKING_DISABLED
+    //En caso que no haya soporte de red compilado
+    //Aqui se puede llegar desde acceso directo de icono
+    menu_error_message("You need to have networking compiled to browse online speccy games");
+    return;
 #endif
 	
     menu_first_aid("search_zxinfo");
@@ -33131,6 +33145,9 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             menu_online_browse_zxinfowos(0);
         break;
 
+        case F_FUNCION_ONLINE_ZX81:
+            menu_online_browse_zx81(0);
+        break;
 
 		case F_FUNCION_OSDKEYBOARD:
 			menu_onscreen_keyboard(0);

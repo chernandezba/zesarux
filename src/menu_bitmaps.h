@@ -92,6 +92,7 @@ extern char *bitmap_button_ext_desktop_file_snapshot[];
 extern char *bitmap_button_ext_desktop_file_tape[];
 extern char *bitmap_button_ext_desktop_file_generic_smartload[];
 extern char *bitmap_button_ext_desktop_speccy_online[];
+extern char *bitmap_button_ext_desktop_zx81_online[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 
