@@ -14908,7 +14908,12 @@ void menu_online_browse_zxinfowos(MENU_ITEM_PARAMETERS)
 {
 
 #ifndef COMPILE_SSL
-	menu_first_aid("no_ssl_wos");	
+
+    menu_error_message("You need to have SSL compiled to browse online speccy games");
+    return;
+
+    //Este first aid ya no se usa
+	//menu_first_aid("no_ssl_wos");	
 #endif
 	
     menu_first_aid("search_zxinfo");
@@ -15313,7 +15318,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_common,"Connects to the www.zx81.nl site to download ZX81 games. Many thanks to ZXwebmaster for allowing it"); 
 
 
-//online browser ya solo es accesible con ssl
+//online browser ya solo es accesible con ssl, porque las descargas tanto de spectrum computing como archive.org necesitan SSL 
 
 #ifdef COMPILE_SSL
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_online_browse_zxinfowos,NULL,"~~Speccy online browser");
