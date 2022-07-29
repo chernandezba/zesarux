@@ -6772,7 +6772,7 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
 
 	if (MACHINE_IS_ZX80) menu_debug_hexdump_with_ascii_modo_ascii=1;
-	else if (MACHINE_IS_ZX81) menu_debug_hexdump_with_ascii_modo_ascii=2;
+	else if (MACHINE_IS_ZX81_TYPE) menu_debug_hexdump_with_ascii_modo_ascii=2;
 
 	else menu_debug_hexdump_with_ascii_modo_ascii=0;
 
@@ -28404,7 +28404,7 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
         	filtros[6]=0;
 	}
 
-	else if (MACHINE_IS_ZX81) {
+	else if (MACHINE_IS_ZX81_TYPE) {
                 filtros[0]="p";
                 filtros[1]="81";
                 filtros[2]="rwa";

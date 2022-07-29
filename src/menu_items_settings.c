@@ -240,7 +240,7 @@ char vofilename_file[PATH_MAX];
 
 int menu_cond_zx81(void)
 {
-        if (MACHINE_IS_ZX81) return 1;
+        if (MACHINE_IS_ZX81_TYPE) return 1;
         return 0;
 }
 
@@ -4297,7 +4297,7 @@ void menu_hardware_zxprinter_copy(MENU_ITEM_PARAMETERS)
 	        reg_pc=0x0eac;
 	}
 
-	if (MACHINE_IS_ZX81) {
+	if (MACHINE_IS_ZX81_TYPE) {
 		reg_pc=0x0869;
 	}
 
@@ -4949,7 +4949,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX81) {
+		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX81_TYPE) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_printers,NULL,"~~Printing emulation");
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'p');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);

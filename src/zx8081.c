@@ -487,7 +487,7 @@ void generar_zx8081_horiz_sync(void) {
 
 
                        //Generar NMI si conviene
-                       if (MACHINE_IS_ZX81) {
+                       if (MACHINE_IS_ZX81_TYPE) {
                                  if (nmi_generator_active.v==1) {
 					generate_nmi();
                                  }

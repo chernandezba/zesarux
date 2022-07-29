@@ -5205,7 +5205,7 @@ void debug_view_basic(char *results_buffer)
 
   	}
 
-  	else if (MACHINE_IS_ZX81) {
+  	else if (MACHINE_IS_ZX81_TYPE) {
   		//ZX81
   		dir_inicio_linea=16509;
 
@@ -7930,7 +7930,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
     z80_int vars_pointer=23627;
 
-    if (MACHINE_IS_ZX81) vars_pointer=16400;
+    if (MACHINE_IS_ZX81_TYPE) vars_pointer=16400;
     if (MACHINE_IS_ZX80) vars_pointer=16392;
     
 	z80_int dir;

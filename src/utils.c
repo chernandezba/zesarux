@@ -2351,7 +2351,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
         }
 
         //simbolos para ZX81
-        else if (MACHINE_IS_ZX81) {
+        else if (MACHINE_IS_ZX81_TYPE) {
                 switch (tecla) {
 
                                 case '$':
@@ -5279,7 +5279,7 @@ int quickload_continue(char *nombre) {
 
         if (noautoload.v==0) {
             //Si no estamos en zx81, cambiar maquina
-            if (!(MACHINE_IS_ZX81)) {
+            if (!(MACHINE_IS_ZX81_TYPE)) {
                     current_machine_type=121;
                     set_machine(NULL);
                     //el reset machine viene desde tape_init
@@ -11625,7 +11625,7 @@ void poke_byte_writerom_exec(z80_int dir,z80_byte value)
                 if (dir<4096) memoria_spectrum[dir]=value;
         }
 
-	else if (MACHINE_IS_ZX81) {
+	else if (MACHINE_IS_ZX81_TYPE) {
                 if (dir<8192) memoria_spectrum[dir]=value;
         }
 

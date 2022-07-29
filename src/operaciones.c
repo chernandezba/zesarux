@@ -1404,7 +1404,7 @@ z80_byte fetch_opcode_zx81(void)
 						enable_rainbow();
 					}
 				}
-				if (MACHINE_IS_ZX81) {
+				if (MACHINE_IS_ZX81_TYPE) {
 					//ZX81
 					if (reg_i!=0x1e) {
 						debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX81 != 0x1e)");

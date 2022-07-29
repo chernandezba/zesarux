@@ -477,6 +477,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_ZX80 (current_machine_type==MACHINE_ID_ZX80)
 #define MACHINE_IS_ZX81 (current_machine_type==MACHINE_ID_ZX81)
 
+#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81)
+
 #define MACHINE_IS_ACE (current_machine_type==MACHINE_ID_ACE)
 
 #define MACHINE_IS_Z88 (current_machine_type==MACHINE_ID_Z88)

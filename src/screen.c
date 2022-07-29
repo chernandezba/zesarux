@@ -12923,7 +12923,7 @@ z80_int screen_text_printchar_return_trap_rom(void)
 {
     if (chardetect_rom_compat_numbers.v) {
         if (MACHINE_IS_SPECTRUM) return 0x09F4;
-        if (MACHINE_IS_ZX81) return 0x0808;
+        if (MACHINE_IS_ZX81_TYPE) return 0x0808;
     }
 
     return 16;
@@ -13191,7 +13191,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
             return;
         }
 
-        if (MACHINE_IS_ZX81) {
+        if (MACHINE_IS_ZX81_TYPE) {
             //Aqui salta desde la rst16 y ademas permite mostrar numeros (cosa que la rst16 no puede)
             //0808 ENTER-CH
             if (reg_pc==screen_text_printchar_return_trap_rom() ) screen_text_printchar_next(reg_a,puntero_printchar_caracter);

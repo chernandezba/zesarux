@@ -233,7 +233,7 @@ void snap_simulate_load_espera_no_tecla(void)
         do {
 
 		//fijar pc a algun sitio que no haga nada
-		if (MACHINE_IS_ZX81) reg_pc=8191;
+		if (MACHINE_IS_ZX81_TYPE) reg_pc=8191;
 		else if (MACHINE_IS_ZX80) reg_pc=4095;
 		else reg_pc=0;
                 cpu_core_loop();

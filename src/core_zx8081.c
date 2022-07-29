@@ -163,7 +163,7 @@ void cpu_core_loop_zx8081(void)
 
 
 				//Para zx81
-                		if (MACHINE_IS_ZX81 && reg_pc==0x0487) {
+                		if (MACHINE_IS_ZX81_TYPE && reg_pc==0x0487) {
 	                	        debug_printf (VERBOSE_INFO,"Autoload tape");
         	                	initial_tap_sequence=1;
 	                	}

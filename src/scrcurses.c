@@ -555,7 +555,7 @@ void prueba_scrcurses_putchar_zx8081(int x,int y, z80_byte caracter)
 #endif        
 
 
-    if (MACHINE_IS_ZX81 && texto_artistico.v && going_to_use_cursesw && caracter<8) {
+    if (MACHINE_IS_ZX81_TYPE && texto_artistico.v && going_to_use_cursesw && caracter<8) {
         move(y+CURSES_TOP_BORDER*border_enabled.v,x+CURSES_IZQ_BORDER*border_enabled.v);
 #ifdef COMPILE_CURSESW        
         cursesw_ext_print_pixel(caracter);
@@ -983,7 +983,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
             //  forzar si caracter es de bloque, pasar a artistico
             // solo si usamos uft blocky
             // Los primeros 11 caracteres del zx81 son de bloque
-            if (MACHINE_IS_ZX81 && texto_artistico.v && going_to_use_cursesw && caracter<11) caracter=255;
+            if (MACHINE_IS_ZX81_TYPE && texto_artistico.v && going_to_use_cursesw && caracter<11) caracter=255;
 
             //En ZX80, caracter 1 es "
             if (MACHINE_IS_ZX80 && texto_artistico.v && going_to_use_cursesw && caracter<12 && caracter!=1) caracter=255;

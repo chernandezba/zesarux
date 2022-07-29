@@ -2268,7 +2268,7 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 				zxvision_print_string_defaults_fillspc(w,1,linea++,textoregistros);
 
 				char texto_nmi[10];
-				if (MACHINE_IS_ZX81) {
+				if (MACHINE_IS_ZX81_TYPE) {
 					sprintf (texto_nmi,"%s",(nmi_generator_active.v ? "NMI:On" : "NMI:Off"));
 				}
 

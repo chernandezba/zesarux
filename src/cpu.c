@@ -5105,7 +5105,7 @@ Total 20 pages=320 Kb
 		}
 
 
-		else if (MACHINE_IS_ZX81) {
+		else if (MACHINE_IS_ZX81_TYPE) {
 
 			//ZX81
                                 leidos=fread(memoria_spectrum,1,8192,ptr_romfile);

@@ -285,7 +285,7 @@ z80_byte old_zxpand_read(void)
 
 			if (zxpand_load_parameter_address==-1) {
 				if (MACHINE_IS_ZX80) inicio=16384;
-				if (MACHINE_IS_ZX81) inicio=16384+9;
+				if (MACHINE_IS_ZX81_TYPE) inicio=16384+9;
 			}
 
 			else inicio=zxpand_load_parameter_address;

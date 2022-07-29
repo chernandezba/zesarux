@@ -512,7 +512,7 @@ int new_tap_load_detect_zx80(void)
 void new_snap_load_zx8081_simulate_cpuloop(void)
 {
                 //apuntar a un nop
-                if (MACHINE_IS_ZX81) reg_pc=8191;
+                if (MACHINE_IS_ZX81_TYPE) reg_pc=8191;
                 else reg_pc=4095;
 
                 //que indique en gui el indicador de carga
