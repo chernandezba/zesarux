@@ -5134,6 +5134,12 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     else if (MACHINE_IS_ZX81) {
         bitmap=bitmap_button_ext_desktop_my_machine_zx81;
     }
+    else if (MACHINE_IS_TIMEX_TS1000) {
+        bitmap=bitmap_button_ext_desktop_my_machine_ts1000;
+    }    
+    else if (MACHINE_IS_TIMEX_TS1500) {
+        bitmap=bitmap_button_ext_desktop_my_machine_ts1500;
+    }      
     else if (MACHINE_IS_ZX80) {
         bitmap=bitmap_button_ext_desktop_my_machine_zx80;
     }    

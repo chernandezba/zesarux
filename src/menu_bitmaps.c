@@ -3507,6 +3507,68 @@ char *bitmap_button_ext_desktop_my_machine_zx81[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
+//Icono "My machine" para TS1000
+char *bitmap_button_ext_desktop_my_machine_ts1000[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxccccxwwwwwwxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+
+//Icono "My machine" para un ts1500
+char *bitmap_button_ext_desktop_my_machine_ts1500[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxccxwwwwxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+};
 
 //Icono "My machine" para ZX80
 char *bitmap_button_ext_desktop_my_machine_zx80[EXT_DESKTOP_BUTTONS_ANCHO]={
