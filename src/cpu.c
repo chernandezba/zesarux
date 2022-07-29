@@ -1386,6 +1386,7 @@ char *string_machines_list_description=
 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
                      
 
+                        " TK85     Microdigital TK85\n"
 					    " TK90X    Microdigital TK90X\n"
 					    " TK90XS   Microdigital TK90X (Spanish)\n"
 					    " TK95     Microdigital TK95\n"
@@ -2807,6 +2808,7 @@ struct s_machine_names machine_names[]={
     {"Jupiter Ace",  			122},
     {"Timex Sinclair 1000",   			MACHINE_ID_TIMEX_TS1000},
     {"Timex Sinclair 1500",   			MACHINE_ID_TIMEX_TS1500},
+    {"Microdigital TK85",		MACHINE_ID_MICRODIGITAL_TK85},
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
@@ -3303,6 +3305,7 @@ void set_machine_params(void)
 122=jupiter ace (old 22)
 123=Timex TS1000
 124=Timex TS1500
+125=Microdigital TK85
 130=z88 (old 30)
 140=amstrad cpc464 
 141=amstrad cpc4128 
@@ -4209,6 +4212,7 @@ You don't need timings for H/V sync =)
 		case MACHINE_ID_ZX81:
         case MACHINE_ID_TIMEX_TS1000:
         case MACHINE_ID_TIMEX_TS1500:
+        case MACHINE_ID_MICRODIGITAL_TK85:
                 poke_byte=poke_byte_zx80;
                 peek_byte=peek_byte_zx80;
 		peek_byte_no_time=peek_byte_zx80_no_time;
@@ -4845,7 +4849,13 @@ void rom_load(char *romfilename)
 
             romfilename="ts1500.rom";
 
-		    break;            
+		    break;      
+
+            case MACHINE_ID_MICRODIGITAL_TK85:
+
+            romfilename="tk85.rom";
+
+		    break;                      
 
             case 122:
 
