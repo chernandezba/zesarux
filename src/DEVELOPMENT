@@ -898,6 +898,10 @@ index a6b8c23..8e3051b 100644
  		case 120:
  		case 121:
  		case 160:
+@@ -3101,6 +3102,7 @@ int get_rom_size(int machine)
+
++    else if (machine==MACHINE_ID_SPECTRUM_48_PLUS_ENG) return 16384;
+
 @@ -10499,6 +10500,7 @@ struct s_machines_short_names_id {
  struct s_machines_short_names_id machines_short_names_id[]={
     {"16k",0},

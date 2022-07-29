@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "screen.h"
+#include "cpu.h"
 #include "debug.h"
 #include "mem128.h"
 #include "operaciones.h"
