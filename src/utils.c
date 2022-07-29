@@ -3106,6 +3106,7 @@ int get_rom_size(int machine)
 	else if (machine==MACHINE_ID_ZX81) return 8192;
     else if (machine==MACHINE_ID_TIMEX_TS1000) return 8192;
     else if (machine==MACHINE_ID_TIMEX_TS1500) return 8192;
+    else if (machine==MACHINE_ID_MICRODIGITAL_TK85) return 10*1024;
 
 	//Jupiter Ace
 	else if (machine==MACHINE_ID_ACE) return 8192;

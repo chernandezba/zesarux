@@ -3570,6 +3570,38 @@ char *bitmap_button_ext_desktop_my_machine_ts1500[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" wwwwwwwwwwwwwwwwwwwwwwww " 	 //25
 };
 
+
+//Icono "My machine" para un tk85
+char *bitmap_button_ext_desktop_my_machine_tk85[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	" xxxxxxxxxxxxxxxxxxxxxxxx ",
+    "xxwwxwxwwxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxyyyyyyyxxxxxxxxxxxxxxxxx",		
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",		    
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwwxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxyyxwwxwwxwwxwwxwwxwxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxwwx",
+	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+};
+
 //Icono "My machine" para ZX80
 char *bitmap_button_ext_desktop_my_machine_zx80[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

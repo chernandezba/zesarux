@@ -150,6 +150,7 @@ extern char *bitmap_button_ext_desktop_my_machine_zx80[];
 extern char *bitmap_button_ext_desktop_my_machine_zx81[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1000[];
 extern char *bitmap_button_ext_desktop_my_machine_ts1500[];
+extern char *bitmap_button_ext_desktop_my_machine_tk85[];
 extern char *bitmap_button_ext_desktop_my_machine_ace[];
 extern char *bitmap_button_ext_desktop_my_machine_ql[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_128_spa[];

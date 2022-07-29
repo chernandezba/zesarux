@@ -5132,11 +5132,21 @@ Total 20 pages=320 Kb
 
 		else if (MACHINE_IS_ZX81_TYPE) {
 
-			//ZX81
-                                leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-                                if (leidos!=8192) {
-					debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                }
+            //TK85 tiene rom de 10kb
+            if (MACHINE_IS_MICRODIGITAL_TK85) {
+                leidos=fread(memoria_spectrum,1,10*1024,ptr_romfile);
+                if (leidos!=10*1024) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                }
+            }
+
+            else {
+                //ZX81 y variantes
+                leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+                if (leidos!=8192) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                }
+            }
 		}
 
                 else if (MACHINE_IS_ACE) {
