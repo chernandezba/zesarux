@@ -5036,7 +5036,7 @@ void scr_putchar_zx8081_comun(int x,int y, z80_byte caracter)
 	//con los caracteres fuera de rango, devolvemos '?'
 	if (caracter>63) caracter=15;
 
-        if (MACHINE_IS_ZX80) direccion=0x0E00;
+        if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
         else direccion=0x1E00;
 
         scr_putsprite_zx8081(direccion+caracter*8,x,y,inverse);
@@ -12304,7 +12304,7 @@ void screen_text_repinta_pantalla_zx81_rainbow_comun(void (*puntero_printchar_ca
         z80_int direccion;
 
         //Tabla de caracteres para ZX80,81
-        if (MACHINE_IS_ZX80) direccion=0x0E00;
+        if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
         else direccion=0x1E00;
 
         z80_byte inverse;
@@ -13186,7 +13186,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
 
         //En ZX80 las llamadas a RST 16 solo son para el cursor
         //El resto de llamadas, incluso rst16, van por la direccion 0x0560
-        if (MACHINE_IS_ZX80) {
+        if (MACHINE_IS_ZX80_TYPE) {
             if (reg_pc==0x0560) screen_text_printchar_next(reg_a,puntero_printchar_caracter);
             return;
         }

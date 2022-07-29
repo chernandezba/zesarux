@@ -231,7 +231,7 @@ int zxpand_load_rom_overlay(void)
 
 	char *romfile=ZXPAND_ZX81_ROM_NAME;
 
-	if (MACHINE_IS_ZX80) romfile=ZXPAND_ZX80_ROM_NAME;
+	if (MACHINE_IS_ZX80_TYPE) romfile=ZXPAND_ZX80_ROM_NAME;
 
 	debug_printf (VERBOSE_INFO,"Loading zxpand rom %s",romfile);
 

@@ -2158,7 +2158,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 
 
 	//simbolos para ZX80
-	else if (MACHINE_IS_ZX80) {
+	else if (MACHINE_IS_ZX80_TYPE) {
                 switch (tecla) {
                                 case '$':
 					if (pressrelease) {
@@ -5259,7 +5259,7 @@ int quickload_continue(char *nombre) {
 
         if (noautoload.v==0) {
         //Si no estamos en zx80, cambiar maquina
-            if (!(MACHINE_IS_ZX80)) {
+            if (!(MACHINE_IS_ZX80_TYPE)) {
                     current_machine_type=120;
                     set_machine(NULL);
             }
@@ -11630,7 +11630,7 @@ void poke_byte_writerom_exec(z80_int dir,z80_byte value)
 		if (dir<16384) memoria_spectrum[dir]=value;
 	}
 
-	else if (MACHINE_IS_ZX80) {
+	else if (MACHINE_IS_ZX80_TYPE) {
                 if (dir<4096) memoria_spectrum[dir]=value;
         }
 

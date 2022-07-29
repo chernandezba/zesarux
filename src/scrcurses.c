@@ -931,7 +931,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 	z80_int direccion;
 
 	//Tabla de caracteres para ZX80,81
-    if (MACHINE_IS_ZX80) direccion=0x0E00;
+    if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
     else direccion=0x1E00;
 
 	z80_byte inverse;
@@ -986,7 +986,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
             if (MACHINE_IS_ZX81_TYPE && texto_artistico.v && going_to_use_cursesw && caracter<11) caracter=255;
 
             //En ZX80, caracter 1 es "
-            if (MACHINE_IS_ZX80 && texto_artistico.v && going_to_use_cursesw && caracter<12 && caracter!=1) caracter=255;
+            if (MACHINE_IS_ZX80_TYPE && texto_artistico.v && going_to_use_cursesw && caracter<12 && caracter!=1) caracter=255;
                 
 
             if (caracter!=255) {

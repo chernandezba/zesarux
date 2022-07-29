@@ -156,7 +156,7 @@ void cpu_core_loop_zx8081(void)
 			if (initial_tap_load.v==1 && initial_tap_sequence==0) {
 
 				//Para zx80
-		                if (MACHINE_IS_ZX80 && reg_pc==0x0283) {
+		                if (MACHINE_IS_ZX80_TYPE && reg_pc==0x0283) {
         		                debug_printf (VERBOSE_INFO,"Autoload tape");
                 		        initial_tap_sequence=1;
 		                }
@@ -178,7 +178,7 @@ void cpu_core_loop_zx8081(void)
 
 				draw_tape_text();
 
-				if (MACHINE_IS_ZX80) new_tape_load_zx80();	
+				if (MACHINE_IS_ZX80_TYPE) new_tape_load_zx80();	
 				else new_tape_load_zx81();
 
 	                        //audio_playing.v=1;
@@ -191,7 +191,7 @@ void cpu_core_loop_zx8081(void)
 
 					draw_tape_text();
 
-	        	                if (MACHINE_IS_ZX80) new_tape_save_zx80();
+	        	                if (MACHINE_IS_ZX80_TYPE) new_tape_save_zx80();
         	        	        else new_tape_save_zx81();
 
                 	        	//audio_playing.v=1;

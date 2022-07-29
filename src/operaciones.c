@@ -1336,7 +1336,7 @@ z80_byte fetch_opcode_zx81(void)
 												//if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=memoria_spectrum[direccion_sprite&4095];
 
 												//Obteniendo tipo de letra de rom de zxpand en el caso del zx80
-												if (zxpand_enabled.v && MACHINE_IS_ZX80 && direccion_sprite<8192) sprite=zxpand_memory_pointer[direccion_sprite];
+												if (zxpand_enabled.v && MACHINE_IS_ZX80_TYPE && direccion_sprite<8192) sprite=zxpand_memory_pointer[direccion_sprite];
 
 					//printf ("direccion_sprite: %d\n",direccion_sprite);
                             else      sprite=memoria_spectrum[direccion_sprite];
@@ -1397,7 +1397,7 @@ z80_byte fetch_opcode_zx81(void)
 		else {
 			//Intentar autodetectar si hay que activar realvideo
 			if (autodetect_rainbow.v) {
-				if (MACHINE_IS_ZX80) {
+				if (MACHINE_IS_ZX80_TYPE) {
 					//ZX80
 					if (reg_i!=0x0e) {
 						debug_printf(VERBOSE_INFO,"Autoenabling realvideo so the program seems to need it (I register on ZX80 != 0x0e)");
@@ -6280,7 +6280,7 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
             return envia_jload_pp_spectrum(puerto_h);
         }
         else {
-            if (MACHINE_IS_ZX80) return envia_load_pp_zx80(puerto_h);
+            if (MACHINE_IS_ZX80_TYPE) return envia_load_pp_zx80(puerto_h);
             else return envia_load_pp_zx81(puerto_h);
         }
     }

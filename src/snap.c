@@ -234,7 +234,7 @@ void snap_simulate_load_espera_no_tecla(void)
 
 		//fijar pc a algun sitio que no haga nada
 		if (MACHINE_IS_ZX81_TYPE) reg_pc=8191;
-		else if (MACHINE_IS_ZX80) reg_pc=4095;
+		else if (MACHINE_IS_ZX80_TYPE) reg_pc=4095;
 		else reg_pc=0;
                 cpu_core_loop();
 
@@ -5274,7 +5274,7 @@ void snapshot_load_name(char *nombre)
                 else if (!util_compare_file_extension(nombre,"o") || !util_compare_file_extension(nombre,"80") ) {
 
 			//Carga de algunos juegos da problemas con esto. No reiniciarlizar si ya estamos en ZX80
-			if (!(MACHINE_IS_ZX80)) {
+			if (!(MACHINE_IS_ZX80_TYPE)) {
                 	        current_machine_type=120;
 
         	                set_machine(NULL);

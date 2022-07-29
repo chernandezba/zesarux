@@ -897,7 +897,7 @@ void scrcurses_refresca_pantalla_zx8081_rainbow(void)
 	z80_int direccion;
 
 	//Tabla de caracteres para ZX80,81
-        if (MACHINE_IS_ZX80) direccion=0x0E00;
+        if (MACHINE_IS_ZX80_TYPE) direccion=0x0E00;
         else direccion=0x1E00;
 
 	z80_byte inverse;

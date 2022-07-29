@@ -705,7 +705,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
         //Si el usuario tiene seleccionada cualquier otra maquina, hara browse suponiendo que es zx81
         if (archivo_destino==NULL) {
             if (MACHINE_IS_ZX81_TYPE) es_zx81=1;
-            if (MACHINE_IS_ZX80) es_zx81=0;
+            if (MACHINE_IS_ZX80_TYPE) es_zx81=0;
         }
         else {
             //Si indicamos .p, asumimos que sera zx81
@@ -749,7 +749,7 @@ int main_leezx81(char *archivo_destino, char *texto_info_output,int si_load)
 			offset_destino=0;
 
 			if (MACHINE_IS_ZX81_TYPE) offset_destino=0x4009;
-			if (MACHINE_IS_ZX80) offset_destino=0x4000;
+			if (MACHINE_IS_ZX80_TYPE) offset_destino=0x4000;
 
 			if (offset_destino==0 && si_load) cpu_panic ("Destination dir is zero");
 

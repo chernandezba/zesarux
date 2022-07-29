@@ -4853,7 +4853,7 @@ int inicio_tokens,z80_byte (*lee_byte_function)(z80_int dir), int tipo, int show
         z80_int ppc,subppc;
 
         if (MACHINE_IS_ZX8081) {
-            if (MACHINE_IS_ZX80) ppc=peek_word_no_time(16386);
+            if (MACHINE_IS_ZX80_TYPE) ppc=peek_word_no_time(16386);
 
             //ZX81
             else ppc=peek_word_no_time(16391);
@@ -7568,10 +7568,10 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
     
     //Si es de 16 bits entera o ZX80, primer byte a 0
     z80_byte number_type=peek_byte_no_time(dir);
-    if (number_type==0 || MACHINE_IS_ZX80) {
+    if (number_type==0 || MACHINE_IS_ZX80_TYPE) {
         int variable_value;
 
-        if (MACHINE_IS_ZX80) {
+        if (MACHINE_IS_ZX80_TYPE) {
             variable_value=peek_word_no_time(dir);
             if (variable_value>32767) {
                 //negativo
@@ -7868,7 +7868,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
                 util_concat_string(results_buffer,"=",maxima_longitud_texto);
                 int tamanyo_numero=5;
 
-                if (MACHINE_IS_ZX80) tamanyo_numero=2;
+                if (MACHINE_IS_ZX80_TYPE) tamanyo_numero=2;
 
                 z80_int offset_numero=puntero+total_offset*tamanyo_numero;
                 debug_view_basic_variables_print_number(offset_numero,buffer_linea);
@@ -7931,7 +7931,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     z80_int vars_pointer=23627;
 
     if (MACHINE_IS_ZX81_TYPE) vars_pointer=16400;
-    if (MACHINE_IS_ZX80) vars_pointer=16392;
+    if (MACHINE_IS_ZX80_TYPE) vars_pointer=16392;
     
 	z80_int dir;
 
@@ -7979,7 +7979,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     desde el principio hasta que encuentra la DEF FN correspondiente
     */
 
-    if (MACHINE_IS_ZX80) {
+    if (MACHINE_IS_ZX80_TYPE) {
         id_variable_alfanum=4;
         id_matriz_num=5;
         id_variable_num_mascar=2;
@@ -8006,7 +8006,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
                 //En zx80, no indica longitud sino que acaba con byte 1
-                if (MACHINE_IS_ZX80) {
+                if (MACHINE_IS_ZX80_TYPE) {
                     util_concat_string(results_buffer,"\"",maxima_longitud_texto);
                     while (peek_byte_no_time(dir)!=1) {
                         z80_byte letra=peek_byte_no_time(dir++);
@@ -8047,7 +8047,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 sprintf(buffer_linea,"%c=%s\n",letra_variable,buf_numero);
 
-                if (MACHINE_IS_ZX80) dir+=2;
+                if (MACHINE_IS_ZX80_TYPE) dir+=2;
                 else dir +=5;
 
                 resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);                
@@ -8071,7 +8071,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 int total_tamanyo;
 
                 //En zx80 solo tienen una dimension
-                if (MACHINE_IS_ZX80) {
+                if (MACHINE_IS_ZX80_TYPE) {
                     total_dimensiones=1;
 
                     z80_byte dimension;
@@ -8197,7 +8197,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 sprintf(buffer_linea,"%s=%s\n",buf_nombre_variable,buf_numero);
 
-                if (MACHINE_IS_ZX80) dir+=2;
+                if (MACHINE_IS_ZX80_TYPE) dir+=2;
                 else dir +=5;
 
                 resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);                
@@ -8211,7 +8211,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 int tamanyo_numero=5;
 
-                if (MACHINE_IS_ZX80) tamanyo_numero=2;
+                if (MACHINE_IS_ZX80_TYPE) tamanyo_numero=2;
 
                 //Inicio, final, step, linea, sentencia    
                 char buf_inicio[100];
@@ -8223,7 +8223,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 dir +=tamanyo_numero;                
 
                 char buf_step[100];
-                if (!MACHINE_IS_ZX80) {
+                if (!MACHINE_IS_ZX80_TYPE) {
                     debug_view_basic_variables_print_number(dir,buf_step);
                     dir +=tamanyo_numero;                
                 }
@@ -8233,7 +8233,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 if (MACHINE_IS_ZX8081) {
                     //printf("FOR %c=%s TO %s STEP %s LINE %d\n",letra_variable,buf_inicio,buf_final,buf_step,linea);
-                    if (MACHINE_IS_ZX80) {
+                    if (MACHINE_IS_ZX80_TYPE) {
                         sprintf(buffer_linea,"FOR %c=%s TO %s LINE %d\n",letra_variable,buf_inicio,buf_final,linea);                    
                     }
                     else sprintf(buffer_linea,"FOR %c=%s TO %s STEP %s LINE %d\n",letra_variable,buf_inicio,buf_final,buf_step,linea);                    

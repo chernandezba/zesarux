@@ -60,7 +60,7 @@ z80_bit zx8081_disable_tape_traps={0};
 //Funcion de deteccion de ROM para la carga de ZX80 y ZX81
 int new_tap_load_detect_zx8081(void)
 {
-        if (MACHINE_IS_ZX80) return new_tap_load_detect_zx80();
+        if (MACHINE_IS_ZX80_TYPE) return new_tap_load_detect_zx80();
         else return new_tap_load_detect_zx81();
 
 }
@@ -68,7 +68,7 @@ int new_tap_load_detect_zx8081(void)
 //Funcion de deteccion de ROM para la grabacion de ZX80 y ZX81
 int new_tap_save_detect_zx8081(void)
 {
-        if (MACHINE_IS_ZX80) return new_tap_save_detect_zx80();
+        if (MACHINE_IS_ZX80_TYPE) return new_tap_save_detect_zx80();
         else return new_tap_save_detect_zx81();
 }
 

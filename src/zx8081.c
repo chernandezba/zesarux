@@ -349,7 +349,7 @@ void set_ramtop_with_rampacks(void)
 
 	z80_int r;
 
-	if (MACHINE_IS_ZX80) return;
+	if (MACHINE_IS_ZX80_TYPE) return;
 
 	//Solo si hay expansiones de memoria
 	if (ram_in_32768.v==1 || ram_in_49152.v==1) {
@@ -373,7 +373,7 @@ z80_byte da_codigo81(z80_byte codigo,z80_bit *inverse)
   }
   else inverse->v=0;
 
-  if (MACHINE_IS_ZX80) {
+  if (MACHINE_IS_ZX80_TYPE) {
 	//zx80
 	if (texto_artistico.v==1) return (codigo<64 ? caracteres_zx80[codigo] : '~');
 	else return (codigo<64 ? caracteres_zx80_no_artistic[codigo] : '~');
@@ -397,7 +397,7 @@ z80_byte da_codigo81_solo_letras(z80_byte codigo,z80_bit *inverse)
   }
   else inverse->v=0;
 
-  if (MACHINE_IS_ZX80) {
+  if (MACHINE_IS_ZX80_TYPE) {
         //zx80
 	return (codigo<64 ? caracteres_zx80_solo_letras[codigo] : ' ');
         }

@@ -419,7 +419,7 @@ if (tape_out_file!=0) {
 
                         else if (!util_compare_file_extension(tape_out_file,"o") ) {
                                         debug_printf (VERBOSE_INFO,"Out .O file detected");
-					if (!(MACHINE_IS_ZX80)) {
+					if (!(MACHINE_IS_ZX80_TYPE)) {
 						debug_printf (VERBOSE_ERR,"Out Tape format only supported on ZX80 models");
 						tape_out_file=NULL;
 					}

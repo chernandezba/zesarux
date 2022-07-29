@@ -6771,7 +6771,7 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
 
 
-	if (MACHINE_IS_ZX80) menu_debug_hexdump_with_ascii_modo_ascii=1;
+	if (MACHINE_IS_ZX80_TYPE) menu_debug_hexdump_with_ascii_modo_ascii=1;
 	else if (MACHINE_IS_ZX81_TYPE) menu_debug_hexdump_with_ascii_modo_ascii=2;
 
 	else menu_debug_hexdump_with_ascii_modo_ascii=0;
@@ -23186,9 +23186,9 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
                                         post_set_machine(NULL);
 
 					//ajustar algunos registros
-					if (MACHINE_IS_ZX80) reg_i=0x0E;
+					if (MACHINE_IS_ZX80_TYPE) reg_i=0x0E;
 
-					if (MACHINE_IS_ZX81) {
+					if (MACHINE_IS_ZX81_TYPE) {
 						reg_i=0x1E;
 						nmi_generator_active.v=0;
 					}
@@ -26129,7 +26129,7 @@ void menu_snapshot_save(MENU_ITEM_PARAMETERS)
   	if (MACHINE_IS_ZX8081) {
 		filtros[0]="zx";
 
-		if (MACHINE_IS_ZX80) filtros[1]="o";
+		if (MACHINE_IS_ZX80_TYPE) filtros[1]="o";
 		else filtros[1]="p";
 
 		filtros[2]="zsf";
@@ -28298,7 +28298,7 @@ void menu_tape_out_open(MENU_ITEM_PARAMETERS)
 
 	if (MACHINE_IS_ZX8081) {
 
-		if (MACHINE_IS_ZX80) filtros[0]="o";
+		if (MACHINE_IS_ZX80_TYPE) filtros[0]="o";
 		else filtros[0]="p";
 
 		filtros[1]=0;
@@ -28397,7 +28397,7 @@ void menu_tape_open(MENU_ITEM_PARAMETERS)
 
         char *filtros[7];
 
-	if (MACHINE_IS_ZX80) {
+	if (MACHINE_IS_ZX80_TYPE) {
 		filtros[0]="80";
         	filtros[1]="o";
         	filtros[2]="rwa";
