@@ -3305,7 +3305,11 @@ void set_machine_params(void)
 122=jupiter ace (old 22)
 123=Timex TS1000
 124=Timex TS1500
-125=Microdigital TK85
+125=Microdigital TK80
+126=Microdigital TK82
+127=Microdigital TK82C
+128=Microdigital TK83
+129=Microdigital TK85
 130=z88 (old 30)
 140=amstrad cpc464 
 141=amstrad cpc4128 

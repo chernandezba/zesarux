@@ -408,7 +408,11 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_ACE		        		122
 #define MACHINE_ID_TIMEX_TS1000	        	123
 #define MACHINE_ID_TIMEX_TS1500	        	124
-#define MACHINE_ID_MICRODIGITAL_TK85       	125
+#define MACHINE_ID_MICRODIGITAL_TK80       	125
+#define MACHINE_ID_MICRODIGITAL_TK82       	126
+#define MACHINE_ID_MICRODIGITAL_TK82C      	127
+#define MACHINE_ID_MICRODIGITAL_TK83       	128
+#define MACHINE_ID_MICRODIGITAL_TK85       	129
 
 #define MACHINE_ID_Z88		        		130
 
