@@ -1375,10 +1375,11 @@ char *string_machines_list_description=
 							" P341     ZX Spectrum +3 (ROM v4.1)\n"
 							" P3S      ZX Spectrum +3 (Spanish)\n"							
 
-                            " TC2048   Timex TC 2048\n"
-                            " TC2068   Timex TC 2068\n"
-                            " TS1000   Timex TS 1000\n"
-							" TS2068   Timex TS 2068\n"
+                            " TC2048   Timex Computer 2048\n"
+                            " TC2068   Timex Computer 2068\n"
+                            " TS1000   Timex Sinclair 1000\n"
+                            " TS1500   Timex Sinclair 1500\n"
+							" TS2068   Timex Sinclair 2068\n"
 
 							" Inves    Inves Spectrum+\n"
               " 48ks     ZX Spectrum+ 48k (Spanish)\n"
@@ -2775,7 +2776,7 @@ struct s_machine_names machine_names[]={
     {"ZX-Uno",         			14},
     {"Chloe 140SE",    			15},
     {"Chloe 280SE",    			16},
-    {"Timex TS2068",   			17},
+    {"Timex Sinclair 2068",   			17},
     {"Prism 512",       			18},
     {"ZX Spectrum Next",   			19},
     {"ZX Spectrum+ 48k (Spanish)",		20},
@@ -2790,8 +2791,8 @@ struct s_machine_names machine_names[]={
     {"ZX Spectrum +3 (Spanish)",		MACHINE_ID_SPECTRUM_P3_SPA},
 
     {"ZX Spectrum+ 48k",		MACHINE_ID_SPECTRUM_48_PLUS_ENG},
-    {"Timex TC2048",   			MACHINE_ID_TIMEX_TC2048},
-    {"Timex TC2068",   			MACHINE_ID_TIMEX_TC2068},
+    {"Timex Computer 2048",   			MACHINE_ID_TIMEX_TC2048},
+    {"Timex Computer 2068",   			MACHINE_ID_TIMEX_TC2068},
     {"Microdigital TK95 (Spanish)",		MACHINE_ID_MICRODIGITAL_TK95_SPA},
 
     {"MSX1",MACHINE_ID_MSX1},
@@ -2804,8 +2805,8 @@ struct s_machine_names machine_names[]={
     {"ZX80",  				120},
     {"ZX81",  				121},
     {"Jupiter Ace",  			122},
-    {"Timex TS1000",   			MACHINE_ID_TIMEX_TS1000},
-    {"Timex TS1500",   			MACHINE_ID_TIMEX_TS1500},
+    {"Timex Sinclair 1000",   			MACHINE_ID_TIMEX_TS1000},
+    {"Timex Sinclair 1500",   			MACHINE_ID_TIMEX_TS1500},
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
