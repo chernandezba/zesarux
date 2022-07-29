@@ -553,14 +553,14 @@ char *array_fabricantes_hotkey[]={
         "Se~~ga",
         "~~Sinclair Research",
         "Spectravideo Intl",
-        "Timex Computers",
+        "Timex Computer",
         "~~Timex Sinclair",
         "TS ~~Labs",
         "~~VTrucco/FB Labs",
         "~~ZXUno Team"
 };
 
-//Si letra es espacio->no hay letra. spectravideo o timex computers no hay letras libres
+//Si letra es espacio->no hay letra. spectravideo o timex computer no hay letras libres
 char array_fabricantes_hotkey_letra[]="aobcdiurmyewpngs  tlvz";
 
 
