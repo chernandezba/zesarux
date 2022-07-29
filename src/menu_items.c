@@ -18883,6 +18883,8 @@ void menu_help_keyboard_load_bmp(void)
     else if (MACHINE_IS_SPECTRUM_128_SPA) strcpy(nombrebmp,"keyboard_128s.bmp");		
     else if (MACHINE_IS_ZX80) strcpy(nombrebmp,"keyboard_zx80.bmp");
     else if (MACHINE_IS_ZX81) strcpy(nombrebmp,"keyboard_zx81.bmp");
+    else if (MACHINE_IS_TIMEX_TS1000) strcpy(nombrebmp,"keyboard_zx81.bmp"); //mismo teclado
+    else if (MACHINE_IS_TIMEX_TS1500) strcpy(nombrebmp,"keyboard_ts1500.bmp"); 
     else if (MACHINE_IS_ZXEVO) strcpy(nombrebmp,"keyboard_zxevo.bmp");
     else if (MACHINE_IS_ZXUNO) strcpy(nombrebmp,"keyboard_zxuno.bmp");
     else strcpy(nombrebmp,"keyboard_48.bmp");
