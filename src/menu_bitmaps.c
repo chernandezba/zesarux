@@ -3553,21 +3553,21 @@ char *bitmap_button_ext_desktop_my_machine_ts1500[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          ",
     "                          ",	
 	"                          ",	//10	
-	" xxxxxxxxxxxxxxxxxxxxxxxx ",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxccxwwwwxxxxxxxxxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxwwxwwxwwxwwxwwxwwxwwxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
-	"xxxxwwxwwxwwxwwxwwxwwxwwxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
-	"xxxwwxwwxwwxwwxwwxwwxxxxxx",		
-	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
-	" xxxxxxxxxxxxxxxxxxxxxxxx " 	 //25
+	" wwwwwwwwwwwwwwwwwwwwwwww ",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwccwWWWWwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWwWWwWWwWWwWWwWWwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwWWwWWwWWwWWwWWwWWwWWwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",    //20
+	"wwwwWWwWWwWWwWWwWWwWWwWWww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwWWwWWwWWwWWwWWwWWwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	" wwwwwwwwwwwwwwwwwwwwwwww " 	 //25
 };
 
 //Icono "My machine" para ZX80
