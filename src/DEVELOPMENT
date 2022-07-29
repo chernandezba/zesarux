@@ -689,7 +689,7 @@ index 38b9613..54e1043 100644
  
  Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 
-## Agregar en FEATURES
+## Agregar en FEATURES y FEATURES_es
 diff --git a/src/FEATURES b/src/FEATURES
 index 49b094c..a6e5fe2 100644
 --- a/src/FEATURES

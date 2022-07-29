@@ -9322,6 +9322,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     //Valores de ZX80/81
     //ZX80/81 con 16 kb
     ramtop_zx8081=16383+16384;
+
+    //TODO: ZX81 de serie tiene 1 kb, TS1000 tiene 2 kb, y TS1500 tiene 16 kb.
+    //En cambio estamos haciendo que todos ellos inicien con 16 kb
+
     ram_in_8192.v=0;
     ram_in_32768.v=0;
     ram_in_49152.v=0;
