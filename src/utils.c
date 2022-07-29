@@ -571,7 +571,7 @@ int array_maquinas_sinclair[]={
 };
 
 int array_maquinas_timex_sinclair[]={
-	MACHINE_ID_TIMEX_TS1000,MACHINE_ID_TIMEX_TS2068,255
+	MACHINE_ID_TIMEX_TS1000,MACHINE_ID_TIMEX_TS1500,MACHINE_ID_TIMEX_TS2068,255
 };
 
 int array_maquinas_timex_computers[]={
@@ -771,6 +771,7 @@ int return_fabricante_maquina(int maquina)
 		break;
 
         case MACHINE_ID_TIMEX_TS1000:
+        case MACHINE_ID_TIMEX_TS1500:
 		case MACHINE_ID_TIMEX_TS2068:
 			return FABRICANTE_TIMEX_SINCLAIR;
 		break;
@@ -3100,8 +3101,10 @@ int get_rom_size(int machine)
     //ZX80
     else if (machine==MACHINE_ID_ZX80) return 4096;
 
-	//ZX81
+	//ZX81 y variantes
 	else if (machine==MACHINE_ID_ZX81) return 8192;
+    else if (machine==MACHINE_ID_TIMEX_TS1000) return 8192;
+    else if (machine==MACHINE_ID_TIMEX_TS1500) return 8192;
 
 	//Jupiter Ace
 	else if (machine==MACHINE_ID_ACE) return 8192;
@@ -10688,6 +10691,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"ZX81",121},
    {"ACE",122},
    {"TS1000",MACHINE_ID_TIMEX_TS1000},
+   {"TS1500",MACHINE_ID_TIMEX_TS1500},
 
    {"Z88",130},
    {"CPC464",MACHINE_ID_CPC_464},

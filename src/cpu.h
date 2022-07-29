@@ -407,6 +407,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_ZX81		        		121
 #define MACHINE_ID_ACE		        		122
 #define MACHINE_ID_TIMEX_TS1000	        	123
+#define MACHINE_ID_TIMEX_TS1500	        	124
 
 #define MACHINE_ID_Z88		        		130
 
@@ -478,8 +479,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_ZX80 (current_machine_type==MACHINE_ID_ZX80)
 #define MACHINE_IS_ZX81 (current_machine_type==MACHINE_ID_ZX81)
 #define MACHINE_IS_TS1000 (current_machine_type==MACHINE_ID_TIMEX_TS1000)
+#define MACHINE_IS_TS1500 (current_machine_type==MACHINE_ID_TIMEX_TS1500)
 
-#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81 || MACHINE_IS_TS1000)
+#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81 || MACHINE_IS_TS1000 || MACHINE_IS_TS1500)
 
 #define MACHINE_IS_ZX8081 (MACHINE_IS_ZX80 || MACHINE_IS_ZX81_TYPE)
 #define MACHINE_IS_ZX8081ACE (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)

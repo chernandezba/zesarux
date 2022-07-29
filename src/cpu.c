@@ -2805,6 +2805,7 @@ struct s_machine_names machine_names[]={
     {"ZX81",  				121},
     {"Jupiter Ace",  			122},
     {"Timex TS1000",   			MACHINE_ID_TIMEX_TS1000},
+    {"Timex TS1500",   			MACHINE_ID_TIMEX_TS1500},
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
@@ -3300,6 +3301,7 @@ void set_machine_params(void)
 121=zx81 (old 21)
 122=jupiter ace (old 22)
 123=Timex TS1000
+124=Timex TS1500
 130=z88 (old 30)
 140=amstrad cpc464 
 141=amstrad cpc4128 
@@ -4205,6 +4207,7 @@ You don't need timings for H/V sync =)
 
 		case MACHINE_ID_ZX81:
         case MACHINE_ID_TIMEX_TS1000:
+        case MACHINE_ID_TIMEX_TS1500:
                 poke_byte=poke_byte_zx80;
                 peek_byte=peek_byte_zx80;
 		peek_byte_no_time=peek_byte_zx80_no_time;
@@ -4836,6 +4839,12 @@ void rom_load(char *romfilename)
             romfilename="zx81.rom";
 
 		    break;
+
+            case MACHINE_ID_TIMEX_TS1500:
+
+            romfilename="ts1500.rom";
+
+		    break;            
 
             case 122:
 
