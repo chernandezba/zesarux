@@ -571,7 +571,7 @@ int array_maquinas_sinclair[]={
 };
 
 int array_maquinas_timex_sinclair[]={
-	MACHINE_ID_TIMEX_TS2068,255
+	MACHINE_ID_TIMEX_TS1000,MACHINE_ID_TIMEX_TS2068,255
 };
 
 int array_maquinas_timex_computers[]={
@@ -770,6 +770,7 @@ int return_fabricante_maquina(int maquina)
 			return FABRICANTE_SINCLAIR;
 		break;
 
+        case MACHINE_ID_TIMEX_TS1000:
 		case MACHINE_ID_TIMEX_TS2068:
 			return FABRICANTE_TIMEX_SINCLAIR;
 		break;
@@ -10686,6 +10687,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"ZX80",120},
    {"ZX81",121},
    {"ACE",122},
+   {"TS1000",MACHINE_ID_TIMEX_TS1000},
 
    {"Z88",130},
    {"CPC464",MACHINE_ID_CPC_464},
