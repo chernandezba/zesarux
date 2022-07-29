@@ -1,14 +1,14 @@
 Version 10.2-RC1 - Hysteria edition. 22 July 2022
 
 Added new emulated machines:
--Spectrum 48k+
--TK80
--TK85
--TK95 Spanish
--Timex TC2048
--Timex TC2068
--Timex TS1000
--Timex TS1500
+-ZX Spectrum 48k+
+-Microdigital TK80
+-Microdigital TK85
+-Microdigital TK95 Spanish
+-Timex Computer 2048
+-Timex Computer 2068
+-Timex Sinclair 1000
+-Timex Sinclair 1500
 
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068

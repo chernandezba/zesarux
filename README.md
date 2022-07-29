@@ -103,7 +103,7 @@ __FEATURES__
     * Sinclair QL
     * Cambridge Z88
     * Inves Spectrum +
-    * Microdigital TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
+    * Microdigital TK80, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
     * Timex Sinclair 1000, 1500, 2068
     * Timex Computer 2048, 2068
     * Sam Coupe
