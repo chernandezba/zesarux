@@ -5143,6 +5143,9 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     else if (MACHINE_IS_MICRODIGITAL_TK82C) {
         bitmap=bitmap_button_ext_desktop_my_machine_tk82c;
     }      
+    else if (MACHINE_IS_MICRODIGITAL_TK83) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tk83;
+    }     
     else if (MACHINE_IS_MICRODIGITAL_TK85) {
         bitmap=bitmap_button_ext_desktop_my_machine_tk85;
     }     
