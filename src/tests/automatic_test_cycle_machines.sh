@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-
-MAQUINAS="MK14 ZX80 ZX81 16k 48k 48kp TC2048 TC2068 128k QL P2 P2F P2S P2A40 P2A41 P2AS P340 P341 P3S TS2068 Inves 48ks 128ks TK90X TK90XS TK95 TK95S Z88 Sam Pentagon Chloe140 Chloe280 Chrome Prism ZXUNO BaseConf TSConf TBBlue ACE CPC464 CPC4128"
+MAQUINAS="MK14 ZX80 ZX81 16k 48k 48kp 128k QL P2 P2F P2S P2A40 P2A41 P2AS P340 P341 P3S TC2048 TC2068 TS1000 TS1500 TS2068 Inves 48ks 128ks TK80 TK82 TK82C TK83 TK85 TK90X TK90XS TK95 TK95S Z88 Sam Pentagon Chloe140 Chloe280 Chrome Prism ZXUNO BaseConf TSConf TBBlue ACE CPC464 CPC4128 MSX1 Coleco SG1000 SMS SVI318 SVI328"
 
 for i in $MAQUINAS; do
 
 echo Maquina: $i
 
-./zesarux --noconfigfile --exit-after 10 --machine $i
+./zesarux --noconfigfile --exit-after 10 --quickexit --machine $i
 
 done
