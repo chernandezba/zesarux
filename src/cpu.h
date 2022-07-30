@@ -501,50 +501,40 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Condiciones de maquinas activas
 //De maquinas Combinadas
 //
-#define MACHINE_IS_SPECTRUM (current_machine_type<40)
+#define MACHINE_IS_SPECTRUM                     (current_machine_type<40)
 
+#define MACHINE_IS_SPECTRUM_48_PLUS_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
+#define MACHINE_IS_SPECTRUM_48_PLUS_ENG         (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
+#define MACHINE_IS_SPECTRUM_16_48               ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA)
 
-
-#define MACHINE_IS_SPECTRUM_48_PLUS_SPA (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_SPA)
-#define MACHINE_IS_SPECTRUM_48_PLUS_ENG (current_machine_type==MACHINE_ID_SPECTRUM_48_PLUS_ENG)
-#define MACHINE_IS_SPECTRUM_16_48 ( (current_machine_type<=MACHINE_ID_MICRODIGITAL_TK95) || MACHINE_IS_SPECTRUM_48_PLUS_SPA || MACHINE_IS_SPECTRUM_48_PLUS_ENG || MACHINE_IS_TIMEX_TC2048 || MACHINE_IS_MICRODIGITAL_TK95_SPA)
-
-#define MACHINE_IS_SPECTRUM_128_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
-
-#define MACHINE_IS_SPECTRUM_P2 ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA))
-
-#define MACHINE_IS_SPECTRUM_P3 (current_machine_type==MACHINE_ID_SPECTRUM_P3_40 || current_machine_type==MACHINE_ID_SPECTRUM_P3_41 || current_machine_type==MACHINE_ID_SPECTRUM_P3_SPA)
+#define MACHINE_IS_SPECTRUM_128_P2              ( (current_machine_type>=MACHINE_ID_SPECTRUM_128 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA) || MACHINE_IS_PENTAGON)
+#define MACHINE_IS_SPECTRUM_P2                  ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2 && current_machine_type<=MACHINE_ID_SPECTRUM_P2_SPA))
+#define MACHINE_IS_SPECTRUM_P3                  (current_machine_type==MACHINE_ID_SPECTRUM_P3_40 || current_machine_type==MACHINE_ID_SPECTRUM_P3_41 || current_machine_type==MACHINE_ID_SPECTRUM_P3_SPA)
 
 //MACHINE_IS_SPECTRUM_P2A_P3 antes de emular el +3, era MACHINE_IS_SPECTRUM_P2A
-#define MACHINE_IS_SPECTRUM_P2A_P3 ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA) || MACHINE_IS_SPECTRUM_P3)
-
-#define MACHINE_IS_SPECTRUM_P2A ( current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA)
+#define MACHINE_IS_SPECTRUM_P2A_P3              ( (current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA) || MACHINE_IS_SPECTRUM_P3)
+#define MACHINE_IS_SPECTRUM_P2A                 ( current_machine_type>=MACHINE_ID_SPECTRUM_P2A_40 && current_machine_type<=MACHINE_ID_SPECTRUM_P2A_SPA)
 
 //MACHINE_IS_SPECTRUM_128_P2_P2A_P3 era MACHINE_IS_SPECTRUM_128_P2_P2A antes de emular el +3
-#define MACHINE_IS_SPECTRUM_128_P2_P2A_P3 ( MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_SPECTRUM_P2A_P3)
-
+#define MACHINE_IS_SPECTRUM_128_P2_P2A_P3       ( MACHINE_IS_SPECTRUM_128_P2 || MACHINE_IS_SPECTRUM_P2A_P3)
 #define MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3 (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_SPECTRUM_128_P2_P2A_P3)
 
-#define MACHINE_IS_CHLOE (MACHINE_IS_CHLOE_140SE || MACHINE_IS_CHLOE_280SE)
+#define MACHINE_IS_CHLOE                        (MACHINE_IS_CHLOE_140SE || MACHINE_IS_CHLOE_280SE)
 
-#define MACHINE_IS_ZXEVO (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF)
+#define MACHINE_IS_ZXEVO                        (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF)
 
-#define MACHINE_IS_TIMEX_TS_TC_2068 (MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_TIMEX_TC2068)
+#define MACHINE_IS_TIMEX_TS_TC_2068             (MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_TIMEX_TC2068)
 
-#define MACHINE_IS_ZX80_TYPE (MACHINE_IS_ZX80 || MACHINE_IS_MICRODIGITAL_TK80 || MACHINE_IS_MICRODIGITAL_TK82)
+#define MACHINE_IS_ZX80_TYPE                    (MACHINE_IS_ZX80 || MACHINE_IS_MICRODIGITAL_TK80 || MACHINE_IS_MICRODIGITAL_TK82)
+#define MACHINE_IS_ZX81_TYPE                    (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85)
+#define MACHINE_IS_ZX8081                       (MACHINE_IS_ZX80_TYPE || MACHINE_IS_ZX81_TYPE)
+#define MACHINE_IS_ZX8081ACE                    (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)
 
-#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85)
-#define MACHINE_IS_ZX8081 (MACHINE_IS_ZX80_TYPE || MACHINE_IS_ZX81_TYPE)
-#define MACHINE_IS_ZX8081ACE (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)
+#define MACHINE_IS_CPC                          (current_machine_type>=MACHINE_ID_CPC_464 && current_machine_type<=149)
 
+#define MACHINE_IS_MSX                          (current_machine_type>=MACHINE_ID_MSX1 && current_machine_type<=119)
 
-
-
-#define MACHINE_IS_CPC (current_machine_type>=MACHINE_ID_CPC_464 && current_machine_type<=149)
-
-#define MACHINE_IS_MSX (current_machine_type>=MACHINE_ID_MSX1 && current_machine_type<=119)
-
-#define MACHINE_IS_SVI (current_machine_type==MACHINE_ID_SVI_318 || current_machine_type==MACHINE_ID_SVI_328)
+#define MACHINE_IS_SVI                          (current_machine_type==MACHINE_ID_SVI_318 || current_machine_type==MACHINE_ID_SVI_328)
 
 /*
 160=QL
@@ -552,7 +542,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 */
 
 
-#define MACHINE_IS_QL (current_machine_type>=MACHINE_ID_QL_STANDARD && current_machine_type<=179)
+#define MACHINE_IS_QL                           (current_machine_type>=MACHINE_ID_QL_STANDARD && current_machine_type<=179)
 
 /*
 180=MK14 Standard
@@ -560,9 +550,12 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 */
 
 
-#define MACHINE_IS_MK14 (current_machine_type>=MACHINE_ID_MK14_STANDARD && current_machine_type<=189)
+#define MACHINE_IS_MK14                         (current_machine_type>=MACHINE_ID_MK14_STANDARD && current_machine_type<=189)
 
 
+//
+//Condiciones de CPU
+//
 #define CPU_IS_MOTOROLA (MACHINE_IS_QL)
 #define CPU_IS_SCMP (MACHINE_IS_MK14)
 #define CPU_IS_Z80 (!CPU_IS_MOTOROLA && !CPU_IS_SCMP)
