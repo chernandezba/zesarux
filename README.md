@@ -16,10 +16,10 @@ It's a ZX Machines Emulator for UNIX based operating systems (and Windows), incl
 
 And also:
 
-* Inves Spectrum +
-* Microdigital TK85, TK90X, TK95
+* Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
 * Timex Sinclair 1000, 1500, 2068
 * Timex Computer 2048, 2068
+* Inves Spectrum +
 * Sam Coupe
 * Pentagon 
 * Chloe 140 SE, 280 SE
@@ -93,7 +93,7 @@ Thanks!
 
 __FEATURES__
 
-* Runs on any Unix system and Windows: tested on GNU/Linux x86, GNU/Linux x86_64, GNU/Linux Raspbian, GNU/Linux RetroPie, FreeBSD x86_64, Haiku, Mac OS X, Windows native, Windows + Cygwin
+* Runs on any UNIX based operating system and Windows: tested on GNU/Linux x86, GNU/Linux x86_64, GNU/Linux Raspbian, GNU/Linux RetroPie, FreeBSD x86_64, Haiku, Mac OS X, Windows native, Windows + Cygwin
 
 * Emulates:
     * Science of Cambridge MK14
@@ -102,10 +102,10 @@ __FEATURES__
     * Sinclair ZX Spectrum models: 16k, 48k (English and Spanish), 48k+ (English and Spanish), Spectrum 128k (English and Spanish), Spectrum +2 (English, Spanish and French), Spectrum +2A (English and Spanish), Spectrum +3 (English and Spanish)
     * Sinclair QL
     * Cambridge Z88
-    * Inves Spectrum +
-    * Microdigital TK80, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
+    * Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portuguese and Spanish), TK95 (Portuguese and Spanish)
     * Timex Sinclair 1000, 1500, 2068
     * Timex Computer 2048, 2068
+    * Inves Spectrum +
     * Sam Coupe
     * Pentagon 
     * Chloe 140 SE, 280 SE

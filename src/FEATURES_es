@@ -1,15 +1,16 @@
-* Se ejecuta en cualquier sistema Unix y Windows: testeado en GNU/Linux x86, GNU/Linux x86_64, GNU/Linux Raspbian, GNU/Linux RetroPie, FreeBSD x86_64, Haiku, Mac OS X, Windows nativo, Windows + Cygwin
+* Se ejecuta en cualquier sistema operativo basado en UNIX y Windows: testeado en GNU/Linux x86, GNU/Linux x86_64, GNU/Linux Raspbian, GNU/Linux RetroPie, FreeBSD x86_64, Haiku, Mac OS X, Windows nativo, Windows + Cygwin
 
 * Emula:
     * Science of Cambridge MK14
     * Sinclair ZX80
     * Sinclair ZX81
-    * Spectrum models: 16k, 48k (English y Spanish), 48k+ (English y Spanish), Inves Spectrum +, Spectrum 128k (English y Spanish), Spectrum +2 (English, Spanish y French), Spectrum +2A (English y Spanish), Spectrum +3 (English y Spanish), Microdigital TK90X (Portuguese y Spanish), TK95 (Portuguese y Spanish)
+    * Sinclair ZX Spectrum modelos: 16k, 48k (Inglés y Español), 48k+ (Inglés y Español), Spectrum 128k (Inglés y Español), Spectrum +2 (Inglés, Español y Francés), Spectrum +2A (Inglés y Español), Spectrum +3 (Inglés y Español)
     * Sinclair QL
     * Cambridge Z88
-    * Microdigital TK85
+    * Microdigital TK80, TK82, TK82C, TK83, TK85, TK90X (Portugués y Español), TK95 (Portugués y Español)
     * Timex Sinclair 1000, 1500, 2068
     * Timex Computer 2048, 2068
+    * Inves Spectrum +
     * Sam Coupe
     * Pentagon 
     * Chloe 140 SE, 280 SE
