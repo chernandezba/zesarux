@@ -432,75 +432,68 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //De maquinas únicas
 //
 
-#define MACHINE_IS_SPECTRUM_16 (current_machine_type==MACHINE_ID_SPECTRUM_16)
-#define MACHINE_IS_SPECTRUM_48 (current_machine_type==MACHINE_ID_SPECTRUM_48)
-#define MACHINE_IS_INVES (current_machine_type==MACHINE_ID_INVES)
-#define MACHINE_IS_MICRODIGITAL_TK90X (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X)
-#define MACHINE_IS_MICRODIGITAL_TK90X_SPA (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_SPA)
-#define MACHINE_IS_MICRODIGITAL_TK95 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95)
-#define MACHINE_IS_MICRODIGITAL_TK95_SPA (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95_SPA)
-#define MACHINE_IS_SPECTRUM_128 (current_machine_type==MACHINE_ID_SPECTRUM_128)
-#define MACHINE_IS_SPECTRUM_128_SPA (current_machine_type==MACHINE_ID_SPECTRUM_128_SPA)
+#define MACHINE_IS_SPECTRUM_16              (current_machine_type==MACHINE_ID_SPECTRUM_16)
+#define MACHINE_IS_SPECTRUM_48              (current_machine_type==MACHINE_ID_SPECTRUM_48)
+#define MACHINE_IS_INVES                    (current_machine_type==MACHINE_ID_INVES)
+#define MACHINE_IS_MICRODIGITAL_TK90X       (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X)
+#define MACHINE_IS_MICRODIGITAL_TK90X_SPA   (current_machine_type==MACHINE_ID_MICRODIGITAL_TK90X_SPA)
+#define MACHINE_IS_MICRODIGITAL_TK95        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95)
+#define MACHINE_IS_MICRODIGITAL_TK95_SPA    (current_machine_type==MACHINE_ID_MICRODIGITAL_TK95_SPA)
+#define MACHINE_IS_SPECTRUM_128             (current_machine_type==MACHINE_ID_SPECTRUM_128)
+#define MACHINE_IS_SPECTRUM_128_SPA         (current_machine_type==MACHINE_ID_SPECTRUM_128_SPA)
 
-#define MACHINE_IS_ZXUNO (current_machine_type==MACHINE_ID_ZXUNO)
+#define MACHINE_IS_ZXUNO                    (current_machine_type==MACHINE_ID_ZXUNO)
 
-#define MACHINE_IS_CHLOE_140SE (current_machine_type==MACHINE_ID_CHLOE_140SE)
-#define MACHINE_IS_CHLOE_280SE (current_machine_type==MACHINE_ID_CHLOE_280SE)
+#define MACHINE_IS_CHLOE_140SE              (current_machine_type==MACHINE_ID_CHLOE_140SE)
+#define MACHINE_IS_CHLOE_280SE              (current_machine_type==MACHINE_ID_CHLOE_280SE)
 
 //MACHINE_IS_TIMEX_TS_TC_2068 engloba la TS2068 (Timex Sinclair 2068) y TC2068 (Timex Computer 2048) que son iguales practicamente
 //fisicamente son identicas excepto que en el logo una dice Timex Sinclair y la otra Timex Computer
 
-#define MACHINE_IS_TIMEX_TS2068 (current_machine_type==MACHINE_ID_TIMEX_TS2068)
-#define MACHINE_IS_TIMEX_TC2068 (current_machine_type==MACHINE_ID_TIMEX_TC2068)
-#define MACHINE_IS_TIMEX_TC2048 (current_machine_type==MACHINE_ID_TIMEX_TC2048)
+#define MACHINE_IS_TIMEX_TS2068             (current_machine_type==MACHINE_ID_TIMEX_TS2068)
+#define MACHINE_IS_TIMEX_TC2068             (current_machine_type==MACHINE_ID_TIMEX_TC2068)
+#define MACHINE_IS_TIMEX_TC2048             (current_machine_type==MACHINE_ID_TIMEX_TC2048)
 
-#define MACHINE_IS_PRISM (current_machine_type==MACHINE_ID_PRISM)
-#define MACHINE_IS_TBBLUE (current_machine_type==MACHINE_ID_TBBLUE)
+#define MACHINE_IS_PRISM                    (current_machine_type==MACHINE_ID_PRISM)
+#define MACHINE_IS_TBBLUE                   (current_machine_type==MACHINE_ID_TBBLUE)
+#define MACHINE_IS_PENTAGON                 (current_machine_type==MACHINE_ID_PENTAGON)
+#define MACHINE_IS_CHROME                   (current_machine_type==MACHINE_ID_CHROME)
+#define MACHINE_IS_TSCONF                   (current_machine_type==MACHINE_ID_TSCONF)
+#define MACHINE_IS_BASECONF                 (current_machine_type==MACHINE_ID_BASECONF)
 
-#define MACHINE_IS_PENTAGON (current_machine_type==MACHINE_ID_PENTAGON)
-#define MACHINE_IS_CHROME (current_machine_type==MACHINE_ID_CHROME)
-
-#define MACHINE_IS_TSCONF (current_machine_type==MACHINE_ID_TSCONF)
-#define MACHINE_IS_BASECONF (current_machine_type==MACHINE_ID_BASECONF)
-
-#define MACHINE_IS_COLECO (current_machine_type==MACHINE_ID_COLECO)
-
-#define MACHINE_IS_SG1000 (current_machine_type==MACHINE_ID_SG1000)
-
-#define MACHINE_IS_SMS (current_machine_type==MACHINE_ID_SMS)
-
-
-#define MACHINE_IS_SVI_318 (current_machine_type==MACHINE_ID_SVI_318)
-#define MACHINE_IS_SVI_328 (current_machine_type==MACHINE_ID_SVI_328)
-
-#define MACHINE_IS_MSX1 (current_machine_type==MACHINE_ID_MSX1)
+#define MACHINE_IS_COLECO                   (current_machine_type==MACHINE_ID_COLECO)
+#define MACHINE_IS_SG1000                   (current_machine_type==MACHINE_ID_SG1000)
+#define MACHINE_IS_SMS                      (current_machine_type==MACHINE_ID_SMS)
+#define MACHINE_IS_SVI_318                  (current_machine_type==MACHINE_ID_SVI_318)
+#define MACHINE_IS_SVI_328                  (current_machine_type==MACHINE_ID_SVI_328)
+#define MACHINE_IS_MSX1                     (current_machine_type==MACHINE_ID_MSX1)
 
 //Basados en ZX80
-#define MACHINE_IS_ZX80 (current_machine_type==MACHINE_ID_ZX80)
-#define MACHINE_IS_MICRODIGITAL_TK80 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK80)
-#define MACHINE_IS_MICRODIGITAL_TK82 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82)
+#define MACHINE_IS_ZX80                     (current_machine_type==MACHINE_ID_ZX80)
+#define MACHINE_IS_MICRODIGITAL_TK80        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK80)
+#define MACHINE_IS_MICRODIGITAL_TK82        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82)
 
 
 //Basados en ZX81
-#define MACHINE_IS_ZX81 (current_machine_type==MACHINE_ID_ZX81)
-#define MACHINE_IS_TIMEX_TS1000 (current_machine_type==MACHINE_ID_TIMEX_TS1000)
-#define MACHINE_IS_TIMEX_TS1500 (current_machine_type==MACHINE_ID_TIMEX_TS1500)
-#define MACHINE_IS_MICRODIGITAL_TK82C (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82C)
-#define MACHINE_IS_MICRODIGITAL_TK83 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK83)
-#define MACHINE_IS_MICRODIGITAL_TK85 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK85)
+#define MACHINE_IS_ZX81                     (current_machine_type==MACHINE_ID_ZX81)
+#define MACHINE_IS_TIMEX_TS1000             (current_machine_type==MACHINE_ID_TIMEX_TS1000)
+#define MACHINE_IS_TIMEX_TS1500             (current_machine_type==MACHINE_ID_TIMEX_TS1500)
+#define MACHINE_IS_MICRODIGITAL_TK82C       (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82C)
+#define MACHINE_IS_MICRODIGITAL_TK83        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK83)
+#define MACHINE_IS_MICRODIGITAL_TK85        (current_machine_type==MACHINE_ID_MICRODIGITAL_TK85)
 
-#define MACHINE_IS_ACE (current_machine_type==MACHINE_ID_ACE)
+#define MACHINE_IS_ACE                      (current_machine_type==MACHINE_ID_ACE)
 
-#define MACHINE_IS_Z88 (current_machine_type==MACHINE_ID_Z88)
+#define MACHINE_IS_Z88                      (current_machine_type==MACHINE_ID_Z88)
 
-#define MACHINE_IS_CPC_464 (current_machine_type==MACHINE_ID_CPC_464)
-#define MACHINE_IS_CPC_4128 (current_machine_type==MACHINE_ID_CPC_4128)
+#define MACHINE_IS_CPC_464                  (current_machine_type==MACHINE_ID_CPC_464)
+#define MACHINE_IS_CPC_4128                 (current_machine_type==MACHINE_ID_CPC_4128)
 
-#define MACHINE_IS_SAM (current_machine_type==MACHINE_ID_SAM)
+#define MACHINE_IS_SAM                      (current_machine_type==MACHINE_ID_SAM)
 
-#define MACHINE_IS_QL_STANDARD (current_machine_type==MACHINE_ID_QL_STANDARD)
+#define MACHINE_IS_QL_STANDARD              (current_machine_type==MACHINE_ID_QL_STANDARD)
 
-#define MACHINE_IS_MK14_STANDARD (current_machine_type==MACHINE_ID_MK14_STANDARD)
+#define MACHINE_IS_MK14_STANDARD            (current_machine_type==MACHINE_ID_MK14_STANDARD)
 
 
 
