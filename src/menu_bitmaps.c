@@ -3665,6 +3665,37 @@ char *bitmap_button_ext_desktop_my_machine_tk80[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+//Icono "My machine" para TK82
+char *bitmap_button_ext_desktop_my_machine_tk82[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxWWxWWxWWxWWxWWxWWxWWxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",    //20
+	"xxxxWWxWWxWWxWWxWWxWWxWWxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
 //Icono "My machine" para Jupiter ACE
 char *bitmap_button_ext_desktop_my_machine_ace[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

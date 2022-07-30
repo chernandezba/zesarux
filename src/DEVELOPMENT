@@ -914,7 +914,7 @@ diff --git a/src/zxvision.c b/src/zxvision.c
 index 363164e..23697c6 100644
 --- a/src/zxvision.c
 +++ b/src/zxvision.c
-@@ -5130,6 +5130,14 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
+@@ -5130,6 +5130,14 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
  
          else if (MACHINE_IS_SPECTRUM_P3) {
              bitmap=bitmap_button_ext_desktop_my_machine_spectrum_p3;

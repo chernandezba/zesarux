@@ -5147,10 +5147,16 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_zx80;
     }    
 
-    //Aunque el teclado sea el de un zx80, la imagen exterior es casi como un zx81
+    //Aunque el teclado sea el de un zx80, la imagen exterior es casi como un zx81??
     else if (MACHINE_IS_MICRODIGITAL_TK80) {
         bitmap=bitmap_button_ext_desktop_my_machine_tk80;
     }       
+
+    //Aunque el teclado sea el de un zx80, la imagen exterior es casi como un zx81??
+    else if (MACHINE_IS_MICRODIGITAL_TK82) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tk82;
+    }       
+
 
     else if (MACHINE_IS_ACE) {
         bitmap=bitmap_button_ext_desktop_my_machine_ace;
