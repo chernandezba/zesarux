@@ -358,7 +358,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 //Valores para stdout. Estan aqui porque se graban en archivo .zx, aunque no este el driver stdout compilado
 //fin valores para stdout
 
-
+//
+// Identificadores de maquinas. Valor de 8 bits
+//
 #define MACHINE_ID_SPECTRUM_16			    0
 #define MACHINE_ID_SPECTRUM_48			    1
 #define MACHINE_ID_INVES			        2
@@ -425,10 +427,10 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_ID_MK14_STANDARD	    	180
 
-
+//
 //Condiciones de maquinas activas
-
 //De maquinas únicas
+//
 
 #define MACHINE_IS_SPECTRUM_16 (current_machine_type==MACHINE_ID_SPECTRUM_16)
 #define MACHINE_IS_SPECTRUM_48 (current_machine_type==MACHINE_ID_SPECTRUM_48)
@@ -450,10 +452,6 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_TIMEX_TS2068 (current_machine_type==MACHINE_ID_TIMEX_TS2068)
 #define MACHINE_IS_TIMEX_TC2068 (current_machine_type==MACHINE_ID_TIMEX_TC2068)
-
-#define MACHINE_IS_TIMEX_TS_TC_2068 (MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_TIMEX_TC2068)
-
-
 #define MACHINE_IS_TIMEX_TC2048 (current_machine_type==MACHINE_ID_TIMEX_TC2048)
 
 #define MACHINE_IS_PRISM (current_machine_type==MACHINE_ID_PRISM)
@@ -461,10 +459,6 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_PENTAGON (current_machine_type==MACHINE_ID_PENTAGON)
 #define MACHINE_IS_CHROME (current_machine_type==MACHINE_ID_CHROME)
-
-
-
-
 
 #define MACHINE_IS_TSCONF (current_machine_type==MACHINE_ID_TSCONF)
 #define MACHINE_IS_BASECONF (current_machine_type==MACHINE_ID_BASECONF)
@@ -475,7 +469,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_SMS (current_machine_type==MACHINE_ID_SMS)
 
-#define MACHINE_IS_SVI (current_machine_type==MACHINE_ID_SVI_318 || current_machine_type==MACHINE_ID_SVI_328)
+
 #define MACHINE_IS_SVI_318 (current_machine_type==MACHINE_ID_SVI_318)
 #define MACHINE_IS_SVI_328 (current_machine_type==MACHINE_ID_SVI_328)
 
@@ -485,7 +479,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_ZX80 (current_machine_type==MACHINE_ID_ZX80)
 #define MACHINE_IS_MICRODIGITAL_TK80 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK80)
 #define MACHINE_IS_MICRODIGITAL_TK82 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82)
-#define MACHINE_IS_ZX80_TYPE (MACHINE_IS_ZX80 || MACHINE_IS_MICRODIGITAL_TK80 || MACHINE_IS_MICRODIGITAL_TK82)
+
 
 //Basados en ZX81
 #define MACHINE_IS_ZX81 (current_machine_type==MACHINE_ID_ZX81)
@@ -494,10 +488,6 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_MICRODIGITAL_TK82C (current_machine_type==MACHINE_ID_MICRODIGITAL_TK82C)
 #define MACHINE_IS_MICRODIGITAL_TK83 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK83)
 #define MACHINE_IS_MICRODIGITAL_TK85 (current_machine_type==MACHINE_ID_MICRODIGITAL_TK85)
-#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85)
-
-#define MACHINE_IS_ZX8081 (MACHINE_IS_ZX80_TYPE || MACHINE_IS_ZX81_TYPE)
-#define MACHINE_IS_ZX8081ACE (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)
 
 #define MACHINE_IS_ACE (current_machine_type==MACHINE_ID_ACE)
 
@@ -514,7 +504,10 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 
 
-//Combinadas
+//
+//Condiciones de maquinas activas
+//De maquinas Combinadas
+//
 #define MACHINE_IS_SPECTRUM (current_machine_type<40)
 
 
@@ -543,6 +536,13 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_ZXEVO (MACHINE_IS_TSCONF || MACHINE_IS_BASECONF)
 
+#define MACHINE_IS_TIMEX_TS_TC_2068 (MACHINE_IS_TIMEX_TS2068 || MACHINE_IS_TIMEX_TC2068)
+
+#define MACHINE_IS_ZX80_TYPE (MACHINE_IS_ZX80 || MACHINE_IS_MICRODIGITAL_TK80 || MACHINE_IS_MICRODIGITAL_TK82)
+
+#define MACHINE_IS_ZX81_TYPE (MACHINE_IS_ZX81 || MACHINE_IS_TIMEX_TS1000 || MACHINE_IS_TIMEX_TS1500 || MACHINE_IS_MICRODIGITAL_TK82C || MACHINE_IS_MICRODIGITAL_TK83 || MACHINE_IS_MICRODIGITAL_TK85)
+#define MACHINE_IS_ZX8081 (MACHINE_IS_ZX80_TYPE || MACHINE_IS_ZX81_TYPE)
+#define MACHINE_IS_ZX8081ACE (MACHINE_IS_ZX8081 || MACHINE_IS_ACE)
 
 
 
@@ -551,6 +551,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_MSX (current_machine_type>=MACHINE_ID_MSX1 && current_machine_type<=119)
 
+#define MACHINE_IS_SVI (current_machine_type==MACHINE_ID_SVI_318 || current_machine_type==MACHINE_ID_SVI_328)
 
 /*
 160=QL
