@@ -202,3 +202,11 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 
 -view variables desde ay3demo cuelga el emulador
 
+-agregar screenshot con zx desktop e iconos
+
+-en machine info, indicar "familia de maquinas", o sea:
+
+tk80, zx80... : tipo ZX80
+ts1000, zx81... : tipo ZX81
+
+etc
