@@ -155,6 +155,9 @@ Etc…
 
 -completar info maquina al pulsa icono en my machine
 * ram ok en todas maquinas
+*indicar "familia de maquinas", o sea:
+tk80, zx80... : tipo ZX80
+ts1000, zx81... : tipo ZX81
 
 
 -Funciones de utils no deberían involucrar nada del menú
@@ -204,9 +207,9 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 
 -agregar screenshot con zx desktop e iconos
 
--en machine info, indicar "familia de maquinas", o sea:
 
-tk80, zx80... : tipo ZX80
-ts1000, zx81... : tipo ZX81
 
 etc
+
+
+-Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual

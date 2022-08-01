@@ -5139,7 +5139,11 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     }    
     else if (MACHINE_IS_TIMEX_TS1500) {
         bitmap=bitmap_button_ext_desktop_my_machine_ts1500;
-    }      
+    }   
+    //TK82C igual al TK82 en apariencia pero sin la C (y teclado diferente tambien)
+    else if (MACHINE_IS_MICRODIGITAL_TK82) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tk82c;
+    }          
     else if (MACHINE_IS_MICRODIGITAL_TK82C) {
         bitmap=bitmap_button_ext_desktop_my_machine_tk82c;
     }      
