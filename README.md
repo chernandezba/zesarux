@@ -213,7 +213,7 @@ __FEATURES__
 
 * Emulates SamRam interface by Gerton Lunter (author of famous Z80 emulator)
 
-* Emulates HiLow DataDrive
+* Emulates HiLow DataDrive, Hilow Barbanegra
 
 * Handles RAM, EPROM, Intel Flash and Hybrid (RAM+EPROM) cards on Z88
 

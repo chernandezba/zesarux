@@ -419,7 +419,9 @@ void hilow_bbn_disable(void)
 
 void hilow_bbn_write_port_fd(z80_int port,z80_byte value)
 {
-    printf("hilow_bbn_write_port_fd: port %04XH value %02XH PC %04XH\n",port,value,reg_pc);
+    //printf("hilow_bbn_write_port_fd: port %04XH value %02XH PC %04XH\n",port,value,reg_pc);
+
+    //Simplemente desmapear la interfaz al enviar cualquier valor
 
     hilow_bbn_mapped_memory.v=0;
 }

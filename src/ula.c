@@ -330,7 +330,7 @@ void nmi_handle_pending_prepost_fetch(void)
     if (hilow_bbn_enabled.v) {
         hilow_bbn_nmi();
     }
-    
+
 }
 
 void generate_nmi(void)
@@ -392,7 +392,13 @@ void generate_nmi_prepare_fetch(void)
     if (hilow_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;        
-    }    
+    }
+
+
+    if (hilow_bbn_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }
 
 }
 
