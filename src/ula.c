@@ -35,6 +35,7 @@
 #include "divmmc.h"
 #include "hilow_datadrive.h"
 #include "samram.h"
+#include "hilow_barbanegra.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -326,6 +327,9 @@ void nmi_handle_pending_prepost_fetch(void)
         hilow_nmi();
     }
 
+    if (hilow_bbn_enabled.v) {
+        hilow_bbn_nmi();
+    }
     
 }
 

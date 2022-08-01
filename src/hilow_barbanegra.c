@@ -419,10 +419,13 @@ void hilow_bbn_disable(void)
 
 void hilow_bbn_write_port_fd(z80_int port,z80_byte value)
 {
+    printf("hilow_bbn_write_port_fd: port %04XH value %02XH\n",port,value);
 
+    hilow_bbn_mapped_memory.v=0;
 }
 
 
+/*
 z80_byte hilow_bbn_read_port_fd(z80_int puerto)
 {
 
@@ -432,3 +435,5 @@ z80_byte hilow_bbn_read_port_fd(z80_int puerto)
 
 
 }
+
+*/

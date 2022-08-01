@@ -84,6 +84,7 @@
 #include "gs.h"
 #include "samram.h"
 #include "vdp_9918a_sms.h"
+#include "hilow_barbanegra.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9267,9 +9268,14 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	if (spritechip_enabled.v && (puerto==SPRITECHIP_COMMAND_PORT || puerto==SPRITECHIP_DATA_PORT) ) spritechip_write(puerto,value);
 
 
-	//Puerto HiLow
+	//Puerto HiLow Datadrive
 	if (hilow_enabled.v && puerto_l==0xFF) {
 		hilow_write_port_ff(puerto,value);
+	}
+
+    //Puerto HiLow Barbanegra
+	if (hilow_bbn_enabled.v && puerto_l==0xFD) {
+		hilow_bbn_write_port_fd(puerto,value);
 	}
 
 

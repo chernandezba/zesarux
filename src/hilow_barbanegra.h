@@ -34,4 +34,6 @@
 
 #define HILOW_BARBANEGRA_MEM_SIZE (HILOW_BARBANEGRA_ROM_SIZE+HILOW_BARBANEGRA_RAM_SIZE)
 
+extern z80_bit hilow_bbn_enabled;
+
 #endif

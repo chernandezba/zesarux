@@ -134,6 +134,7 @@
 #include "samram.h"
 #include "snap_zx8081.h"
 #include "menu_bitmaps.h"
+#include "hilow_barbanegra.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -217,6 +218,7 @@ int ext_desktop_settings_opcion_seleccionada=0;
 int cpu_settings_opcion_seleccionada=0;
 int zxdesktop_set_configurable_icons_opcion_seleccionada=0;
 int fileselector_settings_opcion_seleccionada=0;
+int hilow_barbanegra_opcion_seleccionada=0;
 
 
 //Fin opciones seleccionadas para cada menu
@@ -4511,6 +4513,60 @@ void menu_multiface(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_hilow_barbanegra_enable(MENU_ITEM_PARAMETERS)
+{
+    if (hilow_bbn_enabled.v) {
+        hilow_bbn_disable();
+    }
+    else {
+        hilow_bbn_enable();
+    }
+}
+
+void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_hilow_barbanegra_enable,
+                NULL,"[%c] ~~Hilow_barbanegra Enabled", (hilow_bbn_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'h');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable hilow_barbanegra");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable hilow_barbanegra");
+
+
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&hilow_barbanegra_opcion_seleccionada,&item_seleccionado,array_menu_common,"hilow_barbanegra emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
+
 void menu_hardware_keyboard_issue(MENU_ITEM_PARAMETERS)
 {
 	keyboard_issue2.v^=1;
@@ -4940,6 +4996,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_multiface,NULL,"M~~ultiface emulation"  );
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'u');
+            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow Barbanegra emulation"  );
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 		}
 
