@@ -50,7 +50,6 @@ int hilow_bbn_nested_id_poke_byte;
 int hilow_bbn_nested_id_poke_byte_no_time;
 int hilow_bbn_nested_id_peek_byte;
 int hilow_bbn_nested_id_peek_byte_no_time;
-int hilow_bbn_nested_id_core;
 
 z80_bit hilow_bbn_mapped_memory={0};
 
@@ -224,27 +223,6 @@ void hilow_bbn_footer_operating(void)
 
 
 
-
-z80_byte cpu_core_loop_spectrum_hilow_bbn(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
-{
-
-    //Llamar a anterior
-    debug_nested_core_call_previous(hilow_bbn_nested_id_core);
-
-
-    if (hilow_bbn_mapped_memory.v==0) {
-        //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-        return 0;
-    }
-
-
-    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-    return 0;
-
-}
-
-
-
 //Establecer rutinas propias
 void hilow_bbn_set_peek_poke_functions(void)
 {
@@ -256,8 +234,6 @@ void hilow_bbn_set_peek_poke_functions(void)
 	hilow_bbn_nested_id_peek_byte=debug_nested_peek_byte_add(hilow_bbn_peek_byte,"hilow_bbn peek_byte");
 	hilow_bbn_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(hilow_bbn_peek_byte_no_time,"hilow_bbn peek_byte_no_time");
 
-
-	hilow_bbn_nested_id_core=debug_nested_core_add(cpu_core_loop_spectrum_hilow_bbn,"hilow_bbn Spectrum core");
 
 
 }
@@ -274,7 +250,6 @@ void hilow_bbn_restore_peek_poke_functions(void)
 	debug_nested_peek_byte_no_time_del(hilow_bbn_nested_id_peek_byte_no_time);
 
 
-	debug_nested_core_del(hilow_bbn_nested_id_core);
 }
 
 
