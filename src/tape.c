@@ -1317,31 +1317,31 @@ int tap_load_detect(void)
 int tap_save_detect(void)
 {
 
-		//Para Timex
-                if (MACHINE_IS_TIMEX_TS_TC_2068) {
-                        if (reg_pc!=108) return 0;
-                }
+    //Para Timex
+    if (MACHINE_IS_TIMEX_TS_TC_2068) {
+            if (reg_pc!=108) return 0;
+    }
 
-                //Hilow barbanegra se entra desde 1221
-                else if (hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
-                /*
-                rom normal
-                4c2h       ld hl,053dh
-                4c5h(1221) push hl  
-                4c6h(1222) ld hl,1f80h
+    //Hilow barbanegra se entra desde 1221
+    else if (hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
+    /*
+    rom normal
+    4c2h       ld hl,053dh
+    4c5h(1221) push hl  
+    4c6h(1222) ld hl,1f80h
 
-                rom hilow barbanegra
-                4c2h nop
-                4c3h nop
-                4c4h nop
-                4c5h(1221) ld hl,1f80h
+    rom hilow barbanegra
+    4c2h nop
+    4c3h nop
+    4c4h nop
+    4c5h(1221) ld hl,1f80h
 
-                */
-                    if (reg_pc!=1221) return 0;
-                }
+    */
+        if (reg_pc!=1221) return 0;
+    }
 
-                else if (reg_pc!=1222) return 0;
-                if (tape_out_file==0) return 0;
+    else if (reg_pc!=1222) return 0;
+    if (tape_out_file==0) return 0;
 		//if (tape_save_inserted.v==0) return 0;
 		if ( (tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) return 0;
 
@@ -1354,73 +1354,73 @@ int tap_save_detect(void)
     }
 
 
-                if (superupgrade_enabled.v) {
-                        //Como maquina +2A
-                        //Ver que instruccion sea ld hl,1f80
-                                if (peek_byte_no_time(reg_pc)!=0x21) return 0;
-                                if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
-                                if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+    if (superupgrade_enabled.v) {
+            //Como maquina +2A
+            //Ver que instruccion sea ld hl,1f80
+                    if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                    if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                    if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
 
-                                //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
-                                return 1;
-                }
-
-
-
-                if (MACHINE_IS_SPECTRUM_16_48) {
-
-                                //maquina 16k, inves o 48k
-                                return 1;
-                }
-
-                if (MACHINE_IS_SPECTRUM_128_P2) {
-
-                                //maquina 128k. rom 1 mapeada
-                                if ((puerto_32765 & 16) ==16)
-                                return 1;
-                }
+                    //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
+                    return 1;
+    }
 
 
 
-		//Para Timex
-                if (MACHINE_IS_TIMEX_TS_TC_2068) {
-                        //Si rom EX mapeada
-                        if ( (timex_port_f4 &1) == 0) return 0; //Home mapeada , volver
-                        if ( (timex_port_ff&128) == 0 ) return 0; //Dock mapeada, volver
-                        return 1;
-                }
+    if (MACHINE_IS_SPECTRUM_16_48) {
+
+                    //maquina 16k, inves o 48k
+                    return 1;
+    }
+
+    if (MACHINE_IS_SPECTRUM_128_P2) {
+
+                    //maquina 128k. rom 1 mapeada
+                    if ((puerto_32765 & 16) ==16)
+                    return 1;
+    }
 
 
 
-                if (MACHINE_IS_SPECTRUM_P2A_P3) {
-                                //maquina +2A
-                                if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  ))
-                                return 1;
-                }
-
-		if (MACHINE_IS_PRISM) {
-			//Como maquina +2A
-			//Ver que instruccion sea ld hl,1f80
-                                if (peek_byte_no_time(reg_pc)!=0x21) return 0;
-                                if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
-                                if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+    //Para Timex
+    if (MACHINE_IS_TIMEX_TS_TC_2068) {
+            //Si rom EX mapeada
+            if ( (timex_port_f4 &1) == 0) return 0; //Home mapeada , volver
+            if ( (timex_port_ff&128) == 0 ) return 0; //Dock mapeada, volver
+            return 1;
+    }
 
 
-                                //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
-                                return 1;
-		}
+
+    if (MACHINE_IS_SPECTRUM_P2A_P3) {
+                    //maquina +2A
+                    if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  ))
+                    return 1;
+    }
+
+    if (MACHINE_IS_PRISM) {
+        //Como maquina +2A
+        //Ver que instruccion sea ld hl,1f80
+                            if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                            if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                            if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+
+
+                            //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
+                            return 1;
+    }
 	
-                if (MACHINE_IS_TSCONF) {
-			//Como maquina +2A
-			//Ver que instruccion sea ld hl,1f80
-                                if (peek_byte_no_time(reg_pc)!=0x21) return 0;
-                                if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
-                                if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+    if (MACHINE_IS_TSCONF) {
+    //Como maquina +2A
+    //Ver que instruccion sea ld hl,1f80
+                    if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                    if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                    if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
 
 
-                                //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
-                                return 1;
-		}
+                    //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
+                    return 1;
+    }
 
 
     if (MACHINE_IS_CHROME) {
@@ -1435,31 +1435,31 @@ int tap_save_detect(void)
                                 return 1;
 		}
 
-		if (MACHINE_IS_TBBLUE) {
-			//Como maquina +2A
-                        //Ver que instruccion sea ld hl,1f80
-                                if (peek_byte_no_time(reg_pc)!=0x21) return 0;
-                                if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
-                                if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+    if (MACHINE_IS_TBBLUE) {
+    //Como maquina +2A
+            //Ver que instruccion sea ld hl,1f80
+                    if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                    if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                    if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
 
 
-                                //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
-                                return 1;
-                }
+                    //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
+                    return 1;
+    }
 
 
-                if (MACHINE_IS_ZXUNO_BOOTM_DISABLED) {
-                                //ZX-Uno. Como maquina +2A
+    if (MACHINE_IS_ZXUNO_BOOTM_DISABLED) {
+                    //ZX-Uno. Como maquina +2A
 
-	                       //Ver que instruccion sea ld hl,1f80
-                        	if (peek_byte_no_time(reg_pc)!=0x21) return 0;
-                        	if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
-	                        if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
+                //Ver que instruccion sea ld hl,1f80
+                if (peek_byte_no_time(reg_pc)!=0x21) return 0;
+                if (peek_byte_no_time(reg_pc+1)!=0x80) return 0;
+                if (peek_byte_no_time(reg_pc+2)!=0x1f) return 0;
 
 
-				//Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
-                                return 1;
-                }
+    //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
+                    return 1;
+    }
 
 
         return 0;
