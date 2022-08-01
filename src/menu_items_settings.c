@@ -4533,13 +4533,10 @@ void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS)
             
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_hilow_barbanegra_enable,
-                NULL,"[%c] ~~Hilow_barbanegra Enabled", (hilow_bbn_enabled.v ? 'X' : ' '));
+                NULL,"[%c] ~~Hilow Barbanegra Enabled", (hilow_bbn_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'h');
         menu_add_item_menu_tooltip(array_menu_common,"Enable hilow_barbanegra");
         menu_add_item_menu_ayuda(array_menu_common,"Enable hilow_barbanegra");
-
-
-
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);

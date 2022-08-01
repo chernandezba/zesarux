@@ -57,6 +57,7 @@
 #include "msx.h"
 #include "samram.h"
 #include "zvfs.h"
+#include "hilow_barbanegra.h"
 
 #include "autoselectoptions.h"
 
@@ -1319,6 +1320,24 @@ int tap_save_detect(void)
 		//Para Timex
                 if (MACHINE_IS_TIMEX_TS_TC_2068) {
                         if (reg_pc!=108) return 0;
+                }
+
+                //Hilow barbanegra se entra desde 1221
+                else if (hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
+                /*
+                rom normal
+                4c2h       ld hl,053dh
+                4c5h(1221) push hl  
+                4c6h(1222) ld hl,1f80h
+
+                rom hilow barbanegra
+                4c2h nop
+                4c3h nop
+                4c4h nop
+                4c5h(1221) ld hl,1f80h
+
+                */
+                    if (reg_pc!=1221) return 0;
                 }
 
                 else if (reg_pc!=1222) return 0;
