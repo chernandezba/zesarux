@@ -37,4 +37,10 @@
 extern z80_bit hilow_bbn_enabled;
 extern z80_bit hilow_bbn_mapped_memory;
 
+extern void hilow_bbn_reset(void);
+extern void hilow_bbn_write_port_fd(z80_int port,z80_byte value);
+extern void hilow_bbn_enable(void);
+extern void hilow_bbn_disable(void);
+extern void hilow_bbn_nmi(void);
+
 #endif

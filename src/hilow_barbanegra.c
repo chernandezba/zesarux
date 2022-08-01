@@ -198,37 +198,7 @@ int hilow_bbn_if_rom_basic_enabled(void)
     return 0;
 }
 
-void hilow_bbn_automap_unmap_memory(z80_int dir)
-{
-	//Si hay que mapear/desmapear memorias
-    //TODO: cuando???
-	//printf ("test dir %04XH\n",dir); 
 
-	//Puntos de mapeo rom
-	//Si no estaba mapeada
-    /*
-	if (hilow_bbn_mapped_rom.v==0) {
-        if (hilow_bbn_if_rom_basic_enabled()) {
-		    if (dir==0x04C2 || dir==0x0556 || dir==0x0976) {
-    			//printf ("Mapeando rom y ram en %04XH\n",dir);
-	    		hilow_bbn_mapped_rom.v=1;
-                hilow_bbn_mapped_ram.v=1;
-		    }
-        }
-	}
-
-	//Puntos de desmapeo rom
-	//Si estaba mapeada
-	if (hilow_bbn_mapped_rom.v==1) {
-		if (dir==0x0052) {
-			hilow_bbn_mapped_rom.v=0;
-            hilow_bbn_mapped_ram.v=0;
-			//printf ("Desmapeando rom y ram en %04XH\n",dir);
-		}
-	}	
-    */
-
-}
 
 void hilow_bbn_nmi(void)
 {
@@ -262,15 +232,11 @@ z80_byte cpu_core_loop_spectrum_hilow_bbn(z80_int dir GCC_UNUSED, z80_byte value
     debug_nested_core_call_previous(hilow_bbn_nested_id_core);
 
 
-    hilow_bbn_automap_unmap_memory(reg_pc);
-
     if (hilow_bbn_mapped_memory.v==0) {
         //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
         return 0;
     }
 
-
-   
 
     //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
     return 0;
@@ -414,10 +380,7 @@ void hilow_bbn_disable(void)
 
 
 
-
-
-
-void hilow_bbn_write_port_fd(z80_int port,z80_byte value)
+void hilow_bbn_write_port_fd(z80_int port GCC_UNUSED,z80_byte value GCC_UNUSED)
 {
     //printf("hilow_bbn_write_port_fd: port %04XH value %02XH PC %04XH\n",port,value,reg_pc);
 
