@@ -24,7 +24,7 @@
 
 #include "cpu.h"
 
-#define HILOW_ROM_FILE_NAME "hilow.rom"
+#define HILOW_ROM_FILE_NAME "hilow_datadrive.rom"
 
 
 #define HILOW_ROM_SIZE 8192
