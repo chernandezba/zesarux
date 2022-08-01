@@ -19,8 +19,8 @@
 
 */
 
-#ifndef HILOW_H
-#define HILOW_H
+#ifndef HILOW_DATADRIVE_H
+#define HILOW_DATADRIVE_H
 
 #include "cpu.h"
 

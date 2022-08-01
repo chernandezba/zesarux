@@ -33,7 +33,7 @@
 #include "betadisk.h"
 #include "settings.h"
 #include "divmmc.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 #include "samram.h"
 
 

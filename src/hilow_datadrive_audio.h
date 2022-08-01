@@ -19,8 +19,8 @@
 
 */
 
-#ifndef HILOW_AUDIO_H
-#define HILOW_AUDIO_H
+#ifndef HILOW_DATADRIVE_AUDIO_H
+#define HILOW_DATADRIVE_AUDIO_H
 
 #include "cpu.h"
 

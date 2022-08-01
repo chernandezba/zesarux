@@ -133,10 +133,10 @@
 #include "snap_ram.h"
 #include "sensors.h"
 #include "samram.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 #include "utils_text_adventure.h"
 #include "salamanquesa.h"
-#include "hilow_audio.h"
+#include "hilow_datadrive_audio.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"

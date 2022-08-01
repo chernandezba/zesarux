@@ -25,7 +25,7 @@
 #include "compileoptions.h"
 
 #include "cpu.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 
 #ifdef EMULATE_MEMPTR
         #define set_memptr(value) memptr=value

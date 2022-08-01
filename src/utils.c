@@ -137,10 +137,10 @@
 #include "zvfs.h"
 #include "snap_ram.h"
 #include "menu_items.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 #include "tape_smp.h"
 #include "utils_text_adventure.h"
-#include "hilow_audio.h"
+#include "hilow_datadrive_audio.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;

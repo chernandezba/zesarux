@@ -62,7 +62,7 @@
 #include "ql_i8049.h"
 #include "cpc.h"
 #include "snap_ram.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 
 #include "autoselectoptions.h"
 

@@ -24,8 +24,8 @@
 #include <stdlib.h>
 
 #include "cpu.h"
-#include "hilow_audio.h"
-#include "hilow.h"
+#include "hilow_datadrive_audio.h"
+#include "hilow_datadrive.h"
 
 int hilow_read_audio_completamente_automatico=0;
 

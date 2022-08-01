@@ -73,7 +73,7 @@
 #include "settings.h"
 #include "saa_simul.h"
 #include "datagear.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 #include "msx.h"
 #include "coleco.h"
 #include "sg1000.h"

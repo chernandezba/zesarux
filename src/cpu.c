@@ -122,7 +122,7 @@
 #include "network.h"
 #include "stats.h"
 #include "zeng.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 #include "ds1307.h"
 #include "msx.h"
 #include "coleco.h"

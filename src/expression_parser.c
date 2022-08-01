@@ -41,7 +41,7 @@
 #include "m68k.h"
 #include "prism.h"
 #include "tbblue.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 
 /*
 

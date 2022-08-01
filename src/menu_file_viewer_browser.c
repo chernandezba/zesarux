@@ -51,7 +51,7 @@
 #include "msx.h"
 #include "snap_spg.h"
 #include "snap_zsf.h"
-#include "hilow.h"
+#include "hilow_datadrive.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
