@@ -141,6 +141,7 @@
 #include "tape_smp.h"
 #include "utils_text_adventure.h"
 #include "hilow_datadrive_audio.h"
+#include "hilow_barbanegra.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12708,7 +12709,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=HILOW_SECTOR_SIZE;
         }
-    break;     
+    break;    
+
+    //hilow barbanegra rom
+    case MEMORY_ZONE_HILOW_BARBANEGRA_ROM:
+        if (hilow_bbn_enabled.v) {
+            *readwrite=1;      
+            size=HILOW_BARBANEGRA_ROM_SIZE;
+        }
+    break;         
+
+    //hilow barbanegra ram
+    case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
+        if (hilow_bbn_enabled.v) {
+            *readwrite=3; //read+write
+            size=HILOW_BARBANEGRA_RAM_SIZE;
+        }
+    break;      
 
   }
 
@@ -13113,7 +13130,24 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (menu_hilow_convert_audio_has_been_opened) {
             p=&hilow_read_audio_buffer_result[address+1]; //Saltar el primer byte del sector
         }
-    break;     
+    break;    
+
+
+    //hilow barbanegra rom
+    case MEMORY_ZONE_HILOW_BARBANEGRA_ROM:
+        if (hilow_bbn_enabled.v) {
+            p=&hilow_bbn_memory_pointer[address];             
+        }
+    break;      
+
+
+    //hilow barbanegra ram
+    case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
+        if (hilow_bbn_enabled.v) {
+	        //La RAM esta despues de los 8kb de rom
+            p=&hilow_bbn_memory_pointer[8192+address];             
+        }
+    break;       
 
 
   }
@@ -13241,9 +13275,9 @@ void machine_get_memory_subzone_name(int zone, int machine_id, int address, char
 
 
 
-//Maximo texto: 15 de longitud
+//Maximo texto longitud: MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT
 
-void machine_get_memory_zone_name(int zone, char *name)
+void new_machine_get_memory_zone_name(int zone, char *name)
 {
 
   //Por defecto
@@ -13252,7 +13286,7 @@ void machine_get_memory_zone_name(int zone, char *name)
   //Zona 0, ram speccy
   switch (zone) {
     case 0:
-		 //123456789012345
+		 //123456789012345678901234567890
       strcpy(name,"Machine RAM");
 
 
@@ -13260,7 +13294,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 
 
     case 1:
-		 //123456789012345
+		 //123456789012345678901234567890
       strcpy(name,"Machine ROM");
 
 
@@ -13268,14 +13302,14 @@ void machine_get_memory_zone_name(int zone, char *name)
 
     case 2:
       if (diviface_enabled.v) {
-		   //123456789012345
+		   //123456789012345678901234567890
         strcpy(name,"Diviface eprom");
       }
     break;
 
     case 3:
       if (diviface_enabled.v) {
-		   //123456789012345
+		   //123456789012345678901234567890
         strcpy(name,"Diviface ram");
       }
     break;
@@ -13283,14 +13317,14 @@ void machine_get_memory_zone_name(int zone, char *name)
     //zxuno flash
     case 4:
       if (MACHINE_IS_ZXUNO) {
-		   //123456789012345
+		   //123456789012345678901234567890
         strcpy(name,"ZX-Uno flash");
       }
     break;
 
     case 5:
       if (MACHINE_IS_TSCONF) {
-		   //123456789012345
+		   //123456789012345678901234567890
         strcpy(name,"TSConf Fmaps");
       }
     break;
@@ -13298,7 +13332,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //kartusho
     case 6:
         if (kartusho_enabled.v) {
-		           //123456789012345
+		           //123456789012345678901234567890
 		strcpy(name,"Kartusho rom");
 	}
     break;
@@ -13306,7 +13340,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //dandanator
     case 7:
         if (dandanator_enabled.v) {
-		           //123456789012345
+		           //123456789012345678901234567890
                 strcpy(name,"Dandanator rom");
         }
     break;
@@ -13315,7 +13349,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 	//superupgrade ram
     case 8:
 	if (superupgrade_enabled.v) {
-		           //123456789012345
+		           //123456789012345678901234567890
 		strcpy(name,"Superupgr. ram");
 	}
     break;
@@ -13324,7 +13358,7 @@ void machine_get_memory_zone_name(int zone, char *name)
         //superupgrade rom
     case 9:
         if (superupgrade_enabled.v) {
-		           //123456789012345
+		           //123456789012345678901234567890
                 strcpy(name,"Superupgr. rom");
         }
     break;
@@ -13339,7 +13373,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //Betadisk
     case 11:
 	if (betadisk_enabled.v) {
-			   //123456789012345
+			   //123456789012345678901234567890
 		strcpy(name,"Betadisk rom");
 	}
     break;
@@ -13348,7 +13382,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //Multiface rom
     case 12:
     	if (multiface_enabled.v) {
-    			   //123456789012345
+    			   //123456789012345678901234567890
 		strcpy(name,"Multiface rom");
         }
     break;
@@ -13357,14 +13391,14 @@ void machine_get_memory_zone_name(int zone, char *name)
     //Multiface ram
     case 13:
     	if (multiface_enabled.v) {
-    			   //123456789012345
+    			   //123456789012345678901234567890
 		strcpy(name,"Multiface ram");
         }
     break;   
 
     case 14:
         if (MACHINE_IS_TBBLUE) {
-          		   //123456789012345
+          		   //123456789012345678901234567890
 		strcpy(name,"TBBlue patterns");          
         }
     break;
@@ -13372,7 +13406,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //tsconf sprites
     case 15:
       if (MACHINE_IS_TSCONF) {
-          		   //123456789012345
+          		   //123456789012345678901234567890
 		strcpy(name,"TSConf sprites");   
       }
         break;                   
@@ -13380,7 +13414,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 	//memory zone by file. 16
 	case MEMORY_ZONE_NUM_FILE_ZONE:
 		if (memory_zone_by_file_size>0) {
-          		   //123456789012345
+          		   //123456789012345678901234567890
 		strcpy(name,"File zone");   
 		}
 	break;
@@ -13388,7 +13422,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //tbblue copper. 17
     case MEMORY_ZONE_NUM_TBBLUE_COPPER:
       if (MACHINE_IS_TBBLUE) {
-          		   //123456789012345
+          		   //123456789012345678901234567890
 		strcpy(name,"TBBlue copper");   
       }
     break;   
@@ -13444,7 +13478,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     //ifrom
     case MEMORY_ZONE_IFROM:
         if (ifrom_enabled.v) {
-		           //123456789012345
+		           //123456789012345678901234567890
 		strcpy(name,"iFrom rom");
 	}
     break;       
@@ -13459,7 +13493,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 
     case MEMORY_ZONE_MSX_ALL_MEM:
         if (MACHINE_IS_MSX) {
-                          //123456789012345
+                          //123456789012345678901234567890
                strcpy(name,"MSX All Mem"); 
         }
     break;
@@ -13473,7 +13507,7 @@ void machine_get_memory_zone_name(int zone, char *name)
 
     case MEMORY_ZONE_SVI_ALL_MEM:
         if (MACHINE_IS_SVI) {
-                          //123456789012345
+                          //123456789012345678901234567890
                strcpy(name,"SVI All Mem"); 
         }
     break;    
@@ -13534,7 +13568,24 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (menu_hilow_convert_audio_has_been_opened) {
             strcpy(name,"HiLow Convert");
         }
-    break;       
+    break;     
+
+
+    //hilow barbanegra rom
+    case MEMORY_ZONE_HILOW_BARBANEGRA_ROM:
+        if (hilow_bbn_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"HiLow Barbanegra ROM");
+        }
+    break;         
+
+    //hilow barbanegra ram
+    case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
+        if (hilow_bbn_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"HiLow Barbanegra RAM");
+        }
+    break;        
 
   }
 

@@ -1046,7 +1046,7 @@ void remote_get_breakpoints_optimized(int misocket,int inicio,int items)
 void remote_get_memory_zones(int misocket)
 {
   int i;
-	char zone_name[1024];
+	char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 	int readwrite;
 	int size;
 
@@ -1055,7 +1055,7 @@ void remote_get_memory_zones(int misocket)
 	for (i=0;i<MACHINE_MAX_MEMORY_ZONES;i++) {
 		size=machine_get_memory_zone_attrib(i, &readwrite);
 		if (size>0) {
-			machine_get_memory_zone_name(i, zone_name);
+			new_machine_get_memory_zone_name(i, zone_name);
 			escribir_socket_format(misocket,"Zone: %d Name: %s Size: %d R/W: %d\n",i,zone_name,size,readwrite);
 		}
 	}

@@ -43,4 +43,6 @@ extern void hilow_bbn_enable(void);
 extern void hilow_bbn_disable(void);
 extern void hilow_bbn_nmi(void);
 
+extern z80_byte *hilow_bbn_memory_pointer;
+
 #endif

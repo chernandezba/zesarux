@@ -685,12 +685,12 @@ extern int get_file_date_from_stat(struct stat *buf_stat,int *hora,int *minuto,i
 
 #define MACHINE_MAX_MEMORY_ZONES 1000
 
-//Maximo 15 caracteres de nombre de zona
-#define MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT 15
+//Maximo 30 caracteres de nombre de zona
+#define MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT 30
 
 extern z80_byte *machine_get_memory_zone_pointer(int zone, int address);
 extern unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite);
-extern void machine_get_memory_zone_name(int zone, char *name);
+extern void new_machine_get_memory_zone_name(int zone, char *name);
 extern int machine_get_next_available_memory_zone(int zone);
 extern void machine_get_memory_subzone_name(int zone, int machine_id, int address, char *name);
 extern subzone_info *machine_get_memory_subzone_array(int zone, int machine_id);
@@ -846,7 +846,8 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_HILOW_DEVICE 35
 #define MEMORY_ZONE_HILOW_CONVERT_READ 36
 
-
+#define MEMORY_ZONE_HILOW_BARBANEGRA_ROM 37
+#define MEMORY_ZONE_HILOW_BARBANEGRA_RAM 38
 
 
 

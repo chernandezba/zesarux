@@ -361,7 +361,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 		int menu_change_memory_zone_list_opcion_seleccionada=0;
         //do {
 
-                char buffer_texto[40];
+                char buffer_texto[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 
 				
 
@@ -375,7 +375,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 					zone++;
 					zone=machine_get_next_available_memory_zone(zone);
 					if (zone>=0) {
-						machine_get_memory_zone_name(zone,buffer_texto);
+						new_machine_get_memory_zone_name(zone,buffer_texto);
 						menu_add_item_menu_format(array_menu_memory_zones,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 						menu_add_item_menu_valor_opcion(array_menu_memory_zones,zone);
 
@@ -484,7 +484,7 @@ int menu_get_current_memory_zone_name_number(char *s)
 		return -1;
 	}
 
-	machine_get_memory_zone_name(menu_debug_memory_zone,s);
+	new_machine_get_memory_zone_name(menu_debug_memory_zone,s);
 	return menu_debug_memory_zone;
 }
 
@@ -3506,6 +3506,7 @@ void menu_debug_registers_set_view(zxvision_window *ventana,int vista)
 
 }
 
+/*
 void menu_debug_registers_splash_memory_zone(void)
 {
 
@@ -3523,11 +3524,11 @@ void menu_debug_registers_splash_memory_zone(void)
 
 
 }
-
+*/
 
 //Actualmente nadie usa esta funcion. Para que queremos cambiar la zona (en un menu visible) y luego hacer splash?
 //antes tenia sentido pues el cambio de zona de memoria no era con menu, simplemente saltaba a la siguiente
-void menu_debug_change_memory_zone_splash(void)
+/*void menu_debug_change_memory_zone_splash(void)
 {
 	menu_debug_change_memory_zone();
 
@@ -3535,6 +3536,7 @@ void menu_debug_change_memory_zone_splash(void)
 
 
 }
+*/
 
 void menu_debug_cpu_step_over(void)
 {

@@ -6631,7 +6631,7 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
 
 
-		char memory_zone_text[64]; //espacio temporal mas grande por si acaso
+		char memory_zone_text[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+100]; 
 		if (menu_debug_show_memory_zones==0) {
 			sprintf (memory_zone_text,"Mem %szone (mapped memory)",string_atajos);
 		}
@@ -6639,14 +6639,12 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 			//printf ("Info zona %d\n",menu_debug_memory_zone);
 			char buffer_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 			//int readwrite;
-			machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
+			new_machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
 			sprintf (memory_zone_text,"Mem %szone (%d %s)",string_atajos,menu_debug_memory_zone,buffer_name);
 			//printf ("size: %X\n",menu_debug_memory_zone_size);
 			//printf ("Despues zona %d\n",menu_debug_memory_zone);
 		}
 
-		//truncar texto a 32 por si acaso
-		memory_zone_text[32]=0;
 		//menu_escribe_linea_opcion(linea++,-1,1,memory_zone_text);
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,memory_zone_text);
 
@@ -11192,8 +11190,7 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 
 		char textoshow[33];
 
-		char memory_zone_text[64]; //espacio temporal mas grande por si acaso
-
+		char memory_zone_text[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+100]; 
 		if (menu_debug_show_memory_zones==0) {
 			sprintf (memory_zone_text,"Mem ~~zone (mapped memory)");
 		}
@@ -11202,14 +11199,12 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 			//printf ("Info zona %d\n",menu_debug_memory_zone);
 			char buffer_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 			//int readwrite;
-			machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
+			new_machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
 			sprintf (memory_zone_text,"Mem ~~zone (%d %s)",menu_debug_memory_zone,buffer_name);
 			//printf ("size: %X\n",menu_debug_memory_zone_size);
 			//printf ("Despues zona %d\n",menu_debug_memory_zone);
 		}
 
-		//truncar texto a 32 por si acaso
-		memory_zone_text[32]=0;
 
 
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,memory_zone_text);
