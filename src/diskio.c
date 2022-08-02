@@ -182,7 +182,7 @@ DSTATUS disk_initialize (
 BYTE diskio_lee_byte(long long int posicion)
 {
     if (posicion>=fatfs_disk_zero_tamanyo || posicion<0) {
-        if (debug_diskio) printf("FatFs error reading beyond mmc size (total %ld, trying %ld)\n",fatfs_disk_zero_tamanyo,posicion);
+        if (debug_diskio) printf("FatFs error reading beyond mmc size (total %lld, trying %lld)\n",fatfs_disk_zero_tamanyo,posicion);
         return 0;
     }
 
@@ -196,7 +196,7 @@ BYTE diskio_lee_byte(long long int posicion)
 void diskio_escribe_byte(long long int posicion,BYTE valor)
 {
     if (posicion>=fatfs_disk_zero_tamanyo || posicion<0) {
-        if (debug_diskio) printf("FatFs error writing beyond mmc size (total %ld, trying %ld)\n",fatfs_disk_zero_tamanyo,posicion);
+        if (debug_diskio) printf("FatFs error writing beyond mmc size (total %lld, trying %lld)\n",fatfs_disk_zero_tamanyo,posicion);
         return;
     }
 

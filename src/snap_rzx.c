@@ -57,10 +57,10 @@ int rzx_estimado_segundos;
 int rzx_pendiente_leer_input_recording;
 
 //Total frames del bloque de input recording
-long int rzx_frames_input_recording;
+long long int rzx_frames_input_recording;
 
 //Total frames leidos del bloque de input recording
-long int rzx_frames_input_recording_counter;
+long long int rzx_frames_input_recording_counter;
 
 //Total lecturas i/o en el frame
 z80_int rzx_in_reads_in_frame;
@@ -465,10 +465,10 @@ int rzx_lee_puerto(z80_byte *valor_puerto)
   int rzx_pendiente_leer_input_recording;
 
   //Total frames del bloque de input recording
-  long int rzx_frames_input_recording;
+  long long int rzx_frames_input_recording;
 
   //Total frames leidos del bloque de input recording
-  long int rzx_frames_input_recording_counter;
+  long long int rzx_frames_input_recording_counter;
 
   //Total lecturas i/o en el frame
   z80_int rzx_in_reads_in_frame;

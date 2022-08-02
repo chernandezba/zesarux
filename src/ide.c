@@ -97,7 +97,7 @@ int ide_flash_must_flush_to_disk=0;
 int ide_card_selected=0;
 
 //64 MB
-unsigned long int ide_size=64*1024*1024;
+long long int ide_size=64*1024*1024;
 
 
 int ide_write_sector_operation=0;
@@ -176,7 +176,7 @@ void ide_flush_flash_to_disk(void)
 
 
         int escritos=0;
-        long int size;
+        long long int size;
         size=ide_size;
 
 

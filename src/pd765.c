@@ -223,7 +223,7 @@ void dskplusthree_enable(void)
 	debug_printf (VERBOSE_INFO,"Enabling DSK emulation");
 	debug_printf (VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
 
-	long int tamanyo=get_file_size(dskplusthree_file_name);
+	long long int tamanyo=get_file_size(dskplusthree_file_name);
 
 	if (tamanyo>MAX_BUFFER_DISCO) {
 		debug_printf(VERBOSE_ERR,"DSK size too big");
@@ -1896,7 +1896,7 @@ void dskplusthree_flush_contents_to_disk(void)
 
 
         int escritos=0;
-        long int size;
+        long long int size;
         size=p3dsk_buffer_disco_size;
 
 

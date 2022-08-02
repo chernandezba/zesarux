@@ -562,7 +562,7 @@ void menu_file_zsf_browser_show(char *filename)
 {
 
 
-	long int bytes_to_load=get_file_size(filename);
+	long long int bytes_to_load=get_file_size(filename);
 
 	z80_byte *zsf_file_memory;
 	zsf_file_memory=malloc(bytes_to_load);
@@ -2260,8 +2260,8 @@ void menu_file_hexdump_browser_show(char *filename)
  	sprintf(buffer_texto,"Hexadecimal view");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	long int tamanyo=get_file_size(filename);
- 	sprintf(buffer_texto,"File size: %ld bytes",tamanyo);
+	long long int tamanyo=get_file_size(filename);
+ 	sprintf(buffer_texto,"File size: %lld bytes",tamanyo);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 	if (tamanyo>bytes_to_load) {
@@ -2562,7 +2562,7 @@ void menu_file_pzx_browser_show(char *filename)
 
 	//Ir leyendo hasta llegar al final del archivo
 	//z80_long_int puntero_lectura=0;
-	long int puntero_lectura=0;
+	long long int puntero_lectura=0;
 
 	char buffer_bloque[512];
 	//char buffer_bloque2[512];
@@ -3635,7 +3635,7 @@ void menu_file_ddh_browser_show(char *filename)
 
 
     //Leer solo sector 0 y 1
-	long int bytes_to_load=HILOW_SECTOR_SIZE*2;
+	long long int bytes_to_load=HILOW_SECTOR_SIZE*2;
 
 	z80_byte *ddh_file_memory;
 	ddh_file_memory=malloc(bytes_to_load);
@@ -4096,7 +4096,7 @@ void menu_file_sna_browser_show(char *filename)
  	//indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
  	//si 49179, snapshot de 48k
- 	long int tamanyo=get_file_size(filename);
+ 	long long int tamanyo=get_file_size(filename);
  	if (tamanyo==49179) {
  		sprintf(buffer_texto,"Machine: Spectrum 48k");
  	}

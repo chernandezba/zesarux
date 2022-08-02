@@ -143,8 +143,8 @@ z80_bit fbdev_no_res_change={0};
 
 z80_byte *fbdev_pointer = 0;
 
-long int fbdev_screensize = 0;
-long int offset_centrado=0;
+long long int fbdev_screensize = 0;
+long long int offset_centrado=0;
 
   int fbdev_filedescriptor = 0;
 int fbdev_line_length;

@@ -112,7 +112,7 @@ int mmc_index_command=0;
 z80_byte mmc_r1=0;
 
 //64 MB
-unsigned long int mmc_size=64*1024*1024;
+long long int mmc_size=64*1024*1024;
 
 z80_byte *mmc_memory_pointer;
 
@@ -199,7 +199,7 @@ void mmc_flush_flash_to_disk(void)
 
 
         int escritos=0;
-        long int size;
+        long long int size;
         size=mmc_size;
 
 
@@ -448,8 +448,8 @@ void mmc_insert(void)
 
 	//Tamanyo debe ser multiple de 256 KB, en caso de sectores de 512 bytes
 	//O de 16 MB en el caso de sectores de 32768 byes (para tarjetas > 1 GB)
-	unsigned long int resultado=mmc_size/multiple;
-	unsigned long int multiplicado=resultado*multiple;
+	long long int resultado=mmc_size/multiple;
+	long long int multiplicado=resultado*multiple;
 	if (multiplicado!=mmc_size) {
 		debug_printf (VERBOSE_ERR,"Error. MMC file should be multiple of %d KB. Use at your own risk!",multiple/1024);
 		//mmc_disable();
@@ -598,7 +598,7 @@ int mmc_get_visualmem_position(unsigned int address)
 #ifdef EMULATE_VISUALMEM
 	if (mmc_size>0) {
 
-		unsigned long int address_l,mmc_size_l;
+		long long int address_l,mmc_size_l;
 
 		address_l=address;
 		mmc_size_l=mmc_size;
@@ -608,7 +608,7 @@ int mmc_get_visualmem_position(unsigned int address)
 		// Seria (address/mmc_size) * visualmem_size
 		// la primera division es decimal, entre 0 y 1, por eso la realizo al final,
 		// multiplico antes y luego divido, asi puedo usar numeros enteros y no necesito decimales
-		unsigned long int posicion_final=(address_l*VISUALMEM_MMC_BUFFER_SIZE);
+		long long int posicion_final=(address_l*VISUALMEM_MMC_BUFFER_SIZE);
 
 		posicion_final /=mmc_size_l;
 

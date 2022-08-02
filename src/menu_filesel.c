@@ -4456,7 +4456,7 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 
 	debug_printf(VERBOSE_DEBUG,"Rendering file preview");
 
-	long int file_size=get_file_size(filesel_nombre_archivo_seleccionado);
+	long long int file_size=get_file_size(filesel_nombre_archivo_seleccionado);
 
 	//Creamos carpeta temporal por si no existe
 	char tmpdir[PATH_MAX];

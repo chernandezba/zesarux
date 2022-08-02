@@ -19518,8 +19518,8 @@ void menu_copy_clipboard(char *texto)
 void menu_paste_clipboard_to_file(char *destination_file)
 {
 	//util_file_save(destination_file,menu_clipboard_pointer,menu_clipboard_size);
-	//extern void util_file_save(char *filename,z80_byte *puntero, long int tamanyo);
-	//extern void util_save_file(z80_byte *origin, long int tamanyo_origen, char *destination_file);
+	//extern void util_file_save(char *filename,z80_byte *puntero, long long int tamanyo);
+	//extern void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
 
 	util_save_file(menu_clipboard_pointer,menu_clipboard_size,destination_file);
 }

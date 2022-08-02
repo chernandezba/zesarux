@@ -1308,7 +1308,7 @@ void zxpand_COM_FileOpenRead(void)
 
   if (res==0x40)
    {
-	long int longitud_total=get_file_size(fullpath);
+	long long int longitud_total=get_file_size(fullpath);
 	
 
       if (zxpand_length == 0)
@@ -1380,7 +1380,7 @@ void zxpand_COM_FileOpenWrite(void)
    if (res==0x40)
    {
 
-	long int longitud_total;
+	long long int longitud_total;
 
 	//Si no existe, tiene sentido esto??
       zxpand_globaldata[0] = zxpand_length & 255;
@@ -2054,10 +2054,10 @@ void zxpand_COM_DirectoryRead(void)
 	zxpand_globaldata[indice++]=zxpand_filinfo_fattrib;
 
 	//meter longitud
-	long int longitud_total=get_file_size(zxpand_dp->d_name);
+	long long int longitud_total=get_file_size(zxpand_dp->d_name);
 
 	//copia para ir dividiendo entre 256
-	long int l=longitud_total;
+	long long int l=longitud_total;
 
 	zxpand_globaldata[indice++]=l&0xFF;
 

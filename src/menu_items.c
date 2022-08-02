@@ -15709,7 +15709,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 		        FILE *ptr_mmcfile;
 			ptr_mmcfile=fopen(mmc_file_name,"wb");
 
-		        long int totalsize=size;
+		        long long int totalsize=size;
 			totalsize=totalsize*1024*1024;
 			z80_byte valor_grabar=0;
 
@@ -15725,7 +15725,7 @@ void menu_storage_mmc_file(MENU_ITEM_PARAMETERS)
 
 		else {
 			//Comprobar aqui tambien el tamanyo
-			long int size=get_file_size(mmc_file_name);
+			long long int size=get_file_size(mmc_file_name);
 			if (size>1073741824L) {
 				menu_warn_message("Using MMC bigger than 1 GB can be very slow");
             }
@@ -16151,7 +16151,7 @@ void menu_storage_ide_file(MENU_ITEM_PARAMETERS)
                         FILE *ptr_idefile;
                         ptr_idefile=fopen(ide_file_name,"wb");
 
-   long int totalsize=size;
+   long long int totalsize=size;
                         totalsize=totalsize*1024*1024;
                         z80_byte valor_grabar=0;
 
@@ -16167,7 +16167,7 @@ void menu_storage_ide_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(ide_file_name);
+                        long long int size=get_file_size(ide_file_name);
                         if (size>1073741824L) {
                                 menu_warn_message("Using IDE bigger than 1 GB can be very slow");
                         }
@@ -22096,8 +22096,8 @@ int menu_visual_realtape_valor_contador_segundo_anterior;
 zxvision_window *menu_audio_visual_realtape_window;
 
 //offsets donde empieza y acaba bloque actual
-long int menu_visual_realtape_bloque_posicion_inicio=-1;
-long int menu_visual_realtape_bloque_posicion_final=-1;
+long long int menu_visual_realtape_bloque_posicion_inicio=-1;
+long long int menu_visual_realtape_bloque_posicion_final=-1;
 
 void menu_visual_realtape_overlay(void)
 {
@@ -22305,15 +22305,15 @@ void menu_visual_realtape_overlay(void)
     int tamanyo_trozo_compensado=tamanyo_trozo+1;
 
     //posicion en la cinta real tape
-    long int total=realtape_file_size;
-    long int transcurrido=realtape_file_size_counter;
+    long long int total=realtape_file_size;
+    long long int transcurrido=realtape_file_size_counter;
 
     int maximo_x_dibujar=realtape_visual_total_used/tamanyo_trozo_compensado;
 
 
     //evitar divisiones por cero
     if (total==0) total=1;
-    long int posicion_cinta_x=(transcurrido*maximo_x_dibujar)/total;
+    long long int posicion_cinta_x=(transcurrido*maximo_x_dibujar)/total;
 
     int x=0;
 
@@ -22357,8 +22357,8 @@ void menu_visual_realtape_overlay(void)
 
                 //importante que sean long it igual que menu_visual_realtape_bloque_posicion_inicio,
                 //sino, luego al multiplicar mas abajo podemos salirnos de rango facilmente
-                long int umbral_min=menu_visual_realtape_bloque_posicion_inicio;
-                long int umbral_max=menu_visual_realtape_bloque_posicion_final;
+                long long int umbral_min=menu_visual_realtape_bloque_posicion_inicio;
+                long long int umbral_max=menu_visual_realtape_bloque_posicion_final;
 
                 if (umbral_min!=-1) {
                     umbral_min=(umbral_min*maximo_x_dibujar)/total;
@@ -23452,7 +23452,7 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
 
     else {
         //Tamaño del archivo es >=minimum_size
-        long int tamanyo_archivo=get_file_size(custom_romfile);
+        long long int tamanyo_archivo=get_file_size(custom_romfile);
         if (tamanyo_archivo<minimum_size) {
             debug_printf(VERBOSE_ERR,"ROM file must be at least %d bytes length",minimum_size);
             return;
@@ -26742,7 +26742,7 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 		        FILE *ptr_dskplusthreefile;
 			ptr_dskplusthreefile=fopen(dskplusthree_file_name,"wb");
 
-		        long int totalsize=640*1024;
+		        long long int totalsize=640*1024;
 			
 			z80_byte valor_grabar=0;
 
@@ -28800,7 +28800,7 @@ void menu_dandanator_rom_file(MENU_ITEM_PARAMETERS)
 
         else {
             //Comprobar aqui tambien el tamanyo
-            long int size=get_file_size(dandanator_rom_file_name);
+            long long int size=get_file_size(dandanator_rom_file_name);
             if (size!=DANDANATOR_SIZE) {
                 menu_error_message("ROM file must be 512 KB length");
                 dandanator_rom_file_name[0]=0;
@@ -28926,7 +28926,7 @@ void menu_kartusho_rom_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(kartusho_rom_file_name);
+                        long long int size=get_file_size(kartusho_rom_file_name);
                         if (size!=KARTUSHO_SIZE) {
                                 menu_error_message("ROM file must be 512 KB length");
                                 kartusho_rom_file_name[0]=0;
@@ -29046,7 +29046,7 @@ void menu_samram_rom_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(samram_rom_file_name);
+                        long long int size=get_file_size(samram_rom_file_name);
                         if (size!=32768)  {
                                 menu_error_message("ROM file must be 32 KB length");
                                 samram_rom_file_name[0]=0;
@@ -29172,7 +29172,7 @@ void menu_ifrom_rom_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(ifrom_rom_file_name);
+                        long long int size=get_file_size(ifrom_rom_file_name);
                         if (size!=IFROM_SIZE) {
                                 menu_error_message("ROM file must be 512 KB length");
                                 ifrom_rom_file_name[0]=0;
@@ -29360,7 +29360,7 @@ void menu_storage_hilow_file(MENU_ITEM_PARAMETERS)
             FILE *ptr_hilowfile;
 			ptr_hilowfile=fopen(hilow_file_name,"wb");
 
-            long int totalsize=HILOW_DEVICE_SIZE;
+            long long int totalsize=HILOW_DEVICE_SIZE;
 			z80_byte valor_grabar=0;
 
             if (ptr_hilowfile!=NULL) {
@@ -30452,10 +30452,10 @@ void menu_hilow_convert_audio_overlay(void)
 
         int minutos=menu_hilow_convert_audio_posicion_read_raw/44100/60;
         int segundos=(menu_hilow_convert_audio_posicion_read_raw/44100) % 60;
-        long int frames=menu_hilow_convert_audio_posicion_read_raw % 44100;
-        long int microseconds=(1000000 * frames)/44100;
+        long long int frames=menu_hilow_convert_audio_posicion_read_raw % 44100;
+        long long int microseconds=(1000000 * frames)/44100;
 
-        long int porcentaje_leido;
+        long long int porcentaje_leido;
 
         if (hilow_read_audio_tamanyo_archivo_audio>0) {
             porcentaje_leido=(menu_hilow_convert_audio_posicion_read_raw*100)/hilow_read_audio_tamanyo_archivo_audio;
@@ -30470,10 +30470,10 @@ void menu_hilow_convert_audio_overlay(void)
 
 
         if (menu_hilow_convert_unidades_microseconds) {
-            sprintf(texto_contador_unidades,"%06ld (mm:ss:microsec)",microseconds);
+            sprintf(texto_contador_unidades,"%06lld (mm:ss:microsec)",microseconds);
         }
         else {
-            sprintf(texto_contador_unidades,"%05ld (mm:ss:frames)",frames);
+            sprintf(texto_contador_unidades,"%05lld (mm:ss:frames)",frames);
         }
 
         if (menu_hilow_convert_audio_posicion_read_raw==-1) {
@@ -31286,7 +31286,7 @@ void menu_storage_trd_file(MENU_ITEM_PARAMETERS)
 		        FILE *ptr_trdfile;
 			ptr_trdfile=fopen(trd_file_name,"wb");
 
-		        long int totalsize=640*1024;
+		        long long int totalsize=640*1024;
 			
 			z80_byte valor_grabar=0;
 
@@ -31434,7 +31434,7 @@ void menu_superupgrade_rom_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(superupgrade_rom_file_name);
+                        long long int size=get_file_size(superupgrade_rom_file_name);
                         if (size!=SUPERUPGRADE_ROM_SIZE) {
                                 menu_error_message("Flash file must be 512 KB length");
                                 superupgrade_rom_file_name[0]=0;

@@ -756,7 +756,7 @@ void superupgrade_flush_flash_to_disk(void)
 
 
         int escritos=0;
-        long int size;
+        long long int size;
         size=SUPERUPGRADE_ROM_SIZE;
 
 

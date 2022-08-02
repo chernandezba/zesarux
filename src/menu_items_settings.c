@@ -4412,7 +4412,7 @@ void menu_multiface_rom_file(MENU_ITEM_PARAMETERS)
 
                 else {
                         //Comprobar aqui tambien el tamanyo
-                        long int size=get_file_size(multiface_rom_file_name);
+                        long long int size=get_file_size(multiface_rom_file_name);
                         if (size!=8192) {
                                 menu_error_message("ROM file must be 8 KB length");
                                 multiface_rom_file_name[0]=0;

@@ -276,7 +276,7 @@ extern int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,i
 
 	z80_byte magic_byte=0xDD;
 
-	printf ("Original size: %ld\n",tamanyo);
+	printf ("Original size: %lld\n",tamanyo);
 
 	int longitud_comprimido=util_compress_data_repetitions(memoria_file_orig,memoria_file_compressed,tamanyo,magic_byte);
 	int porcentaje;
