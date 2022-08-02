@@ -5696,7 +5696,7 @@ int si_existe_archivo(char *nombre)
 
 //Retorna sufijo y unidades para un tamaño de bytes
 //B esta con espacios para quede alineado con el resto
-long int get_size_human_friendly(long int tamanyo,char *sufijo)
+long int get_size_human_friendly(long long int tamanyo,char *sufijo)
 {
     strcpy(sufijo,"B  ");
 
