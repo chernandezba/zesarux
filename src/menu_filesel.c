@@ -3094,8 +3094,8 @@ void file_utils_info_file(char *archivo)
     int tipo_archivo=get_file_type(archivo);
     if (tipo_archivo!=2) {    
 
-        long int tamanyo=get_file_size(archivo);
-        sprintf(buffer_tamanyo,"Size: %ld bytes\n",tamanyo);
+        long long int tamanyo=get_file_size(archivo);
+        sprintf(buffer_tamanyo,"Size: %lld bytes\n",tamanyo);
     
     }
         //fecha
