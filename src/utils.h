@@ -690,7 +690,7 @@ extern int get_file_date_from_stat(struct stat *buf_stat,int *hora,int *minuto,i
 
 extern z80_byte *machine_get_memory_zone_pointer(int zone, int address);
 extern unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite);
-extern void new_machine_get_memory_zone_name(int zone, char *name);
+extern void machine_get_memory_zone_name(int zone, char *name);
 extern int machine_get_next_available_memory_zone(int zone);
 extern void machine_get_memory_subzone_name(int zone, int machine_id, int address, char *name);
 extern subzone_info *machine_get_memory_subzone_array(int zone, int machine_id);

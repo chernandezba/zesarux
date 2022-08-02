@@ -13277,7 +13277,7 @@ void machine_get_memory_subzone_name(int zone, int machine_id, int address, char
 
 //Maximo texto longitud: MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT
 
-void new_machine_get_memory_zone_name(int zone, char *name)
+void machine_get_memory_zone_name(int zone, char *name)
 {
 
   //Por defecto

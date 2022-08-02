@@ -375,7 +375,7 @@ int menu_change_memory_zone_list_title(char *titulo)
 					zone++;
 					zone=machine_get_next_available_memory_zone(zone);
 					if (zone>=0) {
-						new_machine_get_memory_zone_name(zone,buffer_texto);
+						machine_get_memory_zone_name(zone,buffer_texto);
 						menu_add_item_menu_format(array_menu_memory_zones,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 						menu_add_item_menu_valor_opcion(array_menu_memory_zones,zone);
 
@@ -484,7 +484,7 @@ int menu_get_current_memory_zone_name_number(char *s)
 		return -1;
 	}
 
-	new_machine_get_memory_zone_name(menu_debug_memory_zone,s);
+	machine_get_memory_zone_name(menu_debug_memory_zone,s);
 	return menu_debug_memory_zone;
 }
 

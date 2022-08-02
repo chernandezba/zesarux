@@ -6639,7 +6639,7 @@ int menu_debux_hexdump_leyenda(zxvision_window *ventana,int linea)
 			//printf ("Info zona %d\n",menu_debug_memory_zone);
 			char buffer_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 			//int readwrite;
-			new_machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
+			machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
 			sprintf (memory_zone_text,"Mem %szone (%d %s)",string_atajos,menu_debug_memory_zone,buffer_name);
 			//printf ("size: %X\n",menu_debug_memory_zone_size);
 			//printf ("Despues zona %d\n",menu_debug_memory_zone);
@@ -11199,7 +11199,7 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 			//printf ("Info zona %d\n",menu_debug_memory_zone);
 			char buffer_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 			//int readwrite;
-			new_machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
+			machine_get_memory_zone_name(menu_debug_memory_zone,buffer_name);
 			sprintf (memory_zone_text,"Mem ~~zone (%d %s)",menu_debug_memory_zone,buffer_name);
 			//printf ("size: %X\n",menu_debug_memory_zone_size);
 			//printf ("Despues zona %d\n",menu_debug_memory_zone);
