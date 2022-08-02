@@ -398,7 +398,7 @@ fi
 
 # Ver si aplicamos definicion para llamadas de 64 bits en 32 bits (stat por ejemplo)
 
-if [ "$SISTEMA" == "Linux" ]; then
+if [ "$SISTEMA" == "GNU/Linux" ]; then
 	echo "Checking if 32 bit Linux ... "
 	BITSSISTEMA=`uname -m`
 
