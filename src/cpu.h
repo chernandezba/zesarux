@@ -70,6 +70,8 @@ typedef unsigned char z80_byte;
 typedef unsigned short z80_int;
 //32 bits
 typedef unsigned int z80_long_int;
+//64 bits
+typedef long long int z80_64bit;
 
 //Usado en menu, para registros de 16 bits de z80 y de 32 de motorola
 typedef unsigned int menu_z80_moto_int;
