@@ -229,7 +229,7 @@ extern void insert_snap_cmdline(char *s);
 
 extern int si_existe_archivo(char *nombre);
 
-extern long int get_file_size(char *nombre);
+extern long long int get_file_size(char *nombre);
 
 extern long int get_size_human_friendly(long int tamanyo,char *sufijo);
 

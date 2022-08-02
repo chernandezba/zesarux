@@ -473,6 +473,26 @@ if [ "$SHORTSIZE" != "4" ]; then
 fi
 
 
+echo -n "Checking size of long long int ... "
+        TEMPFILE="configure.compile.c"
+
+        cat > $TEMPFILE << _EOF
+#include <stdio.h>
+int main () {
+printf ("%lu\n",sizeof(long long int));
+return 0;
+}
+_EOF
+
+$CCOMPILER $CFLAGS $TEMPFILE -o $TEMPFILE.o >> $LOGFILE 2>&1
+SHORTSIZE=`./$TEMPFILE.o`
+rm -f $TEMPFILE $TEMPFILE.o
+echo $SHORTSIZE
+if [ "$SHORTSIZE" != "8" ]; then
+        echo "Error"
+        exit 1
+fi
+
 
 echo -n "Checking Little Endian System ... "
 

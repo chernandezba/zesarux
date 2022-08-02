@@ -14,12 +14,10 @@
 
 -redraws de zxdesktop en determinados cambios (redimensionado/cierre ventana?) donde se queda a veces en negro
 
--botones/iconos en zx desktop que puedan abrir las diferentes ventanas: waveform, debug cpu, etc. 
-iconos que se puedan mover con raton por el zx desktop
-
--Iconos snapshot en escritorio y otros "archivos" de ramdisk
 
 -Para un futuro: que ventanas tengan iconos en una tabla y el gestor de ventanas muestre dichos iconos
+
+-iconos de dispositivos mmc/ide en escritorio 
 
 
 --- FIN ZX Desktop

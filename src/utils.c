@@ -5725,7 +5725,7 @@ long int get_size_human_friendly(long int tamanyo,char *sufijo)
 }
 
 //Retorna tamanyo archivo
-long int get_file_size(char *nombre)
+long long int get_file_size(char *nombre)
 {
 
     //Si es archivo de la mmc

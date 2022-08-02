@@ -1319,14 +1319,14 @@ void menu_filesel_print_file_get(char *buffer, char *s,unsigned int max_length_s
             else {
                 //Mostrar tamanyo. Si no hay setting de desactivado
                 if (menu_filesel_hide_size.v==0) {
-                    long int tamanyo=get_file_size(s);
+                    long long int tamanyo=get_file_size(s);
                     char buffer_tamanyo[100];
                     char buffer_sufijo[10];
 
                     tamanyo=get_size_human_friendly(tamanyo,buffer_sufijo);
 
                     //Con espacio por delante para separar, por si acaso ancho ventana muy pequeña
-                    sprintf(buffer_tamanyo," %ld %s",tamanyo,buffer_sufijo);
+                    sprintf(buffer_tamanyo," %lld %s",tamanyo,buffer_sufijo);
 
                     unsigned int longitud_texto=strlen(buffer_tamanyo);
 
