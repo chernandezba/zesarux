@@ -396,6 +396,18 @@ if [ "$SISTEMA" == "Msys" ]; then
 	LDFLAGS="zesarux.res $LDFLAGS -lwinmm"
 fi
 
+# Ver si aplicamos definicion para llamadas de 64 bits en 32 bits (stat por ejemplo)
+
+if [ "$SISTEMA" == "Linux" ]; then
+	echo "Checking if 32 bit Linux ... "
+	BITSSISTEMA=`uname -m`
+
+	if [ "$BITSSISTEMA" == "i686" ] || [ "$BITSSISTEMA" == "i386" ]; then
+		echo "Applying compiler definition to work with files larger than 2 GB on a 32 bit system"
+		CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64"
+	fi
+fi
+
 echo -n "Checking for $CCOMPILER compiler ... "
 
 RESULT=`which $CCOMPILER`
