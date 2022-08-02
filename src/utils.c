@@ -5751,24 +5751,23 @@ long long int get_file_size(char *nombre)
 
 
 #if __MINGW32__
+        //Para que funcione la llamada en windows 32 bit. Si no, trata tamanyos de archivos con enteros de 32 bits
+        //y mostrara mal cualquier tamanyo mayor de 2 GB
         struct __stat64 buf_stat; 
-                if (_stat64(nombre, &buf_stat) != 0) {
+        if (_stat64(nombre, &buf_stat) != 0) {
 #else
 
         struct stat buf_stat;
-
-                if (stat(nombre, &buf_stat)!=0) {
-
-
+        if (stat(nombre, &buf_stat)!=0) {
 #endif                    
-                        debug_printf(VERBOSE_INFO,"Unable to get status of file %s",nombre);
-			return 0;
-                }
+            debug_printf(VERBOSE_INFO,"Unable to get status of file %s",nombre);
+            return 0;
+        }
 
-                else {
+        else {
 			//printf ("file size: %ld\n",buf_stat.st_size);
 			return buf_stat.st_size;
-                }
+        }
     }
 }
 
