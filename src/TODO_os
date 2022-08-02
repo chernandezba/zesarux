@@ -119,7 +119,6 @@ Fifosdlbuffersize 4 y sdlsamplesize 2048
 *con driver audio intel hd (el que tenia antes): hay clicking normalmente . MAL
 
 
--Windows no es capaz de usar imagen mmc de 2 GB. Quiza porque es un compilado para 32 bits?
 
 
 ------------------

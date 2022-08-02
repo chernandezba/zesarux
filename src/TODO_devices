@@ -66,11 +66,6 @@ mmap tiene flags para decir que es solo lectura pero supongo que fallaria con se
 Sin persistent writes deberia hacerlo como siempre: escribiendo en memoria, sin mmap
 Con mmap, se deja de hacer flush, ya que lo hará automáticamente (??) el sistema operativo, al activar mmap 
 
--En Mac parece que siempre falla al escribir en imagenes de 2 GB (y superiores)
-retorna:
-ptr_mmcfile: 2017595472
-escritos: -2147483648
-
 
 -Revisar protección de escritura en páginas divmmc
 

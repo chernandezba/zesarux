@@ -202,3 +202,5 @@ etc
 
 
 -Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
+
+-probar: Windows no es capaz de usar imagen mmc de 2 GB. Quiza porque es un compilado para 32 bits?
