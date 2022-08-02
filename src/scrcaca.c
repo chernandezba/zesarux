@@ -703,10 +703,12 @@ int scrcaca_get_menu_height(void)
         return 24;
 }
 
+/*
 int scrcaca_driver_can_ext_desktop (void)
 {
         return 0;
 }
+*/
 
 
 int scrcaca_init (void)

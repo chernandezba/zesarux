@@ -3024,10 +3024,12 @@ int scrcocoa_get_menu_height(void)
 }
 
 
+/*
 int scrcocoa_driver_can_ext_desktop (void)
 {
     return 1;
 }
+*/
 
 int realjoystick_cocoa_init(void)
 {

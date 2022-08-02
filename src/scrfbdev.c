@@ -1864,10 +1864,12 @@ int scrfbdev_get_menu_height(void)
         return max;
 }
 
+/*
 int scrfbdev_driver_can_ext_desktop (void)
 {
         return 0;
 }
+*/
 
 
 //Fbdev video drivers

@@ -701,11 +701,12 @@ int scraa_get_menu_height(void)
         return 24;
 }
 
-
+/*
 int scraa_driver_can_ext_desktop (void)
 {
         return 0;
 }
+*/
 
 
 int scraa_init (void) 

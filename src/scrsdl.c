@@ -1531,11 +1531,12 @@ int scrsdl_get_menu_height(void)
         return max;
 }
 
-
+/*
 int scrsdl_driver_can_ext_desktop (void)
 {
         return 1;
 }
+*/
 
 
 int realjoystick_sdl_total_joysticks=0;

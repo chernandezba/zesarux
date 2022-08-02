@@ -1930,11 +1930,12 @@ int scrxwindows_get_menu_height(void)
         return max;
 }
 
-
+/*
 int scrxwindows_driver_can_ext_desktop (void)
 {
         return 1;
 }
+*/
 
 
 int scrxwindows_init (void) {

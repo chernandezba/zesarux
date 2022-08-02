@@ -216,10 +216,12 @@ int scrstdout_get_menu_height(void)
         return 24;
 }
 
+/*
 int scrstdout_driver_can_ext_desktop (void)
 {
         return 0;
 }
+*/
 
 //Null video drivers
 int scrstdout_init (void){ 

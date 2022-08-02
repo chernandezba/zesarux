@@ -291,10 +291,12 @@ int scrvideoname_get_menu_height(void)
         return max;
 }
 
+/*
 int scrvideoname_driver_can_ext_desktop (void)
 {
         return 0;
 }
+*/
 
 int scrvideoname_init (void) {
 
