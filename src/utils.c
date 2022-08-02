@@ -5748,6 +5748,13 @@ long long int get_file_size(char *nombre)
     }
 
     else {
+
+
+#if __MINGW32__
+        struct __stat64 buf_stat; 
+                if (_stat64(nombre, &buf_stat) != 0) {
+#endif
+
         struct stat buf_stat;
 
                 if (stat(nombre, &buf_stat)!=0) {
