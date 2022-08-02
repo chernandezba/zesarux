@@ -198,7 +198,7 @@ void mmc_flush_flash_to_disk(void)
 
 
 
-        int escritos=0;
+        long long int escritos=0;
         long long int size;
         size=mmc_size;
 
@@ -230,7 +230,7 @@ void mmc_flush_flash_to_disk(void)
         }
 
         //printf ("ptr_mmcfile: %d\n",ptr_mmcfile);
-        //printf ("escritos: %d\n",escritos);
+        //printf ("escritos: %lld\n",escritos);
 
         if (escritos!=size || ptr_mmcfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error writing to MMC file");

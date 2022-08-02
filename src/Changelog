@@ -65,7 +65,7 @@ Improved HiLow DataDrive emulation:
 -Added technical documentation on the extras package
 
 
-Fixed showing file size larger than 2 GB on 32 bits processors (including the Windows version too)
+Fixed handling files larger than 2 GB on 32 bits processors (including the Windows version too)
 Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed.
 Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed Z80 behavior running block opcodes (LDIR, etc) and interrupts
