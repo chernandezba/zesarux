@@ -1890,8 +1890,8 @@ char realtape_adjust_offset_sign(unsigned char value)
 }
 
 //Para mostrar indicador de progreso cargado
-long int realtape_file_size=0;
-long int realtape_file_size_counter=0;
+long long int realtape_file_size=0;
+long long int realtape_file_size_counter=0;
 
 void realtape_get_byte_rwa(void)
 {
@@ -1928,8 +1928,8 @@ int realtape_print_footer_last_char=0;
 
 int realtape_get_elapsed_percentage(void)
 {
-    long int total=realtape_file_size;
-    long int transcurrido=realtape_file_size_counter;
+    long long int total=realtape_file_size;
+    long long int transcurrido=realtape_file_size_counter;
 
     int progreso;
 
@@ -1942,7 +1942,7 @@ int realtape_get_elapsed_percentage(void)
 }
 
 //Convierte una cantidad de bytes leidos en cuanto tiempo representa
-int realtape_get_seconds_numbytes(long int numero)
+int realtape_get_seconds_numbytes(long long int numero)
 {
     //15600 hz, 8 bit
     return numero/15600;
@@ -2008,12 +2008,12 @@ void realtape_rewind_ffwd_common(int accion,int porcentaje)
         return;
     }
     
-    long int total=realtape_file_size;
-    long int transcurrido=realtape_file_size_counter;
+    long long int total=realtape_file_size;
+    long long int transcurrido=realtape_file_size_counter;
 
     //tenemos precisamente lo transcurrido asi que no hay que obtener la posicion con fget
     //cuanto es 5% del total
-    long int offset=(total*porcentaje)/100;
+    long long int offset=(total*porcentaje)/100;
 
     if (accion) {
         //avanzar
@@ -2041,7 +2041,7 @@ void realtape_rewind_begin(void)
     }
 
 
-    long int transcurrido=0;
+    long long int transcurrido=0;
 
     realtape_file_size_counter=transcurrido;
 
@@ -2126,7 +2126,7 @@ void realtape_load_visuals(char *filename)
     //vaciar de nuevo por si al cargar es un archivo menor que REALTAPE_VISUAL_MAX_SIZE (cosa rara) y quedan "restos" de lo anterior
     init_visual_real_tape();
 
-    long int total_archivo=get_file_size(filename);
+    long long int total_archivo=get_file_size(filename);
 
     //Hacer trocitos de total_archivo/REALTAPE_VISUAL_MAX_SIZE de maximo
     //4096: trozos de 1 samples

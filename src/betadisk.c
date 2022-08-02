@@ -735,7 +735,7 @@ void trd_flush_contents_to_disk(void)
 
 
         int escritos=0;
-        long int size;
+        long long int size;
         size=TRD_FILE_SIZE;
 
 

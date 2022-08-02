@@ -29,7 +29,7 @@
 #include "hilow_datadrive_audio.h"
 #include "hilow_datadrive.h"
 
-long int hilow_read_audio_tamanyo_archivo_audio;
+long long int hilow_read_audio_tamanyo_archivo_audio;
 
 //Puntero a los datos del audio leido
 z80_byte *hilow_read_audio_read_hilow_memoria_audio;
@@ -805,7 +805,7 @@ int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sect
 
 
 
-long int hilow_read_audio_get_file_size(char *nombre)
+long long int hilow_read_audio_get_file_size(char *nombre)
 {
         struct stat buf_stat;
 

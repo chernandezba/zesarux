@@ -148,8 +148,8 @@ extern void draw_tape_text_top_speed(void);
 
 extern void realtape_print_footer(void);
 
-extern long int realtape_file_size;
-extern long int realtape_file_size_counter;
+extern long long int realtape_file_size;
+extern long long int realtape_file_size_counter;
 
 
 
@@ -164,7 +164,7 @@ extern z80_byte realtape_visual_data[REALTAPE_VISUAL_MAX_SIZE*2][2];
 
 extern int realtape_visual_total_used;
 
-extern int realtape_get_seconds_numbytes(long int numero);
+extern int realtape_get_seconds_numbytes(long long int numero);
 extern int realtape_get_elapsed_seconds(void);
 extern int realtape_get_total_seconds(void);
 extern void init_visual_real_tape(void);

@@ -216,7 +216,7 @@ void coretests_compress_repetitions(void)
 
 void coretests_read_file_memory(char *filename,z80_byte *memoria)
 {
-		long int tamanyo;
+		long long int tamanyo;
 		tamanyo=get_file_size(filename);
 
 
@@ -243,7 +243,7 @@ void coretests_compress_uncompress_repetitions_aux(char *filename)
 	z80_byte *memoria_file_compressed;
 	z80_byte *memoria_file_uncompressed;
 
-	long int tamanyo=get_file_size(filename);
+	long long int tamanyo=get_file_size(filename);
 
 	//Memoria para lectura, comprimir y descomprimir
 	//tamanyo, tamanyo*2, tamanyo*2

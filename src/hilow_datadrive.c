@@ -144,7 +144,7 @@ void hilow_flush_contents_to_disk(void)
 
 
     int escritos=0;
-    long int size;
+    long long int size;
     size=HILOW_DEVICE_SIZE;
 
 

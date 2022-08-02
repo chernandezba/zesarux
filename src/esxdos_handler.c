@@ -336,7 +336,7 @@ int esxdos_handler_get_attr_etc(char *nombre,z80_int puntero,z80_byte *atributo)
 	//Tamanyo
 
 	//copia para ir dividiendo entre 256
-	long int longitud_total=get_file_size(nombre);
+	long long int longitud_total=get_file_size(nombre);
 
 	z80_long_int l=longitud_total;
 

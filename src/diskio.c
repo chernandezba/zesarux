@@ -40,7 +40,7 @@ FILE *ptr_fatfs_disk_zero_file;
 BYTE *fatfs_disk_zero_memory=NULL;
 
 //Tamanyo del archivo
-long int fatfs_disk_zero_tamanyo=0;
+long long int fatfs_disk_zero_tamanyo=0;
 
 int debug_diskio=0;
 
@@ -151,7 +151,7 @@ DSTATUS disk_initialize (
         }
 
         //Y leerlo entero
-        long int leidos=fread(fatfs_disk_zero_memory,1,fatfs_disk_zero_tamanyo,ptr_fatfs_disk_zero_file);
+        long long int leidos=fread(fatfs_disk_zero_memory,1,fatfs_disk_zero_tamanyo,ptr_fatfs_disk_zero_file);
 
         if (leidos<fatfs_disk_zero_tamanyo) {
             if (debug_diskio) printf("FatFs error leyendo archivo %s en memoria\n",fatfs_disk_zero_path);
@@ -179,7 +179,7 @@ DSTATUS disk_initialize (
 }
 
 //leer un byte del archivo mmc (en memoria) controlando offsets
-BYTE diskio_lee_byte(long int posicion)
+BYTE diskio_lee_byte(long long int posicion)
 {
     if (posicion>=fatfs_disk_zero_tamanyo || posicion<0) {
         if (debug_diskio) printf("FatFs error reading beyond mmc size (total %ld, trying %ld)\n",fatfs_disk_zero_tamanyo,posicion);
@@ -193,7 +193,7 @@ BYTE diskio_lee_byte(long int posicion)
 
 
 //escribir un byte en el archivo mmc (en memoria) controlando offsets
-void diskio_escribe_byte(long int posicion,BYTE valor)
+void diskio_escribe_byte(long long int posicion,BYTE valor)
 {
     if (posicion>=fatfs_disk_zero_tamanyo || posicion<0) {
         if (debug_diskio) printf("FatFs error writing beyond mmc size (total %ld, trying %ld)\n",fatfs_disk_zero_tamanyo,posicion);
@@ -222,7 +222,7 @@ DRESULT disk_read (
 	//DRESULT res;
 	//int result;
 
-    long int offset;
+    long long int offset;
 
     if (debug_diskio) printf("FatFs llamado disk_read para drive %d\n",pdrv);
 
@@ -249,7 +249,7 @@ DRESULT disk_read (
 
         offset=sector*FF_MIN_SS;
 
-        long int total_leer=count*FF_MIN_SS;
+        long long int total_leer=count*FF_MIN_SS;
 
         for (;total_leer>0;total_leer--) {
             *buff=diskio_lee_byte(offset);
@@ -297,7 +297,7 @@ DRESULT disk_write (
 	//DRESULT res;
 	//int result;
 
-    long int offset;   
+    long long int offset;   
 
     if (debug_diskio) printf("FatFs llamado disk_write para drive %d sector %d count %d\n",pdrv,sector,count);
 
@@ -324,7 +324,7 @@ DRESULT disk_write (
 
         offset=sector*FF_MIN_SS;
 
-        long int total_leer=count*FF_MIN_SS;
+        long long int total_leer=count*FF_MIN_SS;
 
         for (;total_leer>0;total_leer--) {
             diskio_escribe_byte(offset,*buff);

@@ -928,3 +928,42 @@ index 363164e..23697c6 100644
 
 
 # Agregar en scripts carpeta tests 
+
+
+-----
+
+Sobre tipos de datos
+
+Usar "long"/"long int" es un error , pues en sistemas de 32 bits es un tipo de dato de 32 bits, pero en sistemas de 64 bits ocupa 64 bits
+
+Por tanto, para usar tipos de datos de 64 bits, usar "long long int"
+
+Salida del siguiente programa:
+
+#include <stdio.h>
+int main(int argc, char *argv[])
+{
+    printf( "sizeof(int)=%d\n", sizeof(int) );
+    printf( "sizeof(long)=%d\n", sizeof(long) );
+    printf( "sizeof(long int)=%d\n", sizeof(long int) );
+    printf( "sizeof(long long)=%d\n", sizeof(long long) );
+    printf( "sizeof(long long int)=%d\n", sizeof(long long int) );
+    return 0;
+}
+
+
+En sistema de 32 bits:
+
+sizeof(int)=4
+sizeof(long)=4
+sizeof(long int)=4
+sizeof(long long)=8
+sizeof(long long int)=8
+
+En sistema de 64 bits:
+
+sizeof(int)=4
+sizeof(long)=8
+sizeof(long int)=8
+sizeof(long long)=8
+sizeof(long long int)=8

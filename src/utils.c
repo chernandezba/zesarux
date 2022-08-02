@@ -3234,7 +3234,7 @@ int configfile_read_aux(char *configfile,char *mem)
 {
 
         //Avisar si tamanyo grande
-        if (get_file_size(configfile) > (long int)MAX_SIZE_CONFIG_FILE) cpu_panic("Configuration file is larger than maximum size allowed");
+        if (get_file_size(configfile) > (long long int)MAX_SIZE_CONFIG_FILE) cpu_panic("Configuration file is larger than maximum size allowed");
 
 	FILE *ptr_configfile;
         ptr_configfile=fopen(configfile,"rb");
@@ -5696,7 +5696,7 @@ int si_existe_archivo(char *nombre)
 
 //Retorna sufijo y unidades para un tamaño de bytes
 //B esta con espacios para quede alineado con el resto
-long int get_size_human_friendly(long long int tamanyo,char *sufijo)
+long long int get_size_human_friendly(long long int tamanyo,char *sufijo)
 {
     strcpy(sufijo,"B  ");
 
@@ -5783,7 +5783,7 @@ int get_file_lines(char *filename)
         int total_lineas=0;
 
         //Leemos primero todo el archivo en memoria
-        long int tamanyo_archivo=get_file_size(filename);
+        long long int tamanyo_archivo=get_file_size(filename);
 
         z80_byte *buffer_memoria;
         z80_byte *buffer_memoria_copia;
@@ -9706,7 +9706,7 @@ int convert_pzx_to_rwa(char *origen, char *destino)
 
         //Leemos archivo en memoria
         z80_byte *pzx_file_mem;
-        long int bytes_to_load=get_file_size(origen); 
+        long long int bytes_to_load=get_file_size(origen); 
 
         pzx_file_mem=malloc(bytes_to_load);
         if (pzx_file_mem==NULL) cpu_panic("Can not allocate memory for loading PZX file");
@@ -9734,7 +9734,7 @@ int convert_pzx_to_rwa(char *origen, char *destino)
 
         //Ir leyendo hasta llegar al final del archivo
         //z80_long_int puntero_lectura=0;
-        long int puntero_lectura=0;
+        long long int puntero_lectura=0;
 
         while (puntero_lectura<bytes_to_load) {
                 /*
@@ -13694,7 +13694,7 @@ void util_byte_to_binary(z80_byte value,char *texto)
 	*texto=0; //fin cadena
 }
 
-void util_save_file(z80_byte *origin, long int tamanyo_origen, char *destination_file)
+void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file)
 {
 
 
@@ -13752,7 +13752,7 @@ void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 void util_copy_file(char *source_file, char *destination_file)
 {
 
-	long int tamanyo_origen=get_file_size(source_file);
+	long long int tamanyo_origen=get_file_size(source_file);
 
 	FILE *ptr_source_file;
 
@@ -13929,7 +13929,7 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
 	fread(buffer_lectura,1,saltar_bytes,ptr_inputfile);
 
 	//Y vamos leyendo bloques de 1024
-	unsigned long int escritos=0;
+	long long int escritos=0;
 
 	do {
 	        leidos=fread(buffer_lectura,1,65536,ptr_inputfile);
@@ -13942,7 +13942,7 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
 
         //Y luego rellenar archivo a siguiente valor valido de archivo .ide
         //Nota: para .mmc ya nos sirve, dado que .mmc necesita que sea multiple de 256 kb
-        unsigned long int valid_ide_sizes[]={
+        long long int valid_ide_sizes[]={
 		 8*1024*1024,   //0
 		 16*1024*1024,
 		 32*1024*1024,
@@ -13973,8 +13973,8 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
                 }
 
                 else {
-                        unsigned long int final_size=valid_ide_sizes[i];
-                        unsigned long int rellenar=final_size-escritos;
+                        long long int final_size=valid_ide_sizes[i];
+                        long long int rellenar=final_size-escritos;
                         debug_printf (VERBOSE_DEBUG,"Adding %d KB until normal image size (%d KB)",rellenar/1024,final_size/1024);
                         z80_byte byte_relleno=0xFF;
                         while (rellenar) {
@@ -16525,7 +16525,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         //snapshot .P a SCR
         z80_byte *buffer_lectura;
 
-        long int bytes_to_load=get_file_size(filename);
+        long long int bytes_to_load=get_file_size(filename);
 
         if (bytes_to_load<20) return 1; //Tamaño muy pequeño
 
@@ -17721,7 +17721,7 @@ c800h/1024=32h
 int util_extract_z88_card(char *filename,char *tempdir)  
 {
       
-        long int bytes_to_load=get_file_size(filename);
+        long long int bytes_to_load=get_file_size(filename);
 
         z80_byte *flash_file_memory;
         flash_file_memory=malloc(bytes_to_load);
@@ -17815,7 +17815,7 @@ int util_extract_z88_card(char *filename,char *tempdir)
 //Archivos de basic z88 acaban con 3 bytes: 00 FF FF
 int file_is_z88_basic(char *filename)
 {
-        long int bytes_to_load=get_file_size(filename);
+        long long int bytes_to_load=get_file_size(filename);
 
         z80_byte *flash_file_memory;
         flash_file_memory=malloc(bytes_to_load);

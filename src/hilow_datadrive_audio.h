@@ -34,7 +34,7 @@ extern int hilow_read_audio_invertir_senyal;
 extern int hilow_read_audio_minimo_variacion;
 extern int hilow_read_audio_autocorrect;
 
-extern long int hilow_read_audio_tamanyo_archivo_audio;
+extern long long int hilow_read_audio_tamanyo_archivo_audio;
 extern z80_byte *hilow_read_audio_read_hilow_memoria_audio;
 extern z80_byte *hilow_read_audio_hilow_ddh;
 extern z80_byte hilow_read_audio_buffer_result[];
@@ -45,7 +45,7 @@ extern z80_byte hilow_read_audio_buffer_label[];
 extern int hilow_read_audio_lee_sector(int posicion,int *total_bytes_leidos,int *p_sector);
 extern int hilow_read_audio_buscar_inicio_sector(int posicion);
 extern void hilow_read_audio_pausa(int segundos);
-extern long int hilow_read_audio_get_file_size(char *nombre);
+extern long long int hilow_read_audio_get_file_size(char *nombre);
 extern void hilow_read_audio_espejar_sonido(z80_byte *puntero,int tamanyo);
 extern void hilow_read_audio_write_sector_to_memory(int sector);
 extern int hilow_read_audio_warn_if_sector_mismatch(int sector);
