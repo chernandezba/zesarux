@@ -7846,7 +7846,15 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
         total_dimensiones=30;
     }
 
-    for (i=0;i<dimensiones[indice];i++) {
+    //Controlar tambien tamaño de cada dimension
+    int tamanyo_dimension=dimensiones[indice];
+
+    if (tamanyo_dimension>100) {
+        debug_printf(VERBOSE_ERR,"Maximum size for an array dimension reached: 100");
+        tamanyo_dimension=100;
+    }
+
+    for (i=0;i<tamanyo_dimension;i++) {
         //printf("%d(%d) ",i,indice);
         posicion_actual[indice]=i;
         if (indice<total_dimensiones-1) {
