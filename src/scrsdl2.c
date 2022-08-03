@@ -1365,6 +1365,10 @@ if (ventana_fullscreen) return ; //No hacer resizes cuando este en pantalla comp
   scrsdl_destruye_ventana();
 	scrsdl_crea_ventana();
 
+    //printf("antes menu_draw_ext_desktop\n");
+    menu_draw_ext_desktop();  
+    //printf("despues menu_draw_ext_desktop\n");    
+
 
 }
 
