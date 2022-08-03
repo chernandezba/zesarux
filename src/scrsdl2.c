@@ -1411,6 +1411,10 @@ void scrsdl_actualiza_tablas_teclado(void)
                                 scrsdl_debe_redimensionar=0;
                                 scrsdl_destruye_ventana();
                                 scrsdl_crea_ventana();
+
+                                //printf("antes menu_draw_ext_desktop\n");
+                                menu_draw_ext_desktop();  
+                                //printf("despues menu_draw_ext_desktop\n");                                  
                         }
 		}
 
