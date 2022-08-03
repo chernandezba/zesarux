@@ -7562,6 +7562,7 @@ Toda la parte de coma flotante se puede mejorar y corregir mucho, he evitado usa
 esta todo obtenido mediante enteros de 32 bits, trabajando con tablas de mantisa multiplicadas por 10000
 Además sólo tengo en cuenta 16 de los 32 bits posibles de la mantisa, por tanto los valores muchas veces son aproximados
 NO se debe tomar como una función perfecta sino como algo que nos da un indicativo del valor APROXIMADO de la variable en coma flotante 
+y no da siempre un valor exacto
 */
 void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
 {
@@ -7654,12 +7655,12 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         //printf("exponente %d mantissa %d signo %d\n",exponente,total_mantissa,signo_valor_final);
         if (exponente>18) {
             if (signo_exponente>0) {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float approx)(-%d X 2^%d)/10000",total_mantissa,exponente);    
-                else sprintf(buffer_linea,"(float approx)(%d X 2^%d)/10000",total_mantissa,exponente);    
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/10000",total_mantissa,exponente);    
+                else sprintf(buffer_linea,"(float)(%d X 2^%d)/10000",total_mantissa,exponente);    
             }
             else {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float approx)(-%d / 2^%d)/10000",total_mantissa,exponente);    
-                else sprintf(buffer_linea,"(float approx)(%d / 2^%d)/10000",total_mantissa,exponente); 
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/10000",total_mantissa,exponente);    
+                else sprintf(buffer_linea,"(float)(%d / 2^%d)/10000",total_mantissa,exponente); 
             }
             return;            
         }
@@ -7688,7 +7689,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
             buffer_valor_total
         );*/
 
-        sprintf(buffer_linea,"(float approx)%s",buffer_valor_total);
+        sprintf(buffer_linea,"(float)%s",buffer_valor_total);
         
     }    
 }
