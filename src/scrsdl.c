@@ -1363,6 +1363,8 @@ void scrsdl_actualiza_tablas_teclado(void)
                 clear_putpixel_cache();
                 scrsdl_debe_redimensionar=0;
                 scrsdl_crea_ventana();
+
+                menu_draw_ext_desktop(); 
             }
 		}
 
