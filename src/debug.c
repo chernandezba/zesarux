@@ -8001,7 +8001,10 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
         //no hay matrices alfanum en zx80??
     }      
 
+    
+
   	while (peek_byte_no_time(dir)!=128 && !salir) {
+        z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);
         util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);        
 
@@ -8083,7 +8086,8 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 }
                 util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
-                int total_tamanyo;
+                //hacerla de 64 bits asi podemos controlar tranquilamente cuando nos pasamos del rango admitido de 64kb
+                z80_64bit total_tamanyo;
 
                 //En zx80 solo tienen una dimension
                 if (MACHINE_IS_ZX80_TYPE) {
@@ -8126,8 +8130,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
  
                     total_tamanyo=1;
+                    int salir_calculo_dimensiones=0;
                     
-                    for (i=0;i<total_dimensiones;i++) {
+                    for (i=0;i<total_dimensiones && !salir_calculo_dimensiones;i++) {
                         z80_int dimension=peek_word_no_time(dir+1+(i*2));
                         dimensiones[i]=dimension;
 
@@ -8135,6 +8140,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                             total_tamanyo*=dimension;
                             //printf("tama %d\n",total_tamanyo);
                         }
+
+                        //demasiado grande? salimos sin calcular todo tamaño
+                        if (total_tamanyo>65535) salir_calculo_dimensiones=1;
 
                         char relleno=(i<total_dimensiones-1 ? ',' : ')');
                         sprintf (buffer_linea,"%d%c",dimension,relleno);
@@ -8159,11 +8167,12 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 //sleep(5);
 
                 if (total_tamanyo>65535) {
-                    debug_printf(VERBOSE_ERR,"Array exceeds 64k (%d)",total_tamanyo);
+                    debug_printf(VERBOSE_ERR,"Array exceeds 64k (%lld)",total_tamanyo);
+                    salir=1;
                 }
 
                 else {
-
+                    //printf("total_tamanyo: %lld\n",total_tamanyo);
                     debug_view_basic_variables_print_dim_alpha(results_buffer,inicio_texto,total_dimensiones,&dimensiones[0],
                         0,&posicion_actual[0],0,maxima_longitud_texto,es_numerico);
 
@@ -8280,6 +8289,12 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
             debug_printf(VERBOSE_ERR,"Reached maximum text size. Showing only allowed text");
                 //forzar salir
                 salir=1;
+        }
+
+        //si dir ahora es menor, es que ha "dado la vuelta" a la memoria
+        if (dir<dir_antes) {
+            debug_printf(VERBOSE_ERR,"Reading beyond memory limits");
+            salir=1;
         }
 
 

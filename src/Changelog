@@ -68,6 +68,7 @@ Improved HiLow DataDrive emulation:
 Fixed handling files larger than 2 GB on 32 bit CPU (including the Windows version too)
 Fixed using mmc images larger than 2 GB
 Fixed redrawing ZX Desktop when resizing window
+Fixed hang when using View Variables and memory corrupted
 Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed.
 Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed Z80 behavior running block opcodes (LDIR, etc) and interrupts
