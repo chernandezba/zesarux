@@ -672,7 +672,7 @@ void scrxwindows_resize(int width,int height)
 
     menu_draw_ext_desktop();  
 
-zxvision_set_all_flag_dirty_must_draw_contents();
+zxvision_redraw_all_windows();
 }
 
 
