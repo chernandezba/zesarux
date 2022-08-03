@@ -599,45 +599,45 @@ debug_printf (VERBOSE_INFO,"Using X11 Shared memory");
 void scrxwindows_resize(int width,int height)
 {
 
-	if (!ventana) return;
+    if (!ventana) return;
 
-	clear_putpixel_cache();
+    clear_putpixel_cache();
 
-	int zoom_x_calculado,zoom_y_calculado;
+    int zoom_x_calculado,zoom_y_calculado;
 
-	debug_printf (VERBOSE_INFO,"Xwindows resize");
+    debug_printf (VERBOSE_INFO,"Xwindows resize");
 
-	if (ventana_fullscreen) {
-		zoom_x_calculado=zoom_x;
-		zoom_y_calculado=zoom_y;
+    if (ventana_fullscreen) {
+        zoom_x_calculado=zoom_x;
+        zoom_y_calculado=zoom_y;
 
-		modificado_border.v=1;
+        modificado_border.v=1;
 
 
 
-                debug_printf (VERBOSE_INFO,"Calling XResizeWindow on fullscreen");
+        debug_printf (VERBOSE_INFO,"Calling XResizeWindow on fullscreen");
 
-                scrxwindows_alloc_image(fullscreen_width,fullscreen_height);
+        scrxwindows_alloc_image(fullscreen_width,fullscreen_height);
 
-                XResizeWindow( dpy, ventana, fullscreen_width, fullscreen_height);
+        XResizeWindow( dpy, ventana, fullscreen_width, fullscreen_height);
 
-		XMapRaised(dpy,ventana);
+        XMapRaised(dpy,ventana);
 
-	//printf ("resize %d %d\n",width,height);
-	scr_reallocate_layers_menu(fullscreen_width,fullscreen_height);	
+        //printf ("resize %d %d\n",width,height);
+        scr_reallocate_layers_menu(fullscreen_width,fullscreen_height);	
 
         menu_draw_ext_desktop(); 
-		return;
+        return;
 
-	}
+    }
 
 
 
-	debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
+    debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
-		//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
-		zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-		zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
+    //zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
+    zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
+    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
 	if (!zoom_x_calculado) zoom_x_calculado=1;
@@ -646,33 +646,31 @@ void scrxwindows_resize(int width,int height)
 	debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
 	if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
-		//resize
-		zoom_x=zoom_x_calculado;
-		zoom_y=zoom_y_calculado;
-		set_putpixel_zoom();
-		modificado_border.v=1;
+        //resize
+        zoom_x=zoom_x_calculado;
+        zoom_y=zoom_y_calculado;
+        set_putpixel_zoom();
+        modificado_border.v=1;
 
-                width=screen_get_window_size_width_zoom_border_en();
-								width+=screen_get_ext_desktop_width_zoom();
+        width=screen_get_window_size_width_zoom_border_en();
+                        width+=screen_get_ext_desktop_width_zoom();
 
-                height=screen_get_window_size_height_zoom_border_en();
-                height+=screen_get_ext_desktop_height_zoom();
+        height=screen_get_window_size_height_zoom_border_en();
+        height+=screen_get_ext_desktop_height_zoom();
 
 
-		debug_printf (VERBOSE_INFO,"Calling XResizeWindow to %d X %d",width,height);
+        debug_printf (VERBOSE_INFO,"Calling XResizeWindow to %d X %d",width,height);
 
-		scrxwindows_alloc_image(width,height);
+        scrxwindows_alloc_image(width,height);
 
-		XResizeWindow( dpy, ventana, width, height);
+        XResizeWindow( dpy, ventana, width, height);
 
 	}
 
 	//printf ("resize %d %d\n",width,height);
 	scr_reallocate_layers_menu(width,height);
 
-    //printf("antes menu_draw_ext_desktop\n");
     menu_draw_ext_desktop();  
-    //printf("despues menu_draw_ext_desktop\n");    
 
 }
 
