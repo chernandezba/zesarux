@@ -1326,44 +1326,44 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
 void scrsdl_resize(int width,int height)
 {
 
-if (ventana_fullscreen) return ; //No hacer resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
+    if (ventana_fullscreen) return ; //No hacer resizes cuando este en pantalla completa, sino nos metemos en un bucle de resizes continuos
 
-	clear_putpixel_cache();
+    clear_putpixel_cache();
 
-        int zoom_x_calculado,zoom_y_calculado;
+    int zoom_x_calculado,zoom_y_calculado;
 
-        debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
+    debug_printf (VERBOSE_INFO,"width: %d get_window_width: %d height: %d get_window_height: %d",width,screen_get_window_size_width_no_zoom_border_en(),height,screen_get_window_size_height_no_zoom_border_en());
 
-        //printf ("allocate layers menu\n");
-        scr_reallocate_layers_menu(width,height);   
+    //printf ("allocate layers menu\n");
+    scr_reallocate_layers_menu(width,height);   
 
-	//zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
-        zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
-	    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
-
-
-        if (!zoom_x_calculado) zoom_x_calculado=1;
-        if (!zoom_y_calculado) zoom_y_calculado=1;
-
-        debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
-
-        if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
-                //resize
-		debug_printf (VERBOSE_INFO,"Resizing window");
-
-                zoom_x=zoom_x_calculado;
-                zoom_y=zoom_y_calculado;
-                set_putpixel_zoom();
-
-                //width=screen_get_window_size_width_zoom_border_en();
-                //height=screen_get_window_size_height_zoom_border_en();
+    //zoom_x_calculado=width/screen_get_window_size_width_no_zoom_border_en();
+    zoom_x_calculado=width/(screen_get_window_size_width_no_zoom_border_en()+screen_get_ext_desktop_width_no_zoom() );
+    zoom_y_calculado=height/(screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom() );
 
 
-        }
+    if (!zoom_x_calculado) zoom_x_calculado=1;
+    if (!zoom_y_calculado) zoom_y_calculado=1;
 
-	scrsdl_debe_redimensionar=1;
-  scrsdl_destruye_ventana();
-	scrsdl_crea_ventana();
+    debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
+
+    if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
+        //resize
+        debug_printf (VERBOSE_INFO,"Resizing window");
+
+        zoom_x=zoom_x_calculado;
+        zoom_y=zoom_y_calculado;
+        set_putpixel_zoom();
+
+        //width=screen_get_window_size_width_zoom_border_en();
+        //height=screen_get_window_size_height_zoom_border_en();
+
+
+    }
+
+    scrsdl_debe_redimensionar=1;
+    scrsdl_destruye_ventana();
+    scrsdl_crea_ventana();
 
     //printf("antes menu_draw_ext_desktop\n");
     menu_draw_ext_desktop();  
@@ -1388,34 +1388,34 @@ void scrsdl_actualiza_tablas_teclado(void)
 {
 
 
-	SDL_Event event;
-	int pressrelease;
+    SDL_Event event;
+    int pressrelease;
 
-//SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+    //SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
 
-	while( SDL_PollEvent( &event ) ){
+    while( SDL_PollEvent( &event ) ){
 
 //printf ("evento: %d\n",event.type);
 
 		//Si se ha dejado de redimensionar la ventana
 		//if (event.type!=SDL_WINDOWEVENT_SIZE_CHANGED) {
-    if (!scrsdl_recibido_resize(&event)) {
-                        if (scrsdl_debe_redimensionar) {
+        if (!scrsdl_recibido_resize(&event)) {
+            if (scrsdl_debe_redimensionar) {
 
-				//printf ("evento: %d\n",event.type);
+                //printf ("evento: %d\n",event.type);
 
-                                debug_printf (VERBOSE_DEBUG,"Resizing windows due to a previous pending resize");
+                debug_printf (VERBOSE_DEBUG,"Resizing windows due to a previous pending resize");
 
-                                clear_putpixel_cache();
-                                scrsdl_debe_redimensionar=0;
-                                scrsdl_destruye_ventana();
-                                scrsdl_crea_ventana();
+                clear_putpixel_cache();
+                scrsdl_debe_redimensionar=0;
+                scrsdl_destruye_ventana();
+                scrsdl_crea_ventana();
 
-                                //printf("antes menu_draw_ext_desktop\n");
-                                menu_draw_ext_desktop();  
-                                //printf("despues menu_draw_ext_desktop\n");                                  
-                        }
+                //printf("antes menu_draw_ext_desktop\n");
+                menu_draw_ext_desktop();  
+                //printf("despues menu_draw_ext_desktop\n");                                  
+            }
 		}
 
 
@@ -1447,8 +1447,8 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 
 			if (pressrelease) notificar_tecla_interrupcion_si_z88();
 
-                        if (sdl_raw_keyboard_read.v) scrsdl_deal_raw_keys(pressrelease,scancode);
-                        else scrsdl_deal_keys(pressrelease,tecla);
+            if (sdl_raw_keyboard_read.v) scrsdl_deal_raw_keys(pressrelease,scancode);
+            else scrsdl_deal_keys(pressrelease,tecla);
 
 		}
 
@@ -1456,25 +1456,25 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 
 		//resize
 		//if (event.type==SDL_WINDOWEVENT_SIZE_CHANGED) {
-    if (scrsdl_recibido_resize(&event)) {
+        if (scrsdl_recibido_resize(&event)) {
 
-			        scrsdl_resize(event.window.data1, event.window.data2);
+            scrsdl_resize(event.window.data1, event.window.data2);
 
 		}
 
 
 		//mouse motion
 		if (event.type==SDL_MOUSEMOTION) {
-                    mouse_x=event.motion.x;
-                    mouse_y=event.motion.y;
+            mouse_x=event.motion.x;
+            mouse_y=event.motion.y;
 
 
 
-                    kempston_mouse_x=mouse_x/zoom_x;
-                    kempston_mouse_y=255-mouse_y/zoom_y;
-                    //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
+            kempston_mouse_x=mouse_x/zoom_x;
+            kempston_mouse_y=255-mouse_y/zoom_y;
+            //printf("Mouse is at (%d,%d)\n", kempston_mouse_x, kempston_mouse_y);
 
-                        debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
+            debug_printf (VERBOSE_PARANOID,"Mouse motion. X: %d Y:%d kempston x: %d y: %d",mouse_x,mouse_y,kempston_mouse_x,kempston_mouse_y);
 		}
 
 
@@ -1483,34 +1483,37 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 
 			debug_printf (VERBOSE_PARANOID,"Mouse Button Press. x=%d y=%d", event.button.x, event.button.y);
 
-                        if ( event.button.button == SDL_BUTTON_LEFT ) {
+            if ( event.button.button == SDL_BUTTON_LEFT ) {
 				//mouse_left=1;
 				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,1);
 			}
-                        if ( event.button.button == SDL_BUTTON_RIGHT ) {
+
+            if ( event.button.button == SDL_BUTTON_RIGHT ) {
                                 //mouse_right=1;
 				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,1);
-                        }
+            }
 
-                        //TODO: soporte rueda raton. Ya no se trata como un boton en SDL2, sino que es  SDL_MOUSEWHEEL  event
+            //TODO: soporte rueda raton. Ya no se trata como un boton en SDL2, sino que es  SDL_MOUSEWHEEL  event
 
-                        gunstick_x=event.button.x;
-                        gunstick_y=event.button.y;
-                        gunstick_x=gunstick_x/zoom_x;
-                        gunstick_y=gunstick_y/zoom_y;
+            gunstick_x=event.button.x;
+            gunstick_y=event.button.y;
+            gunstick_x=gunstick_x/zoom_x;
+            gunstick_y=gunstick_y/zoom_y;
 
-                        debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,gunstick_x
-,gunstick_y);
+            debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", event.button.x, event.button.y,
+                gunstick_x,gunstick_y);
 
 		}
 
+
 		if (event.type==SDL_MOUSEBUTTONUP) {
-                        debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.button.x, event.button.y);
-                        if ( event.button.button == SDL_BUTTON_LEFT ) {
+            debug_printf (VERBOSE_PARANOID,"Mouse Button release. x=%d y=%d", event.button.x, event.button.y);
+            if ( event.button.button == SDL_BUTTON_LEFT ) {
 				//mouse_left=0;
 				util_set_reset_mouse(UTIL_MOUSE_LEFT_BUTTON,0);
 			}
-                        if ( event.button.button == SDL_BUTTON_RIGHT ) {
+
+            if ( event.button.button == SDL_BUTTON_RIGHT ) {
 				//mouse_right=0;
 				util_set_reset_mouse(UTIL_MOUSE_RIGHT_BUTTON,0);
 			}
@@ -1518,10 +1521,10 @@ See the SDL documentation. Scancodes represent the physical position of the keys
 		}
 
 		if (event.type==SDL_QUIT) {
-	                debug_printf (VERBOSE_INFO,"Received window close event");
-        	        //Hacemos que aparezca el menu con opcion de salir del emulador
-                	menu_abierto=1;
-	                menu_button_exit_emulator.v=1;
+            debug_printf (VERBOSE_INFO,"Received window close event");
+            //Hacemos que aparezca el menu con opcion de salir del emulador
+            menu_abierto=1;
+            menu_button_exit_emulator.v=1;
 		}
 
         if (event.type==SDL_DROPFILE) {      // In case if dropped file
