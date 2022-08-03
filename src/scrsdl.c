@@ -73,47 +73,45 @@ int scrsdl_debe_redimensionar=0;
 int scrsdl_crea_ventana(void)
 {
 
-        Uint32 flags;
+    Uint32 flags;
 
-        flags=SDL_SWSURFACE | SDL_RESIZABLE;
+    flags=SDL_SWSURFACE | SDL_RESIZABLE;
 
-        if (ventana_fullscreen) {
-		flags |=SDL_FULLSCREEN; 
-	}
+    if (ventana_fullscreen) {
+        flags |=SDL_FULLSCREEN; 
+    }
 
-        int ancho=screen_get_window_size_width_zoom_border_en();
+    int ancho=screen_get_window_size_width_zoom_border_en();
 
-        ancho +=screen_get_ext_desktop_width_zoom();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-        int alto=screen_get_window_size_height_zoom_border_en();
+    int alto=screen_get_window_size_height_zoom_border_en();
 
-        alto +=screen_get_ext_desktop_height_zoom();
+    alto +=screen_get_ext_desktop_height_zoom();
 
-	debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
+    debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
 
-        sdl_screen = SDL_SetVideoMode(ancho,
-                                      alto,
-                                        32, flags);
-        if ( sdl_screen == NULL ) {
-                return 1;
-        }
+    sdl_screen = SDL_SetVideoMode(ancho,alto,32, flags);
+    if ( sdl_screen == NULL ) {
+        return 1;
+    }
 
-        scr_reallocate_layers_menu(ancho,alto);
+    scr_reallocate_layers_menu(ancho,alto);
 
-        //establecer titulo ventana
-        SDL_WM_SetCaption("ZEsarUX " EMULATOR_VERSION , "ZEsarUX");
+    //establecer titulo ventana
+    SDL_WM_SetCaption("ZEsarUX " EMULATOR_VERSION , "ZEsarUX");
 
-	if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
+    if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
 
-	modificado_border.v=1;
+    modificado_border.v=1;
 
-	screen_z88_draw_lower_screen();
+    screen_z88_draw_lower_screen();
 
-	menu_init_footer();
+    menu_init_footer();
 
+    menu_draw_ext_desktop();  
 
-
-        return 0;
+    return 0;
 
 }
 
@@ -1332,9 +1330,7 @@ void scrsdl_resize(int width,int height)
 	scrsdl_debe_redimensionar=1;
 	scrsdl_crea_ventana();
 
-    //printf("antes menu_draw_ext_desktop\n");
-    menu_draw_ext_desktop();  
-    //printf("despues menu_draw_ext_desktop\n");    
+
 
 
 }
@@ -1364,7 +1360,6 @@ void scrsdl_actualiza_tablas_teclado(void)
                 scrsdl_debe_redimensionar=0;
                 scrsdl_crea_ventana();
 
-                menu_draw_ext_desktop(); 
             }
 		}
 

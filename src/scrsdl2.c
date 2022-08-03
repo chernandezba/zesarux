@@ -118,7 +118,7 @@ int scrsdl_crea_ventana(void)
 
     if (scrsdl_pixeles==NULL) return 1;
 
-                scr_reallocate_layers_menu(ancho,alto);
+    scr_reallocate_layers_menu(ancho,alto);
 
 	if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
 
@@ -128,6 +128,7 @@ int scrsdl_crea_ventana(void)
 
 	menu_init_footer();
 
+    menu_draw_ext_desktop();  
 
 
   return 0;
@@ -1345,7 +1346,7 @@ void scrsdl_resize(int width,int height)
     if (!zoom_x_calculado) zoom_x_calculado=1;
     if (!zoom_y_calculado) zoom_y_calculado=1;
 
-    debug_printf (VERBOSE_INFO,"zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
+    debug_printf (VERBOSE_INFO,"scrsdl_resize: zoom_x: %d zoom_y: %d zoom_x_calculated: %d zoom_y_calculated: %d",zoom_x,zoom_y,zoom_x_calculado,zoom_y_calculado);
 
     if (zoom_x_calculado!=zoom_x || zoom_y_calculado!=zoom_y) {
         //resize
@@ -1365,9 +1366,7 @@ void scrsdl_resize(int width,int height)
     scrsdl_destruye_ventana();
     scrsdl_crea_ventana();
 
-    //printf("antes menu_draw_ext_desktop\n");
-    menu_draw_ext_desktop();  
-    //printf("despues menu_draw_ext_desktop\n");    
+   
 
 
 }
@@ -1410,11 +1409,7 @@ void scrsdl_actualiza_tablas_teclado(void)
                 clear_putpixel_cache();
                 scrsdl_debe_redimensionar=0;
                 scrsdl_destruye_ventana();
-                scrsdl_crea_ventana();
-
-                //printf("antes menu_draw_ext_desktop\n");
-                menu_draw_ext_desktop();  
-                //printf("despues menu_draw_ext_desktop\n");                                  
+                scrsdl_crea_ventana();                               
             }
 		}
 
