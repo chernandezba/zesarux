@@ -870,7 +870,11 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 
 	[normalWindow redimensionaVentana:pendingresize_w height:pendingresize_h];
-	pendingresize=0;        
+	pendingresize=0;      
+
+    //printf("antes menu_draw_ext_desktop\n");
+    menu_draw_ext_desktop();  
+    //printf("despues menu_draw_ext_desktop\n");
 
 
 }

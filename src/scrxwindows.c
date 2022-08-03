@@ -670,6 +670,10 @@ void scrxwindows_resize(int width,int height)
 	//printf ("resize %d %d\n",width,height);
 	scr_reallocate_layers_menu(width,height);
 
+    //printf("antes menu_draw_ext_desktop\n");
+    menu_draw_ext_desktop();  
+    //printf("despues menu_draw_ext_desktop\n");    
+
 }
 
 
