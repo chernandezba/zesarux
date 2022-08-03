@@ -2772,6 +2772,7 @@ void scrcocoa_refresca_pantalla(void)
         //printf("Redibujando zx desktop de pendiente_draw_zxdesktop\n");
         pendiente_draw_zxdesktop=0;
         menu_draw_ext_desktop();
+        zxvision_redraw_all_windows();
     }
 
     if (pendingresize) return;
