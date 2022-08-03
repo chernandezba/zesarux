@@ -28,6 +28,7 @@ Para esta version:
 -Ddh con extended info al final, que contenga marcas de sector y labels ? 
 
 -minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
+-Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ?
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
@@ -145,7 +146,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 
 
--completar info maquina al pulsa icono en my machine
+-completar info maquina al pulsar icono en my machine
 ok * ram ok en todas maquinas
 ok *indicar "familia de maquinas", o sea:
 tk80, zx80... : tipo ZX80
@@ -158,13 +159,9 @@ ts1000, zx81... : tipo ZX81
 -al pulsar un icono, si se hace desde una ventana, el icono se mantiene pulsado como es de esperar
 Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y apenas se aprecia el efecto de pulsado
 
--Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ?
 
 -quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
 usar la que si considera movimiento raton
-
--revisar llamadas a funciones, como en mousemoved, de drivers de video que necesitan cosas como scr_driver_can_ext_desktop que estan a NULL
-inicialmente. Igual darle una vuelta para no tener que usar eso desde principio, o que detecten si es NULL para no llamarlo...
 
 
 

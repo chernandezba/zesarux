@@ -7838,6 +7838,13 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
 
     //Nota: aqui no gestionamos el resultado de error de util_concat_string por no hacer mas complicada la llamada recursiva
     //aunque logicamente el limite se controla, si esta al maximo de longitud permitida, util_concat_string no escribira nada
+    //printf("dimensiones[indice] :%d total_dimensiones: %d\n",dimensiones[indice],total_dimensiones);
+
+    //controlar maximo dimensiones
+    if (total_dimensiones>30) {
+        debug_printf(VERBOSE_ERR,"Maximum dimension for an array reached: 30");
+        total_dimensiones=30;
+    }
 
     for (i=0;i<dimensiones[indice];i++) {
         //printf("%d(%d) ",i,indice);

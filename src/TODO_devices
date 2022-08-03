@@ -95,7 +95,7 @@ Quizá activar flag cuando se escribe al menos una vez y al salir sabemos si hay
 
 -Idea: en vez de tener la imagen Mmc, que tenga los archivos que contiene y cree el Mmc copiándolos 
 
-
+-Creacion imagen mmc desde seleccion de imagen mmc, la crea byte a byte y con tamaños grandes puede ser muy lento
 
 ------------------
 
