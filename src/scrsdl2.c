@@ -76,34 +76,34 @@ SDL_Renderer *renderer;
 int scrsdl_crea_ventana(void)
 {
 
-  Uint32 flags;
+    Uint32 flags;
 
-  flags=SDL_WINDOW_RESIZABLE;
+    flags=SDL_WINDOW_RESIZABLE;
 
-  if (ventana_fullscreen) {
-	   flags |=SDL_WINDOW_FULLSCREEN;
-   }
-
-
-   int ancho=screen_get_window_size_width_zoom_border_en();
-   ancho +=screen_get_ext_desktop_width_zoom();
-
-   int alto=screen_get_window_size_height_zoom_border_en();
-   alto +=screen_get_ext_desktop_height_zoom();
-
-   debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
-
-   if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
-
-        if ( window == NULL ) {
-                return 1;
-        }
+    if (ventana_fullscreen) {
+        flags |=SDL_WINDOW_FULLSCREEN;
+    }
 
 
+    int ancho=screen_get_window_size_width_zoom_border_en();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-        //SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+    int alto=screen_get_window_size_height_zoom_border_en();
+    alto +=screen_get_ext_desktop_height_zoom();
 
-	if (renderer==NULL) return 1;
+    debug_printf (VERBOSE_DEBUG,"Creating window %d X %d",ancho,alto );
+
+    if (SDL_CreateWindowAndRenderer(ancho,alto, flags, &window, &renderer)!=0) return 1;
+
+    if ( window == NULL ) {
+            return 1;
+    }
+
+
+
+    //SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+
+    if (renderer==NULL) return 1;
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
@@ -120,74 +120,74 @@ int scrsdl_crea_ventana(void)
 
     scr_reallocate_layers_menu(ancho,alto);
 
-	if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
+    if (mouse_pointer_shown.v==0) SDL_ShowCursor(0);
 
-	modificado_border.v=1;
+    modificado_border.v=1;
 
-	screen_z88_draw_lower_screen();
+    screen_z88_draw_lower_screen();
 
-	menu_init_footer();
+    menu_init_footer();
 
     menu_draw_ext_desktop();  
 
 
-  return 0;
+    return 0;
 
 }
 
 void scrsdl_destruye_ventana(void)
 {
-  if (window!=NULL) SDL_DestroyWindow(window);
-  window=NULL;
+    if (window!=NULL) SDL_DestroyWindow(window);
+    window=NULL;
 }
 
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {	
-        int ancho=screen_get_window_size_width_zoom_border_en();
-        ancho +=screen_get_ext_desktop_width_zoom();
-        Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
+    int ancho=screen_get_window_size_width_zoom_border_en();
+    ancho +=screen_get_ext_desktop_width_zoom();
+    Uint8 *p = (Uint8 *)scrsdl_pixeles + (y * ancho + x) * 4;
 
 
-        //escribir de golpe los 32 bits.
+    //escribir de golpe los 32 bits.
 
-        //agregar alpha
-        color_rgb |=0xFF000000;
-        //y escribir
+    //agregar alpha
+    color_rgb |=0xFF000000;
+    //y escribir
 
-        *(Uint32 *)p = color_rgb;
+    *(Uint32 *)p = color_rgb;
 }
 
 void scrsdl_putpixel_final(int x,int y,unsigned int color)
 {
 
-        unsigned int color32=spectrum_colortable[color];
+    unsigned int color32=spectrum_colortable[color];
 
-        //y escribir
-        scrsdl_putpixel_final_rgb(x,y,color32);                
+    //y escribir
+    scrsdl_putpixel_final_rgb(x,y,color32);                
 
 
 }
 
 void scrsdl_putpixel(int x,int y,unsigned int color)
 {	
-        if (menu_overlay_activo==0) {
-                //Putpixel con menu cerrado
-                scrsdl_putpixel_final(x,y,color);
-                return;
-        }          
+    if (menu_overlay_activo==0) {
+        //Putpixel con menu cerrado
+        scrsdl_putpixel_final(x,y,color);
+        return;
+    }          
 
-        //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+    //Metemos pixel en layer adecuado
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
 
-        //Putpixel haciendo mix  
-        screen_putpixel_mix_layers(x,y);   
+    //Putpixel haciendo mix  
+    screen_putpixel_mix_layers(x,y);   
 
 }
 
 
 void scrsdl_putchar_zx8081(int x,int y, z80_byte caracter)
 {
-        scr_putchar_zx8081_comun(x,y, caracter);
+    scr_putchar_zx8081_comun(x,y, caracter);
 }
 
 void scrsdl_debug_registers(void)
@@ -201,9 +201,9 @@ void scrsdl_debug_registers(void)
 
 void scrsdl_messages_debug(char *s)
 {
-        printf ("%s\n",s);
-        //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
-        fflush(stdout);
+    printf ("%s\n",s);
+    //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
+    fflush(stdout);
 
 }
 
@@ -211,36 +211,37 @@ void scrsdl_messages_debug(char *s)
 void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
-        z80_bit inverse;
+    z80_bit inverse;
 
-        inverse.v=0;
+    inverse.v=0;
 
-        //128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-        scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
+    scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
 
 }
 
-void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
+void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+{
 
 
-        int yorigen;
+    int yorigen;
 
-	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
+    yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
 
 
 
-        //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
-        y +=yorigen;
-        z80_bit inverse;
+    //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
+    y +=yorigen;
+    z80_bit inverse;
 
-        inverse.v=0;
+    inverse.v=0;
 
-        //128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-        scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
+    scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
 
 
@@ -248,9 +249,9 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 void scrsdl_set_fullscreen(void)
 {
 
-	ventana_fullscreen=1;
-  scrsdl_destruye_ventana();
-	scrsdl_crea_ventana();
+    ventana_fullscreen=1;
+    scrsdl_destruye_ventana();
+    scrsdl_crea_ventana();
 
 }
 
@@ -258,9 +259,9 @@ void scrsdl_set_fullscreen(void)
 void scrsdl_reset_fullscreen(void)
 {
 
-	ventana_fullscreen=0;
-  scrsdl_destruye_ventana();
-	scrsdl_crea_ventana();
+    ventana_fullscreen=0;
+    scrsdl_destruye_ventana();
+    scrsdl_crea_ventana();
 
 }
 
@@ -268,14 +269,14 @@ void scrsdl_reset_fullscreen(void)
 void scrsdl_refresca_pantalla_zx81(void)
 {
 
-        scr_refresca_pantalla_y_border_zx8081();
+    scr_refresca_pantalla_y_border_zx8081();
 
 }
 
 
 void scrsdl_refresca_border(void)
 {
-        scr_refresca_border();
+    scr_refresca_border();
 
 }
 
@@ -283,13 +284,13 @@ void scrsdl_refresca_border(void)
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
 
-        int ancho=screen_get_window_size_width_zoom_border_en();
-        ancho +=screen_get_ext_desktop_width_zoom();
+    int ancho=screen_get_window_size_width_zoom_border_en();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-  SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
-  SDL_RenderClear(renderer);
-  SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);
-  SDL_RenderPresent(renderer);
+    SDL_UpdateTexture(scrsdl_texture, NULL, scrsdl_pixeles, ancho * 4);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, scrsdl_texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
 }
 
 //Common routine for a graphical driver
@@ -422,23 +423,23 @@ void scrsdl_refresca_pantalla(void)
 
 void scrsdl_end(void)
 {
-	debug_printf (VERBOSE_INFO,"Closing SDL2 video driver");
-	scrsdl_inicializado.v=0;
-  scrsdl_destruye_ventana(); //Nota: Cuando se cambia de resolucion en maquina (por ejemplo de spectrum a prism),
-  //se llama a _end y luego se vuelve a inicializar el driver
-  //en el caso de video sdl, si audio tambien es sdl, al llamar a commonsdl_end no se finaliza driver sdl, dado que esta usando el audio
-  //Si se iniciase con otro driver de audio, si se finalizaria el driver
-  //Por tanto, hay que destruir explicitamente la ventana en caso de cambios de resolucion y con driver audio sdl
-  //Parece que esto solo afecta a windows. En mac y linux, al reinicializar el driver de video, desaparece la ventana anterior
-	commonsdl_end();
+    debug_printf (VERBOSE_INFO,"Closing SDL2 video driver");
+    scrsdl_inicializado.v=0;
+    scrsdl_destruye_ventana(); //Nota: Cuando se cambia de resolucion en maquina (por ejemplo de spectrum a prism),
+    //se llama a _end y luego se vuelve a inicializar el driver
+    //en el caso de video sdl, si audio tambien es sdl, al llamar a commonsdl_end no se finaliza driver sdl, dado que esta usando el audio
+    //Si se iniciase con otro driver de audio, si se finalizaria el driver
+    //Por tanto, hay que destruir explicitamente la ventana en caso de cambios de resolucion y con driver audio sdl
+    //Parece que esto solo afecta a windows. En mac y linux, al reinicializar el driver de video, desaparece la ventana anterior
+    commonsdl_end();
 }
 
 z80_byte scrsdl_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-        //Para evitar warnings al compilar de "unused parameter"
-        puerto_h=puerto_l;
-        puerto_l=puerto_h;
+    //Para evitar warnings al compilar de "unused parameter"
+    puerto_h=puerto_l;
+    puerto_l=puerto_h;
 
 	return 255;
 }

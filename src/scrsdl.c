@@ -117,48 +117,48 @@ int scrsdl_crea_ventana(void)
 
 void scrsdl_putpixel_final_rgb(int x,int y,unsigned int color_rgb)
 {
-        Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
+    Uint8 *p = (Uint8 *)sdl_screen->pixels + y * sdl_screen->pitch + x * 4;
 
 
-        //escribir de golpe los 32 bits.
-                
-        //agregar alpha
-        color_rgb |=0xFF000000;
-        //y escribir
+    //escribir de golpe los 32 bits.
+            
+    //agregar alpha
+    color_rgb |=0xFF000000;
+    //y escribir
 
-        *(Uint32 *)p = color_rgb;
+    *(Uint32 *)p = color_rgb;
 }
 
 
 void scrsdl_putpixel_final(int x,int y,unsigned int color)
 {
 
-        unsigned int color32=spectrum_colortable[color];
+    unsigned int color32=spectrum_colortable[color];
 
-        //y escribir
-        scrsdl_putpixel_final_rgb(x,y,color32);                
+    //y escribir
+    scrsdl_putpixel_final_rgb(x,y,color32);                
 
 
 }
 
 void scrsdl_putpixel(int x,int y,unsigned int color)
 {
-        if (menu_overlay_activo==0) {
-                //Putpixel con menu cerrado
-                scrsdl_putpixel_final(x,y,color);
-                return;
-        }          
+    if (menu_overlay_activo==0) {
+        //Putpixel con menu cerrado
+        scrsdl_putpixel_final(x,y,color);
+        return;
+    }          
 
-        //Metemos pixel en layer adecuado
-	buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
+    //Metemos pixel en layer adecuado
+    buffer_layer_machine[y*ancho_layer_menu_machine+x]=color;        
 
-        //Putpixel haciendo mix  
-        screen_putpixel_mix_layers(x,y);   
+    //Putpixel haciendo mix  
+    screen_putpixel_mix_layers(x,y);   
 }
 
 void scrsdl_putchar_zx8081(int x,int y, z80_byte caracter)
 {
-        scr_putchar_zx8081_comun(x,y, caracter);
+    scr_putchar_zx8081_comun(x,y, caracter);
 }
 
 void scrsdl_debug_registers(void)
@@ -172,9 +172,9 @@ void scrsdl_debug_registers(void)
 
 void scrsdl_messages_debug(char *s)
 {
-        printf ("%s\n",s);
-        //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
-        fflush(stdout);
+    printf ("%s\n",s);
+    //flush de salida standard. normalmente no hace falta esto, pero si ha finalizado el driver curses, deja la salida que no hace flush
+    fflush(stdout);
 
 }
 
@@ -182,35 +182,35 @@ void scrsdl_messages_debug(char *s)
 void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
-        z80_bit inverse;
+    z80_bit inverse;
 
-        inverse.v=0;
+    inverse.v=0;
 
-        //128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-        scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
+    scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,menu_gui_zoom);
 
 }
 
 void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
 
-        int yorigen;
+    int yorigen;
 
-	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
+    yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en()/8;
 
-        //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
-        y +=yorigen;
-        z80_bit inverse;
+    //scr_putchar_menu(x,yorigen+y,caracter,tinta,papel);
+    y +=yorigen;
+    z80_bit inverse;
 
-        inverse.v=0;
+    inverse.v=0;
 
-        //128 y 129 corresponden a franja de menu y a letra enye minuscula
-        if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    //128 y 129 corresponden a franja de menu y a letra enye minuscula
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
 
-        //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
-        scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
+    //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
+    scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
 
 
@@ -218,8 +218,8 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 void scrsdl_set_fullscreen(void)
 {
 
-	ventana_fullscreen=1;
-	scrsdl_crea_ventana();
+    ventana_fullscreen=1;
+    scrsdl_crea_ventana();
 
 }
 
@@ -227,8 +227,8 @@ void scrsdl_set_fullscreen(void)
 void scrsdl_reset_fullscreen(void)
 {
 
-	ventana_fullscreen=0;
-	scrsdl_crea_ventana();
+    ventana_fullscreen=0;
+    scrsdl_crea_ventana();
 
 }
 
@@ -236,32 +236,32 @@ void scrsdl_reset_fullscreen(void)
 void scrsdl_refresca_pantalla_zx81(void)
 {
 
-        scr_refresca_pantalla_y_border_zx8081();
+    scr_refresca_pantalla_y_border_zx8081();
 
 }
 
 
 void scrsdl_refresca_border(void)
 {
-        scr_refresca_border();
+    scr_refresca_border();
 
 }
 
 void scrsdl_refresca_pantalla_solo_driver(void)
 {
-        int ancho=screen_get_window_size_width_zoom_border_en();
-        ancho +=screen_get_ext_desktop_width_zoom();
+    int ancho=screen_get_window_size_width_zoom_border_en();
+    ancho +=screen_get_ext_desktop_width_zoom();
 
-        int alto=screen_get_window_size_height_zoom_border_en();
-        alto +=screen_get_ext_desktop_height_zoom();        
+    int alto=screen_get_window_size_height_zoom_border_en();
+    alto +=screen_get_ext_desktop_height_zoom();        
 
-        SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
+    SDL_UpdateRect(sdl_screen, 0, 0, ancho, alto );
 
 
-        /* UnLock the screen for direct access to the pixels */
-        if ( SDL_MUSTLOCK(sdl_screen) ) {
-                SDL_UnlockSurface(sdl_screen);
-        }
+    /* UnLock the screen for direct access to the pixels */
+    if ( SDL_MUSTLOCK(sdl_screen) ) {
+            SDL_UnlockSurface(sdl_screen);
+    }
 
 }
 
@@ -270,47 +270,47 @@ void scrsdl_refresca_pantalla_solo_driver(void)
 void scrsdl_refresca_pantalla(void)
 {
 
-        /* Lock the screen for direct access to the pixels */
-	//Aunque en mis pruebas esta funcion dice que la pantalla no necesita hacer lock
-        if ( SDL_MUSTLOCK(sdl_screen) ) {
-		//printf ("locking screen\n");
-                if ( SDL_LockSurface(sdl_screen) < 0 ) {
-                        cpu_panic ("scr sdl can't lock screen");
-                }
+    /* Lock the screen for direct access to the pixels */
+    //Aunque en mis pruebas esta funcion dice que la pantalla no necesita hacer lock
+    if ( SDL_MUSTLOCK(sdl_screen) ) {
+    //printf ("locking screen\n");
+        if ( SDL_LockSurface(sdl_screen) < 0 ) {
+                cpu_panic ("scr sdl can't lock screen");
         }
+    }
 
-        if (sem_screen_refresh_reallocate_layers) {
-                //printf ("--Screen layers are being reallocated. return\n");
-                //debug_exec_show_backtrace();
-                return;
-        }
+    if (sem_screen_refresh_reallocate_layers) {
+            //printf ("--Screen layers are being reallocated. return\n");
+            //debug_exec_show_backtrace();
+            return;
+    }
 
-        sem_screen_refresh_reallocate_layers=1;
-
-
-
-        if (MACHINE_IS_ZX8081) {
+    sem_screen_refresh_reallocate_layers=1;
 
 
-                //scr_refresca_pantalla_rainbow_comun();
-                scrsdl_refresca_pantalla_zx81();
-        }
 
-        else if (MACHINE_IS_PRISM) {
-                screen_prism_refresca_pantalla();
-        }
-
-        else if (MACHINE_IS_TBBLUE) {
-                screen_tbblue_refresca_pantalla();
-        }        
+    if (MACHINE_IS_ZX8081) {
 
 
-        else if (MACHINE_IS_SPECTRUM) {
+            //scr_refresca_pantalla_rainbow_comun();
+            scrsdl_refresca_pantalla_zx81();
+    }
 
-		if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
+    else if (MACHINE_IS_PRISM) {
+            screen_prism_refresca_pantalla();
+    }
+
+    else if (MACHINE_IS_TBBLUE) {
+            screen_tbblue_refresca_pantalla();
+    }        
 
 
-		  else { //Spectrum no TSConf
+    else if (MACHINE_IS_SPECTRUM) {
+
+        if (MACHINE_IS_TSCONF)	screen_tsconf_refresca_pantalla();
+
+
+        else { //Spectrum no TSConf
 
 
                 //modo clasico. sin rainbow
@@ -332,91 +332,91 @@ void scrsdl_refresca_pantalla(void)
                 //modo rainbow - real video
                         scr_refresca_pantalla_rainbow_comun();
                 }
-		}
         }
+    }
 
-        else if (MACHINE_IS_Z88) {
-                screen_z88_refresca_pantalla();
-        }
-
-
-        else if (MACHINE_IS_ACE) {
-                scr_refresca_pantalla_y_border_ace();
-        }
-
-	else if (MACHINE_IS_CPC) {
-                scr_refresca_pantalla_y_border_cpc();
-        }
-
-        else if (MACHINE_IS_SAM) {
-                scr_refresca_pantalla_y_border_sam();
-        }
-
-        else if (MACHINE_IS_QL) {
-                scr_refresca_pantalla_y_border_ql();
-        }
-
-        else if (MACHINE_IS_MK14) {
-                scr_refresca_pantalla_y_border_mk14();
-        }
-
-	else if (MACHINE_IS_MSX) {
-		scr_refresca_pantalla_y_border_msx();
-	}    
-
-	else if (MACHINE_IS_SVI) {
-		scr_refresca_pantalla_y_border_svi();
-	}    	        
-
-	else if (MACHINE_IS_COLECO) {
-		scr_refresca_pantalla_y_border_coleco();
-	}    
-
-	else if (MACHINE_IS_SG1000) {
-		scr_refresca_pantalla_y_border_sg1000();
-	}    
-
-	else if (MACHINE_IS_SMS) {
-		scr_refresca_pantalla_y_border_sms();
-	}       
+    else if (MACHINE_IS_Z88) {
+            screen_z88_refresca_pantalla();
+    }
 
 
-        //printf ("%d\n",spectrum_colortable[1]);
+    else if (MACHINE_IS_ACE) {
+            scr_refresca_pantalla_y_border_ace();
+    }
 
-	screen_render_menu_overlay_if_active();
+    else if (MACHINE_IS_CPC) {
+            scr_refresca_pantalla_y_border_cpc();
+    }
 
-        //Escribir footer
-        draw_middle_footer();
+    else if (MACHINE_IS_SAM) {
+            scr_refresca_pantalla_y_border_sam();
+    }
 
-	scrsdl_refresca_pantalla_solo_driver();
+    else if (MACHINE_IS_QL) {
+            scr_refresca_pantalla_y_border_ql();
+    }
+
+    else if (MACHINE_IS_MK14) {
+            scr_refresca_pantalla_y_border_mk14();
+    }
+
+    else if (MACHINE_IS_MSX) {
+        scr_refresca_pantalla_y_border_msx();
+    }    
+
+    else if (MACHINE_IS_SVI) {
+        scr_refresca_pantalla_y_border_svi();
+    }    	        
+
+    else if (MACHINE_IS_COLECO) {
+        scr_refresca_pantalla_y_border_coleco();
+    }    
+
+    else if (MACHINE_IS_SG1000) {
+        scr_refresca_pantalla_y_border_sg1000();
+    }    
+
+    else if (MACHINE_IS_SMS) {
+        scr_refresca_pantalla_y_border_sms();
+    }       
 
 
-        sem_screen_refresh_reallocate_layers=0;        
+    //printf ("%d\n",spectrum_colortable[1]);
+
+    screen_render_menu_overlay_if_active();
+
+    //Escribir footer
+    draw_middle_footer();
+
+    scrsdl_refresca_pantalla_solo_driver();
+
+
+    sem_screen_refresh_reallocate_layers=0;        
 
 }
 
 
 void scrsdl_end(void)
 {
-	debug_printf (VERBOSE_INFO,"Closing SDL video driver");
+    debug_printf (VERBOSE_INFO,"Closing SDL video driver");
 
-        //Poner soporte de joystick a null si no teniamos soporte nativo
-        if (!realjoystick_is_linux_native()) {
-	        realjoystick_init=realjoystick_null_init;
-	        realjoystick_main=realjoystick_null_main;
-        }
+    //Poner soporte de joystick a null si no teniamos soporte nativo
+    if (!realjoystick_is_linux_native()) {
+        realjoystick_init=realjoystick_null_init;
+        realjoystick_main=realjoystick_null_main;
+    }
 
-	scrsdl_inicializado.v=0;
-	commonsdl_end();
-        //printf ("After close sdl driver\n");
+    scrsdl_inicializado.v=0;
+    commonsdl_end();
+    //printf ("After close sdl driver\n");
 }
 
 z80_byte scrsdl_lee_puerto(z80_byte puerto_h,z80_byte puerto_l)
 {
 
-        //Para evitar warnings al compilar de "unused parameter"
-        puerto_h=puerto_l;
-        puerto_l=puerto_h;
+    //Para evitar warnings al compilar de "unused parameter"
+    puerto_h=puerto_l;
+    puerto_l=puerto_h;
 
 	return 255;
 }
