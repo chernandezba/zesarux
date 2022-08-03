@@ -25621,11 +25621,14 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
     text_buffer[0]=0;
 
 	//margen suficiente para que quepa una linea ...
-	char buf_linea[64];
+	char buf_linea[100];
 
     //Nombre maquina
     sprintf(buf_linea,"Machine: %s\n",get_machine_name(current_machine_type));
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+    sprintf(buf_linea,"Family: %s\n",debug_machine_info_family(current_machine_type));
+    util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);    
 
     //CPU
     if (CPU_IS_MOTOROLA) {

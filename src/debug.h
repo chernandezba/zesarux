@@ -512,6 +512,9 @@ extern int remote_load_source_code(char *archivo);
 extern int debug_load_source_code_skip_columns;
 extern void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto);
 
+extern char *debug_machine_info_family_get_family(enum machine_families_list family_id);
+extern char *debug_machine_info_family(int machine_id);
+
 
 #ifdef TIMESENSORS_ENABLED
  

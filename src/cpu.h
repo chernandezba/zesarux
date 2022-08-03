@@ -568,6 +568,40 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_HAS_VDP_9918A (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS)
 
 
+//Familias de maquinas
+enum machine_families_list
+{
+    MACHINE_FAMILY_SPECTRUM,
+    MACHINE_FAMILY_ZX80,
+    MACHINE_FAMILY_ZX81,
+    MACHINE_FAMILY_COLECO,
+    MACHINE_FAMILY_SG1000,
+    MACHINE_FAMILY_SVI,
+    MACHINE_FAMILY_SMS,
+    MACHINE_FAMILY_MSX,
+    MACHINE_FAMILY_ACE,
+    MACHINE_FAMILY_Z88,
+    MACHINE_FAMILY_CPC,
+    MACHINE_FAMILY_QL,
+    MACHINE_FAMILY_MK14,
+
+    MACHINE_FAMILY_EOF  //Usado para indicar final
+};
+
+#define MAX_FAMILY_NAME_LENGTH 30
+struct s_machine_family_names
+{
+    enum machine_families_list family_id;
+    char family_name[MAX_FAMILY_NAME_LENGTH];
+};
+
+struct s_machine_family
+{
+    z80_byte machine_id;
+    enum machine_families_list family_id;
+};
+
+
 extern int machine_emulate_memory_refresh;
 extern int machine_emulate_memory_refresh_counter;
 

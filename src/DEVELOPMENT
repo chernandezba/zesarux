@@ -925,6 +925,7 @@ index 363164e..23697c6 100644
          }            
      }
 
+# Agregar en debug.c, en struct s_machine_family machine_family_list[]={ , si no es una maquina de la familia Spectrum
 
 
 # Agregar en scripts carpeta tests 

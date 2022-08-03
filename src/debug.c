@@ -8338,6 +8338,89 @@ z80_byte far_peek_byte(int dir)
     return peek_byte_z80_moto(dir);
 }
 
+
+
+struct s_machine_family_names family_names[]={
+    {MACHINE_FAMILY_SPECTRUM,"Spectrum"}, //Este siempre debe ser el primero
+    {MACHINE_FAMILY_ZX80,"ZX80"},
+    {MACHINE_FAMILY_ZX81,"ZX81"},
+    {MACHINE_FAMILY_COLECO,"ColecoVision"},
+    {MACHINE_FAMILY_SG1000,"SG1000"},
+    {MACHINE_FAMILY_SVI,"Spectravideo"},
+    {MACHINE_FAMILY_SMS,"Master System"},
+    {MACHINE_FAMILY_MSX,"MSX"},
+    {MACHINE_FAMILY_ACE,"Jupiter Ace"},
+    {MACHINE_FAMILY_Z88,"Z88"},
+    {MACHINE_FAMILY_CPC,"CPC"},
+    {MACHINE_FAMILY_QL,"QL"},
+    {MACHINE_FAMILY_MK14,"MK14"},
+
+    {MACHINE_FAMILY_EOF,""}
+};
+
+struct s_machine_family machine_family_list[]={
+    {MACHINE_ID_ZX80,MACHINE_FAMILY_ZX80},
+    {MACHINE_ID_MICRODIGITAL_TK80,MACHINE_FAMILY_ZX80},
+    {MACHINE_ID_MICRODIGITAL_TK82,MACHINE_FAMILY_ZX80},
+
+    {MACHINE_ID_ZX81,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_TIMEX_TS1000,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_TIMEX_TS1500,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_MICRODIGITAL_TK82C,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_MICRODIGITAL_TK83,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_MICRODIGITAL_TK85,MACHINE_FAMILY_ZX81},
+    {MACHINE_ID_COLECO,MACHINE_FAMILY_COLECO},
+    {MACHINE_ID_SG1000,MACHINE_FAMILY_SG1000},
+    {MACHINE_ID_SVI_318,MACHINE_FAMILY_SVI},
+    {MACHINE_ID_SVI_328,MACHINE_FAMILY_SVI},
+    {MACHINE_ID_SMS,MACHINE_FAMILY_SMS},
+    {MACHINE_ID_MSX1,MACHINE_FAMILY_MSX},
+    {MACHINE_ID_ACE,MACHINE_FAMILY_ACE},
+    {MACHINE_ID_Z88,MACHINE_FAMILY_Z88},
+    {MACHINE_ID_CPC_464,MACHINE_FAMILY_CPC},
+    {MACHINE_ID_CPC_4128,MACHINE_FAMILY_CPC},
+    {MACHINE_ID_QL_STANDARD,MACHINE_FAMILY_QL},
+    {MACHINE_ID_MK14_STANDARD,MACHINE_FAMILY_MK14},
+
+    {0,MACHINE_FAMILY_EOF}
+
+};
+
+
+//Buscar el texto del nombre de familia. Si no encontrado, retorna siempre "Spectrum"
+char *debug_machine_info_family_get_family(enum machine_families_list family_id)
+{
+    int i=0;
+
+    while (family_names[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (family_names[i].family_id==family_id) {
+            return family_names[i].family_name;
+        }
+        i++;
+    }
+
+    //Por defecto Spectrum
+    return family_names[0].family_name;
+}
+
+
+//Retorna en familia nombre de maquina
+char *debug_machine_info_family(int machine_id)
+{
+    int i=0;
+
+    while (machine_family_list[i].family_id!=MACHINE_FAMILY_EOF) {
+        if (machine_family_list[i].machine_id==machine_id) {
+            return debug_machine_info_family_get_family(machine_family_list[i].family_id);
+        }
+        i++;
+    }
+
+    //Por defecto
+    return debug_machine_info_family_get_family(MACHINE_FAMILY_SPECTRUM);
+}
+
+
 //Rutinas de timesensors. Agrega un define TIMESENSORS_ENABLED en compileoptions.h para activarlo y lanza make
 #ifdef TIMESENSORS_ENABLED
 
