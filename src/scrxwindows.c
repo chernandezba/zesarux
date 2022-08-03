@@ -626,7 +626,7 @@ void scrxwindows_resize(int width,int height)
 	//printf ("resize %d %d\n",width,height);
 	scr_reallocate_layers_menu(fullscreen_width,fullscreen_height);	
 
-
+        menu_draw_ext_desktop(); 
 		return;
 
 	}

@@ -1332,6 +1332,10 @@ void scrsdl_resize(int width,int height)
 	scrsdl_debe_redimensionar=1;
 	scrsdl_crea_ventana();
 
+    //printf("antes menu_draw_ext_desktop\n");
+    menu_draw_ext_desktop();  
+    //printf("despues menu_draw_ext_desktop\n");    
+
 
 }
 
