@@ -194,7 +194,3 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 etc
 
 -Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
-
-
--en los resizes de sdl, sdl2, xwindows, al dibujar zx desktop luego tiene que refrescar ventanas, si conviene
-(o vaciar las caches de menu...)
