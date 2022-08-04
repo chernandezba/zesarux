@@ -5964,7 +5964,7 @@ void menu_draw_ext_desktop(void)
 
     int suma;
     
-    //En el caso de barras fijas, offset es 0
+    //En el caso de barras fijas, offset es 0 
     if (menu_ext_desktop_fill==1) menu_ext_desktop_fill_rainbow_counter=0;
 
     for (y=yinicio;y<yinicio+alto;y++) {
