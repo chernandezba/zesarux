@@ -630,6 +630,8 @@ void screen_show_panic_screen(int xmax, int ymax)
 	}
 }
 
+//Funcion para mostrar traza de llamadas, muy util para debugar
+//Compilar sin optimizaciones, porque si no, hay llamadas que no se ven en la traza
 //Compile with -g -rdynamic to show function names
 //In Mac, with -g
 //These functions on Mac OS X are available starting from Mac OS 10.5
