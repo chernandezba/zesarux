@@ -2300,7 +2300,7 @@ void scr_init_layers_menu(void)
 
   alto=screen_get_window_size_height_zoom_border_en();
 
-    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height*zoom_x;
+    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height*zoom_y;
 
 	scr_reallocate_layers_menu(ancho,alto);
 
