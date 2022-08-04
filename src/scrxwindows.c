@@ -672,9 +672,7 @@ void scrxwindows_resize(int width,int height)
 
     scr_set_pending_redraw_desktop_windows(); 
 
-//if esta permitido mostrarlas...
-//if (overlay_visible_when_menu_closed) {  ?????
-//zxvision_redraw_all_windows();
+
 }
 
 
