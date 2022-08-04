@@ -15321,11 +15321,14 @@ void scr_driver_redraw_desktop_windows(void)
 
     menu_draw_ext_desktop();
 
-    //TODO: Redraw ventanas solo si se permite overlay con menú cerrado. O bien si se está con menú abierto.
-//if esta permitido mostrarlas...
-//if (overlay_visible_when_menu_closed) {  ?????
-//zxvision_redraw_all_windows();    
-    zxvision_redraw_all_windows();
+    //Redraw ventanas solo menu abierto o si se permite overlay con menú cerrado
+    if (menu_abierto || always_force_overlay_visible_when_menu_closed) {   
+        //printf("redraw ventanas\n"); 
+        zxvision_redraw_all_windows();
+    }
+    /*else {
+        printf("no redraw ventanas\n");
+    }*/
 }
 
 void scr_set_pending_redraw_desktop_windows(void)
