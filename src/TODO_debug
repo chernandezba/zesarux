@@ -12,6 +12,8 @@ Menu debugger:
 
 -posicion electron no va bien en: zx81, tsconf. Revisar otras maquinas. En 48k funciona bien
 
+--En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan 
+
 -poder indicar mas de una accion en misma breakpoint condition, ejemplo
 condition: pc=4000h
 

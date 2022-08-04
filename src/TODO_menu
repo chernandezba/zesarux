@@ -26,6 +26,13 @@
 
 --- ZX Vision
 
+
+-Quizá un modo básico con muchas opciones del menú no visibles 
+
+-Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
+
+-Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
+
 -Nuevo concepto para ventanas:
 Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
 Ideal para help keyboard por ejemplo

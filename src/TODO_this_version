@@ -13,14 +13,11 @@ Para esta version:
 -reordenar secciones en experthelp, quiza por settings igual de menu
 
 
-
-
 -Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
 
 -Drag drop con menú abierto en sdl2 no parece funcionar bien
-
 
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
@@ -85,12 +82,10 @@ Sector -407021264
 
 -convert a ddh: 
 *linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
-*en windows el conteo de microsegundos se ve a veces valor negativo en hilow convert. quiza es porque es 64 bits?
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
 -revisar que sigan funcionando bien los print de traps a la rom y los autodetect char de segundas rutinas
-
 
 -al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
 
@@ -116,11 +111,8 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
 -si al iniciar carga con rom no existe, pantalla se ve mal
 Error:    Unable to open rom file tc2048.rom
-Do not create default icons as there are already at least one created
+ok corregido?
 
-
-
--En debug cpu que diga tiempos de opcodes y/o en que t estado se ejecutan 
 
 -Probar debug cpu paws
 
@@ -135,35 +127,18 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
 
 
-
--Quizá un modo básico con muchas opciones del menú no visibles 
-
 -descargas imagenes oficiales mmc de tbblue ahora vienen por https. En Mac no hay soporte ssl. Por tanto solo habria la opcion de usar el tbblue.mmc incluido
 
 -Splash messages en overlay no deberían borrar las ventanas cuando opción de background windows even with menú closed 
 
--Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
-
-
-
--completar info maquina al pulsar icono en my machine
-ok * ram ok en todas maquinas
-ok *indicar "familia de maquinas", o sea:
-tk80, zx80... : tipo ZX80
-ts1000, zx81... : tipo ZX81
-
 
 -Funciones de utils no deberían involucrar nada del menú
-
 
 -al pulsar un icono, si se hace desde una ventana, el icono se mantiene pulsado como es de esperar
 Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y apenas se aprecia el efecto de pulsado
 
-
 -quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
 usar la que si considera movimiento raton
-
-
 
 -formato hobeta: mostrar info en fileutils
 
@@ -189,8 +164,6 @@ for (i=0; i<=14; CheckSum = CheckSum + (header[i] * 257) + i, i++);
 Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Los archivos binarios (con la extensión .$C) en este formato se pueden iniciar directamente desde dispositivos FAT (como HDD o tarjeta SD) mediante el shell de Evo Reset Service integrado.
 
 
--agregar screenshot con zx desktop e iconos
+-agregar screenshot a repositorio con zx desktop e iconos 
 
-etc
-
--Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
+-letras de texto iconos se ven mal si zoom_x !=zoom_y
