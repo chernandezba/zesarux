@@ -15322,6 +15322,11 @@ void scr_driver_redraw_desktop_windows(void)
     menu_draw_ext_desktop();
 
     //Redraw ventanas solo menu abierto o si se permite overlay con menú cerrado
+    //usamos variable overlay_visible_when_menu_closed en vez de always_force_overlay_visible_when_menu_closed
+    //porque esta nos dice si con el menu cerrado se veran las ventanas, es casi igual que 
+    //always_force_overlay_visible_when_menu_closed pero esta ultima es el setting y siempre dice si o no
+    //mientras que la que usamos por ejemplo permite que al iniciar ZEsarUX, veamos el logo de splash, y aun
+    //no se ha activado overlay_visible_when_menu_closed
     if (menu_abierto || overlay_visible_when_menu_closed) {
         //printf("redraw ventanas\n"); 
         zxvision_redraw_all_windows();
