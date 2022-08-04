@@ -626,7 +626,7 @@ void scrxwindows_resize(int width,int height)
         //printf ("resize %d %d\n",width,height);
         scr_reallocate_layers_menu(fullscreen_width,fullscreen_height);	
 
-        menu_draw_ext_desktop(); 
+        scr_set_pending_redraw_desktop_windows();
         return;
 
     }
@@ -670,7 +670,7 @@ void scrxwindows_resize(int width,int height)
 	//printf ("resize %d %d\n",width,height);
 	scr_reallocate_layers_menu(width,height);
 
-    menu_draw_ext_desktop();  
+    scr_set_pending_redraw_desktop_windows(); 
 
 //if esta permitido mostrarlas...
 //if (overlay_visible_when_menu_closed) {  ?????
@@ -873,7 +873,7 @@ void scrxwindows_refresca_pantalla(void)
 
         sem_screen_refresh_reallocate_layers=1;
 
-
+    scr_driver_redraw_desktop_windows();
 
 	if (MACHINE_IS_ZX8081) {
 

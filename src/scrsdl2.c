@@ -128,7 +128,7 @@ int scrsdl_crea_ventana(void)
 
     menu_init_footer();
 
-    menu_draw_ext_desktop();  
+    scr_set_pending_redraw_desktop_windows();
 
 
     return 0;
@@ -306,6 +306,7 @@ void scrsdl_refresca_pantalla(void)
 
         sem_screen_refresh_reallocate_layers=1;
 
+        scr_driver_redraw_desktop_windows();
 
         if (MACHINE_IS_ZX8081) {
 

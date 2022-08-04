@@ -429,7 +429,6 @@ int pendingresize_w,pendingresize_h;
 
 int pendiente_z88_draw_lower=0;
 
-int pendiente_draw_zxdesktop=0;
 
 /*
  ------------------------------------------------------
@@ -873,10 +872,6 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
 	[normalWindow redimensionaVentana:pendingresize_w height:pendingresize_h];
 	pendingresize=0;      
-
-    //printf("antes menu_draw_ext_desktop\n");
-    //menu_draw_ext_desktop();  
-    //printf("despues menu_draw_ext_desktop\n");
 
 
 }
@@ -1416,7 +1411,7 @@ int cocoa_raton_oculto=0;
 	//indique cuando hay que llamar a screen_z88_draw_lower_screen
 	pendiente_z88_draw_lower=1;
 
-    pendiente_draw_zxdesktop=1;
+    scr_set_pending_redraw_desktop_windows();
 
 	[self createTexture];
 
@@ -2768,12 +2763,6 @@ void scrcocoa_refresca_pantalla(void)
 		menu_init_footer();
 	}
 
-    if (pendiente_draw_zxdesktop) {
-        //printf("Redibujando zx desktop de pendiente_draw_zxdesktop\n");
-        pendiente_draw_zxdesktop=0;
-        menu_draw_ext_desktop();
-        zxvision_redraw_all_windows();
-    }
 
     if (pendingresize) return;
 
@@ -2791,7 +2780,7 @@ void scrcocoa_refresca_pantalla(void)
 
     sem_screen_refresh_reallocate_layers=1;
 
-
+    scr_driver_redraw_desktop_windows();
 
     if (MACHINE_IS_ZX8081) {
         //scr_refresca_pantalla_rainbow_comun();

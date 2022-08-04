@@ -109,6 +109,8 @@ z80_bit screen_reduce_075_antialias={1};
 int screen_reduce_offset_x=0;
 int screen_reduce_offset_y=0;
 
+//Usado por los drivers de video cuando hay pendiente un redibujado de ZX Desktop y las ventanas
+int scr_pendiente_redraw_desktop_windows=0;
 
 
 z80_bit ocr_settings_not_look_23606={0};
@@ -15306,3 +15308,24 @@ DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the b
 
 }
 
+/*
+Funcion llamada desde los drivers de video generalmente despues de redimensionar la ventana de ZEsarUX,
+que requiere redibujar el zx desktop y las ventanas, que son cosas que no se redibujan siempre
+*/
+void scr_driver_redraw_desktop_windows(void)
+{
+
+    if (!scr_pendiente_redraw_desktop_windows) return;
+
+    scr_pendiente_redraw_desktop_windows=0;
+
+    menu_draw_ext_desktop();
+
+    //TODO: Redraw ventanas solo si se permite overlay con menú cerrado. O bien si se está con menú abierto.
+    zxvision_redraw_all_windows();
+}
+
+void scr_set_pending_redraw_desktop_windows(void)
+{
+    scr_pendiente_redraw_desktop_windows=1;
+}

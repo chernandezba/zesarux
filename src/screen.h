@@ -985,7 +985,8 @@ extern void screen_render_menu_overlay_if_active(void);
 
 #define SCREEN_LAYER_TRANSPARENT_MENU 65535
 
-			
+extern void scr_driver_redraw_desktop_windows(void);
+extern void scr_set_pending_redraw_desktop_windows(void);		
 
 
 #endif
