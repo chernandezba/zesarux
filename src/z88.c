@@ -369,6 +369,14 @@ void init_z88_memory_slots(void)
 
 }
 
+void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
+{
+
+                                //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+                                z88_eprom_or_flash_must_flush_to_disk=1;
+
+}
+
 //Borrar bloque en la tarjeta flash
 void z88_flash_erase_block(z80_byte slot,z80_long_int offset)
 {
@@ -408,7 +416,7 @@ void z88_flash_erase_block(z80_byte slot,z80_long_int offset)
 				}
 
                                 //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-                                z88_eprom_or_flash_must_flush_to_disk=1;
+                                z88_set_z88_eprom_or_flash_must_flush_to_disk();
 
 }
 
@@ -450,7 +458,7 @@ void z88_procesar_flash_command(z80_byte valor,z80_byte slot,z80_long_int offset
                                 z88_puntero_memoria[offset]=valor;
 
                                 //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-                                z88_eprom_or_flash_must_flush_to_disk=1;
+                                z88_set_z88_eprom_or_flash_must_flush_to_disk();
 
 		                z88_memory_slots[slot].executing_command_number = 0x70;
           } 
@@ -603,7 +611,7 @@ z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int
 						//slot 3 y eprom programming. dejamos escritura
 
 						//marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-						z88_eprom_or_flash_must_flush_to_disk=1;
+						z88_set_z88_eprom_or_flash_must_flush_to_disk();
 					break;
 
 					case 3:
@@ -611,7 +619,7 @@ z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int
 						if (z88_flash_forced_writing_mode.v==1) {
 							//escribimos directamente, sin tener que pasar por modo programacion
 							z88_puntero_memoria[offset]=valor;
-							z88_eprom_or_flash_must_flush_to_disk=1;
+							z88_set_z88_eprom_or_flash_must_flush_to_disk();
 							return 0;
 						}
 
@@ -649,7 +657,7 @@ z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int
                                                 	//slot 3 y eprom programming. dejamos escritura
 
 	                                                //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-        	                                        z88_eprom_or_flash_must_flush_to_disk=1;
+        	                                        z88_set_z88_eprom_or_flash_must_flush_to_disk();
 	
 						}
 					break;
@@ -1984,7 +1992,7 @@ void z88_erase_eprom_flash(void)
         }
 
 	//decimos que EPROM se debe escribir a disco
-	z88_eprom_or_flash_must_flush_to_disk=1;
+	z88_set_z88_eprom_or_flash_must_flush_to_disk();
 
 	z88_close_flap();
 }
