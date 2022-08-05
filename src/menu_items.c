@@ -27728,15 +27728,15 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
         menu_item item_seleccionado;
         int retorno_menu;
         //char string_slot_name_shown[20];
-	char string_slot_eprom_name_shown[20],string_slot_flash_intel_name_shown[20];
+	char string_slot_eprom_name_shown[30],string_slot_flash_intel_name_shown[30];
 	char string_memory_type[20];
 
         do {
 
 		//menu_tape_settings_trunc_name(menu_insert_slot_rom_name,string_slot_name_shown,20);
 
-		menu_tape_settings_trunc_name(menu_insert_slot_eprom_name,string_slot_eprom_name_shown,20);
-		menu_tape_settings_trunc_name(menu_insert_slot_flash_intel_name,string_slot_flash_intel_name_shown,20);
+		menu_tape_settings_trunc_name(menu_insert_slot_eprom_name,string_slot_eprom_name_shown,30);
+		menu_tape_settings_trunc_name(menu_insert_slot_flash_intel_name,string_slot_flash_intel_name_shown,30);
 
 
                 //int slot;
@@ -28170,7 +28170,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 			int eprom_flash_valida=0;
 			int tipo_tarjeta=-1;
-			char *tipos_tarjeta[]={"APP","FIL","MIX"};
+			char *tipos_tarjeta[]={"Applications","Files","Mixed"};
 			int type;
 
 			//Si no hay slot insertado
@@ -28183,8 +28183,8 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 				//Si es flash/eprom en slot de escritura(3), indicar a que archivo hace referencia
 				if (slot==3 && (type==2 || type==3 || type==4) ) {
-					char string_writable_card_shown[18];
-					menu_tape_settings_trunc_name(z88_memory_slots[slot].eprom_flash_nombre_archivo,string_writable_card_shown,18);
+					char string_writable_card_shown[30];
+					menu_tape_settings_trunc_name(z88_memory_slots[slot].eprom_flash_nombre_archivo,string_writable_card_shown,30);
 					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"%s: %s",z88_memory_types[type],string_writable_card_shown);
 				}
 				else {
@@ -28213,7 +28213,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 				int size=(z88_memory_slots[slot].size+1)/1024;
 
 				//Si es EPROM o Flash, decir espacio libre, detectando si hay una tarjeta con filesystem
-				char string_info_tarjeta[40];
+				char string_info_tarjeta[100];
 				if (type==2 || type==3 || type==4) {
 					z80_long_int total_eprom,used_eprom, free_eprom;
 					tipo_tarjeta=z88_return_card_type(slot);
@@ -28223,8 +28223,8 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 						//No buscar filesystem en caso de tarjeta hibrida
 						if (type==4) {
-							sprintf (string_info_tarjeta," (%s) %d kb Free Unkn",tipos_tarjeta[tipo_tarjeta],size);
-                                                }
+							sprintf (string_info_tarjeta,"(%s) %d kb Free Unknown",tipos_tarjeta[tipo_tarjeta],size);
+                        }
 
 						else {
 
@@ -28232,11 +28232,11 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 							//Controlar si eprom corrupta, tamanyos logicos
 							if (free_eprom>1024*1024) {
-								sprintf (string_info_tarjeta," (%s) %d kb Free Unkn",tipos_tarjeta[tipo_tarjeta],size);
+								sprintf (string_info_tarjeta,"(%s) %d kb Free Unknown",tipos_tarjeta[tipo_tarjeta],size);
 							}
 
 							else {
-								sprintf (string_info_tarjeta," (%s) %d K Free %d K",tipos_tarjeta[tipo_tarjeta],size,free_eprom/1024);
+								sprintf (string_info_tarjeta,"(%s) %d K Free %d K",tipos_tarjeta[tipo_tarjeta],size,free_eprom/1024);
 								eprom_flash_valida=1;
 							}
 						}
@@ -28245,23 +28245,28 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 					else {
 						//0 o -1
 						if (tipo_tarjeta==0) {
-							sprintf (string_info_tarjeta," (%s) %d kb",tipos_tarjeta[tipo_tarjeta],size);
+							sprintf (string_info_tarjeta,"(%s) %d kb",tipos_tarjeta[tipo_tarjeta],size);
 						}
 						else {
-							sprintf (string_info_tarjeta," (Unk) %d kb",size);
+							sprintf (string_info_tarjeta,"(Unknown) %d kb",size);
 						}
 					}
 				}
 
 				else {
-					sprintf (string_info_tarjeta," %d K",size);
+					sprintf (string_info_tarjeta,"%d K",size);
 				}
 
-				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,NULL,NULL,"%s",string_info_tarjeta);
+				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," Info: %s",string_info_tarjeta);
+
+                //Quito la ayuda porque al final es un elemento no seleccionable, para no confundir al usuario y piense
+                //que pulsando enter hace alguna accion
+                /*
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Card Information");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Size of Card, and in case of EPROM/Flash cards: \n"
 							"-Type of Card: Applications, Files or Unknown type\n"
 							"-Space Available, in case of Files Card\n");
+                */
 
 
 			}

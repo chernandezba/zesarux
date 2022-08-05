@@ -29,6 +29,8 @@ Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
 Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
+Improved inserting Z88 cards: now it does not hang the emulator during the insert
+Improved selecting Z88 cards: submenus for types and sizes
 
 Improved File selector: 
 -Allow to have a full screen preview if window is big enough
@@ -72,7 +74,6 @@ Fixed redrawing ZX Desktop when resizing window
 Fixed hang when using View Variables and memory corrupted
 Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed
 Fixed losing inserted Z88 cards when changing cpu speed
-Fixed inserting Z88 cards: now it does not hang the emulator during the insert
 Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed Z80 behavior running block opcodes (LDIR, etc) and interrupts
 Fixed .Z80 Timex TS2068 snapshot loading

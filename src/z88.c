@@ -1433,7 +1433,7 @@ void z88_open_flap(void)
 
 	debug_printf (VERBOSE_DEBUG,"Open Z88 flap");
 
-    printf("Open flap\n");
+    //printf("Open flap\n");
     //debug_exec_show_backtrace();
 
 
@@ -1475,7 +1475,7 @@ void z88_close_flap_ahora(void)
 {
 	debug_printf (VERBOSE_DEBUG,"Close Z88 flap");
 
-    printf("Close flap\n");
+    //printf("Close flap\n");
     //debug_exec_show_backtrace();
 
 	//este texto no se suele ver dado que casi siempre entra aqui con menu abierto y en esos casos no se muesta mensaje
@@ -1503,6 +1503,8 @@ int z88_pendiente_cerrar_tapa_timer=0;
 void z88_close_flap(void)
 {
     //Decir cerrar tapa en un segundo
+    //TODO: realmente este valor se podria bajar a 10 y continuaria siendo seguro en apariencia,
+    //pero por si acaso lo dejamos asi
     z88_pendiente_cerrar_tapa_timer=50;
 
 }
