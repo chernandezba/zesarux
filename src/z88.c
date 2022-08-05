@@ -586,112 +586,112 @@ z80_byte z88_get_flash_status(z80_byte slot,z80_int addr)
 z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int offset,z80_byte valor,int accion,z80_int dir)
 {
 
-		z80_byte seccion;
+    z80_byte seccion;
 
 
-                if (accion==0) {
+    if (accion==0) {
 
-			//Escritura
+        //Escritura
 
-			//Volver si rom interna
-			if (bank<0x20) return 0;
-
-
-			//mirar si eprom o ram
-			if (slot>=1) {
-
-				switch (z88_memory_slots[slot].type) {
-					case 1:
-						//Error. Esto no deberia suceder
-						cpu_panic ("ROM cards do not exist on Z88");
-						return 0;
-					break;
-
-					case 2:
-						//EPROM. ver si slot 3 y si esta programacion de eprom activa
-						if (slot!=3) return 0;
-
-						if ((blink_com & 8)==0) {
-							debug_printf (VERBOSE_DEBUG,"Trying to write to EPROM but EPROM PROGRAM bit not enabled");
-							return 0;
-						}
-
-						//slot 3 y eprom programming. dejamos escritura
-
-						//marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-						z88_set_z88_eprom_or_flash_must_flush_to_disk();
-					break;
-
-					case 3:
-						//FLASH
-						if (z88_flash_forced_writing_mode.v==1) {
-							//escribimos directamente, sin tener que pasar por modo programacion
-							z88_puntero_memoria[offset]=valor;
-							z88_set_z88_eprom_or_flash_must_flush_to_disk();
-							return 0;
-						}
-
-						else {
-							debug_printf (VERBOSE_DEBUG,"Processing Flash Command 0x%x on slot: %d",valor,slot);
-							z88_procesar_flash_command(valor,slot,offset);
-							return 0;
-						}
-
-					break;
-
-					case 4:
-						//Primeros 512kb: RAM
-						//Siguientes 512kb: EPROM
-						
-
-						//Si zona eprom
-/*
-        Banks   40 - 7F  are wired to Slot 1
-        Banks   80 - BF  are wired to Slot 2
-        Banks   C0 - FF  are wired to Slot 3 
-*/
-						//They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
-						seccion=bank-slot*0x40;
-						if (seccion>=0x20) {
-
-	                                                //EPROM. ver si slot 3 y si esta programacion de eprom activa
-        	                                        if (slot!=3) return 0;
-
-                	                                if ((blink_com & 8)==0) {
-                        	                                debug_printf (VERBOSE_DEBUG,"Trying to write to EPROM on hybdrid card but EPROM PROGRAM bit not enabled");
-                                	                        return 0;
-                                        	        }
-
-                                                	//slot 3 y eprom programming. dejamos escritura
-
-	                                                //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-        	                                        z88_set_z88_eprom_or_flash_must_flush_to_disk();
-	
-						}
-					break;
-				}
-			}
+        //Volver si rom interna
+        if (bank<0x20) return 0;
 
 
-			//Escritura normal, ya sea en RAM o EPROM con EPROM PROGRAM bit activo
-                        z88_puntero_memoria[offset]=valor;
+        //mirar si eprom o ram
+        if (slot>=1) {
+
+            switch (z88_memory_slots[slot].type) {
+                case 1:
+                    //Error. Esto no deberia suceder
+                    cpu_panic ("ROM cards do not exist on Z88");
+                    return 0;
+                break;
+
+                case 2:
+                    //EPROM. ver si slot 3 y si esta programacion de eprom activa
+                    if (slot!=3) return 0;
+
+                    if ((blink_com & 8)==0) {
+                        debug_printf (VERBOSE_DEBUG,"Trying to write to EPROM but EPROM PROGRAM bit not enabled");
                         return 0;
-                }
+                    }
 
-                else {
+                    //slot 3 y eprom programming. dejamos escritura
 
-			//Lectura
+                    //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+                    z88_set_z88_eprom_or_flash_must_flush_to_disk();
+                break;
 
-			//Si es tarjeta flash y en modo comando, actuar en consecuencia
-			if (z88_memory_slots[slot].type==3 && z88_memory_slots[slot].z88_flash_card_in_command_mode.v) {
-				z80_byte flash_status_value;
-				flash_status_value=z88_get_flash_status(slot,dir);
-				debug_printf (VERBOSE_DEBUG,"Returning flash value 0x%X when in command: 0x%X, address: 0x%X",flash_status_value,z88_memory_slots[slot].executing_command_number,dir);
-				return flash_status_value;
-			}
+                case 3:
+                    //FLASH
+                    if (z88_flash_forced_writing_mode.v==1) {
+                        //escribimos directamente, sin tener que pasar por modo programacion
+                        z88_puntero_memoria[offset]=valor;
+                        z88_set_z88_eprom_or_flash_must_flush_to_disk();
+                        return 0;
+                    }
 
-                        else return z88_puntero_memoria[offset];
-                }
+                    else {
+                        debug_printf (VERBOSE_DEBUG,"Processing Flash Command 0x%x on slot: %d",valor,slot);
+                        z88_procesar_flash_command(valor,slot,offset);
+                        return 0;
+                    }
+
+                break;
+
+                case 4:
+                    //Primeros 512kb: RAM
+                    //Siguientes 512kb: EPROM
+                    
+
+                    //Si zona eprom
+/*
+    Banks   40 - 7F  are wired to Slot 1
+    Banks   80 - BF  are wired to Slot 2
+    Banks   C0 - FF  are wired to Slot 3 
+*/
+                    //They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
+                    seccion=bank-slot*0x40;
+                    if (seccion>=0x20) {
+
+                        //EPROM. ver si slot 3 y si esta programacion de eprom activa
+                        if (slot!=3) return 0;
+
+                        if ((blink_com & 8)==0) {
+                                debug_printf (VERBOSE_DEBUG,"Trying to write to EPROM on hybdrid card but EPROM PROGRAM bit not enabled");
+                                return 0;
+                        }
+
+                        //slot 3 y eprom programming. dejamos escritura
+
+                        //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+                        z88_set_z88_eprom_or_flash_must_flush_to_disk();
+
+                    }
+                break;
+            }
+        }
+
+
+        //Escritura normal, ya sea en RAM o EPROM con EPROM PROGRAM bit activo
+        z88_puntero_memoria[offset]=valor;
+        return 0;
+    }
+
+    else {
+
+        //Lectura
+
+        //Si es tarjeta flash y en modo comando, actuar en consecuencia
+        if (z88_memory_slots[slot].type==3 && z88_memory_slots[slot].z88_flash_card_in_command_mode.v) {
+            z80_byte flash_status_value;
+            flash_status_value=z88_get_flash_status(slot,dir);
+            debug_printf (VERBOSE_DEBUG,"Returning flash value 0x%X when in command: 0x%X, address: 0x%X",flash_status_value,z88_memory_slots[slot].executing_command_number,dir);
+            return flash_status_value;
+        }
+
+        else return z88_puntero_memoria[offset];
+    }
 
 }
 
