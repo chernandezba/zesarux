@@ -3628,6 +3628,9 @@ void menu_footer_z88(void)
 			nombre_tarjeta[10]=0;
 		}
 
+        //Si tapa abierta, escribir en minusculas... TODO: hacer mejor manera de enseñar esto
+        if (z88_flap_is_open()) string_a_minusculas(nombre_tarjeta,nombre_tarjeta);
+
 		menu_putstring_footer(x,2,nombre_tarjeta,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
 		x +=10;
 	}

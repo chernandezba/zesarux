@@ -1457,6 +1457,7 @@ void z88_open_flap(void)
     - Ejecutar unos ciclos de cpu (z88_pausa_open_close_flap) para que el sistema se entere que se ha abierto la tapa
     */
 
+   menu_footer_z88();
 
 }
 
