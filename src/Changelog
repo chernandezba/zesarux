@@ -29,9 +29,11 @@ Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
 Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
-Improved inserting Z88 cards: now it does not hang the emulator during the insert
-Improved selecting Z88 cards: submenus for types and sizes
-Improved Z88 footer: show when writing a card in slot 3
+
+Improved Z88 emulation:
+-Inserting Z88 cards: now it does not hang the emulator during the insert
+-Selecting Z88 cards: submenus for types and sizes
+-Z88 footer: show when writing a card in slot 3
 
 Improved File selector: 
 -Allow to have a full screen preview if window is big enough
