@@ -3608,7 +3608,7 @@ void menu_footer_z88(void)
 
 	if (!MACHINE_IS_Z88) return;
 
-    printf("draw footer\n");
+    //printf("draw footer\n");
 
 	char nombre_tarjeta[20];
 	int x=0;
@@ -3639,9 +3639,10 @@ void menu_footer_z88(void)
         //Si tiene que hacer flush, es que acaba de escribir, indicarlo
         if (i==3 && z88_eprom_or_flash_must_flush_to_disk) {
             //intercambiar colores
-            int temp_tinta=tinta;
+            /*int temp_tinta=tinta;
             tinta=papel;
-            papel=temp_tinta;
+            papel=temp_tinta;*/
+            strcpy(nombre_tarjeta," WRITE ");
         }
 
 		menu_putstring_footer(x,2,nombre_tarjeta,tinta,papel);

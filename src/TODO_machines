@@ -905,7 +905,8 @@ hay por ahi alguna epr de 16 kb??
 tarjeta que probaba Thierry:
 512K flash Eprom (AMIC 29040) and 512K SRAM. They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
 
--en footer, que parpadeen (o texto inverso) cuando se escriba (y se lea?) de una tarjeta de memoria
+
+-en footer, que parpadeen (o texto inverso) cuando se lea? de una tarjeta de memoria
 
 -revisar juegos de whatnow para agregar alguno mas...
 
