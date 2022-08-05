@@ -27987,6 +27987,16 @@ void menu_z88_slot_copy_from_eprom(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_z88_slot_close_flap(MENU_ITEM_PARAMETERS)
+{
+    z88_close_flap();
+}
+
+void menu_z88_slot_open_flap(MENU_ITEM_PARAMETERS)
+{
+    z88_open_flap();
+}
+
 
 //menu z88 slots
 void menu_z88_slots(MENU_ITEM_PARAMETERS)
@@ -28163,6 +28173,21 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 
                 menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+/*
+
+The STA ($B1) register provides information about which interrupt has actually occurred:
+
+BIT         NAME        Function
+7           FLAPOPEN    If set, flap open else flap closed
+*/
+        if (z88_flap_is_open() ) {
+            menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_close_flap,NULL,"Close Flap");
+        }
+        else {
+            menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_open_flap,NULL,"Open Flap");
+        }
 
 
 		menu_add_ESC_item(array_menu_z88_slots);

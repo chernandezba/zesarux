@@ -3179,3 +3179,8 @@ int z88_get_total_ram(void)
 
     return total_ram;
 }
+
+int z88_flap_is_open(void)
+{
+    return (blink_sta & BM_STAFLAPOPEN ? 1 : 0);
+}

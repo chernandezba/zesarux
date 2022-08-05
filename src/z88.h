@@ -294,6 +294,8 @@ extern void z88_enable_snooze(void);
 
 extern unsigned int z88_contador_para_flap;
 
+extern int z88_flap_is_open(void);
+
 extern z80_bit estado_parpadeo_cursor;
 
 

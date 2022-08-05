@@ -10014,7 +10014,7 @@ void screen_z88_dibujar_udg(z88_dir *tabla_caracter,int x,int y,int ancho,int in
 
 
 	/*
-	//TODO. temp. comprovacion puntero
+	//TODO. temp. comprobacion puntero
 	if (tabla_caracter==NULL) {
 		debug_printf (VERBOSE_INFO,"screen_z88_dibujar_udg. tabla_caracter=NULL");
 		return;
@@ -10211,8 +10211,8 @@ void screen_z88_refresca_pantalla_comun(void)
 
 
 
-        if ((blink_com&1)==0) {
-                debug_printf (VERBOSE_DEBUG,"LCD is OFF");
+        if ((blink_com&1)==0 || z88_flap_is_open() ) {
+                debug_printf (VERBOSE_DEBUG,"LCD is OFF or flap open");
                 int x,y,xmenu,ymenu;
 
                 for (y=0;y<64;y++) {
