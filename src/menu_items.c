@@ -27143,9 +27143,13 @@ void menu_z88_slot_insert_ram(MENU_ITEM_PARAMETERS)
 {
 
 	//RAM siempre entre 32 y 1024 K
-	if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
-	else if (menu_insert_slot_ram_size==1024*1024) menu_insert_slot_ram_size=0;
-	else menu_insert_slot_ram_size *=2;
+	//if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
+	//else if (menu_insert_slot_ram_size==1024*1024) menu_insert_slot_ram_size=0;
+	//else menu_insert_slot_ram_size *=2;
+
+	//RAM siempre entre 32 y 1024 K
+	if (menu_insert_slot_ram_size==1024*1024) menu_insert_slot_ram_size=32768;
+	else menu_insert_slot_ram_size *=2;    
 }
 
 
@@ -27713,8 +27717,8 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 			if (menu_insert_slot_type==0 && menu_insert_slot_ram_size!=0) {
 				//RAM
 				menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_ram,NULL,"Size: %d Kb",(menu_insert_slot_ram_size)/1024);
-		                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Size of RAM card");
-        		        menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Size of RAM card");
+                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Size of RAM card");
+                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Size of RAM card");
 
 			}
 
