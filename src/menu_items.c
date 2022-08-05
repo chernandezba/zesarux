@@ -27494,7 +27494,7 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
 }
 
-void menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
+void old_menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
 {
     if (menu_insert_slot_ram_size==0) {
         //si no habia, activamos ram con 32kb
@@ -27530,6 +27530,110 @@ void menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
         menu_insert_slot_ram_size=0;
 	}
 }
+
+
+void menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
+{
+
+        menu_espera_no_tecla();
+
+
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+        //Indicamos la opcion segun el tipo 
+        int common_opcion_seleccionada;
+
+		if (menu_insert_slot_ram_size==0) common_opcion_seleccionada=0;
+		else common_opcion_seleccionada=menu_insert_slot_type+1;
+
+        //tipo 1 rom lo saltamos, no usado. que seria la posicion 2: 0:empty, 1:ram, 2:rom, 3:eprom...
+        if (common_opcion_seleccionada>=2) common_opcion_seleccionada--;
+
+
+
+        do {
+
+            menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Empty");
+
+            int i;
+
+            for (i=0;i<5;i++) {
+
+                //tipo 1 rom no usado
+                if (i!=1) {
+
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,z88_memory_types[i]);
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+                }
+
+            }
+
+
+            retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Slot type");
+
+
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                //En vez de eso simplemente cambiamos valores
+                if (common_opcion_seleccionada==0) {
+                    //pasamos a vacio - ram con 0 kb
+                    menu_insert_slot_type=0;
+                    menu_insert_slot_ram_size=0;
+                }
+                else {
+                    if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
+                    menu_insert_slot_type=item_seleccionado.valor_opcion;
+                }
+                return;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //no cambiar nada
+    return;
+
+
+    /*
+
+    if (menu_insert_slot_ram_size==0) {
+        //si no habia, activamos ram con 32kb
+        menu_insert_slot_type=0;
+        menu_insert_slot_ram_size=32768;
+    }
+
+    else if (menu_insert_slot_type==0) {
+        //de ram pasamos a eprom
+        menu_insert_slot_type=2;
+    }
+
+    //	else if (menu_insert_slot_type==1) {
+    //    //de rom pasamos a eprom
+    //    menu_insert_slot_type=2;
+    //}
+    
+
+    else if (menu_insert_slot_type==2) {
+        //de eprom pasamos a flash
+        menu_insert_slot_type=3;
+    }
+
+    else if (menu_insert_slot_type==3) {
+        //de flash pasamos a hybrida ram+eprom
+        menu_insert_slot_type=4;
+    }
+
+
+    else {
+        //y de flash pasamos a vacio - ram con 0 kb
+        menu_insert_slot_type=0;
+        menu_insert_slot_ram_size=0;
+	}
+    */
+}
+
 
 
 //valor_opcion le viene dado desde la propia funcion de gestion de menu
@@ -27606,7 +27710,7 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
         	        menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Type of memory card if present");
                 	menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Type of memory card if present");
 
-			if (menu_insert_slot_type==0) {
+			if (menu_insert_slot_type==0 && menu_insert_slot_ram_size!=0) {
 				//RAM
 				menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_ram,NULL,"Size: %d Kb",(menu_insert_slot_ram_size)/1024);
 		                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Size of RAM card");
