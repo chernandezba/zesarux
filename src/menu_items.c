@@ -27496,40 +27496,38 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 
 void menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
 {
-	if (menu_insert_slot_ram_size==0) {
-		//si no habia, activamos ram con 32kb
-		menu_insert_slot_type=0;
-		menu_insert_slot_ram_size=32768;
-	}
+    if (menu_insert_slot_ram_size==0) {
+        //si no habia, activamos ram con 32kb
+        menu_insert_slot_type=0;
+        menu_insert_slot_ram_size=32768;
+    }
 
-	else if (menu_insert_slot_type==0) {
-		//de ram pasamos a eprom
-		menu_insert_slot_type=2;
-	}
+    else if (menu_insert_slot_type==0) {
+        //de ram pasamos a eprom
+        menu_insert_slot_type=2;
+    }
 
-/*	else if (menu_insert_slot_type==1) {
-		//de rom pasamos a eprom
-		menu_insert_slot_type=2;
-	}
-*/
+    /*	else if (menu_insert_slot_type==1) {
+        //de rom pasamos a eprom
+        menu_insert_slot_type=2;
+    }
+    */
 
-        else if (menu_insert_slot_type==2) {
-                //de eprom pasamos a flash
-                menu_insert_slot_type=3;
-        }
+    else if (menu_insert_slot_type==2) {
+        //de eprom pasamos a flash
+        menu_insert_slot_type=3;
+    }
 
-        else if (menu_insert_slot_type==3) {
-                //de flash pasamos a hybrida ram+eprom
-                menu_insert_slot_type=4;
-        }
-
-
+    else if (menu_insert_slot_type==3) {
+        //de flash pasamos a hybrida ram+eprom
+        menu_insert_slot_type=4;
+    }
 
 
-	else {
-		//y de flash pasamos a vacio - ram con 0 kb
-                menu_insert_slot_type=0;
-                menu_insert_slot_ram_size=0;
+    else {
+        //y de flash pasamos a vacio - ram con 0 kb
+        menu_insert_slot_type=0;
+        menu_insert_slot_ram_size=0;
 	}
 }
 
