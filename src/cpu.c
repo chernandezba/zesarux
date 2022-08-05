@@ -724,7 +724,7 @@ void cpu_set_turbo_speed(void)
 	antes_extended_stack_enabled.v=extended_stack_enabled.v;
 	
 	
-	
+	do_not_run_init_z88_memory_slots=1;
 	
 
 	if (cpu_turbo_speed>MAX_CPU_TURBO_SPEED) {
@@ -773,6 +773,8 @@ void cpu_set_turbo_speed(void)
 
         init_rainbow();
         init_cache_putpixel();
+
+    do_not_run_init_z88_memory_slots=0;
 
 	if (diviface_enabled.v) diviface_set_peek_poke_functions();
 

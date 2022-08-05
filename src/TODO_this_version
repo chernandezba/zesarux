@@ -168,4 +168,15 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 
 -letras de texto iconos se ven mal si zoom_x !=zoom_y
 
--cambiar cpu turbo en z88 expulsa eprom
+-agregar en FAQ info de Z88 como poder cargar un archivo basic:
+*agregar al inicio del basic:
+#B
+.J
+NEW
+
+*crear archivo eprom
+*copiarlo dentro
+*ejecutarlo desde el filer / o con comando cli desde basic (*CLI .*FILENAME). En el segundo caso no hace falta el "#B" inicial
+Ver documentacion Z88, Filer reference
+
+-poder hacer browse de los archivos en RAM

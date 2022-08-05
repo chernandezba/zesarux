@@ -317,9 +317,14 @@ void z88_set_default_memory_pages(void)
         Banks   C0 - FF  are wired to Slot 3 (usually EPROM).
 */
 
+//Si se llama a init_z88_memory_slots desde cpu_set_turbo_speed, no ejecutar cambio de slots,
+//si no, al cambiar speed cpu, se perderian los slots insertados
+int do_not_run_init_z88_memory_slots=0;
 
 void init_z88_memory_slots(void)
 {
+
+    if (do_not_run_init_z88_memory_slots) return;
 
 	//Offsets siempre fijos. NO TOCAR!!
 	z88_memory_slots[0].offset_total=0;
