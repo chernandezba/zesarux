@@ -311,6 +311,8 @@ extern int z88_get_total_ram(void);
 
 extern int do_not_run_init_z88_memory_slots;
 
+extern int z88_pendiente_cerrar_tapa_timer;
+
 
 #define BM_INTKWAIT 0x80
 // Bit 7, If set, reading the keyboard will Snooze

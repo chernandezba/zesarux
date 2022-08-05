@@ -586,6 +586,10 @@ void timer_check_interrupt(void)
             }
         }
      
+        if (z88_pendiente_cerrar_tapa_timer) {
+            z88_pendiente_cerrar_tapa_timer--;
+            if (z88_pendiente_cerrar_tapa_timer==0) z88_close_flap_ahora();
+        }
 
         //Input file keyboard
         if (input_file_keyboard_is_playing() ) {

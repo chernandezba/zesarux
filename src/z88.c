@@ -1411,6 +1411,8 @@ void z88_notificar_tecla(void)
 
 void z88_pausa_open_close_flap(void)
 {
+    //Ya no hace falta la pausa. Simplemente hacemos que el cierre de tapa va retrasado 1 segundo y se hace mediante el timer
+    return;
 
 	//2 segundos cada vez
 	z88_contador_para_flap=0;
@@ -1431,6 +1433,10 @@ void z88_open_flap(void)
 
 	debug_printf (VERBOSE_DEBUG,"Open Z88 flap");
 
+    printf("Open flap\n");
+    //debug_exec_show_backtrace();
+
+
 	//este texto no se suele ver dado que casi siempre entra aqui con menu abierto y en esos casos no se muesta mensaje
 	//screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Opening Flap");
 
@@ -1446,7 +1452,7 @@ void z88_open_flap(void)
 
 
 	//Notificar apertura tapa
-	blink_sta |=128+32;
+	blink_sta |=BM_STAFLAPOPEN+BM_STAFLAP;
 	blink_sta &=(255-1);
 
 	z88_pausa_open_close_flap();
@@ -1459,11 +1465,18 @@ void z88_open_flap(void)
 
    menu_footer_z88();
 
+   //notificar apertura
+   //iff1.v=1;
+   //interrupcion_maskable_generada.v=1;
+
 }
 
-void z88_close_flap(void)
+void z88_close_flap_ahora(void)
 {
 	debug_printf (VERBOSE_DEBUG,"Close Z88 flap");
+
+    printf("Close flap\n");
+    //debug_exec_show_backtrace();
 
 	//este texto no se suele ver dado que casi siempre entra aqui con menu abierto y en esos casos no se muesta mensaje
 	//screen_print_splash_text_center(ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,"Closing Flap");
@@ -1472,7 +1485,7 @@ void z88_close_flap(void)
 	z88_pausa_open_close_flap();
 
 	//Notificar cierre tapa
-	blink_sta &=(255-128-32);
+	blink_sta &=(255-BM_STAFLAPOPEN-BM_STAFLAP);
 
 	menu_footer_z88();
 
@@ -1482,6 +1495,15 @@ void z88_close_flap(void)
     - Cerrar tapa
     */
 
+   //interrupcion_maskable_generada.v=1;
+}
+
+int z88_pendiente_cerrar_tapa_timer=0;
+
+void z88_close_flap(void)
+{
+    //Decir cerrar tapa en un segundo
+    z88_pendiente_cerrar_tapa_timer=50;
 
 }
 
