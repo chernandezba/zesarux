@@ -27132,6 +27132,47 @@ char menu_insert_slot_flash_intel_name[PATH_MAX];
 
 void menu_z88_slot_insert_internal_ram(MENU_ITEM_PARAMETERS)
 {
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+
+        //por defecto
+        int common_opcion_seleccionada=0;
+
+        //RAM interna. Siempre entre 32 y 512 K
+
+        do {
+
+            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+            int i;
+            int tamanyo=32768;
+
+            for (i=0;i<5;i++) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%d Kb",tamanyo/1024);
+                menu_add_item_menu_valor_opcion(array_menu_common,tamanyo);
+                
+                //Obtener la posicion segun la ram actual. 0=32kb, 1=64kb, etc
+                if (tamanyo==menu_insert_slot_ram_size) common_opcion_seleccionada=i;
+
+                tamanyo *=2;
+            }
+
+
+            retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"RAM Size");
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                menu_insert_slot_ram_size=item_seleccionado.valor_opcion;
+                return;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+}
+
+void old_menu_z88_slot_insert_internal_ram(MENU_ITEM_PARAMETERS)
+{
 
 	//RAM interna. Siempre entre 32 y 512 K
         if (menu_insert_slot_ram_size==512*1024) menu_insert_slot_ram_size=32*1024;
