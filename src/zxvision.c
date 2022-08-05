@@ -3608,6 +3608,8 @@ void menu_footer_z88(void)
 
 	if (!MACHINE_IS_Z88) return;
 
+    printf("draw footer\n");
+
 	char nombre_tarjeta[20];
 	int x=0;
 
@@ -3631,7 +3633,18 @@ void menu_footer_z88(void)
         //Si tapa abierta, escribir en minusculas... TODO: hacer mejor manera de enseñar esto
         if (z88_flap_is_open()) string_a_minusculas(nombre_tarjeta,nombre_tarjeta);
 
-		menu_putstring_footer(x,2,nombre_tarjeta,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
+        int tinta=WINDOW_FOOTER_PAPER;
+        int papel=WINDOW_FOOTER_INK;
+
+        //Si tiene que hacer flush, es que acaba de escribir, indicarlo
+        if (i==3 && z88_eprom_or_flash_must_flush_to_disk) {
+            //intercambiar colores
+            int temp_tinta=tinta;
+            tinta=papel;
+            papel=temp_tinta;
+        }
+
+		menu_putstring_footer(x,2,nombre_tarjeta,tinta,papel);
 		x +=10;
 	}
 }

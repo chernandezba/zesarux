@@ -372,8 +372,16 @@ void init_z88_memory_slots(void)
 void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
 {
 
-                                //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-                                z88_eprom_or_flash_must_flush_to_disk=1;
+    int antes_z88_eprom_or_flash_must_flush_to_disk=z88_eprom_or_flash_must_flush_to_disk;
+
+    //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+    z88_eprom_or_flash_must_flush_to_disk=1;    
+
+    //Si no ha escrito texto footer con tarjeta indicando flush, indicarlo
+    if (!antes_z88_eprom_or_flash_must_flush_to_disk) {
+        menu_footer_z88();
+    }
+
 
 }
 
@@ -2118,6 +2126,10 @@ void z88_flush_eprom_or_flash_to_disk(void)
         //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
         //metera flush a 1
 	z88_eprom_or_flash_must_flush_to_disk=0;
+
+    //Indicar en footer que ya no se escribe
+    //TODO: quiza no es la mejor manera, se podria indicar con un footer de timer
+    menu_footer_z88();
 
 	//Ver si extension eprom es .63
 	if (!util_compare_file_extension(z88_memory_slots[3].eprom_flash_nombre_archivo,"63")) {
