@@ -14600,7 +14600,6 @@ void delete_generic_footertext(void)
     zxdesktop_icon_dandanator_inverse=0;
     zxdesktop_icon_zxunoflash_inverse=0;
     zxdesktop_icon_hilow_inverse=0;
-    zxdesktop_icon_z88_slot3_inverse=0;
 
 	menu_draw_ext_desktop();
 }
