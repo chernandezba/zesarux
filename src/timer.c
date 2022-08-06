@@ -735,9 +735,9 @@ void timer_check_interrupt(void)
             }
 
             //temporizacion para z88 que indica actividad de escritura en slot 3
-            if (z88_footer_timer_write_slot3) {
-                z88_footer_timer_write_slot3--;
-                if (z88_footer_timer_write_slot3==0) {
+            if (z88_footer_timer_slot3_activity_indicator) {
+                z88_footer_timer_slot3_activity_indicator--;
+                if (z88_footer_timer_slot3_activity_indicator==0) {
                     z88_reset_slot3_activity_indicator();
                 }
             }

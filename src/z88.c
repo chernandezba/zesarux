@@ -192,7 +192,7 @@ z80_bit z88_snooze={0};
 z80_bit z88_coma={0};
 z80_bit estado_parpadeo_cursor;
 
-int z88_footer_timer_write_slot3=0;
+int z88_footer_timer_slot3_activity_indicator=0;
 
 int z88_slot3_activity_indicator=0;
 
@@ -393,7 +393,7 @@ void z88_set_slot3_activity_indicator(void)
         //Reflejar cambios en el icono del slot 3
         menu_draw_ext_desktop(); 
 
-        z88_footer_timer_write_slot3=2;    
+        z88_footer_timer_slot3_activity_indicator=2;    
 }
 
 void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
@@ -403,7 +403,7 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
     z88_eprom_or_flash_must_flush_to_disk=1;    
 
     //Si no ha escrito texto footer con tarjeta indicando actividad, indicarlo
-    if (!z88_footer_timer_write_slot3) {
+    if (!z88_footer_timer_slot3_activity_indicator) {
         z88_set_slot3_activity_indicator();         
     }
 

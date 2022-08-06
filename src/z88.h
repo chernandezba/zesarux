@@ -253,7 +253,7 @@ extern void z88_flush_eprom_or_flash_to_disk(void);
 
 extern int z88_eprom_or_flash_must_flush_to_disk;
 
-extern int z88_footer_timer_write_slot3;
+extern int z88_footer_timer_slot3_activity_indicator;
 
 extern int z88_slot3_activity_indicator;
 
