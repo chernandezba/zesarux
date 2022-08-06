@@ -741,10 +741,7 @@ void timer_check_interrupt(void)
                     menu_footer_z88();
 
                     //Reflejar cambios en el icono del slot 3
-                    //TODO: al no redibujar todo el zxdesktop y solo cambiar el estado de inverso si/no,
-                    //puede que se mostrase extraño si con el cambio de inverso si/no hubiera que haber redibujado el zxdesktop
-                    //no se redibuja todo el zxd
-                    menu_draw_ext_desktop_lower_icons();   
+                    menu_draw_ext_desktop();   
                 }
             }
 

@@ -383,7 +383,7 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
         menu_footer_z88();
 
         //Reflejar cambios en el icono del slot 3
-        menu_draw_ext_desktop_lower_icons(); 
+        menu_draw_ext_desktop(); 
 
         z88_footer_timer_write_slot3=2;         
     }
