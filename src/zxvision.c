@@ -3620,7 +3620,7 @@ void menu_footer_z88(void)
 	menu_footer_clear_bottom_line();
 
     //por defecto icono slot 3 no invertido
-    //zxdesktop_icon_z88_slot3_inverse=0;
+    //z88_slot3_activity_indicator=0;
 	
 	int i;
 	for (i=1;i<=3;i++) {
@@ -3640,14 +3640,14 @@ void menu_footer_z88(void)
         int papel=WINDOW_FOOTER_INK;
 
         //Si tiene que hacer flush, es que acaba de escribir, indicarlo
-        if (i==3 && zxdesktop_icon_z88_slot3_inverse) {
+        if (i==3 && z88_slot3_activity_indicator) {
             //intercambiar colores
             /*int temp_tinta=tinta;
             tinta=papel;
             papel=temp_tinta;*/
             strcpy(nombre_tarjeta," WRITE ");
 
-            //zxdesktop_icon_z88_slot3_inverse=1;
+            //z88_slot3_activity_indicator=1;
         }
 
 		menu_putstring_footer(x,2,nombre_tarjeta,tinta,papel);

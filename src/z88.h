@@ -255,7 +255,7 @@ extern int z88_eprom_or_flash_must_flush_to_disk;
 
 extern int z88_footer_timer_write_slot3;
 
-extern int zxdesktop_icon_z88_slot3_inverse;
+extern int z88_slot3_activity_indicator;
 
 
 extern int z88_create_blank_eprom_flash_file(char *nombre,int size);
