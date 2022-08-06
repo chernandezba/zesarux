@@ -3619,35 +3619,32 @@ void menu_footer_z88(void)
 
 	menu_footer_clear_bottom_line();
 
-    //por defecto icono slot 3 no invertido
-    //z88_slot3_activity_indicator=0;
 	
 	int i;
 	for (i=1;i<=3;i++) {
-		if (z88_memory_slots[i].size==0) sprintf (nombre_tarjeta," Empty ");
-		else sprintf (nombre_tarjeta," %s ",z88_memory_types[z88_memory_slots[i].type]);
+		if (z88_memory_slots[i].size==0) sprintf (nombre_tarjeta,"[Empty]");
+		else sprintf (nombre_tarjeta,"[%s]",z88_memory_types[z88_memory_slots[i].type]);
 
 		//Si ocupa el texto mas de 10, cortar texto
 		if (strlen(nombre_tarjeta)>10) {
-			nombre_tarjeta[9]=' ';
+			nombre_tarjeta[9]=']';
 			nombre_tarjeta[10]=0;
 		}
 
         //Si tapa abierta, escribir en minusculas... TODO: hacer mejor manera de enseñar esto
         if (z88_flap_is_open()) string_a_minusculas(nombre_tarjeta,nombre_tarjeta);
 
-        int tinta=WINDOW_FOOTER_PAPER;
-        int papel=WINDOW_FOOTER_INK;
+        int tinta=WINDOW_FOOTER_INK;
+        int papel=WINDOW_FOOTER_PAPER;
 
         //Si tiene que hacer flush, es que acaba de escribir, indicarlo
         if (i==3 && z88_slot3_activity_indicator) {
             //intercambiar colores
-            /*int temp_tinta=tinta;
+            int temp_tinta=tinta;
             tinta=papel;
-            papel=temp_tinta;*/
-            strcpy(nombre_tarjeta," WRITE ");
+            papel=temp_tinta;
+            strcpy(nombre_tarjeta,"[WRITE]");
 
-            //z88_slot3_activity_indicator=1;
         }
 
 		menu_putstring_footer(x,2,nombre_tarjeta,tinta,papel);
