@@ -194,6 +194,8 @@ z80_bit estado_parpadeo_cursor;
 
 int z88_footer_timer_write_slot3=0;
 
+int zxdesktop_icon_z88_slot3_inverse=0;
+
 //para que nunca se salte a modo snooze. Quitar esto cuando ya funcione bien
 int snooze_desactivado=1;
 
@@ -380,6 +382,8 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
 
     //Si no ha escrito texto footer con tarjeta indicando flush, indicarlo
     if (!antes_z88_eprom_or_flash_must_flush_to_disk) {
+        zxdesktop_icon_z88_slot3_inverse=1;
+
         menu_footer_z88();
 
         //Reflejar cambios en el icono del slot 3

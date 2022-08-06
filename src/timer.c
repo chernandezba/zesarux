@@ -738,6 +738,8 @@ void timer_check_interrupt(void)
             if (z88_footer_timer_write_slot3) {
                 z88_footer_timer_write_slot3--;
                 if (z88_footer_timer_write_slot3==0) {
+                    zxdesktop_icon_z88_slot3_inverse=0;
+                    
                     menu_footer_z88();
 
                     //Reflejar cambios en el icono del slot 3

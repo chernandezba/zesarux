@@ -33853,7 +33853,7 @@ int zxdesktop_icon_mdv_flp_inverse=0;
 int zxdesktop_icon_dandanator_inverse=0;
 int zxdesktop_icon_zxunoflash_inverse=0;
 int zxdesktop_icon_hilow_inverse=0;
-int zxdesktop_icon_z88_slot3_inverse=0;
+
 
 struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX_LOWER_ICONS]={
 	//cinta standard
