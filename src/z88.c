@@ -383,7 +383,9 @@ void z88_reset_slot3_activity_indicator(void)
     menu_draw_ext_desktop();   
 }
 
-
+//Indicador de actividad para escritura en slot 3
+//No lo llamamos para lectura, porque si por ejemplo metemos un juego en slot 3, se estaria
+//llamando continuamente aqui
 void z88_set_slot3_activity_indicator(void)
 {
 
@@ -717,7 +719,9 @@ z80_byte poke_peek_byte_no_time_z88_aux(z80_byte bank,z80_byte slot,z80_long_int
             return flash_status_value;
         }
 
-        else return z88_puntero_memoria[offset];
+        else {
+            return z88_puntero_memoria[offset];
+        }
     }
 
 }
