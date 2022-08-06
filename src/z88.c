@@ -388,7 +388,7 @@ void z88_set_slot3_activity_indicator(void)
 {
 
     //Si ya estaba activo el indicador, no hacer nada
-    if (z88_footer_timer_slot3_activity_indicator) return;
+    if (z88_slot3_activity_indicator) return;
 
     z88_slot3_activity_indicator=1;
 
