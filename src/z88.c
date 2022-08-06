@@ -3237,3 +3237,14 @@ int z88_flap_is_open(void)
 {
     return (blink_sta & BM_STAFLAPOPEN ? 1 : 0);
 }
+
+void z88_reset_slot3_activity_indicator(void)
+{
+
+    z88_slot3_activity_indicator=0;
+
+    menu_footer_z88();
+
+    //Reflejar cambios en el icono del slot 3
+    menu_draw_ext_desktop();   
+}

@@ -738,12 +738,7 @@ void timer_check_interrupt(void)
             if (z88_footer_timer_write_slot3) {
                 z88_footer_timer_write_slot3--;
                 if (z88_footer_timer_write_slot3==0) {
-                    z88_slot3_activity_indicator=0;
-
-                    menu_footer_z88();
-
-                    //Reflejar cambios en el icono del slot 3
-                    menu_draw_ext_desktop();   
+                    z88_reset_slot3_activity_indicator();
                 }
             }
 
