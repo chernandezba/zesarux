@@ -3618,6 +3618,9 @@ void menu_footer_z88(void)
 	//borramos esa zona primero
 
 	menu_footer_clear_bottom_line();
+
+    //por defecto icono slot 3 no invertido
+    zxdesktop_icon_z88_slot3_inverse=0;
 	
 	int i;
 	for (i=1;i<=3;i++) {
@@ -3643,6 +3646,8 @@ void menu_footer_z88(void)
             tinta=papel;
             papel=temp_tinta;*/
             strcpy(nombre_tarjeta," WRITE ");
+
+            zxdesktop_icon_z88_slot3_inverse=1;
         }
 
 		menu_putstring_footer(x,2,nombre_tarjeta,tinta,papel);
@@ -4801,6 +4806,8 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 
 void menu_draw_ext_desktop_lower_icons(void)
 {
+
+    if (menu_zxdesktop_buttons_enabled.v==0) return;
 
 	int total_iconos=TOTAL_ZXDESKTOP_MAX_LOWER_ICONS;
 

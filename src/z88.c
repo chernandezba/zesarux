@@ -380,6 +380,9 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
     //Si no ha escrito texto footer con tarjeta indicando flush, indicarlo
     if (!antes_z88_eprom_or_flash_must_flush_to_disk) {
         menu_footer_z88();
+
+        //Reflejar cambios en el icono del slot 3
+        menu_draw_ext_desktop_lower_icons();          
     }
 
 
@@ -2127,9 +2130,13 @@ void z88_flush_eprom_or_flash_to_disk(void)
         //metera flush a 1
 	z88_eprom_or_flash_must_flush_to_disk=0;
 
-    //Indicar en footer que ya no se escribe
+    //Indicar en footer y en iconos de dispositivos que ya no se escribe
     //TODO: quiza no es la mejor manera, se podria indicar con un footer de timer
+	//y redibujar todo footer
     menu_footer_z88();
+
+    //Reflejar cambios en el icono del slot 3
+    menu_draw_ext_desktop_lower_icons();    
 
 	//Ver si extension eprom es .63
 	if (!util_compare_file_extension(z88_memory_slots[3].eprom_flash_nombre_archivo,"63")) {
