@@ -386,14 +386,18 @@ void z88_reset_slot3_activity_indicator(void)
 
 void z88_set_slot3_activity_indicator(void)
 {
-        z88_slot3_activity_indicator=1;
 
-        menu_footer_z88();
+    //Si ya estaba activo el indicador, no hacer nada
+    if (z88_footer_timer_slot3_activity_indicator) return;
 
-        //Reflejar cambios en el icono del slot 3
-        menu_draw_ext_desktop(); 
+    z88_slot3_activity_indicator=1;
 
-        z88_footer_timer_slot3_activity_indicator=2;    
+    menu_footer_z88();
+
+    //Reflejar cambios en el icono del slot 3
+    menu_draw_ext_desktop(); 
+
+    z88_footer_timer_slot3_activity_indicator=2;    
 }
 
 void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
@@ -402,10 +406,8 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
     //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
     z88_eprom_or_flash_must_flush_to_disk=1;    
 
-    //Si no ha escrito texto footer con tarjeta indicando actividad, indicarlo
-    if (!z88_footer_timer_slot3_activity_indicator) {
-        z88_set_slot3_activity_indicator();         
-    }
+    //Indicar actividad en slot 3
+    z88_set_slot3_activity_indicator();
 
 
 }
