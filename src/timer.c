@@ -733,6 +733,23 @@ void timer_check_interrupt(void)
                             delete_generic_footertext();
                     }
             }
+
+            //temporizacion para z88 que indica actividad de escritura en slot 3
+            if (z88_footer_timer_write_slot3) {
+                z88_footer_timer_write_slot3--;
+                if (z88_footer_timer_write_slot3==0) {
+                    menu_footer_z88();
+
+                    //Reflejar cambios en el icono del slot 3
+                    //TODO: al no redibujar todo el zxdesktop y solo cambiar el estado de inverso si/no,
+                    //puede que se mostrase extraño si con el cambio de inverso si/no hubiera que haber redibujado el zxdesktop
+                    //no se redibuja todo el zxd
+                    menu_draw_ext_desktop_lower_icons();   
+                }
+            }
+
+ 
+
             //Temporizador para decir si se ha detectado real joystick
             //dado que si no hay joystick, por defecto está habilitado el bit de joystick presente, pero luego
             //el realjoystick_null_main lo pondrá a 0, desactivandolo

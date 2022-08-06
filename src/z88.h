@@ -253,6 +253,8 @@ extern void z88_flush_eprom_or_flash_to_disk(void);
 
 extern int z88_eprom_or_flash_must_flush_to_disk;
 
+extern int z88_footer_timer_write_slot3;
+
 extern int z88_create_blank_eprom_flash_file(char *nombre,int size);
  
 extern void z88_change_internal_ram(int size);
