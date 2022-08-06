@@ -33910,13 +33910,13 @@ struct s_zxdesktop_lowericons_info zdesktop_lowericons_array[TOTAL_ZXDESKTOP_MAX
 
 	//3 Cartuchos de Z88. 
 	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_1_is_active, zxdesktop_lowericon_z88_cart_1_accion,
-		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&zxdesktop_common_icon_no_inverse},	
+		bitmap_lowericon_ext_desktop_z88_slot_one_active,bitmap_lowericon_ext_desktop_z88_slot_one_inactive,&zxdesktop_common_icon_no_inverse},	
 
 	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_2_is_active, zxdesktop_lowericon_z88_cart_2_accion,
-		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&zxdesktop_common_icon_no_inverse},	
+		bitmap_lowericon_ext_desktop_z88_slot_two_active,bitmap_lowericon_ext_desktop_z88_slot_two_inactive,&zxdesktop_common_icon_no_inverse},	
 
 	{ zxdesktop_lowericon_z88_cart_is_visible, zxdesktop_lowericon_z88_cart_3_is_active, zxdesktop_lowericon_z88_cart_3_accion,
-		bitmap_lowericon_ext_desktop_z88_active,bitmap_lowericon_ext_desktop_z88_inactive,&z88_slot3_activity_indicator},	
+		bitmap_lowericon_ext_desktop_z88_slot_three_active,bitmap_lowericon_ext_desktop_z88_slot_three_inactive,&z88_slot3_activity_indicator},	
 
     //zxuno flash. En este caso no hay distincion entre icono insertado y no insertado
 	{ zxdesktop_lowericon_zxunoflash_is_visible, zxdesktop_lowericon_zxunoflash_is_active, zxdesktop_lowericon_zxunoflash_accion,

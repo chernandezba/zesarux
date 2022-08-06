@@ -108,8 +108,12 @@ extern char *bitmap_lowericon_ext_desktop_cassette_std_inactive[];
 
 extern char *bitmap_lowericon_ext_desktop_mmc_active[];
 extern char *bitmap_lowericon_ext_desktop_mmc_inactive[];
-extern char *bitmap_lowericon_ext_desktop_z88_active[];
-extern char *bitmap_lowericon_ext_desktop_z88_inactive[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_one_active[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_one_inactive[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_two_active[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_two_inactive[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_three_active[];
+extern char *bitmap_lowericon_ext_desktop_z88_slot_three_inactive[];
 extern char *bitmap_lowericon_ext_desktop_mdv_active[];
 extern char *bitmap_lowericon_ext_desktop_mdv_inactive[];
 extern char *bitmap_lowericon_ext_desktop_msx_cart_active[];
