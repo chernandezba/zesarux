@@ -4786,6 +4786,30 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
         }
     }
 
+    //Caso especial para slots z88 con tapa abierta. Al abrir la tapa 
+    //no se ve el numero
+    if (MACHINE_IS_Z88 && z88_flap_is_open() ) {
+        //con tarjeta insertada
+        if (
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_one_active ||
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_two_active ||
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_three_active
+        ) {
+
+            puntero_bitmap=bitmap_lowericon_ext_desktop_z88_slot_nonumber_active;
+        }
+
+        //sin tarjeta insertada
+        if (
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_one_inactive ||
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_two_inactive ||
+            puntero_bitmap==bitmap_lowericon_ext_desktop_z88_slot_three_inactive
+        ) {
+
+            puntero_bitmap=bitmap_lowericon_ext_desktop_z88_slot_nonumber_inactive;
+        }        
+    }
+
 
 	if (pulsado) {
 		//desplazado 2 pixel cuando se pulsa

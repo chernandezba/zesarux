@@ -1512,6 +1512,9 @@ void z88_open_flap(void)
 
    menu_footer_z88();
 
+    //Reflejar cambios al abrir el flap
+    menu_draw_ext_desktop();      
+
    //notificar apertura
    //iff1.v=1;
    //interrupcion_maskable_generada.v=1;
@@ -1535,6 +1538,9 @@ void z88_close_flap_ahora(void)
 	blink_sta &=(255-BM_STAFLAPOPEN-BM_STAFLAP);
 
 	menu_footer_z88();
+
+    //Reflejar cambios al abrir el flap
+    menu_draw_ext_desktop();          
 
     /*
     En el cierre de flap se interesa que haga esto precisamente:
