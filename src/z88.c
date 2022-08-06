@@ -372,16 +372,20 @@ void init_z88_memory_slots(void)
 
 }
 
-void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
+void z88_reset_slot3_activity_indicator(void)
 {
 
-    int antes_z88_eprom_or_flash_must_flush_to_disk=z88_eprom_or_flash_must_flush_to_disk;
+    z88_slot3_activity_indicator=0;
 
-    //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-    z88_eprom_or_flash_must_flush_to_disk=1;    
+    menu_footer_z88();
 
-    //Si no ha escrito texto footer con tarjeta indicando flush, indicarlo
-    if (!antes_z88_eprom_or_flash_must_flush_to_disk) {
+    //Reflejar cambios en el icono del slot 3
+    menu_draw_ext_desktop();   
+}
+
+
+void z88_set_slot3_activity_indicator(void)
+{
         z88_slot3_activity_indicator=1;
 
         menu_footer_z88();
@@ -389,7 +393,18 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
         //Reflejar cambios en el icono del slot 3
         menu_draw_ext_desktop(); 
 
-        z88_footer_timer_write_slot3=2;         
+        z88_footer_timer_write_slot3=2;    
+}
+
+void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
+{
+
+    //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+    z88_eprom_or_flash_must_flush_to_disk=1;    
+
+    //Si no ha escrito texto footer con tarjeta indicando actividad, indicarlo
+    if (!z88_footer_timer_write_slot3) {
+        z88_set_slot3_activity_indicator();         
     }
 
 
@@ -3238,13 +3253,3 @@ int z88_flap_is_open(void)
     return (blink_sta & BM_STAFLAPOPEN ? 1 : 0);
 }
 
-void z88_reset_slot3_activity_indicator(void)
-{
-
-    z88_slot3_activity_indicator=0;
-
-    menu_footer_z88();
-
-    //Reflejar cambios en el icono del slot 3
-    menu_draw_ext_desktop();   
-}

@@ -257,6 +257,7 @@ extern int z88_footer_timer_write_slot3;
 
 extern int z88_slot3_activity_indicator;
 
+extern void z88_reset_slot3_activity_indicator(void);
 
 extern int z88_create_blank_eprom_flash_file(char *nombre,int size);
  
