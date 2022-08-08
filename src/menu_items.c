@@ -28325,7 +28325,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 			//Si hay una eprom en slot 3, dar opcion de borrar
 			if (slot==3 && z88_memory_slots[3].size!=0 && (z88_memory_slots[3].type==2 || z88_memory_slots[3].type==3) ) {
-				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_erase_eprom_flash,NULL," Erase Card");
+				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_erase_eprom_flash,NULL,"Erase Card");
 	                        menu_add_item_menu_tooltip(array_menu_z88_slots,"Card can only be erased on slot 3");
         	                menu_add_item_menu_ayuda(array_menu_z88_slots,"Card can only be erased on slot 3");
 			}
@@ -28336,16 +28336,16 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 				if (slot==3) {
 
-					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_reclaim_free_space,NULL," Reclaim Free Space");
+					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_reclaim_free_space,NULL,"Reclaim Free Space");
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"It reclaims the space used by deleted files");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"It reclaims the space used by deleted files");
 
-					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_undelete_files,NULL," Undelete Files");
+					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_eprom_flash_undelete_files,NULL,"Undelete Files");
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"Undelete deleted files");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"Undelete deleted files");
 
 
-					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_to_eprom_flash,NULL," Copy to Card");
+					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_to_eprom_flash,NULL,"Copy to Card");
 					menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from your hard drive to Card");
 					menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from your hard drive to Card. "
 						"Card card must be initialized before you can copy files to it, "
@@ -28356,13 +28356,13 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 
 
-				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_browser,NULL," Card browser");
+				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_browser,NULL,"Card browser");
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Browse card");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Browse card");
 	                        //establecemos numero slot como opcion de ese item de menu
         	                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
 
-				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL," Copy from Card");
+				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL,"Copy from Card");
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from Card to your hard drive");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from Card to your hard drive");
 	                        //establecemos numero slot como opcion de ese item de menu
@@ -28377,18 +28377,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        //Si no hay pendiente una apertura o cierre
 
-        if (!z88_pendiente_cerrar_tapa_timer) {
-
-            if (z88_flap_is_open() ) {
-                menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_close_flap,NULL,"Close Flap");
-            }
-            else {
-                menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_open_flap,NULL,"Open Flap");
-            }
-
-        }
 
 
 		menu_add_ESC_item(array_menu_z88_slots);
@@ -31977,6 +31966,21 @@ void menu_storage(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_ayuda(array_menu_storage,"Selects Memory Slots to use on Z88");
                 menu_add_item_menu_tiene_submenu(array_menu_storage);
             }
+
+            //Si no hay pendiente una apertura o cierre
+
+            if (!z88_pendiente_cerrar_tapa_timer) {
+
+                menu_add_item_menu_separator(array_menu_storage);
+
+                if (z88_flap_is_open() ) {
+                    menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_z88_slot_close_flap,NULL,"Close Z88 Flap");
+                }
+                else {
+                    menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_z88_slot_open_flap,NULL,"Open Z88 Flap");
+                }
+
+            }            
 
 		}
 
