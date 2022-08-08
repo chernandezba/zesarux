@@ -231,8 +231,6 @@ int snapshot_opcion_seleccionada=0;
 int esxdos_traps_opcion_seleccionada=0;
 int plusthreedisk_opcion_seleccionada=0;
 int msxcart_opcion_seleccionada=0;
-int z88_slots_opcion_seleccionada=0;
-int z88_slot_insert_opcion_seleccionada=0;
 int z88_eprom_size_opcion_seleccionada=0;
 int z88_flash_intel_size_opcion_seleccionada=0;
 int storage_tape_opcion_seleccionada=0;
@@ -27660,6 +27658,9 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 	char string_slot_eprom_name_shown[30],string_slot_flash_intel_name_shown[30];
 	char string_memory_type[20];
 
+    //Esta opcion siempre local aqui y empezar en la 0
+    int z88_slot_insert_opcion_seleccionada=0;
+
     do {
 
 
@@ -28074,12 +28075,16 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
     int slot=valor_opcion;
 
+    //Esta opcion siempre local aqui y empezar en la 0
+    int z88_slots_opcion_seleccionada=0;
+
     do {
 
         menu_add_item_menu_inicial(&array_menu_z88_slots,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         if (slot==0) {
             menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Change RAM size");
+            menu_add_item_menu_tiene_submenu(array_menu_z88_slots);
             menu_add_item_menu_tooltip(array_menu_z88_slots,"Internal ROM and RAM");
             menu_add_item_menu_ayuda(array_menu_z88_slots,"Internal RAM can be maximum 512 KB. Internal ROM can be changed from \n"
                 "Machine Menu->Custom Machine, and can also be maximum 512 KB");
@@ -28095,6 +28100,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Modify slot");
+            menu_add_item_menu_tiene_submenu(array_menu_z88_slots);
 			//establecemos numero slot como opcion de ese item de menu
 			menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
             menu_add_item_menu_tooltip(array_menu_z88_slots,"Type of memory card if present and file name in case of slot 3 and EPROM/Flash cards");
