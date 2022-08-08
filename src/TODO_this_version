@@ -181,29 +181,3 @@ Ver documentacion Z88, Filer reference
 
 -poder hacer browse de los archivos en RAM de z88
 
-
--Z88. Poder cambiar reloj del Z88 con el reloj real.
-OK. pero lo pone a reloj UTC
-B21.
-iy=1fa4
-
-f29b ld (iy+08),c 
-
-c=hora
-
-bank 20h
-8040bh:
-
-        uwSysDateLow            ds.w    1       ; 11 bytes buffer for system time  -> segundos??
-        uwSysDateMid            ds.w    1
-        uwSysDateHigh           ds.w    1
-
-1 enero 0000: 00:00:00
-es:
-
-00229f2f9600H
-
-1 enero 1970 00:00:00
-es:
-
-003118a41200H
