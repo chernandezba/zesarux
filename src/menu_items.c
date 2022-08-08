@@ -28191,9 +28191,15 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
         menu_item item_seleccionado;
         int retorno_menu;
 
+        int slot=valor_opcion;
+
         do {
 
-		menu_add_item_menu_inicial_format(&array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"ROM: %d Kb RAM: %d Kb",(z88_internal_rom_size+1)/1024,(z88_internal_ram_size+1)/1024);
+        menu_add_item_menu_inicial(&array_menu_z88_slots,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        if (slot==0) {
+
+		menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"ROM: %d Kb RAM: %d Kb",(z88_internal_rom_size+1)/1024,(z88_internal_ram_size+1)/1024);
                 menu_add_item_menu_tooltip(array_menu_z88_slots,"Internal ROM and RAM");
                 menu_add_item_menu_ayuda(array_menu_z88_slots,"Internal RAM can be maximum 512 KB. Internal ROM can be changed from \n"
 					"Machine Menu->Custom Machine, and can also be maximum 512 KB");
@@ -28201,13 +28207,13 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
                 //establecemos numero slot como opcion de ese item de menu
                 menu_add_item_menu_valor_opcion(array_menu_z88_slots,0);
 
+        }
 
-
-		int slot;
+        else {
 
 		//int eprom_flash_invalida_en_slot_3=0;
 
-		for (slot=1;slot<=3;slot++) {
+		//for (slot=1;slot<=3;slot++) {
 
 			int eprom_flash_valida=0;
 			int tipo_tarjeta=-1;
@@ -28382,7 +28388,10 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 		menu_add_ESC_item(array_menu_z88_slots);
 
-                retorno_menu=menu_dibuja_menu(&z88_slots_opcion_seleccionada,&item_seleccionado,array_menu_z88_slots,"Z88 Memory Slots" );
+        char titulo_ventana[30];
+        sprintf(titulo_ventana,"Z88 Memory Slot %d",slot);
+
+                retorno_menu=menu_dibuja_menu(&z88_slots_opcion_seleccionada,&item_seleccionado,array_menu_z88_slots,titulo_ventana);
 
                 
 
@@ -31953,12 +31962,16 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_Z88) {
-			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_z88_slots,NULL,"Z88 Memory ~~Slots");
-            menu_add_item_menu_shortcut(array_menu_storage,'s');
+            int i;
+            for (i=0;i<=3;i++) {
+                menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_z88_slots,NULL,"Z88 Memory Slot %d",i);
+                //menu_add_item_menu_shortcut(array_menu_storage,'s');
+                menu_add_item_menu_valor_opcion(array_menu_storage,i);
 
-            menu_add_item_menu_tooltip(array_menu_storage,"Z88 Memory Slots");
-            menu_add_item_menu_ayuda(array_menu_storage,"Selects Memory Slots to use on Z88");
-            menu_add_item_menu_tiene_submenu(array_menu_storage);
+                menu_add_item_menu_tooltip(array_menu_storage,"Z88 Memory Slots");
+                menu_add_item_menu_ayuda(array_menu_storage,"Selects Memory Slots to use on Z88");
+                menu_add_item_menu_tiene_submenu(array_menu_storage);
+            }
 
 		}
 
@@ -33821,18 +33834,18 @@ int zxdesktop_lowericon_z88_cart_3_is_active(void)
 
 void zxdesktop_lowericon_z88_cart_1_accion(void)
 {
-	menu_z88_slot_insert(1);
+	menu_z88_slots(1);
 }
 
 void zxdesktop_lowericon_z88_cart_2_accion(void)
 {
-	menu_z88_slot_insert(2);
+	menu_z88_slots(2);
 }
 
 
 void zxdesktop_lowericon_z88_cart_3_accion(void)
 {
-	menu_z88_slot_insert(3);
+	menu_z88_slots(3);
 }
 
 //Para iconos que no alteran su inverso, apuntar a aqui
