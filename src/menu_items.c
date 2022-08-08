@@ -27132,148 +27132,125 @@ char menu_insert_slot_flash_intel_name[PATH_MAX];
 
 void menu_z88_slot_insert_internal_ram(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        //por defecto
-        int common_opcion_seleccionada=0;
+    //por defecto
+    int common_opcion_seleccionada=0;
 
-        //RAM interna. Siempre entre 32 y 512 K
+    //RAM interna. Siempre entre 32 y 512 K
 
-        do {
+    do {
 
-            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-            int i;
-            int tamanyo=32768;
+        int i;
+        int tamanyo=32768;
 
-            for (i=0;i<5;i++) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%d Kb",tamanyo/1024);
-                menu_add_item_menu_valor_opcion(array_menu_common,tamanyo);
-                
-                //Obtener la posicion segun la ram actual. 0=32kb, 1=64kb, etc
-                if (tamanyo==menu_insert_slot_ram_size) common_opcion_seleccionada=i;
+        for (i=0;i<5;i++) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%d Kb",tamanyo/1024);
+            menu_add_item_menu_valor_opcion(array_menu_common,tamanyo);
+            
+            //Obtener la posicion segun la ram actual. 0=32kb, 1=64kb, etc
+            if (tamanyo==menu_insert_slot_ram_size) common_opcion_seleccionada=i;
 
-                tamanyo *=2;
-            }
+            tamanyo *=2;
+        }
 
 
-            retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"RAM Size");
+        retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"RAM Size");
 
-            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                menu_insert_slot_ram_size=item_seleccionado.valor_opcion;
-                return;
-            }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            menu_insert_slot_ram_size=item_seleccionado.valor_opcion;
+            return;
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
-
-void old_menu_z88_slot_insert_internal_ram(MENU_ITEM_PARAMETERS)
-{
-
-	//RAM interna. Siempre entre 32 y 512 K
-        if (menu_insert_slot_ram_size==512*1024) menu_insert_slot_ram_size=32*1024;
-        else menu_insert_slot_ram_size *=2;
-}
-
 
 void menu_z88_slot_insert_ram(MENU_ITEM_PARAMETERS)
 {
 
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        //por defecto
-        int common_opcion_seleccionada=0;
-
-
-        do {
-
-            menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-            int i;
-            int tamanyo=32768;
-
-            for (i=0;i<6;i++) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%d Kb",tamanyo/1024);
-                menu_add_item_menu_valor_opcion(array_menu_common,tamanyo);
-                
-                //Obtener la posicion segun la ram actual. 0=32kb, 1=64kb, etc
-                if (tamanyo==menu_insert_slot_ram_size) common_opcion_seleccionada=i;
-
-                tamanyo *=2;
-            }
+    //por defecto
+    int common_opcion_seleccionada=0;
 
 
-            retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Size");
+    do {
 
-            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                menu_insert_slot_ram_size=item_seleccionado.valor_opcion;
-                return;
-            }
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+        int i;
+        int tamanyo=32768;
+
+        for (i=0;i<6;i++) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%d Kb",tamanyo/1024);
+            menu_add_item_menu_valor_opcion(array_menu_common,tamanyo);
+            
+            //Obtener la posicion segun la ram actual. 0=32kb, 1=64kb, etc
+            if (tamanyo==menu_insert_slot_ram_size) common_opcion_seleccionada=i;
+
+            tamanyo *=2;
+        }
+
+
+        retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Size");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            menu_insert_slot_ram_size=item_seleccionado.valor_opcion;
+            return;
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
-
-void old_menu_z88_slot_insert_ram(MENU_ITEM_PARAMETERS)
-{
-
-	//RAM siempre entre 32 y 1024 K
-	//if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
-	//else if (menu_insert_slot_ram_size==1024*1024) menu_insert_slot_ram_size=0;
-	//else menu_insert_slot_ram_size *=2;
-
-	//RAM siempre entre 32 y 1024 K
-	if (menu_insert_slot_ram_size==1024*1024) menu_insert_slot_ram_size=32768;
-	else menu_insert_slot_ram_size *=2;    
-}
-
 
 
 int menu_z88_eprom_size(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_z88_eprom_size;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_z88_eprom_size;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        do {
-               //32, 128, 256
+    do {
+        //32, 128, 256
 
-                menu_add_item_menu_inicial_format(&array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"32 Kb");
+        menu_add_item_menu_inicial_format(&array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"32 Kb");
 
-                menu_add_item_menu_format(array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"128 Kb");
+        menu_add_item_menu_format(array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"128 Kb");
 
-		menu_add_item_menu_format(array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"256 Kb");
+        menu_add_item_menu_format(array_menu_z88_eprom_size,MENU_OPCION_NORMAL,NULL,NULL,"256 Kb");
 
 
-                menu_add_item_menu(array_menu_z88_eprom_size,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_ESC_item(array_menu_z88_eprom_size);
+        menu_add_item_menu(array_menu_z88_eprom_size,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_z88_eprom_size);
 
-                retorno_menu=menu_dibuja_menu(&z88_eprom_size_opcion_seleccionada,&item_seleccionado,array_menu_z88_eprom_size,"Eprom Size" );
+        retorno_menu=menu_dibuja_menu(&z88_eprom_size_opcion_seleccionada,&item_seleccionado,array_menu_z88_eprom_size,"Eprom Size" );
 
-                
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
 
-			//Devolver tamanyo eprom
-			if (z88_eprom_size_opcion_seleccionada==0) return 32*1024;
-			if (z88_eprom_size_opcion_seleccionada==1) return 128*1024;
-			if (z88_eprom_size_opcion_seleccionada==2) return 256*1024;
-                }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                    
+            }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+            //Devolver tamanyo eprom
+            if (z88_eprom_size_opcion_seleccionada==0) return 32*1024;
+            if (z88_eprom_size_opcion_seleccionada==1) return 128*1024;
+            if (z88_eprom_size_opcion_seleccionada==2) return 256*1024;
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 	//Salimos con ESC, devolver 0
 	return 0;
@@ -27282,228 +27259,225 @@ int menu_z88_eprom_size(MENU_ITEM_PARAMETERS)
 
 void menu_z88_slot_insert_eprom(MENU_ITEM_PARAMETERS)
 {
-        char *filtros[4];
+    char *filtros[4];
 
-        filtros[0]="eprom";
-        filtros[1]="epr";
-        filtros[2]="63";
-        filtros[3]=0;
+    filtros[0]="eprom";
+    filtros[1]="epr";
+    filtros[2]="63";
+    filtros[3]=0;
 
-	//guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+//guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-        //Obtenemos directorio de rom
-        //si no hay directorio, vamos a rutas predefinidas
-        if (menu_insert_slot_eprom_name[0]==0) menu_chdir_sharedfiles();
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(menu_insert_slot_eprom_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos directorio de rom
+    //si no hay directorio, vamos a rutas predefinidas
+    if (menu_insert_slot_eprom_name[0]==0) menu_chdir_sharedfiles();
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(menu_insert_slot_eprom_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
         }
+    }
 
 
 
-        int ret;
+    int ret;
 
-        ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_eprom_name);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_eprom_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-        if (ret==1) {
+    if (ret==1) {
 
-       		//Ver si archivo existe y preguntar si inicializar o no
-                struct stat buf_stat;
+        //Ver si archivo existe y preguntar si inicializar o no
+        struct stat buf_stat;
 
-                if (stat(menu_insert_slot_eprom_name, &buf_stat)!=0) {
+        if (stat(menu_insert_slot_eprom_name, &buf_stat)!=0) {
 
-			if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-				menu_insert_slot_eprom_name[0]=0;
-				return;
-			}
+            if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                menu_insert_slot_eprom_name[0]=0;
+                return;
+            }
 
-			//Preguntar tamanyo EPROM
-			int size=menu_z88_eprom_size(0);
+            //Preguntar tamanyo EPROM
+            int size=menu_z88_eprom_size(0);
 
-			if (size==0) {
-				//ha salido con ESC
-				menu_insert_slot_eprom_name[0]=0;
-				return;
-			}
+            if (size==0) {
+                //ha salido con ESC
+                menu_insert_slot_eprom_name[0]=0;
+                return;
+            }
 
 
-			if (z88_create_blank_eprom_flash_file(menu_insert_slot_eprom_name,size)) {
-				menu_insert_slot_eprom_name[0]=0;
-			}
+            if (z88_create_blank_eprom_flash_file(menu_insert_slot_eprom_name,size)) {
+                menu_insert_slot_eprom_name[0]=0;
+            }
 
-			return;
-                }
+            return;
         }
+    }
 
-        else menu_insert_slot_eprom_name[0]=0;
+    else menu_insert_slot_eprom_name[0]=0;
 }
 
 
 void menu_z88_slot_insert_hybrid_eprom(MENU_ITEM_PARAMETERS)
 {
-        char *filtros[4];
+    char *filtros[4];
 
-        filtros[0]="eprom";
-        filtros[1]="epr";
-        //filtros[2]="63"; .63 extensions no admitidas para eprom que son hybridas
-        filtros[2]=0;
+    filtros[0]="eprom";
+    filtros[1]="epr";
+    //filtros[2]="63"; .63 extensions no admitidas para eprom que son hybridas
+    filtros[2]=0;
 
-        //guardamos directorio actual
-        char directorio_actual[PATH_MAX];
-        getcwd(directorio_actual,PATH_MAX);
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
 
-        //Obtenemos directorio de rom
-        //si no hay directorio, vamos a rutas predefinidas
-        if (menu_insert_slot_eprom_name[0]==0) menu_chdir_sharedfiles();
-        else {
-                char directorio[PATH_MAX];
-                util_get_dir(menu_insert_slot_eprom_name,directorio);
-                //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+    //Obtenemos directorio de rom
+    //si no hay directorio, vamos a rutas predefinidas
+    if (menu_insert_slot_eprom_name[0]==0) menu_chdir_sharedfiles();
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(menu_insert_slot_eprom_name,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
 
-                //cambiamos a ese directorio, siempre que no sea nulo
-                if (directorio[0]!=0) {
-                        debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
-                        zvfs_chdir(directorio);
-                }
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+                debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+                zvfs_chdir(directorio);
         }
+    }
 
 
 
-        int ret;
+    int ret;
 
-        ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_eprom_name);
-        //volvemos a directorio inicial
-        zvfs_chdir(directorio_actual);
+    ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_eprom_name);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
 
-  if (ret==1) {
+    if (ret==1) {
 
-                //Ver si archivo existe y preguntar si inicializar o no
-                struct stat buf_stat;
+        //Ver si archivo existe y preguntar si inicializar o no
+        struct stat buf_stat;
 
-                if (stat(menu_insert_slot_eprom_name, &buf_stat)!=0) {
+        if (stat(menu_insert_slot_eprom_name, &buf_stat)!=0) {
 
-                        if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                menu_insert_slot_eprom_name[0]=0;
-                                return;
-                        }
+            if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                    menu_insert_slot_eprom_name[0]=0;
+                    return;
+            }
 
-                        //Tamanyo de la parte EPROM es de 512kb
-                        int size=512*1024;
+            //Tamanyo de la parte EPROM es de 512kb
+            int size=512*1024;
 
 
-                        if (z88_create_blank_eprom_flash_file(menu_insert_slot_eprom_name,size)) {
-                                menu_insert_slot_eprom_name[0]=0;
-                        }
+            if (z88_create_blank_eprom_flash_file(menu_insert_slot_eprom_name,size)) {
+                menu_insert_slot_eprom_name[0]=0;
+            }
 
-                        return;
-                }
+            return;
         }
+    }
 
-        else menu_insert_slot_eprom_name[0]=0;
+    else menu_insert_slot_eprom_name[0]=0;
 }
 
 
 
 int menu_z88_flash_intel_size(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_z88_flash_intel_size;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_z88_flash_intel_size;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        do {
-               //512,1024
+    do {
+        //512,1024
 
-                menu_add_item_menu_inicial_format(&array_menu_z88_flash_intel_size,MENU_OPCION_NORMAL,NULL,NULL,"512 Kb");
+        menu_add_item_menu_inicial_format(&array_menu_z88_flash_intel_size,MENU_OPCION_NORMAL,NULL,NULL,"512 Kb");
 
-                menu_add_item_menu_format(array_menu_z88_flash_intel_size,MENU_OPCION_NORMAL,NULL,NULL,"1 Mb");
+        menu_add_item_menu_format(array_menu_z88_flash_intel_size,MENU_OPCION_NORMAL,NULL,NULL,"1 Mb");
 
 
-                menu_add_item_menu(array_menu_z88_flash_intel_size,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                menu_add_ESC_item(array_menu_z88_flash_intel_size);
+        menu_add_item_menu(array_menu_z88_flash_intel_size,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_z88_flash_intel_size);
 
-                retorno_menu=menu_dibuja_menu(&z88_flash_intel_size_opcion_seleccionada,&item_seleccionado,array_menu_z88_flash_intel_size,"Flash Size" );
+        retorno_menu=menu_dibuja_menu(&z88_flash_intel_size_opcion_seleccionada,&item_seleccionado,array_menu_z88_flash_intel_size,"Flash Size" );
 
+        
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
                 
+            }
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+            //Devolver tamanyo flash_intel
+            if (z88_flash_intel_size_opcion_seleccionada==0) return 512*1024;
+            if (z88_flash_intel_size_opcion_seleccionada==1) return 1024*1024;
+        }
 
-                        //Devolver tamanyo flash_intel
-                        if (z88_flash_intel_size_opcion_seleccionada==0) return 512*1024;
-                        if (z88_flash_intel_size_opcion_seleccionada==1) return 1024*1024;
-                }
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-        //Salimos con ESC, devolver 0
-        return 0;
+    //Salimos con ESC, devolver 0
+    return 0;
 }
 
 
 void menu_z88_slot_insert_flash_intel(MENU_ITEM_PARAMETERS)
 {
-        char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="flash";
-        filtros[1]=0;
+    filtros[0]="flash";
+    filtros[1]=0;
 
-        int ret;
+    int ret;
 
-        ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_flash_intel_name);
+    ret=menu_filesel("Select existing or new",filtros,menu_insert_slot_flash_intel_name);
 
-        if (ret==1) {
+    if (ret==1) {
 
-                //Ver si archivo existe y preguntar si inicializar o no
-                struct stat buf_stat;
+        //Ver si archivo existe y preguntar si inicializar o no
+        struct stat buf_stat;
 
-                if (stat(menu_insert_slot_flash_intel_name, &buf_stat)!=0) {
+        if (stat(menu_insert_slot_flash_intel_name, &buf_stat)!=0) {
 
-                        if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
-                                menu_insert_slot_flash_intel_name[0]=0;
-                                return;
-                        }
+            if (menu_confirm_yesno_texto("File does not exist","Create?")==0) {
+                    menu_insert_slot_flash_intel_name[0]=0;
+                    return;
+            }
 
-                        //Preguntar tamanyo Flash
-                        int size=menu_z88_flash_intel_size(0);
+            //Preguntar tamanyo Flash
+            int size=menu_z88_flash_intel_size(0);
 
-                        if (size==0) {
-                                //ha salido con ESC
-                                menu_insert_slot_flash_intel_name[0]=0;
-                                return;
-                        }
+            if (size==0) {
+                //ha salido con ESC
+                menu_insert_slot_flash_intel_name[0]=0;
+                return;
+            }
 
 
-                        if (z88_create_blank_eprom_flash_file(menu_insert_slot_flash_intel_name,size)) {
-				menu_insert_slot_flash_intel_name[0]=0;
-			}
+            if (z88_create_blank_eprom_flash_file(menu_insert_slot_flash_intel_name,size)) {
+                menu_insert_slot_flash_intel_name[0]=0;
+            }
 
-                        return;
-                }
+            return;
         }
+    }
 
-        else menu_insert_slot_flash_intel_name[0]=0;
+    else menu_insert_slot_flash_intel_name[0]=0;
 }
 
 
-
-
-//extern void z88_insert_ram_card(int size,int slot);
 
 //Si se han aplicado cambios (insertar tarjeta memoria) para volver a menu anterior
 z80_bit menu_z88_slot_insert_applied_changes={0};
@@ -27529,193 +27503,107 @@ void menu_z88_slot_insert_apply(MENU_ITEM_PARAMETERS)
 	}
 
 
-	/*
-	if (menu_insert_slot_type==1) {
-                //ROM
-		if (menu_insert_slot_rom_name[0]==0) debug_printf (VERBOSE_ERR,"Empty ROM name");
 
-		else {
-			z88_load_rom_card(menu_insert_slot_rom_name,menu_insert_slot_number);
-			menu_z88_slot_insert_applied_changes.v=1;
-		}
-	}
-	*/
+    if (menu_insert_slot_type==2) {
+        //EPROM
+        if (menu_insert_slot_eprom_name[0]==0) debug_printf (VERBOSE_ERR,"Empty EPROM name");
 
-        if (menu_insert_slot_type==2) {
-                //EPROM
-                if (menu_insert_slot_eprom_name[0]==0) debug_printf (VERBOSE_ERR,"Empty EPROM name");
-
-                else {
-			z88_load_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
-			menu_z88_slot_insert_applied_changes.v=1;
-		}
+        else {
+            z88_load_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
+            menu_z88_slot_insert_applied_changes.v=1;
         }
+    }
 
-        if (menu_insert_slot_type==3) {
-                //Intel Flash
-                if (menu_insert_slot_flash_intel_name[0]==0) debug_printf (VERBOSE_ERR,"Empty Flash name");
+    if (menu_insert_slot_type==3) {
+        //Intel Flash
+        if (menu_insert_slot_flash_intel_name[0]==0) debug_printf (VERBOSE_ERR,"Empty Flash name");
 
-                else {
-			z88_load_flash_intel_card(menu_insert_slot_flash_intel_name,menu_insert_slot_number);
-			menu_z88_slot_insert_applied_changes.v=1;
-		}
+        else {
+            z88_load_flash_intel_card(menu_insert_slot_flash_intel_name,menu_insert_slot_number);
+            menu_z88_slot_insert_applied_changes.v=1;
         }
+    }
 
 
-        if (menu_insert_slot_type==4) {
-                //Hybrida RAM+EPROM
-                if (menu_insert_slot_eprom_name[0]==0) debug_printf (VERBOSE_ERR,"Empty EPROM name");
+    if (menu_insert_slot_type==4) {
+        //Hybrida RAM+EPROM
+        if (menu_insert_slot_eprom_name[0]==0) debug_printf (VERBOSE_ERR,"Empty EPROM name");
 
-                else {
-                        z88_load_hybrid_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
-                        menu_z88_slot_insert_applied_changes.v=1;
-                }
+        else {
+            z88_load_hybrid_eprom_card(menu_insert_slot_eprom_name,menu_insert_slot_number);
+            menu_z88_slot_insert_applied_changes.v=1;
         }
-
-
-
+    }
 
 
 }
 
-void old_menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
-{
-    if (menu_insert_slot_ram_size==0) {
-        //si no habia, activamos ram con 32kb
-        menu_insert_slot_type=0;
-        menu_insert_slot_ram_size=32768;
-    }
 
-    else if (menu_insert_slot_type==0) {
-        //de ram pasamos a eprom
-        menu_insert_slot_type=2;
-    }
-
-    /*	else if (menu_insert_slot_type==1) {
-        //de rom pasamos a eprom
-        menu_insert_slot_type=2;
-    }
-    */
-
-    else if (menu_insert_slot_type==2) {
-        //de eprom pasamos a flash
-        menu_insert_slot_type=3;
-    }
-
-    else if (menu_insert_slot_type==3) {
-        //de flash pasamos a hybrida ram+eprom
-        menu_insert_slot_type=4;
-    }
-
-
-    else {
-        //y de flash pasamos a vacio - ram con 0 kb
-        menu_insert_slot_type=0;
-        menu_insert_slot_ram_size=0;
-	}
-}
 
 
 void menu_z88_slot_insert_change_type(MENU_ITEM_PARAMETERS)
 {
 
-        menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
 
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        //Indicamos la opcion segun el tipo 
-        int common_opcion_seleccionada;
+    //Indicamos la opcion segun el tipo 
+    int common_opcion_seleccionada;
 
-		if (menu_insert_slot_ram_size==0) common_opcion_seleccionada=0;
-		else common_opcion_seleccionada=menu_insert_slot_type+1;
+    if (menu_insert_slot_ram_size==0) common_opcion_seleccionada=0;
+    else common_opcion_seleccionada=menu_insert_slot_type+1;
 
-        //tipo 1 rom lo saltamos, no usado. que seria la posicion 2: 0:empty, 1:ram, 2:rom, 3:eprom...
-        if (common_opcion_seleccionada>=2) common_opcion_seleccionada--;
+    //tipo 1 rom lo saltamos, no usado. que seria la posicion 2: 0:empty, 1:ram, 2:rom, 3:eprom...
+    if (common_opcion_seleccionada>=2) common_opcion_seleccionada--;
 
 
 
-        do {
+    do {
 
-            menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Empty");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Empty");
 
-            int i;
+        int i;
 
-            for (i=0;i<5;i++) {
+        for (i=0;i<5;i++) {
 
-                //tipo 1 rom no usado
-                if (i!=1) {
+            //tipo 1 rom no usado
+            if (i!=1) {
 
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,z88_memory_types[i]);
-                    menu_add_item_menu_valor_opcion(array_menu_common,i);
-                }
-
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,z88_memory_types[i]);
+                menu_add_item_menu_valor_opcion(array_menu_common,i);
             }
 
-
-            retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Slot type");
-
+        }
 
 
-            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                //llamamos por valor de funcion
-                //En vez de eso simplemente cambiamos valores
-                if (common_opcion_seleccionada==0) {
-                    //pasamos a vacio - ram con 0 kb
-                    menu_insert_slot_type=0;
-                    menu_insert_slot_ram_size=0;
-                }
-                else {
-                    if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
-                    menu_insert_slot_type=item_seleccionado.valor_opcion;
-                }
-                return;
+        retorno_menu=menu_dibuja_menu(&common_opcion_seleccionada,&item_seleccionado,array_menu_common,"Slot type");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            //En vez de eso simplemente cambiamos valores
+            if (common_opcion_seleccionada==0) {
+                //pasamos a vacio - ram con 0 kb
+                menu_insert_slot_type=0;
+                menu_insert_slot_ram_size=0;
             }
+            else {
+                if (menu_insert_slot_ram_size==0) menu_insert_slot_ram_size=32768;
+                menu_insert_slot_type=item_seleccionado.valor_opcion;
+            }
+            return;
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-    //no cambiar nada
-    return;
-
-
-    /*
-
-    if (menu_insert_slot_ram_size==0) {
-        //si no habia, activamos ram con 32kb
-        menu_insert_slot_type=0;
-        menu_insert_slot_ram_size=32768;
-    }
-
-    else if (menu_insert_slot_type==0) {
-        //de ram pasamos a eprom
-        menu_insert_slot_type=2;
-    }
-
-    //	else if (menu_insert_slot_type==1) {
-    //    //de rom pasamos a eprom
-    //    menu_insert_slot_type=2;
-    //}
-    
-
-    else if (menu_insert_slot_type==2) {
-        //de eprom pasamos a flash
-        menu_insert_slot_type=3;
-    }
-
-    else if (menu_insert_slot_type==3) {
-        //de flash pasamos a hybrida ram+eprom
-        menu_insert_slot_type=4;
-    }
+//no cambiar nada
 
 
-    else {
-        //y de flash pasamos a vacio - ram con 0 kb
-        menu_insert_slot_type=0;
-        menu_insert_slot_ram_size=0;
-	}
-    */
 }
 
 
@@ -27765,22 +27653,19 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_item *array_menu_z88_slot_insert;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        //char string_slot_name_shown[20];
+    menu_item *array_menu_z88_slot_insert;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    //char string_slot_name_shown[20];
 	char string_slot_eprom_name_shown[30],string_slot_flash_intel_name_shown[30];
 	char string_memory_type[20];
 
-        do {
+    do {
 
-		//menu_tape_settings_trunc_name(menu_insert_slot_rom_name,string_slot_name_shown,20);
 
 		menu_tape_settings_trunc_name(menu_insert_slot_eprom_name,string_slot_eprom_name_shown,30);
 		menu_tape_settings_trunc_name(menu_insert_slot_flash_intel_name,string_slot_flash_intel_name_shown,30);
 
-
-                //int slot;
 
 
 		if (menu_insert_slot_ram_size==0) sprintf (string_memory_type,"%s","Empty");
@@ -27791,8 +27676,8 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 		if (menu_insert_slot_number>0) {
 
 			menu_add_item_menu_inicial_format(&array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_change_type,NULL,"Memory type: %s",string_memory_type);
-        	        menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Type of memory card if present");
-                	menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Type of memory card if present");
+            menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Type of memory card if present");
+            menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Type of memory card if present");
 
 			if (menu_insert_slot_type==0 && menu_insert_slot_ram_size!=0) {
 				//RAM
@@ -27808,28 +27693,26 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 			}
 
 			if (menu_insert_slot_type==2) {
-                	        //EPROM
-                        	menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_eprom,NULL,"Name: %s",string_slot_eprom_name_shown);
-		                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"EPROM file to use");
-        		        menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"EPROM file to use. Valid formats are .eprom. Select existing or new");
+                //EPROM
+                menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_eprom,NULL,"Name: %s",string_slot_eprom_name_shown);
+                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"EPROM file to use");
+                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"EPROM file to use. Valid formats are .eprom. Select existing or new");
 
-                	}
+            }
 
-                        if (menu_insert_slot_type==3) {
-                                //Intel Flash
-                                menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_flash_intel,NULL,"Name: %s",string_slot_flash_intel_name_shown);
-                                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Intel Flash file to use");
-                                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Intel Flash file to use. Valid formats are .flash. Select existing or new");
-
-                        }
+            if (menu_insert_slot_type==3) {
+                //Intel Flash
+                menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_flash_intel,NULL,"Name: %s",string_slot_flash_intel_name_shown);
+                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Intel Flash file to use");
+                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Intel Flash file to use. Valid formats are .flash. Select existing or new");
+            }
 
 			if (menu_insert_slot_type==4) {
-                                //Hybrida RAM+EPROM
-                                menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_hybrid_eprom,NULL,"Name: %s",string_slot_eprom_name_shown);
-                                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Hybrid RAM+EPROM file to use");
-                                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Hybrid RAM+EPROM file to use. Valid formats are .eprom. Select existing or new");
-
-                        }
+                //Hybrida RAM+EPROM
+                menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_hybrid_eprom,NULL,"Name: %s",string_slot_eprom_name_shown);
+                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Hybrid RAM+EPROM file to use");
+                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Hybrid RAM+EPROM file to use. Valid formats are .eprom. Select existing or new");
+            }
 
 
 
@@ -27839,45 +27722,43 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 			//Memoria interna
 			menu_add_item_menu_inicial_format(&array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_internal_ram,NULL,"RAM Size: %d Kb",(menu_insert_slot_ram_size)/1024);
 			menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Size of RAM card");
-                        menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Size of RAM card");
+            menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Size of RAM card");
 		}
 
 
 
 
 		menu_add_item_menu_format(array_menu_z88_slot_insert,MENU_OPCION_NORMAL,menu_z88_slot_insert_apply,NULL,"Apply changes");
-                menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Apply slot changes");
-                menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Apply slot changes");
+        menu_add_item_menu_tooltip(array_menu_z88_slot_insert,"Apply slot changes");
+        menu_add_item_menu_ayuda(array_menu_z88_slot_insert,"Apply slot changes");
 
 
 
 
 
-                menu_add_item_menu(array_menu_z88_slot_insert,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_z88_slot_insert,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                menu_add_ESC_item(array_menu_z88_slot_insert);
-
-                //retorno_menu=menu_dibuja_menu(&z88_slot_insert_opcion_seleccionada,&item_seleccionado,array_menu_z88_slot_insert,"Z88 Memory Slots" );
+        menu_add_ESC_item(array_menu_z88_slot_insert);
 
 		//Titulo de la ventana variable segun el nombre del slot
 		char texto_titulo[32];
 		sprintf (texto_titulo,"Modify Slot %d",menu_insert_slot_number);
 
-                retorno_menu=menu_dibuja_menu(&z88_slot_insert_opcion_seleccionada,&item_seleccionado,array_menu_z88_slot_insert,texto_titulo);
+        retorno_menu=menu_dibuja_menu(&z88_slot_insert_opcion_seleccionada,&item_seleccionado,array_menu_z88_slot_insert,texto_titulo);
 
                 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_z88_slot_insert_applied_changes.v );
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && !menu_z88_slot_insert_applied_changes.v );
 
 
 }
@@ -28187,13 +28068,13 @@ void menu_z88_slot_open_flap(MENU_ITEM_PARAMETERS)
 //menu z88 slots
 void menu_z88_slots(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_z88_slots;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item *array_menu_z88_slots;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-        int slot=valor_opcion;
+    int slot=valor_opcion;
 
-        do {
+    do {
 
         menu_add_item_menu_inicial(&array_menu_z88_slots,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
@@ -28211,10 +28092,6 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
         }
 
         else {
-
-		//int eprom_flash_invalida_en_slot_3=0;
-
-		//for (slot=1;slot<=3;slot++) {
 
 
             menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Modify slot");
@@ -28311,25 +28188,15 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," Info: %s",string_info_tarjeta);
 
-                //Quito la ayuda porque al final es un elemento no seleccionable, para no confundir al usuario y piense
-                //que pulsando enter hace alguna accion
-                /*
-				menu_add_item_menu_tooltip(array_menu_z88_slots,"Card Information");
-				menu_add_item_menu_ayuda(array_menu_z88_slots,"Size of Card, and in case of EPROM/Flash cards: \n"
-							"-Type of Card: Applications, Files or Unknown type\n"
-							"-Space Available, in case of Files Card\n");
-                */
-
 
 			}
 
 			//Si hay una eprom en slot 3, dar opcion de borrar
 			if (slot==3 && z88_memory_slots[3].size!=0 && (z88_memory_slots[3].type==2 || z88_memory_slots[3].type==3) ) {
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_erase_eprom_flash,NULL,"Erase Card");
-	                        menu_add_item_menu_tooltip(array_menu_z88_slots,"Card can only be erased on slot 3");
-        	                menu_add_item_menu_ayuda(array_menu_z88_slots,"Card can only be erased on slot 3");
+                menu_add_item_menu_tooltip(array_menu_z88_slots,"Card can only be erased on slot 3");
+                menu_add_item_menu_ayuda(array_menu_z88_slots,"Card can only be erased on slot 3");
 			}
-
 
 
 			if (eprom_flash_valida && tipo_tarjeta>0) {
@@ -28359,14 +28226,14 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_card_browser,NULL,"Card browser");
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Browse card");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Browse card");
-	                        //establecemos numero slot como opcion de ese item de menu
-        	                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
+                //establecemos numero slot como opcion de ese item de menu
+                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
 
 				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_copy_from_eprom,NULL,"Copy from Card");
 				menu_add_item_menu_tooltip(array_menu_z88_slots,"Copy files from Card to your hard drive");
 				menu_add_item_menu_ayuda(array_menu_z88_slots,"Copy files from Card to your hard drive");
-	                        //establecemos numero slot como opcion de ese item de menu
-        	                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
+                //establecemos numero slot como opcion de ese item de menu
+                menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
 
 
 			}
@@ -28374,7 +28241,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 		}
 
 
-                menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_z88_slots,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 
@@ -28385,20 +28252,20 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
         char titulo_ventana[30];
         sprintf(titulo_ventana,"Z88 Memory Slot %d",slot);
 
-                retorno_menu=menu_dibuja_menu(&z88_slots_opcion_seleccionada,&item_seleccionado,array_menu_z88_slots,titulo_ventana);
+        retorno_menu=menu_dibuja_menu(&z88_slots_opcion_seleccionada,&item_seleccionado,array_menu_z88_slots,titulo_ventana);
 
-                
+        
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                    
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
