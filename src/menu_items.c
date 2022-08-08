@@ -27862,7 +27862,7 @@ void menu_z88_slot_insert(MENU_ITEM_PARAMETERS)
 
 		//Titulo de la ventana variable segun el nombre del slot
 		char texto_titulo[32];
-		sprintf (texto_titulo,"Z88 Memory Slot %d",menu_insert_slot_number);
+		sprintf (texto_titulo,"Modify Slot %d",menu_insert_slot_number);
 
                 retorno_menu=menu_dibuja_menu(&z88_slot_insert_opcion_seleccionada,&item_seleccionado,array_menu_z88_slot_insert,texto_titulo);
 
@@ -28198,14 +28198,15 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial(&array_menu_z88_slots,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
         if (slot==0) {
+            menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Change RAM size");
+            menu_add_item_menu_tooltip(array_menu_z88_slots,"Internal ROM and RAM");
+            menu_add_item_menu_ayuda(array_menu_z88_slots,"Internal RAM can be maximum 512 KB. Internal ROM can be changed from \n"
+                "Machine Menu->Custom Machine, and can also be maximum 512 KB");
 
-		menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"ROM: %d Kb RAM: %d Kb",(z88_internal_rom_size+1)/1024,(z88_internal_ram_size+1)/1024);
-                menu_add_item_menu_tooltip(array_menu_z88_slots,"Internal ROM and RAM");
-                menu_add_item_menu_ayuda(array_menu_z88_slots,"Internal RAM can be maximum 512 KB. Internal ROM can be changed from \n"
-					"Machine Menu->Custom Machine, and can also be maximum 512 KB");
+            //establecemos numero slot como opcion de ese item de menu
+            menu_add_item_menu_valor_opcion(array_menu_z88_slots,0);
 
-                //establecemos numero slot como opcion de ese item de menu
-                menu_add_item_menu_valor_opcion(array_menu_z88_slots,0);
+            menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," ROM: %d Kb RAM: %d Kb",(z88_internal_rom_size+1)/1024,(z88_internal_ram_size+1)/1024);
 
         }
 
@@ -28215,6 +28216,24 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 		//for (slot=1;slot<=3;slot++) {
 
+
+            menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Modify slot");
+			//establecemos numero slot como opcion de ese item de menu
+			menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
+            menu_add_item_menu_tooltip(array_menu_z88_slots,"Type of memory card if present and file name in case of slot 3 and EPROM/Flash cards");
+            menu_add_item_menu_ayuda(array_menu_z88_slots,"Type of memory card if present and file name in case of slot 3 and EPROM/Flash cards.\n"
+                "Slot 1, 2 or 3 can contain "
+                "EPROM or Intel Flash cards. But EPROMS and Flash cards can only be written on slot 3\n"
+                "EPROM/Flash cards files on slots 1,2 are only used at insert time and loaded on Z88 memory\n"
+                "EPROM/Flash cards files on slot 3 are loaded on Z88 memory at insert time but are written everytime \n"
+                "a change is made on this Z88 memory, so, they are always used when they are inserted\n"
+                "\n"
+                "Flash card files and eprom files are internally compatible, but eprom size maximum is 256 Kb "
+                "and flash minimum size is 512 Kb, so you can not load an eprom file as a flash or viceversa\n"
+                );
+                //"Note: if you use OZ rom 4.3.1 or higher, flash cards are recognized well; if you use a lower "
+                //"version, flash cards are recognized as eprom cards");
+
 			int eprom_flash_valida=0;
 			int tipo_tarjeta=-1;
 			char *tipos_tarjeta[]={"Applications","Files","Mixed"};
@@ -28222,7 +28241,7 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 			//Si no hay slot insertado
 			if (z88_memory_slots[slot].size==0) {
-				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"Empty");
+				menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," Empty");
 			}
 
 			else {
@@ -28232,28 +28251,14 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 				if (slot==3 && (type==2 || type==3 || type==4) ) {
 					char string_writable_card_shown[30];
 					menu_tape_settings_trunc_name(z88_memory_slots[slot].eprom_flash_nombre_archivo,string_writable_card_shown,30);
-					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"%s: %s",z88_memory_types[type],string_writable_card_shown);
+					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," %s: %s",z88_memory_types[type],string_writable_card_shown);
 				}
 				else {
-					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_NORMAL,menu_z88_slot_insert,NULL,"%s",z88_memory_types[type]);
+					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," %s",z88_memory_types[type]);
 				}
 			}
 
-			//establecemos numero slot como opcion de ese item de menu
-			menu_add_item_menu_valor_opcion(array_menu_z88_slots,slot);
-	                menu_add_item_menu_tooltip(array_menu_z88_slots,"Type of memory card if present and file name in case of slot 3 and EPROM/Flash cards");
-        	        menu_add_item_menu_ayuda(array_menu_z88_slots,"Type of memory card if present and file name in case of slot 3 and EPROM/Flash cards.\n"
-						"Slot 1, 2 or 3 can contain "
-						"EPROM or Intel Flash cards. But EPROMS and Flash cards can only be written on slot 3\n"
-						"EPROM/Flash cards files on slots 1,2 are only used at insert time and loaded on Z88 memory\n"
-						"EPROM/Flash cards files on slot 3 are loaded on Z88 memory at insert time but are written everytime \n"
-						"a change is made on this Z88 memory, so, they are always used when they are inserted\n"
-						"\n"
-						"Flash card files and eprom files are internally compatible, but eprom size maximum is 256 Kb "
-						"and flash minimum size is 512 Kb, so you can not load an eprom file as a flash or viceversa\n"
-						);
-						//"Note: if you use OZ rom 4.3.1 or higher, flash cards are recognized well; if you use a lower "
-						//"version, flash cards are recognized as eprom cards");
+
 
 			if (z88_memory_slots[slot].size!=0) {
 
