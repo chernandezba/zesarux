@@ -3288,6 +3288,9 @@ es:
 es:
 
 003118a41200H    
+
+
+000000000000H = 23/11/4713 BC
     */
 
     segundos +=0x3118a41200;
@@ -3296,7 +3299,7 @@ es:
 
     int i;
 
-    for (i=0;i<8;i++) {
+    for (i=0;i<6;i++) {
         z80_byte valor=segundos & 0xFF;
         segundos = segundos >> 8;
         poke_byte_no_time_z88_bank_no_check_low(dir++,0x20,valor);
