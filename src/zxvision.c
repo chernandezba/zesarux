@@ -8868,7 +8868,7 @@ void zxvision_restore_one_window(char *ventana_a_restaurar)
 	int antes_menu_overlay_activo=menu_overlay_activo;
 
 
-    printf ("Restoring window %s\n",ventana_a_restaurar);
+    //printf ("Restoring window %s\n",ventana_a_restaurar);
 
     int indice=zxvision_find_known_window(ventana_a_restaurar);
 

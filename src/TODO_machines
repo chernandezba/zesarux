@@ -906,8 +906,6 @@ tarjeta que probaba Thierry:
 512K flash Eprom (AMIC 29040) and 512K SRAM. They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
 
 
--en footer, que parpadeen (o texto inverso) cuando se lea? de una tarjeta de memoria
-
 -revisar juegos de whatnow para agregar alguno mas...
 
 -gestion tamanyo rom interna. necesario? quiza no pues la propia rom ya identifica su propio tamanyo
@@ -923,6 +921,8 @@ o quiza enviando secuencia de teclas..-> indice->panel->tab hasta fecha, etc
 
 -envio de tecla /? desde menu en z88, entra en conflicto porque esa tecla es la -
 
+-establecer battery low no va. por que? Ver funcion z88_set_low_battery
+
 ------
 
 
@@ -931,8 +931,7 @@ o quiza enviando secuencia de teclas..-> indice->panel->tab hasta fecha, etc
 
 -Z88. Dejar algún programa de ejemplo con formato .bas y binario. Quizá el whatnow esta así?
 
--Z88 ventana principal tamaño normal de z88, eliminar zona gris. ventana aparte para menu (quiza esto para todos los modelos??... aunque
-me gusta tener el menu encima de misma ventana del emulador, quiza podria ser una opcion seleccionable)
+-Z88 ventana principal tamaño normal de z88, eliminar zona gris.
 -Z88 teclado virtual para Z88 y/o resto de modelos
 
 -Z88. Probar a compilar programas con z88dk

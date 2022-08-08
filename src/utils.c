@@ -19893,6 +19893,15 @@ void snapshot_get_date_time_string_human(char *texto)
 	snapshot_get_date_time_string_common(texto,0);
 }
 
+//Retorna segundos desde 1970
+z80_64bit util_get_seconds(void)
+{
+
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    return tv.tv_sec;
+}
+
 //Retorna la paridad de un valor, o sea la cantidad de 0
 /*
 Parity:

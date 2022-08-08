@@ -3265,3 +3265,43 @@ int z88_flap_is_open(void)
     return (blink_sta & BM_STAFLAPOPEN ? 1 : 0);
 }
 
+
+//Establece el reloj del Z88 con el actual
+void z88_set_clock_current(void)
+{
+    z80_64bit segundos=util_get_seconds();
+
+    /*
+bank 20h
+8040bh:
+
+        uwSysDateLow            ds.w    1       ; 11 bytes buffer for system time  -> segundos??
+        uwSysDateMid            ds.w    1
+        uwSysDateHigh           ds.w    1
+
+1 enero 0000: 00:00:00
+es:
+
+00229f2f9600H
+
+1 enero 1970 00:00:00
+es:
+
+003118a41200H    
+    */
+
+    segundos +=0x3118a41200;
+
+    z80_int dir=0x40b;
+
+    int i;
+
+    for (i=0;i<8;i++) {
+        z80_byte valor=segundos & 0xFF;
+        segundos = segundos >> 8;
+        poke_byte_no_time_z88_bank_no_check_low(dir++,0x20,valor);
+    }
+
+    //Y timer a 0
+    blink_tim[0]=blink_tim[1]=blink_tim[2]=blink_tim[3]=blink_tim[4]=0;
+}

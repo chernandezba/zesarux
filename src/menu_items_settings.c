@@ -4853,7 +4853,12 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_settings_set_z88_clock(MENU_ITEM_PARAMETERS)
+{
+    z88_set_clock_current();    
 
+    menu_generic_message_splash("Set Z88 clock","OK. Clock synchronized");
+}
 
 
 //menu hardware settings
@@ -5001,7 +5006,11 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		
 
-
+        if (MACHINE_IS_Z88) {
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,"Sync Z88 clock");
+            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+        }
 
 
 

@@ -734,6 +734,8 @@ extern void util_ascii_to_binary(int valor_origen,char *destino,int longitud_max
 
 //extern void util_file_save(char *filename,z80_byte *puntero, long long int tamanyo);
 
+extern z80_64bit util_get_seconds(void);
+
 extern int util_get_byte_repetitions(z80_byte *memoria,int longitud,z80_byte *byte_repetido);
 
 extern int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longitud,z80_byte magic_byte);
