@@ -9441,24 +9441,6 @@ void screen_init_colour_table(void)
 
 
 
-	//Copiamos de tabla normal, que seran grises, a tabla grises y ademas oscuros
-	/*
-	int i,r,g,b;
-	for (i=0;i<EMULATOR_TOTAL_PALETTE_COLOURS;i++) {
-
-                        b=spectrum_colortable_normal[i] & 0xFF;
-                        g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
-                        r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
-
-                        r=r/2;
-                        g=g/2;
-                        b=b/2;
-
-                        spectrum_colortable_new_blanco_y_negro[i]=(r<<16)|(g<<8)|b;
-
-	}
-	*/
-
 
 	screen_gray_mode=antes_screen_gray_mode;
 	screen_init_colour_table_siguiente();
