@@ -15211,6 +15211,22 @@ void disable_16c_mode(void)
 	pentagon_16c_mode_available.v ^=1;
 }
 
+void screen_render_bmpfile_putpixel(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+{
+    //printf("%d %d\n",x,y);
+    if (!follow_zoom) {
+        zxvision_putpixel_no_zoom(ventana,x,y,color_final);
+    }
+    else {
+        int zx,zy;
+        for (zx=0;zx<zoom_x;zx++) {
+            for (zy=0;zy<zoom_y;zy++) {
+                zxvision_putpixel_no_zoom(ventana,x*zoom_x+zx,y*zoom_y+zy,color_final);
+            }
+        }
+
+    }    
+}
 
 /*
 //Se puede especificar un x_offset que desplaza la imagen x pixeles a la derecha,
@@ -15234,8 +15250,10 @@ el marco forma parte de la zona transparente y por tanto se verá transparente d
 //color_final_transparente: color que se mostrara en el caso de transparente
 //Realmente no es transparencia, sino indicar que determinado color se mostrara con un color concreto y no de la paleta
 //pero se usa para simular transparencia, desde el menu about, para indicar color igual al del papel de fondo
-void screen_render_bmpfile(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
-    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
+void screen_render_bmpfile_function(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente,
+    void (*funcion_putpixel)(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+)
 {
 
 //putpixel del archivo bmp
@@ -15312,21 +15330,39 @@ DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the b
 
             //zxvision_putpixel(ventana,x,y,color_final);
 
+            funcion_putpixel(ventana,x,y,color_final,follow_zoom);
+
+/*
             if (!follow_zoom) {
                 zxvision_putpixel_no_zoom(ventana,x,y,color_final);
             }
             else {
                 int zx,zy;
                 for (zx=0;zx<zoom_x;zx++) {
-                for (zy=0;zy<zoom_y;zy++) {
-                zxvision_putpixel_no_zoom(ventana,x*zoom_x+zx,y*zoom_y+zy,color_final);
-                }
+                    for (zy=0;zy<zoom_y;zy++) {
+                        zxvision_putpixel_no_zoom(ventana,x*zoom_x+zx,y*zoom_y+zy,color_final);
+                    }
                 }
 
             }
+*/
+
+
         }
     }
 						
+
+}
+
+
+void screen_render_bmpfile(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
+{
+
+
+    screen_render_bmpfile_function(mem,indice_paleta_color,ventana,x_ignore,follow_zoom,
+        ancho_mostrar,indice_color_transparente,color_final_transparente,
+        screen_render_bmpfile_putpixel);
 
 }
 
