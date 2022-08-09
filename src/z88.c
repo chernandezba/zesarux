@@ -3299,12 +3299,16 @@ es:
 
     int i;
 
+    //Modificar el reloj que ha establecido el usuario
     for (i=0;i<6;i++) {
         z80_byte valor=segundos & 0xFF;
         segundos = segundos >> 8;
         poke_byte_no_time_z88_bank_no_check_low(dir++,0x20,valor);
     }
 
-    //Y timer a 0
+    //Y timer a 0. Esto es lo que se incrementa por hardware,
+    //en cambio el reloj establecido por el usuario no se incrementa.
+    //Así el reloj que muestra el sistema es:
+    // uwSysDate + TIM
     blink_tim[0]=blink_tim[1]=blink_tim[2]=blink_tim[3]=blink_tim[4]=0;
 }
