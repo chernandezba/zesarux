@@ -181,3 +181,7 @@ Ver documentacion Z88, Filer reference
 
 -poder hacer browse de los archivos en RAM de z88
 
+-opcion no mostrar leyenda Z88
+
+-investigar porque en screen_init_colour_table(void) cambia paleta bmp. Quiza esta sobreescribiendo colores grises 
+en algun sitio que no le corresponde
