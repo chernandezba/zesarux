@@ -18854,6 +18854,10 @@ void util_write_screen_bmp(char *archivo)
 
 }
 
+//Se pone a 1 cuando paleta se cambia
+//util para detectar en algunos sitios si paleta se ha cambiado y hay que cargarla de nuevo
+int util_bmp_load_palette_changed_palette=0;
+
 //Cargar 256 colores de paleta de un archivo bmp (de memoria) en un indice de nuestra paleta interna
 void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color)
 {
@@ -18895,6 +18899,12 @@ reserved	1 byte	 	unused (=0)
 
 			indice_paleta +=4;
 		}
+
+    util_bmp_load_palette_changed_palette=1;
+
+    printf("Palette has been changed\n");
+    debug_exec_show_backtrace();
+    printf("\n");
 }
 
 //Cargar un archivo bmp en memoria. Retorna puntero

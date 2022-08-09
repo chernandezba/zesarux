@@ -900,6 +900,8 @@ extern void util_write_screen_bmp(char *archivo);
 
 extern void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color);
 
+extern int util_bmp_load_palette_changed_palette;
+
 extern z80_byte *util_load_bmp_file(char *archivo);
 
 extern void util_rotate_file(char *filename,int archivos);

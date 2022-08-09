@@ -145,7 +145,9 @@ void (*scr_z88_cpc_load_keymap) (void);
 void (*scr_detectedchar_print) (z80_byte caracter);
 
 
-
+void screen_render_bmpfile_function(z80_byte *mem,int indice_paleta_color,zxvision_window *ventana,int x_ignore,int follow_zoom,
+    int ancho_mostrar,int indice_color_transparente,int color_final_transparente,
+    void (*funcion_putpixel)(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom));
 
 //Rutina que muestra los mensajes de registros de cpu, propio para cada driver
 void (*scr_debug_registers)(void);
@@ -10485,6 +10487,15 @@ void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
     //}
 }
 
+
+//Funcion auxiliar usada en render bmp
+void screen_z88_draw_lower_screen_putpixel_aux(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+{
+    screen_z88_draw_lower_screen_putpixel(x,y,color_final);   
+}
+
+z80_byte *z88_legend_bmp_file_mem=NULL;
+
 void screen_z88_draw_lower_screen(void)
 {
 	if (!MACHINE_IS_Z88) return;
@@ -10514,10 +10525,44 @@ void screen_z88_draw_lower_screen(void)
                 screen_z88_draw_lower_screen_putpixel(x,y,7);
 			}
 		}
+        
+        //Si no hay archivo cargado y/o cambio en paleta
+        if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
+
+            printf("Loading z88_legend.bmp\n");
+            if (z88_legend_bmp_file_mem==NULL) printf("because bmp was not loaded\n");
+            if (util_bmp_load_palette_changed_palette) printf("because palette was changed\n");
+
+            //localizarlo
+            char buffer_nombre[PATH_MAX];
+
+            int existe=find_sharedfile("z88_legend.bmp",buffer_nombre);
+            if (!existe)  {
+                debug_printf(VERBOSE_ERR,"Unable to find z88_legend.bmp file");
+                return;
+            }        
+
+            z88_legend_bmp_file_mem=util_load_bmp_file(buffer_nombre);
+
+            //Decimos que paleta no se ha cambiado a partir de aqui
+            //Si alguna otra tarea la cambia, nos daremos cuenta
+            util_bmp_load_palette_changed_palette=0;
+
+            int i;
+            for (i=0;i<256;i++) {
+                printf("%X ",spectrum_colortable_normal[BMP_INDEX_FIRST_COLOR+i]);
+            }
+            printf("\n");
+
+        }
 
 
-        //Prueba keyboard
-        //screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+
+        if (z88_legend_bmp_file_mem!=NULL) {
+            screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
+                0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);
+        }
+
 	}
 }
 
