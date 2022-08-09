@@ -10514,6 +10514,10 @@ void screen_z88_draw_lower_screen(void)
                 screen_z88_draw_lower_screen_putpixel(x,y,7);
 			}
 		}
+
+
+        //Prueba keyboard
+        //screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
 	}
 }
 
@@ -15234,94 +15238,94 @@ void screen_render_bmpfile(z80_byte *mem,int indice_paleta_color,zxvision_window
     int ancho_mostrar,int indice_color_transparente,int color_final_transparente)
 {
 
-						//putpixel del archivo bmp
-			
+//putpixel del archivo bmp
+
 
 /*
 Name	Size	Offset	Description
 Header	
- 	Signature	2 bytes	0000h	'BM'
+Signature	2 bytes	0000h	'BM'
 FileSize	4 bytes	0002h	File size in bytes
 reserved	4 bytes	0006h	unused (=0)
 DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the bitmap data
 
- 	Size	4 bytes	000Eh	Size of InfoHeader =40 
+Size	4 bytes	000Eh	Size of InfoHeader =40 
 Width	4 bytes	0012h	Horizontal width of bitmap in pixels
 Height	4 bytes	0016h	Vertical height of bitmap in pixels
 */		
 
 
-	//ancho y alto de la cabecera. maximo 16 bit
-						int ancho=mem[18] + 256 * mem[19];
-						int alto=mem[22] + 256 * mem[23];
+    //ancho y alto de la cabecera. maximo 16 bit
+    int ancho=mem[18] + 256 * mem[19];
+    int alto=mem[22] + 256 * mem[23];
 
-						//printf ("ancho: %d alto: %d\n",ancho,alto);
+//printf ("ancho: %d alto: %d\n",ancho,alto);
 
 
-						//118 bytes de cabecera ignorar
-						//Cuantos bytes de cabecera ignorar?
+//118 bytes de cabecera ignorar
+//Cuantos bytes de cabecera ignorar?
 
 /*
-						Name	Size	Offset	Description
+Name	Size	Offset	Description
 Header	
- 	Signature	2 bytes	0000h	'BM'
+Signature	2 bytes	0000h	'BM'
 FileSize	4 bytes	0002h	File size in bytes
 reserved	4 bytes	0006h	unused (=0)
 DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the bitmap data
 */
-						//Pillamos el offset como valor de 16 bits para simplificar
+//Pillamos el offset como valor de 16 bits para simplificar
 
-						int offset_bmp=mem[10] + 256 * mem[11];
-						//printf ("offset pixeles: %d\n",offset_bmp);
+    int offset_bmp=mem[10] + 256 * mem[11];
+    //printf ("offset pixeles: %d\n",offset_bmp);
 
-								int ancho_calculo=ancho;
-								//Nota: parece que el ancho tiene que ser par, para poder calcular el offset
-								if ( (ancho_calculo % 2 ) !=0) ancho_calculo++;						
+    int ancho_calculo=ancho;
+    //Nota: parece que el ancho tiene que ser par, para poder calcular el offset
+    if ( (ancho_calculo % 2 ) !=0) ancho_calculo++;						
 
-                        int ancho_mostrar_final=ancho;
+    int ancho_mostrar_final=ancho;
 
-                        if (ancho_mostrar!=0) ancho_mostrar_final=ancho_mostrar;
+    if (ancho_mostrar!=0) ancho_mostrar_final=ancho_mostrar;
 
-                        //printf ("ancho mostrar final : %d\n",ancho_mostrar_final);
+    //printf ("ancho mostrar final : %d\n",ancho_mostrar_final);
 
-						int x,y;
-						for (y=0;y<alto;y++) {
-							for (x=0;x<ancho_mostrar_final;x++) {
-                                if (x<x_ignore) continue;
-								//lineas empiezan por la del final en un bmp
-								//1 byte por pixel, color indexado
-			
-
-								int offset_final=(alto-1-y)*ancho_calculo + x + offset_bmp;
-
-								
+    int x,y;
+    for (y=0;y<alto;y++) {
+        for (x=0;x<ancho_mostrar_final;x++) {
+            if (x<x_ignore) continue;
+            //lineas empiezan por la del final en un bmp
+            //1 byte por pixel, color indexado
 
 
-								//printf ("offset_final_ %d\n",offset_final);
-								z80_byte byte_leido=mem[offset_final];
-                                //printf("byte leido: %d\n",byte_leido);
-                                //if (byte_leido==255) byte_leido=0;
-								z80_int color_final;
+            int offset_final=(alto-1-y)*ancho_calculo + x + offset_bmp;
 
-                                if (indice_color_transparente>=0 && byte_leido==indice_color_transparente) color_final=color_final_transparente;
-                                else color_final=indice_paleta_color+byte_leido;
 
-								//zxvision_putpixel(ventana,x,y,color_final);
 
-                                if (!follow_zoom) {
-								    zxvision_putpixel_no_zoom(ventana,x,y,color_final);
-                                }
-                                else {
-                                    int zx,zy;
-                                    for (zx=0;zx<zoom_x;zx++) {
-                                        for (zy=0;zy<zoom_y;zy++) {
-                                            zxvision_putpixel_no_zoom(ventana,x*zoom_x+zx,y*zoom_y+zy,color_final);
-                                        }
-                                    }
-                                    
-                                }
-							}
-						}
+
+            //printf ("offset_final_ %d\n",offset_final);
+            z80_byte byte_leido=mem[offset_final];
+            //printf("byte leido: %d\n",byte_leido);
+            //if (byte_leido==255) byte_leido=0;
+            z80_int color_final;
+
+            if (indice_color_transparente>=0 && byte_leido==indice_color_transparente) color_final=color_final_transparente;
+            else color_final=indice_paleta_color+byte_leido;
+
+            //zxvision_putpixel(ventana,x,y,color_final);
+
+            if (!follow_zoom) {
+                zxvision_putpixel_no_zoom(ventana,x,y,color_final);
+            }
+            else {
+                int zx,zy;
+                for (zx=0;zx<zoom_x;zx++) {
+                for (zy=0;zy<zoom_y;zy++) {
+                zxvision_putpixel_no_zoom(ventana,x*zoom_x+zx,y*zoom_y+zy,color_final);
+                }
+                }
+
+            }
+        }
+    }
 						
 
 }
