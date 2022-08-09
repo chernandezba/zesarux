@@ -9432,6 +9432,9 @@ void screen_init_colour_table(void)
 	debug_printf (VERBOSE_INFO,"Creating colour tables for %d colours",EMULATOR_TOTAL_PALETTE_COLOURS);
 	if (EMULATOR_TOTAL_PALETTE_COLOURS>65535) cpu_panic("More than 65536 colours to allocate. This is fatal!");
 
+    //TODO: Al parecer al llamar aqui se cambia tabla de colores bmp. Investigar por que...
+    util_bmp_load_palette_changed_palette=1;
+
 	int antes_screen_gray_mode=screen_gray_mode;
 	screen_gray_mode=7;
 	screen_init_colour_table_siguiente();
@@ -10477,7 +10480,7 @@ HIRES          1     0     v     v     000    -  3FF
 #define Z88_LOWER_PUTPIXEL_MAX_Y 128
 void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
 {
-    if (x==5 && y==5) printf("pixel %d %d %d\n",x,y,color);
+    //if (x==639) printf("pixel %d %d %d %d\n",x,y,color,BMP_INDEX_FIRST_COLOR);
 
     y +=64;
 
@@ -10528,9 +10531,10 @@ void screen_z88_draw_lower_screen(void)
 		for (y=0;y<screen_get_emulated_display_height_no_zoom()-64;y++) {
 			for (x=0;x<screen_get_emulated_display_width_no_zoom();x++) {
 				//scr_putpixel_zoom_z88(x,y,7);
-                screen_z88_draw_lower_screen_putpixel(x,y,7);
+                screen_z88_draw_lower_screen_putpixel(x,y,Z88_PXCOLOFF);
 			}
 		}
+        
         
         //Si no hay archivo cargado y/o cambio en paleta
         if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
@@ -10567,8 +10571,11 @@ void screen_z88_draw_lower_screen(void)
 
 
         if (z88_legend_bmp_file_mem!=NULL) {
+            //Nota: este 45 es el color rojo
+            //screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
+            //    0,0,45,Z88_PXCOLOFF,screen_z88_draw_lower_screen_putpixel_aux);
             screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
-                0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);
+                0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
         }
 
 	}
@@ -15378,10 +15385,13 @@ DataOffset	4 bytes	000Ah	Offset from beginning of file to the beginning of the b
             //if (byte_leido==255) byte_leido=0;
             z80_int color_final;
 
+        
             if (indice_color_transparente>=0 && byte_leido==indice_color_transparente) color_final=color_final_transparente;
             else color_final=indice_paleta_color+byte_leido;
 
             //zxvision_putpixel(ventana,x,y,color_final);
+
+            //if (x==ancho_mostrar_final-1) printf("color %d\n",byte_leido);
 
             funcion_putpixel(ventana,x,y,color_final,follow_zoom);
 
