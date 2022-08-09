@@ -2483,15 +2483,15 @@ char *screen_menu_mix_methods_strings[]={
 
 unsigned int screen_convert_rgb_to_bw(unsigned int color_rgb)
 {
-					//blanco y negro
-				if (!menu_multitarea && menu_abierto && screen_machine_bw_no_multitask.v) {
-unsigned int red_machine,green_machine,blue_machine;
+    //blanco y negro
+    if (!menu_multitarea && menu_abierto && screen_machine_bw_no_multitask.v) {
+        unsigned int red_machine,green_machine,blue_machine;
 
-					screen_get_rgb_components(color_rgb,&red_machine,&green_machine,&blue_machine);	
-					int color_gris=rgb_to_grey(red_machine,green_machine,blue_machine);
-					red_machine=green_machine=blue_machine=color_gris;
-					color_rgb=screen_get_color_from_rgb(red_machine,green_machine,blue_machine);
-				}
+        screen_get_rgb_components(color_rgb,&red_machine,&green_machine,&blue_machine);	
+        int color_gris=rgb_to_grey(red_machine,green_machine,blue_machine);
+        red_machine=green_machine=blue_machine=color_gris;
+        color_rgb=screen_get_color_from_rgb(red_machine,green_machine,blue_machine);
+    }
 
 
 	return color_rgb;
@@ -8826,149 +8826,149 @@ z80_byte spectra_return_intensity(int c)
 void screen_init_colour_table_siguiente(void)
 {
 
-                	int i,j,r,g,b,r2,g2,b2,valorgris;
+    int i,j,r,g,b,r2,g2,b2,valorgris;
 
 
-		//Primero construir la tabla de colores de spectra. Que siempre tiene valores fijos
-//Tabla con los colores extra del Spectra.
-//Valores para intensidades de color:
-/*
-C1 C0  Voltage  Output
-0  0   0        0%           -> 0
-0  1   0.24     34.8%    -> 255/100*34.8 = 88.74 -> 89
-1  0   0.50     72.5%    -> 184.875 -> 185
-1  1   0.69     100%     -> 255
-*/
-//#define SPECTRA_COL_ZERO 0
-//#define SPECTRA_COL_LOW 89
-//#define SPECTRA_COL_MEDIUM 185
-//#define SPECTRA_COL_HIGH 255
+    //Primero construir la tabla de colores de spectra. Que siempre tiene valores fijos
+    //Tabla con los colores extra del Spectra.
+    //Valores para intensidades de color:
+    /*
+    C1 C0  Voltage  Output
+    0  0   0        0%           -> 0
+    0  1   0.24     34.8%    -> 255/100*34.8 = 88.74 -> 89
+    1  0   0.50     72.5%    -> 184.875 -> 185
+    1  1   0.69     100%     -> 255
+    */
+    //#define SPECTRA_COL_ZERO 0
+    //#define SPECTRA_COL_LOW 89
+    //#define SPECTRA_COL_MEDIUM 185
+    //#define SPECTRA_COL_HIGH 255
 
 
-		/*
-32 16  8   4   2   1
-G  G   R   R   B   B
+    /*
+    32 16  8   4   2   1
+    G  G   R   R   B   B
 
-		Ejemplos: 0: negro, 1: azul intensidad baja, 2:azul medio, 3: azul alto, 4: rojo bajo, 5: rojo bajo+azul bajo,
-		8: rojo medio, 12: rojo alto, 16: verde bajo, 32: verde medio, 48: verde alto
-		*/
+    Ejemplos: 0: negro, 1: azul intensidad baja, 2:azul medio, 3: azul alto, 4: rojo bajo, 5: rojo bajo+azul bajo,
+    8: rojo medio, 12: rojo alto, 16: verde bajo, 32: verde medio, 48: verde alto
+    */
 
-		int spectra_color;
+    int spectra_color;
 
-		//Bits obtenidos de cada numero de color
-		int spectra_blue,spectra_red,spectra_green;
+    //Bits obtenidos de cada numero de color
+    int spectra_blue,spectra_red,spectra_green;
 
-		//Intensidades asociadas a cada componente de color
-		int spectra_int_blue,spectra_int_red,spectra_int_green;
+    //Intensidades asociadas a cada componente de color
+    int spectra_int_blue,spectra_int_red,spectra_int_green;
 
-		for (spectra_color=0;spectra_color<64;spectra_color++) {
-
-
-			spectra_blue=spectra_color&3;
-			spectra_red=(spectra_color>>2)&3;
-			spectra_green=(spectra_color>>4)&3;
-
-			spectra_int_blue=spectra_return_intensity(spectra_blue);
-			spectra_int_red=spectra_return_intensity(spectra_red);
-			spectra_int_green=spectra_return_intensity(spectra_green);
+    for (spectra_color=0;spectra_color<64;spectra_color++) {
 
 
-			spectra_colortable_original[spectra_color]=(spectra_int_red<<16)|(spectra_int_green<<8)|spectra_int_blue;
+        spectra_blue=spectra_color&3;
+        spectra_red=(spectra_color>>2)&3;
+        spectra_green=(spectra_color>>4)&3;
 
-			debug_printf (VERBOSE_PARANOID,"Initializing Spectra Colour. Index: %d Value: 0x%06X",spectra_color,spectra_colortable_original[spectra_color]);
-
-		}
-
-
-
-
-			//Crear primero paleta de colores normales. Posteriormente si conviene se hacen grises / r, g o b e inverso
-			//spectrum_colortable_normal=(int *)spectrum_colortable_original;
-			//int i;
-			int color32;
-			int *paleta;
-			paleta=screen_return_spectrum_palette();
-			for (i=0;i<16;i++) {
-				color32=paleta[i];
-				//debug_printf(VERBOSE_DEBUG,"Initializing Standard Spectrum Color. Index: %i  Value: %06XH",i,spectrum_colortable_original[i]);
-				//screen_set_colour_normal(i,spectrum_colortable_original[i]);
-				debug_printf(VERBOSE_PARANOID,"Initializing Standard Spectrum Color. Index: %i  Value: %06XH",i,color32);
-				screen_set_colour_normal(i,color32);
-			}
+        spectra_int_blue=spectra_return_intensity(spectra_blue);
+        spectra_int_red=spectra_return_intensity(spectra_red);
+        spectra_int_green=spectra_return_intensity(spectra_green);
 
 
-			//colores para Z88
-			screen_set_colour_normal(Z88_PXCOLON,z88_colortable_original[0]);
-			screen_set_colour_normal(Z88_PXCOLGREY,z88_colortable_original[1]);
-			screen_set_colour_normal(Z88_PXCOLOFF,z88_colortable_original[2]);
-			screen_set_colour_normal(Z88_PXCOLSCROFF,z88_colortable_original[3]);
+        spectra_colortable_original[spectra_color]=(spectra_int_red<<16)|(spectra_int_green<<8)|spectra_int_blue;
+
+        debug_printf (VERBOSE_PARANOID,"Initializing Spectra Colour. Index: %d Value: 0x%06X",spectra_color,spectra_colortable_original[spectra_color]);
+
+    }
 
 
-			//Colores reales de spectrum 16/48/+
-			/*
-			for (i=0;i<16;i++) {
-                                debug_printf(VERBOSE_DEBUG,"Initializing Standard Spectrum 16/48/+ Real Color. Index: %i  Value: %06XH",i,spectrum_colortable_1648_real[i]);
-                                screen_set_colour_normal(SPECCY_1648_REAL_PALETTE_FIRST_COLOR+i,spectrum_colortable_1648_real[i]);
-                        }
-			*/
-
-			//colores ulaplus
-			//ulaplus_rgb_table
-			//ULAPLUS_INDEX_FIRST_COLOR
-
-			for (i=0;i<256;i++) {
-				color32=ulaplus_rgb_table[i];
-				debug_printf(VERBOSE_PARANOID,"Initializing ULAPlus Color. Index: %i  Value: %06XH",i,color32);
-				screen_set_colour_normal(ULAPLUS_INDEX_FIRST_COLOR+i, color32);
-			}
-
-			//Colores spectra
-                        for (i=0;i<64;i++) {
-                        	debug_printf(VERBOSE_PARANOID,"Initializing Spectra Color. Index: %i  Value: %06XH",i,spectra_colortable_original[i]);
-                                screen_set_colour_normal(SPECTRA_INDEX_FIRST_COLOR+i,spectra_colortable_original[i]);
-                        }
-
-			//Colores CPC
-			for (i=0;i<32;i++) {
-                                color32=cpc_rgb_table[i];
-                                debug_printf(VERBOSE_PARANOID,"Initializing CPC Color. Index: %i  Value: %06XH",i,color32);
-                                screen_set_colour_normal(CPC_INDEX_FIRST_COLOR+i, color32);
-                        }
-
-			//Colores Prism
-			//Tenemos tabla de conversion de valor de 4 bits a 8 bits
-			z80_byte prism_4_to_8[16]={
-				/* 0000     0001     0010     0011     0100     0101     0110     0111     1000     1001     1010     1011     1100     1101     1110     1111 */
-				/* 00000000 00000011 00001100 00001111 00110000 00110011 00111100 00111111 11000000 11000011 11001100 11001111 11110000 11110011 11111100 11111111 */
-				//0,          3,       12,      15,      48,      51,      60,      63,      192,     195,     204,     207,     240,     243,     252,     255
-				0*16+0,     1*16+1,  2*16+2,  3*16+3,  4*16+4,  5*16+5,  6*16+6,  7*16+7,  8*16+8,  9*16+9,  10*16+10,11*16+11,12*16+12,13*16+13,14*16+14,15*16+15
 
 
-				};
-			for (i=0;i<4096;i++) {
+    //Crear primero paleta de colores normales. Posteriormente si conviene se hacen grises / r, g o b e inverso
+    //spectrum_colortable_normal=(int *)spectrum_colortable_original;
+    //int i;
+    int color32;
+    int *paleta;
+    paleta=screen_return_spectrum_palette();
+    for (i=0;i<16;i++) {
+        color32=paleta[i];
+        //debug_printf(VERBOSE_DEBUG,"Initializing Standard Spectrum Color. Index: %i  Value: %06XH",i,spectrum_colortable_original[i]);
+        //screen_set_colour_normal(i,spectrum_colortable_original[i]);
+        debug_printf(VERBOSE_PARANOID,"Initializing Standard Spectrum Color. Index: %i  Value: %06XH",i,color32);
+        screen_set_colour_normal(i,color32);
+    }
 
 
-                                b= i & 0xF;
-                                g=(i >> 4 ) & 0xF;
-                                r=(i >> 8 ) & 0xF;
-
-				debug_printf (VERBOSE_PARANOID,"Prism color: %d. 12 bit: r: %d g: %d b: %d",i,r,g,b);
-
-				r=prism_4_to_8[r];
-				g=prism_4_to_8[g];
-				b=prism_4_to_8[b];
+    //colores para Z88
+    screen_set_colour_normal(Z88_PXCOLON,z88_colortable_original[0]);
+    screen_set_colour_normal(Z88_PXCOLGREY,z88_colortable_original[1]);
+    screen_set_colour_normal(Z88_PXCOLOFF,z88_colortable_original[2]);
+    screen_set_colour_normal(Z88_PXCOLSCROFF,z88_colortable_original[3]);
 
 
-                                color32=(r<<16)|(g<<8)|b;
+    //Colores reales de spectrum 16/48/+
+    /*
+    for (i=0;i<16;i++) {
+                        debug_printf(VERBOSE_DEBUG,"Initializing Standard Spectrum 16/48/+ Real Color. Index: %i  Value: %06XH",i,spectrum_colortable_1648_real[i]);
+                        screen_set_colour_normal(SPECCY_1648_REAL_PALETTE_FIRST_COLOR+i,spectrum_colortable_1648_real[i]);
+                }
+    */
 
-				debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",
-					r,g,b);
+    //colores ulaplus
+    //ulaplus_rgb_table
+    //ULAPLUS_INDEX_FIRST_COLOR
 
-                                screen_set_colour_normal(PRISM_INDEX_FIRST_COLOR+i, color32);
-                        }
+    for (i=0;i<256;i++) {
+        color32=ulaplus_rgb_table[i];
+        debug_printf(VERBOSE_PARANOID,"Initializing ULAPlus Color. Index: %i  Value: %06XH",i,color32);
+        screen_set_colour_normal(ULAPLUS_INDEX_FIRST_COLOR+i, color32);
+    }
 
-			//Colores sam coupe
-            for (i=0;i<128;i++) {
+    //Colores spectra
+    for (i=0;i<64;i++) {
+        debug_printf(VERBOSE_PARANOID,"Initializing Spectra Color. Index: %i  Value: %06XH",i,spectra_colortable_original[i]);
+            screen_set_colour_normal(SPECTRA_INDEX_FIRST_COLOR+i,spectra_colortable_original[i]);
+    }
+
+    //Colores CPC
+    for (i=0;i<32;i++) {
+                        color32=cpc_rgb_table[i];
+                        debug_printf(VERBOSE_PARANOID,"Initializing CPC Color. Index: %i  Value: %06XH",i,color32);
+                        screen_set_colour_normal(CPC_INDEX_FIRST_COLOR+i, color32);
+    }
+
+    //Colores Prism
+    //Tenemos tabla de conversion de valor de 4 bits a 8 bits
+    z80_byte prism_4_to_8[16]={
+        /* 0000     0001     0010     0011     0100     0101     0110     0111     1000     1001     1010     1011     1100     1101     1110     1111 */
+        /* 00000000 00000011 00001100 00001111 00110000 00110011 00111100 00111111 11000000 11000011 11001100 11001111 11110000 11110011 11111100 11111111 */
+        //0,          3,       12,      15,      48,      51,      60,      63,      192,     195,     204,     207,     240,     243,     252,     255
+        0*16+0,     1*16+1,  2*16+2,  3*16+3,  4*16+4,  5*16+5,  6*16+6,  7*16+7,  8*16+8,  9*16+9,  10*16+10,11*16+11,12*16+12,13*16+13,14*16+14,15*16+15
+
+
+        };
+    for (i=0;i<4096;i++) {
+
+
+                            b= i & 0xF;
+                            g=(i >> 4 ) & 0xF;
+                            r=(i >> 8 ) & 0xF;
+
+            debug_printf (VERBOSE_PARANOID,"Prism color: %d. 12 bit: r: %d g: %d b: %d",i,r,g,b);
+
+            r=prism_4_to_8[r];
+            g=prism_4_to_8[g];
+            b=prism_4_to_8[b];
+
+
+                            color32=(r<<16)|(g<<8)|b;
+
+            debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",
+                r,g,b);
+
+                            screen_set_colour_normal(PRISM_INDEX_FIRST_COLOR+i, color32);
+    }
+
+    //Colores sam coupe
+    for (i=0;i<128;i++) {
 				/*
 
 Bit 0 BLU0 least significant bit of blue.
@@ -8980,240 +8980,240 @@ Bit 4 BLU1 most  significant bit of blue.
 Bit 5 RED1 most  significant bit of red.
 Bit 6 GRN1 most  significant bit of green.
 				*/
-				int brillo=127*  ((i&8)>>3);
+        int brillo=127*  ((i&8)>>3);
 
-				b=42*(  (i     &1) | ((i>>3)&2))   +brillo;
-				r=42*(  ((i>>1)&1) | ((i>>4)&2))   +brillo;
-				g=42*(  ((i>>2)&1) | ((i>>5)&2))   +brillo;
-
-
-
-                                debug_printf (VERBOSE_PARANOID,"Sam color: %d. 6 bit: r: %d g: %d b: %d",i,r,g,b);
+        b=42*(  (i     &1) | ((i>>3)&2))   +brillo;
+        r=42*(  ((i>>1)&1) | ((i>>4)&2))   +brillo;
+        g=42*(  ((i>>2)&1) | ((i>>5)&2))   +brillo;
 
 
-                                color32=(r<<16)|(g<<8)|b;
 
-                                debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",
-                                        r,g,b);
-
-                                screen_set_colour_normal(SAM_INDEX_FIRST_COLOR+i, color32);
-                }
+        debug_printf (VERBOSE_PARANOID,"Sam color: %d. 6 bit: r: %d g: %d b: %d",i,r,g,b);
 
 
-				//Colores RGB9
-				for (i=0;i<512;i++) {
-					debug_printf (VERBOSE_PARANOID,"RGB9 color: %02XH 32 bit: %06XH",i,get_rgb9_color(i));
-					screen_set_colour_normal(RGB9_INDEX_FIRST_COLOR+i,get_rgb9_color(i));
-				}
+        color32=(r<<16)|(g<<8)|b;
+
+        debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",
+                r,g,b);
+
+        screen_set_colour_normal(SAM_INDEX_FIRST_COLOR+i, color32);
+    }
 
 
-				//Tenemos tabla de conversion de valor de 5 bits a 8 bits. Temporal aproximado
-				/*z80_byte tsconf_5_to_8[32];
+    //Colores RGB9
+    for (i=0;i<512;i++) {
+        debug_printf (VERBOSE_PARANOID,"RGB9 color: %02XH 32 bit: %06XH",i,get_rgb9_color(i));
+        screen_set_colour_normal(RGB9_INDEX_FIRST_COLOR+i,get_rgb9_color(i));
+    }
 
-				for (i=0;i<32;i++) {
-					tsconf_5_to_8[i]=i*8;
-				}*/
 
-				//Colores tsconf
-				for (i=0;i<32768;i++) {
+    //Tenemos tabla de conversion de valor de 5 bits a 8 bits. Temporal aproximado
+    /*z80_byte tsconf_5_to_8[32];
 
-					b= i & 0x1F;
-					g=(i >> 5 ) & 0x1F;
-					r=(i >> 10 ) & 0x1F;
+    for (i=0;i<32;i++) {
+        tsconf_5_to_8[i]=i*8;
+    }*/
 
-					debug_printf (VERBOSE_PARANOID,"tsconf color: %d. 15 bit: r: %d g: %d b: %d",i,r,g,b);
+    //Colores tsconf
+    for (i=0;i<32768;i++) {
+
+        b= i & 0x1F;
+        g=(i >> 5 ) & 0x1F;
+        r=(i >> 10 ) & 0x1F;
+
+        debug_printf (VERBOSE_PARANOID,"tsconf color: %d. 15 bit: r: %d g: %d b: %d",i,r,g,b);
 
 //r=tsconf_5_to_8[r];
 //g=tsconf_5_to_8[g];
 //b=tsconf_5_to_8[b];
 
-					//tsconf_rgb_5_to_8
-					r=tsconf_rgb_5_to_8(r);
-					g=tsconf_rgb_5_to_8(g);
-					b=tsconf_rgb_5_to_8(b);
+        //tsconf_rgb_5_to_8
+        r=tsconf_rgb_5_to_8(r);
+        g=tsconf_rgb_5_to_8(g);
+        b=tsconf_rgb_5_to_8(b);
 
 
-					color32=(r<<16)|(g<<8)|b;
+        color32=(r<<16)|(g<<8)|b;
 
-					debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",r,g,b);
+        debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",r,g,b);
 
-					screen_set_colour_normal(TSCONF_INDEX_FIRST_COLOR+i, color32);
+        screen_set_colour_normal(TSCONF_INDEX_FIRST_COLOR+i, color32);
 
-				}
-
-
-				//Colores HEATMAP
-				for (i=0;i<256;i++) {
-					int colorheat=i<<16;
-					debug_printf (VERBOSE_PARANOID,"Heatmap color: %02XH 32 bit: %06XH",i,colorheat);
-					screen_set_colour_normal(HEATMAP_INDEX_FIRST_COLOR+i,colorheat);
-				}
-
-				//Colores Solarized
-				for (i=0;i<SOLARIZED_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(SOLARIZED_INDEX_FIRST_COLOR+i,solarized_colortable_original[i]);
-				}
-
-					
-
-				//Colores VDP 9918
-				for (i=0;i<VDP_9918_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(VDP_9918_INDEX_FIRST_COLOR+i,vdp9918_colortable_original[i]);
-				}
-
-				//Colores QL
-				for (i=0;i<QL_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(QL_INDEX_FIRST_COLOR+i,ql_colortable_original[i]);
-				}         
-
-				//Colores Turbovision
-				for (i=0;i<TURBOVISION_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(TURBOVISION_INDEX_FIRST_COLOR+i,turbovision_colortable_original[i]);
-				}      
-
-				//Colores SMS
-				for (i=0;i<SMS_TOTAL_PALETTE_COLOURS;i++) {
-					//Es formato %00BBGGRR
-					r=i & 3;
-					g=(i >> 2) & 3;
-					b=(i >> 4) & 3;
-
-                    //Pasar de 3 hasta 255
-                    r *=85;
-                    g *=85;
-                    b *=85;
+    }
 
 
-					color32=(r<<16)|(g<<8)|b;
+    //Colores HEATMAP
+    for (i=0;i<256;i++) {
+        int colorheat=i<<16;
+        debug_printf (VERBOSE_PARANOID,"Heatmap color: %02XH 32 bit: %06XH",i,colorheat);
+        screen_set_colour_normal(HEATMAP_INDEX_FIRST_COLOR+i,colorheat);
+    }
 
-					//debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",r,g,b);
+    //Colores Solarized
+    for (i=0;i<SOLARIZED_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(SOLARIZED_INDEX_FIRST_COLOR+i,solarized_colortable_original[i]);
+    }
 
-                    //printf ("sms %d 32 bit: r: %d g: %d b: %d\n",i,r,g,b);
+        
 
-					screen_set_colour_normal(SMS_INDEX_FIRST_COLOR+i, color32);
+    //Colores VDP 9918
+    for (i=0;i<VDP_9918_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(VDP_9918_INDEX_FIRST_COLOR+i,vdp9918_colortable_original[i]);
+    }
 
-				} 
+    //Colores QL
+    for (i=0;i<QL_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(QL_INDEX_FIRST_COLOR+i,ql_colortable_original[i]);
+    }         
 
-				//Colores BeOS
-				for (i=0;i<BEOS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(BEOS_INDEX_FIRST_COLOR+i,beos_colortable_original[i]);
-				}       
+    //Colores Turbovision
+    for (i=0;i<TURBOVISION_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(TURBOVISION_INDEX_FIRST_COLOR+i,turbovision_colortable_original[i]);
+    }      
 
-				//Colores Retromac
-				for (i=0;i<RETROMAC_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(RETROMAC_INDEX_FIRST_COLOR+i,retromac_colortable_original[i]);
-				}
+    //Colores SMS
+    for (i=0;i<SMS_TOTAL_PALETTE_COLOURS;i++) {
+        //Es formato %00BBGGRR
+        r=i & 3;
+        g=(i >> 2) & 3;
+        b=(i >> 4) & 3;
 
-				//Colores AmigaOS
-				for (i=0;i<AMIGAOS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(AMIGAOS_INDEX_FIRST_COLOR+i,amigaos_colortable_original[i]);
-				} 
+        //Pasar de 3 hasta 255
+        r *=85;
+        g *=85;
+        b *=85;
 
-				//Colores AtariTOS
-				for (i=0;i<ATARITOS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(ATARITOS_INDEX_FIRST_COLOR+i,ataritos_colortable_original[i]);
-				}   
 
-				//Colores OS/2
-				for (i=0;i<OSDOS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(OSDOS_INDEX_FIRST_COLOR+i,osdos_colortable_original[i]);
-				}
+        color32=(r<<16)|(g<<8)|b;
 
-				//Colores ZEsarUX Plus
-				for (i=0;i<ZESARUX_PLUS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(ZESARUX_PLUS_INDEX_FIRST_COLOR+i,zesarux_plus_colortable_original[i]);
-				}
+        //debug_printf (VERBOSE_PARANOID,"32 bit: r: %d g: %d b: %d",r,g,b);
 
-				//Colores RiscOs
-				for (i=0;i<RISCOS_TOTAL_PALETTE_COLOURS;i++) {
-					screen_set_colour_normal(RISCOS_INDEX_FIRST_COLOR+i,riscos_colortable_original[i]);
-				}                
+        //printf ("sms %d 32 bit: r: %d g: %d b: %d\n",i,r,g,b);
+
+        screen_set_colour_normal(SMS_INDEX_FIRST_COLOR+i, color32);
+
+    } 
+
+    //Colores BeOS
+    for (i=0;i<BEOS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(BEOS_INDEX_FIRST_COLOR+i,beos_colortable_original[i]);
+    }       
+
+    //Colores Retromac
+    for (i=0;i<RETROMAC_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(RETROMAC_INDEX_FIRST_COLOR+i,retromac_colortable_original[i]);
+    }
+
+    //Colores AmigaOS
+    for (i=0;i<AMIGAOS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(AMIGAOS_INDEX_FIRST_COLOR+i,amigaos_colortable_original[i]);
+    } 
+
+    //Colores AtariTOS
+    for (i=0;i<ATARITOS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(ATARITOS_INDEX_FIRST_COLOR+i,ataritos_colortable_original[i]);
+    }   
+
+    //Colores OS/2
+    for (i=0;i<OSDOS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(OSDOS_INDEX_FIRST_COLOR+i,osdos_colortable_original[i]);
+    }
+
+    //Colores ZEsarUX Plus
+    for (i=0;i<ZESARUX_PLUS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(ZESARUX_PLUS_INDEX_FIRST_COLOR+i,zesarux_plus_colortable_original[i]);
+    }
+
+    //Colores RiscOs
+    for (i=0;i<RISCOS_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(RISCOS_INDEX_FIRST_COLOR+i,riscos_colortable_original[i]);
+    }                
 
 
 		//}
 
 		//Colores para interlaced scanlines. Linea impar mas oscura
 		//copiamos del color generado del spectrum al color scanline (indice + 16)
-                for (i=0;i<16;i++) {
-                                b=spectrum_colortable_normal[i] & 0xFF;
-                                g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
-                                r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
+    for (i=0;i<16;i++) {
+        b=spectrum_colortable_normal[i] & 0xFF;
+        g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
+        r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
 
-                                //Valores mas oscuros para scanlines
-                                r=r/2;
-                                g=g/2;
-                                b=b/2;
+        //Valores mas oscuros para scanlines
+        r=r/2;
+        g=g/2;
+        b=b/2;
 
-                                //printf ("%x %x %x\n",r,g,b);
+        //printf ("%x %x %x\n",r,g,b);
 
-                                screen_set_colour_normal(i+16,(r<<16)|(g<<8)|b);
-                }
-
-
-		//colores para gigascreen
-		int index_giga=32;
-		for (i=0;i<16;i++) {
-	                for (j=0;j<16;j++) {
-
-                                b=spectrum_colortable_normal[i] & 0xFF;
-                                g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
-                                r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
-
-                                b2=spectrum_colortable_normal[j] & 0xFF;
-                                g2=(spectrum_colortable_normal[j] >> 8 ) & 0xFF;
-                                r2=(spectrum_colortable_normal[j] >> 16 ) & 0xFF;
-
-				r=get_gigascreen_rgb_value(r,r2);
-				g=get_gigascreen_rgb_value(g,g2);
-				b=get_gigascreen_rgb_value(b,b2);
-
-                                //printf ("index: %d %x %x %x\n",index_giga,r,g,b);
-				//printf ("%06X\n",(r<<16)|(g<<8)|b);
-
-                                screen_set_colour_normal(index_giga++,(r<<16)|(g<<8)|b);
-
-        	        }
-
-		}
+        screen_set_colour_normal(i+16,(r<<16)|(g<<8)|b);
+    }
 
 
+    //colores para gigascreen
+    int index_giga=32;
+    for (i=0;i<16;i++) {
+        for (j=0;j<16;j++) {
 
-		//Si video inverso o grises
-        //Modo de grises activo en screen_gray_mode
-        //0: colores normales
-        //1: componente Blue
-        //2: componente Green
-        //4: componente Red
-        //Se pueden sumar para diferentes valores
+            b=spectrum_colortable_normal[i] & 0xFF;
+            g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
+            r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
 
-		if (inverse_video.v==1 || screen_gray_mode!=0) {
-        	        for (i=0;i<EMULATOR_TOTAL_PALETTE_COLOURS;i++) {
-                	        b=spectrum_colortable_normal[i] & 0xFF;
-                        	g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
-	                        r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
+            b2=spectrum_colortable_normal[j] & 0xFF;
+            g2=(spectrum_colortable_normal[j] >> 8 ) & 0xFF;
+            r2=(spectrum_colortable_normal[j] >> 16 ) & 0xFF;
 
-                            //Tipos de grises
-                            if (screen_gray_mode!=0) {
-                                valorgris=rgb_to_grey(r,g,b);
-                                VALOR_GRIS_A_R_G_B
-                            }
+            r=get_gigascreen_rgb_value(r,r2);
+            g=get_gigascreen_rgb_value(g,g2);
+            b=get_gigascreen_rgb_value(b,b2);
 
-                            //Inverso
-                            if (inverse_video.v==1) {
-        	                    r=r^255;
-                	            g=g^255;
-                        	    b=b^255;
-                            }
+            //printf ("index: %d %x %x %x\n",index_giga,r,g,b);
+            //printf ("%06X\n",(r<<16)|(g<<8)|b);
 
-				screen_set_colour_normal(i,(r<<16)|(g<<8)|b);
-			}
-		}
+            screen_set_colour_normal(index_giga++,(r<<16)|(g<<8)|b);
+
+        }
+
+    }
 
 
 
+    //Si video inverso o grises
+    //Modo de grises activo en screen_gray_mode
+    //0: colores normales
+    //1: componente Blue
+    //2: componente Green
+    //4: componente Red
+    //Se pueden sumar para diferentes valores
 
-		//Establecemos tabla actual
-                spectrum_colortable=spectrum_colortable_normal;
+    if (inverse_video.v==1 || screen_gray_mode!=0) {
+        for (i=0;i<EMULATOR_TOTAL_PALETTE_COLOURS;i++) {
+            b=spectrum_colortable_normal[i] & 0xFF;
+            g=(spectrum_colortable_normal[i] >> 8 ) & 0xFF;
+            r=(spectrum_colortable_normal[i] >> 16 ) & 0xFF;
+
+            //Tipos de grises
+            if (screen_gray_mode!=0) {
+                valorgris=rgb_to_grey(r,g,b);
+                VALOR_GRIS_A_R_G_B
+            }
+
+            //Inverso
+            if (inverse_video.v==1) {
+                r=r^255;
+                g=g^255;
+                b=b^255;
+            }
+
+            screen_set_colour_normal(i,(r<<16)|(g<<8)|b);
+        }
+    }
+
+
+
+
+    //Establecemos tabla actual
+    spectrum_colortable=spectrum_colortable_normal;
 
 
 #ifdef COMPILE_CURSES
