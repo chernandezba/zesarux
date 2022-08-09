@@ -10477,6 +10477,8 @@ HIRES          1     0     v     v     000    -  3FF
 #define Z88_LOWER_PUTPIXEL_MAX_Y 128
 void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
 {
+    if (x==5 && y==5) printf("pixel %d %d %d\n",x,y,color);
+
     y +=64;
 
     if (x>=0 && y>=0 && x<screen_get_emulated_display_width_no_zoom() && y<screen_get_emulated_display_height_no_zoom() ) {
@@ -10515,6 +10517,10 @@ void screen_z88_draw_lower_screen(void)
 
 		debug_printf (VERBOSE_DEBUG,"screen_z88_draw_lower_screen");
 
+        printf("draw z88 lower\n");
+        
+        debug_exec_show_backtrace();
+
         //printf("zona %d %d\n",screen_get_emulated_display_width_no_zoom() ,screen_get_emulated_display_height_no_zoom()-64 );
 
 		int x,y;
@@ -10530,6 +10536,8 @@ void screen_z88_draw_lower_screen(void)
         if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
 
             printf("Loading z88_legend.bmp\n");
+
+
             if (z88_legend_bmp_file_mem==NULL) printf("because bmp was not loaded\n");
             if (util_bmp_load_palette_changed_palette) printf("because palette was changed\n");
 
