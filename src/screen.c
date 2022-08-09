@@ -10364,7 +10364,7 @@ void screen_z88_draw_lower_screen(void)
             //Nota: este 45 es el color rojo
             //screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
             //    0,0,45,Z88_PXCOLOFF,screen_z88_draw_lower_screen_putpixel_aux);
-            screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
+            screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,0,
                 0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
         }
 
