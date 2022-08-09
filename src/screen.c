@@ -10522,7 +10522,7 @@ void screen_z88_draw_lower_screen(void)
 
         printf("draw z88 lower\n");
         
-        debug_exec_show_backtrace();
+        //debug_exec_show_backtrace();
 
         //printf("zona %d %d\n",screen_get_emulated_display_width_no_zoom() ,screen_get_emulated_display_height_no_zoom()-64 );
 
@@ -10560,11 +10560,11 @@ void screen_z88_draw_lower_screen(void)
             //Si alguna otra tarea la cambia, nos daremos cuenta
             util_bmp_load_palette_changed_palette=0;
 
-            int i;
+            /*int i;
             for (i=0;i<256;i++) {
                 printf("%X ",spectrum_colortable_normal[BMP_INDEX_FIRST_COLOR+i]);
             }
-            printf("\n");
+            printf("\n");*/
 
         }
 

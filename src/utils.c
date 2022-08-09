@@ -18902,9 +18902,9 @@ reserved	1 byte	 	unused (=0)
 
     util_bmp_load_palette_changed_palette=1;
 
-    printf("Palette has been changed\n");
-    debug_exec_show_backtrace();
-    printf("\n");
+    //printf("Palette has been changed\n");
+    //debug_exec_show_backtrace();
+    //printf("\n");
 }
 
 //Cargar un archivo bmp en memoria. Retorna puntero
