@@ -9433,7 +9433,7 @@ void screen_init_colour_table(void)
 	if (EMULATOR_TOTAL_PALETTE_COLOURS>65535) cpu_panic("More than 65536 colours to allocate. This is fatal!");
 
     //TODO: Al parecer al llamar aqui se cambia tabla de colores bmp. Investigar por que...
-    util_bmp_load_palette_changed_palette=1;
+    //util_bmp_load_palette_changed_palette=1;
 
 	int antes_screen_gray_mode=screen_gray_mode;
 	screen_gray_mode=7;
@@ -10562,7 +10562,7 @@ void screen_z88_draw_lower_screen(void)
 
             /*int i;
             for (i=0;i<256;i++) {
-                printf("%X ",spectrum_colortable_normal[BMP_INDEX_FIRST_COLOR+i]);
+                printf("%X ",spectrum_colortable[BMP_INDEX_FIRST_COLOR+i]);
             }
             printf("\n");*/
 
