@@ -10469,6 +10469,21 @@ HIRES          1     0     v     v     000    -  3FF
 
 }
 
+//Rutina putpixel en la zona inferior del z88
+//Admite pixel con coordenadas 0,0 hasta 639,127
+#define Z88_LOWER_PUTPIXEL_MAX_X 640
+#define Z88_LOWER_PUTPIXEL_MAX_Y 128
+void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
+{
+    y +=64;
+
+    if (x>=0 && y>=0 && x<screen_get_emulated_display_width_no_zoom() && y<screen_get_emulated_display_height_no_zoom() ) {
+        scr_putpixel_zoom_z88(x,y,color);
+    }
+    //else {
+    //    printf("out limits %d,%d\n",x,y);
+    //}
+}
 
 void screen_z88_draw_lower_screen(void)
 {
@@ -10489,11 +10504,14 @@ void screen_z88_draw_lower_screen(void)
 
 		debug_printf (VERBOSE_DEBUG,"screen_z88_draw_lower_screen");
 
+        //printf("zona %d %d\n",screen_get_emulated_display_width_no_zoom() ,screen_get_emulated_display_height_no_zoom()-64 );
+
 		int x,y;
 
-		for (y=64;y<screen_get_emulated_display_height_no_zoom();y++) {
+		for (y=0;y<screen_get_emulated_display_height_no_zoom()-64;y++) {
 			for (x=0;x<screen_get_emulated_display_width_no_zoom();x++) {
-				scr_putpixel_zoom_z88(x,y,7);
+				//scr_putpixel_zoom_z88(x,y,7);
+                screen_z88_draw_lower_screen_putpixel(x,y,7);
 			}
 		}
 	}

@@ -915,9 +915,6 @@ tarjeta que probaba Thierry:
 - driver pantalla.
 *tecla diamond, square, F1, F2, F3 para stdout?
 
--establecer reloj del Z88 con el del sistema. Llamando a rutina RST adecuada
-https://cambridgez88.jira.com/wiki/display/DN/Time+and+date+management
-o quiza enviando secuencia de teclas..-> indice->panel->tab hasta fecha, etc
 
 -envio de tecla /? desde menu en z88, entra en conflicto porque esa tecla es la -
 
