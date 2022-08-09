@@ -9233,11 +9233,6 @@ Bit 6 GRN1 most  significant bit of green.
 
 void screen_init_colour_table(void)
 {
-	/*
-	Primero generamos tabla de colores grises. Esa tabla se usa cuando se abre el menu con multitask off, donde los colores se ponen en gris
-	TODO: hacerlos en gris y tambien oscuros
-	Para ello, se genera tabla con forzado a gris, lo copio a tabla de grises, y luego se genera colores normales
-	*/
 
 	debug_printf (VERBOSE_INFO,"Creating colour tables for %d colours",EMULATOR_TOTAL_PALETTE_COLOURS);
 	if (EMULATOR_TOTAL_PALETTE_COLOURS>65535) cpu_panic("More than 65536 colours to allocate. This is fatal!");
@@ -9245,6 +9240,7 @@ void screen_init_colour_table(void)
     //TODO: Al parecer al llamar aqui se cambia tabla de colores bmp. Investigar por que...
     //util_bmp_load_palette_changed_palette=1;
 
+/*
 	int antes_screen_gray_mode=screen_gray_mode;
 	screen_gray_mode=7;
 	screen_init_colour_table_siguiente();
@@ -9253,6 +9249,8 @@ void screen_init_colour_table(void)
 
 
 	screen_gray_mode=antes_screen_gray_mode;
+
+*/
 	screen_init_colour_table_siguiente();
 
 }
