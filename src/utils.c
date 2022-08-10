@@ -3647,6 +3647,7 @@ int util_write_configfile(void)
 
   if (ocr_settings_not_look_23606.v)          ADD_STRING_CONFIG,"--no-ocr-alternatechars");
 
+  if (z88_hide_keys_shortcuts.v)                ADD_STRING_CONFIG,"--z88-hide-shortcuts");
 
   if (screen_text_all_refresh_pixel.v)        ADD_STRING_CONFIG,"--allpixeltotext");
                                               

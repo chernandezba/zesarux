@@ -1832,6 +1832,7 @@ printf (
 		"--videozx8081 n                  Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
 		"--videofastblack                 Emulate black screen on fast mode on ZX80/ZX81\n"
 		"--no-ocr-alternatechars          Disable looking for an alternate character set other than the ROM default on OCR functions\n"
+        "--z88-hide-shortcuts             Hide Z88 shortcuts from the display\n"
 		"--scr file                       Load Screen File at startup\n"
 	    "--arttextthresold n              Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
 	    "--disablearttext                 Disable artistic emulation for curses & stdout & simpletext\n"
@@ -6488,6 +6489,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--no-ocr-alternatechars")) {
 				ocr_settings_not_look_23606.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--z88-hide-shortcuts")) {
+                z88_hide_keys_shortcuts.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext")) {
 				screen_text_all_refresh_pixel.v=1;
