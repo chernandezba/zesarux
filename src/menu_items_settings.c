@@ -6574,7 +6574,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_Z88 && si_complete_video_driver() ) {
             menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_settings_display_z88_shortcuts,NULL,
-            "Show Z88 shortcuts","Mostrar atajos Z88","Veure dreceres Z88");
+            "Show Z88 shortcuts","Mostrar atajos del Z88","Veure dreceres del Z88");
             menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ", (z88_hide_keys_shortcuts.v==0 ? 'X' : ' ') );
             menu_add_item_menu_tooltip(array_menu_settings_display,"Show Z88 shortcuts below the display");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Show Z88 shortcuts below the display");

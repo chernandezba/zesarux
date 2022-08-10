@@ -10339,18 +10339,18 @@ void screen_z88_draw_lower_screen(void)
             //Si no hay archivo cargado y/o cambio en paleta
             if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
 
-                //printf("Loading z88_legend.bmp\n");
+                //printf("Loading z88_shortcuts.bmp\n");
 
 
-                if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because image was not loaded");
-                if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because bmp palette was changed");
+                if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because image was not loaded");
+                if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because bmp palette was changed");
 
                 //localizarlo
                 char buffer_nombre[PATH_MAX];
 
-                int existe=find_sharedfile("z88_legend.bmp",buffer_nombre);
+                int existe=find_sharedfile("z88_shortcuts.bmp",buffer_nombre);
                 if (!existe)  {
-                    debug_printf(VERBOSE_ERR,"Unable to find z88_legend.bmp file");
+                    debug_printf(VERBOSE_ERR,"Unable to find z88_shortcuts.bmp file");
                     return;
                 }        
 
