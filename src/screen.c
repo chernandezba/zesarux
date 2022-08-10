@@ -358,13 +358,25 @@ z80_bit spectrum_1648_use_real_palette={0};
 
 
 //Tabla con los colores reales del Z88. Formato RGB
+//Es muy dificil saber el color real, dado que depende del contraste activado y de la luz ambiental
+//Los valores de pixel activo y pantalla sin pixel se obtienen de un Z88 real
+//El valor de gris se calcula desde el de pixel activo (se le aumenta luminosidad)
+const int z88_colortable_original[4]={
+0x1d1e36, //Enabled pixel
+0x5c5c78, //Grey enabled pixel
+0x89b9a5, //Empty pixel when screen is switched on
+0xa8d9c4 //Empty pixel when screen is switched off. Realmente es el mismo que con pantalla encendida (con poco contraste),
+         //pero lo altero para que se note cuando está la pantalla apagada
+};
+
+/*
 const int z88_colortable_original[4]={
 0x461B7D, //Enabled pixel
 0x90B0A7, //Grey enabled pixel
 0xD2E0B9, //Empty pixel when screen is switched on
-//0xE0E0E0 //Empty pixel when screen is switched off. A mi este color nunca me ha parecido del todo real
-0xc3c8b8 //Empty pixel when screen is switched off. Color obtenido de un Z88 real
+0xE0E0E0 //Empty pixel when screen is switched off. 
 };
+*/
 
 //ubicacion en el array de colores de los de Z88
 //ver screen.h, Z88_PXCOLON, etc

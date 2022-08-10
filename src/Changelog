@@ -31,6 +31,7 @@ Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
 
 Improved Z88 emulation:
+-Changed colour palette to better match a real Z88
 -Show keys shortcuts below the Z88 display
 -Menu item to synchronize Z88 clock
 -Inserting Z88 cards: now it does not hang the emulator during the insert
