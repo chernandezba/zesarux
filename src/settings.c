@@ -224,6 +224,8 @@ z80_bit ql_flp1_follow_mdv1={0};
 // Display Settings
 //
 
+//Si ocultar legenda de teclas del Z88
+z80_bit z88_hide_keys_shortcuts={0};
 
 //Si debe enviar un espacio al final de cada palabra del adventure keyboard
 int adventure_keyboard_send_final_spc=0;

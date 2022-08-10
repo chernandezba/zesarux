@@ -10322,13 +10322,19 @@ void screen_z88_draw_lower_screen(void)
 
 		int x,y;
 
+        int color_fondo=Z88_PXCOLOFF;
+
+        //Si no mostramos leyenda, color es 7, para distinguir final de pantalla
+        if (z88_hide_keys_shortcuts.v) color_fondo=7;
+
 		for (y=0;y<screen_get_emulated_display_height_no_zoom()-64;y++) {
 			for (x=0;x<screen_get_emulated_display_width_no_zoom();x++) {
 				//scr_putpixel_zoom_z88(x,y,7);
-                screen_z88_draw_lower_screen_putpixel(x,y,Z88_PXCOLOFF);
+                screen_z88_draw_lower_screen_putpixel(x,y,color_fondo);
 			}
 		}
         
+        if (z88_hide_keys_shortcuts.v==0) {
         
         //Si no hay archivo cargado y/o cambio en paleta
         if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
@@ -10374,6 +10380,8 @@ void screen_z88_draw_lower_screen(void)
 
             screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,0,
                 0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
+        }
+
         }
 
 	}
