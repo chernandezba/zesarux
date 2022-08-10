@@ -10336,51 +10336,51 @@ void screen_z88_draw_lower_screen(void)
         
         if (z88_hide_keys_shortcuts.v==0) {
         
-        //Si no hay archivo cargado y/o cambio en paleta
-        if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
+            //Si no hay archivo cargado y/o cambio en paleta
+            if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
 
-            //printf("Loading z88_legend.bmp\n");
+                //printf("Loading z88_legend.bmp\n");
 
 
-            if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because image was not loaded");
-            if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because bmp palette was changed");
+                if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because image was not loaded");
+                if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because bmp palette was changed");
 
-            //localizarlo
-            char buffer_nombre[PATH_MAX];
+                //localizarlo
+                char buffer_nombre[PATH_MAX];
 
-            int existe=find_sharedfile("z88_legend.bmp",buffer_nombre);
-            if (!existe)  {
-                debug_printf(VERBOSE_ERR,"Unable to find z88_legend.bmp file");
-                return;
-            }        
+                int existe=find_sharedfile("z88_legend.bmp",buffer_nombre);
+                if (!existe)  {
+                    debug_printf(VERBOSE_ERR,"Unable to find z88_legend.bmp file");
+                    return;
+                }        
 
-            z88_legend_bmp_file_mem=util_load_bmp_file(buffer_nombre);
+                z88_legend_bmp_file_mem=util_load_bmp_file(buffer_nombre);
 
-            //Decimos que paleta no se ha cambiado a partir de aqui
-            //Si alguna otra tarea la cambia, nos daremos cuenta
-            util_bmp_load_palette_changed_palette=0;
+                //Decimos que paleta no se ha cambiado a partir de aqui
+                //Si alguna otra tarea la cambia, nos daremos cuenta
+                util_bmp_load_palette_changed_palette=0;
 
-            /*int i;
-            for (i=0;i<256;i++) {
-                printf("%X ",spectrum_colortable[BMP_INDEX_FIRST_COLOR+i]);
+                /*int i;
+                for (i=0;i<256;i++) {
+                    printf("%X ",spectrum_colortable[BMP_INDEX_FIRST_COLOR+i]);
+                }
+                printf("\n");*/
+
             }
-            printf("\n");*/
-
-        }
 
 
 
-        if (z88_legend_bmp_file_mem!=NULL) {
-            //Nota: este 45 es el color rojo
-            //screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
-            //    0,0,45,Z88_PXCOLOFF,screen_z88_draw_lower_screen_putpixel_aux);
+            if (z88_legend_bmp_file_mem!=NULL) {
+                //Nota: este 45 es el color rojo
+                //screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
+                //    0,0,45,Z88_PXCOLOFF,screen_z88_draw_lower_screen_putpixel_aux);
 
-            //Para centrar la imagen. Imagen es de 611 de ancho
-            screen_z88_draw_lower_screen_putpixel_aux_x_increment=(screen_get_emulated_display_width_no_zoom()-611)/2;
+                //Para centrar la imagen. Imagen es de 611 de ancho
+                screen_z88_draw_lower_screen_putpixel_aux_x_increment=(screen_get_emulated_display_width_no_zoom()-611)/2;
 
-            screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,0,
-                0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
-        }
+                screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,0,
+                    0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
+            }
 
         }
 
