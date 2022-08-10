@@ -10352,9 +10352,15 @@ void screen_z88_draw_lower_screen(void)
                 char buffer_nombre[PATH_MAX];
 
                 int existe=find_sharedfile("z88_shortcuts.bmp",buffer_nombre);
-                if (!existe && !z88_legend_bmp_file_not_found_shown_error)  {
-                    debug_printf(VERBOSE_ERR,"Unable to find z88_shortcuts.bmp file");
-                    z88_legend_bmp_file_not_found_shown_error=1;
+                if (!existe)  {
+                    //Solo mostrar ese error la primera vez
+                    //Si no, al mostrar el error y cerrar ventana, se intenta volver a cargar y se muestra el error de nuevo
+
+                    if (!z88_legend_bmp_file_not_found_shown_error) {
+                        debug_printf(VERBOSE_ERR,"Unable to find z88_shortcuts.bmp file");
+                        z88_legend_bmp_file_not_found_shown_error=1;
+                    }
+                    
                     return;
                 }        
 
