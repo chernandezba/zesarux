@@ -837,6 +837,7 @@ A: ZEsarUX is really very small. It only needs the following files to run (inclu
 -Some dll files on Windows version
 -rom files: Needed for all the emulated machines. You can delete specific rom files for machines you are not going to use.
 -keyboard*.bmp: Needed on the Help-> Keyboard Help window, you can delete them if you don't intend to use that window
+-z88_shortcuts.bmp: Needed to shot Z88 shortcuts. You can delete it if you are not using Z88 or not enabling Z88 shortcuts setting
 
 Also, if you want to run ZX-Uno or Next:
 -zxuno.flash if running ZX-Uno machine
