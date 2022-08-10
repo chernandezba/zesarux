@@ -10282,10 +10282,14 @@ void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
     //}
 }
 
+int screen_z88_draw_lower_screen_putpixel_aux_x_increment=0;
 
 //Funcion auxiliar usada en render bmp
 void screen_z88_draw_lower_screen_putpixel_aux(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
 {
+    //Centrarlo
+    x +=screen_z88_draw_lower_screen_putpixel_aux_x_increment;
+
     screen_z88_draw_lower_screen_putpixel(x,y,color_final);   
 }
 
@@ -10364,6 +10368,10 @@ void screen_z88_draw_lower_screen(void)
             //Nota: este 45 es el color rojo
             //screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,zoom_x,
             //    0,0,45,Z88_PXCOLOFF,screen_z88_draw_lower_screen_putpixel_aux);
+
+            //Para centrar la imagen. Imagen es de 611 de ancho
+            screen_z88_draw_lower_screen_putpixel_aux_x_increment=(screen_get_emulated_display_width_no_zoom()-611)/2;
+
             screen_render_bmpfile_function(z88_legend_bmp_file_mem,BMP_INDEX_FIRST_COLOR,NULL,0,
                 0,0,-1,0,screen_z88_draw_lower_screen_putpixel_aux);                
         }
