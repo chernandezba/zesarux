@@ -325,6 +325,8 @@ extern void z88_close_flap_ahora(void);
 
 extern void z88_open_flap(void);
 
+extern void z88_set_clock_current(void);
+
 
 #define BM_INTKWAIT 0x80
 // Bit 7, If set, reading the keyboard will Snooze

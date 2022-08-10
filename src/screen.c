@@ -10285,7 +10285,7 @@ void screen_z88_draw_lower_screen_putpixel(int x,int y,int color)
 int screen_z88_draw_lower_screen_putpixel_aux_x_increment=0;
 
 //Funcion auxiliar usada en render bmp
-void screen_z88_draw_lower_screen_putpixel_aux(zxvision_window *ventana,int x,int y,int color_final,int follow_zoom)
+void screen_z88_draw_lower_screen_putpixel_aux(zxvision_window *ventana GCC_UNUSED,int x,int y,int color_final,int follow_zoom GCC_UNUSED)
 {
     //Centrarlo
     x +=screen_z88_draw_lower_screen_putpixel_aux_x_increment;
@@ -10312,9 +10312,9 @@ void screen_z88_draw_lower_screen(void)
 	if (si_complete_video_driver() ) {
 
 
-		debug_printf (VERBOSE_DEBUG,"screen_z88_draw_lower_screen");
+		debug_printf (VERBOSE_DEBUG,"Z88 draw lower screen");
 
-        printf("draw z88 lower\n");
+        //printf("draw z88 lower\n");
         
         //debug_exec_show_backtrace();
 
@@ -10333,11 +10333,11 @@ void screen_z88_draw_lower_screen(void)
         //Si no hay archivo cargado y/o cambio en paleta
         if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
 
-            printf("Loading z88_legend.bmp\n");
+            //printf("Loading z88_legend.bmp\n");
 
 
-            if (z88_legend_bmp_file_mem==NULL) printf("because bmp was not loaded\n");
-            if (util_bmp_load_palette_changed_palette) printf("because palette was changed\n");
+            if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because image was not loaded");
+            if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_legend.bmp because bmp palette was changed");
 
             //localizarlo
             char buffer_nombre[PATH_MAX];
