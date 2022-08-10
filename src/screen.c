@@ -362,7 +362,8 @@ const int z88_colortable_original[4]={
 0x461B7D, //Enabled pixel
 0x90B0A7, //Grey enabled pixel
 0xD2E0B9, //Empty pixel when screen is switched on
-0xE0E0E0 //Empty pixel when screen is switched off
+//0xE0E0E0 //Empty pixel when screen is switched off. A mi este color nunca me ha parecido del todo real
+0xc3c8b8 //Empty pixel when screen is switched off. Color obtenido de un Z88 real
 };
 
 //ubicacion en el array de colores de los de Z88
