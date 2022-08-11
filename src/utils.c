@@ -3453,6 +3453,9 @@ int util_write_configfile(void)
 
   //sprintf (buffer_temp,"--zoom %d",zoom_x);
   if (save_configuration_file_on_exit.v)      ADD_STRING_CONFIG,"--saveconf-on-exit");
+
+
+  //TODO: por que no estamos guardando zoom_x y zoom_y??
                                               ADD_STRING_CONFIG,"--zoom %d",zoom_x);
   if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
 

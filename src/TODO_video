@@ -15,6 +15,7 @@ Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 final de frame. Y al no haberlo , si metemos un refresco de pantalla al final de cada supuesto frame, se estara lanzando muchos mas de 50 veces por segundo
 el refresco de pantalla y por tanto, se ralentiza todo y acaba yendo mas o menos a velocidad normal en vez de top speed
 
+-al guardar opciones de zoom en configuracion, se guarda solo --zoom en vez de --zoomx y --zoomy. Por que?
 
 -watermark sin realvideo no hace zoom. importante???
 
