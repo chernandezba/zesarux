@@ -5093,7 +5093,11 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
 {
     
 
-    int zoom=menu_get_ext_desktop_icons_zoom();
+    int zoom;
+
+    //darle el nivel de zoom x o y, el que sea menor
+    if (zoom_x<zoom_y) zoom=zoom_x;
+    else zoom=zoom_y;    
 
     int ancho_caracter=CHARSET_ICONS_ANCHO;
     int alto_caracter=CHARSET_ICONS_ALTO;
@@ -5110,6 +5114,9 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
         int offset=(c-32)*alto_caracter;
         //printf("c %d offset %d\n",c,offset);
 
+
+        //TODO: esta funcion no permite zoom X y zoom Y diferentes, solo permite uno
+        //en el caso del texto le enviamos el zoom que sea mas pequeño
         screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
             menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset);    
         

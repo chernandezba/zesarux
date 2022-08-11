@@ -70,9 +70,6 @@ Y cierra menus pero no sale
 -menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
--cuelgue tecla pausa
-* ZEsarUX 10.1 on Mac: no hang after pressing pause several times
-* ZEsarUX 10.1 on Windows or Linux: press pause, then enter, no hang. Press pause, pause again, hangs
 
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
