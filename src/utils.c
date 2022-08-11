@@ -3742,7 +3742,7 @@ int util_write_configfile(void)
 
   if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");
 
-
+  if (sync_clock_to_z88.v==0)                   ADD_STRING_CONFIG,"--z88-not-sync-clock-snap");
 
                                                 ADD_STRING_CONFIG,"--snapram-interval %d",snapshot_in_ram_interval_seconds);
                                                 ADD_STRING_CONFIG,"--snapram-max %d",snapshots_in_ram_maximum);

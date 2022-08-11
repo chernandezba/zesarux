@@ -325,7 +325,7 @@ extern void z88_close_flap_ahora(void);
 
 extern void z88_open_flap(void);
 
-extern void z88_set_clock_current(void);
+extern void z88_set_system_clock_to_z88(void);
 
 
 #define BM_INTKWAIT 0x80

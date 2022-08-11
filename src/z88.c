@@ -3267,7 +3267,7 @@ int z88_flap_is_open(void)
 
 
 //Establece el reloj del Z88 con el actual
-void z88_set_clock_current(void)
+void z88_set_system_clock_to_z88(void)
 {
     z80_64bit segundos=util_get_seconds();
 

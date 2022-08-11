@@ -165,22 +165,12 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 
 
 -agregar screenshot a repositorio con zx desktop e iconos 
+-agregar screenshot Z88
 
 -letras de texto iconos se ven mal si zoom_x !=zoom_y
 
--agregar en FAQ info de Z88 como poder cargar un archivo basic:
-*agregar al inicio del basic:
-#B
-.J
-NEW
 
-*crear archivo eprom
-*copiarlo dentro
-*ejecutarlo desde el filer / o con comando cli desde basic (*CLI .*FILENAME). En el segundo caso no hace falta el "#B" inicial
-Ver documentacion Z88, Filer reference
 
 -poder hacer browse de los archivos en RAM de z88
-
--revisar colores reales Z88
 
 -opcion Z88 para sincronizar con reloj al cargar snapshot y/o inicializar maquina?

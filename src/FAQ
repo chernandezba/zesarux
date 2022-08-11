@@ -410,11 +410,23 @@ extras/docs/z88/Z88UGV4.pdf
 Q: How can copy files from my PC to the Z88?
 A: You can load a file on a Z88 ZEsarUX emulated machine by different ways:
 
-1) If it's a Basic txt file, you can open the Z88 basic and then use the ZEsarUX debug-spool menu to load the txt file. ZEsarUX will then send every letter in the file as key presses
+1) If it's a Basic plain text file, you have two choices:
 
-2) If it's a eprom image file (.epr, .eprom or .62 extensions) just insert it from the ZEsarUX storage menu
+a) Add at the beginning:
+#B
+.J
+NEW
 
-3) If it's a file you need to copy on an eprom card, you can insert an existing eprom image file or create a blank one from the storage menu. Then use the same menu to copy a file from your pc to that eprom image. Follow these steps: Go to menu Storage->Z88 memory slots->Select the third empty slot (slot 3). Set memory type: eprom. Select field Name, Enter. Then on the file browser, select the existing eprom file or, to create a new one, just TAB twice and on the File: field, just write a new name with extension .eprom. Select Yes to create a new file, and select the size. Then apply changes. Then return to Z88, open the Filer, and select "Create file card" and select slot 3. Open ZEsarUX menu again, Storage->Z88 memory slots. Then, as you have the card formatted, you can select the "Copy to Card" item and copy files from your pc.
+Then, copy file to an eprom (see step 4), then from Filer, just select the file and Execute it. You can also go to BBC Basic, and run command:
+*CLI .*FILENAME. In this case, the "#B" at the beginning is not necessary
+
+b) You can open the Z88 basic and then use the ZEsarUX debug-spool menu to load the txt file. ZEsarUX will then send every letter in the file as key presses
+
+2) It it's a Basic tokenised file, copy file to an eprom (see step 4), then from BBC Basic just run: LOAD "FILENAME"
+
+3) If it's a eprom image file (.epr, .eprom or .62 extensions) just insert it from the ZEsarUX storage menu
+
+4) If it's a file you need to copy on an eprom card, you can insert an existing eprom image file or create a blank one from the storage menu. Then use the same menu to copy a file from your pc to that eprom image. Follow these steps: Go to menu Storage->Z88 memory slots->Select the third empty slot (slot 3). Set memory type: eprom. Select field Name, Enter. Then on the file browser, select the existing eprom file or, to create a new one, just TAB twice and on the File: field, just write a new name with extension .eprom. Select Yes to create a new file, and select the size. Then apply changes. Then return to Z88, open the Filer, and select "Create file card" and select slot 3. Open ZEsarUX menu again, Storage->Z88 memory slots. Then, as you have the card formatted, you can select the "Copy to Card" item and copy files from your pc.
 
 
 ----------------------------------------------------------------------------

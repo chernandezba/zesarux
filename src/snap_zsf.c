@@ -82,6 +82,7 @@
 #include "ql_zx8302.h"
 #include "ql_i8049.h"
 #include "vdp_9918a_sms.h"
+#include "settings.h"
 
 
 #include "autoselectoptions.h"
@@ -2570,6 +2571,12 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
   }
 
   if (filename!=NULL) fclose(ptr_zsf_file);
+
+  //Ajustes posteriores a la carga de snapshot
+  if (MACHINE_IS_Z88 && sync_clock_to_z88.v) {
+    debug_printf(VERBOSE_DEBUG,"Setting system clock to Z88 clock");
+    z88_set_system_clock_to_z88();
+  }
 
 
 }

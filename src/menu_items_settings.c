@@ -4855,7 +4855,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_settings_set_z88_clock(MENU_ITEM_PARAMETERS)
 {
-    z88_set_clock_current();    
+    z88_set_system_clock_to_z88();    
 
     menu_generic_message_splash("Set Z88 clock","OK. Clock synchronized");
 }
@@ -7753,6 +7753,11 @@ void menu_snapshot_autosnap_path(MENU_ITEM_PARAMETERS)
 	menu_storage_string_root_dir(autosave_snapshot_path_buffer);
 }
 
+void menu_settings_snapshot_sync_to_z88_clock(MENU_ITEM_PARAMETERS)
+{
+    sync_clock_to_z88.v ^=1;
+}
+
 void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 {
 
@@ -7803,6 +7808,14 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,"[%c] Close menu on smartload",(no_close_menu_after_smartload.v ? ' ' : 'X'));
                 menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Closes the menu after Smartload");
 				menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Closes the menu after Smartload");
+
+                if (MACHINE_IS_Z88) {
+                    menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_settings_snapshot_sync_to_z88_clock,NULL,
+                    "Sync PC->Z88 clock","Sinc PC->reloj Z88","Sinc PC->rellotge Z88");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ", (sync_clock_to_z88.v ? 'X' : ' ') );
+                    menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
+                    menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
+                }
                
 
                 menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);

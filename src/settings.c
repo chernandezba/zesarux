@@ -180,6 +180,9 @@ z80_bit autoload_snapshot_on_start;
 //ruta de autoguardado
 char autosave_snapshot_path_buffer[PATH_MAX];
 
+//Sincronizar reloj del sistema al Z88 despues cargar snapshot
+z80_bit sync_clock_to_z88={1};
+
 
 //
 // Tape Settings

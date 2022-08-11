@@ -121,5 +121,7 @@ extern z80_bit zxdesktop_configurable_icons_enabled;
 
 extern z80_bit z88_hide_keys_shortcuts;
 
+extern z80_bit sync_clock_to_z88;
+
 #endif
 

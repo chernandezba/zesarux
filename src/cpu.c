@@ -1699,6 +1699,7 @@ printf (
 		"--tempdir path              Folder to save temporary files. Folder must exist and have read and write permissions\n"
 		"--snap-no-change-machine    Do not change machine when loading sna or z80 snapshots. Just load it on memory\n"
 		"--no-close-after-smartload  Do not close menu after SmartLoad\n"
+        "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
         "--snapram-interval n        Generate a snapshot in ram every n seconds\n"
         "--snapram-max n             Maximum snapshots to keep in memory\n"
         "--snapram-rewind-timeout n  After this time pressed rewind action, the rewind position is reset to current\n"
@@ -6795,6 +6796,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--no-close-after-smartload")) {
 				no_close_menu_after_smartload.v=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--z88-not-sync-clock-snap")) {
+                sync_clock_to_z88.v=0;
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--snapram-interval")) {
                 siguiente_parametro_argumento();
