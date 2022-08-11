@@ -698,7 +698,7 @@ struct s_total_palette_colours {
 typedef struct s_total_palette_colours total_palette_colours;
 
 //Esto usado en menu display->ver paleta total
-#define TOTAL_PALETAS_COLORES 14
+#define TOTAL_PALETAS_COLORES 15
 
 extern total_palette_colours total_palette_colours_array[];
 

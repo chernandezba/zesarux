@@ -10,7 +10,7 @@ The following are features exclusive to ZEsarUX and not found on any emulator of
 
 * Emulates Kartusho, iFrom interfaces
 
-* Emulates HiLow DataDrive
+* Emulates HiLow DataDrive, Hilow Barbanegra
 
 * Real time playback from emulated sound chips AY, SN76489AN, i8049 to external MIDI device 
 
