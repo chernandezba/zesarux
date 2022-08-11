@@ -328,6 +328,32 @@ extern void z88_open_flap(void);
 extern void z88_set_system_clock_to_z88(void);
 
 
+#define BM_COMSRUN      0x80
+// Bit 7, SRUN        Speaker source (0=SBIT, 1=TxD or 3200hz)
+
+#define BM_COMSBIT      0x40
+//Bit 6, SBIT        SRUN=0: 0=low, 1=high; SRUN=1: 0=3200 hz, 1=TxD
+
+#define BM_COMOVERP     0x20
+//Bit 5, OVERP       Set to overprogram EPROM s
+
+#define BM_COMRESTIM    0x10
+//Bit 4, RESTIM      Set to reset the RTC, clear to continue
+
+#define BM_COMPROGRAM   0x08
+//Bit 3, PROGRAM     Set to enable EPROM  programming
+
+#define BM_COMRAMS      0x04
+//Bit 2, RAMS        Binding of lower 8K of segment 0: 0=bank 0, 1=bank 20
+
+#define BM_COMVPPON     0x02
+//Bit 1, VPPON       Set to turn programming voltage ON
+
+#define BM_COMLCDON     0x01
+//Bit 0, LCDON       Set to turn LCD ON, clear to turn LCD OFF
+      
+
+
 #define BM_INTKWAIT 0x80
 // Bit 7, If set, reading the keyboard will Snooze
 

@@ -10017,7 +10017,7 @@ void screen_z88_refresca_pantalla_comun(void)
 
 
 
-        if ((blink_com&1)==0 || z88_flap_is_open() ) {
+        if ((blink_com & BM_COMLCDON)==0 || z88_flap_is_open() ) {
                 debug_printf (VERBOSE_DEBUG,"LCD is OFF or flap open");
                 int x,y,xmenu,ymenu;
 

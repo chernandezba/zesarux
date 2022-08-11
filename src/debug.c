@@ -5473,6 +5473,13 @@ void debug_get_ioports(char *stats_buffer)
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
   		}
 
+        //Segundos y minutos transcurridos segun el tim
+        int doscienteavo_segundo=blink_tim[0];
+        int segundos=blink_tim[1];
+        int minutos=blink_tim[2]+(blink_tim[3]*256)+(blink_tim[4]*65536);
+
+        sprintf (buf_linea,"TIM[FULL]: %d:%02d.%03d\n",minutos,segundos,doscienteavo_segundo);
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
   		sprintf (buf_linea,"COM:  %02X\n",blink_com);
