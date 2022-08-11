@@ -75,7 +75,7 @@ Improved HiLow DataDrive emulation:
 -Added technical documentation on the extras package
 
 
-Fixed handling files larger than 2 GB on 32 bit CPU (including the Windows version too)
+Fixed handling files larger than 2 GB on 32 bit CPU (it does apply to the Windows version even on a 64 bit CPU)
 Fixed using mmc images larger than 2 GB
 Fixed redrawing ZX Desktop when resizing window
 Fixed hang when using View Variables and memory corrupted
