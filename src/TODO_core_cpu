@@ -83,3 +83,33 @@ pueden variar mientras se está ejecutando el thread con el loop del siguiente s
 -Quizá cuando se ha pulsado rewind (en snapshots to RAM) y hasta que no hay el timeout, no generar nuevos snapshots. 
 Si no, cuando pasa el timeout y se hace rewind, aparecen unos snapshot “temporales” que quizá el usuario 
 no quiere ver. O siempre así o igual personalizable. Probarlo
+
+-Error prefijos DD repetidos:
+ DD DD E1 is executed as push hl, not as push ix  with extra DD prefix
+
+Lo curioso es que si cantidad impar de prefijos DD, si que hace lo esperado:
+
+3 DD:
+DD DD -> se ignora y vuelve al core
+DD E1 -> PUSH IX
+
+5 DD:
+DD DD -> se ignora y vuelve al core
+DD DD -> se ignora y vuelve al core
+DD E1 -> PUSH IX
+
+Pero si hay cantidad par, no hace lo esperado
+
+Para corregirlo es algo complicado:
+con el segundo dd, desde instruccion_ddfd_221 se vuelve al core. y por tanto el siguiente byte (que será el E1) se interpreta tal cua: push hl
+
+Habria que modificar el core para que:
+
+-tener un flag que diga que la instruccion antes tiene opcode dd/fd
+-llamar a codsinpr[byte_leido_core_spectrum]  () ; como ahora, si no esta ese flag activado
+-llamar a codprddfd[pref221_opcode_leido]  () ; al igual que se hace desde instruccion_221
+
+Habria que ir con cuidado de si se dispara una interrupcion en medio del opcode...que sucede? quitar el flag y permitir interrupcion?
+
+Resumiendo: esto no se usa mas que en programas de test, su corrección requiere cambios arriesgados que pueden romper el core, y como tal,
+no se va a hacer en un futuro cercano

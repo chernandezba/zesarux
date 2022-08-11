@@ -863,11 +863,10 @@ pacman bien tanto pantalla inicial como juego
 -lanzar esto para z88:
 ./zesarux --noconfigfile --enable-silencedetector --verbose 3 extras/media/z88/lem.epr
 
-hace que se arranque la ventana en tamaño spectrum y despues de unos segundos se redimensiona
+hace que splash logo se vea mal inicialmente
 
 -al copiar archivo ACKNOWLEDGEMENTS en eprom card luego no lo puede obtener desde el filer. Quiza el maximo de nombre hay que cortarlo?
 -con flash acabada de crear el filesystem, el browser del menu muestra el archivo inicial Deleted. Es normal, pero deberia mostrar ese archivo?
--al meter modo turbo se desactiva si hay eprom insertada->porque acaba llamando a set_machine y ahi explusa cartuchos
 -agregar RAM de 1MB. soft reset genera "FS error" y no ve la tarjeta. hay que hacer hard reset para que la vea. con RAM menor de 1MB la reconoce a la primera. esto NO es un fallo del emulador sino el comportamiento normal de OZ ROM
 
 -en pipedream, si se mueve el cursor muy rapido a veces se queda que no contesta el ultimo cursor pulsado, y hay que pulsar otra tecla para liberarlo
@@ -905,7 +904,6 @@ hay por ahi alguna epr de 16 kb??
 tarjeta que probaba Thierry:
 512K flash Eprom (AMIC 29040) and 512K SRAM. They are organized with ram on the bottom (bank 00-1F) and flash (bank 20-3F) on top.
 
-
 -revisar juegos de whatnow para agregar alguno mas...
 
 -gestion tamanyo rom interna. necesario? quiza no pues la propia rom ya identifica su propio tamanyo
@@ -928,10 +926,11 @@ tarjeta que probaba Thierry:
 
 -Z88. Dejar algún programa de ejemplo con formato .bas y binario. Quizá el whatnow esta así?
 
--Z88 ventana principal tamaño normal de z88, eliminar zona gris.
 -Z88 teclado virtual para Z88 y/o resto de modelos
 
 -Z88. Probar a compilar programas con z88dk
+
+-poder hacer browse de los archivos en RAM de z88. Ver en codigo fuente de oz, archivo def/sysvar.def. quiza ahi hay alguna pista
 
 
 ------
