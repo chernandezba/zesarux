@@ -18875,32 +18875,32 @@ reserved	1 byte	 	unused (=0)
 			
 */
 
-        int i;
-		int indice_paleta;
+    int i;
+    int indice_paleta;
 
-        //En posicion 0E, dword que indica tamaño de la segunda paleta. Luego vendra la paleta de colores
-        int size_info_header;
+    //En posicion 0E, dword que indica tamaño de la segunda paleta. Luego vendra la paleta de colores
+    int size_info_header;
 
-        //TODO: asumimos tamaños pequeños de esa cabecera y por tanto solo leo 2 bytes de ese dword
-        size_info_header=mem[0x0E]+256*mem[0x0F];
+    //TODO: asumimos tamaños pequeños de esa cabecera y por tanto solo leo 2 bytes de ese dword
+    size_info_header=mem[0x0E]+256*mem[0x0F];
 
-        indice_paleta=size_info_header;
-        indice_paleta +=0x0E;
+    indice_paleta=size_info_header;
+    indice_paleta +=0x0E;
 
-		//Orden BGR0
-		for (i=0;i<256;i++) {
-			int red=mem[indice_paleta+2];
-			int green=mem[indice_paleta+1];
-			int blue=mem[indice_paleta];
+    //Orden BGR0
+    for (i=0;i<256;i++) {
+        int red=mem[indice_paleta+2];
+        int green=mem[indice_paleta+1];
+        int blue=mem[indice_paleta];
 
-			int color=(red<<16) | (green<<8) | blue;
-            debug_printf(VERBOSE_DEBUG,"Loading BMP palette. Index %d Value %06XH",i,color);
+        int color=(red<<16) | (green<<8) | blue;
+        debug_printf(VERBOSE_DEBUG,"Loading BMP palette. Index %d Value %06XH",i,color);
 
-					
-			screen_set_colour_normal(indice_inicio_color+i,color);
+                
+        screen_set_colour_normal(indice_inicio_color+i,color);
 
-			indice_paleta +=4;
-		}
+        indice_paleta +=4;
+    }
 
     if (indice_inicio_color==BMP_INDEX_FIRST_COLOR) util_bmp_load_palette_changed_palette_primary=1;
     else util_bmp_load_palette_changed_palette_second=1;
