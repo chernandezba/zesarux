@@ -10350,12 +10350,12 @@ void screen_z88_draw_lower_screen(void)
         
         if (z88_hide_keys_shortcuts.v==0) {
 
-            printf("util_bmp_load_palette_changed_palette_primary %d\n",util_bmp_load_palette_changed_palette_primary);
+            //printf("util_bmp_load_palette_changed_palette_primary %d\n",util_bmp_load_palette_changed_palette_primary);
         
             //Si no hay archivo cargado y/o cambio en paleta
             if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette_primary) {
 
-                printf("Loading z88_shortcuts.bmp\n");
+                //printf("Loading z88_shortcuts.bmp\n");
 
 
                 if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because image was not loaded");
