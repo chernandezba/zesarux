@@ -5392,16 +5392,17 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
 
     //Escribir texto del icono
-    int y_texto_icono=y+(ZESARUX_ASCII_LOGO_ALTO+2)*zoom_y;
+    int separacion_texto=2*menu_get_ext_desktop_icons_zoom();
+    int y_texto_icono=y+menu_get_ext_desktop_icons_size()+separacion_texto;
 
     //Si background para el texto
     if (menu_ext_desktop_configurable_icons_text_background.v) {
         int longitud_texto=strlen(zxdesktop_configurable_icons_list[index_icon].text_icon);
 
-        int zoom_iconos=menu_get_ext_desktop_icons_zoom();
+        //int zoom_iconos=menu_get_ext_desktop_icons_zoom();
 
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_iconos,
-            CHARSET_ICONS_ALTO*zoom_iconos,ESTILO_GUI_PAPEL_NORMAL);
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_x,
+            CHARSET_ICONS_ALTO*zoom_y,ESTILO_GUI_PAPEL_NORMAL);
     }
 
 
