@@ -332,15 +332,15 @@ void init_z88_memory_slots(void)
 	//Offsets siempre fijos. NO TOCAR!!
 	z88_memory_slots[0].offset_total=0;
 	z88_memory_slots[1].offset_total=0x40*16384;
-        z88_memory_slots[2].offset_total=0x80*16384;
-        z88_memory_slots[3].offset_total=0xC0*16384;
+    z88_memory_slots[2].offset_total=0x80*16384;
+    z88_memory_slots[3].offset_total=0xC0*16384;
 
 	//de slot 0 solo se usa offset_total
 	//z88_memory_slots[0].size=(1024*1024)-1;
 	//z88_memory_slots[0].type=1;
 
 	//128KB RAM memoria interna
-        z88_internal_ram_size=131071;
+    z88_internal_ram_size=131071;
 
 
 	//Sin ninguna tarjeta insertada
@@ -350,11 +350,11 @@ void init_z88_memory_slots(void)
 
 
 	z88_memory_slots[2].size=0;
-        z88_memory_slots[2].type=0;
+    z88_memory_slots[2].type=0;
 
 
 	z88_memory_slots[3].size=0;
-        z88_memory_slots[3].type=0;
+    z88_memory_slots[3].type=0;
 
 
 	//Nombre eprom vacio. esto solo es necesario para la opcion de menu de insert eprom. nos aseguramos que es texto vacio inicialmente
@@ -417,43 +417,43 @@ void z88_set_z88_eprom_or_flash_must_flush_to_disk(void)
 //Borrar bloque en la tarjeta flash
 void z88_flash_erase_block(z80_byte slot,z80_long_int offset)
 {
-                                if (slot!=3) {
-                                        z88_memory_slots[slot].statusRegister = 0xA8; // SR.7 = Ready, SR.5 = 1 (Block Erase Error), SR.3 = 1 (no VPP)
-                                        return;
-                                }
+    if (slot!=3) {
+        z88_memory_slots[slot].statusRegister = 0xA8; // SR.7 = Ready, SR.5 = 1 (Block Erase Error), SR.3 = 1 (no VPP)
+        return;
+    }
 
-                                //1           VPPON       Set to turn programming voltage ON
-                                if ((blink_com & 1)==0) {
-                                        z88_memory_slots[slot].statusRegister = 0xA8; // SR.7 = Ready, SR.5 = 1 (Block Erase Error), SR.3 = 1 (no VPP)
-                                        debug_printf (VERBOSE_DEBUG,"Trying to erase Flash but VPP programming voltage bit not enabled");
-                                        return;
-                                }
+    //1           VPPON       Set to turn programming voltage ON
+    if ((blink_com & 1)==0) {
+        z88_memory_slots[slot].statusRegister = 0xA8; // SR.7 = Ready, SR.5 = 1 (Block Erase Error), SR.3 = 1 (no VPP)
+        debug_printf (VERBOSE_DEBUG,"Trying to erase Flash but VPP programming voltage bit not enabled");
+        return;
+    }
 
-                                //slot 3 y eprom programming. dejamos escritura
-                                z88_memory_slots[slot].statusRegister = 0x80; // SR.7 = Ready, SR.5 = 0 (Block Erase OK), SR.4 = 0 (Program OK), SR.3 = 0 (VPP OK)
+    //slot 3 y eprom programming. dejamos escritura
+    z88_memory_slots[slot].statusRegister = 0x80; // SR.7 = Ready, SR.5 = 0 (Block Erase OK), SR.4 = 0 (Program OK), SR.3 = 0 (VPP OK)
 
-				//nos situamos en slot 3
-				offset=offset-(1024*1024*3);
+    //nos situamos en slot 3
+    offset=offset-(1024*1024*3);
 
-				//printf ("offset relativo a slot 3: %d\n",offset);
-
-
-				//Obtener que numero de bloque de 64 kb vamos a borrar
-				z80_byte block_number=offset/65536;
-
-				debug_printf (VERBOSE_INFO,"Clearing Flash block %d of 64 kb size",block_number);
-
-				z80_long_int offset_en_bloque=z88_memory_slots[slot].offset_total + block_number*65536;
+    //printf ("offset relativo a slot 3: %d\n",offset);
 
 
-				int longitud=65536;
+    //Obtener que numero de bloque de 64 kb vamos a borrar
+    z80_byte block_number=offset/65536;
 
-				for (;longitud>0;offset_en_bloque++,longitud--) {
-					z88_puntero_memoria[offset_en_bloque]=0xFF;
-				}
+    debug_printf (VERBOSE_INFO,"Clearing Flash block %d of 64 kb size",block_number);
 
-                                //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
-                                z88_set_z88_eprom_or_flash_must_flush_to_disk();
+    z80_long_int offset_en_bloque=z88_memory_slots[slot].offset_total + block_number*65536;
+
+
+    int longitud=65536;
+
+    for (;longitud>0;offset_en_bloque++,longitud--) {
+        z88_puntero_memoria[offset_en_bloque]=0xFF;
+    }
+
+    //marcamos bit para decir que se ha escrito en eprom para luego hacer flush
+    z88_set_z88_eprom_or_flash_must_flush_to_disk();
 
 }
 
