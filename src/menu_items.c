@@ -18896,7 +18896,11 @@ void menu_help_keyboard_load_bmp(void)
             return;
     }
 
-    help_keyboard_bmp_file_mem=util_load_bmp_file(buffer_nombre);
+    //Cargamos el bmp en la paleta secundaria, para que coincida menos con otras imagenes:
+    //Z88 shortcuts: paleta 0
+    //Ventana about: paleta 0
+    //Keyboard help: paleta 1
+    help_keyboard_bmp_file_mem=util_load_bmp_file(buffer_nombre,1);
 
 
     //if (help_keyboard_bmp_file_mem==NULL) return;
@@ -18954,7 +18958,7 @@ void menu_help_keyboard_overlay(void)
             //printf ("Refrescando keyboard help. contador_segundo=%d\n",contador_segundo);
 
             //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
-            screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+            screen_render_bmpfile(help_keyboard_bmp_file_mem,BMP_SECOND_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
 
             ventana->has_been_drawn_contents=0;
                     

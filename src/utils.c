@@ -18855,9 +18855,10 @@ void util_write_screen_bmp(char *archivo)
 
 }
 
-//Se pone a 1 cuando paleta se cambia
+//Indica que la paleta primaria o la secundaria se ha cambiado
 //util para detectar en algunos sitios si paleta se ha cambiado y hay que cargarla de nuevo
-int util_bmp_load_palette_changed_palette=0;
+int util_bmp_load_palette_changed_palette_primary=0;
+int util_bmp_load_palette_changed_palette_second=0;
 
 //Cargar 256 colores de paleta de un archivo bmp (de memoria) en un indice de nuestra paleta interna
 void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color)
@@ -18874,7 +18875,7 @@ reserved	1 byte	 	unused (=0)
 			
 */
 
-        		int i;
+        int i;
 		int indice_paleta;
 
         //En posicion 0E, dword que indica tamaño de la segunda paleta. Luego vendra la paleta de colores
@@ -18901,7 +18902,8 @@ reserved	1 byte	 	unused (=0)
 			indice_paleta +=4;
 		}
 
-    util_bmp_load_palette_changed_palette=1;
+    if (indice_inicio_color==BMP_INDEX_FIRST_COLOR) util_bmp_load_palette_changed_palette_primary=1;
+    else util_bmp_load_palette_changed_palette_second=1;
 
     //printf("Palette has been changed\n");
     //debug_exec_show_backtrace();
@@ -18909,7 +18911,8 @@ reserved	1 byte	 	unused (=0)
 }
 
 //Cargar un archivo bmp en memoria. Retorna puntero
-z80_byte *util_load_bmp_file(char *archivo)
+//id_paleta indica si se carga en paleta de colores 0 o 1
+z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
 {
     z80_byte *puntero;
 
@@ -18933,7 +18936,8 @@ z80_byte *util_load_bmp_file(char *archivo)
 
 
     //Cargar la paleta bmp. 
-    util_bmp_load_palette(puntero,BMP_INDEX_FIRST_COLOR);    
+    int paleta_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
+    util_bmp_load_palette(puntero,paleta_destino);    
 
     return puntero;
 }

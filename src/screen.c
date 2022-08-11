@@ -9250,8 +9250,6 @@ void screen_init_colour_table(void)
 	debug_printf (VERBOSE_INFO,"Creating colour tables for %d colours",EMULATOR_TOTAL_PALETTE_COLOURS);
 	if (EMULATOR_TOTAL_PALETTE_COLOURS>65535) cpu_panic("More than 65536 colours to allocate. This is fatal!");
 
-    //TODO: Al parecer al llamar aqui se cambia tabla de colores bmp. Investigar por que...
-    //util_bmp_load_palette_changed_palette=1;
 
 /*
 	int antes_screen_gray_mode=screen_gray_mode;
@@ -10351,15 +10349,17 @@ void screen_z88_draw_lower_screen(void)
 		}
         
         if (z88_hide_keys_shortcuts.v==0) {
+
+            printf("util_bmp_load_palette_changed_palette_primary %d\n",util_bmp_load_palette_changed_palette_primary);
         
             //Si no hay archivo cargado y/o cambio en paleta
-            if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette) {
+            if (z88_legend_bmp_file_mem==NULL || util_bmp_load_palette_changed_palette_primary) {
 
-                //printf("Loading z88_shortcuts.bmp\n");
+                printf("Loading z88_shortcuts.bmp\n");
 
 
                 if (z88_legend_bmp_file_mem==NULL) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because image was not loaded");
-                if (util_bmp_load_palette_changed_palette) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because bmp palette was changed");
+                if (util_bmp_load_palette_changed_palette_primary) debug_printf(VERBOSE_INFO,"Loading z88_shortcuts.bmp because bmp palette was changed");
 
                 //localizarlo
                 char buffer_nombre[PATH_MAX];
@@ -10377,11 +10377,11 @@ void screen_z88_draw_lower_screen(void)
                     return;
                 }        
 
-                z88_legend_bmp_file_mem=util_load_bmp_file(buffer_nombre);
+                z88_legend_bmp_file_mem=util_load_bmp_file(buffer_nombre,0);
 
                 //Decimos que paleta no se ha cambiado a partir de aqui
                 //Si alguna otra tarea la cambia, nos daremos cuenta
-                util_bmp_load_palette_changed_palette=0;
+                util_bmp_load_palette_changed_palette_primary=0;
 
                 /*int i;
                 for (i=0;i<256;i++) {
