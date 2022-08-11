@@ -6,7 +6,7 @@ Para esta version:
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
--ZSF: soporte para TS2068, Sam coupe, Chloe, Prism, Chrome, MK14
+-ZSF: soporte para Sam coupe, Chloe, Prism, Chrome, MK14
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 

@@ -146,9 +146,6 @@ ver que hace zxpand aqui....
 Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
 
--Probar malloc en 32 bit de 2 gb
-
-
 -utils.c: In function ‘util_extract_hdf’:
 utils.c:11099:18: warning: this decimal constant is unsigned only in ISO C90
                   2147483648L, //8. 2 GB
@@ -294,8 +291,6 @@ como descubrir rutinas de pintado de sprites
 
 -unpaws , unquill para cpc
 
--mapa localidades daad/paws/quill
-
 -De extractor paws o similar:
 TODO: si puntero tokens es 0, no hay tokens
 TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con acentos?
@@ -309,10 +304,9 @@ TODO: algunos valores de xor 255 no son realmente xor 255. Quizá son letras con
 
 -Text keyboard editable desde menu?
 
--Joystick en Mac
+
 -quiza redibujar archivo logo tal cual con el boot logo
 -Posible ocr con traducción de cirílico?
-
 
 
 -reorganizar capturas de pantalla del readme.md para que esten todas las maquinas
@@ -345,7 +339,7 @@ Si es botón está también mapeado a un evento, entonces esa letra no se ve
 
 -Meter roms alternativas para divide
 
--sped52 que use 256 y 512 mb ram
+-sped52 que use 256 y 512 kb ram
 
 -hotswap de 48k a 48k spanish
 
@@ -359,9 +353,7 @@ quizá modo dual de spectra se puede hacer en misma ventana pero haciéndola el 
 
 -currah microspeech
 
--Scorpion emulation
 
--TRS-80 emulation
 
 -Simular fallo de memoria (golpe) en zx81 ("wobble")
 
@@ -493,10 +485,8 @@ Alguna calculadora de texas instruments
 https://en.m.wikipedia.org/wiki/Philips_P2000
 
 
-Master system
 
-
-
+-Scorpion emulation
 
 
 https://en.m.wikipedia.org/wiki/ATM_(computer)

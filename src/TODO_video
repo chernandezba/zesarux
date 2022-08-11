@@ -136,8 +136,6 @@ Ver http://www.atc.us.es/svn/zxuno/software/modo_radastan/videos_radastanianos/ 
 
 -en drivers que muestran debug_printf en ventana, como aa, caca, curses, hacer que si hay mas de un mensaje, aparezcan con pausa entre ellos
 
--Rst16 para stdout que permita número... Esto es para list de basic
-
 -una vez al pasar de stdout a sdl luego sdl no leia teclas
 
 -Impresión caracteres en consola texto nunca debe mostrar el 127. Es Delete
