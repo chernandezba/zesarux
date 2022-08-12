@@ -366,7 +366,7 @@ const int z88_colortable_original[4]={
 0x461B7D, //Enabled pixel
 //0x1d1e36, //Enabled pixel
 
-0x71718e, //Grey enabled pixel
+0x7f7eab, //Grey enabled pixel
 
 0x89b9a5, //Empty pixel when screen is switched on
 0xa8d9c4 //Empty pixel when screen is switched off. Realmente es el mismo que con pantalla encendida (con poco contraste),
