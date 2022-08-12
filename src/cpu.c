@@ -1440,15 +1440,15 @@ char *string_machines_list_description=
 void cpu_help(void)
 {
 	printf ("Usage:\n"
-		"[--tape] file           Insert input standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
-		"[--realtape] file       Insert input real tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
-		"[--snap] file           Load snapshot file. Supported formats: Spectrum: .Z80, .ZX, .SP, .SNA -- ZX80: .ZX, .O, .80 -- ZX81: .ZX, .P, .81, .Z81\n"
+		"[--tape] file           Insert input standard tape file. Supported formats: Spectrum: .TAP, .TZX, .PZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
+		"[--realtape] file       Insert input real tape file. Supported formats: Spectrum: .TAP, .TZX, .PZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- CPC: .CDT -- All machines: .RWA, .SMP, .WAV\n"
+		"[--snap] file           Load snapshot file. Supported formats: Spectrum: .ZSF, .ZX, .Z80, .SP, .SNA -- ZX80: .ZX, .O, .80 -- ZX81: .ZX, .P, .81, .Z81\n"
 		"[--slotcard] file       Insert Z88 EPROM/Flash file in the first slot. Supported formats: .EPR, .63, .EPROM, .FLASH\n"
 		"Note: if you write a tape/snapshot/card file name without --tape, --realtape, --snap or --slotcard parameters, the emulator will try to guess file type (it's the same as SmartLoad on the menu)\n"
 		"\n"
         "--slotcard-num file n   Same as --slotcard but insert card on the slot number n (1,2 or 3)\n"
 
-		"--outtape file          Insert output standard tape file. Supported formats: Spectrum: .TAP, .TZX -- ZX80: .O -- ZX81: .P\n"
+		"--outtape file          Insert output standard tape file. Supported formats: Spectrum: .TAP, .TZX, .PZX -- ZX80: .O -- ZX81: .P\n"
 
 		"--zoom n                Total Zoom Factor\n"
 		"--vo driver             Video output driver. Valid drivers: ");
@@ -1553,6 +1553,7 @@ void cpu_help(void)
 		"--noconfigfile          Do not load configuration file. This parameter must be the first and it's ignored if written on config file\n"
 		"--configfile f          Use the specified config file. This parameter must be the first and it's ignored if written on config file\n"
 		"--experthelp            Show expert options\n"
+        "--helpcustomconfig      Show help for autoconfig files\n"
 		"\n"
 		"Any command line setting shown here or on experthelp can be written on a configuration file,\n"
 		"this configuration file is on your home directory with name: " DEFAULT_ZESARUX_CONFIG_FILE "\n"
@@ -1571,7 +1572,7 @@ void cpu_help(void)
 void cpu_help_expert(void)
 {
 
-	printf ("Expert options, in sections: \n"
+	printf ("Expert options: \n"
 
 
 
@@ -2091,7 +2092,7 @@ printf (
 
 
 
-
+        "\n"
         "\n"
         "Hardware - Memory Settings\n"
         "--------------------------\n"
@@ -2102,7 +2103,7 @@ printf (
         "--zx8081ram16K8000  Emulate 16K RAM in 8000H for ZX80/ZX81\n"
         "--zx8081ram16KC000  Emulate 16K RAM in C000H for ZX80/ZX81\n"
 		"--acemem n          Emulate 3, 19, 35 or 51 kb of memory on Jupiter Ace\n"
-		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512"
+		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512\n"
 
 
 		"\n"
@@ -2434,7 +2435,6 @@ printf (
 		"\n"
 
 		"--saveconf-on-exit                       Always save configuration when exiting emulator\n"
-		"--helpcustomconfig                       Show help for autoconfig files\n"
 		"--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 		"--exit-after n                           Exit emulator after n seconds\n"
 		"--last-version s                         String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
