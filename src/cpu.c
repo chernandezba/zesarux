@@ -1364,9 +1364,9 @@ char *string_machines_list_description=
 
 							" ZX80     ZX80\n"
 							" ZX81     ZX81\n"
-              " 16k      ZX Spectrum 16k\n"
-              " 48k      ZX Spectrum 48k\n"
-              " 48kp     ZX Spectrum+ 48k\n"
+                            " 16k      ZX Spectrum 16k\n"
+                            " 48k      ZX Spectrum 48k\n"
+                            " 48kp     ZX Spectrum+ 48k\n"
 							" 128k     ZX Spectrum+ 128k\n"
 							" QL       QL\n"
 
@@ -1388,7 +1388,7 @@ char *string_machines_list_description=
 							" TS2068   Timex Sinclair 2068\n"
 
 							" Inves    Inves Spectrum+\n"
-              " 48ks     ZX Spectrum+ 48k (Spanish)\n"
+                            " 48ks     ZX Spectrum+ 48k (Spanish)\n"
 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
                      
 
@@ -1543,7 +1543,10 @@ void cpu_help(void)
 
 	printf ("\n");
 
-	printf ("--machine               Machine type: \n");
+	printf ("--machine id            Machine type: \n\n"
+            " ID       Description\n"
+            " -------- -----------\n"
+            "\n");
 
 	printf ("%s",string_machines_list_description);
 
