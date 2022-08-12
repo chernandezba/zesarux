@@ -2372,7 +2372,7 @@ printf (
 		);
 
 	printf (
-		"--menu-mix-method s                      How to mix menu and the layer below. s should be one of:");
+		"--menu-mix-method s                      How to mix menu and the layer below. s should be one of: ");
 
 		
 		for (i=0;i<MAX_MENU_MIX_METHODS;i++) {
@@ -2447,17 +2447,17 @@ printf (
 		"--tonegenerator n                        Enable tone generator. Possible values: 1: generate max, 2: generate min, 3: generate min/max at 50 Hz\n");
 
         printf(
-        "--sensor-set position type               Set sensor for menu View sensors. position must be 0 to %d. type must be one of:\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+        "--sensor-set position type               Set sensor for menu View sensors. Position must be 0 to %d. Type must be one of:\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
 
         sensor_list_print();
 
         printf("\n"
-        "--sensor-set-widget position type        Set widget type sensor for menu View sensors. position must be 0 to %d. type must be one of:\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+        "--sensor-set-widget position type        Set widget type sensor for menu View sensors. Position must be 0 to %d. Type must be one of:\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
 
         widget_list_print();
 
         printf("\n"
-        "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+        "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
  
         printf(
 		"\n\n"

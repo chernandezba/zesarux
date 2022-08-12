@@ -10,7 +10,7 @@ Para esta version:
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
--reordenar secciones en --experthelp, quiza por settings igual de menu
+
 
 
 -Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
@@ -164,3 +164,4 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 -agregar screenshot a repositorio con zx desktop e iconos 
 -agregar screenshot Z88
 
+en curso -reordenar secciones en --experthelp, quiza por settings igual de menu
