@@ -1572,146 +1572,6 @@ void cpu_help_expert(void)
 {
 
 	printf ("Expert options, in sections: \n"
-		"\n"
-		"\n"
-		"Debugging\n"
-		"---------\n"
-		"\n"
-		"--verbose n                         Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
-        "--disable-debug-console-win         Disable debug console window\n"
-		"--verbose-always-console            Always show messages in console (using simple printf) additionally to the default video driver, interesting in some cases as curses, aa or caca video drivers\n"
-		"--debugregisters                    Debug CPU Registers on text console\n"
-	    "--showcompileinfo                   Show compilation information\n"
-		"--debugconfigfile                   Debug parsing of configuration file (and .config files). This parameter must be the first and it's ignored if written on config file\n"
-		"--testconfig                        Test configuration and exit without starting emulator\n"
-		"--romfile file                      Select custom ROM file\n"
-		"--loadbinary file addr len          Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n"
-		"--loadbinarypath path               Select initial Load Binary path\n"
-		"--savebinarypath path               Select initial Save Binary path\n"
-		"--keyboardspoolfile file            Insert spool file for keyboard presses\n"
-		"--keyboardspoolfile-play            Play spool file right after starting the emulated machine\n"
-        "--keyboardspoolfile-keylength n     Length of every key pressed. n is in intervals of 1/50 seconds, from 1 to 100. So, a value of 1 means 20 ms, and 100 means 2000 ms\n"
-        "--keyboardspoolfile-nodelay         Do not send delay after every key press\n"
-
-#ifdef USE_PTHREADS
-		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
-		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
-        "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
-#endif
-
-		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
-		"                                    0: always shows the condition\n"
-		"                                    1: only shows conditions that are not like PC=XXXX\n"
-		"                                    2: never shows conditions\n"
-
-#ifdef MINGW
-		"--nodisableconsole                  Do not disable text output on this console. On Windows, text output is disabled unless you specify "
-		"at least one parameter on command line, or this parameter on command line or on configuration file. \n"
-#endif
-
-	    "--enable-breakpoints                Enable breakpoints handling.\n"
-	    "--brkp-always                       Fire a breakpoint when it is fired always, not only when the condition changes from false to true\n"
-		"--show-display-debug                Shows emulated screen on every key action on debug registers menu\n"
-		"--show-electron-debug               Shows TV electron position when debugging, using a coloured line\n"
-        "--show-basic-address                Shows location address of every basic line on menu View Basic\n"
-	    "--show-invalid-opcode               If running invalid cpu opcodes will generate a warning message\n"
-
-);
-
-        printf(
-
-        "--cpu-history-max-items n           Maximum items allowed on cpu history feature. Each item uses %d bytes of memory\n",
-                                    CPU_HISTORY_REGISTERS_SIZE);
-
-
-
-printf(
-		"--set-breakpoint n s                Set breakpoint with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
-);
-
-printf(
-		"--set-breakpointaction n s          Set breakpoint action with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
-);
-
-printf(
-		"--set-watch n s                     Set watch with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces\n",DEBUG_MAX_WATCHES
-);
-
-printf (
-	    "--set-mem-breakpoint a n            Set memory breakpoint at address a for type n\n"
-        "--load-source-code f                Load source code from file\n"
-	    "--hardware-debug-ports              These ports are used to interact with ZEsarUX, for example showing a ASCII character on console, read ZEsarUX version, etc. "
-		"Read file extras/docs/zesarux_zxi_registers.txt for more information\n"
-	    "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
-	    "--dump-ram-to-file f                Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
-	    "--dump-snapshot-panic               Dump .zsf snapshot when a cpu panic is fired\n"
-
-
-		"\n"
-		"\n"
-		"CPU Settings\n"
-		"------------\n"
-		"\n"
-
-		"--cpuspeed n                Set CPU speed in percentage\n"
-		"--denyturbozxunoboot        Deny setting turbo mode on ZX-Uno boot\n"
-		"--denyturbotbbluerom        Limit setting turbo mode on TBBlue ROM (default setting denied)\n"
-        "--allowturbotbbluerom       Do not limit setting turbo mode on TBBlue ROM\n"
-		"--tbblue-max-turbo-rom n    Max allowed turbo speed mode on TBBlue ROM when enabling --denyturbotbbluerom (default value: 2)\n"
-		"--tbblue-fast-boot-mode     Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n"
-		//no uso esto de momento "--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n"
-		"--random-r-register         Generate random value for R register on every cold start, instead of the normal 0 value. Useful to avoid same R register in the start of games, when they use that register as a random value\n"
-		"--spectrum-reduced-core     Use Spectrum reduced core. It uses less cpu, ideal for slow devices like Raspberry Pi One and Zero\n"
-		"                            The following features will NOT be available or will NOT be properly emulated when using this core:\n"
-		"                            Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file\n"
-		"--no-spectrum-reduced-core  Do not use Spectrum reduced core\n"  
-
-		"\n"
-		"\n"
-		"ULA Settings\n"
-		"------------\n"
-		"\n"
-
-		"--ula-data-bus n            Sets the ula data bus value\n"
-
-
-		"\n"
-		"\n"
-		"Tape Settings\n"
-		"-------------\n"
-		"\n"
-		"--noautoload                No autoload tape file on Spectrum, ZX80 or ZX81\n"
-		"--fastautoload              Do the autoload process at top speed\n"
-		"--noautoselectfileopt       Do not autoselect emulation options for known snap and tape files\n"
-        "--no-fallbacktorealtape     Disable fallback to real tape setting\n"
-        "--anyflagloading            Enables tape load routine to load without knowing block flag\n"
-        "--autorewind                Autorewind standard tape when reaching end of tape\n"
-		"--simulaterealload          Simulate real tape loading\n"
-		"--simulaterealloadfast      Enable fast simulate real tape loading\n"
-        "--deletetzxpauses           Do not follow pauses on TZX tapes\n"
-		"--realloadfast              Fast loading of real tape\n"
-
-
-		"\n"
-		"\n"
-		"Snapshot Settings\n"
-		"-----------------\n"
-		"\n"        
-
-		"--smartloadpath path        Select initial smartload path\n"
-		"--addlastfile file          Add a file to the last files used\n"
-		"--quicksavepath path        Select path for quicksave & continous autosave\n" 
-		"--autoloadsnap              Load last snapshot on start\n"
-		"--autosavesnap              Save snapshot on exit\n"
-		"--autosnappath path         Folder to save/load automatic snapshots\n"
-		"--tempdir path              Folder to save temporary files. Folder must exist and have read and write permissions\n"
-		"--snap-no-change-machine    Do not change machine when loading sna or z80 snapshots. Just load it on memory\n"
-		"--no-close-after-smartload  Do not close menu after SmartLoad\n"
-        "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
-        "--snapram-interval n        Generate a snapshot in ram every n seconds\n"
-        "--snapram-max n             Maximum snapshots to keep in memory\n"
-        "--snapram-rewind-timeout n  After this time pressed rewind action, the rewind position is reset to current\n"
-
 
 		"\n"
 		"\n"
@@ -1809,6 +1669,101 @@ printf (
 		printf (
 #endif
 
+
+
+		"\n"
+		"\n"
+		"CPU Settings\n"
+		"------------\n"
+		"\n"
+
+		"--cpuspeed n                Set CPU speed in percentage\n"
+		"--denyturbozxunoboot        Deny setting turbo mode on ZX-Uno boot\n"
+		"--denyturbotbbluerom        Limit setting turbo mode on TBBlue ROM (default setting denied)\n"
+        "--allowturbotbbluerom       Do not limit setting turbo mode on TBBlue ROM\n"
+		"--tbblue-max-turbo-rom n    Max allowed turbo speed mode on TBBlue ROM when enabling --denyturbotbbluerom (default value: 2)\n"
+		"--tbblue-fast-boot-mode     Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)\n"
+		//no uso esto de momento "--tbblue-123b-port n        Sets the initial value for port 123b on hard reset, for tbblue-fast-boot-mode\n"
+		"--random-r-register         Generate random value for R register on every cold start, instead of the normal 0 value. Useful to avoid same R register in the start of games, when they use that register as a random value\n"
+		"--spectrum-reduced-core     Use Spectrum reduced core. It uses less cpu, ideal for slow devices like Raspberry Pi One and Zero\n"
+		"                            The following features will NOT be available or will NOT be properly emulated when using this core:\n"
+		"                            Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file\n"
+		"--no-spectrum-reduced-core  Do not use Spectrum reduced core\n"  
+
+
+		"\n"
+		"\n"
+		"Debugging\n"
+		"---------\n"
+		"\n"
+		"--verbose n                         Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
+        "--disable-debug-console-win         Disable debug console window\n"
+		"--verbose-always-console            Always show messages in console (using simple printf) additionally to the default video driver, interesting in some cases as curses, aa or caca video drivers\n"
+		"--debugregisters                    Debug CPU Registers on text console\n"
+	    "--showcompileinfo                   Show compilation information\n"
+		"--debugconfigfile                   Debug parsing of configuration file (and .config files). This parameter must be the first and it's ignored if written on config file\n"
+		"--testconfig                        Test configuration and exit without starting emulator\n"
+		"--romfile file                      Select custom ROM file\n"
+		"--loadbinary file addr len          Load binary file \"file\" at address \"addr\" with length \"len\". Set ln to 0 to load the entire file in memory\n"
+		"--loadbinarypath path               Select initial Load Binary path\n"
+		"--savebinarypath path               Select initial Save Binary path\n"
+		"--keyboardspoolfile file            Insert spool file for keyboard presses\n"
+		"--keyboardspoolfile-play            Play spool file right after starting the emulated machine\n"
+        "--keyboardspoolfile-keylength n     Length of every key pressed. n is in intervals of 1/50 seconds, from 1 to 100. So, a value of 1 means 20 ms, and 100 means 2000 ms\n"
+        "--keyboardspoolfile-nodelay         Do not send delay after every key press\n"
+
+#ifdef USE_PTHREADS
+		"--enable-remoteprotocol             Enable ZRCP remote protocol\n"
+		"--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
+        "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
+#endif
+
+		"--showfiredbreakpoint n             Tells to show the breakpoint condition when it is fired. Possible values: \n"
+		"                                    0: always shows the condition\n"
+		"                                    1: only shows conditions that are not like PC=XXXX\n"
+		"                                    2: never shows conditions\n"
+
+#ifdef MINGW
+		"--nodisableconsole                  Do not disable text output on this console. On Windows, text output is disabled unless you specify "
+		"at least one parameter on command line, or this parameter on command line or on configuration file. \n"
+#endif
+
+	    "--enable-breakpoints                Enable breakpoints handling.\n"
+	    "--brkp-always                       Fire a breakpoint when it is fired always, not only when the condition changes from false to true\n"
+		"--show-display-debug                Shows emulated screen on every key action on debug registers menu\n"
+		"--show-electron-debug               Shows TV electron position when debugging, using a coloured line\n"
+        "--show-basic-address                Shows location address of every basic line on menu View Basic\n"
+	    "--show-invalid-opcode               If running invalid cpu opcodes will generate a warning message\n"
+
+);
+
+        printf(
+
+        "--cpu-history-max-items n           Maximum items allowed on cpu history feature. Each item uses %d bytes of memory\n",
+                                    CPU_HISTORY_REGISTERS_SIZE);
+
+
+
+printf(
+		"--set-breakpoint n s                Set breakpoint with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
+);
+
+printf(
+		"--set-breakpointaction n s          Set breakpoint action with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces. Used normally with --enable-breakpoints\n",MAX_BREAKPOINTS_CONDITIONS
+);
+
+printf(
+		"--set-watch n s                     Set watch with string s at position n. n must be between 1 and %d. string s must be written in \"\" if has spaces\n",DEBUG_MAX_WATCHES
+);
+
+printf (
+	    "--set-mem-breakpoint a n            Set memory breakpoint at address a for type n\n"
+        "--load-source-code f                Load source code from file\n"
+	    "--hardware-debug-ports              These ports are used to interact with ZEsarUX, for example showing a ASCII character on console, read ZEsarUX version, etc. "
+		"Read file extras/docs/zesarux_zxi_registers.txt for more information\n"
+	    "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
+	    "--dump-ram-to-file f                Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
+	    "--dump-snapshot-panic               Dump .zsf snapshot when a cpu panic is fired\n"
 
 
 		"\n"
@@ -1916,6 +1871,9 @@ printf (
 #endif
 
 
+
+
+
 		"\n"
 		"\n"
 		"File Browser Settings\n"
@@ -1954,16 +1912,6 @@ printf (
 		"\n"
 
 
-		"\n"
-		"\n"
-		"OSD Settings\n"
-		"------------\n"
-		"\n"
-
-
-		"--enable-watermark      Adds a watermark to the display. Needs realvideo\n"
-		"--watermark-position n  Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n"
-        "--nosplash              Disable all splash texts\n"
 
 
 		"\n"
@@ -1999,7 +1947,109 @@ printf (
 		"--no-cpu-temp               Do not show host CPU temperature on footer\n"
 		"--no-fps                    Do not show FPS on footer\n"
         "--nowelcomemessage          Disable welcome message\n"
-        "--disablemenufileutils      Disable File Utilities menu\n"        
+        "--disablemenufileutils      Disable File Utilities menu\n"  
+
+
+		"\n"
+		"\n"
+		"Hardware Settings\n"
+		"-----------------\n"
+		"\n"
+
+		"--printerbitmapfile f   Sends printer output to image file. Supported formats: pbm, txt\n"
+		"--printertextfile f     Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
+		"--redefinekey src dest  Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
+        "                        Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
+        "                        (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+        "--recreatedzx           Enable support for Recreated ZX Spectrum Keyboard\n"
+		"--keymap n              Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
+		"--enablekempstonmouse   Enable kempston mouse emulation\n"
+		"--kempstonmouse-sens n  Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
+		printf (
+
+
+
+        "\n"
+        "Memory Settings\n"
+        "---------------\n"
+        "\n"
+
+        "--zx8081mem n       Emulate 1,2,...16 kb of memory on ZX80/ZX81\n"
+        "--zx8081ram8K2000   Emulate 8K RAM in 2000H for ZX80/ZX81\n"
+        "--zx8081ram16K8000  Emulate 16K RAM in 8000H for ZX80/ZX81\n"
+        "--zx8081ram16KC000  Emulate 16K RAM in C000H for ZX80/ZX81\n"
+		"--acemem n          Emulate 3, 19, 35 or 51 kb of memory on Jupiter Ace\n"
+		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512"
+
+
+
+		"\n"
+		"\n"
+		"OSD Settings\n"
+		"------------\n"
+		"\n"
+
+
+		"--enable-watermark      Adds a watermark to the display. Needs realvideo\n"
+		"--watermark-position n  Where to put watermark. 0: Top left, 1: Top right. 2: Bottom left. 3: Bottom right\n"
+        "--nosplash              Disable all splash texts\n"
+
+
+
+
+
+		"\n"
+		"\n"
+		"Snapshot Settings\n"
+		"-----------------\n"
+		"\n"        
+
+		"--smartloadpath path        Select initial smartload path\n"
+		"--addlastfile file          Add a file to the last files used\n"
+		"--quicksavepath path        Select path for quicksave & continous autosave\n" 
+		"--autoloadsnap              Load last snapshot on start\n"
+		"--autosavesnap              Save snapshot on exit\n"
+		"--autosnappath path         Folder to save/load automatic snapshots\n"
+		"--tempdir path              Folder to save temporary files. Folder must exist and have read and write permissions\n"
+		"--snap-no-change-machine    Do not change machine when loading sna or z80 snapshots. Just load it on memory\n"
+		"--no-close-after-smartload  Do not close menu after SmartLoad\n"
+        "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
+        "--snapram-interval n        Generate a snapshot in ram every n seconds\n"
+        "--snapram-max n             Maximum snapshots to keep in memory\n"
+        "--snapram-rewind-timeout n  After this time pressed rewind action, the rewind position is reset to current\n"
+
+		"\n"
+		"\n"
+		"Tape Settings\n"
+		"-------------\n"
+		"\n"
+		"--noautoload                No autoload tape file on Spectrum, ZX80 or ZX81\n"
+		"--fastautoload              Do the autoload process at top speed\n"
+		"--noautoselectfileopt       Do not autoselect emulation options for known snap and tape files\n"
+        "--no-fallbacktorealtape     Disable fallback to real tape setting\n"
+        "--anyflagloading            Enables tape load routine to load without knowing block flag\n"
+        "--autorewind                Autorewind standard tape when reaching end of tape\n"
+		"--simulaterealload          Simulate real tape loading\n"
+		"--simulaterealloadfast      Enable fast simulate real tape loading\n"
+        "--deletetzxpauses           Do not follow pauses on TZX tapes\n"
+		"--realloadfast              Fast loading of real tape\n"
+
+
+
+		"\n"
+		"\n"
+		"ULA Settings\n"
+		"------------\n"
+		"\n"
+
+		"--ula-data-bus n            Sets the ula data bus value\n"
+
+
+
+
+
+
+      
 
 		"\n"
 		"\n"
@@ -2143,36 +2193,9 @@ printf (
         "--restore-all-known-windows              Restore all known windows on start. Use ONLY for debugging!\n"
 
 
-		"\n"
-		"\n"
-		"Hardware Settings\n"
-		"-----------------\n"
-		"\n"
-
-		"--printerbitmapfile f   Sends printer output to image file. Supported formats: pbm, txt\n"
-		"--printertextfile f     Sends printer output to text file using OCR method. Printer output is saved to a text file using OCR method to guess text.\n"
-		"--redefinekey src dest  Redefine key scr to be key dest. You can write maximum 10 redefined keys\n"
-        "                        Key must be ascii character numbers or a character included in escaped quotes, like: 97 (for 'a') or \\'q\\'\n"
-        "                        (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-        "--recreatedzx           Enable support for Recreated ZX Spectrum Keyboard\n"
-		"--keymap n              Which kind of physical keyboard you have. Default 0 (English) or 1 (Spanish)\n"
-		"--enablekempstonmouse   Enable kempston mouse emulation\n"
-		"--kempstonmouse-sens n  Set kempston mouse sensitivity (1-%d)\n",MAX_KMOUSE_SENSITIVITY);
-
-		printf (
 
 
-        "\n"
-        "Memory Settings\n"
-        "---------------\n"
-        "\n"
 
-        "--zx8081mem n       Emulate 1,2,...16 kb of memory on ZX80/ZX81\n"
-        "--zx8081ram8K2000   Emulate 8K RAM in 2000H for ZX80/ZX81\n"
-        "--zx8081ram16K8000  Emulate 16K RAM in 8000H for ZX80/ZX81\n"
-        "--zx8081ram16KC000  Emulate 16K RAM in C000H for ZX80/ZX81\n"
-		"--acemem n          Emulate 3, 19, 35 or 51 kb of memory on Jupiter Ace\n"
-		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512"
 
 
 		"\n"
