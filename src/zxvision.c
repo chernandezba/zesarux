@@ -466,20 +466,20 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     for (buscar_cerca=0;buscar_cerca<5;buscar_cerca++) {
 
-    //printf("buscar_cerca %d\n",buscar_cerca);
-    for (y=yinicial+2*buscar_cerca;y<yfinal;y+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
-        for (x=xinicial+2*buscar_cerca;x<xfinal;x+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
-            int total_iconos_cerca=zxvision_si_icono_cerca(x,y);
-            //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
+        //printf("buscar_cerca %d\n",buscar_cerca);
+        for (y=yinicial+2*buscar_cerca;y<yfinal;y+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+            for (x=xinicial+2*buscar_cerca;x<xfinal;x+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+                int total_iconos_cerca=zxvision_si_icono_cerca(x,y);
+                //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
 
-            //Si hay menos iconos cerca de los que esperamos y si esa posicion es valida
-            if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y) ) {
-                *p_x=x;
-                *p_y=y;
-                return;
+                //Si hay menos iconos cerca de los que esperamos y si esa posicion es valida
+                if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y) ) {
+                    *p_x=x;
+                    *p_y=y;
+                    return;
+                }
             }
         }
-    }
 
     }
 
