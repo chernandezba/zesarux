@@ -1677,8 +1677,8 @@ printf (
 
 		"\n"
 		"\n"
-		"Tapes, Snapshots\n"
-		"----------------\n"
+		"Tape Settings\n"
+		"-------------\n"
 		"\n"
 		"--noautoload                No autoload tape file on Spectrum, ZX80 or ZX81\n"
 		"--fastautoload              Do the autoload process at top speed\n"
@@ -1690,6 +1690,14 @@ printf (
 		"--simulaterealloadfast      Enable fast simulate real tape loading\n"
         "--deletetzxpauses           Do not follow pauses on TZX tapes\n"
 		"--realloadfast              Fast loading of real tape\n"
+
+
+		"\n"
+		"\n"
+		"Snapshot Settings\n"
+		"-----------------\n"
+		"\n"        
+
 		"--smartloadpath path        Select initial smartload path\n"
 		"--addlastfile file          Add a file to the last files used\n"
 		"--quicksavepath path        Select path for quicksave & continous autosave\n" 
