@@ -307,7 +307,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
 
     if (x<0 || y<0 || x>total_width || y>total_height) {
-        //printf("Wanted to set Icon position %d,%d out of range (%d,%d). Do not change\n",x,y,total_width,total_height);
+        //printf("Check icon position: %d,%d out of range (%d,%d)\n",x,y,total_width,total_height);
         return 0;
     }
 
@@ -325,7 +325,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 
 
     if (y<=alto_boton && x>=xinicio_botones && x<=xfinal_botones) {
-        //printf("Wanted to set Icon position %d,%d on upper buttons position. Do not change\n",x,y);
+        //printf("Check icon position: %d,%d on upper buttons position\n",x,y);
         return 0;        
     }    
 
@@ -342,7 +342,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     yinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
 
     if (y>=yinicio_botones && x>=xinicio_botones && x<=xfinal_botones) {
-        //printf("Wanted to set Icon position %d,%d on lower device icons position. Do not change\n",x,y);
+        //printf("Check icon position: %d,%d on lower device icons position\n",x,y);
         return 0;        
     }
 
@@ -352,7 +352,7 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     int alto_maquina=screen_get_emulated_display_height_no_zoom_border_en();
 
     if (x<ancho_maquina && y<alto_maquina) {
-        //printf("Wanted to set Icon position %d,%d on emulated machine display. Do not change\n",x,y);
+        //printf("Check icon position: %d,%d on emulated machine display\n",x,y);
         return 0;           
     }
 
@@ -364,7 +364,10 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
 void zxvision_set_configurable_icon_position(int icon,int x,int y)
 {
 
-    if (!zxvision_if_configurable_icon_on_valid_position(x,y)) return;
+    if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
+        //printf("Trying to set icon %d to invalid position %d,%d\n",icon,x,y);
+        return;
+    }
 
     
     zxdesktop_configurable_icons_list[icon].pos_x=x;
@@ -381,7 +384,7 @@ void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info
     strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,extra_info);
 }
 
-//Ver si hay algun icono cerca para saber si se puede posicionar uno o no
+//Ver cuantos iconos hay cerca para saber si se puede posicionar uno o no
 int zxvision_si_icono_cerca(int x,int y)
 {
     int xminimo=x-ZESARUX_ASCII_LOGO_ANCHO;
@@ -392,20 +395,24 @@ int zxvision_si_icono_cerca(int x,int y)
 
     int i;
 
+    int iconos_cerca=0;
+
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {    
             int icon_x=zxdesktop_configurable_icons_list[i].pos_x;
             int icon_y=zxdesktop_configurable_icons_list[i].pos_y;
 
             //Si hay uno cerca de ahi, volver con 1
-            if (icon_x>=xminimo && icon_x<xmaximo && icon_y>=yminimo && icon_y<ymaximo) return 1;
+            if (icon_x>=xminimo && icon_x<xmaximo && icon_y>=yminimo && icon_y<ymaximo) iconos_cerca++;
 
         }
     }
 
-    return 0;
+    return iconos_cerca;
 
 }
+
+#define ZXVISION_SEPARACION_ICONOS_AL_ORDENAR (ZESARUX_ASCII_LOGO_ANCHO*2)
 
 void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 {
@@ -437,17 +444,36 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     //int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
     //Hasta tocar a botones dispositivos
-    int alto_dispositivo;
-    menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
-    alto_dispositivo /=zoom_y;
+    //int alto_dispositivo;
+    //menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
+    //alto_dispositivo /=zoom_y;
 
-    int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;
+    //int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;
+
+    int yfinal;
+    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    //Posiciones menos el zoom
+    yfinal /=zoom_y;
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+    yfinal -=ZESARUX_ASCII_LOGO_ANCHO;
+
+
 
     int x,y;
 
-    for (y=yinicial;y<yfinal;y+=ZESARUX_ASCII_LOGO_ANCHO) {
-        for (x=xinicial;x<xfinal;x+=ZESARUX_ASCII_LOGO_ANCHO) {
-            if (!zxvision_si_icono_cerca(x,y)) {
+    //empezar buscando huecos donde haya 0 iconos cerca. Si no hay, buscar con 1, con 2... hasta 5
+    int buscar_cerca;
+
+    for (buscar_cerca=0;buscar_cerca<5;buscar_cerca++) {
+
+    //printf("buscar_cerca %d\n",buscar_cerca);
+    for (y=yinicial+2*buscar_cerca;y<yfinal;y+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+        for (x=xinicial+2*buscar_cerca;x<xfinal;x+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+            int total_iconos_cerca=zxvision_si_icono_cerca(x,y);
+            //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
+
+            //Si hay menos iconos cerca de los que esperamos y si esa posicion es valida
+            if (total_iconos_cerca<=buscar_cerca && zxvision_if_configurable_icon_on_valid_position(x,y) ) {
                 *p_x=x;
                 *p_y=y;
                 return;
@@ -455,8 +481,11 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
         }
     }
 
+    }
+
 
     //Si no hay hueco, mala suerte... lo ponemos en posicion inicial
+    debug_printf(VERBOSE_DEBUG,"zxvision_get_next_free_icon_position: No free space. Fallback to initial position %d %d",xinicial,yinicial);
     *p_x=xinicial;
     *p_y=yinicial;
 }
@@ -492,7 +521,7 @@ void zxvision_reorder_configurable_icons(void)
     int x=xinicial;
     int y=yinicial;
 
-    int separacion_iconos=ZESARUX_ASCII_LOGO_ANCHO*2;
+    int separacion_iconos=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
         if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
@@ -501,7 +530,15 @@ void zxvision_reorder_configurable_icons(void)
             if (x>=xfinal) {
                 x=xinicial;
                 y+=separacion_iconos;
-                if (y>=yfinal) y=yinicial;
+
+                //Final de pantalla. Ubicamos al principio algo desplazados
+                if (y>=yfinal) {
+                    xinicial+=2;
+                    x=xinicial;
+
+                    yinicial+=2;
+                    y=yinicial;
+                }
             }
         }
     } 
@@ -525,8 +562,9 @@ void zxvision_check_all_configurable_icons_positions(void)
             int y=zxdesktop_configurable_icons_list[i].pos_y;
 
             if (!zxvision_if_configurable_icon_on_valid_position(x,y)) {
-                debug_printf(VERBOSE_DEBUG,"Relocate icon %d because it is on an invalid position %d,%d",i,x,y);
+                debug_printf(VERBOSE_DEBUG,"Relocate icon %d (%s) because it is on an invalid position %d,%d",i,zxdesktop_configurable_icons_list[i].text_icon,x,y);
                 zxvision_get_next_free_icon_position(&x,&y);
+                debug_printf(VERBOSE_DEBUG,"Relocate icon %d to %d,%d",i,x,y);
                 zxvision_set_configurable_icon_position(i,x,y);
             }
         }

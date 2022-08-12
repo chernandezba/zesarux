@@ -9872,7 +9872,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_add_configurable_icons,NULL,"Add next");
 
-        char buffer_texto[40];
+        char buffer_texto[100];
 
         int i;
         for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
@@ -9896,7 +9896,8 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
                 strcpy(estado_icono,"Unknown");
             }
 
-            sprintf (buffer_texto,"Icon %2d %s [%s]",i,estado_icono,defined_direct_functions_array[indice_funcion].texto_funcion);
+            sprintf (buffer_texto,"Icon %2d %d,%d %s [%s]",i,zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
+                    estado_icono,defined_direct_functions_array[indice_funcion].texto_funcion);
 
 
             //if (i==0) menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
