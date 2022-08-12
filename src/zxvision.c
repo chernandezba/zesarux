@@ -450,6 +450,7 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     //int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;
 
+    //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;
     menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
     //Posiciones menos el zoom
