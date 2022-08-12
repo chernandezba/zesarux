@@ -1573,6 +1573,48 @@ void cpu_help_expert(void)
 
 	printf ("Expert options, in sections: \n"
 
+
+
+
+		"\n"
+		"\n"
+		"Accessibility - Print char traps\n"
+		"--------------------------------\n"
+		"\n"
+
+		"--enableprintchartrap      Enable traps for standard ROM print char calls and non standard second & third traps. On Spectrum, ZX80, ZX81 machines, standard ROM calls are those using RST10H. On Z88, are those using OS_OUT and some other functions. Note: it is enabled by default on stdout & simpletext drivers\n"
+		"--disableprintchartrap     Disable traps for ROM print char calls and second & third traps.\n"
+        "--chardetectcompatnum      Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)\n"
+		"--automaticdetectchar      Enable automatic detection & try all method to find print character routines, for games not using RST 10H\n"
+		"--secondtrapchar n         Print Char second trap address\n"
+		"--secondtrapsum32          Print Char second trap sum 32 to character\n"
+		"--thirdtrapchar n          Print Char third trap address\n"
+        "--chardetectignorenl       Ignore new line characters (13, 10) on char detection\n"
+        "--linewidth n              Print char line width\n"        
+
+        //estos dos settings tienen tambien opcion para desactivar el setting por cambios en valor por defecto a partir ZEsarUX 9.3
+		"--linewidthwaitspace       Text will be sent to speech when line is larger than line width and a space, comma or semicolon is detected\n"
+        "--linewidthnowaitspace     Just disable previous setting\n"
+        "--linewidthwaitdot         Text will be sent to speech when line is larger than line width and dot is detected\n"
+        "--linewidthnowaitdot       Just disable previous setting\n"
+
+		"\n"
+		"\n"
+		"Accessibility - Text to Speech\n"
+		"------------------------------\n"
+		"\n"
+
+
+		"--textspeechprogram p      Specify a path to a program or script to be sent the emulator text shown. For example, for text to speech: speech_filters/festival_filter.sh or speech_filters/macos_say_filter.sh\n"
+		"--textspeechstopprogram p  Specify a path to a program or script in charge of stopping the running speech program. For example, speech_filters/stop_festival_filter.sh\n"
+        "--textspeechgetstdout      Send stdout from script to debug console window\n"
+		"--textspeechwait           Wait and pause the emulator until the Speech program returns\n"
+		"--textspeechmenu           Also send text menu entries to Speech program\n"
+		"--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n"
+        
+
+
+
 		"\n"
 		"\n"
 		"Audio Features\n"
@@ -1873,6 +1915,21 @@ printf (
 
 
 
+		"\n"
+        "\n"
+        "External Tools\n"
+        "--------------\n"
+        "\n"
+
+        "--tool-sox-path p     Set external tool sox path. Path can not include spaces\n"
+        "--tool-gunzip-path p  Set external tool gunzip path. Path can not include spaces\n"
+        "--tool-tar-path p     Set external tool tar path. Path can not include spaces\n"
+        "--tool-unrar-path p   Set external tool unrar path. Path can not include spaces\n"
+
+
+
+
+
 
 		"\n"
 		"\n"
@@ -1969,9 +2026,75 @@ printf (
 
 
 
+
+		"\n"
+		"\n"
+		"Hardware - Joystick\n"
+		"-------------------\n"
+		"\n"
+
+		"--joystickemulated type     Type of joystick emulated. Type can be one of: ");
+
+	joystick_print_types();
+		printf (" (default: %s).\n",joystick_texto[joystick_emulation]);
+		printf ("  Note: if a joystick type has spaces in its name, you must write it between \"\"\n");
+
+
+	printf(
+        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift\n"
+		"--disablerealjoystick       Disable real joystick emulation\n"
+		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
+        "--realjoystickindex n       Change default real joystick device id (used on Windows and other OS with SDL driver)\n"
+		"--realjoystick-calibrate n  Parameter to autocalibrate joystick axis. Axis values read from joystick less than n and greater than -n are considered as 0. Default: 16384. Not used on native linux real joystick\n"
+
+#ifdef USE_LINUXREALJOYSTICK
+		"--no-native-linux-realjoy  Do not use native linux real joystick support. Instead use the video driver joystick support (currently only SDL)\n"
+#endif		
+        "--joystickevent but evt     Set a joystick button or axis to an event (changes joystick to event table)\n"
+        "                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
+        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
+        "                            Event must be one of: ");
+
+        realjoystick_print_event_keys();
+
+	printf ("\n"
+		"--joystickkeybt but key     Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
+		"                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
+        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
+        "                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n"
+		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
+        "--joystickkeyev evt key     Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
+        "                            Event must be one of: ");
+
+        realjoystick_print_event_keys();
+
+
+	printf ("\n"
+		"                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n"
+		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
+		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
+
+        	"\n"
+		"  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, "
+		"and --joystickkeybt and --joystickevent are dependent on the real joystick type, because they set a button/axis number to "
+		"an event or key, and button/axis number changes depending on the joystick (the exception here is the axis up/down/left/right "
+		"which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n"
+
+		"\n"
+		"--clearkeylistonsmart       Clear all joystick (events and buttons) to keys table every smart loading.\n"
+		"                            Joystick to events table is never cleared using this setting\n"
+		"--cleareventlist            Clears joystick to events table\n"
+		"--enablejoysticksimulator   Enable real joystick simulator. Only useful on development\n"
+
+
+
+
+
+
         "\n"
-        "Memory Settings\n"
-        "---------------\n"
+        "Hardware - Memory Settings\n"
+        "--------------------------\n"
         "\n"
 
         "--zx8081mem n       Emulate 1,2,...16 kb of memory on ZX80/ZX81\n"
@@ -1980,6 +2103,19 @@ printf (
         "--zx8081ram16KC000  Emulate 16K RAM in C000H for ZX80/ZX81\n"
 		"--acemem n          Emulate 3, 19, 35 or 51 kb of memory on Jupiter Ace\n"
 		"--128kmem n         Set more than 128k RAM for 128k machines. Allowed values: 128, 256, 512"
+
+
+		"\n"
+		"\n"
+		"Network\n"
+		"-------\n"
+		"\n"
+		
+		"--zeng-remote-hostname s    ZENG last remote hostname\n"
+		"--zeng-remote-port n        ZENG last remote port\n"
+		"--zeng-snapshot-interval n  ZENG snapshot interval\n"
+		"--zeng-iam-master           Tells this machine is a ZENG master\n"
+
 
 
 
@@ -2018,10 +2154,106 @@ printf (
         "--snapram-max n             Maximum snapshots to keep in memory\n"
         "--snapram-rewind-timeout n  After this time pressed rewind action, the rewind position is reset to current\n"
 
+
 		"\n"
 		"\n"
-		"Tape Settings\n"
-		"-------------\n"
+		"Statistics\n"
+		"----------\n"
+		"\n"
+		
+		"--total-minutes-use n                 Total minutes of use of ZEsarUX\n"
+		"--stats-send-already-asked            Do not ask to send statistics\n"
+		"--stats-send-enabled                  Enable send statistics\n"
+		"--stats-uuid s                        UUID to send statistics\n"
+		"--stats-disable-check-updates         Disable checking of available ZEsarUX updates\n"
+		"--stats-disable-check-yesterday-users Disable checking ZEsarUX yesterday users\n"
+		"--stats-last-avail-version s          ZEsarUX last available version to download\n"
+		"--stats-speccy-queries n              Total queries on the speccy online browser\n"
+		"--stats-zx81-queries n                Total queries on the zx81 online browser\n"
+		
+
+
+		"\n"
+		"\n"
+		"Storage Settings\n"
+		"----------------\n"
+		"\n"
+
+		"--mmc-file f                    Set mmc image file\n"
+		"--enable-mmc                    Enable MMC emulation. Usually requires --mmc-file\n"
+		"--mmc-write-protection          Enable MMC write protection\n"
+		"--mmc-no-persistent-writes      Disable MMC persistent writes\n");
+
+        printf(
+            "--copy-file-to-mmc source dest  Add file from local filesystem to the mmc, before starting ZEsarUX. That copies the files in "
+            "the mmc image and syncs the changes. "
+            "You can use that setting up to %d times. Destination must not include 0:/ prefix. mmc file is set with setting --mmc-file\n",
+            MAX_COPY_FILES_TO_MMC);
+        
+        printf(
+		"--enable-divmmc-ports           Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
+		"--enable-divmmc-paging          Enable DIVMMC paging only\n"
+		"--enable-divmmc                 Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
+		"--divmmc-rom f                  Sets divmmc firmware rom. If not set, uses default file\n"
+		"--enable-zxmmc                  Enable ZXMMC emulation. Usually requires --enable-mmc\n"
+		"--ide-file f                    Set ide image file\n"
+		"--enable-ide                    Enable IDE emulation. Usually requires --ide-file\n"
+		"--ide-write-protection          Enable IDE write protection\n"
+		"--ide-no-persistent-writes      Disable IDE persistent writes\n"		
+		"--enable-divide-ports           Enable DIVIDE emulation ports only, but not paging. Usually requires --enable-ide\n"
+		"--enable-divide-paging          Enable DIVIDE paging only\n"
+		"--enable-divide                 Enable DIVIDE emulation. Usually requires --enable-ide\n"
+		"--divide-rom f                  Sets divide firmware rom. If not set, uses default file\n"
+		"--enable-8bit-ide               Enable 8-bit simple IDE emulation. Requires --enable-ide\n"
+		"--diviface-ram-size n           Sets divide/divmmc ram size in kb. Allowed values: 32, 64, 128, 256 or 512\n"
+		"--enable-esxdos-handler         Enable ESXDOS traps handler. Requires divmmc or divide paging emulation\n"
+		"--esxdos-root-dir p             Set ESXDOS root directory for traps handler. Uses current directory by default.\n"
+        "--esxdos-readonly               Forbid write operations on ESXDOS handler\n"
+        "--esxdos-local-dir p            Set ESXDOS local directory for traps handler. This is the relative directory used inside esxdos.\n"
+		"--enable-zxpand                 Enable ZXpand emulation\n"
+		"--zxpand-root-dir p             Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
+		"                                Note: ZXpand does not use --mmc-file setting\n"
+		"--zxunospifile path             File to use on ZX-Uno as SPI Flash. Default: zxuno.flash\n"
+		"--zxunospi-write-protection     Enable ZX-Uno SPI Flash write protection\n"
+		"--zxunospi-persistent-writes    Enable ZX-Uno SPI Flash persistent writes\n"
+        "--zxuno-initial-64k f           Load a 64kb file that will be written on the initial 64kb space\n"
+        "--dandanator-rom f              Set ZX Dandanator rom file\n"
+        "--enable-dandanator             Enable ZX Dandanator emulation. Requires --dandanator-rom\n"
+        "--dandanator-press-button       Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n"
+		"--superupgrade-flash f          Set Superupgrade flash file\n"
+		"--enable-superupgrade           Enable Superupgrade emulation. Requires --superupgrade-flash\n"
+        "--kartusho-rom f                Set Kartusho rom file\n"
+        "--enable-kartusho               Enable Kartusho emulation. Requires --kartusho-rom\n"
+        "--ifrom-rom f                   Set iFrom rom file\n"
+        "--enable-ifrom                  Enable iFrom emulation. Requires --ifrom-rom\n"
+        "--dsk-file f                    Set +3 DSK image file\n"
+        "--enable-dsk                    Enable +3 DSK emulation. Usually requires --dsk-file\n"
+        "--dsk-write-protection          Enable +3 DSK write protection\n"
+		"--dsk-no-persistent-writes      Disable +3 DSK persistent writes\n"
+        "--enable-betadisk               Enable Betadisk emulation\n"
+        "--trd-file f                    Set trd image file\n"
+        "--enable-trd                    Enable TRD emulation. Usually requires --trd-file\n"
+        "--trd-write-protection          Enable TRD write protection\n"
+		"--trd-no-persistent-writes      Disable TRD persistent writes\n"
+        "--hilow-file f                  Set HiLow Data Drive image file\n"
+        "--enable-hilow                  Enable HiLow Data Drive. Usually requires --hilow-file\n"
+		"--hilow-write-protection        Enable HiLow Data Drive write protection\n"
+		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"        
+		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
+		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
+		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
+		"--ql-flp1-root-dir p            Set QL flp1 root directory\n"
+        "--ql-mdv1-read-only             Mark mdv1 as read only\n"
+        "--ql-mdv2-read-only             Mark mdv2 as read only\n"
+        "--ql-flp1-read-only             Mark flp1 as read only\n"
+
+
+
+
+		"\n"
+		"\n"
+		"Storage - Tape Settings\n"
+		"-----------------------\n"
 		"\n"
 		"--noautoload                No autoload tape file on Spectrum, ZX80 or ZX81\n"
 		"--fastautoload              Do the autoload process at top speed\n"
@@ -2194,215 +2426,6 @@ printf (
 
 
 
-
-
-
-
-		"\n"
-		"\n"
-		"Print char traps & Text to Speech\n"
-		"---------------------------------\n"
-		"\n"
-
-		"--enableprintchartrap      Enable traps for standard ROM print char calls and non standard second & third traps. On Spectrum, ZX80, ZX81 machines, standard ROM calls are those using RST10H. On Z88, are those using OS_OUT and some other functions. Note: it is enabled by default on stdout & simpletext drivers\n"
-		"--disableprintchartrap     Disable traps for ROM print char calls and second & third traps.\n"
-        "--chardetectcompatnum      Enable ROM trap compatibility for printing numbers (but not good for printing from games, like PAWS)\n"
-		"--automaticdetectchar      Enable automatic detection & try all method to find print character routines, for games not using RST 10H\n"
-		"--secondtrapchar n         Print Char second trap address\n"
-		"--secondtrapsum32          Print Char second trap sum 32 to character\n"
-		"--thirdtrapchar n          Print Char third trap address\n"
-        "--chardetectignorenl       Ignore new line characters (13, 10) on char detection\n"
-        "--linewidth n              Print char line width\n"        
-
-        //estos dos settings tienen tambien opcion para desactivar el setting por cambios en valor por defecto a partir ZEsarUX 9.3
-		"--linewidthwaitspace       Text will be sent to speech when line is larger than line width and a space, comma or semicolon is detected\n"
-        "--linewidthnowaitspace     Just disable previous setting\n"
-        "--linewidthwaitdot         Text will be sent to speech when line is larger than line width and dot is detected\n"
-        "--linewidthnowaitdot       Just disable previous setting\n"
-		"--textspeechprogram p      Specify a path to a program or script to be sent the emulator text shown. For example, for text to speech: speech_filters/festival_filter.sh or speech_filters/macos_say_filter.sh\n"
-		"--textspeechstopprogram p  Specify a path to a program or script in charge of stopping the running speech program. For example, speech_filters/stop_festival_filter.sh\n"
-        "--textspeechgetstdout      Send stdout from script to debug console window\n"
-		"--textspeechwait           Wait and pause the emulator until the Speech program returns\n"
-		"--textspeechmenu           Also send text menu entries to Speech program\n"
-		"--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n"
-        
-
-		"\n"
-		"\n"
-		"Storage Settings\n"
-		"----------------\n"
-		"\n"
-
-		"--mmc-file f                    Set mmc image file\n"
-		"--enable-mmc                    Enable MMC emulation. Usually requires --mmc-file\n"
-		"--mmc-write-protection          Enable MMC write protection\n"
-		"--mmc-no-persistent-writes      Disable MMC persistent writes\n");
-
-        printf(
-            "--copy-file-to-mmc source dest  Add file from local filesystem to the mmc, before starting ZEsarUX. That copies the files in "
-            "the mmc image and syncs the changes. "
-            "You can use that setting up to %d times. Destination must not include 0:/ prefix. mmc file is set with setting --mmc-file\n",
-            MAX_COPY_FILES_TO_MMC);
-        
-        printf(
-		"--enable-divmmc-ports           Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
-		"--enable-divmmc-paging          Enable DIVMMC paging only\n"
-		"--enable-divmmc                 Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
-		"--divmmc-rom f                  Sets divmmc firmware rom. If not set, uses default file\n"
-		"--enable-zxmmc                  Enable ZXMMC emulation. Usually requires --enable-mmc\n"
-		"--ide-file f                    Set ide image file\n"
-		"--enable-ide                    Enable IDE emulation. Usually requires --ide-file\n"
-		"--ide-write-protection          Enable IDE write protection\n"
-		"--ide-no-persistent-writes      Disable IDE persistent writes\n"		
-		"--enable-divide-ports           Enable DIVIDE emulation ports only, but not paging. Usually requires --enable-ide\n"
-		"--enable-divide-paging          Enable DIVIDE paging only\n"
-		"--enable-divide                 Enable DIVIDE emulation. Usually requires --enable-ide\n"
-		"--divide-rom f                  Sets divide firmware rom. If not set, uses default file\n"
-		"--enable-8bit-ide               Enable 8-bit simple IDE emulation. Requires --enable-ide\n"
-		"--diviface-ram-size n           Sets divide/divmmc ram size in kb. Allowed values: 32, 64, 128, 256 or 512\n"
-		"--enable-esxdos-handler         Enable ESXDOS traps handler. Requires divmmc or divide paging emulation\n"
-		"--esxdos-root-dir p             Set ESXDOS root directory for traps handler. Uses current directory by default.\n"
-        "--esxdos-readonly               Forbid write operations on ESXDOS handler\n"
-        "--esxdos-local-dir p            Set ESXDOS local directory for traps handler. This is the relative directory used inside esxdos.\n"
-		"--enable-zxpand                 Enable ZXpand emulation\n"
-		"--zxpand-root-dir p             Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
-		"                                Note: ZXpand does not use --mmc-file setting\n"
-		"--zxunospifile path             File to use on ZX-Uno as SPI Flash. Default: zxuno.flash\n"
-		"--zxunospi-write-protection     Enable ZX-Uno SPI Flash write protection\n"
-		"--zxunospi-persistent-writes    Enable ZX-Uno SPI Flash persistent writes\n"
-        "--zxuno-initial-64k f           Load a 64kb file that will be written on the initial 64kb space\n"
-        "--dandanator-rom f              Set ZX Dandanator rom file\n"
-        "--enable-dandanator             Enable ZX Dandanator emulation. Requires --dandanator-rom\n"
-        "--dandanator-press-button       Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n"
-		"--superupgrade-flash f          Set Superupgrade flash file\n"
-		"--enable-superupgrade           Enable Superupgrade emulation. Requires --superupgrade-flash\n"
-        "--kartusho-rom f                Set Kartusho rom file\n"
-        "--enable-kartusho               Enable Kartusho emulation. Requires --kartusho-rom\n"
-        "--ifrom-rom f                   Set iFrom rom file\n"
-        "--enable-ifrom                  Enable iFrom emulation. Requires --ifrom-rom\n"
-        "--dsk-file f                    Set +3 DSK image file\n"
-        "--enable-dsk                    Enable +3 DSK emulation. Usually requires --dsk-file\n"
-        "--dsk-write-protection          Enable +3 DSK write protection\n"
-		"--dsk-no-persistent-writes      Disable +3 DSK persistent writes\n"
-        "--enable-betadisk               Enable Betadisk emulation\n"
-        "--trd-file f                    Set trd image file\n"
-        "--enable-trd                    Enable TRD emulation. Usually requires --trd-file\n"
-        "--trd-write-protection          Enable TRD write protection\n"
-		"--trd-no-persistent-writes      Disable TRD persistent writes\n"
-        "--hilow-file f                  Set HiLow Data Drive image file\n"
-        "--enable-hilow                  Enable HiLow Data Drive. Usually requires --hilow-file\n"
-		"--hilow-write-protection        Enable HiLow Data Drive write protection\n"
-		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"        
-		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
-		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
-		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
-		"--ql-flp1-root-dir p            Set QL flp1 root directory\n"
-        "--ql-mdv1-read-only             Mark mdv1 as read only\n"
-        "--ql-mdv2-read-only             Mark mdv2 as read only\n"
-        "--ql-flp1-read-only             Mark flp1 as read only\n"
-
-
-		"\n"
-        "\n"
-        "External Tools\n"
-        "--------------\n"
-        "\n"
-
-        "--tool-sox-path p     Set external tool sox path. Path can not include spaces\n"
-        "--tool-gunzip-path p  Set external tool gunzip path. Path can not include spaces\n"
-        "--tool-tar-path p     Set external tool tar path. Path can not include spaces\n"
-        "--tool-unrar-path p   Set external tool unrar path. Path can not include spaces\n"
-
-
-		"\n"
-		"\n"
-		"Joystick\n"
-		"--------\n"
-		"\n"
-
-		"--joystickemulated type     Type of joystick emulated. Type can be one of: ");
-
-	joystick_print_types();
-		printf (" (default: %s).\n",joystick_texto[joystick_emulation]);
-		printf ("  Note: if a joystick type has spaces in its name, you must write it between \"\"\n");
-
-
-	printf(
-        "--joystickfirekey n         Define which key triggers the fire function for the joystick: 0=Home, 1=RightAlt, 2=RightCtrl, 3=RightShift\n"
-		"--disablerealjoystick       Disable real joystick emulation\n"
-		"--realjoystickpath f        Change default real joystick device path (used on Linux)\n"
-        "--realjoystickindex n       Change default real joystick device id (used on Windows and other OS with SDL driver)\n"
-		"--realjoystick-calibrate n  Parameter to autocalibrate joystick axis. Axis values read from joystick less than n and greater than -n are considered as 0. Default: 16384. Not used on native linux real joystick\n"
-
-#ifdef USE_LINUXREALJOYSTICK
-		"--no-native-linux-realjoy  Do not use native linux real joystick support. Instead use the video driver joystick support (currently only SDL)\n"
-#endif		
-        "--joystickevent but evt     Set a joystick button or axis to an event (changes joystick to event table)\n"
-        "                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-        "                            Event must be one of: ");
-
-        realjoystick_print_event_keys();
-
-	printf ("\n"
-		"--joystickkeybt but key     Define a key pressed when a joystick button pressed (changes joystick to key table)\n"
-		"                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
-        "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
-        "                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\'\n"
-		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
-        "--joystickkeyev evt key     Define a key pressed when a joystick event is generated (changes joystick to key table)\n"
-        "                            Event must be one of: ");
-
-        realjoystick_print_event_keys();
-
-
-	printf ("\n"
-		"                            Key must be an ascii character number or a character included in escaped quotes, like: 13 (for enter) or \\'q\\' \n"
-		"                            (the escaped quotes are used only in command line; on configuration file, they are normal quotes '')\n"
-		"                            Note: to simulate Caps shift, use key value 128, and to simulate Symbol shift, use key value 129\n"
-
-        	"\n"
-		"  Note: As you may see, --joystickkeyev is not dependent on the real joystick type you use, because it sets an event to a key, "
-		"and --joystickkeybt and --joystickevent are dependent on the real joystick type, because they set a button/axis number to "
-		"an event or key, and button/axis number changes depending on the joystick (the exception here is the axis up/down/left/right "
-		"which are the same for all joysticks: up: -1, down: +1, left: -1, right: +1)\n"
-
-		"\n"
-		"--clearkeylistonsmart       Clear all joystick (events and buttons) to keys table every smart loading.\n"
-		"                            Joystick to events table is never cleared using this setting\n"
-		"--cleareventlist            Clears joystick to events table\n"
-		"--enablejoysticksimulator   Enable real joystick simulator. Only useful on development\n"
-
-
-		"\n"
-		"\n"
-		"Network\n"
-		"-------\n"
-		"\n"
-		
-		"--zeng-remote-hostname s    ZENG last remote hostname\n"
-		"--zeng-remote-port n        ZENG last remote port\n"
-		"--zeng-snapshot-interval n  ZENG snapshot interval\n"
-		"--zeng-iam-master           Tells this machine is a ZENG master\n"
-
-
-		"\n"
-		"\n"
-		"Statistics\n"
-		"----------\n"
-		"\n"
-		
-		"--total-minutes-use n                 Total minutes of use of ZEsarUX\n"
-		"--stats-send-already-asked            Do not ask to send statistics\n"
-		"--stats-send-enabled                  Enable send statistics\n"
-		"--stats-uuid s                        UUID to send statistics\n"
-		"--stats-disable-check-updates         Disable checking of available ZEsarUX updates\n"
-		"--stats-disable-check-yesterday-users Disable checking ZEsarUX yesterday users\n"
-		"--stats-last-avail-version s          ZEsarUX last available version to download\n"
-		"--stats-speccy-queries n              Total queries on the speccy online browser\n"
-		"--stats-zx81-queries n                Total queries on the zx81 online browser\n"
-		
 			
 		"\n"
 		"\n"
