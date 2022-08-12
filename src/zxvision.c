@@ -413,6 +413,7 @@ int zxvision_si_icono_cerca(int x,int y)
 }
 
 #define ZXVISION_SEPARACION_ICONOS_AL_ORDENAR (ZESARUX_ASCII_LOGO_ANCHO*2)
+#define ZXVISION_OFFSET_ICONOS_REPETIR_POSICION 2
 
 void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 {
@@ -423,6 +424,11 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
     Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+
+    Las funciones zxvision_get_next_free_icon_position y zxvision_get_next_free_icon_position utilizan
+    la misma separación de posicionamiento de iconos,
+    solo que zxvision_get_next_free_icon_position busca el siguiente hueco libre mientras que zxvision_reorder_configurable_icons
+    reordena uno a uno cada icono
     */
 
 
@@ -468,8 +474,9 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
     for (buscar_cerca=0;buscar_cerca<5;buscar_cerca++) {
 
         //printf("buscar_cerca %d\n",buscar_cerca);
-        for (y=yinicial+2*buscar_cerca;y<yfinal;y+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
-            for (x=xinicial+2*buscar_cerca;x<xfinal;x+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+        //Desplazarlos un poco cada vez
+        for (y=yinicial+ZXVISION_OFFSET_ICONOS_REPETIR_POSICION*buscar_cerca;y<yfinal;y+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
+            for (x=xinicial+ZXVISION_OFFSET_ICONOS_REPETIR_POSICION*buscar_cerca;x<xfinal;x+=ZXVISION_SEPARACION_ICONOS_AL_ORDENAR) {
                 int total_iconos_cerca=zxvision_si_icono_cerca(x,y);
                 //printf("%d %d iconos cerca %d\n",x,y,total_iconos_cerca);
 
@@ -493,6 +500,16 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
 void zxvision_reorder_configurable_icons(void)
 {
+
+    /*
+    Se reubican iconos empezando en una zona de forma cuadrada delimitada por:
+    x: desde derecha pantalla emulada hasta final x
+    y: desde debajo botones superiores hasta por encima botones inferiores
+    Las funciones zxvision_get_next_free_icon_position y zxvision_get_next_free_icon_position utilizan
+    la misma separación de posicionamiento de iconos, 
+    solo que zxvision_get_next_free_icon_position busca el siguiente hueco libre mientras que zxvision_reorder_configurable_icons
+    reordena uno a uno cada icono    
+    */
 
     int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
 
@@ -533,11 +550,15 @@ void zxvision_reorder_configurable_icons(void)
                 y+=separacion_iconos;
 
                 //Final de pantalla. Ubicamos al principio algo desplazados
+                //TODO: puede que xinicial o yinicial acaben saliendose de rango,
+                //aunque esto no es un problema al final, al llamarse a zxvision_set_configurable_icon_position no se permite
+                //establecer una posicion invalida; en ese caso, se quedaria la misma posicion que tenia el icono
+
                 if (y>=yfinal) {
-                    xinicial+=2;
+                    xinicial+=ZXVISION_OFFSET_ICONOS_REPETIR_POSICION;
                     x=xinicial;
 
-                    yinicial+=2;
+                    yinicial+=ZXVISION_OFFSET_ICONOS_REPETIR_POSICION;
                     y=yinicial;
                 }
             }
