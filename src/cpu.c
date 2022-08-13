@@ -1887,19 +1887,7 @@ printf (
 		"--textfps n                      Sets FPS for stdout and simpletext text drivers\n"        
 
 
-		"\n"
-		"\n"
-		"Video Driver Settings\n"
-		"---------------------\n"
-		"\n"
 
-
-#ifdef USE_XEXT
-        "--disableshm                Disable X11 Shared Memory\n"
-#endif
-
-		"--nochangeslowparameters    Do not change any performance parameters (frameskip, realvideo, etc) "
-		"on slow machines like raspberry, etc\n"
 
 
 #ifdef COMPILE_FBDEV
@@ -2282,7 +2270,19 @@ printf (
 
 
 
+		"\n"
+		"\n"
+		"Video Driver Settings\n"
+		"---------------------\n"
+		"\n"
 
+
+#ifdef USE_XEXT
+        "--disableshm                Disable X11 Shared Memory\n"
+#endif
+
+		"--nochangeslowparameters    Do not change any performance parameters (frameskip, realvideo, etc) "
+		"on slow machines like raspberry, etc\n"
 
 
       
