@@ -9199,7 +9199,7 @@ void print_funny_message(void)
 	//printf ("random: %d\n",randomize_noise[0]);
 
 	//mensajes random de broma
-	#define MAX_RANDOM_FUNNY_MESSAGES 23
+	#define MAX_RANDOM_FUNNY_MESSAGES 31
 	char *random_funny_messajes[MAX_RANDOM_FUNNY_MESSAGES]={
 		"Detected SoundBlaster at A220 I5 D1 T2",
 		"DOS/4GW Protected Mode Run-time  Version 1.97",		//2
@@ -9212,19 +9212,26 @@ void print_funny_message(void)
 		"301-Keyboard not detected. Press F1 to continue",
 		"Error: IRQL NOT LESS OR EQUAL",   //10
 		"R Tape loading error, 0:1",
-		"Software Failure. Press left mouse button to continue. Guru Meditation #00000004.000AAC0",
+		"Software Failure. Press left mouse button to continue. Guru Meditation #00000004.000AAC0", //12
 		"RAMTOP no good",
-		"   < Sistema preparado >   ",
+		"   < Sistema preparado >   ", //14
 		"Sorry, a system error ocurred. unimplemented trap",
-		"Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,2)",
+		"Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(179,2)", //16
 		"Invalid MSX-DOS call",
-		"B Integer out of range, 0:1",
+		"B Integer out of range, 0:1", //18
 		"Your System ate a SPARC! Gah!",
-		"CMOS checksum error - Defaults loaded",
+		"CMOS checksum error - Defaults loaded", //20
         "Proudly Made on Earth",
-        "Made From 100% Recycled Pixels",
-        "You have died of dysentery"
-      
+        "Made From 100% Recycled Pixels", //22
+        "You have died of dysentery",
+        "Not ready reading drive A. Abort, Retry, Fail?", //24
+        "lp0 on fire",
+        "Does not compute", //26
+        "Shannon and Bill say this can't happen",
+        "Z80 panic: shut her down Scotty, she's sucking mud again", //28
+        "Not enough memory to display the error m",
+        "ERROR 1164 HOW IN THE HELL DID YOU GET HERE", //30
+        "Good afternoon, gentelman, I’m a HAL 9000 Computer"
 	};
 
 
