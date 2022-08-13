@@ -1580,6 +1580,14 @@ char ay_player_second_footer[1024]="";
 //Retorna 0 si ok
 int audio_ay_player_load(char *filename)
 {
+    //Validar extension, si por error se carga otro archivo de diferente extension 
+    //(por ejemplo por error al seleccionar Recent Files), puede petar el emulador
+
+    if (util_compare_file_extension(filename,"ay")) {
+        debug_printf(VERBOSE_ERR,"AY file does not have .ay extension");
+        return 1;
+    }
+
 	//Leemos archivo en memoria
 	int total_mem=get_file_size(filename);
 

@@ -24,8 +24,7 @@ Para esta version:
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ? 
 
--minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background)
--Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ?
+
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
@@ -164,3 +163,11 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 -agregar screenshot a repositorio con zx desktop e iconos 
 -agregar screenshot Z88
 
+-https://telcontar.net/Misc/GUI/RISCOS/
+
+
+-minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background?). o no es necesario que esté para todas, si tiene icono asociado, se minimiza a icono. y si no, no
+-Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ? no, al minimizar no debe cerrar ventana o se perderian quiza algunos
+settings de dicha ventana?
+*problema: minimizar no sale de la aplicación, solo cambia tamaño de ventana. habria que hacer que se cerrase cuando: la ventana indica 
+que tiene una funcion de entrada asociada. como indicar esto? en un parámetro de la zxvision_window ?
