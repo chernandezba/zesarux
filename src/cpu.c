@@ -1440,11 +1440,11 @@ char *string_machines_list_description=
 void cpu_help(void)
 {
 	printf ("Usage:\n"
-		"[--tape] file           Insert input standard tape file. Supported formats: Spectrum: .TAP, .TZX, .PZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- All machines: .RWA, .SMP, .WAV\n"
-		"[--realtape] file       Insert input real tape file. Supported formats: Spectrum: .TAP, .TZX, .PZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- CPC: .CDT -- All machines: .RWA, .SMP, .WAV\n"
-		"[--snap] file           Load snapshot file. Supported formats: Spectrum: .ZSF, .ZX, .Z80, .SP, .SNA -- ZX80: .ZX, .O, .80 -- ZX81: .ZX, .P, .81, .Z81\n"
+		"[--tape] file           Insert input standard tape file. Supported formats: Spectrum: .PZX, .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- Jupiter Ace: .TAP -- All machines: .RWA, .SMP, .WAV\n"
+		"[--realtape] file       Insert input real tape file. Supported formats: Spectrum: .PZX, .TAP, .TZX -- ZX80: .O, .80, .Z81 -- ZX81: .P, .81, .Z81 -- CPC: .CDT -- All machines: .RWA, .SMP, .WAV\n"
+		"[--snap] file           Load snapshot file. Supported formats: Spectrum: .ZSF, .ZX, .NEX, .SNA, .SNX, .SP, .SPG, .RZX, .Z80 -- ZX80: .ZSF, .ZX, .O, .80 -- ZX81: .ZSF, .ZX, .P, .81, .Z81 -- Jupiter Ace: .ACE\n"
 		"[--slotcard] file       Insert Z88 EPROM/Flash file in the first slot. Supported formats: .EPR, .63, .EPROM, .FLASH\n"
-		"Note: if you write a tape/snapshot/card file name without --tape, --realtape, --snap or --slotcard parameters, the emulator will try to guess file type (it's the same as SmartLoad on the menu)\n"
+		"Note: if you write a tape/snapshot/card file name without --tape, --realtape, --snap or --slotcard parameters, ZEsarUX will try to guess file type (it's the same as SmartLoad on the menu)\n"
 		"\n"
         "--slotcard-num file n   Same as --slotcard but insert card on the slot number n (1,2 or 3)\n"
 
