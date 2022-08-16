@@ -11,19 +11,14 @@ Para esta version:
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
 
-
-
 -Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
-
--Drag drop con menú abierto en sdl2 no parece funcionar bien
 
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ? 
-
 
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
@@ -69,7 +64,6 @@ Y cierra menus pero no sale
 -menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
-
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
 -lee_hilow_audio: ultimo sector en cara B dice:
@@ -88,7 +82,6 @@ Sector -407021264
 --Fin Errores
 
 
-
 -Ayuda hablar nuevo comportamiento botón derecho 
 
 -Permitir tirar papelera a papelera? Esto provocará que se pueda ocultar, aún teniendo el grabado de iconos por config (y suponiendo setting que guarde elementos que estén en papelera)
@@ -98,11 +91,6 @@ Sector -407021264
 Esto puede comportar problemas por variables que no se resetean correctamente (que si se hace desde el gestor de tareas),
 se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, como "pseudo" tareas
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
-
-
--nuevo icono suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
-o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
-ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
 
 -si al iniciar carga con rom no existe, pantalla se ve mal
@@ -115,7 +103,6 @@ ok corregido?
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
-
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
 -Para ZENG con más de 2 pcs:
@@ -126,7 +113,6 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -descargas imagenes oficiales mmc de tbblue ahora vienen por https. En Mac no hay soporte ssl. Por tanto solo habria la opcion de usar el tbblue.mmc incluido
 
 -Splash messages en overlay no deberían borrar las ventanas cuando opción de background windows even with menú closed 
-
 
 -Funciones de utils no deberían involucrar nada del menú
 

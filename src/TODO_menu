@@ -19,6 +19,10 @@
 
 -iconos de dispositivos mmc/ide en escritorio 
 
+-nuevos iconos suele quedar arriba a la izquierda debajo de una ventana, pues las ventanas tambien se posicionan por defecto ahi
+o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
+ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
+
 
 --- FIN ZX Desktop
 

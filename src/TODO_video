@@ -5,7 +5,7 @@ Otros TODO menos prioritarios, de aqui hasta el final del archivo:
 
 -nombre ultimo juego cargado en titulo ventana
 
--Joystick SDL: Soporte joystick SDL2
+
 
 -Modo sin colores que ya hay ahora pero cogiendo 4 o 16 colores del pixel tal cual
 
@@ -23,8 +23,11 @@ Opcion desactivar colores que solo va en realvideo off:
 -Quitar atributos que se pueda aunque esté modo rainbow 
 -Quizá simplemente una paleta grayscale y cuando haga render final, que convierta valores rgb a gris
 
+-Joystick SDL: Soporte joystick SDL2
 
 -sdl2 peta con easter-egg en linux
+
+-Drag drop con menú abierto en sdl2 no parece funcionar bien
 
 
 -Contador fps cuando speed es 200% debería mostrar 100 fps
@@ -40,7 +43,7 @@ http://www.worldofspectrum.org/forums/discussion/44669/clashbasher-a-new-interfa
 -Mejorar frameskip con tiempo acumulativo
 
 
--Drag -  Drop en X11. En SDL2 y Cocoa si que funciona
+-Drag -  Drop en X11
 
 -sin multitask, con filtro color azul por ejemplo, en menu, la pantalla de spectrum no aplica filtro color
 
