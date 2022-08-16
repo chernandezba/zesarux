@@ -83,6 +83,8 @@
 #include "ql_i8049.h"
 #include "vdp_9918a_sms.h"
 #include "settings.h"
+#include "scmp.h"
+#include "mk14.h"
 
 
 #include "autoselectoptions.h"
@@ -578,6 +580,29 @@ Byte Fields:
 5 and next bytes: data bytes
 
 
+-Block ID 45: ZSF_MK14_REGS_ID
+Registers of the MK14
+Byte fields:
+0,1: PC Register
+2,3: P1 Register
+4,5: P2 Register
+6,7: P3 Register
+8: AC Register
+9: ER Register
+10: SR Register
+
+-Block ID 46: ZSF_MK14_MEMBLOCK
+Memory RAM/ROM of the MK14
+Byte fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1 and next bytes: Dump of the 64kb
+
+-Block ID 47: ZSF_MK14_LEDS
+Leds values
+Byte fields
+0-7: led values
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -591,7 +616,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 44
+#define MAX_ZSF_BLOCK_ID_NAMES 47
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -639,6 +664,9 @@ char *zsf_block_id_names[]={
   "ZSF_Z88_CONF",
   "ZSF_Z80_HALT_STATE",
   "ZSF_TIMEX_DOCK_ROM",
+  "ZSF_MK14_REGS_ID",
+  "ZSF_MK14_MEMBLOCK",
+  "ZSF_MK14_LEDS",
 
   "Unknown"  //Este siempre al final
 };
@@ -832,6 +860,33 @@ void load_zsf_snapshot_moto_regs(z80_byte *header)
 }
 
 
+void load_zsf_snapshot_mk14_regs(z80_byte *header)
+{
+
+    scmp_m_PC.w.l=value_8_to_16(header[1],header[0]);
+    scmp_m_P1.w.l=value_8_to_16(header[3],header[2]);
+    scmp_m_P2.w.l=value_8_to_16(header[5],header[4]);
+    scmp_m_P3.w.l=value_8_to_16(header[7],header[6]);
+
+    scmp_m_AC=header[8];
+    scmp_m_ER=header[9];
+    scmp_m_SR=header[10];
+
+}
+
+void load_zsf_snapshot_mk14_leds(z80_byte *header)
+{
+
+    int i;
+
+    for (i=0;i<8;i++) {
+        mk14_ledstat[i]=header[i];
+    }
+
+
+}
+
+
 /*
 Cargar bloque de datos en destino indicado
 block_length: usado en bloques no comprimidos (lo que dice la cabecera que ocupa)
@@ -893,6 +948,32 @@ void load_zsf_snapshot_block_data(z80_byte *block_data,int longitud_original)
 
 
   longitud_original -=5;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],&memoria_spectrum[block_start],block_lenght,longitud_original,block_flags&1);
+
+}
+
+void load_zsf_snapshot_mk14_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 1 bytes
+
+  i++;
+  z80_int block_start=0;
+
+  int block_lenght=65536;
+
+  debug_printf (VERBOSE_DEBUG,"Block start: %d Length: %d Compressed: %s Length_source: %d",block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+  //printf ("Block start: %d Length: %d Compressed: %d Length_source: %d\n",block_start,block_lenght,block_flags&1,longitud_original);
+
+
+  longitud_original -=1;
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],&memoria_spectrum[block_start],block_lenght,longitud_original,block_flags&1);
@@ -2392,7 +2473,15 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_MOTO_REGS_ID:
         load_zsf_snapshot_moto_regs(block_data);
-      break;      
+      break;    
+
+      case ZSF_MK14_REGS_ID:
+        load_zsf_snapshot_mk14_regs(block_data);
+      break;     
+
+      case ZSF_MK14_LEDS:
+        load_zsf_snapshot_mk14_leds(block_data);
+      break;             
 
       case ZSF_RAMBLOCK:
         load_zsf_snapshot_block_data(block_data,block_lenght);
@@ -2559,6 +2648,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_timex_dockrom_block_data(block_data,block_lenght);
       break;
 
+      case ZSF_MK14_MEMBLOCK:
+        load_zsf_snapshot_mk14_block_data(block_data,block_lenght);
+      break;      
+
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
       break;
@@ -2625,6 +2718,50 @@ void save_zsf_snapshot_moto_cpuregs(FILE *ptr,z80_byte **destination_memory,int 
 
 
     zsf_write_block(ptr, destination_memory, longitud_total, header,ZSF_MOTO_REGS_ID, 80);
+
+}
+
+void save_zsf_snapshot_mk14_cpuregs(FILE *ptr,z80_byte **destination_memory,int *longitud_total)
+{
+
+  z80_byte header[11];
+
+
+  header[0]=value_16_to_8l(scmp_m_PC.w.l);
+  header[1]=value_16_to_8h(scmp_m_PC.w.l);
+
+  header[2]=value_16_to_8l(scmp_m_P1.w.l);
+  header[3]=value_16_to_8h(scmp_m_P1.w.l);
+
+  header[4]=value_16_to_8l(scmp_m_P2.w.l);
+  header[5]=value_16_to_8h(scmp_m_P2.w.l);
+
+  header[6]=value_16_to_8l(scmp_m_P3.w.l);
+  header[7]=value_16_to_8h(scmp_m_P3.w.l);
+
+  header[8]=scmp_m_AC;
+  header[9]=scmp_m_ER;
+  header[10]=scmp_m_SR;
+
+
+
+/*
+union SCMP_PAIR    scmp_m_PC;
+union SCMP_PAIR    scmp_m_P1;
+union SCMP_PAIR    scmp_m_P2;
+union SCMP_PAIR    scmp_m_P3;
+SCMP_UINT_8   scmp_m_AC;
+SCMP_UINT_8   scmp_m_ER;
+SCMP_UINT_8   scmp_m_SR;
+
+*/
+
+
+
+  zsf_write_block(ptr, destination_memory, longitud_total, header,ZSF_MK14_REGS_ID, 11);
+
+
+
 
 }
 
@@ -2821,7 +2958,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     save_zsf_snapshot_moto_cpuregs(ptr_zsf_file,&destination_memory,longitud_total);
   }
   else if (CPU_IS_SCMP) {
-    //TODO
+    save_zsf_snapshot_mk14_cpuregs(ptr_zsf_file,&destination_memory,longitud_total);
   }
 
   else {
@@ -2908,7 +3045,6 @@ Byte fields:
   }
 
 
-  //Maquinas Spectrum de 48kb y zx80/81 y Ace
   if (MACHINE_IS_SPECTRUM_16_48 || MACHINE_IS_ZX8081 || MACHINE_IS_ACE || MACHINE_IS_TIMEX_TS_TC_2068) {
 
 	  int inicio_ram=16384;
@@ -2921,6 +3057,7 @@ Byte fields:
 		  inicio_ram=0;
 	  }
 
+    
     if (MACHINE_IS_ZX8081) {
       int final_ram=get_ramtop_with_rampacks()+1;
       if (ram_in_8192.v) inicio_ram=8192;
@@ -2964,6 +3101,52 @@ Byte fields:
     free(compressed_ramblock);
 
   }
+
+
+  if (MACHINE_IS_MK14) {
+
+	  int inicio_ram=0;
+	  int longitud_ram=65536;
+
+    //Para el bloque comprimido
+    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+    if (compressed_ramblock==NULL) {
+      debug_printf (VERBOSE_ERR,"Error allocating memory");
+      return;
+    } 
+
+    /*
+    0: Flags. Currently: bit 0: if compressed
+    1 and next bytes: data bytes
+    */
+
+    compressed_ramblock[0]=0;
+
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(&memoria_spectrum[inicio_ram],&compressed_ramblock[1],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    //Store block to file
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_MK14_MEMBLOCK length: %d",longitud_bloque);
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_MK14_MEMBLOCK, longitud_bloque+1);
+
+    free(compressed_ramblock);
+
+
+    //Guardar los leds
+    z80_byte mk14_leds_copia[8];
+    int i;
+
+    for (i=0;i<8;i++) {
+        mk14_leds_copia[i]=mk14_ledstat[i];
+    }
+
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, mk14_leds_copia,ZSF_MK14_LEDS, 8);
+
+  }
+
 
   //Cartucho timex en DOCK
   if (MACHINE_IS_TIMEX_TS_TC_2068 && timex_cartridge_inserted.v) {

@@ -6,7 +6,7 @@ Para esta version:
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
--ZSF: soporte para Sam coupe, Chloe, Prism, Chrome, MK14
+-ZSF: soporte para Sam coupe, Chloe, Prism, Chrome
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
@@ -152,7 +152,8 @@ Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Lo
 -https://telcontar.net/Misc/GUI/RISCOS/
 
 
--minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background?). o no es necesario que esté para todas, si tiene icono asociado, se minimiza a icono. y si no, no
+-minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background?). o no es necesario que esté para todas, si tiene icono asociado, se minimiza a icono. y si no, no.
+el icono deberia verse de alguna manera diferente para decir que la ventana se ha minimizado (aunque realmente se ha cerrado y ya no esta ahi)
 -Minimizar. Si hay icono en escritorio de esa ventana, cerrar ventana ? no, al minimizar no debe cerrar ventana o se perderian quiza algunos
 settings de dicha ventana?
 *problema: minimizar no sale de la aplicación, solo cambia tamaño de ventana. habria que hacer que se cerrase cuando: la ventana indica 
