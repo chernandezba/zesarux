@@ -26,7 +26,7 @@
 
 #define MK14_DIGITS 8
 
-extern int mk14_ledstat[];
+extern z80_byte mk14_ledstat[];
 extern z80_byte mk14_keystatus[];
 extern void mk14_reset(void);
 extern void mk14_write_io_port(z80_int dir,z80_byte value);

@@ -74,7 +74,8 @@ Por ejemplo, mk14_keystatus[0] indica 4 posibles teclas pulsadas:
 11101111  cuarta tecla
 */
 
-int mk14_ledstat[MK14_DIGITS];
+z80_byte mk14_ledstat[MK14_DIGITS];
+
 int mk14_ledlit[MK14_DIGITS];
 int mk14_latencycount[MK14_DIGITS];
 
