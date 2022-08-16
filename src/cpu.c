@@ -2167,8 +2167,8 @@ printf (
 
 		"\n"
 		"\n"
-		"Storage Settings\n"
-		"----------------\n"
+		"Storage - MMC Settings\n"
+		"----------------------\n"
 		"\n"
 
 		"--mmc-file f                    Set mmc image file\n"
@@ -2188,6 +2188,13 @@ printf (
 		"--enable-divmmc                 Enable DIVMMC emulation: ports & paging. Usually requires --enable-mmc\n"
 		"--divmmc-rom f                  Sets divmmc firmware rom. If not set, uses default file\n"
 		"--enable-zxmmc                  Enable ZXMMC emulation. Usually requires --enable-mmc\n"
+
+		"\n"
+		"\n"
+		"Storage - IDE Settings\n"
+		"----------------------\n"
+		"\n"
+
 		"--ide-file f                    Set ide image file\n"
 		"--enable-ide                    Enable IDE emulation. Usually requires --ide-file\n"
 		"--ide-write-protection          Enable IDE write protection\n"
@@ -2198,39 +2205,116 @@ printf (
 		"--divide-rom f                  Sets divide firmware rom. If not set, uses default file\n"
 		"--enable-8bit-ide               Enable 8-bit simple IDE emulation. Requires --enable-ide\n"
 		"--diviface-ram-size n           Sets divide/divmmc ram size in kb. Allowed values: 32, 64, 128, 256 or 512\n"
+
+		"\n"
+		"\n"
+		"Storage - ESXDOS Handler Settings\n"
+		"---------------------------------\n"
+		"\n"
+
 		"--enable-esxdos-handler         Enable ESXDOS traps handler. Requires divmmc or divide paging emulation\n"
 		"--esxdos-root-dir p             Set ESXDOS root directory for traps handler. Uses current directory by default.\n"
         "--esxdos-readonly               Forbid write operations on ESXDOS handler\n"
         "--esxdos-local-dir p            Set ESXDOS local directory for traps handler. This is the relative directory used inside esxdos.\n"
+
+		"\n"
+		"\n"
+		"Storage - ZXPand Settings\n"
+		"-------------------------\n"
+		"\n"
+
 		"--enable-zxpand                 Enable ZXpand emulation\n"
 		"--zxpand-root-dir p             Set ZXpand root directory for sd/mmc filesystem. Uses current directory by default.\n"
 		"                                Note: ZXpand does not use --mmc-file setting\n"
+
+		"\n"
+		"\n"
+		"Storage - ZXUno Settings\n"
+		"------------------------\n"
+		"\n"
+
 		"--zxunospifile path             File to use on ZX-Uno as SPI Flash. Default: zxuno.flash\n"
 		"--zxunospi-write-protection     Enable ZX-Uno SPI Flash write protection\n"
 		"--zxunospi-persistent-writes    Enable ZX-Uno SPI Flash persistent writes\n"
         "--zxuno-initial-64k f           Load a 64kb file that will be written on the initial 64kb space\n"
+
+		"\n"
+		"\n"
+		"Storage - Dandanator Settings\n"
+		"-----------------------------\n"
+		"\n"
+        
         "--dandanator-rom f              Set ZX Dandanator rom file\n"
         "--enable-dandanator             Enable ZX Dandanator emulation. Requires --dandanator-rom\n"
         "--dandanator-press-button       Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n"
+
+		"\n"
+		"\n"
+		"Storage - Superupgrade Settings\n"
+		"-------------------------------\n"
+		"\n"
+
 		"--superupgrade-flash f          Set Superupgrade flash file\n"
 		"--enable-superupgrade           Enable Superupgrade emulation. Requires --superupgrade-flash\n"
+
+		"\n"
+		"\n"
+		"Storage - Kartusho Settings\n"
+		"---------------------------\n"
+		"\n"
+
         "--kartusho-rom f                Set Kartusho rom file\n"
         "--enable-kartusho               Enable Kartusho emulation. Requires --kartusho-rom\n"
+
+		"\n"
+		"\n"
+		"Storage - iFrom Settings\n"
+		"------------------------\n"
+		"\n"
+
         "--ifrom-rom f                   Set iFrom rom file\n"
         "--enable-ifrom                  Enable iFrom emulation. Requires --ifrom-rom\n"
+
+		"\n"
+		"\n"
+		"Storage - +3 DSK Settings\n"
+		"-------------------------\n"
+		"\n"
+
         "--dsk-file f                    Set +3 DSK image file\n"
         "--enable-dsk                    Enable +3 DSK emulation. Usually requires --dsk-file\n"
         "--dsk-write-protection          Enable +3 DSK write protection\n"
 		"--dsk-no-persistent-writes      Disable +3 DSK persistent writes\n"
+
+		"\n"
+		"\n"
+		"Storage - Betadisk Settings\n"
+		"---------------------------\n"
+		"\n"
+
         "--enable-betadisk               Enable Betadisk emulation\n"
         "--trd-file f                    Set trd image file\n"
         "--enable-trd                    Enable TRD emulation. Usually requires --trd-file\n"
         "--trd-write-protection          Enable TRD write protection\n"
 		"--trd-no-persistent-writes      Disable TRD persistent writes\n"
+
+		"\n"
+		"\n"
+		"Storage - HiLow Settings\n"
+		"------------------------\n"
+		"\n"
+
         "--hilow-file f                  Set HiLow Data Drive image file\n"
         "--enable-hilow                  Enable HiLow Data Drive. Usually requires --hilow-file\n"
 		"--hilow-write-protection        Enable HiLow Data Drive write protection\n"
-		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"        
+		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"     
+
+		"\n"
+		"\n"
+		"Storage - QL MDV & FLP Settings\n"
+		"-------------------------------\n"
+		"\n"        
+
 		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
 		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
 		"--ql-mdv2-root-dir p            Set QL mdv2 root directory\n"
