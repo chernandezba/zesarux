@@ -85,6 +85,7 @@
 #include "settings.h"
 #include "scmp.h"
 #include "mk14.h"
+#include "chrome.h"
 
 
 #include "autoselectoptions.h"
@@ -604,6 +605,22 @@ Byte fields
 0-7: led values
 
 
+-Block ID 48: ZSF_CHROME_CONF
+Byte Fields:
+0: Port 32765 contents
+1: Port 8189 contents
+
+
+-Block ID 49: ZSF_CHROME_RAMBLOCK
+A ram binary block for a chrome
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id 
+6 and next bytes: data bytes
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -616,7 +633,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 47
+#define MAX_ZSF_BLOCK_ID_NAMES 49
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -667,6 +684,8 @@ char *zsf_block_id_names[]={
   "ZSF_MK14_REGS_ID",
   "ZSF_MK14_MEMBLOCK",
   "ZSF_MK14_LEDS",
+  "ZSF_CHROME_CONF",
+  "ZSF_CHROME_RAMBLOCK",
 
   "Unknown"  //Este siempre al final
 };
@@ -779,6 +798,18 @@ mem_page_rom_p2a();
 
 
 }
+
+
+void load_zsf_chrome_conf(z80_byte *header)
+{
+
+	puerto_32765=header[0];
+	puerto_8189=header[1];
+
+	chrome_set_memory_pages();
+
+}
+
 
 void load_zsf_snapshot_z80_regs(z80_byte *header)
 {
@@ -1036,6 +1067,35 @@ void load_zsf_zxuno_snapshot_block_data(z80_byte *block_data,int longitud_origin
 
 
   load_zsf_snapshot_block_data_addr(&block_data[i],zxuno_sram_mem_table_new[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
+void load_zsf_chrome_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],chrome_ram_mem_table[ram_page],block_lenght,longitud_original,block_flags&1);
 
 }
 
@@ -2650,7 +2710,15 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_MK14_MEMBLOCK:
         load_zsf_snapshot_mk14_block_data(block_data,block_lenght);
-      break;      
+      break;    
+
+      case ZSF_CHROME_CONF:
+        load_zsf_chrome_conf(block_data);
+      break;     
+
+      case ZSF_CHROME_RAMBLOCK:
+        load_zsf_chrome_snapshot_block_data(block_data,block_lenght);
+      break;         
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -3235,6 +3303,79 @@ Byte Fields:
   	zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, memconf,ZSF_SPEC128_MEMCONF, 3);
 
 }
+
+  if (MACHINE_IS_CHROME) {
+/*
+
+0: Port 32765 contents
+1: Port 8189 contents
+
+*/
+	z80_byte memconf[2];
+	memconf[0]=puerto_32765;
+	memconf[1]=puerto_8189;
+
+
+  	zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, memconf,ZSF_CHROME_CONF, 2);
+
+
+
+   int longitud_ram=16384;
+
+  
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+  /*
+
+-Block ID 49: ZSF_CHROME_RAMBLOCK
+A ram binary block for a chrome
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id 
+6 and next bytes: data bytes
+  */
+
+  int paginas=10;
+  z80_byte ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(chrome_ram_mem_table[ram_page],&compressed_ramblock[6],
+        longitud_ram,&si_comprimido);
+
+
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_CHROME_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_CHROME_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+
+
+}
+
 
 if (MACHINE_IS_ZXEVO) {
   //Grabar nvram
