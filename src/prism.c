@@ -50,7 +50,7 @@ z80_byte *prism_memory_paged[8];
 
 
 //Direcciones de las 4 VRAM
-z80_byte *prism_vram_mem_table[4];
+z80_byte *prism_vram_mem_table[PRISM_VRAM_PAGES];
 
 
 //Tipos de memoria mapeadas
@@ -605,7 +605,7 @@ void prism_malloc_vram(void)
 
 	int i;
 
-	for (i=0;i<4;i++) {
+	for (i=0;i<PRISM_VRAM_PAGES;i++) {
 		prism_vram_mem_table[i]=puntero;
 		puntero +=8192;
 	}
