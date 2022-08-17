@@ -616,6 +616,25 @@ Byte Fields:
 5: ram block id 
 6 and next bytes: data bytes
 
+-Block ID 49: ZSF_PRISM_CONF
+Ports and internal registers of TSCONF machine
+Byte fields:
+0: Last out to port 60987
+1-16: prism_ula2_registers[16]
+17: prism_ula2_palette_control_colour
+18: prism_ula2_palette_control_index
+19-21: prism_ula2_palette_control_rgb[3]
+22: prism_last_ae3b;
+23-278: prism_ae3b_registers[256]
+279: 12 bit prism_palette_zero[256]
+791: 12 bit prism_palette_two[256]
+
+
+
+
+
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos

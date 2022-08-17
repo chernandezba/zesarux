@@ -69,7 +69,7 @@ z80_byte debug_prism_paginas_memoria_mapeadas[8];
 
 
 
-//Modo failsave
+//Modo failsafe
 z80_bit prism_failsafe_mode={0};
 
 
@@ -77,27 +77,19 @@ z80_bit prism_failsafe_mode={0};
 //Puntero a failsafe rom
 z80_byte *prism_failsafe_rom;
 
-//puerto 60987
-z80_byte prism_rom_page;
-
-/*
-0x9E3B (write) - ULA2's 256 colour BORDER
-
-The border is set to this colour when the "BORDER 0" command has been issued (BORDER 1, BORDER 2 etc all work as expected on a normal Spectrum). This register defaults to '0' so Spectrum software setting a black border acts as expected unless this registe is explicitly changed by the user/software.
-*/
-
-//z80_byte prism_ula2_border_colour;
-
-//prism_ula2_border_colour se debe sustituir por prism_ae3b_registers[0];
-
-z80_byte get_prism_ula2_border_colour(void)
-{
-	return prism_ae3b_registers[0];
-}
-
 
 //Guardar aqui cada cambio en el out, tal y como se hace con border normal
 z80_int prism_ula2_border_colour_buffer[MAX_PRISM_BORDER_BUFFER+MAX_STATES_LINE];
+
+
+
+
+
+//puerto 60987
+z80_byte prism_rom_page;
+
+
+
 
 
 /*
@@ -174,6 +166,22 @@ Default value of colour register 2 is "11000100".
 z80_byte prism_ae3b_registers[256]={0,199,196};
 
 z80_byte prism_last_ae3b;
+
+
+/*
+0x9E3B (write) - ULA2's 256 colour BORDER
+
+The border is set to this colour when the "BORDER 0" command has been issued (BORDER 1, BORDER 2 etc all work as expected on a normal Spectrum). This register defaults to '0' so Spectrum software setting a black border acts as expected unless this registe is explicitly changed by the user/software.
+*/
+
+//z80_byte prism_ula2_border_colour;
+
+//prism_ula2_border_colour se debe sustituir por prism_ae3b_registers[0];
+
+z80_byte get_prism_ula2_border_colour(void)
+{
+	return prism_ae3b_registers[0];
+}
 
 
 void prism_out_9e3b(z80_byte value)
