@@ -6,7 +6,7 @@ Para esta version:
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
--ZSF: soporte para Sam coupe, Chloe, Prism, Chrome
+-ZSF: soporte para Sam coupe, Chloe, Prism
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
@@ -158,3 +158,6 @@ el icono deberia verse de alguna manera diferente para decir que la ventana se h
 settings de dicha ventana?
 *problema: minimizar no sale de la aplicación, solo cambia tamaño de ventana. habria que hacer que se cerrase cuando: la ventana indica 
 que tiene una funcion de entrada asociada. como indicar esto? en un parámetro de la zxvision_window ?
+
+
+-unificar util_convert_zsf_to_scr parecidos (zxuno, chrome...)
