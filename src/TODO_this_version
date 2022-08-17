@@ -6,7 +6,7 @@ Para esta version:
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
--ZSF: soporte para Sam coupe, Chloe, Prism
+-ZSF: soporte para Sam coupe, Chloe
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
@@ -161,3 +161,5 @@ que tiene una funcion de entrada asociada. como indicar esto? en un parámetro d
 
 
 -unificar util_convert_zsf_to_scr parecidos (zxuno, chrome...)
+
+-revisar zsf para prism. con snake cargado, al finalizar el juego se cuelga. quiza es culpa del compilador?
