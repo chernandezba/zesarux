@@ -16226,6 +16226,10 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
             break;
 
             case ZSF_SPEC128_RAMBLOCK:
+            case ZSF_ZXUNO_RAMBLOCK:
+            case ZSF_TSCONF_RAMBLOCK:
+            case ZSF_CHROME_RAMBLOCK:
+                //Codigo compatible tanto para 128k, zxuno, tsconf o chrome, los bloques con iguales excepto por el id
                 /*
                 -Block ID 6: ZSF_SPEC128_RAMBLOCK
                 A ram binary block for a spectrum 128, p2 or p2a machine
@@ -16236,6 +16240,39 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 3,4: Block lenght
                 5: ram block id (0..7) for a spectrum 128k for example
                 6 and next bytes: data bytes
+
+                -Block ID 10: ZSF_ZXUNO_RAMBLOCK
+                A ram binary block for a zxuno
+                Byte Fields:
+                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+                1,2: Block start address (currently unused)
+                3,4: Block lenght
+                5: ram block id 
+                6 and next bytes: data bytes   
+
+                -Block ID 14: ZSF_TSCONF_RAMBLOCK
+                A ram binary block for a tsconf
+                Byte Fields:
+                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+                1,2: Block start address (currently unused)
+                3,4: Block lenght
+                5: ram block id 
+                6 and next bytes: data bytes
+                
+
+                -Block ID 49: ZSF_CHROME_RAMBLOCK
+                A ram binary block for a chrome
+                Byte Fields:
+                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+                1,2: Block start address (currently unused)
+                3,4: Block lenght
+                5: ram block id 
+                6 and next bytes: data bytes   
+
+
                 */
 
 
@@ -16343,171 +16380,6 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
             break;
 
-            case ZSF_ZXUNO_RAMBLOCK:
-                /*
-
-                -Block ID 10: ZSF_ZXUNO_RAMBLOCK
-                A ram binary block for a zxuno
-                Byte Fields:
-                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
-                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
-                1,2: Block start address (currently unused)
-                3,4: Block lenght
-                5: ram block id 
-                6 and next bytes: data bytes   
-                                */
-
-                i=0;
-                block_flags=block_data[i];
-
-                //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-
-                i++;
-                block_start=value_8_to_16(block_data[i+1],block_data[i]);
-                i +=2;
-                block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
-                i+=2;
-
-                ram_page=block_data[i];
-                i++;
-
-                //Paginas 5 o 7 de RAM
-                if (ram_page==pagina_pantalla) {
-                    //Ya tenemos pantalla
-                    salir=1;
-
-                    //Asignamos memoria temporal para el bloque
-                    z80_byte *buffer_memoria;
-
-                    //Por si acaso, el doble de lo que en teoria se necesita
-                    buffer_memoria=malloc(block_lenght*2);
-
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
-
-                    debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
-
-
-                    longitud_original -=6;
-
-
-                    load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
-
-                    util_save_file(buffer_memoria,6912,archivo_destino);
-
-                    free(buffer_memoria);
-                }
-
-            break;       
-
-            case ZSF_TSCONF_RAMBLOCK:
-                /*
-                A ram binary block for a tsconf
-                Byte Fields:
-                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
-                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
-                1,2: Block start address (currently unused)
-                3,4: Block lenght
-                5: ram block id 
-                6 and next bytes: data bytes
-                 */
-
-                i=0;
-                block_flags=block_data[i];
-
-                //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-
-                i++;
-                block_start=value_8_to_16(block_data[i+1],block_data[i]);
-                i +=2;
-                block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
-                i+=2;
-
-                ram_page=block_data[i];
-                i++;
-
-                //Paginas 5 o 7 de RAM
-                if (ram_page==pagina_pantalla) {
-                    //Ya tenemos pantalla
-                    salir=1;
-
-                    //Asignamos memoria temporal para el bloque
-                    z80_byte *buffer_memoria;
-
-                    //Por si acaso, el doble de lo que en teoria se necesita
-                    buffer_memoria=malloc(block_lenght*2);
-
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
-
-                    debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
-
-
-                    longitud_original -=6;
-
-
-                    load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
-
-                    util_save_file(buffer_memoria,6912,archivo_destino);
-
-                    free(buffer_memoria);                
-                }
-
-            break;     
-
-            case ZSF_CHROME_RAMBLOCK:
-                /*
-
-                -Block ID 49: ZSF_CHROME_RAMBLOCK
-                A ram binary block for a chrome
-                Byte Fields:
-                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
-                    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
-                1,2: Block start address (currently unused)
-                3,4: Block lenght
-                5: ram block id 
-                6 and next bytes: data bytes   
-                                */
-
-                i=0;
-                block_flags=block_data[i];
-
-                //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-
-                i++;
-                block_start=value_8_to_16(block_data[i+1],block_data[i]);
-                i +=2;
-                block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
-                i+=2;
-
-                ram_page=block_data[i];
-                i++;
-
-                //Paginas 5 o 7 de RAM
-                if (ram_page==pagina_pantalla) {
-                    //Ya tenemos pantalla
-                    salir=1;
-
-                    //Asignamos memoria temporal para el bloque
-                    z80_byte *buffer_memoria;
-
-                    //Por si acaso, el doble de lo que en teoria se necesita
-                    buffer_memoria=malloc(block_lenght*2);
-
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
-
-                    debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
-
-
-                    longitud_original -=6;
-
-
-                    load_zsf_snapshot_block_data_addr(&block_data[i],buffer_memoria,block_lenght,longitud_original,block_flags&1);
-
-                    util_save_file(buffer_memoria,6912,archivo_destino);
-
-                    free(buffer_memoria);
-                }
-
-            break;                
 
         }
 
