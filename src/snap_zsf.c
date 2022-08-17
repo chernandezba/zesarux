@@ -626,10 +626,8 @@ Byte fields:
 19-21: prism_ula2_palette_control_rgb[3]
 22: prism_last_ae3b;
 23-278: prism_ae3b_registers[256]
-279: 12 bit prism_palette_zero[256]
-791: 12 bit prism_palette_two[256]
-
-
+279: 12 bit prism_palette_two[256]
+791: end
 
 
 
@@ -647,7 +645,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 48
+#define MAX_ZSF_BLOCK_ID_NAMES 49
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -699,6 +697,7 @@ char *zsf_block_id_names[]={
   "ZSF_MK14_MEMBLOCK",
   "ZSF_MK14_LEDS",
   "ZSF_CHROME_RAMBLOCK",
+  "ZSF_PRISM_CONF",
 
   "Unknown"  //Este siempre al final
 };
@@ -3365,6 +3364,58 @@ Byte Fields:
 
 }
 
+if (MACHINE_IS_PRISM) {
+
+
+
+   int longitud_ram=16384;
+
+  
+   //Para el bloque comprimido y tambien para el bloque de ZSF_PRISM_CONF
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+/*
+-Block ID 49: ZSF_PRISM_CONF
+Ports and internal registers of TSCONF machine
+Byte fields:
+0: Last out to port 60987
+1-16: prism_ula2_registers[16]
+17: prism_ula2_palette_control_colour
+18: prism_ula2_palette_control_index
+19-21: prism_ula2_palette_control_rgb[3]
+22: prism_last_ae3b;
+23-278: prism_ae3b_registers[256]
+279: 12 bit prism_palette_two[256]
+791: end
+*/
+
+    compressed_ramblock[0]=prism_rom_page;
+
+    int i;
+    for (i=0;i<16;i++) compressed_ramblock[1+i]=prism_ula2_registers[i];
+
+    compressed_ramblock[17]=prism_ula2_palette_control_colour;
+    compressed_ramblock[18]=prism_ula2_palette_control_index;
+
+    compressed_ramblock[19]=prism_ula2_palette_control_rgb[0];
+    compressed_ramblock[20]=prism_ula2_palette_control_rgb[1];
+    compressed_ramblock[21]=prism_ula2_palette_control_rgb[2];
+
+    compressed_ramblock[22]=prism_last_ae3b;
+
+    for (i=0;i<256;i++) compressed_ramblock[23+i]=prism_ae3b_registers[i];
+
+    for (i=0;i<256;i++) compressed_ramblock[279+i]=prism_palette_two[i];
+
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_PRISM_CONF, 791);
+
+
+}
 
 if (MACHINE_IS_ZXEVO) {
   //Grabar nvram
