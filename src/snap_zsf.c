@@ -1860,6 +1860,55 @@ Byte fields:
 }
 
 
+void load_zsf_prism_conf(z80_byte *header)
+{
+
+
+/*
+-Block ID 49: ZSF_PRISM_CONF
+Ports and internal registers of TSCONF machine
+Byte fields:
+0: Last out to port 60987
+1-16: prism_ula2_registers[16]
+17: prism_ula2_palette_control_colour
+18: prism_ula2_palette_control_index
+19-21: prism_ula2_palette_control_rgb[3]
+22: prism_last_ae3b;
+23-278: prism_ae3b_registers[256]
+279: 12 bit prism_palette_two[256]
+791: end
+*/
+
+    prism_rom_page=header[0];
+
+    int i;
+    for (i=0;i<16;i++) prism_ula2_registers[i]=header[1+i];
+
+    prism_ula2_palette_control_colour=header[17];
+    prism_ula2_palette_control_index=header[18];
+
+    prism_ula2_palette_control_rgb[0]=header[19];
+    prism_ula2_palette_control_rgb[1]=header[20];
+    prism_ula2_palette_control_rgb[2]=header[21];
+
+    prism_last_ae3b=header[22];
+
+    for (i=0;i<256;i++) prism_ae3b_registers[i]=header[23+i];
+
+    for (i=0;i<256;i++) {
+        z80_int valor;
+        valor=value_8_to_16(header[279+i*2+1],header[279+i*2]);
+        prism_palette_two[i]=valor;
+    }
+
+
+    prism_set_memory_pages();
+
+}
+
+
+
+
 void load_zsf_z88_conf(z80_byte *header)
 {
 
@@ -2720,7 +2769,11 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_CHROME_RAMBLOCK:
         load_zsf_chrome_snapshot_block_data(block_data,block_lenght);
-      break;         
+      break;
+
+      case ZSF_PRISM_CONF:
+        load_zsf_prism_conf(block_data);
+      break;       
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -3409,7 +3462,10 @@ Byte fields:
 
     for (i=0;i<256;i++) compressed_ramblock[23+i]=prism_ae3b_registers[i];
 
-    for (i=0;i<256;i++) compressed_ramblock[279+i]=prism_palette_two[i];
+    for (i=0;i<256;i++) {
+        compressed_ramblock[279+i*2]=value_16_to_8l(prism_palette_two[i]);
+        compressed_ramblock[279+i*2+1]=value_16_to_8h(prism_palette_two[i]);
+    }
 
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_PRISM_CONF, 791);
