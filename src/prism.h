@@ -49,6 +49,8 @@ extern z80_byte prism_type_memory_paged[];
 #define PRISM_MEMORY_TYPE_DOCK 2
 #define PRISM_MEMORY_TYPE_EX   3
 
+#define PRISM_SRAM_PAGES 64
+
 extern z80_byte debug_prism_paginas_memoria_mapeadas[];
 
 extern z80_byte prism_rom_page;

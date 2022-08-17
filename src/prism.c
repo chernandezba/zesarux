@@ -37,7 +37,7 @@
 z80_byte *prism_rom_mem_table[256];
 
 //Direcciones donde estan cada pagina de ram total, en paginas de 8 kb
-z80_byte *prism_ram_mem_table[64];
+z80_byte *prism_ram_mem_table[PRISM_SRAM_PAGES];
 
 //Direcciones donde estan cada pagina de ram ex, en paginas de 8 kb
 z80_byte *prism_ex_ram_mem_table[8];
@@ -542,7 +542,7 @@ void prism_init_memory_tables(void)
 		puntero +=16384;
 	}
 
-	for (i=0;i<64;i++) {
+	for (i=0;i<PRISM_SRAM_PAGES;i++) {
 		prism_ram_mem_table[i]=puntero;
 		puntero +=8192;
 	}
