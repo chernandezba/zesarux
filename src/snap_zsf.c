@@ -1979,7 +1979,8 @@ Byte fields:
         prism_palette_two[i]=valor;
     }
 
-
+    //Importante: En el snapshot se ha guardado antes que este bloque uno de ZSF_SPEC128_MEMCONF, que contiene
+    //informacion de puertos 32765 y 8189, necesarios para el prism_set_memory_pages
     prism_set_memory_pages();
 
 }
