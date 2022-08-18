@@ -103,8 +103,8 @@ D5       Inhabilitacion de la paginacion
 	z80_byte *puntero_ram5=chloe_home_ram_mem_table[5];	
 	chloe_memory_paged[2]=puntero_ram5;
 	chloe_memory_paged[3]=&puntero_ram5[8192];
-        chloe_type_memory_paged[2]=CHLOE_MEMORY_TYPE_HOME;
-        chloe_type_memory_paged[3]=CHLOE_MEMORY_TYPE_HOME;
+    chloe_type_memory_paged[2]=CHLOE_MEMORY_TYPE_HOME;
+    chloe_type_memory_paged[3]=CHLOE_MEMORY_TYPE_HOME;
 	debug_chloe_paginas_memoria_mapeadas[2]=5;
 	debug_chloe_paginas_memoria_mapeadas[3]=5;
 
@@ -112,18 +112,18 @@ D5       Inhabilitacion de la paginacion
 	z80_byte *puntero_ram2=chloe_home_ram_mem_table[2];	
 	chloe_memory_paged[4]=puntero_ram2;
 	chloe_memory_paged[5]=&puntero_ram2[8192];
-        chloe_type_memory_paged[4]=CHLOE_MEMORY_TYPE_HOME;
-        chloe_type_memory_paged[5]=CHLOE_MEMORY_TYPE_HOME;
+    chloe_type_memory_paged[4]=CHLOE_MEMORY_TYPE_HOME;
+    chloe_type_memory_paged[5]=CHLOE_MEMORY_TYPE_HOME;
 	debug_chloe_paginas_memoria_mapeadas[4]=2;
 	debug_chloe_paginas_memoria_mapeadas[5]=2;
 
 	//Pagina segun puerto 32765
 	z80_byte ram_entra=(puerto_32765)&7;
-        z80_byte *puntero_ram_entra=chloe_home_ram_mem_table[ram_entra];
-        chloe_memory_paged[6]=puntero_ram_entra;
-        chloe_memory_paged[7]=&puntero_ram_entra[8192];
-        chloe_type_memory_paged[6]=CHLOE_MEMORY_TYPE_HOME;
-        chloe_type_memory_paged[7]=CHLOE_MEMORY_TYPE_HOME;
+    z80_byte *puntero_ram_entra=chloe_home_ram_mem_table[ram_entra];
+    chloe_memory_paged[6]=puntero_ram_entra;
+    chloe_memory_paged[7]=&puntero_ram_entra[8192];
+    chloe_type_memory_paged[6]=CHLOE_MEMORY_TYPE_HOME;
+    chloe_type_memory_paged[7]=CHLOE_MEMORY_TYPE_HOME;
 	debug_chloe_paginas_memoria_mapeadas[6]=ram_entra;
 	debug_chloe_paginas_memoria_mapeadas[7]=ram_entra;
 
@@ -161,12 +161,12 @@ D5       Inhabilitacion de la paginacion
 
 
 				if (bloque_ram==6 || bloque_ram==7) {
-				        //TODO. Estamos usando tablas de paginacion segun segmentos de 16kb
-				        //si en la ram alta metemos por ejemplo una pagina de ex y el ultimo trozo de 8 kb es la ram 5 de home,
-				        //todo el bloque de 16b tendra la misma contencion que pagina 5
-				        //Habria que considerar bloques de contend de 8 kb
+                    //TODO. Estamos usando tablas de paginacion segun segmentos de 16kb
+                    //si en la ram alta metemos por ejemplo una pagina de ex y el ultimo trozo de 8 kb es la ram 5 de home,
+                    //todo el bloque de 16b tendra la misma contencion que pagina 5
+                    //Habria que considerar bloques de contend de 8 kb
 					//Entra ex o dock, por tanto no hay contend
-				        contend_pages_actual[3]=0;
+                    contend_pages_actual[3]=0;
 				}
 
 			}
@@ -243,14 +243,14 @@ void chloe_init_memory_tables(void)
 void chloe_out_ula2(z80_byte value)
 {
 
-        z80_byte ula2_register=(value>>4)&15;
+    z80_byte ula2_register=(value>>4)&15;
 
-        value=value&15;
+    value=value&15;
 
 	//Solo registro 0 para control del turbo
 	if (ula2_register==0) {
 		prism_ula2_registers[ula2_register]=value;
-                prism_set_emulator_setting_cpuspeed();
+        prism_set_emulator_setting_cpuspeed();
 	}
 }
 
