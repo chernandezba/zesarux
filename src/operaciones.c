@@ -7094,9 +7094,9 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	//Puerto Chip AY para Timex y Chloe
         if (puerto_l==0xF6 && (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068) ) {
-                        activa_ay_chip_si_conviene();
-                        if (ay_chip_present.v==1) return in_port_ay(0xFF);
-	}
+            activa_ay_chip_si_conviene();
+            if (ay_chip_present.v==1) return in_port_ay(0xFF);
+	    }
 
 	//Puertos paginacion,disco en Prism 2ffd, 3ffd retornan 255
 	if (MACHINE_IS_PRISM) {
@@ -8731,17 +8731,17 @@ Port: 10-- ---- ---- --0-
 
 	//Puerto paginacion 32765 para Chloe
 	if (MACHINE_IS_CHLOE) {
-			//Puerto tipicamente 32765
-                        // the hardware will respond only to those port addresses with bit 1 reset, bit 14 set and bit 15 reset (as opposed to just bits 1 and 15 reset on the 128K/+2).
-                        if ( (puerto & 49154) == 16384 ) {
-				puerto_32765=value;
-				chloe_set_memory_pages();
-                        }
+        //Puerto tipicamente 32765
+        // the hardware will respond only to those port addresses with bit 1 reset, bit 14 set and bit 15 reset (as opposed to just bits 1 and 15 reset on the 128K/+2).
+        if ( (puerto & 49154) == 16384 ) {
+            puerto_32765=value;
+            chloe_set_memory_pages();
+        }
 
-			//Puerto ula2 como en prism. Solo implementamos registro 0 que es el que controla el turbo
-                        if (puerto==36411) {
-                                chloe_out_ula2(value);
-                        }
+        //Puerto ula2 como en prism. Solo implementamos registro 0 que es el que controla el turbo
+        if (puerto==36411) {
+            chloe_out_ula2(value);
+        }
 
 	}
 
@@ -9307,20 +9307,20 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 		if (MACHINE_IS_TIMEX_TS_TC_2068) timex_set_memory_pages();
 		if (is_zxuno_chloe_mmu() ) zxuno_set_memory_pages();
 
-        }
+    }
 
 
 	//Puertos AY para Timex y Chloe
 	if (puerto_l==0xf5 || puerto_l==0xf6) {
 		if (MACHINE_IS_CHLOE || MACHINE_IS_TIMEX_TS_TC_2068) {
-									z80_int puerto_final=puerto;
-                	if (puerto_l==0xf5) puerto_final=65533;
-									else puerto_final=49149;
+            z80_int puerto_final=puerto;
+            if (puerto_l==0xf5) puerto_final=65533;
+            else puerto_final=49149;
 
-               		activa_ay_chip_si_conviene();
-	                if (ay_chip_present.v==1) out_port_ay(puerto_final,value);
+            activa_ay_chip_si_conviene();
+            if (ay_chip_present.v==1) out_port_ay(puerto_final,value);
 		}
-        }
+    }
 
 
 
