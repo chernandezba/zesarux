@@ -6,9 +6,7 @@ Para esta version:
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
-
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
-
 
 -Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
 
@@ -16,17 +14,11 @@ Para esta version:
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
--Ddh con extended info al final, que contenga marcas de sector y labels ? 
-
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
-
--Más links iconos: rom, … pok?
 
 -Fondo zx desktop con game of life 
 
-
 --Fin mejoras
-
 
 
 --Errores
@@ -42,7 +34,6 @@ Y cierra menus pero no sale
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
 
--select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
 
 -archivos de cintas que no se cierran en windows al expulsarlas
 
@@ -50,7 +41,6 @@ Y cierra menus pero no sale
 
 -speech con caracteres con acentos no los envia, los filtra 
 
--Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
@@ -62,13 +52,6 @@ Y cierra menus pero no sale
 -quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
 
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
-
--lee_hilow_audio: ultimo sector en cara B dice:
-Total bytes leidos: 0
-Sector -407021264
-
--convert a ddh: 
-*linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
 
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
@@ -119,34 +102,11 @@ Pero si se pulsa un icono desde menu cerrado, se pulsa y despulsa rapidamente y 
 -quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
 usar la que si considera movimiento raton
 
--formato hobeta: mostrar info en fileutils
-
-Hobeta ( *.$B , *.$C , *.$D ,...) es un formato obsoleto para almacenar archivos TR-DOS , utilizado principalmente por emuladores ZX Spectrum más antiguos . Una característica del formato es que solo se almacena un archivo TR-DOS en un archivo Hobeta . El archivo Hobeta es esencialmente una copia byte por byte de un archivo TR-DOS con un encabezado de 17 bytes agregado.
-La extensión del archivo se obtiene agregando un carácter "$" antes de la extensión del archivo TR-DOS original .
-El formato apareció junto con la copiadora Hobeta del mismo nombre (hobeta.exe 19/11/1990: "HoBeta V2.0, Copyright (C) 1990, InterCompex, Soviet-Swiss JV" - ver El Hobbit ).
-Descripción del formato
-
-Título:
-+0, 8 bytes - nombre de archivo TR-DOS
-+8, 1 byte - tipo de archivo (extensión) TR-DOS
-+9, 2 bytes - parámetro de INICIO del archivo
-+11, 2 bytes - parámetro LENGTH del archivo (longitud en bytes)
-+13, 2 bytes - tamaño de archivo en sectores
-+15, 2 bytes: suma de comprobación de los 15 bytes anteriores (¡no el archivo en sí!)
-Datos:
-Copia byte a byte de todos los sectores del archivo
-El byte alto del tamaño del archivo en sectores siempre debe ser 0.
-Algoritmo de cálculo de suma de comprobación:
-suma de control=0;
-for (i=0; i<=14; CheckSum = CheckSum + (header[i] * 257) + i, i++);
-
-Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Los archivos binarios (con la extensión .$C) en este formato se pueden iniciar directamente desde dispositivos FAT (como HDD o tarjeta SD) mediante el shell de Evo Reset Service integrado.
-
 
 -agregar screenshot a repositorio con zx desktop e iconos 
 -agregar screenshot Z88
 
--https://telcontar.net/Misc/GUI/RISCOS/
+-ideas para zx vision: https://telcontar.net/Misc/GUI/RISCOS/
 
 
 -minimizar a icono? entonces tendría que haber en la tabla todos los posibles iconos para todas las ventanas (aunque solo para aquellas que permiten background?). o no es necesario que esté para todas, si tiene icono asociado, se minimiza a icono. y si no, no.

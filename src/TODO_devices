@@ -196,6 +196,16 @@ https://github.com/charlierobson/ZXpand-Vitamins/wiki/ZXpand---Online-Manual
 
 - emular puerto FFH
 
+-Ddh con extended info al final, que contenga marcas de sector y labels ? 
+
+
+-lee_hilow_audio: ultimo sector en cara B dice:
+Total bytes leidos: 0
+Sector -407021264
+
+-convert a ddh: 
+*linea de comandos: si se dice repetir, repite solo desde el inicio de los datos de sector, pero deberia hacerlo desde el id de sector y el label
+
 
 ------------------            
 

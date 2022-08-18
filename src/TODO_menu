@@ -23,6 +23,8 @@
 o bien nuevo icono se pone donde pulsado boton, o mirar si hay ventanas ahi. De todas maneras, otras acciones como quicksave, tambien
 ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 
+-Más links iconos: rom, … pok?
+
 
 --- FIN ZX Desktop
 
@@ -36,6 +38,10 @@ ponen iconos empezando arriba a la izquierda y tambien puede ser un problema
 -Quizá conversión de cinta a visual tape que lo haga en thread aparte (si hay threads). Eso evitará las pausas largas después de hacer insert en real tape
 
 -Audio chip sheet en modo texto. Que salgan en 3 líneas de texto por cada canal y las notas y hagan scroll igual
+
+-select machine by name hace scroll horizontal la ventana de menu. por que? porque se activa scroll vertical y se pierde 1 caracter de ancho
+
+-Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
 -Nuevo concepto para ventanas:
 Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
@@ -396,8 +402,28 @@ no gestiona bien nombres con espacios
 
 -tecla ',' en zx80/81 no va en menu porque se interpreta como symbol+shift y es lo mismo que TAB para el menu
 
--en menu cambio z88 memory slots, que el apply changes salga justo en la ventana anterior, para poder cambiar varios slots a la vez y que se aplique solo una vez
-(como abrir tapa, insertar 2 slots, y cerrar tapa)
 
+-formato hobeta: mostrar info en fileutils
+
+Hobeta ( *.$B , *.$C , *.$D ,...) es un formato obsoleto para almacenar archivos TR-DOS , utilizado principalmente por emuladores ZX Spectrum más antiguos . Una característica del formato es que solo se almacena un archivo TR-DOS en un archivo Hobeta . El archivo Hobeta es esencialmente una copia byte por byte de un archivo TR-DOS con un encabezado de 17 bytes agregado.
+La extensión del archivo se obtiene agregando un carácter "$" antes de la extensión del archivo TR-DOS original .
+El formato apareció junto con la copiadora Hobeta del mismo nombre (hobeta.exe 19/11/1990: "HoBeta V2.0, Copyright (C) 1990, InterCompex, Soviet-Swiss JV" - ver El Hobbit ).
+Descripción del formato
+
+Título:
++0, 8 bytes - nombre de archivo TR-DOS
++8, 1 byte - tipo de archivo (extensión) TR-DOS
++9, 2 bytes - parámetro de INICIO del archivo
++11, 2 bytes - parámetro LENGTH del archivo (longitud en bytes)
++13, 2 bytes - tamaño de archivo en sectores
++15, 2 bytes: suma de comprobación de los 15 bytes anteriores (¡no el archivo en sí!)
+Datos:
+Copia byte a byte de todos los sectores del archivo
+El byte alto del tamaño del archivo en sectores siempre debe ser 0.
+Algoritmo de cálculo de suma de comprobación:
+suma de control=0;
+for (i=0; i<=14; CheckSum = CheckSum + (header[i] * 257) + i, i++);
+
+Ahora se le ha dado una nueva vida al formato en la computadora ZX Evolution. Los archivos binarios (con la extensión .$C) en este formato se pueden iniciar directamente desde dispositivos FAT (como HDD o tarjeta SD) mediante el shell de Evo Reset Service integrado.
 
 *************
