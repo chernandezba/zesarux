@@ -3146,6 +3146,7 @@ int get_rom_size(int machine)
 
 
 //Retorna la cantidad de ram para la maquina en curso
+//En principio esto solo es a caracter informativo, no se llama desde ninguna funcion importante
 int get_ram_size(void)
 {
     //Memoria
@@ -3163,6 +3164,10 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_SMS) {
         total_ram=8192;
+    }
+
+    else if (MACHINE_IS_INVES) {
+        total_ram=65536;
     }
 
     else if (MACHINE_IS_SPECTRUM_16 || MACHINE_IS_SVI_318) {
