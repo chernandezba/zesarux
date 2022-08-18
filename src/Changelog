@@ -15,7 +15,7 @@ Added new emulated machines:
 
 Added Hilow Barbanegra emulation
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
-Added ZSF support for Timex TS2068, MK14, Chrome, Prism
+Added ZSF support for Timex TS2068, MK14, Chrome, Prism, Chloe
 Added setting for path where to download files from the speccy and zx81 online browser
 Added disk image browsing from storage MMC/IDE menus
 Added PZX load support as standard tape
