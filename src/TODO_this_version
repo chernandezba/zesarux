@@ -14,11 +14,9 @@ Para esta version:
 
 -Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
 
-
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
 -Ddh con extended info al final, que contenga marcas de sector y labels ? 
-
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
@@ -158,8 +156,3 @@ settings de dicha ventana?
 *problema: minimizar no sale de la aplicación, solo cambia tamaño de ventana. habria que hacer que se cerrase cuando: la ventana indica 
 que tiene una funcion de entrada asociada. como indicar esto? en un parámetro de la zxvision_window ?
 
-
--unificar util_convert_zsf_to_scr parecidos (zxuno, chrome...)
-
--revisar zsf para prism. con snake cargado, al finalizar el juego se cuelga. quiza es culpa del compilador? ok parece que era el divmmc
--miniatura pantalla para zsf de prism

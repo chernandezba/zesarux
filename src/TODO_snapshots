@@ -20,15 +20,7 @@ la propia memoria de zxuno quien lo tiene, lo mismo para tbblue, y prism
 Igual deberia desactivar tambien setting divmmc_enabled y divide_enabled.v, porque sino, desactiva el setting diviface pero los otros 
 pueden quedarse activos. Esto en load snapshot zsf de zxuno lo hace aparte
 
--Formato zsf: completar para mas maquinas
-
-*MK14: falta incluso funcion de grabar registros de la cpu      
-
-*Sam      
-*Chloe140 
-*Chloe280 
-*Chrome   
-*Prism    
+ 
 
 
 
