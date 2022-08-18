@@ -56,5 +56,9 @@ extern z80_byte debug_chloe_paginas_memoria_mapeadas[];
 
 extern void chloe_out_ula2(z80_byte value);
 
+#define CHLOE_HOME_RAM_TOTAL_PAGES 8
+#define CHLOE_EX_RAM_TOTAL_PAGES 8
+#define CHLOE_DOCK_RAM_TOTAL_PAGES 8
+
 
 #endif

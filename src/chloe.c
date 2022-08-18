@@ -35,13 +35,13 @@
 z80_byte *chloe_rom_mem_table[2];
 
 //Direcciones donde estan cada pagina de ram home, en paginas de 16 kb
-z80_byte *chloe_home_ram_mem_table[8];
+z80_byte *chloe_home_ram_mem_table[CHLOE_HOME_RAM_TOTAL_PAGES];
 
 //Direcciones donde estan cada pagina de ram ex, en paginas de 8 kb
-z80_byte *chloe_ex_ram_mem_table[8];
+z80_byte *chloe_ex_ram_mem_table[CHLOE_EX_RAM_TOTAL_PAGES];
 
 //Direcciones donde estan cada pagina de ram dock, en paginas de 8 kb
-z80_byte *chloe_dock_ram_mem_table[8];
+z80_byte *chloe_dock_ram_mem_table[CHLOE_DOCK_RAM_TOTAL_PAGES];
 
 //Direcciones actuales mapeadas, bloques de 8 kb
 z80_byte *chloe_memory_paged[8];
@@ -214,17 +214,17 @@ void chloe_init_memory_tables(void)
 	puntero +=32768;
 
 	int i;
-	for (i=0;i<8;i++) {
+	for (i=0;i<CHLOE_HOME_RAM_TOTAL_PAGES;i++) {
 		chloe_home_ram_mem_table[i]=puntero;
 		puntero +=16384;
 	}
 
-	for (i=0;i<8;i++) {
+	for (i=0;i<CHLOE_EX_RAM_TOTAL_PAGES;i++) {
 		chloe_ex_ram_mem_table[i]=puntero;
 		puntero +=8192;
 	}
 
-	for (i=0;i<8;i++) {
+	for (i=0;i<CHLOE_DOCK_RAM_TOTAL_PAGES;i++) {
 		chloe_dock_ram_mem_table[i]=puntero;
 		puntero +=8192;
 	}
