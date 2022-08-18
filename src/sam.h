@@ -76,4 +76,6 @@ extern void sam_splash_videomode_change(void);
 
 extern int get_sam_ram(void);
 
+#define SAM_COUPE_RAM_PAGES 32
+
 #endif

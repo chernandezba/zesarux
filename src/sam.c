@@ -46,11 +46,15 @@ z80_byte sam_border;
 //vale 15 si sam de 256k
 z80_byte sam_memoria_total_mascara=31;
 
+//Paleta de sam coupe
+z80_byte sam_palette[16];
+
+
 //Direcciones actuales mapeadas para lectura, 4 bloques de 16 kb
 z80_byte *sam_memory_paged[4];
 
 //Las 32 paginas de ram
-z80_byte *sam_ram_memory[32];
+z80_byte *sam_ram_memory[SAM_COUPE_RAM_PAGES];
 
 //Las 2 paginas de rom
 z80_byte *sam_rom_memory[2];
@@ -62,9 +66,6 @@ z80_byte sam_memory_paged_type[4];
 //Paginas mapeadas en cada zona de RAM. Se solamente usa en menu debug y breakpoints, no para el core de emulacion
 z80_byte debug_sam_paginas_memoria_mapeadas[4];
 
-
-//Paleta de sam coupe
-z80_byte sam_palette[16];
 
 
 //Puerto teclado FFFE:
@@ -224,7 +225,7 @@ void sam_init_memory_tables(void)
 	puntero +=16384;
 
 	int i;
-	for (i=0;i<32;i++) {
+	for (i=0;i<SAM_COUPE_RAM_PAGES;i++) {
 		sam_ram_memory[i]=puntero;
 		puntero +=16384;
 	}

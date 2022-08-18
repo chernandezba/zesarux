@@ -86,6 +86,7 @@
 #include "scmp.h"
 #include "mk14.h"
 #include "chrome.h"
+#include "sam.h"
 
 
 #include "autoselectoptions.h"
@@ -682,6 +683,35 @@ Byte Fields:
 5: ram block id 
 6 and next bytes: data bytes
 
+
+-Block ID 55: ZSF_SAM_COUPE_CONF
+Ports and internal registers of Sam coupe machine
+Byte fields:
+0: sam_vmpr
+1: sam_hmpr
+2: sam_lmpr
+3: sam_border
+
+//vale 31 si sam de 512k
+//vale 15 si sam de 256k
+4: sam_memoria_total_mascara
+
+//Paleta de sam coupe
+5: sam_palette[16]
+21: end
+
+
+-Block ID 56: ZSF_SAM_COUPE_RAMBLOCK
+A ram binary block for a sam coupe
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id 
+6 and next bytes: data bytes
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -694,7 +724,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 54
+#define MAX_ZSF_BLOCK_ID_NAMES 56
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -752,6 +782,8 @@ char *zsf_block_id_names[]={
   "ZSF_CHLOE_HOME_RAMBLOCK",
   "ZSF_CHLOE_EX_RAMBLOCK",
   "ZSF_CHLOE_DOCK_RAMBLOCK",
+  "ZSF_SAM_COUPE_CONF",
+  "ZSF_SAM_COUPE_RAMBLOCK",
 
   "Unknown"  //Este siempre al final
 };
@@ -2064,6 +2096,70 @@ Byte fields:
 }
 
 
+void load_zsf_sam_coupe_conf(z80_byte *header)
+{
+/*
+-Block ID 55: ZSF_SAM_COUPE_CONF
+Ports and internal registers of Sam coupe machine
+Byte fields:
+0: sam_vmpr
+1: sam_hmpr
+2: sam_lmpr
+3: sam_border
+
+//vale 31 si sam de 512k
+//vale 15 si sam de 256k
+4: sam_memoria_total_mascara
+
+//Paleta de sam coupe
+5: sam_palette[16]
+21: end
+*/
+
+  sam_vmpr=header[0];
+  sam_hmpr=header[1];
+  sam_lmpr=header[2];
+  sam_border=header[3];
+  sam_memoria_total_mascara=header[4];
+
+
+  int i;
+  for (i=0;i<16;i++) sam_palette[i]=header[5+i];
+
+
+  sam_set_memory_pages();    
+
+}
+
+void load_zsf_sam_coupe_snapshot_block_data(z80_byte *block_data,int longitud_original)
+{
+
+
+
+  int i=0;
+  z80_byte block_flags=block_data[i];
+
+  //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
+
+  i++;
+  z80_int block_start=value_8_to_16(block_data[i+1],block_data[i]);
+  i +=2;
+  z80_int block_lenght=value_8_to_16(block_data[i+1],block_data[i]);
+  i+=2;
+
+  z80_byte ram_page=block_data[i];
+  i++;
+
+  debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
+
+
+  longitud_original -=6;
+
+
+  load_zsf_snapshot_block_data_addr(&block_data[i],sam_ram_memory[ram_page],block_lenght,longitud_original,block_flags&1);
+
+}
+
 void load_zsf_prism_conf(z80_byte *header)
 {
 
@@ -2999,6 +3095,14 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
       case ZSF_CHLOE_DOCK_RAMBLOCK:
         load_zsf_chloe_snapshot_block_data_dock(block_data,block_lenght);
       break;
+
+      case ZSF_SAM_COUPE_CONF:
+        load_zsf_sam_coupe_conf(block_data);
+      break; 
+
+      case ZSF_SAM_COUPE_RAMBLOCK:
+        load_zsf_sam_coupe_snapshot_block_data(block_data,block_lenght);
+      break;           
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -4088,6 +4192,100 @@ Byte Fields:
 
 
   }
+
+
+
+if (MACHINE_IS_SAM) {
+
+    z80_byte samconfblock[21];
+
+/*
+-Block ID 55: ZSF_SAM_COUPE_CONF
+Ports and internal registers of Sam coupe machine
+Byte fields:
+0: sam_vmpr
+1: sam_hmpr
+2: sam_lmpr
+3: sam_border
+
+//vale 31 si sam de 512k
+//vale 15 si sam de 256k
+4: sam_memoria_total_mascara
+
+//Paleta de sam coupe
+5: sam_palette[16]
+21: end
+*/    
+
+    samconfblock[0]=sam_vmpr;
+    samconfblock[1]=sam_hmpr;
+    samconfblock[2]=sam_lmpr;
+    samconfblock[3]=sam_border;
+    samconfblock[4]=sam_memoria_total_mascara;
+
+
+    int i;
+    for (i=0;i<16;i++) samconfblock[5+i]=sam_palette[i];
+
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, samconfblock,ZSF_SAM_COUPE_CONF, 21);
+
+
+
+
+
+   int longitud_ram=16384;
+
+  
+   //Para el bloque comprimido
+   z80_byte *compressed_ramblock=malloc(longitud_ram*2);
+  if (compressed_ramblock==NULL) {
+    debug_printf (VERBOSE_ERR,"Error allocating memory");
+    return;
+  }
+
+  /*
+
+-Block ID 56: ZSF_SAM_COUPE_RAMBLOCK
+A ram binary block for a sam coupe
+Byte Fields:
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
+    YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
+1,2: Block start address (currently unused)
+3,4: Block lenght
+5: ram block id 
+6 and next bytes: data bytes
+  */
+
+  int paginas=SAM_COUPE_RAM_PAGES;
+  z80_byte ram_page;
+
+  for (ram_page=0;ram_page<paginas;ram_page++) {
+
+    compressed_ramblock[0]=0;
+    compressed_ramblock[1]=value_16_to_8l(16384);
+    compressed_ramblock[2]=value_16_to_8h(16384);
+    compressed_ramblock[3]=value_16_to_8l(longitud_ram);
+    compressed_ramblock[4]=value_16_to_8h(longitud_ram);
+    compressed_ramblock[5]=ram_page;
+
+    int si_comprimido;
+    int longitud_bloque=save_zsf_copyblock_compress_uncompres(sam_ram_memory[ram_page],&compressed_ramblock[6],longitud_ram,&si_comprimido);
+    if (si_comprimido) compressed_ramblock[0]|=1;
+
+    debug_printf(VERBOSE_DEBUG,"Saving ZSF_SAM_COUPE_RAMBLOCK ram page: %d length: %d",ram_page,longitud_bloque);
+
+    //Store block to file
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SAM_COUPE_RAMBLOCK, longitud_bloque+6);
+
+  }
+
+  free(compressed_ramblock);
+
+
+  }
+
+
 
   if (MACHINE_IS_Z88) {
 
