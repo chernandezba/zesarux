@@ -44,4 +44,6 @@ extern void transtape_nmi(void);
 
 extern z80_byte *transtape_memory_pointer;
 
+extern void transtape_write_port(z80_byte puerto_l,z80_byte value);
+
 #endif

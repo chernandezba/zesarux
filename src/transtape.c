@@ -365,26 +365,25 @@ void transtape_disable(void)
 
 
 
-void transtape_write_port(z80_int port,z80_byte value GCC_UNUSED)
+void transtape_write_port(z80_byte puerto_l,z80_byte value)
 {
-    z80_byte puerto_l=value_16_to_8l(port);
 
     printf("transtape_write_port %d value %d pc: %04XH\n",puerto_l,value,reg_pc);
 
     switch (puerto_l) {
-        case 63:
+        case 63: //3FH= 00111111
             //rom spectrum pero ram transtape
             transtape_mapped_ram_memory.v=1;
             transtape_mapped_rom_memory.v=0;
         break;
 
-        case 127:
+        case 127: //7FH = 01111111
             //rom y ram de transtape
             transtape_mapped_ram_memory.v=1;
             transtape_mapped_rom_memory.v=1;            
         break;
 
-        case 191:
+        case 191: //BFH =10111111
             //desactivar rom y ram de transtape
             transtape_mapped_ram_memory.v=0;
             transtape_mapped_rom_memory.v=0;              
