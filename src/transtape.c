@@ -59,7 +59,7 @@ z80_bit transtape_mapped_rom_memory={0};
 //z80_int conmutadores_load_save_turbo=1024+2048;
 z80_int conmutadores_load_save_turbo=1024+2048; //grabar
 //z80_int conmutadores_load_save_turbo=1024; //?
-//z80_int conmutadores_load_save_turbo=2048; //? colgado?? sonido con espacio
+//z80_int conmutadores_load_save_turbo=2048; //cargar?
 //z80_int conmutadores_load_save_turbo=0; //? colgado??
 
 int transtape_check_if_rom_area(z80_int dir)
