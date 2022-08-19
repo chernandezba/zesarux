@@ -56,7 +56,8 @@ int transtape_nested_id_peek_byte_no_time;
 z80_bit transtape_mapped_ram_memory={0};
 z80_bit transtape_mapped_rom_memory={0};
 
-
+//z80_int conmutadores_load_save_turbo=1024+2048;
+z80_int conmutadores_load_save_turbo=1024+2048;
 
 int transtape_check_if_rom_area(z80_int dir)
 {
@@ -79,6 +80,9 @@ int transtape_check_if_ram_area(z80_int dir)
 z80_byte transtape_read_rom_byte(z80_int dir)
 {
 	//printf ("Read rom byte from %04XH\n",dir);
+    dir &=(65535-1024-2048); //quitar bits 10 y 11
+    //y ponerlo segun indique la mascara
+    dir |=conmutadores_load_save_turbo;
 	return transtape_memory_pointer[dir];
 }
 
