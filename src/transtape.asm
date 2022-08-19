@@ -1,4 +1,4 @@
-;Desensamble directo de la ROM
+;Desensamble directo de la ROM. archivo transtape3.rom. md5: 133ec2129ebf57555662d899d55fe374
 ;Todo comentario es susceptible de ser erroneo!!
 ;
 L0000 LD HL,0000  
@@ -106,8 +106,8 @@ L007A LD BC,0016
 L007D LDIR
 L007F LD A,3E
 L0081 LD (6176),A
-L0084 LD HL,0800
-L0087 LD DE,5CCB
+L0084 LD HL,0800 
+L0087 LD DE,5CCB ;=23755 Escribir programa basic??
 L008A LD BC,0165
 L008D LDIR
 L008F CALL 011F
@@ -119,11 +119,11 @@ L009D LD SP,6175
 L00A0 LD HL,1303
 L00A3 PUSH HL
 L00A4 PUSH HL
-L00A5 LD HL,0001
-L00A8 LD (5C42),HL
+L00A5 LD HL,0001   ;Saltar a linea 1 del basic??
+L00A8 LD (5C42),HL ;NEWPPC - Line to be jumped to
 L00AB XOR A
 L00AC LD (5C44),A
-L00AF LD IY,5C3A ;preparar para llamar a rom del 48k?
+L00AF LD IY,5C3A   ;preparar para llamar a rom del 48k?
 L00B3 EI
 L00B4 JP 617B
 L00B7 DI
@@ -179,18 +179,18 @@ L0117 LD HL,0032
 L011A LD (5C42),HL
 L011D EI
 L011E RET
-L011F EX DE,HL
-L0120 LD (5C4B),HL
+L011F EX DE,HL ;Inicializar varias variables del sistema
+L0120 LD (5C4B),HL ;VARS
 L0123 LD (HL),80
 L0125 INC HL
-L0126 LD (5C59),HL
+L0126 LD (5C59),HL ;E-LINE - Address of command being typed in
 L0129 LD (HL),0D
 L012B INC HL
 L012C LD (HL),80
 L012E INC HL
-L012F LD (5C61),HL
-L0132 LD (5C63),HL
-L0135 LD (5C65),HL
+L012F LD (5C61),HL ;WORKSP - Address of temporary work space
+L0132 LD (5C63),HL ;STKBOT - Address of bottom of calculator stack
+L0135 LD (5C65),HL ;STKEND - Address of start of spare space
 L0138 RET
 L0139 DI
 L013A LD HL,04C7
@@ -13759,7 +13759,7 @@ L3FFF NOP
 ;en la direccion donde se copia en ram, aparezca este codigo y sus comentarios
 ;el codigo esta originalmente en L0177
 L617B OUT (BF),A ;desactivar rom y ram de transtape
-L617D JP 1B9E ;'LINE-NEW'?? para que llama aqui?
+L617D JP 1B9E ;'LINE-NEW'?? para que llama aqui? HL es numero linea
 L6180 OUT (7F),A
 L6182 JP 0139
 L6185 OUT (7F),A
