@@ -36,6 +36,7 @@
 #include "hilow_datadrive.h"
 #include "samram.h"
 #include "hilow_barbanegra.h"
+#include "transtape.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -331,6 +332,10 @@ void nmi_handle_pending_prepost_fetch(void)
         hilow_bbn_nmi();
     }
 
+    if (transtape_enabled.v) {
+        transtape_nmi();
+    }    
+
 }
 
 void generate_nmi(void)
@@ -399,6 +404,11 @@ void generate_nmi_prepare_fetch(void)
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
     }
+
+    if (transtape_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }    
 
 }
 

@@ -139,6 +139,7 @@
 #include "charset.h"
 #include "menu_filesel.h"
 #include "hilow_barbanegra.h"
+#include "transtape.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1352,6 +1353,10 @@ util_stats_init();
 	if (hilow_bbn_enabled.v) {
 		hilow_bbn_reset();
 	}
+
+	if (transtape_enabled.v) {
+		transtape_reset();
+	}    
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();

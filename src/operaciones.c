@@ -85,6 +85,7 @@
 #include "samram.h"
 #include "vdp_9918a_sms.h"
 #include "hilow_barbanegra.h"
+#include "transtape.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9277,6 +9278,13 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	if (hilow_bbn_enabled.v && puerto_l==0xFD) {
 		hilow_bbn_write_port_fd(puerto,value);
 	}
+
+    //Puertos transtape
+    if (transtape_enabled.v) {
+        if (puerto_l==63 || puerto_l==127 || puerto_l==191) {
+            transtape_write_port(puerto,value);
+        }
+    }
 
 
 	//Puerto Timex Video. 8 bit bajo a ff
