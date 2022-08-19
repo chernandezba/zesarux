@@ -44,6 +44,8 @@ z80_bit transtape_enabled={0};
 //RAM mapeada en 3800H
 z80_byte *transtape_memory_pointer;
 
+//Info esquemas:
+//https://www.ciberpucela.com/wp1/2022/04/06/que-tiempos-aquellos-todos-queriamos-una-transtape/
 
 
 int transtape_nested_id_poke_byte;
