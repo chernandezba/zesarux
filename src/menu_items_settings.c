@@ -4574,6 +4574,14 @@ void menu_hardware_transtape_enable(MENU_ITEM_PARAMETERS)
     }
 }
 
+void menu_hardware_transtape_conmutadores(MENU_ITEM_PARAMETERS)
+{
+    if (conmutadores_load_save_turbo==0) conmutadores_load_save_turbo=1024;
+    else if (conmutadores_load_save_turbo==1024) conmutadores_load_save_turbo=2048;
+    else if (conmutadores_load_save_turbo==2048) conmutadores_load_save_turbo=1024+2048;
+    else conmutadores_load_save_turbo=0;
+}
+
 void menu_transtape(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -4588,6 +4596,9 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'t');
         menu_add_item_menu_tooltip(array_menu_common,"Enable transtape");
         menu_add_item_menu_ayuda(array_menu_common,"Enable transtape");
+
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_conmutadores,NULL,"[%d] Switches",conmutadores_load_save_turbo);
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);

@@ -46,4 +46,6 @@ extern z80_byte *transtape_memory_pointer;
 
 extern void transtape_write_port(z80_byte puerto_l,z80_byte value);
 
+extern z80_int conmutadores_load_save_turbo;
+
 #endif
