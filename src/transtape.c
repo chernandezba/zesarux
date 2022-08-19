@@ -67,14 +67,16 @@ int transtape_check_if_rom_area(z80_int dir)
 int transtape_check_if_ram_area(z80_int dir)
 {
     if (dir>=0x3800 && dir<16384 && transtape_mapped_ram_memory.v) {
+        //printf("transtape_check_if_ram_area dir %04XH . is ram\n",dir);
         return 1;
     }
+    //printf("transtape_check_if_ram_area dir %04XH . is NOT ram\n",dir);
 	return 0;
 }
 
 z80_byte transtape_read_rom_byte(z80_int dir)
 {
-	printf ("Read rom byte from %04XH\n",dir);
+	//printf ("Read rom byte from %04XH\n",dir);
 	return transtape_memory_pointer[dir];
 }
 
@@ -82,7 +84,7 @@ z80_byte transtape_read_rom_byte(z80_int dir)
 z80_byte transtape_read_ram_byte(z80_int dir)
 {
 
-	printf ("Read ram byte from %04XH\n",dir);
+	//printf ("Read ram byte from %04XH\n",dir);
 	
 
     dir &= (TRANSTAPE_RAM_SIZE-1);
@@ -103,6 +105,10 @@ void transtape_poke_ram(z80_int dir,z80_byte value)
 		//La RAM esta despues de la rom
 		transtape_memory_pointer[TRANSTAPE_ROM_SIZE+dir]=value;	
 	}
+
+    else {
+        if (dir<16384) printf ("NOT Poke ram byte to %04XH with value %02XH\n",dir,value);
+    }
 
 }
 
@@ -203,7 +209,7 @@ int transtape_if_rom_basic_enabled(void)
 
 void transtape_nmi(void)
 {
-    if (transtape_mapped_ram_memory.v==0) {
+    if (transtape_mapped_rom_memory.v==0) {
         debug_printf(VERBOSE_DEBUG,"Enabling transtape memory from nmi triggered");
         transtape_mapped_ram_memory.v=1;
         transtape_mapped_rom_memory.v=1;
@@ -363,7 +369,7 @@ void transtape_write_port(z80_int port,z80_byte value GCC_UNUSED)
 {
     z80_byte puerto_l=value_16_to_8l(port);
 
-    printf("transtape_write_port %d value %d\n",puerto_l,value);
+    printf("transtape_write_port %d value %d pc: %04XH\n",puerto_l,value,reg_pc);
 
     switch (puerto_l) {
         case 63:
