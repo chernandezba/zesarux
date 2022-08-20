@@ -56,10 +56,21 @@ int transtape_nested_id_peek_byte_no_time;
 z80_bit transtape_mapped_ram_memory={0};
 z80_bit transtape_mapped_rom_memory={0};
 
+//grabar/cargar, con/sin menu
 //z80_int conmutadores_load_save_turbo=1024+2048;
+
+
 z80_int conmutadores_load_save_turbo=1024+2048; //grabar
-//z80_int conmutadores_load_save_turbo=1024; //?
+//esperar tecla 1-3, para grabar normal (1) o turbo (2 o 3)
+
 //z80_int conmutadores_load_save_turbo=2048; //cargar?
+//esperar tecla 1-5. probablemente si carga normal (1), turbo (2) o turbo max(3)
+
+
+
+//z80_int conmutadores_load_save_turbo=1024; //se resetea dejando ram activa??
+
+
 //z80_int conmutadores_load_save_turbo=0; //? colgado??
 
 int transtape_check_if_rom_area(z80_int dir)
