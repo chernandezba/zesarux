@@ -117,3 +117,16 @@ settings de dicha ventana?
 que tiene una funcion de entrada asociada. como indicar esto? en un parámetro de la zxvision_window ?
 
 -otros dispositivos copiadores: https://microhobby.speccy.cz/mhf/195/MH195_21.jpg
+
+-transtape. estado
+Cargar con menu
+-transtape: al final de carga  de bloque grande:
+
+transtape_write_port 127 value 148 pc: 6196H
+Poke ram byte to 3FFAH with value 25H
+Poke ram byte to 3FFBH with value B8H
+transtape_write_port 63 value 198 pc: 0051H
+ y colgado
+
+Grabar sin menu. ok. incluso tape traps
+Cargar. no trape traps. Parece que deja la ram transtape activa

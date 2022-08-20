@@ -50,4 +50,7 @@ extern z80_bit transtape_switch_save_load;
 
 extern z80_bit transtape_switch_disable_menu;
 
+extern z80_bit transtape_mapped_ram_memory;
+extern z80_bit transtape_mapped_rom_memory;
+
 #endif

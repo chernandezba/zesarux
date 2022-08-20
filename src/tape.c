@@ -58,6 +58,7 @@
 #include "samram.h"
 #include "zvfs.h"
 #include "hilow_barbanegra.h"
+#include "transtape.h"
 
 #include "autoselectoptions.h"
 
@@ -1153,6 +1154,11 @@ int tap_load_detect(void)
 			if (reg_pc!=255) return 0;
 		}
 
+        //Transtape se entra desde 3817h, en modo carga sin menu
+        else if (transtape_enabled.v && transtape_mapped_rom_memory.v) {
+            if (reg_pc!=0x3817) return 0;
+        }          
+
                 else if (reg_pc!=1378) return 0;
 
 
@@ -1340,7 +1346,13 @@ int tap_save_detect(void)
         if (reg_pc!=1221) return 0;
     }
 
+    //Transtape se entra desde 3800h, en modo grabacion sin menu
+    else if (transtape_enabled.v && transtape_mapped_rom_memory.v) {
+        if (reg_pc!=0x3800) return 0;
+    }    
+
     else if (reg_pc!=1222) return 0;
+
     if (tape_out_file==0) return 0;
 		//if (tape_save_inserted.v==0) return 0;
 		if ( (tape_loadsave_inserted & TAPE_SAVE_INSERTED)==0) return 0;
