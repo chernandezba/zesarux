@@ -129,4 +129,6 @@ transtape_write_port 63 value 198 pc: 0051H
  y colgado
 
 Grabar sin menu. ok. incluso tape traps
-Cargar. no trape traps. Parece que deja la ram transtape activa
+Cargar. Parece que deja la ram transtape activa
+
+-revisar esquema lineas ram
