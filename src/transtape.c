@@ -60,7 +60,7 @@ z80_bit transtape_mapped_rom_memory={0};
 //z80_int conmutadores_load_save_turbo=1024+2048;
 
 
-z80_int conmutadores_load_save_turbo=1024+2048; //grabar
+//z80_int conmutadores_load_save_turbo=1024+2048; //grabar
 //esperar tecla 1-3, para grabar normal (1) o turbo (2 o 3)
 
 //z80_int conmutadores_load_save_turbo=2048; //cargar?
@@ -72,6 +72,19 @@ z80_int conmutadores_load_save_turbo=1024+2048; //grabar
 
 
 //z80_int conmutadores_load_save_turbo=0; //? colgado??
+
+//0=cargar, con menu
+//1024=grabar, con menu
+//2048=cargar, sin menu
+//2048+1024=grabar, sin menu
+
+//0=cargar, 1=grabar (linea A10=1024)
+z80_bit transtape_switch_save_load={1};
+
+//0=menu, 1=no menu (linea A11=2048)
+z80_bit transtape_switch_disable_menu={0};
+
+
 
 int transtape_check_if_rom_area(z80_int dir)
 {
@@ -94,10 +107,22 @@ int transtape_check_if_ram_area(z80_int dir)
 z80_byte transtape_read_rom_byte(z80_int dir)
 {
 	//printf ("Read rom byte from %04XH\n",dir);
-    dir &=(65535-1024-2048); //quitar bits 10 y 11
+    //conservar A0-A9
+    z80_int dir_bajo=dir & 0x3FF;
+
+    //A12-A3 vienen de A10-A11
+    z80_int dir_alto=(dir & 0xC00)<<2;
+
+    //A10-11 vienen de los switches
+    z80_int dir_medio=(transtape_switch_save_load.v*1024)+(transtape_switch_disable_menu.v*2048);
+
+    z80_int dir_final=dir_bajo | dir_medio | dir_alto;
+
+    /*dir &=(65535-1024-2048); //quitar bits 10 y 11
     //y ponerlo segun indique la mascara
     dir |=conmutadores_load_save_turbo;
-	return transtape_memory_pointer[dir];
+	return transtape_memory_pointer[dir];*/
+    return transtape_memory_pointer[dir_final];
 }
 
 

@@ -4574,12 +4574,14 @@ void menu_hardware_transtape_enable(MENU_ITEM_PARAMETERS)
     }
 }
 
-void menu_hardware_transtape_conmutadores(MENU_ITEM_PARAMETERS)
+void menu_hardware_transtape_switch_saveload(MENU_ITEM_PARAMETERS)
 {
-    if (conmutadores_load_save_turbo==0) conmutadores_load_save_turbo=1024;
-    else if (conmutadores_load_save_turbo==1024) conmutadores_load_save_turbo=2048;
-    else if (conmutadores_load_save_turbo==2048) conmutadores_load_save_turbo=1024+2048;
-    else conmutadores_load_save_turbo=0;
+    transtape_switch_save_load.v ^=1;
+}
+
+void menu_hardware_transtape_switch_menu(MENU_ITEM_PARAMETERS)
+{
+    transtape_switch_disable_menu.v ^=1;
 }
 
 void menu_transtape(MENU_ITEM_PARAMETERS)
@@ -4596,9 +4598,22 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'t');
         menu_add_item_menu_tooltip(array_menu_common,"Enable transtape");
         menu_add_item_menu_ayuda(array_menu_common,"Enable transtape");
+/*
+//0=cargar, 1=grabar (linea A10=1024)
+z80_bit transtape_switch_save_load={1};
 
+//0=menu, 1=no menu (linea A11=2048)
+z80_bit transtape_switch_disable_menu={0};
+*/
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_conmutadores,NULL,"[%d] Switches",conmutadores_load_save_turbo);
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
+            "Switch Load/Save","Conmutador Cargar/Grabar","Conmutador Cargar/Gravar");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_save_load.v ? "Save" : "Load"));
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_menu,NULL,
+            "Switch Menu","Conmutador Menú","Conmutador Menú");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_disable_menu.v ? "No menu" : "Menu"));        
+
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
