@@ -46,9 +46,9 @@ extern z80_byte *transtape_memory_pointer;
 
 extern void transtape_write_port(z80_byte puerto_l,z80_byte value);
 
-extern z80_bit transtape_switch_save_load;
+extern z80_bit transtape_switch_a10;
 
-extern z80_bit transtape_switch_disable_menu;
+extern z80_bit transtape_switch_a11;
 
 extern z80_bit transtape_mapped_ram_memory;
 extern z80_bit transtape_mapped_rom_memory;

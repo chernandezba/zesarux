@@ -79,11 +79,13 @@ z80_bit transtape_mapped_rom_memory={0};
 //2048+1024=grabar, sin menu
 
 //0=cargar, 1=grabar (linea A10=1024)
-z80_bit transtape_switch_save_load={1};
+//Siempre hace de load/save, erroneamente el esquema de transtape 1,2 lo tiene intercambiado
+z80_bit transtape_switch_a10={1};
 
 //0=menu, 1=no menu (linea A11=2048)
-z80_bit transtape_switch_disable_menu={0};
+z80_bit transtape_switch_a11={0};
 
+//Tal cual se comporta la linea CE (Chip enable) de la RAM
 int transtape_signal_ram_enable(z80_int dir)
 {
     //A14=A15=0 A12=A13=1
@@ -91,6 +93,7 @@ int transtape_signal_ram_enable(z80_int dir)
     else return 0;
 }
 
+//Tal cual se comporta la linea CE (Chip enable) de la ROM
 int transtape_signal_rom_enable(z80_int dir)
 {
     //A15=A14=A13=A12=0
@@ -119,7 +122,7 @@ z80_byte transtape_read_rom_byte(z80_int dir)
     z80_int dir_alto=(dir & 0x0C00)<<2;
 
     //A10-11 vienen de los switches
-    z80_int dir_medio=(transtape_switch_save_load.v*1024)+(transtape_switch_disable_menu.v*2048);
+    z80_int dir_medio=(transtape_switch_a10.v*1024)+(transtape_switch_a11.v*2048);
 
     z80_int dir_final=dir_bajo | dir_medio | dir_alto;
 
@@ -423,22 +426,25 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value)
     printf("transtape_write_port %d value %d pc: %04XH\n",puerto_l,value,reg_pc);
 
     switch (puerto_l) {
-        case 63: //3FH= 00111111
+        case 1: //00xxxxxxx1  (habitualmente 63)
             //rom spectrum pero ram transtape
-            transtape_mapped_ram_memory.v=0; //no estoy seguro de esto. segun el manual deberia ser 1, pero 
-            //al cargar desde un snapshot sin menu, llama a este puerto y dejaria la ram mapeada y por tanto la rom
-            //del spectrum no se ve entera
+            transtape_mapped_ram_memory.v=0; 
+            //al cargar desde un snapshot sin menu, llama a este puerto 
+            //Segun el esquema, linea de OE (output enable) se activa de igual manera tanto para la ram como rom,
+            //por tanto la activacion/desactivacio de ram/rom se produce en los mismos casos
+            //Manual dice que desactiva transtape (apaga led), supongo que deja de responder a acciones nmi,
+            //hasta que se le hace un reset. A efectos de emulacion, solo desmapeamos ram y rom
 
             transtape_mapped_rom_memory.v=0;
         break;
 
-        case 127: //7FH = 01111111
+        case 65: //01xxxxx1 (habitualmente 127)
             //rom y ram de transtape
             transtape_mapped_ram_memory.v=1;
             transtape_mapped_rom_memory.v=1;            
         break;
-
-        case 191: //BFH =10111111
+ 
+        case 129: //10xxxxx1 (habitualmente 191)
             //desactivar rom y ram de transtape
             transtape_mapped_ram_memory.v=0;
             transtape_mapped_rom_memory.v=0;              
@@ -447,15 +453,3 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value)
 }
 
 
-/*
-z80_byte transtape_read_port_fd(z80_int puerto)
-{
-
-    
-
-    return 255; 
-
-
-}
-
-*/

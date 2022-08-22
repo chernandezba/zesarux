@@ -9285,8 +9285,11 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 
     //Puertos transtape
     if (transtape_enabled.v) {
-        if (puerto_l==63 || puerto_l==127 || puerto_l==191) {
-            transtape_write_port(puerto_l,value);
+        //Bit 0 a 1, luego dependiendo bits 6 y 7
+        //00xxxxxxx1, 01xxxxxxx1, 10xxxxxxx1
+        z80_byte puerto_enmascarado=puerto_l & (1+64+128);
+        if (puerto_enmascarado==1 || puerto_enmascarado==65 || puerto_enmascarado==129) {
+            transtape_write_port(puerto_enmascarado,value);
         }
     }
 
