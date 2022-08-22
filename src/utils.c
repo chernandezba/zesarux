@@ -142,6 +142,7 @@
 #include "utils_text_adventure.h"
 #include "hilow_datadrive_audio.h"
 #include "hilow_barbanegra.h"
+#include "transtape.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12743,7 +12744,24 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=HILOW_BARBANEGRA_RAM_SIZE;
         }
-    break;      
+    break;    
+
+
+    //transtape rom
+    case MEMORY_ZONE_TRANSTAPE_ROM:
+        if (transtape_enabled.v) {
+            *readwrite=1;      
+            size=TRANSTAPE_ROM_SIZE;
+        }
+    break;         
+
+    //transtape ram
+    case MEMORY_ZONE_TRANSTAPE_RAM:
+        if (transtape_enabled.v) {
+            *readwrite=3; //read+write
+            size=TRANSTAPE_RAM_SIZE;
+        }
+    break;        
 
   }
 
@@ -13167,6 +13185,21 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         }
     break;       
 
+    //transtape rom
+    case MEMORY_ZONE_TRANSTAPE_ROM:
+        if (transtape_enabled.v) {
+            p=&transtape_memory_pointer[address];             
+        }
+    break;      
+
+
+    //transtape ram
+    case MEMORY_ZONE_TRANSTAPE_RAM:
+        if (transtape_enabled.v) {
+	        //La RAM esta despues de los kb de rom
+            p=&transtape_memory_pointer[TRANSTAPE_ROM_SIZE+address];             
+        }
+    break; 
 
   }
 
@@ -13604,6 +13637,22 @@ void machine_get_memory_zone_name(int zone, char *name)
             strcpy(name,"HiLow Barbanegra RAM");
         }
     break;        
+
+    //transtape rom
+    case MEMORY_ZONE_TRANSTAPE_ROM:
+        if (transtape_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Transtape ROM");
+        }
+    break;         
+
+    //transtape ram
+    case MEMORY_ZONE_TRANSTAPE_RAM:
+        if (transtape_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Transtape RAM");
+        }
+    break;      
 
   }
 

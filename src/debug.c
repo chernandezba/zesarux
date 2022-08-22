@@ -102,6 +102,7 @@
 #include "esxdos_handler.h"
 #include "sms.h"
 #include "menu_debug_cpu.h"
+#include "transtape.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5945,6 +5946,13 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 return;
         }
 
+        //Si es transtape
+        if (segmento==0 && transtape_enabled.v && transtape_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"TRAN");
+                sprintf (texto_pagina,"Transtape MEM");
+                return;
+        }        
+
         //Si es superupgrade
         if (superupgrade_enabled.v) {
                 if (debug_paginas_memoria_mapeadas[segmento] & DEBUG_PAGINA_MAP_ES_ROM) {
@@ -6181,6 +6189,11 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         if (MACHINE_IS_SPECTRUM_16_48 && betadisk_enabled.v && betadisk_active.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
                         }
+
+                        //Si transtape
+                        if (MACHINE_IS_SPECTRUM && transtape_enabled.v && transtape_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }                        
 
                         //Si multiface y maquina 48kb. TODO. Si esta dandanator y tambien multiface, muestra siempre dandanator
                         if (MACHINE_IS_SPECTRUM_16_48 && multiface_enabled.v && multiface_switched_on.v) {
