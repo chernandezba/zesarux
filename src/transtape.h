@@ -56,4 +56,6 @@ extern z80_bit transtape_mapped_rom_memory;
 
 extern int transtape_version;
 
+extern void transtape_simulate_reset_button(void);
+
 #endif

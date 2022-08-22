@@ -463,4 +463,8 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value)
     }
 }
 
-
+void transtape_simulate_reset_button(void)
+{
+    //No estoy seguro de este pero por lo que veo, mete PC=0
+    if (transtape_mapped_rom_memory.v) reg_pc=0;
+}

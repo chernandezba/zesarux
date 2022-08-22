@@ -4596,6 +4596,13 @@ int menu_hardware_transtape_version_cond(void)
     else return 1;
 }
 
+void menu_hardware_transtape_reset_button(MENU_ITEM_PARAMETERS)
+{
+    transtape_simulate_reset_button();
+
+     menu_generic_message_splash("Reset button","OK. Reset pressed");
+}
+
 void menu_transtape(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -4640,6 +4647,12 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
             "Switch A11","Conmutador A11","Conmutador A11");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a11.v ? buffer_funcion_a11_one : buffer_funcion_a11_zero));        
 
+        if (transtape_enabled.v) {
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_reset_button,NULL,
+                "Simulate reset press","Simular pulsación reset","Simular polsació reset");        
+        }
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
