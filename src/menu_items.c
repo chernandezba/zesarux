@@ -31862,6 +31862,41 @@ void menu_hardware_transtape_reset_button(MENU_ITEM_PARAMETERS)
      menu_generic_message_splash("Reset button","OK. Reset pressed");
 }
 
+void menu_hardware_transtape_romfile(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select ROM File",filtros,transtape_rom_filename)==1) {
+        if (!si_existe_archivo(transtape_rom_filename)) {
+            menu_error_message("File does not exist");
+            transtape_rom_filename[0]=0;
+            return;
+        }
+
+        else {
+            //Comprobar aqui tambien el tamanyo
+            long long int size=get_file_size(transtape_rom_filename);
+            if (size!=TRANSTAPE_ROM_SIZE) {
+                menu_error_message("ROM file is not expected size");
+                transtape_rom_filename[0]=0;
+                return;
+            }
+        }
+
+    }
+    //Sale con ESC
+    else {
+        //Quitar nombre
+        transtape_rom_filename[0]=0;
+    }
+
+}
+
 void menu_transtape(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -31881,6 +31916,13 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
             "Version","Versión","Versió");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",transtape_version);        
 
+        char string_rom_file_shown[13];
+        menu_tape_settings_trunc_name(transtape_rom_filename,string_rom_file_shown,13);
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_romfile,menu_hardware_transtape_version_cond,
+            "Rom file","Archivo Rom","Arxiu Rom");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_rom_filename[0]==0 ? "Default" : string_rom_file_shown));
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
             "Switch A10","Conmutador A10","Conmutador A10");

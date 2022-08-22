@@ -58,4 +58,6 @@ extern int transtape_version;
 
 extern void transtape_simulate_reset_button(void);
 
+extern char transtape_rom_filename[];
+
 #endif

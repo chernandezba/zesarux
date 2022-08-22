@@ -189,6 +189,8 @@ __FEATURES__
 
 * Emulates Multiface One, 128 and Three
 
+* Emulates Transtape
+
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emulates +3 Disk

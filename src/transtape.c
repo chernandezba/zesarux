@@ -91,6 +91,8 @@ z80_bit transtape_switch_a11={0};
 //Version 2 o 3. la 1 de momento no se emula porque no tenemos la rom
 int transtape_version=3;
 
+char transtape_rom_filename[PATH_MAX]="";
+
 //Tal cual se comporta la linea CE (Chip enable) de la RAM
 int transtape_signal_ram_enable(z80_int dir)
 {
@@ -343,8 +345,14 @@ int transtape_load_rom(void)
 
     char nombre_rom[PATH_MAX];
 
-    if (transtape_version==2) strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V2);
-    else strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V3);
+    if (transtape_rom_filename[0]!=0) {
+        strcpy(nombre_rom,transtape_rom_filename);
+    }
+    else {
+        //Roms por defecto
+        if (transtape_version==2) strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V2);
+        else strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V3);
+    }
 
     debug_printf (VERBOSE_INFO,"Loading transtape rom %s",nombre_rom);
 
