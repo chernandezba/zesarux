@@ -157,7 +157,7 @@ void transtape_poke_ram(z80_int dir,z80_byte value)
 {
 
 	if (transtape_check_if_ram_area(dir) ) {
-		printf ("Poke ram byte to %04XH with value %02XH\n",dir,value);
+		//printf ("Poke ram byte to %04XH with value %02XH\n",dir,value);
 
         dir &= (TRANSTAPE_RAM_SIZE-1);
 
@@ -165,10 +165,7 @@ void transtape_poke_ram(z80_int dir,z80_byte value)
 		transtape_memory_pointer[TRANSTAPE_ROM_SIZE+dir]=value;	
 	}
 
-    else {
-        //Evitar logs de escritura en rom por bug de rom basic
-        if (dir<16384 && dir>100) printf ("NOT Poke ram byte to %04XH with value %02XH\n",dir,value);
-    }
+
 
 }
 
