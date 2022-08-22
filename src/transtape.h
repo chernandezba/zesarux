@@ -24,7 +24,7 @@
 
 #include "cpu.h"
 
-#define TRANSTAPE_ROM_FILE_NAME "transtape3.rom"
+#define TRANSTAPE_ROM_FILE_NAME "transtape3-vC.rom"
 
 
 #define TRANSTAPE_ROM_SIZE 16384

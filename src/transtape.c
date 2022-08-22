@@ -84,34 +84,39 @@ z80_bit transtape_switch_save_load={1};
 //0=menu, 1=no menu (linea A11=2048)
 z80_bit transtape_switch_disable_menu={0};
 
+int transtape_signal_ram_enable(z80_int dir)
+{
+    //A14=A15=0 A12=A13=1
+    if ((dir & 0xF000) == 0x3000 && transtape_mapped_ram_memory.v) return 1;
+    else return 0;
+}
 
+int transtape_signal_rom_enable(z80_int dir)
+{
+    //A15=A14=A13=A12=0
+    if ((dir & 0xF000) == 0 && transtape_mapped_rom_memory.v) return 1;
+    else return 0;
+}
 
 int transtape_check_if_rom_area(z80_int dir)
 {
-    if (dir<16384 && transtape_mapped_rom_memory.v) {
-        return 1;
-    }
-	return 0;
+   
+    return transtape_signal_rom_enable(dir);
 }
 
 int transtape_check_if_ram_area(z80_int dir)
-{
-    if (dir>=0x3800 && dir<16384 && transtape_mapped_ram_memory.v) {
-        //printf("transtape_check_if_ram_area dir %04XH . is ram\n",dir);
-        return 1;
-    }
-    //printf("transtape_check_if_ram_area dir %04XH . is NOT ram\n",dir);
-	return 0;
+{   
+    return transtape_signal_ram_enable(dir);
 }
 
 z80_byte transtape_read_rom_byte(z80_int dir)
 {
 	//printf ("Read rom byte from %04XH\n",dir);
     //conservar A0-A9
-    z80_int dir_bajo=dir & 0x3FF;
+    z80_int dir_bajo=dir & 0x03FF;
 
     //A12-A3 vienen de A10-A11
-    z80_int dir_alto=(dir & 0xC00)<<2;
+    z80_int dir_alto=(dir & 0x0C00)<<2;
 
     //A10-11 vienen de los switches
     z80_int dir_medio=(transtape_switch_save_load.v*1024)+(transtape_switch_disable_menu.v*2048);
@@ -157,6 +162,7 @@ void transtape_poke_ram(z80_int dir,z80_byte value)
     }
 
 }
+
 
 
 z80_byte transtape_poke_byte(z80_int dir,z80_byte valor)
@@ -419,7 +425,10 @@ void transtape_write_port(z80_byte puerto_l,z80_byte value)
     switch (puerto_l) {
         case 63: //3FH= 00111111
             //rom spectrum pero ram transtape
-            transtape_mapped_ram_memory.v=1;
+            transtape_mapped_ram_memory.v=0; //no estoy seguro de esto. segun el manual deberia ser 1, pero 
+            //al cargar desde un snapshot sin menu, llama a este puerto y dejaria la ram mapeada y por tanto la rom
+            //del spectrum no se ve entera
+
             transtape_mapped_rom_memory.v=0;
         break;
 
