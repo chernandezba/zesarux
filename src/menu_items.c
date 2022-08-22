@@ -31924,6 +31924,8 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
             "Rom file","Archivo Rom","Arxiu Rom");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_rom_filename[0]==0 ? "Default" : string_rom_file_shown));
 
+        menu_add_item_menu_separator(array_menu_common);
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
             "Switch A10","Conmutador A10","Conmutador A10");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a10.v ? "Save" : "Load"));
@@ -31949,8 +31951,6 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a11.v ? buffer_funcion_a11_one : buffer_funcion_a11_zero));        
 
         if (transtape_enabled.v) {
-            menu_add_item_menu_separator(array_menu_common);
-
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_reset_button,NULL,
                 "Simulate reset press","Simular pulsación reset","Simular polsació reset");        
         }
@@ -32165,15 +32165,15 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
     
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface emulation");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface");
         menu_add_item_menu_shortcut(array_menu_common,'m');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra emulation");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
         menu_add_item_menu_shortcut(array_menu_common,'b');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Transtape emulation");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Transtape");
         menu_add_item_menu_shortcut(array_menu_common,'t');
         menu_add_item_menu_tiene_submenu(array_menu_common);       
 
