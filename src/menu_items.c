@@ -32419,7 +32419,8 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu(array_menu_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_storage_copy_devices,NULL,"Copy Interfaces");
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_storage_copy_devices,NULL,"C~~opy Interfaces");
+            menu_add_item_menu_shortcut(array_menu_storage,'o');
             menu_add_item_menu_tiene_submenu(array_menu_storage);
         }
 
