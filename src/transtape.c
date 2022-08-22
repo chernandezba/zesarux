@@ -132,10 +132,7 @@ z80_byte transtape_read_rom_byte(z80_int dir)
 
     z80_int dir_final=dir_bajo | dir_medio | dir_alto;
 
-    /*dir &=(65535-1024-2048); //quitar bits 10 y 11
-    //y ponerlo segun indique la mascara
-    dir |=conmutadores_load_save_turbo;
-	return transtape_memory_pointer[dir];*/
+
     return transtape_memory_pointer[dir_final];
 }
 
