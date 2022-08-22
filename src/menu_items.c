@@ -31916,8 +31916,8 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
             "Version","Versión","Versió");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",transtape_version);        
 
-        char string_rom_file_shown[13];
-        menu_tape_settings_trunc_name(transtape_rom_filename,string_rom_file_shown,13);
+        char string_rom_file_shown[20];
+        menu_tape_settings_trunc_name(transtape_rom_filename,string_rom_file_shown,20);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_romfile,menu_hardware_transtape_version_cond,
