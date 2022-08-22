@@ -124,7 +124,7 @@ z80_byte transtape_read_rom_byte(z80_int dir)
     //conservar A0-A9
     z80_int dir_bajo=dir & 0x03FF;
 
-    //A12-A3 vienen de A10-A11
+    //A12-A13 vienen de A10-A11
     z80_int dir_alto=(dir & 0x0C00)<<2;
 
     //A10-11 vienen de los switches

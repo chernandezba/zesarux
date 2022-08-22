@@ -1,10 +1,28 @@
 ;Desensamble directo de la ROM. archivo transtape3.rom. md5: 133ec2129ebf57555662d899d55fe374
 ;Todo comentario es susceptible de ser erroneo!!
+;Nota: las direcciones no suelen coincidir, pues el contenido que ve la cpu de la rom no se corresponde exactamente con las lineas
+;de direcciones A0-A13 , sino que:
+;A0-A9 en el chip de rom vienen tal cual de A0-A9 del bus de direcciones
+;A12-A13 en el chip de rom vienen de A10-A11 del bus de direcciones
+;A10-A11 en el chip de rom vienen de los switches load/save y cinta/menu
+;Es una manera caprichosa de gestionar los switches pero quizá era común en esa epoca
+;Lo mas lógico (para mi) seria que esos switches se pudieran leer desde algun puerto, pero no es asi
+;Por tanto los comentarios que hay en la rom se pueden considerar la mayoria como validos aunque
+;las direcciones no tienen por que corresponder
+;Por ejemplo si tenemos los dos switches a 0 y salta la nmi, la dirección en la rom que se leerá será efectivamente la 0066H
+;Pero si tenemos uno de los switches (el load/save, que altera linea A10) la dirección en la rom que se leerá será 0466H
+;Ver esquema del circuito para mas información
 ;
+;Mas info: los menus de transtape efectivamente son pequeñas rutinas de basic que se generan desde la interfaz
+;y se copian a la ram, alterando temporalmente el contenido de dicha ram,
+;de ahi que se llamen rutinas de la rom para crear lineas en el basic
+;No se si les pareció mas fácil hacerlo así, en vez de hacer menus enteramente en código máquina y no en basic
+
+
 L0000 LD HL,0000  
 L0003 LD SP,FFFE
 L0006 PUSH HL
-L0007 JP 02BC  ;quita la rom y deja la ram
+L0007 JP 02BC  ;quita la rom y ram
 L000A NOP
 L000B NOP
 L000C NOP
@@ -71,7 +89,7 @@ L0048 NOP
 L0049 NOP
 L004A POP AF
 L004B LD SP,(3FFE)
-L004F OUT (3F),A  ;quitar la rom pero dejar ram
+L004F OUT (3F),A  ;quitar la rom y ram
 L0051 EI
 L0052 RET
 L0053 NOP
@@ -522,7 +540,7 @@ L02B5 NOP
 L02B6 NOP
 L02B7 POP AF
 L02B8 LD SP,(3FFE)
-L02BC OUT (3F),A   ;quitar la rom pero dejar ram
+L02BC OUT (3F),A   ;quitar la rom y ram
 L02BE RET
 L02BF NOP
 L02C0 NOP
