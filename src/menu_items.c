@@ -137,6 +137,8 @@
 #include "utils_text_adventure.h"
 #include "salamanquesa.h"
 #include "hilow_datadrive_audio.h"
+#include "hilow_barbanegra.h"
+#include "transtape.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -246,6 +248,11 @@ int zxuno_spi_flash_opcion_seleccionada=0;
 int betadisk_opcion_seleccionada=0;
 int menu_inicio_opcion_seleccionada=0;
 int zxdesktop_trash_opcion_seleccionada=0;
+int storage_copy_devices_opcion_seleccionada=0;
+int multiface_opcion_seleccionada=0;
+int hilow_barbanegra_opcion_seleccionada=0;
+int transtape_opcion_seleccionada=0;
+
 
 
 //Fin opciones seleccionadas para cada menu
@@ -31816,7 +31823,340 @@ void menu_zxuno_spi_flash(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_transtape_enable(MENU_ITEM_PARAMETERS)
+{
+    if (transtape_enabled.v) {
+        transtape_disable();
+    }
+    else {
+        transtape_enable();
+    }
+}
 
+void menu_hardware_transtape_switch_saveload(MENU_ITEM_PARAMETERS)
+{
+    transtape_switch_a10.v ^=1;
+}
+
+void menu_hardware_transtape_switch_menu(MENU_ITEM_PARAMETERS)
+{
+    transtape_switch_a11.v ^=1;
+}
+
+void menu_hardware_transtape_version(MENU_ITEM_PARAMETERS)
+{
+    if (transtape_version==2) transtape_version=3;
+    else transtape_version=2;
+}
+
+int menu_hardware_transtape_version_cond(void)
+{
+    if (transtape_enabled.v) return 0;
+    else return 1;
+}
+
+void menu_hardware_transtape_reset_button(MENU_ITEM_PARAMETERS)
+{
+    transtape_simulate_reset_button();
+
+     menu_generic_message_splash("Reset button","OK. Reset pressed");
+}
+
+void menu_transtape(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_enable,
+                NULL,"[%c] ~~Transtape Enabled", (transtape_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'t');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable transtape");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable transtape");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_version,menu_hardware_transtape_version_cond,
+            "Version","Versión","Versió");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",transtape_version);        
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
+            "Switch A10","Conmutador A10","Conmutador A10");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a10.v ? "Save" : "Load"));
+
+
+        char buffer_funcion_a11_zero[30];
+        char buffer_funcion_a11_one[30];
+        /*
+        //0=menu, 1=no menu en transtape 3
+        //0=microdrive, 1=cinta en transtape 2
+        */
+        if (transtape_version==2) {
+            strcpy(buffer_funcion_a11_zero,"Microdrive");
+            strcpy(buffer_funcion_a11_one,"Tape");
+        }
+        else {
+            strcpy(buffer_funcion_a11_zero,"Menu");
+            strcpy(buffer_funcion_a11_one,"Tape");            
+        }
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_menu,NULL,
+            "Switch A11","Conmutador A11","Conmutador A11");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a11.v ? buffer_funcion_a11_one : buffer_funcion_a11_zero));        
+
+        if (transtape_enabled.v) {
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_reset_button,NULL,
+                "Simulate reset press","Simular pulsación reset","Simular polsació reset");        
+        }
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&transtape_opcion_seleccionada,&item_seleccionado,array_menu_common,"Transtape emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+void menu_hardware_hilow_barbanegra_enable(MENU_ITEM_PARAMETERS)
+{
+    if (hilow_bbn_enabled.v) {
+        hilow_bbn_disable();
+    }
+    else {
+        hilow_bbn_enable();
+    }
+}
+
+void menu_hilow_barbanegra(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_hilow_barbanegra_enable,
+                NULL,"[%c] ~~HiLow Barbanegra Enabled", (hilow_bbn_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'h');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable HiLow barbanegra");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable HiLow barbanegra");
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&hilow_barbanegra_opcion_seleccionada,&item_seleccionado,array_menu_common,"HiLow Barbanegra emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
+void menu_multiface_rom_file(MENU_ITEM_PARAMETERS)
+{
+	multiface_disable();
+
+        char *filtros[2];
+
+        filtros[0]="rom";
+        filtros[1]=0;
+
+
+        if (menu_filesel("Select multiface File",filtros,multiface_rom_file_name)==1) {
+                if (!si_existe_archivo(multiface_rom_file_name)) {
+                        menu_error_message("File does not exist");
+                        multiface_rom_file_name[0]=0;
+                        return;
+
+
+
+                }
+
+                else {
+                        //Comprobar aqui tambien el tamanyo
+                        long long int size=get_file_size(multiface_rom_file_name);
+                        if (size!=8192) {
+                                menu_error_message("ROM file must be 8 KB length");
+                                multiface_rom_file_name[0]=0;
+                                return;
+                        }
+                }
+
+
+        }
+        //Sale con ESC
+        else {
+                //Quitar nombre
+                multiface_rom_file_name[0]=0;
+
+
+        }
+
+}
+
+
+void menu_hardware_multiface_enable(MENU_ITEM_PARAMETERS)
+{
+	if (multiface_enabled.v) multiface_disable();
+	else multiface_enable();
+}
+
+void menu_hardware_multiface_type(MENU_ITEM_PARAMETERS)
+{
+  multiface_type++;
+  if (multiface_type==MULTIFACE_TOTAL_TYPES)  multiface_type=0;
+}
+
+int menu_hardware_multiface_type_cond(void)
+{
+	//En tbblue no se puede cambiar el tipo
+	if (MACHINE_IS_TBBLUE) return 0;
+
+	return !multiface_enabled.v;
+}
+
+void menu_multiface(MENU_ITEM_PARAMETERS)
+{
+        menu_item *array_menu_multiface;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+                char string_multiface_file_shown[13];
+
+				//Como no sabemos cual sera el item inicial, metemos este sin asignar, que se sobreescribe en el siguiente menu_add_item_menu
+                menu_add_item_menu_inicial(&array_menu_multiface,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+					//En tbblue, la rom no es seleccionable, la carga el mismo en la sdram
+
+					if (!MACHINE_IS_TBBLUE) {
+                        menu_tape_settings_trunc_name(multiface_rom_file_name,string_multiface_file_shown,13);
+                        menu_add_item_menu_format(array_menu_multiface,MENU_OPCION_NORMAL,menu_multiface_rom_file,NULL,"~~ROM File [%s]",string_multiface_file_shown);
+                        menu_add_item_menu_shortcut(array_menu_multiface,'r');
+                        menu_add_item_menu_tooltip(array_menu_multiface,"ROM Emulation file");
+                        menu_add_item_menu_ayuda(array_menu_multiface,"ROM Emulation file");
+					}
+
+
+                        menu_add_item_menu_format(array_menu_multiface,MENU_OPCION_NORMAL,menu_hardware_multiface_type,menu_hardware_multiface_type_cond,"~~Type [%s]",multiface_types_string[multiface_type]);
+                  menu_add_item_menu_shortcut(array_menu_multiface,'t');
+                  menu_add_item_menu_tooltip(array_menu_multiface,"Multiface type. You must first disable it if you want to change type");
+                  menu_add_item_menu_ayuda(array_menu_multiface,"Multiface type. You must first disable it if you want to change type");
+
+
+                        			menu_add_item_menu_format(array_menu_multiface,MENU_OPCION_NORMAL,menu_hardware_multiface_enable,NULL,"[%c] ~~Multiface Enabled", (multiface_enabled.v ? 'X' : ' '));
+                        menu_add_item_menu_shortcut(array_menu_multiface,'m');
+                        menu_add_item_menu_tooltip(array_menu_multiface,"Enable multiface");
+                        menu_add_item_menu_ayuda(array_menu_multiface,"Enable multiface");
+
+
+
+
+
+                                menu_add_item_menu(array_menu_multiface,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                menu_add_ESC_item(array_menu_multiface);
+
+                retorno_menu=menu_dibuja_menu(&multiface_opcion_seleccionada,&item_seleccionado,array_menu_multiface,"Multiface emulation");
+
+                
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                                
+                        }
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
+
+void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+    
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface emulation");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra emulation");
+        menu_add_item_menu_shortcut(array_menu_common,'b');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Transtape emulation");
+        menu_add_item_menu_shortcut(array_menu_common,'t');
+        menu_add_item_menu_tiene_submenu(array_menu_common);       
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&storage_copy_devices_opcion_seleccionada,&item_seleccionado,array_menu_common,"Copy Interfaces");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
 
 
 //menu storage 
@@ -32077,6 +32417,11 @@ void menu_storage(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}                  
 
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu(array_menu_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_storage_copy_devices,NULL,"Copy Interfaces");
+            menu_add_item_menu_tiene_submenu(array_menu_storage);
+        }
 
 
         menu_add_item_menu(array_menu_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
