@@ -31928,7 +31928,7 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
             "Switch A10","Conmutador A10","Conmutador A10");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a10.v ? "Save" : "Load"));
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a10.v ? "1=Save" : "0=Load"));
 
 
         char buffer_funcion_a11_zero[30];
@@ -31938,12 +31938,12 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         //0=microdrive, 1=cinta en transtape 2
         */
         if (transtape_version==2) {
-            strcpy(buffer_funcion_a11_zero,"Microdrive");
-            strcpy(buffer_funcion_a11_one,"Tape");
+            strcpy(buffer_funcion_a11_zero,"0=Microdrive");
+            strcpy(buffer_funcion_a11_one,"1=Tape");
         }
         else {
-            strcpy(buffer_funcion_a11_zero,"Menu");
-            strcpy(buffer_funcion_a11_one,"Tape");            
+            strcpy(buffer_funcion_a11_zero,"0=Menu");
+            strcpy(buffer_funcion_a11_one,"1=Tape");            
         }
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_menu,NULL,

@@ -57,27 +57,6 @@ int transtape_nested_id_peek_byte_no_time;
 z80_bit transtape_mapped_ram_memory={0};
 z80_bit transtape_mapped_rom_memory={0};
 
-//grabar/cargar, con/sin menu
-//z80_int conmutadores_load_save_turbo=1024+2048;
-
-
-//z80_int conmutadores_load_save_turbo=1024+2048; //grabar
-//esperar tecla 1-3, para grabar normal (1) o turbo (2 o 3)
-
-//z80_int conmutadores_load_save_turbo=2048; //cargar?
-//esperar tecla 1-5. probablemente si carga normal (1), turbo (2) o turbo max(3)
-
-
-
-//z80_int conmutadores_load_save_turbo=1024; //se resetea dejando ram activa??
-
-
-//z80_int conmutadores_load_save_turbo=0; //? colgado??
-
-//0=cargar, con menu
-//1024=grabar, con menu
-//2048=cargar, sin menu
-//2048+1024=grabar, sin menu
 
 //0=cargar, 1=grabar (linea A10=1024)
 //Siempre hace de load/save, erroneamente el esquema de transtape 1,2 lo tiene intercambiado
@@ -105,6 +84,9 @@ int transtape_signal_ram_enable(z80_int dir)
 int transtape_signal_rom_enable(z80_int dir)
 {
     //A15=A14=A13=A12=0
+    /*
+    De esto deducimos: a partir direccion 1000H  y hasta 2fffh (donde entrara ram transtape) se retorna rom normal
+    */
     if ((dir & 0xF000) == 0 && transtape_mapped_rom_memory.v) return 1;
     else return 0;
 }
@@ -136,6 +118,22 @@ z80_byte transtape_read_rom_byte(z80_int dir)
 
 
     return transtape_memory_pointer[dir_final];
+    /*
+    Ejemplo de rutinas ubicadas en la rom, teniendo en cuenta direcciones absolutas al archivo de rom:
+    A10=A11=0: menu+load en transtape v3
+    00XX 00XX XXXX XXXX: De X000H hasta X3FFH
+
+    A10=1,A11=0: menu+save en transtape v3
+    00XX 01XX XXXX XXXX: De X400H hasta X7FFH
+
+    A10=0,A11=1: tape+load en transtape v3
+    00XX 10XX XXXX XXXX: De X800H hasta XBFFH
+
+    A10=1,A11=1: tape+save en transtape v3
+    00XX 11XX XXXX XXXX: De XC00H hasta XFFFH
+
+    Donde X <= 3
+    */
 }
 
 
