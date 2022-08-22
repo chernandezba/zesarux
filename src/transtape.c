@@ -22,10 +22,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 
-//#if defined(__APPLE__)
-//        #include <sys/syslimits.h>
-//#endif
+#if defined(__APPLE__)
+        #include <sys/syslimits.h>
+#endif
 
 
 #include "transtape.h"
@@ -82,8 +83,13 @@ z80_bit transtape_mapped_rom_memory={0};
 //Siempre hace de load/save, erroneamente el esquema de transtape 1,2 lo tiene intercambiado
 z80_bit transtape_switch_a10={1};
 
-//0=menu, 1=no menu (linea A11=2048)
+//0=menu, 1=no menu en transtape 3
+//0=microdrive, 1=cinta en transtape 2
+//0=normal, 1=turbo en transtape 1
 z80_bit transtape_switch_a11={0};
+
+//Version 2 o 3. la 1 de momento no se emula porque no tenemos la rom
+int transtape_version=3;
 
 //Tal cual se comporta la linea CE (Chip enable) de la RAM
 int transtape_signal_ram_enable(z80_int dir)
@@ -341,9 +347,14 @@ int transtape_load_rom(void)
     FILE *ptr_transtape_romfile;
     int leidos=0;
 
-    debug_printf (VERBOSE_INFO,"Loading transtape rom %s",TRANSTAPE_ROM_FILE_NAME);
+    char nombre_rom[PATH_MAX];
 
-    ptr_transtape_romfile=fopen(TRANSTAPE_ROM_FILE_NAME,"rb");
+    if (transtape_version==2) strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V2);
+    else strcpy(nombre_rom,TRANSTAPE_ROM_FILE_NAME_V3);
+
+    debug_printf (VERBOSE_INFO,"Loading transtape rom %s",nombre_rom);
+
+    ptr_transtape_romfile=fopen(nombre_rom,"rb");
     if (!ptr_transtape_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }

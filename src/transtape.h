@@ -24,7 +24,8 @@
 
 #include "cpu.h"
 
-#define TRANSTAPE_ROM_FILE_NAME "transtape3-vC.rom"
+#define TRANSTAPE_ROM_FILE_NAME_V2 "transtape2.rom"
+#define TRANSTAPE_ROM_FILE_NAME_V3 "transtape3-vC.rom"
 
 
 #define TRANSTAPE_ROM_SIZE 16384
@@ -52,5 +53,7 @@ extern z80_bit transtape_switch_a11;
 
 extern z80_bit transtape_mapped_ram_memory;
 extern z80_bit transtape_mapped_rom_memory;
+
+extern int transtape_version;
 
 #endif

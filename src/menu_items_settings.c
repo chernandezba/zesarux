@@ -4584,6 +4584,18 @@ void menu_hardware_transtape_switch_menu(MENU_ITEM_PARAMETERS)
     transtape_switch_a11.v ^=1;
 }
 
+void menu_hardware_transtape_version(MENU_ITEM_PARAMETERS)
+{
+    if (transtape_version==2) transtape_version=3;
+    else transtape_version=2;
+}
+
+int menu_hardware_transtape_version_cond(void)
+{
+    if (transtape_enabled.v) return 0;
+    else return 1;
+}
+
 void menu_transtape(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -4599,14 +4611,34 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Enable transtape");
         menu_add_item_menu_ayuda(array_menu_common,"Enable transtape");
 
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_version,menu_hardware_transtape_version_cond,
+            "Version","Versión","Versió");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",transtape_version);        
+
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_saveload,NULL,
             "Switch A10","Conmutador A10","Conmutador A10");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a10.v ? "Save" : "Load"));
 
+
+        char buffer_funcion_a11_zero[30];
+        char buffer_funcion_a11_one[30];
+        /*
+        //0=menu, 1=no menu en transtape 3
+        //0=microdrive, 1=cinta en transtape 2
+        */
+        if (transtape_version==2) {
+            strcpy(buffer_funcion_a11_zero,"Microdrive");
+            strcpy(buffer_funcion_a11_one,"Tape");
+        }
+        else {
+            strcpy(buffer_funcion_a11_zero,"Menu");
+            strcpy(buffer_funcion_a11_one,"Tape");            
+        }
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_transtape_switch_menu,NULL,
             "Switch A11","Conmutador A11","Conmutador A11");
-        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a11.v ? "1" : "0"));        
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(transtape_switch_a11.v ? buffer_funcion_a11_one : buffer_funcion_a11_zero));        
 
 
 
