@@ -433,7 +433,7 @@ void transtape_disable(void)
 
 
 
-void transtape_write_port(z80_byte puerto_l,z80_byte value)
+void transtape_write_port(z80_byte puerto_l,z80_byte value GCC_UNUSED)
 {
 
     //printf("transtape_write_port %d value %d pc: %04XH\n",puerto_l,value,reg_pc);
