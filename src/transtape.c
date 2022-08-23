@@ -133,6 +133,9 @@ z80_byte transtape_read_rom_byte(z80_int dir)
     00XX 11XX XXXX XXXX: De XC00H hasta XFFFH
 
     Donde X <= 3
+
+    Quien programó el código de la ROM usaba direcciones del espacio 0-A11 bit, o sea, desde 0 hasta 0FFFh
+    Por tanto no veremos ningún call, jp o similar que use direcciones mayor que 0fffh pretendiendo usar su rom    
     */
 }
 
