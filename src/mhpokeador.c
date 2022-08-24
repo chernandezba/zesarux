@@ -226,10 +226,7 @@ void mhpokeador_alloc_ram_memory(void)
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for mhpokeador emulation",size/1024);
 
-    mhpokeador_memory_pointer=malloc(size);
-    if (mhpokeador_memory_pointer==NULL) {
-        cpu_panic ("No enough memory for mhpokeador emulation");
-    }
+    mhpokeador_memory_pointer=util_malloc(size,"Can not allocate memory for mhpokeador emulation");
 
 
 }
