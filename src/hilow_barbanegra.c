@@ -279,7 +279,7 @@ int hilow_bbn_load_rom(void)
 
     debug_printf (VERBOSE_INFO,"Loading hilow_bbn rom %s",HILOW_BARBANEGRA_ROM_FILE_NAME);
 
-    ptr_hilow_bbn_romfile=fopen(HILOW_BARBANEGRA_ROM_FILE_NAME,"rb");
+    open_sharedfile(HILOW_BARBANEGRA_ROM_FILE_NAME,&ptr_hilow_bbn_romfile);
     if (!ptr_hilow_bbn_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }
