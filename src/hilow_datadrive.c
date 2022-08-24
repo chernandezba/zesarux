@@ -1400,7 +1400,7 @@ int hilow_load_rom(void)
 
     debug_printf (VERBOSE_INFO,"Loading hilow rom %s",HILOW_ROM_FILE_NAME);
 
-    ptr_hilow_romfile=fopen(HILOW_ROM_FILE_NAME,"rb");
+    open_sharedfile(HILOW_ROM_FILE_NAME,&ptr_hilow_romfile);
     if (!ptr_hilow_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }
