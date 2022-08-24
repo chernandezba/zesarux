@@ -19748,7 +19748,7 @@ void toggle_flash_state(void)
     }
 }
 
-
+//Asigna memoria y si falla, genera un mensaje de panic
 void *util_malloc(int total,char *mensaje_panic)
 {
     char *memoria;
@@ -19756,6 +19756,19 @@ void *util_malloc(int total,char *mensaje_panic)
     if (memoria==NULL) {
         cpu_panic(mensaje_panic);
     }        
+
+    return memoria;
+}
+
+//Asigna memoria y si falla, genera un mensaje de panic
+//Llena la memoria con el byte indicado
+void *util_malloc_fill(int total,char *mensaje_panic,z80_byte value)
+{
+    char *memoria;
+    memoria=util_malloc(total,mensaje_panic);
+
+    int i;
+    for (i=0;i<total;i++) memoria[i]=value;
 
     return memoria;
 }

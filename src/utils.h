@@ -942,6 +942,7 @@ extern void util_print_minutes_seconds(int segundos_totales, char *texto);
 extern void toggle_flash_state(void);
 
 extern void *util_malloc(int total,char *mensaje_panic);
+extern void *util_malloc_fill(int total,char *mensaje_panic,z80_byte value);
 extern void *util_malloc_max_texto_generic_message(char *mensaje_panic);
 extern void *util_malloc_max_texto_browser(void);
 

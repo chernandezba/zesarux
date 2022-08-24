@@ -226,7 +226,9 @@ void mhpokeador_alloc_ram_memory(void)
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for mhpokeador emulation",size/1024);
 
-    mhpokeador_memory_pointer=util_malloc(size,"Can not allocate memory for mhpokeador emulation");
+    //Inicializamos memoria con FF, que es como (creo) se comportaba el interfaz original
+    //Ya que no sobreescribimos toda la ram, lo que no se modifica, quedará con FF
+    mhpokeador_memory_pointer=util_malloc_fill(size,"Can not allocate memory for mhpokeador emulation",0xFF);
 
 
 }
