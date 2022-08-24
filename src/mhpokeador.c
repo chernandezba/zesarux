@@ -242,6 +242,9 @@ int mhpokeador_load_rom(void)
     //Aunque realmente no es una rom, sino una ram
     //Al final es un bloque de 1kb que se lee del PC hasta la ram del Pokeador
     //Pero lo guardamos en archivos .rom para que sea menos confuso para el usuario
+    //Hay otro posible firmware, transpoke.tap, que se encuentra en el repo de extras
+    //No se incluye aqui pues es un pokeador+copiador, requiere de un programa basic
+    //para preparar los pokes antes de lanzar la nmi
 
     FILE *ptr_mhpokeador_romfile;
     int leidos=0;

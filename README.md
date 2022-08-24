@@ -191,6 +191,8 @@ __FEATURES__
 
 * Emulates Transtape
 
+* Emulates Microhobby Pokeador Automatico
+
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emulates +3 Disk
