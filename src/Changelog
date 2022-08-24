@@ -1,5 +1,7 @@
 Version 10.2-RC2 - Hysteria edition. 24 August 2022
 
+* New things added:
+
 Added new emulated machines:
 -ZX Spectrum 48k+
 -Microdigital TK80
@@ -26,6 +28,8 @@ Added TAP to TZX turbo converter (TZX Turbo 4000 bauds, to use with Rodolfo Guer
 Added some actions than can be fired from command line and don't start ZEsarUX:
 --convert-tap-tzx, --convert-tap-tzx-turbo-rg, --convert-tap-pzx , --convert-tzx-tap, --convert-pzx-tap
 
+
+* Improvements:
 
 Improved Z88 emulation:
 -Changed colour palette to better match a real Z88
@@ -77,6 +81,8 @@ Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
 
 
+* Fixes:
+
 Fixed handling files larger than 2 GB on 32 bit CPU (it does apply to the Windows version even on a 64 bit CPU)
 Fixed using mmc images larger than 2 GB
 Fixed redrawing ZX Desktop when resizing window
@@ -109,6 +115,7 @@ Fixed ZX Vision:
 Some other minor bugfixes and improvements
 
 
+------------------------------------------
 
 Version 10.1 - Carrier Command edition. 06 May 2022
 
