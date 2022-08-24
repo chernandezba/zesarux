@@ -357,7 +357,7 @@ int transtape_load_rom(void)
 
     debug_printf (VERBOSE_INFO,"Loading transtape rom %s",nombre_rom);
 
-    ptr_transtape_romfile=fopen(nombre_rom,"rb");
+    open_sharedfile(nombre_rom,&ptr_transtape_romfile);
     if (!ptr_transtape_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }
