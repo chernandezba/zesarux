@@ -143,6 +143,7 @@
 #include "hilow_datadrive_audio.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "mhpokeador.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12763,6 +12764,13 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;        
 
+    case MEMORY_ZONE_MHPOKEADOR_RAM:
+        if (mhpokeador_enabled.v) {
+            *readwrite=3; //read+write
+            size=MHPOKEADOR_RAM_SIZE;
+        }
+    break;     
+
   }
 
   return size;
@@ -13200,6 +13208,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
             p=&transtape_memory_pointer[TRANSTAPE_ROM_SIZE+address];             
         }
     break; 
+
+    case MEMORY_ZONE_MHPOKEADOR_RAM:
+        if (mhpokeador_enabled.v) {
+            p=&mhpokeador_memory_pointer[address];             
+        }
+    break;     
 
   }
 
@@ -13652,7 +13666,14 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Transtape RAM");
         }
-    break;      
+    break;
+
+    case MEMORY_ZONE_MHPOKEADOR_RAM:
+        if (mhpokeador_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"MH Pokeador RAM");
+        }
+    break;          
 
   }
 
