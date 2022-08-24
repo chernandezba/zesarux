@@ -42,10 +42,9 @@ Microhobby Pokeador Automatico emulation
 #include "operaciones.h"
 #include "mem128.h"
 
-
+//https://trastero.speccy.org/cosas/Fernando/pokeador/
 
 z80_bit mhpokeador_enabled={0};
-
 
 
 z80_byte *mhpokeador_memory_pointer;
