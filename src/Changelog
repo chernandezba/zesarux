@@ -1,4 +1,4 @@
-Version 10.2-RC1 - Hysteria edition. 18 August 2022
+Version 10.2-RC2 - Hysteria edition. 18 August 2022
 
 Added new emulated machines:
 -ZX Spectrum 48k+
@@ -18,7 +18,7 @@ Added Transtape emulation
 Added Microhobby Pokeador Automatico emulation
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068, MK14, Chrome, Prism, Chloe, Sam Coupe
-Added setting for path where to download files from the speccy and zx81 online browser
+Added path setting where to download files from the speccy and zx81 online browser
 Added disk image browsing from storage MMC/IDE menus
 Added PZX load support as standard tape
 Added TAP to PZX converter
@@ -26,11 +26,6 @@ Added TAP to TZX turbo converter (TZX Turbo 4000 bauds, to use with Rodolfo Guer
 Added some actions than can be fired from command line and don't start ZEsarUX:
 --convert-tap-tzx, --convert-tap-tzx-turbo-rg, --convert-tap-pzx , --convert-tzx-tap, --convert-pzx-tap
 
-
-Improved ZX Spectrum Next emulation: added sprite rendering priority bit
-Improved ZRCP: allow to change command prompt
-Improved generated TZX and PZX files: include date and ZEsarUX version in header
-Improved Custom machine menu: added +2E MMC machine
 
 Improved Z88 emulation:
 -Changed colour palette to better match a real Z88
@@ -75,6 +70,11 @@ Improved HiLow DataDrive emulation:
 -Allow to Format, Browse and Chkdsk an Hilow DataDrive image (.ddh file)
 -Allow to convert audio from a real Hilow DataDrive tape to an image file (.ddh)
 -Added technical documentation on the extras package
+
+Improved ZX Spectrum Next emulation: added sprite rendering priority bit
+Improved ZRCP: allow to change command prompt
+Improved generated TZX and PZX files: include date and ZEsarUX version in header
+Improved Custom machine menu: added +2E MMC machine
 
 
 Fixed handling files larger than 2 GB on 32 bit CPU (it does apply to the Windows version even on a 64 bit CPU)
