@@ -139,6 +139,7 @@
 #include "hilow_datadrive_audio.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "mhpokeador.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -252,6 +253,7 @@ int storage_copy_devices_opcion_seleccionada=0;
 int multiface_opcion_seleccionada=0;
 int hilow_barbanegra_opcion_seleccionada=0;
 int transtape_opcion_seleccionada=0;
+int mhpokeador_opcion_seleccionada=0;
 
 
 
@@ -31979,6 +31981,109 @@ void menu_transtape(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_mhpokeador_enable(MENU_ITEM_PARAMETERS)
+{
+    if (mhpokeador_enabled.v) {
+        mhpokeador_disable();
+    }
+    else {
+        mhpokeador_enable();
+    }
+}
+
+
+int menu_hardware_mhpokeador_version_cond(void)
+{
+    if (mhpokeador_enabled.v) return 0;
+    else return 1;
+}
+
+
+void menu_hardware_mhpokeador_romfile(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="rom";
+    filtros[1]=0;
+
+
+    if (menu_filesel("Select ROM File",filtros,mhpokeador_rom_filename)==1) {
+        if (!si_existe_archivo(mhpokeador_rom_filename)) {
+            menu_error_message("File does not exist");
+            mhpokeador_rom_filename[0]=0;
+            return;
+        }
+
+        else {
+            //Comprobar aqui tambien el tamanyo
+            long long int size=get_file_size(mhpokeador_rom_filename);
+            if (size!=MHPOKEADOR_ROM_SIZE) {
+                menu_error_message("ROM file is not expected size");
+                mhpokeador_rom_filename[0]=0;
+                return;
+            }
+        }
+
+    }
+    //Sale con ESC
+    else {
+        //Quitar nombre
+        mhpokeador_rom_filename[0]=0;
+    }
+
+}
+
+void menu_mhpokeador(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_enable,
+                NULL,"[%c] ~~Pokeador Enabled", (mhpokeador_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable Microhobby Pokeador Automático");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable Microhobby Pokeador Automático");
+
+
+
+        char string_rom_file_shown[20];
+        menu_tape_settings_trunc_name(mhpokeador_rom_filename,string_rom_file_shown,20);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_romfile,menu_hardware_mhpokeador_version_cond,
+            "Rom file","Archivo Rom","Arxiu Rom");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(mhpokeador_rom_filename[0]==0 ? "Default" : string_rom_file_shown));
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&mhpokeador_opcion_seleccionada,&item_seleccionado,array_menu_common,"Microhobby Pokeador emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
 void menu_hardware_hilow_barbanegra_enable(MENU_ITEM_PARAMETERS)
 {
     if (hilow_bbn_enabled.v) {
@@ -32177,7 +32282,9 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'t');
         menu_add_item_menu_tiene_submenu(array_menu_common);       
 
-
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tiene_submenu(array_menu_common);
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

@@ -76,35 +76,42 @@ int mhpokeador_check_if_ram_area(z80_int dir)
     else return 0;
 }
 
-
+z80_byte *mhpokeador_return_memory_pointer(z80_int dir)
+{
+	if (dir>=0x60 && dir<=0x6f) {
+        //Primer KB de RAM
+        return &mhpokeador_memory_pointer[dir];
+    }
+    else {
+        //Segundo KB de RAM
+	    dir &= 1023;
+        return &mhpokeador_memory_pointer[1024+dir];
+    }    
+}
 
 
 z80_byte mhpokeador_read_ram_byte(z80_int dir)
 {
 
-	//printf ("Read ram byte from %04XH\n",dir);
-	
+    z80_byte *puntero;
 
-    dir &= (MHPOKEADOR_RAM_SIZE-1);
+    puntero=mhpokeador_return_memory_pointer(dir);
 
-
-	//La RAM esta despues de la rom
-	return mhpokeador_memory_pointer[MHPOKEADOR_ROM_SIZE+dir];
+	return *puntero;
 }
 
 void mhpokeador_poke_ram(z80_int dir,z80_byte value)
 {
 
 	if (mhpokeador_check_if_ram_area(dir) ) {
-		//printf ("Poke ram byte to %04XH with value %02XH\n",dir,value);
+		printf ("Poke ram byte to %04XH with value %02XH\n",dir,value);
 
-        dir &= (MHPOKEADOR_RAM_SIZE-1);
+        z80_byte *puntero;
 
-		//La RAM esta despues de la rom
-		mhpokeador_memory_pointer[MHPOKEADOR_ROM_SIZE+dir]=value;	
+        puntero=mhpokeador_return_memory_pointer(dir);
+        *puntero=value;
+
 	}
-
-
 
 }
 
@@ -173,7 +180,7 @@ z80_byte mhpokeador_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 
 void mhpokeador_nmi(void)
 {
-
+    //Realmente no hay que hacer nada, ni paginar ni nada...
 }
 
 
