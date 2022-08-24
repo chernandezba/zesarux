@@ -3510,6 +3510,7 @@ void set_machine_params(void)
 
 		multiface_enabled.v=0;
 
+        //Ya que se inicializa la maquina, todas las rutinas de nested core se pierden y hay que desactivar los interfaces asociados
 		dandanator_enabled.v=0;
 		superupgrade_enabled.v=0;
 		kartusho_enabled.v=0;
@@ -3518,6 +3519,8 @@ void set_machine_params(void)
 		hilow_enabled.v=0;
         samram_enabled.v=0;
         mhpokeador_enabled.v=0;
+        transtape_enabled.v=0;
+        hilow_bbn_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
