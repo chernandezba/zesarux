@@ -84,6 +84,7 @@ z80_byte *mhpokeador_return_memory_pointer(z80_int dir)
     }
     else {
         //Segundo KB de RAM
+        dir -=0x3900;
 	    dir &= 1023;
         return &mhpokeador_memory_pointer[1024+dir];
     }    

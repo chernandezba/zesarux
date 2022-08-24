@@ -47,7 +47,7 @@ extern void mhpokeador_nmi(void);
 
 extern z80_byte *mhpokeador_memory_pointer;
 
-
+extern int mhpokeador_tipo_rom_cargar;
 
 extern char mhpokeador_rom_filename[];
 

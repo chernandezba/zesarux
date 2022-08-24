@@ -31992,7 +31992,7 @@ void menu_hardware_mhpokeador_enable(MENU_ITEM_PARAMETERS)
 }
 
 
-int menu_hardware_mhpokeador_version_cond(void)
+int menu_hardware_mhpokeador_enabled_cond(void)
 {
     if (mhpokeador_enabled.v) return 0;
     else return 1;
@@ -32034,6 +32034,13 @@ void menu_hardware_mhpokeador_romfile(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_mhpokeador_tipo(MENU_ITEM_PARAMETERS)
+{
+    mhpokeador_tipo_rom_cargar++;
+    if (mhpokeador_tipo_rom_cargar>MHPOKEADOR_TIPO_ROM_TRANSFER) mhpokeador_tipo_rom_cargar=MHPOKEADOR_TIPO_ROM_POKEADOR;
+
+}
+
 void menu_mhpokeador(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -32054,13 +32061,24 @@ void menu_mhpokeador(MENU_ITEM_PARAMETERS)
         char string_rom_file_shown[20];
         menu_tape_settings_trunc_name(mhpokeador_rom_filename,string_rom_file_shown,20);
 
-        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_romfile,menu_hardware_mhpokeador_version_cond,
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_romfile,menu_hardware_mhpokeador_enabled_cond,
             "Rom file","Archivo Rom","Arxiu Rom");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",(mhpokeador_rom_filename[0]==0 ? "Default" : string_rom_file_shown));
 
+
+        
+        char buffer_tipo[30];
+        if (mhpokeador_tipo_rom_cargar==MHPOKEADOR_TIPO_ROM_TRANSFER) {
+            strcpy(buffer_tipo,"Transfer");
+        }
+        
+        else strcpy(buffer_tipo,"Pokeador");
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_tipo,menu_hardware_mhpokeador_enabled_cond,
+            "Type","Tipo","Tipus");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",buffer_tipo);
+
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_common);
 
