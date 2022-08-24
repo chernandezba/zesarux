@@ -126,9 +126,7 @@ microhobby: https://trastero.speccy.org/cosas/Fernando/pokeador/
 60H-6FH: ram
 3900H-3CFFH: ram
 
-Varios firmware:
--pokeador: Del programa pokeador.tap obtener el 1k que escribe en la 3900h. La modificacion sobre 66h,67h y 68h se hara a mano
--transfer: en mhtransfer.rom. Obtener 1kb de la 3900h. En 66H mete igual que el pokeador, un jp 3900h
+
 
 -transtape. estado
 funcionando todo?

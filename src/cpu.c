@@ -140,6 +140,7 @@
 #include "menu_filesel.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "mhpokeador.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -3516,6 +3517,7 @@ void set_machine_params(void)
 		betadisk_enabled.v=0;
 		hilow_enabled.v=0;
         samram_enabled.v=0;
+        mhpokeador_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
