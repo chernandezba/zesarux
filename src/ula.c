@@ -37,6 +37,7 @@
 #include "samram.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "mhpokeador.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -334,7 +335,11 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (transtape_enabled.v) {
         transtape_nmi();
-    }    
+    }  
+
+    if (mhpokeador_enabled.v) {
+        mhpokeador_nmi();
+    }      
 
 }
 
@@ -408,7 +413,12 @@ void generate_nmi_prepare_fetch(void)
     if (transtape_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }    
+    } 
+
+    if (mhpokeador_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }       
 
 }
 
