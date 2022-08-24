@@ -26,10 +26,12 @@
 
 #define MHPOKEADOR_ROM_POKEADOR "mhpokeador.rom"
 #define MHPOKEADOR_ROM_TRANSFER "mhpokeador-transfer.rom"
+#define MHPOKEADOR_ROM_SALVAPAN "mhpokeador-salvapan.rom"
 
 //Diferentes firmwares a cargar
 #define MHPOKEADOR_TIPO_ROM_POKEADOR 0
 #define MHPOKEADOR_TIPO_ROM_TRANSFER 1
+#define MHPOKEADOR_TIPO_ROM_SALVAPAN 2
 
 
 #define MHPOKEADOR_RAM_SIZE 2048

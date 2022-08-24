@@ -32037,7 +32037,7 @@ void menu_hardware_mhpokeador_romfile(MENU_ITEM_PARAMETERS)
 void menu_hardware_mhpokeador_tipo(MENU_ITEM_PARAMETERS)
 {
     mhpokeador_tipo_rom_cargar++;
-    if (mhpokeador_tipo_rom_cargar>MHPOKEADOR_TIPO_ROM_TRANSFER) mhpokeador_tipo_rom_cargar=MHPOKEADOR_TIPO_ROM_POKEADOR;
+    if (mhpokeador_tipo_rom_cargar>MHPOKEADOR_TIPO_ROM_SALVAPAN) mhpokeador_tipo_rom_cargar=MHPOKEADOR_TIPO_ROM_POKEADOR;
 
 }
 
@@ -32071,8 +32071,13 @@ void menu_mhpokeador(MENU_ITEM_PARAMETERS)
         if (mhpokeador_tipo_rom_cargar==MHPOKEADOR_TIPO_ROM_TRANSFER) {
             strcpy(buffer_tipo,"Transfer");
         }
+
+        else if (mhpokeador_tipo_rom_cargar==MHPOKEADOR_TIPO_ROM_SALVAPAN) {
+            strcpy(buffer_tipo,"Save Screen");
+        }        
         
         else strcpy(buffer_tipo,"Pokeador");
+
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_mhpokeador_tipo,menu_hardware_mhpokeador_enabled_cond,
             "Type","Tipo","Tipus");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%s] ",buffer_tipo);
@@ -32286,23 +32291,25 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
     do {
 
-    
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
+        menu_add_item_menu_shortcut(array_menu_common,'b');
+        menu_add_item_menu_tiene_submenu(array_menu_common);        
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
+        menu_add_item_menu_shortcut(array_menu_common,'p');
+        menu_add_item_menu_tiene_submenu(array_menu_common);    
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_multiface,NULL,"~~Multiface");
         menu_add_item_menu_shortcut(array_menu_common,'m');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
-        menu_add_item_menu_shortcut(array_menu_common,'b');
-        menu_add_item_menu_tiene_submenu(array_menu_common);
+
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Transtape");
         menu_add_item_menu_shortcut(array_menu_common,'t');
         menu_add_item_menu_tiene_submenu(array_menu_common);       
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
-        menu_add_item_menu_shortcut(array_menu_common,'p');
-        menu_add_item_menu_tiene_submenu(array_menu_common);
+
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

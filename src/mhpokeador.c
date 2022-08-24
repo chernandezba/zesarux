@@ -254,6 +254,7 @@ int mhpokeador_load_rom(void)
     else {
         //Roms por defecto
         if (mhpokeador_tipo_rom_cargar==MHPOKEADOR_TIPO_ROM_TRANSFER) strcpy(nombre_rom,MHPOKEADOR_ROM_TRANSFER);
+        else if (mhpokeador_tipo_rom_cargar==MHPOKEADOR_TIPO_ROM_SALVAPAN) strcpy(nombre_rom,MHPOKEADOR_ROM_SALVAPAN);
         else strcpy(nombre_rom,MHPOKEADOR_ROM_POKEADOR);
     }
 
