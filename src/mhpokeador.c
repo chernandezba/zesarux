@@ -263,7 +263,7 @@ int mhpokeador_load_rom(void)
 
     debug_printf (VERBOSE_INFO,"Loading mhpokeador rom %s",nombre_rom);
 
-    ptr_mhpokeador_romfile=fopen(nombre_rom,"rb");
+    open_sharedfile(nombre_rom,&ptr_mhpokeador_romfile);
     if (!ptr_mhpokeador_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }
@@ -283,7 +283,7 @@ int mhpokeador_load_rom(void)
 
 
     if (leidos!=MHPOKEADOR_ROM_SIZE || ptr_mhpokeador_romfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error reading mhpokeador rom");
+        debug_printf (VERBOSE_ERR,"Error reading Microhobby Pokeador Automatico rom file: %s",nombre_rom);
         return 1;
     }
 
