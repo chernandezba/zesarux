@@ -39,16 +39,16 @@ Improved Z88 emulation:
 -Inserting Z88 cards: now it does not hang the emulator during the insert
 -Selecting Z88 cards: submenus for types and sizes
 -Z88 footer: show when writing a card in slot 3, colors follow style
--Z88 device icons: different icons for slot 1,2,3, show when writing a card in slot 3
+-Z88 device icons: different icons for slot 1,2,3, show when writing a card in slot 3, show when flap is open
 
 Improved File selector: 
 -Allow to have a full screen preview if window is big enough
--Better legend key explanation
+-Better hotkeys explanation
 
 Improved Debugging: 
 -Added a setting to show on which scanline has been executed a Halt, inverting border color
 -When enabling step mode, emulation is paused on all menus
--Preserve step mode when exiting debug cpu that was opened by breakpoint
+-Preserve step mode when exiting debug cpu that was opened by a breakpoint
 -When a breakpoint is fired, step mode is kept on all menus
 -Breakpoints actions "call", "printc", "set-register" and "write" can now use expressions instead of fixed values
 -Added breakpoint actions: "disassemble", "printregs"
@@ -66,13 +66,13 @@ Improved ZX Vision:
 
 Improved ZX Desktop:
 -Added configurable icons to the ZX Desktop: icons to windows, icons to actions, file links
--Right mouse button is used now for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
+-Right mouse button is now used for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine
 -Added setting to mix scr image with background
 
 Improved HiLow DataDrive emulation:
--Allow to Format, Browse and Chkdsk an Hilow DataDrive image (.ddh file)
+-Allow to Format, Browse and Chkdsk a Hilow DataDrive image (.ddh file)
 -Allow to convert audio from a real Hilow DataDrive tape to an image file (.ddh)
 -Added technical documentation on the extras package
 
@@ -84,10 +84,10 @@ Improved Custom machine menu: added +2E MMC machine
 
 * Fixes:
 
-Fixed handling files larger than 2 GB on 32 bit CPU (it does apply to the Windows version even on a 64 bit CPU)
+Fixed handling files larger than 2 GB on 32 bit CPU (it also applies to the Windows version even on a 64 bit CPU)
 Fixed using mmc images larger than 2 GB
-Fixed redrawing ZX Desktop when resizing window
-Fixed hang when using View Variables and memory corrupted
+Fixed redrawing ZX Desktop when resizing main ZEsarUX window
+Fixed hang when using View Variables and memory is corrupted
 Fixed hang pressing two times F-key assigned to Pause (Mac OS unaffected)
 Fixed bug that may crash ZEsarUX when starting machine ZX Spectrum +2 Spanish. This is a bug that has always existed
 Fixed losing inserted Z88 cards when changing cpu speed
@@ -95,7 +95,7 @@ Fixed Z80 behavior after EI or DD/FD prefixes and interrupts
 Fixed Z80 behavior running block opcodes (LDIR, etc) and interrupts
 Fixed .Z80 Timex TS2068 snapshot loading
 Fixed showing Recent Files when file name contains character %
-Fixed HiLow DataDrive emulation
+Fixed HiLow DataDrive emulation: can now load, save, format... all actions are now working
 Fixed crash (stack smashing detected) when showing Debug CPU window (and compiled using -fstack-protector)
 Fixed segfault when starting ZEsarUX + disabled welcome splash message + enabled reopen windows on start setting + no window to restore
 Fixed trap print numbers on Spectrum and ZX81 (setting --chardetectcompatnum)
@@ -113,10 +113,10 @@ Fixed ZX Vision:
 -Fixed showing cursor on edit fields and text length longer than visible
 
 
-Some other minor bugfixes and improvements
+* As always, there are some other minor bugfixes and improvements
 
+-----------------------------------------------------------------
 
-------------------------------------------
 
 Version 10.1 - Carrier Command edition. 06 May 2022
 
