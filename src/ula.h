@@ -94,4 +94,6 @@ extern void generate_nmi_prepare_fetch(void);
 
 extern z80_bit dinamic_sd1;
 
+extern z80_byte get_ula_databus_value(void);
+
 #endif

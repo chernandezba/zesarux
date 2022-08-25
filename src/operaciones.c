@@ -5985,7 +5985,7 @@ z80_byte idle_bus_port_atribute(void)
     14347 and 14368 as used by Ramsoft.
 	*/
 	int t_estados_en_linea=(t_estados % screen_testados_linea);
-	if (t_estados_en_linea>=128) return ula_databus_value;
+	if (t_estados_en_linea>=128) return get_ula_databus_value();
 
 	switch( t_estados_en_linea % 8 ) {
 		/* Attribute bytes */
@@ -6003,7 +6003,7 @@ z80_byte idle_bus_port_atribute(void)
 
 		default:
 		/* Idle bus */
-			return ula_databus_value;
+			return get_ula_databus_value();
 		break;
 
 	}

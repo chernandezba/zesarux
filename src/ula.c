@@ -775,3 +775,9 @@ BREAK SPACE        %^
 
 
 }
+
+
+z80_byte get_ula_databus_value(void)
+{
+    return ula_databus_value;
+}
