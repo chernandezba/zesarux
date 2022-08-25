@@ -102,6 +102,10 @@ z80_bit recreated_zx_keyboard_pressed_caps={0};
 int nmi_pending_pre_opcode=0;
 int nmi_pending_post_opcode=0;
 
+//Dinamic SD1. Alterar bit 5 a 0. Realmente pone cualquier puerto que no modifique explicitamente este bit, a 0
+//A la práctica se usa con Camelot Warriors y el puerto FEH
+z80_bit dinamic_sd1={0};
+
 void ula_pentagon_timing_common(void)
 {
 

@@ -193,6 +193,8 @@ __FEATURES__
 
 * Emulates Microhobby Pokeador Automatico
 
+* Emulates Dinamic SD1 emulation
+
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emulates +3 Disk

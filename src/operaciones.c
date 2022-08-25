@@ -6534,6 +6534,8 @@ z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
                 //issue 2
                 else valor=valor|64;
 
+                //Dinamic SD1
+                if (dinamic_sd1.v) valor=valor & (255-32);
 
                 if (realtape_inserted.v && realtape_playing.v) {
                         if (realtape_get_current_bit_playing()) {

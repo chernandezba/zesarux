@@ -4683,6 +4683,10 @@ void menu_hardware_settings_set_z88_clock(MENU_ITEM_PARAMETERS)
     menu_generic_message_splash("Set Z88 clock","OK. Clock synchronized");
 }
 
+void menu_hardware_dinamic_sd1(MENU_ITEM_PARAMETERS)
+{
+    dinamic_sd1.v ^=1;
+}
 
 //menu hardware settings
 void menu_hardware_settings(MENU_ITEM_PARAMETERS)
@@ -4770,6 +4774,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA emulation",(datagear_dma_emulation.v==1 ? 'X' : ' '));
+
+            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1 emulation",(dinamic_sd1.v ? 'X' : ' '));
 		}		
 
 

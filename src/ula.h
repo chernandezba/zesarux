@@ -92,4 +92,6 @@ extern int nmi_pending_pre_opcode;
 extern int nmi_pending_post_opcode;
 extern void generate_nmi_prepare_fetch(void);
 
+extern z80_bit dinamic_sd1;
+
 #endif
