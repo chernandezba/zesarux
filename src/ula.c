@@ -779,5 +779,10 @@ BREAK SPACE        %^
 
 z80_byte get_ula_databus_value(void)
 {
-    return ula_databus_value;
+
+    z80_byte valor=ula_databus_value;
+
+    if (dinamic_sd1.v) valor=valor & (255-32);
+
+    return valor;
 }

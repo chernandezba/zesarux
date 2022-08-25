@@ -277,8 +277,8 @@ tiempo de proceso en 10 segundos: user	0m1.239s
 
         //Para el bus idle le decimos que estamos en zona de border superior o inferior y por tanto retornamos 255
         else {
-            last_ula_attribute=ula_databus_value;
-            last_ula_pixel=ula_databus_value;
+            last_ula_attribute=get_ula_databus_value();
+            last_ula_pixel=get_ula_databus_value();
         }
     }
 }

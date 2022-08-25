@@ -556,7 +556,7 @@ z80_bit inves_ula_bright_error={1};
 
 z80_int get_im2_interrupt_vector(void)
 {
-    return reg_i*256+ula_databus_value;
+    return reg_i*256+get_ula_databus_value();
 }
 
 //Inves. Contador ula delay. mas o menos exagerado
