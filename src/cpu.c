@@ -554,6 +554,11 @@ z80_byte last_inves_low_ram_poke_menu=255;
 
 z80_bit inves_ula_bright_error={1};
 
+/*
+el valor del vector de interrupciones es I*256+FFh simplemente porque durante la INT, 
+la ULA siempre está generando el borde, por lo que el valor del bus flotante es "todo a alta impedancia" y eso, 
+en el Spectrum significa "1"
+*/
 z80_int get_im2_interrupt_vector(void)
 {
     return reg_i*256+get_ula_databus_value();

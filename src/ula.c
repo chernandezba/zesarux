@@ -47,7 +47,7 @@ z80_byte zesarux_zxi_last_register=0;
 
 z80_byte zesarux_zxi_registers_array[256];
 
-//valor que la ula deja en el bus de datos. habitualmente 255
+//valor que la ula deja en el bus de datos. habitualmente 255 (o sea todo a alta impedancia)
 z80_byte ula_databus_value=255;
 
 //ultimo valor enviado al border, tal cual
