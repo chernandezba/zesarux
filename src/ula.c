@@ -782,6 +782,8 @@ z80_byte get_ula_databus_value(void)
 
     z80_byte valor=ula_databus_value;
 
+    //Para funciones que leen directamente con esta funcion y no idle_bus_port_atribute,
+    //tenemos que aplicar mascara SD1 si esta activo
     if (dinamic_sd1.v) valor=valor & (255-32);
 
     return valor;
