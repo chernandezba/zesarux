@@ -103,6 +103,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);
 
 void set_value_beeper (int v);
 
+z80_byte idle_bus_port_atribute(void);
 
 //Tablas para instrucciones adc, sbc y otras
 z80_byte overflow_add_table[] = { 0, 0, 0, FLAG_PV, FLAG_PV, 0, 0, 0 };
@@ -1641,7 +1642,7 @@ z80_byte peek_byte_no_time_spectrum_16k(z80_int dir)
 	#endif
 
         if (dir<32768) return memoria_spectrum[dir];
-	else return 255;
+	else return idle_bus_port(255); //No hay memoria alli, devolvemos lo que la ula ha dejado en el bus
 }
 
 z80_byte peek_byte_spectrum_16k(z80_int dir)
@@ -1660,7 +1661,7 @@ z80_byte peek_byte_spectrum_16k(z80_int dir)
 
 
         if (dir<32768) return memoria_spectrum[dir];
-        else return 255;
+        else return idle_bus_port(255); //No hay memoria alli, devolvemos lo que la ula ha dejado en el bus
 }
 
 z80_byte *zxuno_return_segment_memory(z80_int dir)
