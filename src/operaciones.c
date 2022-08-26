@@ -5938,7 +5938,7 @@ z80_byte lee_puerto_spectrum(z80_byte puerto_h,z80_byte puerto_l)
 }
 
 
-z80_byte idle_bus_port_atribute(void)
+z80_byte idle_bus_port_atribute_aux(void)
 {
 
 	//Retorna el byte que lee la ULA
@@ -6012,6 +6012,14 @@ z80_byte idle_bus_port_atribute(void)
 
 }
 
+z80_byte idle_bus_port_atribute(void)
+{
+	z80_byte valor=idle_bus_port_atribute_aux();
+
+	if (dinamic_sd1.v) valor=valor & (255-32);
+
+	return valor;
+}
 
 z80_byte idle_bus_port(z80_int puerto)
 {
