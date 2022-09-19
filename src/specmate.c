@@ -100,7 +100,10 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
     */
 
     //Direccion de retorno
-    if (specmate_mapped_rom_memory.v && reg_pc==0x72) {
+    //Aqui es conveniente porque el stack hay que hacerle un pop pero....
+    //ahi hay un pop af y entonces alteramos af
+    //quiza se puede simular ese pop sin tocar af y volver en 72H????
+    if (specmate_mapped_rom_memory.v && reg_pc==0x71) {
         printf("Unmapping specmate rom from dir %X\n",reg_pc);
         specmate_mapped_rom_memory.v=0;
     }

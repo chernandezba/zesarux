@@ -123,7 +123,7 @@ phoenix
 specmate 1 y 2:  http://projectspeccy.com/projects/
 dynamid 3
 
-specmate: parece que se desmapea rom al llegar a la 72H
+specmate: parece que se desmapea rom al llegar a la 72H???
 70H POP HL
 71H POP AF
 72H RETN
