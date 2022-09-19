@@ -123,4 +123,9 @@ phoenix
 specmate 1 y 2:  http://projectspeccy.com/projects/
 dynamid 3
 
+specmate: parece que se desmapea rom al llegar a la 72H
+70H POP HL
+71H POP AF
+72H RETN
+ 
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80

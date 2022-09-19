@@ -32359,7 +32359,7 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'m');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_transtape,NULL,"~~Specmate");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_specmate,NULL,"~~Specmate");
         menu_add_item_menu_shortcut(array_menu_common,'s');
         menu_add_item_menu_tiene_submenu(array_menu_common); 
 

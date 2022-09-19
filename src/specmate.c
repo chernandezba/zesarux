@@ -45,6 +45,7 @@ z80_bit specmate_enabled={0};
 z80_byte *specmate_memory_pointer;
 
 
+int specmate_nested_id_core;
 int specmate_nested_id_peek_byte;
 int specmate_nested_id_peek_byte_no_time;
 
@@ -88,8 +89,30 @@ z80_byte specmate_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 	return valor_leido;
 }
 
+z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
+{
+    //printf("specmate core dir %X\n",reg_pc);
+    /*
+    specmate: parece que se desmapea rom al llegar a la 72H
+    70H POP HL
+    71H POP AF
+    72H RETN    
+    */
+
+    //Direccion de retorno
+    if (specmate_mapped_rom_memory.v && reg_pc==0x72) {
+        printf("Unmapping specmate rom from dir %X\n",reg_pc);
+        specmate_mapped_rom_memory.v=0;
+    }
 
 
+    //Llamar a anterior
+    debug_nested_core_call_previous(specmate_nested_id_core);
+
+    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
+    return 0;    
+
+}
 
 void specmate_nmi(void)
 {
@@ -105,13 +128,13 @@ void specmate_nmi(void)
 //Establecer rutinas propias. Solo tiene rom por tanto peek y no poke
 void specmate_set_peek_functions(void)
 {
-    debug_printf (VERBOSE_DEBUG,"Setting specmate peek functions");
+    debug_printf (VERBOSE_DEBUG,"Setting specmate peek/core functions");
 
 	//Asignar mediante nuevas funciones de core anidados
 	specmate_nested_id_peek_byte=debug_nested_peek_byte_add(specmate_peek_byte,"specmate peek_byte");
 	specmate_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(specmate_peek_byte_no_time,"specmate peek_byte_no_time");
 
-
+    specmate_nested_id_core=debug_nested_core_add(cpu_core_loop_specmate,"specmate core");
 
 }
 
@@ -123,6 +146,7 @@ void specmate_restore_peek_poke_functions(void)
 
 	debug_nested_peek_byte_del(specmate_nested_id_peek_byte);
 	debug_nested_peek_byte_no_time_del(specmate_nested_id_peek_byte_no_time);
+    debug_nested_core_del(specmate_nested_id_core);
 
 
 }

@@ -86,7 +86,7 @@ So if you want to demonstrate your appreciation to it, you can donate using Payp
 [ZEsarUX donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=E5RSRST8N7KWS&lc=ES&item_name=Donativo%20ZEsarUX&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
 
 
-All donors will appear in the acknowledgements file
+All donors will appear in the DONORS file
 
 Thanks!
 
@@ -193,7 +193,9 @@ __FEATURES__
 
 * Emulates Microhobby Pokeador Automatico
 
-* Emulates Dinamic SD1 emulation
+* Emulates Dinamic SD1
+
+* Emulates Spec-mate
 
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
