@@ -141,6 +141,7 @@
 #include "hilow_barbanegra.h"
 #include "transtape.h"
 #include "mhpokeador.h"
+#include "specmate.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1363,6 +1364,10 @@ util_stats_init();
 	if (transtape_enabled.v) {
 		transtape_reset();
 	}    
+
+	if (specmate_enabled.v) {
+		specmate_reset();
+	}      
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
@@ -3527,6 +3532,7 @@ void set_machine_params(void)
         mhpokeador_enabled.v=0;
         multiface_enabled.v=0;
         transtape_enabled.v=0;
+        specmate_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
