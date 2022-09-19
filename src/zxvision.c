@@ -9217,8 +9217,10 @@ void zxvision_draw_below_windows_nospeech(zxvision_window *w)
 	//printf ("despues draw below\n");
 }
 
-//Controlar rangos excepto tamaño ventana en estatico
-void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visible_height)
+//Ver si posicion y tamaño ventana admitidos
+//0: no admitido
+//no 0: admitido
+int zxvision_new_window_check_range_aux(int x,int y,int visible_width,int visible_height)
 {
 
 	//Controlar rangos. Cualquier valor que se salga de rango, hacemos ventana maximo 32x24
@@ -9227,19 +9229,36 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
 
 	if (
 
-	 (*x<0               || *x>ZXVISION_MAX_X_VENTANA) ||
-	 (*y<0               || *y>ZXVISION_MAX_Y_VENTANA) ||
+	 (x<0               || x>ZXVISION_MAX_X_VENTANA) ||
+	 (y<0               || y>ZXVISION_MAX_Y_VENTANA) ||
 
 	 //Rangos estaticos de ventana
-	 (*visible_width<=0) ||
-	 (*visible_height<=0) ||
+	 (visible_width<=0) ||
+	 (visible_height<=0) ||
 
 	//Rangos de final de ventana. ZXVISION_MAX_X_VENTANA normalmente vale 31. ZXVISION_MAX_Y_VENTANA normalmente vale 23. Si esta en ancho 31 y le suma 1, es ok. Si suma 2, es error
-	 ((*x)+(*visible_width)>ZXVISION_MAX_X_VENTANA+1) ||
-	 ((*y)+(*visible_height)>ZXVISION_MAX_Y_VENTANA+1) 
+	 (x+visible_width>ZXVISION_MAX_X_VENTANA+1) ||
+	 (y+visible_height>ZXVISION_MAX_Y_VENTANA+1) 
 
 	)
 		{
+                return 0;
+
+		}
+
+    else return 1;
+}
+
+//Controlar rangos excepto tamaño ventana en estatico
+void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visible_height)
+{
+
+	//Controlar rangos. Cualquier valor que se salga de rango, hacemos ventana maximo 32x24
+
+	//Rango xy es el total de ventana. Rango ancho y alto es 32x24, aunque luego se pueda hacer mas grande
+
+	if (!zxvision_new_window_check_range_aux(*x,*y,*visible_width,*visible_height)) {
+		
                 debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Returning fixed safe values",*x,*y,*visible_width,*visible_height);
                 //printf ("zxvision_new_window: window out of range: %d,%d %dx%d. Returning fixed safe values\n",*x,*y,*visible_width,*visible_height);
                 *x=0;
@@ -9247,7 +9266,7 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
                 *visible_width=ZXVISION_MAX_ANCHO_VENTANA;
                 *visible_height=ZXVISION_MAX_ALTO_VENTANA;
 
-		}
+    }
 }
 
 //Comprobar que el alto y ancho no pase de un fijo estatico (32x24 normalmente),

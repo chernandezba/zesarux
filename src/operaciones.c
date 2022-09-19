@@ -1641,7 +1641,7 @@ z80_byte peek_byte_no_time_spectrum_16k(z80_int dir)
 		set_visualmemreadbuffer(dir);
 	#endif
 
-        if (dir<32768) return memoria_spectrum[dir];
+    if (dir<32768) return memoria_spectrum[dir];
 	else return idle_bus_port(255); //No hay memoria alli, devolvemos lo que la ula ha dejado en el bus
 }
 
@@ -1652,16 +1652,16 @@ z80_byte peek_byte_spectrum_16k(z80_int dir)
 	#endif
 
 #ifdef EMULATE_CONTEND
-        if ( (dir&49152)==16384) {
-                t_estados += contend_table[ t_estados ];
-        }
+    if ( (dir&49152)==16384) {
+            t_estados += contend_table[ t_estados ];
+    }
 #endif
 
-        t_estados += 3;
+    t_estados += 3;
 
 
-        if (dir<32768) return memoria_spectrum[dir];
-        else return idle_bus_port(255); //No hay memoria alli, devolvemos lo que la ula ha dejado en el bus
+    if (dir<32768) return memoria_spectrum[dir];
+    else return idle_bus_port(255); //No hay memoria alli, devolvemos lo que la ula ha dejado en el bus
 }
 
 z80_byte *zxuno_return_segment_memory(z80_int dir)
