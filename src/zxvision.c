@@ -9238,10 +9238,10 @@ int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 	 
 
 	)
-		{
-            return 0;
+    {
+        return 0;
 
-		}
+    }
 
     else return 1;
 }
@@ -9267,10 +9267,10 @@ int zxvision_new_window_check_range_aux_y(int y,int visible_height)
 	 (y+visible_height>ZXVISION_MAX_Y_VENTANA+1) 
 
 	)
-		{
-            return 0;
+    {
+        return 0;
 
-		}
+    }
 
     else return 1;
 }
