@@ -9284,6 +9284,9 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
 	//Rango xy es el total de ventana. Rango ancho y alto es 32x24, aunque luego se pueda hacer mas grande
 
     //Controlamos cada parametro por separado, para cambiar lo minimo
+    //TODO: esto se podria hacer aun mejor, usando dos funciones aux para x, y otras dos para y, y mirando si
+    //no es valida la funcion solo por posicion x (y por tanto cambiariamos la x) o si tambien es culpa de que la x + ancho 
+    //esta fuera de pantalla (con lo que habria que cambiar x primero, y luego ancho si conviene). Y lo mismo para y, alto
 	if (!zxvision_new_window_check_range_aux_x(*x,*visible_width)) {
 		
         debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting x position",*x,*y,*visible_width,*visible_height);
