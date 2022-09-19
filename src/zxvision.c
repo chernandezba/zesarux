@@ -9223,9 +9223,6 @@ void zxvision_draw_below_windows_nospeech(zxvision_window *w)
 int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 {
 
-	//Controlar rangos. Cualquier valor que se salga de rango, hacemos ventana maximo 32x24
-
-	//Rango xy es el total de ventana. Rango ancho y alto es 32x24, aunque luego se pueda hacer mas grande
 
 	if (
 
@@ -9236,13 +9233,13 @@ int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 	 (visible_width<=0) ||
 	 
 
-	//Rangos de final de ventana. ZXVISION_MAX_X_VENTANA normalmente vale 31. ZXVISION_MAX_Y_VENTANA normalmente vale 23. Si esta en ancho 31 y le suma 1, es ok. Si suma 2, es error
+	//Rangos de final de ventana. 
 	 (x+visible_width>ZXVISION_MAX_X_VENTANA+1) 
 	 
 
 	)
 		{
-                return 0;
+            return 0;
 
 		}
 
@@ -9255,9 +9252,6 @@ int zxvision_new_window_check_range_aux_x(int x,int visible_width)
 int zxvision_new_window_check_range_aux_y(int y,int visible_height)
 {
 
-	//Controlar rangos. Cualquier valor que se salga de rango, hacemos ventana maximo 32x24
-
-	//Rango xy es el total de ventana. Rango ancho y alto es 32x24, aunque luego se pueda hacer mas grande
 
 	if (
 
@@ -9268,13 +9262,13 @@ int zxvision_new_window_check_range_aux_y(int y,int visible_height)
 	 
 	 (visible_height<=0) ||
 
-	//Rangos de final de ventana. ZXVISION_MAX_X_VENTANA normalmente vale 31. ZXVISION_MAX_Y_VENTANA normalmente vale 23. Si esta en ancho 31 y le suma 1, es ok. Si suma 2, es error
+	//Rangos de final de ventana. 
 	 
 	 (y+visible_height>ZXVISION_MAX_Y_VENTANA+1) 
 
 	)
 		{
-                return 0;
+            return 0;
 
 		}
 
@@ -9292,27 +9286,28 @@ void zxvision_new_window_check_range(int *x,int *y,int *visible_width,int *visib
     //Controlamos cada parametro por separado, para cambiar lo minimo
 	if (!zxvision_new_window_check_range_aux_x(*x,*visible_width)) {
 		
-                debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting x position",*x,*y,*visible_width,*visible_height);
-                *x=0;
-    }
-
-	if (!zxvision_new_window_check_range_aux_y(*y,*visible_height)) {
-		
-                debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting y position",*x,*y,*visible_width,*visible_height);
-                *y=0;
+        debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting x position",*x,*y,*visible_width,*visible_height);
+        *x=0;
     }
 
 	if (!zxvision_new_window_check_range_aux_x(*x,*visible_width)) {
 		
-                debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting visible width",*x,*y,*visible_width,*visible_height);
-                *visible_width=ZXVISION_MAX_ANCHO_VENTANA;
+        debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting visible width",*x,*y,*visible_width,*visible_height);
+        *visible_width=ZXVISION_MAX_ANCHO_VENTANA;
 
-    }
+    }    
 
 	if (!zxvision_new_window_check_range_aux_y(*y,*visible_height)) {
 		
-                debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting visible height",*x,*y,*visible_width,*visible_height);
-                *visible_height=ZXVISION_MAX_ALTO_VENTANA;
+        debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting y position",*x,*y,*visible_width,*visible_height);
+        *y=0;
+    }
+
+
+	if (!zxvision_new_window_check_range_aux_y(*y,*visible_height)) {
+		
+        debug_printf (VERBOSE_INFO,"zxvision_new_window: window out of range: %d,%d %dx%d. Adjusting visible height",*x,*y,*visible_width,*visible_height);
+        *visible_height=ZXVISION_MAX_ALTO_VENTANA;
 
     }            
 }

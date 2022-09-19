@@ -63,6 +63,7 @@ Improved ZX Vision:
 -Reorder windows when changing machine but only when ZEsarUX window is smaller than previous one
 -Custom arrows characters
 -Windows are now restored by default on starting ZEsarUX
+-Better resize & position for new windows out of range
 
 Improved ZX Desktop:
 -Added configurable icons to the ZX Desktop: icons to windows, icons to actions, file links
