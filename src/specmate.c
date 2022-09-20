@@ -127,7 +127,7 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
     //67H PUSH HL    
 
     if (specmate_mapped_rom_memory.v && reg_pc==0x71) {
-        printf("Unmapping specmate rom from dir %X\n",reg_pc);
+        //printf("Unmapping specmate rom from dir %X\n",reg_pc);
         specmate_mapped_rom_memory.v=0;
     }
 

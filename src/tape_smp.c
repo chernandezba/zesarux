@@ -1048,7 +1048,7 @@ void spec_debug_cabecera(int indice,int leidos)
 	debug_printf (VERBOSE_INFO,"- Length: %u Parm1: %u Parm2: %u",len,parm1,parm2);
 
     if (main_spec_rwaatap_pointer_print!=NULL) {
-        sprintf (buffer_string,"- Length:%u Parm1: %u Parm2: %u\n",len,parm1,parm2);
+        sprintf (buffer_string,"- Length: %u Parm1: %u Parm2: %u\n",len,parm1,parm2);
         int nocabe=util_concat_string(main_spec_rwaatap_pointer_print,buffer_string,main_spec_rwaatap_pointer_print_max);
         if (nocabe) return;
     }        
