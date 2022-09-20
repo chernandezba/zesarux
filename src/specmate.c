@@ -21,7 +21,7 @@
 
 /*
 
-Microhobby Pokeador Automatico emulation
+Specmate emulation
 
 */
 
@@ -51,7 +51,21 @@ int specmate_nested_id_peek_byte_no_time;
 
 z80_bit specmate_mapped_rom_memory={0};
 
+/*
+La rom que usamos es probablemente la versión 1, según la info de microhobby 195 pg 21:
 
+SPECMATE1 y 2: Realizando un
+«CAT T:» y si el arranque del programa
+está en la línea 20, para ver a cuál de
+los dos tipos corresponde, pasamos el
+ordenador a modo 48K, tecleamos
+MERGE' y miramos la posición de me-
+moria 23800 (PRINT PEEK 23800); si en
+esa dirección encontramos un 237, se
+tratará de la versión 1, siendo un 6 lo
+que encontramos en esa posición de
+memoria para la versión 2 de este trans-fer
+*/
 
 z80_byte specmate_read_rom_byte(z80_int dir)
 {

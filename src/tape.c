@@ -59,6 +59,7 @@
 #include "zvfs.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "specmate.h"
 
 #include "autoselectoptions.h"
 
@@ -1349,7 +1350,12 @@ int tap_save_detect(void)
     //Transtape se entra desde 3800h, en modo grabacion sin menu
     else if (transtape_enabled.v && transtape_mapped_rom_memory.v) {
         if (reg_pc!=0x3804) return 0;
-    }    
+    }   
+
+    //Specmate
+    else if (specmate_enabled.v && specmate_mapped_rom_memory.v) {
+        if (reg_pc!=0x0d9b) return 0;
+    }
 
     else if (reg_pc!=1222) return 0;
 

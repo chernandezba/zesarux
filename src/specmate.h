@@ -39,4 +39,6 @@ extern void specmate_nmi(void);
 
 extern z80_byte *specmate_memory_pointer;
 
+extern z80_bit specmate_mapped_rom_memory;
+
 #endif
