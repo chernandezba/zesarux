@@ -253,7 +253,7 @@ void menu_file_viewer_read_text_file(char *title,char *file_name)
 		debug_printf(VERBOSE_DEBUG,"File 17 bytes length and first byte is <4: assume Spectrum tape header");
 
 		//int longitud_bloque;
-		char buffer_texto[40];
+		char buffer_texto[60];
 
         	z80_byte flag=0;
 		z80_int longitud=19;
@@ -3198,7 +3198,7 @@ void menu_tape_browser_show(char *filename)
         zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
         //fclose(ptr_tapebrowser);
 
-	char buffer_texto[40];
+	char buffer_texto[60];
 
 	int longitud_bloque;
 

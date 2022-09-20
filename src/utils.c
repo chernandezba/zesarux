@@ -11816,7 +11816,9 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 			//Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
 			switch (first_byte) {
 				case 0:
-					sprintf(texto,"Program %s",buffer_nombre);
+                    //Si tiene autoinicio
+                    if (cabecera_inicio<32768) sprintf(texto,"Program %s [LINE %d]",buffer_nombre,cabecera_inicio);
+					else sprintf(texto,"Program %s",buffer_nombre);
 				break;
 
 				case 1:

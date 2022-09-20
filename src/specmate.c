@@ -131,6 +131,7 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
         specmate_mapped_rom_memory.v=0;
     }
 
+    //TODO: parece que specmate (quizá solo versión 2) utiliza dirección 99H para mapear
 
     //Llamar a anterior
     debug_nested_core_call_previous(specmate_nested_id_core);

@@ -82,6 +82,7 @@ Improved ZX Spectrum Next emulation: added sprite rendering priority bit
 Improved ZRCP: allow to change command prompt
 Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
+Improved Tape browser: show autostart line on basic blocks
 
 
 * Fixes:
