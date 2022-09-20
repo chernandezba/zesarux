@@ -144,6 +144,7 @@
 #include "hilow_barbanegra.h"
 #include "transtape.h"
 #include "mhpokeador.h"
+#include "specmate.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12771,7 +12772,15 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=MHPOKEADOR_RAM_SIZE;
         }
-    break;     
+    break;  
+
+    //specmate rom
+    case MEMORY_ZONE_SPECMATE_ROM:
+        if (specmate_enabled.v) {
+            *readwrite=1;      
+            size=SPECMATE_ROM_SIZE;
+        }
+    break;       
 
   }
 
@@ -13215,7 +13224,14 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (mhpokeador_enabled.v) {
             p=&mhpokeador_memory_pointer[address];             
         }
-    break;     
+    break;    
+
+    //specmate rom
+    case MEMORY_ZONE_SPECMATE_ROM:
+        if (specmate_enabled.v) {
+            p=&specmate_memory_pointer[address];             
+        }
+    break;      
 
   }
 
@@ -13674,6 +13690,14 @@ void machine_get_memory_zone_name(int zone, char *name)
         if (mhpokeador_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"MH Pokeador RAM");
+        }
+    break;     
+
+    //specmate rom
+    case MEMORY_ZONE_SPECMATE_ROM:
+        if (specmate_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Specmate ROM");
         }
     break;          
 
