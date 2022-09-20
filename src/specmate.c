@@ -21,7 +21,7 @@
 
 /*
 
-Specmate emulation
+Spec-Mate emulation
 
 */
 

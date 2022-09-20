@@ -13697,7 +13697,7 @@ void machine_get_memory_zone_name(int zone, char *name)
     case MEMORY_ZONE_SPECMATE_ROM:
         if (specmate_enabled.v) {
                        //123456789012345678901234567890
-            strcpy(name,"Specmate ROM");
+            strcpy(name,"Spec-Mate ROM");
         }
     break;          
 

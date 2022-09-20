@@ -195,7 +195,7 @@ __FEATURES__
 
 * Emulates Dinamic SD1
 
-* Emulates Spec-mate
+* Emulates Spec-Mate
 
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 

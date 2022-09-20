@@ -32005,10 +32005,10 @@ void menu_specmate(MENU_ITEM_PARAMETERS)
             
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_specmate_enable,
-                NULL,"[%c] ~~Specmate Enabled", (specmate_enabled.v ? 'X' : ' '));
+                NULL,"[%c] ~~Spec-Mate Enabled", (specmate_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'s');
-        menu_add_item_menu_tooltip(array_menu_common,"Enable specmate");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable specmate");
+        menu_add_item_menu_tooltip(array_menu_common,"Enable Spec-Mate");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable Spec-Mate");
 
 
 
@@ -32017,7 +32017,7 @@ void menu_specmate(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&specmate_opcion_seleccionada,&item_seleccionado,array_menu_common,"Transtape emulation");
+        retorno_menu=menu_dibuja_menu(&specmate_opcion_seleccionada,&item_seleccionado,array_menu_common,"Spec-mate emulation");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -32359,7 +32359,7 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'m');
         menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_specmate,NULL,"~~Specmate");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_specmate,NULL,"~~Spec-Mate");
         menu_add_item_menu_shortcut(array_menu_common,'s');
         menu_add_item_menu_tiene_submenu(array_menu_common); 
 
