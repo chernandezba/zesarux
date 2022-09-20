@@ -55,12 +55,13 @@ z80_bit specmate_mapped_rom_memory={0};
 
 z80_byte specmate_read_rom_byte(z80_int dir)
 {
+    dir &=8191;
 	return specmate_memory_pointer[dir];
 }
 
 int specmate_check_if_rom_area(z80_int dir)
 {
-    if (dir<8192 && specmate_mapped_rom_memory.v) return 1;
+    if (dir<16384 && specmate_mapped_rom_memory.v) return 1;
     else return 0;
 }
 
@@ -93,16 +94,24 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
 {
     //printf("specmate core dir %X\n",reg_pc);
     /*
-    specmate: parece que se desmapea rom al llegar a la 72H
+    specmate: parece que se desmapea rom al llegar a la 71H, esto en la rom normal:
     70H POP HL
     71H POP AF
     72H RETN    
     */
 
     //Direccion de retorno
-    //Aqui es conveniente porque el stack hay que hacerle un pop pero....
-    //ahi hay un pop af y entonces alteramos af
-    //quiza se puede simular ese pop sin tocar af y volver en 72H????
+    //ahi hay un pop af , que compensa su push af en su rom al mapear:
+
+    //66H JP 0074H
+    //...
+    //74H PUSH AF
+    //75H LD A,R
+
+    //Ese PUSH AF se encuentra tambien logicamente en la rom normal:
+    //66H PUSH AF
+    //67H PUSH HL    
+
     if (specmate_mapped_rom_memory.v && reg_pc==0x71) {
         printf("Unmapping specmate rom from dir %X\n",reg_pc);
         specmate_mapped_rom_memory.v=0;

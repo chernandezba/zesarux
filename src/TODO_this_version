@@ -123,9 +123,6 @@ phoenix
 specmate 1 y 2:  http://projectspeccy.com/projects/
 dynamid 3
 
-specmate: parece que se desmapea rom al llegar a la 72H???
-70H POP HL
-71H POP AF
-72H RETN
+specmate: esquematico es de specmate v2. pero la rom quiza es v1? porque que sucede en la direccion 99h? igual ahi hay algo en la rom v2
  
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
