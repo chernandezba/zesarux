@@ -854,6 +854,7 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_TRANSTAPE_RAM 40
 #define MEMORY_ZONE_MHPOKEADOR_RAM 41
 #define MEMORY_ZONE_SPECMATE_ROM 42
+#define MEMORY_ZONE_PHOENIX_ROM 43
 
 
 
