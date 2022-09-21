@@ -86,6 +86,7 @@
 #include "vdp_9918a_sms.h"
 #include "hilow_barbanegra.h"
 #include "transtape.h"
+#include "phoenix.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9293,6 +9294,11 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 	if (hilow_bbn_enabled.v && puerto_l==0xFD) {
 		hilow_bbn_write_port_fd(puerto,value);
 	}
+
+    //Puerto Phoenix
+	if (phoenix_enabled.v && puerto_l==0xDF) {
+		phoenix_write_port_df();
+	}    
 
     //Puertos transtape
     if (transtape_enabled.v) {

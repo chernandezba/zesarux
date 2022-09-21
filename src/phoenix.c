@@ -258,3 +258,11 @@ void phoenix_disable(void)
 }
 
 
+
+void phoenix_write_port_df(void)
+{
+    //Simplemente desmapear la interfaz al enviar cualquier valor
+    printf("Desmapear rom en pc=%XH\n",reg_pc);
+
+    phoenix_mapped_rom_memory.v=0;
+}

@@ -41,4 +41,6 @@ extern z80_byte *phoenix_memory_pointer;
 
 extern z80_bit phoenix_mapped_rom_memory;
 
+extern void phoenix_write_port_df(void);
+
 #endif
