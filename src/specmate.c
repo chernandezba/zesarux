@@ -131,8 +131,6 @@ z80_byte cpu_core_loop_specmate(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSE
         specmate_mapped_rom_memory.v=0;
     }
 
-    //TODO: parece que specmate (quizá solo versión 2) utiliza dirección 99H para mapear
-
     //Llamar a anterior
     debug_nested_core_call_previous(specmate_nested_id_core);
 
@@ -183,13 +181,6 @@ void specmate_restore_peek_poke_functions(void)
 int specmate_load_rom(void)
 {
 
-    //Aunque realmente no es una rom, sino una ram
-    //Al final es un bloque de 1kb que se lee del PC hasta la ram del Pokeador
-    //Pero lo guardamos en archivos .rom para que sea menos confuso para el usuario
-    //Hay otro posible firmware, transpoke.tap, que se encuentra en el repo de extras
-    //No se incluye aqui pues es un pokeador+copiador, requiere de un programa basic
-    //para preparar los pokes antes de lanzar la nmi
-
     FILE *ptr_specmate_romfile;
     int leidos=0;
 
@@ -218,15 +209,12 @@ int specmate_load_rom(void)
 
 void specmate_alloc_memory(void)
 {
-    //Asignamos 2 kb de ram, igual que la interfaz real
-    //aunque realmente se usan unos pocos bytes del primer kb (60h-6fh), y el segundo kb (3900h-3cffh)
+
     int size=SPECMATE_ROM_SIZE;  
 
     debug_printf (VERBOSE_DEBUG,"Allocating %d kb of memory for specmate emulation",size/1024);
 
-    //Inicializamos memoria con FF, que es como (creo) se comportaba el interfaz original
-    //Ya que no sobreescribimos toda la ram, lo que no se modifica, quedará con FF
-    specmate_memory_pointer=util_malloc_fill(size,"Can not allocate memory for mhpokeador emulation",0xFF);
+    specmate_memory_pointer=util_malloc(size,"Can not allocate memory for specmate emulation");
 
 
 }
