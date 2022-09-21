@@ -197,6 +197,8 @@ __FEATURES__
 
 * Emulates Spec-Mate
 
+* Emulates Phoenix
+
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emulates +3 Disk
