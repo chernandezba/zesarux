@@ -45,7 +45,6 @@ z80_bit phoenix_enabled={0};
 z80_byte *phoenix_memory_pointer;
 
 
-int phoenix_nested_id_core;
 int phoenix_nested_id_peek_byte;
 int phoenix_nested_id_peek_byte_no_time;
 
@@ -91,40 +90,7 @@ z80_byte phoenix_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
 	return valor_leido;
 }
 
-z80_byte cpu_core_loop_phoenix(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED)
-{
-    //printf("phoenix core dir %X\n",reg_pc);
-    /*
-    phoenix: parece que se desmapea rom al llegar a la 71H, esto en la rom normal:
-    70H POP HL
-    71H POP AF
-    72H RETN    
-    */
 
-    //Direccion de retorno
-    //ahi hay un pop af , que compensa su push af en su rom al mapear:
-
-    //66H JP 0074H
-    //...
-    //74H PUSH AF
-    //75H LD A,R
-
-    //Ese PUSH AF se encuentra tambien logicamente en la rom normal:
-    //66H PUSH AF
-    //67H PUSH HL    
-
-    if (phoenix_mapped_rom_memory.v && reg_pc==0x71) {
-        //printf("Unmapping phoenix rom from dir %X\n",reg_pc);
-        phoenix_mapped_rom_memory.v=0;
-    }
-
-    //Llamar a anterior
-    debug_nested_core_call_previous(phoenix_nested_id_core);
-
-    //Para que no se queje el compilador, aunque este valor de retorno no lo usamos
-    return 0;    
-
-}
 
 void phoenix_nmi(void)
 {
@@ -140,13 +106,11 @@ void phoenix_nmi(void)
 //Establecer rutinas propias. Solo tiene rom por tanto peek y no poke
 void phoenix_set_peek_functions(void)
 {
-    debug_printf (VERBOSE_DEBUG,"Setting phoenix peek/core functions");
+    debug_printf (VERBOSE_DEBUG,"Setting phoenix peek functions");
 
-	//Asignar mediante nuevas funciones de core anidados
 	phoenix_nested_id_peek_byte=debug_nested_peek_byte_add(phoenix_peek_byte,"phoenix peek_byte");
 	phoenix_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(phoenix_peek_byte_no_time,"phoenix peek_byte_no_time");
 
-    phoenix_nested_id_core=debug_nested_core_add(cpu_core_loop_phoenix,"phoenix core");
 
 }
 
@@ -158,7 +122,7 @@ void phoenix_restore_peek_poke_functions(void)
 
 	debug_nested_peek_byte_del(phoenix_nested_id_peek_byte);
 	debug_nested_peek_byte_no_time_del(phoenix_nested_id_peek_byte_no_time);
-    debug_nested_core_del(phoenix_nested_id_core);
+
 
 
 }
