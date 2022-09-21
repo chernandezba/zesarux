@@ -104,6 +104,7 @@
 #include "menu_debug_cpu.h"
 #include "transtape.h"
 #include "hilow_barbanegra.h"
+#include "specmate.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5952,7 +5953,14 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"TRAN");
                 sprintf (texto_pagina,"Transtape MEM");
                 return;
-        }    
+        }   
+
+        //Si es specmate
+        if (segmento==0 && specmate_enabled.v && specmate_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"SPMT");
+                sprintf (texto_pagina,"Spec-Mate MEM");
+                return;
+        }
 
 
         //Si es barbanegra
@@ -6204,6 +6212,11 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         if (MACHINE_IS_SPECTRUM && transtape_enabled.v && transtape_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
                         }  
+
+                        //Si specmate
+                        if (MACHINE_IS_SPECTRUM && specmate_enabled.v && specmate_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }
 
                         //Si barbanegra
                         if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
