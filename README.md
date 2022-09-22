@@ -187,19 +187,9 @@ __FEATURES__
 
 * Handles RZX playback 
 
-* Emulates Multiface One, 128 and Three
-
-* Emulates Transtape
-
-* Emulates Microhobby Pokeador Automatico
+* Emulates the following Copy Interfaces: Defcon, Hilow Barbanegra, Microhobby Pokeador Automatico, Multiface One, 128 and Three, Phoenix, Spec-Mate, Transtape
 
 * Emulates Dinamic SD1
-
-* Emulates Spec-Mate
-
-* Emulates Phoenix
-
-* Emulates Defcon
 
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
@@ -225,7 +215,7 @@ __FEATURES__
 
 * Emulates SamRam interface by Gerton Lunter (author of famous Z80 emulator)
 
-* Emulates HiLow DataDrive, Hilow Barbanegra
+* Emulates HiLow DataDrive
 
 * Handles RAM, EPROM, Intel Flash and Hybrid (RAM+EPROM) cards on Z88
 

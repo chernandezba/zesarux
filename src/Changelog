@@ -15,13 +15,15 @@ Added new emulated machines:
 -Timex Sinclair 1000
 -Timex Sinclair 1500
 
-Added Hilow Barbanegra emulation
-Added Transtape emulation
-Added Microhobby Pokeador Automatico emulation
+Added Copy Interfaces emulation:
+-Defcon
+-Hilow Barbanegra
+-Microhobby Pokeador Automatico
+-Phoenix
+-Spec-Mate
+-Transtape
+
 Added Dinamic SD1 emulation
-Added Spec-Mate emulation
-Added Phoenix emulation
-Added Defcon emulation
 Allow .Z80 corrupted snapshot loading from ZXSP emulator with additional header of 31 byte size
 Added ZSF support for Timex TS2068, MK14, Chrome, Prism, Chloe, Sam Coupe
 Added path setting where to download files from the speccy and zx81 online browser
