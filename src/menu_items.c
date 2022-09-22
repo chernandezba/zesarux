@@ -142,6 +142,7 @@
 #include "mhpokeador.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "defcon.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -258,6 +259,7 @@ int transtape_opcion_seleccionada=0;
 int mhpokeador_opcion_seleccionada=0;
 int specmate_opcion_seleccionada=0;
 int phoenix_opcion_seleccionada=0;
+int defcon_opcion_seleccionada=0;
 
 
 
@@ -32091,6 +32093,58 @@ void menu_phoenix(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_defcon_enable(MENU_ITEM_PARAMETERS)
+{
+    if (defcon_enabled.v) {
+        defcon_disable();
+    }
+    else {
+        defcon_enable();
+    }
+}
+
+
+
+void menu_defcon(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_defcon_enable,
+                NULL,"[%c] ~~Defcon Enabled", (defcon_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable Defcon");
+        menu_add_item_menu_ayuda(array_menu_common,"Enable Defcon");
+
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&defcon_opcion_seleccionada,&item_seleccionado,array_menu_common,"Defcon emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
 
 
 void menu_hardware_mhpokeador_enable(MENU_ITEM_PARAMETERS)
@@ -32403,9 +32457,13 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
     do {
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_defcon,NULL,"~~Defcon");
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tiene_submenu(array_menu_common);           
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
         menu_add_item_menu_shortcut(array_menu_common,'b');
-        menu_add_item_menu_tiene_submenu(array_menu_common);        
+        menu_add_item_menu_tiene_submenu(array_menu_common);  
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
         menu_add_item_menu_shortcut(array_menu_common,'p');

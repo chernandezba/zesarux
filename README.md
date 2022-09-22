@@ -199,6 +199,8 @@ __FEATURES__
 
 * Emulates Phoenix
 
+* Emulates Defcon
+
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
 * Emulates +3 Disk
