@@ -40,6 +40,7 @@
 #include "mhpokeador.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "defcon.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -353,7 +354,11 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (phoenix_enabled.v) {
         phoenix_nmi();
-    }            
+    }
+
+    if (defcon_enabled.v) {
+        defcon_nmi();
+    }                
 
 }
 
@@ -442,7 +447,12 @@ void generate_nmi_prepare_fetch(void)
     if (phoenix_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }          
+    }
+
+    if (defcon_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }              
 
 }
 

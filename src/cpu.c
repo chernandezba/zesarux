@@ -143,6 +143,7 @@
 #include "mhpokeador.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "defcon.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1372,7 +1373,11 @@ util_stats_init();
 
 	if (phoenix_enabled.v) {
 		phoenix_reset();
-	}          
+	}  
+
+	if (defcon_enabled.v) {
+		defcon_reset();
+	}            
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
@@ -3539,6 +3544,7 @@ void set_machine_params(void)
         transtape_enabled.v=0;
         specmate_enabled.v=0;
         phoenix_enabled.v=0;
+        defcon_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
