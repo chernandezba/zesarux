@@ -106,6 +106,7 @@
 #include "hilow_barbanegra.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "defcon.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5968,7 +5969,14 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"PHOE");
                 sprintf (texto_pagina,"Phoenix MEM");
                 return;
-        }        
+        }
+
+        //Si es defcon
+        if (segmento==0 && defcon_enabled.v && defcon_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"DEFC");
+                sprintf (texto_pagina,"Defcon MEM");
+                return;
+        }                
 
 
         //Si es barbanegra
@@ -6229,7 +6237,12 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si phoenix
                         if (MACHINE_IS_SPECTRUM && phoenix_enabled.v && phoenix_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }                        
+                        } 
+
+                        //Si defcon
+                        if (MACHINE_IS_SPECTRUM && defcon_enabled.v && defcon_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }                                               
 
                         //Si barbanegra
                         if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
