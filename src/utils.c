@@ -146,6 +146,7 @@
 #include "mhpokeador.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "defcon.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12789,7 +12790,15 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=1;      
             size=PHOENIX_ROM_SIZE;
         }
-    break;          
+    break;
+
+    //defcon rom
+    case MEMORY_ZONE_DEFCON_ROM:
+        if (defcon_enabled.v) {
+            *readwrite=1;      
+            size=DEFCON_ROM_SIZE;
+        }
+    break;              
 
   }
 
@@ -13247,7 +13256,14 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (phoenix_enabled.v) {
             p=&phoenix_memory_pointer[address];             
         }
-    break;          
+    break; 
+
+    //defcon rom
+    case MEMORY_ZONE_DEFCON_ROM:
+        if (defcon_enabled.v) {
+            p=&defcon_memory_pointer[address];             
+        }
+    break;             
 
   }
 
@@ -13723,7 +13739,15 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Phoenix ROM");
         }
-    break;             
+    break; 
+
+    //defcon rom
+    case MEMORY_ZONE_DEFCON_ROM:
+        if (defcon_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Defcon ROM");
+        }
+    break;                
 
   }
 
