@@ -22,6 +22,7 @@
 /*
 
 Defcon emulation
+https://speccy4ever.speccy.org/_OC.htm
 
 */
 
