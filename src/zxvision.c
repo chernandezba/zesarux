@@ -5909,7 +5909,7 @@ void zxdesktop_draw_scrfile_load(void)
         if (!retorno) {
 	
             strcpy(final_scrfile_name,tempscr);
-            printf("Leyendo archivo scr %s\n",final_scrfile_name);
+            //printf("Leyendo archivo scr %s\n",final_scrfile_name);
         }
 
         else {

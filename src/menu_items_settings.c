@@ -9404,11 +9404,16 @@ void menu_ext_desk_settings_switch_button(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 {
-    char *filtros[3];
+    char *filtros[8];
 
     filtros[0]="scr";
     filtros[1]="tap";
-    filtros[2]=0;
+    filtros[2]="tzx";
+    filtros[3]="pzx";
+    filtros[4]="trd";
+    filtros[5]="ddh";
+    filtros[6]="dsk";
+    filtros[7]=0;
 
     //guardamos directorio actual
     char directorio_actual[PATH_MAX];
@@ -9526,7 +9531,7 @@ void menu_zxdesktop_set_configurable_icons_choose(MENU_ITEM_PARAMETERS)
     int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(indice_seleccionada);
 
     if (indice_retorno>=0) {
-        printf("definimos boton. accion %d\n",indice_retorno);
+        //printf("definimos boton. accion %d\n",indice_retorno);
         //int id_funcion=defined_direct_functions_array[accion_seleccionada].id_funcion;
         //Asignar funcion
         zxdesktop_configurable_icons_list[icono_seleccionado].indice_funcion=indice_retorno;

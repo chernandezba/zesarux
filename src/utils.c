@@ -16186,13 +16186,36 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
 
     menu_filesel_mkdir(tmpdir);
 
+    int retorno;
 
     //TODO: detectar si es tap, tzx, etc... o bien usar rutina comun que convierta segun extension
-    int retorno=util_extract_tap(filename,tmpdir,NULL,0);
+    if (!util_compare_file_extension(filename,"tap")) {    
+        retorno=util_extract_tap(filename,tmpdir,NULL,0);
+    }
+    else if (!util_compare_file_extension(filename,"tzx")) {    
+        retorno=util_extract_tzx(filename,tmpdir,NULL);
+    } 
+    else if (!util_compare_file_extension(filename,"pzx") ) {
+            retorno=util_extract_pzx(filename,tmpdir,NULL);
+    }		
+    else if (!util_compare_file_extension(filename,"trd") ) {
+            retorno=util_extract_trd(filename,tmpdir);
+    }		
+    else if (!util_compare_file_extension(filename,"ddh") ) {
+            retorno=util_extract_ddh(filename,tmpdir);
+    }	            
+    else if (!util_compare_file_extension(filename,"dsk") ) {
+            //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
+            retorno=util_extract_dsk(filename,tmpdir);
+    }       
+    else {
+        debug_printf(VERBOSE_ERR,"Unknown input file to extract scr");
+        return 1;
+    }
 
     char archivo_info_pantalla[PATH_MAX];
     sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
-    printf("archivo_info_pantalla %s\n",archivo_info_pantalla);
+    //printf("archivo_info_pantalla %s\n",archivo_info_pantalla);
 
     char buf_archivo_scr[PATH_MAX];
 
