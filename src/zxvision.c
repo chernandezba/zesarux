@@ -5914,7 +5914,7 @@ void zxdesktop_draw_scrfile_load(void)
 
         else {
             //TODO: no hay miniatura, que hacer??
-            debug_printf(VERBOSE_ERR,"Tape/Snapshot has no screen");
+            debug_printf(VERBOSE_ERR,"File has no SCR screen");
         }
 
     }

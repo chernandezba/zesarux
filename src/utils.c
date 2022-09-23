@@ -16188,7 +16188,8 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
 
     int retorno;
 
-    //TODO: detectar si es tap, tzx, etc... o bien usar rutina comun que convierta segun extension
+    //Tipos de archivos que hay que extraer todos y buscar un archivo de pantalla
+    
     if (!util_compare_file_extension(filename,"tap")) {    
         retorno=util_extract_tap(filename,tmpdir,NULL,0);
     }
@@ -16208,6 +16209,43 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
             //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
             retorno=util_extract_dsk(filename,tmpdir);
     }       
+
+    //Tipos de archivos en que es conversion directa
+    else if (!util_compare_file_extension(filename,"zsf")) {
+        util_convert_zsf_to_scr(filename,archivo_destino);
+        //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
+        return 0;
+    }
+
+	//Si es sna
+	else if (!util_compare_file_extension(filename,"sna")) {
+        util_convert_sna_to_scr(filename,archivo_destino);
+        //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
+        return 0;        
+	}	
+
+	//Si es sp
+	else if (!util_compare_file_extension(filename,"sp")) {
+        util_convert_sp_to_scr(filename,archivo_destino);
+        //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
+        return 0;        
+	}	
+
+	//Si es z80
+	else if (!util_compare_file_extension(filename,"z80")) {
+		util_convert_z80_to_scr(filename,archivo_destino);
+        //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
+        return 0;        
+	}		
+
+	//Si es P
+	else if (!util_compare_file_extension(filename,"p")) {
+		util_convert_p_to_scr(filename,archivo_destino);
+        //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
+        return 0;        
+	}		
+
+
     else {
         debug_printf(VERBOSE_ERR,"Unknown input file to extract scr");
         return 1;
@@ -16232,11 +16270,14 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     }
 
     else {
-        //TODO: no hay miniatura, que hacer??
-        debug_printf(VERBOSE_ERR,"Tape/Snapshot has no screen");
+        debug_printf(VERBOSE_ERR,"File has no SCR screen");
 
         return 1;
-    }    
+    }  
+
+ 
+
+    return 0;
 }
 
 int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
