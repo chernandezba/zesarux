@@ -2591,6 +2591,7 @@ printf (
         "--convert-tap-tzx source destination           Convert tap source file to destination tzx\n"
         "--convert-tap-tzx-turbo-rg source destination  Convert tap source file to destination tzx turbo (4000 bauds) for use with Rodolfo Guerra ROMS\n"
         "--convert-tap-pzx source destination           Convert tap source file to destination pzx\n"
+        "--convert-tap-scr source destination           Convert tap source file to destination scr\n"
         "--convert-tzx-tap source destination           Convert tzx source file to destination tap\n"
         "--convert-pzx-tap source destination           Convert pzx source file to destination tap\n"
 
@@ -9193,6 +9194,23 @@ int parse_cmdline_options(void) {
                 printf("Conversion finished. Exiting\n");
                 exit(0);
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--convert-tap-scr")) {
+                siguiente_parametro_argumento();
+                char *origen=argv[puntero_parametro];
+                siguiente_parametro_argumento();
+                char *destino=argv[puntero_parametro];
+
+                printf("Converting from TAP file %s to SCR file %s\n",origen,destino);
+
+                if (util_convert_any_to_scr(origen,destino)) {
+                    printf("Error executing conversion\n");
+                    exit(1);
+                }
+
+                printf("Conversion finished. Exiting\n");
+                exit(0);
+            }            
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx-turbo-rg")) {
                 siguiente_parametro_argumento();

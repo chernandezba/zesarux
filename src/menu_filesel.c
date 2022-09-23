@@ -1716,6 +1716,7 @@ void file_utils_file_convert(char *fullpath)
             "TAP to PZX",
 			"TAP to RWA",
 			"TAP to WAV",
+            "TAP to SCR",
 			NULL};
 
 		int opcion=menu_ask_list_texto("File converter","Select conversion",opciones);
@@ -1749,6 +1750,11 @@ void file_utils_file_convert(char *fullpath)
 				sprintf(archivo_destino,"%s/%s.wav",directorio,archivo);
 				convert_any_to_wav(fullpath,archivo_destino);
 			break;
+
+			case 5:
+				sprintf(archivo_destino,"%s/%s.scr",directorio,archivo);
+				util_convert_any_to_scr(fullpath,archivo_destino);
+			break;            
 
 		}
 	}
