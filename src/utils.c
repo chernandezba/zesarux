@@ -16168,7 +16168,53 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
 
 }
 
+//Retorna 0 si ok
+int util_convert_any_to_scr(char *filename,char *archivo_destino)
+{
+    //Extraer imagen de cualquier archivo (cinta, snap, disco, etc) a scr
 
+    //Extraer scr de esa cinta, snapshot, etc
+    
+    
+
+    char tmpdir[PATH_MAX];
+
+    char buf_file_no_dir[PATH_MAX];
+    util_get_file_no_directory(filename,buf_file_no_dir);
+
+    sprintf (tmpdir,"%s/%s_extract_scr",get_tmpdir_base(),buf_file_no_dir);
+
+    menu_filesel_mkdir(tmpdir);
+
+
+    //TODO: detectar si es tap, tzx, etc... o bien usar rutina comun que convierta segun extension
+    int retorno=util_extract_tap(filename,tmpdir,NULL,0);
+
+    char archivo_info_pantalla[PATH_MAX];
+    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
+    printf("archivo_info_pantalla %s\n",archivo_info_pantalla);
+
+    char buf_archivo_scr[PATH_MAX];
+
+    if (si_existe_archivo(archivo_info_pantalla)) {
+        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);        
+
+        //strcpy(final_scrfile_name,buf_archivo_scr);
+        //printf("Leyendo archivo scr %s\n",final_scrfile_name);
+
+        //Finalmente movemos el scr generado a la ruta final
+        zvfs_rename(buf_archivo_scr,archivo_destino);
+
+        return 0;
+    }
+
+    else {
+        //TODO: no hay miniatura, que hacer??
+        debug_printf(VERBOSE_ERR,"Tape/Snapshot has no screen");
+
+        return 1;
+    }    
+}
 
 int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 //,z80_byte *origin_memory,int longitud_memoria,int load_fast_mode)

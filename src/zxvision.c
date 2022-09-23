@@ -5881,6 +5881,45 @@ void zxdesktop_draw_scrfile_load(void)
 
     debug_printf(VERBOSE_DEBUG,"Loading ZX Desktop background SCR file %s",zxdesktop_draw_scrfile_name);
 
+    //Si se extrae de un tap, snapshot o similar, indicar aqui siempre que scr archivo es realmente
+    char final_scrfile_name[PATH_MAX]="";
+
+    if (!util_compare_file_extension(zxdesktop_draw_scrfile_name,"scr")) {
+        strcpy(final_scrfile_name,zxdesktop_draw_scrfile_name);
+    }
+    else {
+        
+        //Extraer scr de esa cinta, snapshot, etc
+        
+        //TODO: detectar si es tap, tzx, etc... o bien usar rutina comun que convierta segun extension
+
+        char tmpdir[PATH_MAX];
+        sprintf (tmpdir,"%s/zxdesktop_scr",get_tmpdir_base());
+        menu_filesel_mkdir(tmpdir);
+
+    
+        char buf_file_no_dir[PATH_MAX];
+        util_get_file_no_directory(zxdesktop_draw_scrfile_name,buf_file_no_dir);     
+
+        char tempscr[PATH_MAX];
+        sprintf(tempscr,"%s/%s.scr",tmpdir,buf_file_no_dir);
+
+        int retorno=util_convert_any_to_scr(zxdesktop_draw_scrfile_name,tempscr);
+
+        if (!retorno) {
+	
+            strcpy(final_scrfile_name,tempscr);
+            printf("Leyendo archivo scr %s\n",final_scrfile_name);
+        }
+
+        else {
+            //TODO: no hay miniatura, que hacer??
+            debug_printf(VERBOSE_ERR,"Tape/Snapshot has no screen");
+        }
+
+    }
+
+
     //asignar memoria si conviene
     if (zxdesktop_draw_scrfile_pointer==NULL) {
         zxdesktop_draw_scrfile_pointer=malloc(6912);
@@ -5905,7 +5944,7 @@ void zxdesktop_draw_scrfile_load(void)
         if (zxdesktop_cache_scrfile==NULL || zxdesktop_cache_scrfile_invertflash==NULL) cpu_panic("Can not allocate cache memory for scr file");
     }    
 
-    if (!si_existe_archivo(zxdesktop_draw_scrfile_name)) {
+    if (!si_existe_archivo(final_scrfile_name)) {
         debug_printf(VERBOSE_ERR,"Can not load ZX Desktop background SCR file %s",zxdesktop_draw_scrfile_name);
         //Aunque el archivo no exista, igualmente leer a cache (aun con datos random de zxdesktop_draw_scrfile_pointer),
         //asi la cache estará inicializada con datos de colores dentro de rango
@@ -5913,7 +5952,7 @@ void zxdesktop_draw_scrfile_load(void)
     }
 
     else {
-        lee_archivo(zxdesktop_draw_scrfile_name,(char *)zxdesktop_draw_scrfile_pointer,6912);
+        lee_archivo(final_scrfile_name,(char *)zxdesktop_draw_scrfile_pointer,6912);
     }
 
 

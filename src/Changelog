@@ -76,6 +76,7 @@ Improved ZX Desktop:
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine
 -Added setting to mix scr image with background
+-Allow to set any tape/snapshot/disk that contains a spectrum screen (SCR) as background
 
 Improved HiLow DataDrive emulation:
 -Allow to Format, Browse and Chkdsk a Hilow DataDrive image (.ddh file)

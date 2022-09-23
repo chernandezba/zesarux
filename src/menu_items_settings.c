@@ -9404,10 +9404,11 @@ void menu_ext_desk_settings_switch_button(MENU_ITEM_PARAMETERS)
 
 void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 {
-    char *filtros[2];
+    char *filtros[3];
 
     filtros[0]="scr";
-    filtros[1]=0;
+    filtros[1]="tap";
+    filtros[2]=0;
 
     //guardamos directorio actual
     char directorio_actual[PATH_MAX];
