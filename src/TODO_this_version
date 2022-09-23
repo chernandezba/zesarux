@@ -130,5 +130,3 @@ https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
  
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
--funcion convertir tap a scr. usar parte de zxdesktop_draw_scrfile_load
--funcion comun para convertir XX en scr, aplicarlo en zxdesktop_draw_scrfile_load. esto tambien podria servir como accion de linea de comandos sin tener que iniciar ZEsarUX
