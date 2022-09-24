@@ -9445,7 +9445,7 @@ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 
     int ret;
 
-    ret=menu_filesel("Select SCR file",filtros,zxdesktop_draw_scrfile_name);
+    ret=menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 

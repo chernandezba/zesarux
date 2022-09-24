@@ -32012,10 +32012,36 @@ void menu_specmate(MENU_ITEM_PARAMETERS)
                 NULL,"[%c] ~~Spec-Mate Enabled", (specmate_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'s');
         menu_add_item_menu_tooltip(array_menu_common,"Enable Spec-Mate");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable Spec-Mate");
 
-
-
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, you will be directed to BLACK border mode, "
+            "look at the following modes:\n"
+            "\n"
+            "BLACK BORDER MODE\n"
+            "\n"
+            "t = save to tape\n"
+            "m = save to microdrive\n"
+            "d = save to disc drive (NB this applies to Beta Interface Only)\n"
+            "w = save to wafadrive\n"
+            "f =  save 'FAST' to tape (i.e. twice normal tape speed)\n"
+            "0 = remove attirbutes\n"
+            "\n"
+            "RED BORDER MODE\n"
+            "\n"
+            "n = normal save with one screen\n"
+            "s = screenless save\n"
+            "a = save part A of program (with double screen)\n"
+            "b = save part B of program (with double screen)\n"
+            "\n"
+            "BLUE BORDER MODE\n"
+            "\n"
+            "1 = use top part of screen for *SPEC-MATE* data\n"
+            "2 = use middle part of screen for *SPEC-MATE* data\n"
+            "3 = use bottom part of screen for *SPEC-MATE* data\n"
+            "\n"
+            "MAGENTA BORDER MODE\n"
+            "\n"
+            "Type the name of the program. Press 'ENTER' to save\n"
+        );
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -32065,9 +32091,14 @@ void menu_phoenix(MENU_ITEM_PARAMETERS)
                 NULL,"[%c] ~~Phoenix Enabled", (phoenix_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'p');
         menu_add_item_menu_tooltip(array_menu_common,"Enable Phoenix");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable Phoenix");
 
-
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, you must press: \n"
+            "1: save snapshot for microdrive or disk\n"
+            "2: save snapshot to tape at normal speed (1500 bauds)\n"
+            "3: save snapshot to tape at turbo speed (2000 bauds)\n"
+            "4: save snapshot to tape at turbo speed (2500 bauds)\n"
+            "5: return to game, using the snapshot restore routine in order to check the snapshot is valid\n"
+        );
 
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -32115,10 +32146,15 @@ void menu_defcon(MENU_ITEM_PARAMETERS)
             
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_defcon_enable,
-                NULL,"[%c] ~~Defcon Enabled", (defcon_enabled.v ? 'X' : ' '));
+            NULL,"[%c] ~~Defcon Enabled", (defcon_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'d');
         menu_add_item_menu_tooltip(array_menu_common,"Enable Defcon");
-        menu_add_item_menu_ayuda(array_menu_common,"Enable Defcon");
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, you must press: \n"
+            "1: to save screen and loader program\n"
+            "2: to save snapshot data\n"
+            "To load the snapshot, just:\n"
+            "LOAD \"\" CODE: LOAD \"\" CODE: RANDOMIZE USR 16388\n"
+        );
 
 
 
