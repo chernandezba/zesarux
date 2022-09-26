@@ -41,6 +41,7 @@
 #include "specmate.h"
 #include "phoenix.h"
 #include "defcon.h"
+#include "ramjet.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -358,7 +359,11 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (defcon_enabled.v) {
         defcon_nmi();
-    }                
+    }
+
+    if (ramjet_enabled.v) {
+        ramjet_nmi();
+    }                    
 
 }
 
@@ -452,7 +457,12 @@ void generate_nmi_prepare_fetch(void)
     if (defcon_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }              
+    }
+
+    if (ramjet_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }                  
 
 }
 
