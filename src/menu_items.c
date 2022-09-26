@@ -32204,13 +32204,22 @@ void menu_ramjet(MENU_ITEM_PARAMETERS)
     do {
 
             
-
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_ramjet_enable,
             NULL,"[%c] ~~Ramjet Enabled", (ramjet_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_common,'r');
         menu_add_item_menu_tooltip(array_menu_common,"Enable Ramjet");
-        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, you must press: \n"
-            "....."
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, you may: \n"
+            "- Reset cpu: Ramjet boot will appear, with the copier program\n"
+            "- Press NMI: the following keys are used:\n"
+            "t: save 48k snapshot to disk\n"
+            "l: save 128k snapshot to disk\n"
+            "s: save 48k snapshot to tape\n"
+            "u: save screen to tape\n"
+            "c: save 128k snapshot to tape\n"
+            "p: poke program\n"
+            "r: return to program\n"
+            "\n"
+            "When saving snapshots, you will be asked for a name, just write it and press enter\n"
         );
 
 

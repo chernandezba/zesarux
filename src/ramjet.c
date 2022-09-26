@@ -189,7 +189,8 @@ void ramjet_reset(void)
         return;
     }
 
-    ramjet_mapped_rom_memory.v=0;
+    //En este interfaz hacemos lo contrario, con el reset aparece activa
+    ramjet_mapped_rom_memory.v=1;
 
 }
 

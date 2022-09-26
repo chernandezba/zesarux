@@ -24,7 +24,7 @@
 
 #include "cpu.h"
 
-#define RAMJET_ROM "ramjet2.rom"
+#define RAMJET_ROM "ramjet3.rom"
 
 #define RAMJET_ROM_SIZE 16384
 
