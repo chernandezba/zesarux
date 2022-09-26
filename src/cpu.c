@@ -144,6 +144,7 @@
 #include "specmate.h"
 #include "phoenix.h"
 #include "defcon.h"
+#include "ramjet.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1377,7 +1378,11 @@ util_stats_init();
 
 	if (defcon_enabled.v) {
 		defcon_reset();
-	}            
+	}
+
+	if (ramjet_enabled.v) {
+		ramjet_reset();
+	}                
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
@@ -3546,6 +3551,7 @@ void set_machine_params(void)
         specmate_enabled.v=0;
         phoenix_enabled.v=0;
         defcon_enabled.v=0;
+        ramjet_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;

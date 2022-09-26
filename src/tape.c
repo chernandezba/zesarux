@@ -61,6 +61,7 @@
 #include "transtape.h"
 #include "specmate.h"
 #include "phoenix.h"
+#include "ramjet.h"
 
 #include "autoselectoptions.h"
 
@@ -1361,7 +1362,12 @@ int tap_save_detect(void)
     //Phoenix
     else if (phoenix_enabled.v && phoenix_mapped_rom_memory.v) {
         if (reg_pc!=0x02b3) return 0;
-    }    
+    }
+
+    //Ramjet
+    else if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
+        if (reg_pc!=0x0835) return 0;
+    }        
 
     else if (reg_pc!=1222) return 0;
 
