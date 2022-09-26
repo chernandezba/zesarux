@@ -60,8 +60,8 @@ z80_byte ramjet_read_rom_byte(z80_int dir)
     z80_byte valor_d3=valor_leido & 0x08;
     z80_byte valor_d4=valor_leido & 0x10;
 
-    valor_d3 >>=1;
-    valor_d4 <<=1;
+    valor_d3 <<=1;
+    valor_d4 >>=1;
 
     valor_leido &= 0xE7;
 
