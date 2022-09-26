@@ -233,3 +233,18 @@ void ramjet_disable(void)
 	ramjet_enabled.v=0;
 }
 
+
+void ramjet_write_port(z80_int puerto,z80_byte value)
+{
+    printf ("Out Port Ramjet %x written with value %x, PC after=0x%x\n",puerto,value,reg_pc);
+
+    //TODO: validar esto
+    if (value & 128) {
+        printf("Desactivando ramjet a peticion puerto\n");
+        ramjet_mapped_rom_memory.v=0;
+    }
+    else {
+        printf("Activando ramjet a peticion puerto\n");
+        ramjet_mapped_rom_memory.v=1;        
+    }
+}

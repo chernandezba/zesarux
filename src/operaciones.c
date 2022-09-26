@@ -87,6 +87,7 @@
 #include "hilow_barbanegra.h"
 #include "transtape.h"
 #include "phoenix.h"
+#include "ramjet.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -9298,7 +9299,13 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
     //Puerto Phoenix
 	if (phoenix_enabled.v && puerto_l==0xDF) {
 		phoenix_write_port_df();
-	}    
+	}
+
+    //Puerto Ramjet
+    //a7 a 0. a11=a15=1
+    if (ramjet_enabled.v && (puerto & 0x8880) == 0x8800) {
+        ramjet_write_port(puerto,value);
+    }    
 
     //Puertos transtape
     if (transtape_enabled.v) {
