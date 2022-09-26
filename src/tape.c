@@ -1426,6 +1426,12 @@ int tap_save_detect(void)
                     //maquina +2A
                     if ((puerto_32765 & 16) ==16   && ((puerto_8189&4) ==4  ))
                     return 1;
+
+                    //maquina +2A con ramjet
+                    if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
+                        if (reg_pc==0x0835) return 1;
+                    }                     
+
     }
 
     if (MACHINE_IS_PRISM) {
