@@ -187,7 +187,7 @@ __FEATURES__
 
 * Handles RZX playback 
 
-* Emulates the following Copy Interfaces: Defcon, Hilow Barbanegra, Microhobby Pokeador Automatico, Multiface One, 128 and Three, Phoenix, Spec-Mate, Transtape
+* Emulates the following Copy Interfaces: Defcon, Hilow Barbanegra, Microhobby Pokeador Automatico, Multiface One, 128 and Three, Phoenix, Ramjet, Spec-Mate, Transtape
 
 * Emulates Dinamic SD1
 
