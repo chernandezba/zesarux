@@ -32235,6 +32235,8 @@ void menu_ramjet(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_ramjet_version,
             menu_hardware_ramjet_version_cond,"[%d] Ramjet ~~Version", ramjet_version);
         menu_add_item_menu_shortcut(array_menu_common,'v');
+        menu_add_item_menu_tooltip(array_menu_common,"It seems version 2 is compatible with 48k/128k and version 3 is compatible with +2A/+3");
+        menu_add_item_menu_ayuda(array_menu_common,"It seems version 2 is compatible with 48k/128k and version 3 is compatible with +2A/+3");
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
