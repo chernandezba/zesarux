@@ -1366,7 +1366,7 @@ int tap_save_detect(void)
 
     //Ramjet
     else if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
-        if (reg_pc!=0x0835 && reg_pc!=1849) return 0;
+        if (!ramjet_save_detect()) return 0;
     }        
 
     else if (reg_pc!=1222) return 0;
@@ -1429,10 +1429,7 @@ int tap_save_detect(void)
 
                     //maquina +2A con ramjet
                     if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
-                        //0835: grabado desde nmi
-                        if (reg_pc==0x0835) return 1;
-                        //1849: grabado desde copion
-                        if (reg_pc==0x1849) return 1;
+                        if (ramjet_save_detect()) return 1;
                     }                     
 
     }

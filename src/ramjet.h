@@ -46,4 +46,6 @@ extern void ramjet_write_port(z80_int puerto,z80_byte value);
 
 extern int ramjet_version;
 
+extern int ramjet_save_detect(void);
+
 #endif

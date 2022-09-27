@@ -260,3 +260,25 @@ void ramjet_write_port(z80_int puerto,z80_byte value)
         ramjet_mapped_rom_memory.v=1;        
     }
 }
+
+
+int ramjet_save_detect(void)
+{
+    /*
+05bbh: save en ramjet3.rom ex af,af', inc de, .....
+2202h: save en ramjet3.rom desde copion
+
+0581h: save en ramjet2.rom. ex af,af', inc de , dec ix, di, ld a,2....
+184ch: save en ramjet2.rom desde copion    
+    */
+    if (ramjet_version==2) {
+        if (reg_pc==0x0581 || reg_pc==0x184c) return 1;
+    }
+
+    else {
+        if (reg_pc==0x05bb || reg_pc==0x2202) return 1;
+    }
+
+    //temp
+    return 0;
+}
