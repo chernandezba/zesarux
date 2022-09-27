@@ -4478,23 +4478,23 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		*/
 
         
-        if (previous_machine_type==0 || tbblue_bootrom.v) {
-            
+            if (previous_machine_type==0 || tbblue_bootrom.v) {
+                
 
-			//Pentagon not supported yet. TODO
-			//last_value=tbblue_config1;
-			tbblue_bootrom.v=0;
-			//printf ("----setting bootrom to 0\n");
+                //Pentagon not supported yet. TODO
+                //last_value=tbblue_config1;
+                tbblue_bootrom.v=0;
+                //printf ("----setting bootrom to 0\n");
 
-			//printf ("Writing register 3 value %02XH\n",value);
+                //printf ("Writing register 3 value %02XH\n",value);
 
-			tbblue_set_memory_pages();
+                tbblue_set_memory_pages();
 
 
-			//Solo cuando hay cambio
-			//if ( last_register_3 != value )
-			tbblue_set_emulator_setting_timing();
-        }
+                //Solo cuando hay cambio
+                //if ( last_register_3 != value )
+                tbblue_set_emulator_setting_timing();
+            }
 		break;
 
 
