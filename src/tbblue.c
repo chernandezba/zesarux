@@ -4375,6 +4375,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	
 	//z80_byte aux_divmmc;
 
+    z80_byte machine_type;
+
 	if (index_position==3) {
 
         //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
@@ -4383,12 +4385,15 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
         //(W) 0x03 (03) => Set machine type, only in IPL or config mode
         //   		bits 2-0 = Machine type:
         //      		000 = Config mode
-        z80_byte machine_type=tbblue_registers[3]&7;
+        machine_type=tbblue_registers[3]&7;
 
         if (!(machine_type==0 || tbblue_bootrom.v)) {
             debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
             //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
-            return;
+
+            //Preservar bits de maquina
+            value &=(255-7);
+            value |=machine_type;
         }
     }
 
@@ -4472,22 +4477,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		100 = Pentagon 128K
       		*/
 
-		/*  OLD:
-        (W)		03 => Set machine type, only in bootrom or config mode:
-                    A write in this register disables the bootrom mode (0000 to 3FFF are mapped to the RAM instead of the internal ROM)
-                    bits 7-5 = Reserved, must be 0
-                    bits 4-3 = Timing:
-                        00,
-                        01 = ZX 48K
-                        10 = ZX 128K
-                        11 = ZX +2/+3e
-                    bit 2 = Reserved, must be 0
-                    bits 1-0 = Machine type:
-                        00 = Config mode (bootrom)
-                        01 = ZX 48K
-                        10 = ZX 128K
-                        11 = ZX +2/+3e
-                        */
+        machine_type=tbblue_registers[3]&7;
+        if (machine_type==0 || tbblue_bootrom.v) {
+            
+
+
 			//Pentagon not supported yet. TODO
 			//last_value=tbblue_config1;
 			tbblue_bootrom.v=0;
@@ -4501,6 +4495,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 			//Solo cuando hay cambio
 			//if ( last_register_3 != value )
 			tbblue_set_emulator_setting_timing();
+        }
 		break;
 
 
