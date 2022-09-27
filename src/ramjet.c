@@ -52,6 +52,8 @@ z80_bit ramjet_mapped_rom_memory={0};
 
 //Nota: que yo sepa, no tiene manera de desmapearse una vez se ha activado
 
+int ramjet_version=3;
+
 z80_byte ramjet_read_rom_byte(z80_int dir)
 {
     //D3 y D4 estan intercambiados
@@ -147,9 +149,18 @@ int ramjet_load_rom(void)
     FILE *ptr_ramjet_romfile;
     int leidos=0;
 
-    debug_printf (VERBOSE_INFO,"Loading ramjet rom %s",RAMJET_ROM);
+    char nombre_rom[PATH_MAX];
 
-    open_sharedfile(RAMJET_ROM,&ptr_ramjet_romfile);
+    if (ramjet_version==2) {
+        strcpy(nombre_rom,RAMJET_ROM_V2);
+    }
+    else {
+        strcpy(nombre_rom,RAMJET_ROM_V3);
+    }
+
+    debug_printf (VERBOSE_INFO,"Loading ramjet rom %s",nombre_rom);
+
+    open_sharedfile(nombre_rom,&ptr_ramjet_romfile);
     if (!ptr_ramjet_romfile) {
             debug_printf (VERBOSE_ERR,"Unable to open ROM file");
     }
@@ -163,7 +174,7 @@ int ramjet_load_rom(void)
 
 
     if (leidos!=RAMJET_ROM_SIZE || ptr_ramjet_romfile==NULL) {
-        debug_printf (VERBOSE_ERR,"Error reading ramjet rom file: %s",RAMJET_ROM);
+        debug_printf (VERBOSE_ERR,"Error reading ramjet rom file: %s",nombre_rom);
         return 1;
     }
 

@@ -24,7 +24,8 @@
 
 #include "cpu.h"
 
-#define RAMJET_ROM "ramjet3.rom"
+#define RAMJET_ROM_V2 "ramjet2.rom"
+#define RAMJET_ROM_V3 "ramjet3.rom"
 
 #define RAMJET_ROM_SIZE 16384
 
@@ -42,5 +43,7 @@ extern z80_byte *ramjet_memory_pointer;
 extern z80_bit ramjet_mapped_rom_memory;
 
 extern void ramjet_write_port(z80_int puerto,z80_byte value);
+
+extern int ramjet_version;
 
 #endif

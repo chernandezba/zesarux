@@ -32194,7 +32194,17 @@ void menu_hardware_ramjet_enable(MENU_ITEM_PARAMETERS)
     }
 }
 
+int menu_hardware_ramjet_version_cond(void)
+{
+    if (ramjet_enabled.v) return 0;
+    else return 1; 
+}
 
+void menu_hardware_ramjet_version(MENU_ITEM_PARAMETERS)
+{
+    if (ramjet_version==2) ramjet_version=3;
+    else ramjet_version=2;
+}
 
 void menu_ramjet(MENU_ITEM_PARAMETERS)
 {
@@ -32222,8 +32232,9 @@ void menu_ramjet(MENU_ITEM_PARAMETERS)
             "When saving snapshots, you will be asked for a name, just write it and press enter\n"
         );
 
-
-
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hardware_ramjet_version,
+            menu_hardware_ramjet_version_cond,"[%d] Ramjet ~~Version", ramjet_version);
+        menu_add_item_menu_shortcut(array_menu_common,'v');
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
