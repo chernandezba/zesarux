@@ -4319,24 +4319,24 @@ leaving I/O Mode is at most 64 scan lines.
  switch (joystick_mode) {
 	 case 0:
 	 	joystick_emulation=JOYSTICK_SINCLAIR_2;
-		debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Sinclair 2");
+		//debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Sinclair 2");
 	 break;
 
 	 case 1:
 	 case 4:
      case 5:
 	 	joystick_emulation=JOYSTICK_KEMPSTON;
-		debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston");
+		//debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Kempston");
 	 break;
 
 	 case 2:
 	 	joystick_emulation=JOYSTICK_CURSOR_WITH_SHIFT;
-		debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Cursor");
+		//debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Cursor");
 	 break;
 
 	 case 3:
 	 	joystick_emulation=JOYSTICK_SINCLAIR_1;
-		debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Sinclair 1");
+		//debug_printf(VERBOSE_DEBUG,"Setting joystick 1 emulation to Sinclair 1");
 	 break;
 
      default:
