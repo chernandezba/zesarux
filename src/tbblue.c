@@ -4375,7 +4375,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	
 	//z80_byte aux_divmmc;
 
-    z80_byte machine_type;
+    z80_byte previous_machine_type=tbblue_registers[3]&7;
 
 	if (index_position==3) {
 
@@ -4385,15 +4385,15 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
         //(W) 0x03 (03) => Set machine type, only in IPL or config mode
         //   		bits 2-0 = Machine type:
         //      		000 = Config mode
-        machine_type=tbblue_registers[3]&7;
+        
 
-        if (!(machine_type==0 || tbblue_bootrom.v)) {
+        if (!(previous_machine_type==0 || tbblue_bootrom.v)) {
             debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
             //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
 
             //Preservar bits de maquina
             value &=(255-7);
-            value |=machine_type;
+            value |=previous_machine_type;
         }
     }
 
@@ -4477,10 +4477,9 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		100 = Pentagon 128K
       		*/
 
-        machine_type=tbblue_registers[3]&7;
-        if (machine_type==0 || tbblue_bootrom.v) {
+        
+        if (previous_machine_type==0 || tbblue_bootrom.v) {
             
-
 
 			//Pentagon not supported yet. TODO
 			//last_value=tbblue_config1;
