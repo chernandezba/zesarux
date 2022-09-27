@@ -4479,7 +4479,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
         
             if (previous_machine_type==0 || tbblue_bootrom.v) {
-                
+                //printf("Changing machine to %XH\n",value&7);
 
                 //Pentagon not supported yet. TODO
                 //last_value=tbblue_config1;
