@@ -9304,7 +9304,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
     //Puerto Ramjet
     //a7 a 0. a11=a15=1
     if (ramjet_enabled.v && (puerto & 0x8880) == 0x8800) {
-        ramjet_write_port(puerto,value);
+        ramjet_write_port(value);
     }    
 
     //Puertos transtape

@@ -42,7 +42,7 @@ extern z80_byte *ramjet_memory_pointer;
 
 extern z80_bit ramjet_mapped_rom_memory;
 
-extern void ramjet_write_port(z80_int puerto,z80_byte value);
+extern void ramjet_write_port(z80_byte value);
 
 extern int ramjet_version;
 
