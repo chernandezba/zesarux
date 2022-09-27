@@ -858,6 +858,7 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_SPECMATE_ROM 42
 #define MEMORY_ZONE_PHOENIX_ROM 43
 #define MEMORY_ZONE_DEFCON_ROM 44
+#define MEMORY_ZONE_RAMJET_ROM 45
 
 
 

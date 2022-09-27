@@ -147,6 +147,7 @@
 #include "specmate.h"
 #include "phoenix.h"
 #include "defcon.h"
+#include "ramjet.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12798,7 +12799,15 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=1;      
             size=DEFCON_ROM_SIZE;
         }
-    break;              
+    break;
+
+    //ramjet rom
+    case MEMORY_ZONE_RAMJET_ROM:
+        if (ramjet_enabled.v) {
+            *readwrite=1;      
+            size=RAMJET_ROM_SIZE;
+        }
+    break;                  
 
   }
 
@@ -13264,6 +13273,13 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
             p=&defcon_memory_pointer[address];             
         }
     break;             
+
+    //ramjet rom
+    case MEMORY_ZONE_RAMJET_ROM:
+        if (ramjet_enabled.v) {
+            p=&ramjet_memory_pointer[address];             
+        }
+    break;    
 
   }
 
@@ -13747,7 +13763,15 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Defcon ROM");
         }
-    break;                
+    break;
+
+    //ramjet rom
+    case MEMORY_ZONE_RAMJET_ROM:
+        if (ramjet_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Ramjet ROM");
+        }
+    break;                    
 
   }
 
