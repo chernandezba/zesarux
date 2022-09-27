@@ -107,6 +107,7 @@
 #include "specmate.h"
 #include "phoenix.h"
 #include "defcon.h"
+#include "ramjet.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5976,7 +5977,14 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"DEFC");
                 sprintf (texto_pagina,"Defcon MEM");
                 return;
-        }                
+        }
+
+        //Si es ramjet
+        if (segmento==0 && ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"RAMJ");
+                sprintf (texto_pagina,"Ramjet MEM");
+                return;
+        }
 
 
         //Si es barbanegra
@@ -6242,7 +6250,12 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si defcon
                         if (MACHINE_IS_SPECTRUM && defcon_enabled.v && defcon_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }                                               
+                        } 
+
+                        //Si ramjet
+                        if (MACHINE_IS_SPECTRUM && ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }
 
                         //Si barbanegra
                         if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {

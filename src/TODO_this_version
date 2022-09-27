@@ -129,12 +129,7 @@ dynamid 3
 interface 007? https://github.com/alvaroalea/Interface007 clon de dynamid3???
 https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
 
--ramjet: corregir puntos de entrada save rom. agregar setting de version 2 o 3  
-05bbh: save en ramjet3.rom ex af,af', inc de, .....
-2202: save en ramjet3.rom desde copion
 
-0581: save en ramjet2.rom. ex af,af', inc de , dec ix, di, ld a,2....
-184c: save en ramjet2.rom desde copion
  
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
