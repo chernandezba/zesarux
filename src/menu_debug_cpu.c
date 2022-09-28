@@ -7410,7 +7410,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
 
-				if (tecla=='k' && menu_debug_registers_current_view==1 && CPU_IS_Z80) {
+				if (tecla=='k' && menu_debug_registers_current_view!=8 && CPU_IS_Z80) {
                     menu_debug_cpu_view_stack();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -8195,7 +8195,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
                 //Ver stack
-                if (tecla=='k' && menu_debug_registers_current_view==1 && CPU_IS_Z80) {
+                if (tecla=='k' && menu_debug_registers_current_view!=8 && CPU_IS_Z80) {
 					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
 					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
 					menu_emulation_paused_on_menu=1;

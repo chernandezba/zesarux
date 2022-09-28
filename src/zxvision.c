@@ -50,6 +50,7 @@
 #include "menu_bitmaps.h"
 #include "menu_debug_cpu.h"
 #include "menu_file_viewer_browser.h"
+#include "menu_filesel.h"
 #include "screen.h"
 #include "cpu.h"
 #include "debug.h"

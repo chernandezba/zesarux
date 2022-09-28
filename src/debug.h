@@ -224,6 +224,8 @@ extern z80_int debug_core_lanzado_inter_retorno_pc_maskable;
 extern void debug_anota_retorno_step_nmi(void);
 extern void debug_anota_retorno_step_maskable(void);
 
+extern z80_int debug_get_stack_z80_value(int i);
+
 
 //Maximo elementos en una lista
 #define MAX_DEBUG_NESTED_ELEMENTS 1000
