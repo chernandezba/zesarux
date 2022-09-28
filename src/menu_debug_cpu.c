@@ -4229,17 +4229,19 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                 sprintf(s,"set~^Pc=ptr%s%s%s",string_nextpcbr,string_history,string_backwards);
 
-                sprintf (buffer_intermedio_short,"~^Pc=ptr%s%s%s ~~F~~1:help",
+                sprintf (buffer_intermedio_short,"~^Pc=ptr%s%s%s%s ~~F~~1:help",
                     ( debug_breakpoints_enabled.v ? " nxtpc~^Br" : "" ),
                     (CPU_IS_Z80 ? " cpu~^Hst" : ""),
+                    (CPU_IS_Z80 ? " st~~k" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " b~^Stp bru~^N" : "")
                     
                 );                
 
 
-                sprintf (buffer_intermedio_long,"set~^Pc=ptr%s%s%s ~~F~~1:help",
+                sprintf (buffer_intermedio_long,"set~^Pc=ptr%s%s%s%s ~~F~~1:help",
                     ( debug_breakpoints_enabled.v ? " nextpc~^Brk" : "" ),
                     (CPU_IS_Z80 ? " cpu~^Hist" : ""),
+                    (CPU_IS_Z80 ? " stac~~k" : ""),
                     (cpu_step_mode.v && cpu_history_enabled.v && cpu_history_started.v ? " back~^Step backru~^N" : "")
                     
                 );
@@ -6973,6 +6975,52 @@ void menu_debug_registers_view_adventure(MENU_ITEM_PARAMETERS)
     menu_debug_registers(valor_opcion);
 }
 
+void menu_debug_cpu_view_stack(void)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int menu_debug_cpu_view_stack_opcion_seleccionada=0;
+
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int i;
+
+        for (i=0;i<30;i++) {
+            menu_z80_moto_int stack_value=debug_get_stack_z80_value(i);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"%04X",stack_value);
+            menu_add_item_menu_valor_opcion(array_menu_common,stack_value);
+        }
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&menu_debug_cpu_view_stack_opcion_seleccionada,&item_seleccionado,array_menu_common,"View Stack");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //Cambiar puntero con el valor seleccionado
+            menu_debug_memory_pointer=item_seleccionado.valor_opcion;
+            //printf("Set pointer to %XH\n",menu_debug_memory_pointer);
+            menu_debug_follow_pc.v=0; //se deja de seguir pc
+
+            //y salimos
+            return;
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+}
+
 void menu_debug_registers(MENU_ITEM_PARAMETERS)
 {
 
@@ -7361,6 +7409,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
+
+				if (tecla=='k' && menu_debug_registers_current_view==1 && CPU_IS_Z80) {
+                    menu_debug_cpu_view_stack();
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                }                
 
 				if (tecla=='m' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
@@ -8138,6 +8192,28 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
 					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
                 }
+
+
+                //Ver stack
+                if (tecla=='k' && menu_debug_registers_current_view==1 && CPU_IS_Z80) {
+					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
+					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+					menu_emulation_paused_on_menu=1;
+
+                    menu_debug_cpu_view_stack();
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+
+					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+					si_ejecuta_una_instruccion=0;
+
+
+                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
+                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+					
+                }                          
 
 				//Daad breakpoint
 		        if (tecla=='k' && menu_debug_registers_current_view==8) {

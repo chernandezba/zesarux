@@ -52,7 +52,8 @@ Improved File selector:
 -Allow to have a full screen preview if window is big enough
 -Better hotkeys explanation
 
-Improved Debugging: 
+Improved Debugging:
+-Allow to change memory pointer to a value from the stack
 -Added a setting to show on which scanline has been executed a Halt, inverting border color
 -When enabling step mode, emulation is paused on all menus
 -Preserve step mode when exiting debug cpu that was opened by a breakpoint
