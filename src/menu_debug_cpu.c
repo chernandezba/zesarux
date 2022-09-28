@@ -2743,8 +2743,8 @@ int menu_debug_registers_subview_type=0;
 				if (CPU_IS_Z80 || CPU_IS_MOTOROLA) {
 					sprintf(buffer_linea,"(SP) ");
 
-					int valores=5;
-					if (CPU_IS_MOTOROLA) valores=3;
+					int valores=10;
+					if (CPU_IS_MOTOROLA) valores=5;
 					debug_get_stack_values(valores,&buffer_linea[5]);
 					//menu_escribe_linea_opcion(linea++,-1,1,buffer_linea);
 					zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
