@@ -314,7 +314,7 @@ ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX S
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_multitask.png "ZX Desktop")
 
 
-Default clean ZX Destkop starting from ZEsarUX version 10.2
+Default clean ZX Desktop starting from ZEsarUX version 10.2
 
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
 
