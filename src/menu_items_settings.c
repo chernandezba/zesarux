@@ -7148,11 +7148,13 @@ void menu_accessibility_menu_zxdesktop_button_boxes(MENU_ITEM_PARAMETERS)
     menu_ext_desktop_disable_box_upper_icons.v=0;
     menu_ext_desktop_disable_box_lower_icons.v=0;
 
-    //Y no transparentes
+    //Y no transparentes botones e iconos
     menu_ext_desktop_transparent_upper_icons.v=0;
     menu_ext_desktop_transparent_lower_icons.v=0;
+    menu_ext_desktop_transparent_configurable_icons.v=0;
+    
 
-    menu_generic_message_splash("ZX Desktop buttons","OK. Enabled boxes and disable transparency on ZX Desktop buttons");
+    menu_generic_message_splash("ZX Desktop buttons","OK. Enabled boxes and disable transparency on ZX Desktop buttons and icons");
 }
 
 void menu_accessibility_menu_hotkeys(MENU_ITEM_PARAMETERS)
@@ -7213,13 +7215,13 @@ void menu_accessibility_menu(MENU_ITEM_PARAMETERS)
         if (screen_ext_desktop_enabled) {
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_clean,NULL,"ZX Desktop c~~lean fill");
             menu_add_item_menu_shortcut(array_menu_common,'l');
-            menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision-> ZX Desktop menu");
-            menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision-> ZX Desktop menu");
+            menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
+            menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,"ZX Desktop ~~buttons visibility");
-            menu_add_item_menu_shortcut(array_menu_common,'b');
-            menu_add_item_menu_tooltip(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision-> ZX Desktop menu");
-            menu_add_item_menu_ayuda(array_menu_common,"This setting can be also be enabled/disabled from Settings-> ZX Vision-> ZX Desktop menu");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_accessibility_menu_zxdesktop_button_boxes,NULL,"ZX Desktop ~~objects visibility");
+            menu_add_item_menu_shortcut(array_menu_common,'o');
+            menu_add_item_menu_tooltip(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
+            menu_add_item_menu_ayuda(array_menu_common,"Affects buttons and icons. This setting can be also be enabled/disabled from Settings-> ZX Desktop menu");
         }
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
