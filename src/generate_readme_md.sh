@@ -53,8 +53,12 @@ ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX S
 ![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_multitask.png "ZX Desktop")
 
 
-ZX Desktop, running demo ny17 from TSConf, showing new direct access buttons starting from ZEsarUX version 9.1
-![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_buttons.png "ZX Desktop Buttons")
+Default clean ZX Destkop starting from ZEsarUX version 10.2
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
+
+
+ZX Desktop, running demo ny17 from TSConf, showing some windows opened
+![alt text](${URLIMAGES_BASE}/screenshots/screenshot_zxdesktop_example_windows.png "ZX Desktop example several windows")
 
 
 ZX Spectrum Overscan demo
