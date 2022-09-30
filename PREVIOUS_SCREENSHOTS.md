@@ -89,3 +89,8 @@ ZEsarUX-10.0 September 2021 - Default window with ZX Desktop disabled
 ZEsarUX-10.0 September 2021 - Default window with ZX Desktop enabled
 
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot-ZEsarUX-10.0_zxdesktop.png "screenshot-ZEsarUX-10.0_zxdesktop")
+
+
+ZEsarUX-10.2 October 2022 - Default window with ZX Desktop enabled
+
+![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot-ZEsarUX-10.2_zxdesktop.png "screenshot-ZEsarUX-10.2_zxdesktop")
