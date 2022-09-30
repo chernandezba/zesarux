@@ -315,10 +315,12 @@ ZX Desktop, running multitask windows, on Solarized Dark GUI Style, running ZX S
 
 
 Default clean ZX Destkop starting from ZEsarUX version 10.2
+
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_default.png "ZX Desktop default")
 
 
 ZX Desktop, running demo ny17 from TSConf, showing some windows opened
+
 ![alt text](https://github.com/chernandezba/zesarux/raw/main/screenshots/screenshot_zxdesktop_example_windows.png "ZX Desktop example several windows")
 
 
