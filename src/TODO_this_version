@@ -73,10 +73,6 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
 
--si al iniciar carga con rom no existe, pantalla se ve mal
-Error:    Unable to open rom file tc2048.rom
-ok corregido?
-
 
 -Probar debug cpu paws
 
