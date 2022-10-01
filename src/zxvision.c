@@ -1031,6 +1031,9 @@ int overlay_visible_when_menu_closed=0;
 //las ventanas si la cpu ya va saturada
 z80_bit auto_frameskip_even_when_movin_windows={0};
 
+//Hacer autoframeskip al dibujar fondo zx deskop
+z80_bit auto_frameskip_draw_zxdesktop_background={1};
+
 //Aunque este siempre se asignara primero, pero por si acaso le damos valor por defecto
 z80_bit autoframeskip_setting_before_moving_windows={1};
 
@@ -6353,7 +6356,13 @@ void menu_draw_ext_desktop(void)
 
     int xstart_zxdesktop=screen_get_ext_desktop_start_x();
 
-    menu_draw_ext_desktop_background(xstart_zxdesktop);
+    int dibujar_zxdesktop_background=1;
+
+    if (auto_frameskip_draw_zxdesktop_background.v) {
+        if (!screen_if_refresh()) dibujar_zxdesktop_background=0;
+    }
+    
+    if (dibujar_zxdesktop_background) menu_draw_ext_desktop_background(xstart_zxdesktop);
 
 
 	//Dibujar botones si están activados (por defecto)
