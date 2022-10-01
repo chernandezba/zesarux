@@ -1029,7 +1029,7 @@ int overlay_visible_when_menu_closed=0;
 //Hacer autoframeskip al moverse ventanas
 //Esto permite, si se desactiva, ver las ventanas siempre que se muevan, pero a costa de usar mas cpu y puede que ralentizar la emulacion al moverse
 //las ventanas si la cpu ya va saturada
-z80_bit auto_frameskip_even_when_movin_windows={0};
+z80_bit auto_frameskip_even_when_movin_windows={1};
 
 //Hacer autoframeskip al dibujar fondo zx deskop
 z80_bit frameskip_draw_zxdesktop_background={1};

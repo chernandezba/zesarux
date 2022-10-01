@@ -3569,7 +3569,7 @@ int util_write_configfile(void)
 
   if (autoframeskip.v==0)                     ADD_STRING_CONFIG,"--disable-autoframeskip");
 
-  if (auto_frameskip_even_when_movin_windows.v)         ADD_STRING_CONFIG,"--autoframeskip-moving-win");
+  if (auto_frameskip_even_when_movin_windows.v==0)         ADD_STRING_CONFIG,"--no-autoframeskip-moving-win");
 
   if (frameskip_draw_zxdesktop_background.v==0)    ADD_STRING_CONFIG,"--no-frameskip-zxdesktop-back");
 

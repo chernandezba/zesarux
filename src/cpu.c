@@ -2011,7 +2011,7 @@ printf (
 		"--frameskip n                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
         "--no-frameskip-zxdesktop-back  Disable apply frameskip drawing ZX Desktop Background\n"
 		"--disable-autoframeskip        Disable autoframeskip\n"
-        "--autoframeskip-moving-win     Autoframeskip even when moving windows\n"
+        "--no-autoframeskip-moving-win  Disable autoframeskip even when moving windows\n"
         "--disable-flash                Disable flash\n"
 		"--fullscreen                   Enable full screen\n"
 		"--disableborder                Disable Border\n"   
@@ -6144,9 +6144,15 @@ int parse_cmdline_options(void) {
 					autoframeskip.v=0;
 				}
 
+            //Mantenida por compatibilidad hacia atras. El valor por defecto es 1
             else if (!strcmp(argv[puntero_parametro],"--autoframeskip-moving-win")) {
                 auto_frameskip_even_when_movin_windows.v=1;
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--no-autoframeskip-moving-win")) {
+                auto_frameskip_even_when_movin_windows.v=0;
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--no-frameskip-zxdesktop-back")) {
                 frameskip_draw_zxdesktop_background.v=0;

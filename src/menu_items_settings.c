@@ -928,12 +928,12 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
         if (autoframeskip.v) {
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_no_autoframeskip_move_windows,NULL,
-                "Also when moving windows","También al mover ventanas","També al moure finestres");
+                "Also when moving objects","También al mover objetos","També al moure objectes");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(auto_frameskip_even_when_movin_windows.v ? 'X' : ' ')                
             );
-            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving or resizing windows");
-            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving or resizing windows. Enabling it uses less cpu when moving or resizing windows but "
-                "can make windows disappear or not refresh quickly. Disabling it enhances refreshing windows when moving but uses more cpu and may slow down emulation");
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows. Enabling it uses less cpu when moving or resizing objects but "
+                "can make objects disappear or not refresh quickly. Disabling it enhances refreshing objects when moving but uses more cpu and may slow down emulation");
         }
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
