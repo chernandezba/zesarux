@@ -6066,12 +6066,8 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto)
 
 }
 
-
-void menu_draw_ext_desktop(void)
+void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 {
-
-	//Si no escritorio extendido, salir
-	if (!screen_ext_desktop_enabled || !scr_driver_can_ext_desktop() ) return;
 
 
     //Los putpixel que hacemos aqui son sin zoom. Se podrian hacer con zoom, pero habria que
@@ -6088,7 +6084,7 @@ void menu_draw_ext_desktop(void)
         Y considerando el espacio de coordenadas x e y con zoom
     */
 
-    int xstart_zxdesktop=screen_get_ext_desktop_start_x();
+    
     //int xinicio=0;
     int yinicio=0;
 
@@ -6335,6 +6331,22 @@ void menu_draw_ext_desktop(void)
         }    
 
     }
+
+
+}
+
+
+
+void menu_draw_ext_desktop(void)
+{
+
+	//Si no escritorio extendido, salir
+	if (!screen_ext_desktop_enabled || !scr_driver_can_ext_desktop() ) return;
+
+    int xstart_zxdesktop=screen_get_ext_desktop_start_x();
+
+    menu_draw_ext_desktop_background(xstart_zxdesktop);
+
 
 
 	//Dibujar botones si están activados (por defecto)

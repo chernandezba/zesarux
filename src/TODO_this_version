@@ -131,3 +131,6 @@ https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007
 
 -Mejorar entrada en changelog sobre iconos en escritorio 
 
+-Si hay submenu, quizá gestionar desde propia función de menú. Y/o no cerrar menú anterior
+
+-Al mover un icono no dibujar fondo si hay framedrop
