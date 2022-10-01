@@ -865,6 +865,11 @@ void menu_change_online_download_path(MENU_ITEM_PARAMETERS)
     menu_storage_string_root_dir(online_download_path);
 }
 
+void menu_interface_frameskip_draw_zxdesktop_background(MENU_ITEM_PARAMETERS)
+{
+    frameskip_draw_zxdesktop_background.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -900,6 +905,13 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
 
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip_draw_zxdesktop_background,NULL,
+            "Frameskip to ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')                
+        );
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");        
+
 
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_autoframeskip,NULL,"[%c] ~~%s",        
 				(autoframeskip.v ? 'X' : ' '),
@@ -922,7 +934,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving or resizing windows");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving or resizing windows. Enabling it uses less cpu when moving or resizing windows but "
                 "can make windows disappear or not refresh quickly. Disabling it enhances refreshing windows when moving but uses more cpu and may slow down emulation");
-        }        
+        }
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
             "Flash enabled","Parpadeo activado","Parpelleig activat");

@@ -3571,6 +3571,8 @@ int util_write_configfile(void)
 
   if (auto_frameskip_even_when_movin_windows.v)         ADD_STRING_CONFIG,"--autoframeskip-moving-win");
 
+  if (frameskip_draw_zxdesktop_background.v==0)    ADD_STRING_CONFIG,"--no-frameskip-zxdesktop-back");
+
   if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
                 
   if (no_cambio_parametros_maquinas_lentas.v) ADD_STRING_CONFIG,"--nochangeslowparameters");

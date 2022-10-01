@@ -962,6 +962,7 @@ extern z80_bit menu_invert_mouse_scroll;
 extern z80_bit menu_mouse_right_send_esc;
 
 extern z80_bit auto_frameskip_even_when_movin_windows;
+extern z80_bit frameskip_draw_zxdesktop_background;
 
 extern int if_pending_error_message;
 extern char pending_error_message[];

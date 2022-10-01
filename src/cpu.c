@@ -2000,34 +2000,35 @@ printf (
 		"----------------\n"
 		"\n"
 
-		"--zoomx n                   Horizontal Zoom Factor\n"
-		"--zoomy n                   Vertical Zoom Factor\n"
+		"--zoomx n                      Horizontal Zoom Factor\n"
+		"--zoomy n                      Vertical Zoom Factor\n"
 		
-		"--reduce-075                Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-		"--reduce-075-no-antialias   Disable antialias for reduction, enabled by default\n"
-		"--reduce-075-offset-x n     Destination offset x on reduced display\n"
-		"--reduce-075-offset-y n     Destination offset y on reduced display\n"
+		"--reduce-075                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
+		"--reduce-075-no-antialias      Disable antialias for reduction, enabled by default\n"
+		"--reduce-075-offset-x n        Destination offset x on reduced display\n"
+		"--reduce-075-offset-y n        Destination offset y on reduced display\n"
 
-		"--frameskip n               Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-		"--disable-autoframeskip     Disable autoframeskip\n"
-        "--autoframeskip-moving-win  Autoframeskip even when moving windows\n"
-        "--disable-flash             Disable flash\n"
-		"--fullscreen                Enable full screen\n"
-		"--disableborder             Disable Border\n"   
-        "--disablefooter             Disable window footer\n"             
-        "--ignoremouseclickopenmenu  Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
-        "--limitopenmenu             Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
-        "--language language         Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
-        "--online-download-path p    Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
+		"--frameskip n                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
+        "--no-frameskip-zxdesktop-back  Disable apply frameskip drawing ZX Desktop Background\n"
+		"--disable-autoframeskip        Disable autoframeskip\n"
+        "--autoframeskip-moving-win     Autoframeskip even when moving windows\n"
+        "--disable-flash                Disable flash\n"
+		"--fullscreen                   Enable full screen\n"
+		"--disableborder                Disable Border\n"   
+        "--disablefooter                Disable window footer\n"             
+        "--ignoremouseclickopenmenu     Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
+        "--limitopenmenu                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
+        "--language language            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
+        "--online-download-path p       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
 #ifndef MINGW
-		"--no-cpu-usage              Do not show host CPU usage on footer\n"
+		"--no-cpu-usage                 Do not show host CPU usage on footer\n"
 #endif
 
-		"--no-cpu-temp               Do not show host CPU temperature on footer\n"
-		"--no-fps                    Do not show FPS on footer\n"
-        "--nowelcomemessage          Disable welcome message\n"
-        "--disablemenufileutils      Disable File Utilities menu\n"  
+		"--no-cpu-temp                  Do not show host CPU temperature on footer\n"
+		"--no-fps                       Do not show FPS on footer\n"
+        "--nowelcomemessage             Disable welcome message\n"
+        "--disablemenufileutils         Disable File Utilities menu\n"  
 
 
 		"\n"
@@ -6146,6 +6147,10 @@ int parse_cmdline_options(void) {
             else if (!strcmp(argv[puntero_parametro],"--autoframeskip-moving-win")) {
                 auto_frameskip_even_when_movin_windows.v=1;
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--no-frameskip-zxdesktop-back")) {
+                frameskip_draw_zxdesktop_background.v=0;
+            }            
 
             else if (!strcmp(argv[puntero_parametro],"--disable-flash")) {
                 disable_change_flash.v=1;
