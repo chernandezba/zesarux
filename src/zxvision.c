@@ -6066,6 +6066,38 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto)
 
 }
 
+void menu_draw_ext_desktop_border_emulated_machine(int ancho_no_zxdesktop,int alto_zxdesktop,int alto_no_zxdesktop)
+{
+
+    int x,y;
+
+    //Recuadro que envuelve maquina emulada. Solo si hay zxdesktop vertical y tiene minimo de 16
+    if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
+        int grueso_recuadro=4;
+
+        int color=ESTILO_GUI_PAPEL_TITULO;
+
+        if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
+
+        //linea vertical de abajo
+        for (y=alto_no_zxdesktop;y<alto_no_zxdesktop+grueso_recuadro;y++) {
+
+            //Se le suma a x el grueso, para que coincida con linea vertical
+            for (x=0;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
+                scr_putpixel(x,y,color); 
+            }
+        }
+
+        //linea vertical de derecha
+        for (x=ancho_no_zxdesktop;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
+            for (y=0;y<alto_no_zxdesktop;y++) {
+                scr_putpixel(x,y,color); 
+            }
+        }    
+
+    }
+}
+
 void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 {
 
@@ -6306,31 +6338,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
     menu_ext_desktop_fill_rainbow_counter++;
 
-    //Recuadro que envuelve maquina emulada. Solo si hay zxdesktop vertical y tiene minimo de 16
-    if (!zxdesktop_disable_show_frame_around_display && alto_zxdesktop>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
-        int grueso_recuadro=4;
-
-        int color=ESTILO_GUI_PAPEL_TITULO;
-
-        if (zxvision_key_not_sent_emulated_mach() ) color=ESTILO_GUI_PAPEL_TITULO_INACTIVA;
-
-        //linea vertical de abajo
-        for (y=alto_no_zxdesktop;y<alto_no_zxdesktop+grueso_recuadro;y++) {
-
-            //Se le suma a x el grueso, para que coincida con linea vertical
-            for (x=0;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
-                scr_putpixel(x,y,color); 
-            }
-        }
-
-        //linea vertical de derecha
-        for (x=ancho_no_zxdesktop;x<ancho_no_zxdesktop+grueso_recuadro;x++) {
-            for (y=0;y<alto_no_zxdesktop;y++) {
-                scr_putpixel(x,y,color); 
-            }
-        }    
-
-    }
+    menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
 
 
 }
@@ -6346,7 +6354,6 @@ void menu_draw_ext_desktop(void)
     int xstart_zxdesktop=screen_get_ext_desktop_start_x();
 
     menu_draw_ext_desktop_background(xstart_zxdesktop);
-
 
 
 	//Dibujar botones si están activados (por defecto)
