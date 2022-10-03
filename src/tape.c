@@ -62,6 +62,7 @@
 #include "specmate.h"
 #include "phoenix.h"
 #include "ramjet.h"
+#include "interface007.h"
 
 #include "autoselectoptions.h"
 
@@ -1367,7 +1368,12 @@ int tap_save_detect(void)
     //Ramjet
     else if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
         if (!ramjet_save_detect()) return 0;
-    }        
+    }
+
+    //Interface007
+    else if (interface007_enabled.v && interface007_mapped_rom_memory.v) {
+        if (reg_pc!=0x0243) return 0;
+    }            
 
     else if (reg_pc!=1222) return 0;
 
