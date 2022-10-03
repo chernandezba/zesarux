@@ -146,6 +146,7 @@
 #include "defcon.h"
 #include "ramjet.h"
 #include "interface007.h"
+#include "dinamid3.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1387,7 +1388,11 @@ util_stats_init();
 
 	if (interface007_enabled.v) {
 		interface007_reset();
-	}                  
+	}
+
+	if (dinamid3_enabled.v) {
+		dinamid3_reset();
+	}                      
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
@@ -3559,6 +3564,7 @@ void set_machine_params(void)
         defcon_enabled.v=0;
         ramjet_enabled.v=0;
         interface007_enabled.v=0;
+        dinamid3_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;

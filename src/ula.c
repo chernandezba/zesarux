@@ -43,6 +43,7 @@
 #include "defcon.h"
 #include "ramjet.h"
 #include "interface007.h"
+#include "dinamid3.h"
 
 
 //#define ZESARUX_ZXI_PORT_REGISTER 0xCF3B
@@ -368,7 +369,11 @@ void nmi_handle_pending_prepost_fetch(void)
 
     if (interface007_enabled.v) {
         interface007_nmi();
-    }                        
+    }
+
+    if (dinamid3_enabled.v) {
+        dinamid3_nmi();
+    }                            
 
 }
 
@@ -472,7 +477,12 @@ void generate_nmi_prepare_fetch(void)
     if (interface007_enabled.v) {
         nmi_pending_pre_opcode=1;
         nmi_pending_post_opcode=0;
-    }                      
+    }
+
+    if (dinamid3_enabled.v) {
+        nmi_pending_pre_opcode=1;
+        nmi_pending_post_opcode=0;
+    }                          
 
 }
 

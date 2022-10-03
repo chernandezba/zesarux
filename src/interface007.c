@@ -21,7 +21,7 @@
 
 /*
 
-Spec-Mate emulation
+Interface007 emulation
 
 */
 

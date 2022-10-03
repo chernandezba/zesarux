@@ -145,6 +145,7 @@
 #include "defcon.h"
 #include "ramjet.h"
 #include "interface007.h"
+#include "dinamid3.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -264,6 +265,7 @@ int phoenix_opcion_seleccionada=0;
 int defcon_opcion_seleccionada=0;
 int ramjet_opcion_seleccionada=0;
 int interface007_opcion_seleccionada=0;
+int dinamid3_opcion_seleccionada=0;
 
 
 
@@ -32124,6 +32126,61 @@ void menu_interface007(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_hardware_dinamid3_enable(MENU_ITEM_PARAMETERS)
+{
+    if (dinamid3_enabled.v) {
+        dinamid3_disable();
+    }
+    else {
+        dinamid3_enable();
+    }
+}
+
+
+
+void menu_dinamid3(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_hardware_dinamid3_enable,
+                NULL,"[%c] ~~Dinamid3 Enabled", (dinamid3_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_common,'d');
+        menu_add_item_menu_tooltip(array_menu_common,"Enable Dinamid3");
+
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, press: \n"
+            "1: to save at normal speed\n"
+            "2, 3, 4 or 5: to save at 2x, 3x, 4x or 5x speed\n"
+        );
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&dinamid3_opcion_seleccionada,&item_seleccionado,array_menu_common,"Dinamid3 emulation");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
+
 
 
 void menu_hardware_phoenix_enable(MENU_ITEM_PARAMETERS)
@@ -32633,14 +32690,18 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_defcon,NULL,"~~Defcon");
         menu_add_item_menu_shortcut(array_menu_common,'d');
-        menu_add_item_menu_tiene_submenu(array_menu_common);           
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_dinamid3,NULL,"D~~inamid3");
+        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_tiene_submenu(array_menu_common);                   
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_hilow_barbanegra,NULL,"HiLow ~~Barbanegra");
         menu_add_item_menu_shortcut(array_menu_common,'b');
         menu_add_item_menu_tiene_submenu(array_menu_common); 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface007,NULL,"~~Interface007");
-        menu_add_item_menu_shortcut(array_menu_common,'i');
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface007,NULL,"I~~nterface007");
+        menu_add_item_menu_shortcut(array_menu_common,'n');
         menu_add_item_menu_tiene_submenu(array_menu_common);         
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");

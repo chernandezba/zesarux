@@ -63,6 +63,7 @@
 #include "phoenix.h"
 #include "ramjet.h"
 #include "interface007.h"
+#include "dinamid3.h"
 
 #include "autoselectoptions.h"
 
@@ -1373,7 +1374,12 @@ int tap_save_detect(void)
     //Interface007
     else if (interface007_enabled.v && interface007_mapped_rom_memory.v) {
         if (reg_pc!=0x0243) return 0;
-    }            
+    }
+
+    //Dinamid3. Esto es zona de rom normal, simplemente llama mas adelante de lo habitual
+    else if (dinamid3_enabled.v && dinamid3_mapped_rom_memory.v) {
+        if (reg_pc!=0x04d0) return 0;
+    }                
 
     else if (reg_pc!=1222) return 0;
 
