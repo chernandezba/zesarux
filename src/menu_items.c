@@ -32096,8 +32096,9 @@ void menu_interface007(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'i');
         menu_add_item_menu_tooltip(array_menu_common,"Enable Interface007");
 
-        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, ... "
-        
+        menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, press: \n"
+            "1: to save at normal speed\n"
+            "2, 3, 4 or 5: to save at 2x, 3x, 4x or 5x speed\n"
         );
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
