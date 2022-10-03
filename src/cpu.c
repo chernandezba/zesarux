@@ -145,6 +145,7 @@
 #include "phoenix.h"
 #include "defcon.h"
 #include "ramjet.h"
+#include "interface007.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -1382,7 +1383,11 @@ util_stats_init();
 
 	if (ramjet_enabled.v) {
 		ramjet_reset();
-	}                
+	}  
+
+	if (interface007_enabled.v) {
+		interface007_reset();
+	}                  
 
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
@@ -3553,6 +3558,7 @@ void set_machine_params(void)
         phoenix_enabled.v=0;
         defcon_enabled.v=0;
         ramjet_enabled.v=0;
+        interface007_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
