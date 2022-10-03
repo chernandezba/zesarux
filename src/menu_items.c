@@ -32153,8 +32153,9 @@ void menu_dinamid3(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Enable Dinamid3");
 
         menu_add_item_menu_ayuda(array_menu_common,"After enabling the interface and press NMI, press: \n"
-            "1: to save at normal speed\n"
-            "2, 3, 4 or 5: to save at 2x, 3x, 4x or 5x speed\n"
+            "1: save (seems it doesn't read any other key). Then:\n"
+            "s: save snapshot to tape\n"
+            "d: save snapshot to tape with a copy program that copies it to microdrive"
         );
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
