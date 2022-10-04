@@ -266,6 +266,7 @@ int defcon_opcion_seleccionada=0;
 int ramjet_opcion_seleccionada=0;
 int interface007_opcion_seleccionada=0;
 int dinamid3_opcion_seleccionada=0;
+int mantransfe_opcion_seleccionada=0;
 
 
 
@@ -25241,62 +25242,6 @@ void menu_debug_lost_vsync(MENU_ITEM_PARAMETERS)
 
 
 
-void menu_run_mantransfer(MENU_ITEM_PARAMETERS)
-{
-	//Cargar mantransfer.bin
-	char *mantransfefilename="mantransfev3.bin";
-                FILE *ptr_mantransfebin;
-                int leidos;
-
-                open_sharedfile(mantransfefilename,&ptr_mantransfebin);
-                if (!ptr_mantransfebin)
-                {
-                        debug_printf(VERBOSE_ERR,"Unable to open mantransfer binary file %s",mantransfefilename);
-                        return;
-                }
-
-	#define MAX_MANTRANSFE_BIN 1024
-	z80_byte buffer[MAX_MANTRANSFE_BIN];
-
-	leidos=fread(buffer,1,MAX_MANTRANSFE_BIN,ptr_mantransfebin);
-
-	//pasarlo a memoria
-	int i;
-
-	for (i=0;i<leidos;i++) {
-		poke_byte_no_time(16384+i,buffer[i]);
-	}
-
-	fclose(ptr_mantransfebin);
-
-	//Establecer modo im1 o im2
-	//Al inicio hay
-	//regsp defw 0
-	//im 1  (0xed,0x56)
-
-	//im2 seria 0xed, 0x5e
-
-	int offset_im_opcode=16384+2+1;
-	z80_byte opcode;
-
-	if (im_mode==1 || im_mode==0) opcode=0x56;
-	//im2
-	else opcode=0x5e;
-
-	poke_byte_no_time(offset_im_opcode,opcode);
-
-	debug_printf (VERBOSE_INFO,"Running mantransfer saving routine");
-
-	//y saltar a la rutina de grabacion de mantransfe
-	//Si se cambia la rutina, hay que cambiar este salto tambien
-        push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
-        reg_pc=16384+0x32;
-
-        //Y salimos de todos los menus
-        salir_todos_menus=1;
-
-}
-
 
 
 
@@ -26019,23 +25964,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-	if (MACHINE_IS_SPECTRUM_16_48) {
-		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_run_mantransfer,NULL,
-            "Run mantransfer","Ejecutar mantransfer","Executar mantransfer");
-		menu_add_item_menu_tooltip(array_menu_debug,"Run mantransfer, which dumps ram memory contents (snapshot) to Spectrum Tape\n"
-					"Only Spectrum 48k/16k models supported");
-		menu_add_item_menu_ayuda(array_menu_debug,"The difference between this option and the Save snapshot option is that "
-					"this option runs a Spectrum machine program (mantransfev3.bin) which dumps the ram contents to tape, "
-					"so you can use a .tap file to save it or even a real tape connected to line out of your soundcard.\n"
-					"It uses a small amount of RAM on memory display and some bytes on the stack, so it is not a perfect "
-					"routine and sometimes may fail.\n"
-					"The source code can be found on mantransfev3.tap\n"
-					"Note: Although mantransfe is a Spectrum program and it could run on a real spectrum or another emulator, "
-					"the saving routine needs that ZEsarUX emulator tells which im mode the cpu is (IM1 or IM2), "
-					"so, a saved program can be run on a real spectrum or another emulator, "
-					"but the saving routine sees im1 by default, so, saving from a real spectrum or another emulator "
-					"instead ZEsarUX will only work if the cpu is in IM1 mode (and not IM2)");
-	}
+
 
 	//testeo
 	//menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_testeo_scanf_numero,NULL,"Test scanf number");
@@ -32182,6 +32111,116 @@ void menu_dinamid3(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_run_mantransfer(MENU_ITEM_PARAMETERS)
+{
+	//Cargar mantransfer.bin
+	char *mantransfefilename="mantransfev3.bin";
+                FILE *ptr_mantransfebin;
+                int leidos;
+
+                open_sharedfile(mantransfefilename,&ptr_mantransfebin);
+                if (!ptr_mantransfebin)
+                {
+                        debug_printf(VERBOSE_ERR,"Unable to open mantransfer binary file %s",mantransfefilename);
+                        return;
+                }
+
+	#define MAX_MANTRANSFE_BIN 1024
+	z80_byte buffer[MAX_MANTRANSFE_BIN];
+
+	leidos=fread(buffer,1,MAX_MANTRANSFE_BIN,ptr_mantransfebin);
+
+	//pasarlo a memoria
+	int i;
+
+	for (i=0;i<leidos;i++) {
+		poke_byte_no_time(16384+i,buffer[i]);
+	}
+
+	fclose(ptr_mantransfebin);
+
+	//Establecer modo im1 o im2
+	//Al inicio hay
+	//regsp defw 0
+	//im 1  (0xed,0x56)
+
+	//im2 seria 0xed, 0x5e
+
+	int offset_im_opcode=16384+2+1;
+	z80_byte opcode;
+
+	if (im_mode==1 || im_mode==0) opcode=0x56;
+	//im2
+	else opcode=0x5e;
+
+	poke_byte_no_time(offset_im_opcode,opcode);
+
+	debug_printf (VERBOSE_INFO,"Running mantransfer saving routine");
+
+	//y saltar a la rutina de grabacion de mantransfe
+	//Si se cambia la rutina, hay que cambiar este salto tambien
+        push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+        reg_pc=16384+0x32;
+
+        //Y salimos de todos los menus
+        salir_todos_menus=1;
+
+}
+
+
+
+void menu_mantransfer(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+
+            
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_run_mantransfer,
+                NULL,"Run mantransfer");
+
+		menu_add_item_menu_tooltip(array_menu_common,"Run mantransfer, which dumps ram memory contents (snapshot) to Spectrum Tape\n"
+					"Only Spectrum 48k/16k models supported");
+		menu_add_item_menu_ayuda(array_menu_common,"Mantransfer is a software-based copy interface. It was coded by me, in the 90's, "
+                    "as an alternative to a hardware-based copy interface (transtape, multiface, etc).\n"
+                    "It was kept resident on memory by using IM2 interrupts, and triggered by a key combination\n"
+                    "The difference between this option and the Save snapshot option is that "
+					"this option runs a Spectrum machine program (mantransfev3.bin) which dumps the ram contents to tape, "
+					"so you can use a .tap file to save it or even a real tape connected to line out of your soundcard.\n"
+					"It uses a small amount of RAM on memory display and some bytes on the stack, so it is not a perfect "
+					"routine and sometimes may fail.\n"
+					"The source code can be found on mantransfev3.tap\n"
+					"Note: Although mantransfe is a Spectrum program and it could run on a real spectrum or another emulator, "
+					"the saving routine needs that ZEsarUX emulator tells which im mode the cpu is (IM1 or IM2), "
+					"so, a saved program can be run on a real spectrum or another emulator, "
+					"but the saving routine sees im1 by default, so, saving from a real spectrum or another emulator "
+					"instead ZEsarUX will only work if the cpu is in IM1 mode (and not IM2)");
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&mantransfe_opcion_seleccionada,&item_seleccionado,array_menu_common,"Mantransfer");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
 
 
 void menu_hardware_phoenix_enable(MENU_ITEM_PARAMETERS)
@@ -32703,7 +32742,13 @@ void menu_storage_copy_devices(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface007,NULL,"I~~nterface007");
         menu_add_item_menu_shortcut(array_menu_common,'n');
-        menu_add_item_menu_tiene_submenu(array_menu_common);         
+        menu_add_item_menu_tiene_submenu(array_menu_common);        
+
+        if (MACHINE_IS_SPECTRUM_16_48) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mantransfer,NULL,"M~~antransfer");
+            menu_add_item_menu_shortcut(array_menu_common,'a');
+            menu_add_item_menu_tiene_submenu(array_menu_common);       
+        }
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_mhpokeador,NULL,"Microhobby ~~Pokeador Automático");
         menu_add_item_menu_shortcut(array_menu_common,'p');
