@@ -26,6 +26,8 @@ Dinamid3 emulation
 */
 
 //Parece que dinamid3 es una copia y/o modificación sobre interface007
+//https://foro.speccy.org/viewtopic.php?t=4997
+//https://www.va-de-retro.com/foros/viewtopic.php?t=693&start=40
 
 #include <stdio.h>
 #include <stdlib.h>

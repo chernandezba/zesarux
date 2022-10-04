@@ -109,21 +109,6 @@ settings de dicha ventana?
 *problema: minimizar no sale de la aplicación, solo cambia tamaño de ventana. habria que hacer que se cerrase cuando: la ventana indica 
 que tiene una funcion de entrada asociada. como indicar esto? en un parámetro de la zxvision_window ?
 
--otros dispositivos copiadores: https://microhobby.speccy.cz/mhf/195/MH195_21.jpg
-https://worldofspectrum.net/pub/sinclair/games-info/d/Discopack+3.pdf
-
--disciple
--plus d (sucesor de disciple)
-
-dynamid 3
--https://foro.speccy.org/viewtopic.php?t=4997
--https://www.va-de-retro.com/foros/viewtopic.php?t=693&start=40
-
-interface 007. clon de dynamid3???
-https://github.com/alvaroalea/Interface007 
-https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
-https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007
-
  
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
@@ -133,7 +118,3 @@ https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007
 
 -Si hay submenu, quizá gestionar desde propia función de menú. Y/o no cerrar menú anterior
 
--Al mover un icono no dibujar fondo si hay framedrop
-
-
--007, dinamid3: agregar memory zones, segmento en debug

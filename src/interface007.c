@@ -25,6 +25,10 @@ Interface007 emulation
 
 */
 
+//https://github.com/alvaroalea/Interface007 
+//https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
+//https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
