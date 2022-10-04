@@ -32179,7 +32179,9 @@ void menu_mantransfer(MENU_ITEM_PARAMETERS)
             
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_run_mantransfer,
-                NULL,"Run mantransfer");
+                NULL,"Run ~~Mantransfer");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ejecutar ~~Mantransfer","Executar ~~Mantransfer");
+        menu_add_item_menu_shortcut(array_menu_common,'m');
 
 		menu_add_item_menu_tooltip(array_menu_common,"Run mantransfer, which dumps ram memory contents (snapshot) to Spectrum Tape\n"
 					"Only Spectrum 48k/16k models supported");
