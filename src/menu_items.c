@@ -32115,15 +32115,15 @@ void menu_run_mantransfer(MENU_ITEM_PARAMETERS)
 {
 	//Cargar mantransfer.bin
 	char *mantransfefilename="mantransfev3.bin";
-                FILE *ptr_mantransfebin;
-                int leidos;
+    FILE *ptr_mantransfebin;
+    int leidos;
 
-                open_sharedfile(mantransfefilename,&ptr_mantransfebin);
-                if (!ptr_mantransfebin)
-                {
-                        debug_printf(VERBOSE_ERR,"Unable to open mantransfer binary file %s",mantransfefilename);
-                        return;
-                }
+    open_sharedfile(mantransfefilename,&ptr_mantransfebin);
+    if (!ptr_mantransfebin)
+    {
+            debug_printf(VERBOSE_ERR,"Unable to open mantransfer binary file %s",mantransfefilename);
+            return;
+    }
 
 	#define MAX_MANTRANSFE_BIN 1024
 	z80_byte buffer[MAX_MANTRANSFE_BIN];
@@ -32159,11 +32159,11 @@ void menu_run_mantransfer(MENU_ITEM_PARAMETERS)
 
 	//y saltar a la rutina de grabacion de mantransfe
 	//Si se cambia la rutina, hay que cambiar este salto tambien
-        push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
-        reg_pc=16384+0x32;
+    push_valor(reg_pc,PUSH_VALUE_TYPE_CALL);
+    reg_pc=16384+0x32;
 
-        //Y salimos de todos los menus
-        salir_todos_menus=1;
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
 }
 
