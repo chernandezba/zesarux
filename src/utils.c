@@ -148,6 +148,8 @@
 #include "phoenix.h"
 #include "defcon.h"
 #include "ramjet.h"
+#include "interface007.h"
+#include "dinamid3.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -12809,7 +12811,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=1;      
             size=RAMJET_ROM_SIZE;
         }
-    break;                  
+    break;
+
+    //interface007 rom
+    case MEMORY_ZONE_INTERFACE007_ROM:
+        if (interface007_enabled.v) {
+            *readwrite=1;      
+            size=INTERFACE007_ROM_SIZE;
+        }
+    break;
+
+    //dinamid3 rom
+    case MEMORY_ZONE_DINAMID3_ROM:
+        if (dinamid3_enabled.v) {
+            *readwrite=1;      
+            size=DINAMID3_ROM_SIZE;
+        }
+    break;                          
 
   }
 
@@ -13281,7 +13299,21 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (ramjet_enabled.v) {
             p=&ramjet_memory_pointer[address];             
         }
-    break;    
+    break;
+
+    //interface007 rom
+    case MEMORY_ZONE_INTERFACE007_ROM:
+        if (interface007_enabled.v) {
+            p=&interface007_memory_pointer[address];             
+        }
+    break;
+
+    //dinamid3 rom
+    case MEMORY_ZONE_DINAMID3_ROM:
+        if (dinamid3_enabled.v) {
+            p=&dinamid3_memory_pointer[address];             
+        }
+    break;            
 
   }
 
@@ -13773,7 +13805,23 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Ramjet ROM");
         }
-    break;                    
+    break;
+
+    //interface007 rom
+    case MEMORY_ZONE_INTERFACE007_ROM:
+        if (interface007_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Interface007 ROM");
+        }
+    break;
+
+    //dinamid3 rom
+    case MEMORY_ZONE_DINAMID3_ROM:
+        if (dinamid3_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"Dinamid3 ROM");
+        }
+    break;                            
 
   }
 

@@ -25,6 +25,8 @@ Dinamid3 emulation
 
 */
 
+//Parece que dinamid3 es una copia y/o modificación sobre interface007
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
