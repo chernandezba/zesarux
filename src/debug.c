@@ -108,6 +108,8 @@
 #include "phoenix.h"
 #include "defcon.h"
 #include "ramjet.h"
+#include "dinamid3.h"
+#include "interface007.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5986,6 +5988,20 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 return;
         }
 
+        //Si es interface007
+        if (segmento==0 && interface007_enabled.v && interface007_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"I007");
+                sprintf (texto_pagina,"I007 MEM");
+                return;
+        }
+
+        //Si es dinamid3
+        if (segmento==0 && dinamid3_enabled.v && dinamid3_mapped_rom_memory.v) {
+                sprintf (texto_pagina_short,"DIN3");
+                sprintf (texto_pagina,"Dinamid3 MEM");
+                return;
+        }                
+
 
         //Si es barbanegra
         if (segmento==0 && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
@@ -6256,6 +6272,16 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         if (MACHINE_IS_SPECTRUM && ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
                         }
+
+                        //Si interface007
+                        if (MACHINE_IS_SPECTRUM && interface007_enabled.v && interface007_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }
+
+                        //Si dinamid3
+                        if (MACHINE_IS_SPECTRUM && dinamid3_enabled.v && dinamid3_mapped_rom_memory.v) {
+                                debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
+                        }                                                
 
                         //Si barbanegra
                         if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
