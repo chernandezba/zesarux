@@ -25,6 +25,8 @@ Phoenix emulation
 
 */
 
+//Parece que dinamid3, interface007 y phoenix comparten código rom y debieron originarse de un mismo sitio
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>

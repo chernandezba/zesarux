@@ -25,6 +25,7 @@ Interface007 emulation
 
 */
 
+//Parece que dinamid3, interface007 y phoenix comparten código rom y debieron originarse de un mismo sitio
 //https://github.com/alvaroalea/Interface007 
 //https://www.va-de-retro.com/foros/viewtopic.php?f=63&t=693&start=70
 //https://spectrumcomputing.co.uk/entry/1000191/Hardware/Interface_007

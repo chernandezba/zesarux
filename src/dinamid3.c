@@ -25,7 +25,7 @@ Dinamid3 emulation
 
 */
 
-//Parece que dinamid3 es una copia y/o modificación sobre interface007
+//Parece que dinamid3, interface007 y phoenix comparten código rom y debieron originarse de un mismo sitio
 //https://foro.speccy.org/viewtopic.php?t=4997
 //https://www.va-de-retro.com/foros/viewtopic.php?t=693&start=40
 
