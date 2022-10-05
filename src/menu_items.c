@@ -15850,7 +15850,7 @@ void menu_storage_mmc_download_tbblue(void)
 	//sprintf(archivo_zip,"%s%s",dest_dir,"tbbluemmc-32mb.zip");
 	sprintf(archivo_zip,"%s%s",dest_dir,zipfilename);
 
-	int ssl_use=0;
+	int ssl_use=1;
 
 
 	int ret=menu_download_file(host_final,url,archivo_zip,ssl_use,estimated_size,"");  

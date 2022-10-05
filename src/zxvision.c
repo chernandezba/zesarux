@@ -19391,6 +19391,11 @@ int menu_inves_cond_realvideo(void)
 
 
 #ifndef NETWORKING_DISABLED
+//Nota: realmente deberiamos mirar que hay soporte de threads, en vez de que haya networking
+//lo que sucede es que si no hay threads (no existe USE_PTHREADS), tampoco hay networking (definira NETWORKING_DISABLED), por tanto esto seria coherente
+//El unico problema que podria haber es que se quiera usar estas ventanas de descompresion de zip en algun sitio que no venga
+//de una descarga por red, pero actualmente solo se usa esta rutina al descargar por red, y por tanto, si no hay red, no hay descarga
+//que se pueda ejecutar y por tanto no se usara la rutina de descompresion de zip
 
 
 // Para el thread de descompresion de zip

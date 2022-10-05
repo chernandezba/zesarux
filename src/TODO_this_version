@@ -90,3 +90,77 @@ usar la que si considera movimiento raton
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
 -Mejorar entrada en changelog sobre iconos en escritorio 
+
+
+-nextos funcionando (mi imagen tbblue): 2.06H
+-nueva imagen (que falla): 2.07k:
+
+-2.07 fallan todas
+
+-2.06 ok
+
+commit ae03a1011aa972e1445a1defdfe0fa91e3084f0d
+Author: Garry Lancaster <garrylancaster@gmail.com>
+Date:   Wed Oct 14 23:33:06 2020 +0100
+
+    Updated NextZXOS to v2.06N
+
+imagen de v2.06N:
+firmware 1.29e
+core 3.01.08
+
+imagen de v2.07a (Sun Feb 27 09:58:54 2022):
+firmware 1.31
+core 3.01.11?
+-mas lenta en arrancar
+-no pitido en pagina inicial de modos
+-no inicia nextzxos
+
+
+
+Commits interesantes de la fpga:
+
+commit f2e9a1793f0f03d2a6c9067e5ce68d4b211e86b5
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Tue Jan 5 20:27:15 2021 -0700
+
+    DIVMMC: Corrections in automap reset logic, disable address range made active even when ROM3 is not present
+
+commit 8b052d1b53894ea397a3c1c625ffc5644dd46298
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Wed Jan 6 23:48:14 2021 -0700
+
+    DIVMMC: Nextreg 0xB8 and 0xB9 control which entry points are active, a second set of tape traps added for nextzxos
+
+commit f692cd726072fb160435566ad33657a7a90ddcff
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Wed Jan 6 23:47:19 2021 -0700
+
+    DIVMMC: Disable addresses 1FFX should be active even if ROM3 is not present
+
+commit d6397d4e2237bebc5240e29b82a508bf3ba57780
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Thu Jan 7 09:46:35 2021 -0700
+
+    Provide a means to re-enter config mode in order to launch other cores from nextzxos
+
+
+commit 738f0147f6c9fa9a9c1e5b4beaa7cb044a2bf10c
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Mon Jan 11 23:58:49 2021 -0700
+
+    DIVMMC: Add all RST as entry points, make triggering programmable via nextreg 0xB8 - 0xBB, add nextzxos tap traps to improve compatibility
+
+
+commit 8c09cba2d2819410f260dc47531b96c92061457d
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Sun Jan 17 14:44:17 2021 -0700
+
+    DIVMMC: Simplify logic during sram address calculation
+
+commit e6fa3a4a4ccb8ddf7be7b2e8befb59ef67a34956
+Author: aralbrec <alvin_albrecht@hotmail.com>
+Date:   Mon Jul 12 21:55:14 2021 -0600
+
+    #6 #7: Divmmc bank 3 always read only when mapram is set, conmem does not bring in divmmc rom when mapram is set (departure from standard divmmc hardwa
+re)                    
