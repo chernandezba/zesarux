@@ -15915,14 +15915,25 @@ void menu_storage_mmc_autoconfigure_tbblue(MENU_ITEM_PARAMETERS)
 {
 
 	int tipo_imagen;
+
+    int available_download=1;
 	
-//Si no hay phreads, solo se puede usar la opcion local
+//Si no hay phreads ni ssl, solo se puede usar la opcion local
 #ifdef NETWORKING_DISABLED
-	tipo_imagen=1;
-#else
-	tipo_imagen=menu_simple_two_choices("SD Image type","Included or download?","Use included in ZEsarUX","Download from official repo");
+	available_download=0;
+#endif
+
+#ifndef COMPILE_SSL
+    available_download=0;
 #endif
 	
+    if (available_download) {
+        tipo_imagen=menu_simple_two_choices("SD Image type","Included or download?","Use included in ZEsarUX","Download from official repo");
+    }
+    else {
+        tipo_imagen=1;
+    }
+
 	switch(tipo_imagen) {
 		case 1:
 			//Usar imagen local
