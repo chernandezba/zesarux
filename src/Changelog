@@ -122,6 +122,7 @@ Fixed TZX turbo files extract (including screen previews), convert & file info
 Fixed .Z80 and .ZSF screen previews when using 128k screen page 7
 Fixed .DSK extract 
 Fixed crash when saving .ZSF snapshots when a byte DD is found just before a byte is repeated more than 256 times
+Fixed Next MMC images download. Now you need SSL enabled on compilation
 
 Fixed ZX Vision:
 -Fixed showing cursor on edit fields and text length longer than visible
