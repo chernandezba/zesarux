@@ -1,0 +1,4 @@
+solo forzando 3d00 o reg_pc>=0x1ff8 && reg_pc<=0x1fff, ya arranca
+Aunque sigue usando comportamiento erroneo bit 4 registro 6, y no implementa divmmc registro 10
+
+Por tanto es una modificacion incorrecta aunque funciona
