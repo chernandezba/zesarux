@@ -71,3 +71,5 @@ usar la que si considera movimiento raton
 
 
 -A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
+
+-Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
