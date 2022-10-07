@@ -206,6 +206,12 @@ Un tercer botón que diga "take me there" para cuando sugiere menús, que te lle
 
 --- menu - fallos ---
 
+-menu about: sin zx desktop, sale muy ancho pues ancho por defecto en zxvision_generic_message_tooltip es ahora 40
+-quiza se deberia hacer mas uso de menu_center_x_from_width, en ventanas que ya no caben con ancho 32 con zxdesktop ancho 256 y abrir ventanas en zxdesktop
+
+-Splash messages en overlay no deberían borrar las ventanas cuando opción de background windows even with menú closed 
+
+
 -a veces al cambiar numero chips en settings-audio-ay chips se cuelga
 
 -Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
