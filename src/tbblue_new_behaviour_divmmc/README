@@ -1,0 +1,49 @@
+Two very important changes are that NextZXOS now uses the divmmc's hardware traps and it has switched to a stackless nmi for the multiface.  Definitely the machine will not boot up without the divmmc being fully emulated.
+
+The divmmc is fairly simple device but it's been extended in the Next.  The documentation in ports.txt and nextreg.txt are complete if you know how the divmmc works:
+
+https://gitlab.com/SpectrumNext/ZX_Spectrum_Next_FPGA/-/blob/master/cores/zxnext/ports.txt
+
+https://gitlab.com/SpectrumNext/ZX_Spectrum_Next_FPGA/-/blob/master/cores/zxnext/nextreg.txt
+
+i/o port 0xe3 is a manual control of the divmmc:
+
+0xE3 Divmmc control
+(R/W)
+bit 7 = conmem = 1 to map in divmmc, 0K-8K will contain the esxdos rom, 8K-16K will contain the selected divmmc bank
+bit 6 = mapram = 1 to replace the esxdos rom with divmmc bank 3
+bits 3:0 = bank = selected divmmc ram bank for 8K-16K region
+* conmen can be used to manually control divmmc mapping.
+* divmmc automatically maps itself in when instruction fetches hit specific addresses in the rom. When this happens, the
+  esxdos rom (or divmmc bank 3 if mapram is set) appears in 0K-8K and the selected divmmc bank appears as ram in 8K-16K.
+* bit 6 can only be set, once set only a power cycle can reset it on the original divmmc.
+  nextreg 0x09 bit 3 can be set to reset this bit.
+
+The divmmc has been enhanced in the zx next to add more entry points and make them programmable.
+See nextreg 0xB8 - 0xBB.
+
+
+You can set bit 7 to manually page in the divmmc into the bottom 16K but most of the time the divmmc is running in automap mode where z80 instruction fetches from particular addresses in rom occur.
+
+nextreg 0xb8 through 0xbb control what trap addresses are active and when.  Nextreg 0xb8 chooses which z80 restart addresses are traps.  Nextreg 0xb9 determines if the trap is active only when ROM3 is present or if always.  Nextreg 0xba decides whether the trap is instant or delayed.  Instant = the instruction at the trap address comes from divmmc memory.  Delayed = the divmmc memory is activated after the instruction byte is fetched from the current memory mapping.  Nextreg 0xbb covers other trap addresses (like tape and trdos) with fewer options than the above.
+
+A few other scattered bits inherited from past cores:
+
+nextreg 0x06 bit 4 = enable divmmc nmi button (disabled by nextzxos)
+nextreg 0x09 bit 3 = set to reset the divmmc mapram bit (may only be used by user)
+nextreg 0x0a bit 4 = enable divmmc automap (if not set, no trapping occurs)
+
+If you are familiar with the divmmc then the above should be enough to emulate the Next's divmmc.  There are more changes coming in 3.01.11 but it is 3.01.10 that is in the release.
+
+
+
+Without the stackless nmi, the multiface will not work.  Nextreg 0xc0 bit 3 set enables stackless nmi mode where the return address during nmi acknowledge will be written to nextreg 0xc2 and 0xc3 instead of memory.  The first RETN following will use this return address instead of the one popped from memory. There is a little written about it in the nextreg.txt file for these nextreg.
+
+
+These things should get nextzxos running properly.  Keep in mind that the Next makes the divmmc and multiface compatible with each other by disabling the other when one is active.  If the divmmc is active for example, the multiface nmi interrupt button will not work.
+
+As to why it's slower -- the firmware and nextzxos now run at 28 MHz most of the time.  I don't know if that causes issues for the emulation?
+
+
+Implementing the hardware im2 mode is going to be a bit of a pain for emulator authors but it will be important.  A lot of the upcoming software is using it especially for digital audio.  The Next is unsual compared to other z80 machines in that each im2 peripheral can be programmed to interrupt a dma operation.  That part is essential in order for digital audio to be played properly using the new ctc.
+

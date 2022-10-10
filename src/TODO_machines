@@ -618,7 +618,7 @@ writes do not have an effect and reads return unspecified data.
 
 A mejorar en Next para próxima versión:
 
-Pruebas en carpeta tbblue_new_behaviour_divmmc
+Pruebas en carpeta tbblue_new_behaviour_divmmc. Ver README para info adicional
 
 -nextos funcionando (mi imagen tbblue): 2.06H
 -2.06I arranca pero en basic, por ejemplo input a$, no va bien
