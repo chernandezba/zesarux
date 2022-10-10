@@ -96,7 +96,7 @@ http://dunfield.classiccmp.org/r/765.pdf
 Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
 
 lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
-Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK
+Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
 -Emulación pcw 8256
 Requiere antes floppy
