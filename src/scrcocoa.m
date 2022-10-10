@@ -2583,7 +2583,7 @@ void scrcocoa_putpixel_final(int x,int y,unsigned int color)
 
     //y escribir
     scrcocoa_putpixel_final_rgb(x,y,color32);
-               
+
 
 }
 
@@ -3054,6 +3054,8 @@ int scrcocoa_init (void) {
 
 	debug_printf (VERBOSE_INFO,"Init COCOA(OpenGL) Video Driver");
 
+    //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
+    screen_este_driver_permite_ext_desktop=1;
 
     //printf ("scrcocoa_init\n");
 

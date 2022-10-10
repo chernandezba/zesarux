@@ -405,6 +405,8 @@ void do_fallback_video(void)
 
 	for (i=0;i<num_scr_driver_array;i++) {
 
+        screen_este_driver_permite_ext_desktop=0;
+
 		screen_reset_scr_driver_params();
 
 		int (*funcion_init) ();
@@ -2629,7 +2631,7 @@ int set_scrdriver_cocoa(void)
     scr_actualiza_tablas_teclado=scrcocoa_actualiza_tablas_teclado;
 
     //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-    screen_este_driver_permite_ext_desktop=1;
+    //screen_este_driver_permite_ext_desktop=1;
     return 0;
 }
 
@@ -2647,7 +2649,7 @@ int set_scrdriver_xwindows(void)
     scr_actualiza_tablas_teclado=scrxwindows_actualiza_tablas_teclado;
 
     //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-    screen_este_driver_permite_ext_desktop=1;
+    //screen_este_driver_permite_ext_desktop=1;
     //scr_debug_registers=scrxwindows_debug_registers;
     //scr_messages_debug=scrxwindows_messages_debug;
     return 0;
@@ -2666,7 +2668,7 @@ int set_scrdriver_sdl(void)
     scr_actualiza_tablas_teclado=scrsdl_actualiza_tablas_teclado;
 
     //Esto se tiene que cambiar antes incluso de inicializar el driver video, para evitar leer mal el tamaño total ventana
-    screen_este_driver_permite_ext_desktop=1;
+    //screen_este_driver_permite_ext_desktop=1;
     return 0;
 }
 

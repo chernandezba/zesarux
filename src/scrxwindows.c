@@ -1945,6 +1945,10 @@ int scrxwindows_init (void) {
 
 	debug_printf (VERBOSE_INFO,"Init XWindows Video Driver");
 
+    //Esto tiene que ir al principio de inicializar driver para leer correctamente el tamaño de ventana
+    screen_este_driver_permite_ext_desktop=1;
+
+
 	// Open the display
 
 	dpy = XOpenDisplay(NIL);
