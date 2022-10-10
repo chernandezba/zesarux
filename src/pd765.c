@@ -128,6 +128,9 @@ char dskplusthree_file_name[PATH_MAX]="";
 
 int dwstate=0,drstate=0;
 
+int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar);
+z80_byte plus3dsk_get_byte_disk(int offset);
+
 
 void pd765_debug_getstacktrace(int items)
 {
@@ -174,6 +177,26 @@ void pd765_read_sector(int indice_destino)
         //sector
 
 	debug_printf(VERBOSE_DEBUG,"Reading full sector at track %d sector %d",pd765_ncn,pd765_sector);
+
+
+    /* 
+
+    Habria que leer el sector asi , buscando el id , y no calcular offset de manera matematica
+	int iniciosector=traps_plus3dos_getoff_track_sector(pd765_ncn,pd765_sector);
+
+
+        int i;
+	for (i=0;i<512;i++) {
+		z80_byte byte_leido=plus3dsk_get_byte_disk(iniciosector+i);
+        pdc_buffer_retorno[indice_destino++]=byte_leido;
+	}
+
+
+    return;    
+
+    */
+
+  
 
 	int offset=pd765_get_index_memory(0);
 	pd765_next_sector();
@@ -522,6 +545,9 @@ void pd765_write_command(z80_byte value)
 				if (pd765_index_write_command==9) {
 					pd765_index_read_command=1;
 					pd765_index_write_command=0;
+
+                    //printf("Leer cilindro %d cabeza %d sector %d\n",pd765_ncn,pd765_hd,pd765_sector);
+                    //sleep(3);
 
 		                        pd765_st0=(pd765_hd&1)<<2 | (pd765_us1&1) << 1 | (pd765_us0&1) | 32    ; //Indicar 32 de seek end
                 		        pd765_st1=0;
@@ -1117,6 +1143,7 @@ sectores van alternados:
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
 				debug_printf(VERBOSE_DEBUG,"Found sector %d/%d at %d/%d",pista_buscar,sector_buscar,pista,sector);
+                        //sleep(3);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
