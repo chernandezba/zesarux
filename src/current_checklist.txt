@@ -10,14 +10,9 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
-
--ejecutar tests/manual_tests.sh
+ok mac
 
 -ejecutar tests/machines_test.sh
-
--ejecutar tests/games_tests.sh
-
--probar cambio idioma menu y ver diferentes menus
 
 Drivers video:
 -probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
@@ -40,9 +35,6 @@ Drivers video:
 **probar recreated
 -ejecutar tests/videotest.sh
 
-
--iniciar con ./zesarux --noconfigfile
-habilitar zxdesktop, mover iconos, pulsar iconos
 
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
@@ -94,13 +86,9 @@ Drivers audio:
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
 -probar turbosound, 3 chips ay
--probar specdrum, covox
--probar general sound
 -probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con extras/snap_tests/teststereo.tap y demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
--probar menu aysheet
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 -probar export to .mid
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak)
@@ -119,8 +107,6 @@ Drivers audio:
 *probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
 *probar carga realtape : spectrum: smp,wav,rwa,tap,tzx (tzx normal y turbo). zx80: smp,wav,rwa,o. zx81: smp,wav,rwa,p
 
--probar watermark, reduce 0.75
-
 -probar linea comandos: --tape, --realtape, --snap, --slotcard, --outtape
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar ZXMMC menor de 1 GB y mayor de 1 GB. Probar snap_tests/pruebasplus3e.mmc. cat tab, load, format to 0,4, etc
@@ -132,10 +118,6 @@ config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair
 Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
 -probar dandanator: spectrum y CPC
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
--probar kartusho
--probar ifrom
--probar betadisk
--probar discos +3
 -probar file browser
 
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
@@ -192,13 +174,7 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
--probar buscador vidas infinitas. tambien con cpu top speed
 -probar debug i/o ports: spectrum zx80/81, z88, zx-uno, etc
--probar debugger, step over interrupt, electron position, cursores, toggle, runto, etc
--probar breakpoint condicionales (=,<,> y con registros indirectos (hl), con and or xor) , operadores bitwise &|^ en variables
--probar desactivar breakpoints con espacio
--probar exportar disassemble a archivo texto
--probar assembler, desde menu y ZRCP
 -probar watches
 -probar remote command protocol ZRCP, en linux, mac y windows
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
@@ -257,16 +233,11 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena. probar interlace y abrir menu visualmem y view sprites (debe desactivar interlace momentaneamente)
 -probar modo gigascreen. demos e imagenes
 -probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
--probar View Basic: ZX80, ZX81, Spectrum
--probar View Hexdump
--probar View Sprites
+-probar View Basic, variables: ZX80, ZX81, Spectrum
 -probar emulator speed
 -probar turbo mode. manual y en zxuno, prism, chloe y tbblue
 -probar top speed, con threads y sin threads
 -probar accelerate loaders
--probar mantransferv3
--probar multiface
--probar betadisk
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 

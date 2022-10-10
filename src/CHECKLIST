@@ -112,7 +112,7 @@ Drivers audio:
 -probar specdrum, covox
 -probar general sound
 -probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con extras/snap_tests/teststereo.tap y demos y tests/stereotest.sh
+-probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar view ay piano con extras/media/spectrum/tests/testpiano.tap  y demos turbosound
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 -probar menu aysheet
@@ -272,7 +272,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena. probar interlace y abrir menu visualmem y view sprites (debe desactivar interlace momentaneamente)
 -probar modo gigascreen. demos e imagenes
 -probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
--probar View Basic: ZX80, ZX81, Spectrum
+-probar View Basic, variables: ZX80, ZX81, Spectrum
 -probar View Hexdump
 -probar View Sprites
 -probar emulator speed
@@ -280,7 +280,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar top speed, con threads y sin threads
 -probar accelerate loaders
 -probar mantransferv3
--probar multiface
+-probar multiface, transtape, etc... todos los dispositivos de copia
 -probar betadisk
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
