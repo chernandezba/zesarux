@@ -23074,6 +23074,53 @@ void hotswap_p2a_to_48k(MENU_ITEM_PARAMETERS)
 }
 
 
+
+void hotswap_128k_to_128k(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_128;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_128k_to_128k_spa(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_128_SPA;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_128k_to_p2(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P2;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_128k_to_p2f(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P2_FRE;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_128k_to_p2_spa(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_SPECTRUM_P2_SPA;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_128k_to_p2a(MENU_ITEM_PARAMETERS)
+{
+    hotswap_128_to_p2a();
+    menu_warn_message("Note that ROM data are the previous data coming from 128K");
+}
+
+void hotswap_128k_to_48k(MENU_ITEM_PARAMETERS)
+{
+    hotswap_any_machine_to_spec48();
+}
+
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
 
@@ -23098,13 +23145,13 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 			//casos maquinas 128k,+2 (y no +2a)
 			if (MACHINE_IS_SPECTRUM_128_P2) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum+ 128k",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128k (Spanish)",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,NULL,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,NULL,NULL);
+                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum+ 128k",MENU_OPCION_NORMAL,hotswap_128k_to_128k,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128k (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_128k_spa,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2",MENU_OPCION_NORMAL,hotswap_128k_to_p2,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,hotswap_128k_to_p2f,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_p2_spa,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_128k_to_p2a,NULL);
+				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_128k_to_48k,NULL);
 			}
 
 			//maquinas p2a
@@ -23256,25 +23303,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 					return; //Para evitar saltar a otro if
 				}
 
-				if (MACHINE_IS_SPECTRUM_128_P2) {
-					if (hotswap_machine_opcion_seleccionada==6) {
-						hotswap_any_machine_to_spec48();
-					}
 
-					else if (hotswap_machine_opcion_seleccionada==5) {
-						hotswap_128_to_p2a();
-						menu_warn_message("Note that ROM data are the previous data coming from 128K");
-					}
-
-					else {
-						current_machine_type=hotswap_machine_opcion_seleccionada+6;
-                        set_machine_params();
-                        post_set_machine(NULL);
-					}
-                    //Y salimos de todos los menus
-                    salir_todos_menus=1;
-					return; //Para evitar saltar a otro if
-                }
 
 
 
