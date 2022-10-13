@@ -23289,97 +23289,97 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
         hotswap_machine_opcion_seleccionada=0;
 
-			//casos maquinas 16k, 48k
-			if (MACHINE_IS_SPECTRUM_16_48) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 16k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
-                menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-                menu_add_item_menu_valor_opcion(array_menu_machine_selection,6);                
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,hotswap_1648_to_128k,NULL);
+        //casos maquinas 16k, 48k
+        if (MACHINE_IS_SPECTRUM_16_48) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 16k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
+            menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,6);                
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,hotswap_1648_to_128k,NULL);
 
-			}
+        }
 
-			//casos maquinas 128k,+2 (y no +2a)
-			if (MACHINE_IS_SPECTRUM_128_P2) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum+ 128k",MENU_OPCION_NORMAL,hotswap_128k_to_128k,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128k (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_128k_spa,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2",MENU_OPCION_NORMAL,hotswap_128k_to_p2,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,hotswap_128k_to_p2f,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_p2_spa,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_128k_to_p2a,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_128k_to_48k,NULL);
-			}
+        //casos maquinas 128k,+2 (y no +2a)
+        if (MACHINE_IS_SPECTRUM_128_P2) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum+ 128k",MENU_OPCION_NORMAL,hotswap_128k_to_128k,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128k (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_128k_spa,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2",MENU_OPCION_NORMAL,hotswap_128k_to_p2,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (French)",MENU_OPCION_NORMAL,hotswap_128k_to_p2f,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2 (Spanish)",MENU_OPCION_NORMAL,hotswap_128k_to_p2_spa,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_128k_to_p2a,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_128k_to_48k,NULL);
+        }
 
-			//maquinas p2a
-			if (MACHINE_IS_SPECTRUM_P2A_P3) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a40,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.1)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a41,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (Spanish)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2aspa,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 128k",MENU_OPCION_NORMAL,hotswap_p2a_to_128k,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_p2a_to_48k,NULL);
-			}
+        //maquinas p2a
+        if (MACHINE_IS_SPECTRUM_P2A_P3) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a40,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.1)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2a41,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum +2A (Spanish)",MENU_OPCION_NORMAL,hotswap_p2a_to_p2aspa,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 128k",MENU_OPCION_NORMAL,hotswap_p2a_to_128k,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_p2a_to_48k,NULL);
+        }
 
-			//maquinas cpc
-			if (MACHINE_IS_CPC) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"Amstrad CPC 464",MENU_OPCION_NORMAL,hotswap_cpc_to_464,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"Amstrad CPC 4128",MENU_OPCION_NORMAL,hotswap_cpc_to_4128,NULL);
-			}			
+        //maquinas cpc
+        if (MACHINE_IS_CPC) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Amstrad CPC 464",MENU_OPCION_NORMAL,hotswap_cpc_to_464,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Amstrad CPC 4128",MENU_OPCION_NORMAL,hotswap_cpc_to_4128,NULL);
+        }			
 
-            //maquinas zxuno
-            if (MACHINE_IS_ZXUNO) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_zxuno_to_p2a,NULL);
+        //maquinas zxuno
+        if (MACHINE_IS_ZXUNO) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_zxuno_to_p2a,NULL);
 
-                menu_add_item_menu_tooltip(array_menu_machine_selection,"The final machine type is "
-                "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
-                menu_add_item_menu_ayuda(array_menu_machine_selection,"The final machine type is "
-                "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
-
-
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_zxuno_to_48k,NULL);
-
-            }
+            menu_add_item_menu_tooltip(array_menu_machine_selection,"The final machine type is "
+            "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
+            menu_add_item_menu_ayuda(array_menu_machine_selection,"The final machine type is "
+            "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
 
 
-			//maquinas zx80, zx81
-			if (MACHINE_IS_ZX8081) {
-				menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx80,NULL);
-	            menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx81,NULL);
-			}
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_zxuno_to_48k,NULL);
 
-                 
-
-			//maquinas chloe
-			if (MACHINE_IS_CHLOE) {
-				menu_add_item_menu_inicial(&array_menu_machine_selection,"Chloe 140SE",MENU_OPCION_NORMAL,hotswap_chloe_to_140,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"Chloe 280SE",MENU_OPCION_NORMAL,hotswap_chloe_to_280,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_chloe_to_48k,NULL);
+        }
 
 
-			}
+        //maquinas zx80, zx81
+        if (MACHINE_IS_ZX8081) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx80,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx81,NULL);
+        }
 
-			//Diferentes maquinas que solo pueden saltar a spectrum 48k
-			if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_resto_a_48k,NULL);
-			}
+                
 
-			
+        //maquinas chloe
+        if (MACHINE_IS_CHLOE) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Chloe 140SE",MENU_OPCION_NORMAL,hotswap_chloe_to_140,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Chloe 280SE",MENU_OPCION_NORMAL,hotswap_chloe_to_280,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_chloe_to_48k,NULL);
 
 
-            menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-            //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-			menu_add_ESC_item(array_menu_machine_selection);
+        }
 
-			retorno_menu=menu_dibuja_menu(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,"Hotswap Machine" );
+        //Diferentes maquinas que solo pueden saltar a spectrum 48k
+        if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_resto_a_48k,NULL);
+        }
+
+        
+
+
+        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_machine_selection);
+
+        retorno_menu=menu_dibuja_menu(&hotswap_machine_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,"Hotswap Machine" );
 
 	                
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
