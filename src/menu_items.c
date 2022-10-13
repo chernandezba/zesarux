@@ -22921,7 +22921,7 @@ void hotswap_128_to_p2a(void)
 	}
 
 	//Spectrum +2A
-        current_machine_type=11;
+        current_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
 
         set_machine(NULL);
 
@@ -23402,29 +23402,29 @@ int custom_machine_type=0;
 char custom_romfile[PATH_MAX]="";
 
 static char *custom_machine_names[]={
-                "Spectrum 16k",
-                "Spectrum 48k",
+    "Spectrum 16k",
+    "Spectrum 48k",
 
-		"TK90X/95",
+    "TK90X/95",
 
-                "Spectrum 128k/+2",
-                "Spectrum +2A",
-                "Spectrum +2E MMC",
-                "Spectrum +3",
-		"ZX-Uno",
+    "Spectrum 128k/+2",
+    "Spectrum +2A",
+    "Spectrum +2E MMC",
+    "Spectrum +3",
+    "ZX-Uno",
 
-		"Chloe 140 SE",
-		"Chloe 280 SE",
-		"Timex Sinclair 2068",
-		"Prism 512",
+    "Chloe 140 SE",
+    "Chloe 280 SE",
+    "Timex Sinclair 2068",
+    "Prism 512",
 
-                "ZX80",
-                "ZX81",
-		"Jupiter Ace",
-		"Z88",
-		"Amstrad CPC 464",
-		"Sam Coupe",
-		"QL"
+    "ZX80",
+    "ZX81",
+    "Jupiter Ace",
+    "Z88",
+    "Amstrad CPC 464",
+    "Sam Coupe",
+    "QL"
 };
 
 
