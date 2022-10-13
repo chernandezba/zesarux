@@ -42,7 +42,7 @@ Drivers video:
 **probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
 **probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
 **probar ocultar raton
-**probar zx desktop, botones zx desktop, iconos
+**probar zx desktop
 **probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
 **probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
 **probar desactivando border
@@ -300,7 +300,7 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -Probar MK14
 
 -Pruebas interfaz menu:
-* habilitar zx desktop
+* habilitar zx desktop. probar botones, iconos
 * zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
 
 -probar Sprite chip con demo

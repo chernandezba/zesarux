@@ -4,13 +4,11 @@
 
 -Ayuda hablar nuevo comportamiento botón derecho 
 
-
 -Probar debug cpu paws
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
 -Mejorar entrada en changelog sobre iconos en escritorio 
-
 
 -con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
 
@@ -20,6 +18,3 @@
 
 -007 y dinamid. Condicion dirección rom para activar rom interface?
 
-
--hotswap: PENDIENTE rehacer cambio a maquina destino, no usar cosas como current_machine_type=hotswap_machine_opcion_selecciona
-da+6;
