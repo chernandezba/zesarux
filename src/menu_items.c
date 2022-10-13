@@ -23121,6 +23121,26 @@ void hotswap_128k_to_48k(MENU_ITEM_PARAMETERS)
     hotswap_any_machine_to_spec48();
 }
 
+
+void hotswap_chloe_to_140(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_CHLOE_140SE;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_chloe_to_280(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_CHLOE_280SE;
+    set_machine_params();
+    post_set_machine(NULL);    
+}
+
+void hotswap_chloe_to_48k(MENU_ITEM_PARAMETERS)
+{
+    hotswap_any_machine_to_spec48();   
+}
+
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
 
@@ -23194,9 +23214,9 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 			//maquinas chloe
 			if (MACHINE_IS_CHLOE) {
-				menu_add_item_menu_inicial(&array_menu_machine_selection,"Chloe 140SE",MENU_OPCION_NORMAL,NULL,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"Chloe 280SE",MENU_OPCION_NORMAL,NULL,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,NULL,NULL);
+				menu_add_item_menu_inicial(&array_menu_machine_selection,"Chloe 140SE",MENU_OPCION_NORMAL,hotswap_chloe_to_140,NULL);
+				menu_add_item_menu(array_menu_machine_selection,"Chloe 280SE",MENU_OPCION_NORMAL,hotswap_chloe_to_280,NULL);
+				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_chloe_to_48k,NULL);
 
 
 			}
@@ -23347,21 +23367,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 
 
-				if (MACHINE_IS_CHLOE) {
-                    if (hotswap_machine_opcion_seleccionada==2) {
-                        hotswap_any_machine_to_spec48();
-                    }
-
-					else {
-						current_machine_type=hotswap_machine_opcion_seleccionada+15;
-                        set_machine_params();
-                        post_set_machine(NULL);
-
-					}
-                    //Y salimos de todos los menus
-                    salir_todos_menus=1;
-					return; //Para evitar saltar a otro if
-				}
+	
 
 
             }
