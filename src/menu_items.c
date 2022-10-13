@@ -23176,6 +23176,104 @@ void hotswap_zxuno_to_48k(MENU_ITEM_PARAMETERS)
     hotswap_any_machine_to_spec48();    
 }
 
+void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
+{
+
+    //Caso especial cuando se cambia entre maquina Inves, porque la asignacion de memoria es diferente
+    if (MACHINE_IS_INVES || valor_opcion==2) {
+        //si misma maquina inves origen o destino, no hacer nada
+
+        //Cambiamos de Inves a otra
+        if (MACHINE_IS_INVES && valor_opcion!=2) {
+            //Asignamos 64kb RAM
+            z80_byte *memoria_spectrum_final;
+                memoria_spectrum_final=malloc(65536);
+
+                if (memoria_spectrum_final==NULL) {
+                    cpu_panic ("Error. Cannot allocate Machine memory");
+                }
+
+            //Copiamos ROM y RAM a destino
+            int i;
+            //ROM
+            for (i=0;i<16384;i++) memoria_spectrum_final[i]=memoria_spectrum[65536+i];
+
+            //RAM
+            for (i=16384;i<65536;i++) memoria_spectrum_final[i]=memoria_spectrum[i];
+
+            free(memoria_spectrum);
+            memoria_spectrum=memoria_spectrum_final;
+
+        }
+
+        //Cambiamos de otra a Inves
+        if (!(MACHINE_IS_INVES) && valor_opcion==2) {
+            //Asignamos 80 kb RAM
+            z80_byte *memoria_spectrum_final;
+            memoria_spectrum_final=malloc(65536+16384);
+
+            if (memoria_spectrum_final==NULL) {
+                    cpu_panic ("Error. Cannot allocate Machine memory");
+            }
+
+            //Copiamos ROM y RAM a destino
+            int i;
+            //ROM
+            for (i=0;i<16384;i++) memoria_spectrum_final[65536+i]=memoria_spectrum[i];
+
+            //RAM
+            for (i=16384;i<65536;i++) memoria_spectrum_final[i]=memoria_spectrum[i];
+
+            free(memoria_spectrum);
+            memoria_spectrum=memoria_spectrum_final;
+
+            //Establecemos valores de low ram inves
+            random_ram_inves(memoria_spectrum,16384);
+
+
+        }
+    }
+
+    switch(valor_opcion)
+    {
+        case 0:
+            current_machine_type=MACHINE_ID_SPECTRUM_16;
+        break;
+
+        case 1:
+            current_machine_type=MACHINE_ID_SPECTRUM_48;
+        break;
+
+        case 2:
+            current_machine_type=MACHINE_ID_INVES;
+        break;
+
+        case 3:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
+        break;
+
+        case 4:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_SPA;
+        break;
+
+        case 5:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95;
+        break;
+
+
+    }
+
+    set_machine_params();
+    post_set_machine(NULL);
+			
+
+}
+
+void hotswap_1648_to_128k(MENU_ITEM_PARAMETERS)
+{
+    hotswap_any_machine_to_spec128();    
+}
+
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
 
@@ -23189,13 +23287,20 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 			//casos maquinas 16k, 48k
 			if (MACHINE_IS_SPECTRUM_16_48) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 16k",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,NULL,NULL);
-                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,NULL,NULL);
-				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,NULL,NULL);
+                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 16k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
+                menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
+                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
+                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
+                menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+                menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
+				menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,hotswap_1648_to_128k,NULL);
+
 			}
 
 			//casos maquinas 128k,+2 (y no +2a)
@@ -23283,96 +23388,6 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             }
         }
 
-
-        /*
-
-            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-				//casos maquinas 16k, 48k
-                if (MACHINE_IS_SPECTRUM_16_48) {
-					//Caso especial cuando se cambia entre maquina Inves, porque la asignacion de memoria es diferente
-					if (MACHINE_IS_INVES || hotswap_machine_opcion_seleccionada==2) {
-						//si misma maquina inves origen o destino, no hacer nada
-
-						//Cambiamos de Inves a otra
-						if (MACHINE_IS_INVES && hotswap_machine_opcion_seleccionada!=2) {
-							//Asignamos 64kb RAM
-							z80_byte *memoria_spectrum_final;
-						        memoria_spectrum_final=malloc(65536);
-
-						        if (memoria_spectrum_final==NULL) {
-						                cpu_panic ("Error. Cannot allocate Machine memory");
-						        }
-
-							//Copiamos ROM y RAM a destino
-							int i;
-							//ROM
-							for (i=0;i<16384;i++) memoria_spectrum_final[i]=memoria_spectrum[65536+i];
-
-							//RAM
-							for (i=16384;i<65536;i++) memoria_spectrum_final[i]=memoria_spectrum[i];
-
-							free(memoria_spectrum);
-							memoria_spectrum=memoria_spectrum_final;
-
-						}
-						if (!(MACHINE_IS_INVES) && hotswap_machine_opcion_seleccionada==2) {
-							//Asignamos 80 kb RAM
-                            z80_byte *memoria_spectrum_final;
-                            memoria_spectrum_final=malloc(65536+16384);
-
-                            if (memoria_spectrum_final==NULL) {
-                                    cpu_panic ("Error. Cannot allocate Machine memory");
-                            }
-
-							//Copiamos ROM y RAM a destino
-							int i;
-							//ROM
-                            for (i=0;i<16384;i++) memoria_spectrum_final[65536+i]=memoria_spectrum[i];
-
-                            //RAM
-                            for (i=16384;i<65536;i++) memoria_spectrum_final[i]=memoria_spectrum[i];
-
-                            free(memoria_spectrum);
-                            memoria_spectrum=memoria_spectrum_final;
-
-							//Establecemos valores de low ram inves
-							random_ram_inves(memoria_spectrum,16384);
-
-
-						}
-					}
-
-					//Hotswap a 128
-                    if (hotswap_machine_opcion_seleccionada==6) {
-						debug_printf (VERBOSE_INFO,"Hotswapping to Spectrum 128");
-                        hotswap_any_machine_to_spec128();
-                    }
-
-					else {
-						current_machine_type=hotswap_machine_opcion_seleccionada;
-                        set_machine_params();
-                        post_set_machine(NULL);
-					}
-                    //Y salimos de todos los menus
-                    salir_todos_menus=1;
-					return; //Para evitar saltar a otro if
-				}
-
-
-
-
-
-		
-
-				
-
-
-
-	
-
-
-            }
-        */
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
