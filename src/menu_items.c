@@ -22965,7 +22965,7 @@ void hotswap_any_machine_to_spec128(void)
         for (i=0;i<49152;i++) memoria_buffer[i]=peek_byte_no_time(16384+i);
 
 	//Spectrum 128k
-        current_machine_type=6;
+        current_machine_type=MACHINE_ID_SPECTRUM_128;
 
         set_machine(NULL);
 
