@@ -19,3 +19,7 @@
 -framedrop de iconos funciona bien si multitask off?
 
 -007 y dinamid. Condicion dirección rom para activar rom interface?
+
+
+-hotswap: PENDIENTE rehacer cambio a maquina destino, no usar cosas como current_machine_type=hotswap_machine_opcion_selecciona
+da+6;

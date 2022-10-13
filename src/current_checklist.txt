@@ -74,7 +74,7 @@ Drivers audio:
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar particularidades Inves: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound), no contended memory, colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings
--probar hotswap maquina
+-probar hotswap maquina. PENDIENTE rehacer cambio a maquina destino, no usar cosas como current_machine_type=hotswap_machine_opcion_seleccionada+6;
 -probar custom rom desde menu y desde linea de comandos. probar todas roms
 -probar realvideo spectrum
 -probar realvideo zx80/81
