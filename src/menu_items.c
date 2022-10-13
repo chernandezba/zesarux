@@ -23141,6 +23141,41 @@ void hotswap_chloe_to_48k(MENU_ITEM_PARAMETERS)
     hotswap_any_machine_to_spec48();   
 }
 
+
+void hotswap_zxuno_to_p2a(MENU_ITEM_PARAMETERS)
+{
+              
+    current_machine_type=MACHINE_ID_SPECTRUM_P2A_40;
+    set_machine_params();
+
+    //no cargar rom, la rom sera la que haya activa en las paginas del zxuno
+    post_set_machine_no_rom_load();
+
+    //dejamos toda la memoria que hay asignada del zx-uno, solo que
+    //reasignamos los punteros de paginacion del +2a
+
+    hotswap_zxuno_to_p2as_set_pages();
+
+
+    //Si teniamos el divmmc activo. Llamar a esto manualmente, no a todo divmmc_enable(),
+    //pues cargaria por ejemplo el firmware esxdos de disco, y mejor conservamos el mismo firmware
+    //que haya cargado el ZX-Uno
+    if (diviface_enabled.v) {
+        diviface_set_peek_poke_functions();
+        //diviface_paginacion_manual_activa.v=0;
+        diviface_control_register&=(255-128);
+        diviface_paginacion_automatica_activa.v=0;
+    }
+
+    menu_warn_message("Note that ROM data are the previous data coming from ZX-Uno");
+
+}		
+
+void hotswap_zxuno_to_48k(MENU_ITEM_PARAMETERS)
+{
+    hotswap_any_machine_to_spec48();    
+}
+
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
 
@@ -23191,7 +23226,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
             //maquinas zxuno
             if (MACHINE_IS_ZXUNO) {
-                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,NULL,NULL);
+                menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum +2A (ROM v4.0)",MENU_OPCION_NORMAL,hotswap_zxuno_to_p2a,NULL);
 
                 menu_add_item_menu_tooltip(array_menu_machine_selection,"The final machine type is "
                 "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
@@ -23199,7 +23234,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
                 "Spectrum +2A (ROM v4.0) but the data ROM really comes from ZX-Uno");
 
 
-                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,NULL,NULL);
+                menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_zxuno_to_48k,NULL);
 
             }
 
@@ -23329,41 +23364,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
 		
 
-				if (MACHINE_IS_ZXUNO) {
-                    if (hotswap_machine_opcion_seleccionada==1) {
-                        hotswap_any_machine_to_spec48();
-                    }
-
-					else {
-						current_machine_type=hotswap_machine_opcion_seleccionada+11;
-						set_machine_params();
-
-						//no cargar rom, la rom sera la que haya activa en las paginas del zxuno
-						post_set_machine_no_rom_load();
-
-						//dejamos toda la memoria que hay asignada del zx-uno, solo que
-						//reasignamos los punteros de paginacion del +2a
-
-						hotswap_zxuno_to_p2as_set_pages();
-
-
-						//Si teniamos el divmmc activo. Llamar a esto manualmente, no a todo divmmc_enable(),
-						//pues cargaria por ejemplo el firmware esxdos de disco, y mejor conservamos el mismo firmware
-						//que haya cargado el ZX-Uno
-						if (diviface_enabled.v) {
-							diviface_set_peek_poke_functions();
-							//diviface_paginacion_manual_activa.v=0;
-							diviface_control_register&=(255-128);
-							diviface_paginacion_automatica_activa.v=0;
-						}
-
-						menu_warn_message("Note that ROM data are the previous data coming from ZX-Uno");
-
-					}
-
-					salir_todos_menus=1;
-					return; //Para evitar saltar a otro if
-				}
+				
 
 
 
