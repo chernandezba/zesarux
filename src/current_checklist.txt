@@ -75,8 +75,7 @@ ok coreaudio, null
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80) 
 -probar opcion ay speech on/off con chase hq por ejemplo
--probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
--probar export to .mid
+ok Mac -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 -probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak)
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
@@ -101,18 +100,12 @@ Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minuscu
 -probar spectra. Test modos. Comparar con ZXSP. X128 NO es correcto del todo, falla la implementacion del flash
 Comparar test 128 pantalla con tabla docs/spectra/SPECTRA 128 Test.txt
 
--probar modos video timex. Mode 0 standard, 1 dual screen, 2 hires colour 8x1), timex+ulaplus. Mode 6 (512x192 monochrome)
-Modo 0 con solo habilitarlo
-Modo 1 con testtimexmode1.tap
-Modo 2 con demos
-Modo 2 con timex+ulaplus demo slideshow_timex_64.tap, DemoHAM8, DemoHAM8x1.tzx
-Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y testtimexmode6-ulaplus.tap y alternaterom_sebasic4_rom01.rom(mode 1)
 
 -probar autoactivado de rainbow cuando efectos en border. juegos, demos y snap_tests/test_autorealvideo_border.zx
 -probar color border en ULAPlus
 
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
--probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos ulaplus, gigascreen, scanlines, spectra, timex, prism, sam
+-probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos gigascreen, scanlines, spectra, timex, prism, sam
 -probar fuller audio box emulation
 -probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
 nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
