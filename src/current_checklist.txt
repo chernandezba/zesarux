@@ -12,8 +12,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 ok mac
 
--ejecutar tests/machines_test.sh
-
 Drivers video:
 -probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
 *por cada driver (incluido null) y con y sin pthreads:
@@ -30,10 +28,11 @@ Drivers video:
 **en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
 **en curses, aa, caca, stdout, simpletext probar realvideo
 **en aa, caca probar mensajes debug
-**en stdout, probar con modo traprst16 y modo autoredraw
 **en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
 **probar recreated
 -ejecutar tests/videotest.sh
+
+ok mac
 
 
 -probar desactivando xextensions en configure con --disable-xext
@@ -50,6 +49,7 @@ Drivers audio:
 **aumentar/bajar velocidad cpu
 ***usar tests/soundtest.sh
 ***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
+ok coreaudio, null
 
 -probar targets:
 * linux 32 bits

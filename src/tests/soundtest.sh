@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-for DRIVER in pulse alsa sdl dsp null; do 
+for DRIVER in coreaudio pulse alsa sdl dsp null; do 
 
 echo "Driver $DRIVER"
 sleep 5

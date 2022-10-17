@@ -104,3 +104,5 @@ Requiere antes floppy
 -6128. Requiere antes floppy
 
 -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
+
+-al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
