@@ -59,8 +59,6 @@ ok coreaudio, null
 * windows mingw, con y sin pthreads
 * windows cygwin
 
-
-
 -Funciones de Red:
 --Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
 --Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
@@ -70,13 +68,12 @@ ok coreaudio, null
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
--probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128 y activar contended memory
 -probar modos hi-res zx81: hrg, chr$128, udg, wrx, otros hi-res. probar xtricator, pacman 
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80) 
--probar opcion ay speech on/off con chase hq por ejemplo
-ok Mac -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
--probar autoactivado de chip ay: en spectrum (ay, fuller), zx8081 (en zx80/81 solo con bi-pak)
+
+ok Mac -probar midi output to real device
+
 -probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
 -probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
 -probar any flag loading cintas, con copiador, rocman
@@ -112,25 +109,12 @@ nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencio
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
 nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
--probar rzx files con extras/media/spectrum/rzx
 -probar quicksave, autosave at interval, snapshots to ram
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
--probar custom configuration file, con snap_tests/test_autoconfig.tap  (y hay snap_tests/test_autoconfig.tap.config) y snap_tests/test_autoconfig.p (y hay snap_tests/test_autoconfig.p.config)
--probar footer cuando se carga cinta/snap detectado por autoselectoptions o custom configuration file:
-* cuando el juego es generico y no se indica nombre (por ejemplo, aydemo)
-* juego que solo pone nombre pero no info, por ejemplo Dancing Demon y Pink Panther
-* cuando se indica juego (como por ejemplo, overscan.tap)
-* nombre con punto, como H.E.R.O.
-* cuando hay segundo mensaje:
-** Song in Lines 5 - no cabe entero 
-** Manic miner zx81 o orquesta - caben los : en el primer mensaje
-** segundo mensaje se desplaza porque no cabe, como beamrider 
-** primer y segundo mensaje se desplazan, como voyage of peril
-** FSCAPES.P, que no da tiempo a mostrar todo el segundo mensaje porque carga partes
-* Con y sin border enabled
--probar recent files, drive
+
+
 -probar on screen keyboard, con F8 y con joystick
 -probar on screen adventure keyboard 
 -probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
@@ -139,23 +123,13 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
 -probar speech en stdout
 -probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
--probar poke: manual (48 y 128, zxuno) y pok file (tanto buenos como corrupt, longline, desde snap_tests/)
--probar ram refresh junto con extras/media/spectrum/tests/memoryrefresh.tap
--probar opcion para desactivar paging en ram/rom
 -probar cpu transaction log
--probar modo interlaced, scanlines y tapes/spectrum/tests/interlace-test.tap. interlaced zx81 con ilena. probar interlace y abrir menu visualmem y view sprites (debe desactivar interlace momentaneamente)
--probar modo gigascreen. demos e imagenes
--probar modos ULA Plus: rgb estandard, modo 3 radastan, modos ZEsarUX. modos ham (cambio rapido de paleta por interrupciones) multicolor demo, etc. hardware scroll radastan+zxuno
 
 -keymaps en xwindows y sdl para z88, cpc, chloe, sam, ql, ...
 
 -probar Jupiter Ace. centipede (chip ay) y valkyr (speaker y chip ay). cargar y grabar ace. cargar wav
 -Probar Prism: extras/media/spectrum/prism/allvideotests.tap. Tests de chloe. Failsafe mode. Modos lineales de video extras/media/spectrum/prism/linear_modes/
 -Probar demos Pentagon. Modo 16C. Nota: confusio.tap requiere usr0
-
--Pruebas interfaz menu:
-* habilitar zx desktop
-* zx vision: mover ventana, maximizar, restaurar, minimizar, enviar a background, shift+derecha
 
 -probar instalando en ruta concreta y ejecutando desde alli
 -probar generando archivo binario y probar a ejecutar, e instalar. 

@@ -106,3 +106,11 @@ Requiere antes floppy
 -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
 
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
+
+-opcion vaciar papelera al salir
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+-parecido a Recent files, que permita cambiar a directorios recientes
+
+-selector tipo joystick, que sea un desplegable en vez de que haya que ir dando cada vez al enter
