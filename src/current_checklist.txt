@@ -17,19 +17,6 @@ ok linux
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
-Drivers audio:
--probar drivers sonido pulse, alsa, dsp, sdl, coreaudio, null. con y sin pthreads
-*por cada driver (incluido null) y con y sin pthreads:
-**quitar multitask de menu
-**activar stop emulation en menu
-**esperar a silencio
-**ver en todos casos usos de cpu
-**probar sonido Z88, Spectrum (beep y ay), ZX80/81 (vsync sound y ay)
-**aumentar/bajar velocidad cpu
-***usar tests/soundtest.sh
-***en dsp, si no se tiene dsp real, se puede probar con aoss (que se oye entrecortado continuo) o en cygwin (que distorsiona)
-ok coreaudio, null
-
 -probar targets:
 * linux 32 bits
 * linux 64 bits
