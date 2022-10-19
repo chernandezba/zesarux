@@ -116,3 +116,9 @@ Requiere antes floppy
 -selector tipo joystick, que sea un desplegable en vez de que haya que ir dando cada vez al enter
 
 -smartload de un pok file
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border

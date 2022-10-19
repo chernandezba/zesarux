@@ -2,6 +2,13 @@ Version 10.2-RC3 - Hysteria edition. 07 October 2022
 
 * New things added:
 
+Added configurable icons to the ZX Desktop. These icons can:
+-Open windows, for example View Sprites
+-Trigger actions, like Reset
+-File links, these are linked to tapes or snapshots on your disk drive
+-There are other special icons, like Trash Can
+These icons opens a whole new world on ZEsarUX, so the ZX Desktop is becoming a Full Desktop environment :)
+
 Added new emulated machines:
 -ZX Spectrum 48k+
 -Microdigital TK80
@@ -76,7 +83,6 @@ Improved ZX Vision:
 -Better resize & reposition for new windows out of range
 
 Improved ZX Desktop:
--Added configurable icons to the ZX Desktop: icons to windows, icons to actions, file links
 -Right mouse button is now used for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Allow to extend ZX Desktop vertically
 -Added frame around emulated machine

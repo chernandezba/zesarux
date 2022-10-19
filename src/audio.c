@@ -1399,7 +1399,8 @@ int set_audiodriver_null(void) {
 //Ha fallado el init del driver de audio y hacemos fallback a null
 void fallback_audio_null(void)
 {
-	debug_printf (VERBOSE_ERR,"Error using audio output driver %s. Fallback to null",audio_new_driver_name);
+	//debug_printf (VERBOSE_ERR,"Error using audio output driver %s. Fallback to null",audio_new_driver_name);
+    debug_printf (VERBOSE_ERR,"Error using audio output driver. Fallback to null");
 	set_audiodriver_null();
 	audio_init();
 }

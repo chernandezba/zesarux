@@ -442,3 +442,30 @@
         //
         //Fin pruebas 22 Abril 2022
         //
+
+
+        //
+        //Pruebas 19 Octubre 2022
+        //
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        //con pthreads
+        ./zesarux --noconfigfile --ao null --vo null
+        //48k, ao null, vo null, 9% cpu aprox en pc
+
+        //sin rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1
+        //48k, ao null, vo x11, zoom 1, 16% cpu aprox en pc
+
+        //con rainbow
+        //sin memptr,sin visualmem, sin cpustats
+        //con contended memory
+        ./zesarux --noconfigfile --ao null --vo xwindows --zoom 1 extras/media/spectrum/rainbow/over128.z80
+        //128k, ao null, vo x11, zoom 1, over128.z80, 41% cpu aprox en pc
+
+        //
+        //Fin pruebas 19 Octubre 2022
+        //
