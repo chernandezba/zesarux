@@ -100,6 +100,7 @@ Improved ZRCP: allow to change command prompt
 Improved generated TZX and PZX files: include date and ZEsarUX version in header
 Improved Custom machine menu: added +2E MMC machine
 Improved Tape browser: show autostart line on basic blocks
+Improved runtoParse text adventure debug command: now it sets a breakpoint before the Parse condact, instead of setting it after
 
 
 * Fixes:

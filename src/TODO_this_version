@@ -17,6 +17,5 @@
 -007 y dinamid. Condicion dirección rom para activar rom interface?
 
 -Probar debug cpu paws:
-*al volver de un steptoparse, debe cambiar el breakpoint y cerrar menu, pero no lo hace. creo que hay que plantear diferente este steptoparse
 
-*sin background windows, step to step no va correctamente, al hacer enter no cierra todos los menus
+*sin background windows, step to step no va correctamente, al hacer enter no cierra todos los menus. mismo pasa con runtostep

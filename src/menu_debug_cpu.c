@@ -7160,6 +7160,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 	//Si se habia lanzado un runtoparse de daad
+    
 	if (debug_daad_breakpoint_runtoparse_fired.v) {
 		debug_printf (VERBOSE_DEBUG,"Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window");
 
@@ -7168,10 +7169,21 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 		debug_daad_breakpoint_runtoparse_fired.v=0;
 		debug_stepping_daad_runto_parse.v=0;
 		menu_debug_delete_daad_parse_breakpoint();
+
+        //TODO: Esto desactivado a partir de ZEsarUX 10.2. Salir desde aqui no funciona bien, pues 
+        //la ventana de debug cpu se llama de una manera especial al saltar el breakpoint y no puedo cerrarlo sin hacer cambios complicados
+        //en el core de ZX Vision
+        //La idea es que el runtoparse hace el primer breakpoint, hasta aqui, que le situa en un condacto de tipo parse,
+        //pero luego habria que poner otro breakpoint automatico que retornara el usuario despues del comando parse
+        //al haber desactivado esto, al usuario le deja ahora justo antes de ejecutar el comando parse
+        //pero deberia ser, que en una sola accion de runtoparse, le deje despues
+        /*
 		menu_debug_daad_step_breakpoint();
 		salir_todos_menus=1;
 		return;
+        */
 	}
+    
 
 
 
