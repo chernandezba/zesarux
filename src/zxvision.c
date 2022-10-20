@@ -22576,7 +22576,7 @@ void menu_inicio(void)
 
 
     if (indice_abrir_ventana_sin_multitarea>=0) {
-        printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
+        //printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
         zxvision_known_window_names_array[indice_abrir_ventana_sin_multitarea].start(0);
     }
 
