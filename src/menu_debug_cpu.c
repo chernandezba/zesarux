@@ -7183,33 +7183,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	do {
 
-		//Ver si ha cambiado tamanyo ventana para recrearla
-		//Si no gestionamos esto, zxvision redimensiona por su cuenta el tamaño visible pero el tamaño total
-		//requiere logicamente recrearla de nuevo
-        //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
-        /*
-		if (ventana->visible_width!=ventana_ancho_antes || ventana->visible_height!=ventana_alto_antes) {
-			debug_printf (VERBOSE_DEBUG,"Debug CPU window size has changed. Recreate it again");
-
-			//Guardamos la geometria actual
-			util_add_window_geometry_compact(ventana);
-
-			zxvision_destroy_window(ventana);
-
-			//Al crearla, usara la geometria guardada antes
-			menu_debug_registers_zxvision_ventana(ventana);
-			menu_debug_registers_set_title(ventana);
-
-			//Guardamos valores en variables para saber si cambia
-			menu_debug_registers_zxvision_save_size(ventana,&ventana_ancho_antes,&ventana_alto_antes);
-
-            zxvision_draw_window(ventana);
-
-            //Indicar tamanyo de antes minimizado, que es el que tenia al inicio
-            //ventana->height_before_max_min_imize=alto_ventana_inicial;
-            //ventana->width_before_max_min_imize=ancho_ventana_inicial;
-		}
-        */
+	
 
 
 		//Si es la vista 8, siempre esta en cpu step mode, y zona de memoria es la mapped
