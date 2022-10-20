@@ -9,18 +9,12 @@ PERCCOMPLETADO=$((100-$PERC))
 echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
--probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
-ok mac
-ok linux
-
 -probar desactivando xextensions en configure con --disable-xext
 -probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
 -probar targets:
 * linux 32 bits
 * linux 64 bits
-* raspberry. y activando extensiones raspberry
-* mac os x, con y sin optimizaciones
 * windows mingw, con y sin pthreads
 * windows cygwin
 
@@ -36,28 +30,12 @@ ok linux
 -probar autodetect WRX mode on ZX80/81
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80) 
 
-ok Mac -probar midi output to real device
-
--probar snaps de spectrum, zx80, zx81, z88. Cargar y grabar. .zx, .o, .p, .z80, solo carga: .z81, .sna. En grabar, generar los mismos p** que hay en snap_tests/ en una carpeta temporal y luego probar a cargarlos (desde zesarux, fuse y eightyone) - esto se hace con automatic_test_save_all.sh. Probar snaps grabados en otros emuladores: Fuse, Eightyone, etc. 
--probar cintas. Cargar cinta con formato tap, tzx. Grabar cinta con comando save en tap, tzx, p, o
--probar any flag loading cintas, con copiador, rocman
--probar archivos zip, tar, rar, gz
--probar expansor archivos tap, tzx, dsk, trd, etc
--probar cambiando rutas a sox, gunzip, etc...
-
--probar diferentes cargas, a continuacion, hay ejemplos en carpeta snap_tests y tambien alguno suelto, como canciones.smp y orquesta.smp
-*probar carga binaria (tape) smp,wav,rwa en spectrum
-*probar carga binaria (tape) smp,wav,rwa en zx80
-*probar carga binaria (tape) smp,wav,rwa en zx81: con audio real, con save desde basic y aofile (wav y rwa), con rutina de conversion de .p a rwa en real tape
-
--probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 -probar esxdos handler
 -probar zxpand: config "V", config "D=", CAT, CAT "+DIR", DELETE, load "NOMBRE", SAVE "NOMBRE" etc. En zx80, zx81
 config "O=X" donde X es 0, 1 o 2 y probar a sobreescribir archivos, dragons lair version lenta y rapida (optimizada). zxpand linea comandos --enable-zxpand y --zxpand-root-dir (y este probando con path completo, relativo, y con y sin / al final)
 Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
 -probar superupgrade. Básico, programa de modificación de rom. Programa en basic extras/media/spectrum/tests/superupgrade-test.tap y usando 512kb de rom que sean siempre la misma rom de spectrum 48k. Probar con rman.tap
 
--probar paleta gris, roja, verde, azul, inverso, real, etc. tambien con modos gigascreen, scanlines, spectra, timex, prism, sam
 -probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
 nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
 -probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
@@ -67,7 +45,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar impresora: en zx spectrum, zx81
 -probar COPY to printer
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
-
 
 -probar on screen keyboard, con F8 y con joystick
 -probar on screen adventure keyboard 
