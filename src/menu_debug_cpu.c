@@ -3675,7 +3675,8 @@ int debug_show_fired_breakpoints_type=0;
 		if (util_textadv_detect_paws_quill()){
 			if (reg_pc==util_paws_get_pc_parser()) esta_en_parser=1;
 		}
-
+        //printf("esta_en_parser: %d\n",esta_en_parser);
+        //printf("debug_stepping_daad.v: %d debug_stepping_daad_runto_parse.v: %d\n",debug_stepping_daad.v,debug_stepping_daad_runto_parse.v);
 
 		if ( (debug_stepping_daad.v || debug_stepping_daad_runto_parse.v) && esta_en_parser ) {
 
@@ -3862,6 +3863,7 @@ void menu_debug_daad_runto_parse(void)
 {
 	menu_debug_daad_parse_breakpoint();
 	debug_stepping_daad_runto_parse.v=1;
+    //printf("menu_debug_daad_runto_parse. debug_stepping_daad_runto_parse.v=%d\n",debug_stepping_daad_runto_parse.v);
 }
 
 
@@ -7030,19 +7032,8 @@ void menu_debug_cpu_view_stack(void)
 void menu_debug_registers(MENU_ITEM_PARAMETERS)
 {
 
-    //printf("inicio debug registers\n");
+    //printf("inicio debug registers. debug_daad_breakpoint_runtoparse_fired.v=%d\n",debug_daad_breakpoint_runtoparse_fired.v);
 
-	//Si se habia lanzado un runtoparse de daad
-	if (debug_daad_breakpoint_runtoparse_fired.v) {
-		debug_printf (VERBOSE_DEBUG,"Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window");
-		//Lo quitamos y metemos un breakpoint del step to step
-		debug_daad_breakpoint_runtoparse_fired.v=0;
-		debug_stepping_daad_runto_parse.v=0;
-		menu_debug_delete_daad_parse_breakpoint();
-		menu_debug_daad_step_breakpoint();
-		salir_todos_menus=1;
-		return;
-	}
 
 
 	z80_byte acumulado;
@@ -7058,15 +7049,12 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	valor_contador_segundo_anterior=contador_segundo;
 
-	debug_stepping_daad.v=0;
-	debug_stepping_daad_runto_parse.v=0;
 
 	//menu_debug_registers_current_view
 	//Si estabamos antes en vista 8, pero ya no hay un programa daad en memoria, resetear a vista 1
 	if (menu_debug_registers_current_view==8 && !util_daad_detect() && !util_textadv_detect_paws_quill() ) {
 		menu_debug_registers_current_view=1;
 	}
-
 
 
 
@@ -7133,7 +7121,6 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
         }	
 
 
-
         if (menu_breakpoint_exception.v) {
             menu_debug_registers_gestiona_breakpoint();
             //Ver tipo de accion para ese breakpoint
@@ -7172,7 +7159,25 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
         }
 
 
+	//Si se habia lanzado un runtoparse de daad
+	if (debug_daad_breakpoint_runtoparse_fired.v) {
+		debug_printf (VERBOSE_DEBUG,"Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window");
 
+        printf("Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window\n");
+		//Lo quitamos y metemos un breakpoint del step to step
+		debug_daad_breakpoint_runtoparse_fired.v=0;
+		debug_stepping_daad_runto_parse.v=0;
+		menu_debug_delete_daad_parse_breakpoint();
+		menu_debug_daad_step_breakpoint();
+		salir_todos_menus=1;
+		return;
+	}
+
+
+
+	debug_stepping_daad.v=0;
+	debug_stepping_daad_runto_parse.v=0;
+    printf("inicio menu_debug_registers. debug_stepping_daad_runto_parse.v=0;\n");
 
 
 
