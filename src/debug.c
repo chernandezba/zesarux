@@ -1356,7 +1356,7 @@ void cpu_core_loop_debug_breakpoint(char *message)
 
     if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
         zxvision_open_menu_with_window("debugcpu");
-        printf("despues zxvision_open_menu_with_window debugcpu\n");
+        //printf("despues zxvision_open_menu_with_window debugcpu\n");
     }
 
     

@@ -4110,7 +4110,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			if (menu_debug_registers_current_view==8) {
 				//de momento solo el run to parse en daad. en quill o paws no tiene sentido, dado que no usan el condacto "PARSE"
 				//solo se usa en psi en paws
-				if (util_daad_detect()) sprintf(s,"runto~~Parse ~~Watch Wr~~ite M~~essages");
+				if (util_daad_detect()) sprintf(s,"runtoafter~~Parse ~~Watch Wr~~ite M~~essages");
 				else sprintf(s,"~~Watch Wr~~ite M~~essages");
 				return;
 			}
@@ -6959,7 +6959,7 @@ void menu_debug_help(void)
         "\n"
         "k: Set a breakpoint fired with a special Daad condact\n"
         "\n"
-        "p: Continue execution until the next Parse command on Daad\n"
+        "p: Continue execution until after executing the next Parse command on Daad\n"
         "\n"
         "w: Modify watches, that lists 7 objects/flags\n"
         "\n"
@@ -7170,18 +7170,35 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 		debug_stepping_daad_runto_parse.v=0;
 		menu_debug_delete_daad_parse_breakpoint();
 
-        //TODO: Esto desactivado a partir de ZEsarUX 10.2. Salir desde aqui no funciona bien, pues 
-        //la ventana de debug cpu se llama de una manera especial al saltar el breakpoint y no puedo cerrarlo sin hacer cambios complicados
-        //en el core de ZX Vision
+
         //La idea es que el runtoparse hace el primer breakpoint, hasta aqui, que le situa en un condacto de tipo parse,
-        //pero luego habria que poner otro breakpoint automatico que retornara el usuario despues del comando parse
+        //pero se pone otro breakpoint automatico que retornara el usuario despues del comando parse
         //al haber desactivado esto, al usuario le deja ahora justo antes de ejecutar el comando parse
         //pero deberia ser, que en una sola accion de runtoparse, le deje despues
-        /*
+        //O sea, este comando "runtoparse" se convierte mas bien en "runafterparseinput"
+        
 		menu_debug_daad_step_breakpoint();
 		salir_todos_menus=1;
+              
+        //Ademas quitamos el flag de abrir menu que se habia quedado activado
+        //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
+        //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
+        //tanto en caso que haya multitarea como no
+        //Esta sentencia y comentarios estan repetidos en varios sitios
+        //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
+        //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
+        menu_event_open_menu.v=0;
+
+        //Este siguiente es necesario cuando se tiene ventanas en multitarea activado
+        //Nota: esto por ejemplo no es necesario cuando se hace un "stepcondact" ya que la salida de la ventana es diferente de la que se hace aqui
+        //Nota para mi yo del futuro: Y por que es diferente? Toda la explicacion tecnica ahora no se (y no tengo ganas de mirarlo),
+        //pero esta claro que es diferente salir con la tecla de stepcondact, a la salida que se ha hecho aqui, que se ha entrado
+        //desde un primer breakpoint de "ejecutar hasta parse" y luego metemos otro de "stepcondact"
+        menu_pressed_close_all_menus.v=1;
+
+
 		return;
-        */
+        
 	}
     
 
@@ -7477,7 +7494,16 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 						//Esto es run hasta Parse Daad
 						menu_debug_daad_runto_parse();
                     	tecla=2; //Simular ESC
-						salir_todos_menus=1;						
+						salir_todos_menus=1;	
+
+                    //Ademas quitamos el flag de abrir menu que se habia quedado activado
+                    //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
+                    //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
+                    //tanto en caso que haya multitarea como no
+                    //Esta sentencia y comentarios estan repetidos en varios sitios
+                    //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
+                    //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
+                    menu_event_open_menu.v=0;                        					
 					}
 					else {
 						debug_t_estados_parcial=0;
@@ -8064,7 +8090,16 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 						salir_todos_menus=1;
 						cpu_step_mode.v=0;
 						acumulado=0; //teclas pulsadas
-						//Con esto saldremos						
+						//Con esto saldremos	
+
+                    //Ademas quitamos el flag de abrir menu que se habia quedado activado
+                    //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
+                    //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
+                    //tanto en caso que haya multitarea como no
+                    //Esta sentencia y comentarios estan repetidos en varios sitios
+                    //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
+                    //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
+                    menu_event_open_menu.v=0;                        					
 					}
 					else {
 						debug_t_estados_parcial=0;
@@ -8411,6 +8446,16 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					cpu_step_mode.v=0;
 					salir_todos_menus=1;
 					acumulado=0;
+
+                    
+                    //Ademas quitamos el flag de abrir menu que se habia quedado activado
+                    //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
+                    //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
+                    //tanto en caso que haya multitarea como no
+                    //Esta sentencia y comentarios estan repetidos en varios sitios
+                    //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
+                    //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
+                    menu_event_open_menu.v=0;
 					
                 }					
 

@@ -21978,7 +21978,7 @@ void menu_inicio_bucle(void)
         //prueba menu en barra arriba del todo
         //menu_topbarmenu();
 
-        printf("antes menu_inicio_bucle_main\n");
+        printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
 		menu_inicio_bucle_main();
         printf("despues menu_inicio_bucle_main\n");
 
@@ -21991,7 +21991,7 @@ void menu_inicio_bucle(void)
 
         printf("antes zxvision_simple_window_manager\n");
         reopen_menu=zxvision_simple_window_manager(reopen_menu);
-        printf("despues zxvision_simple_window_manager\n");
+        printf("despues zxvision_simple_window_manager. reopen_menu=%d\n",reopen_menu);
 
 
 		which_window_clicked_on_background=NULL;
@@ -22186,7 +22186,7 @@ void menu_inicio(void)
 
         }
 
-        //printf ("1 salir_todos_menus: %d\n",salir_todos_menus);
+        printf ("en zxvision_switch_to_window_on_open_menu salir_todos_menus: %d\n",salir_todos_menus);
 
 
 
@@ -22579,11 +22579,11 @@ printf ("3inicio menu_inicio\n");
 
 
     if (indice_abrir_ventana_sin_multitarea>=0) {
-        //printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
+        printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
         zxvision_known_window_names_array[indice_abrir_ventana_sin_multitarea].start(0);
     }
 
-printf ("4inicio menu_inicio\n");
+printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
 
 	//Si first aid al inicio
 	if (menu_first_aid_must_show_startup) {
@@ -22827,7 +22827,7 @@ printf ("5inicio menu_inicio\n");
             cls_menu_overlay();
         }
 
-printf ("6inicio menu_inicio\n");
+printf ("6inicio menu_inicio. menu_event_open_menu.v=%d\n",menu_event_open_menu.v);
 
         if (menu_event_open_menu.v) {
 

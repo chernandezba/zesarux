@@ -122,3 +122,5 @@ Requiere antes floppy
 -cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
 
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
+
+-incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
