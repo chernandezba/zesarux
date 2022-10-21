@@ -7164,7 +7164,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	if (debug_daad_breakpoint_runtoparse_fired.v) {
 		debug_printf (VERBOSE_DEBUG,"Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window");
 
-        printf("Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window\n");
+        //printf("Going back from a daad breakpoint runtoparse. Adding a step to step condact breakpoint and exiting window\n");
 		//Lo quitamos y metemos un breakpoint del step to step
 		debug_daad_breakpoint_runtoparse_fired.v=0;
 		debug_stepping_daad_runto_parse.v=0;
@@ -7173,9 +7173,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
         //La idea es que el runtoparse hace el primer breakpoint, hasta aqui, que le situa en un condacto de tipo parse,
         //pero se pone otro breakpoint automatico que retornara el usuario despues del comando parse
-        //al haber desactivado esto, al usuario le deja ahora justo antes de ejecutar el comando parse
-        //pero deberia ser, que en una sola accion de runtoparse, le deje despues
-        //O sea, este comando "runtoparse" se convierte mas bien en "runafterparseinput"
+        //O sea, este comando "runtoparse" se convierte mas bien en "runtoafterparse"
         
 		menu_debug_daad_step_breakpoint();
 		salir_todos_menus=1;
@@ -7206,7 +7204,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	debug_stepping_daad.v=0;
 	debug_stepping_daad_runto_parse.v=0;
-    printf("inicio menu_debug_registers. debug_stepping_daad_runto_parse.v=0;\n");
+    //printf("inicio menu_debug_registers. debug_stepping_daad_runto_parse.v=0;\n");
 
 
 

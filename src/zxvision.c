@@ -21978,9 +21978,9 @@ void menu_inicio_bucle(void)
         //prueba menu en barra arriba del todo
         //menu_topbarmenu();
 
-        printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
+        //printf("antes menu_inicio_bucle_main. salir_todos_menus=%d\n",salir_todos_menus);
 		menu_inicio_bucle_main();
-        printf("despues menu_inicio_bucle_main\n");
+        //printf("despues menu_inicio_bucle_main\n");
 
 		//Se reabre el menu tambien si pulsada tecla F5 en cualquiera de los menus
 		if (menu_pressed_open_menu_while_in_menu.v) {
@@ -21989,9 +21989,9 @@ void menu_inicio_bucle(void)
 			//printf ("Reabrimos menu\n");
 		}
 
-        printf("antes zxvision_simple_window_manager\n");
+        //printf("antes zxvision_simple_window_manager\n");
         reopen_menu=zxvision_simple_window_manager(reopen_menu);
-        printf("despues zxvision_simple_window_manager. reopen_menu=%d\n",reopen_menu);
+        //printf("despues zxvision_simple_window_manager. reopen_menu=%d\n",reopen_menu);
 
 
 		which_window_clicked_on_background=NULL;
@@ -22140,7 +22140,7 @@ void menu_inicio_reset_emulated_keys(void)
 void menu_inicio(void)
 {
 
-	printf ("inicio menu_inicio\n");
+	//printf ("inicio menu_inicio\n");
     pulsado_alguna_ventana_con_menu_cerrado=0;
 
     int indice_abrir_ventana_sin_multitarea=-1;
@@ -22186,14 +22186,14 @@ void menu_inicio(void)
 
         }
 
-        printf ("en zxvision_switch_to_window_on_open_menu salir_todos_menus: %d\n",salir_todos_menus);
+        //printf ("en zxvision_switch_to_window_on_open_menu salir_todos_menus: %d\n",salir_todos_menus);
 
 
 
         
     }
     
-printf ("0inicio menu_inicio\n");
+//printf ("0inicio menu_inicio\n");
 
 	//Comprobar si se ha pulsado un boton para colorearlo
 	if (mouse_left) {
@@ -22457,8 +22457,10 @@ printf ("0inicio menu_inicio\n");
     	menu_set_menu_abierto(0);		
 		return;
 	}
-printf ("1inicio menu_inicio\n");
+
+//printf ("1inicio menu_inicio\n");
     //printf("XX1 menu_breakpoint_exception.v %d\n",menu_breakpoint_exception.v);
+
 
 	//Menu desactivado y salida del emulador
 	if (menu_desactivado_andexit.v) end_emulator_autosave_snapshot();
@@ -22501,7 +22503,9 @@ printf ("1inicio menu_inicio\n");
 			liberar_teclas_y_esperar=0;
 		}
 	}
-printf ("2inicio menu_inicio\n");
+
+//printf ("2inicio menu_inicio\n");
+
     //printf("0 antes liberar_teclas_y_esperar\n");
     //printf("PC=%04XH\n",reg_pc);
 
@@ -22549,7 +22553,8 @@ printf ("2inicio menu_inicio\n");
 	}
 
 
-printf ("3inicio menu_inicio\n");
+//printf ("3inicio menu_inicio\n");
+
     //printf("2\n");
 	//quitar splash text por si acaso
 	menu_splash_segundos=1;
@@ -22579,11 +22584,11 @@ printf ("3inicio menu_inicio\n");
 
 
     if (indice_abrir_ventana_sin_multitarea>=0) {
-        printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
+        //printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
         zxvision_known_window_names_array[indice_abrir_ventana_sin_multitarea].start(0);
     }
 
-printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
+//printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
 
 	//Si first aid al inicio
 	if (menu_first_aid_must_show_startup) {
@@ -22598,7 +22603,7 @@ printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
         menu_first_aid_title("realjoystick_detected","Joystick detected");
     }
 
-printf ("5inicio menu_inicio\n");
+//printf ("5inicio menu_inicio\n");
 
 	if (menu_button_osdkeyboard.v) {
 		//menu_espera_no_tecla();
@@ -22827,7 +22832,7 @@ printf ("5inicio menu_inicio\n");
             cls_menu_overlay();
         }
 
-printf ("6inicio menu_inicio. menu_event_open_menu.v=%d\n",menu_event_open_menu.v);
+//printf ("6inicio menu_inicio. menu_event_open_menu.v=%d\n",menu_event_open_menu.v);
 
         if (menu_event_open_menu.v) {
 
@@ -22837,7 +22842,8 @@ printf ("6inicio menu_inicio. menu_event_open_menu.v=%d\n",menu_event_open_menu.
             //printf ("Abrir menu normal. mouse left: %d\n",mouse_left);
 
             //printf("menu_event_open_menu.v xx\n");
-printf ("7inicio menu_inicio\n");
+
+//printf ("7inicio menu_inicio\n");
 
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_left_mouse_button.v) {
@@ -22867,7 +22873,7 @@ printf ("7inicio menu_inicio\n");
                 }
             }
 
-printf ("8inicio menu_inicio\n");            
+//printf ("8inicio menu_inicio\n");            
 
             //Ver si se ha pulsado en botones de zx desktop
             if (menu_was_open_by_right_mouse_button.v) {
@@ -22897,11 +22903,11 @@ printf ("8inicio menu_inicio\n");
                 }
             }        
 
-         printf ("9inicio menu_inicio\n");   
+//printf ("9inicio menu_inicio\n");   
 
             menu_inicio_bucle();
 
-printf ("10inicio menu_inicio\n");            
+//printf ("10inicio menu_inicio\n");            
 
         }
 
@@ -22915,7 +22921,7 @@ printf ("10inicio menu_inicio\n");
 	//Volver
 	menu_inicio_pre_retorno();
 
-    printf ("salir menu\n");
+//printf ("salir menu\n");
 
     //Si se ha hecho drag & drop con el menu abierto, decir de abrir de nuevo el menu para gestionar ese drag & drop
     if (menu_event_pending_drag_drop_menu_open.v) {
