@@ -1,16 +1,13 @@
 *Bateria de pruebas en curso
 
 (ver que tanto progreso de checklist esta ejecutado:
-BYTESTOTAL=`wc -c CHECKLIST|awk '{printf $1}'`
-BYTESPARCIAL=`wc -c current_checklist.txt|awk '{printf $1}'`
+BYTESTOTAL=`wc -l CHECKLIST|awk '{printf $1}'`
+BYTESPARCIAL=`wc -l current_checklist.txt|awk '{printf $1}'`
 PERC=$(($BYTESPARCIAL*100))
 PERC=$(($PERC/$BYTESTOTAL))
 PERCCOMPLETADO=$((100-$PERC))
 echo "Porcentaje=$PERCCOMPLETADO %"
 )
-
--probar desactivando xextensions en configure con --disable-xext
--probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
 -probar targets:
 * linux 32 bits
@@ -27,8 +24,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quicksave, autosave at interval, snapshots to ram
-
--probar cpu transaction log
 
 -probar instalando en ruta concreta y ejecutando desde alli
 -probar generando archivo binario y probar a ejecutar, e instalar. 
