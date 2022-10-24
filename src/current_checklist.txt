@@ -24,15 +24,7 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 --Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
--probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 
--probar esxdos handler
-Probar delete, rename, etc y resto de acciones con CMDR, con archivos en minusculas y mayusculas
-
--probar lightgun, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con juegos y testlightgun.zx, y con realvideo on y off
-nota: curses, lightgun no va muy fino en los juegos debido al tiempo de retencion del boton de fire
--probar kempston mouse, para todos drivers que lo soportan: xwindows, cocoa, sdl, caca (consola texto y X), curses (consola texto y X). con demo kempston, art studio
-nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar fire (y no al mover)
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quicksave, autosave at interval, snapshots to ram
 -probar --verbose 0 y que no aparezca ningun mensaje por consola...
