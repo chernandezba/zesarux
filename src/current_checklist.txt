@@ -27,7 +27,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar zxi ports con extras/media/spectrum/tests/zesarux-zxi-ports.tap , extras/media/spectrum/tests/hardwaredebugport.tap
 -probar quicksave, autosave at interval, snapshots to ram
--probar --verbose 0 y que no aparezca ningun mensaje por consola...
 
 -probar cpu transaction log
 
@@ -35,4 +34,3 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar generando archivo binario y probar a ejecutar, e instalar. 
 -probar generando archivo source y probar a compilar e instalar cambiando prefix
 -probar versiones finales: binario->bajar y ejecutar, instalar. source->bajar, compilar y ejecutar, instalar.
-
