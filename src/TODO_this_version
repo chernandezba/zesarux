@@ -4,17 +4,4 @@
 
 -Ayuda hablar nuevo comportamiento botón derecho 
 
-
-
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
-
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
-
--revisar que sigan funcionando bien los print de traps a la rom y los autodetect char de segundas rutinas
-
--framedrop de iconos funciona bien si multitask off?
-
--007 y dinamid. Condicion dirección rom para activar rom interface?
-
--Probar debug cpu paws:
-*redimensionar ventana si "opcion framedrop zx desktop" no dibuja desktop

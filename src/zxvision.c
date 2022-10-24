@@ -6362,6 +6362,10 @@ void menu_draw_ext_desktop(void)
         if (!screen_if_refresh()) dibujar_zxdesktop_background=0;
     }
 
+    //No hago frameskip de ZX Desktop si la emulacion esta detenida en el menu, pues en ese caso
+    //no hay "nadie" ejecutando el core de cpu que diga que hay que descartar frames o no
+    if (!menu_multitarea || menu_emulation_paused_on_menu) dibujar_zxdesktop_background=1;
+
     if (dibujar_zxdesktop_background) menu_draw_ext_desktop_background(xstart_zxdesktop);
 
 

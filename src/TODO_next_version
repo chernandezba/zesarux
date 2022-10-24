@@ -124,3 +124,12 @@ Requiere antes floppy
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
 
 -incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
+
+-Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
+Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
+
+Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+

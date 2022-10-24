@@ -51,9 +51,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar realjoystick. probar opciones linea comandos: --joystickkeyev, --joystickkeybt, --joystickevent. Probar menu test joystick. Probar joystick sdl, joystick nativo linux, joystick simulator, disable joystick. En todos casos probar quitar y poner border (porque reinicializa drivers)
 -probar ghosting
 -probar rutinas autodeteccion caracteres: algunos de sslfunctions, otro no listado (como Spiderman o masters of the universe), hobbit (usa dos rutinas de caracteres). probar con stdout y xwindows, sdl, etc. probar --enableprintchartrap y --disableprintchartrap en stdout y xwindows
--probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
--probar speech en stdout
--probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
 -probar cpu transaction log
 
 -probar instalando en ruta concreta y ejecutando desde alli
