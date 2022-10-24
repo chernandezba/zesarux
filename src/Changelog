@@ -83,8 +83,8 @@ Improved ZX Vision:
 -Better resize & reposition for new windows out of range
 
 Improved ZX Desktop:
--Right mouse button is now used for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Allow to extend ZX Desktop vertically
+-Right mouse button is now used for secondary actions. It no longer simulates ESC key (unless you enable it on ZX Vision Settings)
 -Added frame around emulated machine
 -Added setting to mix scr image with background
 -Allow to set any tape/snapshot/disk that contains a spectrum screen (SCR) as background

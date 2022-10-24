@@ -1150,8 +1150,13 @@ IOHIDManagerSetDeviceMatching(hidManager, matchDict);
 
     //0,0 en cocoa esta abajo a la izquierda
     //por tanto, para coordenada y, restamos del tope la coordenada y
+	int tamanyo_y;
+	tamanyo_y=screen_get_window_size_height_no_zoom_border_en()+screen_get_ext_desktop_height_no_zoom();
+
+
     gunstick_x=gunstick_x/zoom_x;
-    gunstick_y=screen_get_window_size_height_no_zoom_border_en()-gunstick_y/zoom_y;
+    //gunstick_y=screen_get_window_size_height_no_zoom_border_en()-gunstick_y/zoom_y;
+    gunstick_y=tamanyo_y-gunstick_y/zoom_y;
 
     debug_printf (VERBOSE_PARANOID,"Mouse Button press. x=%d y=%d. gunstick: x: %d y: %d", x, y,gunstick_x,gunstick_y);
 

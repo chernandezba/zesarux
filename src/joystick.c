@@ -334,7 +334,7 @@ int gunstick_view_white(void)
 		indice_cache=(get_total_ancho_rainbow()*gunstick_y)+gunstick_x;
                                         
 		z80_byte color=putpixel_cache[indice_cache];
-                                        
+
 		//color blanco con o sin brillo
 		if (color==15 || color==7) {
 			debug_printf (VERBOSE_DEBUG,"white zone detected on lightgun");
