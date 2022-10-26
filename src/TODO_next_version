@@ -135,3 +135,12 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
 -daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
+
+
+-Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
+
+-Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
+
+-Ayuda hablar nuevo comportamiento botón derecho 
+
+-First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 

@@ -48,8 +48,8 @@ Examples
 //#define EMULATOR_VERSION "10.2"
 //#define SNAPSHOT_VERSION
 
-#define EMULATOR_DATE "20 October 2022"
-#define EMULATOR_SHORT_DATE "20/10/2022"
+#define EMULATOR_DATE "26 October 2022"
+#define EMULATOR_SHORT_DATE "26/10/2022"
 #define EMULATOR_GAME_EDITION "Hysteria"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com" 
