@@ -1,3 +1,145 @@
+Version 10.2 - Hysteria edition. 26 Octubre 2022
+
+* Nuevas caracteristicas agregadas:
+
+Agregado iconos configurables al ZX Desktop. Estos iconos pueden:
+-Abrir ventanas, por ejemplo Ver Sprites
+-Desencadenar acciones, como Restablecer
+-Enlaces de archivos, estos están vinculados a cintas o instantáneas de tu disco duro
+-Hay otros íconos especiales, como Papelera
+Estos íconos abren un mundo completamente nuevo en ZEsarUX, por lo que ZX Desktop se está convirtiendo en un entorno de escritorio completo :)
+
+Agregadas nuevas maquinas:
+-ZX Spectrum 48k+
+-Microdigital TK80
+-Microdigital TK82
+-Microdigital TK82C
+-Microdigital TK83
+-Microdigital TK85
+-Microdigital TK95 Spanish
+-Timex Computer 2048
+-Timex Computer 2068
+-Timex Sinclair 1000
+-Timex Sinclair 1500
+
+Agregados Interfaces de Copia:
+-Defcon
+-Dinamid3
+-Hilow Barbanegra
+-Interface007
+-Microhobby Pokeador Automatico
+-Phoenix
+-Ramjet
+-Spec-Mate
+-Transtape
+
+Agregado emulación Dinamic SD1
+Permitir la carga de instantáneas dañadas .Z80 desde el emulador ZXSP con un encabezado adicional de 31 bytes de tamaño
+Agregado soporte ZSF para Timex TS2068, MK14, Chrome, Prism, Chloe, Sam Coupe
+Agregada opción de ruta donde descargar archivos desde el navegador en línea speccy y zx81
+Agregado navegación de imagen de disco desde menús de almacenamiento MMC/IDE
+Agregado soporte de carga PZX como cinta estándar
+Agregado conversor de TAP a PZX 
+Agregado conversor de TAP a TZX turbo (TZX Turbo 4000 baudios, para usar con ROMS de Rodolfo Guerra)
+Agregado conversor de TAP a SCR 
+Agregadas algunas acciones que se pueden disparar desde la línea de comandos y no inician ZEsarUX:
+--convert-tap-tzx, --convert-tap-tzx-turbo-rg, --convert-tap-pzx , --convert-tap-scr, --convert-tzx-tap, --convert-pzx-tap
+
+
+* Mejoras:
+
+Emulación mejorada Z88:
+-Paleta de colores modificada para que coincida mejor con un Z88 real
+-Mostrar atajos de teclas debajo de la pantalla Z88
+-Configuración de instantáneas y acción de menú para sincronizar el reloj Z88 con el reloj de su computadora
+-Insertando tarjetas Z88: ahora no se cuelga el emulador durante la inserción
+-Selección de tarjetas Z88: submenús para tipos y tamaños
+-Pie de página Z88: se muestra al escribir una tarjeta en la ranura 3, los colores siguen el estilo
+-Iconos del dispositivo Z88: diferentes íconos para los slots 1,2,3, se muestran al escribir una tarjeta en el slot 3, se muestran cuando la tapa está abierta
+
+Selector de archivos mejorado:
+-Permitir tener una vista previa de pantalla completa si la ventana es lo suficientemente grande
+-Mejor explicación de teclas de acceso rápido
+
+Depuración mejorada:
+-Permitir cambiar el puntero de memoria a un valor de la pila
+-Agregado un ajuste para mostrar sobre qué scanline se ha ejecutado un Halt, invirtiendo el color del borde
+-Al habilitar el modo step, la emulación se detiene en todos los menús
+-Conservar el modo de step al salir de la CPU de depuración que fue abierta por un punto de interrupción
+-Cuando se activa un punto de interrupción, el modo step se mantiene en todos los menús
+-Las acciones de puntos de interrupción "call", "printc", "set-register" y "write" ahora pueden usar expresiones en lugar de valores fijos
+-Agregadas acciones de breakpoint: "disassemble", "printregs"
+-Advertir en el pie de página cuando está en modo step
+-Ampliar el ancho de la lista de breakpoints
+
+Mejorado SmartLoad & Drag-Drop: 
+-Permitir cargar un archivo .rom como un archivo rom personalizado para la máquina actual
+-Permitir arrastrar y soltar cuando se abre el menú
+
+Mejorado ZX Vision:
+-Reordenar ventanas al cambiar de máquina, pero solo cuando la ventana ZEsarUX es más pequeña que la anterior
+-Caracteres de cursores personalizados
+-Ventanas ahora se restauran de forma predeterminada al iniciar ZEsarUX
+-Mejor cambio de tamaño y reposicionado para nuevas ventanas fuera de rango
+
+Mejorado ZX Desktop:
+-Permitir extender ZX Desktop verticalmente
+-El botón derecho del mouse ahora se usa para acciones secundarias. Ya no simula la tecla ESC (a menos que la habilite en la configuración de ZX Vision)
+-Agregado marco alrededor de la máquina emulada
+-Agregada opción para mezclar imagen scr con fondo
+-Permitir configurar cualquier cinta/instantánea/disco que contenga una pantalla de Spectrum (SCR) como fondo
+-Aplicar frameskip al dibujar el fondo de escritorio ZX
+
+Emulación mejorada HiLow DataDrive:
+-Permitir Formatear, Navegar y Chkdsk una imagen Hilow DataDrive (archivo .ddh)
+-Permitir convertir audio de una cinta Hilow DataDrive real a un archivo de imagen (.ddh)
+-Agregada Documentación técnica en el paquete de zesarux extras
+
+Mejorada emulación ZX Spectrum Next: Bit de prioridad de renderizado de sprite agregado
+Mejorado ZRCP: permitir cambiar command prompt
+Archivos TZX y PZX generados mejorados: incluye la fecha y la versión de ZEsarUX en el encabezado
+Mejorado Menú máquina personalizado: Agregada máquina +2E
+Mejorado Navegador de cintas: muestra la línea de inicio automático en bloques de Basic
+
+
+* Correcciones:
+
+Se corrigió el manejo de archivos de más de 2 GB en CPU de 32 bits (también se aplica a la versión de Windows incluso en una CPU de 64 bits)
+Se corrigió el uso de imágenes mmc de más de 2 GB
+Se corrigió el redibujado de ZX Desktop al cambiar el tamaño de la ventana principal de ZEsarUX
+Se corrigió el bloqueo al usar Ver variables y la memoria está dañada
+Se corrigió el bloqueo presionando dos veces la tecla F asignada a Pausa (Mac OS no afectado)
+Se corrigió un error que podía bloquear ZEsarUX al iniciar la máquina ZX Spectrum +2 en español. Este es un error que siempre ha existido.
+Se corrigió la pérdida de tarjetas Z88 insertadas al cambiar la velocidad de la CPU
+Se corrigió el comportamiento de Z80 después de prefijos e interrupciones EI o DD/FD
+Se corrigió el comportamiento de Z80 ejecutando códigos de operación de bloque (LDIR, etc.) e interrupciones
+Se corrigió la carga de instantáneas .Z80 Timex TS2068
+Se corrigió la visualización de archivos recientes cuando el nombre del archivo contiene el carácter %
+Se corrigió la Emulación del HiLow DataDrive: ahora puede cargar, guardar, formatear... todas las acciones ahora funcionan
+Se corrigió el bloqueo (se detectó una rotura de stack) al mostrar la ventana Depurar CPU (y compilado usando -fstack-protector)
+Se corrigió el error de segmento al iniciar ZEsarUX + mensaje de bienvenida deshabilitado + reabrir ventanas habilitadas en la configuración de inicio + sin ventana para restaurar
+Se corrigieron los traps de impresión de números de impresión en Spectrum y ZX81 (configuración --chardetectcompatnum)
+Se corrigió el error de segmento al seleccionar un tipo de archivo no válido en una cinta real
+Se corrigió imagen de ayuda de teclado para Spectravideo 318
+Se corrigieron las máquinas permitidas al guardar instantáneas .ZX
+Se corrigieron acciones de puntos de interrupción: ahora se ejecutan en todas partes (incluso en el menú)
+Se corrigió la presión de la tecla c (modo continuo) en debug CPU (la emulación se detenía temporalmente)
+Se corrigió la extracción de archivos TZX turbo (incluidas vistas previas de pantalla), conversión e información de archivo
+Se corrigieron las vistas previas de pantalla .Z80 y .ZSF al usar la página 7 de pantalla de 128k
+Se corrigió extracción de .DSK
+Se corrigió el fallo al guardar instantáneas .ZSF cuando se encuentra un byte DD justo antes de que un byte se repita más de 256 veces
+Se corrigió la descarga de imágenes de Next MMC. Ahora necesita SSL habilitado en la compilación
+
+Corregido ZX Vision:
+-Se corrigió que se mostrara el cursor en los campos de edición y la longitud del texto fuera más larga de lo visible
+
+
+* Como siempre, hay otras mejoras y correcciones de errores menores.
+
+----------------------------------------
+
+
+
 Version 10.1 - Carrier Command edition. 06 Mayo 2022
 
 Agregado soporte de joystick real en Mac
