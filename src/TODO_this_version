@@ -1,0 +1,150 @@
+Para esta version:
+
+--Mejoras
+
+-algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
+
+-conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
+
+-Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
+
+-Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
+
+--Fin mejoras
+
+
+--Errores
+
+-Error: Abrir menú debug cpu con tecla F
+Luego pulsar botón salir emulador
+Y cierra menus pero no sale
+
+-ZENG soporte para QL. ok aunque no envia teclas extendidas
+-ZENG para msx se leen los cursores en destino
+-ZENG colecovision no va bien
+
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
+
+-speech con caracteres con acentos no los envia, los filtra 
+
+
+-Probar generic message en stdout. Funciona bien?
+
+-Desactivar border hace desaparecer el joystick. Solo en cocoa?
+
+-snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
+
+-quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
+
+
+-al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
+
+--Fin Errores
+
+
+-Renombrar setting de background windows por multitask windows? O algo así
+Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
+
+-Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
+
+-Para ZENG con más de 2 pcs:
+*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
+
+
+
+-Funciones de utils no deberían involucrar nada del menú
+
+
+-quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
+usar la que si considera movimiento raton
+
+ 
+- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
+
+
+-A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
+
+-Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
+
+-Emulación floppy:
+
+
+EL CONTROLADOR DE DISQUETES NEC 765
+http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
+
+
+Format:DSK disk image file format - CPCWiki
+https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
+
+More information
+https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
+
+Operating Systems Development Series
+http://www.brokenthorn.com/Resources/OSDev20.html
+
+
+http://dunfield.classiccmp.org/r/765.pdf
+￼
+Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
+
+lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
+Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
+
+-Emulación pcw 8256
+Requiere antes floppy
+
+-6128. Requiere antes floppy
+
+-mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
+
+-al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
+
+-opcion vaciar papelera al salir
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+-parecido a Recent files, que permita cambiar a directorios recientes
+
+-selector tipo joystick, que sea un desplegable en vez de que haya que ir dando cada vez al enter
+
+-smartload de un pok file
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
+
+-incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
+
+-Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
+Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
+
+Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+-paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
+
+
+-Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
+
+-Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
+
+-Ayuda hablar nuevo comportamiento botón derecho 
+
+-First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
+
+-Si interfaz en Spanish, en help->changelog, falla al encontrar archivo "Cambios" si estamos usando version instalada (pues no se incluye dicho archivo al empaquetar)
+
+-Plus3dos handler: depende de pd765 para detectar unidad A:

@@ -39,12 +39,19 @@ z80_bit pd765_enabled={0};
 z80_bit pd765_enabled;
 void pd765_enable(void)
 {
+    if (pd765_enabled.v) return;
+
+    debug_printf (VERBOSE_INFO,"Enabling PD765");
+    pd765_enabled.v=1;
 
 }
 
 void pd765_disable(void)
 {
+    if (pd765_enabled.v==0) return;
 
+    debug_printf (VERBOSE_INFO,"Disabling PD765");
+    pd765_enabled.v=0;
 }
 
 void pd765_motor_on(void)
