@@ -148,6 +148,7 @@
 #include "interface007.h"
 #include "dinamid3.h"
 #include "dsk.h"
+#include "plus3dos_handler.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"

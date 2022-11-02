@@ -37,6 +37,8 @@ DSK emulation
 #include "debug.h"
 #include "utils.h"
 #include "tape.h"
+#include "menu_items.h"
+#include "screen.h"
 
 
 char dskplusthree_file_name[PATH_MAX]="";
@@ -203,4 +205,16 @@ void plus3dsk_put_byte_disk(int offset,z80_byte value)
         p3dsk_buffer_disco[offset]=value;
 
 	dskplusthree_must_flush_to_disk=1;
+}
+
+
+void dsk_show_activity(void)
+{
+	generic_footertext_print_operating("DISK");
+
+	//Y poner icono en inverso
+	if (!zxdesktop_icon_plus3_inverse) {
+			zxdesktop_icon_plus3_inverse=1;
+			menu_draw_ext_desktop();
+	}	
 }

@@ -51,4 +51,6 @@ extern z80_byte plus3dsk_get_byte_disk(int offset);
 
 extern z80_byte p3dsk_buffer_disco[];
 
+extern void dsk_show_activity(void);
+
 #endif

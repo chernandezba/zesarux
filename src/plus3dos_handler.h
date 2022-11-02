@@ -24,6 +24,8 @@
 
 #include "cpu.h"
 
+extern void traps_plus3dos(void);
 
+extern z80_bit plus3dos_traps;
 
 #endif

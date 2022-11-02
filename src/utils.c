@@ -151,6 +151,7 @@
 #include "interface007.h"
 #include "dinamid3.h"
 #include "dsk.h"
+#include "plus3dos_handler.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
