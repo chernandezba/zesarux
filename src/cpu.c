@@ -3803,7 +3803,7 @@ void set_machine_params(void)
 
 			if (MACHINE_IS_SPECTRUM_P3) {
 				pd765_enable();
-				plus3dos_traps.v=1;
+				//plus3dos_traps.v=1;
 			}
 
 		}

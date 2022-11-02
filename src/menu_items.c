@@ -26826,7 +26826,7 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
 		dskplusthree_enable();
 		pd765_enable();
-		plus3dos_traps.v=1;
+		//plus3dos_traps.v=1;
 
 
         }
@@ -26863,7 +26863,7 @@ void menu_storage_dskplusthree_emulation(MENU_ITEM_PARAMETERS)
 	if (dskplusthree_emulation.v==0) {
 		dskplusthree_enable();
 		pd765_enable();
-		plus3dos_traps.v=1;
+		//plus3dos_traps.v=1;
 	}
 
 	else dskplusthree_disable();

@@ -5398,7 +5398,7 @@ int quickload_continue(char *nombre) {
                 
         dskplusthree_enable();
 		pd765_enable();
-		plus3dos_traps.v=1;
+		//plus3dos_traps.v=1;
 		
                                
 
