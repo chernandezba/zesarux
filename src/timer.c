@@ -63,6 +63,7 @@
 #include "cpc.h"
 #include "snap_ram.h"
 #include "hilow_datadrive.h"
+#include "dsk.h"
 
 #include "autoselectoptions.h"
 
