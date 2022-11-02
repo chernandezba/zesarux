@@ -26847,7 +26847,7 @@ void menu_storage_plusthreedisk_traps(MENU_ITEM_PARAMETERS)
 
 void menu_plusthreedisk_pd765(MENU_ITEM_PARAMETERS)
 {
-        if (pd765_enabled.v) pd765_disable();
+    if (pd765_enabled.v) pd765_disable();
 	else pd765_enable();
 }
 

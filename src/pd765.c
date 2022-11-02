@@ -77,7 +77,8 @@ z80_byte pd765_read_status_register(void)
 
 void pd765_out_port_1ffd(z80_byte value)
 {
-    //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. Setting bit 3 low will turn them off again. (0x1ffd is also used for memory control).
+    //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. 
+    //Setting bit 3 low will turn them off again. (0x1ffd is also used for memory control).
 
     if (value&8) pd765_motor_on();
     else pd765_motor_off();

@@ -74,34 +74,7 @@ usar la que si considera movimiento raton
 
 -Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
 
--Emulación floppy:
 
-
-EL CONTROLADOR DE DISQUETES NEC 765
-http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
-
-
-Format:DSK disk image file format - CPCWiki
-https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
-
-More information
-https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
-
-Operating Systems Development Series
-http://www.brokenthorn.com/Resources/OSDev20.html
-
-
-http://dunfield.classiccmp.org/r/765.pdf
-￼
-Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
-
-lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
-Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
-
--Emulación pcw 8256
-Requiere antes floppy
-
--6128. Requiere antes floppy
 
 -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
 
@@ -147,3 +120,33 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 
 -Plus3dos handler: depende de pd765 para detectar unidad A:
+
+
+-Emulación floppy:
+
+
+EL CONTROLADOR DE DISQUETES NEC 765
+http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
+
+
+Format:DSK disk image file format - CPCWiki
+https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
+
+More information
+https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
+
+Operating Systems Development Series
+http://www.brokenthorn.com/Resources/OSDev20.html
+
+
+http://dunfield.classiccmp.org/r/765.pdf
+￼
+Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
+
+lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
+Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
+
+-Emulación pcw 8256
+Requiere antes floppy
+
+-6128. Requiere antes floppy
