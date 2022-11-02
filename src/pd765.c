@@ -30,12 +30,6 @@
 #include "cpu.h"
 #include "debug.h"
 #include "utils.h"
-#include "zxvision.h"
-#include "menu_items.h"
-#include "screen.h"
-#include "mem128.h"
-#include "operaciones.h"
-#include "tape.h"
 #include "dsk.h"
 
 z80_bit pd765_enabled={0};

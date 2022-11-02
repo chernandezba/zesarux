@@ -35,15 +35,4 @@ extern z80_byte pd765_read_command(void);
 extern z80_byte pd765_read_status_register(void);
 
 
-
-
-
-
-
-
-
-
-
-
-
 #endif
