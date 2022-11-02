@@ -8677,19 +8677,18 @@ Port: 10-- ---- ---- --0-
 		if ( (puerto & 61442 )== 4096) {
 			mem128_p2a_write_page_port(puerto,value);
 
-			//0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. Setting bit 3 low will turn them off again. (0x1ffd is also used for memory control).
-			if (pd765_enabled.v) {
-				if (value&8) pd765_motor_on();
-				else pd765_motor_off();
-			}
+            //Puertos disco +3. Motor on/off
+            if (pd765_enabled.v) {
+			    pd765_out_port_1ffd(value);
+            }
 
 		}
 
 
-                //Puertos disco +3
-                if (pd765_enabled.v) {
-                	if (puerto==0x3FFD) pd765_write_command(value);
-                }
+        //Puertos disco +3
+        if (puerto==0x3FFD && pd765_enabled.v) {
+            pd765_out_port_3ffd(value);
+        }
 
 	}
 
