@@ -36,6 +36,7 @@
 #include "mem128.h"
 #include "operaciones.h"
 #include "tape.h"
+#include "dsk.h"
 
 z80_bit pd765_enabled={0};
 
@@ -77,10 +78,7 @@ z80_byte pd765_eot=0;
 z80_byte pd765_gpl=0;
 z80_byte pd765_dtl=0;
 
-//Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
-#define MAX_BUFFER_DISCO 214784
-z80_byte p3dsk_buffer_disco[MAX_BUFFER_DISCO];
-int p3dsk_buffer_disco_size=MAX_BUFFER_DISCO; //Tamanyo del dsk leido. De momento establecemos en maximo
+
 
 z80_byte pdc_buffer_retorno[20000];
 int pdc_buffer_retorno_len=0;
@@ -89,7 +87,7 @@ int pdc_buffer_retorno_index=0;
 z80_bit plus3dos_traps={0};
 
 
-char dskplusthree_file_name[PATH_MAX]="";
+
 
 
 #define kBusy 0x10
@@ -225,53 +223,8 @@ int contador_recallibrate_temp=0;
 z80_byte pd765_status_register=128;
 
 
-z80_bit dskplusthree_emulation={0};
 
 
-void dskplusthree_disable(void)
-{
-
-	if (dskplusthree_emulation.v==0) return;
-
-	debug_printf (VERBOSE_INFO,"Disabling DSK emulation");
-
-	dskplusthree_emulation.v=0;
-}
-
-void dskplusthree_enable(void)
-{
-
-	if (dskplusthree_emulation.v) return;
-
-	debug_printf (VERBOSE_INFO,"Enabling DSK emulation");
-	debug_printf (VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
-
-	long long int tamanyo=get_file_size(dskplusthree_file_name);
-
-	if (tamanyo>MAX_BUFFER_DISCO) {
-		debug_printf(VERBOSE_ERR,"DSK size too big");
-		return;
-	}
-
-        FILE *ptr_dskfile;
-        ptr_dskfile=fopen(dskplusthree_file_name,"rb");
-
-        if (!ptr_dskfile) {
-                debug_printf(VERBOSE_ERR,"Unable to open disk %s",dskplusthree_file_name);
-                return;
-        }
-
-        //int leidos=fread(p3dsk_buffer_disco,1,200000,ptr_configfile);
-        fread(p3dsk_buffer_disco,1,MAX_BUFFER_DISCO,ptr_dskfile);
-
-
-        fclose(ptr_dskfile);
-
-	p3dsk_buffer_disco_size=tamanyo;
-
-        dskplusthree_emulation.v=1;
-
-}
 
 void pd765_enable(void)
 {
@@ -848,13 +801,7 @@ O es por culpa del PCN que vale 0???
 //
 //
 
-z80_bit dskplusthree_write_protection={0};
 
-int dskplusthree_must_flush_to_disk=0;
-
-
-//Si cambios en escritura se hace flush a disco
-z80_bit dskplusthree_persistent_writes={1};
 
 
 void traps_plus3dos_return(void)
@@ -1059,38 +1006,6 @@ int traps_plus3dos_getoff_start_track(int pista_lineal)
 }
 
 
-z80_byte plus3dsk_get_byte_disk(int offset)
-{
-
-        if (dskplusthree_emulation.v==0) return 0;
-
-        if (offset>=p3dsk_buffer_disco_size) {
-                debug_printf (VERBOSE_ERR,"Error. Trying to read beyond dsk. Size: %d Asked: %d. Disabling DSK",p3dsk_buffer_disco_size,offset);
-                dskplusthree_disable();
-                return 0;
-        }
-
-
-        return p3dsk_buffer_disco[offset];
-}
-
-void plus3dsk_put_byte_disk(int offset,z80_byte value)
-{
-        if (dskplusthree_emulation.v==0) return;
-
-        if (offset>=p3dsk_buffer_disco_size) {
-                debug_printf (VERBOSE_ERR,"Error. Trying to read beyond dsk. Size: %d Asked: %d. Disabling DSK",p3dsk_buffer_disco_size,offset);
-                dskplusthree_disable();
-                return;
-        }
-
-
-	if (dskplusthree_write_protection.v) return;
-
-        p3dsk_buffer_disco[offset]=value;
-
-	dskplusthree_must_flush_to_disk=1;
-}
 
 //Retorna el offset al dsk segun la pista y sector dados (ambos desde 0...)
 int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar)
@@ -1162,7 +1077,7 @@ sectores van alternados:
 	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);	
 	//TODO
 	//de momento retornamos offset fuera de rango
-	return MAX_BUFFER_DISCO;
+	return DSK_MAX_BUFFER_DISCO;
 
 
 	//Old
@@ -1894,68 +1809,3 @@ ENTRY CONDITIONS
 
 
 
-void dskplusthree_flush_contents_to_disk(void)
-{
-
-        if (dskplusthree_emulation.v==0) return;
-
-        if (dskplusthree_must_flush_to_disk==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush DSK to disk but no changes made");
-                return;
-        }
-
-
-        if (dskplusthree_persistent_writes.v==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush DSK to disk but persistent writes disabled");
-                return;
-        }
-
-
-
-        debug_printf (VERBOSE_INFO,"Flushing DSK to disk");
-
-
-        FILE *ptr_dskplusthreefile;
-
-        debug_printf (VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
-        ptr_dskplusthreefile=fopen(dskplusthree_file_name,"wb");
-
-
-
-        int escritos=0;
-        long long int size;
-        size=p3dsk_buffer_disco_size;
-
-
-        if (ptr_dskplusthreefile!=NULL) {
-                z80_byte *puntero;
-                puntero=p3dsk_buffer_disco; 
-
-                //Justo antes del fwrite se pone flush a 0, porque si mientras esta el fwrite entra alguna operacion de escritura,
-                //metera flush a 1
-                dskplusthree_must_flush_to_disk=0;
-
-                escritos=fwrite(puntero,1,size,ptr_dskplusthreefile);
-
-                fclose(ptr_dskplusthreefile);
-
-
-        }
-
-        //debug_printf(VERBOSE_DEBUG,"ptr_dskplusthreefile: %d",ptr_dskplusthreefile);
-        //debug_printf(VERBOSE_DEBUG,"escritos: %d",escritos);
-
-        if (escritos!=size || ptr_dskplusthreefile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to DSK file");
-        }
-
-}
-
-void dsk_insert_disk(char *nombre)
-{
-                strcpy(dskplusthree_file_name,nombre);
-                
-    if (noautoload.v==0) {
-		reset_cpu();
-	}
-}

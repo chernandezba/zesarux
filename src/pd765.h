@@ -38,19 +38,14 @@ extern void traps_plus3dos(void);
 
 extern z80_bit plus3dos_traps;
 
-extern char dskplusthree_file_name[];
 
-extern z80_bit dskplusthree_emulation;
 
-extern void dskplusthree_disable(void);
-extern void dskplusthree_enable(void);
 
-extern z80_bit dskplusthree_write_protection;
 
-extern z80_bit dskplusthree_persistent_writes;
 
-extern void dskplusthree_flush_contents_to_disk(void);
 
-extern void dsk_insert_disk(char *nombre);
+
+
+
 
 #endif

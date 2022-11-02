@@ -24,6 +24,31 @@
 
 #include "cpu.h"
 
+//Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
+#define DSK_MAX_BUFFER_DISCO 214784
 
+
+
+extern void dsk_insert_disk(char *nombre);
+
+extern char dskplusthree_file_name[];
+
+extern void dskplusthree_flush_contents_to_disk(void);
+
+extern z80_bit dskplusthree_emulation;
+
+
+extern z80_bit dskplusthree_write_protection;
+
+extern z80_bit dskplusthree_persistent_writes;
+
+
+extern void dskplusthree_disable(void);
+extern void dskplusthree_enable(void);
+
+extern void plus3dsk_put_byte_disk(int offset,z80_byte value);
+extern z80_byte plus3dsk_get_byte_disk(int offset);
+
+extern z80_byte p3dsk_buffer_disco[];
 
 #endif

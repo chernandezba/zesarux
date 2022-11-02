@@ -147,6 +147,7 @@
 #include "ramjet.h"
 #include "interface007.h"
 #include "dinamid3.h"
+#include "dsk.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
