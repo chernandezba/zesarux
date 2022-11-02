@@ -34,7 +34,35 @@
 
 z80_bit pd765_enabled={0};
 
+z80_byte pd765_main_status_register=0;
 
+/*
+Main status register
+
+Bit Number  Name                Symbol      Description
+----------  -----------         ------      --------------
+DB0         FDD 0 Busy          D0B         FDD Number 0 is in seek mode. If any of the bits is set FDC will not accept read or write command
+DB1         FDD 1 Busy          D1B         FDD Number 1 is in seek mode. If any of the bits is set FDC will not accept read or write command
+DB2         FDD 2 Busy          D2B         FDD Number 2 is in seek mode. If any of the bits is set FDC will not accept read or write command
+DB3         FDD 3 Busy          D3B         FDD Number 3 is in seek mode. If any of the bits is set FDC will not accept read or write command
+DB4         FDC Busy            CB          A read or write command is in process. FDC will not accept any other command
+DB5         Execution Mode      EXM         This bit is set only during execution phase in non-DMA mode. When DB5 goes low, execution phase has ended,
+                                            and result phase was started. It operates only during NON-DMA mode of operation
+DB6         Data Input/Output   DIO         Indicates direction of data transfer between FDC and Data Register. If DIO = "1" then transfer is from
+                                            Data Register to the Processor. If DIO = "0", then transfer is from the Processor to Data Register
+DB7         Request for Master  RQM         Indicates Data Register is ready to send or receive data to or from the Processor. Both bits DIO and RQM
+                                            should be used to perform the hand-shaking functions of "ready" and "direction" to the processor
+
+*/
+
+#define PD765_STATUS_REGISTER_D0B_MASK 0x01
+#define PD765_STATUS_REGISTER_D1B_MASK 0x02
+#define PD765_STATUS_REGISTER_D2B_MASK 0x04
+#define PD765_STATUS_REGISTER_D3B_MASK 0x08
+#define PD765_STATUS_REGISTER_CB_MASK  0x10
+#define PD765_STATUS_REGISTER_EXM_MASK 0x20
+#define PD765_STATUS_REGISTER_DIO_MASK 0x40
+#define PD765_STATUS_REGISTER_RQM_MASK 0x80
 
 z80_bit pd765_enabled;
 void pd765_enable(void)
@@ -72,7 +100,8 @@ z80_byte pd765_read_command(void)
 }
 z80_byte pd765_read_status_register(void)
 {
-    return 255;
+    printf("PD765: Reading main status register: %02XH\n",pd765_main_status_register);
+    return pd765_main_status_register;
 }
 
 void pd765_out_port_1ffd(z80_byte value)
@@ -93,3 +122,7 @@ void pd765_out_port_3ffd(z80_byte value)
 
 }
 
+void pd765_reset(void)
+{
+    pd765_main_status_register=0;
+}

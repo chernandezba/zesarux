@@ -1398,6 +1398,10 @@ util_stats_init();
 		dinamid3_reset();
 	}                      
 
+    if (pd765_enabled.v) {
+        pd765_reset();
+    }
+
 	//Inicializar zona memoria de debug
 	debug_memory_zone_debug_reset();
 
