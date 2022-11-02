@@ -6,8 +6,8 @@ Agregado iconos configurables al ZX Desktop. Estos iconos pueden:
 -Abrir ventanas, por ejemplo Ver Sprites
 -Desencadenar acciones, como Restablecer
 -Enlaces de archivos, estos están vinculados a cintas o instantáneas de tu disco duro
--Hay otros íconos especiales, como Papelera
-Estos íconos abren un mundo completamente nuevo en ZEsarUX, por lo que ZX Desktop se está convirtiendo en un entorno de escritorio completo :)
+-Hay otros iconos especiales, como Papelera
+Estos iconos abren un mundo completamente nuevo en ZEsarUX, por lo que ZX Desktop se está convirtiendo en un entorno de escritorio completo :)
 
 Agregadas nuevas maquinas:
 -ZX Spectrum 48k+
@@ -55,7 +55,7 @@ Emulación mejorada Z88:
 -Insertando tarjetas Z88: ahora no se cuelga el emulador durante la inserción
 -Selección de tarjetas Z88: submenús para tipos y tamaños
 -Pie de página Z88: se muestra al escribir una tarjeta en la ranura 3, los colores siguen el estilo
--Iconos del dispositivo Z88: diferentes íconos para los slots 1,2,3, se muestran al escribir una tarjeta en el slot 3, se muestran cuando la tapa está abierta
+-Iconos del dispositivo Z88: diferentes iconos para los slots 1,2,3, se muestran al escribir una tarjeta en el slot 3, se muestran cuando la tapa está abierta
 
 Selector de archivos mejorado:
 -Permitir tener una vista previa de pantalla completa si la ventana es lo suficientemente grande
@@ -246,7 +246,7 @@ Corregido ZX Vision:
 -Corregido error al restaurar ventanas al inicio cuando se generaba un error anterior
 -Corregido las barras de desplazamiento de dibujo cuando la ventana no está en la parte superior de todas las ventanas.
 -Corregido dibujado de botón de cierre en las ventanas de fondo
--Corregido que se mostrara el estado de inserción de la cinta de entrada en el menú y el ícono del ZX Desktop cuando la cinta no se puede abrir
+-Corregido que se mostrara el estado de inserción de la cinta de entrada en el menú y el icono del ZX Desktop cuando la cinta no se puede abrir
 -Corregido ventana Editor hexadecimal mientras se mueve o cambia el tamaño
 -Corregido view sensors al hacer clic en las barras de desplazamiento
 -Corregido la actualización de la ventana Visual Real Tape cuando activado Top Speed

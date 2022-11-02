@@ -145,6 +145,5 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
--Si interfaz en Spanish, en help->changelog, falla al encontrar archivo "Cambios" si estamos usando version instalada (pues no se incluye dicho archivo al empaquetar)
 
 -Plus3dos handler: depende de pd765 para detectar unidad A:
