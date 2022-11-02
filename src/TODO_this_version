@@ -120,6 +120,7 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 
 -Plus3dos handler: depende de pd765 para detectar unidad A:
+Probablemente porque el status register debe retornar pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT cuando solo hay plus3doshandler
 
 
 -Emulación floppy:

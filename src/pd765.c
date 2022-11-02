@@ -34,7 +34,7 @@
 
 z80_bit pd765_enabled={0};
 
-z80_byte pd765_main_status_register=0;
+
 
 /*
 Main status register
@@ -64,6 +64,16 @@ DB7         Request for Master  RQM         Indicates Data Register is ready to 
 #define PD765_STATUS_REGISTER_DIO_MASK 0x40
 #define PD765_STATUS_REGISTER_RQM_MASK 0x80
 
+#define PD765_STATUS_REGISTER_ON_BOOT (PD765_STATUS_REGISTER_RQM_MASK)
+
+z80_byte pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+
+
+void pd765_reset(void)
+{
+    pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+}
+
 z80_bit pd765_enabled;
 void pd765_enable(void)
 {
@@ -92,15 +102,18 @@ void pd765_motor_off(void)
 }
 void pd765_write_command(z80_byte value)
 {
-
+    printf("PD765: Write command on pc %04XH: %02XH\n",reg_pc,value);
 }
 z80_byte pd765_read_command(void)
 {
+    printf("PD765: Read command on pc %04XH\n",reg_pc);
+
     return 255;
 }
 z80_byte pd765_read_status_register(void)
 {
-    printf("PD765: Reading main status register: %02XH\n",pd765_main_status_register);
+    printf("PD765: Reading main status register on pc %04XH: %02XH\n",reg_pc,pd765_main_status_register);
+    //sleep(1);
     return pd765_main_status_register;
 }
 
@@ -122,7 +135,3 @@ void pd765_out_port_3ffd(z80_byte value)
 
 }
 
-void pd765_reset(void)
-{
-    pd765_main_status_register=0;
-}
