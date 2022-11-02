@@ -78,7 +78,7 @@ z80_byte pdc_buffer_retorno[20000];
 int pdc_buffer_retorno_len=0;
 int pdc_buffer_retorno_index=0;
 
-z80_bit plus3dos_traps={0};
+
 
 
 

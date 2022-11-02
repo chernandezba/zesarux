@@ -41,12 +41,7 @@ PLUS3DOS handler
 #include "dsk.h"
 
 
-//
-//
-// A partir de aqui nuevo codigo para hacer traps en plus3dos
-// El codigo anterior del pd765 no funciona del todo bien, pese a que las funciones principales de retornar disco ok, seek y demas paracen funcionar
-//
-//
+z80_bit plus3dos_traps={0};
 
 
 
