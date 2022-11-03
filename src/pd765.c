@@ -86,7 +86,8 @@ int pd765_phase=PD765_PHASE_ON_BOOT;
 int pd765_input_parameters_index=0;
 
 enum pd765_command_list {
-    PD765_COMMAND_SPECIFY
+    PD765_COMMAND_SPECIFY,
+    PD765_COMMAND_SENSE_DRIVE_STATUS,
 };
 
 enum pd765_command_list pd765_command_received;
@@ -147,6 +148,59 @@ void pd765_handle_command_specify(void)
     //TODO: de momento no hacer nada
 }
 
+void pd765_read_parameters_specify(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for SPECIFY\n");
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_srt=(value>>4) & 0x0F;
+        pd765_input_parameter_hut=value & 0x0F;
+        printf("PD765: SRT=%XH HUT=%XH\n",pd765_input_parameter_srt,pd765_input_parameter_hut);
+        pd765_input_parameters_index++;
+    }
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_hlt=(value>>4) & 0x0F;
+        pd765_input_parameter_nd=value & 0x0F;
+        printf("PD765: HLT=%XH ND=%XH\n",pd765_input_parameter_hlt,pd765_input_parameter_nd);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for SPECIFY\n");
+
+        pd765_handle_command_specify();
+    }       
+}
+
+
+
+void pd765_handle_command_sense_drive_status(void)
+{
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+}
+
+void pd765_read_parameters_sense_drive_status(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for SENSE DRIVE STATUS\n");
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for SENSE DRIVE STATUS\n");
+
+        pd765_handle_command_sense_drive_status();
+    }       
+}
+
 void pd765_write_handle_phase_command(z80_byte value)
 {
     //Hay que recibir comando aun
@@ -161,6 +215,13 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameters_index++;
         }
 
+        else if (value==4) {
+            //Sense drive status
+            printf("PD765: SENSE DRIVE STATUS command\n");
+            pd765_command_received=PD765_COMMAND_SENSE_DRIVE_STATUS;
+            pd765_input_parameters_index++;            
+        }
+
         else {
             printf("PD765: UNKNOWN command\n");
         }
@@ -170,26 +231,12 @@ void pd765_write_handle_phase_command(z80_byte value)
         printf("PD765: Receiving command parameters. Index=%d\n",pd765_input_parameters_index);
         switch(pd765_command_received) {
             case PD765_COMMAND_SPECIFY:
-                printf("PD765: Receiving command parameters for SPECIFY\n");
-                if (pd765_input_parameters_index==1) {
-                    pd765_input_parameter_srt=(value>>4) & 0x0F;
-                    pd765_input_parameter_hut=value & 0x0F;
-                    printf("PD765: SRT=%X HUT=%X\n",pd765_input_parameter_srt,pd765_input_parameter_hut);
-                    pd765_input_parameters_index++;
-                }
-                else if (pd765_input_parameters_index==2) {
-                    pd765_input_parameter_hlt=(value>>4) & 0x0F;
-                    pd765_input_parameter_nd=value & 0x0F;
-                    printf("PD765: HLT=%X ND=%X\n",pd765_input_parameter_hlt,pd765_input_parameter_nd);
-
-                    //Fin de comando
-                    pd765_input_parameters_index=0;
-                    
-                    printf("PD765: End command parameters for SPECIFY\n");
-
-                    pd765_handle_command_specify();
-                }   
+                pd765_read_parameters_specify(value); 
             break;
+
+            case PD765_COMMAND_SENSE_DRIVE_STATUS:
+                pd765_read_parameters_sense_drive_status(value); 
+            break;            
         }
     }
 }
