@@ -64,14 +64,46 @@ DB7         Request for Master  RQM         Indicates Data Register is ready to 
 #define PD765_STATUS_REGISTER_DIO_MASK 0x40
 #define PD765_STATUS_REGISTER_RQM_MASK 0x80
 
-#define PD765_STATUS_REGISTER_ON_BOOT (PD765_STATUS_REGISTER_RQM_MASK)
+#define PD765_STATUS_REGISTER_ON_BOOT PD765_STATUS_REGISTER_RQM_MASK
 
 z80_byte pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+
+
+
+#define PD765_PHASE_COMMAND     0
+#define PD765_PHASE_EXECUTION   1
+#define PD765_PHASE_RESULT      2
+
+#define PD765_PHASE_ON_BOOT PD765_PHASE_COMMAND
+
+//Fase en la que está la controladora
+int pd765_phase=PD765_PHASE_ON_BOOT;
+
+
+
+
+//Indice en la recepción de parámetros de un comando
+int pd765_input_parameters_index=0;
+
+//Parámetros recibidos en un comando
+z80_byte pd765_input_parameter_command;
+z80_byte pd765_input_parameter_hd;
+z80_byte pd765_input_parameter_us0;
+z80_byte pd765_input_parameter_us1;
+z80_byte pd765_input_parameter_c;
+z80_byte pd765_input_parameter_h;
+z80_byte pd765_input_parameter_r;
+z80_byte pd765_input_parameter_n;
+z80_byte pd765_input_parameter_eot;
+z80_byte pd765_input_parameter_gpl;
+z80_byte pd765_input_parameter_dtl;
 
 
 void pd765_reset(void)
 {
     pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+    pd765_phase=PD765_PHASE_ON_BOOT;
+    pd765_input_parameters_index=0;
 }
 
 z80_bit pd765_enabled;
@@ -103,6 +135,23 @@ void pd765_motor_off(void)
 void pd765_write_command(z80_byte value)
 {
     printf("PD765: Write command on pc %04XH: %02XH\n",reg_pc,value);
+
+    switch (pd765_phase) {
+        case PD765_PHASE_COMMAND:
+            if (pd765_input_parameters_index==0) {
+                //Hay que recibir el comando
+                printf("PD765: Receiving byte command: %02XH\n",value);
+            }
+        break;
+
+        case PD765_PHASE_EXECUTION:
+            //TODO: no se puede escribir en este estado?
+        break;
+
+        case PD765_PHASE_RESULT:
+            //TODO: no se puede escribir en este estado?
+        break;
+    }
 }
 z80_byte pd765_read_command(void)
 {
