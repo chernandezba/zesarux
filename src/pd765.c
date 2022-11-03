@@ -161,11 +161,16 @@ void pd765_motor_off(void)
 z80_byte pd765_get_st0(void)
 {
 
-    //TODO
+    //TODO completar BIEN esto
+    z80_byte return_value=(pd765_signal_se.v * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 
-    //de momento solo signal SE
-    return pd765_signal_se.v * 32;
+    //??? se resetea seek end al leer este st0???
+    //pd765_signal_se.v=0;
+
+    return return_value;
 }
+
+
 
 #define PD765_ST3_REGISTER_FT_MASK 0x80
 #define PD765_ST3_REGISTER_WP_MASK 0x40
@@ -439,8 +444,9 @@ h. Scan Commands
 2.    Ready Line of FDD changes state
 3.    End of Seek or Recalibrate Command
 4.    During Execution Phase in the NON-DMA Mode
+
 Interrupts caused by reasons 1 and 4 above occur during normal command operations and are easily 
-discernible by the processor. During an execution phase in NON-DMA Mode, D85 in Main Status Register is high. 
+discernible by the processor. During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. 
 Upon entering Result Phase this bit gets clear. Reason 1 and 4 does not require Sense Interrupt Status command. 
 The interrupt is cleared by reading/writing data to FDC. 
 Interrupts caused by reasons 2 and 3 above may be uniquely 

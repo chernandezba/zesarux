@@ -153,3 +153,4 @@ Requiere antes floppy
 -6128. Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
+pd765_read_result_command_sense_interrupt_status, completar. completar get_st0
