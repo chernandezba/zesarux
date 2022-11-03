@@ -286,10 +286,12 @@ void pd765_write(z80_byte value)
         break;
 
         case PD765_PHASE_EXECUTION:
+            printf("PD765: Write command on phase execution SHOULD NOT happen\n");
             //TODO: no se puede escribir en este estado?
         break;
 
         case PD765_PHASE_RESULT:
+            printf("PD765: Write command on phase result SHOULD NOT happen\n");
             //TODO: no se puede escribir en este estado?
         break;
     }
@@ -305,6 +307,12 @@ z80_byte pd765_read_result_command_sense_drive_status(void)
     if (pd765_output_parameters_index==0) {
         z80_byte return_value=pd765_get_st3();
         printf("PD765: Returning ST3: %02XH\n",return_value);
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
 
         return return_value;
     }
