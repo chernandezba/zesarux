@@ -80,7 +80,8 @@ z80_byte pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
 int pd765_phase=PD765_PHASE_ON_BOOT;
 
 
-
+//Indice en el retorno de resultados de un comando
+int pd765_output_parameters_index=0;
 
 //Indice en la recepción de parámetros de un comando
 int pd765_input_parameters_index=0;
@@ -114,6 +115,7 @@ void pd765_reset(void)
     pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
     pd765_phase=PD765_PHASE_ON_BOOT;
     pd765_input_parameters_index=0;
+    pd765_output_parameters_index=0;
 }
 
 z80_bit pd765_enabled;
@@ -142,6 +144,36 @@ void pd765_motor_off(void)
 {
 
 }
+
+
+#define PD765_ST3_REGISTER_FT_MASK 0x80
+#define PD765_ST3_REGISTER_WP_MASK 0x40
+#define PD765_ST3_REGISTER_RD_MASK 0x20
+#define PD765_ST3_REGISTER_T0_MASK 0x10
+#define PD765_ST3_REGISTER_TS_MASK 0x08
+
+z80_byte pd765_get_st3(void)
+{
+    /*
+    Bit Name                Symbol  Description
+    D7  Fault               FT      This bit is used to indicate the status of the Fault signal from the FDD
+    D6  Write Protected     WP      This bit is used to indicate the status of the Write Protected signal from the FDD
+    D5  Ready               RY      This bit is used to indicate the status of the Ready signal from the FDD
+    D4  Track 0             T0      This bit is used to indicate the status of the Track 0 signal from the FDD
+    D3  Two Side            TS      This bit is used to indicate the status ot the Two Side signal from the FDD
+    D2  Head Address        HD      This bit is used to indicate the status of Side Select signal to the FDD
+    D1  Unit Select 1       US1     This bit is used to indicate the status of the Unit Select 1 signal to the FDD
+    D0  Unit Select 0       US0     This bit is used to indicate the status of the Unit Select 0 signal to the FDD
+    */
+
+   //TODO: posible WP (si protegemos para escritura desde menu) y FT (en que casos?)
+
+   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
+}
+
+//
+// Gestion de escrituras de puerto
+//
 
 void pd765_handle_command_specify(void)
 {
@@ -180,6 +212,9 @@ void pd765_handle_command_sense_drive_status(void)
 
     //E indicar que hay que leer datos
     pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
 }
 
 void pd765_read_parameters_sense_drive_status(z80_byte value)
@@ -259,9 +294,57 @@ void pd765_write(z80_byte value)
         break;
     }
 }
+
+
+//
+// Gestion de lecturas de puerto
+//
+
+z80_byte pd765_read_result_command_sense_drive_status(void)
+{
+    if (pd765_output_parameters_index==0) {
+        z80_byte return_value=pd765_get_st3();
+        printf("PD765: Returning ST3: %02XH\n",return_value);
+
+        return return_value;
+    }
+    else {
+        return 255;
+    }
+}
+
+z80_byte pd765_read_handle_phase_result(void)
+{
+    switch(pd765_command_received) {
+        case PD765_COMMAND_SPECIFY:
+            //No tiene resultado 
+        break;
+
+        case PD765_COMMAND_SENSE_DRIVE_STATUS:
+            return pd765_read_result_command_sense_drive_status();
+        break;            
+    }    
+
+    return 255;
+}
+
 z80_byte pd765_read(void)
 {
     printf("PD765: Read command on pc %04XH\n",reg_pc);
+
+    switch (pd765_phase) {
+        case PD765_PHASE_COMMAND:
+            //TODO: no se puede leer en este estado?
+        break;
+
+        case PD765_PHASE_EXECUTION:
+            //TODO: no se puede leer en este estado?
+        break;
+
+        case PD765_PHASE_RESULT:
+            return pd765_read_handle_phase_result();
+        break;
+    }    
 
     return 255;
 }
