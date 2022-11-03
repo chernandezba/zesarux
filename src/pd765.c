@@ -291,8 +291,6 @@ void pd765_handle_command_recalibrate(void)
     as described in the SEEK Command, also applies to the RECALIBRATE Command.    
     */
 
-   //TODO: Gestion de SE in ST0 cuando se le diga
-
    pd765_signal_ts0.v=1;
    pd765_signal_se.v=1;
    pd765_pcn=0;
