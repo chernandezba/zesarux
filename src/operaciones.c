@@ -6649,7 +6649,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 		if (pd765_enabled.v) {
 			if (puerto_h==0x2F) return pd765_read_status_register();
 
-			if (puerto_h==0x3F) return pd765_read_command();
+			if (puerto_h==0x3F) return pd765_read();
 		}
 
 		else {

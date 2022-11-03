@@ -85,8 +85,13 @@ int pd765_phase=PD765_PHASE_ON_BOOT;
 //Indice en la recepción de parámetros de un comando
 int pd765_input_parameters_index=0;
 
+enum pd765_command_list {
+    PD765_COMMAND_SPECIFY
+};
+
+enum pd765_command_list pd765_command_received;
+
 //Parámetros recibidos en un comando
-z80_byte pd765_input_parameter_command;
 z80_byte pd765_input_parameter_hd;
 z80_byte pd765_input_parameter_us0;
 z80_byte pd765_input_parameter_us1;
@@ -97,6 +102,10 @@ z80_byte pd765_input_parameter_n;
 z80_byte pd765_input_parameter_eot;
 z80_byte pd765_input_parameter_gpl;
 z80_byte pd765_input_parameter_dtl;
+z80_byte pd765_input_parameter_srt;
+z80_byte pd765_input_parameter_hut;
+z80_byte pd765_input_parameter_hlt;
+z80_byte pd765_input_parameter_nd;
 
 
 void pd765_reset(void)
@@ -132,16 +141,66 @@ void pd765_motor_off(void)
 {
 
 }
-void pd765_write_command(z80_byte value)
+
+void pd765_handle_command_specify(void)
+{
+    //TODO: de momento no hacer nada
+}
+
+void pd765_write_handle_phase_command(z80_byte value)
+{
+    //Hay que recibir comando aun
+    if (pd765_input_parameters_index==0) {
+        //Hay que recibir el comando
+        printf("PD765: Byte command: %02XH\n",value);
+
+        if (value==3) {
+            //Specify
+            printf("PD765: SPECIFY command\n");
+            pd765_command_received=PD765_COMMAND_SPECIFY;
+            pd765_input_parameters_index++;
+        }
+
+        else {
+            printf("PD765: UNKNOWN command\n");
+        }
+    }
+    else {
+        //Recibiendo parametros de comando
+        printf("PD765: Receiving command parameters. Index=%d\n",pd765_input_parameters_index);
+        switch(pd765_command_received) {
+            case PD765_COMMAND_SPECIFY:
+                printf("PD765: Receiving command parameters for SPECIFY\n");
+                if (pd765_input_parameters_index==1) {
+                    pd765_input_parameter_srt=(value>>4) & 0x0F;
+                    pd765_input_parameter_hut=value & 0x0F;
+                    printf("PD765: SRT=%X HUT=%X\n",pd765_input_parameter_srt,pd765_input_parameter_hut);
+                    pd765_input_parameters_index++;
+                }
+                else if (pd765_input_parameters_index==2) {
+                    pd765_input_parameter_hlt=(value>>4) & 0x0F;
+                    pd765_input_parameter_nd=value & 0x0F;
+                    printf("PD765: HLT=%X ND=%X\n",pd765_input_parameter_hlt,pd765_input_parameter_nd);
+
+                    //Fin de comando
+                    pd765_input_parameters_index=0;
+                    
+                    printf("PD765: End command parameters for SPECIFY\n");
+
+                    pd765_handle_command_specify();
+                }   
+            break;
+        }
+    }
+}
+
+void pd765_write(z80_byte value)
 {
     printf("PD765: Write command on pc %04XH: %02XH\n",reg_pc,value);
 
     switch (pd765_phase) {
         case PD765_PHASE_COMMAND:
-            if (pd765_input_parameters_index==0) {
-                //Hay que recibir el comando
-                printf("PD765: Receiving byte command: %02XH\n",value);
-            }
+            pd765_write_handle_phase_command(value);
         break;
 
         case PD765_PHASE_EXECUTION:
@@ -153,7 +212,7 @@ void pd765_write_command(z80_byte value)
         break;
     }
 }
-z80_byte pd765_read_command(void)
+z80_byte pd765_read(void)
 {
     printf("PD765: Read command on pc %04XH\n",reg_pc);
 
@@ -180,7 +239,7 @@ void pd765_out_port_3ffd(z80_byte value)
 {
 
     //Puertos disco +3
-    pd765_write_command(value);
+    pd765_write(value);
 
 }
 
