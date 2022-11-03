@@ -89,6 +89,7 @@ int pd765_input_parameters_index=0;
 enum pd765_command_list {
     PD765_COMMAND_SPECIFY,
     PD765_COMMAND_SENSE_DRIVE_STATUS,
+    PD765_COMMAND_RECALIBRATE
 };
 
 enum pd765_command_list pd765_command_received;
@@ -109,6 +110,11 @@ z80_byte pd765_input_parameter_hut;
 z80_byte pd765_input_parameter_hlt;
 z80_byte pd765_input_parameter_nd;
 
+//Signal TS0 de ST3
+z80_bit pd765_signal_ts0={0};
+
+//Signal SE de ST0
+z80_bit pd765_signal_se={0};
 
 void pd765_reset(void)
 {
@@ -116,6 +122,8 @@ void pd765_reset(void)
     pd765_phase=PD765_PHASE_ON_BOOT;
     pd765_input_parameters_index=0;
     pd765_output_parameters_index=0;
+    pd765_signal_ts0.v=0;
+    pd765_signal_se.v=0;
 }
 
 z80_bit pd765_enabled;
@@ -146,11 +154,22 @@ void pd765_motor_off(void)
 }
 
 
+z80_byte pd765_get_st0(void)
+{
+
+    //TODO
+
+    //de momento solo signal SE
+    return pd765_signal_se.v * 32;
+}
+
 #define PD765_ST3_REGISTER_FT_MASK 0x80
 #define PD765_ST3_REGISTER_WP_MASK 0x40
 #define PD765_ST3_REGISTER_RD_MASK 0x20
 #define PD765_ST3_REGISTER_T0_MASK 0x10
 #define PD765_ST3_REGISTER_TS_MASK 0x08
+
+
 
 z80_byte pd765_get_st3(void)
 {
@@ -168,7 +187,7 @@ z80_byte pd765_get_st3(void)
 
    //TODO: posible WP (si protegemos para escritura desde menu) y FT (en que casos?)
 
-   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
+   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_signal_ts0.v * PD765_ST3_REGISTER_T0_MASK) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 }
 
 //
@@ -236,6 +255,47 @@ void pd765_read_parameters_sense_drive_status(z80_byte value)
     }       
 }
 
+void pd765_handle_command_recalibrate(void)
+{
+    /*
+    RECALIBRATE
+    The function of this command is to retract the read/write head within the FDD to the Track 0 position.
+    The FDC clears the contents of the PC counter, and checks the status of the Track 0 signal from the FDD. 
+    As long as the Track O signal is low, the Direction signal remains O (low) and Step Pulses are issued.
+    When the Track 0 signal goes high, the SE (SEEK END) flag in Status Register O is set to a 1 (high) and 
+    the command is terminated. 
+    
+    If the Track O signal is still low after 77 Step Pulse have been issued, 
+    the FDC sets the SE (SEEK END) and EC (EQUIPMENT CHECK) flags of Status Register 0 to both 1s (highs), 
+    and terminates the command after bits 7 and 6 of Status Register 0 is set to 0 and 1 respectively.
+    The ability to do overlap RECALIBRATE Commands to multiple FDDs and the loss of the READY signal, 
+    as described in the SEEK Command, also applies to the RECALIBRATE Command.    
+    */
+
+   //TODO: Gestion de SE in ST0 cuando se le diga
+
+   pd765_signal_ts0.v=1;
+   pd765_signal_se.v=1;
+}
+
+void pd765_read_parameters_recalibrate(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for RECALIBRATE\n");
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: US1=%XH US0=%XH\n",pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for RECALIBRATE\n");
+
+        pd765_handle_command_recalibrate();
+    }       
+}
+
 void pd765_write_handle_phase_command(z80_byte value)
 {
     //Hay que recibir comando aun
@@ -257,6 +317,13 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameters_index++;            
         }
 
+        else if (value==7) {
+            //Recalibrate
+            printf("PD765: RECALIBRATE command\n");
+            pd765_command_received=PD765_COMMAND_RECALIBRATE;
+            pd765_input_parameters_index++;            
+        }
+
         else {
             printf("PD765: UNKNOWN command\n");
         }
@@ -271,7 +338,11 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             case PD765_COMMAND_SENSE_DRIVE_STATUS:
                 pd765_read_parameters_sense_drive_status(value); 
-            break;            
+            break;    
+
+            case PD765_COMMAND_RECALIBRATE:
+                pd765_read_parameters_recalibrate(value); 
+            break;        
         }
     }
 }
@@ -331,6 +402,10 @@ z80_byte pd765_read_handle_phase_result(void)
         case PD765_COMMAND_SENSE_DRIVE_STATUS:
             return pd765_read_result_command_sense_drive_status();
         break;            
+
+        case PD765_COMMAND_RECALIBRATE:
+            //No tiene resultado 
+        break;        
     }    
 
     return 255;
