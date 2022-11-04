@@ -123,6 +123,9 @@ z80_bit pd765_signal_ts0={0};
 //Si esta pendiente pasar a 1
 //int xxpd765_pendiente_signal_se=0;
 
+//
+//Gestion de tratamiento de senyales con contador
+//
 //Estructura para tratamiento de senyales con contador
 struct s_pd765_signal_counter {
     int current_counter; //inicializar a 0
@@ -153,7 +156,7 @@ void pd765_sc_set(pd765_signal_counter *s)
     s->value=1;
 }
 
-//Incrementar si esta running
+//Incrementar si esta running y cambiar a 1 si llega al limite
 void pd765_sc_handle_running(pd765_signal_counter *s)
 {
     if (s->running) {
@@ -186,6 +189,11 @@ int pd765_sc_get(pd765_signal_counter *s)
 {
     return s->value;
 }
+
+
+//
+//FIN Gestion de tratamiento de senyales con contador
+//
 
 
 //Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
