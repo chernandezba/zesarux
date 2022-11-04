@@ -116,19 +116,19 @@ z80_bit pd765_signal_ts0={0};
 
 
 //Signal SE de ST0
-z80_bit xxpd765_signal_se={0};
+//z80_bit xxpd765_signal_se={0};
 
-int xxpd765_contador_signal_se=0;
+//int xxpd765_contador_signal_se=0;
 
 //Si esta pendiente pasar a 1
-int xxpd765_pendiente_signal_se=0;
+//int xxpd765_pendiente_signal_se=0;
 
 //Estructura para tratamiento de senyales con contador
 struct s_pd765_signal_counter {
     int current_counter; //inicializar a 0
     int value;  //valor actual de la señal. inicializar a 0
     int running; //indica contador ejecutandose. inicializar a 0
-    int max;     //valor maximo a partir del cual se pasa a 1
+    int max;     //valor maximo a partir del cual se pasa a 1, inicializar con valor deseado
     
 };
 
@@ -138,6 +138,7 @@ typedef struct s_pd765_signal_counter pd765_signal_counter;
 //establecer a 0
 void pd765_sc_reset(pd765_signal_counter *s)
 {
+    printf(" PD765: reset signal\n");
     s->current_counter=0;
     s->running=0;
     s->value=0;
@@ -146,6 +147,7 @@ void pd765_sc_reset(pd765_signal_counter *s)
 //establecer a 1
 void pd765_sc_set(pd765_signal_counter *s)
 {
+    printf(" PD765: set signal\n");
     s->current_counter=0;
     s->running=0;
     s->value=1;
@@ -155,6 +157,7 @@ void pd765_sc_set(pd765_signal_counter *s)
 void pd765_sc_handle_running(pd765_signal_counter *s)
 {
     if (s->running) {
+        printf(" PD765: handle signal running. Current counter: %d\n",s->current_counter);
         (s->current_counter)++;
         if ((s->current_counter)>=(s->max)) {
             printf("PD765: Activar senyal\n");
@@ -166,7 +169,16 @@ void pd765_sc_handle_running(pd765_signal_counter *s)
 //Activar contador
 void pd765_sc_set_running(pd765_signal_counter *s)
 {
+    printf(" PD765: set signal running\n");
     s->running=1;
+}
+
+//Activar contador, reiniciando desde 0 y con valor 0
+void pd765_sc_initialize_running(pd765_signal_counter *s)
+{
+    printf(" PD765: set initialize signal running\n");
+    pd765_sc_reset(s);
+    pd765_sc_set_running(s);
 }
 
 //obtener valor
@@ -176,7 +188,7 @@ int pd765_sc_get(pd765_signal_counter *s)
 }
 
 
-//Signal SE de ST0
+//Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
 pd765_signal_counter signal_se={
     0,0,0,
     5
@@ -380,8 +392,7 @@ void pd765_handle_command_recalibrate(void)
    pd765_signal_ts0.v=1;
    pd765_pcn=0;
 
-   pd765_sc_reset(&signal_se);
-   pd765_sc_set_running(&signal_se);
+   pd765_sc_initialize_running(&signal_se);
    
 }
 
