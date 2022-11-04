@@ -117,6 +117,8 @@ z80_bit pd765_signal_ts0={0};
 //Signal SE de ST0
 z80_bit pd765_signal_se={0};
 
+int pd765_contador_signal_se=0;
+
 int pd765_pcn=0;
 
 void pd765_reset(void)
@@ -128,6 +130,7 @@ void pd765_reset(void)
     pd765_signal_ts0.v=0;
     pd765_signal_se.v=0;
     pd765_pcn=0;
+    pd765_contador_signal_se=0;
 }
 
 z80_bit pd765_enabled;
@@ -158,6 +161,8 @@ void pd765_motor_off(void)
 }
 
 
+
+
 z80_byte pd765_get_st0(void)
 {
 
@@ -166,6 +171,10 @@ z80_byte pd765_get_st0(void)
 
     //??? se resetea seek end al leer este st0???
     //pd765_signal_se.v=0;
+
+    //Si se ha pedido 5 veces, decir que va a 1
+    pd765_contador_signal_se++;
+    if (pd765_contador_signal_se>5) pd765_signal_se.v=1;
 
     return return_value;
 }
@@ -292,7 +301,8 @@ void pd765_handle_command_recalibrate(void)
     */
 
    pd765_signal_ts0.v=1;
-   pd765_signal_se.v=1;
+   pd765_signal_se.v=0;
+   pd765_contador_signal_se=0;
    pd765_pcn=0;
 }
 
