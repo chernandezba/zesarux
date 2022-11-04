@@ -119,8 +119,7 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
 
--Plus3dos handler: depende de pd765 para detectar unidad A:
-Probablemente porque el status register debe retornar pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT cuando solo hay plus3doshandler
+-Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
 
 -Emulación floppy:

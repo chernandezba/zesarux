@@ -88,6 +88,7 @@
 #include "transtape.h"
 #include "phoenix.h"
 #include "ramjet.h"
+#include "plus3dos_handler.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -6651,6 +6652,14 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 			if (puerto_h==0x3F) return pd765_read();
 		}
+
+        //Con handler
+        else if (plus3dos_traps.v) {
+            //Bit Request for Master
+			if (puerto_h==0x2F) return 0x80;
+
+			if (puerto_h==0x3F) return 255;            
+        }
 
 		else {
 			if (puerto_h==0x2F) return 255;
