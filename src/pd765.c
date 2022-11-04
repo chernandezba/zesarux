@@ -160,7 +160,7 @@ void pd765_sc_handle_running(pd765_signal_counter *s)
         printf(" PD765: handle signal running. Current counter: %d\n",s->current_counter);
         (s->current_counter)++;
         if ((s->current_counter)>=(s->max)) {
-            printf("PD765: Activar senyal\n");
+            printf(" PD765: Activar senyal\n");
             pd765_sc_set(s);
         }
     }
@@ -245,11 +245,11 @@ void pd765_motor_off(void)
 z80_byte pd765_get_st0(void)
 {
 
+    pd765_sc_handle_running(&signal_se);
+
     //TODO completar BIEN esto
     z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 
-
-    pd765_sc_handle_running(&signal_se);
 
     /*
     if (pd765_pendiente_signal_se) {
