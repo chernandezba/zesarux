@@ -115,13 +115,6 @@ z80_byte pd765_input_parameter_nd;
 z80_bit pd765_signal_ts0={0};
 
 
-//Signal SE de ST0
-//z80_bit xxpd765_signal_se={0};
-
-//int xxpd765_contador_signal_se=0;
-
-//Si esta pendiente pasar a 1
-//int xxpd765_pendiente_signal_se=0;
 
 //
 //Gestion de tratamiento de senyales con contador
@@ -213,10 +206,8 @@ void pd765_reset(void)
     pd765_input_parameters_index=0;
     pd765_output_parameters_index=0;
     pd765_signal_ts0.v=0;
-    //pd765_signal_se.v=0;
     pd765_pcn=0;
-    //pd765_contador_signal_se=0;
-    //pd765_pendiente_signal_se=0;
+
     pd765_sc_reset(&signal_se);
 }
 
@@ -257,19 +248,6 @@ z80_byte pd765_get_st0(void)
 
     //TODO completar BIEN esto
     z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
-
-
-    /*
-    if (pd765_pendiente_signal_se) {
-        //Si se ha pedido 5 veces, decir que va a 1
-        pd765_contador_signal_se++;
-        if (pd765_contador_signal_se>5) {
-            pd765_signal_se.v=1;
-            pd765_pendiente_signal_se=0;
-            printf("PD765: Activar senyal SE\n");
-        }
-    }
-    */
 
 
     return return_value;
@@ -509,6 +487,10 @@ void pd765_write(z80_byte value)
 
 
 //
+// FIN Gestion de escrituras de puerto
+//
+
+//
 // Gestion de lecturas de puerto
 //
 
@@ -641,6 +623,12 @@ z80_byte pd765_read(void)
 
     return 255;
 }
+
+//
+// FIN Gestion de lecturas de puerto
+//
+
+
 z80_byte pd765_read_status_register(void)
 {
     printf("PD765: Reading main status register on pc %04XH: %02XH\n",reg_pc,pd765_main_status_register);
