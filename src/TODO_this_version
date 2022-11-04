@@ -155,4 +155,3 @@ Requiere antes floppy
 pd765_read_result_command_sense_interrupt_status, completar. completar get_st0. quiza tiene que ver 
 "During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. Upon entering Result Phase this bit gets clear."?
 
-pd765_contador_signal_se: tiene que incrementarse y cambiar señal solo si hay pendiente activarse
