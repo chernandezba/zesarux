@@ -114,13 +114,75 @@ z80_byte pd765_input_parameter_nd;
 //Signal TS0 de ST3
 z80_bit pd765_signal_ts0={0};
 
-//Signal SE de ST0
-z80_bit pd765_signal_se={0};
 
-int pd765_contador_signal_se=0;
+//Signal SE de ST0
+z80_bit xxpd765_signal_se={0};
+
+int xxpd765_contador_signal_se=0;
 
 //Si esta pendiente pasar a 1
-int pd765_pendiente_signal_se=0;
+int xxpd765_pendiente_signal_se=0;
+
+//Estructura para tratamiento de senyales con contador
+struct s_pd765_signal_counter {
+    int current_counter; //inicializar a 0
+    int value;  //valor actual de la señal. inicializar a 0
+    int running; //indica contador ejecutandose. inicializar a 0
+    int max;     //valor maximo a partir del cual se pasa a 1
+    
+};
+
+typedef struct s_pd765_signal_counter pd765_signal_counter;
+
+//tratamiento de senyales de contador (sc=signal counter)
+//establecer a 0
+void pd765_sc_reset(pd765_signal_counter *s)
+{
+    s->current_counter=0;
+    s->running=0;
+    s->value=0;
+}
+
+//establecer a 1
+void pd765_sc_set(pd765_signal_counter *s)
+{
+    s->current_counter=0;
+    s->running=0;
+    s->value=1;
+}
+
+//Incrementar si esta running
+void pd765_sc_handle_running(pd765_signal_counter *s)
+{
+    if (s->running) {
+        (s->current_counter)++;
+        if ((s->current_counter)>=(s->max)) {
+            printf("PD765: Activar senyal\n");
+            pd765_sc_set(s);
+        }
+    }
+}
+
+//Activar contador
+void pd765_sc_set_running(pd765_signal_counter *s)
+{
+    s->running=1;
+}
+
+//obtener valor
+int pd765_sc_get(pd765_signal_counter *s)
+{
+    return s->value;
+}
+
+
+//Signal SE de ST0
+pd765_signal_counter signal_se={
+    0,0,0,
+    5
+};
+
+
 
 int pd765_pcn=0;
 
@@ -131,10 +193,11 @@ void pd765_reset(void)
     pd765_input_parameters_index=0;
     pd765_output_parameters_index=0;
     pd765_signal_ts0.v=0;
-    pd765_signal_se.v=0;
+    //pd765_signal_se.v=0;
     pd765_pcn=0;
-    pd765_contador_signal_se=0;
-    pd765_pendiente_signal_se=0;
+    //pd765_contador_signal_se=0;
+    //pd765_pendiente_signal_se=0;
+    pd765_sc_reset(&signal_se);
 }
 
 z80_bit pd765_enabled;
@@ -171,11 +234,12 @@ z80_byte pd765_get_st0(void)
 {
 
     //TODO completar BIEN esto
-    z80_byte return_value=(pd765_signal_se.v * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
+    z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 
-    //??? se resetea seek end al leer este st0???
-    //pd765_signal_se.v=0;
 
+    pd765_sc_handle_running(&signal_se);
+
+    /*
     if (pd765_pendiente_signal_se) {
         //Si se ha pedido 5 veces, decir que va a 1
         pd765_contador_signal_se++;
@@ -185,6 +249,8 @@ z80_byte pd765_get_st0(void)
             printf("PD765: Activar senyal SE\n");
         }
     }
+    */
+
 
     return return_value;
 }
@@ -309,12 +375,14 @@ void pd765_handle_command_recalibrate(void)
     The ability to do overlap RECALIBRATE Commands to multiple FDDs and the loss of the READY signal, 
     as described in the SEEK Command, also applies to the RECALIBRATE Command.    
     */
+   
 
    pd765_signal_ts0.v=1;
-   pd765_signal_se.v=0;
-   pd765_contador_signal_se=0;
-   pd765_pendiente_signal_se=1;
    pd765_pcn=0;
+
+   pd765_sc_reset(&signal_se);
+   pd765_sc_set_running(&signal_se);
+   
 }
 
 void pd765_read_parameters_recalibrate(z80_byte value)
