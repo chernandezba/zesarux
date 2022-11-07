@@ -884,7 +884,7 @@ z80_byte pd765_read_status_register(void)
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
-        printf("PD765: mantener pd765_interrupt_pending pues esta seek activo\n");
+        printf(" PD765: mantener pd765_interrupt_pending pues esta seek activo\n");
         pd765_interrupt_pending=1;
     }
 
