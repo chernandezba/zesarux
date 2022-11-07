@@ -453,8 +453,8 @@ void pd765_handle_command_recalibrate(void)
     //Decir datos no libres
     //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_RQM_MASK);
 
-    //Indicar seek unidad 0
-    pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
+    //Indicar seek unidad 0. Seguro?
+    //pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
@@ -578,6 +578,11 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_command_received=PD765_COMMAND_SENSE_INTERRUPT_STATUS;
 
             pd765_interrupt_pending=0;
+
+            //Estos bits se resetean con un sense interrupt
+            if (pd765_sc_get(&signal_se)) {
+                pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+            }
             
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
@@ -760,11 +765,11 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     //pd765_interrupt_pending=0;
 
     if (pd765_output_parameters_index==0) {
-        if (pd765_sc_get(&signal_se)) {
+        /*if (pd765_sc_get(&signal_se)) {
             printf("PD765: Reset DB0 etc\n");
 
             pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
-        }
+        }*/
 
 
         z80_byte return_value=pd765_get_st0();
