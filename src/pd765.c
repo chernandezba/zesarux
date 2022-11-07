@@ -589,6 +589,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             //Estos bits se resetean con un sense interrupt
             if (pd765_sc_get(&signal_se)) {
+                //TODO: dudoso hacer esto aqui
                 pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
             }
             
@@ -789,7 +790,12 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
         if (pd765_sc_get(&signal_se)) {
             printf("PD765: Reset SE etc\n");
 
+            //TODO: realmente hay que quitar señal SE  al leerlo desde sense interrupt?
             pd765_sc_reset(&signal_se);
+
+
+            //TODO: dudoso si hacer esto aqui o donde: se resetea D0B, D1B etc antes o despues del sense interrupt?
+            //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
 
         }
 
