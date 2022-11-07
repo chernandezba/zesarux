@@ -458,7 +458,7 @@ void pd765_handle_command_recalibrate(void)
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
-    pd765_interrupt_pending=0;
+    //pd765_interrupt_pending=0;
    
 }
 
@@ -508,7 +508,7 @@ void pd765_handle_command_seek(void)
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
-    pd765_interrupt_pending=0;
+    //pd765_interrupt_pending=0;
 
    
 }
@@ -576,6 +576,8 @@ void pd765_write_handle_phase_command(z80_byte value)
             //Sense interrupt status
             printf("PD765: SENSE INTERRUPT STATUS command\n");
             pd765_command_received=PD765_COMMAND_SENSE_INTERRUPT_STATUS;
+
+            pd765_interrupt_pending=0;
             
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
@@ -741,7 +743,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     */
 
     //This command when issued resets the interrupt signal and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
-    pd765_interrupt_pending=0;
+    //pd765_interrupt_pending=0;
 
     if (pd765_output_parameters_index==0) {
         if (pd765_sc_get(&signal_se)) {
