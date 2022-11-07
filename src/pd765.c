@@ -91,7 +91,8 @@ enum pd765_command_list {
     PD765_COMMAND_SENSE_DRIVE_STATUS,
     PD765_COMMAND_RECALIBRATE,
     PD765_COMMAND_SENSE_INTERRUPT_STATUS,
-    PD765_COMMAND_SEEK
+    PD765_COMMAND_SEEK,
+    PD765_COMMAND_INVALID
 };
 
 enum pd765_command_list pd765_command_received;
@@ -116,7 +117,8 @@ z80_byte pd765_input_parameter_ncn;
 //Signal TS0 de ST3
 z80_bit pd765_signal_ts0={0};
 
-
+//Interrupcion pendiente de la controladora
+int pd765_interrupt_pending=0;
 
 //
 //Gestion de tratamiento de senyales con contador
@@ -215,6 +217,9 @@ void pd765_signal_se_function_triggered(void)
 
     pd765_phase=PD765_PHASE_COMMAND;
 
+    //Avisar interrupcion pendiente de la controladora
+    pd765_interrupt_pending=1;
+
 }
 
 //Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
@@ -234,6 +239,7 @@ void pd765_reset(void)
     pd765_output_parameters_index=0;
     pd765_signal_ts0.v=0;
     pd765_pcn=0;
+    pd765_interrupt_pending=0;
 
     pd765_sc_reset(&signal_se);
 }
@@ -368,6 +374,20 @@ void pd765_handle_command_sense_interrupt_status(void)
 
         //printf("PD765: Reset DB0 etc\n");
         //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+
+
+}
+
+void pd765_handle_command_invalid(void)
+{
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
 
 
 }
@@ -544,7 +564,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameters_index++;            
         }
 
-        else if (value==8) {
+        else if (value==8 && pd765_interrupt_pending) {
             //Sense interrupt status
             printf("PD765: SENSE INTERRUPT STATUS command\n");
             pd765_command_received=PD765_COMMAND_SENSE_INTERRUPT_STATUS;
@@ -561,8 +581,11 @@ void pd765_write_handle_phase_command(z80_byte value)
         }                
 
         else {
-            printf("PD765: UNKNOWN command\n");
-            sleep(5);
+            printf("PD765: INVALID command (or SENSE INTERRUPT without interrupt pending)\n");
+
+            pd765_command_received=PD765_COMMAND_INVALID;
+            pd765_handle_command_invalid();
+            sleep(1);
         }
     }
     else {
@@ -587,7 +610,11 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
-            break;                                
+            break;   
+
+            case PD765_COMMAND_INVALID:
+                printf("PD765: ERROR INVALID command has no input parameters\n");
+            break;                                         
         }
     }
 }
@@ -644,6 +671,26 @@ z80_byte pd765_read_result_command_sense_drive_status(void)
     }
 }
 
+z80_byte pd765_read_result_command_invalid(void)
+{
+    if (pd765_output_parameters_index==0) {
+
+        //Retornar ST0=80H
+        printf("PD765: Command invalid return 80H\n");
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
+
+        return 0x80;
+    }
+    else {
+        return 255;
+    }
+}
+
 z80_byte pd765_read_result_command_sense_interrupt_status(void)
 {
     //ST0, PCN
@@ -684,6 +731,9 @@ Sense Interrupt Status Command after these commends to effectively terminate the
 of where the heed is positioned (PCN).
 Issuing Sense Interrupt Status Command without interrupt pending is treated as an invalid command.
     */
+
+    //This command when issued resets the interrupt signal and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
+    pd765_interrupt_pending=0;
 
     if (pd765_output_parameters_index==0) {
         if (pd765_sc_get(&signal_se)) {
@@ -753,7 +803,11 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
             return pd765_read_result_command_sense_interrupt_status();
-        break;               
+        break;  
+
+        case PD765_COMMAND_INVALID:
+            return pd765_read_result_command_invalid();
+        break;                     
     }    
 
     return 255;
