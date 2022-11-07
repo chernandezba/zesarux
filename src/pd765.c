@@ -543,6 +543,10 @@ void pd765_write_handle_phase_command(z80_byte value)
         //Hay que recibir el comando
         printf("PD765: Byte command: %02XH\n",value);
 
+        if (value==8 && !pd765_interrupt_pending) {
+            printf("PD765: SENSE INTERRUPT command without interrupt pending. Will generate invalid command\n");
+        }
+
         if (value==3) {
             //Specify
             printf("PD765: SPECIFY command\n");
@@ -581,7 +585,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         }                
 
         else {
-            printf("PD765: INVALID command (or SENSE INTERRUPT without interrupt pending)\n");
+            printf("PD765: INVALID command\n");
 
             pd765_command_received=PD765_COMMAND_INVALID;
             pd765_handle_command_invalid();
