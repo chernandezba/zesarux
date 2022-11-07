@@ -90,7 +90,8 @@ enum pd765_command_list {
     PD765_COMMAND_SPECIFY,
     PD765_COMMAND_SENSE_DRIVE_STATUS,
     PD765_COMMAND_RECALIBRATE,
-    PD765_COMMAND_SENSE_INTERRUPT_STATUS
+    PD765_COMMAND_SENSE_INTERRUPT_STATUS,
+    PD765_COMMAND_SEEK
 };
 
 enum pd765_command_list pd765_command_received;
@@ -110,6 +111,7 @@ z80_byte pd765_input_parameter_srt;
 z80_byte pd765_input_parameter_hut;
 z80_byte pd765_input_parameter_hlt;
 z80_byte pd765_input_parameter_nd;
+z80_byte pd765_input_parameter_ncn;
 
 //Signal TS0 de ST3
 z80_bit pd765_signal_ts0={0};
@@ -125,6 +127,9 @@ struct s_pd765_signal_counter {
     int value;  //valor actual de la señal. inicializar a 0
     int running; //indica contador ejecutandose. inicializar a 0
     int max;     //valor maximo a partir del cual se pasa a 1, inicializar con valor deseado
+
+    //Funcion que se llama al activar valor
+    void (*function_triggered)(void);
     
 };
 
@@ -158,6 +163,8 @@ void pd765_sc_handle_running(pd765_signal_counter *s)
         if ((s->current_counter)>=(s->max)) {
             printf(" PD765: Activar senyal\n");
             pd765_sc_set(s);
+
+            s->function_triggered();
         }
     }
 }
@@ -188,16 +195,36 @@ int pd765_sc_get(pd765_signal_counter *s)
 //FIN Gestion de tratamiento de senyales con contador
 //
 
+//Cilindro actual
+int pd765_pcn=0;
+
+
+void pd765_signal_se_function_triggered(void)
+{
+    printf("PD765: seek has finished. Changing PCN from NCN\n");
+    pd765_pcn=pd765_input_parameter_ncn;
+
+    //E indicar fase ejecucion ha finalizado
+    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+
+    //Decir RQM
+    //pd765_main_status_register |= PD765_STATUS_REGISTER_RQM_MASK;
+
+    //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
+    //pd765_main_status_register &= (0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+    pd765_phase=PD765_PHASE_COMMAND;
+
+}
 
 //Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
 pd765_signal_counter signal_se={
     0,0,0,
-    5
+    5,pd765_signal_se_function_triggered
 };
 
 
 
-int pd765_pcn=0;
 
 void pd765_reset(void)
 {
@@ -244,9 +271,12 @@ void pd765_motor_off(void)
 z80_byte pd765_get_st0(void)
 {
 
-    pd765_sc_handle_running(&signal_se);
+    //pd765_sc_handle_running(&signal_se);
 
     //TODO completar BIEN esto
+
+    //temp
+    //z80_byte return_value=(0) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
     z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 
 
@@ -324,6 +354,22 @@ void pd765_handle_command_sense_interrupt_status(void)
 
     //E indice a 0
     pd765_output_parameters_index=0;
+
+
+    //Quitar flags de seek siempre que seek esté finalizado
+    /*
+    if (pd765_sc_get(&signal_se)) {
+        printf("PD765: Reset DB0 etc\n");
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+
+        pd765_sc_reset(&signal_se);
+    }
+    */
+
+        //printf("PD765: Reset DB0 etc\n");
+        //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+
+
 }
 
 void pd765_handle_command_sense_drive_status(void)
@@ -375,12 +421,26 @@ void pd765_handle_command_recalibrate(void)
     */
    
 
+   //TODO: realmente esto deberia ponerse solo cuando realmente acabe el seek
    pd765_signal_ts0.v=1;
-   pd765_pcn=0;
 
    pd765_sc_initialize_running(&signal_se);
+   pd765_input_parameter_ncn=0;
+
+    //E indicar fase ejecucion ha empezado
+    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;
+
+    //Decir datos no libres
+    //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_RQM_MASK);
+
+    //Indicar seek unidad 0
+    pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
+
+    //pd765_phase=PD765_PHASE_EXECUTION;
    
 }
+
+
 
 void pd765_read_parameters_recalibrate(z80_byte value)
 {
@@ -397,6 +457,62 @@ void pd765_read_parameters_recalibrate(z80_byte value)
         printf("PD765: End command parameters for RECALIBRATE\n");
 
         pd765_handle_command_recalibrate();
+    }       
+}
+
+void pd765_handle_command_seek(void)
+{
+    /*
+    Parecido a recalibrate pero vamos al track indicado
+    */
+   
+
+   //pd765_pcn=pd765_input_parameter_ncn;
+
+   pd765_sc_initialize_running(&signal_se);
+
+    //E indicar fase ejecucion ha empezado
+    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;
+
+    //Decir datos no libres
+    //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_RQM_MASK);    
+
+    //Indicar seek unidad 0
+    pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
+
+    //Y decimos no track 0
+    //TODO: Esto deberia hacerse en cualquier comando que no fuera recalibrate
+    pd765_signal_ts0.v=1;
+
+    //pd765_phase=PD765_PHASE_EXECUTION;
+
+   
+}
+
+void pd765_read_parameters_seek(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for SEEK\n");
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_ncn=value;
+        printf("PD765: NCN=%XH\n",pd765_input_parameter_ncn);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for SEEK\n");
+
+        pd765_handle_command_seek();
     }       
 }
 
@@ -435,10 +551,18 @@ void pd765_write_handle_phase_command(z80_byte value)
             
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
-        }        
+        }
+
+        else if (value==0x0F) {
+            //Seek
+            printf("PD765: SEEK command\n");
+            pd765_command_received=PD765_COMMAND_SEEK;
+            pd765_input_parameters_index++;            
+        }                
 
         else {
             printf("PD765: UNKNOWN command\n");
+            sleep(5);
         }
     }
     else {
@@ -459,7 +583,11 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
                 printf("PD765: ERROR SENSE_INTERRUPT_STATUS has no input parameters\n");
-            break;                    
+            break;
+
+            case PD765_COMMAND_SEEK:
+                pd765_read_parameters_seek(value); 
+            break;                                
         }
     }
 }
@@ -476,6 +604,9 @@ void pd765_write(z80_byte value)
         case PD765_PHASE_EXECUTION:
             printf("PD765: Write command on phase execution SHOULD NOT happen\n");
             //TODO: no se puede escribir en este estado?
+
+            //temporal
+            //pd765_sc_handle_running(&signal_se);
         break;
 
         case PD765_PHASE_RESULT:
@@ -555,10 +686,31 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     */
 
     if (pd765_output_parameters_index==0) {
+        if (pd765_sc_get(&signal_se)) {
+            printf("PD765: Reset DB0 etc\n");
+
+            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+        }
+
+
         z80_byte return_value=pd765_get_st0();
-        printf("PD765: Returning ST0: %02XH\n",return_value);
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
 
         pd765_output_parameters_index++;
+
+        //Quitar flags de seek siempre que seek esté finalizado
+        if (pd765_sc_get(&signal_se)) {
+            printf("PD765: Reset SE etc\n");
+
+            pd765_sc_reset(&signal_se);
+
+        }
+
+        //else {
+            //Pero si no estaba haciendo seek, no hay interrupcion y mandamos error
+            //TODO mejorar esto
+            //return_value |=0x80;
+        //}
 
         return return_value;        
     }
@@ -593,7 +745,11 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_RECALIBRATE:
             //No tiene resultado 
-        break; 
+        break;
+
+        case PD765_COMMAND_SEEK:
+            //No tiene resultado 
+        break;         
 
         case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
             return pd765_read_result_command_sense_interrupt_status();
@@ -631,8 +787,27 @@ z80_byte pd765_read(void)
 
 z80_byte pd765_read_status_register(void)
 {
-    printf("PD765: Reading main status register on pc %04XH: %02XH\n",reg_pc,pd765_main_status_register);
+
+    //TODO: solo hacerlo aqui o en mas sitios? Quiza deberia estar en el core y con tiempos reales...
+    pd765_sc_handle_running(&signal_se);
+
+
+    printf("PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)\n",reg_pc,pd765_main_status_register,
+(pd765_main_status_register & PD765_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_CB_MASK  ? "CB" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_D3B_MASK ? "D3B" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_D2B_MASK ? "D2B" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_D1B_MASK ? "D1B" : ""),
+(pd765_main_status_register & PD765_STATUS_REGISTER_D0B_MASK ? "D0B" : "")
+);
+
+
     //sleep(1);
+
+
+
     return pd765_main_status_register;
 }
 
