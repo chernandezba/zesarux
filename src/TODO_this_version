@@ -152,6 +152,10 @@ Requiere antes floppy
 -6128. Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
-pd765_read_result_command_sense_interrupt_status, completar. completar get_st0. quiza tiene que ver 
-"During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. Upon entering Result Phase this bit gets clear."?
-
+Pendiente cuando se haga lectura y escritura de datos en sector:
+"
+During the Execution Phase, the Main Status Register need not be read. If the PD765 is in the NON-DMÀ Mode, then the receipt of each data byte (if uPD765 is reading
+data from FDD) is indicated by an Interrupt signal on pin 18 (INT = 1). The generation
+of a Read signal (RD = 0) or Write signal (WR - 0) will reset the Interrupt as well as
+output the Data onto the Data Bus. If the processor cannot handle Interrupts fast enough (every 13 us) for MFM and 27 us for FM mode, then it may poll the Main Status Register and then bit D7 (RQM) functions just like the Interrupt signal. If a Write Command is in process then the WR signal performs the reset to the Interrupt signal.
+"

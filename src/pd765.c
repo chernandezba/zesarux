@@ -595,7 +595,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_command_received=PD765_COMMAND_INVALID;
             pd765_handle_command_invalid();
-            sleep(1);
+            //sleep(1);
         }
     }
     else {
