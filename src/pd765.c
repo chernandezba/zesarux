@@ -457,6 +457,8 @@ void pd765_handle_command_recalibrate(void)
     pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
+
+    pd765_interrupt_pending=0;
    
 }
 
@@ -505,6 +507,8 @@ void pd765_handle_command_seek(void)
     pd765_signal_ts0.v=1;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
+
+    pd765_interrupt_pending=0;
 
    
 }
