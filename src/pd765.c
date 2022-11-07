@@ -458,6 +458,9 @@ void pd765_handle_command_recalibrate(void)
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
+    //En fase de ejecucion se activa interrupt
+    pd765_interrupt_pending=1;
+
     //pd765_interrupt_pending=0;
    
 }
@@ -507,6 +510,11 @@ void pd765_handle_command_seek(void)
     pd765_signal_ts0.v=1;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
+
+    //En fase de ejecucion se activa interrupt
+    //TODO: siempre hay que activarlo cuando se esta en este estado?
+    //TODO2: por que no estoy haciendo pd765_phase=PD765_PHASE_EXECUTION ?
+    pd765_interrupt_pending=1;    
 
     //pd765_interrupt_pending=0;
 
@@ -602,7 +610,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             //No tiene parametros. Solo resultados
             pd765_handle_command_invalid();
-            //sleep(1);
+            if (value!=8) sleep(5);
         }
     }
     else {
@@ -873,6 +881,12 @@ z80_byte pd765_read_status_register(void)
 
     //TODO: solo hacerlo aqui o en mas sitios? Quiza deberia estar en el core y con tiempos reales...
     pd765_sc_handle_running(&signal_se);
+
+    if (signal_se.running) {
+        //Mientras estamos en fase ejecucion, mantener pending_interrupt
+        printf("PD765: mantener pd765_interrupt_pending pues esta seek activo\n");
+        pd765_interrupt_pending=1;
+    }
 
 
     printf("PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)\n",reg_pc,pd765_main_status_register,
