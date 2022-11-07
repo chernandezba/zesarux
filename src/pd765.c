@@ -158,7 +158,7 @@ void pd765_sc_set(pd765_signal_counter *s)
 void pd765_sc_handle_running(pd765_signal_counter *s)
 {
     if (s->running) {
-        printf(" PD765: handle signal running. Current counter: %d\n",s->current_counter);
+        printf(" PD765: handle signal running. Current counter: %d max: %d\n",s->current_counter,s->max);
         (s->current_counter)++;
         if ((s->current_counter)>=(s->max)) {
             printf(" PD765: Activar senyal\n");
