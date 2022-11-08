@@ -276,6 +276,8 @@ sectores van alternados:
 
 	int iniciopista_orig=256;
 
+    printf("buscando traps_plus3dos_getoff_track_sector pista_buscar %d sector_buscar %d\n",pista_buscar,sector_buscar);
+
 	//Buscamos en todo el archivo dsk
 	for (pista=0;pista<traps_plus3dos_pistas;pista++) {
 
@@ -293,6 +295,8 @@ sectores van alternados:
 			z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
 
 			debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+            
+            printf("Sector id leido: %02XH\n",sector_id);
 
 			sector_id &=0xF;
 

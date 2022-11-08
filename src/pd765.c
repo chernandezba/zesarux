@@ -1212,8 +1212,8 @@ z80_byte pd765_read_result_command_read_data(void)
 
         //chapuza retorno
 
-        //TODO: Revisar que esto este bien
-	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r);
+        //TODO: Revisar que esto este bien. sector_id en la funcion se le resta 1
+	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r-1);
 
         //chapuza
         /*if (pd765_input_parameter_r==1) {
