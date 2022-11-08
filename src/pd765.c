@@ -1213,7 +1213,25 @@ z80_byte pd765_read_result_command_read_data(void)
         //chapuza retorno
 
         //TODO: Revisar que esto este bien. sector_id en la funcion se le resta 1
-	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r-1);
+	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r);
+
+        /*
+Con plus3dos traps se pide al hacer un cat:
+Found sector 0/0 at 0/0
+Offset sector: 200H
+
+
+Found sector 0/1 at 0/2
+Offset sector: 600H
+
+
+Found sector 0/2 at 0/4
+Offset sector: A00H
+
+
+Found sector 0/3 at 0/6
+Offset sector: E00H        
+        */
 
         //chapuza
         /*if (pd765_input_parameter_r==1) {

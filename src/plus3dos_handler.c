@@ -249,7 +249,9 @@ int traps_plus3dos_getoff_start_track(int pista_lineal)
 
 
 
-//Retorna el offset al dsk segun la pista y sector dados (ambos desde 0...)
+//Retorna el offset al dsk segun la pista y sector dados 
+//Pista empieza en 0
+//Sectores empiezan en el 1....
 int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar)
 {
 
@@ -300,7 +302,7 @@ sectores van alternados:
 
 			sector_id &=0xF;
 
-			sector_id--;  //empiezan en 1...
+			//sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
 				debug_printf(VERBOSE_DEBUG,"Found sector %d/%d at %d/%d",pista_buscar,sector_buscar,pista,sector);
@@ -428,7 +430,7 @@ EXIT CONDITIONS
                 All other registers preserved
 */
 
-        int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
+        int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
 
 
         int i;
@@ -531,7 +533,7 @@ ENTRY CONDITIONS
 */
 
 
-	int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
+	int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
 
 
         int i;
