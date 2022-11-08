@@ -300,12 +300,16 @@ sectores van alternados:
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
 				debug_printf(VERBOSE_DEBUG,"Found sector %d/%d at %d/%d",pista_buscar,sector_buscar,pista,sector);
+                printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
                         //sleep(3);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
                 		//int iniciopista=traps_plus3dos_getoff_start_track(pista);
-		                return offset+traps_plus3dos_bytes_sector*sector;
+                        int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
+                        printf("Offset sector: %XH\n",offset_retorno);
+
+		                return offset_retorno;
 			}
 
 		}
@@ -529,6 +533,7 @@ ENTRY CONDITIONS
         int i;
 	for (i=0;i<512;i++) {
 		z80_byte byte_leido=plus3dsk_get_byte_disk(iniciosector+i);
+        if (i<10) printf("Byte %d Valor %02XH\n",i,byte_leido);
 		traps_poke_addr_page(reg_b,reg_hl+i,byte_leido);
 	}
 

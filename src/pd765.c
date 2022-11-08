@@ -1082,7 +1082,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //TODO
 
-        z80_byte return_value=1;
+        z80_byte return_value=0;
         printf("PD765: Returning R: %02XH\n",return_value);
 
         pd765_output_parameters_index++;
@@ -1212,11 +1212,11 @@ z80_byte pd765_read_result_command_read_data(void)
 
         //chapuza retorno
 
-        //TODO: Esto esta mal. hay que buscar el sector indicado
+        //TODO: Revisar que esto este bien
 	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r);
 
         //chapuza
-        if (pd765_input_parameter_r==1) {
+        /*if (pd765_input_parameter_r==1) {
             iniciosector=traps_plus3dos_getoff_track_sector(0,0);
         }
 
@@ -1226,7 +1226,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         if (pd765_input_parameter_r==3) {
             iniciosector=traps_plus3dos_getoff_track_sector(0,4);
-        }
+        }*/
         /*
         En carlos sainz ids asi:
 Debug:    Iniciopista: 100H (256). Sectores en pista 0: 9. IDS pista:
@@ -1239,6 +1239,7 @@ Debug:    C8
 Debug:    C4        
         */
 
+        printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
         
 		z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
 
