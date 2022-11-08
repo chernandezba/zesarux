@@ -153,16 +153,13 @@ Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
 Pendiente cuando se haga lectura y escritura de datos en sector:
-"
-During the Execution Phase, the Main Status Register need not be read. If the PD765 is in the NON-DMÀ Mode, then the receipt of each data byte (if uPD765 is reading
-data from FDD) is indicated by an Interrupt signal on pin 18 (INT = 1). The generation
-of a Read signal (RD = 0) or Write signal (WR - 0) will reset the Interrupt as well as
-output the Data onto the Data Bus. If the processor cannot handle Interrupts fast enough (every 13 us) for MFM and 27 us for FM mode, then it may poll the Main Status Register and then bit D7 (RQM) functions just like the Interrupt signal. If a Write Command is in process then the WR signal performs the reset to the Interrupt signal.
-"
+-sobre salto a track2 
 
-Desde 2025H se comprueba seek end. Parece que cuando llega ahi, seek end ya se ha reseteado antes (aunque se haya llegado en algun momento a final de seek)
-Si quito los reset de Seek end, ya lo hace bien y entra el siguiente comando (read id, que no tengo implementado)
+        defc    equipment=$e420 ; (8) equipment info for FD units 0 to 3
+                ; Byte 0: bits 0..1=side info (0=unknown,1/2=#sides)
+                ; Byte 0: bits 2..3=track info (0=unknown,1/2=single/double)
+                ; Byte 0: bit 6 set if head position known
+                ; Byte 1: track under head
 
-Ver si averiguo cuando realmente hay que resetear seek end
-O quiza, cuando se haga un seek/recalibrate, y el cilindro actual sea el que se pide, se mantiene seek end
-En otro caso, seek end se resetea y se pone al final 
+en 1e24h salta a track2, aparentemente desde 1e16h porque no esta single/double track en E420h                
+puede que tenga que ver el comando specify y sense drive status que igual no se establecen bien

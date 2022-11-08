@@ -324,7 +324,13 @@ z80_byte pd765_get_st3(void)
 
    //TODO: posible WP (si protegemos para escritura desde menu) y FT (en que casos?)
 
-   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_signal_ts0.v * PD765_ST3_REGISTER_T0_MASK) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
+   
+
+   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_signal_ts0.v * PD765_ST3_REGISTER_T0_MASK) 
+        | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0 ;
+
+    //Two side??
+//        | PD765_ST3_REGISTER_TS_MASK;
 }
 
 //
