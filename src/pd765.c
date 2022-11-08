@@ -92,6 +92,8 @@ enum pd765_command_list {
     PD765_COMMAND_RECALIBRATE,
     PD765_COMMAND_SENSE_INTERRUPT_STATUS,
     PD765_COMMAND_SEEK,
+    PD765_COMMAND_READ_ID,
+    PD765_COMMAND_READ_DATA,
     PD765_COMMAND_INVALID
 };
 
@@ -273,7 +275,6 @@ void pd765_motor_off(void)
 
 
 
-
 z80_byte pd765_get_st0(void)
 {
 
@@ -289,6 +290,21 @@ z80_byte pd765_get_st0(void)
     return return_value;
 }
 
+
+z80_byte pd765_get_st1(void)
+{
+    //TODO
+
+    return 0;
+}
+
+
+z80_byte pd765_get_st2(void)
+{
+    //TODO
+
+    return 0;
+}
 
 
 #define PD765_ST3_REGISTER_FT_MASK 0x80
@@ -361,6 +377,12 @@ void pd765_handle_command_sense_interrupt_status(void)
     //E indice a 0
     pd765_output_parameters_index=0;
 
+    //Estos bits se resetean con un sense interrupt
+    if (pd765_sc_get(&signal_se)) {
+        //TODO: dudoso hacer esto aqui
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+    }    
+
 
     //Quitar flags de seek siempre que seek esté finalizado
     /*
@@ -374,6 +396,21 @@ void pd765_handle_command_sense_interrupt_status(void)
 
         //printf("PD765: Reset DB0 etc\n");
         //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+
+
+}
+
+
+void pd765_handle_command_read_id(void)
+{
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
 
 
 }
@@ -423,6 +460,19 @@ void pd765_read_parameters_sense_drive_status(z80_byte value)
     }       
 }
 
+//Indicar si cuando se va a hacer seek o recalibrate, ya se esta en pista indicada, y por tanto no empezar de nuevo
+void pd765_if_seek_already_end(void)
+{
+    if (pd765_input_parameter_ncn==pd765_pcn) {
+        printf("PD765: Already seeked where asked\n");
+
+        pd765_sc_set(&signal_se);
+
+        signal_se.function_triggered();
+
+    }
+}
+
 void pd765_handle_command_recalibrate(void)
 {
     /*
@@ -462,6 +512,8 @@ void pd765_handle_command_recalibrate(void)
     pd765_interrupt_pending=1;
 
     //pd765_interrupt_pending=0;
+
+    pd765_if_seek_already_end();
    
 }
 
@@ -518,6 +570,25 @@ void pd765_handle_command_seek(void)
 
     //pd765_interrupt_pending=0;
 
+    pd765_if_seek_already_end();
+
+   
+}
+
+void pd765_handle_command_read_data(void)
+{
+
+    //TODO: revisar si esto es asi
+    pd765_interrupt_pending=1;    
+
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
    
 }
 
@@ -545,6 +616,76 @@ void pd765_read_parameters_seek(z80_byte value)
         printf("PD765: End command parameters for SEEK\n");
 
         pd765_handle_command_seek();
+    }       
+}
+
+void pd765_read_parameters_read_data(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for READ DATA\n");
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_c=value;
+        printf("PD765: C=%XH\n",pd765_input_parameter_c);
+
+        pd765_input_parameters_index++;;
+    }  
+
+    else if (pd765_input_parameters_index==3) {
+        pd765_input_parameter_h=value;
+        printf("PD765: H=%XH\n",pd765_input_parameter_h);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==4) {
+        pd765_input_parameter_r=value;
+        printf("PD765: R=%XH\n",pd765_input_parameter_r);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==5) {
+        pd765_input_parameter_n=value;
+        printf("PD765: N=%XH\n",pd765_input_parameter_n);
+
+        pd765_input_parameters_index++;;
+    }   
+
+    else if (pd765_input_parameters_index==6) {
+        pd765_input_parameter_eot=value;
+        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==7) {
+        pd765_input_parameter_gpl=value;
+        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==8) {
+        pd765_input_parameter_dtl=value;
+        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for READ_DATA\n");
+
+        pd765_handle_command_read_data();
     }       
 }
 
@@ -587,15 +728,32 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_interrupt_pending=0;
 
-            //Estos bits se resetean con un sense interrupt
-            if (pd765_sc_get(&signal_se)) {
-                //TODO: dudoso hacer esto aqui
-                pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
-            }
+
             
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
         }
+
+        else if ((value & 0xBF)==0x0A) {
+            //Read id
+            //TODO: bit MF
+            printf("---PD765: READ ID command\n");
+            pd765_command_received=PD765_COMMAND_READ_ID;
+
+            
+            
+            //No tiene parametros. Solo resultados
+            pd765_handle_command_read_id();            
+        }
+
+        else if ((value & 0x1F)==0x06) {
+            //Read data
+            //TODO: bits MT, MF, SK
+            printf("---PD765: READ DATA command\n");
+            pd765_command_received=PD765_COMMAND_READ_DATA;
+
+            pd765_input_parameters_index++;         
+        }        
 
         else if (value==0x0F) {
             //Seek
@@ -633,6 +791,15 @@ void pd765_write_handle_phase_command(z80_byte value)
             case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
                 printf("PD765: ERROR SENSE_INTERRUPT_STATUS has no input parameters\n");
             break;
+
+
+            case PD765_COMMAND_READ_ID:
+                printf("PD765: ERROR READ_ID has no input parameters\n");
+            break; 
+
+            case PD765_COMMAND_READ_DATA:
+                pd765_read_parameters_read_data(value); 
+            break;                       
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
@@ -793,6 +960,9 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
             //TODO: realmente hay que quitar señal SE  al leerlo desde sense interrupt?
             pd765_sc_reset(&signal_se);
 
+            //prueba indicar interrupcion
+            //pd765_interrupt_pending=1;
+
 
             //TODO: dudoso si hacer esto aqui o donde: se resetea D0B, D1B etc antes o despues del sense interrupt?
             //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
@@ -825,6 +995,271 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     }
 }
 
+z80_byte pd765_read_result_command_read_id(void)
+{
+    /*
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    READ ID
+    The READ ID Command is used to give the present position of the recording head. 
+    The FDC stores the values from the first ID Field it is able to read. If no proper ID Address Mark is found on the diskette, 
+    before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
+    and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
+    The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
+    During this command there is no data transfer between FDC and the CPU except during the result phase.    
+
+    */
+    if (pd765_output_parameters_index==0) {
+
+        z80_byte return_value=pd765_get_st0();
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==1) {
+
+        z80_byte return_value=pd765_get_st1();
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }  
+
+    else if (pd765_output_parameters_index==2) {
+
+        z80_byte return_value=pd765_get_st2();
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==3) {
+
+        //TODO
+
+        z80_byte return_value=0;
+        printf("PD765: Returning C: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    } 
+
+    else if (pd765_output_parameters_index==4) {
+
+        //TODO
+
+        z80_byte return_value=0;
+        printf("PD765: Returning H: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==5) {
+
+        //TODO
+
+        z80_byte return_value=1;
+        printf("PD765: Returning R: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==6) {
+
+        //TODO
+
+        z80_byte return_value=2;
+        printf("PD765: Returning N: %02XH\n",return_value);
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
+
+        return return_value;        
+    }                      
+
+
+    else {
+        return 255;
+    }
+}
+
+
+z80_byte pd765_read_result_command_read_data(void)
+{
+    /*
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    */
+
+   //TODO: todos estos resultados estan probablemente mal
+    if (pd765_output_parameters_index==0) {
+
+        z80_byte return_value=pd765_get_st0();
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==1) {
+
+        z80_byte return_value=pd765_get_st1();
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }  
+
+    else if (pd765_output_parameters_index==2) {
+
+        z80_byte return_value=pd765_get_st2();
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==3) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_c;
+        printf("PD765: Returning C: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    } 
+
+    else if (pd765_output_parameters_index==4) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==5) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_r+1;
+        printf("PD765: Returning R: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==6) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }   
+
+    else if (pd765_output_parameters_index>=7 && pd765_output_parameters_index<7+512) {
+
+        //TODO
+        int indice=pd765_output_parameters_index-7;
+
+        //chapuza retorno
+
+        //TODO: Esto esta mal. hay que buscar el sector indicado
+	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r);
+
+        //chapuza
+        if (pd765_input_parameter_r==1) {
+            iniciosector=traps_plus3dos_getoff_track_sector(0,0);
+        }
+
+        if (pd765_input_parameter_r==2) {
+            iniciosector=traps_plus3dos_getoff_track_sector(0,2);
+        }        
+
+        if (pd765_input_parameter_r==3) {
+            iniciosector=traps_plus3dos_getoff_track_sector(0,4);
+        }
+        /*
+        En carlos sainz ids asi:
+Debug:    Iniciopista: 100H (256). Sectores en pista 0: 9. IDS pista:
+Debug:    C1
+Debug:    C6
+Debug:    C2
+Debug:    C7
+Debug:    C3
+Debug:    C8
+Debug:    C4        
+        */
+
+        
+		z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
+
+        printf("PD765: Returning Byte read at offset %d: %02XH\n",indice,return_value);
+
+        pd765_output_parameters_index++;
+
+
+        if (pd765_output_parameters_index==7+512) {
+            //Y decir que ya no hay que devolver mas datos
+            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+            //Y pasamos a fase command
+            pd765_phase=PD765_PHASE_COMMAND;
+
+            sleep(10);
+        }
+
+        return return_value;        
+    }     
+
+                    
+
+    else {
+        return 255;
+    }
+}
+
+
+
 z80_byte pd765_read_handle_phase_result(void)
 {
     switch(pd765_command_received) {
@@ -846,7 +1281,15 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
             return pd765_read_result_command_sense_interrupt_status();
-        break;  
+        break;
+
+        case PD765_COMMAND_READ_ID:
+            return pd765_read_result_command_read_id();
+        break; 
+
+        case PD765_COMMAND_READ_DATA:
+            return pd765_read_result_command_read_data();
+        break;                  
 
         case PD765_COMMAND_INVALID:
             return pd765_read_result_command_invalid();

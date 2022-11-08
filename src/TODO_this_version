@@ -159,3 +159,10 @@ data from FDD) is indicated by an Interrupt signal on pin 18 (INT = 1). The gene
 of a Read signal (RD = 0) or Write signal (WR - 0) will reset the Interrupt as well as
 output the Data onto the Data Bus. If the processor cannot handle Interrupts fast enough (every 13 us) for MFM and 27 us for FM mode, then it may poll the Main Status Register and then bit D7 (RQM) functions just like the Interrupt signal. If a Write Command is in process then the WR signal performs the reset to the Interrupt signal.
 "
+
+Desde 2025H se comprueba seek end. Parece que cuando llega ahi, seek end ya se ha reseteado antes (aunque se haya llegado en algun momento a final de seek)
+Si quito los reset de Seek end, ya lo hace bien y entra el siguiente comando (read id, que no tengo implementado)
+
+Ver si averiguo cuando realmente hay que resetear seek end
+O quiza, cuando se haga un seek/recalibrate, y el cilindro actual sea el que se pide, se mantiene seek end
+En otro caso, seek end se resetea y se pone al final 
