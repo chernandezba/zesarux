@@ -124,19 +124,7 @@ int pd765_motor_status=0;
 //
 //Gestion de tratamiento de senyales con contador
 //
-//Estructura para tratamiento de senyales con contador
-struct s_pd765_signal_counter {
-    int current_counter; //inicializar a 0
-    int value;  //valor actual de la señal. inicializar a 0
-    int running; //indica contador ejecutandose. inicializar a 0
-    int max;     //valor maximo a partir del cual se pasa a 1, inicializar con valor deseado
 
-    //Funcion que se llama al activar valor
-    void (*function_triggered)(void);
-    
-};
-
-typedef struct s_pd765_signal_counter pd765_signal_counter;
 
 //tratamiento de senyales de contador (sc=signal counter)
 //establecer a 0
@@ -1250,7 +1238,7 @@ Offset sector: E00H
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
 
-            sleep(10);
+            sleep(5);
         }
 
         return return_value;        

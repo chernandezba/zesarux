@@ -50,4 +50,20 @@ extern int pd765_interrupt_pending;
 extern int pd765_pcn;
 extern int pd765_motor_status;
 
+//Estructura para tratamiento de senyales con contador
+struct s_pd765_signal_counter {
+    int current_counter; //inicializar a 0
+    int value;  //valor actual de la señal. inicializar a 0
+    int running; //indica contador ejecutandose. inicializar a 0
+    int max;     //valor maximo a partir del cual se pasa a 1, inicializar con valor deseado
+
+    //Funcion que se llama al activar valor
+    void (*function_triggered)(void);
+    
+};
+
+typedef struct s_pd765_signal_counter pd765_signal_counter;
+
+extern pd765_signal_counter signal_se;
+
 #endif
