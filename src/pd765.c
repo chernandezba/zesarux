@@ -1233,29 +1233,6 @@ Found sector 0/3 at 0/6
 Offset sector: E00H        
         */
 
-        //chapuza
-        /*if (pd765_input_parameter_r==1) {
-            iniciosector=traps_plus3dos_getoff_track_sector(0,0);
-        }
-
-        if (pd765_input_parameter_r==2) {
-            iniciosector=traps_plus3dos_getoff_track_sector(0,2);
-        }        
-
-        if (pd765_input_parameter_r==3) {
-            iniciosector=traps_plus3dos_getoff_track_sector(0,4);
-        }*/
-        /*
-        En carlos sainz ids asi:
-Debug:    Iniciopista: 100H (256). Sectores en pista 0: 9. IDS pista:
-Debug:    C1
-Debug:    C6
-Debug:    C2
-Debug:    C7
-Debug:    C3
-Debug:    C8
-Debug:    C4        
-        */
 
         printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
         
