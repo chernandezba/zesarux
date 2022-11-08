@@ -403,6 +403,9 @@ void pd765_handle_command_sense_interrupt_status(void)
 
 void pd765_handle_command_read_id(void)
 {
+    
+    pd765_interrupt_pending=1;    
+
     //Cambiamos a fase de resultado
     pd765_phase=PD765_PHASE_RESULT;
 
@@ -578,7 +581,7 @@ void pd765_handle_command_seek(void)
 void pd765_handle_command_read_data(void)
 {
 
-    //TODO: revisar si esto es asi
+
     pd765_interrupt_pending=1;    
 
     //Cambiamos a fase de resultado
@@ -1008,7 +1011,8 @@ z80_byte pd765_read_result_command_read_id(void)
 
     READ ID
     The READ ID Command is used to give the present position of the recording head. 
-    The FDC stores the values from the first ID Field it is able to read. If no proper ID Address Mark is found on the diskette, 
+    The FDC stores the values from the first ID Field it is able to read. 
+    If no proper ID Address Mark is found on the diskette, 
     before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
     and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
     The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
