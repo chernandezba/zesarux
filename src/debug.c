@@ -5352,7 +5352,7 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"Pending interrupt: %s\n",(pd765_interrupt_pending ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         
-        sprintf (buf_linea,"Seeking: %d\n",(signal_se.running ? "Yes" : "No"));
+        sprintf (buf_linea,"Seeking: %s\n",(signal_se.running ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         //Salto de linea final
