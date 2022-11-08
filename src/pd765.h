@@ -24,6 +24,17 @@
 
 #include "cpu.h"
 
+#define PD765_STATUS_REGISTER_D0B_MASK 0x01
+#define PD765_STATUS_REGISTER_D1B_MASK 0x02
+#define PD765_STATUS_REGISTER_D2B_MASK 0x04
+#define PD765_STATUS_REGISTER_D3B_MASK 0x08
+#define PD765_STATUS_REGISTER_CB_MASK  0x10
+#define PD765_STATUS_REGISTER_EXM_MASK 0x20
+#define PD765_STATUS_REGISTER_DIO_MASK 0x40
+#define PD765_STATUS_REGISTER_RQM_MASK 0x80
+
+extern z80_byte pd765_main_status_register;
+
 extern z80_bit pd765_enabled;
 extern void pd765_enable(void);
 extern void pd765_disable(void);
@@ -34,5 +45,9 @@ extern void pd765_out_port_1ffd(z80_byte value);
 extern void pd765_out_port_3ffd(z80_byte value);
 
 extern void pd765_reset(void);
+
+extern int pd765_interrupt_pending;
+extern int pd765_pcn;
+extern int pd765_motor_status;
 
 #endif

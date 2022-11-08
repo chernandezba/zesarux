@@ -55,14 +55,7 @@ DB7         Request for Master  RQM         Indicates Data Register is ready to 
 
 */
 
-#define PD765_STATUS_REGISTER_D0B_MASK 0x01
-#define PD765_STATUS_REGISTER_D1B_MASK 0x02
-#define PD765_STATUS_REGISTER_D2B_MASK 0x04
-#define PD765_STATUS_REGISTER_D3B_MASK 0x08
-#define PD765_STATUS_REGISTER_CB_MASK  0x10
-#define PD765_STATUS_REGISTER_EXM_MASK 0x20
-#define PD765_STATUS_REGISTER_DIO_MASK 0x40
-#define PD765_STATUS_REGISTER_RQM_MASK 0x80
+
 
 #define PD765_STATUS_REGISTER_ON_BOOT PD765_STATUS_REGISTER_RQM_MASK
 
@@ -121,6 +114,12 @@ z80_bit pd765_signal_ts0={0};
 
 //Interrupcion pendiente de la controladora
 int pd765_interrupt_pending=0;
+
+//Cilindro actual
+int pd765_pcn=0;
+
+//Estado motor. 0 apagado, 1 activado
+int pd765_motor_status=0;
 
 //
 //Gestion de tratamiento de senyales con contador
@@ -199,8 +198,7 @@ int pd765_sc_get(pd765_signal_counter *s)
 //FIN Gestion de tratamiento de senyales con contador
 //
 
-//Cilindro actual
-int pd765_pcn=0;
+
 
 
 void pd765_signal_se_function_triggered(void)
@@ -242,6 +240,7 @@ void pd765_reset(void)
     pd765_signal_ts0.v=0;
     pd765_pcn=0;
     pd765_interrupt_pending=0;
+    pd765_motor_status=0;
 
     pd765_sc_reset(&signal_se);
 }
@@ -266,11 +265,17 @@ void pd765_disable(void)
 
 void pd765_motor_on(void)
 {
-
+    if (!pd765_motor_status) {
+        pd765_motor_status=1;
+        printf("PD765: Motor on\n");
+    }
 }
 void pd765_motor_off(void)
 {
-
+    if (pd765_motor_status) {
+        pd765_motor_status=0;
+        printf("PD765: Motor off\n");
+    }
 }
 
 

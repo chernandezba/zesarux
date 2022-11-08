@@ -110,6 +110,7 @@
 #include "ramjet.h"
 #include "dinamid3.h"
 #include "interface007.h"
+#include "pd765.h"
 
 
 struct timeval debug_timer_antes, debug_timer_ahora;
@@ -5321,6 +5322,40 @@ void debug_get_ioports(char *stats_buffer)
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 		}
   	}
+
+    if (pd765_enabled.v) {
+  		sprintf (buf_linea,"\nPD765 status:\n");
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	
+
+        sprintf (buf_linea,"Motor: %s\n",(pd765_motor_status ? "On" : "Off"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	            
+
+        sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+
+        sprintf (buf_linea,"%s %s %s %s %s %s %s %s\n",
+            (pd765_main_status_register & PD765_STATUS_REGISTER_RQM_MASK ? "RQM" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_DIO_MASK ? "DIO" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK ? "EXM" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_CB_MASK  ? "CB " : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_D3B_MASK ? "D3B" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_D2B_MASK ? "D2B" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_D1B_MASK ? "D1B" : "   "),
+            (pd765_main_status_register & PD765_STATUS_REGISTER_D0B_MASK ? "D0B" : "   ")
+        );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+
+
+        sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Pending interrupt: %d\n",pd765_interrupt_pending);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        //Salto de linea final
+        sprintf (buf_linea,"\n");
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+    }
 
 	if (diviface_enabled.v) {
   		sprintf (buf_linea,"Diviface control port: %02X\n",diviface_control_register);
