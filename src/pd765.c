@@ -1244,7 +1244,7 @@ Offset sector: E00H
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
 
-            sleep(5);
+            //sleep(5);
         }
 
         return return_value;        
