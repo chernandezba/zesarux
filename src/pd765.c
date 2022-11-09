@@ -697,6 +697,15 @@ void pd765_write_handle_phase_command(z80_byte value)
     if (pd765_input_parameters_index==0) {
         //Hay que recibir el comando
         printf("PD765: Byte command: %02XH\n",value);
+        
+        //si esta haciendo seek y se lanza otro comando no seek, no aceptar
+        if (signal_se.running) {
+            if (value!=7 && value!=0xf) {
+                printf("PD765: ignore command in seek phase\n");
+                return;
+            }
+        }  
+        
 
         if (value==8 && !pd765_interrupt_pending) {
             printf("PD765: SENSE INTERRUPT command without interrupt pending. Will generate invalid command\n");
