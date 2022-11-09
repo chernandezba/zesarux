@@ -299,6 +299,7 @@ sectores van alternados:
 			debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
             
 
+            //TODO: no estoy seguro de esto
 			sector_id &=0xF;
 
             printf("Sector id leido: %02XH\n",sector_id);
