@@ -192,6 +192,7 @@ void pd765_signal_se_function_triggered(void)
         //Captain blood por ejemplo intenta hacer seek a pistas invalidas
         //TODO: ni deberia empezar el seek con esto
         printf("PD765: seek BEYOND limit: %d\n",pd765_pcn);
+        sleep(10);
     }
 
     //TODO: chapuza para que funcione el read id
@@ -801,7 +802,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             //No tiene parametros. Solo resultados
             pd765_handle_command_invalid();
-            if (value!=8) sleep(5);
+            if (value!=8) sleep(10);
         }
     }
     else {
@@ -1380,6 +1381,7 @@ z80_byte pd765_read_handle_phase_result(void)
 z80_byte pd765_read(void)
 {
     printf("PD765: Read command on pc %04XH\n",reg_pc);
+    dsk_show_activity();
 
     switch (pd765_phase) {
         case PD765_PHASE_COMMAND:
@@ -1405,6 +1407,8 @@ z80_byte pd765_read(void)
 
 z80_byte pd765_read_status_register(void)
 {
+
+    dsk_show_activity();
 
     //TODO: solo hacerlo aqui o en mas sitios? Quiza deberia estar en el core y con tiempos reales...
     //aqui se hacia siempre antes de poner en el core pd765_sc_handle_running(&signal_se);
@@ -1440,13 +1444,21 @@ void pd765_out_port_1ffd(z80_byte value)
     //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. 
     //Setting bit 3 low will turn them off again. (0x1ffd is also used for memory control).
 
-    if (value&8) pd765_motor_on();
-    else pd765_motor_off();
+    if (value&8) {
+        dsk_show_activity();
+        pd765_motor_on();
+    }
+    else {
+        //Pues realmente si motor va a off, no hay actividad
+        pd765_motor_off();
+    }
  
 }
 
 void pd765_out_port_3ffd(z80_byte value)
 {
+    dsk_show_activity();
+
 
     //Puertos disco +3
     pd765_write(value);
