@@ -60,6 +60,7 @@
 #include "snap_zsf.h"
 #include "zeng.h"
 #include "snap_ram.h"
+#include "pd765.h"
 
 
 
@@ -69,7 +70,8 @@ void cpu_core_loop_reduced_spectrum(void)
 
 		timer_check_interrupt();
 
-
+        //Eventos de la controladora de disco
+        pd765_next_event_from_core();
 
 		//Gestionar autoload
 		gestionar_autoload_spectrum();

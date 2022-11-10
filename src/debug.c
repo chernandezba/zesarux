@@ -5355,6 +5355,12 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"Seeking: %s\n",(signal_se.running ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
+        //Chapuza. Cambiar esto por algo mejor, tipo "estado=reading data"
+        sprintf (buf_linea,"Reading: %s\n",(
+                 ((pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
+
         //Salto de linea final
         sprintf (buf_linea,"\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        

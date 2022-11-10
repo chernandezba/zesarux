@@ -152,14 +152,9 @@ Requiere antes floppy
 -6128. Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
-Pendiente cuando se haga lectura y escritura de datos en sector:
--sobre salto a track2 
+con la mascara quitada al buscar sector_id, plus3dos handler fallara con carlos sainz por ejemplo
+quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro (y pd765 siempre use mascara 255)
 
-        defc    equipment=$e420 ; (8) equipment info for FD units 0 to 3
-                ; Byte 0: bits 0..1=side info (0=unknown,1/2=#sides)
-                ; Byte 0: bits 2..3=track info (0=unknown,1/2=single/double)
-                ; Byte 0: bit 6 set if head position known
-                ; Byte 1: track under head
-
-en 1e24h salta a track2, aparentemente desde 1e16h porque no esta single/double track en E420h                
-puede que tenga que ver el comando specify y sense drive status que igual no se establecen bien
+-mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
+hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
+Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc

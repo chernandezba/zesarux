@@ -79,16 +79,7 @@ int pd765_output_parameters_index=0;
 //Indice en la recepción de parámetros de un comando
 int pd765_input_parameters_index=0;
 
-enum pd765_command_list {
-    PD765_COMMAND_SPECIFY,
-    PD765_COMMAND_SENSE_DRIVE_STATUS,
-    PD765_COMMAND_RECALIBRATE,
-    PD765_COMMAND_SENSE_INTERRUPT_STATUS,
-    PD765_COMMAND_SEEK,
-    PD765_COMMAND_READ_ID,
-    PD765_COMMAND_READ_DATA,
-    PD765_COMMAND_INVALID
-};
+
 
 enum pd765_command_list pd765_command_received;
 
@@ -191,8 +182,20 @@ int pd765_sc_get(pd765_signal_counter *s)
 
 void pd765_signal_se_function_triggered(void)
 {
-    printf("PD765: seek has finished. Changing PCN from NCN\n");
+    
     pd765_pcn=pd765_input_parameter_ncn;
+
+    printf("PD765: seek has finished. Changing PCN from NCN: %d\n",pd765_pcn);
+
+    //prueba temp
+    if (pd765_pcn>39) {
+        //Captain blood por ejemplo intenta hacer seek a pistas invalidas
+        //TODO: ni deberia empezar el seek con esto
+        printf("PD765: seek BEYOND limit: %d\n",pd765_pcn);
+    }
+
+    //TODO: chapuza para que funcione el read id
+    //pd765_input_parameter_c=pd765_input_parameter_ncn;
 
     //E indicar fase ejecucion ha finalizado
     pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
@@ -213,7 +216,8 @@ void pd765_signal_se_function_triggered(void)
 //Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
 pd765_signal_counter signal_se={
     0,0,0,
-    5,pd765_signal_se_function_triggered
+    //5,pd765_signal_se_function_triggered
+    200,pd765_signal_se_function_triggered
 };
 
 
@@ -266,7 +270,14 @@ void pd765_motor_off(void)
     }
 }
 
+void pd765_next_event_from_core(void)
+{
 
+    //TODO De momento solo hacer eventos de seek, no cuento t-estados como tal, solo numero de veces tal cual que se llama aqui
+    if (pd765_enabled.v) {
+        pd765_sc_handle_running(&signal_se);
+    }
+}
 
 z80_byte pd765_get_st0(void)
 {
@@ -584,13 +595,17 @@ void pd765_handle_command_read_data(void)
     pd765_interrupt_pending=1;    
 
     //Cambiamos a fase de resultado
+    //TODO: realmente la fase seria ejecucion, arreglar esto
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    //pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
+
+    //E indicar fase ejecucion ha empezado
+    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;    
    
 }
 
@@ -660,6 +675,12 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_input_parameter_n=value;
         printf("PD765: N=%XH\n",pd765_input_parameter_n);
 
+        if (pd765_input_parameter_n==0) {
+            //TODO
+            printf("N=0 not handled yet!!\n");
+            sleep(5);
+        }
+
         pd765_input_parameters_index++;;
     }   
 
@@ -701,7 +722,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         //si esta haciendo seek y se lanza otro comando no seek, no aceptar
         if (signal_se.running) {
             if (value!=7 && value!=0xf) {
-                printf("PD765: ignore command in seek phase\n");
+                printf("---PD765: Ignore command on seek phase\n");
                 return;
             }
         }  
@@ -1006,6 +1027,46 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     }
 }
 
+void pd765_get_chrn(int pista,int *parametro_c,int *parametro_h,int *parametro_r,int *parametro_n)
+{
+
+
+
+
+	int iniciopista_orig=256;
+
+    //printf("buscando traps_plus3dos_getoff_track_sector pista_buscar %d sector_buscar %d\n",pista_buscar,sector_buscar);
+
+	//Buscamos en todo el archivo dsk
+	for (pista=0;pista<40;pista++) {
+
+		int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
+		printf("CHRN : pista:  %d",pista);
+
+		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
+		int iniciopista=iniciopista_orig;
+		//saltar 0x18
+		iniciopista +=0x18;
+
+    int sector=0;
+			int offset_tabla_sector=sector*8; 
+			*parametro_c=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); 
+            if ((*parametro_c)==pista) {
+                *parametro_h=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+1); 
+			    *parametro_r=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
+                *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
+                return;
+            }
+
+		iniciopista_orig +=256;
+		iniciopista_orig +=512/*traps_plus3dos_bytes_sector*/*sectores_en_pista;            
+
+    }  
+
+    //TODO valores invalidos
+    *parametro_c=*parametro_h=*parametro_r=*parametro_n=-1;
+}
+
 z80_byte pd765_read_result_command_read_id(void)
 {
     /*
@@ -1027,6 +1088,13 @@ z80_byte pd765_read_result_command_read_id(void)
     During this command there is no data transfer between FDC and the CPU except during the result phase.    
 
     */
+
+   //Devolver CHRN siguiente
+   int leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+
+   pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+
     if (pd765_output_parameters_index==0) {
 
         z80_byte return_value=pd765_get_st0();
@@ -1061,7 +1129,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //TODO
 
-        z80_byte return_value=0;
+        z80_byte return_value=leido_id_c; //pd765_pcn;
         printf("PD765: Returning C: %02XH\n",return_value);
 
         pd765_output_parameters_index++;
@@ -1073,7 +1141,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //TODO
 
-        z80_byte return_value=0;
+        z80_byte return_value=leido_id_h;
         printf("PD765: Returning H: %02XH\n",return_value);
 
         pd765_output_parameters_index++;
@@ -1085,7 +1153,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //TODO
 
-        z80_byte return_value=1;
+        z80_byte return_value=leido_id_r; //pd765_input_parameter_r;
         printf("PD765: Returning R: %02XH\n",return_value);
 
         pd765_output_parameters_index++;
@@ -1097,7 +1165,7 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //TODO
 
-        z80_byte return_value=2;
+        z80_byte return_value=leido_id_n;
         printf("PD765: Returning N: %02XH\n",return_value);
 
         //Y decir que ya no hay que devolver mas datos
@@ -1129,89 +1197,19 @@ z80_byte pd765_read_result_command_read_data(void)
 
     */
 
-   //TODO: todos estos resultados estan probablemente mal
-    if (pd765_output_parameters_index==0) {
+   //TODO: correcto sector size
 
-        z80_byte return_value=pd765_get_st0();
-        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+   //esto solo es asi cuando N es 0
+   int sector_size=pd765_input_parameter_dtl;
 
-        pd765_output_parameters_index++;
+   sector_size=512; //460 no; //470 no; //450 si; //500;
 
-        return return_value;        
-    }
+ 
 
-    else if (pd765_output_parameters_index==1) {
-
-        z80_byte return_value=pd765_get_st1();
-        printf("PD765: Returning ST1: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }  
-
-    else if (pd765_output_parameters_index==2) {
-
-        z80_byte return_value=pd765_get_st2();
-        printf("PD765: Returning ST2: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==3) {
+    if (pd765_output_parameters_index>=0 && pd765_output_parameters_index<0+sector_size) {
 
         //TODO
-
-        z80_byte return_value=pd765_input_parameter_c;
-        printf("PD765: Returning C: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    } 
-
-    else if (pd765_output_parameters_index==4) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_h;
-        printf("PD765: Returning H: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==5) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_r+1;
-        printf("PD765: Returning R: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==6) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_n;
-        printf("PD765: Returning N: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }   
-
-    else if (pd765_output_parameters_index>=7 && pd765_output_parameters_index<7+512) {
-
-        //TODO
-        int indice=pd765_output_parameters_index-7;
+        int indice=pd765_output_parameters_index;
 
         //chapuza retorno
 
@@ -1237,7 +1235,7 @@ Offset sector: E00H
         */
 
 
-        printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
         
 		z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
 
@@ -1245,8 +1243,113 @@ Offset sector: E00H
 
         pd765_output_parameters_index++;
 
+        if (pd765_output_parameters_index==sector_size) {
+            //E indicar fase ejecucion ha finalizado
+            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
 
-        if (pd765_output_parameters_index==7+512) {
+
+            pd765_interrupt_pending=1;    
+
+            //Cambiamos a fase de resultado
+            pd765_phase=PD765_PHASE_RESULT;
+
+            //E indicar que hay que leer datos
+            pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+        }
+
+        return return_value;        
+    }     
+
+   //TODO: todos estos resultados estan probablemente mal
+    else if (pd765_output_parameters_index==sector_size) {
+
+        z80_byte return_value=pd765_get_st0();
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==sector_size+1) {
+
+        z80_byte return_value=pd765_get_st1();
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }  
+
+    else if (pd765_output_parameters_index==sector_size+2) {
+
+        z80_byte return_value=pd765_get_st2();
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==sector_size+3) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_c;
+
+//TODO esto tambien mejorar
+        //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;
+        
+
+        printf("PD765: Returning C: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    } 
+
+    else if (pd765_output_parameters_index==sector_size+4) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==sector_size+5) {
+
+        //TODO
+        //pd765_input_parameter_r++;
+
+        z80_byte return_value=pd765_input_parameter_r;
+
+        //TODO esto tambien mejorar
+        //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value=1;
+        //else if (pd765_input_parameter_r<pd765_input_parameter_eot) return_value++;
+
+        return_value++;
+
+
+        printf("PD765: Returning R: %02XH\n",return_value);
+
+        pd765_output_parameters_index++;
+
+        return return_value;        
+    }
+
+    else if (pd765_output_parameters_index==sector_size+6) {
+
+        //TODO
+
+        z80_byte return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+
+
             //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
 
@@ -1254,10 +1357,10 @@ Offset sector: E00H
             pd765_phase=PD765_PHASE_COMMAND;
 
             //sleep(5);
-        }
+             
 
         return return_value;        
-    }     
+    }      
 
                     
 
@@ -1337,7 +1440,7 @@ z80_byte pd765_read_status_register(void)
 {
 
     //TODO: solo hacerlo aqui o en mas sitios? Quiza deberia estar en el core y con tiempos reales...
-    pd765_sc_handle_running(&signal_se);
+    //aqui se hacia siempre antes de poner en el core pd765_sc_handle_running(&signal_se);
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt

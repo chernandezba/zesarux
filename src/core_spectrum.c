@@ -71,6 +71,7 @@
 #include "codsinpr.h"
 #include "menu_items.h"
 #include "plus3dos_handler.h"
+#include "pd765.h"
 
 z80_byte byte_leido_core_spectrum;
 
@@ -785,6 +786,8 @@ void core_spectrum_ciclo_fetch(void)
 	core_spectrum_store_rainbow_current_atributes();
 	TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_store_rainbow_current_atributes);
 
+    //Eventos de la controladora de disco
+    pd765_next_event_from_core();
 
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT

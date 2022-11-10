@@ -66,4 +66,19 @@ typedef struct s_pd765_signal_counter pd765_signal_counter;
 
 extern pd765_signal_counter signal_se;
 
+enum pd765_command_list {
+    PD765_COMMAND_SPECIFY,
+    PD765_COMMAND_SENSE_DRIVE_STATUS,
+    PD765_COMMAND_RECALIBRATE,
+    PD765_COMMAND_SENSE_INTERRUPT_STATUS,
+    PD765_COMMAND_SEEK,
+    PD765_COMMAND_READ_ID,
+    PD765_COMMAND_READ_DATA,
+    PD765_COMMAND_INVALID
+};
+
+extern enum pd765_command_list pd765_command_received;
+
+extern void pd765_next_event_from_core(void);
+
 #endif
