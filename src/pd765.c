@@ -1027,45 +1027,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     }
 }
 
-void pd765_get_chrn(int pista,int *parametro_c,int *parametro_h,int *parametro_r,int *parametro_n)
-{
 
-
-
-
-	int iniciopista_orig=256;
-
-    //printf("buscando traps_plus3dos_getoff_track_sector pista_buscar %d sector_buscar %d\n",pista_buscar,sector_buscar);
-
-	//Buscamos en todo el archivo dsk
-	for (pista=0;pista<40;pista++) {
-
-		int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
-		printf("CHRN : pista:  %d",pista);
-
-		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
-		int iniciopista=iniciopista_orig;
-		//saltar 0x18
-		iniciopista +=0x18;
-
-    int sector=0;
-			int offset_tabla_sector=sector*8; 
-			*parametro_c=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); 
-            if ((*parametro_c)==pista) {
-                *parametro_h=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+1); 
-			    *parametro_r=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
-                *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+3); 
-                return;
-            }
-
-		iniciopista_orig +=256;
-		iniciopista_orig +=512/*traps_plus3dos_bytes_sector*/*sectores_en_pista;            
-
-    }  
-
-    //TODO valores invalidos
-    *parametro_c=*parametro_h=*parametro_r=*parametro_n=-1;
-}
 
 z80_byte pd765_read_result_command_read_id(void)
 {
