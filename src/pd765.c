@@ -140,7 +140,7 @@ void pd765_sc_set(pd765_signal_counter *s)
 void pd765_sc_handle_running(pd765_signal_counter *s)
 {
     if (s->running) {
-        printf(" PD765: handle signal running. Current counter: %d max: %d\n",s->current_counter,s->max);
+        //printf(" PD765: handle signal running. Current counter: %d max: %d\n",s->current_counter,s->max);
         (s->current_counter)++;
         if ((s->current_counter)>=(s->max)) {
             printf(" PD765: Activar senyal\n");
@@ -189,7 +189,6 @@ void pd765_signal_se_function_triggered(void)
 
     //prueba temp
     if (pd765_pcn>39) {
-        //Captain blood por ejemplo intenta hacer seek a pistas invalidas
         //TODO: ni deberia empezar el seek con esto
         printf("PD765: seek BEYOND limit: %d\n",pd765_pcn);
         sleep(10);
