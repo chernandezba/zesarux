@@ -1054,7 +1054,7 @@ void pd765_get_chrn(int pista,int *parametro_c,int *parametro_h,int *parametro_r
             if ((*parametro_c)==pista) {
                 *parametro_h=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+1); 
 			    *parametro_r=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
-                *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
+                *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+3); 
                 return;
             }
 
@@ -1092,7 +1092,10 @@ z80_byte pd765_read_result_command_read_id(void)
    //Devolver CHRN siguiente
    int leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
-   pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+   //TODO En este caso devolvemos el CHRN del primer sector
+   dsk_get_chrn(pd765_pcn,0,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+   //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
 
     if (pd765_output_parameters_index==0) {
@@ -1214,7 +1217,9 @@ z80_byte pd765_read_result_command_read_data(void)
         //chapuza retorno
 
         //TODO: Revisar que esto este bien. 
-	    int iniciosector=traps_plus3dos_getoff_track_sector(pd765_input_parameter_c,pd765_input_parameter_r);
+	    //int iniciosector=traps_plus3dos_getoff_track_sector(pd765_pcn,pd765_input_parameter_r);
+
+        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r);
 
         /*
 Con plus3dos traps se pide al hacer un cat:

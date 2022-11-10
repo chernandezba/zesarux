@@ -218,3 +218,159 @@ void dsk_show_activity(void)
 			menu_draw_ext_desktop();
 	}	
 }
+
+
+
+//Retorna el offset al dsk segun la pista y sector dados 
+//Pista empieza en 0
+//Sectores empiezan en el 1....
+int dsk_get_sector(int pista,int parametro_r)
+{
+
+/*
+sectores van alternados:
+00000100  54 72 61 63 6b 2d 49 6e  66 6f 0d 0a 00 00 00 00  |Track-Info......|
+00000110  00 00 00 00 02 09 4e e5  00 00 c1 02 00 00 00 02  |......N.........|
+00000120  00 00 c6 02 00 00 00 02  00 00 c2 02 00 00 00 02  |................|
+00000130  00 00 c7 02 00 00 00 02  00 00 c3 02 00 00 00 02  |................|
+00000140  00 00 c8 02 00 00 00 02  00 00 c4 02 00 00 00 02  |................|
+00000150  00 00 c9 02 00 00 00 02  00 00 c5 02 00 00 00 02  |................|
+00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+
+1,6,2,7,3,8
+
+
+0 1 2 3 4 5 6 7 8  
+0,5,1,6,2,7,3,8,4
+
+*/
+
+
+	int sector;
+
+	int iniciopista_orig=256;
+
+    //TODO: no poner esto fijo
+int traps_plus3dos_pistas=40;
+int traps_plus3dos_sect_pista=9;
+int traps_plus3dos_bytes_sector=512;    
+
+int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
+
+
+    //TODO: comprobar que pista no se salga del maximo de traps_plus3dos_pistas
+    iniciopista_orig +=pista*(256+traps_plus3dos_bytes_sector*sectores_en_pista);
+
+    //printf("buscando traps_plus3dos_getoff_track_sector pista_buscar %d sector_buscar %d\n",pista_buscar,sector_buscar);
+
+		
+		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+
+		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
+		int iniciopista=iniciopista_orig;
+		//saltar 0x18
+		iniciopista +=0x18;
+
+		for (sector=0;sector<sectores_en_pista;sector++) {
+			int offset_tabla_sector=sector*8; 
+			//z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
+			z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
+
+			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+            
+
+            //TODO: no estoy seguro de esto
+			//sector_id &=0xF;
+
+            //printf("Sector id leido: %02XH\n",sector_id);
+
+			//sector_id--;  //empiezan en 1...
+
+			if (sector_id==parametro_r) {
+				//debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
+                printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
+                        //sleep(3);
+		                //int offset=traps_plus3dos_getoff_start_track(pista);
+		                int offset=iniciopista_orig+256;
+
+                		//int iniciopista=traps_plus3dos_getoff_start_track(pista);
+                        int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
+                        //printf("Offset sector: %XH\n",offset_retorno);
+
+		                return offset_retorno;
+			}
+
+		}
+
+
+
+    printf("NOT Found sector ID %02XH on track %d\n",parametro_r,pista);
+	//TODO
+	//de momento retornamos offset fuera de rango
+	return DSK_MAX_BUFFER_DISCO;
+
+}
+
+//Devolver CHRN de una pista y sector concreto
+void dsk_get_chrn(int pista,int sector,int *parametro_c,int *parametro_h,int *parametro_r,int *parametro_n)
+{
+
+/*
+sectores van alternados:
+00000100  54 72 61 63 6b 2d 49 6e  66 6f 0d 0a 00 00 00 00  |Track-Info......|
+00000110  00 00 00 00 02 09 4e e5  00 00 c1 02 00 00 00 02  |......N.........|
+00000120  00 00 c6 02 00 00 00 02  00 00 c2 02 00 00 00 02  |................|
+00000130  00 00 c7 02 00 00 00 02  00 00 c3 02 00 00 00 02  |................|
+00000140  00 00 c8 02 00 00 00 02  00 00 c4 02 00 00 00 02  |................|
+00000150  00 00 c9 02 00 00 00 02  00 00 c5 02 00 00 00 02  |................|
+00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+
+1,6,2,7,3,8
+
+
+0 1 2 3 4 5 6 7 8  
+0,5,1,6,2,7,3,8,4
+
+*/
+
+
+
+	int iniciopista_orig=256;
+
+    //TODO: no poner esto fijo
+int traps_plus3dos_pistas=40;
+int traps_plus3dos_sect_pista=9;
+int traps_plus3dos_bytes_sector=512;    
+
+int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
+
+
+    //TODO: comprobar que pista no se salga del maximo de traps_plus3dos_pistas
+    iniciopista_orig +=pista*(256+traps_plus3dos_bytes_sector*sectores_en_pista);
+
+    //printf("buscando traps_plus3dos_getoff_track_sector pista_buscar %d sector_buscar %d\n",pista_buscar,sector_buscar);
+
+		
+		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+
+		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
+		int iniciopista=iniciopista_orig;
+		//saltar 0x18
+		iniciopista +=0x18;
+
+
+			int offset_tabla_sector=sector*8; 
+			//z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
+			//z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
+
+			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+
+			*parametro_c=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); 
+            *parametro_h=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+1); 
+			*parametro_r=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
+            *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+3);             
+            
+
+
+
+}
