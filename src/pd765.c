@@ -799,6 +799,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if ((value & 0xBF)==0x0A) {
             //Read id
+            //TODO: bit MF
             printf("---PD765: READ ID command\n");
             pd765_command_received=PD765_COMMAND_READ_ID;
             pd765_input_parameters_index++; ;            
