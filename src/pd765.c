@@ -485,6 +485,25 @@ void pd765_read_parameters_sense_drive_status(z80_byte value)
     }       
 }
 
+void pd765_read_parameters_read_id(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for READ ID\n");
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for READ ID\n");
+
+        pd765_handle_command_read_id();
+    }       
+}
+
 //Indicar si cuando se va a hacer seek o recalibrate, ya se esta en pista indicada, y por tanto no empezar de nuevo
 void pd765_if_seek_already_end(void)
 {
@@ -780,14 +799,9 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if ((value & 0xBF)==0x0A) {
             //Read id
-            //TODO: bit MF
             printf("---PD765: READ ID command\n");
             pd765_command_received=PD765_COMMAND_READ_ID;
-
-            
-            
-            //No tiene parametros. Solo resultados
-            pd765_handle_command_read_id();            
+            pd765_input_parameters_index++; ;            
         }
 
         else if ((value & 0x1F)==0x06) {
@@ -838,7 +852,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
 
             case PD765_COMMAND_READ_ID:
-                printf("PD765: ERROR READ_ID has no input parameters\n");
+                pd765_read_parameters_read_id(value); 
             break; 
 
             case PD765_COMMAND_READ_DATA:
