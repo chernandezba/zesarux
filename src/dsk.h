@@ -53,8 +53,8 @@ extern z80_byte p3dsk_buffer_disco[];
 
 extern void dsk_show_activity(void);
 
-extern int dsk_get_sector(int pista,int parametro_r);
+extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico);
 
-extern void dsk_get_chrn(int pista,int sector,int *parametro_c,int *parametro_h,int *parametro_r,int *parametro_n);
+extern void dsk_get_chrn(int pista,int sector,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n);
 
 #endif

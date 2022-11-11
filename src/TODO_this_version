@@ -158,3 +158,13 @@ quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro 
 -mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
 hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
 Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+
+
+Test unitario +3 que cargue un disco autoarrancable y espere output concreto
+
+Para debug visual floppy simplificar a 512 bytes por sector. 
+Fijar también a 9 sectores?
+
+Para saber la ubicación de cada pista hay que considerar el tamaño de cada pista, que puede cambiar. Por tanto no se puede hacer un cálculo directo sino que hay que recorrer cada una de ellas
+
+Por otra parte, en read data, podemos calcular dicha ubicación con el primer byte y los siguientes solo sumar posición 

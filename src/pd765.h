@@ -81,4 +81,11 @@ extern enum pd765_command_list pd765_command_received;
 
 extern void pd765_next_event_from_core(void);
 
+extern int pd765_last_sector_read;
+
+extern z80_byte pd765_last_sector_id_c_read;
+extern z80_byte pd765_last_sector_id_h_read;
+extern z80_byte pd765_last_sector_id_r_read;
+extern z80_byte pd765_last_sector_id_n_read;
+
 #endif

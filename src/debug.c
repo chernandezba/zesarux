@@ -112,7 +112,6 @@
 #include "interface007.h"
 #include "pd765.h"
 
-
 struct timeval debug_timer_antes, debug_timer_ahora;
 
 
@@ -5333,7 +5332,7 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
 
-        sprintf (buf_linea,"%s %s %s %s %s %s %s %s\n",
+        sprintf (buf_linea,"(%s %s %s %s %s %s %s %s)\n",
             (pd765_main_status_register & PD765_STATUS_REGISTER_RQM_MASK ? "RQM" : "   "),
             (pd765_main_status_register & PD765_STATUS_REGISTER_DIO_MASK ? "DIO" : "   "),
             (pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK ? "EXM" : "   "),
@@ -5345,20 +5344,26 @@ void debug_get_ioports(char *stats_buffer)
         );
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
 
-
-        sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-
         sprintf (buf_linea,"Pending interrupt: %s\n",(pd765_interrupt_pending ? "Yes" : "No"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
         sprintf (buf_linea,"Seeking: %s\n",(signal_se.running ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         //Chapuza. Cambiar esto por algo mejor, tipo "estado=reading data"
         sprintf (buf_linea,"Reading: %s\n",(
                  ((pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
+
+        sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        
+        sprintf (buf_linea,"Last Sector Read: %d\n",pd765_last_sector_read);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Last Sector ID Read: (CHRN) %02XH %02XH %02XH %02XH\n",
+            pd765_last_sector_id_c_read,pd765_last_sector_id_h_read,pd765_last_sector_id_r_read,pd765_last_sector_id_n_read);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
         //Salto de linea final

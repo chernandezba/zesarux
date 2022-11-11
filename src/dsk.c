@@ -221,10 +221,9 @@ void dsk_show_activity(void)
 
 
 
-//Retorna el offset al dsk segun la pista y sector dados 
-//Pista empieza en 0
-//Sectores empiezan en el 1....
-int dsk_get_sector(int pista,int parametro_r)
+//Retorna el offset al dsk segun la pista y sector id dados 
+//Retorna tambien el sector fisico: 0,1,2,3....
+int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 {
 
 /*
@@ -297,6 +296,7 @@ int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
                         int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
                         //printf("Offset sector: %XH\n",offset_retorno);
 
+                        *sector_fisico=sector;
 		                return offset_retorno;
 			}
 
@@ -312,7 +312,7 @@ int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
 }
 
 //Devolver CHRN de una pista y sector concreto
-void dsk_get_chrn(int pista,int sector,int *parametro_c,int *parametro_h,int *parametro_r,int *parametro_n)
+void dsk_get_chrn(int pista,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n)
 {
 
 /*
@@ -359,7 +359,7 @@ int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
 		iniciopista +=0x18;
 
 
-			int offset_tabla_sector=sector*8; 
+			int offset_tabla_sector=sector_fisico*8; 
 			//z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
 			//z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
 

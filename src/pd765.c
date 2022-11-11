@@ -109,6 +109,18 @@ int pd765_interrupt_pending=0;
 //Cilindro actual
 int pd765_pcn=0;
 
+//Ultimo sector fisico leido. En principio esto solo se usa para debug
+int pd765_last_sector_read=0;
+
+
+//Ultimos id de sector leidos. En principio esto solo se usa para debug
+z80_byte pd765_last_sector_id_c_read=0;
+z80_byte pd765_last_sector_id_h_read=0;
+z80_byte pd765_last_sector_id_r_read=0;
+z80_byte pd765_last_sector_id_n_read=0;
+
+
+
 //Estado motor. 0 apagado, 1 activado
 int pd765_motor_status=0;
 
@@ -1052,10 +1064,19 @@ z80_byte pd765_read_result_command_read_id(void)
     */
 
    //Devolver CHRN siguiente
-   int leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+   z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
-   //TODO En este caso devolvemos el CHRN del primer sector
+   //TODO En este caso devolvemos el CHRN del primer sector. Igual se podria simular el giro del disco,
+   //y retornar el sector id del sector que está debajo del cabezal en ese momento
    dsk_get_chrn(pd765_pcn,0,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+    //Guardarlo para debug
+    pd765_last_sector_id_c_read=leido_id_c;
+    pd765_last_sector_id_h_read=leido_id_h;
+    pd765_last_sector_id_r_read=leido_id_r;
+    pd765_last_sector_id_n_read=leido_id_n;  
+
+    printf("##read_id: last_r: %d\n",pd765_last_sector_id_r_read);
 
    //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
@@ -1181,7 +1202,29 @@ z80_byte pd765_read_result_command_read_data(void)
         //TODO: Revisar que esto este bien. 
 	    //int iniciosector=traps_plus3dos_getoff_track_sector(pd765_pcn,pd765_input_parameter_r);
 
-        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r);
+        z80_byte sector_fisico;
+        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
+
+        //TODO gestinar error si sector no encontrado
+
+        //Indicar ultimo sector leido para debug
+        pd765_last_sector_read=sector_fisico;
+
+        //Leer chrn para debug
+        z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+        dsk_get_chrn(pd765_pcn,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+        
+        //sleep(5);
+
+        //Guardarlo para debug
+        pd765_last_sector_id_c_read=leido_id_c;
+        pd765_last_sector_id_h_read=leido_id_h;
+        pd765_last_sector_id_r_read=leido_id_r;
+        pd765_last_sector_id_n_read=leido_id_n;
+
+        printf("####read_data. pd765_last_sector_read: %d pd765_last_sector_id_r_read: %d pd765_input_parameter_r: %d\n",
+            pd765_last_sector_read,pd765_last_sector_id_r_read,pd765_input_parameter_r);
 
         /*
 Con plus3dos traps se pide al hacer un cat:
