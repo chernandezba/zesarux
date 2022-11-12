@@ -1304,6 +1304,9 @@ Offset sector: E00H
         
         
         //todo optimizar esto y obtenerlo una vez al principio de read data
+        z80_byte sector_fisico;
+        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
+        
         z80_byte leido_id_st1 ,leido_id_st2;
         dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
         return_value=leido_id_st1;
