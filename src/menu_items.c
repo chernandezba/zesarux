@@ -34484,6 +34484,9 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 			menu_zxdesktop_trash(0);
 		break;
 
+        case F_FUNCION_POKE:
+            menu_poke(0);
+        break;
 
 	}
 

@@ -228,6 +228,9 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     {"LinkToDefault",F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,bitmap_button_ext_desktop_file_generic_smartload},
 
     {"MyMachine",F_FUNCION_DESKTOP_MY_MACHINE,bitmap_button_ext_desktop_my_machine_generic}
+
+    {"Poke",F_FUNCION_POKE,bitmap_button_ext_desktop_my_machine_generic}
+
 };
 
 //Retorna accion asociada a una posicion dentro de defined_direct_functions_array
