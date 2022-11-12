@@ -1300,6 +1300,13 @@ Offset sector: E00H
     else if (pd765_output_parameters_index==sector_size+1) {
 
         z80_byte return_value=pd765_get_st1();
+        
+        
+        
+        //todo optimizar esto y obtenerlo una vez al principio de read data
+        z80_byte leido_id_st1 ,leido_id_st2;
+        dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
+        return_value=leido_id_st1;
         printf("PD765: Returning ST1: %02XH\n",return_value);
 
         pd765_output_parameters_index++;
