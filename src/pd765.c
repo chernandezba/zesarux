@@ -110,14 +110,13 @@ int pd765_interrupt_pending=0;
 int pd765_pcn=0;
 
 //Ultimo sector fisico leido. En principio esto solo se usa para debug
-int pd765_last_sector_read=0;
-
+int pd765_debug_last_sector_read=0;
 
 //Ultimos id de sector leidos. En principio esto solo se usa para debug
-z80_byte pd765_last_sector_id_c_read=0;
-z80_byte pd765_last_sector_id_h_read=0;
-z80_byte pd765_last_sector_id_r_read=0;
-z80_byte pd765_last_sector_id_n_read=0;
+z80_byte pd765_debug_last_sector_id_c_read=0;
+z80_byte pd765_debug_last_sector_id_h_read=0;
+z80_byte pd765_debug_last_sector_id_r_read=0;
+z80_byte pd765_debug_last_sector_id_n_read=0;
 
 
 
@@ -703,39 +702,19 @@ void pd765_handle_command_read_data(void)
     //TODO gestionar error si sector no encontrado
 
     //Indicar ultimo sector leido para debug
-    pd765_last_sector_read=sector_fisico;
+    pd765_debug_last_sector_read=sector_fisico;
 
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
     dsk_get_chrn(pd765_pcn,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     
-    //sleep(5);
-
-    //Guardarlo para debug
-    pd765_last_sector_id_c_read=leido_id_c;
-    pd765_last_sector_id_h_read=leido_id_h;
-    pd765_last_sector_id_r_read=leido_id_r;
-    pd765_last_sector_id_n_read=leido_id_n;
+    pd765_debug_last_sector_id_c_read=leido_id_c;
+    pd765_debug_last_sector_id_h_read=leido_id_h;
+    pd765_debug_last_sector_id_r_read=leido_id_r;
+    pd765_debug_last_sector_id_n_read=leido_id_n;
 
 
-    /*
-Con plus3dos traps se pide al hacer un cat:
-Found sector 0/0 at 0/0
-Offset sector: 200H
-
-
-Found sector 0/1 at 0/2
-Offset sector: 600H
-
-
-Found sector 0/2 at 0/4
-Offset sector: A00H
-
-
-Found sector 0/3 at 0/6
-Offset sector: E00H        
-    */
 
    //Inicializar buffer retorno
    pd765_reset_buffer();
@@ -750,9 +729,6 @@ Offset sector: E00H
 
     }
 
-
-//Parametros de despues del buffer
-//TODO: todos estos resultados estan probablemente mal
 
     z80_byte return_value=pd765_get_st0();
     printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
@@ -773,9 +749,8 @@ Offset sector: E00H
     pd765_put_buffer(return_value);
 
 
-    //TODO
+    //TODO. Gestion de CHRN cuando se interrumpe el comando
     return_value=pd765_input_parameter_c;
-//TODO esto tambien mejorar
     //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
     printf("PD765: Returning C: %02XH\n",return_value);
     pd765_put_buffer(return_value);
@@ -786,12 +761,7 @@ Offset sector: E00H
     pd765_put_buffer(return_value);
 
 
-
     return_value=pd765_input_parameter_r;
-    //TODO esto tambien mejorar
-    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value=1;
-    //else if (pd765_input_parameter_r<pd765_input_parameter_eot) return_value++;
-
     return_value++;
     printf("PD765: Returning R: %02XH\n",return_value);
     pd765_put_buffer(return_value);
@@ -1250,12 +1220,12 @@ z80_byte pd765_read_result_command_read_id(void)
    dsk_get_chrn(pd765_pcn,0,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     //Guardarlo para debug
-    pd765_last_sector_id_c_read=leido_id_c;
-    pd765_last_sector_id_h_read=leido_id_h;
-    pd765_last_sector_id_r_read=leido_id_r;
-    pd765_last_sector_id_n_read=leido_id_n;  
+    pd765_debug_last_sector_id_c_read=leido_id_c;
+    pd765_debug_last_sector_id_h_read=leido_id_h;
+    pd765_debug_last_sector_id_r_read=leido_id_r;
+    pd765_debug_last_sector_id_n_read=leido_id_n;  
 
-    printf("##read_id: last_r: %d\n",pd765_last_sector_id_r_read);
+    printf("##read_id: last_r: %d\n",pd765_debug_last_sector_id_r_read);
 
    //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 

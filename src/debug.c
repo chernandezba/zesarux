@@ -5358,11 +5358,11 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
         
-        sprintf (buf_linea,"Last Sector Read: %d\n",pd765_last_sector_read);
+        sprintf (buf_linea,"Last Sector Read: %d\n",pd765_debug_last_sector_read);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Last Sector ID Read: (CHRN) %02XH %02XH %02XH %02XH\n",
-            pd765_last_sector_id_c_read,pd765_last_sector_id_h_read,pd765_last_sector_id_r_read,pd765_last_sector_id_n_read);
+            pd765_debug_last_sector_id_c_read,pd765_debug_last_sector_id_h_read,pd765_debug_last_sector_id_r_read,pd765_debug_last_sector_id_n_read);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
