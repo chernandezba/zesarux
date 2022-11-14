@@ -33304,18 +33304,17 @@ void menu_visual_floppy_overlay(void)
 
 
     //esto hara ejecutar esto 2 veces por segundo
-    if ( ((contador_segundo%500) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
+    //if ( ((contador_segundo%500) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
 
                 //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
         //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
         //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
         //a usar 52% cuando lo tenemos a 0
-        menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
+        //menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
 
          menu_visual_floppy_contador_segundo_anterior=contador_segundo;
 
-    //TODO conservar linea superior menu
-    zxvision_cls(menu_visual_floppy_window);
+
 
     //Print....      
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
@@ -33340,7 +33339,7 @@ void menu_visual_floppy_overlay(void)
 
 
     //TODO: esto es temporal
-    zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
+    //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
 
     zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
         radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
@@ -33409,7 +33408,7 @@ void menu_visual_floppy_overlay(void)
             //Mostrar colores
     //zxvision_draw_window_contents(menu_visual_floppy_window);  
 
-    }
+    //}
 
 
     //Mostrar colores
