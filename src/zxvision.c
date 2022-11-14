@@ -153,6 +153,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"NMI",F_FUNCION_NMI,bitmap_button_ext_desktop_nmi},
 	{"DebugCPU",F_FUNCION_DEBUGCPU,bitmap_button_ext_desktop_debugcpu},
     {"DebugCPUViewAdv",F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,bitmap_button_ext_desktop_debugcpu_view_adventure},
+    {"Poke",F_FUNCION_POKE,bitmap_button_ext_desktop_userdefined},
     {"TextAdventureMap",F_FUNCION_TEXT_ADVENTURE_MAP,bitmap_button_ext_desktop_text_adventure_map},
     {"HexEditor",F_FUNCION_HEX_EDITOR,bitmap_button_ext_desktop_hexeditor},
     {"ViewSprites",F_FUNCION_VIEW_SPRITES,bitmap_button_ext_desktop_viewsprites},

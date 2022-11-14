@@ -535,7 +535,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 56
+#define MAX_F_FUNCTIONS 57
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -594,7 +594,8 @@ enum defined_f_function_ids {
     F_FUNCION_DESKTOP_GENERIC_SMARTLOAD,
     F_FUNCION_MACHINE_SELECTION,
     F_FUNCION_SET_MACHINE,
-    F_FUNCION_DESKTOP_MY_MACHINE
+    F_FUNCION_DESKTOP_MY_MACHINE,
+    F_FUNCION_POKE,
 };
 //Nota: F_FUNCION_BACKGROUND_WINDOW no se llama de la misma manera que las otras funciones F
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window
