@@ -305,9 +305,7 @@ int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
 
 
     printf("NOT Found sector ID %02XH on track %d\n",parametro_r,pista);
-	//TODO
-	//de momento retornamos offset fuera de rango
-	return DSK_MAX_BUFFER_DISCO;
+	return -1;
 
 }
 

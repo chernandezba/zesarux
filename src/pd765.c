@@ -703,7 +703,67 @@ void pd765_handle_command_read_data(void)
     z80_byte sector_fisico;
     int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
 
-    //TODO gestionar error si sector no encontrado
+    //gestionar error si sector no encontrado
+    //Megaphoenix esta dando este error: 
+    //NOT Found sector ID 02H on track 4
+    if (iniciosector<0) {
+        /*
+        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
+        then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
+        (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
+        */
+        printf("PD765: sector not found\n");
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+
+        //Inicializar buffer retorno
+        pd765_reset_buffer();            
+
+        z80_byte return_value=pd765_get_st0();
+
+        return_value |=0x40;
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+
+
+        return_value=0x02;
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return_value=0;        
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+        pd765_put_buffer(return_value);     
+
+        return_value=pd765_input_parameter_c;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_r;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);           
+
+        return;
+
+    }
 
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_read=sector_fisico;
