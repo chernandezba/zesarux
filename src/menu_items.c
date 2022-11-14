@@ -33219,7 +33219,7 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
     //si fuera limites, no hacer putpixel
     if (pista>=MENU_VISUAL_FLOPPY_PISTAS || sector>=MENU_VISUAL_FLOPPY_SECTORES || byte_en_sector>=MENU_VISUAL_FLOPPY_BYTES_SECTOR) {
-        printf("Error fuera limite\n");
+        //printf("Error fuera limite\n");
         return;
     }
 
@@ -33336,6 +33336,32 @@ void menu_visual_floppy_overlay(void)
         else radio_exterior_disco=alto_ventana_pixeles/2;
 
 
+        int radio_interior_disco=radio_exterior_disco/6;
+
+        //prueba
+        int color_byte_sector=0;
+
+        int byte_en_sector;
+        int sector;
+        int pista;
+
+
+        //prueba borrar primero todo
+        for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
+
+        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
+
+        for (byte_en_sector=0;byte_en_sector<MENU_VISUAL_FLOPPY_BYTES_SECTOR;byte_en_sector++) {
+        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
+            pista,sector,byte_en_sector,ESTILO_GUI_PAPEL_NORMAL);
+        }
+
+        }
+
+        }
+
+
 
         //TODO: esto es temporal
         //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
@@ -33351,35 +33377,14 @@ void menu_visual_floppy_overlay(void)
         //del interior hasta el exterior quedan 5/6
         //ahi ubicaremos sectores 0..39
 
-        int radio_interior_disco=radio_exterior_disco/6;
+        
         zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
             radio_interior_disco,radio_interior_disco,color_contorno_disco, 
             zxvision_putpixel,360);
 
         
-        //prueba
-        int color_byte_sector=2;
 
-        int byte_en_sector;
-        int sector;
-        int pista;
-
-
-        /*
-        for (pista=0;pista<10;pista++) {
-
-        for (sector=0;sector<9;sector++) {
-
-        for (byte_en_sector=0;byte_en_sector<512;byte_en_sector++) {
-        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
-        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-            pista,sector,byte_en_sector,(pista+color_byte_sector+sector)%8);
-        }
-
-        }
-
-        }
-        */
+        
 
         int i;
 
