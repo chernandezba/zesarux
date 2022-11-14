@@ -33400,6 +33400,7 @@ void menu_visual_floppy_overlay(void)
 
 
             menu_visual_floppy_buffer_reset();
+            //zxvision_draw_window_contents(menu_visual_floppy_window);   
 
 
     }
