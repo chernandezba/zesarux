@@ -33347,7 +33347,8 @@ void menu_visual_floppy_overlay(void)
 
 
         //prueba borrar primero todo
-        for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
+        //alternativa mediante: voy a dibujar todo pista, sector y byte
+        /*for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
 
         for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
 
@@ -33359,6 +33360,14 @@ void menu_visual_floppy_overlay(void)
 
         }
 
+        }*/
+
+        //alternativa mediante circulos desde interior hasta exterior
+        int r;
+        for (r=radio_interior_disco+1;r<radio_exterior_disco;r++) {
+            zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+              r,r,ESTILO_GUI_PAPEL_NORMAL, 
+             zxvision_putpixel,360);
         }
 
 
