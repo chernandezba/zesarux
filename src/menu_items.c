@@ -33208,6 +33208,47 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_visual_floppy_window;
 
+#define MENU_VISUAL_FLOPPY_PISTAS 40
+#define MENU_VISUAL_FLOPPY_SECTORES 9
+#define MENU_VISUAL_FLOPPY_BYTES_SECTOR 512
+
+//centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disco_y,
+    int radio_interior_disco,int radio_exterior_disco,int pista,int sector,int byte_en_sector,int color)
+{
+
+    //si fuera limites, no hacer putpixel
+    if (pista>=MENU_VISUAL_FLOPPY_PISTAS || sector>=MENU_VISUAL_FLOPPY_SECTORES || byte_en_sector>=MENU_VISUAL_FLOPPY_BYTES_SECTOR) {
+        printf("Error fuera limite\n");
+        return;
+    }
+
+    //calcular el incremento de radio en la zona entre radio interior y exterior segun la pista
+
+    int radio_usable=radio_exterior_disco-radio_interior_disco;
+
+    int radio_del_byte=(radio_usable*pista)/MENU_VISUAL_FLOPPY_PISTAS;
+
+    radio_del_byte +=radio_interior_disco;
+
+    //calcular grados. Partiendo que sector 0 es grados 0
+    int grados_por_sector=(360/MENU_VISUAL_FLOPPY_SECTORES);
+
+    //Inicio del sector en:
+    int grados_sector=grados_por_sector*sector;
+
+    //Y sumarle lo relativo al byte en sector
+    int incremento_sector=(grados_sector*byte_en_sector)/MENU_VISUAL_FLOPPY_BYTES_SECTOR;
+
+    int grados_final=grados_sector+incremento_sector;
+
+    //ya tenemos radio y grados. dibujar pixel
+    int xdestino=centro_disco_x+((radio_del_byte*util_get_cosine(grados_final))/10000);
+    int ydestino=centro_disco_y+((radio_del_byte*util_get_sine(grados_final))/10000);   
+
+    zxvision_putpixel(menu_visual_floppy_window,xdestino,ydestino,color); 
+
+}
 
 void menu_visual_floppy_overlay(void)
 {
@@ -33222,8 +33263,52 @@ void menu_visual_floppy_overlay(void)
 
 
     //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...                      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
+    int ancho_ventana_pixeles=(menu_visual_floppy_window->visible_width)*menu_char_width;
+    int alto_ventana_pixeles=(menu_visual_floppy_window->visible_height-2)*menu_char_height;
+
+    
+    //printf("ancho %d alto %d\n",ancho_ventana_pixeles,alto_ventana_pixeles);
+
+    int centro_disco_x=ancho_ventana_pixeles/2;
+    int centro_disco_y=alto_ventana_pixeles/2;
+
+    int color_contorno_disco=7;
+
+    //Elegir el radio como el menor de las dimensiones ancho, alto
+    int radio_exterior_disco;
+
+    if (ancho_ventana_pixeles<alto_ventana_pixeles) radio_exterior_disco=ancho_ventana_pixeles/2;
+    else radio_exterior_disco=alto_ventana_pixeles/2;
+
+
+
+    //TODO: esto es temporal
+    zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
+
+    zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+        radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
+        zxvision_putpixel,360);
+
+
+    //Resto de dimensiones van relativas a radio_exterior_disco
+    //radio exterior entre 6 partes
+    //radio interior es 1/6 del exterior
+    //del interior hasta el exterior quedan 5/6
+    //ahi ubicaremos sectores 0..39
+
+    int radio_interior_disco=radio_exterior_disco/6;
+    zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+        radio_interior_disco,radio_interior_disco,color_contorno_disco, 
+        zxvision_putpixel,360);
+
+    
+    //prueba
+    int color_byte_sector=2;
+    //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+    menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
+        20,0,0,color_byte_sector);
 
     //Mostrar colores
     zxvision_draw_window_contents(menu_visual_floppy_window);
