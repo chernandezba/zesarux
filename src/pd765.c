@@ -1393,6 +1393,8 @@ z80_byte pd765_read_result_command_read_data(void)
     pd765_output_parameters_index++;
 
 
+    //notificar buffer de visual floppy
+    menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_output_parameters_index);
 
     //TODO
     int sector_size=512;

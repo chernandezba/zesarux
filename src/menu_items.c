@@ -33256,7 +33256,7 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 }
 
 //Para indicar los sectores leidos, buffer 
-#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 10000
+#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 100000
 int menu_visual_floppy_buffer_length=0;
 
 struct s_menu_visual_floppy_buffer {
@@ -33278,6 +33278,7 @@ void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
         printf("Visual floppy buffer is full\n");
         return;
     }
+    printf("add to buffer %d %d %d\n",pista,sector,byte_en_sector);
 
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].pista=pista;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].sector=sector;
@@ -33285,6 +33286,10 @@ void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
 
     menu_visual_floppy_buffer_length++;
 }
+
+
+//Contador de segundo para hacer que el overlay solo se redibuje un numero de veces por segundo y no siempre
+int menu_visual_floppy_contador_segundo_anterior;
 
 void menu_visual_floppy_overlay(void)
 {
@@ -33297,6 +33302,14 @@ void menu_visual_floppy_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_floppy_window->is_minimized) return;  
 
+
+    //esto hara ejecutar esto 2 veces por segundo
+    if ( ((contador_segundo%500) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
+
+         menu_visual_floppy_contador_segundo_anterior=contador_segundo;
+
+    //TODO conservar linea superior menu
+    zxvision_cls(menu_visual_floppy_window);
 
     //Print....      
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
@@ -33347,6 +33360,8 @@ void menu_visual_floppy_overlay(void)
     int sector;
     int pista;
 
+
+    /*
     for (pista=0;pista<10;pista++) {
 
     for (sector=0;sector<9;sector++) {
@@ -33360,16 +33375,43 @@ void menu_visual_floppy_overlay(void)
     }
 
     }
+    */
+
+    int i;
+
+    for (i=0;i<menu_visual_floppy_buffer_length;i++) {
+        pista=menu_visual_floppy_buffer[i].pista;
+        sector=menu_visual_floppy_buffer[i].sector;
+        byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
+
+        //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
+
+        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
+        pista,sector,byte_en_sector,color_byte_sector);
+
+    }
 
     //printf("\n");
 
 
 
-    menu_visual_floppy_buffer_reset();
+        menu_visual_floppy_buffer_reset();
+
+        //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+        //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
+        //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
+        //a usar 52% cuando lo tenemos a 0
+        menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
+
+
+            //Mostrar colores
+    //zxvision_draw_window_contents(menu_visual_floppy_window);  
+
+    }
 
 
     //Mostrar colores
-    zxvision_draw_window_contents(menu_visual_floppy_window);
+    zxvision_draw_window_contents(menu_visual_floppy_window);    
     
 }
 
