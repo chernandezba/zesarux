@@ -55,6 +55,7 @@ extern void menu_display_total_palette(MENU_ITEM_PARAMETERS);
 extern void menu_debug_disassemble(MENU_ITEM_PARAMETERS);
 extern void menu_debug_assemble(MENU_ITEM_PARAMETERS);
 
+extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 
 extern void menu_settings_display(MENU_ITEM_PARAMETERS);
 

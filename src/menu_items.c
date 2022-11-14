@@ -269,6 +269,7 @@ int ramjet_opcion_seleccionada=0;
 int interface007_opcion_seleccionada=0;
 int dinamid3_opcion_seleccionada=0;
 int mantransfe_opcion_seleccionada=0;
+int visualfloppy_opcion_seleccionada=0;
 
 
 
@@ -25978,7 +25979,11 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 #endif
 
     
-
+        //TODO maquina 6128
+        if (MACHINE_IS_SPECTRUM_P3 /*|| MACHINE_IS_CPC618*/) {
+            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
+                "Visual Floppy","Floppy Visual","Floppy Visual");
+        }
 
 
     menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -33197,6 +33202,157 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 
 }
+
+
+
+
+zxvision_window *menu_visual_floppy_window;
+
+
+void menu_visual_floppy_overlay(void)
+{
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_visual_floppy_window->is_minimized) return;  
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...                      
+
+
+    //Mostrar colores
+    zxvision_draw_window_contents(menu_visual_floppy_window);
+    
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_visual_floppy;
+
+
+void menu_visual_floppy(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_visual_floppy;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	zxvision_delete_window_if_exists(ventana);	
+
+
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+	if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		ancho_ventana=30;
+		alto_ventana=20;
+
+        xventana=menu_center_x()-ancho_ventana/2;
+        yventana=menu_center_y()-alto_ventana/2;        
+	}
+
+        
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Floppy",
+        "visualfloppy",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+	ventana->can_be_backgrounded=1;
+         
+
+
+	zxvision_draw_window(ventana);
+
+
+
+
+    menu_visual_floppy_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+	set_menu_overlay_function(menu_visual_floppy_overlay);
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+    	menu_item *array_menu_debug_new_visualfloppy;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
+
+
+
+
+		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,NULL,NULL,"Rotation: off");
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'b');
+		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Change bright value");
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
+
+
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu(&visualfloppy_opcion_seleccionada,&item_seleccionado,array_menu_debug_new_visualfloppy,"Visual floppy" );
+
+		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                            
+                    }
+            }
+		}
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
+
+
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+	zxvision_set_window_overlay_from_current(ventana);		
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+
+	
+	util_add_window_geometry_compact(ventana);
+
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
 
 
 
