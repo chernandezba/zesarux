@@ -33306,6 +33306,12 @@ void menu_visual_floppy_overlay(void)
     //esto hara ejecutar esto 2 veces por segundo
     if ( ((contador_segundo%500) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
 
+                //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+        //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
+        //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
+        //a usar 52% cuando lo tenemos a 0
+        menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
+
          menu_visual_floppy_contador_segundo_anterior=contador_segundo;
 
     //TODO conservar linea superior menu
@@ -33397,11 +33403,7 @@ void menu_visual_floppy_overlay(void)
 
         menu_visual_floppy_buffer_reset();
 
-        //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
-        //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
-        //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
-        //a usar 52% cuando lo tenemos a 0
-        menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
+
 
 
             //Mostrar colores
