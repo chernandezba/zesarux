@@ -33227,24 +33227,29 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
     int radio_usable=radio_exterior_disco-radio_interior_disco;
 
-    int radio_del_byte=(radio_usable*pista)/MENU_VISUAL_FLOPPY_PISTAS;
+    //pista 0 esta en la zona mas externa
+    int radio_del_byte=(radio_usable*(MENU_VISUAL_FLOPPY_PISTAS-pista))/MENU_VISUAL_FLOPPY_PISTAS;
 
     radio_del_byte +=radio_interior_disco;
 
     //calcular grados. Partiendo que sector 0 es grados 0
     int grados_por_sector=(360/MENU_VISUAL_FLOPPY_SECTORES);
 
-    //Inicio del sector en:
-    int grados_sector=grados_por_sector*sector;
+
 
     //Y sumarle lo relativo al byte en sector
-    int incremento_sector=(grados_sector*byte_en_sector)/MENU_VISUAL_FLOPPY_BYTES_SECTOR;
+    int incremento_sector=(grados_por_sector*byte_en_sector)/MENU_VISUAL_FLOPPY_BYTES_SECTOR;
+
+    //Inicio del sector en:
+    int grados_sector=grados_por_sector*sector;    
 
     int grados_final=grados_sector+incremento_sector;
 
     //ya tenemos radio y grados. dibujar pixel
     int xdestino=centro_disco_x+((radio_del_byte*util_get_cosine(grados_final))/10000);
-    int ydestino=centro_disco_y+((radio_del_byte*util_get_sine(grados_final))/10000);   
+    int ydestino=centro_disco_y-((radio_del_byte*util_get_sine(grados_final))/10000);   
+
+    //if (byte_en_sector>470) printf("final: %d,%d grados: %d\n",xdestino,ydestino,grados_final);
 
     zxvision_putpixel(menu_visual_floppy_window,xdestino,ydestino,color); 
 
@@ -33306,9 +33311,27 @@ void menu_visual_floppy_overlay(void)
     
     //prueba
     int color_byte_sector=2;
+
+    int byte_en_sector=0;
+    int sector;
+    int pista;
+
+    for (pista=0;pista<10;pista++) {
+
+    for (sector=0;sector<9;sector++) {
+
+    for (byte_en_sector=0;byte_en_sector<512;byte_en_sector++) {
     //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
     menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-        20,0,0,color_byte_sector);
+        pista,sector,byte_en_sector,(pista+color_byte_sector+sector)%8);
+    }
+
+    }
+
+    }
+
+    //printf("\n");
+
 
     //Mostrar colores
     zxvision_draw_window_contents(menu_visual_floppy_window);
