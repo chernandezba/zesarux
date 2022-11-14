@@ -33255,6 +33255,37 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
 }
 
+//Para indicar los sectores leidos, buffer 
+#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 10000
+int menu_visual_floppy_buffer_length=0;
+
+struct s_menu_visual_floppy_buffer {
+    int pista;
+    int sector;
+    int byte_en_sector;
+};
+
+struct s_menu_visual_floppy_buffer menu_visual_floppy_buffer[MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER];
+
+void menu_visual_floppy_buffer_reset(void)
+{
+    menu_visual_floppy_buffer_length=0;
+}
+
+void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
+{
+    if (menu_visual_floppy_buffer_length>=MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER) {
+        printf("Visual floppy buffer is full\n");
+        return;
+    }
+
+    menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].pista=pista;
+    menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].sector=sector;
+    menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].byte_en_sector=byte_en_sector;
+
+    menu_visual_floppy_buffer_length++;
+}
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -33331,6 +33362,10 @@ void menu_visual_floppy_overlay(void)
     }
 
     //printf("\n");
+
+
+
+    menu_visual_floppy_buffer_reset();
 
 
     //Mostrar colores
