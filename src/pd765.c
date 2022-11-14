@@ -189,6 +189,8 @@ int pd765_sc_get(pd765_signal_counter *s)
 //
 
 
+//Decir que el seek que se estaba ejecutando era un recalibrate
+z80_bit pd765_seek_was_recalibrating={0};
 
 
 void pd765_signal_se_function_triggered(void)
@@ -219,6 +221,10 @@ void pd765_signal_se_function_triggered(void)
 
     //Avisar interrupcion pendiente de la controladora
     pd765_interrupt_pending=1;
+
+    //Y si era un recalibrate, disparar senyal
+    if (pd765_seek_was_recalibrating.v) pd765_signal_ts0.v=1;
+    else pd765_signal_ts0.v=0;
 
 }
 
@@ -282,6 +288,7 @@ void pd765_reset(void)
     pd765_motor_status=0;
 
     pd765_sc_reset(&signal_se);
+    pd765_seek_was_recalibrating.v=0;
     pd765_reset_buffer();
 }
 
@@ -334,8 +341,8 @@ z80_byte pd765_get_st0(void)
 
     //TODO completar BIEN esto
 
-    //temp
-    //z80_byte return_value=(0) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
+
+
     z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
 
 
@@ -570,11 +577,11 @@ void pd765_handle_command_recalibrate(void)
     as described in the SEEK Command, also applies to the RECALIBRATE Command.    
     */
    
-
-   //TODO: realmente esto deberia ponerse solo cuando realmente acabe el seek
-   pd765_signal_ts0.v=1;
+   //Inicialmente decimos no senyal TS0
+   pd765_signal_ts0.v=0;
 
    pd765_sc_initialize_running(&signal_se);
+   pd765_seek_was_recalibrating.v=1;
    pd765_input_parameter_ncn=0;
 
     //E indicar fase ejecucion ha empezado
@@ -627,6 +634,7 @@ void pd765_handle_command_seek(void)
    //pd765_pcn=pd765_input_parameter_ncn;
 
    pd765_sc_initialize_running(&signal_se);
+   pd765_seek_was_recalibrating.v=0;
 
     //E indicar fase ejecucion ha empezado
     pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;
@@ -637,9 +645,6 @@ void pd765_handle_command_seek(void)
     //Indicar seek unidad 0
     pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
 
-    //Y decimos no track 0
-    //TODO: Esto deberia hacerse en cualquier comando que no fuera recalibrate
-    pd765_signal_ts0.v=1;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
