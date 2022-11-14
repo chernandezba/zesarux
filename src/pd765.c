@@ -205,8 +205,6 @@ void pd765_signal_se_function_triggered(void)
         sleep(10);
     }
 
-    //TODO: chapuza para que funcione el read id
-    //pd765_input_parameter_c=pd765_input_parameter_ncn;
 
     //E indicar fase ejecucion ha finalizado
     pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
@@ -251,19 +249,20 @@ void pd765_reset_buffer(void)
     pd765_result_buffer_length=0;
 }
 
-z80_byte pd765_get_buffer(int index)
+z80_byte pd765_get_buffer(int indice)
 {
-    if (index<0 || index>=PD765_MAX_RESULT_BUFFER) {
-        debug_printf(VERBOSE_ERR,"Error getting PD765 buffer beyond limit: %d",index);
+    if (indice<0 || indice>=PD765_MAX_RESULT_BUFFER) {
+        debug_printf(VERBOSE_ERR,"Error getting PD765 buffer beyond limit: %d",indice);
         return 0;
     }
-    else return pd765_result_buffer[index];
+    else return pd765_result_buffer[indice];
 }
 
 void pd765_put_buffer(z80_byte value)
 {
+    
     if (pd765_result_buffer_length>=PD765_MAX_RESULT_BUFFER) {
-        debug_printf(VERBOSE_ERR,"Error putting PD765 buffer beyond limit: %d",index);
+        debug_printf(VERBOSE_ERR,"Error putting PD765 buffer beyond limit: %d",pd765_result_buffer_length);
         return;
     }
     pd765_result_buffer[pd765_result_buffer_length++]=value;
