@@ -33302,117 +33302,111 @@ void menu_visual_floppy_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_floppy_window->is_minimized) return;  
 
+    //esto hara ejecutar esto 5 veces por segundo
+    if ( ((contador_segundo%200) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
 
-    //esto hara ejecutar esto 2 veces por segundo
-    //if ( ((contador_segundo%500) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
+                    //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
+            //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
+            //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
+            //a usar 52% cuando lo tenemos a 0
+            //menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
 
-                //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
-        //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
-        //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
-        //a usar 52% cuando lo tenemos a 0
-        //menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
-
-         menu_visual_floppy_contador_segundo_anterior=contador_segundo;
-
-
-
-    //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
-
-    int ancho_ventana_pixeles=(menu_visual_floppy_window->visible_width)*menu_char_width;
-    int alto_ventana_pixeles=(menu_visual_floppy_window->visible_height-2)*menu_char_height;
-
-    
-    //printf("ancho %d alto %d\n",ancho_ventana_pixeles,alto_ventana_pixeles);
-
-    int centro_disco_x=ancho_ventana_pixeles/2;
-    int centro_disco_y=alto_ventana_pixeles/2;
-
-    int color_contorno_disco=7;
-
-    //Elegir el radio como el menor de las dimensiones ancho, alto
-    int radio_exterior_disco;
-
-    if (ancho_ventana_pixeles<alto_ventana_pixeles) radio_exterior_disco=ancho_ventana_pixeles/2;
-    else radio_exterior_disco=alto_ventana_pixeles/2;
+            menu_visual_floppy_contador_segundo_anterior=contador_segundo;
 
 
 
-    //TODO: esto es temporal
-    //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
+        //Print....      
+        //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
-    zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-        radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
-        zxvision_putpixel,360);
+        int ancho_ventana_pixeles=(menu_visual_floppy_window->visible_width)*menu_char_width;
+        int alto_ventana_pixeles=(menu_visual_floppy_window->visible_height-2)*menu_char_height;
 
+        
+        //printf("ancho %d alto %d\n",ancho_ventana_pixeles,alto_ventana_pixeles);
 
-    //Resto de dimensiones van relativas a radio_exterior_disco
-    //radio exterior entre 6 partes
-    //radio interior es 1/6 del exterior
-    //del interior hasta el exterior quedan 5/6
-    //ahi ubicaremos sectores 0..39
+        int centro_disco_x=ancho_ventana_pixeles/2;
+        int centro_disco_y=alto_ventana_pixeles/2;
 
-    int radio_interior_disco=radio_exterior_disco/6;
-    zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-        radio_interior_disco,radio_interior_disco,color_contorno_disco, 
-        zxvision_putpixel,360);
+        int color_contorno_disco=7;
 
-    
-    //prueba
-    int color_byte_sector=2;
+        //Elegir el radio como el menor de las dimensiones ancho, alto
+        int radio_exterior_disco;
 
-    int byte_en_sector=0;
-    int sector;
-    int pista;
+        if (ancho_ventana_pixeles<alto_ventana_pixeles) radio_exterior_disco=ancho_ventana_pixeles/2;
+        else radio_exterior_disco=alto_ventana_pixeles/2;
 
 
-    /*
-    for (pista=0;pista<10;pista++) {
 
-    for (sector=0;sector<9;sector++) {
+        //TODO: esto es temporal
+        //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
 
-    for (byte_en_sector=0;byte_en_sector<512;byte_en_sector++) {
-    //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
-    menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-        pista,sector,byte_en_sector,(pista+color_byte_sector+sector)%8);
-    }
+        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+            radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
+            zxvision_putpixel,360);
 
-    }
 
-    }
-    */
+        //Resto de dimensiones van relativas a radio_exterior_disco
+        //radio exterior entre 6 partes
+        //radio interior es 1/6 del exterior
+        //del interior hasta el exterior quedan 5/6
+        //ahi ubicaremos sectores 0..39
 
-    int i;
+        int radio_interior_disco=radio_exterior_disco/6;
+        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+            radio_interior_disco,radio_interior_disco,color_contorno_disco, 
+            zxvision_putpixel,360);
 
-    for (i=0;i<menu_visual_floppy_buffer_length;i++) {
-        pista=menu_visual_floppy_buffer[i].pista;
-        sector=menu_visual_floppy_buffer[i].sector;
-        byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
+        
+        //prueba
+        int color_byte_sector=2;
 
-        //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
+        int byte_en_sector;
+        int sector;
+        int pista;
 
+
+        /*
+        for (pista=0;pista<10;pista++) {
+
+        for (sector=0;sector<9;sector++) {
+
+        for (byte_en_sector=0;byte_en_sector<512;byte_en_sector++) {
+        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
         menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-        pista,sector,byte_en_sector,color_byte_sector);
+            pista,sector,byte_en_sector,(pista+color_byte_sector+sector)%8);
+        }
+
+        }
+
+        }
+        */
+
+        int i;
+
+        for (i=0;i<menu_visual_floppy_buffer_length;i++) {
+            pista=menu_visual_floppy_buffer[i].pista;
+            sector=menu_visual_floppy_buffer[i].sector;
+            byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
+
+            //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
+
+            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
+            pista,sector,byte_en_sector,color_byte_sector);
+
+        }
+
+        //printf("\n");
+
+
+
+            menu_visual_floppy_buffer_reset();
+
 
     }
 
-    //printf("\n");
 
 
-
-        menu_visual_floppy_buffer_reset();
-
-
-
-
-            //Mostrar colores
-    //zxvision_draw_window_contents(menu_visual_floppy_window);  
-
-    //}
-
-
-    //Mostrar colores
-    zxvision_draw_window_contents(menu_visual_floppy_window);    
+    //zxvision_draw_window_contents(menu_visual_floppy_window);    
     
 }
 
