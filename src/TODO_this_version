@@ -118,6 +118,7 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
+-Opción rpi que baje framedrop por defecto no hacerlo?
 
 -Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
@@ -168,3 +169,12 @@ Fijar también a 9 sectores?
 Para saber la ubicación de cada pista hay que considerar el tamaño de cada pista, que puede cambiar. Por tanto no se puede hacer un cálculo directo sino que hay que recorrer cada una de ellas
 
 Por otra parte, en read data, podemos calcular dicha ubicación con el primer byte y los siguientes solo sumar posición 
+
+
+-Rqm debe ir a 0 después de haber recibido los parámetros en fase comando:
+
+A menos que se haya enviado un comando ilegal, luego de recibido correctamente el u ́ltimo byte MSR.RQM se pone en “0” y se ingresa en la fase siguiente, definida para cada comando (Transferencia o Resultado).
+O sea en fase ejecución se pone a 0
+
+Y se pondrá a 1 en la fase de resultado
+En read y write data se pone a 1 antes de recibir/escribir el primer byte del sector

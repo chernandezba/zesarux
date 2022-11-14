@@ -233,6 +233,43 @@ pd765_signal_counter signal_se={
 };
 
 
+//
+//Gestion de buffer de respuesta
+//
+
+//TODO: todos los comandos que devuelvan resultado deberian usar este buffer
+
+//Maximo sector es de 8kb, esto hay mas que suficiente
+#define PD765_MAX_RESULT_BUFFER 9000
+//El buffer
+z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
+//Y cuantos datos hay en el buffer para retornarlos
+int pd765_result_buffer_length=0;
+
+//Por si acaso funciones para escribir y leer del buffer y que no nos salgamos
+void pd765_reset_buffer(void)
+{
+    pd765_result_buffer_length=0;
+}
+
+z80_byte pd765_get_buffer(int index)
+{
+    if (index<0 || index>=PD765_MAX_RESULT_BUFFER) {
+        debug_printf(VERBOSE_ERR,"Error getting PD765 buffer beyond limit: %d",index);
+        return 0;
+    }
+    else return pd765_result_buffer[index];
+}
+
+void pd765_put_buffer(z80_byte value)
+{
+    if (pd765_result_buffer_length>=PD765_MAX_RESULT_BUFFER) {
+        debug_printf(VERBOSE_ERR,"Error putting PD765 buffer beyond limit: %d",index);
+        return;
+    }
+    pd765_result_buffer[pd765_result_buffer_length++]=value;
+}
+
 
 
 void pd765_reset(void)
@@ -247,6 +284,7 @@ void pd765_reset(void)
     pd765_motor_status=0;
 
     pd765_sc_reset(&signal_se);
+    pd765_reset_buffer();
 }
 
 z80_bit pd765_enabled;
@@ -637,6 +675,132 @@ void pd765_handle_command_read_data(void)
 
     //E indicar fase ejecucion ha empezado
     pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;    
+
+    //Metemos resultado de leer en buffer de salida
+
+    /*
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    */
+
+   //TODO: correcto sector size
+
+   //esto solo es asi cuando N es 0
+   int sector_size=pd765_input_parameter_dtl;
+
+   sector_size=512; 
+
+ 
+    z80_byte sector_fisico;
+    int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
+
+    //TODO gestionar error si sector no encontrado
+
+    //Indicar ultimo sector leido para debug
+    pd765_last_sector_read=sector_fisico;
+
+    //Leer chrn para debug
+    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+    dsk_get_chrn(pd765_pcn,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+    
+    //sleep(5);
+
+    //Guardarlo para debug
+    pd765_last_sector_id_c_read=leido_id_c;
+    pd765_last_sector_id_h_read=leido_id_h;
+    pd765_last_sector_id_r_read=leido_id_r;
+    pd765_last_sector_id_n_read=leido_id_n;
+
+
+    /*
+Con plus3dos traps se pide al hacer un cat:
+Found sector 0/0 at 0/0
+Offset sector: 200H
+
+
+Found sector 0/1 at 0/2
+Offset sector: 600H
+
+
+Found sector 0/2 at 0/4
+Offset sector: A00H
+
+
+Found sector 0/3 at 0/6
+Offset sector: E00H        
+    */
+
+   //Inicializar buffer retorno
+   pd765_reset_buffer();
+
+    int indice;
+
+    for (indice=0;indice<sector_size;indice++) {
+        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+    
+        z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
+        pd765_put_buffer(return_value);
+
+    }
+
+
+//Parametros de despues del buffer
+//TODO: todos estos resultados estan probablemente mal
+
+    z80_byte return_value=pd765_get_st0();
+    printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+    pd765_put_buffer(return_value);
+
+
+    
+    z80_byte leido_id_st1 ,leido_id_st2;
+    dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
+    return_value=leido_id_st1;
+    printf("PD765: Returning ST1: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+
+    return_value=leido_id_st2;        
+    printf("PD765: Returning ST2: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    //TODO
+    return_value=pd765_input_parameter_c;
+//TODO esto tambien mejorar
+    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
+    printf("PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    printf("PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+
+    return_value=pd765_input_parameter_r;
+    //TODO esto tambien mejorar
+    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value=1;
+    //else if (pd765_input_parameter_r<pd765_input_parameter_eot) return_value++;
+
+    return_value++;
+    printf("PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    printf("PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
    
 }
 
@@ -1187,87 +1351,17 @@ z80_byte pd765_read_result_command_read_id(void)
 
 z80_byte pd765_read_result_command_read_data(void)
 {
-    /*
-    ST0
-    ST1
-    ST2
-    C
-    H
-    R
-    N
-
-    */
-
-   //TODO: correcto sector size
-
-   //esto solo es asi cuando N es 0
-   int sector_size=pd765_input_parameter_dtl;
-
-   sector_size=512; //460 no; //470 no; //450 si; //500;
-
- 
-
-    if (pd765_output_parameters_index>=0 && pd765_output_parameters_index<0+sector_size) {
-
-        //TODO
-        int indice=pd765_output_parameters_index;
-
-        //chapuza retorno
-
-        //TODO: Revisar que esto este bien. 
-	    //int iniciosector=traps_plus3dos_getoff_track_sector(pd765_pcn,pd765_input_parameter_r);
-
-        z80_byte sector_fisico;
-        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
-
-        //TODO gestinar error si sector no encontrado
-
-        //Indicar ultimo sector leido para debug
-        pd765_last_sector_read=sector_fisico;
-
-        //Leer chrn para debug
-        z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
-        dsk_get_chrn(pd765_pcn,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
-
-        
-        //sleep(5);
-
-        //Guardarlo para debug
-        pd765_last_sector_id_c_read=leido_id_c;
-        pd765_last_sector_id_h_read=leido_id_h;
-        pd765_last_sector_id_r_read=leido_id_r;
-        pd765_last_sector_id_n_read=leido_id_n;
-
-        printf("####read_data. pd765_last_sector_read: %d pd765_last_sector_id_r_read: %d pd765_input_parameter_r: %d\n",
-            pd765_last_sector_read,pd765_last_sector_id_r_read,pd765_input_parameter_r);
-
-        /*
-Con plus3dos traps se pide al hacer un cat:
-Found sector 0/0 at 0/0
-Offset sector: 200H
 
 
-Found sector 0/1 at 0/2
-Offset sector: 600H
+
+    z80_byte return_value=pd765_get_buffer(pd765_output_parameters_index);
+    printf("PD765: Return byte from READ DATA at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    pd765_output_parameters_index++;
 
 
-Found sector 0/2 at 0/4
-Offset sector: A00H
 
-
-Found sector 0/3 at 0/6
-Offset sector: E00H        
-        */
-
-
-        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
-        
-		z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
-
-        printf("PD765: Returning Byte read at offset %d: %02XH\n",indice,return_value);
-
-        pd765_output_parameters_index++;
-
+    //TODO
+    int sector_size=512;
         if (pd765_output_parameters_index==sector_size) {
             //E indicar fase ejecucion ha finalizado
             pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
@@ -1283,135 +1377,20 @@ Offset sector: E00H
 
         }
 
-        return return_value;        
-    }     
 
-   //TODO: todos estos resultados estan probablemente mal
-    else if (pd765_output_parameters_index==sector_size) {
-
-        z80_byte return_value=pd765_get_st0();
-        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==sector_size+1) {
-
-        z80_byte return_value=pd765_get_st1();
-        
-        
-        
-        //todo optimizar esto y obtenerlo una vez al principio de read data
-        z80_byte sector_fisico;
-        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
-        
-        z80_byte leido_id_st1 ,leido_id_st2;
-        dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
-        return_value=leido_id_st1;
-        printf("PD765: Returning ST1: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }  
-
-    else if (pd765_output_parameters_index==sector_size+2) {
-
-        z80_byte return_value=pd765_get_st2();
-        
-          //todo optimizar esto y obtenerlo una vez al principio de read data
-        z80_byte sector_fisico;
-        int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
-        
-        z80_byte leido_id_st1 ,leido_id_st2;
-        dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
-        return_value=leido_id_st2;
-        
-        
-        printf("PD765: Returning ST2: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==sector_size+3) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_c;
-
-//TODO esto tambien mejorar
-        //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;
-        
-
-        printf("PD765: Returning C: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    } 
-
-    else if (pd765_output_parameters_index==sector_size+4) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_h;
-        printf("PD765: Returning H: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==sector_size+5) {
-
-        //TODO
-        //pd765_input_parameter_r++;
-
-        z80_byte return_value=pd765_input_parameter_r;
-
-        //TODO esto tambien mejorar
-        //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value=1;
-        //else if (pd765_input_parameter_r<pd765_input_parameter_eot) return_value++;
-
-        return_value++;
-
-
-        printf("PD765: Returning R: %02XH\n",return_value);
-
-        pd765_output_parameters_index++;
-
-        return return_value;        
-    }
-
-    else if (pd765_output_parameters_index==sector_size+6) {
-
-        //TODO
-
-        z80_byte return_value=pd765_input_parameter_n;
-        printf("PD765: Returning N: %02XH\n",return_value);
-
-
-            //Y decir que ya no hay que devolver mas datos
+        if (pd765_output_parameters_index>=pd765_result_buffer_length) {
+            printf("PD765: End of result buffer of READ DATA\n");
+                //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
 
-            //sleep(5);
-             
+        }
 
-        return return_value;        
-    }      
 
-                    
+    return return_value;        
 
-    else {
-        return 255;
-    }
 }
 
 
