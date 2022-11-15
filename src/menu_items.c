@@ -33273,6 +33273,33 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
 }
 
+
+void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int centro_disco_y,int radio_exterior_disco,int radio_fin_datos)
+{
+
+        int ancho_cabezal=radio_exterior_disco/20;
+
+        int alto_cabezal=ancho_cabezal*2;
+
+        int xcabezal=centro_disco_x-ancho_cabezal/2;
+
+        //La zona por donde se mueve el cabezal
+        int recorrido_total_cabezal=radio_exterior_disco-radio_fin_datos-1;
+
+        
+
+        int recorrido_actual_cabezal=(pista_actual*recorrido_total_cabezal)/MENU_VISUAL_FLOPPY_PISTAS;
+        //pista 0 arriba del todo
+        int ycabezal=centro_disco_y-radio_exterior_disco+recorrido_actual_cabezal+1;
+
+        int x,y;
+        for (x=0;x<ancho_cabezal;x++) {
+            for (y=0;y<alto_cabezal;y++) {
+                zxvision_putpixel(menu_visual_floppy_window,xcabezal+x,ycabezal+y,6);
+            }
+        }
+}
+
 //Para indicar los sectores leidos, buffer 
 //buffer de 128kb.
 #define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 131072
@@ -33295,6 +33322,7 @@ void menu_visual_floppy_buffer_reset(void)
 {
     menu_visual_floppy_buffer_length=0;
 }
+
 
 void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
 {
@@ -33493,9 +33521,7 @@ void menu_visual_floppy_overlay(void)
             radio_index_hole,radio_index_hole,color_contorno_disco, 
             zxvision_putpixel,360); 
 
-
-
-        //Marcas sectores
+   //Marcas sectores
         //prueba borrar primero todo
         //alternativa mediante: voy a dibujar todo pista, sector y byte
         for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
@@ -33510,7 +33536,17 @@ void menu_visual_floppy_overlay(void)
 
         }
 
-        }        
+        } 
+
+
+        //Dibujar cabezal
+        //Calcular ancho cabezal
+        int pista_actual=pd765_pcn;
+
+        menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos);
+
+   
+            
 
             //esto de momento no menu_visual_floppy_buffer_reset();
 
@@ -33555,6 +33591,8 @@ void menu_visual_floppy_overlay(void)
 
     //limitar siempre a 360
     menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
+
+    
 
     //printf("Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
 
