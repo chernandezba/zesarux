@@ -12693,7 +12693,7 @@ void zxvision_draw_window_contents(zxvision_window *w)
 				//printf ("fuera de rango\n");
 				if (!ventana_encima) {
 				putchar_menu_overlay_parpadeo_cache_or_not(xdestination,ydestination,
-				' ',ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL,0,use_cache);
+				' ',ESTILO_GUI_TINTA_NORMAL,w->default_paper/*ESTILO_GUI_PAPEL_NORMAL*/,0,use_cache);
 				}
 			}
 			//printf ("sonda 3\n");

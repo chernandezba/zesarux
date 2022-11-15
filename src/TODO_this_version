@@ -181,4 +181,4 @@ O sea en fase ejecución se pone a 0
 Y se pondrá a 1 en la fase de resultado
 En read y write data se pone a 1 antes de recibir/escribir el primer byte del sector
 
--visualfloppy: si se quiere dibujar marcas sectores se puede hacer con bucle hacia menu_visual_floppy_putpixel_track_sector indicando siempre  byte_en_sector=0
+-visualfloppy: circulo grande modificar funcion elipse para corregir punteado

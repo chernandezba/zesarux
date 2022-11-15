@@ -33812,7 +33812,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);        
 
 		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
-            ,"[%c] ~~Header",(menu_visualfloppy_header_visible ? 'X' : ' '));
+            ,"[%c] ~~Head",(menu_visualfloppy_header_visible ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'h');
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);        
