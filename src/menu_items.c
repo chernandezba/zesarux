@@ -33313,9 +33313,12 @@ void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int cent
 
         
 
-        int recorrido_actual_cabezal=(pista_actual*recorrido_total_cabezal)/MENU_VISUAL_FLOPPY_PISTAS;
+        //int recorrido_actual_cabezal=(pista_actual*recorrido_total_cabezal)/MENU_VISUAL_FLOPPY_PISTAS;
         //pista 0 arriba del todo
-        int ycabezal=centro_disco_y-radio_exterior_disco+recorrido_actual_cabezal+1;
+
+        int recorrido_actual_cabezal=menu_visual_floppy_get_radio_pista(pista_actual,radio_exterior_disco,radio_fin_datos);
+
+        int ycabezal=centro_disco_y-recorrido_actual_cabezal;
 
         /*
         Cabezal asi:
@@ -33336,11 +33339,18 @@ void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int cent
                 int xinicio=xcabezal;
                 int xfinal=xcabezal+ancho_cabezal-1;
 
-                //Si linea de arriba, hacerla un poco mas larga para marcar exacta la pista
+                //Si las dos lineas de arriba, hacerla un poco mas larga para marcar exacta la pista
+                //Con alto 2, pues en posicion 90 grados, el circulo hace un "piquito" hacia arriba
                 if (y==0) {
                     xinicio -=2;
                     xfinal +=2;
                 }
+
+                if (y==1) {
+                    xinicio -=1;
+                    xfinal +=1;
+                }
+
 
                 zxvision_draw_line(menu_visual_floppy_window,xinicio,ycabezal+y,xfinal,ycabezal+y,color,zxvision_putpixel);
             }
@@ -33474,8 +33484,8 @@ void menu_visual_floppy_overlay(void)
         }
 
 
-        //prueba borrar primero todo
-        //alternativa mediante: voy a dibujar todo pista, sector y byte
+        //prueba dibujar todo
+        
         /*
         for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
 
@@ -33491,6 +33501,7 @@ void menu_visual_floppy_overlay(void)
 
         }
         */
+        
 
         //TODO: esto es temporal
         //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
@@ -33593,7 +33604,8 @@ void menu_visual_floppy_overlay(void)
         //Dibujar cabezal
         //Calcular ancho cabezal
         int pista_actual=pd765_pcn;
-
+//temp
+//pista_actual=39;
         menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
 
    
