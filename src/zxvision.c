@@ -9606,6 +9606,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->offset_x=0;
 	w->offset_y=0;
 
+    w->default_paper=ESTILO_GUI_PAPEL_NORMAL;
+
 	//Establecer titulo ventana
 	strcpy(w->window_title,title);	
 
@@ -9647,7 +9649,6 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->height_before_max_min_imize=visible_height;	
 	w->width_before_max_min_imize=visible_width;	
 
-    w->default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
     //printf("zxvision_new_window_no_check_range. before min: %d X %d\n",w->width_before_max_min_imize,w->height_before_max_min_imize);
 

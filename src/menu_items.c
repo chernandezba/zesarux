@@ -33221,6 +33221,8 @@ int menu_visualfloppy_rotacion_activada=1;
 //rotacion con rpm real
 int menu_visualfloppy_rotacion_real=1;
 
+int menu_visualfloppy_header_visible=1;
+
 //Retorna en que radio está una pista concreta
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
 {
@@ -33646,13 +33648,12 @@ void menu_visual_floppy_overlay(void)
 
 
         //Dibujar cabezal
-        //Calcular ancho cabezal
-        int pista_actual=pd765_pcn;
-//temp
-//pista_actual=39;
-        menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
+        if (menu_visualfloppy_header_visible) {
+            //Calcular ancho cabezal
+            int pista_actual=pd765_pcn;
+            menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
 
-   
+        }
             
 
             //esto de momento no menu_visual_floppy_buffer_reset();
@@ -33724,6 +33725,11 @@ void menu_visual_floppy_rotation_real(MENU_ITEM_PARAMETERS)
     menu_visualfloppy_rotacion_real ^=1;
 }
 
+void menu_visual_floppy_switch_header(MENU_ITEM_PARAMETERS)
+{
+	menu_visualfloppy_header_visible ^=1;
+}
+
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 {
 	menu_espera_no_tecla();
@@ -33758,7 +33764,9 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 	ventana->can_be_backgrounded=1;
          
-
+    //definir color de papel de fondo
+    ventana->default_paper=HEATMAP_INDEX_FIRST_COLOR;
+    zxvision_cls(ventana);
 
 	zxvision_draw_window(ventana);
 
@@ -33792,7 +33800,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation,NULL
-            ,"[%c] Show ~~Rotation",(menu_visualfloppy_rotacion_activada ? 'X' : ' '));
+            ,"[%c] ~~Rotation",(menu_visualfloppy_rotacion_activada ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'r');
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Disable rotation");
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
@@ -33801,7 +33809,13 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
             ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,20,0);        
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);        
+
+		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
+            ,"[%c] ~~Header",(menu_visualfloppy_header_visible ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'h');
+		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);        
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
