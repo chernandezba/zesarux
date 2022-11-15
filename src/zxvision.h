@@ -137,6 +137,9 @@ struct s_zxvision_window {
 	int is_maximized;
 
     //papel usado por ejemplo al hacer zxvision_cls
+    //aunque no se usa en casi ninguna funcion mas, por ejemplo, zxvision_print_string_defaults no lo usa
+    //esta pensado para cuando se quiere poner un fondo de color concreto y mayormente llenar la pantalla
+    //de pixeles, como en Visual Floppy
     int default_paper;
 
 	//Si boton de background aparece en ventana. Nota: en principio F6 funciona aunque esto no se establezca
