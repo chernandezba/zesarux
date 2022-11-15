@@ -118,10 +118,39 @@ z80_byte pd765_debug_last_sector_id_h_read=0;
 z80_byte pd765_debug_last_sector_id_r_read=0;
 z80_byte pd765_debug_last_sector_id_n_read=0;
 
-
+int tempp_estados=0;
 
 //Estado motor. 0 apagado, 1 activado
 int pd765_motor_status=0;
+
+//Velocidad relativa del motor: 0%: detenido del todo, 100%: iniciado del todo
+//De momento solo usado en visual floppy
+int pd765_motor_speed=0;
+
+//En cuanto se acelera o frena el motor por cada frame de pantalla (o sea cada 20 ms)
+//Al parecer al hacer un cat a:, desde un motor on, hasta el primer comando (recalibrate) pasa 1 segundo
+#define PD765_INCREMENT_PERCENTAGE_MOTOR 2
+
+//Gestion de velocidad del motor.
+void pd765_handle_speed_motor(void)
+{
+    //printf("estados: %d speed: %d\n",tempp_estados++,pd765_motor_speed);
+
+    if (pd765_motor_status) {
+        //Iniciado. Llevar hasta 100% velocidad
+        if (pd765_motor_speed<=100) {
+            pd765_motor_speed +=PD765_INCREMENT_PERCENTAGE_MOTOR;
+            if (pd765_motor_speed>100) pd765_motor_speed=100;
+        }
+    }
+    else {
+        //Detenido. Llevar velocidad hasta 0%
+        if (pd765_motor_speed>0) {
+            pd765_motor_speed -=PD765_INCREMENT_PERCENTAGE_MOTOR;
+            if (pd765_motor_speed<0) pd765_motor_speed=0;
+        }
+    }
+}
 
 //
 //Gestion de tratamiento de senyales con contador
@@ -286,6 +315,7 @@ void pd765_reset(void)
     pd765_pcn=0;
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
+    pd765_motor_speed=0;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;

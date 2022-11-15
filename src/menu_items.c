@@ -33212,6 +33212,15 @@ zxvision_window *menu_visual_floppy_window;
 #define MENU_VISUAL_FLOPPY_SECTORES 9
 #define MENU_VISUAL_FLOPPY_BYTES_SECTOR 512
 
+//Angulo de rotacion actual que se aumenta si motor activo
+int menu_visualfloppy_rotacion_disco=0;
+
+//Si permitida rotacion
+int menu_visualfloppy_rotacion_activada=1;
+
+//rotacion con rpm real
+int menu_visualfloppy_rotacion_real=1;
+
 //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
 void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disco_y,
     int radio_interior_disco,int radio_exterior_disco,int pista,int sector,int byte_en_sector,int color)
@@ -33225,12 +33234,15 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
     //calcular el incremento de radio en la zona entre radio interior y exterior segun la pista
 
-    int radio_usable=radio_exterior_disco-radio_interior_disco;
+    int radio_usable=radio_exterior_disco-radio_interior_disco-1; //quitar 1 para no usar justo el radio exterior
 
     //pista 0 esta en la zona mas externa
     int radio_del_byte=(radio_usable*(MENU_VISUAL_FLOPPY_PISTAS-pista))/MENU_VISUAL_FLOPPY_PISTAS;
 
     radio_del_byte +=radio_interior_disco;
+
+    //quitar 1 para no usar justo el radio exterior
+    radio_del_byte--;
 
     //calcular grados. Partiendo que sector 0 es grados 0
     int grados_por_sector=(360/MENU_VISUAL_FLOPPY_SECTORES);
@@ -33245,6 +33257,12 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 
     int grados_final=grados_sector+incremento_sector;
 
+    //sumarle la rotacion disco
+    grados_final +=menu_visualfloppy_rotacion_disco;
+
+    //limitar a 360
+    grados_final = grados_final % 360;    
+
     //ya tenemos radio y grados. dibujar pixel
     int xdestino=centro_disco_x+((radio_del_byte*util_get_cosine(grados_final))/10000);
     int ydestino=centro_disco_y-((radio_del_byte*util_get_sine(grados_final))/10000);   
@@ -33256,13 +33274,19 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 }
 
 //Para indicar los sectores leidos, buffer 
-#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 100000
+//buffer de 128kb.
+#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 131072
 int menu_visual_floppy_buffer_length=0;
+
+#define MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL (360/10)
+#define MENU_VISUAL_FLOPPY_ROTATION_SPEED_SLOW (360/50/2)
+
 
 struct s_menu_visual_floppy_buffer {
     int pista;
     int sector;
     int byte_en_sector;
+    int intensidad; //intensidad de color en porcentaje: 100%: cuando se agrega. Va bajando hasta 0
 };
 
 struct s_menu_visual_floppy_buffer menu_visual_floppy_buffer[MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER];
@@ -33283,6 +33307,7 @@ void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].pista=pista;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].sector=sector;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].byte_en_sector=byte_en_sector;
+    menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].intensidad=100;
 
     menu_visual_floppy_buffer_length++;
 }
@@ -33303,7 +33328,7 @@ void menu_visual_floppy_overlay(void)
     if (menu_visual_floppy_window->is_minimized) return;  
 
     //esto hara ejecutar esto 5 veces por segundo
-    if ( ((contador_segundo%200) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
+    //if ( ((contador_segundo%200) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
 
                     //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
             //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
@@ -33335,8 +33360,19 @@ void menu_visual_floppy_overlay(void)
         if (ancho_ventana_pixeles<alto_ventana_pixeles) radio_exterior_disco=ancho_ventana_pixeles/2;
         else radio_exterior_disco=alto_ventana_pixeles/2;
 
+        //quitarle 1 caracter de radio. Fijo a 8 pixeles que es el maximo de un caracter en ancho o alto
+        radio_exterior_disco -=8;
 
         int radio_interior_disco=radio_exterior_disco/6;
+
+        //Resto de dimensiones van relativas a radio_exterior_disco
+        //radio exterior entre 6 partes
+        //radio interior es 1/6 del exterior
+        //margen del interior hasta datos: otro 1/6
+        //del interior hasta el exterior quedan 5/6
+        //ahi ubicaremos sectores 0..39      
+
+        int radio_fin_datos=radio_interior_disco*2;
 
         //prueba
         int color_byte_sector=0;
@@ -33346,79 +33382,181 @@ void menu_visual_floppy_overlay(void)
         int pista;
 
 
-        //prueba borrar primero todo
-        //alternativa mediante: voy a dibujar todo pista, sector y byte
-        /*for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
 
-        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
-
-        for (byte_en_sector=0;byte_en_sector<MENU_VISUAL_FLOPPY_BYTES_SECTOR;byte_en_sector++) {
-        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
-        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-            pista,sector,byte_en_sector,ESTILO_GUI_PAPEL_NORMAL);
-        }
-
-        }
-
-        }*/
 
         //alternativa mediante circulos desde interior hasta exterior
         int r;
-        for (r=radio_interior_disco+1;r<radio_exterior_disco;r++) {
+        for (r=0;r<radio_exterior_disco;r++) {
             zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-              r,r,ESTILO_GUI_PAPEL_NORMAL, 
+              r,r,HEATMAP_INDEX_FIRST_COLOR, 
              zxvision_putpixel,360);
         }
 
 
 
+
+        //prueba borrar primero todo
+        //alternativa mediante: voy a dibujar todo pista, sector y byte
+        /*
+        for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
+
+        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
+
+        for (byte_en_sector=0;byte_en_sector<MENU_VISUAL_FLOPPY_BYTES_SECTOR;byte_en_sector++) {
+        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+            pista,sector,byte_en_sector,(pista+sector) % 8);
+        }
+
+        }
+
+        }
+        */
+
         //TODO: esto es temporal
         //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
 
-        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-            radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
-            zxvision_putpixel,360);
 
-
-        //Resto de dimensiones van relativas a radio_exterior_disco
-        //radio exterior entre 6 partes
-        //radio interior es 1/6 del exterior
-        //del interior hasta el exterior quedan 5/6
-        //ahi ubicaremos sectores 0..39
-
-        
-        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-            radio_interior_disco,radio_interior_disco,color_contorno_disco, 
-            zxvision_putpixel,360);
 
         
 
         
 
         int i;
+        int intensidad;
+
+        int ultimo_color_no_cero=-1;
 
         for (i=0;i<menu_visual_floppy_buffer_length;i++) {
             pista=menu_visual_floppy_buffer[i].pista;
             sector=menu_visual_floppy_buffer[i].sector;
             byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
+            intensidad=menu_visual_floppy_buffer[i].intensidad;
+
+            if (intensidad!=0) ultimo_color_no_cero=i;
+
+            //calcular color heatmap
+            //#define HEATMAP_INDEX_FIRST_COLOR (TSCONF_INDEX_FIRST_COLOR+TSCONF_TOTAL_PALETTE_COLOURS)
+            //#define HEATMAP_TOTAL_PALETTE_COLOURS 256
+            int incremento_color=((HEATMAP_TOTAL_PALETTE_COLOURS-1)*intensidad)/100;
+            //por si acaso
+            if (incremento_color>=HEATMAP_TOTAL_PALETTE_COLOURS-1) incremento_color=HEATMAP_TOTAL_PALETTE_COLOURS-1;
+            int color=HEATMAP_INDEX_FIRST_COLOR+incremento_color;
+
 
             //printf("%d %d,%d,%d\n",i,pista,sector,byte_en_sector);
 
-            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_interior_disco,radio_exterior_disco,
-            pista,sector,byte_en_sector,color_byte_sector);
+            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+            pista,sector,byte_en_sector,color);
+
+            //Y decrementar intensidad
+            if (intensidad>0) intensidad--;
+            menu_visual_floppy_buffer[i].intensidad=intensidad;
 
         }
+        
+        menu_visual_floppy_buffer_length=ultimo_color_no_cero+1;
+
+        printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
 
         //printf("\n");
 
+        //Exterior
+        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+            radio_exterior_disco,radio_exterior_disco,color_contorno_disco, 
+            zxvision_putpixel,360);
 
 
-            menu_visual_floppy_buffer_reset();
+
+
+        //Interior
+        zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+            radio_interior_disco,radio_interior_disco,color_contorno_disco, 
+            zxvision_putpixel,360);        
+
+
+        //El Index Hole
+        //Entre Interior y principio datos
+        int posicion_index_hole=(radio_fin_datos-radio_interior_disco/2);
+
+        //Proporcion como siempre del total
+        int radio_index_hole=radio_exterior_disco/20;
+
+       // int index_hole_x=centro_disco_x+posicion_index_hole;
+        //int index_hole_y=centro_disco_y;
+
+        int index_hole_x=centro_disco_x+((posicion_index_hole*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000);
+        int index_hole_y=centro_disco_y-((posicion_index_hole*util_get_sine(menu_visualfloppy_rotacion_disco))/10000);   
+
+
+        zxvision_draw_ellipse(menu_visual_floppy_window,index_hole_x,index_hole_y,
+            radio_index_hole,radio_index_hole,color_contorno_disco, 
+            zxvision_putpixel,360); 
+
+
+
+        //Marcas sectores
+        //prueba borrar primero todo
+        //alternativa mediante: voy a dibujar todo pista, sector y byte
+        for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
+
+        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
+
+     
+        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+            pista,sector,0,1);
+        
+
+        }
+
+        }        
+
+            //esto de momento no menu_visual_floppy_buffer_reset();
+
+
             //zxvision_draw_window_contents(menu_visual_floppy_window);   
 
 
+    //}
+
+    if (!menu_visualfloppy_rotacion_activada) {
+        menu_visualfloppy_rotacion_disco=0;
+    }    
+
+    
+    else if (pd765_motor_speed) {
+    
+        int incremento_grados;
+
+        if (menu_visualfloppy_rotacion_real) {
+            //Para que cada 10 frames rote una vez entera
+            //Por tanto en 1 segundo gira 5 veces
+            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
+        }
+
+        else {
+
+            //rotar bastante menos. 1 vuelta cada 2 segundos
+            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_SLOW;
+        }
+
+        //Aplicarle la velocidad relativa del motor
+        incremento_grados=(incremento_grados*pd765_motor_speed)/100;
+
+        //Sabemos que velocidad no es 0%, por tanto algo se tiene que mover. Si incremento=0, al menos ponemos 1 de incremento
+        //if (incremento_grados==0) incremento_grados=1;
+
+        //printf("speed: %d %%\n",pd765_motor_speed);
+
+        menu_visualfloppy_rotacion_disco +=incremento_grados;
+
     }
 
+    //limitar siempre a 360
+    menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
+
+    //printf("Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
 
 
     //zxvision_draw_window_contents(menu_visual_floppy_window);    
@@ -33431,6 +33569,15 @@ void menu_visual_floppy_overlay(void)
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
 zxvision_window zxvision_window_visual_floppy;
 
+void menu_visual_floppy_rotation(MENU_ITEM_PARAMETERS)
+{
+    menu_visualfloppy_rotacion_activada ^=1;
+}
+
+void menu_visual_floppy_rotation_real(MENU_ITEM_PARAMETERS)
+{
+    menu_visualfloppy_rotacion_real ^=1;
+}
 
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 {
@@ -33491,13 +33638,25 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
 	do {
 
+        //asignar fondo de color de floppy
+        int y;
+        for (y=0;y<ventana->total_height;y++) {
+            zxvision_fill_width_spaces_paper(ventana,y,HEATMAP_INDEX_FIRST_COLOR);
+        }
 
 
 
-		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,NULL,NULL,"Rotation: off");
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'b');
-		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Change bright value");
+		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation,NULL
+            ,"[%c] Show ~~Rotation",(menu_visualfloppy_rotacion_activada ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'r');
+		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Disable rotation");
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
+
+		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation_real,NULL
+            ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
+		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,20,0);        
 
 
 		//Nombre de ventana solo aparece en el caso de stdout

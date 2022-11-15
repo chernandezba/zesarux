@@ -691,6 +691,8 @@ void timer_check_interrupt(void)
         //Ocultación/activación de botón switch zx desktop
         zxdesktop_switchdesktop_timer_event();
 
+        pd765_handle_speed_motor();
+
         //Cosas que suceden cada 1 segundo
         if (contador_segundo>=1000) {
 

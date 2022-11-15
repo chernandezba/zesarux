@@ -13078,18 +13078,23 @@ void zxvision_print_char_defaults(zxvision_window *w,int x,int y,char c)
     zxvision_print_string_defaults(w,x,y,buffer);
 }
 
-void zxvision_fill_width_spaces(zxvision_window *w,int y)
+void zxvision_fill_width_spaces_paper(zxvision_window *w,int y,int papel)
 {
 	overlay_screen caracter_aux;
 	caracter_aux.caracter=' ';
 	caracter_aux.tinta=ESTILO_GUI_TINTA_NORMAL;
-	caracter_aux.papel=ESTILO_GUI_PAPEL_NORMAL;
+	caracter_aux.papel=papel;
 	caracter_aux.parpadeo=0;		
 
 	int i;
 	for (i=0;i<w->total_width;i++) {
 		zxvision_print_char(w,i,y,&caracter_aux);
 	}
+}
+
+void zxvision_fill_width_spaces(zxvision_window *w,int y)
+{
+    zxvision_fill_width_spaces_paper(w,y,ESTILO_GUI_PAPEL_NORMAL);
 }
 
 //Igual que la anterior pero antes borra la linea con espacios
