@@ -33274,8 +33274,11 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 }
 
 
-void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int centro_disco_y,int radio_exterior_disco,int radio_fin_datos)
+void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int centro_disco_y,int radio_exterior_disco,int radio_fin_datos,int color)
 {
+
+    if (pista_actual<0) pista_actual=0;
+    if (pista_actual>=MENU_VISUAL_FLOPPY_PISTAS) pista_actual=MENU_VISUAL_FLOPPY_PISTAS-1;
 
         int ancho_cabezal=radio_exterior_disco/20;
 
@@ -33292,12 +33295,34 @@ void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int cent
         //pista 0 arriba del todo
         int ycabezal=centro_disco_y-radio_exterior_disco+recorrido_actual_cabezal+1;
 
-        int x,y;
-        for (x=0;x<ancho_cabezal;x++) {
+        /*
+        Cabezal asi:
+
+        ----------
+          ------
+          ------
+          ------
+          ------
+          ------
+          ------
+
+        */
+
+        int y;
+        
             for (y=0;y<alto_cabezal;y++) {
-                zxvision_putpixel(menu_visual_floppy_window,xcabezal+x,ycabezal+y,6);
+                int xinicio=xcabezal;
+                int xfinal=xcabezal+ancho_cabezal-1;
+
+                //Si linea de arriba, hacerla un poco mas larga para marcar exacta la pista
+                if (y==0) {
+                    xinicio -=2;
+                    xfinal +=2;
+                }
+
+                zxvision_draw_line(menu_visual_floppy_window,xinicio,ycabezal+y,xfinal,ycabezal+y,color,zxvision_putpixel);
             }
-        }
+        
 }
 
 //Para indicar los sectores leidos, buffer 
@@ -33411,7 +33436,7 @@ void menu_visual_floppy_overlay(void)
 
 
 
-
+        //borrar todo el contenido de los circulos
         //alternativa mediante circulos desde interior hasta exterior
         int r;
         for (r=0;r<radio_exterior_disco;r++) {
@@ -33420,7 +33445,11 @@ void menu_visual_floppy_overlay(void)
              zxvision_putpixel,360);
         }
 
-
+        //borrar posibles posiciones de cabezal
+        int i;
+        for (i=0;i<MENU_VISUAL_FLOPPY_PISTAS;i++) {
+            menu_visual_floppy_draw_header(i,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR);
+        }
 
 
         //prueba borrar primero todo
@@ -33450,7 +33479,7 @@ void menu_visual_floppy_overlay(void)
 
         
 
-        int i;
+        
         int intensidad;
 
         int ultimo_color_no_cero=-1;
@@ -33543,7 +33572,7 @@ void menu_visual_floppy_overlay(void)
         //Calcular ancho cabezal
         int pista_actual=pd765_pcn;
 
-        menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos);
+        menu_visual_floppy_draw_header(pista_actual,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,6);
 
    
             
