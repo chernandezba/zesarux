@@ -33221,6 +33221,23 @@ int menu_visualfloppy_rotacion_activada=1;
 //rotacion con rpm real
 int menu_visualfloppy_rotacion_real=1;
 
+//Retorna en que radio está una pista concreta
+int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
+{
+    int radio_usable=radio_exterior_disco-radio_interior_disco-1; //quitar 1 para no usar justo el radio exterior
+
+    //pista 0 esta en la zona mas externa
+    int radio_del_byte=(radio_usable*(MENU_VISUAL_FLOPPY_PISTAS-1-pista))/MENU_VISUAL_FLOPPY_PISTAS;
+
+    radio_del_byte +=radio_interior_disco;
+
+    //quitar 1 para no usar justo el radio exterior
+    radio_del_byte--;
+
+    return radio_del_byte;
+
+}
+
 //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
 void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disco_y,
     int radio_interior_disco,int radio_exterior_disco,int pista,int sector,int byte_en_sector,int color)
@@ -33233,16 +33250,21 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
     }
 
     //calcular el incremento de radio en la zona entre radio interior y exterior segun la pista
+    int radio_del_byte=menu_visual_floppy_get_radio_pista(pista,radio_exterior_disco,radio_interior_disco);
+
+    /*/
 
     int radio_usable=radio_exterior_disco-radio_interior_disco-1; //quitar 1 para no usar justo el radio exterior
 
     //pista 0 esta en la zona mas externa
-    int radio_del_byte=(radio_usable*(MENU_VISUAL_FLOPPY_PISTAS-pista))/MENU_VISUAL_FLOPPY_PISTAS;
+    int radio_del_byte=(radio_usable*(MENU_VISUAL_FLOPPY_PISTAS-1-pista))/MENU_VISUAL_FLOPPY_PISTAS;
 
     radio_del_byte +=radio_interior_disco;
 
     //quitar 1 para no usar justo el radio exterior
     radio_del_byte--;
+
+    */
 
     //calcular grados. Partiendo que sector 0 es grados 0
     int grados_por_sector=(360/MENU_VISUAL_FLOPPY_SECTORES);
