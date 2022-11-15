@@ -33397,6 +33397,27 @@ void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
     menu_visual_floppy_buffer_length++;
 }
 
+void menu_visual_floppy_dibujar_index_hole(int centro_disco_x,int centro_disco_y,
+    int radio_exterior_disco,int radio_interior_disco,int radio_fin_datos,int color,int grados)
+{
+            //El Index Hole
+        //Entre Interior y principio datos
+        int posicion_index_hole=(radio_fin_datos-radio_interior_disco/2);
+
+        //Proporcion como siempre del total
+        int radio_index_hole=radio_exterior_disco/20;
+
+       // int index_hole_x=centro_disco_x+posicion_index_hole;
+        //int index_hole_y=centro_disco_y;
+
+        int index_hole_x=centro_disco_x+((posicion_index_hole*util_get_cosine(grados))/10000);
+        int index_hole_y=centro_disco_y-((posicion_index_hole*util_get_sine(grados))/10000);   
+
+
+        zxvision_draw_ellipse(menu_visual_floppy_window,index_hole_x,index_hole_y,
+            radio_index_hole,radio_index_hole,color, 
+            zxvision_putpixel,360); 
+}
 
 //Contador de segundo para hacer que el overlay solo se redibuje un numero de veces por segundo y no siempre
 int menu_visual_floppy_contador_segundo_anterior;
@@ -33483,6 +33504,11 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_draw_header(i,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR);
         }
 
+        //borrar posiciones de index holes
+        for (i=0;i<360;i++) {
+            menu_visual_floppy_dibujar_index_hole(centro_disco_x,centro_disco_y,radio_exterior_disco,radio_interior_disco,
+                radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR,i);       
+        }
 
         //prueba dibujar todo
         
@@ -33566,6 +33592,10 @@ void menu_visual_floppy_overlay(void)
 
 
         //El Index Hole
+        menu_visual_floppy_dibujar_index_hole(centro_disco_x,centro_disco_y,radio_exterior_disco,radio_interior_disco,
+            radio_fin_datos,color_contorno_disco,menu_visualfloppy_rotacion_disco);
+
+/*
         //Entre Interior y principio datos
         int posicion_index_hole=(radio_fin_datos-radio_interior_disco/2);
 
@@ -33582,6 +33612,8 @@ void menu_visual_floppy_overlay(void)
         zxvision_draw_ellipse(menu_visual_floppy_window,index_hole_x,index_hole_y,
             radio_index_hole,radio_index_hole,color_contorno_disco, 
             zxvision_putpixel,360); 
+*/
+
 
    //Marcas sectores
         //prueba borrar primero todo
