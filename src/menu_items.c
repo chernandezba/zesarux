@@ -33422,6 +33422,9 @@ void menu_visual_floppy_dibujar_index_hole(int centro_disco_x,int centro_disco_y
 //Contador de segundo para hacer que el overlay solo se redibuje un numero de veces por segundo y no siempre
 int menu_visual_floppy_contador_segundo_anterior;
 
+//Si se ha llenado el fondo con espacios del color de fondo esperado
+//int menu_visual_floppy_fondo_asignado=0;
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -33445,6 +33448,15 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_contador_segundo_anterior=contador_segundo;
 
 
+        /*if (!menu_visual_floppy_fondo_asignado) {
+            menu_visual_floppy_fondo_asignado=1;
+                    //asignar fondo de color de floppy
+        int y;
+        for (y=0;y<menu_visual_floppy_window->total_height;y++) {
+            zxvision_fill_width_spaces_paper(menu_visual_floppy_window,y,HEATMAP_INDEX_FIRST_COLOR);
+        }
+        
+        }*/
 
         //Print....      
         //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
@@ -33757,6 +33769,9 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 
 	set_menu_overlay_function(menu_visual_floppy_overlay);
+
+    //forzar a escribir el fondo desde overlay
+    //menu_visual_floppy_fondo_asignado=0;
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -33771,11 +33786,8 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
 	do {
 
-        //asignar fondo de color de floppy
-        int y;
-        for (y=0;y<ventana->total_height;y++) {
-            zxvision_fill_width_spaces_paper(ventana,y,HEATMAP_INDEX_FIRST_COLOR);
-        }
+        //forzar a escribir el fondo desde overlay
+        //menu_visual_floppy_fondo_asignado=0;
 
 
 

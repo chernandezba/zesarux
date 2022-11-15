@@ -136,6 +136,9 @@ struct s_zxvision_window {
 	int is_minimized;
 	int is_maximized;
 
+    //papel usado por ejemplo al hacer zxvision_cls
+    int default_paper;
+
 	//Si boton de background aparece en ventana. Nota: en principio F6 funciona aunque esto no se establezca
 	int can_be_backgrounded;
 

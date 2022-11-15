@@ -9519,7 +9519,7 @@ void zxvision_cls(zxvision_window *w)
 
 	for (i=0;i<buffer_size;i++) {
 		p->tinta=ESTILO_GUI_TINTA_NORMAL;
-		p->papel=ESTILO_GUI_PAPEL_NORMAL;
+		p->papel=w->default_paper;
 		p->parpadeo=0;
 		p->caracter=' ';
 
@@ -9646,6 +9646,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
     //printf("--zxvision_new_window_no_check_range. setting before min: %d X %d\n",visible_width,visible_height);
 	w->height_before_max_min_imize=visible_height;	
 	w->width_before_max_min_imize=visible_width;	
+
+    w->default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
     //printf("zxvision_new_window_no_check_range. before min: %d X %d\n",w->width_before_max_min_imize,w->height_before_max_min_imize);
 
