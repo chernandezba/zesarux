@@ -288,12 +288,7 @@ const int dsk_sector_sizes_numbers[]={
     8192, //6
 };
 
-int dsk_extended_get_start_track(int pista,int cara)
-{
-    printf("TODO dsk_extended_get_start_track\n");
-    sleep(5);
-    return -1;
-}
+
 
 //entrada: offset a track information block
 int dsk_get_total_sectors_track(int offset)
@@ -346,6 +341,32 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
 }
 
+int dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
+{
+    
+    int offset=0x34; //Nos situamos en la track size table
+
+    //TODO: soportar discos de dos caras
+
+    int offset_total_a_pista=0;
+
+    int pista;
+
+    for (pista=0;pista<pista_buscar;pista++) {
+        int tamanyo_pista=plus3dsk_get_byte_disk(offset);
+        offset++;
+
+        tamanyo_pista *=256;
+
+        offset_total_a_pista +=tamanyo_pista;
+
+    }
+
+    printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
+
+    return 0x100+offset_total_a_pista;
+
+}
 
 //Retorna -1 si pista no encontrada
 //Retorna offset al Track information block
@@ -363,6 +384,8 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 {
 
     int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
+
+    printf("Inicio pista %d: %XH\n",pista,iniciopista);
 
     int total_sectors=dsk_get_total_sectors_track(iniciopista);    
 
