@@ -138,6 +138,14 @@ void dskplusthree_disable(void)
 	dskplusthree_emulation.v=0;
 }
 
+                                
+const char *dsk_signature_basic=   "MV - CPC";
+//Usada en captain blood: "MV - CPC format Disk Image (DU54)\r\nDisk-Info"
+
+const char *dsk_signature_extended="EXTENDED";
+
+int dsk_file_type_extended=0;
+
 void dskplusthree_enable(void)
 {
 
@@ -166,6 +174,38 @@ void dskplusthree_enable(void)
 
 
         fclose(ptr_dskfile);
+
+    //Detect signature
+    const int signature_check_length=8;
+
+    if (!memcmp(dsk_signature_basic,p3dsk_buffer_disco,signature_check_length)) {
+        printf("Detected Basic DSK\n");
+        dsk_file_type_extended=0;
+    }
+
+    else if (!memcmp(dsk_signature_extended,p3dsk_buffer_disco,signature_check_length)) {
+        printf("Detected Extended DSK\n");
+        dsk_file_type_extended=1;
+    }
+
+    else {
+        debug_printf(VERBOSE_ERR,"Unknown DSK file format");
+        return;
+    }
+
+    //Mostrar firma ocultando caracteres no validos
+    char buffer_signature[35];
+    int i;
+    for (i=0;i<34;i++) {
+        z80_byte c=p3dsk_buffer_disco[i];
+        if (c<32 || c>126) c='.';
+
+        buffer_signature[i]=c;
+    }
+
+    buffer_signature[i]=0;
+
+    printf("DSK signature: %s\n",buffer_signature);
 
 	p3dsk_buffer_disco_size=tamanyo;
 

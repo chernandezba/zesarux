@@ -33476,7 +33476,7 @@ void menu_visualfloppy_increment_rotation(void)
     menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
 
 
-    printf("###Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
+    //printf("###Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
 
 }
 
