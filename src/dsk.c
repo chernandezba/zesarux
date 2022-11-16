@@ -313,6 +313,8 @@ int dsk_get_sector_size_track(int offset)
     }
 
     sector_size=dsk_sector_sizes_numbers[sector_size];
+
+    return sector_size;
 }
 
 int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
@@ -371,6 +373,8 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
     for (sector=0;sector<total_sectors;sector++) {
 
+        printf("Buscando sector ID %02XH on track %d estamos en pos sector %d\n",parametro_r,pista,sector);
+
 
         z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
 
@@ -392,8 +396,11 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
             //printf("Offset sector: %XH\n",offset_retorno);
 
             *sector_fisico=sector;
+            printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
             return offset_retorno;
         }
+
+        sector_information_list +=8;
 
     }
 
