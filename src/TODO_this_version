@@ -182,3 +182,5 @@ Y se pondrá a 1 en la fase de resultado
 En read y write data se pone a 1 antes de recibir/escribir el primer byte del sector
 
 -visualfloppy: circulo grande modificar funcion elipse para corregir punteado
+
+-ZXCPM: falla con error size 0 not supported
