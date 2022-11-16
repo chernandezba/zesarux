@@ -278,7 +278,63 @@ void dsk_show_activity(void)
 	}	
 }
 
+const int dsk_sector_sizes_numbers[]={
+    0,    //0: no usado, puesto aqui por comodidad al hacer lookup de tabla
+    256,  //1
+    512,  //2
+    1024, //3
+    2048, //4
+    4096, //5
+    8192, //6
+};
 
+int dsk_extended_get_start_track(int pista,int cara)
+{
+    printf("TODO\n");
+    return -1;
+}
+
+int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
+{
+    int pista;
+    int offset=0x100;
+
+    for (pista=0;pista<dsk_get_total_tracks();pista++) {
+        z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
+        z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
+
+        if (track_number==pista_encontrar && side_number==cara_encontrar) {
+            return offset;
+        }
+
+        int sector_size=plus3dsk_get_byte_disk(offset+0x14);
+        if (sector_size<1 || sector_size>6) {
+            debug_printf(VERBOSE_ERR,"Sector size %d unsupported",sector_size);
+            return -1;
+        }
+
+        sector_size=dsk_sector_sizes_numbers[sector_size];
+
+        int total_sectors=plus3dsk_get_byte_disk(offset+0x15);
+
+        int saltar=total_sectors*sector_size+256; //256 ocupa el sector block
+
+        offset +=saltar;
+    }
+
+    return -1;
+
+}
+
+
+//Retorna -1 si pista no encontrada
+//Retorna offset al Track information block
+int dsk_get_start_track(int pista,int cara)
+{
+    //Hacerlo diferente si dsk basico o extendido
+    if (dsk_file_type_extended) return dsk_extended_get_start_track(pista,cara);
+    else return dsk_basic_get_start_track(pista,cara);
+}
 
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
