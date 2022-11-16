@@ -290,8 +290,29 @@ const int dsk_sector_sizes_numbers[]={
 
 int dsk_extended_get_start_track(int pista,int cara)
 {
-    printf("TODO\n");
+    printf("TODO dsk_extended_get_start_track\n");
+    sleep(5);
     return -1;
+}
+
+//entrada: offset a track information block
+int dsk_get_total_sectors_track(int offset)
+{
+    int total_sectors=plus3dsk_get_byte_disk(offset+0x15);
+
+    return total_sectors;
+}
+
+//entrada: offset a track information block
+int dsk_get_sector_size_track(int offset)
+{
+    int sector_size=plus3dsk_get_byte_disk(offset+0x14);
+    if (sector_size<1 || sector_size>6) {
+        debug_printf(VERBOSE_ERR,"Sector size %d unsupported",sector_size);
+        return -1;
+    }
+
+    sector_size=dsk_sector_sizes_numbers[sector_size];
 }
 
 int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
@@ -307,15 +328,12 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
             return offset;
         }
 
-        int sector_size=plus3dsk_get_byte_disk(offset+0x14);
-        if (sector_size<1 || sector_size>6) {
-            debug_printf(VERBOSE_ERR,"Sector size %d unsupported",sector_size);
+        int sector_size=dsk_get_sector_size_track(offset);
+        if (sector_size<0) {
             return -1;
         }
 
-        sector_size=dsk_sector_sizes_numbers[sector_size];
-
-        int total_sectors=plus3dsk_get_byte_disk(offset+0x15);
+        int total_sectors=dsk_get_total_sectors_track(offset);
 
         int saltar=total_sectors*sector_size+256; //256 ocupa el sector block
 
@@ -336,9 +354,60 @@ int dsk_get_start_track(int pista,int cara)
     else return dsk_basic_get_start_track(pista,cara);
 }
 
+
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
 int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
+{
+
+    int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
+
+    int total_sectors=dsk_get_total_sectors_track(iniciopista);    
+
+
+    int sector_information_list=iniciopista+0x18;
+
+    int sector;
+
+    for (sector=0;sector<total_sectors;sector++) {
+
+
+        z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
+
+
+        if (sector_id==parametro_r) {
+            //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
+            printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
+
+
+            int offset=iniciopista+0x100;
+
+            int sector_size=dsk_get_sector_size_track(iniciopista);
+            if (sector_size<0) {
+                return -1;
+            }                        
+
+            //int iniciopista=traps_plus3dos_getoff_start_track(pista);
+            int offset_retorno=offset+sector_size*sector;
+            //printf("Offset sector: %XH\n",offset_retorno);
+
+            *sector_fisico=sector;
+            return offset_retorno;
+        }
+
+    }
+
+
+
+    printf("NOT Found sector ID %02XH on track %d\n",parametro_r,pista);
+	return -1;
+
+}
+
+
+//Retorna el offset al dsk segun la pista y sector id dados 
+//Retorna tambien el sector fisico: 0,1,2,3....
+int old_dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 {
 
 /*
