@@ -33443,15 +33443,15 @@ void menu_visualfloppy_increment_rotation(void)
         if (menu_visualfloppy_rotacion_real) {
             //Para que cada 10 frames rote una vez entera
             //Por tanto en 1 segundo gira 5 veces
-            //incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
+            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
 
             //para que visualmente el ojo siempre perciba movimiento hacia la izquierda (o al menos, que no detecte movimiento de marcas de sectores a la derecha)
             //incremento_grados+=4;
             //porque por una parte tenemos que deberiamos hacer, en 10 frames, una vuelta completa (o sea, incremento_grados=360/10)
             //pero pero otra, hay 9 marcas de sector (y no 10) que al moverse cada frame parece que se mueven a la derecha
-            incremento_grados=360/MENU_VISUAL_FLOPPY_PISTAS;
-
             //Al final en 1 segundo habremos dado 5.5 vueltas en vez de 5, o sea, en vez de 300 rpm iremos a 333 rpm
+            //incremento_grados=360/MENU_VISUAL_FLOPPY_PISTAS;
+            
         }
 
         else {
@@ -33640,7 +33640,7 @@ void menu_visual_floppy_overlay(void)
         
         menu_visual_floppy_buffer_length=ultimo_color_no_cero+1;
 
-        printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
+        if (ultimo_color_no_cero!=-1) printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
 
         //printf("\n");
 

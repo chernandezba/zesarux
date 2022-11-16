@@ -59,4 +59,8 @@ extern void dsk_get_chrn(int pista,int sector,z80_byte *parametro_c,z80_byte *pa
 
 extern void dsk_get_st12(int pista,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2);
 
+extern int dsk_get_total_tracks(void);
+
+extern int dsk_get_total_sides(void);
+
 #endif

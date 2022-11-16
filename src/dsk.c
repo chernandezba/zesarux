@@ -146,6 +146,19 @@ const char *dsk_signature_extended="EXTENDED";
 
 int dsk_file_type_extended=0;
 
+void dsk_get_string_protected(int offset,char *buffer_signature,int total_bytes)
+{
+    int i;
+    for (i=0;i<total_bytes;i++) {
+        z80_byte c=p3dsk_buffer_disco[i+offset];
+        if (c<32 || c>126) c='.';
+
+        buffer_signature[i]=c;
+    }
+
+    buffer_signature[i]=0;    
+}
+
 void dskplusthree_enable(void)
 {
 
@@ -195,17 +208,14 @@ void dskplusthree_enable(void)
 
     //Mostrar firma ocultando caracteres no validos
     char buffer_signature[35];
-    int i;
-    for (i=0;i<34;i++) {
-        z80_byte c=p3dsk_buffer_disco[i];
-        if (c<32 || c>126) c='.';
-
-        buffer_signature[i]=c;
-    }
-
-    buffer_signature[i]=0;
-
+    dsk_get_string_protected(0,buffer_signature,34);
     printf("DSK signature: %s\n",buffer_signature);
+
+    char buffer_creator[15];
+    dsk_get_string_protected(0x22,buffer_creator,14);
+    printf("DSK creator: %s\n",buffer_creator);    
+
+    printf("DSK total tracks: %d total sides: %d\n",dsk_get_total_tracks(),dsk_get_total_sides());
 
 	p3dsk_buffer_disco_size=tamanyo;
 
@@ -247,6 +257,15 @@ void plus3dsk_put_byte_disk(int offset,z80_byte value)
 	dskplusthree_must_flush_to_disk=1;
 }
 
+int dsk_get_total_tracks(void)
+{
+    return p3dsk_buffer_disco[0x30];
+}
+
+int dsk_get_total_sides(void)
+{
+    return p3dsk_buffer_disco[0x31];
+}
 
 void dsk_show_activity(void)
 {
@@ -289,8 +308,9 @@ sectores van alternados:
 
 	int iniciopista_orig=256;
 
-    //TODO: no poner esto fijo
-int traps_plus3dos_pistas=40;
+    
+int traps_plus3dos_pistas=dsk_get_total_tracks();
+//TODO: no poner esto fijo
 int traps_plus3dos_sect_pista=9;
 int traps_plus3dos_bytes_sector=512;    
 
@@ -375,8 +395,9 @@ sectores van alternados:
 
 	int iniciopista_orig=256;
 
-    //TODO: no poner esto fijo
-int traps_plus3dos_pistas=40;
+    
+int traps_plus3dos_pistas=dsk_get_total_tracks();
+//TODO: no poner esto fijo
 int traps_plus3dos_sect_pista=9;
 int traps_plus3dos_bytes_sector=512;    
 
@@ -442,8 +463,9 @@ sectores van alternados:
 
 	int iniciopista_orig=256;
 
-    //TODO: no poner esto fijo
-int traps_plus3dos_pistas=40;
+    
+int traps_plus3dos_pistas=dsk_get_total_tracks();
+//TODO: no poner esto fijo
 int traps_plus3dos_sect_pista=9;
 int traps_plus3dos_bytes_sector=512;    
 
