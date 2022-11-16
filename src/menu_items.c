@@ -33427,6 +33427,59 @@ int menu_visual_floppy_contador_segundo_anterior;
 //Si se ha llenado el fondo con espacios del color de fondo esperado
 //int menu_visual_floppy_fondo_asignado=0;
 
+//Esto se llama desde el timer
+void menu_visualfloppy_increment_rotation(void)
+{
+
+    if (!menu_visualfloppy_rotacion_activada) {
+        menu_visualfloppy_rotacion_disco=0;
+    }    
+
+    
+    else if (pd765_motor_speed) {
+    
+        int incremento_grados;
+
+        if (menu_visualfloppy_rotacion_real) {
+            //Para que cada 10 frames rote una vez entera
+            //Por tanto en 1 segundo gira 5 veces
+            //incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
+
+            //para que visualmente el ojo siempre perciba movimiento hacia la izquierda (o al menos, que no detecte movimiento de marcas de sectores a la derecha)
+            //incremento_grados+=4;
+            //porque por una parte tenemos que deberiamos hacer, en 10 frames, una vuelta completa (o sea, incremento_grados=360/10)
+            //pero pero otra, hay 9 marcas de sector (y no 10) que al moverse cada frame parece que se mueven a la derecha
+            incremento_grados=360/MENU_VISUAL_FLOPPY_PISTAS;
+
+            //Al final en 1 segundo habremos dado 5.5 vueltas en vez de 5, o sea, en vez de 300 rpm iremos a 333 rpm
+        }
+
+        else {
+
+            //rotar bastante menos. 1 vuelta cada 2 segundos
+            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_SLOW;
+        }
+
+        //Aplicarle la velocidad relativa del motor
+        incremento_grados=(incremento_grados*pd765_motor_speed)/100;
+
+        //Sabemos que velocidad no es 0%, por tanto algo se tiene que mover. Si incremento=0, al menos ponemos 1 de incremento
+        //if (incremento_grados==0) incremento_grados=1;
+
+        //printf("speed: %d %%\n",pd765_motor_speed);
+
+        menu_visualfloppy_rotacion_disco +=incremento_grados;
+
+    }
+
+    //limitar siempre a 360
+    menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
+
+
+    printf("###Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
+
+}
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -33598,7 +33651,6 @@ void menu_visual_floppy_overlay(void)
 
 
 
-
         //Interior
         zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
             radio_interior_disco,radio_interior_disco,color_contorno_disco, 
@@ -33639,7 +33691,7 @@ void menu_visual_floppy_overlay(void)
      
         //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
         menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,0,1);
+            pista,sector,0,/*1+sector/2*/1);
         
 
         }
@@ -33664,47 +33716,9 @@ void menu_visual_floppy_overlay(void)
 
     //}
 
-    if (!menu_visualfloppy_rotacion_activada) {
-        menu_visualfloppy_rotacion_disco=0;
-    }    
+    //la rotacion del disco que se simula en esta ventana se hace desde el timer
 
     
-    else if (pd765_motor_speed) {
-    
-        int incremento_grados;
-
-        if (menu_visualfloppy_rotacion_real) {
-            //Para que cada 10 frames rote una vez entera
-            //Por tanto en 1 segundo gira 5 veces
-            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
-        }
-
-        else {
-
-            //rotar bastante menos. 1 vuelta cada 2 segundos
-            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_SLOW;
-        }
-
-        //Aplicarle la velocidad relativa del motor
-        incremento_grados=(incremento_grados*pd765_motor_speed)/100;
-
-        //Sabemos que velocidad no es 0%, por tanto algo se tiene que mover. Si incremento=0, al menos ponemos 1 de incremento
-        //if (incremento_grados==0) incremento_grados=1;
-
-        //printf("speed: %d %%\n",pd765_motor_speed);
-
-        menu_visualfloppy_rotacion_disco +=incremento_grados;
-
-    }
-
-    //limitar siempre a 360
-    menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
-
-    
-
-    //printf("Rotacion: %d\n",menu_visualfloppy_rotacion_disco);
-
-
     //zxvision_draw_window_contents(menu_visual_floppy_window);    
     
 }

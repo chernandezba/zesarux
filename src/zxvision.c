@@ -13329,10 +13329,27 @@ void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int rad
 
     int grados;
 
+    //A partir de circulos de radio 57 (360/2/pi) se quedaria punteado, y hay que hacer lineas para unirlos
+    //Debido logicamente a que la funcion que uso de coseno y seno solo tiene tablas de 360 grados, sin decimales,
+    //si usase tablas con decimales y el bucle for de abajo incrementase grados en decimal, y no en entero de 1, no pasaria
+    const int umbral_punteado=57;
+    int radio_mayor;
+
+    if (radius_x>radius_y) radio_mayor=radius_x;
+    else radio_mayor=radius_y;
+
     for (grados=0;grados<limite_grados;grados++) {
         int xdestino=x1+((radius_x*util_get_cosine(grados))/10000);
         int ydestino=y1+((radius_y*util_get_sine(grados))/10000);
         fun_putpixel(w,xdestino,ydestino,c);
+
+        if (radio_mayor>=umbral_punteado) {
+            //generar linea que una con el punto siguiente
+            int xdestino2=x1+((radius_x*util_get_cosine(grados+1))/10000);
+            int ydestino2=y1+((radius_y*util_get_sine(grados+1))/10000);
+            
+            zxvision_draw_line(w,xdestino,ydestino,xdestino2,ydestino2,c,fun_putpixel);
+        }
     }
 
 }

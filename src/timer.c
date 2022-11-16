@@ -693,6 +693,11 @@ void timer_check_interrupt(void)
 
         pd765_handle_speed_motor();
 
+        //para que la rotacion sea constante en dicha ventana
+        //si hiciera la gestion de rotacion desde esa ventana sucederia
+        //que si hay framedrop, rotaria mas lento
+        menu_visualfloppy_increment_rotation();
+
         //Cosas que suceden cada 1 segundo
         if (contador_segundo>=1000) {
 
