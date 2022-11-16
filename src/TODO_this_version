@@ -184,3 +184,6 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 -visualfloppy: circulo grande modificar funcion elipse para corregir punteado
 
 -ZXCPM: falla con error size 0 not supported
+
+-mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
+-rainbow islands:tiene pistas repetidas y otras que no estan

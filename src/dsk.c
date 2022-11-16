@@ -352,7 +352,21 @@ int dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
 
     int pista;
 
-    for (pista=0;pista<pista_buscar;pista++) {
+    int max_pistas=dsk_get_total_tracks();
+
+    for (pista=0;pista<max_pistas;pista++) {
+
+        z80_byte current_track=plus3dsk_get_byte_disk(0x100+offset_total_a_pista+0x10);
+
+        printf("dsk_extended_get_start_track: pista: %d current_track: %d offset+0x100: %XH buscar pista: %d\n",
+            pista,current_track,offset_total_a_pista+0x100,pista_buscar);
+
+        if (pista_buscar==current_track) {
+            printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
+
+            return 0x100+offset_total_a_pista;            
+        }
+
         int tamanyo_pista=plus3dsk_get_byte_disk(offset);
         offset++;
 
@@ -362,9 +376,11 @@ int dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
 
     }
 
-    printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
+    //printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
 
-    return 0x100+offset_total_a_pista;
+    //return 0x100+offset_total_a_pista;
+    printf("Can not find track %d\n",pista_buscar);
+    return -1;
 
 }
 
@@ -387,7 +403,9 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
     printf("Inicio pista %d: %XH\n",pista,iniciopista);
 
-    int total_sectors=dsk_get_total_sectors_track(iniciopista);    
+    int total_sectors=dsk_get_total_sectors_track(iniciopista);   
+
+    printf("Total sectors: %d\n",total_sectors); 
 
 
     int sector_information_list=iniciopista+0x18;
@@ -429,7 +447,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
 
 
-    printf("NOT Found sector ID %02XH on track %d\n",parametro_r,pista);
+    printf("NOT Found sector ID %02XH on track %d (max sectors: %d)\n",parametro_r,pista,total_sectors);
 	return -1;
 
 }

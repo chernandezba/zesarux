@@ -25,7 +25,8 @@
 #include "cpu.h"
 
 //Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
-#define DSK_MAX_BUFFER_DISCO 214784
+//Ejemplo Alien Storm: 255232
+#define DSK_MAX_BUFFER_DISCO 255232
 
 
 
