@@ -299,7 +299,7 @@ int dsk_get_total_sectors_track(int offset)
 }
 
 //entrada: offset a track information block
-int dsk_get_sector_size_track(int offset)
+int dsk_get_sector_size_track_from_offset(int offset)
 {
     int sector_size=plus3dsk_get_byte_disk(offset+0x14);
     if (sector_size<1 || sector_size>6) {
@@ -344,7 +344,7 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
             return offset;
         }
 
-        int sector_size=dsk_get_sector_size_track(offset);
+        int sector_size=dsk_get_sector_size_track_from_offset(offset);
         if (sector_size<0) {
             return -1;
         }
@@ -384,7 +384,7 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
             return offset;
         }
 
-        int sector_size=dsk_get_sector_size_track(offset);
+        int sector_size=dsk_get_sector_size_track_from_offset(offset);
         if (sector_size<0) {
             return -1;
         }
@@ -486,7 +486,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
             int offset=iniciopista+0x100;
 
-            int sector_size=dsk_get_sector_size_track(iniciopista);
+            int sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
             if (sector_size<0) {
                 return -1;
             }                        

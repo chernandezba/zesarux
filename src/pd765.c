@@ -984,7 +984,7 @@ void pd765_write_handle_phase_command(z80_byte value)
                 printf("---PD765: Ignore command on seek phase\n");
                 return;
             }
-        }  
+        }
         
 
         if (value==8 && !pd765_interrupt_pending) {
@@ -1355,9 +1355,7 @@ z80_byte pd765_read_result_command_read_id(void)
     }
 
     else if (pd765_output_parameters_index==3) {
-
-        //TODO
-
+        
         z80_byte return_value=leido_id_c; //pd765_pcn;
         printf("PD765: Returning C: %02XH\n",return_value);
 
@@ -1368,7 +1366,6 @@ z80_byte pd765_read_result_command_read_id(void)
 
     else if (pd765_output_parameters_index==4) {
 
-        //TODO
 
         z80_byte return_value=leido_id_h;
         printf("PD765: Returning H: %02XH\n",return_value);
@@ -1380,8 +1377,6 @@ z80_byte pd765_read_result_command_read_id(void)
 
     else if (pd765_output_parameters_index==5) {
 
-        //TODO
-
         z80_byte return_value=leido_id_r; //pd765_input_parameter_r;
         printf("PD765: Returning R: %02XH\n",return_value);
 
@@ -1391,8 +1386,6 @@ z80_byte pd765_read_result_command_read_id(void)
     }
 
     else if (pd765_output_parameters_index==6) {
-
-        //TODO
 
         z80_byte return_value=leido_id_n;
         printf("PD765: Returning N: %02XH\n",return_value);
