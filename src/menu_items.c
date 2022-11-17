@@ -25979,11 +25979,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 #endif
 
     
-        //TODO maquina 6128
-        if (MACHINE_IS_SPECTRUM_P3 /*|| MACHINE_IS_CPC618*/) {
-            menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
-                "Visual Floppy","Floppy Visual","Floppy Visual");
-        }
+
 
 
     menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -26954,6 +26950,12 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
                 menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Viewer");
                 menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Viewer");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
+                "Visual Floppy","Floppy Visual","Floppy Visual");
+        
+
                         
                                 menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
