@@ -64,4 +64,6 @@ extern int dsk_get_total_tracks(void);
 
 extern int dsk_get_total_sides(void);
 
+extern int dsk_get_sector_size_track(int pista,int cara);
+
 #endif

@@ -315,7 +315,6 @@ void pd765_reset(void)
     pd765_pcn=0;
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
-    pd765_motor_speed=0;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
@@ -722,12 +721,11 @@ void pd765_handle_command_read_data(void)
 
     */
 
-   //TODO: correcto sector size
 
-   //esto solo es asi cuando N es 0
+   //TODO: esto solo es asi cuando N es 0
    int sector_size=pd765_input_parameter_dtl;
 
-   sector_size=512; 
+   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
 
  
     z80_byte sector_fisico;
@@ -1419,8 +1417,7 @@ z80_byte pd765_read_result_command_read_data(void)
     //notificar buffer de visual floppy
     menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_output_parameters_index);
 
-    //TODO
-    //int sector_size=512;
+
     printf("Buscando sector size para pista %d\n",pd765_pcn);
     int sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente
 
