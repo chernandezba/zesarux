@@ -33651,7 +33651,7 @@ void menu_visual_floppy_overlay(void)
         
         menu_visual_floppy_buffer_length=ultimo_color_no_cero+1;
 
-        if (ultimo_color_no_cero!=-1) printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
+        //if (ultimo_color_no_cero!=-1) printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
 
         //printf("\n");
 

@@ -384,8 +384,8 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
         z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
         z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
 
-        printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-            pista,track_number,offset,pista_encontrar);        
+        //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+        //    pista,track_number,offset,pista_encontrar);        
 
         if (track_number==pista_encontrar && side_number==cara_encontrar) {
             printf("dsk_extended_get_start_track: return %X\n",offset);
