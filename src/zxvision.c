@@ -202,7 +202,8 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"PauseUnpauseRealTape",F_FUNCION_PAUSEUNPAUSEREALTAPE,bitmap_button_ext_desktop_pauseunpausetape},
     {"ReinsertRealTape",F_FUNCION_REINSERTREALTAPE,bitmap_button_ext_desktop_reinsertrealtape},    
     {"RewindRealTape",F_FUNCION_REWINDREALTAPE,bitmap_button_ext_desktop_rewindtape},    
-    {"FFWDRealTape",F_FUNCION_FFWDREALTAPE,bitmap_button_ext_desktop_ffwdtape}, 
+    {"FFWDRealTape",F_FUNCION_FFWDREALTAPE,bitmap_button_ext_desktop_ffwdtape},
+    {"ShowVisualTape",F_FUNCION_SHOWVISUALTAPE,bitmap_button_ext_desktop_userdefined},
 
     //Actuar sobre menus y ventanas
     {"CloseAllMenus",F_FUNCION_CLOSE_ALL_MENUS,bitmap_button_ext_desktop_close_all_menus}, 

@@ -35124,6 +35124,10 @@ void menu_process_f_functions_by_action_name(int id_funcion)
             menu_poke(0);
         break;
 
+        case F_FUNCION_SHOWVISUALTAPE:
+            menu_visual_realtape(0);
+        break;
+
 		case F_FUNCION_TEXT_ADVENTURE_MAP:
 			menu_debug_textadventure_map_connections(0);
 		break;        
