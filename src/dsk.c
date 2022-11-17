@@ -312,6 +312,14 @@ int dsk_get_sector_size_track_from_offset(int offset)
     return sector_size;
 }
 
+int dsk_get_sector_size_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_sector_size_track_from_offset(offset);
+}
+
+
+
 const char *dsk_track_info_signature="Track-Info\r\n";
 
 int dsk_check_track_signature(int offset)
