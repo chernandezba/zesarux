@@ -312,12 +312,31 @@ int dsk_get_sector_size_track(int offset)
     return sector_size;
 }
 
+const char *dsk_track_info_signature="Track-Info\r\n";
+
+int dsk_check_track_signature(int offset)
+{
+    int i;
+    for (i=0;i<12;i++) {
+        int leido_firma=dsk_track_info_signature[i];
+        int leido_pista=plus3dsk_get_byte_disk(offset+i);
+        if (leido_firma!=leido_pista) return -1;
+    }
+    return 0;    
+}
+
 int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 {
     int pista;
     int offset=0x100;
 
     for (pista=0;pista<dsk_get_total_tracks();pista++) {
+        //Validar que estemos en informacion de pista realmente mirando la firma
+        //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+        if (dsk_check_track_signature(offset)) {
+            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH offset %XH",pista,offset);
+        }    
+
         z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
         z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
 
@@ -341,12 +360,52 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
 }
 
-int dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
+int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
+{
+    int pista;
+    int offset=0x100;
+    int offset_track_table=0x34;
+
+    for (pista=0;pista<dsk_get_total_tracks();pista++) {
+        //Validar que estemos en informacion de pista realmente mirando la firma
+        //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+        if (dsk_check_track_signature(offset)) {
+            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH offset %XH",pista,offset);
+        } 
+
+        z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
+        z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
+
+        printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+            pista,track_number,offset,pista_encontrar);        
+
+        if (track_number==pista_encontrar && side_number==cara_encontrar) {
+            printf("dsk_extended_get_start_track: return %X\n",offset);
+            return offset;
+        }
+
+        int sector_size=dsk_get_sector_size_track(offset);
+        if (sector_size<0) {
+            return -1;
+        }
+
+        
+        int saltar=plus3dsk_get_byte_disk(offset_track_table)*256;
+        offset +=saltar;
+
+        //TODO: este incremento sobre la tabla (creo) que es el doble cuando el disco tiene dos caras
+        offset_track_table++;
+    }
+
+    return -1;
+
+}
+
+
+int old_dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
 {
     
     int offset=0x34; //Nos situamos en la track size table
-
-    //TODO: soportar discos de dos caras
 
     int offset_total_a_pista=0;
 

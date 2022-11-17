@@ -33223,6 +33223,9 @@ int menu_visualfloppy_rotacion_real=1;
 
 int menu_visualfloppy_header_visible=1;
 
+
+int menu_visualfloppy_coloured_tracks_divisions=1;
+
 //Retorna en que radio está una pista concreta
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
 {
@@ -33480,6 +33483,12 @@ void menu_visualfloppy_increment_rotation(void)
 
 }
 
+#define MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS 12
+const int menu_visual_floppy_colores_marcas[MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS]={
+    1, 2, 3, 4, 5, 6,  //evitar negro y blanco
+    9,10,11,12,13,14  //evitar negro y blanco de brillo
+};
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -33533,8 +33542,8 @@ void menu_visual_floppy_overlay(void)
         if (ancho_ventana_pixeles<alto_ventana_pixeles) radio_exterior_disco=ancho_ventana_pixeles/2;
         else radio_exterior_disco=alto_ventana_pixeles/2;
 
-        //quitarle 1 caracter de radio. Fijo a 8 pixeles que es el maximo de un caracter en ancho o alto
-        radio_exterior_disco -=8;
+        //quitarle 2 caracter de radio. Fijo a 8 pixeles que es el maximo de un caracter en ancho o alto
+        radio_exterior_disco -=(8*2);
 
         int radio_interior_disco=radio_exterior_disco/6;
 
@@ -33690,8 +33699,18 @@ void menu_visual_floppy_overlay(void)
 
      
         //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+        int color_marca=1;
+
+        if (menu_visualfloppy_coloured_tracks_divisions) {
+
+            int indice_color=sector % MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS;
+
+            color_marca=menu_visual_floppy_colores_marcas[indice_color];
+            
+        }
+
         menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,0,/*1+sector/2*/1);
+            pista,sector,0,color_marca);
         
 
         }
@@ -33742,6 +33761,11 @@ void menu_visual_floppy_rotation_real(MENU_ITEM_PARAMETERS)
 void menu_visual_floppy_switch_header(MENU_ITEM_PARAMETERS)
 {
 	menu_visualfloppy_header_visible ^=1;
+}
+
+void menu_visualfloppy_switch_coloured_tracks_divisions(MENU_ITEM_PARAMETERS)
+{
+    menu_visualfloppy_coloured_tracks_divisions ^=1;
 }
 
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
@@ -33811,7 +33835,8 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
         //forzar a escribir el fondo desde overlay
         //menu_visual_floppy_fondo_asignado=0;
 
-
+        //borrar primera linea por si conmuta parametro rotacion
+        zxvision_fill_width_spaces_paper(ventana,0,HEATMAP_INDEX_FIRST_COLOR);
 
 		menu_add_item_menu_inicial_format(&array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation,NULL
             ,"[%c] ~~Rotation",(menu_visualfloppy_rotacion_activada ? 'X' : ' '));
@@ -33819,17 +33844,28 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Disable rotation");
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,0);
 
-		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation_real,NULL
-            ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
-		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);        
+
+        if (menu_visualfloppy_rotacion_activada) {
+            menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_rotation_real,NULL
+                ,"[%c] R~~eal Rotation",(menu_visualfloppy_rotacion_real ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'e');
+            menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show real speed of rotation");
+            menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,0);        
+        }
 
 		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visual_floppy_switch_header,NULL
-            ,"[%c] ~~Head",(menu_visualfloppy_header_visible ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'h');
+            ,"[%c] He~~ad",(menu_visualfloppy_header_visible ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show header");
-		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);        
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);      
+
+        
+		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_tracks_divisions,NULL
+            ,"[%c] ~~Color limits",(menu_visualfloppy_coloured_tracks_divisions ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
+		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
+		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);         
+
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
