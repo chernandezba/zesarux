@@ -187,3 +187,5 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 -rainbow islands:tiene pistas repetidas y otras que no estan
+
+-info: juegos de dinamic por ejemplo usan sectores de 1024 bytes: Megaphoenix, Buggy Ranger, After the war, etc
