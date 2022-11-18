@@ -13510,9 +13510,13 @@ void zxvision_widgets_draw_volumen_maxmin(zxvision_window *ventana,int columna_t
     zxvision_print_string(ventana,columna_texto,fila_texto+1,tinta,papel,0,buffer_texto);
 }
 
-//Conversion de coordenadas 3D a 2D. Conversion muy simple
+
+//Conversion de coordenadas 3D a 2D. Usando funcion coseno y seno
 void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,int *yfinal)
 {
+
+    int grados=45;
+
     /*
 
                 z
@@ -13532,8 +13536,13 @@ void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,in
 
           y
     */ 
-    *xfinal=x-y/2;
-    *yfinal=z-y/2;
+    //*xfinal=x-y/2;
+    //*yfinal=z-y/2;
+
+    *xfinal=x- ((y *util_get_cosine(grados))/10000);
+    *yfinal=z- ((y *util_get_sine  (grados))/10000);
+
+
 }
 
 void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget,int ycentro_widget,int percentaje,int color,int longitud_linea)

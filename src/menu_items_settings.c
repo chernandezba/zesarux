@@ -1712,7 +1712,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
-            "Use mouse on menu","Usar raton en el menu","Usar ratolí al menu");
+            "Use mouse on menu","Usar ratón en el menu","Usar ratolí al menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
