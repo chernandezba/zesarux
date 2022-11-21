@@ -799,7 +799,9 @@ void pd765_handle_command_read_data(void)
 
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
-    dsk_get_chrn(pd765_pcn,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+    //TODO: de momento solo cara 0
+    dsk_get_chrn(pd765_pcn,0,sector_fisico,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     
     pd765_debug_last_sector_id_c_read=leido_id_c;
@@ -830,7 +832,8 @@ void pd765_handle_command_read_data(void)
 
     
     z80_byte leido_id_st1 ,leido_id_st2;
-    dsk_get_st12(pd765_pcn,sector_fisico,&leido_id_st1,&leido_id_st2);
+    //TODO: de momento solo cara 0
+    dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);
     return_value=leido_id_st1;
     printf("PD765: Returning ST1: %02XH\n",return_value);
     pd765_put_buffer(return_value);
@@ -1317,7 +1320,8 @@ z80_byte pd765_read_result_command_read_id(void)
 
    //TODO En este caso devolvemos el CHRN del primer sector. Igual se podria simular el giro del disco,
    //y retornar el sector id del sector que está debajo del cabezal en ese momento
-   dsk_get_chrn(pd765_pcn,0,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+   //TODO de momento solo cara 0
+   dsk_get_chrn(pd765_pcn,0,0,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     //Guardarlo para debug
     pd765_debug_last_sector_id_c_read=leido_id_c;

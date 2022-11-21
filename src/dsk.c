@@ -568,11 +568,11 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
 
 //Devolver CHRN de una pista y sector concreto
-void dsk_get_chrn(int pista,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n)
+void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n)
 {
 
 
-    int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
+    int iniciopista=dsk_get_start_track(pista,cara); 
 
     printf("En dsk_get_chrn Inicio pista %d: %XH\n",pista,iniciopista);
 
@@ -601,10 +601,10 @@ void dsk_get_chrn(int pista,int sector_fisico,z80_byte *parametro_c,z80_byte *pa
 
 //Devolver st1,2 de una pista y sector concreto
 
-void dsk_get_st12(int pista,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2)
+void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2)
 {
 
-    int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
+    int iniciopista=dsk_get_start_track(pista,cara); 
 
     printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
 

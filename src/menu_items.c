@@ -26916,8 +26916,23 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
         int total_sectores=dsk_get_total_sectors_track(pista,cara);
 
         for (sector=0;sector<total_sectores;sector++) {
-            
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Sector %d",sector);
+                z80_byte leido_id_st1 ,leido_id_st2;
+                //TODO: de momento solo cara 0
+                dsk_get_st12(pista,cara,sector,&leido_id_st1,&leido_id_st2);
+
+
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Sector %d ST1: %X ST2: %X",
+                    sector,leido_id_st1,leido_id_st2);
+
+                //Leer chrn para debug
+                z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+
+                dsk_get_chrn(pista,cara,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);                
+
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," C:%02X H:%02X R:%02X N:%02X",
+                    leido_id_c,leido_id_h,leido_id_r,leido_id_n);
+
+                menu_add_item_menu_separator(array_menu_common);
 
             
         }
