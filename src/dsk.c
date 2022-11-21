@@ -407,11 +407,11 @@ int dsk_get_track_number_from_offset(int offset)
 }
 
 
-/*int dsk_get_track_number(int pista,int cara)
+int dsk_get_track_number(int pista,int cara)
 {
     int offset=dsk_get_start_track(pista,cara);
     return dsk_get_track_number_from_offset(offset);
-}*/
+}
 
 
 //Retorna numero de cata. 
@@ -422,6 +422,11 @@ int dsk_get_track_side_from_offset(int offset)
     return side_number;
 }
 
+int dsk_get_track_side(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_track_side_from_offset(offset);
+}
 
 
 int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)

@@ -71,4 +71,8 @@ extern void dsk_get_signature(char *buffer);
 extern void dsk_get_creator(char *buffer);
 extern int dsk_get_start_track(int pista,int cara);
 
+extern int dsk_get_track_number(int pista,int cara);
+extern int dsk_get_track_side(int pista,int cara);
+extern int dsk_get_sector_size_track(int pista,int cara);
+
 #endif
