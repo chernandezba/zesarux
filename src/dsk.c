@@ -575,7 +575,7 @@ void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80
 
     int iniciopista=dsk_get_start_track(pista,cara); 
 
-    printf("En dsk_get_chrn Inicio pista %d: %XH\n",pista,iniciopista);
+    //printf("En dsk_get_chrn Inicio pista %d: %XH\n",pista,iniciopista);
 
     //saltar 0x18
     iniciopista +=0x18;
