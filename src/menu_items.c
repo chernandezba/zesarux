@@ -26978,8 +26978,19 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         for (pista=0;pista<total_pistas;pista++) {
             for (cara=0;cara<total_caras;cara++) {
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL,"Track %02d Side %d",pista,cara);
+                int sinformatear=0;
 
+                if (dsk_file_type_extended) {
+                    int track_size=dsk_extended_get_track_size(pista,cara);
+                    if (!track_size) sinformatear=1;
+                }
+ 
+                if (sinformatear) {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02d Side %d. UNFORMATTED",pista,cara);
+                }
+
+                else {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL,"Track %02d Side %d",pista,cara);
                 menu_add_item_menu_tiene_submenu(array_menu_common);
 
                 //Codificamos la opcion para el submenu asi
@@ -26998,6 +27009,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
                     gap_length_track,filler_byte_track);                    
                 
+                }
 
                 menu_add_item_menu_separator(array_menu_common);
 

@@ -75,5 +75,7 @@ extern int dsk_get_sector_size_track(int pista,int cara);
 extern int dsk_get_total_sectors_track(int pista,int cara);
 extern int dsk_get_gap_length_track(int pista,int cara);
 extern int dsk_get_filler_byte_track(int pista,int cara);
+extern int dsk_file_type_extended;
+extern int dsk_extended_get_track_size(int pista,int cara);
 
 #endif

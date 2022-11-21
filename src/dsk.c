@@ -458,15 +458,16 @@ int dsk_get_track_side(int pista,int cara)
 
 int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
 {
-    int pista;
+    int pista,cara;
     int offset=0x100;
     int offset_track_table=0x34;
 
     for (pista=0;pista<dsk_get_total_tracks();pista++) {
+        for (cara=0;cara<dsk_get_total_sides();cara++) {
         //Validar que estemos en informacion de pista realmente mirando la firma
         //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
         if (dsk_check_track_signature(offset)) {
-            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH offset %XH",pista,offset);
+            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH size %d offset %XH",pista,cara,offset);
         } 
 
         z80_byte track_number=dsk_get_track_number_from_offset(offset);
@@ -489,8 +490,11 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
         int saltar=plus3dsk_get_byte_disk(offset_track_table)*256;
         offset +=saltar;
 
-        //TODO: este incremento sobre la tabla (creo) que es el doble cuando el disco tiene dos caras
+        
         offset_track_table++;
+
+
+    }
     }
 
     return -1;
@@ -507,17 +511,19 @@ int dsk_get_start_track(int pista,int cara)
     else return dsk_basic_get_start_track(pista,cara);
 }
 
-int dsk_get_track_size(int pista,int cara)
+int dsk_extended_get_track_size(int pista,int cara)
 {
-    //Hacerlo diferente si dsk basico o extendido
-    if (dsk_file_type_extended) {
-        i dsk_extended_get_start_track(pista,cara);
-    } 
-    else {
-        int sector_size=dsk_get_sector_size_track(pista,cara);
-        int sectors=dsk_get_total_sectors_track(pista,cara);
-        return sectors*sector_size;
-    }
+    int offset_track_table=0x34;
+    
+    //este incremento sobre la tabla es el doble cuando el disco tiene dos caras
+    int incremento=pista*dsk_get_total_sides();
+    
+    offset_track_table +=incremento;
+
+    if (cara==1) offset_track_table++;
+
+    return plus3dsk_get_byte_disk(offset_track_table)*256;
+
 }
 
 
