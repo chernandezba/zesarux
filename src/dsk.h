@@ -65,8 +65,6 @@ extern int dsk_get_total_tracks(void);
 
 extern int dsk_get_total_sides(void);
 
-extern int dsk_get_sector_size_track(int pista,int cara);
-
 extern void dsk_get_signature(char *buffer);
 extern void dsk_get_creator(char *buffer);
 extern int dsk_get_start_track(int pista,int cara);

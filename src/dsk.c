@@ -321,7 +321,7 @@ int dsk_get_filler_byte_track_from_offset(int offset)
 
 
 //entrada: offset a track information block
-int dsk_get_total_sectors_track(int offset)
+int dsk_get_total_sectors_track_from_offset(int offset)
 {
     int total_sectors=plus3dsk_get_byte_disk(offset+0x15);
 
@@ -387,7 +387,7 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
             return -1;
         }
 
-        int total_sectors=dsk_get_total_sectors_track(offset);
+        int total_sectors=dsk_get_total_sectors_track_from_offset(offset);
 
         int saltar=total_sectors*sector_size+256; //256 ocupa el sector block
 
@@ -490,7 +490,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
     printf("Inicio pista %d: %XH\n",pista,iniciopista);
 
-    int total_sectors=dsk_get_total_sectors_track(iniciopista);   
+    int total_sectors=dsk_get_total_sectors_track_from_offset(iniciopista);   
 
     printf("Total sectors: %d\n",total_sectors); 
 
