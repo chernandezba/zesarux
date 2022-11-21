@@ -293,7 +293,7 @@ void dsk_show_activity(void)
 }
 
 const int dsk_sector_sizes_numbers[]={
-    0,    //0: no usado, puesto aqui por comodidad al hacer lookup de tabla
+    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
     256,  //1
     512,  //2
     1024, //3
@@ -358,7 +358,7 @@ int dsk_get_total_sectors_track(int pista,int cara)
 int dsk_get_sector_size_track_from_offset(int offset)
 {
     int sector_size=plus3dsk_get_byte_disk(offset+0x14);
-    if (sector_size<1 || sector_size>6) {
+    if (sector_size>6) {
         debug_printf(VERBOSE_ERR,"Sector size %d unsupported",sector_size);
         return -1;
     }
