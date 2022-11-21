@@ -31,6 +31,7 @@
 #include "debug.h"
 #include "utils.h"
 #include "dsk.h"
+#include "menu_items.h"
 
 z80_bit pd765_enabled={0};
 

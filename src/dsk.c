@@ -303,6 +303,22 @@ const int dsk_sector_sizes_numbers[]={
 };
 
 
+//entrada: offset a track information block
+int dsk_get_gap_length_track_from_offset(int offset)
+{
+    z80_byte gap=plus3dsk_get_byte_disk(offset+0x16);
+
+    return gap;
+}
+
+//entrada: offset a track information block
+int dsk_get_filler_byte_track_from_offset(int offset)
+{
+    z80_byte filler=plus3dsk_get_byte_disk(offset+0x17);
+
+    return filler;
+}
+
 
 //entrada: offset a track information block
 int dsk_get_total_sectors_track(int offset)
@@ -382,6 +398,32 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
 }
 
+//Retorna numero de pista. 
+//Entrada: offset: offset a track-info
+int dsk_get_track_number_from_offset(int offset)
+{
+    z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
+    return track_number;
+}
+
+
+/*int dsk_get_track_number(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_track_number_from_offset(offset);
+}*/
+
+
+//Retorna numero de cata. 
+//Entrada: offset: offset a track-info
+int dsk_get_track_side_from_offset(int offset)
+{
+    z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
+    return side_number;
+}
+
+
+
 int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
 {
     int pista;
@@ -395,8 +437,8 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
             debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH offset %XH",pista,offset);
         } 
 
-        z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
-        z80_byte side_number=plus3dsk_get_byte_disk(offset+0x11);
+        z80_byte track_number=dsk_get_track_number_from_offset(offset);
+        z80_byte side_number=dsk_get_track_side_from_offset(offset);
 
         //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
         //    pista,track_number,offset,pista_encontrar);        
