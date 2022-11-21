@@ -4840,6 +4840,18 @@ void scr_refresca_pantalla_comun(void)
 					//	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
 					//	else color= ( byte_leido & 128 ? ink2 : paper );
 					//}
+
+                    /*
+
+                    Prueba cutre de visualizar la imagen en un plano 3D
+                    int xfinal,yfinal;
+                    //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
+                    zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
+                    scr_putpixel_zoom(xfinal,191-yfinal,color);
+                    if (xfinal<0) printf("X %d\n",xfinal);
+
+                    */
+
 					scr_putpixel_zoom(x_hi+bit,y,color);
 
 	                                byte_leido=byte_leido<<1;

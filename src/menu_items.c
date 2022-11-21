@@ -33426,6 +33426,24 @@ void menu_visual_floppy_dibujar_index_hole(int centro_disco_x,int centro_disco_y
             zxvision_putpixel,360); 
 }
 
+void menu_visual_floppy_draw_arrow(int centro_disco_x,int centro_disco_y,int radio_exterior_disco,int color)
+{
+    int indicador_rotacion_radio=radio_exterior_disco/3;
+    int indicador_rotacion_x=centro_disco_x-radio_exterior_disco-indicador_rotacion_radio/2;
+    int indicador_rotacion_y=centro_disco_y;            
+    zxvision_draw_arc(menu_visual_floppy_window,indicador_rotacion_x,indicador_rotacion_y,
+        indicador_rotacion_radio,indicador_rotacion_radio,color, 
+        zxvision_putpixel,90,180);     
+
+    int final_flecha_x=indicador_rotacion_x-indicador_rotacion_radio;
+    int final_flecha_y=indicador_rotacion_y;
+    int longitud_flecha=indicador_rotacion_radio/2;
+    zxvision_draw_line(menu_visual_floppy_window,final_flecha_x,final_flecha_y,
+        final_flecha_x-longitud_flecha/2+1,final_flecha_y-longitud_flecha+1,color,zxvision_putpixel);
+    zxvision_draw_line(menu_visual_floppy_window,final_flecha_x,final_flecha_y,
+        final_flecha_x+longitud_flecha-1,final_flecha_y-longitud_flecha/2+1,color,zxvision_putpixel);       
+}
+
 //Contador de segundo para hacer que el overlay solo se redibuje un numero de veces por segundo y no siempre
 int menu_visual_floppy_contador_segundo_anterior;
 
@@ -33588,6 +33606,12 @@ void menu_visual_floppy_overlay(void)
                 radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR,i);       
         }
 
+
+        //Borrar flecha indicadora de rotación
+        menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,HEATMAP_INDEX_FIRST_COLOR);
+        
+
+
         //prueba dibujar todo
         
         /*
@@ -33671,6 +33695,12 @@ void menu_visual_floppy_overlay(void)
         //El Index Hole
         menu_visual_floppy_dibujar_index_hole(centro_disco_x,centro_disco_y,radio_exterior_disco,radio_interior_disco,
             radio_fin_datos,color_contorno_disco,menu_visualfloppy_rotacion_disco);
+
+
+        //Flecha indicadora de rotación
+        if (pd765_motor_status) {
+            menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,7);
+        }
 
 /*
         //Entre Interior y principio datos

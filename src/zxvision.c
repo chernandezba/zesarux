@@ -13323,9 +13323,8 @@ void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, vo
  }
 }
 
-//Funcion para trazar una elipse
-//TODO: si el radio es muy grande, se vera punteada. Se deberia mejorar haciendo lineas entre esos puntos intermedios
-void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados)
+//Funcion para trazar un arco
+void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados)
 {
 
     int grados;
@@ -13339,19 +13338,28 @@ void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int rad
     if (radius_x>radius_y) radio_mayor=radius_x;
     else radio_mayor=radius_y;
 
-    for (grados=0;grados<limite_grados;grados++) {
+    for (grados=inicio_grados;grados<limite_grados;grados++) {
         int xdestino=x1+((radius_x*util_get_cosine(grados))/10000);
-        int ydestino=y1+((radius_y*util_get_sine(grados))/10000);
+        int ydestino=y1-((radius_y*util_get_sine(grados))/10000);
         fun_putpixel(w,xdestino,ydestino,c);
 
         if (radio_mayor>=umbral_punteado) {
             //generar linea que una con el punto siguiente
             int xdestino2=x1+((radius_x*util_get_cosine(grados+1))/10000);
-            int ydestino2=y1+((radius_y*util_get_sine(grados+1))/10000);
+            int ydestino2=y1-((radius_y*util_get_sine(grados+1))/10000);
             
             zxvision_draw_line(w,xdestino,ydestino,xdestino2,ydestino2,c,fun_putpixel);
         }
     }
+
+}
+
+//Funcion para trazar una elipse
+void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados)
+{
+
+    zxvision_draw_arc(w,x1,y1,radius_x,radius_y,c,fun_putpixel,0,limite_grados);
+
 
 }
 
@@ -13372,9 +13380,9 @@ void zxvision_widgets_draw_speedometer(zxvision_window *ventana,int xcentro_widg
         int centro_y=ycentro_widget;
         int radio=longitud_linea;
 
-        zxvision_draw_ellipse(ventana,centro_x,centro_y,radio,-radio,color_contorno,zxvision_putpixel,180);
+        zxvision_draw_ellipse(ventana,centro_x,centro_y,radio,radio,color_contorno,zxvision_putpixel,180);
         //doble contorno. Con radio algo menor
-        zxvision_draw_ellipse(ventana,centro_x,centro_y,radio-1,-radio+1,color_contorno,zxvision_putpixel,180);
+        zxvision_draw_ellipse(ventana,centro_x,centro_y,radio-1,radio-1,color_contorno,zxvision_putpixel,180);
      
 }
 
@@ -13445,7 +13453,7 @@ void zxvision_widgets_draw_curve_common(zxvision_window *ventana,int xinicio_wid
     int centro_widget=xinicio_widget+radio_total;
 
     //Hacer 180 grados de curva
-    zxvision_draw_ellipse(ventana,centro_widget,ycentro_widget,radio_porcentaje,-radio_porcentaje,color,zxvision_putpixel,180);
+    zxvision_draw_ellipse(ventana,centro_widget,ycentro_widget,radio_porcentaje,radio_porcentaje,color,zxvision_putpixel,180);
 
     //Y lineas izquierda y derecha
     int trozo_linea=longitud_linea-radio_porcentaje;
@@ -13519,28 +13527,38 @@ void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,in
 
     /*
 
-                z
+        Pasar de:
+                +z
 
-                ^
-                |
-                |
-                |
-                |
-                |
-                ----------------->  x
-               /
-              /
-             /
-            /
-           v
+                ^     ^ +y
+                |    /
+                |   /
+                |  /
+                | /
+                |/
+                ----------------->  +x
+            0,0   
 
-          y
+
+        A:
+                +y
+
+                ^     
+                |    
+                |   
+                |  
+                | 
+                |
+                ----------------->  +x
+            0,0   
+
+              
     */ 
     //*xfinal=x-y/2;
     //*yfinal=z-y/2;
 
-    *xfinal=x- ((y *util_get_cosine(grados))/10000);
-    *yfinal=z- ((y *util_get_sine  (grados))/10000);
+    *xfinal=x+ ((y *util_get_cosine(grados))/10000);
+    *yfinal=z+ ((y *util_get_sine  (grados))/10000);
 
 
 }
@@ -13578,7 +13596,7 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
 
             int xplano,yplano;
             zxvision_widgets_draw_particles_3d_convert(xdestino,ydestino,z/100,&xplano,&yplano);
-            //printf("%d %d\n",xplano,yplano);
+            //if (yplano<0) printf("%d %d\n",xplano,yplano);
             zxvision_putpixel(ventana,x_centro_widget+xplano,ycentro_widget-yplano,color); //es -yplano porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
 
             //cada grado, reducir radio

@@ -470,6 +470,7 @@ extern void zxvision_putpixel(zxvision_window *w,int x,int y,int color);
 extern void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color);
 extern void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) );
 extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados);
+extern void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados);
 
 
 #define ZXVISION_TOTAL_WIDGET_TYPES 10
@@ -501,6 +502,7 @@ extern void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,in
 extern void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,int columna_texto,int fila_texto,char *short_name,int tipo,int valor_en_vez_de_perc,int tinta_texto_descripcion,int papel_texto_descripcion,int escribir_espacios);
 extern void zxvision_widgets_erase_speedometer(zxvision_window *ventana,int xcentro_widget,int ycentro_widget);
 extern void zxvision_draw_filled_rectangle(zxvision_window *ventana,int xinicio,int yinicio,int ancho,int alto,int color);
+extern void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,int *yfinal);
 
 extern z80_byte zxvision_read_keyboard(void);
 void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla);
