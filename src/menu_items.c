@@ -33584,7 +33584,7 @@ void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
         printf("Visual floppy buffer is full\n");
         return;
     }
-    printf("add to buffer %d %d %d\n",pista,sector,byte_en_sector);
+    //printf("add to buffer %d %d %d\n",pista,sector,byte_en_sector);
 
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].pista=pista;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].sector=sector;

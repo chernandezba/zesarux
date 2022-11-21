@@ -475,7 +475,7 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
         //    pista,track_number,offset,pista_encontrar);        
 
         if (track_number==pista_encontrar && side_number==cara_encontrar) {
-            printf("dsk_extended_get_start_track: return %X\n",offset);
+            //printf("dsk_extended_get_start_track: return %X\n",offset);
             return offset;
         }
 
@@ -606,7 +606,7 @@ void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z
 
     int iniciopista=dsk_get_start_track(pista,cara); 
 
-    printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
+    //printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
 
     //saltar 0x18
     iniciopista +=0x18;

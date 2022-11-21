@@ -1430,10 +1430,10 @@ z80_byte pd765_read_result_command_read_data(void)
     menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_output_parameters_index);
 
 
-    printf("Buscando sector size para pista %d\n",pd765_pcn);
+    //printf("Buscando sector size para pista %d\n",pd765_pcn);
     int sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente
 
-    printf("SIZE: %d\n",sector_size);
+    if (sector_size==0) printf("SIZE: %d\n",sector_size);
     //sleep(5);
 
         if (pd765_output_parameters_index==sector_size) {
