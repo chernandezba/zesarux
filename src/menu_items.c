@@ -26991,23 +26991,23 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
                 else {
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL,"Track %02d Side %d",pista,cara);
-                menu_add_item_menu_tiene_submenu(array_menu_common);
+                    menu_add_item_menu_tiene_submenu(array_menu_common);
 
-                //Codificamos la opcion para el submenu asi
-                int valor_opcion_menu=pista+cara*256;
-                menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);
+                    //Codificamos la opcion para el submenu asi
+                    int valor_opcion_menu=pista+cara*256;
+                    menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);
 
-                int sector_size_track=dsk_get_sector_size_track(pista,cara);
-                int total_sectors_track=dsk_get_total_sectors_track(pista,cara);
-                int gap_length_track=dsk_get_gap_length_track(pista,cara);
-                int filler_byte_track=dsk_get_filler_byte_track(pista,cara);
+                    int sector_size_track=dsk_get_sector_size_track(pista,cara);
+                    int total_sectors_track=dsk_get_total_sectors_track(pista,cara);
+                    int gap_length_track=dsk_get_gap_length_track(pista,cara);
+                    int filler_byte_track=dsk_get_filler_byte_track(pista,cara);
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Sector size: %4d Sectors: %d",
-                    sector_size_track,total_sectors_track);
-                
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Sector size: %4d Sectors: %d",
+                        sector_size_track,total_sectors_track);
+                    
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
-                    gap_length_track,filler_byte_track);                    
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
+                        gap_length_track,filler_byte_track);                    
                 
                 }
 
