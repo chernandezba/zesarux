@@ -424,47 +424,6 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
 }
 
 
-int old_dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
-{
-    
-    int offset=0x34; //Nos situamos en la track size table
-
-    int offset_total_a_pista=0;
-
-    int pista;
-
-    int max_pistas=dsk_get_total_tracks();
-
-    for (pista=0;pista<max_pistas;pista++) {
-
-        z80_byte current_track=plus3dsk_get_byte_disk(0x100+offset_total_a_pista+0x10);
-
-        printf("dsk_extended_get_start_track: pista: %d current_track: %d offset+0x100: %XH buscar pista: %d\n",
-            pista,current_track,offset_total_a_pista+0x100,pista_buscar);
-
-        if (pista_buscar==current_track) {
-            printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
-
-            return 0x100+offset_total_a_pista;            
-        }
-
-        int tamanyo_pista=plus3dsk_get_byte_disk(offset);
-        offset++;
-
-        tamanyo_pista *=256;
-
-        offset_total_a_pista +=tamanyo_pista;
-
-    }
-
-    //printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
-
-    //return 0x100+offset_total_a_pista;
-    printf("Can not find track %d\n",pista_buscar);
-    return -1;
-
-}
-
 //Retorna -1 si pista no encontrada
 //Retorna offset al Track information block
 int dsk_get_start_track(int pista,int cara)
@@ -816,3 +775,45 @@ int sectores_en_pista=plus3dsk_get_byte_disk(iniciopista_orig+0x15);
 
 
 }
+
+int old_dsk_extended_get_start_track(int pista_buscar,int cara_buscar)
+{
+    
+    int offset=0x34; //Nos situamos en la track size table
+
+    int offset_total_a_pista=0;
+
+    int pista;
+
+    int max_pistas=dsk_get_total_tracks();
+
+    for (pista=0;pista<max_pistas;pista++) {
+
+        z80_byte current_track=plus3dsk_get_byte_disk(0x100+offset_total_a_pista+0x10);
+
+        printf("dsk_extended_get_start_track: pista: %d current_track: %d offset+0x100: %XH buscar pista: %d\n",
+            pista,current_track,offset_total_a_pista+0x100,pista_buscar);
+
+        if (pista_buscar==current_track) {
+            printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
+
+            return 0x100+offset_total_a_pista;            
+        }
+
+        int tamanyo_pista=plus3dsk_get_byte_disk(offset);
+        offset++;
+
+        tamanyo_pista *=256;
+
+        offset_total_a_pista +=tamanyo_pista;
+
+    }
+
+    //printf("dsk_extended_get_start_track: return 0x100+%X\n",offset_total_a_pista);
+
+    //return 0x100+offset_total_a_pista;
+    printf("Can not find track %d\n",pista_buscar);
+    return -1;
+
+}
+
