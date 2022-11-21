@@ -270,7 +270,9 @@ int interface007_opcion_seleccionada=0;
 int dinamid3_opcion_seleccionada=0;
 int mantransfe_opcion_seleccionada=0;
 int visualfloppy_opcion_seleccionada=0;
-
+int menu_plusthreedisk_info_sectors_list_opcion_seleccionada=0;
+int menu_plusthreedisk_info_tracks_list_opcion_seleccionada=0;
+int menu_plusthreedisk_info_opcion_seleccionada=0;
 
 
 //Fin opciones seleccionadas para cada menu
@@ -26901,9 +26903,8 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
     int pista=valor_opcion & 0xFF;
     int cara=valor_opcion/256;
 
-
-    //No hace falta guardar opcion anterior
-    int opcion_seleccionada=0;
+    char menu_titulo[40];
+    sprintf(menu_titulo,"Track %d Head %d Sectors",pista,cara);
 
     do {
 
@@ -26921,7 +26922,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
                 dsk_get_st12(pista,cara,sector,&leido_id_st1,&leido_id_st2);
 
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Sector %d ST1: %X ST2: %X",
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Sector %d ST1: %02X ST2: %02X",
                     sector,leido_id_st1,leido_id_st2);
 
                 //Leer chrn para debug
@@ -26929,7 +26930,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
                 dsk_get_chrn(pista,cara,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);                
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," C:%02X H:%02X R:%02X N:%02X",
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," C:%02X H:%02X R:%02X N:%02X",
                     leido_id_c,leido_id_h,leido_id_r,leido_id_n);
 
                 menu_add_item_menu_separator(array_menu_common);
@@ -26941,7 +26942,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Sectors list");
+        retorno_menu=menu_dibuja_menu(&menu_plusthreedisk_info_sectors_list_opcion_seleccionada,&item_seleccionado,array_menu_common,menu_titulo);
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -26963,8 +26964,6 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
     int retorno_menu;
 
 
-    //No hace falta guardar opcion anterior
-    int opcion_seleccionada=0;
 
     do {
 
@@ -26981,7 +26980,6 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
             for (cara=0;cara<total_caras;cara++) {
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL,"Track %02d Side %d",pista,cara);
 
-                //Solo pongo este indicador de submenu aqui aunque todos los items te llevan al listado de sectores
                 menu_add_item_menu_tiene_submenu(array_menu_common);
 
                 //Codificamos la opcion para el submenu asi
@@ -26993,13 +26991,15 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                 int gap_length_track=dsk_get_gap_length_track(pista,cara);
                 int filler_byte_track=dsk_get_filler_byte_track(pista,cara);
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL," Sector size: %4d Total sectors: %d",
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Sector size: %4d Sectors: %d",
                     sector_size_track,total_sectors_track);
-                menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);
+                
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler byte: %2XH",
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
                     gap_length_track,filler_byte_track);                    
-                menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);
+                
+
+                menu_add_item_menu_separator(array_menu_common);
 
             }
         }
@@ -27008,7 +27008,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
+        retorno_menu=menu_dibuja_menu(&menu_plusthreedisk_info_tracks_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Tracks list");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -27033,8 +27033,6 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
     char buffer_signature[DSK_SIGNATURE_LENGTH+1];
     char buffer_creator[DSK_CREATOR_LENGTH+1];
 
-    //No hace falta guardar opcion anterior
-    int opcion_seleccionada=0;
 
     do {
 
@@ -27062,7 +27060,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_common);
 
-        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Disk Info");
+        retorno_menu=menu_dibuja_menu(&menu_plusthreedisk_info_opcion_seleccionada,&item_seleccionado,array_menu_common,"Disk Info");
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
