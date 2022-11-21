@@ -507,6 +507,19 @@ int dsk_get_start_track(int pista,int cara)
     else return dsk_basic_get_start_track(pista,cara);
 }
 
+int dsk_get_track_size(int pista,int cara)
+{
+    //Hacerlo diferente si dsk basico o extendido
+    if (dsk_file_type_extended) {
+        i dsk_extended_get_start_track(pista,cara);
+    } 
+    else {
+        int sector_size=dsk_get_sector_size_track(pista,cara);
+        int sectors=dsk_get_total_sectors_track(pista,cara);
+        return sectors*sector_size;
+    }
+}
+
 
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
