@@ -1041,7 +1041,8 @@ void pd765_write_handle_phase_command(z80_byte value)
             z80_byte parametro_mt=(value>>7)&1;
             z80_byte parametro_mf=(value>>6)&1;
             z80_byte parametro_sk=(value>>5)&1;
-            printf("---PD765: READ DATA command. MT=%d MF=%d SK=%d\n",parametro_mt,parametro_mf,parametro_sk);
+            printf("---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
+                parametro_mt,parametro_mf,parametro_sk,pd765_pcn);
             if(parametro_mt) {
                 printf("MF parameter not handled yet\n");
                 sleep(3);

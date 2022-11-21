@@ -245,7 +245,8 @@ z80_byte plus3dsk_get_byte_disk(int offset)
 
         if (offset>=p3dsk_buffer_disco_size) {
                 debug_printf (VERBOSE_ERR,"Error. Trying to read beyond dsk. Size: %d Asked: %d. Disabling DSK",p3dsk_buffer_disco_size,offset);
-                dskplusthree_disable();
+                //TODO de momento no desactivamos disco, para poder hacer debug
+                //dskplusthree_disable();
                 return 0;
         }
 
