@@ -28,7 +28,8 @@
 //Ejemplo Alien Storm: 255232
 #define DSK_MAX_BUFFER_DISCO 255232
 
-
+#define DSK_SIGNATURE_LENGTH 34
+#define DSK_CREATOR_LENGTH 14
 
 extern void dsk_insert_disk(char *nombre);
 

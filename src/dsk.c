@@ -159,6 +159,20 @@ void dsk_get_string_protected(int offset,char *buffer_signature,int total_bytes)
     buffer_signature[i]=0;    
 }
 
+
+
+void dsk_get_signature(char *buffer)
+{
+    //Mostrar firma ocultando caracteres no validos
+    dsk_get_string_protected(0,buffer,DSK_SIGNATURE_LENGTH);
+}
+
+void dsk_get_creator(char *buffer)
+{
+    dsk_get_string_protected(0x22,buffer,DSK_CREATOR_LENGTH);
+}
+
+
 void dskplusthree_enable(void)
 {
 
@@ -207,12 +221,12 @@ void dskplusthree_enable(void)
     }
 
     //Mostrar firma ocultando caracteres no validos
-    char buffer_signature[35];
-    dsk_get_string_protected(0,buffer_signature,34);
+    char buffer_signature[DSK_SIGNATURE_LENGTH+1];
+    dsk_get_signature(buffer_signature);
     printf("DSK signature: %s\n",buffer_signature);
 
-    char buffer_creator[15];
-    dsk_get_string_protected(0x22,buffer_creator,14);
+    char buffer_creator[DSK_CREATOR_LENGTH+1];
+    dsk_get_creator(buffer_creator);
     printf("DSK creator: %s\n",buffer_creator);    
 
     printf("DSK total tracks: %d total sides: %d\n",dsk_get_total_tracks(),dsk_get_total_sides());

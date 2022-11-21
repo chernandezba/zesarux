@@ -26887,6 +26887,61 @@ void menu_storage_dskplusthree_persistent_writes(MENU_ITEM_PARAMETERS)
 	dskplusthree_persistent_writes.v ^=1;
 }
 
+int menu_storage_dskplusthree_info_cond(void)
+{
+    return dskplusthree_emulation.v;    
+}
+
+
+
+void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    char buffer_signature[DSK_SIGNATURE_LENGTH+1];
+    char buffer_creator[DSK_CREATOR_LENGTH+1];
+
+    //No hace falta guardar opcion anterior
+    int opcion_seleccionada=0;
+
+    do {
+
+
+        dsk_get_signature(buffer_signature);
+        dsk_get_creator(buffer_creator);
+
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," %s",buffer_signature);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Creator:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," %s",buffer_creator);
+                
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_get_total_tracks());
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_get_total_sides());
+
+   
+        menu_add_item_menu_separator(array_menu_common);
+
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Disk Info");
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+}
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_plusthreedisk;
@@ -26953,9 +27008,12 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
-                "Visual Floppy","Floppy Visual","Floppy Visual");
+                "Visual Floppy","Visual Floppy","Visual Floppy");
         
-
+            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
+                "Disk Info","Disk Info","Disk Info");
+            menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
+                
                         
                                 menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
