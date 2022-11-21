@@ -311,12 +311,29 @@ int dsk_get_gap_length_track_from_offset(int offset)
     return gap;
 }
 
+
+
+int dsk_get_gap_length_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_gap_length_track_from_offset(offset);
+
+}
+
+
 //entrada: offset a track information block
 int dsk_get_filler_byte_track_from_offset(int offset)
 {
     z80_byte filler=plus3dsk_get_byte_disk(offset+0x17);
 
     return filler;
+}
+
+int dsk_get_filler_byte_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_filler_byte_track_from_offset(offset);
+
 }
 
 
@@ -327,6 +344,15 @@ int dsk_get_total_sectors_track_from_offset(int offset)
 
     return total_sectors;
 }
+
+
+int dsk_get_total_sectors_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+    return dsk_get_total_sectors_track_from_offset(offset);
+
+}
+
 
 //entrada: offset a track information block
 int dsk_get_sector_size_track_from_offset(int offset)
