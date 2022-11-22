@@ -56,6 +56,13 @@ DB7         Request for Master  RQM         Indicates Data Register is ready to 
 
 */
 
+//TODO: Tengo mis dudas con el significado del bit:
+//DB4         FDC Busy            CB          A read or write command is in process. FDC will not accept any other command
+//Mickey mouse usa este bit
+//Se activa este bit solo con comandos que implican lectura o escritura? Como read data o read id?
+//O tambien con comandos como sense interrupt... En este caso "A read or write command is in process" querria decir:
+//"cuando este en curso una lectura o escritura de parametros", cosa que no pareceria logica, porque se activaria
+//siempre que esta en medio de un comando
 
 
 #define PD765_STATUS_REGISTER_ON_BOOT PD765_STATUS_REGISTER_RQM_MASK
@@ -478,6 +485,9 @@ void pd765_handle_command_sense_interrupt_status(void)
         pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
     }    
 
+    //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
+    //pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
 
     //Quitar flags de seek siempre que seek esté finalizado
     /*
@@ -511,6 +521,7 @@ void pd765_handle_command_read_id(void)
     pd765_output_parameters_index=0;
 
     //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
     pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
 
 
@@ -713,6 +724,7 @@ void pd765_handle_command_read_data(void)
     pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;    
 
     //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
     pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;    
 
     //Metemos resultado de leer en buffer de salida
@@ -1292,6 +1304,9 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+        //Decir que ya no esta busy
+        //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);        
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
