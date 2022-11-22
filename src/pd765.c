@@ -712,6 +712,9 @@ void pd765_handle_command_read_data(void)
     //E indicar fase ejecucion ha empezado
     pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;    
 
+    //Mientras dura, indicar que FDC esta busy
+    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;    
+
     //Metemos resultado de leer en buffer de salida
 
     /*
@@ -1070,7 +1073,11 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             //No tiene parametros. Solo resultados
             pd765_handle_command_invalid();
-            if (value!=8) sleep(10);
+
+            if (value!=8) {
+                //sleep(3);
+                debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH",value);
+            }
         }
     }
     else {
@@ -1484,6 +1491,9 @@ z80_byte pd765_read_result_command_read_data(void)
             printf("PD765: End of result buffer of READ DATA\n");
                 //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+            //Decir que ya no esta busy
+            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);            
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
