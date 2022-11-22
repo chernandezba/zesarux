@@ -360,7 +360,7 @@ int dsk_get_sector_size_track_from_offset(int offset)
 {
     int sector_size=plus3dsk_get_byte_disk(offset+0x14);
     if (sector_size>6) {
-        debug_printf(VERBOSE_ERR,"Sector size %d unsupported",sector_size);
+        printf("Sector size %d unsupported\n",sector_size);
         return -1;
     }
 
@@ -411,6 +411,7 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
 
         int sector_size=dsk_get_sector_size_track_from_offset(offset);
         if (sector_size<0) {
+            debug_printf(VERBOSE_ERR,"DSK Basic: Sector size not supported on track %d",pista);
             return -1;
         }
 
@@ -483,6 +484,7 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
 
         int sector_size=dsk_get_sector_size_track_from_offset(offset);
         if (sector_size<0) {
+            debug_printf(VERBOSE_ERR,"DSK Extended: Sector size not supported on track %d side %d",pista,cara);
             return -1;
         }
 
@@ -562,6 +564,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
             int sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
             if (sector_size<0) {
+                debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
                 return -1;
             }                        
 

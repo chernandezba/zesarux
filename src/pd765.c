@@ -735,6 +735,7 @@ void pd765_handle_command_read_data(void)
     //gestionar error si sector no encontrado
     //Megaphoenix esta dando este error: 
     //NOT Found sector ID 02H on track 4
+    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
     if (iniciosector<0) {
         /*
         If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
