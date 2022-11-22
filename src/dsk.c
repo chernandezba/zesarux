@@ -255,17 +255,26 @@ int dsk_get_protection_scheme_aux(char *esquema)
 
 //Realmente es: SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT 1988 SPEEDLOCK ASSOCIATES FOR MORE DETAILS, PHONE (0734) 470303
 //Ejemplo Batman The Caped Crusader.dsk
-char *dsk_protection_scheme_speedlock="SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT";
+char *dsk_protection_scheme_speedlock_p3="SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT";
+
+//Realmente es: SPEEDLOCK DISC PROTECTION SYSTEMS (C) 1989 SPEEDLOCK ASSOCIATES FOR MORE DETAILS, PHONE (0734) 470303
+//Ejemplo Chuck Yeager's Advanced Flight Trainer.dsk
+char *dsk_protection_scheme_speedlock_disc="SPEEDLOCK DISC PROTECTION SYSTEMS";
 
 //Ejemplo: Cabal.dsk
 char *dsk_protection_scheme_paul_owen="OCEAN SOFTWARE LIMITED\x80PAUL OWENS\x80PROTECTION SYSTEM";
 
 void dsk_get_protection_scheme(char *buffer)
 {
-    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock)) {
-        strcpy(buffer,"SPEEDLOCK");
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
+        strcpy(buffer,"SPEEDLOCK +3 DISC 1988");
         return;
     }
+
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
+        strcpy(buffer,"SPEEDLOCK DISC 1989");
+        return;
+    }    
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
         strcpy(buffer,"Ocean Paul Owens");
