@@ -510,6 +510,9 @@ void pd765_handle_command_read_id(void)
     //E indice a 0
     pd765_output_parameters_index=0;
 
+    //Mientras dura, indicar que FDC esta busy
+    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
+
 
 }
 
@@ -1031,7 +1034,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         else if ((value & 0xBF)==0x0A) {
             //Read id
             //TODO: bit MF
-            printf("---PD765: READ ID command\n");
+            printf("---PD765: READ ID command. Current track: %02XH\n",pd765_pcn);
             pd765_command_received=PD765_COMMAND_READ_ID;
             pd765_input_parameters_index++; ;            
         }
@@ -1421,6 +1424,9 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+        //Decir que ya no esta busy
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
