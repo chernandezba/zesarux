@@ -27044,6 +27044,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
     char buffer_signature[DSK_SIGNATURE_LENGTH+1];
     char buffer_creator[DSK_CREATOR_LENGTH+1];
+    char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
 
 
     do {
@@ -27051,6 +27052,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
         dsk_get_signature(buffer_signature);
         dsk_get_creator(buffer_creator);
+        dsk_get_protection_scheme(buffer_esquema_proteccion);
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
@@ -27061,6 +27063,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
                 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_get_total_tracks());
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_get_total_sides());
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Protection System: %s",buffer_esquema_proteccion);
 
    
         menu_add_item_menu_separator(array_menu_common);

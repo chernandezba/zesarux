@@ -31,6 +31,8 @@
 #define DSK_SIGNATURE_LENGTH 34
 #define DSK_CREATOR_LENGTH 14
 
+#define DSK_MAX_PROTECTION_SCHEME 100
+
 extern void dsk_insert_disk(char *nombre);
 
 extern char dskplusthree_file_name[];
@@ -77,5 +79,7 @@ extern int dsk_get_gap_length_track(int pista,int cara);
 extern int dsk_get_filler_byte_track(int pista,int cara);
 extern int dsk_file_type_extended;
 extern int dsk_extended_get_track_size(int pista,int cara);
+
+extern void dsk_get_protection_scheme(char *buffer);
 
 #endif

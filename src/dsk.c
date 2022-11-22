@@ -231,12 +231,52 @@ void dskplusthree_enable(void)
 
     printf("DSK total tracks: %d total sides: %d\n",dsk_get_total_tracks(),dsk_get_total_sides());
 
+    char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
+    dsk_get_protection_scheme(buffer_esquema_proteccion);
+    printf("Protection system: %s\n",buffer_esquema_proteccion);
+
 	p3dsk_buffer_disco_size=tamanyo;
 
         dskplusthree_emulation.v=1;
 
 }
 
+int dsk_get_protection_scheme_aux(char *esquema)
+{
+    int longitud=strlen(esquema);
+    int i;
+
+    for (i=0;i<p3dsk_buffer_disco_size-longitud;i++) {
+        if (!memcmp(&p3dsk_buffer_disco[i],esquema,longitud)) return 1;
+    }
+
+    return 0;
+}
+
+//Realmente es: SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT 1988 SPEEDLOCK ASSOCIATES FOR MORE DETAILS, PHONE (0734) 470303
+//Ejemplo Batman The Caped Crusader.dsk
+char *dsk_protection_scheme_speedlock="SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT";
+
+//Ejemplo: Cabal.dsk
+char *dsk_protection_scheme_paul_owen="OCEAN SOFTWARE LIMITED\x80PAUL OWENS\x80PROTECTION SYSTEM";
+
+void dsk_get_protection_scheme(char *buffer)
+{
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock)) {
+        strcpy(buffer,"SPEEDLOCK");
+        return;
+    }
+
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
+        strcpy(buffer,"Ocean Paul Owens");
+        return;
+    }
+
+
+    
+
+    strcpy(buffer,"None");
+}
 
 z80_byte plus3dsk_get_byte_disk(int offset)
 {
