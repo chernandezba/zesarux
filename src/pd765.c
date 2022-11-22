@@ -254,6 +254,9 @@ void pd765_signal_se_function_triggered(void)
     //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
     //pd765_main_status_register &= (0xFF - PD765_STATUS_REGISTER_DIO_MASK);
 
+    //TODO: correcto esto aqui?
+    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+
     pd765_phase=PD765_PHASE_COMMAND;
 
     //Avisar interrupcion pendiente de la controladora
@@ -480,10 +483,10 @@ void pd765_handle_command_sense_interrupt_status(void)
     pd765_output_parameters_index=0;
 
     //Estos bits se resetean con un sense interrupt
-    if (pd765_sc_get(&signal_se)) {
-        //TODO: dudoso hacer esto aqui
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
-    }    
+    //if (pd765_sc_get(&signal_se)) {
+    //    //TODO: dudoso hacer esto aqui
+    //    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+    //}    
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
