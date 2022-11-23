@@ -240,8 +240,7 @@ void pd765_signal_se_function_triggered(void)
     //prueba temp
     if (pd765_pcn>39) {
         //TODO: ni deberia empezar el seek con esto
-        printf("PD765: seek BEYOND limit: %d\n",pd765_pcn);
-        sleep(10);
+        debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
     }
 
 

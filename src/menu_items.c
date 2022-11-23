@@ -27192,7 +27192,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
                 "Disk Info","Disk Info","Disk Info");
-            menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
+            //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
                 
                         
                                 menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);

@@ -279,6 +279,12 @@ char *dsk_protection_scheme_alkatraz="THE ALKATRAZ PROTECTION SYSTEM   (C) 1987"
 //***Loader Copyright Three Inch Software 1988, All Rights Reserved. Three Inch Software, 73 Surbiton Road, Kingston upon Thames, KT1 2HG***
 char *dsk_protection_scheme_three_inch="Loader Copyright Three Inch Software";
 
+//Este viene en Norte y Sur, al parecer ejecuta comandos invalidos pero funciona en ZEsarUX
+//NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT.                              
+//SI TIENES CONCIMIENTOS DE CODIGO MAQUINA PUEDES TENER TRABAJO LLAMANDO AL NUMERO: (93) 485-11-57 O ESCRIBENDO A: 
+//C/FRANCISCO DE ARANDA, 45-47 ENTLO. 1 08005 BARCELONA.
+char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT";
+
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
 //TODO: cuando soporte alguno de estos esquemas, retornar 0 en algunos casos diciendo que ya se soporta
 int dsk_get_protection_scheme(char *buffer)
@@ -308,6 +314,11 @@ int dsk_get_protection_scheme(char *buffer)
         return 1;
     }    
     
+    //Este si que esta soportado
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_new_frontier)) {
+        strcpy(buffer,"New Frontier");
+        return 0;
+    }
 
     strcpy(buffer,"None");
     return 0;
