@@ -1121,8 +1121,8 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             if (value!=8) {
                 //sleep(3);
-                //debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
-                printf("!!!!!!PD765: Invalid command %02XH on PC=%04XH\n",value,reg_pc);
+                debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
+                //printf("!!!!!!PD765: Invalid command %02XH on PC=%04XH\n",value,reg_pc);
             }
         }
     }
