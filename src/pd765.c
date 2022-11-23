@@ -390,10 +390,13 @@ void pd765_next_event_from_core(void)
             //y sumar lo de ahora
             diferencia=diferencia_hasta_fin_frame+t_estados;
 
-            printf("STATES: fin de frame\n");
+            //Si sale negativo (que no deberia) dejarlo tal cual
+            if (diferencia<0) diferencia=0;
+
+            if (signal_se.running) printf("STATES: fin de frame\n");
         }
 
-        printf("STATES: diference: %d last: %d now: %d \n",diferencia,pd765_ultimo_t_estados,t_estados);
+        if (signal_se.running) printf("STATES: diference: %d last: %d now: %d \n",diferencia,pd765_ultimo_t_estados,t_estados);
 
         pd765_sc_handle_running(&signal_se,diferencia);
 
