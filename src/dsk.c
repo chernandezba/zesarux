@@ -283,6 +283,12 @@ char *dsk_protection_scheme_three_inch="Loader Copyright Three Inch Software";
 //NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT.                              
 //SI TIENES CONCIMIENTOS DE CODIGO MAQUINA PUEDES TENER TRABAJO LLAMANDO AL NUMERO: (93) 485-11-57 O ESCRIBENDO A: 
 //C/FRANCISCO DE ARANDA, 45-47 ENTLO. 1 08005 BARCELONA.
+/*
+Sectores de 4kb
+Parece que despues de un seek a pista 0, lanza otro a pista 1 y
+si ese seek no finaliza en menos de 97 t-estados, empieza a enviar valores random (leidos de la rom) hasta que finaliza
+el seek (durante el seek los valores random se ignoran)
+*/
 char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT";
 
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no

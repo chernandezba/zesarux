@@ -32,6 +32,7 @@
 #include "utils.h"
 #include "dsk.h"
 #include "menu_items.h"
+#include "screen.h"
 
 z80_bit pd765_enabled={0};
 
@@ -185,11 +186,11 @@ void pd765_sc_set(pd765_signal_counter *s)
 }
 
 //Incrementar si esta running y cambiar a 1 si llega al limite
-void pd765_sc_handle_running(pd765_signal_counter *s)
+void pd765_sc_handle_running(pd765_signal_counter *s,int incremento)
 {
     if (s->running) {
-        //printf(" PD765: handle signal running. Current counter: %d max: %d\n",s->current_counter,s->max);
-        (s->current_counter)++;
+        printf(" PD765: handle signal running. Current counter: %d max: %d\n",s->current_counter,s->max);
+        (s->current_counter)+=incremento;
         if ((s->current_counter)>=(s->max)) {
             printf(" PD765: Activar senyal\n");
             pd765_sc_set(s);
@@ -271,7 +272,9 @@ void pd765_signal_se_function_triggered(void)
 pd765_signal_counter signal_se={
     0,0,0,
     //5,pd765_signal_se_function_triggered
-    200,pd765_signal_se_function_triggered
+
+    //Norte y sur: 97 t-estados para mover cabezal de la pista 0 a la 1
+    80,pd765_signal_se_function_triggered
 };
 
 
@@ -364,12 +367,37 @@ void pd765_motor_off(void)
     }
 }
 
+int pd765_ultimo_t_estados=-1;
+
 void pd765_next_event_from_core(void)
 {
 
     //TODO De momento solo hacer eventos de seek, no cuento t-estados como tal, solo numero de veces tal cual que se llama aqui
     if (pd765_enabled.v) {
-        pd765_sc_handle_running(&signal_se);
+        //Vamos a saber cuantos t-estados han pasado desde el anterior
+
+        //Estado inicial. no sabemos cuanto ha transcurrido
+        if (pd765_ultimo_t_estados<0) pd765_ultimo_t_estados=t_estados;
+
+        int diferencia=t_estados-pd765_ultimo_t_estados;
+
+        //Si t_estados ha dado la vuelta, la resta sera <0
+        if (diferencia<0) {
+
+            //del anterior hasta fin de frame
+            int diferencia_hasta_fin_frame=screen_testados_total-pd765_ultimo_t_estados;
+
+            //y sumar lo de ahora
+            diferencia=diferencia_hasta_fin_frame+t_estados;
+
+            printf("STATES: fin de frame\n");
+        }
+
+        printf("STATES: diference: %d last: %d now: %d \n",diferencia,pd765_ultimo_t_estados,t_estados);
+
+        pd765_sc_handle_running(&signal_se,diferencia);
+
+        pd765_ultimo_t_estados=t_estados;
     }
 }
 
@@ -1004,7 +1032,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         //si esta haciendo seek y se lanza otro comando no seek, no aceptar
         if (signal_se.running) {
             if (value!=7 && value!=0xf) {
-                printf("---PD765: Ignore command on seek phase\n");
+                printf("---PD765: Ignore command on seek phase. Counter to finish seek: %d\n",signal_se.current_counter);
                 return;
             }
         }
@@ -1090,7 +1118,8 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             if (value!=8) {
                 //sleep(3);
-                debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH",value);
+                //debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
+                printf("!!!!!!PD765: Invalid command %02XH on PC=%04XH\n",value,reg_pc);
             }
         }
     }
@@ -1600,7 +1629,7 @@ z80_byte pd765_read_status_register(void)
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
-        printf(" PD765: mantener pd765_interrupt_pending pues esta seek activo\n");
+        printf(" PD765: mantener pd765_interrupt_pending pues esta seek activo. Counter to finish seek: %d\n",signal_se.current_counter);
         pd765_interrupt_pending=1;
     }
 
