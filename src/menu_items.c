@@ -26918,7 +26918,7 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 
         for (sector=0;sector<total_sectores;sector++) {
                 z80_byte leido_id_st1 ,leido_id_st2;
-                //TODO: de momento solo cara 0
+                
                 dsk_get_st12(pista,cara,sector,&leido_id_st1,&leido_id_st2);
 
 
@@ -27002,12 +27002,45 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                     int gap_length_track=dsk_get_gap_length_track(pista,cara);
                     int filler_byte_track=dsk_get_filler_byte_track(pista,cara);
 
+                    int datarate_track=dsk_get_datarate_track(pista,cara);
+                    char *datarates[]={
+                        "Single or Double Density",
+                        "High Density",
+                        "Extended Density"
+                    };
+
+                    datarate_track--;
+                    char datarate_buffer[100];
+                    if (datarate_track<0 || datarate_track>2) {
+                        strcpy(datarate_buffer,"Unknown");
+                    }
+                    else {
+                        strcpy(datarate_buffer,datarates[datarate_track]);
+                    }
+
+                    int recordingmode=dsk_get_recordingmode_track(pista,cara);
+                    char *recordings[]={
+                        "FM",
+                        "MFM"
+                    };
+
+                    recordingmode--;
+                    char recordingmode_buffer[100];
+                    if (recordingmode<0 || recordingmode>1) {
+                        strcpy(recordingmode_buffer,"Unknown");
+                    }
+                    else {
+                        strcpy(recordingmode_buffer,recordings[recordingmode]);
+                    }
+
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Sector size: %4d Sectors: %d",
                         sector_size_track,total_sectors_track);
                     
-
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
-                        gap_length_track,filler_byte_track);                    
+                        gap_length_track,filler_byte_track);       
+
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Datarate: %s. Recording mode: %s",
+                        datarate_buffer,recordingmode_buffer);                                     
                 
                 }
 
@@ -27056,14 +27089,14 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," %s",buffer_signature);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_signature);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Creator:");
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," %s",buffer_creator);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Creator:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_creator);
                 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_get_total_tracks());
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_get_total_sides());
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Protection System: %s",buffer_esquema_proteccion);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Total tracks: %d",dsk_get_total_tracks());
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Total sides: %d",dsk_get_total_sides());
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Protection System: %s",buffer_esquema_proteccion);
 
    
         menu_add_item_menu_separator(array_menu_common);

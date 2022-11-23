@@ -80,6 +80,6 @@ extern int dsk_get_filler_byte_track(int pista,int cara);
 extern int dsk_file_type_extended;
 extern int dsk_extended_get_track_size(int pista,int cara);
 
-extern void dsk_get_protection_scheme(char *buffer);
+extern int dsk_get_protection_scheme(char *buffer);
 
 #endif

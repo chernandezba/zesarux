@@ -232,7 +232,11 @@ void dskplusthree_enable(void)
     printf("DSK total tracks: %d total sides: %d\n",dsk_get_total_tracks(),dsk_get_total_sides());
 
     char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
-    dsk_get_protection_scheme(buffer_esquema_proteccion);
+    int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
+    if (protegido_no_soportado) {
+        debug_printf(VERBOSE_ERR,"This disk is protected with an unsupported method: %s. It probably won't be readable",buffer_esquema_proteccion);
+    }
+
     printf("Protection system: %s\n",buffer_esquema_proteccion);
 
 	p3dsk_buffer_disco_size=tamanyo;
@@ -264,27 +268,49 @@ char *dsk_protection_scheme_speedlock_disc="SPEEDLOCK DISC PROTECTION SYSTEMS";
 //Ejemplo: Cabal.dsk
 char *dsk_protection_scheme_paul_owen="OCEAN SOFTWARE LIMITED\x80PAUL OWENS\x80PROTECTION SYSTEM";
 
-void dsk_get_protection_scheme(char *buffer)
+//Alkatraz
+//THE ALKATRAZ PROTECTION SYSTEM   (C) 1987  Appleby Associates                    Antony Dunmore          James Wood            John Bayliffe
+//Ejemplo: Echelon.dsk
+char *dsk_protection_scheme_alkatraz="THE ALKATRAZ PROTECTION SYSTEM   (C) 1987";
+
+
+//Esto no se si realmente es un sistema de proteccion
+//Pero parece que da problemas al usar esos discos
+//***Loader Copyright Three Inch Software 1988, All Rights Reserved. Three Inch Software, 73 Surbiton Road, Kingston upon Thames, KT1 2HG***
+char *dsk_protection_scheme_three_inch="Loader Copyright Three Inch Software";
+
+//Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
+//TODO: cuando soporte alguno de estos esquemas, retornar 0 en algunos casos diciendo que ya se soporta
+int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
         strcpy(buffer,"SPEEDLOCK +3 DISC 1988");
-        return;
+        return 1;
     }
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_disc)) {
         strcpy(buffer,"SPEEDLOCK DISC 1989");
-        return;
+        return 1;
     }    
 
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_paul_owen)) {
         strcpy(buffer,"Ocean Paul Owens");
-        return;
+        return 1;
     }
 
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_alkatraz)) {
+        strcpy(buffer,"ALKATRAZ 1987");
+        return 1;
+    }
 
+    if (dsk_get_protection_scheme_aux(dsk_protection_scheme_three_inch)) {
+        strcpy(buffer,"Three Inch");
+        return 1;
+    }    
     
 
     strcpy(buffer,"None");
+    return 0;
 }
 
 z80_byte plus3dsk_get_byte_disk(int offset)
@@ -370,6 +396,43 @@ int dsk_get_gap_length_track(int pista,int cara)
 
 }
 
+
+//entrada: offset a track information block
+int dsk_get_datarate_track_from_offset(int offset)
+{
+    z80_byte datarate=plus3dsk_get_byte_disk(offset+0x12);
+
+    return datarate;
+}
+
+
+
+int dsk_get_datarate_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+
+    return dsk_get_datarate_track_from_offset(offset);
+
+}
+
+
+//entrada: offset a track information block
+int dsk_get_recordingmode_track_from_offset(int offset)
+{
+    z80_byte recordingmode=plus3dsk_get_byte_disk(offset+0x16);
+
+    return recordingmode;
+}
+
+
+
+int dsk_get_recordingmode_track(int pista,int cara)
+{
+    int offset=dsk_get_start_track(pista,cara);
+
+    return dsk_get_recordingmode_track_from_offset(offset);
+
+}
 
 //entrada: offset a track information block
 int dsk_get_filler_byte_track_from_offset(int offset)
