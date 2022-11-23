@@ -199,3 +199,5 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 -Si DSK no esta insertado, que no se intenten usar funciones de disco: ejemplo: no selecciono disco y le doy al "Cargador" del +3, y dara error de dsk
 ->luego asegurarse que si no hay dsk, no diga que es un +2a y no hay discos a: y b:
 Creo que se deberia retornar algo asi como el flag de disk not ready de la pd765 si no está insertado
+
+-articfox: carga pero genera comando invalido. quiza parecido a norte y sur?
