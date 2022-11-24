@@ -127,6 +127,8 @@ z80_byte pd765_debug_last_sector_id_h_read=0;
 z80_byte pd765_debug_last_sector_id_r_read=0;
 z80_byte pd765_debug_last_sector_id_n_read=0;
 
+int pd765_siguiente_sector_read_id;
+
 int tempp_estados=0;
 
 //Estado motor. 0 apagado, 1 activado
@@ -849,6 +851,9 @@ void pd765_handle_command_read_data(void)
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_read=sector_fisico;
 
+    //Ultimo sector leido para read_id
+    pd765_siguiente_sector_read_id=sector_fisico+1;
+
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
@@ -1352,7 +1357,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
     }
 }
 
-int pd765_ultimo_sector_read_id;
+
 
 z80_byte pd765_read_result_command_read_id(void)
 {
@@ -1386,7 +1391,7 @@ z80_byte pd765_read_result_command_read_id(void)
     //Devolvemos el siguiente lector al anterior leido por read id
     //TODO de momento solo cara 0
     int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
-    int sector=pd765_ultimo_sector_read_id;
+    int sector=pd765_siguiente_sector_read_id;
 
     if (total_sectores!=0) {
         sector=sector % total_sectores;
@@ -1488,7 +1493,7 @@ z80_byte pd765_read_result_command_read_id(void)
         pd765_phase=PD765_PHASE_COMMAND;
 
         //E indicar siguiente sector de read_id, ya que el disco gira, se obtendrá otro distinto
-        pd765_ultimo_sector_read_id++;
+        pd765_siguiente_sector_read_id++;
 
         return return_value;        
     }                      

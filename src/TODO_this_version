@@ -201,3 +201,9 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 Creo que se deberia retornar algo asi como el flag de disk not ready de la pd765 si no está insertado
 
 -articfox: carga pero genera comando invalido. quiza parecido a norte y sur?
+
+
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla
+
+-desde disk info-pistas-sectores, al pulsar en un sector, abrir hex editor con una zona especial que consiste en esa pista
+esa zona solo esta activa mientras haya dsk insertado, y al reinsertar/quitar dsk, se pierde
