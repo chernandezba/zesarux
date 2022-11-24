@@ -218,5 +218,8 @@ alien storm (erbe)
 PD765: Reading main status register on pc FF19H: C0H (RQM DIO      )
 PD765: Reading main status register on pc FF3AH: C0H (RQM DIO      )
 PD765: Reading main status register on pc FEF2H: C0H (RQM DIO      )
+espera D0 despues de sense interrupt (en ff38h). o sea, 
+DB4         FDC Busy            CB          A read or write command is in process. FDC will not accept any other command
 
-
+otro D0h
+luego 80h

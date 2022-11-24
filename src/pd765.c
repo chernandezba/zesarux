@@ -522,7 +522,7 @@ void pd765_handle_command_sense_interrupt_status(void)
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    //pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
+    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
 
     //Quitar flags de seek siempre que seek esté finalizado
     /*
@@ -1370,7 +1370,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
         pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);        
+        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);        
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
