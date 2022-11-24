@@ -708,7 +708,32 @@ void pd765_handle_command_seek(void)
     /*
     Parecido a recalibrate pero vamos al track indicado
     */
-   
+
+   /*
+    if (pd765_input_parameter_ncn==pd765_pcn) {
+        printf("PD765: Already seeked where asked\n");
+
+
+    //E indicar fase ejecucion ha finalizado
+    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+
+    //Decir RQM
+    //pd765_main_status_register |= PD765_STATUS_REGISTER_RQM_MASK;
+
+    //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
+    //pd765_main_status_register &= (0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+
+    //TODO: correcto esto aqui?
+    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+
+    pd765_phase=PD765_PHASE_COMMAND;
+
+    pd765_interrupt_pending=0;
+
+
+        return;
+    }   
+    */
 
    //pd765_pcn=pd765_input_parameter_ncn;
 

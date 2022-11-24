@@ -207,3 +207,16 @@ Creo que se deberia retornar algo asi como el flag de disk not ready de la pd765
 
 -desde disk info-pistas-sectores, al pulsar en un sector, abrir hex editor con una zona especial que consiste en esa pista
 esa zona solo esta activa mientras haya dsk insertado, y al reinsertar/quitar dsk, se pierde
+
+alien storm (erbe)
+-sector fisico 0 pista 0. leido desde rom
+-inicio juego. read id
+-read id de pista 0 sector fisico 1: chrn: 0 0 6 2
+-seek a pista 0  (pista de ff57h)
+-sense interrupt
+-bucle cerrado:
+PD765: Reading main status register on pc FF19H: C0H (RQM DIO      )
+PD765: Reading main status register on pc FF3AH: C0H (RQM DIO      )
+PD765: Reading main status register on pc FEF2H: C0H (RQM DIO      )
+
+
