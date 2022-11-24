@@ -764,6 +764,8 @@ void pd765_handle_command_seek(void)
    
 }
 
+int pd765_last_sector_size_read_data=0;
+
 void pd765_handle_command_read_data(void)
 {
 
@@ -878,6 +880,16 @@ void pd765_handle_command_read_data(void)
 
     //Ultimo sector leido para read_id
     pd765_siguiente_sector_read_id=sector_fisico+1;
+
+
+    //Tamanyo real para caso discos extendidos
+    if (dsk_file_type_extended) {
+        sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
+    }
+
+    pd765_last_sector_size_read_data=sector_size;
+
+    printf("REAL sector size: %d\n",pd765_last_sector_size_read_data);
 
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
@@ -1545,7 +1557,9 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     //printf("Buscando sector size para pista %d\n",pd765_pcn);
-    int sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente
+    //int sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente
+
+    int sector_size=pd765_last_sector_size_read_data;
 
     if (sector_size==0) printf("SIZE: %d\n",sector_size);
     //sleep(5);

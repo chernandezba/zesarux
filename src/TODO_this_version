@@ -223,3 +223,5 @@ DB4         FDC Busy            CB          A read or write command is in proces
 
 otro D0h
 luego 80h
+
+-despues de leer sector grande de 8kb, creo que habia que retornar error...
