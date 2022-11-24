@@ -26933,6 +26933,11 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," C:%02X H:%02X R:%02X N:%02X",
                     leido_id_c,leido_id_h,leido_id_r,leido_id_n);
 
+                if (dsk_file_type_extended) {
+                    int tamanyo_real=dsk_get_real_sector_size_extended(pista,cara,sector);
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," Actual size: %d",tamanyo_real);
+                }
+
                 menu_add_item_menu_separator(array_menu_common);
 
             

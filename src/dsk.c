@@ -778,5 +778,32 @@ void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z
 
 }
 
+//Devolver tamaño real de una pista y sector concreto, para tipo extendido
+
+int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico)
+{
+
+    int iniciopista=dsk_get_start_track(pista,cara); 
+
+    //printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
+
+    //saltar 0x18
+    iniciopista +=0x18;
+
+
+    int offset_tabla_sector=sector_fisico*8; 
+    //z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
+    //z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
+
+    //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+
+
+    int tamanyo=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+6)+256*plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+7);  
+
+    return tamanyo;            
+
+
+}
+
 
 
