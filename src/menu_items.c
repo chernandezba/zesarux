@@ -33494,7 +33494,10 @@ void menu_visual_floppy_putpixel_track_sector(int centro_disco_x,int centro_disc
 {
 
     //si fuera limites, no hacer putpixel
-    if (pista>=MENU_VISUAL_FLOPPY_PISTAS || sector>=MENU_VISUAL_FLOPPY_SECTORES || byte_en_sector>=MENU_VISUAL_FLOPPY_BYTES_SECTOR) {
+    //No limito byte_en_sector, en caso de sectores de mas de 512 bytes, el pixel simplemente "saltara" al siguiente sector,
+    //dado que tampoco voy a hacer una representacion super exacta del entorno, pero al menos, por ejemplo en sectores de 4kb, que se 
+    //vea bien que lee mas alla de 512 bytes
+    if (pista>=MENU_VISUAL_FLOPPY_PISTAS || sector>=MENU_VISUAL_FLOPPY_SECTORES /*|| byte_en_sector>=MENU_VISUAL_FLOPPY_BYTES_SECTOR*/) {
         //printf("Error fuera limite\n");
         return;
     }
