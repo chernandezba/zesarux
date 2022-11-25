@@ -240,8 +240,8 @@ void pd765_signal_se_function_triggered(void)
 
     printf("PD765: seek has finished. Changing PCN from NCN: %d\n",pd765_pcn);
 
-    //prueba temp
-    if (pd765_pcn>39) {
+    //Controlar limite seek
+    if (pd765_pcn>=dsk_get_total_tracks()) {
         //TODO: ni deberia empezar el seek con esto
         debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
     }
@@ -766,6 +766,12 @@ void pd765_handle_command_seek(void)
 
 int pd765_last_sector_size_read_data=0;
 
+
+//Esto se puso para intentar cargar Alien\ Storm\ \(Erbe\).dsk
+//quiza no es necesario?? o gestionar de otra manera
+//Esto tiene que ver con lecturas de sectores de 8kb, que afecta supuestamente tambien a speedlock
+int anormal_termination=0;
+
 void pd765_handle_command_read_data(void)
 {
 
@@ -882,10 +888,27 @@ void pd765_handle_command_read_data(void)
     pd765_siguiente_sector_read_id=sector_fisico+1;
 
 
+    anormal_termination=0;
+
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
-        sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
+        //Tamanyo que dice el sector realmente
+        int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
+
+        //sector_size es el tamaño que decia del sector en la info de pista
+
+        //TODO: esto tambien pasa cuando es mayor?
+        if (real_sector_size<sector_size) {
+            printf("Reading less data than the track size says. Setting abnormal termination flag\n");
+            anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+        }
+
+        sector_size=real_sector_size;
+
+        //se van a leer menos datos
     }
+
+    
 
     pd765_last_sector_size_read_data=sector_size;
 
@@ -920,6 +943,11 @@ void pd765_handle_command_read_data(void)
 
 
     z80_byte return_value=pd765_get_st0();
+
+    if (anormal_termination) {
+        return_value |= 0x40;
+    }
+
     printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
     pd765_put_buffer(return_value);
 
@@ -940,24 +968,33 @@ void pd765_handle_command_read_data(void)
 
 
     //TODO. Gestion de CHRN cuando se interrumpe el comando
+
+    //TODO: no tengo claro si los valores de retorno CHRN son los leidos de la info del sector (leido_id_XX), 
+    //o bien son los del parametro del comando (pd765_input_parameter_XX)
+    //alien storm (erbe) por ejemplo se lee sector 0 de pista 1 con parametros: CHRN 1 0 1 2 , pero la pista tiene 1 0 1 6
+
     return_value=pd765_input_parameter_c;
+    //return_value=leido_id_c;
     //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
     printf("PD765: Returning C: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_h;
+    //return_value=leido_id_h;
     printf("PD765: Returning H: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_r;
+    //return_value=leido_id_r;
     return_value++;
     printf("PD765: Returning R: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_n;
+    //return_value=leido_id_n;
     printf("PD765: Returning N: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
@@ -1345,6 +1382,16 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 
 
         z80_byte return_value=pd765_get_st0();
+
+        //TODO: esto viene de read data y creo que aqui no deberia hacerse
+        /*if (anormal_termination) {
+            return_value |= 0x40;
+
+            //Y quitamos anormal_termination
+            //TODO: esto se deberia hacer directamente en un byte de valor st0 y alterar ahi?
+            anormal_termination=0;
+        } */ 
+
         printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
 
         pd765_output_parameters_index++;

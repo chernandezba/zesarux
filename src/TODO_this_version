@@ -224,4 +224,57 @@ DB4         FDC Busy            CB          A read or write command is in proces
 otro D0h
 luego 80h
 
--despues de leer sector grande de 8kb, creo que habia que retornar error...
+
+
+-Buscando sector ID 01H on track 1 estamos en pos sector 0
+Found sector ID 01H on track 1 at pos sector 0
+Found sector ID 01H on track 1 at offset in DSK: 1700H
+REAL sector size: 6144
+PD765: Returning ST0: 00H ()
+PD765: Returning ST1: 20H -> Data error
+PD765: Returning ST2: 60H -> Data error, Control Mark. control mark... gestion diferente?
+PD765: Returning C: 01H
+PD765: Returning H: 00H
+PD765: Returning R: 02H
+PD765: Returning N: 02H
+
+Parece que lee 3584 bytes de ese sector y el resto aunque lo lee lo ignora, no lo guarda
+
+quiza st0 incorrecto! quiza deberia ser abnormal termination D7=0 D6=1. aun asi, con esto, se comporta igual
+
+luego:
+
+---PD765: SENSE INTERRUPT STATUS command
+PD765: Reading main status register on pc FF19H: D0H (RQM DIO  CB    )
+PD765: Reading main status register on pc FF3AH: D0H (RQM DIO  CB    )
+PD765: Read command on pc FF46H
+PD765: Returning ST0: 00H ()
+PD765: Reading main status register on pc FF3AH: D0H (RQM DIO  CB    )
+PD765: Read command on pc FF46H
+PD765: Returning PCN: 01H
+PD765: Reading main status register on pc FF3AH: 80H (RQM       )
+PD765: Reading main status register on pc FEF2H: 80H (RQM       )
+PD765: Write command on pc FEFDH: 07H
+PD765: Byte command: 07H
+---PD765: RECALIBRATE command
+
+sense interrupt
+
+seek 1
+
+repite!
+
+Buscando sector ID 01H on track 1 estamos en pos sector 0
+Found sector ID 01H on track 1 at pos sector 0
+Found sector ID 01H on track 1 at offset in DSK: 1700H
+REAL sector size: 6144
+PD765: Returning ST0: 00H ()
+PD765: Returning ST1: 20H
+PD765: Returning ST2: 60H
+PD765: Returning C: 01H
+PD765: Returning H: 00H
+PD765: Returning R: 02H
+PD765: Returning N: 02H
+
+
+-comand 4c read deleted data implementar
