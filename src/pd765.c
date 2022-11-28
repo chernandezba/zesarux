@@ -997,56 +997,62 @@ field are not checked when SK = 1.
     }
 
 
-    if (return_value & 0x40) {
-        //Sector with deleted address mark
-        printf("Sector with deleted address mark\n");
+
         //sleep(5);
 
-        if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
+    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
 
-        /*
-        Read deleted data:
-        This command is the same as the Read Data Command except that when the FDC detects a Data Address
-        Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
-        CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
-        the sector with the Data Address Mark and reads the next sector.
+    /*
+    Read deleted data:
+    This command is the same as the Read Data Command except that when the FDC detects a Data Address
+    Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
+    CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
+    the sector with the Data Address Mark and reads the next sector.
 
-        */
+    */
 
-            //TODO: al reves??? leer bien: 
-            //bubble bobble y black lamp This command is the same as the Read Data Command except that when the FDC detects a Data Address
-                //((Mark at the beginning of a Data Field 
+        //TODO: al reves??? leer bien: 
+        //bubble bobble y black lamp This command is the same as the Read Data Command except that when the FDC detects a Data Address
+            //((Mark at the beginning of a Data Field 
+        if ((return_value & 0x40)==0) {
             if (pd765_input_parameter_sk) {
+                    printf("Sector with address mark\n");
                     printf("TODO next sector\n");
                     sleep(5);
             }
             else {
                     //leer tal cual
-                    //sleep(5);
             }
-
         }
 
-        if (pd765_command_received==PD765_COMMAND_READ_DATA) {
-            /*
-            read data
-            If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
-            Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
-            and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
-            the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
-            field are not checked when SK = 1.
-            */
+    }
+    
 
+    
+
+    if (pd765_command_received==PD765_COMMAND_READ_DATA) {
+        /*
+        read data
+        If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
+        Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
+        and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
+        the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
+        field are not checked when SK = 1.
+        */
+
+        if (return_value & 0x40) {
             if (pd765_input_parameter_sk) {
+                    printf("Sector with deleted address mark\n");
                     printf("TODO next sector\n");
                     sleep(5);
             }
             else {
                     //leer tal cual
             }
+        }
 
-        }        
-    }
+    }        
+    
 
     printf("PD765: Returning ST2: %02XH\n",return_value);
     pd765_put_buffer(return_value);
