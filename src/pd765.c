@@ -1013,6 +1013,30 @@ field are not checked when SK = 1.
 
         */
 
+            //TODO: al reves??? leer bien: 
+            //bubble bobble y black lamp This command is the same as the Read Data Command except that when the FDC detects a Data Address
+                //((Mark at the beginning of a Data Field 
+            if (pd765_input_parameter_sk) {
+                    printf("TODO next sector\n");
+                    sleep(5);
+            }
+            else {
+                    //leer tal cual
+                    //sleep(5);
+            }
+
+        }
+
+        if (pd765_command_received==PD765_COMMAND_READ_DATA) {
+            /*
+            read data
+            If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
+            Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
+            and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
+            the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
+            field are not checked when SK = 1.
+            */
+
             if (pd765_input_parameter_sk) {
                     printf("TODO next sector\n");
                     sleep(5);
@@ -1020,13 +1044,6 @@ field are not checked when SK = 1.
             else {
                     //leer tal cual
             }
-
-        }
-
-        if (pd765_command_received==PD765_COMMAND_READ_DATA) {
-
-            //TODO
-            sleep(5);
 
         }        
     }
