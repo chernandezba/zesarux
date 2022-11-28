@@ -109,6 +109,12 @@ z80_byte pd765_input_parameter_hlt;
 z80_byte pd765_input_parameter_nd;
 z80_byte pd765_input_parameter_ncn;
 
+
+z80_byte pd765_input_parameter_mt;
+z80_byte pd765_input_parameter_mf;
+z80_byte pd765_input_parameter_sk;
+
+
 //Signal TS0 de ST3
 z80_bit pd765_signal_ts0={0};
 
@@ -137,6 +143,8 @@ int pd765_motor_status=0;
 //Velocidad relativa del motor: 0%: detenido del todo, 100%: iniciado del todo
 //De momento solo usado en visual floppy
 int pd765_motor_speed=0;
+
+
 
 //En cuanto se acelera o frena el motor por cada frame de pantalla (o sea cada 20 ms)
 //Al parecer al hacer un cat a:, desde un motor on, hasta el primer comando (recalibrate) pasa 1 segundo
@@ -774,7 +782,16 @@ int anormal_termination=0;
 
 void pd765_handle_command_read_data(void)
 {
+/*
+Read data:
 
+If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
+Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
+and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
+the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
+field are not checked when SK = 1.
+
+*/
 
     pd765_interrupt_pending=1;    
 
@@ -980,6 +997,40 @@ void pd765_handle_command_read_data(void)
     }
 
 
+    if (return_value & 0x40) {
+        //Sector with deleted address mark
+        printf("Sector with deleted address mark\n");
+        //sleep(5);
+
+        if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
+
+        /*
+        Read deleted data:
+        This command is the same as the Read Data Command except that when the FDC detects a Data Address
+        Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
+        CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
+        the sector with the Data Address Mark and reads the next sector.
+
+        */
+
+            if (pd765_input_parameter_sk) {
+                    printf("TODO next sector\n");
+                    sleep(5);
+            }
+            else {
+                    //leer tal cual
+            }
+
+        }
+
+        if (pd765_command_received==PD765_COMMAND_READ_DATA) {
+
+            //TODO
+            sleep(5);
+
+        }        
+    }
+
     printf("PD765: Returning ST2: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
@@ -1119,6 +1170,11 @@ void pd765_read_parameters_read_data(z80_byte value)
 
         pd765_handle_command_read_data();
     }       
+
+
+    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
+        //sleep(3);
+    }
 }
 
 void pd765_write_handle_phase_command(z80_byte value)
@@ -1186,19 +1242,49 @@ void pd765_write_handle_phase_command(z80_byte value)
         else if ((value & 0x1F)==0x06) {
             //Read data
             //TODO: bits MT, MF, SK
-            z80_byte parametro_mt=(value>>7)&1;
-            z80_byte parametro_mf=(value>>6)&1;
-            z80_byte parametro_sk=(value>>5)&1;
+            pd765_input_parameter_mt=(value>>7)&1;
+            pd765_input_parameter_mf=(value>>6)&1;
+            pd765_input_parameter_sk=(value>>5)&1;
             printf("---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
-                parametro_mt,parametro_mf,parametro_sk,pd765_pcn);
-            if(parametro_mt) {
+                pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
+            if(pd765_input_parameter_mt) {
                 printf("MF parameter not handled yet\n");
-                sleep(3);
+                //sleep(3);
             }
+
+            if(pd765_input_parameter_sk) {
+                printf("SK parameter not handled yet\n");
+                //sleep(3);
+            } 
+
             pd765_command_received=PD765_COMMAND_READ_DATA;
 
             pd765_input_parameters_index++;         
-        }        
+        }    
+
+        else if ((value & 0x1F)==0x0c) {
+            //Read deleted data
+            //TODO: bits MT, MF, SK
+            pd765_input_parameter_mt=(value>>7)&1;
+            pd765_input_parameter_mf=(value>>6)&1;
+            pd765_input_parameter_sk=(value>>5)&1;
+            printf("---PD765: READ DELETED DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
+                pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
+            //sleep(10);
+            
+            if(pd765_input_parameter_mt) {
+                printf("MF parameter not handled yet\n");
+                sleep(3);
+            }
+
+            if(pd765_input_parameter_sk) {
+                printf("SK parameter not handled yet\n");
+                sleep(3);
+            }            
+            pd765_command_received=PD765_COMMAND_READ_DELETED_DATA;
+
+            pd765_input_parameters_index++;         
+        }            
 
         else if (value==0x0F) {
             //Seek
@@ -1248,6 +1334,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             break; 
 
             case PD765_COMMAND_READ_DATA:
+            case PD765_COMMAND_READ_DELETED_DATA:
                 pd765_read_parameters_read_data(value); 
             break;                       
 
@@ -1692,6 +1779,7 @@ z80_byte pd765_read_handle_phase_result(void)
         break; 
 
         case PD765_COMMAND_READ_DATA:
+        case PD765_COMMAND_READ_DELETED_DATA:
             return pd765_read_result_command_read_data();
         break;                  
 
