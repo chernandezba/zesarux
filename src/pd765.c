@@ -1011,7 +1011,7 @@ field are not checked when SK = 1.
 
     */
 
-        //TODO: al reves??? leer bien: 
+        //TODO: como afecta bit MD??
         //bubble bobble y black lamp This command is the same as the Read Data Command except that when the FDC detects a Data Address
             //((Mark at the beginning of a Data Field 
         if ((return_value & 0x40)==0) {
@@ -1021,7 +1021,8 @@ field are not checked when SK = 1.
                     sleep(5);
             }
             else {
-                    //leer tal cual
+                //leer tal cual
+                return_value |= 0x40;
             }
         }
 
@@ -1039,6 +1040,8 @@ field are not checked when SK = 1.
         the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
         field are not checked when SK = 1.
         */
+
+       //TODO: como afecta bit MD??
 
         if (return_value & 0x40) {
             if (pd765_input_parameter_sk) {
