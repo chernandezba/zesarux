@@ -278,3 +278,83 @@ PD765: Returning N: 02H
 
 
 -comand 4c read deleted data implementar
+
+
+-Gauntlet 2:
+
+---PD765: SEEK command
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 00H
+PD765: Receiving command parameters. Index=1
+PD765: Receiving command parameters for SEEK
+PD765: HD=0H US1=0H US0=0H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 01H
+PD765: Receiving command parameters. Index=2
+PD765: Receiving command parameters for SEEK
+PD765: NCN=1H
+....
+
+PD765: Write command on pc FEF8H: 46H
+PD765: Byte command: 46H
+---PD765: READ DATA command. MT=0 MF=1 SK=0. Current track: 01H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 00H
+PD765: Receiving command parameters. Index=1
+PD765: Receiving command parameters for READ DATA
+PD765: HD=0H US1=0H US0=0H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 01H
+PD765: Receiving command parameters. Index=2
+PD765: Receiving command parameters for READ DATA
+PD765: C=1H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 00H
+PD765: Receiving command parameters. Index=3
+PD765: Receiving command parameters for READ DATA
+PD765: H=0H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 11H
+PD765: Receiving command parameters. Index=4
+PD765: Receiving command parameters for READ DATA
+PD765: R=11H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 02H
+PD765: Receiving command parameters. Index=5
+PD765: Receiving command parameters for READ DATA
+PD765: N=2H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 18H
+PD765: Receiving command parameters. Index=6
+PD765: Receiving command parameters for READ DATA
+PD765: EOT=18H
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: 2AH
+PD765: Receiving command parameters. Index=7
+PD765: Receiving command parameters for READ DATA
+PD765: GPL=2AH
+PD765: Reading main status register on pc FEEDH: 80H (RQM       )
+PD765: Write command on pc FEF8H: FFH
+PD765: Receiving command parameters. Index=8
+PD765: Receiving command parameters for READ DATA
+PD765: DTL=FFH
+PD765: End command parameters for READ_DATA
+Inicio pista 1: 1400H
+Total sectors: 8
+Buscando sector ID 11H on track 1 estamos en pos sector 0
+Found sector ID 11H on track 1 at pos sector 0
+Found sector ID 11H on track 1 at offset in DSK: 1500H
+REAL sector size: 512
+PD765: Returning ST0: 00H ()
+PD765: Returning ST1: 00H
+PD765: Returning ST2: 00H
+PD765: Returning C: 01H
+PD765: Returning H: 00H
+PD765: Returning R: 12H
+PD765: Returning N: 02H
+PD765: Reading main status register on pc FF05H: B0H (RQM  EXM CB    )
+PD765: Reading main status register on pc FF05H: B0H (RQM  EXM CB    )
+PD765: Reading main status register on pc FF05H: B0H (RQM  EXM CB    )
+PD765: Reading main status register on pc FF05H: B0H (RQM  EXM CB    )
+PD765: Reading main status register on pc FF05H: B0H (RQM  EXM CB    )
+

@@ -795,6 +795,10 @@ void pd765_handle_command_read_data(void)
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
 
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
     //Metemos resultado de leer en buffer de salida
 
     /*
