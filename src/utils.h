@@ -861,6 +861,7 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_RAMJET_ROM 45
 #define MEMORY_ZONE_INTERFACE007_ROM 46
 #define MEMORY_ZONE_DINAMID3_ROM 47
+#define MEMORY_ZONE_DSK_SECTOR 48
 
 
 

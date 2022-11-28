@@ -64,6 +64,7 @@
 #include "snap_ram.h"
 #include "hilow_datadrive.h"
 #include "dsk.h"
+#include "menu_items.h"
 
 #include "autoselectoptions.h"
 

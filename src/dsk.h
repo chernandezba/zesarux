@@ -82,4 +82,14 @@ extern int dsk_extended_get_track_size(int pista,int cara);
 
 extern int dsk_get_protection_scheme(char *buffer);
 
+extern int dsk_memory_zone_dsk_sector_start;
+extern int dsk_memory_zone_dsk_sector_size;
+extern z80_bit dsk_memory_zone_dsk_sector_enabled;
+
+extern int dsk_get_sector_fisico(int pista,int cara,int sector_fisico);
+extern int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico);
+extern int dsk_get_datarate_track(int pista,int cara);
+extern int dsk_get_gap_length_track(int pista,int cara);
+extern int dsk_get_recordingmode_track(int pista,int cara);
+
 #endif

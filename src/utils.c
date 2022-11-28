@@ -12831,6 +12831,13 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         }
     break;                          
 
+    case MEMORY_ZONE_DSK_SECTOR:
+        if (dsk_memory_zone_dsk_sector_enabled.v) {
+            *readwrite=1;      
+            size=dsk_memory_zone_dsk_sector_size;
+        }
+    break;    
+
   }
 
   return size;
@@ -13315,7 +13322,13 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         if (dinamid3_enabled.v) {
             p=&dinamid3_memory_pointer[address];             
         }
-    break;            
+    break;  
+
+    case MEMORY_ZONE_DSK_SECTOR:
+        if (dsk_memory_zone_dsk_sector_enabled.v) {
+            p=&p3dsk_buffer_disco[dsk_memory_zone_dsk_sector_start+address];
+        }
+    break;                
 
   }
 
@@ -13823,7 +13836,14 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Dinamid3 ROM");
         }
-    break;                            
+    break;  
+
+    case MEMORY_ZONE_DSK_SECTOR:
+        if (dsk_memory_zone_dsk_sector_enabled.v) {
+                       //123456789012345678901234567890
+            strcpy(name,"DSK Sector");
+        }
+    break;                               
 
   }
 

@@ -66,9 +66,9 @@ DB7         Request for Master  RQM         Indicates Data Register is ready to 
 //siempre que esta en medio de un comando
 
 
-#define PD765_STATUS_REGISTER_ON_BOOT PD765_STATUS_REGISTER_RQM_MASK
+#define PD765_MAIN_STATUS_REGISTER_ON_BOOT PD765_MAIN_STATUS_REGISTER_RQM_MASK
 
-z80_byte pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+z80_byte pd765_main_status_register=PD765_MAIN_STATUS_REGISTER_ON_BOOT;
 
 
 
@@ -248,16 +248,16 @@ void pd765_signal_se_function_triggered(void)
 
 
     //E indicar fase ejecucion ha finalizado
-    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
     //Decir RQM
-    //pd765_main_status_register |= PD765_STATUS_REGISTER_RQM_MASK;
+    //pd765_main_status_register |= PD765_MAIN_STATUS_REGISTER_RQM_MASK;
 
     //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
-    //pd765_main_status_register &= (0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+    //pd765_main_status_register &= (0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
     //TODO: correcto esto aqui?
-    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
 
     pd765_phase=PD765_PHASE_COMMAND;
 
@@ -322,7 +322,7 @@ void pd765_put_buffer(z80_byte value)
 
 void pd765_reset(void)
 {
-    pd765_main_status_register=PD765_STATUS_REGISTER_ON_BOOT;
+    pd765_main_status_register=PD765_MAIN_STATUS_REGISTER_ON_BOOT;
     pd765_phase=PD765_PHASE_ON_BOOT;
     pd765_input_parameters_index=0;
     pd765_output_parameters_index=0;
@@ -509,7 +509,7 @@ void pd765_handle_command_sense_interrupt_status(void)
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
@@ -517,25 +517,25 @@ void pd765_handle_command_sense_interrupt_status(void)
     //Estos bits se resetean con un sense interrupt
     //if (pd765_sc_get(&signal_se)) {
     //    //TODO: dudoso hacer esto aqui
-    //    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+    //    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
     //}    
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
 
     //Quitar flags de seek siempre que seek esté finalizado
     /*
     if (pd765_sc_get(&signal_se)) {
         printf("PD765: Reset DB0 etc\n");
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
 
         pd765_sc_reset(&signal_se);
     }
     */
 
         //printf("PD765: Reset DB0 etc\n");
-        //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);    
+        //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
 
 
 }
@@ -550,14 +550,14 @@ void pd765_handle_command_read_id(void)
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
 
 
 }
@@ -568,7 +568,7 @@ void pd765_handle_command_invalid(void)
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
@@ -582,7 +582,7 @@ void pd765_handle_command_sense_drive_status(void)
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
@@ -664,13 +664,13 @@ void pd765_handle_command_recalibrate(void)
    pd765_input_parameter_ncn=0;
 
     //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
     //Decir datos no libres
-    //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_RQM_MASK);
+    //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_RQM_MASK);
 
     //Indicar seek unidad 0. Seguro?
-    //pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
+    //pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_D0B_MASK;
 
     //pd765_phase=PD765_PHASE_EXECUTION;
 
@@ -715,16 +715,16 @@ void pd765_handle_command_seek(void)
 
 
     //E indicar fase ejecucion ha finalizado
-    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
     //Decir RQM
-    //pd765_main_status_register |= PD765_STATUS_REGISTER_RQM_MASK;
+    //pd765_main_status_register |= PD765_MAIN_STATUS_REGISTER_RQM_MASK;
 
     //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
-    //pd765_main_status_register &= (0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+    //pd765_main_status_register &= (0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
     //TODO: correcto esto aqui?
-    pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
 
     pd765_phase=PD765_PHASE_COMMAND;
 
@@ -741,13 +741,13 @@ void pd765_handle_command_seek(void)
    pd765_seek_was_recalibrating.v=0;
 
     //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;
 
     //Decir datos no libres
-    //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_RQM_MASK);    
+    //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_RQM_MASK);    
 
     //Indicar seek unidad 0
-    pd765_main_status_register |=PD765_STATUS_REGISTER_D0B_MASK;
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_D0B_MASK;
 
 
     //pd765_phase=PD765_PHASE_EXECUTION;
@@ -783,17 +783,17 @@ void pd765_handle_command_read_data(void)
     pd765_phase=PD765_PHASE_RESULT;
 
     //E indicar que hay que leer datos
-    //pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+    //pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
     //E indice a 0
     pd765_output_parameters_index=0;
 
     //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_EXM_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
 
     //Mientras dura, indicar que FDC esta busy
     //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_STATUS_REGISTER_CB_MASK;    
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
 
     //Metemos resultado de leer en buffer de salida
 
@@ -831,14 +831,14 @@ void pd765_handle_command_read_data(void)
         printf("PD765: sector not found\n");
 
         //E indicar fase ejecucion ha finalizado
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
 
         //E indicar que hay que leer datos
-        pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
         //Inicializar buffer retorno
         pd765_reset_buffer();            
@@ -960,9 +960,22 @@ void pd765_handle_command_read_data(void)
     printf("PD765: Returning ST1: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
-
+    //TODO: otros bits de st1 y st2 en este caso y en read id, por ejemplo missing address mark(d0) en st1
 
     return_value=leido_id_st2;        
+
+    if (leido_id_c!=pd765_input_parameter_c) {
+        printf("#####Cylinder read from disk is not what asked\n");
+        //Wrong cylinder
+        return_value |= PD765_STATUS_REGISTER_TWO_WC_MASK;
+
+        if (leido_id_c==0xFF) {
+            //Bad cylinder
+            return_value |= PD765_STATUS_REGISTER_TWO_BC_MASK;
+        }
+    }
+
+
     printf("PD765: Returning ST2: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
@@ -1285,7 +1298,7 @@ z80_byte pd765_read_result_command_sense_drive_status(void)
         printf("PD765: Returning ST3: %02XH\n",return_value);
 
         //Y decir que ya no hay que devolver mas datos
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
@@ -1305,7 +1318,7 @@ z80_byte pd765_read_result_command_invalid(void)
         printf("PD765: Command invalid return 80H\n");
 
         //Y decir que ya no hay que devolver mas datos
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
@@ -1377,7 +1390,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
         /*if (pd765_sc_get(&signal_se)) {
             printf("PD765: Reset DB0 etc\n");
 
-            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
         }*/
 
 
@@ -1408,7 +1421,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 
 
             //TODO: dudoso si hacer esto aqui o donde: se resetea D0B, D1B etc antes o despues del sense interrupt?
-            //pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_D0B_MASK - PD765_STATUS_REGISTER_D1B_MASK - PD765_STATUS_REGISTER_D2B_MASK - PD765_STATUS_REGISTER_D3B_MASK);                
+            //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
 
         }
 
@@ -1426,10 +1439,10 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
         printf("PD765: Returning PCN: %02XH\n",return_value);
 
         //Y decir que ya no hay que devolver mas datos
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);        
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);        
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
@@ -1568,10 +1581,10 @@ z80_byte pd765_read_result_command_read_id(void)
         printf("PD765: Returning N: %02XH\n",return_value);
 
         //Y decir que ya no hay que devolver mas datos
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
-        pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
@@ -1613,7 +1626,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         if (pd765_output_parameters_index==sector_size) {
             //E indicar fase ejecucion ha finalizado
-            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_EXM_MASK);
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
             pd765_interrupt_pending=1;    
@@ -1622,7 +1635,7 @@ z80_byte pd765_read_result_command_read_data(void)
             pd765_phase=PD765_PHASE_RESULT;
 
             //E indicar que hay que leer datos
-            pd765_main_status_register |=PD765_STATUS_REGISTER_DIO_MASK;
+            pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
         }
 
@@ -1630,10 +1643,10 @@ z80_byte pd765_read_result_command_read_data(void)
         if (pd765_output_parameters_index>=pd765_result_buffer_length) {
             printf("PD765: End of result buffer of READ DATA\n");
                 //Y decir que ya no hay que devolver mas datos
-            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_DIO_MASK);
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
             //Decir que ya no esta busy
-            pd765_main_status_register &=(0xFF - PD765_STATUS_REGISTER_CB_MASK);            
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
@@ -1729,14 +1742,14 @@ z80_byte pd765_read_status_register(void)
 
 
     printf("PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)\n",reg_pc,pd765_main_status_register,
-(pd765_main_status_register & PD765_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_CB_MASK  ? "CB" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_D3B_MASK ? "D3B" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_D2B_MASK ? "D2B" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_D1B_MASK ? "D1B" : ""),
-(pd765_main_status_register & PD765_STATUS_REGISTER_D0B_MASK ? "D0B" : "")
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_CB_MASK  ? "CB" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D3B_MASK ? "D3B" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D2B_MASK ? "D2B" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D1B_MASK ? "D1B" : ""),
+(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D0B_MASK ? "D0B" : "")
 );
 
 

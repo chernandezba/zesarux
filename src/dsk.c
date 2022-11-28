@@ -67,6 +67,13 @@ void dsk_insert_disk(char *nombre)
 
 z80_bit dskplusthree_emulation={0};
 
+//Zona de memoria dsk sector. Offset inicio, tamanyo y si esta activo
+int dsk_memory_zone_dsk_sector_start=0;
+int dsk_memory_zone_dsk_sector_size=0;
+z80_bit dsk_memory_zone_dsk_sector_enabled={0};
+
+
+
 
 void dskplusthree_flush_contents_to_disk(void)
 {
@@ -136,6 +143,8 @@ void dskplusthree_disable(void)
 	debug_printf (VERBOSE_INFO,"Disabling DSK emulation");
 
 	dskplusthree_emulation.v=0;
+
+    dsk_memory_zone_dsk_sector_enabled.v=0;
 }
 
                                 
@@ -717,6 +726,37 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
 
 }
 
+
+//Retorna el offset al dsk segun la pista y sector fisico
+int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
+{
+
+    int iniciopista=dsk_get_start_track(pista,cara); 
+
+    //printf("Inicio pista %d: %XH\n",pista,iniciopista);
+
+
+    int offset=iniciopista+0x100;
+
+    int sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+    if (sector_size<0) {
+        debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector_fisico);
+        return -1;
+    }                        
+
+    //int iniciopista=traps_plus3dos_getoff_start_track(pista);
+    int offset_retorno=offset+sector_size*sector_fisico;
+    //printf("Offset sector: %XH\n",offset_retorno);
+
+    
+    //printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
+    return offset_retorno;
+
+
+
+
+
+}
 
 
 //Devolver CHRN de una pista y sector concreto

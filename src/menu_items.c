@@ -26894,6 +26894,51 @@ int menu_storage_dskplusthree_info_cond(void)
     return dskplusthree_emulation.v;    
 }
 
+void menu_plusthreedisk_info_sectors_sector(MENU_ITEM_PARAMETERS)
+{
+    int pista=valor_opcion & 0xFF;
+    int cara=(valor_opcion/256) & 0xFF;
+    int sector=(valor_opcion/65536) & 65535;
+
+    int iniciosector=dsk_get_sector_fisico(pista,cara,sector);
+
+    dsk_memory_zone_dsk_sector_start=iniciosector;
+
+    //esto da tamaño segun parametro N,
+    //pero en protecciones en que el sector esta escrito varias veces con diferentes valores,
+    //queremos ver todas las copias
+    //Ver formato DSK:
+    /*
+    2. Storing Multiple Versions of Weak/Random Sectors.
+    Some copy protections have what is described as 'weak/random' data. Each time the sector is read one 
+    or more bytes will change, the value may be random between consecutive reads of the same sector.
+    To support these formats the following extension has been proposed.
+    Where a sector has weak/random data, there are multiple copies stored. The actual sector size field 
+    in the SECTOR INFORMATION LIST describes the size of all the copies. To determine if a sector has multiple 
+    copies then compare the actual sector size field to the size defined by the N parameter. 
+    For multiple copies the actual sector size field will have a value which is a multiple of the size 
+    defined by the N parameter. The emulator should then choose which copy of the sector it should return on each read.
+    */
+    int sector_size=dsk_get_sector_size_track(pista,cara);
+
+    if (dsk_file_type_extended) {
+        //Tamanyo que dice el sector realmente
+        sector_size=dsk_get_real_sector_size_extended(pista,cara,sector); 
+    }
+
+    if (iniciosector<0 || sector_size<0) {
+        debug_printf(VERBOSE_ERR,"Can not set memory zone to dsk sector");
+        dsk_memory_zone_dsk_sector_enabled.v=0;
+    }
+
+    dsk_memory_zone_dsk_sector_size=sector_size;
+    dsk_memory_zone_dsk_sector_enabled.v=1;  
+
+    menu_set_memzone(MEMORY_ZONE_DSK_SECTOR);  
+
+    menu_debug_hexdump(0);
+}
+
 void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -26922,8 +26967,13 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
                 dsk_get_st12(pista,cara,sector,&leido_id_st1,&leido_id_st2);
 
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Sector %d ST1: %02X ST2: %02X",
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_sector,NULL,"Sector %d ST1: %02X ST2: %02X",
                     sector,leido_id_st1,leido_id_st2);
+
+                //Codificamos la opcion para el submenu asi
+                int valor_opcion_menu=pista+cara*256+sector*65536;
+                menu_add_item_menu_valor_opcion(array_menu_common,valor_opcion_menu);   
+                menu_add_item_menu_tiene_submenu(array_menu_common);                 
 
                 //Leer chrn para debug
                 z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
@@ -27017,7 +27067,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                     datarate_track--;
                     char datarate_buffer[100];
                     if (datarate_track<0 || datarate_track>2) {
-                        strcpy(datarate_buffer,"Unknown");
+                        strcpy(datarate_buffer,"Unk");
                     }
                     else {
                         strcpy(datarate_buffer,datarates[datarate_track]);
@@ -27032,7 +27082,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                     recordingmode--;
                     char recordingmode_buffer[100];
                     if (recordingmode<0 || recordingmode>1) {
-                        strcpy(recordingmode_buffer,"Unknown");
+                        strcpy(recordingmode_buffer,"Unk");
                     }
                     else {
                         strcpy(recordingmode_buffer,recordings[recordingmode]);
@@ -27044,7 +27094,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Gap length: %3d Filler: %2XH",
                         gap_length_track,filler_byte_track);       
 
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Datarate: %s. Recording mode: %s",
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,menu_plusthreedisk_info_sectors_list,NULL," Datarate: %s. Record mode: %s",
                         datarate_buffer,recordingmode_buffer);                                     
                 
                 }
@@ -33469,7 +33519,7 @@ int menu_visualfloppy_rotacion_real=1;
 int menu_visualfloppy_header_visible=1;
 
 
-int menu_visualfloppy_coloured_tracks_divisions=1;
+int menu_visualfloppy_coloured_effects=1;
 
 //Retorna en que radio está una pista concreta
 int menu_visual_floppy_get_radio_pista(int pista,int radio_exterior_disco,int radio_interior_disco)
@@ -33562,7 +33612,7 @@ void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int cent
         int xcabezal=centro_disco_x-ancho_cabezal/2;
 
         //La zona por donde se mueve el cabezal
-        int recorrido_total_cabezal=radio_exterior_disco-radio_fin_datos-1;
+        //int recorrido_total_cabezal=radio_exterior_disco-radio_fin_datos-1;
 
         
 
@@ -33755,6 +33805,9 @@ const int menu_visual_floppy_colores_marcas[MENU_VISUALFLOPPY_TOTAL_COLORES_MARC
     9,10,11,12,13,14  //evitar negro y blanco de brillo
 };
 
+//color de la flecha indicadora de rotacion
+int menu_visualfloppy_color_rotacion=1;
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -33822,8 +33875,8 @@ void menu_visual_floppy_overlay(void)
 
         int radio_fin_datos=radio_interior_disco*2;
 
-        //prueba
-        int color_byte_sector=0;
+        
+        //int color_byte_sector=0;
 
         int byte_en_sector;
         int sector;
@@ -33945,7 +33998,13 @@ void menu_visual_floppy_overlay(void)
 
         //Flecha indicadora de rotación
         if (pd765_motor_status) {
-            menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,7);
+            int color=7;
+            if (menu_visualfloppy_coloured_effects) {
+                color=menu_visualfloppy_color_rotacion;
+                menu_visualfloppy_color_rotacion++;
+                if (menu_visualfloppy_color_rotacion>=8) menu_visualfloppy_color_rotacion=1;
+            }
+            menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,color);
         }
 
 /*
@@ -33979,7 +34038,7 @@ void menu_visual_floppy_overlay(void)
         //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
         int color_marca=1;
 
-        if (menu_visualfloppy_coloured_tracks_divisions) {
+        if (menu_visualfloppy_coloured_effects) {
 
             int indice_color=sector % MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS;
 
@@ -34041,9 +34100,9 @@ void menu_visual_floppy_switch_header(MENU_ITEM_PARAMETERS)
 	menu_visualfloppy_header_visible ^=1;
 }
 
-void menu_visualfloppy_switch_coloured_tracks_divisions(MENU_ITEM_PARAMETERS)
+void menu_visualfloppy_switch_coloured_effects(MENU_ITEM_PARAMETERS)
 {
-    menu_visualfloppy_coloured_tracks_divisions ^=1;
+    menu_visualfloppy_coloured_effects ^=1;
 }
 
 void menu_visual_floppy(MENU_ITEM_PARAMETERS)
@@ -34138,8 +34197,8 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,1,1);      
 
         
-		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_tracks_divisions,NULL
-            ,"[%c] ~~Color limits",(menu_visualfloppy_coloured_tracks_divisions ? 'X' : ' '));
+		menu_add_item_menu_format(array_menu_debug_new_visualfloppy,MENU_OPCION_NORMAL,menu_visualfloppy_switch_coloured_effects,NULL
+            ,"[%c] ~~Color effects",(menu_visualfloppy_coloured_effects ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_debug_new_visualfloppy,'a');
 		menu_add_item_menu_ayuda(array_menu_debug_new_visualfloppy,"Show tracks divisions in different colours");
 		menu_add_item_menu_tabulado(array_menu_debug_new_visualfloppy,15,1);         
