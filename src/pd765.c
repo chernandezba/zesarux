@@ -1011,6 +1011,8 @@ field are not checked when SK = 1.
 
         //TODO: como afecta bit MD??
         //bubble bobble y black lamp 
+
+        //Leido un sector normal, sin marca de borrado
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
                     printf("Sector with address mark\n");
@@ -1023,11 +1025,25 @@ field are not checked when SK = 1.
                 //TODO: hay que activar este bit? no tendria logica, porque no es un sector borrado
                 //leido_id_st2 |= PD765_STATUS_REGISTER_TWO_CM_MASK;
 
-                leido_st0=0x40;
-                leido_id_st1=0x80;
+           
+            }
+        }
 
-                //quitar el bit de CM?
-                leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);                
+        else {
+            //Leido un sector con marca de borrado
+            if (pd765_input_parameter_sk) {
+                //TODO: no se muy bien que hacer aqui
+            }
+            else {
+                leido_st0=0x40; //Abnormal termination of command (NT)
+
+                //End of Cylinder. When the FDC tries to access a Sector beyond the final Sector of a Cylinder, this flag is set
+                //TODO: a saber por qué hay que activar este flag, yo solo se que Wec Le Mans (Erbe).dsk espera exactamente
+                //este valor. Si no, no carga
+                leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK; 
+
+                //quitar el bit de CM
+                leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);     
             }
         }
 
