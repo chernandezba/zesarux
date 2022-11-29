@@ -27179,96 +27179,91 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 }
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_plusthreedisk;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_plusthreedisk;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
-
-
-        	char string_dskplusthree_file_shown[17];
+        char string_dskplusthree_file_shown[17];
 						
 
-			menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,17);
-                        menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,"~~DSK File: %s",string_dskplusthree_file_shown);
-                        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'d');
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation file");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation file");
+        menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,17);
+        menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,"~~DSK File: %s",string_dskplusthree_file_shown);
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'d');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation file");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation file");
 
 
-                        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_emulation,
-                        	menu_storage_dskplusthree_emulation_cond,"DSK ~~Emulation: %s", (dskplusthree_emulation.v ? "Yes" : "No"));
-                        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'e');
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_emulation,
+        menu_storage_dskplusthree_emulation_cond,"DSK ~~Emulation: %s", (dskplusthree_emulation.v ? "Yes" : "No"));
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'e');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
 
 
-			menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,"~~Write protect: %s", (dskplusthree_write_protection.v ? "Yes" : "No"));
-                        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'w');
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"If DSK disk is write protected");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"If DSK disk is write protected");
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,"~~Write protect: %s", (dskplusthree_write_protection.v ? "Yes" : "No"));
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'w');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"If DSK disk is write protected");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"If DSK disk is write protected");
 
 
-			menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,"Persistent Writes: %s",(dskplusthree_persistent_writes.v ? "Yes" : "No") );
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk. "
-                        "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
-                        "tells if these changes are written to disk or not."
-                        );
-
-
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,"Persistent Writes: %s",(dskplusthree_persistent_writes.v ? "Yes" : "No") );
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk. "
+        "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
+        "tells if these changes are written to disk or not."
+        );
 
 
                                
-			menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,"~~PLUS3DOS Traps: %s", (plus3dos_traps.v ? "Yes" : "No"));
-                        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'k');
-                        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable plusthreedisk");
-                        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable plusthreedisk");
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,"~~PLUS3DOS Traps: %s", (plus3dos_traps.v ? "Yes" : "No"));
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'k');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable plusthreedisk");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable plusthreedisk");
 
 
-                        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,"PD765 enabled: %s",(pd765_enabled.v ? "Yes" : "No") );
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,"PD765 enabled: %s",(pd765_enabled.v ? "Yes" : "No") );
 
 
-                menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
-                    menu_storage_dskplusthree_emulation_cond,"Disk ~~Viewer");
-                menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
-                menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Viewer");
-                menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Viewer");
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
+            menu_storage_dskplusthree_emulation_cond,"Disk ~~Viewer");
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Viewer");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Viewer");
 
 
-            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
-                "Visual Floppy","Visual Floppy","Visual Floppy");
-        
-            menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
-                "Disk Info","Disk Info","Disk Info");
-            //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
+            "Visual Floppy","Visual Floppy","Visual Floppy");
+    
+        menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_info,menu_storage_dskplusthree_info_cond,
+            "Disk Info","Disk Info","Disk Info");
+        //menu_add_item_menu_tiene_submenu(array_menu_plusthreedisk);
                 
                         
-                                menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_ESC_item(array_menu_plusthreedisk);
+        menu_add_ESC_item(array_menu_plusthreedisk);
 
-                retorno_menu=menu_dibuja_menu(&plusthreedisk_opcion_seleccionada,&item_seleccionado,array_menu_plusthreedisk,"+3 Disk" );
+        retorno_menu=menu_dibuja_menu(&plusthreedisk_opcion_seleccionada,&item_seleccionado,array_menu_plusthreedisk,"+3 Disk" );
 
                 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                
+            }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
