@@ -26,7 +26,8 @@
 
 //Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
 //Ejemplo Alien Storm: 255232
-#define DSK_MAX_BUFFER_DISCO 255232
+//Paperboy2-SideB(Spectrum).dsk: 335301
+#define DSK_MAX_BUFFER_DISCO 335301
 
 #define DSK_SIGNATURE_LENGTH 34
 #define DSK_CREATOR_LENGTH 14

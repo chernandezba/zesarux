@@ -33661,8 +33661,8 @@ void menu_visual_floppy_draw_header(int pista_actual,int centro_disco_x,int cent
 }
 
 //Para indicar los sectores leidos, buffer 
-//buffer de 128kb.
-#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 131072
+//buffer de 256kb.
+#define MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER 262144
 int menu_visual_floppy_buffer_length=0;
 
 #define MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL (360/10)
