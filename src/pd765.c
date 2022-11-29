@@ -998,6 +998,15 @@ field are not checked when SK = 1.
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
 
     ///Wec Le Mans (Erbe).dsk le mans espera 40h, 80h y 00h en st0, st1 y st2
+    /*
+    Otros juegos que funcionan al retornar bien estos valores:
+    Carrier command
+    Comando Quatro
+    Gremlins 2
+    Ice Breaker
+    Mortadelo y Filemon 2
+    Narco Police
+    */
 
 
     /*
