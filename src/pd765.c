@@ -446,11 +446,8 @@ z80_byte pd765_get_st2(void)
 }
 
 
-#define PD765_ST3_REGISTER_FT_MASK 0x80
-#define PD765_ST3_REGISTER_WP_MASK 0x40
-#define PD765_ST3_REGISTER_RD_MASK 0x20
-#define PD765_ST3_REGISTER_T0_MASK 0x10
-#define PD765_ST3_REGISTER_TS_MASK 0x08
+
+
 
 
 
@@ -472,11 +469,11 @@ z80_byte pd765_get_st3(void)
 
    
 
-   return (PD765_ST3_REGISTER_RD_MASK) | (pd765_signal_ts0.v * PD765_ST3_REGISTER_T0_MASK) 
+   return (PD765_STATUS_REGISTER_THREE_RD_MASK) | (pd765_signal_ts0.v * PD765_STATUS_REGISTER_THREE_T0_MASK) 
         | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0 ;
 
     //Two side??
-//        | PD765_ST3_REGISTER_TS_MASK;
+//        | PD765_STATUS_REGISTER_THREE_TS_MASK;
 }
 
 //
