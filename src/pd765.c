@@ -1031,8 +1031,7 @@ field are not checked when SK = 1.
             else {
                 //SK=0
                 //leer tal cual
-                //TODO: hay que activar este bit? no tendria logica, porque no es un sector borrado
-                //leido_id_st2 |= PD765_STATUS_REGISTER_TWO_CM_MASK;
+                //TODO:...
 
 
                 //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
