@@ -1034,7 +1034,11 @@ field are not checked when SK = 1.
                 //TODO: hay que activar este bit? no tendria logica, porque no es un sector borrado
                 //leido_id_st2 |= PD765_STATUS_REGISTER_TWO_CM_MASK;
 
-           
+
+                //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
+                //leido_st0=0x40; //Abnormal termination of command (NT)
+                //leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK; 
+         
             }
         }
 
