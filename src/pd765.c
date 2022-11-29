@@ -995,12 +995,12 @@ field are not checked when SK = 1.
 
     //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
-        if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
-            printf("Sector with deleted mark\n");
-        }
-        else {
-            printf("Sector with address mark\n");
-        }
+    if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
+        printf("Sector with deleted mark\n");
+    }
+    else {
+        printf("Sector with address mark\n");
+    }
 
 
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
