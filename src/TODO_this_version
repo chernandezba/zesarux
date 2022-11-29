@@ -163,15 +163,7 @@ hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow
 Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
 
 
-Test unitario +3 que cargue un disco autoarrancable y espere output concreto
-
-Para debug visual floppy simplificar a 512 bytes por sector. 
-Fijar también a 9 sectores?
-
-Para saber la ubicación de cada pista hay que considerar el tamaño de cada pista, que puede cambiar. Por tanto no se puede hacer un cálculo directo sino que hay que recorrer cada una de ellas
-
-Por otra parte, en read data, podemos calcular dicha ubicación con el primer byte y los siguientes solo sumar posición 
-
+-Test unitario +3 que cargue un disco autoarrancable y espere output concreto
 
 -Rqm debe ir a 0 después de haber recibido los parámetros en fase comando:
 
@@ -181,18 +173,13 @@ O sea en fase ejecución se pone a 0
 Y se pondrá a 1 en la fase de resultado
 En read y write data se pone a 1 antes de recibir/escribir el primer byte del sector
 
--visualfloppy: circulo grande modificar funcion elipse para corregir punteado
 
 -ZXCPM: falla con error size 0 not supported
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
--rainbow islands:tiene pistas repetidas y otras que no estan
 
 -info: juegos de dinamic por ejemplo usan sectores de 1024 bytes: Megaphoenix, Buggy Ranger, After the war, etc
 
--Mi función de 3D que use tabla de coseno: hecho. ajustar el tamaño de los widgets que usa: zxvision_widgets_draw_particles_3d_convert
-
--Browser para ver tablas de pistas y sectores de disco llamando a mismas funciones dsk
 
 -Abrir ventana arbitraria con F. Había función para abrir ventana por nombre?
 
@@ -200,7 +187,6 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 ->luego asegurarse que si no hay dsk, no diga que es un +2a y no hay discos a: y b:
 Creo que se deberia retornar algo asi como el flag de disk not ready de la pd765 si no está insertado
 
--articfox: carga pero genera comando invalido. quiza parecido a norte y sur?
 
 
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla
@@ -275,9 +261,6 @@ PD765: Returning C: 01H
 PD765: Returning H: 00H
 PD765: Returning R: 02H
 PD765: Returning N: 02H
-
-
--comand 4c read deleted data implementar
 
 
 -Gauntlet 2:

@@ -382,7 +382,7 @@ int pd765_ultimo_t_estados=-1;
 void pd765_next_event_from_core(void)
 {
 
-    //TODO De momento solo hacer eventos de seek, no cuento t-estados como tal, solo numero de veces tal cual que se llama aqui
+    //TODO De momento solo hacer eventos de seek
     if (pd765_enabled.v) {
         //Vamos a saber cuantos t-estados han pasado desde el anterior
 
@@ -843,6 +843,7 @@ field are not checked when SK = 1.
     //Megaphoenix esta dando este error: 
     //NOT Found sector ID 02H on track 4
     //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
+    //Tambien abadia del crimen
     if (iniciosector<0) {
         /*
         If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
@@ -919,6 +920,9 @@ field are not checked when SK = 1.
         //sector_size es el tamaño que decia del sector en la info de pista
 
         //TODO: esto tambien pasa cuando es mayor?
+        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
+        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
+        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
             printf("Reading less data than the track size says. Setting abnormal termination flag\n");
             anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
@@ -1000,6 +1004,8 @@ field are not checked when SK = 1.
 
         //sleep(5);
 
+    //Detectamos que el sector tiene marca de borrado con: return_value & PD765_STATUS_REGISTER_TWO_CM_MASK
+
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
 
     /*
@@ -1012,9 +1018,8 @@ field are not checked when SK = 1.
     */
 
         //TODO: como afecta bit MD??
-        //bubble bobble y black lamp This command is the same as the Read Data Command except that when the FDC detects a Data Address
-            //((Mark at the beginning of a Data Field 
-        if ((return_value & 0x40)==0) {
+        //bubble bobble y black lamp 
+        if ((return_value & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
                     printf("Sector with address mark\n");
                     printf("TODO next sector\n");
@@ -1022,15 +1027,20 @@ field are not checked when SK = 1.
             }
             else {
                 //leer tal cual
-                return_value |= 0x40;
+                //TODO: hay que activar este bit? no tendria logica, porque no es un sector borrado
+                //return_value |= PD765_STATUS_REGISTER_TWO_CM_MASK;
             }
         }
+
+
+        //temp. quitar el bit de CM???
+        //return_value &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);
 
     }
     
 
     
-
+    //TODO: no se si esto se hace tambien cuando el comando es PD765_COMMAND_READ_DELETED_DATA
     if (pd765_command_received==PD765_COMMAND_READ_DATA) {
         /*
         read data
@@ -1043,7 +1053,7 @@ field are not checked when SK = 1.
 
        //TODO: como afecta bit MD??
 
-        if (return_value & 0x40) {
+        if (return_value & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
                     printf("Sector with deleted address mark\n");
                     printf("TODO next sector\n");
@@ -1124,7 +1134,9 @@ void pd765_read_parameters_seek(z80_byte value)
 
 void pd765_read_parameters_read_data(z80_byte value)
 {
-    printf("PD765: Receiving command parameters for READ DATA\n");
+    printf("PD765: Receiving command parameters for %s\n",
+    (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+    );
 
     if (pd765_input_parameters_index==1) {
         pd765_input_parameter_hd=(value>>2) & 0x01;
@@ -1192,7 +1204,9 @@ void pd765_read_parameters_read_data(z80_byte value)
         //Fin de comando
         pd765_input_parameters_index=0;
         
-        printf("PD765: End command parameters for READ_DATA\n");
+        printf("PD765: End command parameters for %s\n",
+        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+        );
 
         pd765_handle_command_read_data();
     }       
@@ -1278,10 +1292,10 @@ void pd765_write_handle_phase_command(z80_byte value)
                 //sleep(3);
             }
 
-            if(pd765_input_parameter_sk) {
-                printf("SK parameter not handled yet\n");
+            //if(pd765_input_parameter_sk) {
+                //printf("SK parameter not handled yet\n");
                 //sleep(3);
-            } 
+            //} 
 
             pd765_command_received=PD765_COMMAND_READ_DATA;
 
@@ -1303,10 +1317,10 @@ void pd765_write_handle_phase_command(z80_byte value)
                 sleep(3);
             }
 
-            if(pd765_input_parameter_sk) {
-                printf("SK parameter not handled yet\n");
-                sleep(3);
-            }            
+            //if(pd765_input_parameter_sk) {
+            //    printf("SK parameter not handled yet\n");
+            //    sleep(3);
+            //}            
             pd765_command_received=PD765_COMMAND_READ_DELETED_DATA;
 
             pd765_input_parameters_index++;         
@@ -1725,7 +1739,9 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     z80_byte return_value=pd765_get_buffer(pd765_output_parameters_index);
-    printf("PD765: Return byte from READ DATA at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    printf("PD765: Return byte from %s at index %d: %02XH\n",
+        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" ),
+        pd765_output_parameters_index,return_value);
     pd765_output_parameters_index++;
 
 
@@ -1758,7 +1774,9 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
         if (pd765_output_parameters_index>=pd765_result_buffer_length) {
-            printf("PD765: End of result buffer of READ DATA\n");
+            printf("PD765: End of result buffer of %s\n",
+            (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+            );
                 //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
