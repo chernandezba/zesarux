@@ -995,6 +995,14 @@ field are not checked when SK = 1.
 
     //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
+        if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
+            printf("Sector with deleted mark\n");
+        }
+        else {
+            printf("Sector with address mark\n");
+        }
+
+
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
 
     ///Wec Le Mans (Erbe).dsk le mans espera 40h, 80h y 00h en st0, st1 y st2
@@ -1024,7 +1032,6 @@ field are not checked when SK = 1.
         //Leido un sector normal, sin marca de borrado
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
-                    printf("Sector with address mark\n");
                     printf("TODO next sector\n");
                     sleep(5);
             }
@@ -1082,7 +1089,6 @@ field are not checked when SK = 1.
 
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
-                    printf("Sector with deleted address mark\n");
                     printf("TODO next sector\n");
                     sleep(5);
             }
