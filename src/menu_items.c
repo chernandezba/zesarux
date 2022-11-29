@@ -27236,10 +27236,11 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,menu_storage_dskplusthree_emulation_cond,"DSK ~~Viewer");
+                menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
+                    menu_storage_dskplusthree_emulation_cond,"Disk ~~Viewer");
                 menu_add_item_menu_shortcut(array_menu_plusthreedisk,'v');
-                menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Viewer");
-                menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Viewer");
+                menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Disk Viewer");
+                menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Disk Viewer");
 
 
             menu_add_item_menu_en_es_ca(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
