@@ -964,36 +964,28 @@ field are not checked when SK = 1.
     }
 
 
-    z80_byte return_value=pd765_get_st0();
-
-    if (anormal_termination) {
-        return_value |= 0x40;
-    }
-
-    printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
-    pd765_put_buffer(return_value);
-
-
-    
+    z80_byte leido_st0=pd765_get_st0();
     z80_byte leido_id_st1 ,leido_id_st2;
     //TODO: de momento solo cara 0
-    dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);
-    return_value=leido_id_st1;
-    printf("PD765: Returning ST1: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
+    dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);    
+
+    if (anormal_termination) {
+        leido_st0 |= 0x40;
+    }
+
+
 
     //TODO: otros bits de st1 y st2 en este caso y en read id, por ejemplo missing address mark(d0) en st1
 
-    return_value=leido_id_st2;        
-
+    
     if (leido_id_c!=pd765_input_parameter_c) {
         printf("#####Cylinder read from disk is not what asked\n");
         //Wrong cylinder
-        return_value |= PD765_STATUS_REGISTER_TWO_WC_MASK;
+        leido_id_st2 |= PD765_STATUS_REGISTER_TWO_WC_MASK;
 
         if (leido_id_c==0xFF) {
             //Bad cylinder
-            return_value |= PD765_STATUS_REGISTER_TWO_BC_MASK;
+            leido_id_st2 |= PD765_STATUS_REGISTER_TWO_BC_MASK;
         }
     }
 
@@ -1001,9 +993,12 @@ field are not checked when SK = 1.
 
         //sleep(5);
 
-    //Detectamos que el sector tiene marca de borrado con: return_value & PD765_STATUS_REGISTER_TWO_CM_MASK
+    //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
+
+    ///Wec Le Mans (Erbe).dsk le mans espera 40h, 80h y 00h en st0, st1 y st2
+
 
     /*
     Read deleted data:
@@ -1016,22 +1011,29 @@ field are not checked when SK = 1.
 
         //TODO: como afecta bit MD??
         //bubble bobble y black lamp 
-        if ((return_value & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
+        if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
                     printf("Sector with address mark\n");
                     printf("TODO next sector\n");
                     sleep(5);
             }
             else {
+                //SK=0
                 //leer tal cual
                 //TODO: hay que activar este bit? no tendria logica, porque no es un sector borrado
-                //return_value |= PD765_STATUS_REGISTER_TWO_CM_MASK;
+                //leido_id_st2 |= PD765_STATUS_REGISTER_TWO_CM_MASK;
+
+                leido_st0=0x40;
+                leido_id_st1=0x80;
+
+                //quitar el bit de CM?
+                leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);                
             }
         }
 
 
-        //temp. quitar el bit de CM???
-        //return_value &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);
+
+
 
     }
     
@@ -1050,7 +1052,7 @@ field are not checked when SK = 1.
 
        //TODO: como afecta bit MD??
 
-        if (return_value & PD765_STATUS_REGISTER_TWO_CM_MASK) {
+        if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
                     printf("Sector with deleted address mark\n");
                     printf("TODO next sector\n");
@@ -1063,9 +1065,14 @@ field are not checked when SK = 1.
 
     }        
     
+    printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    pd765_put_buffer(leido_st0);    
 
-    printf("PD765: Returning ST2: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
+    printf("PD765: Returning ST1: %02XH\n",leido_id_st1);
+    pd765_put_buffer(leido_id_st1);    
+
+    printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
+    pd765_put_buffer(leido_id_st2);
 
 
     //TODO. Gestion de CHRN cuando se interrumpe el comando
@@ -1074,7 +1081,7 @@ field are not checked when SK = 1.
     //o bien son los del parametro del comando (pd765_input_parameter_XX)
     //alien storm (erbe) por ejemplo se lee sector 0 de pista 1 con parametros: CHRN 1 0 1 2 , pero la pista tiene 1 0 1 6
 
-    return_value=pd765_input_parameter_c;
+    z80_byte return_value=pd765_input_parameter_c;
     //return_value=leido_id_c;
     //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
     printf("PD765: Returning C: %02XH\n",return_value);
