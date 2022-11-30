@@ -589,12 +589,9 @@ void pd765_handle_command_read_id(void)
 
 
 
-
-
     //Metemos resultado de leer en buffer de salida
 
   
-
    //Inicializar buffer retorno
    pd765_reset_buffer();
 
@@ -637,7 +634,6 @@ void pd765_handle_command_read_id(void)
     }
 
     
-
     //TODO de momento solo cara 0
     printf("Obtener ID de Read id para sector %d de pista %02XH\n",sector,pd765_pcn);
    dsk_get_chrn(pd765_pcn,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
@@ -653,66 +649,28 @@ void pd765_handle_command_read_id(void)
    //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
 
+    z80_byte leido_st0=pd765_get_st0();
+    printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
 
+    z80_byte leido_st1=pd765_get_st1();
+    printf("PD765: Returning ST1: %02XH\n",leido_st1);
 
-
-        z80_byte return_value=pd765_get_st0();
-        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
-        pd765_put_buffer(return_value);
-     
+    z80_byte leido_st2=pd765_get_st2();
+    printf("PD765: Returning ST2: %02XH\n",leido_st2);   
     
+    printf("PD765: Returning C: %02XH\n",leido_id_c);
+    printf("PD765: Returning H: %02XH\n",leido_id_h);
+    printf("PD765: Returning R: %02XH\n",leido_id_r);
+    printf("PD765: Returning N: %02XH\n",leido_id_n);
 
+    pd765_put_buffer(leido_st0);    
+    pd765_put_buffer(leido_st1);
+    pd765_put_buffer(leido_st2);
     
-
-        return_value=pd765_get_st1();
-        printf("PD765: Returning ST1: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-     
-    
-
-    
-
-        return_value=pd765_get_st2();
-        printf("PD765: Returning ST2: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-     
-    
-
-    
-        
-        return_value=leido_id_c; //pd765_pcn;
-        printf("PD765: Returning C: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-   
-    
-
-    
-
-
-        return_value=leido_id_h;
-        printf("PD765: Returning H: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-      
-    
-
-    
-
-        return_value=leido_id_r; //pd765_input_parameter_r;
-        printf("PD765: Returning R: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-    
-    
-
-  
-
-        return_value=leido_id_n;
-        printf("PD765: Returning N: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-
-
-
+    pd765_put_buffer(leido_id_c);
+    pd765_put_buffer(leido_id_h);
+    pd765_put_buffer(leido_id_r);
+    pd765_put_buffer(leido_id_n);
 
 }
 
