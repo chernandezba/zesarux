@@ -133,7 +133,7 @@ z80_byte pd765_debug_last_sector_id_h_read=0;
 z80_byte pd765_debug_last_sector_id_r_read=0;
 z80_byte pd765_debug_last_sector_id_n_read=0;
 
-int pd765_siguiente_sector_read_id=-1;
+int pd765_ultimo_sector_read_id=-1;
 
 int tempp_estados=0;
 
@@ -280,7 +280,7 @@ void pd765_signal_se_function_triggered(void)
 
 
     //Decir anterior sector leido de esa pista
-    pd765_siguiente_sector_read_id=-1;
+    pd765_ultimo_sector_read_id=-1;
 
 }
 
@@ -344,7 +344,7 @@ void pd765_reset(void)
     pd765_pcn=0;
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
-    pd765_siguiente_sector_read_id=-1;
+    pd765_ultimo_sector_read_id=-1;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
@@ -613,6 +613,25 @@ int pd765_common_dsk_not_inserted_read(void)
 
 }
 
+void pd765_siguiente_sector(void)
+{
+    pd765_ultimo_sector_read_id++;
+
+    //TODO de momento solo cara 0
+    int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
+
+
+    if (total_sectores!=0) {
+        pd765_ultimo_sector_read_id=pd765_ultimo_sector_read_id % total_sectores;
+    }
+    else {
+        pd765_ultimo_sector_read_id=0;
+    }  
+
+    //Por si acaso, aunque esto no deberia pasar
+    if (pd765_ultimo_sector_read_id<0) pd765_ultimo_sector_read_id=0;  
+}
+
 void pd765_handle_command_read_id(void)
 {
 
@@ -676,16 +695,12 @@ void pd765_handle_command_read_id(void)
   
 
     //Devolvemos el siguiente lector al anterior leido por read id
-    //TODO de momento solo cara 0
-    int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
-    int sector=pd765_siguiente_sector_read_id;
+    pd765_siguiente_sector();
 
-    if (total_sectores!=0) {
-        sector=sector % total_sectores;
-    }
-    else {
-        sector=0;
-    }
+
+
+    int sector=pd765_ultimo_sector_read_id;
+
 
     
     //TODO de momento solo cara 0
@@ -1008,7 +1023,20 @@ field are not checked when SK = 1.
 
  
     z80_byte sector_fisico;
-    int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1);
+
+
+    //primero intentar obtener sector siguiente dentro de la pista
+    int iniciosector;
+
+    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_read_id,pd765_pcn,pd765_input_parameter_r);
+    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id);
+
+    
+    if (iniciosector<0) {
+        //no hay siguiente, volver a girar la pista
+        printf("Next sector with asked it not found. Starting from the beginning of track\n");
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1);
+    }
 
     //gestionar error si sector no encontrado
     //Megaphoenix esta dando este error: 
@@ -1077,7 +1105,7 @@ field are not checked when SK = 1.
     pd765_debug_last_sector_read=sector_fisico;
 
     //Ultimo sector leido para read_id
-    pd765_siguiente_sector_read_id=sector_fisico+1;
+    pd765_ultimo_sector_read_id=sector_fisico;
 
 
     anormal_termination=0;
@@ -1816,9 +1844,6 @@ z80_byte pd765_read_result_command_read_id(void)
 
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
-
-        //E indicar siguiente sector de read_id, ya que el disco gira, se obtendrá otro distinto
-        pd765_siguiente_sector_read_id++;
 
     }
 

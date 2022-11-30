@@ -694,7 +694,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
         z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
 
 
-        if (sector_id==parametro_r) {
+        if (sector_id==parametro_r && sector>minimo_sector) {
             //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
             printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
 
