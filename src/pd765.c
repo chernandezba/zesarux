@@ -248,7 +248,9 @@ void pd765_signal_se_function_triggered(void)
 
     printf("PD765: seek has finished. Changing PCN from NCN: %d\n",pd765_pcn);
 
-    //Controlar limite seek
+    //Controlar limite seek.
+    //TODO: realmente hay que controlar esto en el seek? quiza no, quiza
+    //se controla luego que al hacer un read data no estemos leyendo mas alla del total de pistas...
     if (pd765_pcn>=dsk_get_total_tracks()) {
         //TODO: ni deberia empezar el seek con esto
         debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
@@ -633,6 +635,12 @@ void pd765_handle_command_read_id(void)
    //Inicializar buffer retorno
    pd765_reset_buffer();
 
+    //Si DSK no insertado
+    if (pd765_common_dsk_not_inserted_read()) {
+        return;
+    }
+
+
     pd765_interrupt_pending=1;    
 
     //Cambiamos a fase de resultado
@@ -675,10 +683,7 @@ void pd765_handle_command_read_id(void)
     */
 
 
-    //Si DSK no insertado
-    if (pd765_common_dsk_not_inserted_read()) {
-        return;
-    }
+
  
 
    //Devolver CHRN siguiente
