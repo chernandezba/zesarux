@@ -790,6 +790,9 @@ field are not checked when SK = 1.
 
 */
 
+    //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
+    pd765_last_sector_size_read_data=0;
+
     //Si DSK no insertado
     if (dskplusthree_emulation.v==0) {
         printf("PD765: DSK not inserted\n");
