@@ -180,6 +180,8 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 
 -info: juegos de dinamic por ejemplo usan sectores de 1024 bytes: Megaphoenix, Buggy Ranger, After the war, etc
 
+-Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
+del mensaje lo obtiene de la ventana
 
 -Abrir ventana arbitraria con F. Había función para abrir ventana por nombre?
 
