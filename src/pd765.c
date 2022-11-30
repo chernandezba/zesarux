@@ -546,7 +546,7 @@ void pd765_handle_command_sense_interrupt_status(void)
 }
 
 
-void pd765_handle_command_read_id(void)
+void old_pd765_handle_command_read_id(void)
 {
     
     pd765_interrupt_pending=1;    
@@ -566,6 +566,155 @@ void pd765_handle_command_read_id(void)
 
 
 }
+
+void pd765_handle_command_read_id(void)
+{
+
+    pd765_interrupt_pending=1;    
+
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
+
+    //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
+
+
+
+
+
+    //Metemos resultado de leer en buffer de salida
+
+  
+
+   //Inicializar buffer retorno
+   pd765_reset_buffer();
+
+    /*
+    
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    READ ID
+    The READ ID Command is used to give the present position of the recording head. 
+    The FDC stores the values from the first ID Field it is able to read. 
+    If no proper ID Address Mark is found on the diskette, 
+    before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
+    and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
+    The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
+    During this command there is no data transfer between FDC and the CPU except during the result phase.    
+
+    */
+
+   //Devolver CHRN siguiente
+   z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+
+  
+
+    //Devolvemos el siguiente lector al anterior leido por read id
+    //TODO de momento solo cara 0
+    int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
+    int sector=pd765_siguiente_sector_read_id;
+
+    if (total_sectores!=0) {
+        sector=sector % total_sectores;
+    }
+    else {
+        sector=0;
+    }
+
+    
+
+    //TODO de momento solo cara 0
+    printf("Obtener ID de Read id para sector %d de pista %02XH\n",sector,pd765_pcn);
+   dsk_get_chrn(pd765_pcn,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+    //Guardarlo para debug
+    pd765_debug_last_sector_id_c_read=leido_id_c;
+    pd765_debug_last_sector_id_h_read=leido_id_h;
+    pd765_debug_last_sector_id_r_read=leido_id_r;
+    pd765_debug_last_sector_id_n_read=leido_id_n;  
+
+    printf("##read_id: last_r: %d\n",pd765_debug_last_sector_id_r_read);
+
+   //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+
+
+
+
+
+        z80_byte return_value=pd765_get_st0();
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+     
+    
+
+    
+
+        return_value=pd765_get_st1();
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+     
+    
+
+    
+
+        return_value=pd765_get_st2();
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+     
+    
+
+    
+        
+        return_value=leido_id_c; //pd765_pcn;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+   
+    
+
+    
+
+
+        return_value=leido_id_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+      
+    
+
+    
+
+        return_value=leido_id_r; //pd765_input_parameter_r;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+    
+    
+
+  
+
+        return_value=leido_id_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+
+
+
+
+}
+
+
 
 void pd765_handle_command_invalid(void)
 {
@@ -1684,7 +1833,7 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 
 
 
-z80_byte pd765_read_result_command_read_id(void)
+z80_byte old_pd765_read_result_command_read_id(void)
 {
     /*
     ST0
@@ -1828,6 +1977,40 @@ z80_byte pd765_read_result_command_read_id(void)
         return 255;
     }
 }
+
+
+z80_byte pd765_read_result_command_read_id(void)
+{
+
+
+    z80_byte return_value=pd765_get_buffer(pd765_output_parameters_index);
+    printf("PD765: Return byte from READ_ID at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    pd765_output_parameters_index++;
+
+
+    if (pd765_output_parameters_index>=pd765_result_buffer_length) {
+        printf("PD765: End of result buffer of READ_ID\n");
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+        //Decir que ya no esta busy
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
+
+        //E indicar siguiente sector de read_id, ya que el disco gira, se obtendrá otro distinto
+        pd765_siguiente_sector_read_id++;
+
+    }
+
+
+    return return_value;        
+
+}
+
+
 
 
 z80_byte pd765_read_result_command_read_data(void)
