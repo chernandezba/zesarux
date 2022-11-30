@@ -19512,7 +19512,7 @@ void menu_debug_unnamed_console_overlay(void)
         }
     }
 
-    if (!debug_unnamed_console_modified) {
+    if (!debug_unnamed_console_refresh) {
         //Si no hay mensajes, ver si hay que refrescar porque se ha borrado el contador de actividad
         if (refrescar_borrado_contador) {
             //printf("---Refrescar antes de salir sin escribir\n");
@@ -19548,6 +19548,9 @@ void menu_debug_unnamed_console_overlay(void)
         //printf("\n");
     }
 
+
+    if (debug_unnamed_console_new_messages) {
+        debug_unnamed_console_new_messages=0;
     //Mostrar indicador actividad. Para que diga que hay mensajes nuevos
     //mantener durante 50 frames (1 segundo visible) despues de ultimo mensaje
     menu_debug_unnamed_console_indicador_actividad_visible=50;
@@ -19563,6 +19566,8 @@ void menu_debug_unnamed_console_overlay(void)
 
     zxvision_print_string_defaults_fillspc(ventana,1,1,mensaje_dest);
 
+    }
+
     //Mostar la leyenda tambien aqui, para cuando refresca en segundo plano,
     //porque a veces se redibujan las ventanas pero solo se llama al overlay, y no a la funcion principal 
     menu_debug_unnamed_console_show_legend(ventana);
@@ -19570,7 +19575,8 @@ void menu_debug_unnamed_console_overlay(void)
     zxvision_draw_window_contents(ventana);
 
     //Decir que no se ha modificado 
-    debug_unnamed_console_modified=0;
+    debug_unnamed_console_refresh=0;
+    
 }
 
 
@@ -19652,6 +19658,9 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
     menu_first_aid("debug_console");
 
+    //Cada vez que se reentra en ventana, refrescar
+    debug_unnamed_console_refresh=1;
+
     z80_byte tecla;
     do {
 
@@ -19664,7 +19673,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
         if (tecla=='l') {
             menu_debug_verbose(0);
-            debug_unnamed_console_modified=1;
+            debug_unnamed_console_refresh=1;
         }
 
         //printf ("tecla: %d\n",tecla);

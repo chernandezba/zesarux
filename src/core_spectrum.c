@@ -71,7 +71,6 @@
 #include "codsinpr.h"
 #include "menu_items.h"
 #include "plus3dos_handler.h"
-#include "pd765.h"
 
 z80_byte byte_leido_core_spectrum;
 

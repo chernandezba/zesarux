@@ -920,7 +920,8 @@ void debug_printf_sem_init(void)
 char *debug_unnamed_console_memory_pointer=NULL;
 int debug_unnamed_console_current_x=0;
 int debug_unnamed_console_current_y=0;
-int debug_unnamed_console_modified=0;
+int debug_unnamed_console_refresh=0;
+int debug_unnamed_console_new_messages=0;
 
 z80_bit debug_unnamed_console_enabled={1};
 
@@ -980,7 +981,9 @@ void debug_unnamed_console_printchar(char c)
     if (debug_unnamed_console_memory_pointer==NULL) return;
 
     //decir que se ha modificado
-    debug_unnamed_console_modified=1;
+    debug_unnamed_console_new_messages=1;
+    //y que se tiene que refrescar
+    debug_unnamed_console_refresh=1;
 
     if (c==10) {
         //siguiente linea
@@ -1780,7 +1783,7 @@ void set_cpu_core_loop(void)
 	                        cpu_core_loop=cpu_core_loop_spectrum;
 			}
 			else {
-				debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
+				debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, PLUS3DOS traps, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
 				cpu_core_loop=cpu_core_loop_reduced_spectrum;
 			}
                         cpu_core_loop_name="Spectrum";

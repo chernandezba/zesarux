@@ -161,7 +161,8 @@ extern char *debug_unnamed_console_memory_pointer;
 extern int debug_unnamed_console_current_x;
 extern int debug_unnamed_console_current_y;
 extern void debug_unnamed_console_init(void);
-extern int debug_unnamed_console_modified;
+extern int debug_unnamed_console_refresh;
+extern int debug_unnamed_console_new_messages;
 extern z80_bit debug_unnamed_console_enabled;
 extern void debug_unnamed_console_end(void);
 
