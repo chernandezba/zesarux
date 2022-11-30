@@ -546,6 +546,7 @@ void pd765_handle_command_sense_interrupt_status(void)
 }
 
 
+/*
 void old_pd765_handle_command_read_id(void)
 {
     
@@ -566,6 +567,7 @@ void old_pd765_handle_command_read_id(void)
 
 
 }
+*/
 
 void pd765_handle_command_read_id(void)
 {
@@ -1832,28 +1834,10 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 }
 
 
-
+/*
 z80_byte old_pd765_read_result_command_read_id(void)
 {
-    /*
-    ST0
-    ST1
-    ST2
-    C
-    H
-    R
-    N
 
-    READ ID
-    The READ ID Command is used to give the present position of the recording head. 
-    The FDC stores the values from the first ID Field it is able to read. 
-    If no proper ID Address Mark is found on the diskette, 
-    before the INDEX HOLE is encountered for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
-    and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
-    The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
-    During this command there is no data transfer between FDC and the CPU except during the result phase.    
-
-    */
 
    //Devolver CHRN siguiente
    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
@@ -1977,7 +1961,7 @@ z80_byte old_pd765_read_result_command_read_id(void)
         return 255;
     }
 }
-
+*/
 
 z80_byte pd765_read_result_command_read_id(void)
 {
