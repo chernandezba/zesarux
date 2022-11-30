@@ -133,7 +133,7 @@ z80_byte pd765_debug_last_sector_id_h_read=0;
 z80_byte pd765_debug_last_sector_id_r_read=0;
 z80_byte pd765_debug_last_sector_id_n_read=0;
 
-int pd765_siguiente_sector_read_id;
+int pd765_siguiente_sector_read_id=-1;
 
 int tempp_estados=0;
 
@@ -278,6 +278,10 @@ void pd765_signal_se_function_triggered(void)
     if (pd765_seek_was_recalibrating.v) pd765_signal_ts0.v=1;
     else pd765_signal_ts0.v=0;
 
+
+    //Decir anterior sector leido de esa pista
+    pd765_siguiente_sector_read_id=-1;
+
 }
 
 //Signal SE de ST0. Cambio a valor 1 cuando se consulta 5 veces
@@ -340,6 +344,7 @@ void pd765_reset(void)
     pd765_pcn=0;
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
+    pd765_siguiente_sector_read_id=-1;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
@@ -999,12 +1004,11 @@ field are not checked when SK = 1.
 
    //TODO: esto solo es asi cuando N es 0
    int sector_size=pd765_input_parameter_dtl;
-
    sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
 
  
     z80_byte sector_fisico;
-    int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico);
+    int iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1);
 
     //gestionar error si sector no encontrado
     //Megaphoenix esta dando este error: 

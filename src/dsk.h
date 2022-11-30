@@ -27,7 +27,8 @@
 //Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
 //Ejemplo Alien Storm: 255232
 //Paperboy2-SideB(Spectrum).dsk: 335301
-#define DSK_MAX_BUFFER_DISCO 335301
+//Monty Python's Flying Circus.dsk 444160
+#define DSK_MAX_BUFFER_DISCO 444160
 
 #define DSK_SIGNATURE_LENGTH 34
 #define DSK_CREATOR_LENGTH 14
@@ -58,7 +59,7 @@ extern z80_byte p3dsk_buffer_disco[];
 
 extern void dsk_show_activity(void);
 
-extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico);
+extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector);
 
 extern void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n);
 

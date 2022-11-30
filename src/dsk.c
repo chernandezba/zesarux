@@ -669,7 +669,8 @@ int dsk_extended_get_track_size(int pista,int cara)
 
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
-int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico)
+//Parametro minimo_sector permite escoger un sector mayor que dicho parametro
+int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector)
 {
 
     int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
