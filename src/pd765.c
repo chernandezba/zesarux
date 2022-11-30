@@ -572,6 +572,9 @@ void old_pd765_handle_command_read_id(void)
 void pd765_handle_command_read_id(void)
 {
 
+   //Inicializar buffer retorno
+   pd765_reset_buffer();
+
     pd765_interrupt_pending=1;    
 
     //Cambiamos a fase de resultado
@@ -592,9 +595,6 @@ void pd765_handle_command_read_id(void)
     //Metemos resultado de leer en buffer de salida
 
   
-   //Inicializar buffer retorno
-   pd765_reset_buffer();
-
     /*
     
     ST0
@@ -615,6 +615,60 @@ void pd765_handle_command_read_id(void)
     During this command there is no data transfer between FDC and the CPU except during the result phase.    
 
     */
+
+
+    //Si DSK no insertado
+    if (dskplusthree_emulation.v==0) {
+        printf("PD765: DSK not inserted\n");
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+        z80_byte return_value=pd765_get_st0();
+
+        return_value |=PD765_STATUS_REGISTER_ZERO_NR_MASK;
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+
+
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK;
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return_value=0;
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+
+        pd765_put_buffer(return_value);
+
+        return_value=pd765_input_parameter_c;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_r;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return;
+    }
+
 
    //Devolver CHRN siguiente
    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
