@@ -1201,6 +1201,8 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_REG_IY_H        (1<<20)
 #define MOD_REG_IY          (MOD_REG_IY_L|MOD_REG_IY_H)
 
+//para (HL)
+#define MOD_REG_HL_MEM      (1<<21)
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
@@ -1214,7 +1216,7 @@ z80_long_int debug_modified_registers_list[256]={
     0,MOD_REG_HL,0,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
     //48 JR NC,DIS
-    0,MOD_REG_SP,0,MOD_REG_SP,MOD_REG_F,MOD_REG_F,0,MOD_REG_F,
+    0,MOD_REG_SP,0,MOD_REG_SP,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
     //64 LD B,B
     MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,
@@ -1226,7 +1228,7 @@ z80_long_int debug_modified_registers_list[256]={
     MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,
     MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,
     //112 LD (HL),B
-    0,0,0,0,0,0,0,0,
+    MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,0,MOD_REG_HL_MEM,
     MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,0,
     //128 ADD A,B
     MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,
@@ -1658,6 +1660,14 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     }
                 }
             break;
+
+
+            case 16:
+                sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
+                //mostrar cuando se modifica (HL)
+                //columna 1,2,3,4 registro (HL)
+                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
+            break;            
     /*
     //Retorna paginas mapeadas (nombres cortos)
     void menu_debug_get_memory_pages(char *s)
@@ -2077,6 +2087,7 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     int columna1=columnas_modificadas & 0xF;
     int columna2=(columnas_modificadas>>4) & 0xF;
     int columna3=(columnas_modificadas>>8) & 0xF;
+    int columna4=(columnas_modificadas>>12) & 0xF;
 
     if (columna1) {
         columna1--;
@@ -2091,7 +2102,12 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     if (columna3) {
         columna3--;
         zxvision_set_attr(w,xinicial+columna3,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
-    }        
+    }
+
+    if (columna4) {
+        columna4--;
+        zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }            
 }
 
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
