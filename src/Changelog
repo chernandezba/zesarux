@@ -5,6 +5,7 @@ Added Poke F-Function
 Add DSK disk info menu: to get tracks and sectors of a disk
 
 Improve debug console: better refresh, dynamic width??
+Improve debug: show on debug when (hl),(bc),.... is going to be modified
 
 Fixed PD765 emulation: TODO: add more details here
 

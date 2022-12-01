@@ -472,3 +472,6 @@ PD765: Returning ST0: 00H ()
 PD765: Returning ST1: 00H
 PD765: Returning ST2: 40H
 PD765: Returning C: 00H
+
+
+-pendiente MOD_REG_HL_BC, DE, SP... y mostrar (DE) (BC) (SP)
