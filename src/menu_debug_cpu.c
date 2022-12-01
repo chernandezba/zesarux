@@ -1667,7 +1667,17 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 //mostrar cuando se modifica (HL)
                 //columna 1,2,3,4 registro (HL)
                 if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
-            break;            
+            break;      
+
+            case 17:
+                sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
+                //TODO: mostrar cuando se modifica (DE)
+            break; 
+
+            case 18:
+                sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
+                //TODO: mostrar cuando se modifica (BC)    
+            break;                               
     /*
     //Retorna paginas mapeadas (nombres cortos)
     void menu_debug_get_memory_pages(char *s)
