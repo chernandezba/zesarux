@@ -649,8 +649,7 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         pd765_put_buffer(return_value);
 
 
-        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK;
-        return_value=PD765_STATUS_REGISTER_ONE_MA_MASK;
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK | PD765_STATUS_REGISTER_ONE_MA_MASK;
         printf("PD765: Returning ST1: %02XH\n",return_value);
         pd765_put_buffer(return_value);
 
