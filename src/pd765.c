@@ -613,6 +613,81 @@ int pd765_common_dsk_not_inserted_read(void)
 
 }
 
+int pd765_common_if_track_unformatted(int pista,int cara)
+{
+    
+    if (!dsk_is_track_formatted(pista,cara)) {
+        /*
+        The READ ID Command is used to give the present position of the recording head. 
+        The FDC stores the values from the first ID Field it is able to read. 
+        If no proper ID Address Mark is found on the diskette, before the INDEX HOLE is encountered 
+        for the second time then the MA (Missing Address Mark) flag in Status Register 1 is set to a 1 (high), 
+        and if no data is found then the ND (No Data) flag is also set in Status Register 1 to a 1 (high). 
+        The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
+        During this command there is no data transfer between FDC and the CPU except during the result phase.
+        */
+        printf("PD765: Track %02XH Side %d unformatted\n",pista,cara);
+        sleep(1);
+        
+        pd765_interrupt_pending=1;    
+
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+        z80_byte return_value=pd765_get_st0();
+
+        return_value |=0x40;
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+
+
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK;
+        return_value=PD765_STATUS_REGISTER_ONE_MA_MASK;
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return_value=0;
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+
+        pd765_put_buffer(return_value);
+
+        return_value=0;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=0;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=0;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=0;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        sleep(5);
+
+        return 1;
+    }
+
+    return 0;
+
+}
+
+
 void pd765_siguiente_sector(void)
 {
     pd765_ultimo_sector_read_id++;
@@ -640,6 +715,12 @@ void pd765_handle_command_read_id(void)
 
     //Si DSK no insertado
     if (pd765_common_dsk_not_inserted_read()) {
+        return;
+    }
+
+    //Si pista no formateada
+    //TODO: de momento solo cara 0
+    if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
         return;
     }
 
