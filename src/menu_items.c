@@ -27042,6 +27042,7 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
 
         for (pista=0;pista<total_pistas;pista++) {
             for (cara=0;cara<total_caras;cara++) {
+                /*
                 int sinformatear=0;
 
                 if (dsk_file_type_extended) {
@@ -27050,6 +27051,11 @@ void menu_plusthreedisk_info_tracks_list(MENU_ITEM_PARAMETERS)
                 }
  
                 if (sinformatear) {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02d Side %d. UNFORMATTED",pista,cara);
+                }
+                */
+
+                if (!dsk_is_track_formatted(pista,cara)) {
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02d Side %d. UNFORMATTED",pista,cara);
                 }
 

@@ -94,4 +94,6 @@ extern int dsk_get_datarate_track(int pista,int cara);
 extern int dsk_get_gap_length_track(int pista,int cara);
 extern int dsk_get_recordingmode_track(int pista,int cara);
 
+extern int dsk_is_track_formatted(int pista,int cara);
+
 #endif

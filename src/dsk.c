@@ -847,4 +847,16 @@ int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico)
 }
 
 
+int dsk_is_track_formatted(int pista,int cara)
+{
+    int sinformatear=0;
 
+    if (dsk_file_type_extended) {
+        int track_size=dsk_extended_get_track_size(pista,cara);
+        if (!track_size) sinformatear=1;
+    }
+
+    if (sinformatear) return 0;
+
+    return 1;
+}
