@@ -474,4 +474,4 @@ PD765: Returning ST2: 40H
 PD765: Returning C: 00H
 
 
--pendiente MOD_REG_HL_BC, DE, SP... y mostrar (DE) (BC) (SP)
+-pendiente MOD_REG_HL_BC, DE, SP... quiza moverlos arriba en posicion....
