@@ -1059,6 +1059,12 @@ field are not checked when SK = 1.
         return;
     }
 
+    //Si pista no formateada
+    //TODO: de momento solo cara 0
+    if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
+        return;
+    }    
+
 
     pd765_interrupt_pending=1;    
 
