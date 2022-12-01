@@ -626,8 +626,8 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         The command is then terminated with Bits 7 and 6 in Status Register O set to 0 and 1 respectively. 
         During this command there is no data transfer between FDC and the CPU except during the result phase.
         */
-        printf("PD765: Track %02XH Side %d unformatted\n",pista,cara);
-        sleep(1);
+        printf("PD765: Track %02XH Side %d unformatted!!!!!!!!!\n",pista,cara);
+        
         
         pd765_interrupt_pending=1;    
 
@@ -677,7 +677,7 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         printf("PD765: Returning N: %02XH\n",return_value);
         pd765_put_buffer(return_value);
 
-        sleep(5);
+        sleep(3);
 
         return 1;
     }
