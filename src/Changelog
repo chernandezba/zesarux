@@ -1,13 +1,26 @@
 Version 10.3 - xxxx edition. 02 November 2022
 
+* New things added:
+
 Added Poke F-Function
+Added Visual Real Tape F-Function
+Added DSK disk info menu: to get tracks and sectors of a disk
 
-Add DSK disk info menu: to get tracks and sectors of a disk
 
-Improve debug console: better refresh, dynamic width??
-Improve debug: show on debug when (hl),(bc),.... is going to be modified
+* Improvements:
 
-Fixed PD765 emulation: TODO: add more details here
+Improved Debug Console: better refresh, dynamic width??
+Improved Debug CPU: added (hl), (de), (bc)
+
+
+* Fixes:
+
+Fixed +3 disk (and CPC6128?) (PD765) emulation: TODO: add more details here
+
+
+* As always, there are some other minor bugfixes and improvements
+
+----------------------------------------
 
 
 Version 10.2 - Hysteria edition. 26 October 2022

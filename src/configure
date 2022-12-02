@@ -1781,6 +1781,14 @@ sourcetargz:
 	echo
 	echo "Generated file is : ZEsarUX_src-\$(EMULATOR_VERSION).tar.gz"
 
+backupsrc:
+	rm -fR backupsrctemp
+	mkdir -p backupsrctemp/ZEsarUX-\$(EMULATOR_VERSION)
+	cp -a \$(ONLYSOURCEFILES) backupsrctemp/ZEsarUX-\$(EMULATOR_VERSION)/
+	tar -C backupsrctemp -cvzf ZEsarUX_backupsrc-\$(EMULATOR_VERSION).tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	echo
+	echo "Generated file is : ZEsarUX_backupsrc-\$(EMULATOR_VERSION).tar.gz"
+
 bintargz: all
 	./generate_install_sh.sh
 	rm -fR bintargztemp

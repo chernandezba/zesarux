@@ -1203,14 +1203,16 @@ void menu_debug_registers_change_ptr(void)
 
 //para (HL)
 #define MOD_REG_HL_MEM      (1<<21)
+#define MOD_REG_DE_MEM      (1<<22)
+#define MOD_REG_BC_MEM      (1<<23)
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
     //0 NOP
-    0,MOD_REG_B|MOD_REG_C,0,        MOD_REG_BC,MOD_REG_B|MOD_REG_F,MOD_REG_B|MOD_REG_F,MOD_REG_B,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_B|MOD_REG_C,MOD_REG_BC_MEM,MOD_REG_BC,MOD_REG_B|MOD_REG_F,MOD_REG_B|MOD_REG_F,MOD_REG_B,MOD_REG_A|MOD_REG_F,
     MOD_REG_AF|MOD_REG_AF_SHADOW,   MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_BC,MOD_REG_C|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_C,MOD_REG_A|MOD_REG_F,
     //16 DJNZ dis
-    MOD_REG_B,MOD_REG_DE,0,MOD_REG_DE,MOD_REG_D|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_D,MOD_REG_A|MOD_REG_F,
+    MOD_REG_B,MOD_REG_DE,MOD_REG_DE_MEM,MOD_REG_DE,MOD_REG_D|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_D,MOD_REG_A|MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_DE,MOD_REG_E|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_E,MOD_REG_A|MOD_REG_F,
     //32 JR NZ,DIS
     0,MOD_REG_HL,0,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
@@ -1340,12 +1342,27 @@ z80_long_int debug_modified_registers_ed_list[256]={
     //144
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
-    //160 LDI
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    //176 LDIR
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //160 LDI, CPI
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INI, OUTI, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //168 LDD, CPD
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //IND, OUTD, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //176 LDIR, CPIR
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INIR, OTIR, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //184 LDDR, CPDR
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INDR, OTDR, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
     //192
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1626,25 +1643,40 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 if (registros_modificados & MOD_REG_IM_MODE)      *columnas_modificadas |=1|(2<<4);      //columna 1,2 registro IM
             break;
 
-            /*case 12:
-            case 13:
-                menu_debug_get_memory_pages(textopaginasmem);
-                menu_util_cut_line_at_spaces(12,textopaginasmem,textopaginasmem_linea1,textopaginasmem_linea2);
-                if (linea==12) sprintf (textoregistros,"%s",textopaginasmem_linea1 );
-                if (linea==13) sprintf (textoregistros,"%s",textopaginasmem_linea2 );
-            break;*/
-
             case 11:
+                sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
+                //mostrar cuando se modifica (HL)
+                //columna 1,2,3,4 registro (HL)
+                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
+            break;      
+
+            case 12:
+                sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
+                //mostrar cuando se modifica (DE)
+                //columna 1,2,3,4 registro (DE)
+                if (registros_modificados & MOD_REG_DE_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
+            break; 
+
+            case 13:
+                sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
+                //mostrar cuando se modifica (BC)    
+                //columna 1,2,3,4 registro (BC)
+                if (registros_modificados & MOD_REG_BC_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
+            break;               
+
+    
+
+            case 14:
                 sprintf (textoregistros,"TSTATE %d",t_estados);
             break;
 
-            case 12:
-            case 13:
-            case 14:
             case 15:
+            case 16:
+            case 17:
+            case 18:
                 //Por defecto, cad
                 //Mostrar en una linea, dos bloques de memoria mapeadas
-                offset_bloque=linea-12;  //este 12 debe coincidir con el primer case de este bloque
+                offset_bloque=linea-15;  //este 15 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
                 
                 offset_bloque *=2; //2 bloques por cada linea
@@ -1660,45 +1692,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     }
                 }
             break;
-
-
-            case 16:
-                sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
-                //mostrar cuando se modifica (HL)
-                //columna 1,2,3,4 registro (HL)
-                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
-            break;      
-
-            case 17:
-                sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
-                //TODO: mostrar cuando se modifica (DE)
-            break; 
-
-            case 18:
-                sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
-                //TODO: mostrar cuando se modifica (BC)    
-            break;                               
-    /*
-    //Retorna paginas mapeadas (nombres cortos)
-    void menu_debug_get_memory_pages(char *s)
-    {
-
-            int i;
-            int longitud;
-            int indice=0;
-
-            for (i=0;i<total_segmentos;i++) {
-                    longitud=strlen(segmentos[i].shortname)+1;
-                    sprintf(&s[indice],"%s ",segmentos[i].shortname);
-
-                    indice +=longitud;
-
-            }
-
-    }
-    */
-
-                    
             
 
         }
