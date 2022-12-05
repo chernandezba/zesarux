@@ -2325,6 +2325,38 @@ char *bitmap_button_ext_desktop_wavepiano[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	" xxggggggggggggggggggggxx ",
+	" xgggxxxggggggggggxxxgggx ",
+	" xggxx xxg      gxx xxggx ",
+	" xggx   xg      gx   xggx ",
+	" xggxx xxg      gxx xxggx ",
+	" xgggxxxggggggggggxxxgggx ",
+	" xggggggggggggggggggggggx ",
+	" xggggggggggggggggggggggx ",
+	" xggggggggggggggggggggggx ",
+	" xggggggxxxxxxxxxxggggggx ", //10
+	" xgggggxggggggggggxgggggx ",
+	" xxggggxggggggggggxggggxx ",
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	"                          ",
+	"            b      b      ",
+	"   b       b b    b b     ",
+	"  b b     b   b   b  b    ",
+	" b   b    b   b   b  b    ",
+	" b    b   b   b   b  b  b ",
+	"      b   b    b  b  b b  ", //20
+	"      b   b    b  b   b   ",
+	"       b b     b  b       ",
+	"        b      b b        ",
+	"               b b        ",
+	"                b         "  //25
+};
+
+
+
 char *bitmap_button_ext_desktop_aymixer[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "   xxx      xxx      xxx  ",     //0
