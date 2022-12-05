@@ -806,6 +806,15 @@ void pd765_handle_command_read_id(void)
 
     z80_byte leido_st2=pd765_get_st2();
     printf("PD765: Returning ST2: %02XH\n",leido_st2);   
+
+
+    if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
+        printf("Sector with deleted mark\n");
+        sleep(5);
+    }
+    else {
+        printf("Sector with address mark\n");
+    }    
     
     printf("PD765: Returning C: %02XH\n",leido_id_c);
     printf("PD765: Returning H: %02XH\n",leido_id_h);
@@ -1120,7 +1129,7 @@ field are not checked when SK = 1.
     
     if (iniciosector<0) {
         //no hay siguiente, volver a girar la pista
-        printf("Next sector with asked it not found. Starting from the beginning of track\n");
+        printf("Next sector with asked ID not found. Starting from the beginning of track\n");
         iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1);
     }
 
@@ -1317,7 +1326,7 @@ field are not checked when SK = 1.
         //Leido un sector normal, sin marca de borrado
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
-                    printf("TODO next sector\n");
+                    printf("TODO next sector. Sector not deleted and SK=1\n");
                     sleep(5);
             }
             else {
@@ -1337,6 +1346,8 @@ field are not checked when SK = 1.
             //Leido un sector con marca de borrado
             if (pd765_input_parameter_sk) {
                 //TODO: no se muy bien que hacer aqui
+                    printf("TODO. Sector deleted and SK=1\n");
+                    sleep(5);                
             }
             else {
                 leido_st0=0x40; //Abnormal termination of command (NT)
@@ -1374,12 +1385,25 @@ field are not checked when SK = 1.
 
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
-                    printf("TODO next sector\n");
+                    printf("TODO next sector when sector deleted and sk=1\n");
                     sleep(5);
             }
             else {
-                    //leer tal cual
+                    //TODO
+                    printf("TODO. Sector deleted and SK=0\n");
+                    sleep(5);                          
             }
+        }
+        else {
+            if (pd765_input_parameter_sk) {
+                    //printf("TODO next sector when sector not deleted and sk=1\n");
+                    //sleep(5);
+            }
+            else {
+                    //leer tal cual
+                    //printf("TODO. Sector not deleted and SK=0\n");
+                    //sleep(5);                          
+            }            
         }
 
     }        

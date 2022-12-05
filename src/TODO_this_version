@@ -475,3 +475,7 @@ PD765: Returning C: 00H
 
 
 -pendiente MOD_REG_HL_BC, DE, SP... quiza moverlos arriba en posicion....
+
+-cambio en menu_inicio y zxvision_switch_to_window_on_open_menu:
+
+https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d2719ffbb2#diff-521337e1d39e077ccafa540faa6e18649b8c776cc3b4865ec4f648e4dca04216

@@ -1989,12 +1989,19 @@ void remote_cpu_exit_step(int misocket)
  menu_multitarea=menu_multitarea_antes_cpu_step;
 }
 
-void remote_cpu_after_core_loop(void)
+
+//Cosas que hay que hacer despues de ejecutar opcodes de cpu
+void remote_cpu_after_core_loop(int misocket)
 {
   if (menu_multitarea==0) {
     audio_playing.v=0;
     //audio_thread_finish();
   }
+
+  //Si se ha disparado excepcion de breakpoint, quitar
+  menu_breakpoint_exception.v=0;  
+
+  remote_get_regs_disassemble(misocket);
 }
 
 
@@ -2010,6 +2017,13 @@ void remote_core_loop_if_update_immediately(int update,int nowait_endframe)
 		}
 }
 
+void remote_cpu_before_core_loop(void)
+{
+  //Limpiar algun flag que se haya quedado antes
+  menu_abierto=0;
+  menu_breakpoint_exception.v=0;
+}
+
 void remote_cpu_step(int misocket) {
   //char buffer_retorno[1024];
   //Ejecutar una instruccion
@@ -2018,7 +2032,9 @@ void remote_cpu_step(int misocket) {
     return;
   }
   debug_core_lanzado_inter.v=0;
-  //cpu_core_loop();
+
+  remote_cpu_before_core_loop();  
+  
 	remote_core_loop_if_update_immediately(1,1);
 
   if (debug_core_lanzado_inter.v && (remote_debug_settings&32)) {
@@ -2026,49 +2042,11 @@ void remote_cpu_step(int misocket) {
   }
 
 
-  remote_cpu_after_core_loop();
 
-  remote_get_regs_disassemble(misocket);
+  remote_cpu_after_core_loop(misocket);
 
-}
-
-/*
-int si_remote_cpu_step_over_jpret(void)
-{
-	if (CPU_IS_MOTOROLA || CPU_IS_SCMP) return 0;
-	z80_byte opcode=peek_byte_no_time(reg_pc);
-
-	switch (opcode)
-	{
-
-		case 0xC3: // JP
-                case 0xCA: // JP Z
-                case 0xD2: // JP NC
-                case 0xDA: // JP C
-                case 0xE2: // JP PO
-                case 0xE9: // JP (HL)
-                case 0xEA: // JP PE
-                case 0xF2: // JP P
-                case 0xFA: // JP M
-
-                case 0xC0: // RET NZ
-                case 0xC8: // RET Z
-                case 0xC9: // RET
-                case 0xD0: // RET NC
-                case 0xD8: // RET C
-                case 0xE0: // RET PO
-                case 0xE8: // RET PE
-                case 0xF0: // RET P
-                case 0xF8: // RET M
-
-			return 1;
-		break;
-	}
-
-	return 0;
 
 }
-*/
 
 void remote_cpu_step_over(int misocket) {
 
@@ -2086,12 +2064,12 @@ void remote_cpu_step_over(int misocket) {
     return;
   }
 
+  remote_cpu_before_core_loop();
 
-debug_cpu_step_over();
+  debug_cpu_step_over();
 
-  remote_cpu_after_core_loop();
-
-  remote_get_regs_disassemble(misocket);
+  
+  remote_cpu_after_core_loop(misocket);
 
 
 }
@@ -2160,7 +2138,8 @@ void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,in
 	      salir=1;
 	    }
 	  }
-	  if (menu_abierto) salir=1;
+      //Si se abre menu o salta excepcion, salir
+	  if (menu_abierto || menu_breakpoint_exception.v) salir=1;
 	}
 
 
@@ -2175,12 +2154,6 @@ void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,in
 	#endif
 	}
 
-	//Si se ha saltado un breakpoint, decirlo
-	if (menu_breakpoint_exception.v) {
-		if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
-			escribir_socket_format(misocket,"Breakpoint fired: %s\n",catch_breakpoint_message);
-			}
-	}
 
 
 }
@@ -2200,39 +2173,24 @@ void remote_cpu_run(int misocket,int verbose,int limite,int datosvuelve,int upda
 
 
 
+  remote_cpu_before_core_loop();
 
   //Parar cuando se produzca algun evento de apertura de menu, como un breakpoint
-  menu_abierto=0;
 
-
-//Opcion A. Solo para este caso de run
-/*
- #ifdef MINGW
-  towindows_remote_cpu_run_misocket=misocket;
-  towindows_remote_cpu_run_verbose=verbose;
-  towindows_remote_cpu_run_limite=limite;
-  towindows_remote_cpu_run_loop=1;
-
-	debug_printf (VERBOSE_DEBUG,"Calling remote_cpu_run_loop from ZRCP to main loop");
-  while (towindows_remote_cpu_run_loop)  {
-	  sleep (1);
-  }
-  	debug_printf (VERBOSE_DEBUG,"Exiting remote_cpu_run_loop from ZRCP to main loop");
- #else
-  remote_cpu_run_loop(misocket,verbose,limite,datosvuelve);
- #endif
-*/
-
-//Opcion B. Hacemos esto normal y luego en menu, el menu_event_remote_protocol_enterstep refresca la pantalla por si solo cada 1 segundo
+//Hacemos esto normal y luego en menu, el menu_event_remote_protocol_enterstep refresca la pantalla por si solo cada 1 segundo
   remote_cpu_run_loop(misocket,verbose,limite,datosvuelve,update_immediately);
-
-
-
 
   debug_printf(VERBOSE_DEBUG,"Exiting run command");
 
-  remote_cpu_after_core_loop();
-  remote_get_regs_disassemble(misocket);
+	//Si se ha saltado un breakpoint, decirlo
+	if (menu_breakpoint_exception.v) {
+		if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
+			escribir_socket_format(misocket,"Breakpoint fired: %s\n",catch_breakpoint_message);
+			}
+	}  
+
+
+  remote_cpu_after_core_loop(misocket);
 
 }
 

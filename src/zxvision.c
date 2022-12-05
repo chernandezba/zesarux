@@ -22209,29 +22209,34 @@ void menu_inicio(void)
         zxvision_switch_to_window_on_open_menu=0;
 
         //printf ("0 salir_todos_menus: %d\n",salir_todos_menus);
-        //printf("menu_breakpoint_exception.v : %d\n",menu_breakpoint_exception.v);
+        
 
-        if (!menu_allow_background_windows /*|| !menu_multitarea*/) {
+        if (!menu_allow_background_windows || !menu_multitarea) {
             //abrirla tal cual sin mas
             indice_abrir_ventana_sin_multitarea=zxvision_find_known_window(zxvision_switch_to_window_on_open_menu_name);
             //se abre un poco mas adelante
-
-            
+    
         }
 
         else {
 
 
-            //TODO: si no existe ventana, crearla
+            //¿TODO?: si no existe ventana, crearla
             zxvision_window *ventana_abrir=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
+
+            //printf("ventana_abrir=%p\n",ventana_abrir);
 
             if (ventana_abrir==NULL) {
                 zxvision_restore_one_window(zxvision_switch_to_window_on_open_menu_name);
                 //buscarla de nuevo
                 ventana_abrir=zxvision_find_window_in_background(zxvision_switch_to_window_on_open_menu_name);
+
+                //printf("ventana_abrir 2=%p\n",ventana_abrir);
             }
 
             if (ventana_abrir!=NULL) {
+                //printf("ventana_abrir 3=%p\n",ventana_abrir);
+                
                 debug_printf(VERBOSE_DEBUG,"Restoring window %s",zxvision_switch_to_window_on_open_menu_name);
                 zxvision_handle_mouse_ev_switch_back_wind(ventana_abrir);
                 pulsado_alguna_ventana_con_menu_cerrado=1;
@@ -22518,7 +22523,7 @@ void menu_inicio(void)
 	}
 
 //printf ("1inicio menu_inicio\n");
-    //printf("XX1 menu_breakpoint_exception.v %d\n",menu_breakpoint_exception.v);
+    
 
 
 	//Menu desactivado y salida del emulador
@@ -22827,11 +22832,6 @@ void menu_inicio(void)
             while (menu_event_remote_protocol_enterstep.v) {
                 timer_sleep(100);
 
-                //Truco para que desde windows se pueda ejecutar el core loop desde aqui cuando zrcp lo llama
-                /*if (towindows_remote_cpu_run_loop) {
-                    remote_cpu_run_loop(towindows_remote_cpu_run_misocket,towindows_remote_cpu_run_verbose,towindows_remote_cpu_run_limite);
-                    towindows_remote_cpu_run_loop=0;
-                }*/
     #ifdef MINGW
                 int antes_menu_abierto=menu_abierto;
                 menu_abierto=0; //Para que no aparezca en gris al refrescar

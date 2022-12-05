@@ -259,16 +259,6 @@ z80_byte fetch_opcode_legacy_ql(void)
 
 
 
-/*
-void ql_debug_force_breakpoint(char *message)
-{
-  catch_breakpoint_index=0;
-  menu_breakpoint_exception.v=1;
-  menu_abierto=1;
-  sprintf (catch_breakpoint_message,"%s",message);
-  printf ("Abrimos menu\n");
-}
-*/
 
 
 void motorola_get_flags_string(char *texto)

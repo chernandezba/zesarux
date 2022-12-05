@@ -1189,16 +1189,7 @@ int debug_nested_id_peek_byte;
 int debug_nested_id_peek_byte_no_time;
 
 
-void do_breakpoint_exception(char *message)
-{
-	if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
-		cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
-	}
 
-	menu_breakpoint_exception.v=1;
-	sprintf(catch_breakpoint_message,"%s",message);
-	debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
-}
 
 void set_peek_byte_function_debug(void)
 {
@@ -1350,6 +1341,16 @@ z80_byte lee_puerto_debug(z80_byte puerto_h,z80_byte puerto_l)
 }
 
 
+void do_breakpoint_exception(char *message)
+{
+	if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
+		cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
+	}
+
+	sprintf(catch_breakpoint_message,"%s",message);
+	debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
+}
+
 
 //Mostrar mensaje que ha hecho saltar el breakpoint y ejecutar accion (por defecto abrir menu)
 void cpu_core_loop_debug_breakpoint(char *message)
@@ -1358,14 +1359,19 @@ void cpu_core_loop_debug_breakpoint(char *message)
 	do_breakpoint_exception(message);
 
     if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
-        zxvision_open_menu_with_window("debugcpu");
-        //printf("despues zxvision_open_menu_with_window debugcpu\n");
+        menu_breakpoint_exception.v=1;
+
+        //Si el breakpoint no ha saltado mientras estamos en cpu step de ZRCP
+        if (menu_event_remote_protocol_enterstep.v==0) {
+            zxvision_open_menu_with_window("debugcpu");
+        }
+        
     }
 
     
     else {
         //Gestionar acciones. Se gestionan desde aqui mismo y ya no escalan a menu
-        menu_breakpoint_exception.v=0;
+        
         //Gestion acciones
         //printf("Handling action %s\n",debug_breakpoints_actions_array[catch_breakpoint_index]);
         debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
