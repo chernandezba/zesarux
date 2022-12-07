@@ -1123,14 +1123,18 @@ field are not checked when SK = 1.
     //primero intentar obtener sector siguiente dentro de la pista
     int iniciosector;
 
+    int search_deleted=0;
+
+    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
+
     printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_read_id,pd765_pcn,pd765_input_parameter_r);
-    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id);
+    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id,search_deleted,pd765_input_parameter_sk);
 
     
     if (iniciosector<0) {
         //no hay siguiente, volver a girar la pista
         printf("Next sector with asked ID not found. Starting from the beginning of track\n");
-        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1);
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk);
     }
 
     //gestionar error si sector no encontrado
@@ -1159,17 +1163,17 @@ field are not checked when SK = 1.
 
         z80_byte return_value=pd765_get_st0();
 
-        return_value |=0x40;
+        //abnormal termination
+        return_value |=PD765_STATUS_REGISTER_ZERO_AT;
         printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
         pd765_put_buffer(return_value);
 
 
-        //TODO: esto es correcto???
-        return_value=0x02;
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
         printf("PD765: Returning ST1: %02XH\n",return_value);
         pd765_put_buffer(return_value);
 
-        return_value=0;        
+        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
         printf("PD765: Returning ST2: %02XH\n",return_value);
         pd765_put_buffer(return_value);     
 
@@ -1264,7 +1268,7 @@ field are not checked when SK = 1.
     dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);    
 
     if (anormal_termination) {
-        leido_st0 |= 0x40;
+        leido_st0 |= PD765_STATUS_REGISTER_ZERO_AT;
     }
 
 
@@ -1299,26 +1303,26 @@ field are not checked when SK = 1.
 
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
 
-    ///Wec Le Mans (Erbe).dsk le mans espera 40h, 80h y 00h en st0, st1 y st2
-    /*
-    Otros juegos que funcionan al retornar bien estos valores:
-    Carrier command
-    Comando Quatro
-    Gremlins 2
-    Ice Breaker
-    Mortadelo y Filemon 2
-    Narco Police
-    */
+        ///Wec Le Mans (Erbe).dsk le mans espera 40h, 80h y 00h en st0, st1 y st2
+        /*
+        Otros juegos que funcionan al retornar bien estos valores:
+        Carrier command
+        Comando Quatro
+        Gremlins 2
+        Ice Breaker
+        Mortadelo y Filemon 2
+        Narco Police
+        */
 
 
-    /*
-    Read deleted data:
-    This command is the same as the Read Data Command except that when the FDC detects a Data Address
-    Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
-    CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
-    the sector with the Data Address Mark and reads the next sector.
+        /*
+        Read deleted data:
+        This command is the same as the Read Data Command except that when the FDC detects a Data Address
+        Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
+        CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
+        the sector with the Data Address Mark and reads the next sector.
 
-    */
+        */
 
         //TODO: como afecta bit MD??
         //bubble bobble y black lamp 
@@ -1326,7 +1330,8 @@ field are not checked when SK = 1.
         //Leido un sector normal, sin marca de borrado
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
-                    printf("TODO next sector. Sector not deleted and SK=1\n");
+                //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
+                    printf("Sector not deleted and SK=1\n");
                     sleep(5);
             }
             else {
@@ -1334,6 +1339,7 @@ field are not checked when SK = 1.
                 //leer tal cual
                 //TODO:...
 
+                leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
 
                 //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
                 //leido_st0=0x40; //Abnormal termination of command (NT)
@@ -1345,12 +1351,10 @@ field are not checked when SK = 1.
         else {
             //Leido un sector con marca de borrado
             if (pd765_input_parameter_sk) {
-                //TODO: no se muy bien que hacer aqui
-                    printf("TODO. Sector deleted and SK=1\n");
-                    sleep(5);                
+                    printf("Sector deleted and SK=1\n");
             }
             else {
-                leido_st0=0x40; //Abnormal termination of command (NT)
+                leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
 
                 //End of Cylinder. When the FDC tries to access a Sector beyond the final Sector of a Cylinder, this flag is set
                 //TODO: a saber por qué hay que activar este flag, yo solo se que Wec Le Mans (Erbe).dsk espera exactamente
@@ -1363,7 +1367,8 @@ field are not checked when SK = 1.
         }
 
 
-
+        //TODO: quitar el bit de CM de manera general, tiene sentido??
+        //leido_id_st2 &= (255-PD765_STATUS_REGISTER_TWO_CM_MASK);     
 
 
     }
@@ -1383,21 +1388,33 @@ field are not checked when SK = 1.
 
        //TODO: como afecta bit MD??
 
+        //leido un sector borrado
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
-                    printf("TODO next sector when sector deleted and sk=1\n");
+                    //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
+                    printf("next sector when sector deleted and sk=1\n");
                     sleep(5);
             }
             else {
-                    //TODO
-                    printf("TODO. Sector deleted and SK=0\n");
-                    sleep(5);                          
+                    
+                    /*
+                    If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
+                    Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
+                    and terminates the Read Data Command, after reading all the data in the Sector
+                    */
+                    //Devolver tal cual st1 y st2 que vengan del sector, con el error apropiado
+
+                    leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
+
+
+                    //printf("TODO. Sector deleted and SK=0\n");
+                    //sleep(5);                          
             }
         }
         else {
+            //leido un sector normal
             if (pd765_input_parameter_sk) {
-                    //printf("TODO next sector when sector not deleted and sk=1\n");
-                    //sleep(5);
+                    printf("next sector when sector not deleted and sk=1\n");
             }
             else {
                     //leer tal cual

@@ -78,7 +78,8 @@ z80_bit remote_ack_enter_cpu_step={0};
 //Si se llama a end_emulator desde aqui
 z80_bit remote_calling_end_emulator={0};
 
-
+//solicitar comando de cerrar todos menus
+int zrcp_command_close_all_menus=0;
 
 #ifndef NETWORKING_DISABLED
 
@@ -623,6 +624,7 @@ struct s_items_ayuda items_ayuda[]={
 },
 
 	{"clear-membreakpoints",NULL,NULL,"Clear all memory breakpoints"},
+    {"close-all-menus",NULL,NULL,"Close all open menus"},
 
 	{"cpu-code-coverage",NULL,"action [parameter]","Sets cpu code coverage parameters. Action and parameters are the following:\n"
 	"clear            Clear address list\n"
@@ -3764,7 +3766,53 @@ void interpreta_comando(char *comando,int misocket)
 	 clear_mem_breakpoints();
   }
 
+ else if (!strcmp(comando_sin_parametros,"close-all-menus")) {
 
+    if (menu_abierto) {
+        //Ir a menu principal
+        puerto_especial2 &=(255-16); //pulsar F5
+        usleep(100000); //pausa de 0.1 segundos
+
+        puerto_especial2 |=16; //liberar F5
+        usleep(100000); //pausa de 0.1 segundos
+    }
+    
+
+    int timeout=10;
+    //Si esta menu abierto con un tooltip, es necesario hacer esto al menos dos veces
+
+    while (menu_abierto && timeout) {
+
+        //Y cerrar
+        puerto_especial1 &=(255-1); //Pulsar ESC
+        usleep(100000); //pausa de 0.1 segundos
+
+        puerto_especial1 |=1; //Liberar ESC
+        usleep(100000); //pausa de 0.1 segundos
+
+        timeout--;
+    }
+
+    /*
+    TODO: lo mejor seria usar zrcp_command_close_all_menus pero tiene varios problemas:
+    - requiere evento para leer tecla: movimiento raton por ejemplo
+    - no cierra menus cuando hay un tooltip abierto
+    - no va dentro de debug cpu (probablemente porque espera tambien pulsacion tecla)
+
+    zrcp_command_close_all_menus=1;
+    */    
+
+   /*
+    if (menu_abierto) {
+        zrcp_command_close_all_menus=1;
+        usleep(100000); //pausa de 0.1 segundos
+    }
+    */
+
+    if (menu_abierto) {
+        escribir_socket(misocket,"ERROR. Can not close all menus");
+    }
+  }
 
   else if (!strcmp(comando_sin_parametros,"cpu-code-coverage") ) {
     remote_parse_commands_argvc(parametros);

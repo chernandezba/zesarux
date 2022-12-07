@@ -980,3 +980,62 @@ typedef unsigned int z80_long_int;
 typedef unsigned int z80_32bit;
 //64 bits
 typedef long long int z80_64bit;
+
+
+-----
+
+How Z80 core in debug mode works (and nested functions)
+
+This is a way I created to add some conditions or states to the cpu core so it doesn't slowdown the main emulation.
+When a machine is created, the Z80 cpu core is running from a function called "cpu_core_loop". This is running Z80 opcodes, redrawing the screen, reading the keyboard, etc.
+
+Then, when something is enabled in the cpu core (like breakpoints or betadisk emulation for example), that core is changed to another function called "cpu_core_loop_nested_handler". This function runs the cpu_core_loop as usual but also executes other core functions that need attention (check breakpoints for example). You can add other core functions on top of the normal core, this is way it's called "nested": every nested funcition calls the previous one in order they are added, so, for example:
+
+-You start ZEsarUX. Z80 core function is set to cpu_core_loop
+
+-You enable breakpoints. Z80 core function is set to cpu_core_loop_nested_handler. 
+cpu_core_loop_nested_handler runs the following functions:
+1. cpu_core_loop_debug (the one that checks breakpoints)
+2. cpu_core_loop
+
+-You enable betadisk. cpu_core_loop_nested_handler runs the following functions:
+1. cpu_core_loop_betadisk
+2. cpu_core_loop_debug
+3. cpu_core_loop
+
+
+
+This is a simple way to avoid having in the normal core sentences like:
+
+if (breakpoints_enabled) check_breakpoints();
+if (betadisk_enabled) betadisk_rom_traps();
+etc...
+
+There could exist lots of "if something is enabled then"... This might sound not too important, but all this increases physical cpu usage so it can slowdown emulation (even more on architectures without Speculative Execution in the cpu, like raspberry pi).
+
+So, these nested functions allows me to avoid "if" sentences and have low cpu usage when the Z80 cpu core is not using all these features (breakpoints, betadisk etc), and only increase cpu usage when they are enabled.
+
+Some ZRCP functions like "smartload" or "set-machine" first set cpu-step-mode; if that mode is not set, it may crash randomly, when the cpu core thread is inside a nested call (for example inside cpu_core_loop_debug) but the function list is emptied by the ZRCP thread (when running smartload).
+
+By the way, read and write functions (*peek* and *poke*) work the same way as Z80 core loop: they use nested functions when something is enabled, to reduce cpu usage. You can run the ZRCP command "dump-nested-functions" and you'll see all these nested functions when they are enabled, for example:
+
+command> dump-nested-functions
+
+Nested Core functions
+Element: 0x7fb4e275cac0 (0) id: 0 name: Debug core pointer function: 0x10be7c200 previous: 0x0 next: 0x7fb4e24a29a0
+Element: 0x7fb4e24a29a0 (1) id: 1 name: Betadisk core pointer function: 0x10bfc7de0 previous: 0x7fb4e275cac0 next: 0x0
+
+Nested poke_byte functions
+Element: 0x7fb4e275c570 (0) id: 0 name: Debug poke_byte pointer function: 0x10be7a3b0 previous: 0x0 next: 0x0
+
+Nested poke_byte_no_time functions
+Element: 0x7fb4e275c760 (0) id: 0 name: Debug poke_byte_no_time pointer function: 0x10be7a570 previous: 0x0 next: 0x0
+
+Nested peek_byte functions
+Element: 0x7fb4e275c880 (0) id: 0 name: Debug peek_byte pointer function: 0x10be7a730 previous: 0x0 next: 0x7fb4e24a2bb0
+Element: 0x7fb4e24a2bb0 (1) id: 1 name: Betadisk peek_byte pointer function: 0x10bfc7b00 previous: 0x7fb4e275c880 next: 0x0
+
+Nested peek_byte_no_time functions
+Element: 0x7fb4e275c9a0 (0) id: 0 name: Debug peek_byte_no_time pointer function: 0x10be7a900 previous: 0x0 next: 0x7fb4e24a2880
+Element: 0x7fb4e24a2880 (1) id: 1 name: Betadisk peek_byte_no_time pointer function: 0x10bfc7bc0 previous: 0x7fb4e275c9a0 next: 0x0
+

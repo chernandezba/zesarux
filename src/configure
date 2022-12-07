@@ -1625,7 +1625,7 @@ ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h screen.h divide.h menu_items
 pd765.o: pd765.c pd765.h cpu.h debug.h utils.h dsk.h menu_items.h screen.h
 	\$(CC) \$(CFLAGS) -c pd765.c
 
-dsk.o: dsk.c dsk.h cpu.h debug.h utils.h tape.h menu_items.h screen.h
+dsk.o: dsk.c dsk.h cpu.h debug.h utils.h tape.h menu_items.h screen.h pd765.h
 	\$(CC) \$(CFLAGS) -c dsk.c
 
 plus3dos_handler.o: plus3dos_handler.c plus3dos_handler.h cpu.h debug.h utils.h operaciones.h mem128.h dsk.h

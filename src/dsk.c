@@ -39,6 +39,7 @@ DSK emulation
 #include "tape.h"
 #include "menu_items.h"
 #include "screen.h"
+#include "pd765.h"
 
 
 char dskplusthree_file_name[PATH_MAX]="";
@@ -670,7 +671,7 @@ int dsk_extended_get_track_size(int pista,int cara)
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
 //Parametro minimo_sector permite escoger un sector mayor que dicho parametro
-int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector)
+int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector,int search_deleted,int skip_not_match)
 {
 
     int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
@@ -694,7 +695,36 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
         z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
 
 
-        if (sector_id==parametro_r && sector>minimo_sector) {
+        
+        //Para obtener el tipo de sector (borrado si/no)
+        z80_byte leido_id_st1=plus3dsk_get_byte_disk(sector_information_list+4); 
+        z80_byte leido_id_st2=plus3dsk_get_byte_disk(sector_information_list+5); 
+
+        //sector borrado
+        int deleted_sector=0;
+        if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) deleted_sector=1;
+
+        int match_condition=0;
+
+        if (search_deleted==deleted_sector) {
+            //Encontramos el tipo de sector que buscamos (borrado si/no)
+            match_condition=1;
+        }
+        else {
+            //No lo encontramos. Si skip=0, no saltarlo
+            if (!skip_not_match) match_condition=1;
+        }
+
+
+        //Sector no tiene marca ni de borrado ni de no borrado, por tanto no hay match
+        //Aun no me he encontrado ningun disco con esto, pero por si acaso
+        if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_MD_MASK) || (leido_id_st1 & PD765_STATUS_REGISTER_ONE_MA_MASK)) {
+            match_condition=0;
+            printf("DSK: sector does not have deleted nor not deleted mask\n");
+            //sleep(3);
+        }
+
+        if (sector_id==parametro_r && sector>minimo_sector && match_condition) {
             //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
             printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
 

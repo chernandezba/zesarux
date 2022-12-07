@@ -36,7 +36,7 @@ extern int remote_salir_conexion;
 //extern int towindows_remote_cpu_run_limite;
 //extern int towindows_remote_cpu_run_loop;
 
-
+extern int zrcp_command_close_all_menus;
 
 #define DEFAULT_REMOTE_PROTOCOL_PORT 10000
 

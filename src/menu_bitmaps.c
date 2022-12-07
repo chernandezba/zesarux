@@ -2343,15 +2343,15 @@ char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxgggxggggggggggggxgggxx ",
 	"  xxxxxxxxxxxxxxxxxxxxxx  ",
 	"                          ",
-	"   b       bbb     bb     ",
+	"           bbb            ",
+	"          b   b    bb     ",
+	"   b      b   b   b  b    ",
 	"  b b     b   b   b  b    ",
-	" b   b    b   b   b  b    ",
-	" b    b   b   b   b  b  b ",
-	"      b   b    b  b  b b  ", //20
-	"      b   b    b  b   b   ",
-	"       b b     b  b       ",
+	" b   b    b    b  b  b    ", //20
+	" b    b   b    b  b  b  b ",
+	"      b   b    b  b  b b  ",
+	"       b b     b b    b   ",
 	"        b      b b        ",
-	"               b b        ",
 	"                b         "  //25
 };
 
@@ -2786,6 +2786,36 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxx  "	//25
 };
 
+
+char *bitmap_button_ext_desktop_poke[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "             r            ",     //0
+    "            rrr           ",
+	"           YYrrr          ",
+	"          YYxYrrr         ",
+	"         YYxYYYr          ",
+	"        YYxYYYY           ",
+	"       YYxYYYY            ",
+	"      YYxYYYY             ",
+	"     xYxYYYY              ",
+	"     xxYYYY               ",
+	"     xxxYY                ",	//10
+	"     xxxx                 ",
+    "                          ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xcRRRcRcccRcRRRcRRcccRccx ",
+	"xcRccccRcRcccRccRcRcRcRcx ",
+	"xcRRRcccRccccRccRRccRRRcx ",
+	"xcRccccRcRcccRccRRccRcRcx ",
+	"xcRRRcRcccRccRccRcRcRcRcx ",
+	"xcccccccccccccccccccccccx ",
+	"xcccRcccRcRcRcRRRcRRRcccx ",	//20
+	"xcccRcccRcRcRcRcccRcccccx ",
+	"xcccRcccRcRcRcRRRcRRRcccx ",
+	"xcccRcccRcRcRcRcccccRcccx ",
+	"xcccRRRcRccRccRRRcRRRcccx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx "    //25
+};
 
 
 char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
