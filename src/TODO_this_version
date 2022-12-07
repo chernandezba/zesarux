@@ -183,7 +183,7 @@ En read y write data se pone a 1 antes de recibir/escribir el primer byte del se
 -Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
 del mensaje lo obtiene de la ventana
 
--Abrir ventana arbitraria con F. Había función para abrir ventana por nombre? Quiza en icono, usar campo de Parámetros que habitualmente no se usa (en accesos directos se usa, por ejemplo)
+
 
 
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla
@@ -478,3 +478,10 @@ PD765: Returning C: 00H
 https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d2719ffbb2#diff-521337e1d39e077ccafa540faa6e18649b8c776cc3b4865ec4f648e4dca04216
 
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
+
+-Abrir ventana arbitraria. 
+*Para icono ya está. Hacerlo para tecla F, parámetro adicional para funciones que permita usar parámetros
+*Crear imagen del icono
+
+-Ventana parecida a Window Information pero solo para conmutar de ventanas (como un panel de tareas): con iconos de cada aplicación cargada

@@ -211,6 +211,8 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"BackgroundWindow",F_FUNCION_BACKGROUND_WINDOW,bitmap_button_ext_desktop_userdefined}, 
 	//Para el usuario, mejor esta descripcion de ShowBackgroundWindows en vez de overlay_windows
 	{"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_userdefined}, 
+    //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
+    {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_userdefined},
     
     //Misc
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage}, 
@@ -9053,6 +9055,16 @@ void zxvision_restore_one_window(char *ventana_a_restaurar)
 
 }
 
+//abrir tal cual la ventana identificada por el nombre
+//no hace mas magia, ni abre menu, ni nada... solo busca la ventana y la abre
+void zxvision_open_window_by_name(char *nombre)
+{
+    int indice=zxvision_find_known_window(nombre);
+
+    if (indice>=0) {
+        zxvision_known_window_names_array[indice].start(0);
+    }     
+}
 
 void zxvision_restore_windows_on_startup(void)
 {

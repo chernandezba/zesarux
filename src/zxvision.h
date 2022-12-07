@@ -231,6 +231,7 @@ extern z80_bit menu_desactivado_file_utilities;
 extern int zxvision_switch_to_window_on_open_menu;
 extern char zxvision_switch_to_window_on_open_menu_name[];
 extern void zxvision_open_menu_with_window(char *geometry_name);
+extern void zxvision_open_window_by_name(char *nombre);
 
 extern void set_menu_overlay_function(void (*funcion)(void) );
 extern void reset_menu_overlay_function(void);
@@ -544,7 +545,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 58
+#define MAX_F_FUNCTIONS 59
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -606,6 +607,7 @@ enum defined_f_function_ids {
     F_FUNCION_SET_MACHINE,
     F_FUNCION_DESKTOP_MY_MACHINE,
     F_FUNCION_POKE,
+    F_FUNCION_OPEN_WINDOW
 };
 //Nota: F_FUNCION_BACKGROUND_WINDOW no se llama de la misma manera que las otras funciones F
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window

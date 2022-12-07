@@ -16568,6 +16568,7 @@ void menu_display_window_list_info(zxvision_window *w)
 {
     menu_generic_message_format("Window information",
         "Title: %s\n"
+        "Name: %s\n"
         "Position: %d,%d\n"
         "Visible size: %dX%d\n"
         "Total size: %dX%d\n"
@@ -16577,7 +16578,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Always visible: %s\n"
         "Can be resized: %s\n"
         ,
-        w->window_title,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
+        w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
         w->offset_x,w->offset_y,
         (w->is_minimized ? "Yes" : "No"),
         (w->is_maximized ? "Yes" : "No"),
@@ -35317,6 +35318,20 @@ void menu_process_f_functions_by_action_name(int id_funcion)
 			menu_snapshot_quicksave(0);
 
 		break;
+
+        case F_FUNCION_OPEN_WINDOW:
+
+            //Si viene de pulsar icono, obtener parametro de icono que indica ventana a abrir
+            indice_icono=zxdesktop_configurable_icons_current_executing;
+
+            if (indice_icono!=-1) {
+
+                char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+
+                zxvision_open_window_by_name(nombre);
+
+            }
+        break;
 
         case F_FUNCION_DESKTOP_SNAPSHOT:
         case F_FUNCION_DESKTOP_TAPE:
