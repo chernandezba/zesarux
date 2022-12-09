@@ -307,20 +307,33 @@ z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
 //Y cuantos datos hay en el buffer para retornarlos
 int pd765_result_buffer_length=0;
 
+int pd765_result_bufer_read_pointer=0;
+
 //Por si acaso funciones para escribir y leer del buffer y que no nos salgamos
 void pd765_reset_buffer(void)
 {
     pd765_result_buffer_length=0;
+    pd765_result_bufer_read_pointer=0;
 }
 
-z80_byte pd765_get_buffer(int indice)
+int pd765_buffer_read_is_final(void)
 {
-    if (indice<0 || indice>=PD765_MAX_RESULT_BUFFER) {
-        debug_printf(VERBOSE_ERR,"Error getting PD765 buffer beyond limit: %d",indice);
+    if (pd765_result_bufer_read_pointer<0 || pd765_result_bufer_read_pointer>=pd765_result_buffer_length) return 1;
+    else return 0;
+}
+
+z80_byte pd765_get_buffer(void)
+{
+    if (pd765_result_bufer_read_pointer<0 || pd765_result_bufer_read_pointer>=pd765_result_buffer_length) {
+        debug_printf(VERBOSE_ERR,"Error getting PD765 buffer beyond limit: %d",pd765_result_bufer_read_pointer);
         return 0;
     }
-    else return pd765_result_buffer[indice];
+    else {
+        return pd765_result_buffer[pd765_result_bufer_read_pointer++];
+    }
 }
+
+
 
 void pd765_put_buffer(z80_byte value)
 {
@@ -1050,205 +1063,13 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
     }    
 }
 
-int pd765_last_sector_size_read_data=0;
-
-
 //Esto se puso para intentar cargar Alien\ Storm\ \(Erbe\).dsk
 //quiza no es necesario?? o gestionar de otra manera
 //Esto tiene que ver con lecturas de sectores de 8kb, que afecta supuestamente tambien a speedlock
 int anormal_termination=0;
 
-void pd765_handle_command_read_data(void)
+void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
 {
-/*
-Read data:
-
-If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
-Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
-and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
-the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
-field are not checked when SK = 1.
-
-*/
-
-    //Inicializar buffer retorno
-    pd765_reset_buffer();    
-
-
-    //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
-    pd765_last_sector_size_read_data=0;
-
-    if (pd765_common_dsk_not_inserted_read()) {
-        return;
-    }
-
-    //Si pista no formateada
-    //TODO: de momento solo cara 0
-    if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
-        return;
-    }    
-
-
-    pd765_interrupt_pending=1;    
-
-    //Cambiamos a fase de resultado
-    //TODO: realmente la fase seria ejecucion, arreglar esto
-    pd765_phase=PD765_PHASE_RESULT;
-
-    //E indicar que hay que leer datos
-    //pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-
-    //E indice a 0
-    pd765_output_parameters_index=0;
-
-    //E indicar fase ejecucion ha empezado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
-
-    //Mientras dura, indicar que FDC esta busy
-    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
-
-
-    //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-
-    //Metemos resultado de leer en buffer de salida
-
-    /*
-    ST0
-    ST1
-    ST2
-    C
-    H
-    R
-    N
-
-    */
-
-
-   //TODO: esto solo es asi cuando N es 0
-   int sector_size=pd765_input_parameter_dtl;
-   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
-
- 
-    z80_byte sector_fisico;
-
-
-    //primero intentar obtener sector siguiente dentro de la pista
-    int iniciosector;
-
-    int search_deleted=0;
-
-    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
-
-    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_read_id,pd765_pcn,pd765_input_parameter_r);
-    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id,search_deleted,pd765_input_parameter_sk);
-
-    
-    if (iniciosector<0) {
-        //no hay siguiente, volver a girar la pista
-        printf("Next sector with asked ID not found. Starting from the beginning of track\n");
-        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk);
-    }
-
-    //gestionar error si sector no encontrado
-    //Megaphoenix esta dando este error: 
-    //NOT Found sector ID 02H on track 4
-    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
-    //Tambien abadia del crimen
-    if (iniciosector<0) {
-        /*
-        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
-        then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
-        (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
-        */
-        printf("PD765: sector not found\n");
-
-        //E indicar fase ejecucion ha finalizado
-        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
-
-
-        //Cambiamos a fase de resultado
-        pd765_phase=PD765_PHASE_RESULT;
-
-        //E indicar que hay que leer datos
-        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-           
-
-        z80_byte return_value=pd765_get_st0();
-
-        //abnormal termination
-        return_value |=PD765_STATUS_REGISTER_ZERO_AT;
-        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
-        pd765_put_buffer(return_value);
-
-
-        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
-        printf("PD765: Returning ST1: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
-        printf("PD765: Returning ST2: %02XH\n",return_value);
-        pd765_put_buffer(return_value);     
-
-        return_value=pd765_input_parameter_c;
-        printf("PD765: Returning C: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_h;
-        printf("PD765: Returning H: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_r;
-        printf("PD765: Returning R: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_n;
-        printf("PD765: Returning N: %02XH\n",return_value);
-        pd765_put_buffer(return_value);           
-
-        return;
-
-    }
-
-    //Indicar ultimo sector leido para debug
-    pd765_debug_last_sector_read=sector_fisico;
-
-    //Ultimo sector leido para read_id
-    pd765_ultimo_sector_read_id=sector_fisico;
-
-
-    anormal_termination=0;
-
-    //Tamanyo real para caso discos extendidos
-    if (dsk_file_type_extended) {
-        //Tamanyo que dice el sector realmente
-        int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
-
-        //sector_size es el tamaño que decia del sector en la info de pista
-
-        //TODO: esto tambien pasa cuando es mayor?
-        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
-        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
-        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
-        if (real_sector_size<sector_size) {
-            printf("Reading less data than the track size says. Setting abnormal termination flag\n");
-            anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
-        }
-
-        sector_size=real_sector_size;
-
-        //se van a leer menos datos
-    }
-
-    
-
-    pd765_last_sector_size_read_data=sector_size;
-
-    printf("REAL sector size: %d\n",pd765_last_sector_size_read_data);
 
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
@@ -1264,7 +1085,7 @@ field are not checked when SK = 1.
 
 
 
-    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
+    
 
 
     z80_byte leido_st0=pd765_get_st0();
@@ -1461,7 +1282,7 @@ field are not checked when SK = 1.
 
     return_value=pd765_input_parameter_r;
     //return_value=leido_id_r;
-    return_value++;
+    //return_value++;
     printf("PD765: Returning R: %02XH\n",return_value);
     pd765_put_buffer(return_value);
 
@@ -1469,7 +1290,226 @@ field are not checked when SK = 1.
     return_value=pd765_input_parameter_n;
     //return_value=leido_id_n;
     printf("PD765: Returning N: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
+    pd765_put_buffer(return_value);    
+}
+    
+
+int pd765_last_sector_size_read_data=0;
+
+
+//Devolviendo valores sector
+#define PD765_READ_COMMAND_STATE_READING_DATA 1
+//Devolviendo ST0, ST1, ST2..
+#define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
+int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
+
+
+
+void pd765_handle_command_read_data(void)
+{
+/*
+Read data:
+
+If the FDC reads a Deleted Data Address Mark off the diskette, and the SK bit (bit D5 in the first Command
+Word) is not set (SK = 0), then the FDC sets the CM (Control Mark) flag in Status Register 2 to a 1 (high),
+and terminates the Read Data Command, after reading all the data in the Sector. If SK = 1, the FDC skips
+the sector with the Deleted Data Address Mark and reads the next sector. The CRC bits in the deleted data
+field are not checked when SK = 1.
+
+*/
+
+    //Inicializar buffer retorno
+    pd765_reset_buffer();    
+
+
+    //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
+    pd765_last_sector_size_read_data=0;
+
+    if (pd765_common_dsk_not_inserted_read()) {
+
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
+
+        return;
+    }
+
+    //Si pista no formateada
+    //TODO: de momento solo cara 0
+    if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
+
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
+
+
+        return;
+    }    
+
+
+    pd765_interrupt_pending=1;    
+
+    //Cambiamos a fase de resultado
+    //TODO: realmente la fase seria ejecucion, arreglar esto
+    pd765_phase=PD765_PHASE_RESULT;
+
+    pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
+
+    //E indicar que hay que leer datos
+    //pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
+
+    //E indicar fase ejecucion ha empezado
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
+
+    //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
+
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+    //Metemos resultado de leer en buffer de salida
+
+    /*
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    */
+
+
+   //TODO: esto solo es asi cuando N es 0
+   int sector_size=pd765_input_parameter_dtl;
+   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
+
+ 
+    z80_byte sector_fisico;
+
+
+    //primero intentar obtener sector siguiente dentro de la pista
+    int iniciosector;
+
+    int search_deleted=0;
+
+    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
+
+    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_read_id,pd765_pcn,pd765_input_parameter_r);
+    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id,search_deleted,pd765_input_parameter_sk);
+
+    
+    if (iniciosector<0) {
+        //no hay siguiente, volver a girar la pista
+        printf("Next sector with asked ID not found. Starting from the beginning of track\n");
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk);
+    }
+
+    //gestionar error si sector no encontrado
+    //Megaphoenix esta dando este error: 
+    //NOT Found sector ID 02H on track 4
+    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
+    //Tambien abadia del crimen
+    if (iniciosector<0) {
+        /*
+        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
+        then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
+        (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
+        */
+        printf("PD765: sector not found\n");
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+           
+
+        z80_byte return_value=pd765_get_st0();
+
+        //abnormal termination
+        return_value |=PD765_STATUS_REGISTER_ZERO_AT;
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+
+
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+        pd765_put_buffer(return_value);     
+
+        return_value=pd765_input_parameter_c;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_r;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);         
+
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;  
+
+        return;
+
+    }
+
+    //Indicar ultimo sector leido para debug
+    pd765_debug_last_sector_read=sector_fisico;
+
+    //Ultimo sector leido para read_id
+    pd765_ultimo_sector_read_id=sector_fisico;
+
+
+    anormal_termination=0;
+
+    //Tamanyo real para caso discos extendidos
+    if (dsk_file_type_extended) {
+        //Tamanyo que dice el sector realmente
+        int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
+
+        //sector_size es el tamaño que decia del sector en la info de pista
+
+        //TODO: esto tambien pasa cuando es mayor?
+        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
+        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
+        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
+        if (real_sector_size<sector_size) {
+            printf("Reading less data than the track size says. Setting abnormal termination flag\n");
+            anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+        }
+
+        sector_size=real_sector_size;
+
+        //se van a leer menos datos
+    }
+
+    
+
+    pd765_last_sector_size_read_data=sector_size;
+
+    printf("REAL sector size: %d\n",pd765_last_sector_size_read_data);
+
+
+    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
 
    
 }
@@ -1960,12 +2000,13 @@ z80_byte pd765_read_result_command_read_id(void)
 {
 
 
-    z80_byte return_value=pd765_get_buffer(pd765_output_parameters_index);
+    z80_byte return_value=pd765_get_buffer();
     printf("PD765: Return byte from READ_ID at index %d: %02XH\n",pd765_output_parameters_index,return_value);
     pd765_output_parameters_index++;
 
 
-    if (pd765_output_parameters_index>=pd765_result_buffer_length) {
+    //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
+    if (pd765_buffer_read_is_final()) {        
         printf("PD765: End of result buffer of READ_ID\n");
 
         //Y decir que ya no hay que devolver mas datos
@@ -1992,15 +2033,17 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
 
-    z80_byte return_value=pd765_get_buffer(pd765_output_parameters_index);
+    z80_byte return_value=pd765_get_buffer();
     printf("PD765: Return byte from %s at index %d: %02XH\n",
         (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" ),
         pd765_output_parameters_index,return_value);
     pd765_output_parameters_index++;
 
 
-    //notificar buffer de visual floppy
-    menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_output_parameters_index);
+    if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+        //notificar buffer de visual floppy
+        menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_result_bufer_read_pointer);
+    }
 
 
     //printf("Buscando sector size para pista %d\n",pd765_pcn);
@@ -2011,38 +2054,59 @@ z80_byte pd765_read_result_command_read_data(void)
     if (sector_size==0) printf("SIZE: %d\n",sector_size);
     //sleep(5);
 
-        if (pd765_output_parameters_index==sector_size) {
-            //E indicar fase ejecucion ha finalizado
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+        if (pd765_buffer_read_is_final()) {
+            pd765_reset_buffer();
+
+            //Leyendo datos de sector
+            if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+
+                if (pd765_input_parameter_eot==pd765_input_parameter_r) {
+                    pd765_input_parameter_r++;
+                     //chapuza: habria que guardar en otro sitio el sector fisico
+                    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_read_id);
 
 
-            pd765_interrupt_pending=1;    
-
-            //Cambiamos a fase de resultado
-            pd765_phase=PD765_PHASE_RESULT;
-
-            //E indicar que hay que leer datos
-            pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-
-        }
+                    //E indicar fase ejecucion ha finalizado
+                    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
 
-        if (pd765_output_parameters_index>=pd765_result_buffer_length) {
-            printf("PD765: End of result buffer of %s\n",
-            (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
-            );
-                //Y decir que ya no hay que devolver mas datos
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+                    pd765_interrupt_pending=1;    
 
-            //Decir que ya no esta busy
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+                    //Cambiamos a fase de resultado
+                    pd765_phase=PD765_PHASE_RESULT;
 
-            //Y pasamos a fase command
-            pd765_phase=PD765_PHASE_COMMAND;
+                    //E indicar que hay que leer datos
+                    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
-            pd765_input_parameter_r++;            
+                    pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+                }
+                else {
+                    pd765_input_parameter_r++;
 
-        }
+                    pd765_handle_command_read_data();
+                }
+
+             }
+
+
+            //estado fin de comando
+            else {
+                printf("PD765: End of result buffer of %s\n",
+                (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+                );
+                    //Y decir que ya no hay que devolver mas datos
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+                //Decir que ya no esta busy
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+
+                //Y pasamos a fase command
+                pd765_phase=PD765_PHASE_COMMAND;
+
+                //pd765_input_parameter_r++;            
+
+            }
+    }
 
 
     return return_value;        
