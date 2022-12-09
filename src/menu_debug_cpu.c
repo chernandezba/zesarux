@@ -4286,7 +4286,7 @@ int menu_debug_continuous_speed_step=0;
 void menu_debug_registers_next_cont_speed(void)
 {
 	menu_debug_continuous_speed++;
-	if (menu_debug_continuous_speed==4) menu_debug_continuous_speed=0;
+	if (menu_debug_continuous_speed==5) menu_debug_continuous_speed=0;
 }
 
  
@@ -6725,6 +6725,13 @@ void menu_debug_help(void)
         "Cuando no se está en modo paso a paso, la emulación de la máquina sigue ejecutándose. En cambio, en modo paso a paso, "
         "la emulación está detenida, y se ejecuta una instrucción a cada pulsación de la tecla Enter\n"
         "\n"
+        "c: modo continuo: Ejecuta continuamente el modo paso a paso pero sin requerir ninguna pulsación de tecla. Tiene varias velocidades:\n"
+        "0: pausa de 0.5 segundos entre cada opcode\n"
+        "1: pausa de 0.1 segundos entre cada opcode\n"
+        "2: pausa de 0.02 segundos entre cada opcode\n"
+        "3: sin pausa entre cada opcode\n"
+        "4: sin pausa entre cada grupo de 10 opcodes\n"
+        "\n"
         "d: desensamblar: Se tiene una ventana adicional de desensamblado y exportación del listado a archivo de texto\n"
         "\n"
         "a: ensamblar: Se puede ensamblar codigo máquina, linea a linea\n"
@@ -6825,6 +6832,13 @@ void menu_debug_help(void)
         "Quan no s'està en mode pas a pas, l'emulació de la màquina continua executant-se. En canvi, en mode pas a pas,"
         "l'emulació està aturada, i s'executa una instrucció a cada clic de la tecla Enter\n"
         "\n"
+        "c: mode continu: Executa continuament el mode pas a pas sense necessitar prémer cap tecla. Té varies velocitats:\n"
+        "0: pausa de 0.5 segons entre cada instrucció\n"
+        "1: pausa de 0.1 segons entre cada instrucció\n"
+        "2: pausa de 0.02 segons entre cada instrucció\n"
+        "3: sense pausa entre cada instrucció\n"
+        "4: sense pausa entre cada grup de 10 instruccions\n"
+        "\n"        
         "d: desassemblar: Es té una finestra addicional de desassemblat i exportació del llistat a fitxer de text\n"
         "\n"
         "a: assemblar: Es pot assemblar codi màquina, línia a línia\n"
@@ -6926,6 +6940,13 @@ void menu_debug_help(void)
         "When not in step mode, machine emulated continues running. Besides, on step mode, "
         "emulation is stopped, and an opcode is run on every pressing of key Enter\n"
         "\n"
+        "c: continuos mode: Repeated execution of step mode without pressing any key. It has different speeds:\n"
+        "0: 0.5 pause between every opcode\n"
+        "1: 0.1 pause between every opcode\n"
+        "2: 0.02 pause between every opcode\n"
+        "3: no pause between every opcode\n"
+        "4: no pause between every group of 10 opcodes\n"
+        "\n"        
         "d: disassemble: An additional window for disassembly and exporting listings to text files\n"
         "\n"
         "a: assemble: You can assemble machine code, line by line\n"
@@ -7728,10 +7749,14 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				//1= pausa de 0.1
 				//2= pausa de 0.02
 				//3= sin pausa
+                //4= sin pausa, ejecutando cada vez 10 opcodes de golpe
 
 				if (menu_debug_continuous_speed==0) usleep(500000); //0.5 segundo
 				else if (menu_debug_continuous_speed==1) usleep(100000); //0.1 segundo
 				else if (menu_debug_continuous_speed==2) usleep(20000); //0.02 segundo
+
+                //velocidad 3, sin pausa
+                //velocidad 4, sin pausa y ejecutando 4 opcodes cada vez
 			}
 
 
@@ -8403,7 +8428,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 			}
 
-			else {
+			//Modo continuo
+            else {
 				//Cualquier tecla Detiene el continuous loop excepto C
 				//printf ("continuos loop\n");
 				acumulado=menu_da_todas_teclas();
@@ -8480,6 +8506,17 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //printf("ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
                     menu_debug_registers_run_cpu_opcode();
                     //printf("despues ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
+
+                    if (continuous_step) {
+                        //Si speed 4, ejecutar 10 opcodes
+                        if (menu_debug_continuous_speed==4) {
+                            int i;
+                            //1 opcode ya lo hemos ejecutado antes. faltan 9
+                            for (i=0;i<9 && !menu_breakpoint_exception.v;i++) {
+                                menu_debug_registers_run_cpu_opcode();
+                            }
+                        }
+                    }
                 }
 
 				//Ver si se ha disparado interrupcion (nmi o maskable)

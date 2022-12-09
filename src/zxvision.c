@@ -797,12 +797,7 @@ void create_default_zxdesktop_configurable_icons(void)
 
 }
 
-//Retorna bitmap de una accion
-char **get_direct_function_icon_bitmap(int indice_funcion)
-{
 
-    return defined_direct_functions_array[indice_funcion].bitmap_button;
-}
 
 
 
@@ -4569,7 +4564,8 @@ char **menu_get_extdesktop_button_bitmap(int numero_boton)
 
 
         if (accion!=F_FUNCION_DEFAULT) {
-            puntero_bitmap=defined_direct_functions_array[indice_tabla].bitmap_button;
+            //puntero_bitmap=defined_direct_functions_array[indice_tabla].bitmap_button;
+            puntero_bitmap=get_direct_function_icon_bitmap_final(indice_tabla);
         }
 
     }
@@ -5410,16 +5406,22 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
     return bitmap;
 }
 
-void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
+//Retorna bitmap de una accion
+/*
+char **get_direct_function_icon_bitmap(int id_accion)
 {
-    int x,y;
-    menu_get_ext_desktop_icons_position(index_icon,&x,&y);
 
-    char **bitmap=get_direct_function_icon_bitmap(zxdesktop_configurable_icons_list[index_icon].indice_funcion);
+    return defined_direct_functions_array[id_accion].bitmap_button;
+}
+*/
+
+//Retorna bitmap de una accion, considerando tambien iconos dinamicos (papelera, my machine...)
+char **get_direct_function_icon_bitmap_final(int id_accion)
+{
+    char **bitmap=defined_direct_functions_array[id_accion].bitmap_button;
 
     //Si icono es papelera, decir que cambiamos si la papelera no esta vacia
-    int id_accion=zxdesktop_configurable_icons_list[index_icon].indice_funcion;
-
+    
     enum defined_f_function_ids id_funcion=defined_direct_functions_array[id_accion].id_funcion;
 
     //Comportamiento icono diferente para trash
@@ -5448,6 +5450,18 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
         bitmap=menu_ext_desktop_draw_configurable_icon_return_machine_icon();               
     }
+
+    return bitmap;
+}
+
+void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
+{
+    int x,y;
+    menu_get_ext_desktop_icons_position(index_icon,&x,&y);
+
+    int id_accion=zxdesktop_configurable_icons_list[index_icon].indice_funcion;
+
+    char **bitmap=get_direct_function_icon_bitmap_final(id_accion);
 
 	if (pulsado || menu_ext_desktop_transparent_configurable_icons.v==0 || menu_pressed_zxdesktop_configurable_icon_which==index_icon) {
         //Aplicar un background si se pulsa o si hay setting de no fondo transparente
@@ -21702,7 +21716,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
-        menu_process_f_functions_by_action_name(id_funcion);
+        menu_process_f_functions_by_action_name(id_funcion,1);
         //printf("Despues procesar funcion\n");
     }
 
@@ -22168,7 +22182,7 @@ void menu_process_f_functions_by_action_index(int indice)
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion);
+    menu_process_f_functions_by_action_name(id_funcion,0);
 }
 
 void menu_process_f_functions(void)
@@ -22887,7 +22901,7 @@ void menu_inicio(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0);
                 menu_button_f_function_action=0;
             }
 

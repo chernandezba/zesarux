@@ -1036,6 +1036,20 @@ void pd765_handle_command_seek(void)
    
 }
 
+
+void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector)
+{
+    int indice;
+
+    for (indice=0;indice<sector_size;indice++) {
+        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+    
+        z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
+        pd765_put_buffer(return_value);
+
+    }    
+}
+
 int pd765_last_sector_size_read_data=0;
 
 
@@ -1250,16 +1264,7 @@ field are not checked when SK = 1.
 
 
 
-
-    int indice;
-
-    for (indice=0;indice<sector_size;indice++) {
-        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
-    
-        z80_byte return_value=plus3dsk_get_byte_disk(iniciosector+indice);
-        pd765_put_buffer(return_value);
-
-    }
+    pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
 
 
     z80_byte leido_st0=pd765_get_st0();
@@ -2034,6 +2039,8 @@ z80_byte pd765_read_result_command_read_data(void)
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
+
+            pd765_input_parameter_r++;            
 
         }
 

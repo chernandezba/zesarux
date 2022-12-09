@@ -35268,8 +35268,8 @@ void menu_process_f_function_topspeed(void)
 
 
 
-
-void menu_process_f_functions_by_action_name(int id_funcion)
+//Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
+void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop)
 {
 
     //printf("enum: %d\n",id_funcion);
@@ -35322,14 +35322,19 @@ void menu_process_f_functions_by_action_name(int id_funcion)
         case F_FUNCION_OPEN_WINDOW:
 
             //Si viene de pulsar icono, obtener parametro de icono que indica ventana a abrir
-            indice_icono=zxdesktop_configurable_icons_current_executing;
+            if (si_pulsado_icono_zxdesktop) {
+                indice_icono=zxdesktop_configurable_icons_current_executing;
 
-            if (indice_icono!=-1) {
+                if (indice_icono!=-1) {
 
-                char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
 
-                zxvision_open_window_by_name(nombre);
+                    zxvision_open_window_by_name(nombre);
 
+                }
+            }
+            else {
+                debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
             }
         break;
 
@@ -35338,23 +35343,28 @@ void menu_process_f_functions_by_action_name(int id_funcion)
         case F_FUNCION_DESKTOP_GENERIC_SMARTLOAD:
 
             //Si viene de pulsar icono, obtener parametro de icono que indica cinta/snap/... a cargar
-            indice_icono=zxdesktop_configurable_icons_current_executing;
+            if (si_pulsado_icono_zxdesktop) {
+                indice_icono=zxdesktop_configurable_icons_current_executing;
 
-            if (indice_icono!=-1) {
+                if (indice_icono!=-1) {
 
-                char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
-                strcpy(quickload_file,nombre);
+                    char *nombre=zxdesktop_configurable_icons_list[indice_icono].extra_info;
+                    strcpy(quickload_file,nombre);
 
-                quickfile=quickload_file;
+                    quickfile=quickload_file;
 
-                //Ver si es un zip que viene de una descarga online por ejemplo
-                if (!util_compare_file_extension(nombre,"zip")) {
-                    menu_smartload(0);
+                    //Ver si es un zip que viene de una descarga online por ejemplo
+                    if (!util_compare_file_extension(nombre,"zip")) {
+                        menu_smartload(0);
+                    }
+
+                    else {
+                        quickload(quickload_file);
+                    }
                 }
-
-                else {
-                    quickload(quickload_file);
-                }
+            }
+            else {
+                debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
             }
         break;
 

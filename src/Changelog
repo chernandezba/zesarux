@@ -11,8 +11,12 @@ Added icon/F-key to open any window identified by its name (TODO: now F-keys can
 * Improvements:
 
 Improved Debug Console: better refresh, dynamic width??
-Improved Debug CPU: added (hl), (de), (bc)
+Improved Debug CPU: 
+- added (hl), (de), (bc)
+- added continuos speed 4 (run 10 opcodes every time, with no pause)
 
+Improved ZX Desktop:
+- Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
 
 * Fixes:
 

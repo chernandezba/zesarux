@@ -481,7 +481,9 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 
 -Abrir ventana arbitraria. 
-*Para icono ya está. Hacerlo para tecla F, parámetro adicional para funciones que permita usar parámetros
+*Para icono ya está. Hacerlo para tecla F??, parámetro adicional para funciones que permita usar parámetros
 *Crear imagen del icono
 
 -Ventana parecida a Window Information pero solo para conmutar de ventanas (como un panel de tareas): con iconos de cada aplicación cargada
+
+-comando read data debe leer de manera indefinida
