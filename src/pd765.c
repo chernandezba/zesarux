@@ -2042,6 +2042,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         //notificar buffer de visual floppy
+        //TODO: incrementar sector leido, tanto para este visual como para debug i/o. 
         menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_result_bufer_read_pointer);
     }
 

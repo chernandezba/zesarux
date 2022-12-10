@@ -487,3 +487,5 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -Ventana parecida a Window Information pero solo para conmutar de ventanas (como un panel de tareas): con iconos de cada aplicación cargada
 
 -comando read data debe leer de manera indefinida
+
+-visual floppy: contador de bytes leidos que se muestran al dibujar
