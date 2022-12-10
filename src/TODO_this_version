@@ -489,3 +489,5 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -comando read data debe leer de manera indefinida
 
 -visual floppy: contador de bytes leidos que se muestran al dibujar
+
+-chasehq ahora no va: quiza porque hay que detectar final de pista??
