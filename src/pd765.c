@@ -997,33 +997,6 @@ void pd765_handle_command_seek(void)
     Parecido a recalibrate pero vamos al track indicado
     */
 
-   /*
-    if (pd765_input_parameter_ncn==pd765_pcn) {
-        printf("PD765: Already seeked where asked\n");
-
-
-    //E indicar fase ejecucion ha finalizado
-    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
-
-    //Decir RQM
-    //pd765_main_status_register |= PD765_MAIN_STATUS_REGISTER_RQM_MASK;
-
-    //TODO: No tengo claro porque de esto. la ROM necesita esto para salir del bucle cerrado
-    //pd765_main_status_register &= (0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
-
-    //TODO: correcto esto aqui?
-    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
-
-    pd765_phase=PD765_PHASE_COMMAND;
-
-    pd765_interrupt_pending=0;
-
-
-        return;
-    }   
-    */
-
-   //pd765_pcn=pd765_input_parameter_ncn;
 
    pd765_sc_initialize_running(&signal_se);
    pd765_seek_was_recalibrating.v=0;
@@ -1084,12 +1057,6 @@ void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,
     printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
     pd765_put_buffer(leido_id_st2);
 
-
-    //TODO. Gestion de CHRN cuando se interrumpe el comando
-
-    //TODO: no tengo claro si los valores de retorno CHRN son los leidos de la info del sector (leido_id_XX), 
-    //o bien son los del parametro del comando (pd765_input_parameter_XX)
-    //alien storm (erbe) por ejemplo se lee sector 0 de pista 1 con parametros: CHRN 1 0 1 2 , pero la pista tiene 1 0 1 6
 
     z80_byte return_value=pd765_input_parameter_c;
     //return_value=leido_id_c;
@@ -1266,7 +1233,6 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     
 
     
-    //TODO: no se si esto se hace tambien cuando el comando es PD765_COMMAND_READ_DELETED_DATA
     if (pd765_command_received==PD765_COMMAND_READ_DATA) {
         /*
         read data
@@ -1432,6 +1398,9 @@ field are not checked when SK = 1.
 
    //TODO: esto solo es asi cuando N es 0
    int sector_size=pd765_input_parameter_dtl;
+
+
+
    sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
 
  
@@ -2092,7 +2061,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     //printf("Buscando sector size para pista %d\n",pd765_pcn);
-    //int sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente
+
 
     int sector_size=pd765_last_sector_size_read_data;
 
@@ -2243,9 +2212,6 @@ z80_byte pd765_read_status_register(void)
 {
 
     dsk_show_activity();
-
-    //TODO: solo hacerlo aqui o en mas sitios? Quiza deberia estar en el core y con tiempos reales...
-    //aqui se hacia siempre antes de poner en el core pd765_sc_handle_running(&signal_se);
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
