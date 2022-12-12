@@ -5375,6 +5375,9 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
+        sprintf (buf_linea,"Bytes/sec: %d\n",pd765_read_stats_bytes_sec);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
         //Salto de linea final
         sprintf (buf_linea,"\n");
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        

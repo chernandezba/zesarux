@@ -114,6 +114,8 @@ extern void pd765_next_event_from_core(void);
 
 extern int pd765_debug_last_sector_read;
 
+extern int pd765_read_stats_bytes_sec;
+
 extern z80_byte pd765_debug_last_sector_id_c_read;
 extern z80_byte pd765_debug_last_sector_id_h_read;
 extern z80_byte pd765_debug_last_sector_id_r_read;

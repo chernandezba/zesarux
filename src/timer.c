@@ -717,6 +717,7 @@ void timer_check_interrupt(void)
             //Temporizador para ventanas splash
             menu_window_splash_counter++;
 
+            pd765_read_stats();
 
             //resetear texto splash
             reset_welcome_message();

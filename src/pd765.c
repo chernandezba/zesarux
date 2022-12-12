@@ -172,6 +172,19 @@ void pd765_handle_speed_motor(void)
     }
 }
 
+//ultimo valor de bytes/segundo
+int pd765_read_stats_bytes_sec=0;
+//Acumulado hasta ahora
+int pd765_read_stats_bytes_sec_acumulated=0;
+
+//Estadisticas de lectura de pd765
+void pd765_read_stats(void)
+{
+    pd765_read_stats_bytes_sec=pd765_read_stats_bytes_sec_acumulated;
+
+    pd765_read_stats_bytes_sec_acumulated=0;
+}
+
 //
 //Gestion de tratamiento de senyales con contador
 //
@@ -2094,6 +2107,9 @@ z80_byte pd765_read_result_command_read_data(void)
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         //notificar buffer de visual floppy
         menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
+
+        //Estadisticas lectura
+        pd765_read_stats_bytes_sec_acumulated++;
     }
 
 
