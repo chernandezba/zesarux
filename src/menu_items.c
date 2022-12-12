@@ -33950,7 +33950,7 @@ void menu_visual_floppy_overlay(void)
         
 
         
-
+        int total_bytes_mostrados=0;
         
         int intensidad;
 
@@ -33962,7 +33962,10 @@ void menu_visual_floppy_overlay(void)
             byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
             intensidad=menu_visual_floppy_buffer[i].intensidad;
 
-            if (intensidad!=0) ultimo_color_no_cero=i;
+            if (intensidad!=0) {
+                total_bytes_mostrados++;
+                ultimo_color_no_cero=i;
+            }
 
             //calcular color heatmap
             //#define HEATMAP_INDEX_FIRST_COLOR (TSCONF_INDEX_FIRST_COLOR+TSCONF_TOTAL_PALETTE_COLOURS)
@@ -34086,8 +34089,13 @@ void menu_visual_floppy_overlay(void)
 
     //la rotacion del disco que se simula en esta ventana se hace desde el timer
 
-    
-    //zxvision_draw_window_contents(menu_visual_floppy_window);    
+    int linea_contador_bytes=2;
+    //borrar linea donde hay el contador de total bytes
+    zxvision_fill_width_spaces_paper(menu_visual_floppy_window,linea_contador_bytes,HEATMAP_INDEX_FIRST_COLOR);
+    if (total_bytes_mostrados) {
+        zxvision_print_string_defaults_format(menu_visual_floppy_window,1,linea_contador_bytes,"Bytes shown: %d",total_bytes_mostrados);
+    }
+    zxvision_draw_window_contents(menu_visual_floppy_window);    
     
 }
 
