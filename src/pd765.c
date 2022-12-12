@@ -451,10 +451,7 @@ void pd765_next_event_from_core(void)
 z80_byte pd765_get_st0(void)
 {
 
-    //pd765_sc_handle_running(&signal_se);
-
     //TODO completar BIEN esto
-
 
 
     z80_byte return_value=(pd765_sc_get(&signal_se) * 32) | (pd765_input_parameter_hd<<2) | (pd765_input_parameter_us1<<1) | pd765_input_parameter_us0;
@@ -478,9 +475,6 @@ z80_byte pd765_get_st2(void)
 
     return 0;
 }
-
-
-
 
 
 
@@ -794,16 +788,12 @@ void pd765_handle_command_read_id(void)
 
 
 
- 
-
    //Devolver CHRN siguiente
    z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
 
   
-
     //Devolvemos el siguiente lector al anterior leido por read id
     pd765_siguiente_sector();
-
 
 
     int sector=pd765_ultimo_sector_fisico_read;
@@ -822,7 +812,6 @@ void pd765_handle_command_read_id(void)
 
     printf("##read_id: last_r: %d\n",pd765_debug_last_sector_id_r_read);
 
-   //pd765_get_chrn(pd765_pcn,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
 
     z80_byte leido_st0=pd765_get_st0();
@@ -1146,10 +1135,6 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     pd765_debug_last_sector_id_n_read=leido_id_n;
 
 
-
-    
-
-
     z80_byte leido_st0=pd765_get_st0();
     z80_byte leido_id_st1 ,leido_id_st2;
     //TODO: de momento solo cara 0
@@ -1181,7 +1166,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
 
 
-        //sleep(5);
+    //sleep(5);
 
     //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
@@ -1235,8 +1220,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                 pd765_read_command_must_stop_anormal_termination=1;
 
-                        printf("Anormal termination porque read deleted, sector normal y sk=0\n");
-        //sleep(2);
+                printf("Anormal termination porque read deleted, sector normal y sk=0\n");
+                //sleep(2);
 
 
                 //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
@@ -1258,8 +1243,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
                 //Creo que esto deberia estar activado para todos discos pero para speed lock no...
                 //pd765_read_command_must_stop_anormal_termination=1;
 
-        printf("Anormal termination porque read deleted, sector borrado y sk=0\n");
-        //sleep(2);
+                printf("Anormal termination porque read deleted, sector borrado y sk=0\n");
+                //sleep(2);
 
 
                 //End of Cylinder. When the FDC tries to access a Sector beyond the final Sector of a Cylinder, this flag is set
@@ -1314,8 +1299,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                     pd765_read_command_must_stop_anormal_termination=1;
 
-        printf("Anormal termination por read data, sector borrado y sk=0\n");
-        //sleep(2);
+                    printf("Anormal termination por read data, sector borrado y sk=0\n");
+                    //sleep(2);
 
 
 
@@ -1348,6 +1333,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 int pd765_last_sector_size_read_data=0;
 
 
+//Los dos posibles estados al leer datos
 //Devolviendo valores sector
 #define PD765_READ_COMMAND_STATE_READING_DATA 1
 //Devolviendo ST0, ST1, ST2..
@@ -1385,7 +1371,6 @@ field are not checked when SK = 1.
         pd765_read_command_must_stop_anormal_termination=1;
 
         printf("Anormal termination dsk no insertado\n");
-        sleep(2);
 
 
         return;
@@ -1400,7 +1385,6 @@ field are not checked when SK = 1.
         pd765_read_command_must_stop_anormal_termination=1;
 
         printf("Anormal termination porque pista no formateada\n");
-        sleep(2);
 
 
         return;
@@ -1694,9 +1678,6 @@ void pd765_read_parameters_read_data(z80_byte value)
     }       
 
 
-    if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) {
-        //sleep(3);
-    }
 }
 
 void pd765_write_handle_phase_command(z80_byte value)
@@ -1747,7 +1728,6 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_interrupt_pending=0;
 
-
             
             //No tiene parametros. Solo resultados
             pd765_handle_command_sense_interrupt_status();
@@ -1763,21 +1743,17 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if ((value & 0x1F)==0x06) {
             //Read data
-            //TODO: bits MT, MF, SK
+            //TODO: bits MT, MF
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
             printf("---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
-            if(pd765_input_parameter_mt) {
-                printf("MF parameter not handled yet\n");
-                //sleep(3);
+            if (pd765_input_parameter_mt) {
+                printf("MT parameter not handled yet\n");
+                sleep(3);
             }
 
-            //if(pd765_input_parameter_sk) {
-                //printf("SK parameter not handled yet\n");
-                //sleep(3);
-            //} 
 
             pd765_command_received=PD765_COMMAND_READ_DATA;
 
@@ -1786,7 +1762,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if ((value & 0x1F)==0x0c) {
             //Read deleted data
-            //TODO: bits MT, MF, SK
+            //TODO: bits MT, MF
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
@@ -1794,15 +1770,12 @@ void pd765_write_handle_phase_command(z80_byte value)
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             //sleep(10);
             
-            if(pd765_input_parameter_mt) {
-                printf("MF parameter not handled yet\n");
+            if (pd765_input_parameter_mt) {
+                printf("MT parameter not handled yet\n");
                 sleep(3);
             }
 
-            //if(pd765_input_parameter_sk) {
-            //    printf("SK parameter not handled yet\n");
-            //    sleep(3);
-            //}            
+             
             pd765_command_received=PD765_COMMAND_READ_DELETED_DATA;
 
             pd765_input_parameters_index++;         
@@ -1936,17 +1909,17 @@ z80_byte pd765_read_result_command_invalid(void)
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
 
-/*
-INVALID
-If an invalid command is sent to the FDC (a commend not defined above), then the FDC will terminate the command 
-after bits 7 and 6 of Status Register 0 are set to 1 and 0 respectively. No interrupt is generated by the MPD766 
-during this condition. Bit 6 and bit 7 (DIO and RQM) in the Main Status Register are both high ("1") indicating 
-to the processor that the uPD765 is in the Result Phase and the contents of Status Register 0 (STO) must be read. 
-When the processor reads Status Register 0 it will find a 80 hex indicating an invalid command was received.
-A Sense Interrupt Status Command must be sent after a Seek or Recalibrate Interrupt, otherwise the FDC will consider 
-the next command to be an Invelid Command.
-In some applications the user may wish to use this command as a No-Op command, to place the FDC in a standby or no operation state.
-*/        
+        /*
+        INVALID
+        If an invalid command is sent to the FDC (a commend not defined above), then the FDC will terminate the command 
+        after bits 7 and 6 of Status Register 0 are set to 1 and 0 respectively. No interrupt is generated by the MPD766 
+        during this condition. Bit 6 and bit 7 (DIO and RQM) in the Main Status Register are both high ("1") indicating 
+        to the processor that the uPD765 is in the Result Phase and the contents of Status Register 0 (STO) must be read. 
+        When the processor reads Status Register 0 it will find a 80 hex indicating an invalid command was received.
+        A Sense Interrupt Status Command must be sent after a Seek or Recalibrate Interrupt, otherwise the FDC will consider 
+        the next command to be an Invelid Command.
+        In some applications the user may wish to use this command as a No-Op command, to place the FDC in a standby or no operation state.
+        */        
 
         return 0x80;
     }
@@ -1960,40 +1933,40 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
     //ST0, PCN
     /*
     SENSE INTERRUPT STATUS
-An Interrupt signal is generated by the FDC for one of the following reasons:
-1. Upon entering the Result Phase of:
-а. Read Data Command
-b. Read a Track Command
-c. Read ID Command
-d. Read Deleted Data Command
-e. Write Data Command
-f. Format a Cylinder Command
-g. Write Deleted Data Command
-h. Scan Commands
+    An Interrupt signal is generated by the FDC for one of the following reasons:
+    1. Upon entering the Result Phase of:
+    а. Read Data Command
+    b. Read a Track Command
+    c. Read ID Command
+    d. Read Deleted Data Command
+    e. Write Data Command
+    f. Format a Cylinder Command
+    g. Write Deleted Data Command
+    h. Scan Commands
 
-2.    Ready Line of FDD changes state
-3.    End of Seek or Recalibrate Command
-4.    During Execution Phase in the NON-DMA Mode
+    2.    Ready Line of FDD changes state
+    3.    End of Seek or Recalibrate Command
+    4.    During Execution Phase in the NON-DMA Mode
 
-Interrupts caused by reasons 1 and 4 above occur during normal command operations and are easily 
-discernible by the processor. During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. 
-Upon entering Result Phase this bit gets clear. Reason 1 and 4 does not require Sense Interrupt Status command. 
-The interrupt is cleared by reading/writing data to FDC. 
-Interrupts caused by reasons 2 and 3 above may be uniquely 
-identified with the aid of the Sense Interrupt Status Commend. This command when issued resets the interrupt signal 
-and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
+    Interrupts caused by reasons 1 and 4 above occur during normal command operations and are easily 
+    discernible by the processor. During an execution phase in NON-DMA Mode, DB5 in Main Status Register is high. 
+    Upon entering Result Phase this bit gets clear. Reason 1 and 4 does not require Sense Interrupt Status command. 
+    The interrupt is cleared by reading/writing data to FDC. 
+    Interrupts caused by reasons 2 and 3 above may be uniquely 
+    identified with the aid of the Sense Interrupt Status Commend. This command when issued resets the interrupt signal 
+    and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
 
-SEEK END |  INTERRUPT CODE | CAUSE
-Bit 5    |  Bit 6   Bit 7  |
---------------------------------------------------------------------------------
-0           1          1   | Ready Line changed state, either polarity
-1           0          0   | Normal Termination of Seek or Recalibrate Command
-1           1          0   | Abnormal Termination of Seek or Recalibrate Command
+    SEEK END |  INTERRUPT CODE | CAUSE
+    Bit 5    |  Bit 6   Bit 7  |
+    --------------------------------------------------------------------------------
+    0           1          1   | Ready Line changed state, either polarity
+    1           0          0   | Normal Termination of Seek or Recalibrate Command
+    1           1          0   | Abnormal Termination of Seek or Recalibrate Command
 
-Neither the Seek or Recalibrate Command have a Result Phase. Therefore, it is mandatory to use the 
-Sense Interrupt Status Command after these commends to effectively terminate them and to provide verification 
-of where the heed is positioned (PCN).
-Issuing Sense Interrupt Status Command without interrupt pending is treated as an invalid command.
+    Neither the Seek or Recalibrate Command have a Result Phase. Therefore, it is mandatory to use the 
+    Sense Interrupt Status Command after these commends to effectively terminate them and to provide verification 
+    of where the heed is positioned (PCN).
+    Issuing Sense Interrupt Status Command without interrupt pending is treated as an invalid command.
     */
 
     //This command when issued resets the interrupt signal and via bits 5, 6, and 7 of Status Register 0 identifies the cause of the interrupt.
@@ -2028,9 +2001,6 @@ Issuing Sense Interrupt Status Command without interrupt pending is treated as a
 
             //TODO: realmente hay que quitar señal SE  al leerlo desde sense interrupt?
             pd765_sc_reset(&signal_se);
-
-            //prueba indicar interrupcion
-            //pd765_interrupt_pending=1;
 
 
             //TODO: dudoso si hacer esto aqui o donde: se resetea D0B, D1B etc antes o despues del sense interrupt?
@@ -2285,15 +2255,15 @@ z80_byte pd765_read_status_register(void)
 
 
     printf("PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)\n",reg_pc,pd765_main_status_register,
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_CB_MASK  ? "CB" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D3B_MASK ? "D3B" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D2B_MASK ? "D2B" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D1B_MASK ? "D1B" : ""),
-(pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D0B_MASK ? "D0B" : "")
-);
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_CB_MASK  ? "CB" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D3B_MASK ? "D3B" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D2B_MASK ? "D2B" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D1B_MASK ? "D1B" : ""),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D0B_MASK ? "D0B" : "")
+    );
 
 
     //sleep(1);
@@ -2323,9 +2293,7 @@ void pd765_out_port_3ffd(z80_byte value)
 {
     dsk_show_activity();
 
-
     //Puertos disco +3
     pd765_write(value);
-
 }
 
