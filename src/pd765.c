@@ -663,6 +663,9 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
+        //Mientras dura, indicar que FDC esta busy. ATF por ejemplo necesita esto
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;
+
         z80_byte return_value=pd765_get_st0();
 
         return_value |=0x40;
