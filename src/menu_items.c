@@ -26977,8 +26977,8 @@ void menu_plusthreedisk_info_sectors_list(MENU_ITEM_PARAMETERS)
                 dsk_get_st12(pista,cara,sector,&leido_id_st1,&leido_id_st2);
 
 
-                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_sector,NULL,"Sector %d ST1: %02X ST2: %02X",
-                    sector,leido_id_st1,leido_id_st2);
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_sectors_sector,NULL,"Sector %d ST1: %02X ST2: %02X %s",
+                    sector,leido_id_st1,leido_id_st2,(leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK ? "DELETED" : ""));
 
                 //Codificamos la opcion para el submenu asi
                 int valor_opcion_menu=pista+cara*256+sector*65536;

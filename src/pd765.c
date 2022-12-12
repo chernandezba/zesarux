@@ -133,9 +133,10 @@ z80_byte pd765_debug_last_sector_id_h_read=0;
 z80_byte pd765_debug_last_sector_id_r_read=0;
 z80_byte pd765_debug_last_sector_id_n_read=0;
 
-int pd765_ultimo_sector_read_id=-1;
+//Ultimo sector fisico leido por comandos read data y read_id
+int pd765_ultimo_sector_fisico_read=-1;
 
-int tempp_estados=0;
+//int tempp_estados=0;
 
 //Estado motor. 0 apagado, 1 activado
 int pd765_motor_status=0;
@@ -280,7 +281,7 @@ void pd765_signal_se_function_triggered(void)
 
 
     //Decir anterior sector leido de esa pista
-    pd765_ultimo_sector_read_id=-1;
+    pd765_ultimo_sector_fisico_read=-1;
 
 }
 
@@ -357,7 +358,7 @@ void pd765_reset(void)
     pd765_pcn=0;
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
-    pd765_ultimo_sector_read_id=-1;
+    pd765_ultimo_sector_fisico_read=-1;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
@@ -690,7 +691,7 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         printf("PD765: Returning N: %02XH\n",return_value);
         pd765_put_buffer(return_value);
 
-        sleep(3);
+        sleep(1);
 
         return 1;
     }
@@ -702,21 +703,21 @@ int pd765_common_if_track_unformatted(int pista,int cara)
 
 void pd765_siguiente_sector(void)
 {
-    pd765_ultimo_sector_read_id++;
+    pd765_ultimo_sector_fisico_read++;
 
     //TODO de momento solo cara 0
     int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
 
 
     if (total_sectores!=0) {
-        pd765_ultimo_sector_read_id=pd765_ultimo_sector_read_id % total_sectores;
+        pd765_ultimo_sector_fisico_read=pd765_ultimo_sector_fisico_read % total_sectores;
     }
     else {
-        pd765_ultimo_sector_read_id=0;
+        pd765_ultimo_sector_fisico_read=0;
     }  
 
     //Por si acaso, aunque esto no deberia pasar
-    if (pd765_ultimo_sector_read_id<0) pd765_ultimo_sector_read_id=0;  
+    if (pd765_ultimo_sector_fisico_read<0) pd765_ultimo_sector_fisico_read=0;  
 }
 
 void pd765_handle_command_read_id(void)
@@ -792,7 +793,7 @@ void pd765_handle_command_read_id(void)
 
 
 
-    int sector=pd765_ultimo_sector_read_id;
+    int sector=pd765_ultimo_sector_fisico_read;
 
 
     
@@ -1049,6 +1050,8 @@ void pd765_handle_command_seek(void)
    
 }
 
+//Indica que el comando read data se debe detener (no leer sectores siguientes) despues de este
+int pd765_read_command_must_stop_anormal_termination=0;
 
 void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector)
 {
@@ -1066,10 +1069,56 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
 //Esto se puso para intentar cargar Alien\ Storm\ \(Erbe\).dsk
 //quiza no es necesario?? o gestionar de otra manera
 //Esto tiene que ver con lecturas de sectores de 8kb, que afecta supuestamente tambien a speedlock
-int anormal_termination=0;
+//int anormal_termination=0;
 
-void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
+void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,z80_byte leido_id_st2)
 {
+    printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    pd765_put_buffer(leido_st0);    
+
+    printf("PD765: Returning ST1: %02XH\n",leido_id_st1);
+    pd765_put_buffer(leido_id_st1);    
+
+    printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
+    pd765_put_buffer(leido_id_st2);
+
+
+    //TODO. Gestion de CHRN cuando se interrumpe el comando
+
+    //TODO: no tengo claro si los valores de retorno CHRN son los leidos de la info del sector (leido_id_XX), 
+    //o bien son los del parametro del comando (pd765_input_parameter_XX)
+    //alien storm (erbe) por ejemplo se lee sector 0 de pista 1 con parametros: CHRN 1 0 1 2 , pero la pista tiene 1 0 1 6
+
+    z80_byte return_value=pd765_input_parameter_c;
+    //return_value=leido_id_c;
+    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
+    printf("PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    //return_value=leido_id_h;
+    printf("PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_r;
+    //return_value=leido_id_r;
+    //return_value++;
+    printf("PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    //return_value=leido_id_n;
+    printf("PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);      
+}
+
+void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus)
+{
+
+
 
     //Leer chrn para debug
     z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
@@ -1093,9 +1142,13 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
     //TODO: de momento solo cara 0
     dsk_get_st12(pd765_pcn,0,sector_fisico,&leido_id_st1,&leido_id_st2);    
 
-    if (anormal_termination) {
+    /*if (anormal_termination) {
         leido_st0 |= PD765_STATUS_REGISTER_ZERO_AT;
-    }
+        pd765_read_command_must_stop_anormal_termination=1;
+        printf("Anormal termination por anormal_termination\n");
+        sleep(2);
+
+    }*/
 
 
 
@@ -1167,6 +1220,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
 
                 leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
 
+                pd765_read_command_must_stop_anormal_termination=1;
+
+                        printf("Anormal termination porque read deleted, sector normal y sk=0\n");
+        //sleep(2);
+
+
                 //Paris Dakar carga algo mejor si retorno 40h, 80h, 00
                 //leido_st0=0x40; //Abnormal termination of command (NT)
                 //leido_id_st1=PD765_STATUS_REGISTER_ONE_EN_MASK; 
@@ -1181,6 +1240,14 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
             }
             else {
                 leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
+
+                //TODO: cargas con speedlock no requieren que no se detenga la carga de multiples sectores, ejemplo Pang.dsk
+                //Creo que esto deberia estar activado para todos discos pero para speed lock no...
+                //pd765_read_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination porque read deleted, sector borrado y sk=0\n");
+        //sleep(2);
+
 
                 //End of Cylinder. When the FDC tries to access a Sector beyond the final Sector of a Cylinder, this flag is set
                 //TODO: a saber por qué hay que activar este flag, yo solo se que Wec Le Mans (Erbe).dsk espera exactamente
@@ -1232,6 +1299,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
 
                     leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
 
+                    pd765_read_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination por read data, sector borrado y sk=0\n");
+        //sleep(2);
+
+
 
                     //printf("TODO. Sector deleted and SK=0\n");
                     //sleep(5);                          
@@ -1250,47 +1323,12 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico)
         }
 
     }        
+
+    if (put_values_in_bus) {
+        pd765_read_chrn_put_return_in_bus(leido_st0,leido_id_st1,leido_id_st2);
+    }
     
-    printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-    pd765_put_buffer(leido_st0);    
-
-    printf("PD765: Returning ST1: %02XH\n",leido_id_st1);
-    pd765_put_buffer(leido_id_st1);    
-
-    printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
-    pd765_put_buffer(leido_id_st2);
-
-
-    //TODO. Gestion de CHRN cuando se interrumpe el comando
-
-    //TODO: no tengo claro si los valores de retorno CHRN son los leidos de la info del sector (leido_id_XX), 
-    //o bien son los del parametro del comando (pd765_input_parameter_XX)
-    //alien storm (erbe) por ejemplo se lee sector 0 de pista 1 con parametros: CHRN 1 0 1 2 , pero la pista tiene 1 0 1 6
-
-    z80_byte return_value=pd765_input_parameter_c;
-    //return_value=leido_id_c;
-    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
-    printf("PD765: Returning C: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_h;
-    //return_value=leido_id_h;
-    printf("PD765: Returning H: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_r;
-    //return_value=leido_id_r;
-    //return_value++;
-    printf("PD765: Returning R: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_n;
-    //return_value=leido_id_n;
-    printf("PD765: Returning N: %02XH\n",return_value);
-    pd765_put_buffer(return_value);    
+ 
 }
     
 
@@ -1318,6 +1356,8 @@ field are not checked when SK = 1.
 
 */
 
+    pd765_read_command_must_stop_anormal_termination=0;
+
     //Inicializar buffer retorno
     pd765_reset_buffer();    
 
@@ -1329,6 +1369,12 @@ field are not checked when SK = 1.
 
         pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
 
+        pd765_read_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination dsk no insertado\n");
+        sleep(2);
+
+
         return;
     }
 
@@ -1337,6 +1383,11 @@ field are not checked when SK = 1.
     if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
 
         pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
+
+        pd765_read_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination porque pista no formateada\n");
+        sleep(2);
 
 
         return;
@@ -1397,8 +1448,13 @@ field are not checked when SK = 1.
 
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
 
-    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_read_id,pd765_pcn,pd765_input_parameter_r);
-    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_read_id,search_deleted,pd765_input_parameter_sk);
+    if (search_deleted) {
+        printf("search deleted\n");
+        //sleep(5);
+    }
+
+    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_input_parameter_r);
+    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk);
 
     
     if (iniciosector<0) {
@@ -1475,11 +1531,11 @@ field are not checked when SK = 1.
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_read=sector_fisico;
 
-    //Ultimo sector leido para read_id
-    pd765_ultimo_sector_read_id=sector_fisico;
+    //Ultimo sector leido 
+    pd765_ultimo_sector_fisico_read=sector_fisico;
 
 
-    anormal_termination=0;
+    //anormal_termination=0;
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
@@ -1494,7 +1550,7 @@ field are not checked when SK = 1.
         //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
             printf("Reading less data than the track size says. Setting abnormal termination flag\n");
-            anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+            //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
         }
 
         sector_size=real_sector_size;
@@ -1510,6 +1566,10 @@ field are not checked when SK = 1.
 
 
     pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
+
+
+    //Evaluar condiciones que hacen abortar el comando
+    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,0);
 
    
 }
@@ -2031,20 +2091,18 @@ z80_byte pd765_read_result_command_read_id(void)
 z80_byte pd765_read_result_command_read_data(void)
 {
 
+    if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+        //notificar buffer de visual floppy
+        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
+    }
 
 
     z80_byte return_value=pd765_get_buffer();
     printf("PD765: Return byte from %s at index %d: %02XH\n",
         (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" ),
-        pd765_output_parameters_index,return_value);
-    pd765_output_parameters_index++;
+        pd765_result_bufer_read_pointer-1,return_value);
+    //pd765_output_parameters_index++;
 
-
-    if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
-        //notificar buffer de visual floppy
-        //TODO: incrementar sector leido, tanto para este visual como para debug i/o. 
-        menu_visual_floopy_buffer_add(pd765_pcn,pd765_debug_last_sector_read,pd765_result_bufer_read_pointer);
-    }
 
 
     //printf("Buscando sector size para pista %d\n",pd765_pcn);
@@ -2055,58 +2113,70 @@ z80_byte pd765_read_result_command_read_data(void)
     if (sector_size==0) printf("SIZE: %d\n",sector_size);
     //sleep(5);
 
-        if (pd765_buffer_read_is_final()) {
-            pd765_reset_buffer();
+    if (pd765_buffer_read_is_final()) {
+        printf("PD765: End of result buffer of %s\n",
+        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+        );
 
-            //Leyendo datos de sector
-            if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+        //Fin de buffer de lectura
+        pd765_reset_buffer();
 
-                if (pd765_input_parameter_eot==pd765_input_parameter_r) {
-                    pd765_input_parameter_r++;
-                     //chapuza: habria que guardar en otro sitio el sector fisico
-                    pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_read_id);
+        //Estaba leyendo datos de sector
+        if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
 
+            //Cumple EOT. No leer mas
+            if (pd765_input_parameter_eot==pd765_input_parameter_r || pd765_read_command_must_stop_anormal_termination) {
+                printf("PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN\n",
+                    pd765_input_parameter_r,pd765_input_parameter_r);
 
-                    //E indicar fase ejecucion ha finalizado
-                    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
-
-
-                    pd765_interrupt_pending=1;    
-
-                    //Cambiamos a fase de resultado
-                    pd765_phase=PD765_PHASE_RESULT;
-
-                    //E indicar que hay que leer datos
-                    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
-
-                    pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
-                }
-                else {
-                    pd765_input_parameter_r++;
-
-                    pd765_handle_command_read_data();
-                }
-
-             }
+                pd765_input_parameter_r++;
+                    
+                pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
 
 
-            //estado fin de comando
-            else {
-                printf("PD765: End of result buffer of %s\n",
-                (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
-                );
-                    //Y decir que ya no hay que devolver mas datos
-                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+                //E indicar fase ejecucion ha finalizado
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
 
-                //Decir que ya no esta busy
-                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
 
-                //Y pasamos a fase command
-                pd765_phase=PD765_PHASE_COMMAND;
+                pd765_interrupt_pending=1;    
 
-                //pd765_input_parameter_r++;            
+                //Cambiamos a fase de resultado
+                pd765_phase=PD765_PHASE_RESULT;
 
+                //E indicar que hay que leer datos
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+                pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
             }
+            else {
+                printf("PD765: Reading next sector because R (%02XH) is not EOT (%02XH)\n",
+                    pd765_input_parameter_r,pd765_input_parameter_eot);
+                //sleep(5);
+
+                pd765_input_parameter_r++;
+
+                pd765_handle_command_read_data();
+            }
+
+        }
+
+
+        //Estaba enviando valores ST1, ..CHRN 
+        else {
+            printf("PD765: End returning output parameters ST0,1,2, CHRN\n");
+
+            //Y decir que ya no hay que devolver mas datos
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+            //Decir que ya no esta busy
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+
+            //Y pasamos a fase command
+            pd765_phase=PD765_PHASE_COMMAND;
+
+            //pd765_input_parameter_r++;            
+
+        }
     }
 
 

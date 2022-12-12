@@ -491,3 +491,6 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -visual floppy: contador de bytes leidos que se muestran al dibujar
 
 -chasehq ahora no va: quiza porque hay que detectar final de pista??
+
+-condiciones que hacen abortar la lectura de un sector (mascara AT) , que vendran de chrn, deben evaluarse justo al leer sector y tenerlo
+en cuenta para no hacer multiple lectura sector. Ejemplo en chase hq
