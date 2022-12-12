@@ -178,7 +178,7 @@ int pd765_read_stats_bytes_sec=0;
 int pd765_read_stats_bytes_sec_acumulated=0;
 
 //Estadisticas de lectura de pd765
-void pd765_read_stats(void)
+void pd765_read_stats_update(void)
 {
     pd765_read_stats_bytes_sec=pd765_read_stats_bytes_sec_acumulated;
 
