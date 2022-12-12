@@ -1655,7 +1655,7 @@ chardevice.o: chardevice.c chardevice.h cpu.h debug.h
 uartbridge.o: uartbridge.c uartbridge.h cpu.h debug.h utils.h chardevice.h screen.h
 	\$(CC) \$(CFLAGS) -c uartbridge.c
 
-expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h screen.h mem128.h scmp.h m68k.h prism.h tbblue.h hilow_datadrive.h
+expression_parser.o: expression_parser.c expression_parser.h cpu.h debug.h utils.h operaciones.h screen.h mem128.h scmp.h m68k.h prism.h tbblue.h hilow_datadrive.h pd765.h
 	\$(CC) \$(CFLAGS) -c expression_parser.c
 
 kartusho.o: kartusho.c kartusho.h cpu.h debug.h utils.h operaciones.h ula.h

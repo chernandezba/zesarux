@@ -120,8 +120,6 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -Opción rpi que baje framedrop por defecto no hacerlo?
 
--Icono para funcion Poke
-
 -Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
 
@@ -168,7 +166,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 
--info: juegos de dinamic por ejemplo usan sectores de 1024 bytes: Megaphoenix, Buggy Ranger, After the war, etc
 
 -Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
 del mensaje lo obtiene de la ventana

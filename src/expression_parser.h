@@ -90,6 +90,8 @@ enum token_parser_indice {
 	TPI_V_RAM,
 	TPI_V_ROM,
 
+    TPI_V_PD765_PCN,
+
 	TPI_V_OPCODE1,
 	TPI_V_OPCODE2,
 	TPI_V_OPCODE3,

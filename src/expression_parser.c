@@ -42,6 +42,7 @@
 #include "prism.h"
 #include "tbblue.h"
 #include "hilow_datadrive.h"
+#include "pd765.h"
 
 /*
 
@@ -182,6 +183,8 @@ token_parser_textos_indices tpti_variables[]={
 
     {TPI_V_RAM,"RAM"},
     {TPI_V_ROM,"ROM"},
+
+    {TPI_V_PD765_PCN,"PD765PCN"},
     	
 
     {TPI_FIN,""}
@@ -1215,6 +1218,10 @@ int exp_par_calculate_numvarreg(token_parser *token)
 		    return debug_paginas_memoria_mapeadas[3];
 		    //TODO. condiciones especiales para mapeo de paginas del +2A tipo ram en rom
 	    }
+
+    case TPI_V_PD765_PCN:
+        return pd765_pcn;
+    break;
 
 	//ram mapeada en 49152-65535 de Prism
         if (MACHINE_IS_PRISM) {
