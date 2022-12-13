@@ -501,6 +501,7 @@ int dsk_get_sector_size_track_from_offset(int offset)
     int sector_size=plus3dsk_get_byte_disk(offset+0x14);
 
     //It is assumed that sector sizes are defined as 3 bits only, so that a sector size of N="8" is equivalent to N="0".
+    //Mot o Mundial de futbol tienen algunos sectores con tamaño 8
     sector_size &=7;
 
     /*if (sector_size>6) {
