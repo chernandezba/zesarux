@@ -731,7 +731,15 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
             int offset=iniciopista+0x100;
 
-            int sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+            int sector_size;
+
+            //Ejemplos en los que es necesario leer el tamanyo de esta manera: Riptoff Master Disk.dsk
+            if (dsk_file_type_extended) {
+                //TODO: cara 0 de momento solamente
+                sector_size=dsk_get_real_sector_size_extended(pista,0,sector);
+            }
+
+            else sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
             if (sector_size<0) {
                 debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
                 return -1;
@@ -769,7 +777,16 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
 
     int offset=iniciopista+0x100;
 
-    int sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+    int sector_size;
+
+    //Ejemplos en los que es necesario leer el tamanyo de esta manera: Riptoff Master Disk.dsk
+    if (dsk_file_type_extended) {
+        sector_size=dsk_get_real_sector_size_extended(pista,cara,sector_fisico);
+    }
+
+    else sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+
+
     if (sector_size<0) {
         debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector_fisico);
         return -1;

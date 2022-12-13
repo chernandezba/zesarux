@@ -1508,6 +1508,7 @@ field are not checked when SK = 1.
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
+        //printf("sector size before: %d\n",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
@@ -1523,6 +1524,7 @@ field are not checked when SK = 1.
         }
 
         sector_size=real_sector_size;
+        //printf("sector size after: %d\n",sector_size);
 
         //se van a leer menos datos
     }

@@ -26912,6 +26912,8 @@ void menu_plusthreedisk_info_sectors_sector(MENU_ITEM_PARAMETERS)
 
     int iniciosector=dsk_get_sector_fisico(pista,cara,sector);
 
+    //printf("Pista %d Cara %d Sector %d. Inicio=%XH\n",pista,cara,sector,iniciosector);
+
     dsk_memory_zone_dsk_sector_start=iniciosector;
 
     //esto da tamaño segun parametro N,

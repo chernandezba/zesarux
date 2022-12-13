@@ -28,7 +28,8 @@
 //Ejemplo Alien Storm: 255232
 //Paperboy2-SideB(Spectrum).dsk: 335301
 //Monty Python's Flying Circus.dsk 444160
-#define DSK_MAX_BUFFER_DISCO 444160
+//Narc - Side A.dsk 472832
+#define DSK_MAX_BUFFER_DISCO 472832
 
 #define DSK_SIGNATURE_LENGTH 34
 #define DSK_CREATOR_LENGTH 14
