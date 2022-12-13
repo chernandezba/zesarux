@@ -403,6 +403,7 @@ const int dsk_sector_sizes_numbers[]={
     2048, //4
     4096, //5
     8192, //6
+    16384 //7
 };
 
 
@@ -498,10 +499,14 @@ int dsk_get_total_sectors_track(int pista,int cara)
 int dsk_get_sector_size_track_from_offset(int offset)
 {
     int sector_size=plus3dsk_get_byte_disk(offset+0x14);
-    if (sector_size>6) {
+
+    //It is assumed that sector sizes are defined as 3 bits only, so that a sector size of N="8" is equivalent to N="0".
+    sector_size &=7;
+
+    /*if (sector_size>6) {
         printf("Sector size %d unsupported\n",sector_size);
         return -1;
-    }
+    }*/
 
     sector_size=dsk_sector_sizes_numbers[sector_size];
 
