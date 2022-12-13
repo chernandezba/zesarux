@@ -734,12 +734,17 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             int sector_size;
 
             //Ejemplos en los que es necesario leer el tamanyo de esta manera: Riptoff Master Disk.dsk
+            //En esos casos , el sector_size "normal" del dsk basico, esta a 0
             if (dsk_file_type_extended) {
                 //TODO: cara 0 de momento solamente
                 sector_size=dsk_get_real_sector_size_extended(pista,0,sector);
             }
 
-            else sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+            else {
+                sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+            }
+
+
             if (sector_size<0) {
                 debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
                 return -1;
