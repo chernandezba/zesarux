@@ -6648,9 +6648,13 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 		//Puertos disco +3
 		if (pd765_enabled.v) {
-			if (puerto_h==0x2F) return pd765_read_status_register();
+            //Tipicamente 2ffd
+            //  2FFD 0010..........0. R   Spectrum +3 Floppy FDC NEC uPD765 status
+			if ((puerto & 0xF002) == 0x2000) return pd765_read_status_register();
 
-			if (puerto_h==0x3F) return pd765_read();
+            //Tipicamente 3ffd
+            //  3FFD 0011..........0. R/W Spectrum +3 Floppy FDC NEC uPD765 data
+            if ((puerto & 0xF002) == 0x3000) return pd765_read();
 		}
 
         //Con handler
@@ -8695,7 +8699,9 @@ Port: 10-- ---- ---- --0-
 
 
         //Puertos disco +3
-        if (puerto==0x3FFD && pd765_enabled.v) {
+        //Tipicamente 3ffd
+        //  3FFD 0011..........0. R/W Spectrum +3 Floppy FDC NEC uPD765 data
+        if ((puerto & 0xF002) == 0x3000 && pd765_enabled.v) {
             pd765_out_port_3ffd(value);
         }
 
