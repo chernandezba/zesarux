@@ -1297,7 +1297,14 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     
  
 }
-    
+
+
+void pd765_handle_command_read_track(void)
+{
+    printf("TODO pd765_handle_command_read_track\n");
+    sleep(5);
+}
+
 
 int pd765_last_sector_size_read_data=0;
 
@@ -1654,6 +1661,86 @@ void pd765_read_parameters_read_data(z80_byte value)
 
 }
 
+
+void pd765_read_parameters_read_track(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for READ_TRACK\n");
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_c=value;
+        printf("PD765: C=%XH\n",pd765_input_parameter_c);
+
+        pd765_input_parameters_index++;;
+    }  
+
+    else if (pd765_input_parameters_index==3) {
+        pd765_input_parameter_h=value;
+        printf("PD765: H=%XH\n",pd765_input_parameter_h);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==4) {
+        pd765_input_parameter_r=value;
+        printf("PD765: R=%XH\n",pd765_input_parameter_r);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==5) {
+        pd765_input_parameter_n=value;
+        printf("PD765: N=%XH\n",pd765_input_parameter_n);
+
+        if (pd765_input_parameter_n==0) {
+            //TODO
+            printf("N=0 not handled yet!!\n");
+            sleep(5);
+        }
+
+        pd765_input_parameters_index++;;
+    }   
+
+    else if (pd765_input_parameters_index==6) {
+        pd765_input_parameter_eot=value;
+        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==7) {
+        pd765_input_parameter_gpl=value;
+        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==8) {
+        pd765_input_parameter_dtl=value;
+        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for READ_TRACK\n");
+
+        pd765_handle_command_read_track();
+    }       
+
+
+}
+
+
 void pd765_write_handle_phase_command(z80_byte value)
 {
     //Hay que recibir comando aun
@@ -1753,7 +1840,23 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_command_received=PD765_COMMAND_READ_DELETED_DATA;
 
             pd765_input_parameters_index++;         
-        }            
+        }   
+
+        //Batman - The Movie (Erbe).dsk usa esto
+        else if ((value & 0x9F)==0x02) {
+            //Read track
+            //TODO: bits MF
+            
+            pd765_input_parameter_mf=(value>>6)&1;
+            pd765_input_parameter_sk=(value>>5)&1;
+            printf("---PD765: READ TRACK command. MF=%d SK=%d. Current track: %02XH\n",
+                pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
+           
+
+            pd765_command_received=PD765_COMMAND_READ_TRACK;
+
+            pd765_input_parameters_index++;         
+        }                  
 
         else if (value==0x0F) {
             //Seek
@@ -1805,7 +1908,11 @@ void pd765_write_handle_phase_command(z80_byte value)
             case PD765_COMMAND_READ_DATA:
             case PD765_COMMAND_READ_DELETED_DATA:
                 pd765_read_parameters_read_data(value); 
-            break;                       
+            break;     
+
+            case PD765_COMMAND_READ_TRACK:
+                pd765_read_parameters_read_track(value);
+            break;
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
@@ -2176,7 +2283,12 @@ z80_byte pd765_read_handle_phase_result(void)
         case PD765_COMMAND_READ_DATA:
         case PD765_COMMAND_READ_DELETED_DATA:
             return pd765_read_result_command_read_data();
-        break;                  
+        break;     
+
+        case PD765_COMMAND_READ_TRACK:
+            printf("TODO pd765_read_result_command_read_track");
+            sleep(5);
+        break;            
 
         case PD765_COMMAND_INVALID:
             return pd765_read_result_command_invalid();

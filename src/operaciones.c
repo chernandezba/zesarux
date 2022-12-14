@@ -8701,6 +8701,9 @@ Port: 10-- ---- ---- --0-
         //Puertos disco +3
         //Tipicamente 3ffd
         //  3FFD 0011..........0. R/W Spectrum +3 Floppy FDC NEC uPD765 data
+        // Twin World e Iron Lord, de Ubisoft, ambos envian valores con OUTI, con valor antes del outi de BC=3ffd
+        //el valor de puerto que se envia sera 3efd, y segun esta mascara, funcionara bien.
+        //si en cambio solo detectasemos puerto 3ffd, no cargarian
         if ((puerto & 0xF002) == 0x3000 && pd765_enabled.v) {
             pd765_out_port_3ffd(value);
         }
