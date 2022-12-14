@@ -255,9 +255,8 @@ void dskplusthree_enable(void)
 
 }
 
-int dsk_get_protection_scheme_aux(char *esquema)
+int dsk_get_protection_scheme_aux_longitud(char *esquema,int longitud)
 {
-    int longitud=strlen(esquema);
     int i;
 
     for (i=0;i<p3dsk_buffer_disco_size-longitud;i++) {
@@ -265,6 +264,12 @@ int dsk_get_protection_scheme_aux(char *esquema)
     }
 
     return 0;
+}
+
+int dsk_get_protection_scheme_aux(char *esquema)
+{
+    int longitud=strlen(esquema);
+    return dsk_get_protection_scheme_aux_longitud(esquema,longitud);
 }
 
 //Realmente es: SPEEDLOCK +3 DISC PROTECTION SYSTEM COPYRIGHT 1988 SPEEDLOCK ASSOCIATES FOR MORE DETAILS, PHONE (0734) 470303
@@ -301,6 +306,17 @@ el seek (durante el seek los valores random se ignoran)
 */
 char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 BY NEW FRONTIER SOFT";
 
+
+//Este sistema de proteccion consiste en pista 1, sector size 8192 pero solo 1 sector con size 6144, CRHN=1 0 1 6
+//Bonanza Bros - Side B (Spectrum).dsk , X-Out.dsk
+//Los bytes corresponden al track-info de pista 1, sector 0,1
+char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
+
+//Este carga un bloque corto, luego una secuencia de colores en el border
+//Tai-Pan.dsk, Action Force.dsk
+//Los bytes corresponden a track-info de pista 3, sectores 8,9
+char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
+
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
 //TODO: cuando soporte alguno de estos esquemas, retornar 0 en algunos casos diciendo que ya se soporta
 int dsk_get_protection_scheme(char *buffer)
@@ -335,6 +351,16 @@ int dsk_get_protection_scheme(char *buffer)
         strcpy(buffer,"New Frontier");
         return 0;
     }
+
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown1,16)) {
+        strcpy(buffer,"Unknown 1");
+        return 1;
+    } 
+
+    if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
+        strcpy(buffer,"Unknown 2");
+        return 1;
+    } 
 
     strcpy(buffer,"None");
     return 0;

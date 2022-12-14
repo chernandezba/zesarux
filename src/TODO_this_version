@@ -193,3 +193,13 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
 
 -ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
+
+-en breakpoints, condicion tipo: mwa=16384, no salta si opcode escribe 16 bits de golpe, como:
+
+ld (16384),HL
+
+en este caso si que saltaria con:
+
+mwa=16385
+
+Porque se queda la ultima direccion mwa escrita de ese opcode
