@@ -1310,7 +1310,7 @@ int pd765_last_sector_size_read_data=0;
 #define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
 int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
 
-
+z80_byte pd765_read_command_searching_parameter_r;
 
 void pd765_handle_command_read_data(void)
 {
@@ -1426,20 +1426,20 @@ field are not checked when SK = 1.
 
     if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
         //Obtener el siguiente sector sin comparar R
-        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,0);
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,0);
     }
 
     else {
 
 
-        printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_input_parameter_r);
-        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
+        printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
 
         
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
             printf("Next sector with asked ID not found. Starting from the beginning of track\n");
-            iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
+            iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
     }
@@ -1701,6 +1701,7 @@ void pd765_read_parameters_read_data(z80_byte value)
             pd765_total_sectors_read_track=0;
         }
 
+        pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
 
         pd765_handle_command_read_data();
     }       
@@ -2166,16 +2167,17 @@ z80_byte pd765_read_result_command_read_data(void)
 
             else {
                 //Cumple EOT. No leer mas
-                if (pd765_input_parameter_eot==pd765_input_parameter_r) {
+                if (pd765_input_parameter_eot==pd765_read_command_searching_parameter_r) {
                     condition_end_sector=1;
                 }
             }
    
             if (condition_end_sector || pd765_read_command_must_stop_anormal_termination) {
                 printf("PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN\n",
-                    pd765_input_parameter_r,pd765_input_parameter_r);
+                    pd765_read_command_searching_parameter_r,pd765_input_parameter_eot);
 
-                pd765_input_parameter_r++;
+                //pd765_input_parameter_r++;
+                pd765_read_command_searching_parameter_r++;
                     
                 pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
 
@@ -2196,10 +2198,11 @@ z80_byte pd765_read_result_command_read_data(void)
             }
             else {
                 printf("PD765: Reading next sector because R (%02XH) is not EOT (%02XH)\n",
-                    pd765_input_parameter_r,pd765_input_parameter_eot);
+                    pd765_read_command_searching_parameter_r,pd765_input_parameter_eot);
                 //sleep(5);
 
-                pd765_input_parameter_r++;
+                //pd765_input_parameter_r++;
+                pd765_read_command_searching_parameter_r++;
 
                 pd765_handle_command_read_data();
             }
