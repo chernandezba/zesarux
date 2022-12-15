@@ -1060,6 +1060,46 @@ void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,
     printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
     pd765_put_buffer(leido_id_st2);
 
+    //TODO: de momento asumimos el caso de Equal to EOT
+
+    z80_byte return_value=pd765_input_parameter_c+1;
+    //return_value=leido_id_c;
+    //if (pd765_input_parameter_r==pd765_input_parameter_eot) return_value++;   
+    printf("PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    //return_value=leido_id_h;
+    printf("PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=1;
+    //return_value=leido_id_r;
+    //return_value++;
+    printf("PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    //return_value=leido_id_n;
+    printf("PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);      
+}
+
+
+void old_pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,z80_byte leido_id_st2)
+{
+    printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    pd765_put_buffer(leido_st0);    
+
+    printf("PD765: Returning ST1: %02XH\n",leido_id_st1);
+    pd765_put_buffer(leido_id_st1);    
+
+    printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
+    pd765_put_buffer(leido_id_st2);
+
 
     z80_byte return_value=pd765_input_parameter_c;
     //return_value=leido_id_c;
@@ -1086,7 +1126,6 @@ void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,
     printf("PD765: Returning N: %02XH\n",return_value);
     pd765_put_buffer(return_value);      
 }
-
 void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_values_in_bus)
 {
 
