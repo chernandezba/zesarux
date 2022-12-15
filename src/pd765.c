@@ -1528,6 +1528,9 @@ field are not checked when SK = 1.
         then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
         (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
         */
+
+       //TODO: valores de retorno de CRHN son correctos? Que se devuelve en este caso?
+
         printf("PD765: sector not found\n");
 
         //E indicar fase ejecucion ha finalizado
