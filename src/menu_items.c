@@ -27155,13 +27155,17 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
     do {
 
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_tracks_list,NULL,"Tracks list");
+        menu_add_item_menu_tiene_submenu(array_menu_common);
+
+        menu_add_item_menu_separator(array_menu_common);
 
         dsk_get_signature(buffer_signature);
         dsk_get_creator(buffer_creator);
         dsk_get_protection_scheme(buffer_esquema_proteccion);
 
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Signature:");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",buffer_signature);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"Creator:");
@@ -27174,10 +27178,7 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
    
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_plusthreedisk_info_tracks_list,NULL,"Tracks list");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
 
-        menu_add_item_menu_separator(array_menu_common);
 
         menu_add_ESC_item(array_menu_common);
 

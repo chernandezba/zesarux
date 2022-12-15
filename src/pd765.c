@@ -400,14 +400,14 @@ void pd765_motor_on(void)
 {
     if (!pd765_motor_status) {
         pd765_motor_status=1;
-        printf("PD765: Motor on\n");
+        printf("PD765: Motor on PC=%04XH\n",reg_pc);
     }
 }
 void pd765_motor_off(void)
 {
     if (pd765_motor_status) {
         pd765_motor_status=0;
-        printf("PD765: Motor off\n");
+        printf("PD765: Motor off PC=%04XH\n",reg_pc);
     }
 }
 
@@ -1124,7 +1124,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
     
     if (leido_id_c!=pd765_input_parameter_c) {
-        printf("#####Cylinder read from disk is not what asked\n");
+        printf("#####Cylinder read from disk (%02XH) is not what asked (%02XH)\n",leido_id_c,pd765_input_parameter_c);
         //Wrong cylinder
         leido_id_st2 |= PD765_STATUS_REGISTER_TWO_WC_MASK;
 
