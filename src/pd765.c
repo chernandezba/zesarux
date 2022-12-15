@@ -2220,7 +2220,7 @@ z80_byte pd765_read_result_command_read_data(void)
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
 
-            //pd765_input_parameter_r++;            
+                   
 
         }
     }
