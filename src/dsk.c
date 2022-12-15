@@ -703,7 +703,10 @@ int dsk_extended_get_track_size(int pista,int cara)
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
 //Parametro minimo_sector permite escoger un sector mayor que dicho parametro
-int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector,int search_deleted,int skip_not_match)
+//search_deleted: si buscar sectores borrados
+//skip_not_match corresponde a parametro SK
+//check_r_parameter se pone a 0 en read_track
+int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector,int search_deleted,int skip_not_match,int check_r_parameter)
 {
 
     int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
@@ -756,7 +759,24 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             //sleep(3);
         }
 
-        if (sector_id==parametro_r && sector>minimo_sector && match_condition) {
+
+        //Condicion de que R tenga el valor esperado
+        int condition_r_equals=0;
+
+        if (check_r_parameter) {
+            if (sector_id==parametro_r) {
+                condition_r_equals=1;
+            }            
+        }
+
+        //No validamos que R tenga el valor esperado
+        else {
+            condition_r_equals=1;
+        }
+
+
+
+        if (condition_r_equals && sector>minimo_sector && match_condition) {
             //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
             printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
 

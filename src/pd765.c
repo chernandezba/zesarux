@@ -1298,13 +1298,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
  
 }
 
-
-void pd765_handle_command_read_track(void)
-{
-    printf("TODO pd765_handle_command_read_track\n");
-    sleep(5);
-}
-
+int pd765_total_sectors_read_track=0;
 
 int pd765_last_sector_size_read_data=0;
 
@@ -1429,14 +1423,25 @@ field are not checked when SK = 1.
         //sleep(5);
     }
 
-    printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_input_parameter_r);
-    iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk);
 
-    
-    if (iniciosector<0) {
-        //no hay siguiente, volver a girar la pista
-        printf("Next sector with asked ID not found. Starting from the beginning of track\n");
-        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk);
+    if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
+        //Obtener el siguiente sector sin comparar R
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,0);
+    }
+
+    else {
+
+
+        printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_input_parameter_r);
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
+
+        
+        if (iniciosector<0) {
+            //no hay siguiente, volver a girar la pista
+            printf("Next sector with asked ID not found. Starting from the beginning of track\n");
+            iniciosector=dsk_get_sector(pd765_pcn,pd765_input_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
+        }
+
     }
 
     //gestionar error si sector no encontrado
@@ -1503,6 +1508,8 @@ field are not checked when SK = 1.
         return;
 
     }
+
+    pd765_total_sectors_read_track++;
 
     //Indicar ultimo sector leido para debug
     pd765_debug_last_sector_read=sector_fisico;
@@ -1579,10 +1586,39 @@ void pd765_read_parameters_seek(z80_byte value)
     }       
 }
 
+const char *pd765_last_command_name_read_data="READ_DATA";
+const char *pd765_last_command_name_read_deleted_data="READ_DELETED_DATA";
+const char *pd765_last_command_name_read_track="READ_TRACK";
+const char *pd765_last_command_name_unknown="UNKNOWN";
+
+const char *pd765_last_command_name(void)
+{
+    switch (pd765_command_received) {
+        case PD765_COMMAND_READ_DELETED_DATA:
+            return pd765_last_command_name_read_deleted_data;
+        break;
+
+        case PD765_COMMAND_READ_TRACK:
+            return pd765_last_command_name_read_track;
+        break;
+
+        case PD765_COMMAND_READ_DATA:
+            return pd765_last_command_name_read_data;
+        break;
+
+
+        default:
+            return pd765_last_command_name_unknown;
+        break;
+
+    }
+
+}
+
 void pd765_read_parameters_read_data(z80_byte value)
 {
     printf("PD765: Receiving command parameters for %s\n",
-    (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+    pd765_last_command_name()
     );
 
     if (pd765_input_parameters_index==1) {
@@ -1652,94 +1688,25 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_input_parameters_index=0;
         
         printf("PD765: End command parameters for %s\n",
-        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+        pd765_last_command_name()
         );
+
+
+        //Si read track, indicar que ultimo sector es el 0 tal cual
+        if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
+            //Decir anterior sector leido de esa pista
+            pd765_ultimo_sector_fisico_read=-1;
+
+            //Y conteo total de sectores a 0
+            pd765_total_sectors_read_track=0;
+        }
+
 
         pd765_handle_command_read_data();
     }       
 
 
 }
-
-
-void pd765_read_parameters_read_track(z80_byte value)
-{
-    printf("PD765: Receiving command parameters for READ_TRACK\n");
-
-    if (pd765_input_parameters_index==1) {
-        pd765_input_parameter_hd=(value>>2) & 0x01;
-        pd765_input_parameter_us1=(value>>1) & 0x01;
-        pd765_input_parameter_us0=value  & 0x01;
-        
-        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
-
-        pd765_input_parameters_index++;
-    }
-
-    else if (pd765_input_parameters_index==2) {
-        pd765_input_parameter_c=value;
-        printf("PD765: C=%XH\n",pd765_input_parameter_c);
-
-        pd765_input_parameters_index++;;
-    }  
-
-    else if (pd765_input_parameters_index==3) {
-        pd765_input_parameter_h=value;
-        printf("PD765: H=%XH\n",pd765_input_parameter_h);
-
-        pd765_input_parameters_index++;;
-    }
-
-    else if (pd765_input_parameters_index==4) {
-        pd765_input_parameter_r=value;
-        printf("PD765: R=%XH\n",pd765_input_parameter_r);
-
-        pd765_input_parameters_index++;;
-    }
-
-    else if (pd765_input_parameters_index==5) {
-        pd765_input_parameter_n=value;
-        printf("PD765: N=%XH\n",pd765_input_parameter_n);
-
-        if (pd765_input_parameter_n==0) {
-            //TODO
-            printf("N=0 not handled yet!!\n");
-            sleep(5);
-        }
-
-        pd765_input_parameters_index++;;
-    }   
-
-    else if (pd765_input_parameters_index==6) {
-        pd765_input_parameter_eot=value;
-        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
-
-        pd765_input_parameters_index++;;
-    } 
-
-    else if (pd765_input_parameters_index==7) {
-        pd765_input_parameter_gpl=value;
-        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
-
-        pd765_input_parameters_index++;;
-    } 
-
-    else if (pd765_input_parameters_index==8) {
-        pd765_input_parameter_dtl=value;
-        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
-
-
-        //Fin de comando
-        pd765_input_parameters_index=0;
-        
-        printf("PD765: End command parameters for READ_TRACK\n");
-
-        pd765_handle_command_read_track();
-    }       
-
-
-}
-
 
 void pd765_write_handle_phase_command(z80_byte value)
 {
@@ -1846,7 +1813,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         else if ((value & 0x9F)==0x02) {
             //Read track
             //TODO: bits MF
-            
+            pd765_input_parameter_mt=0;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
             printf("---PD765: READ TRACK command. MF=%d SK=%d. Current track: %02XH\n",
@@ -1907,12 +1874,9 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             case PD765_COMMAND_READ_DATA:
             case PD765_COMMAND_READ_DELETED_DATA:
+            case PD765_COMMAND_READ_TRACK:
                 pd765_read_parameters_read_data(value); 
             break;     
-
-            case PD765_COMMAND_READ_TRACK:
-                pd765_read_parameters_read_track(value);
-            break;
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
@@ -2166,7 +2130,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
     z80_byte return_value=pd765_get_buffer();
     printf("PD765: Return byte from %s at index %d: %02XH\n",
-        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" ),
+        pd765_last_command_name(),
         pd765_result_bufer_read_pointer-1,return_value);
     //pd765_output_parameters_index++;
 
@@ -2182,7 +2146,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
     if (pd765_buffer_read_is_final()) {
         printf("PD765: End of result buffer of %s\n",
-        (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA ? "READ DELETED DATA" : "READ DATA" )
+        pd765_last_command_name()
         );
 
         //Fin de buffer de lectura
@@ -2191,8 +2155,23 @@ z80_byte pd765_read_result_command_read_data(void)
         //Estaba leyendo datos de sector
         if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
 
-            //Cumple EOT. No leer mas
-            if (pd765_input_parameter_eot==pd765_input_parameter_r || pd765_read_command_must_stop_anormal_termination) {
+            int condition_end_sector=0;
+
+            //Si leyendo pista, acabamos cuando el conteo total de sectores llega a EOT
+            if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
+                if (pd765_total_sectors_read_track==pd765_input_parameter_eot) {
+                    condition_end_sector=1;
+                }
+            }
+
+            else {
+                //Cumple EOT. No leer mas
+                if (pd765_input_parameter_eot==pd765_input_parameter_r) {
+                    condition_end_sector=1;
+                }
+            }
+   
+            if (condition_end_sector || pd765_read_command_must_stop_anormal_termination) {
                 printf("PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN\n",
                     pd765_input_parameter_r,pd765_input_parameter_r);
 
@@ -2282,13 +2261,9 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_READ_DATA:
         case PD765_COMMAND_READ_DELETED_DATA:
+        case PD765_COMMAND_READ_TRACK:
             return pd765_read_result_command_read_data();
         break;     
-
-        case PD765_COMMAND_READ_TRACK:
-            printf("TODO pd765_read_result_command_read_track");
-            sleep(5);
-        break;            
 
         case PD765_COMMAND_INVALID:
             return pd765_read_result_command_invalid();

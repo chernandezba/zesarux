@@ -203,3 +203,8 @@ en este caso si que saltaria con:
 mwa=16385
 
 Porque se queda la ultima direccion mwa escrita de ese opcode
+
+
+-Read track
+* A determinar flags que se activan según petición inicial chrn
+* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
