@@ -1044,6 +1044,65 @@ void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int 
     }    
 }
 
+//R de sector a buscar en siguiente comando de read 
+z80_byte pd765_read_command_searching_parameter_r;
+
+void pd765_read_put_chrn_in_bus(void)
+{
+    //Segun la tabla pagina 9
+    //TODO: diferentes valores de HD, MT. de momento solo considero cuando ambos sean 0
+
+    z80_byte return_value;
+
+    if (pd765_read_command_searching_parameter_r<pd765_input_parameter_eot) {
+
+        return_value=pd765_input_parameter_c;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_r+1;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);    
+    }      
+
+    //else if (pd765_read_command_searching_parameter_r==pd765_input_parameter_eot) {
+    //Cuando ambos son iguales. TODO: puede suceder que pd765_read_command_searching_parameter_r sea mayor que eot?
+    else {
+
+        return_value=pd765_input_parameter_c+1;
+        printf("PD765: Returning C: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_h;
+        printf("PD765: Returning H: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=1;
+        printf("PD765: Returning R: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+
+        return_value=pd765_input_parameter_n;
+        printf("PD765: Returning N: %02XH\n",return_value);
+        pd765_put_buffer(return_value);    
+    }
+
+  
+}
+
 //Esto se puso para intentar cargar Alien\ Storm\ \(Erbe\).dsk
 //quiza no es necesario?? o gestionar de otra manera
 //Esto tiene que ver con lecturas de sectores de 8kb, que afecta supuestamente tambien a speedlock
@@ -1060,26 +1119,7 @@ void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,
     printf("PD765: Returning ST2: %02XH\n",leido_id_st2);
     pd765_put_buffer(leido_id_st2);
 
-    //TODO: de momento asumimos el caso de Equal to EOT
-
-    z80_byte return_value=pd765_input_parameter_c+1;
-    printf("PD765: Returning C: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_h;
-    printf("PD765: Returning H: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=1;
-    printf("PD765: Returning R: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_n;
-    printf("PD765: Returning N: %02XH\n",return_value);
-    pd765_put_buffer(return_value);      
+    pd765_read_put_chrn_in_bus();
 }
 
 
@@ -1343,7 +1383,7 @@ int pd765_last_sector_size_read_data=0;
 #define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
 int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
 
-z80_byte pd765_read_command_searching_parameter_r;
+
 
 void pd765_handle_command_read_data(void)
 {
