@@ -898,6 +898,7 @@ void pd765_handle_command_read_id(void)
 
     
     //TODO de momento solo cara 0
+    //TODO: retornar error si no hay sectores en esta pista
     printf("Obtener ID de Read id para sector %d de pista %02XH\n",sector,pd765_pcn);
    dsk_get_chrn(pd765_pcn,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
@@ -915,17 +916,20 @@ void pd765_handle_command_read_id(void)
     z80_byte leido_st1=pd765_get_st1();
     z80_byte leido_st2=pd765_get_st2();
 
+    //TODO: no estoy seguro si tengo que usar alguno de los bits de st1 o st2 del sector, quiza
+    //de ST1: b2 ND (No Data)
+    //de ST2: b0 MD (Missing address Mark in Data field)
+    //dsk_get_st12(pd765_pcn,0,sector,&leido_st1,&leido_st2); 
+
     printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
     printf("PD765: Returning ST1: %02XH\n",leido_st1);
     printf("PD765: Returning ST2: %02XH\n",leido_st2);  
 
 
-    //dsk_get_st12(pd765_pcn,0,sector,&leido_st1,&leido_st2); 
-
 
     if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
         printf("Sector with deleted mark\n");
-        sleep(5);
+        //sleep(1);
     }
     else {
         printf("Sector with address mark\n");
