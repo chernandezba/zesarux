@@ -1303,8 +1303,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
                 //TODO: cargas con speedlock no requieren que no se detenga la carga de multiples sectores, ejemplo Pang.dsk
                 //Creo que esto deberia estar activado para todos discos pero para speed lock no...
                 //pd765_read_command_must_stop_anormal_termination=1;
-
-                printf("Anormal termination porque read deleted, sector borrado y sk=0\n");
+                //printf("Anormal termination porque read deleted, sector borrado y sk=0\n");
                 //sleep(2);
 
 
