@@ -927,13 +927,13 @@ void pd765_handle_command_read_id(void)
 
 
 
-    if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
+    /*if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
         printf("Sector with deleted mark\n");
         //sleep(1);
     }
     else {
         printf("Sector with address mark\n");
-    }    
+    } */   
     
     printf("PD765: Returning C: %02XH\n",leido_id_c);
     printf("PD765: Returning H: %02XH\n",leido_id_h);
