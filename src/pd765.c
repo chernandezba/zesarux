@@ -1381,6 +1381,22 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
     }        
 
+    // Comprobar CRC
+    /*
+    After reading the ID and Data Fields in each sector, the FDC checks the CRC bytes.
+    If a read error is detected (incorrect CRC in ID field), the FDC sets the DE (Data Error)
+    flag in Status Register 1 to a 1 (high), and if a CRC error occurs in the Data Field the
+    FDC also sets the DD (Data Error in Data Field) flag in Status Register 2 to a 1 (high),
+    and terminates the Read Data Command. (Status Register 0 also has bits 7 and o set to 0 and 1 respectively.)
+    */
+
+    if ((leido_id_st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) || (leido_id_st2 & PD765_STATUS_REGISTER_TWO_DD_MASK)) {
+        leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
+        pd765_read_command_must_stop_anormal_termination=1;
+        printf("Abnormal termination por CRC error\n");
+        //sleep(1);
+    }
+
     if (put_values_in_bus) {
         pd765_read_chrn_put_return_in_bus(leido_st0,leido_id_st1,leido_id_st2);
     }
