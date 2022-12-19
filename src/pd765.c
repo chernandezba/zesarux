@@ -1255,7 +1255,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         Read deleted data:
         This command is the same as the Read Data Command except that when the FDC detects a Data Address
         Mark at the beginning of a Data Field (and SK = 0 (low), it will read all the data in the sector and set the
-        CM flag in Status Register 2 to a 1 (highl, and then terminate the command. If SK = 1, then the FDC skips
+        CM flag in Status Register 2 to a 1 (high), and then terminate the command. If SK = 1, then the FDC skips
         the sector with the Data Address Mark and reads the next sector.
 
         */
@@ -1273,9 +1273,11 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
             else {
                 //SK=0
                 //leer tal cual
-                //TODO:...
 
                 leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
+
+                //poner el bit de CM
+                leido_id_st2 |= PD765_STATUS_REGISTER_TWO_CM_MASK;
 
                 pd765_read_command_must_stop_anormal_termination=1;
 

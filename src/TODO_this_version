@@ -210,3 +210,5 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 * A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
 
 -Football Manager 2.dsk con pista con C=FFH
+
+-En debug cpu al cambiar direccion, ventana input para historial de direcciones consultadas y primera línea input igual que ahora. Primera dirección que sea la última 
