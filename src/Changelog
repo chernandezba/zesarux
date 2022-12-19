@@ -14,6 +14,11 @@ Improved Debug Console: better refresh, dynamic width??
 Improved Debug CPU: 
 - added (hl), (de), (bc)
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
+- show last memory pointer when changing it
+
+Improved View Sprites: sprite is no longer disabled when changing memory pointer
+
+Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump and Disassemble
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)

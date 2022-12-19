@@ -10820,7 +10820,8 @@ menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
 
        //restauramos modo normal de texto de menu, porque sino, tendriamos la ventana
         //del cambio de direccion, y encima los sprites
-       set_menu_overlay_function(normal_overlay_texto_menu);
+        //esto ya no hace falta....
+       //set_menu_overlay_function(normal_overlay_texto_menu);
 
 
         char string_address[10];
@@ -10838,11 +10839,13 @@ menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
 
 
 
-        p=parse_string_to_number(string_address);
+        //p=parse_string_to_number(string_address);
+        //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+        menu_debug_cpu_calculate_expression(string_address,&p);
 
 
 
-        set_menu_overlay_function(menu_debug_draw_sprites);
+        //set_menu_overlay_function(menu_debug_draw_sprites);
 
 
         return p;

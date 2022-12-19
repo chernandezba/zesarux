@@ -1121,6 +1121,8 @@ void menu_debug_registers_print_register_aux_moto(zxvision_window *w,char *texto
 
 z80_bit menu_debug_follow_pc={1}; //Si puntero de direccion sigue al registro pc
 menu_z80_moto_int menu_debug_memory_pointer=0; //Puntero de direccion
+//Ultima direccion asignada a la variable
+menu_z80_moto_int last_menu_debug_memory_pointer=0;
 
 //linea en menu debug que tiene el cursor (indicado por >), desde 0 hasta 23 como mucho
 int menu_debug_line_cursor=0;
@@ -1147,22 +1149,46 @@ void menu_debug_change_registers(void)
 }
 
 
+//Evalua la expresion y retorna su valor. Retorna 0 si ok. 1 si error parseando, 2 si error evaluando,
+//y muestra en pantalla si hay error
+int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *output_value)
+{
+	char buffer_salida[256]; //mas que suficiente
+	char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+	int result=exp_par_evaluate_expression(string_address,buffer_salida,string_detoken);
+	if (result==0) {
+		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);		
+        *output_value=parse_string_to_number(buffer_salida);
+        return 0;
+	}
+
+	else if (result==1) {
+		menu_error_message(buffer_salida);
+        return 1;
+	}
+
+	else {
+		menu_generic_message_format("Error","%s parsed string: %s",buffer_salida,string_detoken);
+        return 2;
+	}
+}
 
 void menu_debug_registers_change_ptr(void)
 {
 
+    char string_address[10];
 
+    util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
+    menu_ventana_scanf("Value?",string_address,10);
 
-        char string_address[10];
+    //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+    int result=menu_debug_cpu_calculate_expression(string_address,&last_menu_debug_memory_pointer);
 
-
-                                        util_sprintf_address_hex(menu_debug_memory_pointer,string_address);
-                menu_ventana_scanf("Address?",string_address,10);
-
-        menu_debug_memory_pointer=parse_string_to_number(string_address);
-
-
-        return;
+	if (result==0) {
+        menu_debug_memory_pointer=last_menu_debug_memory_pointer;
+	}
+    
 
 }
 
@@ -1897,23 +1923,25 @@ menu_z80_moto_int menu_debug_register_decrement_half(menu_z80_moto_int posicion,
 
  
 
-int menu_debug_hexdump_change_pointer(int p)
+menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
 {
 
 
-        char string_address[10];
+    char string_address[10];
 
-        sprintf (string_address,"%XH",p);
-
-
-        //menu_ventana_scanf("Address? (in hex)",string_address,6);
-        menu_ventana_scanf("Address?",string_address,10);
-
-	//p=strtol(string_address, NULL, 16);
-	p=parse_string_to_number(string_address);
+    sprintf (string_address,"%XH",p);
 
 
-	return p;
+    //menu_ventana_scanf("Address? (in hex)",string_address,6);
+    menu_ventana_scanf("Address?",string_address,10);
+
+    //p=parse_string_to_number(string_address);
+
+    //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+    menu_debug_cpu_calculate_expression(string_address,&p);
+
+
+    return p;
 
 }
 

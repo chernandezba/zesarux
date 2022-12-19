@@ -51,7 +51,8 @@ extern void menu_debug_print_address_memory_zone(char *texto, menu_z80_moto_int 
 extern void menu_debug_set_memory_zone(int zone);
 extern int menu_debug_show_memory_zones;
 extern menu_z80_moto_int adjust_address_memory_size(menu_z80_moto_int direccion);
-extern int menu_debug_hexdump_change_pointer(int p);
+extern menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p);
+extern int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *output_value);
 extern void menu_debug_change_memory_zone(void);
 extern int menu_debug_get_total_digits_hexa(int valor);
 extern int menu_get_current_memory_zone_name_number(char *s);
