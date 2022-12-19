@@ -313,6 +313,7 @@ char *dsk_protection_scheme_new_frontier="NEW DISK PROTECTION SYSTEM. (C) 1990 B
 char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x01\x06\x20\x60\x00\x18";
 
 //Este carga un bloque corto, luego una secuencia de colores en el border
+//Esto es speedlock tambien
 //Tai-Pan.dsk, Action Force.dsk
 //Los bytes corresponden a track-info de pista 3, sectores 8,9
 char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
@@ -358,7 +359,7 @@ int dsk_get_protection_scheme(char *buffer)
     } 
 
     if (dsk_get_protection_scheme_aux_longitud(dsk_protection_scheme_unknown2,16)) {
-        strcpy(buffer,"Unknown 2");
+        strcpy(buffer,"SPEEDLOCK +3 DISC 1988-2");
         return 1;
     } 
 
