@@ -21140,7 +21140,18 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
         //Insertar en primera posicion del historial el texto elegido
         //solo si hemos escrito el texto en el input
         if (ventana.cursor_line==0) {
-            util_scanf_history_insert(textos_historial,texto);
+            //Si la cadena ya existe en otra entrada, no insertar
+            int encontrado=0;
+            for (i=0;i<lineas_historial && !encontrado;i++) {
+                if (!strcmp(texto,textos_historial[i])) encontrado=1;
+            }
+
+            if (encontrado) {
+                debug_printf(VERBOSE_PARANOID,"String (%s) already on list. Do not insert",texto);
+            }
+            else {
+                util_scanf_history_insert(textos_historial,texto);
+            }
         }
 
     }
