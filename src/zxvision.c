@@ -20999,9 +20999,28 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 
 }
 
+int zxvision_scanf_history_get_total_lines(char **textos_historial)
+{
+    int i;
+
+    //Por asignar un maximo
+    int max_lineas=100;
+
+    for (i=0;i<max_lineas && textos_historial[i];i++) {
+
+    }
+
+    if (i==max_lineas) {
+        debug_printf(VERBOSE_ERR,"Maximum history lines reached: %d",max_lineas);
+    }
+
+    return i;
+}
+
 //funcion como scanf pero con lineas adicionales por debajo que permiten elegir valores historicos
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
-void zxvision_scanf_history(char *titulo,char *texto,int max_length)
+//textos_historial acabados en NULL
+void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial)
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
@@ -21027,8 +21046,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length)
 		return;
 	}
 
-    //temporal
-    int lineas_historial=5;
+    int lineas_historial=zxvision_scanf_history_get_total_lines(textos_historial);
 
 	//int scanf_x=1;
 	//int scanf_y=10;
@@ -21048,13 +21066,65 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length)
 	//No queremos que se pueda redimensionar
 	ventana.can_be_resized=0;
 
+    int tecla=0;
+
+    //Mostrar lineas historial
+    int i;
+    for (i=0;i<lineas_historial;i++) {
+        zxvision_print_string_defaults(&ventana,1,i+1,textos_historial[i]);
+    }
+
+
 	zxvision_draw_window(&ventana);
 
+    do {
 
-	int tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
+
+        if (ventana.cursor_line==0) {
+            
+            
+            tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
+
+            if (tecla==10) {
+                //flecha abajo
+                ventana.cursor_line=1;
+                zxvision_set_visible_cursor(&ventana);
+            }
+        }
+
+        else {
+            
+            zxvision_draw_window_contents(&ventana);
+            tecla=zxvision_common_getkey_refresh();
+
+            //Abajo
+            if (tecla==10) {
+                if (ventana.cursor_line<lineas_historial) {
+                    zxvision_inc_cursor_line(&ventana);
+                }
+            }
+
+            //Arriba
+            if (tecla==11) {
+                if (ventana.cursor_line>0) {
+                   zxvision_dec_cursor_line(&ventana);
+
+                   if (ventana.cursor_line==0) {
+                    zxvision_reset_visible_cursor(&ventana);
+                   }
+                }
+            }
+
+            if (tecla==13) {
+                //Asignar a texto la linea seleccionada
+                strcpy(texto,textos_historial[ventana.cursor_line-1]);
+            }
+        }
 
 
-    printf("Tecla: %d\n",tecla);
+        printf("Tecla: %d\n",tecla);
+
+    }  while (tecla!=13 && tecla!=2);
 
 	zxvision_destroy_window(&ventana);
 
