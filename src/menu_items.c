@@ -6731,10 +6731,8 @@ menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
     sprintf (string_address,"%XH",p);
 
 
-    //menu_ventana_scanf("Address? (in hex)",string_address,6);
     menu_ventana_scanf("Address?",string_address,10);
-
-    //p=parse_string_to_number(string_address);
+    
 
     //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
     menu_debug_cpu_calculate_expression(string_address,&p);
@@ -9170,6 +9168,28 @@ void menu_debug_disassemble_export(int p)
 
 }
 
+menu_z80_moto_int menu_debug_disassemble_change_pointer(menu_z80_moto_int p)
+{
+
+
+    char string_address[10];
+
+    sprintf (string_address,"%XH",p);
+
+
+    //menu_ventana_scanf("Address? (in hex)",string_address,6);
+    menu_ventana_scanf("Address?",string_address,10);
+
+    //p=parse_string_to_number(string_address);
+
+    //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+    menu_debug_cpu_calculate_expression(string_address,&p);
+
+
+    return p;
+
+}
+
 z80_bit menu_debug_disassemble_hexa_view={0};
 
 void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
@@ -9315,8 +9335,7 @@ void menu_debug_disassemble(MENU_ITEM_PARAMETERS)
 			break;
 
 			case 'm':
-				//Usamos misma funcion de menu_debug_hexdump_change_pointer
-				direccion=menu_debug_hexdump_change_pointer(direccion);
+				direccion=menu_debug_disassemble_change_pointer(direccion);
 				zxvision_draw_window(&ventana);
 			break;
 
