@@ -21020,8 +21020,10 @@ int zxvision_scanf_history_get_total_lines(char **textos_historial)
     return i;
 }
 
-void zxvision_scanf_history_insert(int lineas_historial,char **textos_historial,char *texto)
+void zxvision_scanf_history_insert(char **textos_historial,char *texto)
 {
+
+    int lineas_historial=zxvision_scanf_history_get_total_lines(textos_historial);
 
     int i;
 
@@ -21184,7 +21186,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
     //solo si hemos escrito el texto en el input
     if (ventana.cursor_line==0) {
 
-        zxvision_scanf_history_insert(lineas_historial,textos_historial,texto);
+        zxvision_scanf_history_insert(textos_historial,texto);
 
     }
 

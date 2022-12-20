@@ -377,9 +377,10 @@ extern void zxvision_window_delete_all_windows(void);
 extern void zxvision_window_delete_all_windows_and_clear_geometry(void);
 extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo);
 extern void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial);
+extern void zxvision_scanf_history_insert(char **textos_historial,char *texto);
 
 //Contando el NULL del final
-#define ZXVISION_SCANF_HISTORY_MAX_LINES 5
+#define ZXVISION_SCANF_HISTORY_MAX_LINES 11
 
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);

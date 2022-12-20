@@ -1562,6 +1562,50 @@ void codetests_get_pixel_color_scr(void)
 
 }
 
+char *codetests_scanf_history_array[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
+
+
+void codetests_scanf_history(void)
+{
+    //compruebo que cadena inicial llegue al final, y que luego rote
+
+    int total_elelements=ZXVISION_SCANF_HISTORY_MAX_LINES-1;
+
+    zxvision_scanf_history_insert(codetests_scanf_history_array,"1234");
+    zxvision_scanf_history_insert(codetests_scanf_history_array,"4567");
+
+    int i;
+
+    //Inserto total_elements-2, asi con los anteriores anterior ya he llenado la lista
+    for (i=0;i<total_elelements-2;i++) {
+        zxvision_scanf_history_insert(codetests_scanf_history_array,"9876");
+    }
+
+    //ultima cadena tiene que ser la inicial
+    if (strcmp(codetests_scanf_history_array[total_elelements-1],"1234")) {
+        printf ("error. last element is not initial\n");
+        exit(1);
+    }
+
+    //inserto de nuevo. ultimo elemento tiene que ser el segundo
+    zxvision_scanf_history_insert(codetests_scanf_history_array,"4444");
+
+    if (strcmp(codetests_scanf_history_array[total_elelements-1],"4567")) {
+        printf ("error. last element is rotated properly\n");
+        exit(1);
+    }
+
+    //Y primer elemento tiene que ser el ultimo insertado
+    if (strcmp(codetests_scanf_history_array[0],"4444")) {
+        printf ("error. first element is not what expected\n");
+        exit(1);
+    }    
+}
+
+
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -1651,6 +1695,8 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning cosine table tests\n");
     codetests_cosine_table();
 
+    printf("\nRunning zxvision scanf history tests\n");
+    codetests_scanf_history();
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");
