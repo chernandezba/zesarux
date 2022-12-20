@@ -21087,7 +21087,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
             
             tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
 
-            if (tecla==10) {
+            if (tecla==10 && lineas_historial>0) {
                 //flecha abajo
                 ventana.cursor_line=1;
                 zxvision_set_visible_cursor(&ventana);
@@ -21135,7 +21135,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 
     //debug
     for (i=0;i<=lineas_historial;i++) {
-        printf("DEBUG Posicion %d puntero %p\n",i,textos_historial[i]);
+        printf("DEBUG Before insert Posicion %d puntero %p\n",i,textos_historial[i]);
     }
 
 
@@ -21150,15 +21150,18 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
         printf("freeing last position: %p",mem_to_free);
         free(mem_to_free);
     }
+    else {
+       lineas_historial++; 
+    }
 
-    // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 2-1=1
+    // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 2
     for (i=lineas_historial-1;i>=1;i--) {
         char *puntero=textos_historial[i-1];
         textos_historial[i]=puntero;
     }
 
     //Meter NULL del final
-    textos_historial[lineas_historial+1]=NULL;
+    textos_historial[lineas_historial]=NULL;
 
     //Meter primera posicion, asignando memoria para string
     int total_bytes=strlen(texto)+1;
@@ -21166,6 +21169,11 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
     strcpy(newstring,texto);
     textos_historial[0]=newstring;
 
+
+    //debug
+    for (i=0;i<=lineas_historial;i++) {
+        printf("DEBUG After insert Posicion %d puntero %p\n",i,textos_historial[i]);
+    }
 
 
 	zxvision_destroy_window(&ventana);
