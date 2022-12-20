@@ -2603,8 +2603,10 @@ printf (
 
         printf("\n"
         "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+
  
         printf(
+        "--history-item-add-debugcpu-ptr s        Add string as history for debug cpu change pointer\n"
 		"\n\n"
 
 		"One-time actions\n"
@@ -9214,6 +9216,13 @@ int parse_cmdline_options(void) {
                 menu_debug_view_sensors_list_sensors[numero_sensor].valor_en_vez_de_perc=1;
 
 			}      
+
+
+            
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-debugcpu-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_registers_change_ptr_historial,argv[puntero_parametro]);
+			}             
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx")) {
                 siguiente_parametro_argumento();

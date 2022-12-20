@@ -25,7 +25,7 @@ Improved ZX Desktop:
 
 Improved ZX Vision:
 - Text input fields now handle repeated keys
-- Some text input fields now have history of last items
+- Some text input fields now have history of last items, and history is saved on configuration file
 
 * Fixes:
 

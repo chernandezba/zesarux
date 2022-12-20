@@ -4226,6 +4226,16 @@ int util_write_configfile(void)
         }
     }
 
+
+    //Historiales de varios campos de texto
+    //Debug cpu change ptr
+    //Obtener de ultimo a mas reciente, para que al insertarlo queden en el orden ocrrecto
+    int history_length=util_scanf_history_get_total_lines(menu_debug_registers_change_ptr_historial);
+    for (i=history_length-1;i>=0;i--) {
+        ADD_STRING_CONFIG,"--history-item-add-debugcpu-ptr \"%s\" ",menu_debug_registers_change_ptr_historial[i]);
+    }
+
+
   for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
     int indice=defined_f_functions_keys_array[i];
     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);

@@ -56,6 +56,7 @@ extern int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_mot
 extern void menu_debug_change_memory_zone(void);
 extern int menu_debug_get_total_digits_hexa(int valor);
 extern int menu_get_current_memory_zone_name_number(char *s);
+extern char *menu_debug_registers_change_ptr_historial[];
 
 
 extern int map_adventure_offset_x;
