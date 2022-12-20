@@ -10363,12 +10363,21 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 
 	//cursor siempre al final del texto
 
+    int refrescar=1;
+
 	do { 
-		zxvision_scanf_print_string(ventana,string,offset_string,max_length_shown,x,y,pos_cursor_x);
 
-		if (menu_multitarea==0) menu_refresca_pantalla();
+        //para acelerar este proceso, solo llamar aqui cuando haya alguna modificacion
+        //asi se puede mover bien la ventana sin usar mucha cpu
+        if (refrescar) {
+		    zxvision_scanf_print_string(ventana,string,offset_string,max_length_shown,x,y,pos_cursor_x);
+            refrescar=0;
+        }
 
-		menu_espera_tecla();
+        //printf("After print string\n");
+		//if (menu_multitarea==0) menu_refresca_pantalla();
+
+		//menu_espera_tecla();
 		//printf ("Despues de espera tecla\n");
 		tecla=zxvision_common_getkey_refresh();	
 		//printf ("tecla leida=%d\n",tecla);
@@ -10399,6 +10408,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 				//Y mover cursor a la derecha
 				menu_scanf_cursor_derecha(string,&pos_cursor_x,&offset_string,max_length_shown);
 
+                refrescar=1;
+
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
 
 			}
@@ -10416,6 +10427,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 		if (tecla==9) {
 				menu_scanf_cursor_derecha(string,&pos_cursor_x,&offset_string,max_length_shown);
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
+                refrescar=1;
 		}			
 
 		//tecla borrar
@@ -10442,6 +10454,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 
 					//Y mover cursor a la izquierda
 					menu_scanf_cursor_izquierda(&offset_string,&pos_cursor_x);	
+
+                    refrescar=1;
 					
 				}
 			}
@@ -10452,6 +10466,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 		if (tecla==8) {
 				menu_scanf_cursor_izquierda(&offset_string,&pos_cursor_x);
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
+
+                refrescar=1;
 		}				
 
 		//tecla abajo. 
@@ -10472,6 +10488,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
                 offset_string=0;
                 pos_cursor_x=0;
                 tecla=0; //para no volver
+
+                refrescar=1;
             }
 	
 		}
