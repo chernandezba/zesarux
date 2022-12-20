@@ -21106,13 +21106,10 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 
     int lineas_historial=zxvision_scanf_history_get_total_lines(textos_historial);
 
-	//int scanf_x=1;
-	//int scanf_y=10;
 	int scanf_ancho=30;
 	int scanf_alto=3+lineas_historial;	
 	int scanf_x=menu_center_x()-scanf_ancho/2;
 	int scanf_y=menu_center_y()-scanf_alto/2;
-
 
     menu_espera_no_tecla();
 
@@ -21122,7 +21119,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 							scanf_ancho-1,scanf_alto-2,titulo);
 
 	//No queremos que se pueda redimensionar
-	ventana.can_be_resized=0;
+	//ventana.can_be_resized=0;
 
     int tecla=0;
 
@@ -21132,11 +21129,9 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
         zxvision_print_string_defaults(&ventana,1,i+1,textos_historial[i]);
     }
 
-
-	zxvision_draw_window(&ventana);
+    zxvision_draw_window(&ventana);
 
     do {
-
 
         if (ventana.cursor_line==0) {
             
@@ -21151,7 +21146,6 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
         }
 
         else {
-            
             zxvision_draw_window_contents(&ventana);
             tecla=zxvision_common_getkey_refresh();
 
