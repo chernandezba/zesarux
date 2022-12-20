@@ -10317,7 +10317,7 @@ void menu_scanf_cursor_derecha(char *texto,int *pos_cursor_x,int *offset_string,
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
 //ejemplo, si el array es de 50, se le debe pasar max_length a 50
 //volver_si_fuera_foco dice si vuelve al pulsar en linea de edicion pero mas a la izquierda o derecha de esa zona
-int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco)
+int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo)
 {
 
 
@@ -10373,7 +10373,9 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 		tecla=zxvision_common_getkey_refresh();	
 		//printf ("tecla leida=%d\n",tecla);
 		int mouse_left_estaba_pulsado=mouse_left;
-		menu_espera_no_tecla();
+
+        //no esperar a liberar tecla asi podemos gestionar repeticiones
+		//menu_espera_no_tecla();
 
 
 
@@ -10452,16 +10454,25 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
 		}				
 
-		//tecla abajo. borrar todo
+		//tecla abajo. 
 		if (tecla==10) {
-			//Enviar a speech decir borrar todo
-			menu_speech_tecla_pulsada=0;
-            strcpy (buf_speech,"delete all");
-            menu_textspeech_send_text(buf_speech);
+            if (volver_si_flecha_abajo) {
+                //Volver
+				//tecla=13;
+            }
 
-            string[0]=0;
-			offset_string=0;
-			pos_cursor_x=0;
+            else {
+                //borrar todo si es que no se sale con flecha abajo
+                //Enviar a speech decir borrar todo
+                menu_speech_tecla_pulsada=0;
+                strcpy (buf_speech,"delete all");
+                menu_textspeech_send_text(buf_speech);
+
+                string[0]=0;
+                offset_string=0;
+                pos_cursor_x=0;
+                tecla=0; //para no volver
+            }
 	
 		}
 
@@ -10498,7 +10509,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 		}
 
 
-	} while (tecla!=13 && tecla!=15 && tecla!=2);
+	} while (tecla!=13 && tecla!=15 && tecla!=2 && tecla!=10);
 
 	//if (tecla==13) printf ("salimos con enter\n");
 	//if (tecla==15) printf ("salimos con tab\n");
@@ -20975,7 +20986,7 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 	zxvision_draw_window(&ventana);
 
 
-	zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0);
+	zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,0);
 
 	//menu_scanf(texto,max_length,scanf_ancho-2,scanf_x+1,scanf_y+1);
 	//int menu_scanf(char *string,unsigned int max_length,int max_length_shown,int x,int y)
@@ -20988,11 +20999,75 @@ void menu_ventana_scanf(char *titulo,char *texto,int max_length)
 
 }
 
+//funcion como scanf pero con lineas adicionales por debajo que permiten elegir valores historicos
+//max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
+void zxvision_scanf_history(char *titulo,char *texto,int max_length)
+{
+
+    //En caso de stdout, es mas simple, mostrar texto y esperar texto
+	if (!strcmp(scr_new_driver_name,"stdout")) {
+		printf ("%s\n",titulo);
+		scrstdout_menu_print_speech_macro(titulo);
+
+		//Controlar maximo en cadena de texto aparte
+		char buffer_temporal[1024];
+		scanf("%s",buffer_temporal);
+		int l=strlen(buffer_temporal);
+		if (l>max_length-1) {
+			printf ("Too long\n");
+			scrstdout_menu_print_speech_macro("Too long");
+			return;
+		}
+
+
+		strcpy(texto,buffer_temporal);
+
+		//scanf("%s",texto);
+
+		return;
+	}
+
+    //temporal
+    int lineas_historial=5;
+
+	//int scanf_x=1;
+	//int scanf_y=10;
+	int scanf_ancho=30;
+	int scanf_alto=3+lineas_historial;	
+	int scanf_x=menu_center_x()-scanf_ancho/2;
+	int scanf_y=menu_center_y()-scanf_alto/2;
+
+
+    menu_espera_no_tecla();
+
+	zxvision_window ventana;
+
+	zxvision_new_window(&ventana,scanf_x,scanf_y,scanf_ancho,scanf_alto,
+							scanf_ancho-1,scanf_alto-2,titulo);
+
+	//No queremos que se pueda redimensionar
+	ventana.can_be_resized=0;
+
+	zxvision_draw_window(&ventana);
+
+
+	int tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
+
+
+    printf("Tecla: %d\n",tecla);
+
+	zxvision_destroy_window(&ventana);
+
+}
+
+
+
+
 void menu_ventana_scanf_number_aux(zxvision_window *ventana,char *texto,int max_length,int x_texto_input)
 {
 	//En entrada de texto no validamos el maximo y minimo. Eso lo tiene que seguir haciendo la funcion que llama a menu_ventana_scanf_numero
 	//Si que se controla al pulsar botones de + y -
-	zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1);
+	zxvision_scanf(ventana,texto,max_length,max_length,x_texto_input,0,1,0);
 }
 
 void menu_ventana_scanf_number_print_buttons(zxvision_window *ventana,char *texto,int x_boton_menos,int x_boton_mas,int x_texto_input,int x_boton_ok,int x_boton_cancel)

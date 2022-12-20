@@ -6721,6 +6721,29 @@ void menu_debug_hexdump_mostrar_cursor(zxvision_window *ventana)
 		}
 }
 
+
+menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
+{
+
+
+    char string_address[10];
+
+    sprintf (string_address,"%XH",p);
+
+
+    //menu_ventana_scanf("Address? (in hex)",string_address,6);
+    menu_ventana_scanf("Address?",string_address,10);
+
+    //p=parse_string_to_number(string_address);
+
+    //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+    menu_debug_cpu_calculate_expression(string_address,&p);
+
+
+    return p;
+
+}
+
 zxvision_window zxvision_window_debug_hexdump;
 
 void menu_debug_hexdump(MENU_ITEM_PARAMETERS)

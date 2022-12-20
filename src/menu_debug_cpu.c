@@ -1180,7 +1180,8 @@ void menu_debug_registers_change_ptr(void)
     char string_address[10];
 
     util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
-    menu_ventana_scanf("Value?",string_address,10);
+    //menu_ventana_scanf("Value?",string_address,10);
+    zxvision_scanf_history("Value?",string_address,10);
 
     //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
     int result=menu_debug_cpu_calculate_expression(string_address,&last_menu_debug_memory_pointer);
@@ -1923,27 +1924,7 @@ menu_z80_moto_int menu_debug_register_decrement_half(menu_z80_moto_int posicion,
 
  
 
-menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p)
-{
 
-
-    char string_address[10];
-
-    sprintf (string_address,"%XH",p);
-
-
-    //menu_ventana_scanf("Address? (in hex)",string_address,6);
-    menu_ventana_scanf("Address?",string_address,10);
-
-    //p=parse_string_to_number(string_address);
-
-    //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
-    menu_debug_cpu_calculate_expression(string_address,&p);
-
-
-    return p;
-
-}
 
 
 //Ajustar cuando se pulsa hacia arriba por debajo de direccion 0.

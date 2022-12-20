@@ -4930,7 +4930,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				else {
 
 
-				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0);
+				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0);
 				//); //6 ocupa el texto "File: "
 
 				if (tecla==15) {
