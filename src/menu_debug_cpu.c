@@ -1184,18 +1184,8 @@ void menu_debug_registers_change_ptr(void)
     char string_address[10];
 
     util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
+
     //menu_ventana_scanf("Value?",string_address,10);
-
-    /*char *historial[]={
-        "Linea 1",
-        "Linea 2",
-        "16384",
-        "0056H",
-        NULL
-    };*/
-
-  
-
     zxvision_scanf_history("Value?",string_address,10,menu_debug_registers_change_ptr_historial);
 
     //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
