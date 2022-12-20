@@ -1174,7 +1174,7 @@ int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *
 	}
 }
 
-char *menu_debug_registers_change_ptr_historial[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+char *menu_debug_registers_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
 };  
 

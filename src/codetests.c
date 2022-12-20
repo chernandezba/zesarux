@@ -1562,7 +1562,7 @@ void codetests_get_pixel_color_scr(void)
 
 }
 
-char *codetests_scanf_history_array[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+char *codetests_scanf_history_array[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
 };  
 
@@ -1571,18 +1571,18 @@ void codetests_scanf_history(void)
 {
     //compruebo que cadena inicial llegue al final, y que luego rote
 
-    int total_elelements=ZXVISION_SCANF_HISTORY_MAX_LINES-1;
+    int total_elelements=UTIL_SCANF_HISTORY_MAX_LINES-1;
 
-    zxvision_scanf_history_insert(codetests_scanf_history_array,"1234");
+    util_scanf_history_insert(codetests_scanf_history_array,"1234");
     printf("\n");
-    zxvision_scanf_history_insert(codetests_scanf_history_array,"4567");
+    util_scanf_history_insert(codetests_scanf_history_array,"4567");
     printf("\n");
 
     int i;
 
     //Inserto total_elements-2, asi con los anteriores anterior ya he llenado la lista
     for (i=0;i<total_elelements-2;i++) {
-        zxvision_scanf_history_insert(codetests_scanf_history_array,"9876");
+        util_scanf_history_insert(codetests_scanf_history_array,"9876");
         printf("\n");
     }
 
@@ -1593,7 +1593,7 @@ void codetests_scanf_history(void)
     }
 
     //inserto de nuevo. ultimo elemento tiene que ser el segundo
-    zxvision_scanf_history_insert(codetests_scanf_history_array,"4444");
+    util_scanf_history_insert(codetests_scanf_history_array,"4444");
     printf("\n");
 
     if (strcmp(codetests_scanf_history_array[total_elelements-1],"4567")) {

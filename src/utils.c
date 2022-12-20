@@ -20307,3 +20307,79 @@ int util_parity(z80_byte value)
     //printf("util_parity: paridad %d\n",paridad);
     return paridad;
 }
+
+
+//Retorna numero de punteros de strings en el array, utilizado en scanf con historial
+int util_scanf_history_get_total_lines(char **textos_historial)
+{
+    int i;
+
+    //Por asignar un maximo
+    int max_lineas=100;
+
+    for (i=0;i<max_lineas && textos_historial[i];i++) {
+
+    }
+
+    if (i==max_lineas) {
+        debug_printf(VERBOSE_ERR,"Maximum history lines reached: %d",max_lineas);
+    }
+
+    return i;
+}
+
+//Insertar un texto en la primera posicion dentro de un array de punteros de strings, utilizado en scanf con historial
+void util_scanf_history_insert(char **textos_historial,char *texto)
+{
+
+    int lineas_historial=util_scanf_history_get_total_lines(textos_historial);
+
+    int i;
+
+    //liberar ultima posicion
+    //int ultima_posicion=UTIL_SCANF_HISTORY_MAX_LINES-1; //contando que al final hay el NULL
+
+    //debug
+    for (i=0;i<=lineas_historial;i++) {
+        debug_printf(VERBOSE_PARANOID,"util_scanf_history_insert: Before insert. Position %d Pointer %p (%s)",
+            i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
+    }
+
+
+    //Ejemplo UTIL_SCANF_HISTORY_MAX_LINES vale 3
+    //Tenemos "string 1", "string 2", NULL
+    //si lleno, lineas_historial==3-1=2
+    //memoria a liberar = textos_historial[2-1] = tetos_historial [1]="string 2"
+
+
+    if (lineas_historial==UTIL_SCANF_HISTORY_MAX_LINES-1) {        //Liberar posicion ultima
+        char *mem_to_free=textos_historial[lineas_historial-1];
+        debug_printf(VERBOSE_DEBUG,"util_scanf_history_insert: History is full. Freeing last position: %p",mem_to_free);
+        free(mem_to_free);
+    }
+    else {
+        lineas_historial++; 
+    }
+
+    // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 1
+    for (i=lineas_historial-1;i>=1;i--) {
+        char *puntero=textos_historial[i-1];
+        textos_historial[i]=puntero;
+    }
+
+    //Meter NULL del final
+    textos_historial[lineas_historial]=NULL;
+
+    //Meter primera posicion, asignando memoria para string
+    int total_bytes=strlen(texto)+1;
+    char *newstring=util_malloc(total_bytes,"Can not allocate buffer for history string");
+    strcpy(newstring,texto);
+    textos_historial[0]=newstring;
+
+
+    //debug
+    for (i=0;i<=lineas_historial;i++) {
+        debug_printf(VERBOSE_PARANOID,"util_scanf_history_insert: After insert. Position %d Pointer %p (%s)",
+            i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
+    }    
+}

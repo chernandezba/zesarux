@@ -964,4 +964,11 @@ extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 
 extern int util_parity(z80_byte value);
 
+
+//Contando el NULL del final
+#define UTIL_SCANF_HISTORY_MAX_LINES 11
+
+extern void util_scanf_history_insert(char **textos_historial,char *texto);
+extern int util_scanf_history_get_total_lines(char **textos_historial);
+
 #endif

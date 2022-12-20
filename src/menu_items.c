@@ -6721,7 +6721,7 @@ void menu_debug_hexdump_mostrar_cursor(zxvision_window *ventana)
 		}
 }
 
-char *menu_debug_hexdump_change_ptr_historial[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+char *menu_debug_hexdump_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
 };  
 
@@ -10859,7 +10859,7 @@ void menu_debug_draw_sprites(void)
 
 }
 
-char *menu_debug_sprintes_change_ptr_historial[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+char *menu_debug_sprintes_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
 };  
 
