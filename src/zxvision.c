@@ -21096,7 +21096,8 @@ void zxvision_scanf_history_insert(char **textos_historial,char *texto)
 //funcion como scanf pero con lineas adicionales por debajo que permiten elegir valores historicos
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
 //textos_historial acabados en NULL
-void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial)
+//Retorna tecla pulsada
+int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial)
 {
 
     //En caso de stdout, es mas simple, mostrar texto y esperar texto
@@ -21111,7 +21112,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 		if (l>max_length-1) {
 			printf ("Too long\n");
 			scrstdout_menu_print_speech_macro("Too long");
-			return;
+			return 0;
 		}
 
 
@@ -21119,8 +21120,13 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 
 		//scanf("%s",texto);
 
-		return;
+		return 0;
 	}
+
+    //copiar texto original por si se sale con ESC
+    //int longitud_texto_original=strlen(texto)+1;
+    //char *copia_texto_original=util_malloc(longitud_texto_original,"Can not allocate buffer for zxvision_scanf_history original string");
+    //strcpy(copia_texto_original,texto);
 
     int lineas_historial=zxvision_scanf_history_get_total_lines(textos_historial);
 
@@ -21194,14 +21200,28 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
 
     }  while (tecla!=13 && tecla!=2);
 
-    //Insertar en primera posicion del historial el texto elegido
-    //solo si hemos escrito el texto en el input
-    if (ventana.cursor_line==0) {
-        zxvision_scanf_history_insert(textos_historial,texto);
+    /*if (tecla==2) {
+        printf("Pulsado ESC\n");
+
+        //Recuperar texto original
+        strcpy(texto,copia_texto_original);
+    }*/
+
+    if (tecla!=2) {
+
+        //Insertar en primera posicion del historial el texto elegido
+        //solo si hemos escrito el texto en el input
+        if (ventana.cursor_line==0) {
+            zxvision_scanf_history_insert(textos_historial,texto);
+        }
+
     }
 
+    //free(copia_texto_original);
 
 	zxvision_destroy_window(&ventana);
+
+    return tecla;
 
 }
 
