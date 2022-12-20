@@ -1574,13 +1574,16 @@ void codetests_scanf_history(void)
     int total_elelements=ZXVISION_SCANF_HISTORY_MAX_LINES-1;
 
     zxvision_scanf_history_insert(codetests_scanf_history_array,"1234");
+    printf("\n");
     zxvision_scanf_history_insert(codetests_scanf_history_array,"4567");
+    printf("\n");
 
     int i;
 
     //Inserto total_elements-2, asi con los anteriores anterior ya he llenado la lista
     for (i=0;i<total_elelements-2;i++) {
         zxvision_scanf_history_insert(codetests_scanf_history_array,"9876");
+        printf("\n");
     }
 
     //ultima cadena tiene que ser la inicial
@@ -1591,6 +1594,7 @@ void codetests_scanf_history(void)
 
     //inserto de nuevo. ultimo elemento tiene que ser el segundo
     zxvision_scanf_history_insert(codetests_scanf_history_array,"4444");
+    printf("\n");
 
     if (strcmp(codetests_scanf_history_array[total_elelements-1],"4567")) {
         printf ("error. last element is rotated properly\n");

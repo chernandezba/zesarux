@@ -21032,7 +21032,8 @@ void zxvision_scanf_history_insert(char **textos_historial,char *texto)
 
         //debug
         for (i=0;i<=lineas_historial;i++) {
-            printf("DEBUG Before insert Posicion %d puntero %p\n",i,textos_historial[i]);
+            debug_printf(VERBOSE_DEBUG,"zxvision_scanf_history_insert: Before insert. Position %d Pointer %p (%s)",
+                i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
         }
 
 
@@ -21044,7 +21045,7 @@ void zxvision_scanf_history_insert(char **textos_historial,char *texto)
 
         if (lineas_historial==ZXVISION_SCANF_HISTORY_MAX_LINES-1) {        //Liberar posicion ultima
             char *mem_to_free=textos_historial[lineas_historial-1];
-            printf("History full. Freeing last position: %p\n",mem_to_free);
+            debug_printf(VERBOSE_DEBUG,"zxvision_scanf_history_insert: History is full. Freeing last position: %p",mem_to_free);
             free(mem_to_free);
         }
         else {
@@ -21069,7 +21070,8 @@ void zxvision_scanf_history_insert(char **textos_historial,char *texto)
 
         //debug
         for (i=0;i<=lineas_historial;i++) {
-            printf("DEBUG After insert Posicion %d puntero %p\n",i,textos_historial[i]);
+            debug_printf(VERBOSE_DEBUG,"zxvision_scanf_history_insert: After insert. Position %d Pointer %p (%s)",
+                i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
         }    
 }
 
@@ -21178,16 +21180,14 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
         }
 
 
-        printf("Tecla: %d\n",tecla);
+        //printf("Tecla: %d\n",tecla);
 
     }  while (tecla!=13 && tecla!=2);
 
     //Insertar en primera posicion del historial el texto elegido
     //solo si hemos escrito el texto en el input
     if (ventana.cursor_line==0) {
-
         zxvision_scanf_history_insert(textos_historial,texto);
-
     }
 
 
