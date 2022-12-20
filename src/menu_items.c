@@ -9182,11 +9182,7 @@ menu_z80_moto_int menu_debug_disassemble_change_pointer(menu_z80_moto_int p)
 
     sprintf (string_address,"%XH",p);
 
-
-    //menu_ventana_scanf("Address? (in hex)",string_address,6);
     menu_ventana_scanf("Address?",string_address,10);
-
-    //p=parse_string_to_number(string_address);
 
     //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
     menu_debug_cpu_calculate_expression(string_address,&p);
@@ -10863,6 +10859,10 @@ void menu_debug_draw_sprites(void)
 
 }
 
+char *menu_debug_sprintes_change_ptr_historial[ZXVISION_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
+
 menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
 {
 
@@ -10875,21 +10875,27 @@ menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
         char string_address[10];
 
 
+        int tecla;
 
 				if (view_sprites_hardware) {
 					sprintf(string_address,"%d",p&63);
-					menu_ventana_scanf("Sprite?",string_address,3);
+					//menu_ventana_scanf("Sprite?",string_address,3);
+                    tecla=zxvision_scanf_history("Sprite?",string_address,3,menu_debug_sprintes_change_ptr_historial);
 				}
 				else {
 					util_sprintf_address_hex(p,string_address);
-        	menu_ventana_scanf("Address?",string_address,10);
+        	        //menu_ventana_scanf("Address?",string_address,10);
+                    tecla=zxvision_scanf_history("Address?",string_address,10,menu_debug_sprintes_change_ptr_historial);
 				}
 
 
 
         //p=parse_string_to_number(string_address);
         //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
-        menu_debug_cpu_calculate_expression(string_address,&p);
+
+        if (tecla!=2) {
+            menu_debug_cpu_calculate_expression(string_address,&p);
+        }
 
 
 

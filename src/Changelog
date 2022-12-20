@@ -22,7 +22,10 @@ Improved changing pointer on some windows: can use an expression when changing m
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
+
+Improved ZX Vision:
 - Text input fields now handle repeated keys
+- Some text input fields now have history of last items
 
 * Fixes:
 
