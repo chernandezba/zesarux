@@ -4228,12 +4228,28 @@ int util_write_configfile(void)
 
 
     //Historiales de varios campos de texto
+
     //Debug cpu change ptr
     //Obtener de ultimo a mas reciente, para que al insertarlo queden en el orden ocrrecto
     int history_length=util_scanf_history_get_total_lines(menu_debug_registers_change_ptr_historial);
     for (i=history_length-1;i>=0;i--) {
         ADD_STRING_CONFIG,"--history-item-add-debugcpu-ptr \"%s\" ",menu_debug_registers_change_ptr_historial[i]);
     }
+
+    //Hex editor
+    //Obtener de ultimo a mas reciente, para que al insertarlo queden en el orden ocrrecto
+    history_length=util_scanf_history_get_total_lines(menu_debug_hexdump_change_ptr_historial);
+    for (i=history_length-1;i>=0;i--) {
+        ADD_STRING_CONFIG,"--history-item-add-hexeditor-ptr \"%s\" ",menu_debug_hexdump_change_ptr_historial[i]);
+    }
+
+    //Sprites
+    //Obtener de ultimo a mas reciente, para que al insertarlo queden en el orden ocrrecto
+    history_length=util_scanf_history_get_total_lines(menu_debug_sprites_change_ptr_historial);
+    for (i=history_length-1;i>=0;i--) {
+        ADD_STRING_CONFIG,"--history-item-add-sprites-ptr \"%s\" ",menu_debug_sprites_change_ptr_historial[i]);
+    }
+
 
 
   for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
