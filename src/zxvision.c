@@ -21020,7 +21020,56 @@ int zxvision_scanf_history_get_total_lines(char **textos_historial)
     return i;
 }
 
+void zxvision_scanf_history_insert(int lineas_historial,char **textos_historial,char *texto)
+{
 
+    int i;
+
+        //liberar ultima posicion
+        //int ultima_posicion=ZXVISION_SCANF_HISTORY_MAX_LINES-1; //contando que al final hay el NULL
+
+        //debug
+        for (i=0;i<=lineas_historial;i++) {
+            printf("DEBUG Before insert Posicion %d puntero %p\n",i,textos_historial[i]);
+        }
+
+
+        //Ejemplo ZXVISION_SCANF_HISTORY_MAX_LINES vale 3
+        //Tenemos "string 1", "string 2", NULL
+        //si lleno, lineas_historial==3-1=2
+        //memoria a liberar = textos_historial[2-1] = tetos_historial [1]="string 2"
+
+
+        if (lineas_historial==ZXVISION_SCANF_HISTORY_MAX_LINES-1) {        //Liberar posicion ultima
+            char *mem_to_free=textos_historial[lineas_historial-1];
+            printf("History full. Freeing last position: %p\n",mem_to_free);
+            free(mem_to_free);
+        }
+        else {
+            lineas_historial++; 
+        }
+
+        // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 1
+        for (i=lineas_historial-1;i>=1;i--) {
+            char *puntero=textos_historial[i-1];
+            textos_historial[i]=puntero;
+        }
+
+        //Meter NULL del final
+        textos_historial[lineas_historial]=NULL;
+
+        //Meter primera posicion, asignando memoria para string
+        int total_bytes=strlen(texto)+1;
+        char *newstring=util_malloc(total_bytes,"Can not allocate buffer for history string");
+        strcpy(newstring,texto);
+        textos_historial[0]=newstring;
+
+
+        //debug
+        for (i=0;i<=lineas_historial;i++) {
+            printf("DEBUG After insert Posicion %d puntero %p\n",i,textos_historial[i]);
+        }    
+}
 
 //funcion como scanf pero con lineas adicionales por debajo que permiten elegir valores historicos
 //max_length contando caracter 0 del final, es decir, para un texto de 4 caracteres, debemos especificar max_length=5
@@ -21135,50 +21184,7 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
     //solo si hemos escrito el texto en el input
     if (ventana.cursor_line==0) {
 
-        //liberar ultima posicion
-        //int ultima_posicion=ZXVISION_SCANF_HISTORY_MAX_LINES-1; //contando que al final hay el NULL
-
-        //debug
-        for (i=0;i<=lineas_historial;i++) {
-            printf("DEBUG Before insert Posicion %d puntero %p\n",i,textos_historial[i]);
-        }
-
-
-        //Ejemplo ZXVISION_SCANF_HISTORY_MAX_LINES vale 3
-        //Tenemos "string 1", "string 2", NULL
-        //si lleno, lineas_historial==3-1=2
-        //memoria a liberar = textos_historial[2-1] = tetos_historial [1]="string 2"
-
-
-        if (lineas_historial==ZXVISION_SCANF_HISTORY_MAX_LINES-1) {        //Liberar posicion ultima
-            char *mem_to_free=textos_historial[lineas_historial-1];
-            printf("freeing last position: %p",mem_to_free);
-            free(mem_to_free);
-        }
-        else {
-            lineas_historial++; 
-        }
-
-        // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 1
-        for (i=lineas_historial-1;i>=1;i--) {
-            char *puntero=textos_historial[i-1];
-            textos_historial[i]=puntero;
-        }
-
-        //Meter NULL del final
-        textos_historial[lineas_historial]=NULL;
-
-        //Meter primera posicion, asignando memoria para string
-        int total_bytes=strlen(texto)+1;
-        char *newstring=util_malloc(total_bytes,"Can not allocate buffer for history string");
-        strcpy(newstring,texto);
-        textos_historial[0]=newstring;
-
-
-        //debug
-        for (i=0;i<=lineas_historial;i++) {
-            printf("DEBUG After insert Posicion %d puntero %p\n",i,textos_historial[i]);
-        }
+        zxvision_scanf_history_insert(lineas_historial,textos_historial,texto);
 
     }
 
