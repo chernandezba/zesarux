@@ -21134,8 +21134,6 @@ void zxvision_scanf_history(char *titulo,char *texto,int max_length,char **texto
     do {
 
         if (ventana.cursor_line==0) {
-            
-            
             tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
 
             if (tecla==10 && lineas_historial>0) {
