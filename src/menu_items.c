@@ -33576,6 +33576,11 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_toy_follow_mouse_window;
 
+int menu_toy_follow_last_final_linea_x=0;
+int menu_toy_follow_last_final_linea_y=0;
+
+int menu_toy_follow_last_origen_linea_x=0;
+int menu_toy_follow_last_origen_linea_y=0;
 
 void menu_toy_follow_mouse_overlay(void)
 {
@@ -33598,9 +33603,18 @@ void menu_toy_follow_mouse_overlay(void)
     //temp
     printf("mouse    %d x %d\n",mouse_x,mouse_y);
 
-    int origen_linea_x=30;
-    int origen_linea_y=30;
-    int longitud_linea=200;
+    int origen_linea_x=(w->visible_width)*menu_char_width/2;
+    int origen_linea_y=(w->visible_height)*menu_char_height/2;
+    int longitud_linea;
+
+    if (w->visible_width < w->visible_height) longitud_linea=(w->visible_width)*menu_char_width;
+    else longitud_linea=(w->visible_height)*menu_char_height;
+
+    longitud_linea -=16;
+
+    
+
+    if (longitud_linea<10) longitud_linea=10;
 
     //this window
     int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
@@ -33633,8 +33647,25 @@ void menu_toy_follow_mouse_overlay(void)
     int final_linea_y=origen_linea_y+(delta_y/zoom_y/menu_gui_zoom); 
 
 
-    zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
-    zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,10,10,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+    if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y
+    || menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
+    ) {
+        printf("Redrawing\n");
+
+        //Erase last
+        
+        zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
+            menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
+        
+
+        zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
+        zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,10,10,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+
+        menu_toy_follow_last_final_linea_x=final_linea_x;
+        menu_toy_follow_last_final_linea_y=final_linea_y;
+        menu_toy_follow_last_origen_linea_x=origen_linea_x;
+        menu_toy_follow_last_origen_linea_y=origen_linea_y;
+    }
                 
 
 
