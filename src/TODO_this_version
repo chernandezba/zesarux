@@ -212,3 +212,14 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 -Football Manager 2.dsk con pista con C=FFH
 
 -En debug cpu al cambiar direccion, ventana input para historial de direcciones consultadas y primera línea input igual que ahora. Primera dirección que sea la última 
+
+
+-error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
+*step mode
+*funcion z (memory zone) o tecla (o) por ejemplo
+*quitar step mode
+*pulsar teclas y llega a maquina emulada
+
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-historial direcciones que pueda usar raton

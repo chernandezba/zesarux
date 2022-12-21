@@ -4013,10 +4013,10 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 
 				if (util_daad_detect() || util_textadv_detect_paws_quill() ) maxima_vista='8';
 
-								sprintf(buffer_mensaje_short,"P~~tr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
+								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
 
-								sprintf(buffer_mensaje_long,"Poin~~ter:%sH [%c] ~~FollowPC ~~1-~~%c:View",
+								sprintf(buffer_mensaje_long,"~~Memptr:%sH [%c] ~~FollowPC ~~1-~~%c:View",
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
 
 
@@ -4085,12 +4085,12 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 					menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// StM DAsm En:Stp StOvr CntSt Md	
-							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt ~~Md",
+							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt H~~x",
 								//          10        20        30        40        50        60
 								//012345678901234567890123456789012345678901234567890123456789012
 							//     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
 
-							"~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep ~~Mode"
+							"~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep He~~x"
 					
 					); 
 
@@ -4122,11 +4122,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 							//01234567890123456789012345678901
 							// Stepmode Disassem Assem Mode
-							"~~StepMode ~~Disassem ~~Assem ~~Mode",
+							"~~StepMode ~~Disassem ~~Assem He~~x",
 
 							//012345678901234567890123456789012345678901234567890123456789012
 							// StepMode Disassemble Assemble Mode
-							"~~StepMode ~~Disassemble ~~Assemble ~~Mode"
+							"~~StepMode ~~Disassemble ~~Assemble He~~x"
 					);
 
 
@@ -6735,7 +6735,7 @@ void menu_debug_help(void)
         "En la mayoría de las vistas, hay diferentes teclas que realizan acciones. Hay que tener en cuenta que se distingue mayúsculas "
         "de minúsculas, por tanto, las teclas en mayúsculas hay que accionarlas junto con la tecla Caps shift:\n"
         "\n"
-        "t: cambiar el puntero donde estamos visualizando el listado\n"
+        "m: cambiar el puntero donde estamos visualizando el listado\n"
         "\n"
         "f: habilita/deshabilita el seguimiento del puntero con la posición del registro PC de la cpu\n"
         "\n"
@@ -6759,7 +6759,7 @@ void menu_debug_help(void)
         "\n"
         "o: Ejecutar hasta volver de la siguiente instrucción, útil por ejemplo para volver justo después de un CALL\n"
         "\n"
-        "m: Cambiar entre los diferentes modos de la vista 1\n"
+        "x: Cambiar entre los diferentes modos de la vista 1\n"
         "\n"
         "r: Modificar registros\n"
         "\n"
@@ -6842,7 +6842,7 @@ void menu_debug_help(void)
         "A la majoria de les vistes, hi ha diferents tecles que realitzen accions. Cal tenir en compte que es distingeix majúscules"
         "de minúscules, per tant, les tecles en majúscules cal accionar-les juntament amb la tecla Caps shift:\n"
         "\n"
-        "t: canviar el punter on estem visualitzant el llistat\n"
+        "m: canviar el punter on estem visualitzant el llistat\n"
         "\n"
         "f: habilita/deshabilita el seguiment del punter amb la posició del registre PC de la cpu\n"
         "\n"
@@ -6866,7 +6866,7 @@ void menu_debug_help(void)
         "\n"
         "o: Executar fins a tornar de la següent instrucció, útil per exemple per tornar just després d'un CALL\n"
         "\n"
-        "m: Canviar entre els diferents modes de la vista 1\n"
+        "x: Canviar entre els diferents modes de la vista 1\n"
         "\n"
         "r: Modificar registres\n"
         "\n"
@@ -6950,7 +6950,7 @@ void menu_debug_help(void)
         "In most of the views, there are some keys which run actions. Capitalisation in keys is taken care "
         "so, capital keys must be fired pressing Caps shift too:\n"
         "\n"
-        "t: Change the listing pointer\n"
+        "m: Change the listing pointer\n"
         "\n"
         "f: enable/disable following pointer with the PC cpu register\n"
         "\n"
@@ -6974,7 +6974,7 @@ void menu_debug_help(void)
         "\n"
         "o: Run until returning from the next opcode, useful, for example, to return after a CALL opcode\n"
         "\n"
-        "m: Switch between different modes of view 1\n"
+        "x: Switch between different modes of view 1\n"
         "\n"
         "r: Modify registers\n"
         "\n"
@@ -7487,7 +7487,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }                
 
-				if (tecla=='m' && menu_debug_registers_current_view==1) {
+				if (tecla=='x' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -7629,7 +7629,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
 
-				if (tecla=='t') {
+				if (tecla=='m') {
 					menu_debug_follow_pc.v=0; //se deja de seguir pc
 					menu_debug_registers_change_ptr();
 					//Decimos que no hay tecla pulsada
@@ -8006,13 +8006,31 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
-				if (tecla=='m' && menu_debug_registers_current_view==1) {
+				if (tecla=='x' && menu_debug_registers_current_view==1) {
 		            menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                 }
+
+		        if (tecla=='m' && menu_debug_registers_current_view!=8) {
+                    menu_debug_follow_pc.v=0; //se deja de seguir pc
+					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
+					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+					menu_emulation_paused_on_menu=1;
+                    menu_debug_registers_change_ptr();
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                                        
+					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
+
+                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
+                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+                }                
 
 
 				//Mensaje al que apunta instruccion de condact
@@ -8268,23 +8286,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     si_ejecuta_una_instruccion=0;
 				}
 
-		        if (tecla=='t') {
-                    menu_debug_follow_pc.v=0; //se deja de seguir pc
-					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
-					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
-					menu_emulation_paused_on_menu=1;
-                    menu_debug_registers_change_ptr();
 
-                    //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                                        
-					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;
-
-                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
-                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
-					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-                }
 
 
                 //Ver stack

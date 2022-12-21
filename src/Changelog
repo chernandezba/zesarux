@@ -11,7 +11,8 @@ Added icon/F-key to open any window identified by its name (TODO: now F-keys can
 * Improvements:
 
 Improved Debug Console: better refresh, dynamic width??
-Improved Debug CPU: 
+Improved Debug CPU:
+- switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
 - added (hl), (de), (bc)
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
 - show last memory pointer when changing it
