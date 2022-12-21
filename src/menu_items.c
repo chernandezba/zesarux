@@ -33642,7 +33642,10 @@ void menu_toy_follow_mouse_overlay(void)
 
     printf("grado %d\n",grado);
 
-
+    if (longitud_linea>hipotenusa) {
+        //acortar si esta cerca
+        longitud_linea=hipotenusa;
+    }
 
     //calculo segun grado
     int final_linea_x=origen_linea_x+(longitud_linea*util_get_cosine(grado)/zoom_x/menu_gui_zoom/10000);
