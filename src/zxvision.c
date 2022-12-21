@@ -21070,8 +21070,9 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 	zxvision_new_window(&ventana,scanf_x,scanf_y,scanf_ancho,scanf_alto,
 							scanf_ancho-1,scanf_alto-2,titulo);
 
-	//No queremos que se pueda redimensionar
-	//ventana.can_be_resized=0;
+	//No queremos que se pueda redimensionar, el tamaño es suficiente para que quepa historial
+    //ademas eventos de resize habria que tratarlos debajo adecuadamente
+	ventana.can_be_resized=0;
 
     int tecla=0;
 
@@ -21085,28 +21086,69 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 
     do {
 
+        //En primera linea, input de texto
         if (ventana.cursor_line==0) {
-            tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,0,1);
+            
+            tecla=zxvision_scanf(&ventana,texto,max_length,scanf_ancho-2,1,0,1,1);
 
+            //flecha abajo
             if (tecla==10 && lineas_historial>0) {
-                //flecha abajo
-                ventana.cursor_line=1;
+                
+                zxvision_inc_cursor_line(&ventana);
                 zxvision_set_visible_cursor(&ventana);
+
+                //decimos que hay que leer tecla
+                tecla=0;
+            }
+
+            else {
+                //Si se hace click con raton, tecla es 13 tal cual        
+                printf("menu_mouse_y: %d\n",menu_mouse_y);
+                printf("tecla: %d\n",tecla);
+
+                //Se lee 13 (de zxvision_scanf, que puede ser enter o click izquierdo raton)
+                //y ademas click izquierdo
+                if (tecla==13 && mouse_left) {
+                    
+                    //Ver si apuntamos a linea 1 tal cual
+                    if (menu_mouse_y==1) {
+                        //apuntamos a mismo sitio, no hacemos nada
+                        tecla=0;
+                    }
+                    else {
+                        //apuntamos a linea historial
+                        //linea 2 es la primera del historial
+                        zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
+                        zxvision_set_visible_cursor(&ventana);
+                        zxvision_draw_window_contents(&ventana);
+
+                        menu_espera_no_tecla();
+                        //Y dejar tecla=13 tal cual para que entre por el if de abajo donde gestiona lineas historial
+                    }
+                }
             }
         }
 
-        else {
-            zxvision_draw_window_contents(&ventana);
-            tecla=zxvision_common_getkey_refresh();
+        //Gestion lineas historial
+        if (ventana.cursor_line!=0) {
+            printf("menu_mouse_y: %d\n",menu_mouse_y);
+            printf("tecla: %d\n",tecla);
 
-            //Abajo
+            zxvision_draw_window_contents(&ventana);
+
+            //Si tecla no venia definida de antes, leerla
+            if (!tecla) tecla=zxvision_common_getkey_refresh();
+
+            //Cursor abajo
             if (tecla==10) {
+                zxvision_set_visible_cursor(&ventana);
                 if (ventana.cursor_line<lineas_historial) {
                     zxvision_inc_cursor_line(&ventana);
                 }
+                tecla=0;
             }
 
-            //Arriba
+            //Cursor arriba
             if (tecla==11) {
                 if (ventana.cursor_line>0) {
                    zxvision_dec_cursor_line(&ventana);
@@ -21115,11 +21157,41 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
                     zxvision_reset_visible_cursor(&ventana);
                    }
                 }
+                tecla=0;
+            }
+
+            //Pulsado boton izquierdo raton
+            if (tecla==0 && mouse_left) {
+                //Si linea 1, volver al input
+                if (menu_mouse_y<2) {
+                    zxvision_set_cursor_line(&ventana,0);
+                    zxvision_reset_visible_cursor(&ventana);
+                    zxvision_draw_window_contents(&ventana);
+
+                    menu_espera_no_tecla();
+                    tecla=0;
+                }
+                else {
+                    //pulsado en linea historial. salir
+                    zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
+                    zxvision_draw_window_contents(&ventana);
+                
+                    menu_espera_no_tecla();
+                    tecla=13;
+                }
             }
 
             if (tecla==13) {
                 //Asignar a texto la linea seleccionada
-                strcpy(texto,textos_historial[ventana.cursor_line-1]);
+                //asegurarnos que cursor no sale del total de historial
+                int cursor_historial=ventana.cursor_line-1;
+
+                if (cursor_historial>=0 && cursor_historial<lineas_historial) {
+                    strcpy(texto,textos_historial[cursor_historial]);
+                }
+                else {
+                    debug_printf(VERBOSE_DEBUG,"Trying to set history line %d which does not exist, this should not happen!",cursor_historial);
+                }
             }
         }
 
