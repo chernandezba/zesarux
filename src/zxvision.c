@@ -21103,8 +21103,9 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 
             else {
                 //Si se hace click con raton, tecla es 13 tal cual        
-                printf("menu_mouse_y: %d\n",menu_mouse_y);
-                printf("tecla: %d\n",tecla);
+                
+                //printf("menu_mouse %dx%d\n",menu_mouse_x,menu_mouse_y);
+                //printf("tecla: %d\n",tecla);
 
                 //Se lee 13 (de zxvision_scanf, que puede ser enter o click izquierdo raton)
                 //y ademas click izquierdo
@@ -21116,14 +21117,16 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
                         tecla=0;
                     }
                     else {
-                        //apuntamos a linea historial
-                        //linea 2 es la primera del historial
-                        zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
-                        zxvision_set_visible_cursor(&ventana);
-                        zxvision_draw_window_contents(&ventana);
+                        if (menu_mouse_x>=0 && menu_mouse_x<ventana.visible_width) {
+                            //apuntamos a linea historial
+                            //linea 2 es la primera del historial
+                            zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
+                            zxvision_set_visible_cursor(&ventana);
+                            zxvision_draw_window_contents(&ventana);
 
-                        menu_espera_no_tecla();
-                        //Y dejar tecla=13 tal cual para que entre por el if de abajo donde gestiona lineas historial
+                            menu_espera_no_tecla();
+                            //Y dejar tecla=13 tal cual para que entre por el if de abajo donde gestiona lineas historial
+                        }
                     }
                 }
             }
@@ -21131,13 +21134,15 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 
         //Gestion lineas historial
         if (ventana.cursor_line!=0) {
-            printf("menu_mouse_y: %d\n",menu_mouse_y);
-            printf("tecla: %d\n",tecla);
+            //printf("menu_mouse %dx%d\n",menu_mouse_x,menu_mouse_y);
+            //printf("tecla: %d\n",tecla);
 
             zxvision_draw_window_contents(&ventana);
 
             //Si tecla no venia definida de antes, leerla
             if (!tecla) tecla=zxvision_common_getkey_refresh();
+
+            //printf("menu_mouse %dx%d\n",menu_mouse_x,menu_mouse_y);
 
             //Cursor abajo
             if (tecla==10) {
@@ -21163,21 +21168,23 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
             //Pulsado boton izquierdo raton
             if (tecla==0 && mouse_left) {
                 //Si linea 1, volver al input
-                if (menu_mouse_y<2) {
-                    zxvision_set_cursor_line(&ventana,0);
-                    zxvision_reset_visible_cursor(&ventana);
-                    zxvision_draw_window_contents(&ventana);
+                if (menu_mouse_x>=0 && menu_mouse_x<ventana.visible_width) {
+                    if (menu_mouse_y<2) {
+                        zxvision_set_cursor_line(&ventana,0);
+                        zxvision_reset_visible_cursor(&ventana);
+                        zxvision_draw_window_contents(&ventana);
 
-                    menu_espera_no_tecla();
-                    tecla=0;
-                }
-                else {
-                    //pulsado en linea historial. salir
-                    zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
-                    zxvision_draw_window_contents(&ventana);
-                
-                    menu_espera_no_tecla();
-                    tecla=13;
+                        menu_espera_no_tecla();
+                        tecla=0;
+                    }
+                    else {
+                        //pulsado en linea historial. salir
+                        zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
+                        zxvision_draw_window_contents(&ventana);
+                    
+                        menu_espera_no_tecla();
+                        tecla=13;
+                    }
                 }
             }
 
@@ -21228,6 +21235,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
 
     }
 
+    //printf("Tecla al salir: %d\n",tecla);
     //free(copia_texto_original);
 
 	zxvision_destroy_window(&ventana);
