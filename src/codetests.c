@@ -1640,9 +1640,30 @@ void codetests_sqrt(void)
     if (square!=33) {
         printf ("error calculating square root\n");
         exit(1);        
-    }         
+    }       
+
+    //printf("%d\n",util_sqrt(1547536)  );
 }
 
+void codetests_acosine(void)
+{
+    int i;
+
+    for (i=0;i<=10000;i+=1000) {
+        printf("Acosine of %d: %d\n",i,util_get_acosine(i));
+    }
+
+    if (util_get_acosine(8660)!=30) {
+        printf ("error calculating acosine\n");
+        exit(1);         
+    }
+
+    if (util_get_acosine(-349)!=92) {
+        printf ("error calculating acosine\n");
+        exit(1);         
+    }
+    
+}
 
 void codetests_main(int main_argc,char *main_argv[])
 {
@@ -1739,6 +1760,8 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning square root tests\n");
     codetests_sqrt();
 
+    printf("\nRunning acosine tests\n");
+    codetests_acosine();
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");

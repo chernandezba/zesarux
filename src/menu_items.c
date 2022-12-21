@@ -33625,29 +33625,24 @@ void menu_toy_follow_mouse_overlay(void)
 
     printf("delta %d , %d\n",delta_x,delta_y);
 
-    //limitar longitud
-    if (util_abs(delta_x)>util_abs(delta_y)) {
-        if (util_abs(delta_x) > longitud_linea) {
-            int factor=(util_abs(delta_x)*1000)/longitud_linea;
+    int cuadrado_a=delta_x*delta_x;
+    int cuadrado_b=delta_y*delta_y;
+    int cuadrados=(cuadrado_a) + (cuadrado_b);
+    int hipotenusa=util_sqrt(cuadrados);
+    printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
+    int grado=util_get_acosine((10000*delta_x)/hipotenusa);
 
-            delta_x=(delta_x*1000)/factor;
-            delta_y=(delta_y*1000)/factor;
-        }
-    }
-    else {
-        if (util_abs(delta_y) > longitud_linea) {
-            int factor=(util_abs(delta_y)*1000)/longitud_linea;
+    //desplazamiento y va al reves. esto es "para abajo"
+    if (delta_y>0) grado=360-grado;
 
-            delta_x=(delta_x*1000)/factor;
-            delta_y=(delta_y*1000)/factor;
-        }    
-    }
+    printf("grado %d\n",grado);
 
-    int final_linea_x=origen_linea_x+(delta_x/zoom_x/menu_gui_zoom);
-    int final_linea_y=origen_linea_y+(delta_y/zoom_y/menu_gui_zoom); 
 
-    int hipotenusa=util_sqrt(delta_x*delta_x + delta_y*delta_y);
-    printf("hipotenusa: %d\n",hipotenusa);
+
+
+    //calculo segun grado
+    int final_linea_x=origen_linea_x+(longitud_linea*util_get_cosine(grado)/zoom_x/menu_gui_zoom/10000);
+    int final_linea_y=origen_linea_y-(longitud_linea*util_get_sine(grado)/zoom_y/menu_gui_zoom/10000);
 
 
     if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y

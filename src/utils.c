@@ -19763,7 +19763,7 @@ int util_cosine_table[91]={
  2250,
  2079,
  1908,
- 1736,
+ 1736, //80
  1564,
  1392,
  1219,
@@ -19804,6 +19804,32 @@ int util_get_cosine(int degrees)
 int util_get_sine(int degrees)
 {
     return util_get_cosine(90-degrees);
+}
+
+//Retorna los grados para un coseno dado
+int util_get_acosine(int cosine)
+{
+    int i;
+    int acosine;
+
+    for (i=1;i<91;i++) {
+        if (util_abs(cosine)==util_cosine_table[i]) {
+            acosine=i;
+            break;
+        }
+
+        if (util_abs(cosine)>util_cosine_table[i]) {
+            acosine=i-1;
+            break;
+        }        
+    }
+
+    //Si negativo
+    if (cosine<0) {
+        acosine=180-acosine;
+    }
+
+    return acosine;
 }
 
 //calcula la raiz cuadrada con valores enteros
