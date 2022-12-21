@@ -33646,6 +33646,9 @@ void menu_toy_follow_mouse_overlay(void)
     int final_linea_x=origen_linea_x+(delta_x/zoom_x/menu_gui_zoom);
     int final_linea_y=origen_linea_y+(delta_y/zoom_y/menu_gui_zoom); 
 
+    int hipotenusa=util_sqrt(delta_x*delta_x + delta_y*delta_y);
+    printf("hipotenusa: %d\n",hipotenusa);
+
 
     if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y
     || menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y

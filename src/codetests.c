@@ -1608,6 +1608,40 @@ void codetests_scanf_history(void)
     }    
 }
 
+void codetests_sqrt(void)
+{
+
+    //primer mostrar tabla
+    int i;
+
+    for (i=0;i<=25;i++) {
+        printf("Square root of %d: %d\n",i,util_sqrt(i));
+    }
+
+    //luego comprobar algunos valores exactos
+    int square;
+
+    square=util_sqrt(25);
+    printf("Square of 25 is %d\n",square);
+    if (square!=5) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }
+
+    square=util_sqrt(144);
+    printf("Square of 144 is %d\n",square);
+    if (square!=12) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }   
+
+    square=util_sqrt(1089);
+    printf("Square of 1089 is %d\n",square);
+    if (square!=33) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }         
+}
 
 
 void codetests_main(int main_argc,char *main_argv[])
@@ -1701,6 +1735,10 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning zxvision scanf history tests\n");
     codetests_scanf_history();
+
+    printf("\nRunning square root tests\n");
+    codetests_sqrt();
+
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");

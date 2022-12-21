@@ -19806,6 +19806,20 @@ int util_get_sine(int degrees)
     return util_get_cosine(90-degrees);
 }
 
+//calcula la raiz cuadrada con valores enteros
+int util_sqrt(int number)
+{
+    int resultado=0;
+    while (resultado<=number) {
+        if (resultado*resultado==number) return resultado; //exacto
+
+        if (resultado*resultado>number) return resultado-1; //nos pasamos. restar 1 para no esceder
+
+        resultado++;
+    }
+
+    return resultado;
+}
 
 //Dice si la direccion de memoria dir contiene los bytes de la lista. 
 int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items)
