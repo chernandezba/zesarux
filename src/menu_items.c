@@ -33599,16 +33599,14 @@ void menu_toy_follow_mouse_overlay(void)
 
     zxvision_window *w=menu_toy_follow_mouse_window;
 
-
-    //temp
     printf("mouse    %d x %d\n",mouse_x,mouse_y);
 
     int origen_linea_x=(w->visible_width)*menu_char_width/2;
-    int origen_linea_y=(w->visible_height)*menu_char_height/2;
+    int origen_linea_y=(w->visible_height-1)*menu_char_height/2;
     int longitud_linea;
 
     if (w->visible_width < w->visible_height) longitud_linea=(w->visible_width)*menu_char_width;
-    else longitud_linea=(w->visible_height)*menu_char_height;
+    else longitud_linea=(w->visible_height-1)*menu_char_height;
 
     longitud_linea -=16;
 
@@ -33630,13 +33628,19 @@ void menu_toy_follow_mouse_overlay(void)
     int cuadrados=(cuadrado_a) + (cuadrado_b);
     int hipotenusa=util_sqrt(cuadrados);
     printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
-    int grado=util_get_acosine((10000*delta_x)/hipotenusa);
+    int grado;
+
+    if (hipotenusa==0) {
+        grado=0;
+    }
+    else {
+        grado=util_get_acosine((10000*delta_x)/hipotenusa);
+    }
 
     //desplazamiento y va al reves. esto es "para abajo"
     if (delta_y>0) grado=360-grado;
 
     printf("grado %d\n",grado);
-
 
 
 
