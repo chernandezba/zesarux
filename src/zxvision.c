@@ -8943,6 +8943,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"windowlist",menu_display_window_list},
     {"hilowconvertaudio",menu_hilow_convert_audio},
     {"visualfloppy",menu_visual_floppy},
+    {"toyfollowmouse",menu_toy_follow_mouse},
 
 	{"",NULL} //NO BORRAR ESTA!!
 };

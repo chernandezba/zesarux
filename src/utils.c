@@ -19669,6 +19669,12 @@ int util_abs(int v)
     else return v;
 }
 
+int util_sign(int v)
+{
+    if (v<0) return -1;
+    else return +1;
+}
+
 
 int util_cosine_table[91]={
 

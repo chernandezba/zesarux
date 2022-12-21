@@ -4317,7 +4317,6 @@ void menu_audio_draw_sound_wave(void)
 			zxvision_print_string_defaults_fillspc(menu_audio_draw_sound_wave_window,1,1,buffer_texto_medio);
 
 
-	
 
 			//Hacer decaer el volumen
 			menu_waveform_previous_volume=menu_decae_dec_valor_volumen(menu_waveform_previous_volume,menu_audio_draw_sound_wave_volumen_escalado);
@@ -26129,6 +26128,9 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
 
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
+            "Toy Follow Mouse","Juguete Sigue Ratón","Joguina Segueix Ratolí");
+        
 
 #ifdef TIMESENSORS_ENABLED
 
@@ -33570,6 +33572,192 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 }
 
+
+
+zxvision_window *menu_toy_follow_mouse_window;
+
+
+void menu_toy_follow_mouse_overlay(void)
+{
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_toy_follow_mouse_window->is_minimized) return;  
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
+
+    zxvision_window *w=menu_toy_follow_mouse_window;
+
+
+    //temp
+    printf("mouse    %d x %d\n",mouse_x,mouse_y);
+
+    int origen_linea_x=30;
+    int origen_linea_y=30;
+    int longitud_linea=200;
+
+    //this window
+    int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
+    int this_win_y=(w->y)*menu_char_height*menu_gui_zoom*zoom_y+((origen_linea_y+menu_char_height)*zoom_y*menu_gui_zoom); //menu_char_height de la linea titulo
+    printf("this win %d x %d\n",this_win_x,this_win_y);
+    int delta_x=mouse_x-this_win_x;
+    int delta_y=mouse_y-this_win_y;
+
+    printf("delta %d , %d\n",delta_x,delta_y);
+
+    //limitar longitud
+    if (util_abs(delta_x)>util_abs(delta_y)) {
+        if (util_abs(delta_x) > longitud_linea) {
+            int factor=(util_abs(delta_x)*1000)/longitud_linea;
+
+            delta_x=(delta_x*1000)/factor;
+            delta_y=(delta_y*1000)/factor;
+        }
+    }
+    else {
+        if (util_abs(delta_y) > longitud_linea) {
+            int factor=(util_abs(delta_y)*1000)/longitud_linea;
+
+            delta_x=(delta_x*1000)/factor;
+            delta_y=(delta_y*1000)/factor;
+        }    
+    }
+
+    int final_linea_x=origen_linea_x+(delta_x/zoom_x/menu_gui_zoom);
+    int final_linea_y=origen_linea_y+(delta_y/zoom_y/menu_gui_zoom); 
+
+
+    zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
+    zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,10,10,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+                
+
+
+    //Mostrar colores
+    zxvision_draw_window_contents(menu_toy_follow_mouse_window);
+    
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_toy_follow_mouse;
+
+
+void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_toy_follow_mouse;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	zxvision_delete_window_if_exists(ventana);	
+
+
+	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+	if (!util_find_window_geometry("toyfollowmouse",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		ancho_ventana=30;
+		alto_ventana=20;
+
+        xventana=menu_center_x()-ancho_ventana/2;
+        yventana=menu_center_y()-alto_ventana/2;        
+	}
+
+        
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Toy Follow Mouse",
+        "toyfollowmouse",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+	ventana->can_be_backgrounded=1;
+         
+
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_toy_follow_mouse_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+	set_menu_overlay_function(menu_toy_follow_mouse_overlay);
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();		
+
+
+        switch (tecla) {
+
+            case 11:
+                //arriba
+                //blablabla          
+            break;
+
+
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;					
+        }
+
+
+    } while (salir==0);
+
+
+	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
+	zxvision_set_window_overlay_from_current(ventana);		
+
+    //restauramos modo normal de texto de menu
+    set_menu_overlay_function(normal_overlay_texto_menu);
+
+
+	
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
 
 
 
