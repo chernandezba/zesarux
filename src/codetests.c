@@ -1608,41 +1608,76 @@ void codetests_scanf_history(void)
     }    
 }
 
+int codetests_sqrt_aux(int valor)
+{
+    int result_type;
+
+    int square=util_sqrt(valor,&result_type);
+    printf("Square of %d is %d\n",valor,square);  
+
+    //Tipo resultado: 0 exacto, 1 aproximado, -1 valor negativo
+    if (result_type==0) printf("Exact\n");
+    else if (result_type==1) printf("Aproximate\n");
+    else if (result_type==-1) printf("Negative error\n");
+    printf("\n");
+
+    return square;
+}
+
 void codetests_sqrt(void)
 {
 
     //primer mostrar tabla
     int i;
 
-    for (i=0;i<=25;i++) {
-        printf("Square root of %d: %d\n",i,util_sqrt(i));
+    for (i=0;i<=100;i++) {
+        codetests_sqrt_aux(i);
+        //printf("Square root of %d: %d\n",i,util_sqrt(i));
     }
 
     //luego comprobar algunos valores exactos
     int square;
 
-    square=util_sqrt(25);
-    printf("Square of 25 is %d\n",square);
+    square=codetests_sqrt_aux(25);
     if (square!=5) {
         printf ("error calculating square root\n");
         exit(1);        
     }
 
-    square=util_sqrt(144);
-    printf("Square of 144 is %d\n",square);
+    square=codetests_sqrt_aux(144);
     if (square!=12) {
         printf ("error calculating square root\n");
         exit(1);        
     }   
 
-    square=util_sqrt(1089);
-    printf("Square of 1089 is %d\n",square);
+    square=codetests_sqrt_aux(1089);
     if (square!=33) {
         printf ("error calculating square root\n");
         exit(1);        
+    }     
+
+    //Y una prueba sin parametro de tipo resultado
+    square=util_sqrt(10000,NULL);
+    printf("Square of 10000 is %d\n",square);  
+    if (square!=100) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    } 
+    printf("\n");       
+
+    //Y prueba con valor negativo
+    int result_type;
+    square=util_sqrt(-1,&result_type);
+    printf("Square of -1 is %d\n",square);  
+    if (result_type==-1) {
+        printf("Ok negative no result\n");
+    }
+    else {
+        printf ("error returning negative square root\n");
+        exit(1);        
     }       
 
-    //printf("%d\n",util_sqrt(1547536)  );
+
 }
 
 void codetests_acosine(void)

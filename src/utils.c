@@ -19832,8 +19832,8 @@ int util_get_acosine(int cosine)
     return acosine;
 }
 
-//calcula la raiz cuadrada con valores enteros
-int util_sqrt(int number)
+//Antiguo algoritmo raiz cuadrada que recorre todos los elementos
+int old_util_sqrt(int number)
 {
     int resultado=0;
     while (resultado<=number) {
@@ -19845,6 +19845,86 @@ int util_sqrt(int number)
     }
 
     return resultado;
+}
+
+//calcula la raiz cuadrada con valores enteros
+//Algoritmo mejorado que va dividiendo conjunto total/2 cada vez, siendo mucho mas rapido
+//Por ejemplo, 13 iteraciones para calcular raiz de 10000, mientras con el antiguo, serian 100 iteraciones
+//(con el antiguo siempre son X iteraciones siendo X el resultado de la raiz cuadrada)
+//Tipo resultado: 0 exacto, 1 aproximado, -1 valor negativo
+//Si result_type==NULL, no guardar tipo resultado
+int util_sqrt(int number,int *result_type)
+{
+    //printf("-------\n");
+    int resultado;
+    int final=number;
+    int inicio=0;
+
+    int result_type_when_null;
+
+    //Cuando parametro es NULL, lo cambiamos para que apunte a una variable local que no uso
+    if (result_type==NULL) {
+        result_type=&result_type_when_null;
+    }
+
+    while (inicio<=final) {
+        //printf("Inicio %d final %d\n",inicio,final);
+
+        //Si hay dos
+
+        int medio=(inicio+final)/2;
+
+        int cuadrado=medio*medio;
+
+        if (cuadrado==number) {
+            //printf("Exact result #1\n");
+            *result_type=0;
+            return medio; //exacto
+        }
+
+        int delta=final-inicio;
+        //si hay dos o 1 numeros en nuestro conjunto, hay que optar por el primero o segundo, sin que exceda
+        if (delta<=1) {
+            
+            if (final*final==number) {
+                //printf("Exact result #2\n");  //creo que esta solucion nunca se da
+                *result_type=0;
+                return final;
+            }
+            else {
+                if (inicio*inicio==number) {
+                    //printf("Exact result #3\n"); //creo que esta solucion nunca se da
+                    *result_type=0;
+                }
+                else {
+                    //printf("Aproximate result\n");
+                    *result_type=1;
+                }
+
+                return inicio;
+            }
+        }
+
+        if (cuadrado>number) {
+            //Nos quedamos con la parte izquierda
+            //printf("izq\n");
+            final=medio;         
+        }
+
+        else {
+            //cuadrado<number
+            //Nos quedamos con la parte derecha
+            //printf("der\n");
+            inicio=medio;               
+        }
+
+
+    }
+
+    //realmente por aqui solo deberiamos salir si inicio>final, o sea , si final es negativo
+    //printf("Fallback return\n");
+    *result_type=-1;
+    return inicio;
 }
 
 //Dice si la direccion de memoria dir contiene los bytes de la lista. 

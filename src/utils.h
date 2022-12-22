@@ -946,7 +946,7 @@ extern int util_sign(int v);
 extern int util_get_cosine(int degrees);
 extern int util_get_sine(int degrees);
 extern int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items);
-extern int util_sqrt(int number);
+extern int util_sqrt(int number,int *result_type);
 extern int util_get_acosine(int cosine);
 
 extern void util_print_minutes_seconds(int segundos_totales, char *texto);

@@ -33588,8 +33588,8 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int cuadrado_a=delta_x*delta_x;
     int cuadrado_b=delta_y*delta_y;
     int cuadrados=(cuadrado_a) + (cuadrado_b);
-    int hipotenusa=util_sqrt(cuadrados);
-    printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
+    int hipotenusa=util_sqrt(cuadrados,NULL);
+    //printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
     int grado;
 
     if (hipotenusa==0) {
