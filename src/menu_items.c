@@ -33585,13 +33585,11 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int *last_final_linea_x,int *last_final_linea_y,int max_tamanyo_usable)
 {
 
-    //printf("Deltas %d %d\n",delta_x,delta_y);
+    //printf("\nDeltas %d %d\n",delta_x,delta_y);
     z80_64bit cuadrado_a=delta_x*delta_x;
     z80_64bit cuadrado_b=delta_y*delta_y;
     z80_64bit cuadrados=(cuadrado_a) + (cuadrado_b);
     int hipotenusa=util_sqrt(cuadrados,NULL);
-
-    //int hipotenusa=old_util_sqrt(cuadrados);
 
     //printf("cuadrados %lld %lld. suma cuadrados: %lld hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
     int grado;
@@ -33620,9 +33618,12 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
 
     int longitud_final_linea=max_radio_ojo-radio_iris-grosor_iris;
 
-    if (longitud_final_linea>hipotenusa) {
+    //TODO: esto no va fino en caso de zoom_x!=zoom_y
+    //Tampoco la distancia esta bien calculada, creo... habria que considerar hipotenusas y demas, y para el caso
+    //de algo que es solo un juguete, no hace falta complicarse mas
+    if (longitud_final_linea>hipotenusa/zoom_x/menu_gui_zoom) {
         //acortar si esta cerca
-        longitud_final_linea=hipotenusa;
+        longitud_final_linea=hipotenusa/zoom_x/menu_gui_zoom;
     }
 
     //calculo segun grado
@@ -33725,6 +33726,7 @@ void menu_toy_follow_mouse_overlay(void)
     
 
     int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
+    
     int delta_x=mouse_x-this_win_x;
     
     //printf("1 this win %d x %d\n",this_win_x,this_win_y);
