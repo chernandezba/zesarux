@@ -19853,12 +19853,17 @@ int old_util_sqrt(int number)
 //(con el antiguo siempre son X iteraciones siendo X el resultado de la raiz cuadrada)
 //Tipo resultado: 0 exacto, 1 aproximado, -1 valor negativo
 //Si result_type==NULL, no guardar tipo resultado
-int util_sqrt(int number,int *result_type)
+//
+//Nota para mi yo del futuro (o cualquiera que lea esto):
+//Podria haber usado la funcion sqrt que utiliza libreria math del sistema (y probablemente directo a cpu),
+//pero quiero hacerlo asi, asi aprendo un algoritmo simple
+//Ademas, no necesito decimales (y si necesito algo de precision, podria usar un valor de entrada multiplicado por 10000 por ejemplo)
+z80_64bit util_sqrt(z80_64bit number,int *result_type)
 {
     //printf("-------\n");
-    int resultado;
-    int final=number;
-    int inicio=0;
+    z80_64bit resultado;
+    z80_64bit final=number;
+    z80_64bit inicio=0;
 
     int result_type_when_null;
 
@@ -19872,9 +19877,9 @@ int util_sqrt(int number,int *result_type)
 
         //Si hay dos
 
-        int medio=(inicio+final)/2;
+        z80_64bit medio=(inicio+final)/2;
 
-        int cuadrado=medio*medio;
+        z80_64bit cuadrado=medio*medio;
 
         if (cuadrado==number) {
             //printf("Exact result #1\n");
@@ -19882,7 +19887,7 @@ int util_sqrt(int number,int *result_type)
             return medio; //exacto
         }
 
-        int delta=final-inicio;
+        z80_64bit delta=final-inicio;
         //si hay dos o 1 numeros en nuestro conjunto, hay que optar por el primero o segundo, sin que exceda
         if (delta<=1) {
             

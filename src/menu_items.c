@@ -33585,11 +33585,13 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int *last_final_linea_x,int *last_final_linea_y,int max_tamanyo_usable)
 {
 
+    printf("Deltas %d %d\n",delta_x,delta_y);
     int cuadrado_a=delta_x*delta_x;
     int cuadrado_b=delta_y*delta_y;
     int cuadrados=(cuadrado_a) + (cuadrado_b);
     int hipotenusa=util_sqrt(cuadrados,NULL);
-    //printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
+    //int hipotenusa=old_util_sqrt(cuadrados);
+    printf("cuadrados %d %d. suma cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
     int grado;
 
     if (hipotenusa==0) {
@@ -33603,8 +33605,6 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     if (delta_y>0) grado=360-grado;
 
     printf("grado %d\n",grado);
-
-
 
 
     int max_radio_ojo=max_tamanyo_usable/2;
@@ -33627,8 +33627,8 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int final_linea_x=origen_linea_x+(longitud_final_linea*util_get_cosine(grado)/10000);
     int final_linea_y=origen_linea_y-(longitud_final_linea*util_get_sine(grado)/10000);
 
-    //temp
-    printf("x %d max_radio_ojo %d\n",origen_linea_x,max_radio_ojo);
+    
+    //printf("x %d max_radio_ojo %d\n",origen_linea_x,max_radio_ojo);
 
 
     if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y) {
@@ -33698,7 +33698,7 @@ void menu_toy_follow_mouse_overlay(void)
     //Para que quepan los dos ojos, dividir entre 3
     int origen_linea_x=(w->visible_width)*menu_char_width/4;
 
-    printf("Ancho: %d (%d) origen_x: %d\n",w->visible_width,(w->visible_width)*menu_char_width,origen_linea_x);
+    //printf("Ancho: %d (%d) origen_x: %d\n",w->visible_width,(w->visible_width)*menu_char_width,origen_linea_x);
 
     int origen_linea_y=(w->visible_height-1)*menu_char_height/2;
     int max_tamanyo_usable;
@@ -33722,8 +33722,8 @@ void menu_toy_follow_mouse_overlay(void)
     int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
     int delta_x=mouse_x-this_win_x;
     
-    printf("1 this win %d x %d\n",this_win_x,this_win_y);
-    printf("1 delta %d , %d\n",delta_x,delta_y);
+    //printf("1 this win %d x %d\n",this_win_x,this_win_y);
+    //printf("1 delta %d , %d\n",delta_x,delta_y);
 
     
 
@@ -33738,8 +33738,8 @@ void menu_toy_follow_mouse_overlay(void)
     this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
     delta_x=mouse_x-this_win_x;    
 
-    printf("2 this win %d x %d\n",this_win_x,this_win_y);
-    printf("2 delta %d , %d\n",delta_x,delta_y);
+    //printf("2 this win %d x %d\n",this_win_x,this_win_y);
+    //printf("2 delta %d , %d\n",delta_x,delta_y);
 
 
     menu_toy_follow_mouse_draw_one_eye(w,origen_linea_x,origen_linea_y,delta_x,delta_y,
