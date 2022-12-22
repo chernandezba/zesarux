@@ -33585,8 +33585,6 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int *last_final_linea_x,int *last_final_linea_y,int max_tamanyo_usable)
 {
 
-
-
     int cuadrado_a=delta_x*delta_x;
     int cuadrado_b=delta_y*delta_y;
     int cuadrados=(cuadrado_a) + (cuadrado_b);
@@ -33618,11 +33616,6 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
 
     
 
-    //Algo menos de la mitad
-    //int max_longitud_hasta_iris=(max_tamanyo_usable*3)/8;
-
-    //int max_longitud_hasta_iris=max_radio_ojo;
-
     int longitud_final_linea=max_radio_ojo-radio_iris-grosor_iris;
 
     if (longitud_final_linea>hipotenusa) {
@@ -33636,26 +33629,15 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
 
     //temp
     printf("x %d max_radio_ojo %d\n",origen_linea_x,max_radio_ojo);
-    //zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,max_radio_ojo,max_radio_ojo,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
-    //zxvision_putpixel(w,0,0,2);
-    //zxvision_putpixel(w,origen_linea_x,0,2);    
 
-    if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y
-    //|| menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
-    ) {
+
+    if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y) {
         printf("Redrawing\n");
 
-        //Erase last
-        
-        //zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
-        //    menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
-
-
-
         //El iris
+        //Erase last
         menu_toy_follow_mouse_draw_iris(w,*last_final_linea_x,*last_final_linea_y,radio_iris,ESTILO_GUI_PAPEL_NORMAL);
 
-        //zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
         menu_toy_follow_mouse_draw_iris(w,final_linea_x,final_linea_y,radio_iris,ESTILO_GUI_TINTA_NORMAL);
         
         //El ojo
@@ -33692,8 +33674,7 @@ int menu_toy_follow_last_eye1_y=0;
 int menu_toy_follow_last_eye2_x=0;
 int menu_toy_follow_last_eye2_y=0;
 
-//int menu_toy_follow_last_origen_linea_x=0;
-//int menu_toy_follow_last_origen_linea_y=0;
+
 
 void menu_toy_follow_mouse_overlay(void)
 {
@@ -33707,14 +33688,12 @@ void menu_toy_follow_mouse_overlay(void)
     if (menu_toy_follow_mouse_window->is_minimized) return;  
 
 
-    //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
 
     zxvision_window *w=menu_toy_follow_mouse_window;
 
     printf("mouse    %d x %d\n",mouse_x,mouse_y);
 
-    int radio_ojo=10;
+    
 
     //Para que quepan los dos ojos, dividir entre 3
     int origen_linea_x=(w->visible_width)*menu_char_width/4;
@@ -33724,23 +33703,15 @@ void menu_toy_follow_mouse_overlay(void)
     int origen_linea_y=(w->visible_height-1)*menu_char_height/2;
     int max_tamanyo_usable;
 
-    //if (w->visible_width < w->visible_height) max_tamanyo_usable=(w->visible_width)*menu_char_width;
-    //else max_tamanyo_usable=(w->visible_height-1)*menu_char_height;
 
     max_tamanyo_usable=(w->visible_width)*menu_char_width;
 
-    //max_tamanyo_usable -=16;
 
     //para que quepan dos ojos
     max_tamanyo_usable /=2;
 
     if (max_tamanyo_usable<10) max_tamanyo_usable=10;
 
-    //int max_radio_ojo=max_tamanyo_usable/2; 
-    //Algo menos de la mitad
-    //int max_longitud_hasta_iris=(max_tamanyo_usable*3)/8;
-
-    
 
     //this window
     
@@ -33751,89 +33722,31 @@ void menu_toy_follow_mouse_overlay(void)
     int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
     int delta_x=mouse_x-this_win_x;
     
-    printf("this win %d x %d\n",this_win_x,this_win_y);
-    printf("delta %d , %d\n",delta_x,delta_y);
+    printf("1 this win %d x %d\n",this_win_x,this_win_y);
+    printf("1 delta %d , %d\n",delta_x,delta_y);
 
-    int resta_radio=10; //para que los ojos no esten pegados
+    
 
     menu_toy_follow_mouse_draw_one_eye(w,origen_linea_x,origen_linea_y,delta_x,delta_y,
         &menu_toy_follow_last_eye1_x,&menu_toy_follow_last_eye1_y,max_tamanyo_usable);
+
+
 
     //segundo ojo
     origen_linea_x +=max_tamanyo_usable;
 
     this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
     delta_x=mouse_x-this_win_x;    
+
+    printf("2 this win %d x %d\n",this_win_x,this_win_y);
+    printf("2 delta %d , %d\n",delta_x,delta_y);
+
+
     menu_toy_follow_mouse_draw_one_eye(w,origen_linea_x,origen_linea_y,delta_x,delta_y,
         &menu_toy_follow_last_eye2_x,&menu_toy_follow_last_eye2_y,max_tamanyo_usable);
-    /*
-
-    int cuadrado_a=delta_x*delta_x;
-    int cuadrado_b=delta_y*delta_y;
-    int cuadrados=(cuadrado_a) + (cuadrado_b);
-    int hipotenusa=util_sqrt(cuadrados);
-    printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
-    int grado;
-
-    if (hipotenusa==0) {
-        grado=0;
-    }
-    else {
-        grado=util_get_acosine((10000*delta_x)/hipotenusa);
-    }
-
-    //desplazamiento y va al reves. esto es "para abajo"
-    if (delta_y>0) grado=360-grado;
-
-    printf("grado %d\n",grado);
-
-    int longitud_final_linea=max_longitud_hasta_iris;
-
-    if (longitud_final_linea>hipotenusa) {
-        //acortar si esta cerca
-        longitud_final_linea=hipotenusa;
-    }
-
-    //calculo segun grado
-    int final_linea_x=origen_linea_x+(longitud_final_linea*util_get_cosine(grado)/10000);
-    int final_linea_y=origen_linea_y-(longitud_final_linea*util_get_sine(grado)/10000);
-
-    
-
-    if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y
-    //|| menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
-    ) {
-        printf("Redrawing\n");
-
-        //Erase last
-        
-        //zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
-        //    menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
-
-        //El iris
-        menu_toy_follow_mouse_draw_iris(w,menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,radio_ojo,ESTILO_GUI_PAPEL_NORMAL);
-
-        //zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
-        menu_toy_follow_mouse_draw_iris(w,final_linea_x,final_linea_y,radio_ojo,ESTILO_GUI_TINTA_NORMAL);
-        
-        //El ojo
-        
-        int radio_ojo;
-
-        for (radio_ojo=max_radio_ojo;radio_ojo>=max_radio_ojo-5;radio_ojo--) {
-            zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,radio_ojo,radio_ojo,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
-        }
+  
 
 
-    }
-                
-    menu_toy_follow_last_final_linea_x=final_linea_x;
-    menu_toy_follow_last_final_linea_y=final_linea_y;
-    //menu_toy_follow_last_origen_linea_x=origen_linea_x;
-    //menu_toy_follow_last_origen_linea_y=origen_linea_y;    
-    */
-
-    //Mostrar colores
     zxvision_draw_window_contents(menu_toy_follow_mouse_window);
     
 }
