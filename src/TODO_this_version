@@ -220,3 +220,15 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 *pulsar teclas y llega a maquina emulada
 
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-en debug cpu, si instruccion por ejemplo:
+
+ld a,(16384) 
+
+que muestre contenido de dirección 16384.
+
+donde mostrarlo? en teoria mostrar como se hace el resaltado de registros, al mover el cursor, quizá ponerlo 
+debajo de (hl),(de) y (bc)
+->completar. de momento solo dos opcodes. usamos MOD_READ_NN_MEM8 y MOD_READ_NN_MEM16
+
+-assemble: ld hl,(68H) no interpreta el 68H como hexadecimal

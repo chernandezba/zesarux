@@ -16,6 +16,7 @@ Improved Debug Console: better refresh, dynamic width??
 Improved Debug CPU:
 - switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
 - added (hl), (de), (bc)
+- added (nn) when selecting a opcode like: ld reg,(nn)
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
 - show last memory pointer when changing it
 

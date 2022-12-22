@@ -1243,6 +1243,10 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_REG_DE_MEM      (1<<22)
 #define MOD_REG_BC_MEM      (1<<23)
 
+//Para (NN) byte y 16 bits, lecturas
+#define MOD_READ_NN_MEM8     (1<<24)
+#define MOD_READ_NN_MEM16    (1<<25)
+
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
     //0 NOP
@@ -1253,10 +1257,10 @@ z80_long_int debug_modified_registers_list[256]={
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_DE,MOD_REG_E|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_E,MOD_REG_A|MOD_REG_F,
     //32 JR NZ,DIS
     0,MOD_REG_HL,0,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
-    0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
     //48 JR NC,DIS
     0,MOD_REG_SP,0,MOD_REG_SP,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_F,
-    0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
+    0,MOD_REG_HL|MOD_REG_F,MOD_REG_A|MOD_READ_NN_MEM8,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
     //64 LD B,B
     MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,
     MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,
@@ -1702,18 +1706,38 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
             break;               
 
     
-
             case 14:
-                sprintf (textoregistros,"TSTATE %d",t_estados);
+                //Aqui mostrar referencias a ld xx,(NN) y similares
+                if (registros_modificados & MOD_READ_NN_MEM8) {
+                    //puntero
+                    z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
+                    
+                    sprintf (textoregistros,"(%04X) %02X",puntero,peek_byte_z80_moto(puntero));
+                }
+
+                else if (registros_modificados & MOD_READ_NN_MEM16) {
+                    //puntero
+                    z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
+
+                    sprintf (textoregistros,"(%04X) %02X%02X",puntero,
+                        peek_byte_z80_moto(puntero+1),peek_byte_z80_moto(puntero));
+                }
+                else {
+
+                }
             break;
 
             case 15:
+                sprintf (textoregistros,"TSTATE %d",t_estados);
+            break;
+
             case 16:
             case 17:
             case 18:
+            case 19:
                 //Por defecto, cad
                 //Mostrar en una linea, dos bloques de memoria mapeadas
-                offset_bloque=linea-15;  //este 15 debe coincidir con el primer case de este bloque
+                offset_bloque=linea-16;  //este 16 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
                 
                 offset_bloque *=2; //2 bloques por cada linea
