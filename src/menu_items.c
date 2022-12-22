@@ -33585,13 +33585,15 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     int *last_final_linea_x,int *last_final_linea_y,int max_tamanyo_usable)
 {
 
-    printf("Deltas %d %d\n",delta_x,delta_y);
-    int cuadrado_a=delta_x*delta_x;
-    int cuadrado_b=delta_y*delta_y;
-    int cuadrados=(cuadrado_a) + (cuadrado_b);
+    //printf("Deltas %d %d\n",delta_x,delta_y);
+    z80_64bit cuadrado_a=delta_x*delta_x;
+    z80_64bit cuadrado_b=delta_y*delta_y;
+    z80_64bit cuadrados=(cuadrado_a) + (cuadrado_b);
     int hipotenusa=util_sqrt(cuadrados,NULL);
+
     //int hipotenusa=old_util_sqrt(cuadrados);
-    printf("cuadrados %d %d. suma cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
+
+    //printf("cuadrados %lld %lld. suma cuadrados: %lld hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
     int grado;
 
     if (hipotenusa==0) {
@@ -33604,7 +33606,7 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     //desplazamiento y va al reves. esto es "para abajo"
     if (delta_y>0) grado=360-grado;
 
-    printf("grado %d\n",grado);
+    //printf("grado %d\n",grado);
 
 
     int max_radio_ojo=max_tamanyo_usable/2;
@@ -33632,7 +33634,10 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
 
 
     if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y) {
-        printf("Redrawing\n");
+
+        //Muestro el contador segundo por si salen muchos seguidos y hace scroll para que se vea la actividad
+        //En caso contrario seria el mismo mensaje repetido y por tanto no se veria scroll ni movimiento
+        debug_printf(VERBOSE_DEBUG,"Redrawing eye. Seconds counter: %d",contador_segundo);
 
         //El iris
         //Erase last
@@ -33691,7 +33696,7 @@ void menu_toy_follow_mouse_overlay(void)
 
     zxvision_window *w=menu_toy_follow_mouse_window;
 
-    printf("mouse    %d x %d\n",mouse_x,mouse_y);
+    //printf("mouse    %d x %d\n",mouse_x,mouse_y);
 
     
 
