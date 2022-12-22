@@ -26129,7 +26129,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-            "Toy Follow Mouse","Juguete Sigue Ratón","Joguina Segueix Ratolí");
+            "Toy Xeyes","Juguete Xeyes","Joguina Xeyes");
         
 
 #ifdef TIMESENSORS_ENABLED
@@ -33572,56 +33572,20 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_toy_follow_mouse_draw_iris(zxvision_window *w,int x,int y,int radio,int color)
+{
+    int i;
 
+    for (i=0;i<=radio;i++) {
+        zxvision_draw_ellipse(w,x,y,i,i,color,zxvision_putpixel,360);
+    }
+}
 
-zxvision_window *menu_toy_follow_mouse_window;
-
-int menu_toy_follow_last_final_linea_x=0;
-int menu_toy_follow_last_final_linea_y=0;
-
-int menu_toy_follow_last_origen_linea_x=0;
-int menu_toy_follow_last_origen_linea_y=0;
-
-void menu_toy_follow_mouse_overlay(void)
+void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,int origen_linea_y,int delta_x,int delta_y,
+    int *last_final_linea_x,int *last_final_linea_y,int max_tamanyo_usable)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
-
-    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
-
-    //si ventana minimizada, no ejecutar todo el codigo de overlay
-    if (menu_toy_follow_mouse_window->is_minimized) return;  
-
-
-    //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
-
-    zxvision_window *w=menu_toy_follow_mouse_window;
-
-    printf("mouse    %d x %d\n",mouse_x,mouse_y);
-
-    int origen_linea_x=(w->visible_width)*menu_char_width/2;
-    int origen_linea_y=(w->visible_height-1)*menu_char_height/2;
-    int longitud_linea;
-
-    if (w->visible_width < w->visible_height) longitud_linea=(w->visible_width)*menu_char_width;
-    else longitud_linea=(w->visible_height-1)*menu_char_height;
-
-    longitud_linea -=16;
-
-    
-
-    if (longitud_linea<10) longitud_linea=10;
-
-    //this window
-    int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
-    int this_win_y=(w->y)*menu_char_height*menu_gui_zoom*zoom_y+((origen_linea_y+menu_char_height)*zoom_y*menu_gui_zoom); //menu_char_height de la linea titulo
-    printf("this win %d x %d\n",this_win_x,this_win_y);
-    int delta_x=mouse_x-this_win_x;
-    int delta_y=mouse_y-this_win_y;
-
-    printf("delta %d , %d\n",delta_x,delta_y);
 
     int cuadrado_a=delta_x*delta_x;
     int cuadrado_b=delta_y*delta_y;
@@ -33642,37 +33606,232 @@ void menu_toy_follow_mouse_overlay(void)
 
     printf("grado %d\n",grado);
 
-    if (longitud_linea>hipotenusa) {
+
+
+
+    int max_radio_ojo=max_tamanyo_usable/2;
+
+    int grosor_iris=5;
+
+    //radio iris segun ojo
+    int radio_iris=max_radio_ojo/4;
+
+    
+
+    //Algo menos de la mitad
+    //int max_longitud_hasta_iris=(max_tamanyo_usable*3)/8;
+
+    //int max_longitud_hasta_iris=max_radio_ojo;
+
+    int longitud_final_linea=max_radio_ojo-radio_iris-grosor_iris;
+
+    if (longitud_final_linea>hipotenusa) {
         //acortar si esta cerca
-        longitud_linea=hipotenusa;
+        longitud_final_linea=hipotenusa;
     }
 
     //calculo segun grado
-    int final_linea_x=origen_linea_x+(longitud_linea*util_get_cosine(grado)/zoom_x/menu_gui_zoom/10000);
-    int final_linea_y=origen_linea_y-(longitud_linea*util_get_sine(grado)/zoom_y/menu_gui_zoom/10000);
+    int final_linea_x=origen_linea_x+(longitud_final_linea*util_get_cosine(grado)/10000);
+    int final_linea_y=origen_linea_y-(longitud_final_linea*util_get_sine(grado)/10000);
 
+    //temp
+    printf("x %d max_radio_ojo %d\n",origen_linea_x,max_radio_ojo);
+    //zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,max_radio_ojo,max_radio_ojo,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+    //zxvision_putpixel(w,0,0,2);
+    //zxvision_putpixel(w,origen_linea_x,0,2);    
 
-    if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y
-    || menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
+    if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y
+    //|| menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
     ) {
         printf("Redrawing\n");
 
         //Erase last
         
-        zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
-            menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
+        //zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
+        //    menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
+
+
+
+        //El iris
+        menu_toy_follow_mouse_draw_iris(w,*last_final_linea_x,*last_final_linea_y,radio_iris,ESTILO_GUI_PAPEL_NORMAL);
+
+        //zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
+        menu_toy_follow_mouse_draw_iris(w,final_linea_x,final_linea_y,radio_iris,ESTILO_GUI_TINTA_NORMAL);
         
+        //El ojo
+        //Ligera elipse
+        
+        int radio_ojo;
 
-        zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
-        zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,10,10,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
 
-        menu_toy_follow_last_final_linea_x=final_linea_x;
-        menu_toy_follow_last_final_linea_y=final_linea_y;
-        menu_toy_follow_last_origen_linea_x=origen_linea_x;
-        menu_toy_follow_last_origen_linea_y=origen_linea_y;
+        //En incrementos de 0.1 para poder rellenar la elipse
+        max_radio_ojo *=10;
+
+        //max_radio_ojo-1 para no llegar al marco de la ventana
+        for (radio_ojo=max_radio_ojo-1;radio_ojo>max_radio_ojo-grosor_iris*10;radio_ojo--) {
+
+            //Ligeramente alargado
+            int radio_vertical=(radio_ojo*5)/3;
+            zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,radio_ojo/10,radio_vertical/10,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+        }
+
+        *last_final_linea_x=final_linea_x;
+        *last_final_linea_y=final_linea_y;
+
+    }
+
+}
+
+
+
+zxvision_window *menu_toy_follow_mouse_window;
+
+int menu_toy_follow_last_eye1_x=0;
+int menu_toy_follow_last_eye1_y=0;
+
+int menu_toy_follow_last_eye2_x=0;
+int menu_toy_follow_last_eye2_y=0;
+
+//int menu_toy_follow_last_origen_linea_x=0;
+//int menu_toy_follow_last_origen_linea_y=0;
+
+void menu_toy_follow_mouse_overlay(void)
+{
+
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_toy_follow_mouse_window->is_minimized) return;  
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
+
+    zxvision_window *w=menu_toy_follow_mouse_window;
+
+    printf("mouse    %d x %d\n",mouse_x,mouse_y);
+
+    int radio_ojo=10;
+
+    //Para que quepan los dos ojos, dividir entre 3
+    int origen_linea_x=(w->visible_width)*menu_char_width/4;
+
+    printf("Ancho: %d (%d) origen_x: %d\n",w->visible_width,(w->visible_width)*menu_char_width,origen_linea_x);
+
+    int origen_linea_y=(w->visible_height-1)*menu_char_height/2;
+    int max_tamanyo_usable;
+
+    //if (w->visible_width < w->visible_height) max_tamanyo_usable=(w->visible_width)*menu_char_width;
+    //else max_tamanyo_usable=(w->visible_height-1)*menu_char_height;
+
+    max_tamanyo_usable=(w->visible_width)*menu_char_width;
+
+    //max_tamanyo_usable -=16;
+
+    //para que quepan dos ojos
+    max_tamanyo_usable /=2;
+
+    if (max_tamanyo_usable<10) max_tamanyo_usable=10;
+
+    //int max_radio_ojo=max_tamanyo_usable/2; 
+    //Algo menos de la mitad
+    //int max_longitud_hasta_iris=(max_tamanyo_usable*3)/8;
+
+    
+
+    //this window
+    
+    int this_win_y=(w->y)*menu_char_height*menu_gui_zoom*zoom_y+((origen_linea_y+menu_char_height)*zoom_y*menu_gui_zoom); //menu_char_height de la linea titulo
+    int delta_y=mouse_y-this_win_y;
+    
+
+    int this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
+    int delta_x=mouse_x-this_win_x;
+    
+    printf("this win %d x %d\n",this_win_x,this_win_y);
+    printf("delta %d , %d\n",delta_x,delta_y);
+
+    int resta_radio=10; //para que los ojos no esten pegados
+
+    menu_toy_follow_mouse_draw_one_eye(w,origen_linea_x,origen_linea_y,delta_x,delta_y,
+        &menu_toy_follow_last_eye1_x,&menu_toy_follow_last_eye1_y,max_tamanyo_usable);
+
+    //segundo ojo
+    origen_linea_x +=max_tamanyo_usable;
+
+    this_win_x=(w->x)*menu_char_width*menu_gui_zoom*zoom_x+(origen_linea_x*zoom_x*menu_gui_zoom);
+    delta_x=mouse_x-this_win_x;    
+    menu_toy_follow_mouse_draw_one_eye(w,origen_linea_x,origen_linea_y,delta_x,delta_y,
+        &menu_toy_follow_last_eye2_x,&menu_toy_follow_last_eye2_y,max_tamanyo_usable);
+    /*
+
+    int cuadrado_a=delta_x*delta_x;
+    int cuadrado_b=delta_y*delta_y;
+    int cuadrados=(cuadrado_a) + (cuadrado_b);
+    int hipotenusa=util_sqrt(cuadrados);
+    printf("%d %d cuadrados: %d hipotenusa: %d\n",cuadrado_a,cuadrado_b,cuadrados,hipotenusa);    
+    int grado;
+
+    if (hipotenusa==0) {
+        grado=0;
+    }
+    else {
+        grado=util_get_acosine((10000*delta_x)/hipotenusa);
+    }
+
+    //desplazamiento y va al reves. esto es "para abajo"
+    if (delta_y>0) grado=360-grado;
+
+    printf("grado %d\n",grado);
+
+    int longitud_final_linea=max_longitud_hasta_iris;
+
+    if (longitud_final_linea>hipotenusa) {
+        //acortar si esta cerca
+        longitud_final_linea=hipotenusa;
+    }
+
+    //calculo segun grado
+    int final_linea_x=origen_linea_x+(longitud_final_linea*util_get_cosine(grado)/10000);
+    int final_linea_y=origen_linea_y-(longitud_final_linea*util_get_sine(grado)/10000);
+
+    
+
+    if (menu_toy_follow_last_final_linea_x!=final_linea_x || menu_toy_follow_last_final_linea_y != final_linea_y
+    //|| menu_toy_follow_last_origen_linea_x!=origen_linea_x || menu_toy_follow_last_origen_linea_y!=origen_linea_y
+    ) {
+        printf("Redrawing\n");
+
+        //Erase last
+        
+        //zxvision_draw_line(w,menu_toy_follow_last_origen_linea_x,menu_toy_follow_last_origen_linea_y,
+        //    menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,ESTILO_GUI_PAPEL_NORMAL,zxvision_putpixel);
+
+        //El iris
+        menu_toy_follow_mouse_draw_iris(w,menu_toy_follow_last_final_linea_x,menu_toy_follow_last_final_linea_y,radio_ojo,ESTILO_GUI_PAPEL_NORMAL);
+
+        //zxvision_draw_line(w,origen_linea_x,origen_linea_y,final_linea_x,final_linea_y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
+        menu_toy_follow_mouse_draw_iris(w,final_linea_x,final_linea_y,radio_ojo,ESTILO_GUI_TINTA_NORMAL);
+        
+        //El ojo
+        
+        int radio_ojo;
+
+        for (radio_ojo=max_radio_ojo;radio_ojo>=max_radio_ojo-5;radio_ojo--) {
+            zxvision_draw_ellipse(w,origen_linea_x,origen_linea_y,radio_ojo,radio_ojo,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel,360);
+        }
+
+
     }
                 
-
+    menu_toy_follow_last_final_linea_x=final_linea_x;
+    menu_toy_follow_last_final_linea_y=final_linea_y;
+    //menu_toy_follow_last_origen_linea_x=origen_linea_x;
+    //menu_toy_follow_last_origen_linea_y=origen_linea_y;    
+    */
 
     //Mostrar colores
     zxvision_draw_window_contents(menu_toy_follow_mouse_window);
@@ -33706,21 +33865,21 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 
 	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("toyfollowmouse",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=30;
-		alto_ventana=20;
+	if (!util_find_window_geometry("toyxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+		ancho_ventana=19;
+		alto_ventana=19;
 
         xventana=menu_center_x()-ancho_ventana/2;
         yventana=menu_center_y()-alto_ventana/2;        
 	}
 
         
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Toy Follow Mouse",
-        "toyfollowmouse",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"XEyes",
+        "toyxeyes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;
          
-
+    ventana->can_use_all_width=1;
 
 	zxvision_draw_window(ventana);
 
