@@ -33634,11 +33634,14 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
     //printf("x %d max_radio_ojo %d\n",origen_linea_x,max_radio_ojo);
 
 
-    if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y) {
+    //if ((*last_final_linea_x)!=final_linea_x || (*last_final_linea_y) != final_linea_y) {
 
         //Muestro el contador segundo por si salen muchos seguidos y hace scroll para que se vea la actividad
         //En caso contrario seria el mismo mensaje repetido y por tanto no se veria scroll ni movimiento
         debug_printf(VERBOSE_DEBUG,"Redrawing eye. Seconds counter: %d",contador_segundo);
+
+
+        //printf("Redrawing eye. Seconds counter: %d\n",contador_segundo);
 
         //El iris
         //Erase last
@@ -33666,7 +33669,7 @@ void menu_toy_follow_mouse_draw_one_eye(zxvision_window *w,int origen_linea_x,in
         *last_final_linea_x=final_linea_x;
         *last_final_linea_y=final_linea_y;
 
-    }
+    //}
 
 }
 
@@ -33680,6 +33683,8 @@ int menu_toy_follow_last_eye1_y=0;
 int menu_toy_follow_last_eye2_x=0;
 int menu_toy_follow_last_eye2_y=0;
 
+int menu_toy_follow_last_mouse_x=-1;
+int menu_toy_follow_last_mouse_y=-1;
 
 
 void menu_toy_follow_mouse_overlay(void)
@@ -33693,6 +33698,12 @@ void menu_toy_follow_mouse_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_toy_follow_mouse_window->is_minimized) return;  
 
+
+    //Si no se mueve raton respecto a anterior, no hacer nada
+    if (menu_toy_follow_last_mouse_x==mouse_x && menu_toy_follow_last_mouse_y==mouse_y) return;
+
+    menu_toy_follow_last_mouse_x=mouse_x;
+    menu_toy_follow_last_mouse_y=mouse_y;
 
 
     zxvision_window *w=menu_toy_follow_mouse_window;
