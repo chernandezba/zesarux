@@ -8943,7 +8943,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"windowlist",menu_display_window_list},
     {"hilowconvertaudio",menu_hilow_convert_audio},
     {"visualfloppy",menu_visual_floppy},
-    {"toyxeyes",menu_toy_follow_mouse},
+    {"toyzxeyes",menu_toy_follow_mouse},
 
 	{"",NULL} //NO BORRAR ESTA!!
 };
@@ -21180,16 +21180,19 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
                     }
                     else {
                         //pulsado en linea historial. salir
+                        //printf("Click linea\n");
                         zxvision_set_cursor_line(&ventana,menu_mouse_y-1);
                         zxvision_draw_window_contents(&ventana);
                     
                         menu_espera_no_tecla();
                         tecla=13;
+                        //saldra como si se leyera tecla enter desde abajo
                     }
                 }
             }
 
             if (tecla==13) {
+                //printf("Pulsado enter\n");
                 //Asignar a texto la linea seleccionada
                 //asegurarnos que cursor no sale del total de historial
                 int cursor_historial=ventana.cursor_line-1;
@@ -21200,6 +21203,12 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
                 else {
                     debug_printf(VERBOSE_DEBUG,"Trying to set history line %d which does not exist, this should not happen!",cursor_historial);
                 }
+            }
+
+            if (tecla!=10 && tecla!=11 && tecla!=13) {
+                //Cualquier otra tecla no gestionada, quitarla, si no, se quedaria con tecla diferente de 0 en bucle
+                //printf("Establecer tecla=0\n");
+                tecla=0;
             }
         }
 

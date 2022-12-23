@@ -26129,7 +26129,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-            "Toy Xeyes","Juguete Xeyes","Joguina Xeyes");
+            "Toy ZXeyes","Juguete ZXeyes","Joguina ZXeyes");
         
 
 #ifdef TIMESENSORS_ENABLED
@@ -33796,7 +33796,7 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 
 	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("toyxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+	if (!util_find_window_geometry("toyzxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 		ancho_ventana=19;
 		alto_ventana=19;
 
@@ -33805,8 +33805,8 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 	}
 
         
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"XEyes",
-        "toyxeyes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZXEyes",
+        "toyzxeyes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 	ventana->can_be_backgrounded=1;
          

@@ -229,6 +229,7 @@ que muestre contenido de dirección 16384.
 
 donde mostrarlo? en teoria mostrar como se hace el resaltado de registros, al mover el cursor, quizá ponerlo 
 debajo de (hl),(de) y (bc)
-->completar. de momento solo dos opcodes. usamos MOD_READ_NN_MEM8 y MOD_READ_NN_MEM16
+->completar. faltan (ix+d),(iy+d), tanto en ld r,(ix+d), como set, res, bit, rl, ...
+Solo hecho ld b,(ix/iy+d)
 
 -assemble: ld hl,(68H) no interpreta el 68H como hexadecimal
