@@ -1246,8 +1246,12 @@ void menu_debug_registers_change_ptr(void)
 //Para (NN) byte y 16 bits, lecturas
 #define MOD_READ_NN_MEM8    (1<<24)
 #define MOD_READ_NN_MEM16   (1<<25)
+//Para (NN) byte y 16 bits, escrituras
+#define MOD_WRITE_NN_MEM8    (1<<26)
+#define MOD_WRITE_NN_MEM16   (1<<27)
+
 //Para (IX+d),(IY+d)
-#define MOD_READ_IXIY_d_MEM8 (1<<26)
+#define MOD_READ_IXIY_d_MEM8 (1<<28)
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
@@ -1258,10 +1262,10 @@ z80_long_int debug_modified_registers_list[256]={
     MOD_REG_B,MOD_REG_DE,MOD_REG_DE_MEM,MOD_REG_DE,MOD_REG_D|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_D,MOD_REG_A|MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_DE,MOD_REG_E|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_E,MOD_REG_A|MOD_REG_F,
     //32 JR NZ,DIS
-    0,MOD_REG_HL,0,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_HL,MOD_WRITE_NN_MEM16,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
     //48 JR NC,DIS
-    0,MOD_REG_SP,0,MOD_REG_SP,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_F,
+    0,MOD_REG_SP,MOD_WRITE_NN_MEM8,MOD_REG_SP,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A|MOD_READ_NN_MEM8,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
     //64 LD B,B
     MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,
@@ -1709,15 +1713,15 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
     
             case 14:
-                //Aqui mostrar referencias a ld xx,(NN) y similares
-                if (registros_modificados & MOD_READ_NN_MEM8) {
+                //Aqui mostrar referencias a ld xx,(NN) y similares. y ld (nn),xx
+                if ((registros_modificados & MOD_READ_NN_MEM8) || (registros_modificados & MOD_WRITE_NN_MEM8)) {
                     //puntero
                     z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
                     
                     sprintf (textoregistros,"(%04X) %02X",puntero,peek_byte_z80_moto(puntero));
                 }
 
-                else if (registros_modificados & MOD_READ_NN_MEM16) {
+                else if ((registros_modificados & MOD_READ_NN_MEM16) || (registros_modificados & MOD_WRITE_NN_MEM16)) {
                     //puntero
                     z80_int dir_leer=menu_debug_memory_pointer+1;
 

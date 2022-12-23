@@ -231,5 +231,6 @@ donde mostrarlo? en teoria mostrar como se hace el resaltado de registros, al mo
 debajo de (hl),(de) y (bc)
 ->completar. faltan (ix+d),(iy+d), tanto en ld r,(ix+d), como set, res, bit, rl, ...
 Solo hecho ld b,(ix/iy+d)
+->completar tipo ld (nn),a , ld (nn),reg  (MOD_WRITE_NN_MEM8 , MOD_WRITE_NN_MEM16)
 
 -assemble: ld hl,(68H) no interpreta el 68H como hexadecimal
