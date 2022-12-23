@@ -1246,10 +1246,8 @@ void menu_debug_registers_change_ptr(void)
 //Para (NN) byte y 16 bits, lecturas
 #define MOD_READ_NN_MEM8    (1<<24)
 #define MOD_READ_NN_MEM16   (1<<25)
-//Para (NN) de 16 bits cuando hay un prefijo delante, como LD DE,(NN)
-#define MOD_READ_NN_MEM16_PREF  (1<<26)
 //Para (IX+d),(IY+d)
-#define MOD_READ_IXIY_d_MEM8 (1<<27)
+#define MOD_READ_IXIY_d_MEM8 (1<<26)
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
@@ -1371,16 +1369,16 @@ z80_long_int debug_modified_registers_ed_list[256]={
     0,0,0,0,0,0,0,0,
     //64 IN B,(C)
     MOD_REG_B|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_I,
-    MOD_REG_C|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_READ_NN_MEM16_PREF,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
+    MOD_REG_C|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
     //80 IN D,(C)
     MOD_REG_D|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_E|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE|MOD_READ_NN_MEM16_PREF,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_E|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //96 IN H,(C)
     MOD_REG_H|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_L|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16_PREF,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_L|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //112 IN F,(C)
     MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,                   MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
-    MOD_REG_A|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP|MOD_READ_NN_MEM16_PREF,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
+    MOD_REG_A|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
     //128
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1723,19 +1721,15 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     //puntero
                     z80_int dir_leer=menu_debug_memory_pointer+1;
 
+                    //si prefijo 237, como por ejemplo en opcodes ld de,(nn)
+                    if (peek_byte_z80_moto(menu_debug_memory_pointer)==237) dir_leer++;
+
                     z80_int puntero=peek_byte_z80_moto(dir_leer)+256*peek_byte_z80_moto(dir_leer+1);
 
                     sprintf (textoregistros,"(%04X) %02X%02X",puntero,
                         peek_byte_z80_moto(puntero+1),peek_byte_z80_moto(puntero));
                 }
 
-                else if (registros_modificados & MOD_READ_NN_MEM16_PREF) {
-                    //puntero
-                    z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+2)+256*peek_byte_z80_moto(menu_debug_memory_pointer+3);
-
-                    sprintf (textoregistros,"(%04X) %02X%02X",puntero,
-                        peek_byte_z80_moto(puntero+1),peek_byte_z80_moto(puntero));
-                }
 
                 else if (registros_modificados & MOD_READ_IXIY_d_MEM8) {
                     //+d con signo (char)
