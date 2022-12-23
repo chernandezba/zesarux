@@ -1721,7 +1721,9 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
                 else if (registros_modificados & MOD_READ_NN_MEM16) {
                     //puntero
-                    z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
+                    z80_int dir_leer=menu_debug_memory_pointer+1;
+
+                    z80_int puntero=peek_byte_z80_moto(dir_leer)+256*peek_byte_z80_moto(dir_leer+1);
 
                     sprintf (textoregistros,"(%04X) %02X%02X",puntero,
                         peek_byte_z80_moto(puntero+1),peek_byte_z80_moto(puntero));
