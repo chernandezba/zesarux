@@ -3007,6 +3007,52 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 }
 
 
+int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
+{
+
+	//Reducciones segun cada tamaño de letra
+	int saltar_pixeles_size7;
+	int saltar_pixeles_size6[2];
+
+	//Escalados por defecto
+	//Saltar ultima linea pixel en caso tamaño 7
+	saltar_pixeles_size7=7;
+
+	//Saltar ultima linea pixel y primera linea pixel en caso tamaño 6
+	saltar_pixeles_size6[0]=7;
+	saltar_pixeles_size6[1]=0;
+
+
+    if (char_set==char_set_beos) {
+        saltar_pixeles_size7=0;
+
+        saltar_pixeles_size6[0]=0;
+        saltar_pixeles_size6[1]=1;
+    }
+
+
+	if (menu_char_height==8) {
+		return 1;
+	}
+
+	//Si 7, saltar una linea
+	else if (menu_char_height==7) {
+		if (linea==saltar_pixeles_size7) {
+			return 0;
+		}
+	}
+
+	//Si 6, saltar dos lineas
+	else if (menu_char_height==6) {
+		if (linea==saltar_pixeles_size6[0] || linea==saltar_pixeles_size6[1]) {
+			return 0;
+		}
+	}    
+
+    //por defecto
+    return 1;
+}
+
 //Muestra un caracter en pantalla, usado en menu
 //entrada: caracter
 //x,y: coordenadas en x-0..31 e y 0..23 
@@ -3033,19 +3079,22 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 
 	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
 
-	//temp prueba
-	//margenx_izq=margeny_arr=0;
 
 	//Caso de pentagon y en footer
 	if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 	
   y=y*menu_char_height;
 
-  for (line=0;line<menu_char_height;line++,y++) {
-		byte_leido=*puntero++;
-		if (inverse.v==1) byte_leido = byte_leido ^255;
+  for (line=0;line<8;line++) {
+        
+    byte_leido=*puntero++;
+    if (inverse.v==1) byte_leido = byte_leido ^255;
 
-		int px=0; //Coordenada x del pixel final
+    int px=0; //Coordenada x del pixel final
+
+    //Si se dibuja esa linea debido a reduccion de alto de caracter
+    if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
+
 		for (bit=0;bit<8;bit++) {
 			if (byte_leido & 128 ) color=tinta;
 			else color=papel;
@@ -3064,15 +3113,6 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 			yfinal=y*zoom_level;
 
 
-			//No hay que sumar ya los margenes
-			/*if (rainbow_enabled.v==1) {
-				xfinal +=margenx_izq;
-
-				yfinal +=margeny_arr;
-			}*/
-
-
-
 
 			//Hacer zoom de ese pixel si conviene
 
@@ -3083,38 +3123,9 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 				px++;
 			}
 
+        }
 
-			/*
-			if (menu_char_width==8) {
-				scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-				px++;
-			}
-
-			//Si 7, saltar primer pixel a la izquierda
-			else if (menu_char_width==7) {
-				if (bit!=0) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
-
-			//Si 6, saltar dos pixeles: primero izquierda y primero derecha
-			else if (menu_char_width==6) {
-				if (bit!=0 && bit!=7) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
-
-			//Si 5, saltar tres pixeles: primero izquierda y centro y primero derecha
-			else if (menu_char_width==5) {
-				if (bit!=0 && bit!=6 && bit!=7) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
-			*/
-
+        y++;
 
     }
   }
