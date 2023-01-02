@@ -427,6 +427,7 @@ extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int l
 extern void zxvision_handle_click_minimize(zxvision_window *w);
 extern void zxvision_minimize_window(zxvision_window *w);
 extern void zxvision_maximize_window(zxvision_window *w);
+extern void zxvision_handle_maximize(zxvision_window *w);
 
 extern int zxvision_trocear_string_lineas(char *texto,char *buffer_lineas[]);
 extern void zxvision_print_mensaje_lineas_troceado(zxvision_window *ventana,char *mensaje_entrada);

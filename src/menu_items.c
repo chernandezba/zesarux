@@ -16963,6 +16963,35 @@ void menu_display_window_minimize_all_common(void)
     
 }
 
+//Maximizar todas las ventanas
+void menu_display_window_maximize_all_common(void)
+{
+	//Podemos empezar desde la de arriba por ejemplo, da igual
+	zxvision_window *ventana;
+
+	ventana=zxvision_current_window;
+
+
+	while (ventana!=NULL) {
+
+		//Primero decimos que no esta maximizada
+        ventana->is_maximized=0;
+
+        //Luego simulamos accion de pulsar boton de maximizar ventana
+        zxvision_handle_maximize(ventana);
+
+
+		//Y guardar la geometria
+		util_add_window_geometry_compact(ventana);
+
+		ventana=ventana->previous_window;
+	}	
+
+	cls_menu_overlay();
+
+    
+}
+
 //Reducir todas las ventanas a un tamaño pequeño "razonable" de 20x10, si es que no eran ya asi de pequeñas
 void menu_display_window_reduce_all_common(void)
 {
@@ -17044,6 +17073,13 @@ void menu_display_window_minimize_all_rearrange(MENU_ITEM_PARAMETERS)
     menu_display_window_rearrange_all_common();
 
     menu_generic_message_splash("Minimize+rearrange all","OK. All windows minimized+rearranged");
+}
+
+void menu_display_window_maximize_all(MENU_ITEM_PARAMETERS)
+{
+    menu_display_window_maximize_all_common();
+
+    menu_generic_message_splash("Maximize all","OK. All windows maximized");
 }
 
 void menu_zxdesktop_trash_recover(MENU_ITEM_PARAMETERS)
@@ -17165,6 +17201,11 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
         menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_maximize_all,NULL,
+            "Maximize all windows","Maximizar todas las ventanas","Maximitzar totes les finestres");          
 
         menu_add_item_menu_separator(array_menu_common);
 
