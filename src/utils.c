@@ -8393,9 +8393,11 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
                 return texto[1];
         }
 
-	//sufijo. Buscar ultimo caracter antes de final de cadena o espacio. Asi podemos parsear cosas como "20H 32 34", y se interpretara solo el 20H
+	//sufijo. Buscar ultimo caracter antes de final de cadena o espacio o parentesis de cierre. Asi podemos parsear cosas como "20H 32 34", y se interpretara solo el 20H
+    //Nota: ese parentesis de cierre se usa, en principio, solamente desde assemble.c cuando el valor a parsear es de tipo
+    //ASM_PARM_PARENTHESIS_N o ASM_PARM_PARENTHESIS_NN. Esto no deberia dar ningun problema, pero por si acaso...
         int posicion_sufijo=0;
-        for (;texto[posicion_sufijo]!=0 && texto[posicion_sufijo]!=' ';posicion_sufijo++);
+        for (;texto[posicion_sufijo]!=0 && texto[posicion_sufijo]!=' ' && texto[posicion_sufijo]!=')';posicion_sufijo++);
         posicion_sufijo--;
 
   //int posicion_sufijo=l-1;
@@ -19861,7 +19863,7 @@ int old_util_sqrt(int number)
 z80_64bit util_sqrt(z80_64bit number,int *result_type)
 {
     //printf("-------\n");
-    z80_64bit resultado;
+    //z80_64bit resultado;
     z80_64bit final=number;
     z80_64bit inicio=0;
 

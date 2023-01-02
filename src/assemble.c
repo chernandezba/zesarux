@@ -908,7 +908,11 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 				//Parseamos valor
                                 if (tipo_parametro_tabla==ASM_PARM_PARENTHESIS_N || tipo_parametro_tabla==ASM_PARM_PARENTHESIS_NN) {
                                         //Saltar el parentesis en (NN)
+                                        //printf("Valor en parentesis: [%s]\n",&buffer_operador[1]);
+                                        //Nota: aqui el string a parsear acaba en ), la rutina parse_string_to_number
+                                        //está preparada para entender ese ) como final de cadena
                                         valor_parametro=parse_string_to_number(&buffer_operador[1]);
+                                        //printf("Evaluado: %02XH\n",valor_parametro);
                                 }
                         
 				else valor_parametro=parse_string_to_number(buffer_operador);
