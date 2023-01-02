@@ -1250,8 +1250,11 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_WRITE_NN_MEM8    (1<<26)
 #define MOD_WRITE_NN_MEM16   (1<<27)
 
-//Para (IX+d),(IY+d)
+//Para (IX+d),(IY+d), lectura
 #define MOD_READ_IXIY_d_MEM8 (1<<28)
+//Para (IX+d),(IY+d), escritura
+#define MOD_WRITE_IXIY_d_MEM8 (1<<28)
+
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
@@ -1434,35 +1437,35 @@ z80_long_int debug_modified_registers_dd_fd_list[256]={
     0,0,0,0,0,0,0,0,
     0,MOD_REG_IX|MOD_REG_F,0,0,0,0,0,0,
     //32 NOPD
-    0,MOD_REG_IX,0,         MOD_REG_IX,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,
-    0,MOD_REG_IX,MOD_REG_IX,MOD_REG_IX,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,
+    0,MOD_REG_IX,MOD_WRITE_NN_MEM16,MOD_REG_IX,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,
+    0,MOD_REG_IX,MOD_REG_IX|MOD_READ_NN_MEM16,MOD_REG_IX,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,
     //48 NOPD
-    0,0,0,0,MOD_REG_F,MOD_REG_F,0,0,
+    0,0,0,0,MOD_REG_F|MOD_WRITE_IXIY_d_MEM8,MOD_REG_F|MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,0,
     0,MOD_REG_IX,0,0,0,0,0,0,
     //64 NOPD
     0,0,0,0,MOD_REG_B,MOD_REG_B,MOD_REG_B|MOD_READ_IXIY_d_MEM8,0,
-    0,0,0,0,MOD_REG_C,MOD_REG_C,MOD_REG_C,0,
+    0,0,0,0,MOD_REG_C,MOD_REG_C,MOD_REG_C|MOD_READ_IXIY_d_MEM8,0,
     //80 NOPD
-    0,0,0,0,MOD_REG_D,MOD_REG_D,MOD_REG_D,0,
-    0,0,0,0,MOD_REG_E,MOD_REG_E,MOD_REG_E,0,
+    0,0,0,0,MOD_REG_D,MOD_REG_D,MOD_REG_D|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_E,MOD_REG_E,MOD_REG_E|MOD_READ_IXIY_d_MEM8,0,
     //96 LD IXh,B
-    MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,MOD_REG_IX_H,MOD_REG_H,MOD_REG_IX_H,
-    MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,MOD_REG_L,MOD_REG_IX_L,
-    //112 NOPD
-    0,0,0,0,0,0,0,0,
-    0,0,0,0,MOD_REG_A,MOD_REG_A,MOD_REG_A,0,
+    MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,MOD_REG_IX_H,MOD_REG_H|MOD_READ_IXIY_d_MEM8,MOD_REG_IX_H,
+    MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,MOD_REG_L|MOD_READ_IXIY_d_MEM8,MOD_REG_IX_L,
+    //112 LD (IX+d),B
+    MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,0,MOD_WRITE_IXIY_d_MEM8,
+    0,0,0,0,MOD_REG_A,MOD_REG_A,MOD_REG_A|MOD_READ_IXIY_d_MEM8,0,
     //128 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //144 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //160 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //176 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //192 NOPD
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1725,8 +1728,13 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     //puntero
                     z80_int dir_leer=menu_debug_memory_pointer+1;
 
-                    //si prefijo 237, como por ejemplo en opcodes ld de,(nn)
-                    if (peek_byte_z80_moto(menu_debug_memory_pointer)==237) dir_leer++;
+                    //si prefijo 237 o 221 o 253, como por ejemplo en opcodes ld de,(nn)
+                    if (peek_byte_z80_moto(menu_debug_memory_pointer)==237 ||
+                        peek_byte_z80_moto(menu_debug_memory_pointer)==221 ||
+                        peek_byte_z80_moto(menu_debug_memory_pointer)==253
+                    ) {
+                        dir_leer++;
+                    }
 
                     z80_int puntero=peek_byte_z80_moto(dir_leer)+256*peek_byte_z80_moto(dir_leer+1);
 
@@ -1735,7 +1743,7 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 }
 
 
-                else if (registros_modificados & MOD_READ_IXIY_d_MEM8) {
+                else if ((registros_modificados & MOD_READ_IXIY_d_MEM8) || (registros_modificados & MOD_WRITE_IXIY_d_MEM8)) {
                     //+d con signo (char)
                     char desplazamiento=peek_byte_z80_moto(menu_debug_memory_pointer+2);
 
