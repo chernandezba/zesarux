@@ -35621,14 +35621,19 @@ void menu_process_f_function_pause(void)
         //seguiremos en el bucle
         //pero si esto sucede, hay una tecla pulsada (por ejemplo una tecla F es puerto_especial*)
         //y entonces en menu_espera_tecla no llamara a menu_cpu_core_loop, y este es el que llama a scr_actualiza_tablas_teclado(),
-        //Esa llamada es importante en drivers de video que hay que llamarlos explicitamente para que lean/liberen teclas,
+        //Esa llamada es importante en drivers de video que hay que llamarlos explicitamente para que lean/liberen teclas y botones ratón,
         //como xwindows (cocoa en cambio salta a la rutina de liberar/pulsar tecla cuando se actua sobre una de ellas)
         //entonces tenemos que llamar a scr_actualiza_tablas_teclado(), o nos quedariamos en un bucle cerrado
         //si al entrar en pausa, pulsamos una tecla F por ejemplo
         scr_actualiza_tablas_teclado();
+
+        //O si se pulsa boton raton, volver
+        if (zxvision_clicked_mouse_button()) tecla=13;
 	}
 
 	menu_espera_no_tecla();
+
+    //printf("no tecla %d\n",tecla);
 
 	//restaurar
 	menu_multitarea=antes_multitarea;

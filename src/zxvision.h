@@ -382,6 +382,8 @@ extern int zxvision_scanf_history(char *titulo,char *texto,int max_length,char *
 //Contando el NULL del final
 //#define ZXVISION_SCANF_HISTORY_MAX_LINES 11
 
+extern int zxvision_clicked_mouse_button(void);
+
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);
 

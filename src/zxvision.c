@@ -15893,6 +15893,13 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 	//return pulsado_boton_cerrar;
 }
 
+//Si se pulsa algun boton de raton (y raton habilitado)
+int zxvision_clicked_mouse_button(void)
+{
+    if (!si_menu_mouse_activado()) return 0;
+    if (mouse_left || mouse_right) return 1;
+    return 0;
+}
 
 //Guardar tamanyo en variables por si cambia
 void zxvision_window_save_size(zxvision_window *ventana,int *ventana_ancho_antes,int *ventana_alto_antes)

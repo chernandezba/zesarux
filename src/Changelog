@@ -35,6 +35,7 @@ Improved ZX Vision:
 * Fixes:
 
 Fixed +3 disk (and CPC6128?) (PD765) emulation: TODO: add more details here
+Fixed pause: can now return when pressing mouse button too
 
 
 * As always, there are some other minor bugfixes and improvements
