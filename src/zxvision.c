@@ -8781,9 +8781,9 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 	current_win_alto=alto;
 
 	xpixel=x*menu_char_width;
-	ypixel=(y+1)*8; //La barra de titulo no tendra linea como tal
+	ypixel=(y+1)*menu_char_height; //La barra de titulo no tendra linea como tal
 	anchopixel=ancho*menu_char_width;
-	altopixel=alto*8;
+	altopixel=alto*menu_char_height;
 
 	int xderecha=xpixel+anchopixel-1;
 	//printf ("x derecha: %d\n",xderecha);
@@ -8800,7 +8800,7 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 		}
 	}
 
-	menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-8,ESTILO_GUI_COLOR_RECUADRO);
+	menu_establece_cuadrado(xpixel,ypixel,xderecha,ypixel+altopixel-1-menu_char_height,ESTILO_GUI_COLOR_RECUADRO);
 
 
 	int color_tinta_titulo;
@@ -13225,20 +13225,20 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 
 	//Obtener coordenadas en pixeles de zona ventana dibujable
 	int window_pixel_start_x=(w->x)*menu_char_width;
-	int window_pixel_start_y=((w->y)+1)*8;
+	int window_pixel_start_y=((w->y)+1)*menu_char_height;
 	int window_pixel_final_x=window_pixel_start_x+((w->visible_width)-zxvision_get_minus_width_byscrollvbar(w))*menu_char_width;
 	int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*8;
 
 	//Obtener coordenada x,y final donde va a parar
 	int xfinal=x+window_pixel_start_x-(w->offset_x)*menu_char_width;
-	int yfinal=y+window_pixel_start_y-(w->offset_y)*8;
+	int yfinal=y+window_pixel_start_y-(w->offset_y)*menu_char_height;
 
 	//Ver si esta dentro de rango
 	if (xfinal>=window_pixel_start_x && xfinal<window_pixel_final_x && yfinal>=window_pixel_start_y && yfinal<window_pixel_final_y) {
 
     //Chapucilla para evitar que las ventanas en background sobreescriban a las de arriba
     //if (!zxvision_coords_in_front_window(w,xfinal/menu_char_width,yfinal/8)) {		
-	if (!zxvision_coords_in_superior_windows(w,xfinal/menu_char_width,yfinal/8)) {				
+	if (!zxvision_coords_in_superior_windows(w,xfinal/menu_char_width,yfinal/menu_char_height)) {				
 		menu_scr_putpixel(xfinal,yfinal,color);
 	}
 
