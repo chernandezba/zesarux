@@ -1520,6 +1520,15 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
             direccion=adjust_address_memory_size(direccion);
             opcode=menu_debug_get_mapped_byte(direccion);
             modificados=debug_modified_registers_cb_list[opcode];
+            //En este caso tambien se agregan flags de lectura o escritura de (ix/iy+d) 
+            if (opcode>=0x40 && opcode<=0x80) {
+                //lectura de bits BIT 0,(IX+d)...
+                modificados |=MOD_READ_IXIY_d_MEM8;
+            }
+            else {
+                //resto son escrituras RLC (IX+d)...
+                modificados |=MOD_WRITE_IXIY_d_MEM8;
+            }
         }
 
         else {
@@ -1763,10 +1772,11 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 
                     char string_offset[10];
                     if (desplazamiento>=0) {
-                        sprintf(string_offset,"+%d",desplazamiento);
+                        sprintf(string_offset,"+%02X",desplazamiento);
                     }
                     else {
-                        sprintf(string_offset,"%d",desplazamiento);
+                        desplazamiento=-desplazamiento;
+                        sprintf(string_offset,"-%02X",desplazamiento);
                     }
 
 
