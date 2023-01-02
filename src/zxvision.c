@@ -13227,7 +13227,7 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 	int window_pixel_start_x=(w->x)*menu_char_width;
 	int window_pixel_start_y=((w->y)+1)*menu_char_height;
 	int window_pixel_final_x=window_pixel_start_x+((w->visible_width)-zxvision_get_minus_width_byscrollvbar(w))*menu_char_width;
-	int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*8;
+	int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*menu_char_height;
 
 	//Obtener coordenada x,y final donde va a parar
 	int xfinal=x+window_pixel_start_x-(w->offset_x)*menu_char_width;
@@ -13271,14 +13271,14 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 	//Obtener coordenadas en pixeles de zona ventana dibujable
 	//En este caso multiplicar por zoom_x zoom_y pues coordenadas finales no tienen en cuenta zoom
 	int window_pixel_start_x=(w->x)*menu_char_width*zoom_x;
-	int window_pixel_start_y=((w->y)+1)*8*zoom_y;
+	int window_pixel_start_y=((w->y)+1)*menu_char_height*zoom_y;
 
 	int window_pixel_final_x=window_pixel_start_x+((w->visible_width)-zxvision_get_minus_width_byscrollvbar(w))*menu_char_width*zoom_x;
-	int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*8*zoom_y;
+	int window_pixel_final_y=window_pixel_start_y+((w->visible_height)-2)*menu_char_height*zoom_y;
 
 	//Obtener coordenada x,y final donde va a parar
 	int xfinal=x+window_pixel_start_x-(w->offset_x)*menu_char_width*zoom_x;
-	int yfinal=y+window_pixel_start_y-(w->offset_y)*8*zoom_y;
+	int yfinal=y+window_pixel_start_y-(w->offset_y)*menu_char_height*zoom_y;
 
 
 	//int total_width_window=((w->visible_width)-zxvision_get_minus_width_byscrollvbar(w))*menu_char_width*zoom_x;
@@ -13294,7 +13294,7 @@ Es lo que pasa con otras ventanas de texto, que no se amplía el ancho total al 
 
 		//Chapucilla para evitar que las ventanas en background sobreescriban a las de arriba
 		//if (!zxvision_coords_in_front_window(w,xfinal/menu_char_width,yfinal/8)) {		
-		if (!zxvision_coords_in_superior_windows(w,(xfinal/menu_char_width)/zoom_x,(yfinal/8)/zoom_y)  ) {				
+		if (!zxvision_coords_in_superior_windows(w,(xfinal/menu_char_width)/zoom_x,(yfinal/menu_char_height)/zoom_y)  ) {				
 			menu_scr_putpixel_no_zoom(xfinal,yfinal,color);
 		}
 
@@ -13783,7 +13783,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
     if (tipo==ZXVISION_WIDGET_TYPE_SPEEDOMETER) {
         int longitud_linea=ZXVISION_WIDGET_TYPE_SPEEDOMETER_LINE_LENGTH;
 
-        int yorigen_linea=(fila_texto*8)+longitud_linea+16;  //+16 para que este dos lineas por debajo del texto
+        int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xcentro_widget=(columna_texto*menu_char_width)+longitud_linea; //Para ajustarlo por la derecha
 
         zxvision_widgets_draw_speedometer_common(ventana,xcentro_widget,yorigen_linea,media_cpu_perc,color_pixeles,color_pixeles);                   
@@ -13797,9 +13797,9 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
 
         //Cuadrado
         int xorig=(columna_texto*menu_char_width);
-        int yorig=(fila_texto*8)+8;
+        int yorig=(fila_texto*menu_char_height)+menu_char_height;
         int ancho=radio_circulo*2;
-        int alto=radio_circulo*2+8;
+        int alto=radio_circulo*2+menu_char_height;
 
         int y;
         for (y=0;y<alto;y++) {
@@ -13808,7 +13808,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
             else zxvision_draw_line(ventana,xorig,yorig+y,xorig+ancho,yorig+y,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel); 
         }
 
-        int ycirculo=(fila_texto*8)+(radio_circulo)+16;  //+16 para que este dos lineas por debajo del texto
+        int ycirculo=(fila_texto*menu_char_height)+(radio_circulo)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xcirculo=(columna_texto*menu_char_width)+radio_circulo;
 
         zxvision_widgets_draw_circle_ellipse(ventana,xcirculo,ycirculo,media_cpu_perc,color_pixeles,radio_circulo-3,radio_circulo-3,concentrico); 
@@ -13823,7 +13823,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
 
         int radio_circulo=ZXVISION_WIDGET_TYPE_CIRCLE_RADIUS;
 
-        int ycirculo=(fila_texto*8)+(radio_circulo)+16;  //+16 para que este dos lineas por debajo del texto
+        int ycirculo=(fila_texto*menu_char_height)+(radio_circulo)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xcirculo=(columna_texto*menu_char_width)+radio_circulo;
 
         zxvision_widgets_draw_circle_ellipse(ventana,xcirculo,ycirculo,media_cpu_perc,color_pixeles,radio_circulo,radio_circulo,concentrico);                   
@@ -13836,7 +13836,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
         int radio_circulo_x=ZXVISION_WIDGET_TYPE_CIRCLE_RADIUS*2;
         int radio_circulo_y=ZXVISION_WIDGET_TYPE_CIRCLE_RADIUS;
 
-        int ycirculo=(fila_texto*8)+(radio_circulo_y)+16;  //+16 para que este dos lineas por debajo del texto
+        int ycirculo=(fila_texto*menu_char_height)+(radio_circulo_y)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xcirculo=(columna_texto*menu_char_width)+radio_circulo_x;
 
         zxvision_widgets_draw_circle_ellipse(ventana,xcirculo,ycirculo,media_cpu_perc,color_pixeles,radio_circulo_x,radio_circulo_y,concentrico);                   
@@ -13846,7 +13846,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
     if (tipo==ZXVISION_WIDGET_TYPE_CURVE) {
         int longitud_linea=ZXVISION_WIDGET_TYPE_CURVE_LENGTH;
 
-        int yorigen_linea=(fila_texto*8)+longitud_linea+16;  //+16 para que este dos lineas por debajo del texto
+        int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xorigen_widget=(columna_texto*menu_char_width);
 
         zxvision_widgets_draw_curve_common(ventana,xorigen_widget,yorigen_linea,media_cpu_perc,color_pixeles,longitud_linea);                   
@@ -13856,7 +13856,7 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
     if (tipo==ZXVISION_WIDGET_TYPE_PARTICLES) {
         int longitud_linea=ZXVISION_WIDGET_TYPE_PARTICLES_RADIUS;
 
-        int yorigen_linea=(fila_texto*8)+longitud_linea+16;  //+16 para que este dos lineas por debajo del texto
+        int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto
         int xorigen_widget=(columna_texto*menu_char_width);
 
         zxvision_widgets_draw_particles(ventana,xorigen_widget,yorigen_linea,media_cpu_perc,color_pixeles,longitud_linea);                   

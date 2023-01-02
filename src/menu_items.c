@@ -21661,10 +21661,10 @@ void menu_debug_view_sensors_print_cursor(zxvision_window *ventana)
     */
 
     int x1=(MENU_VIEW_SENSORS_START_X+columna* MENU_SENSORS_SEPARACION_ENTRE_COLUMNAS)*menu_char_width-1; //-1 para que no roce por la izquierda con el texto
-    int y1=(MENU_VIEW_SENSORS_START_Y-1+fila * MENU_SENSORS_SEPARACION_ENTRE_FILAS)   *8;
+    int y1=(MENU_VIEW_SENSORS_START_Y-1+fila * MENU_SENSORS_SEPARACION_ENTRE_FILAS)   *menu_char_height;
 
     int x2=(MENU_VIEW_SENSORS_START_X+(columna+1)* MENU_SENSORS_SEPARACION_ENTRE_COLUMNAS)*menu_char_width-1; //-1 para que no toque el pixel siguiente
-    int y2=(MENU_VIEW_SENSORS_START_Y-2+(fila+1) * MENU_SENSORS_SEPARACION_ENTRE_FILAS)   *8-1; //-1 para que no toque el pixel siguiente
+    int y2=(MENU_VIEW_SENSORS_START_Y-2+(fila+1) * MENU_SENSORS_SEPARACION_ENTRE_FILAS)   *menu_char_height-1; //-1 para que no toque el pixel siguiente
 
     //arriba
     zxvision_draw_line(ventana,x1,y1,x2,y1,ESTILO_GUI_TINTA_NORMAL,zxvision_putpixel);
