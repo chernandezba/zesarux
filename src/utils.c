@@ -3475,8 +3475,8 @@ int util_write_configfile(void)
   if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
 
 
-//Solo la agrego si no es 8, que esto es experimental
   if (menu_char_width!=8)		      ADD_STRING_CONFIG,"--menucharwidth %d",menu_char_width);
+  if (menu_char_height!=8)		      ADD_STRING_CONFIG,"--menucharheight %d",menu_char_height);
 
   if (screen_reduce_075.v)			ADD_STRING_CONFIG,"--reduce-075");
   if (screen_reduce_075_antialias.v==0)		ADD_STRING_CONFIG,"--reduce-075-no-antialias");

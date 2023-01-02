@@ -230,8 +230,6 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 
 -Breakpoints de memorias absolutas - Gunther stube
 
--Probar menú char height a 7 dibujando 7 líneas solo de alto 
-
 --nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
 opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
 

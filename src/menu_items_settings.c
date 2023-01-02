@@ -1465,6 +1465,17 @@ void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_interface_charheight(MENU_ITEM_PARAMETERS)
+{
+	menu_char_height--;
+
+	if (menu_char_height==5) menu_char_height=8;
+
+    menu_interface_charwidth_after_width_change();
+
+
+}
+
 
 void menu_interface_hide_submenu_indicator(MENU_ITEM_PARAMETERS)
 {
@@ -1611,14 +1622,19 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
     do {
 
 	
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char w~~idth");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Ampl~~itud de caracter de menu","Ampl~~itud de caracter de menu");
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char width");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Amplitud de caracter de menu","Amplitud de caracter de menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
-		menu_add_item_menu_shortcut(array_menu_common,'i');	
+		//menu_add_item_menu_shortcut(array_menu_common,'i');	
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character width. You can reduce it so allowing more text columns in a window");
 
 
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charheight,NULL,"Menu char height");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter de menú","Alçada de caracter de menú");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_height);
+		menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
+		menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,
             "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");

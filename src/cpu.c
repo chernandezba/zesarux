@@ -2497,6 +2497,7 @@ printf (
 		//"--invespokerom n           Inves rom poke value\n"
 
 		"--menucharwidth n                        Character size width for menus valid values: 8,7,6 or 5\n"
+        "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
         
@@ -6150,6 +6151,16 @@ int parse_cmdline_options(void) {
 				}
 				menu_char_width=valor;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--menucharheight")) {
+				siguiente_parametro_argumento();
+				int valor=atoi(argv[puntero_parametro]);
+				if (valor!=6 && valor!=7 && valor!=8) {
+					printf ("Invalid value for character height\n");
+					exit(1);
+				}
+				menu_char_height=valor;
+			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--zoom")) {
 				siguiente_parametro_argumento();
