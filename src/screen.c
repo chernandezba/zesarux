@@ -3039,9 +3039,9 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 	//Caso de pentagon y en footer
 	if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 	
-  y=y*8;
+  y=y*menu_char_height;
 
-  for (line=0;line<8;line++,y++) {
+  for (line=0;line<menu_char_height;line++,y++) {
 		byte_leido=*puntero++;
 		if (inverse.v==1) byte_leido = byte_leido ^255;
 
@@ -3144,9 +3144,9 @@ void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse
     //Caso de pentagon y en footer
     if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 
-    y=y*8;
+    y=y*menu_char_height;
 
-    for (line=0;line<8;line++,y++) {
+    for (line=0;line<menu_char_height;line++,y++) {
         byte_leido=*puntero++;
         if (inverse.v==1) byte_leido = byte_leido ^255;
         for (bit=0;bit<8;bit++) {

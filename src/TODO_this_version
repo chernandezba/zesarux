@@ -230,8 +230,6 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 
 -Breakpoints de memorias absolutas - Gunther stube
 
--Opción maximizar todas ventanas
-
 -Probar menú char height a 7 dibujando 7 líneas solo de alto 
 
 --nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
