@@ -234,3 +234,6 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
 
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
+
+-correcta impresion texto en footer dependiendo de alto caracter: no deberia cambiar
+Ver funcion scr_putchar_footer_comun_zoom

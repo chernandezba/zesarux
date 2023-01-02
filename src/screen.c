@@ -3062,30 +3062,30 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
 void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel,int zoom_level)
 {
 
-	int color;
-  z80_byte bit;
-  z80_byte line;
-  z80_byte byte_leido;
+    int color;
+    z80_byte bit;
+    z80_byte line;
+    z80_byte byte_leido;
 
-  //printf ("tinta %d papel %d\n",tinta,papel);
+    //printf ("tinta %d papel %d\n",tinta,papel);
 
-  //margenes de zona interior de pantalla. Para modo rainbow
-  int margenx_izq;
-  int margeny_arr;
+    //margenes de zona interior de pantalla. Para modo rainbow
+    int margenx_izq;
+    int margeny_arr;
 
-	z80_byte *puntero;
-	puntero=&char_set[(caracter-32)*8];
-
-
-	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+    z80_byte *puntero;
+    puntero=&char_set[(caracter-32)*8];
 
 
-	//Caso de pentagon y en footer
-	if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
+    scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+
+
+    //Caso de pentagon y en footer
+    if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 	
-  y=y*menu_char_height;
+    y=y*menu_char_height;
 
-  for (line=0;line<8;line++) {
+    for (line=0;line<8;line++) {
         
     byte_leido=*puntero++;
     if (inverse.v==1) byte_leido = byte_leido ^255;
@@ -3095,33 +3095,31 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
     //Si se dibuja esa linea debido a reduccion de alto de caracter
     if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
 
-		for (bit=0;bit<8;bit++) {
-			if (byte_leido & 128 ) color=tinta;
-			else color=papel;
-
-   
-
-			byte_leido=(byte_leido&127)<<1;
-
-			//este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
-
-			int xfinal,yfinal;
-
-			//xfinal=(((x*menu_char_width)+bit)*zoom_level);
-
-			xfinal=(((x*menu_char_width)+px)*zoom_level);
-			yfinal=y*zoom_level;
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido & 128 ) color=tinta;
+            else color=papel;
 
 
 
-			//Hacer zoom de ese pixel si conviene
+            byte_leido=(byte_leido&127)<<1;
 
-		
-			//Ancho de caracter 8, 7 y 6 pixeles
-			if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
-				scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-				px++;
-			}
+            //este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
+
+            int xfinal,yfinal;
+
+            //xfinal=(((x*menu_char_width)+bit)*zoom_level);
+
+            xfinal=(((x*menu_char_width)+px)*zoom_level);
+            yfinal=y*zoom_level;
+
+
+            //Hacer zoom de ese pixel si conviene
+
+            //Ancho de caracter 8, 7 y 6 pixeles
+            if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
+                scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
+                px++;
+            }
 
         }
 
