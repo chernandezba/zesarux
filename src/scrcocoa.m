@@ -2670,6 +2670,13 @@ void scrcocoa_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
+    new_scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+
+}
+
+void old_scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
+{
+
     int yorigen;
 
 
@@ -2691,8 +2698,6 @@ void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
     scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 
 }
-
-
 
 void scrcocoa_set_fullscreen(void)
 {

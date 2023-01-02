@@ -150,6 +150,8 @@ extern void scr_putsprite_comun_zoom(z80_byte *puntero,int x,int y,z80_bit inver
 extern void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel,int zoom_level);
 extern void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel);
 
+extern void new_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel);
+
 extern void scr_putpixel_gui_zoom(int x,int y,int color,int zoom_level);
 extern void scr_putpixel_gui_no_zoom(int x,int y,int color,int zoom_level);
 

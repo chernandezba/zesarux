@@ -3129,7 +3129,91 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
   }
 }
 
+//y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
+void new_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel)
+{
+    
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    
+    int color;
+    z80_byte bit;
+    z80_byte line;
+    z80_byte byte_leido;
 
+    //printf ("tinta %d papel %d\n",tinta,papel);
+
+    //margenes de zona interior de pantalla. Para modo rainbow
+    int margenx_izq;
+    int margeny_arr;
+
+	int zoom_level=1;
+
+	z80_byte *puntero;
+	puntero=&char_set[(caracter-32)*8];
+
+    scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+
+    //Caso de pentagon y en footer
+    //if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
+
+    if (pentagon_timing.v) margeny_arr=56*border_enabled.v;
+
+    y=y*8;
+
+
+    int yorigen;
+
+	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en();
+
+
+	y +=yorigen;    
+
+    for (line=0;line<8;line++,y++) {
+        byte_leido=*puntero++;
+        
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido & 128 ) color=tinta;
+            else color=papel;
+
+
+            byte_leido=(byte_leido&127)<<1;
+
+            //este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
+
+            int xfinal,yfinal;
+
+            if (rainbow_enabled.v==1) {
+                    //xfinal=(((x*8)+bit)*zoom_level);
+                    xfinal=(((x*8)+bit)*zoom_level);
+                    xfinal +=margenx_izq;
+
+                    yfinal=y*zoom_level;
+                    yfinal +=margeny_arr;
+            }
+
+            else {
+                    //xfinal=((x*8)+bit)*zoom_level;
+                    xfinal=((x*8)+bit)*zoom_level;
+                    yfinal=y*zoom_level;
+            }
+
+
+            //Hacer zoom de ese pixel si conviene
+
+
+            if (rainbow_enabled.v==1) scr_putpixel_zoom_rainbow(xfinal,yfinal,color);
+
+            else scr_putpixel_zoom(xfinal,yfinal,color);							
+
+
+
+        }
+    }
+}								
+
+
+
+//y en coordenadas de fila, contando border, pantalla, border, por lo que el footer suele comenzar en la 32
 void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel)
 {
     int color;
