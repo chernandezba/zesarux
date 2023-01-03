@@ -9468,9 +9468,31 @@ void screen_after_menu_overlay_timer(void)
 void screen_render_menu_overlay_if_active(void)
 {
 	if (menu_overlay_activo) {
+
+    struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+
+    timer_stats_current_time(&zxvision_time_total_antes);  
+
+        printf("INICIO menu overlay\n");
         screen_before_menu_overlay_timer();
+
+        //TODO: explicar por que el calculo de tiempo de la ventana actual no se realiza desde el draw below windows y hay que hacerlo aparte aqui
+        //al final
+
+
         menu_overlay_function();
         screen_after_menu_overlay_timer();
+        printf("FINAL menu overlay\n");
+
+
+zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);      
+
+        //tiempo correspondiente para la ventana activa es la resta
+        long diferencia=zxvision_time_total_drawing_overlay-zxvision_time_total_drawing_overlay_except_current;
+        if (zxvision_current_window!=NULL) {
+            zxvision_current_window->last_spent_time_overlay=diferencia;
+        }
+
     }
 }
 

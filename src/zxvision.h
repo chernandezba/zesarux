@@ -201,6 +201,7 @@ typedef struct s_zxvision_window zxvision_window;
 
 
 extern long zxvision_time_total_drawing_overlay;
+extern long zxvision_time_total_drawing_overlay_except_current;
 
 //Aqui hay un problema, y es que en utils.h se esta usando zxvision_window, y hay que declarar este tipo de ventana antes
 #include "utils.h"
@@ -364,7 +365,7 @@ extern void zxvision_draw_window_contents(zxvision_window *w);
 extern void zxvision_draw_window_contents_no_speech(zxvision_window *ventana);
 extern int zxvision_wait_until_esc(zxvision_window *w);
 
-extern void zxvision_draw_overlay_if_exists(zxvision_window *w);
+extern int zxvision_draw_overlay_if_exists(zxvision_window *w);
 //extern void menu_draw_background_windows_overlay(void);
 
 extern void zxvision_window_move_this_window_on_top(zxvision_window *ventana);

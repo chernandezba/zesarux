@@ -16796,8 +16796,18 @@ void menu_display_window_list_print_item(zxvision_window *w,int linea,char *wind
 void menu_display_window_list_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+    if (!zxvision_drawing_in_background) {
+        printf("No dibujando en background. Dibujando ventanas background cuando primer plano Window List\n");
+        normal_overlay_texto_menu();
+    }
+    
     //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
+
+    printf("Inicio efectivo overlay window list\n");
+
+    //TODO: tiempo total transcurrido en esta ventana cuando esta activa, habria que considerar los return posibles
+    //y actualizar last_spent_time_overlay de manera correspondiente
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -16870,6 +16880,9 @@ void menu_display_window_list_overlay(void)
 
 
     zxvision_draw_window_contents(menu_display_window_list_window);
+
+    printf("FIN overlay window list\n");
+
 }
 
 
@@ -16928,14 +16941,14 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 
     //opcion a 0 siempre al iniciar
-    menu_display_window_list_opcion_seleccionada=1;
+    menu_display_window_list_opcion_seleccionada=0;
 
 	do {
 
-		//menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Window name         Flags  Time spent");
-        //menu_add_item_menu_tabulado(array_menu_common,1,0);
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Window name         Flags  Time spent");
+        menu_add_item_menu_tabulado(array_menu_common,1,0);
 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
         menu_add_item_menu_tabulado(array_menu_common,1,1);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;

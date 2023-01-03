@@ -240,3 +240,5 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 -correcta impresion texto en footer dependiendo de alto caracter: no deberia cambiar
 Ver funcion scr_putchar_footer_comun_zoom
 ->revisar en caso pentagon
+
+-completar comentarios en screen_render_menu_overlay_if_active
