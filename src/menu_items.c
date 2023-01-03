@@ -16647,9 +16647,23 @@ void menu_display_window_list_info(zxvision_window *w)
 
 int menu_display_window_conmutar_ventana=0;
 
+//nombre de la ventana (geometry name) seleccionda
+char menu_display_window_list_selected_window[MAX_NAME_WINDOW_GEOMETRY]="";
+
 void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 {
-	//en valor_opcion, numero entrada
+	zxvision_window *ventana;
+
+	//ventana=zxvision_return_n_window_from_top(valor_opcion);
+
+    ventana=zxvision_find_window_in_background(menu_display_window_list_selected_window);
+
+	if (ventana==NULL) {
+		menu_error_message("Can not find that window");
+		return;
+	}
+
+    //printf("Ventana pulsada: %s\n",ventana->window_title);
 
 
     int tipo=menu_simple_eight_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
@@ -16657,15 +16671,6 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 
     if (tipo==0) return; //ESC	
 
-
-	zxvision_window *ventana;
-
-	ventana=zxvision_return_n_window_from_top(valor_opcion);
-
-	if (ventana==NULL) {
-		menu_error_message("Can not find that window");
-		return;
-	}
 
     switch (tipo) {
 
@@ -16792,7 +16797,7 @@ void menu_display_window_list_overlay(void)
     if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
         menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
 
-        printf("refrescando. contador segundo: %d\n",contador_segundo);
+        //printf("refrescando. contador segundo: %d\n",contador_segundo);
 
         zxvision_cls(menu_display_window_list_window);
 
@@ -16847,7 +16852,7 @@ void menu_display_window_list_overlay(void)
 
                 linea++;
 
-                printf("Dibujar %s\n",item_ventana_puntero->window_title);
+                //printf("Dibujar %s\n",item_ventana_puntero->window_title);
                 /*
                 menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
 
@@ -16858,7 +16863,7 @@ void menu_display_window_list_overlay(void)
             }
 
             else {
-                printf("NO Dibujar %s\n",item_ventana_puntero->window_title);
+                //printf("NO Dibujar %s\n",item_ventana_puntero->window_title);
             }
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
@@ -16908,9 +16913,6 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     menu_display_window_list_create_window(ventana);
 
-    //Cambiamos funcion overlay de texto de menu
-    //el overlay realmente solo se activa al salir de aqui
-    //la ponemos temporalmente por si se esta restaurando en inicio
     set_menu_overlay_function(menu_display_window_list_overlay);
 
     menu_display_window_list_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
@@ -16946,7 +16948,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
-		int total_ventanas=0;
+		//int total_ventanas=0;
 
         int linea=1;
 
@@ -16974,9 +16976,12 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
                 */
 
 
-			    menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
+			    //menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
+                if (item_ventana_puntero->geometry_name[0]!=0) {
+                    menu_add_item_menu_misc(array_menu_common,item_ventana_puntero->geometry_name);
+                }
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
-                total_ventanas++;
+                //total_ventanas++;
             }
 
 
@@ -16999,12 +17004,14 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
                         //cerrar primero nosotros mismos,
                         //dado que la lista de ventanas que tenemos aqui no nos consideramos a nosotros mismos,
                         //y es importante dado que le enviamos el numero de linea seleccionada (valor_opcion)
-                        zxvision_destroy_window(ventana);
+                        //temp zxvision_destroy_window(ventana);
+
+                        strcpy(menu_display_window_list_selected_window,item_seleccionado.texto_misc);
 
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
                         //Y volver a abrir ventana
-                        menu_display_window_list_create_window(ventana);
+                        //menu_display_window_list_create_window(ventana);
                 }
         }
 
