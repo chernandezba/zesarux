@@ -9469,15 +9469,19 @@ void screen_render_menu_overlay_if_active(void)
 {
 	if (menu_overlay_activo) {
 
-    struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+        struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
 
-    timer_stats_current_time(&zxvision_time_total_antes);  
+        timer_stats_current_time(&zxvision_time_total_antes);  
 
         printf("INICIO menu overlay\n");
         screen_before_menu_overlay_timer();
 
-        //TODO: explicar por que el calculo de tiempo de la ventana actual no se realiza desde el draw below windows y hay que hacerlo aparte aqui
-        //al final
+        //Aqui calculamos lo que se tarda en lanzar el overlay de cada ventana (desde menu_draw_background_windows_overlay_after_normal), y el total de todas las ventanas
+        //Si hay una ventana en primer plano, con overlay, no se puede calcular directamente su tiempo,
+        //pues primero se ejecuta el menu_overlay_function, que sera el overlay de esa ventana, donde no sabemos el tiempo
+        //(pues habria que meter calculo de tiempo en cada funcion de overlay) y luego en normal_overlay_texto, acaba saltando a 
+        //menu_draw_background_windows_overlay_after_normal, que es quien si que calcula el tiempo de cada ventana en background
+        //Mas info, ver DEVELOPMENT: Sobre menu y overlay y ventanas en background
 
 
         menu_overlay_function();
@@ -9485,7 +9489,7 @@ void screen_render_menu_overlay_if_active(void)
         printf("FINAL menu overlay\n");
 
 
-zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);      
+        zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);      
 
         //tiempo correspondiente para la ventana activa es la resta
         long diferencia=zxvision_time_total_drawing_overlay-zxvision_time_total_drawing_overlay_except_current;

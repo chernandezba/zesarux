@@ -16663,6 +16663,13 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 		return;
 	}
 
+    int selected_ourself=0;
+
+    if (!strcmp(menu_display_window_list_selected_window,"windowlist")) {
+        //Se ha seleccionado la propia ventana, hay acciones que no se pueden hacer
+        selected_ourself=1;
+    }
+
     //printf("Ventana pulsada: %s\n",ventana->window_title);
 
 
@@ -16675,12 +16682,17 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     switch (tipo) {
 
 	    case 1:
-            //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
-            clicked_on_background_windows=1;
-            which_window_clicked_on_background=ventana;
+            if (!selected_ourself) {
+                
+            
+                //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
+                clicked_on_background_windows=1;
+                which_window_clicked_on_background=ventana;
 
-            //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
-            menu_display_window_conmutar_ventana=1;
+                //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
+                menu_display_window_conmutar_ventana=1;
+
+            }
 
         break;
     
@@ -16689,7 +16701,9 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         break;
 
         case 3:
-            zxvision_window_move_this_window_to_bottom(ventana);
+            if (!selected_ourself) {
+                zxvision_window_move_this_window_to_bottom(ventana);
+            }
         break;
 
         case 4:
@@ -16709,8 +16723,13 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         break;
     
 
-        default:
-	        zxvision_window_delete_this_window(ventana);
+        case 8:
+            if (selected_ourself) {
+                debug_printf(VERBOSE_ERR,"Can not close ourself");
+            }
+            else {
+	            zxvision_window_delete_this_window(ventana);
+            }
         break;
 
     }
@@ -16773,7 +16792,7 @@ zxvision_window *menu_display_window_list_window;
 int menu_display_window_list_valor_contador_segundo_anterior;
 
 //nos excluimos cuando es la ventana activa y no el background
-int menu_display_window_list_excluirnos_nosotros=0;
+//int menu_display_window_list_excluirnos_nosotros=0;
 
 zxvision_window zxvision_window_menu_window_list;
 
@@ -16844,9 +16863,9 @@ void menu_display_window_list_overlay(void)
 
            
 
-            if (menu_display_window_list_excluirnos_nosotros) {
+            /*if (menu_display_window_list_excluirnos_nosotros) {
                 if (item_ventana_puntero==menu_display_window_list_window) mostrar=0;
-            }
+            }*/
 
             if (mostrar) {
 
@@ -16932,7 +16951,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     }
 
 
-    menu_display_window_list_excluirnos_nosotros=1;
+    //menu_display_window_list_excluirnos_nosotros=1;
 
     //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
     menu_item *array_menu_common;
@@ -16960,7 +16979,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		while (item_ventana_puntero!=NULL) {
 
             //excluirnos nosotros mismos
-            if (item_ventana_puntero!=ventana) {
+            //if (item_ventana_puntero!=ventana) {
 
                 char window_text[MAX_ITEM_WINDOW_NAME];
 
@@ -16975,7 +16994,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
                 
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
                 
-            }
+            //}
 
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
@@ -17011,7 +17030,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     //restauramos modo normal de texto de menu
     set_menu_overlay_function(normal_overlay_texto_menu);
 
-    menu_display_window_list_excluirnos_nosotros=0;
+    //menu_display_window_list_excluirnos_nosotros=0;
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);
