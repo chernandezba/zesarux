@@ -16735,6 +16735,21 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
     );
 }
 
+#define MAX_WINDOW_FLAGS_LENGHT 32
+
+//Para que quepa toda la info de ventana, flags y tiempo usado
+#define MAX_ITEM_WINDOW_NAME (ZXVISION_MAX_WINDOW_TITLE+MAX_WINDOW_FLAGS_LENGHT+100)
+
+void menu_display_window_list_get_item_window(char *texto_destino,zxvision_window *item_ventana_puntero)
+{
+    //Si esta minimizada o Maximizada
+    char window_flags[MAX_WINDOW_FLAGS_LENGHT];
+
+
+    menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+    sprintf(texto_destino,
+        "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);    
+}
 
 zxvision_window *menu_display_window_list_window;
 
@@ -16769,12 +16784,24 @@ void menu_display_window_list_overlay(void)
         int linea=1;
 
         //Si esta minimizada o Maximizada
-        char window_flags[32];
+        //char window_flags[MAX_WINDOW_FLAGS_LENGHT];
 
 		while (item_ventana_puntero!=NULL) {
+
+            char window_text[MAX_ITEM_WINDOW_NAME];
+
+            menu_display_window_list_get_item_window(window_text,item_ventana_puntero);
+
+            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea++,
+                window_text);
+
+
+            /*
             menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+
             zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
-                "%s%s",item_ventana_puntero->window_title,window_flags);
+                "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);
+            */
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
@@ -16860,16 +16887,29 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         int linea=1;
 
         //Si esta minimizada o Maximizada
-        char window_flags[32];
+        //char window_flags[MAX_WINDOW_FLAGS_LENGHT];
 
 		while (item_ventana_puntero!=NULL) {
 
             //excluirnos nosotros mismos
             if (item_ventana_puntero!=ventana) {
+
+                char window_text[MAX_ITEM_WINDOW_NAME];
+
+                menu_display_window_list_get_item_window(window_text,item_ventana_puntero);
+
+
+			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
+                    window_text);
+
+                /*
                 menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
 
 			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
                     "%s%s",item_ventana_puntero->window_title,window_flags);
+                */
+
+
 			    menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
                 total_ventanas++;

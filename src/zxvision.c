@@ -12165,9 +12165,9 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
 		zxvision_draw_overlay_if_exists(pointer_window);
 	
-	    w->last_spent_time_overlay=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
+	    pointer_window->last_spent_time_overlay=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
 
-    	printf ("tiempo transcurrido: %ld microsec\n",w->last_spent_time_overlay);
+    	printf ("tiempo transcurrido: %ld microsec\n",pointer_window->last_spent_time_overlay);
 		
 
 		pointer_window=pointer_window->next_window;
