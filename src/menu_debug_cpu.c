@@ -8990,7 +8990,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
         else if (menu_debug_textadventure_map_connections_zoom>=5) {
             //Si no se ven los dibujos, al menos mostrar descripción de las localidades
-            int y_location=(inicio_celda_y/8)+1;
+            int y_location=(inicio_celda_y/menu_char_height)+1;
             int x_location=inicio_celda_x/menu_char_width+1;
 
             int maxima_longitud=(tamanyo_interior_celda/menu_char_width)-2;
@@ -9030,7 +9030,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
             int total_lineas=zxvision_generic_message_aux_justificar_lineas(texto_localidad,strlen(texto_localidad),maxima_longitud,punteros_lineas);
 
-            int maximo_permitido_alto=(((tamanyo_celda/2)-1)/8)-1; //-1 de margen de arriba
+            int maximo_permitido_alto=(((tamanyo_celda/2)-1)/menu_char_height)-1; //-1 de margen de arriba
 
             if (total_lineas>maximo_permitido_alto) total_lineas=maximo_permitido_alto;
             
@@ -9539,7 +9539,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
       
 
     int pos_x_linea=texto_x*menu_char_width-textadv_map_get_space_compass_right();
-    int pos_y_linea=(texto_y+(map_adventure_offset_y/8))*8;
+    int pos_y_linea=(texto_y+(map_adventure_offset_y/menu_char_height))*menu_char_height;
 
 
     int p1_x;
@@ -9793,7 +9793,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
                     //justo el centro de la habitacion
                     int offset_x=(x*tamanyo_habitacion+map_adventure_offset_x+tamanyo_habitacion/2)/menu_char_width;
-                    int offset_y=(y*tamanyo_habitacion+map_adventure_offset_y+tamanyo_habitacion/2)/8;
+                    int offset_y=(y*tamanyo_habitacion+map_adventure_offset_y+tamanyo_habitacion/2)/menu_char_height;
                     
                     //cuanto es la mitad de pantalla
                     int mitad_ancho=(w->visible_width)/2;
@@ -9979,12 +9979,12 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
 
         //pasar a caracteres
         ancho_total /=menu_char_width;
-        alto_total /=8;
+        alto_total /=menu_char_height;
     }
 
     //darle mas para los offsets
     ancho_total +=map_adventure_offset_x/menu_char_width;
-    alto_total +=map_adventure_offset_y/8;
+    alto_total +=map_adventure_offset_y/menu_char_height;
 
     //1 mas por cada, de los decimales al dividir
     ancho_total++;

@@ -241,4 +241,4 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 Ver funcion scr_putchar_footer_comun_zoom
 ->revisar en caso pentagon
 
--completar comentarios en screen_render_menu_overlay_if_active
+-text adventure map no se ven bien primeras lineas con dibujos si char height no es 8
