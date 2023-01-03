@@ -9707,6 +9707,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->always_visible=0;
 
+    w->last_spent_time_overlay=0;
+
 	w->can_mouse_send_hotkeys=0;
 
     w->no_refresh_change_offset=0;
@@ -12087,10 +12089,13 @@ void zxvision_draw_overlay_if_exists(zxvision_window *w)
 		}
 }
 
+//Tiempo total transcurrido dibujando overlays
+long zxvision_time_total_drawing_overlay=0;
+
 //Dibujar todos los overlay de las ventanas que hay debajo de esta en cascada, desde la mas antigua hasta arriba, pero llamando solo las que tienen overlay
 void zxvision_draw_overlays_below_windows(zxvision_window *w)
 {
-
+    printf ("drawing overlay start---------\n");
 
 	//Primero ir a buscar la de abajo del todo
 	zxvision_window *pointer_window;
@@ -12123,6 +12128,11 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	zxvision_drawing_in_background=1;
 
 
+    struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+
+    timer_stats_current_time(&zxvision_time_total_antes);     
+
+
 	//Dibujar todas ventanas excepto la de mas arriba. 
 	//while (pointer_window!=w && pointer_window!=NULL) {
 
@@ -12144,15 +12154,28 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		//en principio no hace falta. Ya se redibuja por el redibujado normal
 		//zxvision_draw_window_contents(pointer_window);
 
+        printf ("drawing overlay name: %s\n",pointer_window->window_title);
+
+        struct timeval zxvision_time_antes,zxvision_time_despues;
+
+        //calcular tiempo que tarda en dibujarse
+
+	    timer_stats_current_time(&zxvision_time_antes);       
+
 
 		zxvision_draw_overlay_if_exists(pointer_window);
 	
+	    w->last_spent_time_overlay=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
+
+    	printf ("tiempo transcurrido: %ld microsec\n",w->last_spent_time_overlay);
 		
 
 		pointer_window=pointer_window->next_window;
 	}
 
+    zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);
 
+    printf ("tiempo TOTAL transcurrido: %ld microsec\n",zxvision_time_total_drawing_overlay);
 
 	zxvision_drawing_in_background=0;
 

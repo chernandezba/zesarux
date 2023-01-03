@@ -182,6 +182,9 @@ struct s_zxvision_window {
 	int visible_cursor;
 	int cursor_line;
 
+    //tiempo total transcurrido, en microsegundos, dibujando overlay
+    long last_spent_time_overlay;
+
 	//Ventana anterior. Se van poniendo una encima de otra
 	struct s_zxvision_window *previous_window;
 
