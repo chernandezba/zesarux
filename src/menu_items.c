@@ -16745,6 +16745,9 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
 //Para que quepa toda la info de ventana, flags y tiempo usado
 #define MAX_ITEM_WINDOW_NAME (ZXVISION_MAX_WINDOW_TITLE+MAX_WINDOW_FLAGS_LENGHT+100)
 
+int menu_display_window_list_espacios_nombre_ventana=20;
+int menu_display_window_list_espacios_flags=6;
+
 void menu_display_window_list_get_item_window(char *texto_destino,zxvision_window *item_ventana_puntero)
 {
     //Si esta minimizada o Maximizada
@@ -16752,8 +16755,17 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
 
 
     menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+
+    int porcentaje;
+
+    if (!zxvision_time_total_drawing_overlay) porcentaje=0;
+
+    else porcentaje=((item_ventana_puntero->last_spent_time_overlay)*100)/zxvision_time_total_drawing_overlay;
+
     sprintf(texto_destino,
-        "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);    
+        "%-*s%*s %7ld us (%3d %%)",menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
+        menu_display_window_list_espacios_flags,window_flags,
+        item_ventana_puntero->last_spent_time_overlay,porcentaje);    
 }
 
 zxvision_window *menu_display_window_list_window;
@@ -16802,13 +16814,14 @@ void menu_display_window_list_overlay(void)
         zxvision_cls(menu_display_window_list_window);
 
 		
-
-        menu_display_window_list_print_item(menu_display_window_list_window,0,"-Top-");
+        menu_display_window_list_print_item(menu_display_window_list_window,0,"Window name         Flags  Time spent");
+        menu_display_window_list_print_item(menu_display_window_list_window,1,"-Top-");
+        
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
 
-        int linea=1;
+        int linea=2;
 
         //Si esta minimizada o Maximizada
         //char window_flags[MAX_WINDOW_FLAGS_LENGHT];
@@ -16915,17 +16928,20 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 
     //opcion a 0 siempre al iniciar
-    menu_display_window_list_opcion_seleccionada=0;
+    menu_display_window_list_opcion_seleccionada=1;
 
 	do {
 
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
-        menu_add_item_menu_tabulado(array_menu_common,1,0);
+		//menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Window name         Flags  Time spent");
+        //menu_add_item_menu_tabulado(array_menu_common,1,0);
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
+        menu_add_item_menu_tabulado(array_menu_common,1,1);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 		
 
-        int linea=1;
+        int linea=2;
 
 
 		while (item_ventana_puntero!=NULL) {

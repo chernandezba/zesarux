@@ -200,7 +200,7 @@ typedef struct s_zxvision_window zxvision_window;
 
 
 
-
+extern long zxvision_time_total_drawing_overlay;
 
 //Aqui hay un problema, y es que en utils.h se esta usando zxvision_window, y hay que declarar este tipo de ventana antes
 #include "utils.h"
