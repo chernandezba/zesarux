@@ -3530,13 +3530,13 @@ void menu_put_switch_zxdesktop_footer(void)
         debug_printf(VERBOSE_PARANOID,"Drawing ZX Desktop switch button");
 
 
-        if (caracter_ampliar_ancho!=' ') new_scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_ampliar_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_ancho,xorigen,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
-        if (caracter_reducir_ancho!=' ') new_scr_putchar_footer_comun_zoom(caracter_reducir_ancho,xorigen,yorigen+1,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_reducir_ancho!=' ') scr_putchar_footer_comun_zoom(caracter_reducir_ancho,xorigen,yorigen+1,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
-        if (caracter_ampliar_alto!=' ') new_scr_putchar_footer_comun_zoom(caracter_ampliar_alto,xorigen-1,yorigen+1,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_ampliar_alto!=' ') scr_putchar_footer_comun_zoom(caracter_ampliar_alto,xorigen-1,yorigen+1,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
-        if (caracter_reducir_alto!=' ') new_scr_putchar_footer_comun_zoom(caracter_reducir_alto,xorigen-1,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
+        if (caracter_reducir_alto!=' ') scr_putchar_footer_comun_zoom(caracter_reducir_alto,xorigen-1,yorigen,ESTILO_GUI_PAPEL_NORMAL,ESTILO_GUI_TINTA_NORMAL);
 
 
     }

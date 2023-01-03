@@ -193,7 +193,8 @@ void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
 }
 
-void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
+/*
+void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
 
     int yorigen;
@@ -212,8 +213,12 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
     //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
     scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
+*/
 
-
+void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+{
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+}
 
 void scrsdl_set_fullscreen(void)
 {

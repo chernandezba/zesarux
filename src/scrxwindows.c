@@ -775,7 +775,8 @@ void scrxwindows_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel
 }
 
 //Rutina de putchar para footer window
-void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
+/*
+void old_scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
 
         int yorigen;
@@ -792,8 +793,13 @@ void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pap
         //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
 				scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
+*/
 
-
+//Rutina de putchar para footer window
+void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+{
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+}
 
 
 void scrxwindows_refresca_pantalla_zx81(void)

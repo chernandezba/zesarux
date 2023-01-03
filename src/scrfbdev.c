@@ -365,7 +365,8 @@ void scrfbdev_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
 }
 
-void scrfbdev_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
+/*
+void old_scrfbdev_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
 	int yorigen;
@@ -387,8 +388,12 @@ void scrfbdev_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 		scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 
 }
+*/
 
-
+void scrfbdev_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
+{
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+}
 
 
 void scrfbdev_refresca_pantalla_zx81(void)

@@ -3130,7 +3130,7 @@ void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,i
 }
 
 //y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
-void new_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel)
+void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel)
 {
     
     if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
@@ -3214,7 +3214,7 @@ void new_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,i
 
 
 //y en coordenadas de fila, contando border, pantalla, border, por lo que el footer suele comenzar en la 32
-void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel)
+void old_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel)
 {
     int color;
     z80_byte bit;
