@@ -16801,7 +16801,7 @@ void menu_display_window_list_overlay(void)
 
         zxvision_cls(menu_display_window_list_window);
 
-		//zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,0,"-Top-");
+		
 
         menu_display_window_list_print_item(menu_display_window_list_window,0,"-Top-");
 
@@ -16834,31 +16834,12 @@ void menu_display_window_list_overlay(void)
 
                 menu_display_window_list_print_item(menu_display_window_list_window,linea,window_text);
 
-                /*
-
-                if (linea==menu_display_window_list_opcion_seleccionada) {
-                    //linea donde esta el cursor. invertir
-                    
-                    zxvision_print_string_fillspc(menu_display_window_list_window,1,linea,
-                        ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,window_text);
-                    
-                }
-                else {
-
-                    zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,
-                        window_text);
-                }
-                */
+              
 
                 linea++;
 
                 //printf("Dibujar %s\n",item_ventana_puntero->window_title);
-                /*
-                menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
-
-                zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
-                    "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);
-                */
+               
 
             }
 
@@ -16869,7 +16850,7 @@ void menu_display_window_list_overlay(void)
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
 
-        //zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,"-Bottom-");
+        
         menu_display_window_list_print_item(menu_display_window_list_window,linea,"-Bottom-");
 
     }
@@ -16924,10 +16905,6 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
             return;
     }
 
-    //restauramos modo normal de texto de menu
-    //solo queremos el overlay cuando estamos fuera
-    //Aqui dentro, la lista de ventanas son items de menu. En el overlay, la lista de ventanas son lineas sin menus
-    //desactivado set_menu_overlay_function(normal_overlay_texto_menu);
 
     menu_display_window_list_excluirnos_nosotros=1;
 
@@ -16936,7 +16913,6 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    //int comun_opcion_seleccionada=0;
 
     //opcion a 0 siempre al iniciar
     menu_display_window_list_opcion_seleccionada=0;
@@ -16947,13 +16923,10 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
-
-		//int total_ventanas=0;
+		
 
         int linea=1;
 
-        //Si esta minimizada o Maximizada
-        //char window_flags[MAX_WINDOW_FLAGS_LENGHT];
 
 		while (item_ventana_puntero!=NULL) {
 
@@ -16968,20 +16941,11 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
                     window_text);
 
-                /*
-                menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
-
-			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
-                    "%s%s",item_ventana_puntero->window_title,window_flags);
-                */
-
-
-			    //menu_add_item_menu_valor_opcion(array_menu_common,total_ventanas);
-                if (item_ventana_puntero->geometry_name[0]!=0) {
-                    menu_add_item_menu_misc(array_menu_common,item_ventana_puntero->geometry_name);
-                }
+                //Agregarle el nombre de geometria para saber que ventana es
+                menu_add_item_menu_misc(array_menu_common,item_ventana_puntero->geometry_name);
+                
                 menu_add_item_menu_tabulado(array_menu_common,1,linea++);
-                //total_ventanas++;
+                
             }
 
 
@@ -17000,18 +16964,12 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
                 //llamamos por valor de funcion
                 if (item_seleccionado.menu_funcion!=NULL) {
-                        //printf ("actuamos por funcion\n");
-                        //cerrar primero nosotros mismos,
-                        //dado que la lista de ventanas que tenemos aqui no nos consideramos a nosotros mismos,
-                        //y es importante dado que le enviamos el numero de linea seleccionada (valor_opcion)
-                        //temp zxvision_destroy_window(ventana);
 
+                        //Indicar el nombre de la ventana
                         strcpy(menu_display_window_list_selected_window,item_seleccionado.texto_misc);
 
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-                        //Y volver a abrir ventana
-                        //menu_display_window_list_create_window(ventana);
                 }
         }
 
@@ -17020,9 +16978,6 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
     zxvision_set_window_overlay_from_current(ventana);
-
-    //Este caso es especial, activamos el overlay solo cuando estamos fuera de la ventana
-    //desactivado ventana->overlay_function=menu_display_window_list_overlay;
 
     //restauramos modo normal de texto de menu
     set_menu_overlay_function(normal_overlay_texto_menu);
