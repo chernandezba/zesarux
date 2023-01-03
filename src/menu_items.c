@@ -273,7 +273,7 @@ int visualfloppy_opcion_seleccionada=0;
 int menu_plusthreedisk_info_sectors_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_tracks_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_opcion_seleccionada=0;
-
+int menu_display_window_list_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -16755,6 +16755,27 @@ zxvision_window *menu_display_window_list_window;
 
 int menu_display_window_list_valor_contador_segundo_anterior;
 
+//nos excluimos cuando es la ventana activa y no el background
+int menu_display_window_list_excluirnos_nosotros=0;
+
+zxvision_window zxvision_window_menu_window_list;
+
+void menu_display_window_list_print_item(zxvision_window *w,int linea,char *window_text)
+{
+    if (linea==menu_display_window_list_opcion_seleccionada) {
+        //linea donde esta el cursor. invertir
+        
+        zxvision_print_string_fillspc(w,1,linea,
+            ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,window_text);
+        
+    }
+    else {
+
+        zxvision_print_string_defaults_fillspc(w,1,linea,
+            window_text);
+    }    
+}
+
 void menu_display_window_list_overlay(void)
 {
 
@@ -16771,12 +16792,13 @@ void menu_display_window_list_overlay(void)
     if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
         menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
 
-        //printf("refrescando. contador segundo: %d\n",contador_segundo);
+        printf("refrescando. contador segundo: %d\n",contador_segundo);
 
         zxvision_cls(menu_display_window_list_window);
 
-		zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,0,"-Top-");
+		//zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,0,"-Top-");
 
+        menu_display_window_list_print_item(menu_display_window_list_window,0,"-Top-");
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
 
@@ -16788,25 +16810,62 @@ void menu_display_window_list_overlay(void)
 
 		while (item_ventana_puntero!=NULL) {
 
-            char window_text[MAX_ITEM_WINDOW_NAME];
+            //excluirnos nosotros mismos
 
-            menu_display_window_list_get_item_window(window_text,item_ventana_puntero);
+            int mostrar=1;
 
-            zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea++,
-                window_text);
+           
+
+            if (menu_display_window_list_excluirnos_nosotros) {
+                if (item_ventana_puntero==menu_display_window_list_window) mostrar=0;
+            }
+
+            if (mostrar) {
 
 
-            /*
-            menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+                char window_text[MAX_ITEM_WINDOW_NAME];
 
-            zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
-                "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);
-            */
+                menu_display_window_list_get_item_window(window_text,item_ventana_puntero);
+
+                menu_display_window_list_print_item(menu_display_window_list_window,linea,window_text);
+
+                /*
+
+                if (linea==menu_display_window_list_opcion_seleccionada) {
+                    //linea donde esta el cursor. invertir
+                    
+                    zxvision_print_string_fillspc(menu_display_window_list_window,1,linea,
+                        ESTILO_GUI_TINTA_SELECCIONADO,ESTILO_GUI_PAPEL_SELECCIONADO,0,window_text);
+                    
+                }
+                else {
+
+                    zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,
+                        window_text);
+                }
+                */
+
+                linea++;
+
+                printf("Dibujar %s\n",item_ventana_puntero->window_title);
+                /*
+                menu_display_window_list_get_window_flags(item_ventana_puntero,window_flags);
+
+                zxvision_print_string_defaults_fillspc_format(menu_display_window_list_window,1,linea++,
+                    "%s%s %ld us",item_ventana_puntero->window_title,window_flags,item_ventana_puntero->last_spent_time_overlay);
+                */
+
+            }
+
+            else {
+                printf("NO Dibujar %s\n",item_ventana_puntero->window_title);
+            }
 
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
 
-        zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,"-Bottom-");
+        //zxvision_print_string_defaults_fillspc(menu_display_window_list_window,1,linea,"-Bottom-");
+        menu_display_window_list_print_item(menu_display_window_list_window,linea,"-Bottom-");
 
     }
 
@@ -16814,7 +16873,7 @@ void menu_display_window_list_overlay(void)
     zxvision_draw_window_contents(menu_display_window_list_window);
 }
 
-zxvision_window zxvision_window_menu_window_list;
+
 
 void menu_display_window_list_create_window(zxvision_window *ventana)
 {
@@ -16866,14 +16925,19 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     //restauramos modo normal de texto de menu
     //solo queremos el overlay cuando estamos fuera
     //Aqui dentro, la lista de ventanas son items de menu. En el overlay, la lista de ventanas son lineas sin menus
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //desactivado set_menu_overlay_function(normal_overlay_texto_menu);
+
+    menu_display_window_list_excluirnos_nosotros=1;
 
     //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
     menu_item *array_menu_common;
     menu_item item_seleccionado;
     int retorno_menu;
 
-    int comun_opcion_seleccionada=0;
+    //int comun_opcion_seleccionada=0;
+
+    //opcion a 0 siempre al iniciar
+    menu_display_window_list_opcion_seleccionada=0;
 
 	do {
 
@@ -16925,7 +16989,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 
 
-		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
+		retorno_menu=menu_dibuja_menu(&menu_display_window_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
 
 			
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -16948,14 +17012,15 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND && !menu_display_window_conmutar_ventana);
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //zxvision_set_window_overlay_from_current(ventana);
+    zxvision_set_window_overlay_from_current(ventana);
 
     //Este caso es especial, activamos el overlay solo cuando estamos fuera de la ventana
-    ventana->overlay_function=menu_display_window_list_overlay;
+    //desactivado ventana->overlay_function=menu_display_window_list_overlay;
 
     //restauramos modo normal de texto de menu
-    //set_menu_overlay_function(normal_overlay_texto_menu);
+    set_menu_overlay_function(normal_overlay_texto_menu);
 
+    menu_display_window_list_excluirnos_nosotros=0;
 
     //Grabar geometria ventana
     util_add_window_geometry_compact(ventana);
