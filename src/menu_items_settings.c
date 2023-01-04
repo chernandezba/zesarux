@@ -907,13 +907,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'r');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip_draw_zxdesktop_background,NULL,
             "Frameskip to ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')                
-        );
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')  );
         menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");        
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_autoframeskip,NULL,"[%c] ~~%s",        
@@ -921,9 +922,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 menu_get_string_language("Auto Frameskip")
         );
 
-
- 
-				menu_add_item_menu_shortcut(array_menu_window_settings,'a');	
+		menu_add_item_menu_shortcut(array_menu_window_settings,'a');	
         menu_add_item_menu_tooltip(array_menu_window_settings,"Let ZEsarUX decide when to skip frames");
         menu_add_item_menu_ayuda(array_menu_window_settings,"ZEsarUX skips frames when the host cpu use is too high. Then skiping frames the cpu use decreases");
 
@@ -937,6 +936,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows. Enabling it uses less cpu when moving or resizing objects but "
                 "can make objects disappear or not refresh quickly. Disabling it enhances refreshing objects when moving but uses more cpu and may slow down emulation");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
@@ -944,6 +944,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
         if (mouse_menu_disabled.v==0) {
@@ -956,6 +957,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_window_settings,'i');
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disabling this will make mouse be ignored when clicking on "
                 "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,
@@ -964,6 +966,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'m');	
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button)");			
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 
@@ -979,14 +982,19 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark");
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark. This feature has been used on a large bulb display for the RunZX 2018 event");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 		if (screen_reduce_075.v) {
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_antialias.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofx,NULL,"[%d]  Offset x",screen_reduce_offset_x);
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofy,NULL,"[%d]  Offset y",screen_reduce_offset_y);
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 		
 
@@ -1000,6 +1008,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'o');
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Show on footer some machine information");
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Show on footer some machine information, like tape loading");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 		if (menu_footer) {
@@ -1008,6 +1017,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_window_settings,'p');
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show FPS on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the current FPS");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 												
 		}
 
@@ -1022,6 +1032,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU usage on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells you how much host cpu machine is using ZEsarUX. So it's better to have it low. "
 															"Higher values mean you need a faster host machine to use ZEsarUX");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 #endif
 
@@ -1033,6 +1044,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			//menu_add_item_menu_shortcut(array_menu_window_settings,'c');
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU temperature on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the temperature of the main CPU");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 												
 		}
 #endif
@@ -1065,6 +1077,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 
 
@@ -6055,11 +6068,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Allow legacy hi-color effects on pixel/attribute display zone on TBBlue");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Allows you to make hi-res effects on pixel/attribute display zone on TBBlue, like overscan demo for example. "
 										"It is not needed for Spectrum Next games, but needed for Timex 8x1 mode. Disabling it reduces cpu usage");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tbblue_store_scanlines_border,NULL,"[%c] Legacy border effects",(tbblue_store_scanlines_border.v ? 'X' : ' '));	
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Allow legacy border effects on TBBlue");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Allows you to make hi-res effects on border zone on TBBlue, like overscan demo or load/save border stripes for example. "
 										"It is not needed for Spectrum Next games. Disabling it reduces cpu usage");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			/*
 			Benchmark of this: compiled without optimization O2, with:
 			./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl 
@@ -6093,7 +6108,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enable optimized sprite rendering. Usually you don't need to disable this");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Optimized render walks on the sprite list until the last visible sprite. "
                                     "Besides, non-optimized rendering walk on the whole sprite list all the time, no matter the last visible sprite. "
-                                    "Usually don't want to disable this optimization");            
+                                    "Usually don't want to disable this optimization");    
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);        
 
 		}
 
@@ -6104,10 +6120,12 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables full vdac colour palette or PWM style");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Full vdac colour palette gives you different colour levels for every 5 bit colour component.\n"
 					"With PWM mode it gives you 5 bit values different from 0..23, but from 24 to 31 are all set to value 255");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tsconf_pal_depth,NULL,
 					 "[%d] TSConf palette depth",tsconf_palette_depth);
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6121,7 +6139,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				else
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_cpc_force_mode,NULL,"[%d] Force Video Mode",
 						cpc_forzar_modo_video_modo);
-
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				//menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_cpc_double_vsync,NULL,"[%c] Double Vsync",(cpc_send_double_vsync.v==1 ? 'X' : ' ') );
 				//menu_add_item_menu_tooltip(array_menu_settings_display,"Workaround to avoid hang on some games");
 				//menu_add_item_menu_ayuda(array_menu_settings_display,"Workaround to avoid hang on some games");
@@ -6143,6 +6161,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					"Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
 					"to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
 					"This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 				if (video_interlaced_mode.v) {
@@ -6150,6 +6169,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_shortcut(array_menu_settings_display,'c');
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable scanlines on interlaced mode");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Scanlines draws odd lines a bit darker than even lines");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				}
 
 
@@ -6159,6 +6179,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable gigascreen colours");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Gigascreen enables more than 15 colours by combining pixels "
 							"of even and odd frames. The total number of different colours is 102");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				}
 
 
@@ -6171,9 +6192,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"(models except +2A and +3) that draws corrupted pixels when I register is pointed to "
 						"slow RAM.");
 						// Even on 48k models it resets the machine after some seconds drawing corrupted pixels");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 					if (snow_effect_enabled.v==1) {
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect_margin,NULL,"[%d] Snow effect threshold",snow_effect_min_value);
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 					}
 				}
 
@@ -6182,6 +6205,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_inves_ula_bright_error,NULL,"[%c] Inves bright error",(inves_ula_bright_error.v ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1. Seems it only happens with RF or RGB connection");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 				}
 
@@ -6224,6 +6248,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"LNCTR video adjust");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"LNCTR video adjust change sprite offset when drawing video images. "
 				"If you see your hi-res image is not displayed well, try changing it");
+            
 
 
 
@@ -6231,11 +6256,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_x_offset,menu_cond_zx8081_realvideo,"[%d] Video x_offset",offset_zx8081_t_coordx);
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video horizontal image offset");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video horizontal image offset, usually you don't need to change this");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"[%d] Video min. vsync length",minimo_duracion_vsync);
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,"[%c] Autodetect WRX",(autodetect_wrx.v==1 ? 'X' : ' '));
@@ -6260,6 +6287,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_fast_zx8081,menu_cond_zx8081_no_realvideo,"[%c] ZX80/81 detect fast mode", (video_fast_mode_emulation.v==1 ? 'X' : ' '));
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 		}
@@ -6290,12 +6318,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"Mode 7: Linear mode 128x192, 16 colours per pixel (ZEsarUX mode 1)\n"
 						"Mode 9: Linear mode 256x192, 16 colours per pixel (ZEsarUX mode 2)\n"
 			);
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_PENTAGON) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_16c_mode,NULL,"[%c] 16C mode support",(pentagon_16c_mode_available.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables 16C video mode support");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Enables 16C video mode support. That brings you mode 256x192x16 colour on Pentagon");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
@@ -6310,12 +6340,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				"Mode 1: Video data at address 24576 and 8x8 color attributes at address 30720\n"
 				"Mode 2: Multicolor mode: video data at address 16384 and 8x1 color attributes at address 24576\n"
 				"Mode 6: Hi-res mode 512x192, monochrome.");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 				if (timex_video_emulation.v && !MACHINE_IS_TBBLUE) {
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video_512192,NULL,"[%c] Timex Real 512x192",(timex_mode_512192_real.v ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Selects between real 512x192 or scaled 256x192");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Real 512x192 does not support scanline effects (it draws the display at once). "
 								"If not enabled real, it draws scaled 256x192 but does support scanline effects");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6324,11 +6356,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_ugly_hack,NULL,"[%c] Ugly hack",(timex_ugly_hack_enabled ? 'X' : ' ') );
 						menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
 						menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 						if (timex_ugly_hack_enabled) {
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_force_line_512192,NULL,"[%d] Force 512x192 at",timex_ugly_hack_last_hires);
 						menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
 						menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 						}
 					}
 
@@ -6342,12 +6376,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_shortcut(array_menu_settings_display,'e');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_spritechip,NULL,"[%c] ~~ZGX Sprite Chip",(spritechip_enabled.v ? 'X' : ' ') );
 				menu_add_item_menu_shortcut(array_menu_settings_display,'z');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ZGX Sprite Chip");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Enables ZGX Sprite Chip");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 
@@ -6364,6 +6400,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates the resolution of ZX80/81 on the Spectrum");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"It makes the resolution of display on Spectrum like a ZX80/81, with no colour. "
 					"This mode is not supported with real video enabled");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			if (menu_display_emulate_zx8081_cond() ){
@@ -6372,12 +6409,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"when ZX80/81 Display on Speccy enabled");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Pixel Threshold to draw black or white in a 4x4 rectangle, "
 						"when ZX80/81 Display on Speccy enabled");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,"[%c] Colours enabled",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6387,31 +6426,33 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"[%d] OSD Adventure KB length",adventure_keyboard_key_length);
-
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default 50)");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_finalspc,NULL,"[%c] OSD Adv. final space",
 				(adventure_keyboard_send_final_spc ? 'X' : ' '));
-					
-
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			
 
 		}
 
 		if (MACHINE_HAS_VDP_9918A) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,"[%c] Unlimited sprites per line", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );	
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
         if (MACHINE_IS_SMS) {
             //Corrige tambien el cuelgue del space harrier al iniciar
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_disable_raster_interrupt,NULL,"[%c] Disable raster interrupt", (sms_disable_raster_interrupt.v ? 'X' : ' ') );	
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
             if (sms_disable_raster_interrupt.v==0) {
                 menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_only_one_raster_int_frame,NULL,
                     "[%c] One interrupt / frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );	
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
             }
 
             //wonder boy, astro flash
@@ -6420,12 +6461,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 (sms_wonderboy_scroll_hack.v ? 'X' : ' ') );	
             menu_add_item_menu_tooltip(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_MSX) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,"[%c] Loading stripes", (msx_loading_stripes.v ? 'X' : ' ') );	
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}		
 
         /*
@@ -6449,6 +6492,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions. "
 							"It will look also for another character set which table is set on sysvar 23606/7. It may generate false positives "
 							"on some games. It's used on text drivers (curses, stdout, simpletext) but also on OCR function");
+        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 		if (menu_display_cursesstdoutsimpletext_cond() || menu_display_aa_cond() ) {
