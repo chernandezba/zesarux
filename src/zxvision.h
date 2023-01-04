@@ -866,7 +866,7 @@ struct s_menu_item {
     int tiene_submenu;
 
     //Si es un item avanzado
-    int item_avanzado;
+    //int item_avanzado;
 };
 
 typedef struct s_menu_item menu_item;

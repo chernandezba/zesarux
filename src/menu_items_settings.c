@@ -3093,6 +3093,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Total number of AY Chips");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Total number of AY Chips");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
         }
 
@@ -3107,20 +3108,22 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
             menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
 			menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
-
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 		}
 
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_enable,NULL,"[%c] General Sound", (gs_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
             if (gs_enabled.v) {
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_mem,NULL,"[%4d KB] General Sound RAM",
                 (gs_memory_mapping_mask_pages+1)*32 );
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
             }
         }
 
@@ -3145,8 +3148,10 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_type,NULL,"[%c] ~~DAC%s",(audiodac_enabled.v ? 'X' : ' ' ),
 						string_audiodac);
 				menu_add_item_menu_shortcut(array_menu_settings_audio,'d');
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				if (audiodac_enabled.v) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_set_port,NULL,"[%02XH] DAC port",audiodac_types[audiodac_selected_type].port);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				}
 
 
@@ -3215,6 +3220,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Apply filter on ROM save routines");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"It detects when on ROM save routines and alter audio output to use only "
 					"the MIC bit of the FEH port");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 //extern z80_bit output_beep_filter_alter_volume;
 //extern char output_beep_filter_volume;
@@ -3226,10 +3232,12 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_tooltip(array_menu_settings_audio,"Alter output beeper volume");
 				menu_add_item_menu_ayuda(array_menu_settings_audio,"Alter output beeper volume. You can set to a maximum to "
 							"send the audio to a real spectrum to load it");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 				if (output_beep_filter_alter_volume.v) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_volume,NULL,"[%d] Beeper volume",output_beep_filter_volume);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				}
 			}
 
@@ -3239,6 +3247,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_resample_1bit,NULL,"[%c] 1 bit filter",(audio_resample_1bit.v ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Resample audio output to 1 bit only");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"Resample audio output to 1 bit only");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 		
 	
 		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -3253,6 +3262,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Saves the generated sound to a file");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"You can save .raw format and if compiled with sndfile, to .wav format. "
 					"You can see the file parameters on the console enabling verbose debug level to 2 minimum");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 
@@ -3260,19 +3270,22 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Archivo audio ~~insertado","Arxiu audio ~~insertat");
         menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(aofile_inserted.v ? 'X' : ' ' ));
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'i');
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
-                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
-				menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
-				menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
-				menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
+        menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
-                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
-				menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
-                menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
+        menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
+        menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
@@ -3354,11 +3367,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 		menu_add_ESC_item(array_menu_settings_audio);
 
-                retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,"Audio Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,"Audio Settings" );
 
                 
 

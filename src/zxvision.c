@@ -18979,7 +18979,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
 
     m->atajo_tecla=0;
     m->tiene_submenu=0;
-    m->item_avanzado=0;
+    
     m->menu_funcion_espacio=NULL;
 
     m->next=NULL;
@@ -19129,14 +19129,37 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
 //Agregar decirle que es un item avanzado al ultimo item de menu
 void menu_add_item_menu_es_avanzado(menu_item *m)
 {
-       //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
-        {
-                m=m->next;
+    menu_item *inicial;
+
+    inicial=m;
+
+    menu_item *previo;
+    previo=NULL;
+
+    //busca el ultimo item. si no tenemos el modo avanzado, quitarlo
+
+    while (m->next!=NULL)
+    {
+        previo=m;
+        m=m->next;
+    }
+
+    if (menu_show_advanced_items.v==0) {
+        //Quitarlo, siempre que no seamos el item inicial
+        printf("Quitar item ultimo pues no estamos en modo avanzado\n");
+        if (previo!=NULL) {
+            printf("Quitado item ultimo\n");
+            //Liberar este ultimo
+            free(m);
+            //Indicar al previo que no hay siguiente
+            previo->next=NULL;
         }
-
-        m->item_avanzado=1;
+        else {
+            debug_printf(VERBOSE_DEBUG,"Can not remove advanced item because it is the first one");
+        }
+    }
+        
 }
 
 char *menu_text_string_sure_spanish="Seguro?";
