@@ -24144,8 +24144,9 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 				if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
 			}
 
-
+                        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
                        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
                         //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
                         menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
@@ -24153,12 +24154,17 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
                         menu_add_item_menu_tooltip(array_menu_machine_selection,"Change machine type without resetting");
                         menu_add_item_menu_ayuda(array_menu_machine_selection,"Change machine type without resetting.");
                         menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+
 
                         menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine,NULL,
                             "Custom machine","Maquina personalizada","Maquina personalitzada");
                         menu_add_item_menu_tooltip(array_menu_machine_selection,"Specify custom machine type & ROM");
                         menu_add_item_menu_ayuda(array_menu_machine_selection,"Specify custom machine type & ROM");
                         menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+
+
 
                         menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -24324,8 +24330,10 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 			}
 
 		}	
-			
+
+        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine	
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
         menu_add_item_menu(array_menu_common,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
@@ -24333,12 +24341,16 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Change machine type without resetting");
         menu_add_item_menu_ayuda(array_menu_common,"Change machine type without resetting.");
         menu_add_item_menu_tiene_submenu(array_menu_common);
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu(array_menu_common,"Custom machine",MENU_OPCION_NORMAL,menu_custom_machine,NULL);
         menu_add_item_menu_spanish(array_menu_common,"Maquina personalizada");
         menu_add_item_menu_tooltip(array_menu_common,"Specify custom machine type & ROM");
         menu_add_item_menu_ayuda(array_menu_common,"Specify custom machine type & ROM");
         menu_add_item_menu_tiene_submenu(array_menu_common);		
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
+
 					
 		menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -26051,7 +26063,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_debug,"It only resets cpu by setting PC register to zero");
             menu_add_item_menu_ayuda(array_menu_debug,"It only resets cpu by setting PC register to zero.\n"
                 "Useful for example using DivIDE firmwares in MAPRAM mode and you need to restart it but without "
-                "losing the mapping");                    
+                "losing the mapping");    
+            menu_add_item_menu_es_avanzado(array_menu_debug);
         }
                 
 
@@ -26084,6 +26097,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_ZXUNO_BOOTM_DISABLED) {
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_special_nmi,NULL,
                 "Generate Special NMI","Generar NMI Especial","Generar NMI Especial");
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
 		menu_add_item_menu(array_menu_debug,"~~Debug CPU",MENU_OPCION_NORMAL,menu_debug_registers,NULL);
@@ -26124,16 +26138,19 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "sjasmplus inputfile.asm --lst=output_extended.asm\n"
             "That output_extended.asm will have labels/addresses on every line. Then go to Debug settings, and uncheck "
             "'Source code L Prefix'. You need also to adjust 'Source code skip cols' to discard X characters from the beginning "
-            "of the line until the label/address is located, typically 6 or 7 characters");   
+            "of the line until the label/address is located, typically 6 or 7 characters");  
+        menu_add_item_menu_es_avanzado(array_menu_debug); 
 
         if (remote_tamanyo_archivo_raw_source_code) {
             menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unload_source_code,NULL,
                 "Unload Source Code","Descartar Codigo Fuente","Descartar Codi Font");
+            menu_add_item_menu_es_avanzado(array_menu_debug);
         }     
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_ZXUNO || datagear_dma_emulation.v) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_dma_tsconf_zxuno,NULL,"Debug D~~MA");
 			menu_add_item_menu_shortcut(array_menu_debug,'m');
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}					
 
 		if (CPU_IS_Z80) {
@@ -26144,11 +26161,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
                 "~~CPU Transaction Log","Registro transacciones ~~CPU","Registre transaccions ~~CPU");
 			menu_add_item_menu_shortcut(array_menu_debug,'c');
             menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
 		if (CPU_IS_MOTOROLA) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Addresses");
 			menu_add_item_menu_shortcut(array_menu_debug,'i');        
+            menu_add_item_menu_es_avanzado(array_menu_debug);
         }
 
 		if (MACHINE_IS_TSCONF || MACHINE_IS_TBBLUE || MACHINE_IS_CPC) {
@@ -26205,6 +26224,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console,NULL,
             "Debug console","Consola Depuración","Consola Depuració");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -26236,6 +26256,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sensors,NULL,
             "View Sensors","Ver Sensores","Veure Sensors");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
 		if (si_complete_video_driver() ) {
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_view_sprites,NULL,
@@ -26284,6 +26305,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_lost_vsync,NULL,
 				"Simulate lost VSYNC: %s",(simulate_lost_vsync.v==1 ? "On" : "Off"));
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
 
@@ -26313,14 +26335,15 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 		if (!CPU_IS_MOTOROLA) {
-		menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Input File Spoolin~~g");
-		menu_add_item_menu_shortcut(array_menu_debug,'g');
-                menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
-                menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
+		    menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_input_file_keyboard,NULL,"Input File Spoolin~~g");
+		    menu_add_item_menu_shortcut(array_menu_debug,'g');
+            menu_add_item_menu_tooltip(array_menu_debug,"Sends every character from a text file as keyboard presses");
+            menu_add_item_menu_ayuda(array_menu_debug,"Every character from a text file is sent as keyboard presses. Only Ascii characters, not UFT, Unicode or others. "
                                                                    "Symbols that require extended mode on Spectrum are not sent: [ ] (c) ~ \\ { }. These can be used "
                                                                    "as a delay.\n"
 								"Note: symbol | means Shift+1 (Edit)");
-                                menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
 
@@ -26335,11 +26358,13 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
             "Write message","Escribir mensaje","Escriure missatge");
 		menu_add_item_menu_tooltip(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
 		menu_add_item_menu_ayuda(array_menu_debug,"Just lets you write text in a window, useful if you want to record the display and you want to say something");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_shortcuts_window,NULL,
             "Shortcuts helper","Ayudante de atajos","Ajudant de dreceres");
 		menu_add_item_menu_tooltip(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
+        menu_add_item_menu_es_avanzado(array_menu_debug);
 
 		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
             "Toy ZXeyes","Juguete ZXeyes","Joguina ZXeyes");
@@ -26360,8 +26385,6 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
 
-
-
 	//testeo
 	//menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_testeo_scanf_numero,NULL,"Test scanf number");
 
@@ -26372,7 +26395,6 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		}
 		*/
 
-	
 
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -26859,8 +26881,9 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_snapshot);
 
 
+        //Este separador solo aparece cuando la opcion avanzada de autoconfig tambien aparece, por tanto, es un item avanzado en si mismo
         menu_add_item_menu(array_menu_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
+        menu_add_item_menu_es_avanzado(array_menu_snapshot);
 
         menu_add_item_menu_en_es_ca(array_menu_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_game_config,NULL,
             "Save a~~utoconfig file","Salvar archivo a~~utoconfig","Salvar arxiu a~~utoconfig");
@@ -26868,6 +26891,7 @@ void menu_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_snapshot,"Generate .config file with common settings");
         menu_add_item_menu_ayuda(array_menu_snapshot,"Generate .config file with common settings. Used to define custom settings for games, "
             "by default it asks to generate a .config file for the last smartloaded game");
+        menu_add_item_menu_es_avanzado(array_menu_snapshot);
 
 
 
