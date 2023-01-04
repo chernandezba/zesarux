@@ -16078,6 +16078,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVMMC RAM [%d KB]",get_diviface_total_ram() );
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
+            menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
 
 
         }
@@ -16090,6 +16091,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
             if (divmmc_rom_name[0]==0) sprintf (string_divmmc_rom_file_shown,"Default");
             else menu_tape_settings_trunc_name(divmmc_rom_name, string_divmmc_rom_file_shown,10);
             menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,"DIVMMC EPROM File [%s]", string_divmmc_rom_file_shown);
+            menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
 
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
@@ -16100,6 +16102,7 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
                 (diviface_eprom_write_jumper.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
+                menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
             }
 
         }
@@ -16439,11 +16442,13 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVIDE RAM [%d KB]",get_diviface_total_ram() );
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE RAM");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE RAM");
+                menu_add_item_menu_es_avanzado(array_menu_ide_divide);
             }
 
             if (divide_rom_name[0]==0) sprintf (string_divide_rom_file_shown,"Default");
             else menu_tape_settings_trunc_name(divide_rom_name, string_divide_rom_file_shown,10);
             menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,"DIVIDE EPROM File [%s]", string_divide_rom_file_shown);
+            menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
@@ -16453,6 +16458,7 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
                 (diviface_eprom_write_jumper.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
+                menu_add_item_menu_es_avanzado(array_menu_ide_divide);
             }
 
 
@@ -35688,7 +35694,6 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"Debug tools");
             menu_add_item_menu_ayuda(array_menu_principal,"Tools to debug the machine");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
-            menu_add_item_menu_es_avanzado(array_menu_principal);
 
 
             menu_add_item_menu(array_menu_principal,"Netw~~ork",MENU_OPCION_NORMAL,menu_network,NULL);
