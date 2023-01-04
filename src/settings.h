@@ -123,5 +123,7 @@ extern z80_bit z88_hide_keys_shortcuts;
 
 extern z80_bit sync_clock_to_z88;
 
+extern z80_bit menu_show_advanced_items;
+
 #endif
 

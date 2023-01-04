@@ -18974,12 +18974,13 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
 	//m->texto=texto;
 	strcpy(m->texto_opcion,texto);
 
+
+
     //Texto en español vacio por defecto
     m->texto_opcion_spanish[0]=0;
 
     //Texto en catalan vacio por defecto
     m->texto_opcion_catalan[0]=0;
-
 
     //Prefijo vacio por defecto
     m->texto_opcion_prefijo[0]=0;
@@ -18987,27 +18988,25 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
     //Sufijo vacio por defecto
     m->texto_opcion_sufijo[0]=0;
 
+    m->tipo_opcion=tipo_opcion;
+    m->menu_funcion=menu_funcion;
+    m->menu_funcion_activo=menu_funcion_activo;
+    m->texto_ayuda=NULL;
+    m->texto_tooltip=NULL;
 
+    //Por defecto inicializado a ""
+    m->texto_misc[0]=0;
 
-	m->tipo_opcion=tipo_opcion;
-	m->menu_funcion=menu_funcion;
-	m->menu_funcion_activo=menu_funcion_activo;
-	m->texto_ayuda=NULL;
-	m->texto_tooltip=NULL;
-
-	//Por defecto inicializado a ""
-	m->texto_misc[0]=0;
-
-	m->atajo_tecla=0;
+    m->atajo_tecla=0;
     m->tiene_submenu=0;
-	m->menu_funcion_espacio=NULL;
+    m->item_avanzado=0;
+    m->menu_funcion_espacio=NULL;
+
+    m->next=NULL;
 
 
-	m->es_menu_tabulado=0; //por defecto no es menu tabulado. esta opcion se hereda en cada item, desde el primero
 
-
-	m->next=NULL;
-
+    m->es_menu_tabulado=0; //por defecto no es menu tabulado. esta opcion se hereda en cada item, desde el primero
 
 	*p=m;
 }
@@ -19055,34 +19054,39 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 	//next->texto=texto;
 	strcpy(next->texto_opcion,texto);
 
+
+
     //Texto en español vacio por defecto
     next->texto_opcion_spanish[0]=0;    
 
     //Texto en catalan vacio por defecto
     next->texto_opcion_catalan[0]=0;    
 
- 
     //Prefijo vacio por defecto
     next->texto_opcion_prefijo[0]=0;
 
     //Sufijo vacio por defecto
     next->texto_opcion_sufijo[0]=0;
 
+    next->tipo_opcion=tipo_opcion;
+    next->menu_funcion=menu_funcion;
+    next->menu_funcion_activo=menu_funcion_activo;
+    next->texto_ayuda=NULL;
+    next->texto_tooltip=NULL;
 
-	next->tipo_opcion=tipo_opcion;
-	next->menu_funcion=menu_funcion;
-	next->menu_funcion_activo=menu_funcion_activo;
-	next->texto_ayuda=NULL;
-	next->texto_tooltip=NULL;
+    //Por defecto inicializado a ""
+    next->texto_misc[0]=0;
 
-	//Por defecto inicializado a ""
-	next->texto_misc[0]=0;
+    next->atajo_tecla=0;
+    next->tiene_submenu=0;   
+    next->item_avanzado=0; 
+    next->menu_funcion_espacio=NULL;
+	
 
-	next->atajo_tecla=0;
-    next->tiene_submenu=0;    
-	next->menu_funcion_espacio=NULL;
-	next->es_menu_tabulado=es_menu_tabulado;
+
 	next->next=NULL;
+
+    next->es_menu_tabulado=es_menu_tabulado;
 }
 
 //Agregar un item separador

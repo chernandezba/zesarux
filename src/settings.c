@@ -293,6 +293,8 @@ z80_bit setting_machine_selection_by_name={0};
 //Si el visor de archivos siempre muestra en hexadecimal
 z80_bit menu_file_viewer_always_hex={0};
 
+//Si mostrar items avanzados de menu
+z80_bit menu_show_advanced_items={0};
 
 //
 // ZX Desktop Settings
