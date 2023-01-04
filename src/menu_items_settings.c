@@ -1665,6 +1665,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                 "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
             menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
             menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
         }
 
@@ -1672,9 +1673,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
             "Select machine by name","Seleccionar maquina por nombre","Escollir maquina pel nom");
 		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
-
 		menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
 		menu_add_item_menu_ayuda(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
@@ -1683,6 +1684,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_common,'q');	
 		menu_add_item_menu_tooltip(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");			
 		menu_add_item_menu_ayuda(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
@@ -1737,6 +1739,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,
             "    Custom charset","    Charset personalizado","    Charset personalitzat");
         menu_add_item_menu_sufijo(array_menu_common,temp_charset);
+        menu_add_item_menu_es_avanzado(array_menu_common);
     
 
 
@@ -1746,6 +1749,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
             "Use mouse on menu","Usar ratón en el menu","Usar ratolí al menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
         if (mouse_menu_disabled.v==0) {
@@ -1754,6 +1758,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                     "Mouse pointer","Puntero del raton","Punter del ratolí");
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
+                menu_add_item_menu_es_avanzado(array_menu_common);
             }
         }
 
@@ -1768,12 +1773,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'h');
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,
             "Force confirm yes","Forzar confirmaciones a si","Forçar confirmacions a si");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 		menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
@@ -1783,25 +1790,31 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		//menu_add_item_menu_shortcut(array_menu_common,'p');
 		menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 		menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
             "Submenu indicator","Indicador de submenu","Indicador de submenu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
         menu_add_item_menu_ayuda(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
             "Minimize button","Boton de minimizar","Boto de minimitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
             "Maximize button","Boton de maximizar","Boto de maximitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 		
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
             "Close button","Boton de cerrar","Boto de tancar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
@@ -1809,18 +1822,20 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
         menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,
             "Invert mouse scroll","Invertir scroll raton","Invertir scroll ratoli");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
             "Right mouse sends ESC","Boton derecho envia ESC","Botó dret envia ESC");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') ); 
-
         menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -1873,6 +1888,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
 		menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
 		menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         
 
@@ -8881,11 +8897,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_tape,'n');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag. You must enable it on Tape Copy programs and also on Rocman game");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,"[%c] ~~Autorewind", (tape_auto_rewind.v ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_settings_tape,'a');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
         menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
                 //menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -8895,14 +8913,17 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_tape,'s');
 			menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes");
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes. You can skip simulation pressing any key (and the data is loaded)");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load_fast,menu_tape_simulate_real_load_cond,"[%c] Fast Simulate real load", (tape_loading_simulate_fast.v==1 ? 'X' : ' '));
-                        menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
-                        menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_tzx_suppress_pause,NULL,"[%c] TZX delete pause", (tzx_suppress_pause.v==1 ? 'X' : ' '));
-                        menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
-                        menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
             if (MACHINE_IS_ZX8081) {
 			    menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_zx8081_disable_tape_traps,NULL,"[%c] Tape traps", (zx8081_disable_tape_traps.v==1 ? ' ' : 'X'));
@@ -8912,7 +8933,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        	        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,"--Input Real Tape--");
@@ -8926,11 +8947,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new,NULL,"[%c] Improved algorithm", (realtape_algorithm_new.v==1 ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Use improved loading algorithm");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Use improved loading algorithm. Gives better results with non-zero centered audio tapes but without noise");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
         if (realtape_algorithm_new.v) {
             menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new_noise_reduction,NULL,"[%d] Noise reduction",realtape_algorithm_new_noise_reduction);
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Noise reduction value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Noise reduction value. Set a value >0 when you need to reduce noise");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
 
 
@@ -8942,6 +8965,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
                         "normally as 1 if the value is in range 0...+127, and 0 if it is in range -127...-1. This setting "
                         "increases this 0 (of range 0...+127) to consider it is a bit 1. I have found this value is better to be 0 "
                         "on Spectrum, and 2 on ZX80/81");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
 
 
@@ -8950,11 +8974,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Apply offset to sound value read");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Indicates some value (positive or negative) to sum to the raw value read "
 					"(considering range from -128 to +127) to the input audio value read");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
 		if (MACHINE_IS_MSX) {
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_msx_loading_noise_reduction,NULL,"[%c] MSX Loading noise reduction",
 			(msx_loading_noise_reduction.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
@@ -8963,6 +8989,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_tape,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_tape,"Set top speed setting when loading a real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
 
 
