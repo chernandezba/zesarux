@@ -3158,6 +3158,8 @@ void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int p
 
     if (pentagon_timing.v) margeny_arr=56*border_enabled.v;
 
+    //Ancho y alto de caracter en footer es siempre 8x8
+
     y=y*8;
 
 

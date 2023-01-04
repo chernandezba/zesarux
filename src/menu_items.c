@@ -16650,7 +16650,7 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
     int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
     if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        ancho=32;
+        ancho=49;
         alto=20;
 
         x=menu_center_x()-ancho/2;
@@ -16853,13 +16853,13 @@ void menu_display_window_list_overlay(void)
 {
 
     if (!zxvision_drawing_in_background) {
-        printf("No dibujando en background. Dibujando ventanas background cuando primer plano Window List\n");
+        //printf("No dibujando en background. Dibujando ventanas background cuando primer plano Window List\n");
         normal_overlay_texto_menu();
     }
     
     //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
 
-    printf("Inicio efectivo overlay window list\n");
+    //printf("Inicio efectivo overlay window list\n");
 
     //TODO: tiempo total transcurrido en esta ventana cuando esta activa, habria que considerar los return posibles
     //y actualizar last_spent_time_overlay de manera correspondiente
@@ -16969,7 +16969,7 @@ void menu_display_window_list_overlay(void)
 
     zxvision_draw_window_contents(menu_display_window_list_window);
 
-    printf("FIN overlay window list\n");
+    //printf("FIN overlay window list\n");
 
 }
 

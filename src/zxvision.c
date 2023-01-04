@@ -12090,13 +12090,13 @@ int zxvision_draw_overlay_if_exists(zxvision_window *w)
 		//Esto pasa en ventanas que por ejemplo actualizan no a cada frame, al menos refrescar aqui con ultimo valor				
 
 		if (overlay_function!=NULL) {
-			printf ("llamando a funcion overlay %p\n",overlay_function);
+			//printf ("llamando a funcion overlay %p\n",overlay_function);
 			
 			overlay_function(); //llamar a funcion overlay
             return 1;
 		}
         else {
-            printf ("NO llamando a funcion overlay %p\n",overlay_function);
+            //printf ("NO llamando a funcion overlay %p\n",overlay_function);
             return 0;
         }
 }
@@ -12168,7 +12168,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		//en principio no hace falta. Ya se redibuja por el redibujado normal
 		//zxvision_draw_window_contents(pointer_window);
 
-        printf ("drawing overlay name: %s\n",pointer_window->window_title);
+        //printf ("drawing overlay name: %s\n",pointer_window->window_title);
 
         struct timeval zxvision_time_antes,zxvision_time_despues;
 
@@ -12186,7 +12186,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
             zxvision_time_total_drawing_overlay_except_current +=transcurrido;
         }
 
-    	printf ("tiempo transcurrido: %ld microsec\n\n",pointer_window->last_spent_time_overlay);
+    	//printf ("tiempo transcurrido: %ld microsec\n\n",pointer_window->last_spent_time_overlay);
 		
 
 		pointer_window=pointer_window->next_window;
