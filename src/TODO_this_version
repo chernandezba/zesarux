@@ -212,7 +212,6 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 -Football Manager 2.dsk con pista con C=FFH
 
 
-
 -error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
 *step mode
 *funcion z (memory zone) o tecla (o) por ejemplo
@@ -224,9 +223,6 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 
 -Icono de aplicación que se vea distinto si la aplicación está abierta 
 
--Cálculo de tiempo usado en cada app en background:
-*contar el tiempo de cada una
-*luego para sacar porcentajes de uso, sumar todos tiempos y sacar porcentaje de cada una respecto el total
 
 -Breakpoints de memorias absolutas - Gunther stube
 

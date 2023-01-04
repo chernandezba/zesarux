@@ -16887,7 +16887,7 @@ void menu_display_window_list_overlay(void)
 
 		
         menu_display_window_list_print_item(menu_display_window_list_window,0,"Process name           Flags  Time spent");
-        menu_display_window_list_print_item(menu_display_window_list_window,1,"-Top-");
+        menu_display_window_list_print_item(menu_display_window_list_window,1,"--Top--");
         
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
@@ -16935,7 +16935,7 @@ void menu_display_window_list_overlay(void)
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
 
-        menu_display_window_list_print_item(menu_display_window_list_window,linea,"-Bottom-");
+        menu_display_window_list_print_item(menu_display_window_list_window,linea,"--Bottom--");
 
         char buffer_additional_items[MAX_TEXTO_OPCION];
 
@@ -17024,7 +17024,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Process name           Flags  Time spent");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Top--");
         menu_add_item_menu_tabulado(array_menu_common,1,1);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
@@ -17058,7 +17058,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 			
 		}
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Bottom-");
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Bottom--");
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 

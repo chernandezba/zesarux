@@ -1639,7 +1639,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 	
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char width");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Amplitud de caracter de menu","Amplitud de caracter de menu");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter de menú","Ample de caracter de menú");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
 		//menu_add_item_menu_shortcut(array_menu_common,'i');	
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
@@ -3167,6 +3167,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM) {
 
 			menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 			char string_audiodac[32];
 
@@ -3181,6 +3182,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 						string_audiodac);
 				menu_add_item_menu_shortcut(array_menu_settings_audio,'d');
                 menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
 				if (audiodac_enabled.v) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_set_port,NULL,"[%02XH] DAC port",audiodac_types[audiodac_selected_type].port);
                     menu_add_item_menu_es_avanzado(array_menu_settings_audio);
@@ -3283,6 +3285,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		
 	
 		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 		char string_aofile_shown[10];
@@ -9960,6 +9963,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');   
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);      
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 		
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
@@ -10020,6 +10024,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
 
@@ -10137,7 +10142,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             if (menu_ext_desktop_fill==7) {
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_degraded_inverted,NULL,
                     "Inverted Degraded","Degradado invertido","Degradat invertit");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));                
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);                
             }
 
 			if (seleccion_secondary) {
