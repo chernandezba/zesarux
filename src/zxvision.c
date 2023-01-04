@@ -19147,9 +19147,9 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
 
     if (menu_show_advanced_items.v==0) {
         //Quitarlo, siempre que no seamos el item inicial
-        printf("Quitar item ultimo pues no estamos en modo avanzado\n");
+        //printf("Quitar item ultimo pues no estamos en modo avanzado\n");
         if (previo!=NULL) {
-            printf("Quitado item ultimo\n");
+            //printf("Quitado item ultimo\n");
             //Liberar este ultimo
             free(m);
             //Indicar al previo que no hay siguiente
