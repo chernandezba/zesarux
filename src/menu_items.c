@@ -35688,6 +35688,7 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"Debug tools");
             menu_add_item_menu_ayuda(array_menu_principal,"Tools to debug the machine");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
+            menu_add_item_menu_es_avanzado(array_menu_principal);
 
 
             menu_add_item_menu(array_menu_principal,"Netw~~ork",MENU_OPCION_NORMAL,menu_network,NULL);
@@ -35695,6 +35696,7 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"Network related actions");
             menu_add_item_menu_ayuda(array_menu_principal,"Network related actions");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
+            menu_add_item_menu_es_avanzado(array_menu_principal);
 
 
             if (menu_allow_background_windows) {
@@ -35703,6 +35705,7 @@ void menu_inicio_bucle_main(void)
                 menu_add_item_menu_tooltip(array_menu_principal,"Window management");
                 menu_add_item_menu_ayuda(array_menu_principal,"Window management");
                 menu_add_item_menu_tiene_submenu(array_menu_principal);
+                menu_add_item_menu_es_avanzado(array_menu_principal);
             }
 
 

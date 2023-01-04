@@ -4101,7 +4101,8 @@ int util_write_configfile(void)
  
   if (menu_limit_menu_open.v)                 ADD_STRING_CONFIG,"--limitopenmenu");
 
-  if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
+//de momento desactivado el autoguardado hasta que piense opcion por defecto
+  //if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
 
   if (setting_machine_selection_by_name.v)    ADD_STRING_CONFIG,"--setmachinebyname");
 

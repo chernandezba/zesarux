@@ -7407,12 +7407,14 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 	    	menu_add_item_menu_tooltip(array_menu_settings,"Change some CPU settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Change some CPU settings");		
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu(array_menu_settings,"D~~ebug",MENU_OPCION_NORMAL,menu_settings_debug,NULL);
 		menu_add_item_menu_shortcut(array_menu_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_settings,"Debug settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Debug settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu(array_menu_settings,"~~Display",MENU_OPCION_NORMAL,menu_settings_display,NULL);
 		menu_add_item_menu_shortcut(array_menu_settings,'d');
@@ -7426,6 +7428,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_ayuda(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_fileselector_settings,NULL,
             "~~File Browser","Navegador de ~~ficheros","Navegador de ~~fitxers");
@@ -7433,6 +7436,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Settings for the File browser");
 		menu_add_item_menu_ayuda(array_menu_settings,"These settings are related to the File Browser");   
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		//Set F keys functions
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_hardware_set_f_functions,NULL,
@@ -7458,7 +7462,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_osd_settings,NULL,"~~OSD");
 		menu_add_item_menu_shortcut(array_menu_settings,'o');
-        menu_add_item_menu_tiene_submenu(array_menu_settings);	        
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);	        
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,
             "~~Snapshot","In~~stantánea","Instantània");
@@ -7466,6 +7471,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Snapshot settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Snapshot settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 #ifndef NETWORKING_DISABLED	
 
@@ -7494,6 +7500,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_settings,"Change some ULA settings");
             menu_add_item_menu_ayuda(array_menu_settings,"Change some ULA settings");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
+            menu_add_item_menu_es_avanzado(array_menu_settings);
 
 
 		}	
