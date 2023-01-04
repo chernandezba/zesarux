@@ -19126,6 +19126,19 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         m->tiene_submenu=1;
 }
 
+//Agregar decirle que es un item avanzado al ultimo item de menu
+void menu_add_item_menu_es_avanzado(menu_item *m)
+{
+       //busca el ultimo item i le añade el indicado
+
+        while (m->next!=NULL)
+        {
+                m=m->next;
+        }
+
+        m->item_avanzado=1;
+}
+
 char *menu_text_string_sure_spanish="Seguro?";
 char *menu_text_string_sure_catalan="Segur?";
 char *menu_text_string_sure_english="Sure?";
