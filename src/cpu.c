@@ -2036,6 +2036,7 @@ printf (
         "--disablefooter                Disable window footer\n"             
         "--ignoremouseclickopenmenu     Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
         "--limitopenmenu                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
+		"--advancedmenus                Show advanced menu items\n"
         "--language language            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
         "--online-download-path p       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
@@ -6614,6 +6615,10 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--limitopenmenu")) {
 				menu_limit_menu_open.v=1;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--advancedmenus")) {
+				menu_show_advanced_items.v=1;
+			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--setmachinebyname")) {
 				setting_machine_selection_by_name.v=1;

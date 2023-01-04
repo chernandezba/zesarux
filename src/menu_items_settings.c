@@ -418,6 +418,7 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'s');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show,NULL,
@@ -425,13 +426,15 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'v');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
             "    ~~Reset config file","    ~~Resetear archivo config","    ~~Resetejar arxiu config");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'r');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Reset configuration file to default values");
-		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");		
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");	
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);	
 
 
 
@@ -7363,7 +7366,10 @@ void menu_accessibility_settings(MENU_ITEM_PARAMETERS)
 
 }
 
-
+void menu_zxvision_settings_advanced_enable(MENU_ITEM_PARAMETERS)
+{
+    menu_show_advanced_items.v ^=1;
+}
 
 
 //menu settings
@@ -7509,7 +7515,16 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
 
-  menu_add_item_menu(array_menu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_zxvision_settings_advanced_enable,NULL,
+            "Advanced menu items","Items de menú avanzados","Items de menú avançats");
+        menu_add_item_menu_prefijo_format(array_menu_settings,"[%c] ",(menu_show_advanced_items.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_settings,"Shows advanced menu items");
+        menu_add_item_menu_ayuda(array_menu_settings,"Shows advanced menu items");
+
+
+        menu_add_item_menu_separator(array_menu_settings);
 
 
                 //menu_add_item_menu(array_menu_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);

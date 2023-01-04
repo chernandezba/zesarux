@@ -2,6 +2,7 @@ Version 10.3 - xxxx edition. 02 November 2022
 
 * New things added:
 
+Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
 Added Visual Floppy to see +3 disk (and CPC6128?) activity
 Added Poke F-Function
 Added Visual Real Tape F-Function
