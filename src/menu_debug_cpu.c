@@ -8820,7 +8820,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
     //asumimos por defecto que no se ven
     int mostrar_dibujos=0;
 
-    //temporal. hacer 4 pixeles de cada
+    //hacer 4 pixeles de cada
     //mapa para zoom mas reducido (zoom=0). pixeles de 4x4
     if (menu_debug_textadventure_map_connections_zoom==0) {
         int ancho,alto;
@@ -9518,7 +9518,7 @@ void old_textadv_map_putpixel(zxvision_window *w,int x,int y,int color)
 void textadv_map_putpixel(zxvision_window *w,int x,int y,int color)
 {
     //calcular la posicion y donde se ve en pantalla, o sea, considerando scroll vertical
-    int efectiva_y=y-w->offset_y*8;
+    int efectiva_y=y-w->offset_y*menu_char_height;
 
     if (efectiva_y>=0 && efectiva_y<map_adventure_offset_y) return;
 
