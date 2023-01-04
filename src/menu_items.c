@@ -1678,7 +1678,7 @@ Calculando ese tiempo: 12% cpu
 
     
         
-    int yorigen_linea=(fila_texto*8)+longitud_linea+16;        
+    int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2;        
 
     //CPU USE
     int pos_x=1;
@@ -2205,7 +2205,7 @@ M1-M0= mode bits:
                 fila_texto +=((longitud_linea/8)+4)*chip;
 
                //TODO: con 3 chips no cabe en vertical todo
-                int yorigen_linea=(fila_texto*8)+longitud_linea+16-1; 
+                int yorigen_linea=(fila_texto*menu_char_height)+longitud_linea+menu_char_height*2-1; 
                 //-1 porque la linea del speedometer cuando esta horizontal
                 //del todo, queda en la siguiente posicion y
 
@@ -8700,8 +8700,9 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 
                         //printf("ancho: %d\n",ancho_ventana);
 
-						menu_dibuja_rectangulo_relleno(menu_display_total_palette_draw_barras_window,posicion_barra_color_x*menu_char_width,posicion_barra_color_y*8,
-											menu_char_width*(ancho_ventana-longitud_texto-3),8,indice_color_final_rgb);
+						menu_dibuja_rectangulo_relleno(menu_display_total_palette_draw_barras_window,
+                            posicion_barra_color_x*menu_char_width,posicion_barra_color_y*menu_char_height,
+							menu_char_width*(ancho_ventana-longitud_texto-3),menu_char_height,indice_color_final_rgb);
 					}
 
 			 		else {
@@ -10465,7 +10466,7 @@ int menu_draw_sprites_get_origin_y(void)
 
 	//Si se pasa aun mas
 	//if (view_sprites_alto_sprite>184) sy=0;    
-    int yorigen=16; //sy*8;    
+    int yorigen=menu_char_height*2; 
 
     return yorigen;
 }
@@ -10507,7 +10508,6 @@ void menu_debug_draw_sprites(void)
 
     int xorigen=menu_draw_sprites_get_origin_x();
         
-	//int yorigen=16; //sy*8;
     int yorigen=menu_draw_sprites_get_origin_y();
 
 
