@@ -4778,12 +4778,12 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
                                         "Autofire can only be enabled on Kempston, Fuller, Zebra and Mikrogen; Sinclair, Cursor, and OPQA can not have "
                                         "autofire because this function can interfiere with the menu (it might think a key is pressed)");
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
         menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,"[%d Hz] Joystick ~~AutoLeftRight",50/joystick_autoleftright_frequency);
-
-
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		
 		
 
@@ -4809,13 +4809,18 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
 					"Gunstick from MHT Ingenieros S.L: all types except AYChip\n\n"
 					"Magnum Light Phaser (experimental): supported by AYChip type");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
 			if (menu_hardware_gunstick_aychip_cond()) {
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		}
 
 
@@ -4825,14 +4830,17 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 			if (kempston_mouse_emulation.v) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,"[%2d] Mouse Sensitivity",kempston_mouse_factor_sensibilidad);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 			}
 
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA emulation",(datagear_dma_emulation.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1 emulation",(dinamic_sd1.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		}		
 
 
@@ -4841,17 +4849,21 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			(tbblue_fast_boot_mode.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%d] Next machine id",tbblue_machine_id); 
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			//menu_hardware_tbblue_core_version
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"[%d.%d.%d] Next core version",
 									tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 		}
 
@@ -4887,6 +4899,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,"Sync Z88 clock");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
 
@@ -9926,12 +9939,14 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. It will be enabled again going back from full screen");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 	
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
                 "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
@@ -9939,6 +9954,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
         menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
         menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");        
+        menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
         if (screen_get_ext_desktop_height_zoom()>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
@@ -9947,6 +9963,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(!zxdesktop_disable_show_frame_around_display ? 'X' : ' ' ) );
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
         }
 
         if (screen_ext_desktop_enabled) {
@@ -9962,15 +9979,18 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
                     "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
                     "Box on upper buttons","Caja en botones superiores","Caixa als botons superiors");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,
                     "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
 
@@ -9980,10 +10000,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
                     "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_lower_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_box,NULL,
                     "Box on lower buttons","Caja en botones inferiores","Caixa als botons inferiors");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_lower_icons.v ? ' ' : 'X' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 			}
 
@@ -9999,15 +10021,18 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
                     "Transparent icons","Iconos transparentes","Icones transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
                     "Icon text background","Fondo de texto de iconos","Fons de text de icones");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
                     "    Modify icons","    Modificar iconos","    Modificar icones");
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);  
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             }
 
@@ -10132,11 +10157,13 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
                         "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
                         "SCR allow flash","SCR permitir parpadeo","SCR permetre parpelleig");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_disable_flash==0 ? 'X' : ' ' ));
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                 }
