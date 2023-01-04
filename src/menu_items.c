@@ -16645,7 +16645,29 @@ void menu_display_window_list_info(zxvision_window *w)
 
 }
 
+void menu_display_window_list_create_window(zxvision_window *ventana)
+{
+    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+    if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        ancho=32;
+        alto=20;
+
+        x=menu_center_x()-ancho/2;
+        y=menu_center_y()-alto/2;
+    }
+
+
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Process Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+    ventana->can_be_backgrounded=1;
+
+    zxvision_draw_window(ventana);
+}
+
 int menu_display_window_conmutar_ventana=0;
+
+zxvision_window zxvision_window_menu_window_list;
 
 //nombre de la ventana (geometry name) seleccionda
 char menu_display_window_list_selected_window[MAX_NAME_WINDOW_GEOMETRY]="";
@@ -16679,6 +16701,10 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     if (tipo==0) return; //ESC	
 
 
+    zxvision_window *window_management_ventana;
+    window_management_ventana=&zxvision_window_menu_window_list;    
+
+
     switch (tipo) {
 
 	    case 1:
@@ -16697,7 +16723,12 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         break;
     
         case 2:
+            //Este move on top deja la ventana actual la que le indiquemos, entonces,
+            //hay que borrar la propia de process management para abrirla luego, de tal manera que al abrirla
+            //si situa justo por encima de la que queremos enviar al top
+            zxvision_destroy_window(window_management_ventana);
             zxvision_window_move_this_window_on_top(ventana);
+            menu_display_window_list_create_window(window_management_ventana);
         break;
 
         case 3:
@@ -16753,9 +16784,9 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
     }
 
     sprintf(texto," [%s%s%s]",
-        (ventana->is_maximized   ? "M" : ""),
-        (ventana->is_minimized   ? "m" : ""),
-        (ventana->always_visible ? "V" : "")
+        (ventana->is_maximized   ? "M" : " "),
+        (ventana->is_minimized   ? "m" : " "),
+        (ventana->always_visible ? "V" : " ")
     );
 }
 
@@ -16764,8 +16795,14 @@ void menu_display_window_list_get_window_flags(zxvision_window *ventana,char *te
 //Para que quepa toda la info de ventana, flags y tiempo usado
 #define MAX_ITEM_WINDOW_NAME (ZXVISION_MAX_WINDOW_TITLE+MAX_WINDOW_FLAGS_LENGHT+100)
 
-int menu_display_window_list_espacios_nombre_ventana=20;
+int menu_display_window_list_espacios_nombre_ventana=22;
 int menu_display_window_list_espacios_flags=6;
+
+long menu_display_get_total_time(void)
+{
+    //Tiempo renderizando menus (overlays, normal_text) y tiempo emulacion
+    return core_render_menu_overlay_difftime+core_cpu_timer_frame_difftime+sensor_get_value("last_emul_render");;
+}
 
 void menu_display_window_list_get_item_window(char *texto_destino,zxvision_window *item_ventana_puntero)
 {
@@ -16777,9 +16814,9 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
 
     int porcentaje;
 
-    if (!zxvision_time_total_drawing_overlay) porcentaje=0;
+    if (!menu_display_get_total_time()) porcentaje=0;
 
-    else porcentaje=((item_ventana_puntero->last_spent_time_overlay)*100)/zxvision_time_total_drawing_overlay;
+    else porcentaje=((item_ventana_puntero->last_spent_time_overlay)*100)/menu_display_get_total_time();
 
     sprintf(texto_destino,
         "%-*s%*s %7ld us (%3d %%)",menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
@@ -16794,7 +16831,7 @@ int menu_display_window_list_valor_contador_segundo_anterior;
 //nos excluimos cuando es la ventana activa y no el background
 //int menu_display_window_list_excluirnos_nosotros=0;
 
-zxvision_window zxvision_window_menu_window_list;
+
 
 void menu_display_window_list_print_item(zxvision_window *w,int linea,char *window_text)
 {
@@ -16843,7 +16880,7 @@ void menu_display_window_list_overlay(void)
         zxvision_cls(menu_display_window_list_window);
 
 		
-        menu_display_window_list_print_item(menu_display_window_list_window,0,"Window name         Flags  Time spent");
+        menu_display_window_list_print_item(menu_display_window_list_window,0,"Process name           Flags  Time spent");
         menu_display_window_list_print_item(menu_display_window_list_window,1,"-Top-");
         
 
@@ -16892,8 +16929,40 @@ void menu_display_window_list_overlay(void)
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
 
-        
         menu_display_window_list_print_item(menu_display_window_list_window,linea,"-Bottom-");
+
+        char buffer_additional_items[MAX_TEXTO_OPCION];
+
+
+        int porcentaje;
+
+        if (!menu_display_get_total_time()) porcentaje=0;
+        else porcentaje=(normal_overlay_time_total_drawing_overlay*100)/menu_display_get_total_time();
+
+        sprintf(buffer_additional_items,"ZX Vision text render  [SYS] %7ld us (%3d %%)",normal_overlay_time_total_drawing_overlay,porcentaje);
+        menu_display_window_list_print_item(menu_display_window_list_window,linea+1,buffer_additional_items);
+
+
+        if (!menu_display_get_total_time()) porcentaje=0;
+        else porcentaje=(core_cpu_timer_frame_difftime*100)/menu_display_get_total_time();
+
+        sprintf(buffer_additional_items,"Emulation frame        [SYS] %7ld us (%3d %%)",core_cpu_timer_frame_difftime,porcentaje);
+        menu_display_window_list_print_item(menu_display_window_list_window,linea+2,buffer_additional_items);
+
+
+        long emulated_display_render=sensor_get_value("last_emul_render");
+        if (!menu_display_get_total_time()) porcentaje=0;
+        else porcentaje=(emulated_display_render*100)/menu_display_get_total_time();
+
+        sprintf(buffer_additional_items,"Render emulated display[SYS] %7ld us (%3d %%)",emulated_display_render,porcentaje);
+        menu_display_window_list_print_item(menu_display_window_list_window,linea+3,buffer_additional_items);        
+
+
+        //TODO: este tiempo total no es perfecto,
+        //deberia coincidir con la suma de todos los procesos
+        //hay algún otro tiempo que se me escapa y no se está considerando
+        sprintf(buffer_additional_items,"Total time:                  %7ld us",menu_display_get_total_time());
+        menu_display_window_list_print_item(menu_display_window_list_window,linea+4,buffer_additional_items);
 
     }
 
@@ -16906,25 +16975,7 @@ void menu_display_window_list_overlay(void)
 
 
 
-void menu_display_window_list_create_window(zxvision_window *ventana)
-{
-    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        ancho=32;
-        alto=20;
-
-        x=menu_center_x()-ancho/2;
-        y=menu_center_y()-alto/2;
-    }
-
-
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Window Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-    ventana->can_be_backgrounded=1;
-
-    zxvision_draw_window(ventana);
-}
 
 void menu_display_window_list(MENU_ITEM_PARAMETERS)
 {
@@ -16964,7 +17015,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 	do {
 
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Window name         Flags  Time spent");
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Process name           Flags  Time spent");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"-Top-");
@@ -17006,7 +17057,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 
 
-		retorno_menu=menu_dibuja_menu(&menu_display_window_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
+		retorno_menu=menu_dibuja_menu(&menu_display_window_list_opcion_seleccionada,&item_seleccionado,array_menu_common,"Process management");
 
 			
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -17297,8 +17348,8 @@ void menu_windows(MENU_ITEM_PARAMETERS)
     do {
 
                 
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Window management");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Gestión ventanas","Gestió finestres");
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Process management");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Gestión procesos","Gestió processos");
         menu_add_item_menu_tooltip(array_menu_common,"Move to top or close individual windows");
         menu_add_item_menu_ayuda(array_menu_common,"Move to top or close individual windows");
 
@@ -18867,7 +18918,7 @@ void menu_debug_msx_svi_memory_info(MENU_ITEM_PARAMETERS)
 		menu_add_ESC_item(array_menu_common);
 		menu_add_item_menu_tabulado(array_menu_common,1,alto_ventana-4);
 
-		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Window management");
+		retorno_menu=menu_dibuja_menu(&comun_opcion_seleccionada,&item_seleccionado,array_menu_common,"Memory Info");
 
 			
 			if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {

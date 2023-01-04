@@ -9469,11 +9469,11 @@ void screen_render_menu_overlay_if_active(void)
 {
 	if (menu_overlay_activo) {
 
-        struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+        //struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
 
-        timer_stats_current_time(&zxvision_time_total_antes);  
+        //timer_stats_current_time(&zxvision_time_total_antes);  
 
-        printf("INICIO menu overlay\n");
+        //printf("INICIO menu overlay\n");
         screen_before_menu_overlay_timer();
 
         //Aqui calculamos lo que se tarda en lanzar el overlay de cada ventana (desde menu_draw_background_windows_overlay_after_normal), y el total de todas las ventanas
@@ -9486,14 +9486,25 @@ void screen_render_menu_overlay_if_active(void)
 
         menu_overlay_function();
         screen_after_menu_overlay_timer();
-        printf("FINAL menu overlay\n");
+        //printf("FINAL menu overlay\n");
 
 
-        zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);      
+        //zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);  
+        //tiempo empleado es core_render_menu_overlay_difftime    
 
-        //tiempo correspondiente para la ventana activa es la resta
-        long diferencia=zxvision_time_total_drawing_overlay-zxvision_time_total_drawing_overlay_except_current;
+        //tiempo correspondiente para la ventana activa es la resta de dibujar todos, y quitando tambien el tiempo de normal overlay
+        /*
+        Info adicional:
+        al llamar a menu_overlay_function aqui, salta el overlay de la ventana activa
+        esta ventana activa, llama a normal overlay. Y desde normal overlay hace overlay de todas las que estan debajo
+        Y despues de eso, se hace el overlay propiamente de la ventana activa, y es el tiempo que vamos a calcular aqui, 
+        pues no se tiene calculo de otra manera
+        */
+        long diferencia=core_render_menu_overlay_difftime-zxvision_time_total_drawing_overlay_except_current-normal_overlay_time_total_drawing_overlay;
         if (zxvision_current_window!=NULL) {
+            //Si negativo, cosa que no deberia pasar
+            if (diferencia<0) diferencia=0;
+
             zxvision_current_window->last_spent_time_overlay=diferencia;
         }
 

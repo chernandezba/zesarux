@@ -7001,6 +7001,8 @@ int stats_normal_overlay_menu_total_chars=0;
 //Total de caracteres que se han redibujado en normal_overlay_texto_menu, o sea, que no estaban en cache
 int stats_normal_overlay_menu_drawn_chars=0;
 
+long normal_overlay_time_total_drawing_overlay=0;
+
 //funcion normal de impresion de overlay de buffer de texto y cuadrado de lineas usado en los menus
 //En drivers no graficos, cuando renderizan la maquina emulada, siempre escriben encima de cualquier cosa, aunque haya menu abierto
 //luego es cuando se redibuja la capa de menu. Pero claro, si la capa de menu tiene que .modificado es 0, no volvera a escribir el menu
@@ -7010,6 +7012,11 @@ int stats_normal_overlay_menu_drawn_chars=0;
 //Es por esto que en drivers no graficos, NO hacemos caso de la cache putchar
 void normal_overlay_texto_menu(void)
 {
+
+    //Calcular tiempo total haciendo este normal overlay
+    struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+
+    timer_stats_current_time(&zxvision_time_total_antes);      
 
     stats_normal_overlay_menu_total_chars=0;
     stats_normal_overlay_menu_drawn_chars=0;
@@ -7083,6 +7090,8 @@ void normal_overlay_texto_menu(void)
             }
 		}
 	}
+
+    normal_overlay_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);      
 
 	normal_overlay_texto_menu_final();
  
@@ -9854,7 +9863,7 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
 
 		//Hasta aqui lo que hemos hecho ha sido quitar nuestra ventana
 
-
+        //printf("zxvision_current_window: %p\n",zxvision_current_window);
 
 		//Ahora la subimos arriba del todo
 		if (zxvision_current_window!=NULL) {
@@ -9868,10 +9877,8 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
 		ventana->next_window=NULL;
 
 		//Y la actual somos nosotros
-		//if (zxvision_current_window!=NULL) {
-			zxvision_current_window=ventana;
-		//}
-
+		
+		zxvision_current_window=ventana;
 
 		zxvision_redraw_all_windows();
 }
@@ -12095,7 +12102,8 @@ int zxvision_draw_overlay_if_exists(zxvision_window *w)
 }
 
 //Tiempo total transcurrido dibujando overlays
-long zxvision_time_total_drawing_overlay=0;
+//esto ya lo tenemos con core_render_menu_overlay_difftime
+//long zxvision_time_total_drawing_overlay=0;
 
 //tiempo total transcurrido dibujando overlays excepto ventana actual
 long zxvision_time_total_drawing_overlay_except_current=0;

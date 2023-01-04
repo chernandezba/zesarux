@@ -114,12 +114,26 @@ int sensor_last_core_frame_get_value(int id GCC_UNUSED)
 
 int sensor_last_full_render_get_value(int id GCC_UNUSED)
 {
+    //Esto incluye tiempo refrescar pantalla+tiempo en overlay
     return core_cpu_timer_refresca_pantalla_difftime;
+}
+
+int sensor_last_emulated_display_render(int id GCC_UNUSED)
+{
+    long resultado=core_cpu_timer_refresca_pantalla_difftime-normal_overlay_time_total_drawing_overlay;
+    //por si acaso
+    if (resultado<0) resultado=0;
+    return resultado;
 }
 
 int sensor_last_menu_overlay_render_get_value(int id GCC_UNUSED)
 {
     return core_render_menu_overlay_difftime;
+}
+
+int sensor_last_normal_text_overlay_get_value(int id GCC_UNUSED)
+{
+    return normal_overlay_time_total_drawing_overlay;
 }
 
 int sensor_avg_menu_overlay_render_get_value(int id GCC_UNUSED)
@@ -331,6 +345,16 @@ pues de una octava a la otra es el doble de valor
     sensor_last_full_render_get_value,0
     },
 
+
+   {
+    "last_emul_render","Last Emul Render","EmulRender",
+    0,20000, 
+    9999,-9999,
+    10000,-9999,
+    sensor_last_emulated_display_render,0
+    },
+
+
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {
     "last_menu_overlay_render","Last Menu Overlay Render","OvlMenRnd",
@@ -347,7 +371,16 @@ pues de una octava a la otra es el doble de valor
     9999,-9999,
     10000,-9999,
     sensor_avg_menu_overlay_render_get_value,0
-    },                  
+    },         
+
+    //En este el tiempo maximo y los porcentajes no tienen mucho sentido
+   {
+    "last_normal_text_overlay","Last ZX Vision text render","OvlTexRnd",
+    0,20000, 
+    9999,-9999,
+    10000,-9999,
+    sensor_last_normal_text_overlay_get_value,0
+    },               
 
     //En este el tiempo maximo y los porcentajes no tienen mucho sentido
    {

@@ -242,3 +242,4 @@ Ver funcion scr_putchar_footer_comun_zoom
 ->revisar en caso pentagon
 
 -text adventure map no se ven bien primeras lineas con dibujos si char height no es 8. quiza culpa de las miniaturas de dibujos
+-window management, cambiar a process management o similar. Window name cambiar a process name o similar
