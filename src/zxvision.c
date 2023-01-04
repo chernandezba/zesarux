@@ -18952,29 +18952,9 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 
 
-
-
-
-//Agregar el item inicial del menu
-//Parametros: puntero al puntero de menu_item inicial. texto
-void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
+void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
 {
-
-	menu_item *m;
-
-	m=malloc(sizeof(menu_item));
-
-	//printf ("%d\n",sizeof(menu_item));
-
-        if (m==NULL) cpu_panic("Cannot allocate initial menu item");
-
-	//comprobacion de maximo
-	if (strlen(texto)>MAX_TEXTO_OPCION) cpu_panic ("Text item greater than maximum");
-
-	//m->texto=texto;
-	strcpy(m->texto_opcion,texto);
-
-
+    ////
 
     //Texto en español vacio por defecto
     m->texto_opcion_spanish[0]=0;
@@ -19004,7 +18984,34 @@ void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu
 
     m->next=NULL;
 
+    ////    
+}
 
+
+//Agregar el item inicial del menu
+//Parametros: puntero al puntero de menu_item inicial. texto
+void menu_add_item_menu_inicial(menu_item **p,char *texto,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo)
+{
+
+	menu_item *m;
+
+	m=malloc(sizeof(menu_item));
+
+	//printf ("%d\n",sizeof(menu_item));
+
+        if (m==NULL) cpu_panic("Cannot allocate initial menu item");
+
+	//comprobacion de maximo
+	if (strlen(texto)>MAX_TEXTO_OPCION) cpu_panic ("Text item greater than maximum");
+
+	//m->texto=texto;
+	strcpy(m->texto_opcion,texto);
+
+    ////
+
+    menu_add_item_menu_common_defaults(m,tipo_opcion,menu_funcion,menu_funcion_activo);
+
+    ////
 
     m->es_menu_tabulado=0; //por defecto no es menu tabulado. esta opcion se hereda en cada item, desde el primero
 
@@ -19023,8 +19030,6 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 	}
 
 	menu_item *next;
-
-
 
 
 	if (m->tipo_opcion==MENU_OPCION_UNASSIGNED) {
@@ -19054,37 +19059,11 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 	//next->texto=texto;
 	strcpy(next->texto_opcion,texto);
 
+    ////
 
+    menu_add_item_menu_common_defaults(next,tipo_opcion,menu_funcion,menu_funcion_activo);
 
-    //Texto en español vacio por defecto
-    next->texto_opcion_spanish[0]=0;    
-
-    //Texto en catalan vacio por defecto
-    next->texto_opcion_catalan[0]=0;    
-
-    //Prefijo vacio por defecto
-    next->texto_opcion_prefijo[0]=0;
-
-    //Sufijo vacio por defecto
-    next->texto_opcion_sufijo[0]=0;
-
-    next->tipo_opcion=tipo_opcion;
-    next->menu_funcion=menu_funcion;
-    next->menu_funcion_activo=menu_funcion_activo;
-    next->texto_ayuda=NULL;
-    next->texto_tooltip=NULL;
-
-    //Por defecto inicializado a ""
-    next->texto_misc[0]=0;
-
-    next->atajo_tecla=0;
-    next->tiene_submenu=0;   
-    next->item_avanzado=0; 
-    next->menu_funcion_espacio=NULL;
-	
-
-
-	next->next=NULL;
+    ////
 
     next->es_menu_tabulado=es_menu_tabulado;
 }
