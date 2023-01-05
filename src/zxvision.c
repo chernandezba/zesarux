@@ -7953,6 +7953,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 		return;
 	}
 
+    printf("menu_escribe_linea_opcion_zxvision. indice %d opcion_actual %d texto %s\n",indice,opcion_actual,texto_entrada);
 
 	int papel,tinta;
 	int i;
@@ -12182,11 +12183,12 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	    if (existe) {
             long transcurrido=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
             pointer_window->last_spent_time_overlay=transcurrido;
+            //printf ("tiempo transcurrido: %ld microsec\n\n",transcurrido);
 
             zxvision_time_total_drawing_overlay_except_current +=transcurrido;
         }
 
-    	//printf ("tiempo transcurrido: %ld microsec\n\n",pointer_window->last_spent_time_overlay);
+    	
 		
 
 		pointer_window=pointer_window->next_window;
@@ -16386,7 +16388,7 @@ void zxvision_rearrange_background_windows(void)
 
 
 //Retorna el item i
-menu_item *menu_retorna_item(menu_item *m,int i)
+menu_item *old_menu_retorna_item(menu_item *m,int i)
 {
 
 	menu_item *item_next;
@@ -16403,6 +16405,41 @@ menu_item *menu_retorna_item(menu_item *m,int i)
 
 	return m;
 
+
+}
+
+int menu_item_retornar_avanzados(menu_item *m)
+{
+    if (m->item_avanzado && menu_show_advanced_items.v==0) return 0;
+
+    else return 1;
+
+}
+
+//Retorna el item buscado, excluyendo los avanzados
+menu_item *menu_retorna_item(menu_item *m,int buscado)
+{
+
+    int contador=0;
+
+	menu_item *item_next;
+
+    while (1) {
+        //Si llegado al deseado
+        if (contador==buscado && menu_item_retornar_avanzados(m)) return m;
+
+        //Siguiente item. incrementar contador si es que no se excluye item por ser avanzado
+        if (menu_item_retornar_avanzados(m)) contador++;
+
+        item_next=m->next;
+
+        //Si llegado al final
+        if (item_next==NULL) return m;  //Controlar si final
+
+        //Siguiente item
+        m=item_next;
+
+    }
 
 }
 
@@ -16459,7 +16496,9 @@ menu_item *menu_retorna_item_tabulado_xy(menu_item *m,int x,int y,int *linea_bus
         	//Ver si coincide y. x tiene que estar en el rango del texto
         	int longitud_texto=menu_calcular_ancho_string_item(menu_retorna_item_language(m));
         	if (y==m->menu_tabulado_y && 
-        	    x>=m->menu_tabulado_x && x<m->menu_tabulado_x+longitud_texto) 
+        	    x>=m->menu_tabulado_x && x<m->menu_tabulado_x+longitud_texto &&
+                menu_item_retornar_avanzados(m)
+                )
         	{
         		encontrado=1;
         	}
@@ -17450,7 +17489,7 @@ void menu_dibuja_menu_stdout_texto_sin_atajo(char *origen, char *destino)
 
 
 
-
+//TODO: no hace caso de si estamos en modo no avanzado de menu
 int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
 	int linea_seleccionada=*opcion_inicial;
@@ -17673,12 +17712,13 @@ int menu_retorna_atajo(menu_item *m,z80_byte tecla)
 	int linea=0;
 
 	while (m!=NULL) {
-		if (m->atajo_tecla==tecla) {
+		if (m->atajo_tecla==tecla && menu_item_retornar_avanzados(m)) {
 			debug_printf (VERBOSE_DEBUG,"Shortcut found at entry number: %d",linea);
 			return linea;
 		}
+
+        if (menu_item_retornar_avanzados(m)) linea++;
 		m=m->next;
-		linea++;
 	}
 
 	//no encontrado atajo. escribir entradas de menu con atajos para informar al usuario
@@ -17712,9 +17752,12 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 		int opcion_seleccionada_activada=1;
 		
 
+        int pos_y_destino=0;
 
 
-        for (i=0;i<max_opciones;i++) {
+        for (i=0;i<max_opciones;/*i++*/) {
+
+            if (menu_item_retornar_avanzados(aux)) {
 
 			//si la opcion seleccionada es un separador, el cursor saltara a la siguiente
 			//Nota: el separador no puede ser final de menu
@@ -17756,7 +17799,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
             
 			
 			else {
-				int y_destino=i;
+				int y_destino=pos_y_destino;
 				int linea_seleccionada_destino=linea_seleccionada;
 
 				if (y_destino>=0) {
@@ -17768,6 +17811,12 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 				
 		
 			}
+
+            //TODO: creo que estas dos variables hacen lo mismo
+            pos_y_destino++;
+            i++;
+
+            }
             
 			
 			aux=aux->next;
@@ -18210,8 +18259,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
 		if (ancho_calculado>ancho) ancho=ancho_calculado;
 		//printf ("%s\n",aux->texto);
+        if (menu_item_retornar_avanzados(aux)) max_opciones++;
+
 		aux=aux->next;
-		max_opciones++;
+		
 	} while (aux!=NULL);
 
 	//printf ("Opciones totales: %d\n",max_opciones);
@@ -18979,6 +19030,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
 
     m->atajo_tecla=0;
     m->tiene_submenu=0;
+    m->item_avanzado=0;
     
     m->menu_funcion_espacio=NULL;
 
@@ -19126,8 +19178,20 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
         m->tiene_submenu=1;
 }
 
-//Agregar decirle que es un item avanzado al ultimo item de menu
 void menu_add_item_menu_es_avanzado(menu_item *m)
+{
+    //busca el ultimo item i le añade el indicado
+
+    while (m->next!=NULL)
+    {
+            m=m->next;
+    }
+
+    m->item_avanzado=1;    
+}
+
+//Agregar decirle que es un item avanzado al ultimo item de menu
+void old_menu_add_item_menu_es_avanzado(menu_item *m)
 {
 
     menu_item *inicial;

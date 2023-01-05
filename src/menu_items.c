@@ -16855,6 +16855,10 @@ void menu_display_window_list_print_item(zxvision_window *w,int linea,char *wind
     }    
 }
 
+//Indicar que el overlay no tiene que actualizar, usado al pulsar en un proceso,
+//en que se abre nueva ventana y entonces el cursor estaria apuntando al proceso que no hemos pulsado, y seria confuso para el usuario
+int menu_display_window_list_overlay_do_not_update=0;
+
 void menu_display_window_list_overlay(void)
 {
 
@@ -16878,7 +16882,8 @@ void menu_display_window_list_overlay(void)
 
 
     //esto hara ejecutar esto 5 veces por segundo
-    if ( ((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+    if ( (((contador_segundo%200) == 0 && menu_display_window_list_valor_contador_segundo_anterior!=contador_segundo) || 
+        menu_multitarea==0) && menu_display_window_list_overlay_do_not_update==0) {
         menu_display_window_list_valor_contador_segundo_anterior=contador_segundo;
 
         //printf("refrescando. contador segundo: %d\n",contador_segundo);
@@ -16887,7 +16892,7 @@ void menu_display_window_list_overlay(void)
 
 		
         menu_display_window_list_print_item(menu_display_window_list_window,0,"Process name           Flags  Time spent");
-        menu_display_window_list_print_item(menu_display_window_list_window,1,"--Top--");
+        menu_display_window_list_print_item(menu_display_window_list_window,1,"---Top---");
         
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
@@ -16935,7 +16940,7 @@ void menu_display_window_list_overlay(void)
 			item_ventana_puntero=item_ventana_puntero->previous_window;
 		}
 
-        menu_display_window_list_print_item(menu_display_window_list_window,linea,"--Bottom--");
+        menu_display_window_list_print_item(menu_display_window_list_window,linea,"---Bottom---");
 
         char buffer_additional_items[MAX_TEXTO_OPCION];
 
@@ -17024,7 +17029,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Process name           Flags  Time spent");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Top--");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"---Top---");
         menu_add_item_menu_tabulado(array_menu_common,1,1);
 
 		zxvision_window *item_ventana_puntero=zxvision_current_window;
@@ -17058,7 +17063,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 			
 		}
 
-		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"--Bottom--");
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"---Bottom---");
         menu_add_item_menu_tabulado(array_menu_common,1,linea++);
 
 
@@ -17070,10 +17075,14 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
                 //llamamos por valor de funcion
                 if (item_seleccionado.menu_funcion!=NULL) {
 
+                        menu_display_window_list_overlay_do_not_update=1;
+
                         //Indicar el nombre de la ventana
                         strcpy(menu_display_window_list_selected_window,item_seleccionado.texto_misc);
 
                         item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                        menu_display_window_list_overlay_do_not_update=0;
 
                 }
         }
@@ -26126,7 +26135,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_machine_info,NULL,
             "Machine Info","Información Máquina","Informació máquina");                            
 
-        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);                    
+        menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_debug);                     
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_load_source_code,NULL,
             "Load Source Code","Cargar Código Fuente","Carregar Codi Font");
@@ -26156,6 +26166,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 		if (CPU_IS_Z80) {
 			menu_add_item_menu_format(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_ioports,NULL,"Debug ~~I/O Ports");
 			menu_add_item_menu_shortcut(array_menu_debug,'i');
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_cpu_transaction_log,NULL,
                 "~~CPU Transaction Log","Registro transacciones ~~CPU","Registre transaccions ~~CPU");
@@ -26250,6 +26261,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_cpu_stats,NULL,
                 "View CPU Statistics","Ver estadísticas CPU","Veure estadístiques CPU");
             menu_add_item_menu_tiene_submenu(array_menu_debug);
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 		}
 
 #endif        
@@ -26329,6 +26341,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_debug,"Some file utilities.\nNOTE: Shortcuts in file utilities must be chosen by pressing Shift+Key, "
 								"I mean, shortcuts are in capital letters to differentiate from quick selecting a file, so for example, "
 								"to view a file you must press Shift+v");
+            menu_add_item_menu_es_avanzado(array_menu_debug);
 
 		}
 		
@@ -34431,6 +34444,12 @@ const int menu_visual_floppy_colores_marcas[MENU_VISUALFLOPPY_TOTAL_COLORES_MARC
 //color de la flecha indicadora de rotacion
 int menu_visualfloppy_color_rotacion=1;
 
+int last_menu_visual_floppy_buffer_length=0;
+
+int last_menu_visualfloppy_rotacion_disco=0;
+
+int last_pd765_motor_status=0;
+
 void menu_visual_floppy_overlay(void)
 {
 
@@ -34442,27 +34461,12 @@ void menu_visual_floppy_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_visual_floppy_window->is_minimized) return;  
 
-    //esto hara ejecutar esto 5 veces por segundo
-    //if ( ((contador_segundo%200) == 0 && menu_visual_floppy_contador_segundo_anterior!=contador_segundo) ) {
-
-                    //Otra alternativa de borrar el fondo. En vez de tener esta variable must_clear_cache_on_draw=1 siempre,
-            //solo la alteramos momentaneamente al reducir sprite, con esto se borra correctamente y en cambio
-            //el uso de cpu cuando no modificamos pasa por ejemplo de un uso de 82% teniendo esto siempre a 1,
-            //a usar 52% cuando lo tenemos a 0
-            //menu_visual_floppy_window->must_clear_cache_on_draw_once=1;
-
-            menu_visual_floppy_contador_segundo_anterior=contador_segundo;
 
 
-        /*if (!menu_visual_floppy_fondo_asignado) {
-            menu_visual_floppy_fondo_asignado=1;
-                    //asignar fondo de color de floppy
-        int y;
-        for (y=0;y<menu_visual_floppy_window->total_height;y++) {
-            zxvision_fill_width_spaces_paper(menu_visual_floppy_window,y,HEATMAP_INDEX_FIRST_COLOR);
-        }
-        
-        }*/
+        menu_visual_floppy_contador_segundo_anterior=contador_segundo;
+
+
+
 
         //Print....      
         //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...    
@@ -34505,59 +34509,62 @@ void menu_visual_floppy_overlay(void)
         int sector;
         int pista;
 
+        int hay_cambios=1;
 
-
-        //borrar todo el contenido de los circulos
-        //alternativa mediante circulos desde interior hasta exterior
-        int r;
-        for (r=0;r<radio_exterior_disco;r++) {
-            zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
-              r,r,HEATMAP_INDEX_FIRST_COLOR, 
-             zxvision_putpixel,360);
+        //El bloque de borrado tarda hasta 9 milisegundos (que es mucho, dado que esto se ejecuta en cada frame de video,
+        //y el maximo que podemos tardar en un frame de video, contando absolutamente todo, es 20 milisegundos)
+        //por tanto es importante hacerlo solo cuando es necesario,
+        //o sea, no hacerlo cuando:
+        //no hay datos en el buffer a mostrar (ni la vez anterior tampoco), o sea =0,
+        //y
+        //rotacion disco no ha cambiado desde la vez anterior
+        if (menu_visual_floppy_buffer_length==0 &&
+            last_menu_visual_floppy_buffer_length==menu_visual_floppy_buffer_length &&
+            last_menu_visualfloppy_rotacion_disco==menu_visualfloppy_rotacion_disco &&
+            last_pd765_motor_status==pd765_motor_status
+            ) {
+            //printf("no hay cambios\n");
+            hay_cambios=0;
         }
 
-        //borrar posibles posiciones de cabezal
-        int i;
-        for (i=0;i<MENU_VISUAL_FLOPPY_PISTAS;i++) {
-            menu_visual_floppy_draw_header(i,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR);
+        last_menu_visualfloppy_rotacion_disco=menu_visualfloppy_rotacion_disco;
+        last_menu_visual_floppy_buffer_length=menu_visual_floppy_buffer_length;
+        last_pd765_motor_status=pd765_motor_status;
+
+        //Si motor moviendose
+        //if (pd765_motor_status) {
+        //    hay_cambios=1;
+        //}
+
+        int i,r;
+
+
+        if (hay_cambios) {
+
+            //borrar todo el contenido de los circulos
+            //alternativa mediante circulos desde interior hasta exterior
+            for (r=0;r<radio_exterior_disco;r++) {
+                zxvision_draw_ellipse(menu_visual_floppy_window,centro_disco_x,centro_disco_y,
+                r,r,HEATMAP_INDEX_FIRST_COLOR, 
+                zxvision_putpixel,360);
+            }
+
+            //borrar posibles posiciones de cabezal
+            for (i=0;i<MENU_VISUAL_FLOPPY_PISTAS;i++) {
+                menu_visual_floppy_draw_header(i,centro_disco_x,centro_disco_y,radio_exterior_disco,radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR);
+            }
+
+            //borrar posiciones de index holes
+            for (i=0;i<360;i++) {
+                menu_visual_floppy_dibujar_index_hole(centro_disco_x,centro_disco_y,radio_exterior_disco,radio_interior_disco,
+                    radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR,i);       
+            }
+
+
+            //Borrar flecha indicadora de rotación
+            menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,HEATMAP_INDEX_FIRST_COLOR);
+
         }
-
-        //borrar posiciones de index holes
-        for (i=0;i<360;i++) {
-            menu_visual_floppy_dibujar_index_hole(centro_disco_x,centro_disco_y,radio_exterior_disco,radio_interior_disco,
-                radio_fin_datos,HEATMAP_INDEX_FIRST_COLOR,i);       
-        }
-
-
-        //Borrar flecha indicadora de rotación
-        menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,HEATMAP_INDEX_FIRST_COLOR);
-        
-
-
-        //prueba dibujar todo
-        
-        /*
-        for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
-
-        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
-
-        for (byte_en_sector=0;byte_en_sector<MENU_VISUAL_FLOPPY_BYTES_SECTOR;byte_en_sector++) {
-        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
-        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,byte_en_sector,(pista+sector) % 8);
-        }
-
-        }
-
-        }
-        */
-        
-
-        //TODO: esto es temporal
-        //zxvision_putpixel(menu_visual_floppy_window,centro_disco_x,centro_disco_y,color_contorno_disco);
-
-
-
         
 
         
@@ -34566,6 +34573,8 @@ void menu_visual_floppy_overlay(void)
         int intensidad;
 
         int ultimo_color_no_cero=-1;
+
+        //printf("menu_visual_floppy_buffer_length: %d\n",menu_visual_floppy_buffer_length);
 
         for (i=0;i<menu_visual_floppy_buffer_length;i++) {
             pista=menu_visual_floppy_buffer[i].pista;
@@ -34598,6 +34607,7 @@ void menu_visual_floppy_overlay(void)
 
         }
         
+        //Ajustar el tamaño total al ultimo valor no cero registrado
         menu_visual_floppy_buffer_length=ultimo_color_no_cero+1;
 
         //if (ultimo_color_no_cero!=-1) printf("ultimo_color_no_cero: %d total: %d\n",ultimo_color_no_cero,menu_visual_floppy_buffer_length);
@@ -34633,24 +34643,6 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_draw_arrow(centro_disco_x,centro_disco_y,radio_exterior_disco,color);
         }
 
-/*
-        //Entre Interior y principio datos
-        int posicion_index_hole=(radio_fin_datos-radio_interior_disco/2);
-
-        //Proporcion como siempre del total
-        int radio_index_hole=radio_exterior_disco/20;
-
-       // int index_hole_x=centro_disco_x+posicion_index_hole;
-        //int index_hole_y=centro_disco_y;
-
-        int index_hole_x=centro_disco_x+((posicion_index_hole*util_get_cosine(menu_visualfloppy_rotacion_disco))/10000);
-        int index_hole_y=centro_disco_y-((posicion_index_hole*util_get_sine(menu_visualfloppy_rotacion_disco))/10000);   
-
-
-        zxvision_draw_ellipse(menu_visual_floppy_window,index_hole_x,index_hole_y,
-            radio_index_hole,radio_index_hole,color_contorno_disco, 
-            zxvision_putpixel,360); 
-*/
 
 
    //Marcas sectores
@@ -34658,25 +34650,25 @@ void menu_visual_floppy_overlay(void)
         //alternativa mediante: voy a dibujar todo pista, sector y byte
         for (pista=0;pista<MENU_VISUAL_FLOPPY_PISTAS;pista++) {
 
-        for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
+            for (sector=0;sector<MENU_VISUAL_FLOPPY_SECTORES;sector++) {
 
-     
-        //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
-        int color_marca=1;
-
-        if (menu_visualfloppy_coloured_effects) {
-
-            int indice_color=sector % MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS;
-
-            color_marca=menu_visual_floppy_colores_marcas[indice_color];
-            
-        }
-
-        menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
-            pista,sector,0,color_marca);
         
+            //centro x,y, radios exterior, interior, pista (0..39), sector (0..8), byte en sector (0..511)
+            int color_marca=1;
 
-        }
+            if (menu_visualfloppy_coloured_effects) {
+
+                int indice_color=sector % MENU_VISUALFLOPPY_TOTAL_COLORES_MARCAS;
+
+                color_marca=menu_visual_floppy_colores_marcas[indice_color];
+                
+            }
+
+            menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
+                pista,sector,0,color_marca);
+            
+
+            }
 
         } 
 
@@ -35734,7 +35726,6 @@ void menu_inicio_bucle_main(void)
                 menu_add_item_menu_tooltip(array_menu_principal,"Window management");
                 menu_add_item_menu_ayuda(array_menu_principal,"Window management");
                 menu_add_item_menu_tiene_submenu(array_menu_principal);
-                menu_add_item_menu_es_avanzado(array_menu_principal);
             }
 
 

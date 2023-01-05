@@ -9502,12 +9502,23 @@ void screen_render_menu_overlay_if_active(void)
         Y despues de eso, se hace el overlay propiamente de la ventana activa, y es el tiempo que vamos a calcular aqui, 
         pues no se tiene calculo de otra manera
         */
+
+       //En el caso que se salte aqui con el menu cerrado (cuando esta background event with menu closed), 
+       //ya se han calculado bien todos los tiempos pues se salta aqui desde el redibujado de normal overlay y no desde la ventana activa
+       //Se podria decir que cuando está el menu cerrado, la "ventana" activa es el core de emulacion, en que, cuando va a hacer refresco de pantalla,
+       //salta a normal overlay y de ahi a refrescar TODAS las ventanas. En cambio cuando está el menu abierto, hay una ventana siempre
+       //activa, que es la que llamará a normal_overlay, que es la que redibuja todas las ventanas MENOS la actual
+       //TODO: quiza mejorar el redibujado de ventanas, tanto cuando esta menu abierto como cerrado, que lo hiciera siempre igual
+
+        if (menu_abierto) {
         long diferencia=core_render_menu_overlay_difftime-zxvision_time_total_drawing_overlay_except_current-normal_overlay_time_total_drawing_overlay;
         if (zxvision_current_window!=NULL) {
             //Si negativo, cosa que no deberia pasar
             if (diferencia<0) diferencia=0;
 
             zxvision_current_window->last_spent_time_overlay=diferencia;
+            //printf("Menu abierto. calculado tiempo para ventana activa %s: %ld\n",zxvision_current_window->window_title,diferencia);
+        }
         }
 
     }

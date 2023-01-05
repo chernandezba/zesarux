@@ -1872,7 +1872,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_allow_background_windows && menu_multitarea) {
            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
-            "Even when menu closed","Incluso con menu cerrado","Inclus amb menu tancat");
+            "Even when menu closed","Incluso con menu cerrado","Inclús amb menu tancat");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') ); 
            menu_add_item_menu_tooltip(array_menu_common,"Shows background window even when menu closed");
            menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");

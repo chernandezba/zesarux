@@ -233,3 +233,13 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 
 
 -si modo avanzado no por defecto, nuevo first aid que avise de eso
+
+-Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero 
+
+-Revisar que ítem de tipo avanzado hay que definirlo siempre al final: quiza cambiarlo y hacer que al marcar un item
+avanzado no lo borre, le pone un flag, y luego al buscarlo siempre hay que ignorarlo
+Si lo mantenemos como está ahora, implica que SIEMPRE hay que definirlo al final de ese item, porque lo borrara. Cualquier accion sobre ese item
+que esté erroneamente despues, aplicará al item anterior logicamente:
+* menu_retorna_item: no debe contar los que esten marcados como avanzados (y si no estamos en modo avanzado logicamente)
+->Corregido. Marca el item en vez de borrarlo. Probar que todo funcione
+->creo que hay que revisar menu_retorna_item_tabulado_xy y el retorno de linea cuando hay avanzados no visibles
