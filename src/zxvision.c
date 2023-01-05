@@ -17759,62 +17759,62 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
 
             if (menu_item_retornar_avanzados(aux)) {
 
-			//si la opcion seleccionada es un separador, el cursor saltara a la siguiente
-			//Nota: el separador no puede ser final de menu
-			//if (linea_seleccionada==i && aux->tipo_opcion==MENU_OPCION_SEPARADOR) linea_seleccionada++;
+                //si la opcion seleccionada es un separador, el cursor saltara a la siguiente
+                //Nota: el separador no puede ser final de menu
+                //if (linea_seleccionada==i && aux->tipo_opcion==MENU_OPCION_SEPARADOR) linea_seleccionada++;
 
-			t_menu_funcion_activo menu_funcion_activo;
+                t_menu_funcion_activo menu_funcion_activo;
 
-			menu_funcion_activo=aux->menu_funcion_activo;
+                menu_funcion_activo=aux->menu_funcion_activo;
 
-			if (menu_funcion_activo!=NULL) {
-				opcion_activada=menu_funcion_activo();
-			}
+                if (menu_funcion_activo!=NULL) {
+                    opcion_activada=menu_funcion_activo();
+                }
 
-			else {
-				opcion_activada=1;
-			}
+                else {
+                    opcion_activada=1;
+                }
 
-			//Al listar opciones de menu, decir si la opcion está desabilitada
-			if (!opcion_activada) menu_textspeech_send_text("Unavailable option: ");
+                //Al listar opciones de menu, decir si la opcion está desabilitada
+                if (!opcion_activada) menu_textspeech_send_text("Unavailable option: ");
 
-			//Cuando haya opcion_activa, nos la apuntamos para decirla al final en speech.
-			//Y si es la primera vez en ese menu, dice "Selected item". Sino, solo dice el nombre de la opcion
-			if (linea_seleccionada==i) {
-				if (menu_active_item_primera_vez) {
-					sprintf (texto_opcion_seleccionada,"Selected item: %s",menu_retorna_item_language(aux));
-					menu_active_item_primera_vez=0;
-				}
+                //Cuando haya opcion_activa, nos la apuntamos para decirla al final en speech.
+                //Y si es la primera vez en ese menu, dice "Selected item". Sino, solo dice el nombre de la opcion
+                if (linea_seleccionada==i) {
+                    if (menu_active_item_primera_vez) {
+                        sprintf (texto_opcion_seleccionada,"Selected item: %s",menu_retorna_item_language(aux));
+                        menu_active_item_primera_vez=0;
+                    }
 
-				else {
-					sprintf (texto_opcion_seleccionada,"%s",menu_retorna_item_language(aux));
-				}
+                    else {
+                        sprintf (texto_opcion_seleccionada,"%s",menu_retorna_item_language(aux));
+                    }
 
-				opcion_seleccionada_activada=opcion_activada;
-			}
+                    opcion_seleccionada_activada=opcion_activada;
+                }
 
-			if (menu_tabulado) {
-				menu_escribe_linea_opcion_tabulado_zxvision(ventana,i,linea_seleccionada,opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y);
-			}
+                if (menu_tabulado) {
+                    menu_escribe_linea_opcion_tabulado_zxvision(ventana,i,linea_seleccionada,opcion_activada,menu_retorna_item_language(aux),aux->menu_tabulado_x,aux->menu_tabulado_y);
+                }
+                
+                
+                else {
+                    int y_destino=pos_y_destino;
+                    int linea_seleccionada_destino=linea_seleccionada;
+
+                    if (y_destino>=0) {
+                    
+                            menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu);
+                            //menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,aux->texto_opcion,aux->tiene_submenu);
+                        
+                    }
+                    
             
-			
-			else {
-				int y_destino=pos_y_destino;
-				int linea_seleccionada_destino=linea_seleccionada;
+                }
 
-				if (y_destino>=0) {
-				
-						menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,menu_retorna_item_language(aux),aux->tiene_submenu);
-                        //menu_escribe_linea_opcion_zxvision(ventana,y_destino,linea_seleccionada_destino,opcion_activada,aux->texto_opcion,aux->tiene_submenu);
-					
-				}
-				
-		
-			}
-
-            //TODO: creo que estas dos variables hacen lo mismo
-            pos_y_destino++;
-            i++;
+                //TODO: creo que estas dos variables hacen lo mismo
+                pos_y_destino++;
+                i++;
 
             }
             
