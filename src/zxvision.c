@@ -7953,7 +7953,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
 		return;
 	}
 
-    printf("menu_escribe_linea_opcion_zxvision. indice %d opcion_actual %d texto %s\n",indice,opcion_actual,texto_entrada);
+    //printf("menu_escribe_linea_opcion_zxvision. indice %d opcion_actual %d texto %s\n",indice,opcion_actual,texto_entrada);
 
 	int papel,tinta;
 	int i;
@@ -16396,7 +16396,7 @@ menu_item *old_menu_retorna_item(menu_item *m,int i)
         while (i>0)
         {
         	//printf ("m: %p i: %d\n",m,i);
-        	item_next=m->next;
+        	item_next=m->siguiente_item;
         	if (item_next==NULL) return m;  //Controlar si final
 
                 m=item_next;
@@ -16431,7 +16431,7 @@ menu_item *menu_retorna_item(menu_item *m,int buscado)
         //Siguiente item. incrementar contador si es que no se excluye item por ser avanzado
         if (menu_item_retornar_avanzados(m)) contador++;
 
-        item_next=m->next;
+        item_next=m->siguiente_item;
 
         //Si llegado al final
         if (item_next==NULL) return m;  //Controlar si final
@@ -16506,13 +16506,13 @@ menu_item *menu_retorna_item_tabulado_xy(menu_item *m,int x,int y,int *linea_bus
         	else {
 
         		//printf ("m: %p i: %d\n",m,i);
-        		item_next=m->next;
+        		item_next=m->siguiente_item;
 	        	if (item_next==NULL) return NULL;  //Controlar si final
 
-                	m=item_next;
-			//i--;
-			indice++;
-		}
+                m=item_next;
+                //i--;
+                indice++;
+		    }
         }
 
         if (encontrado) {
@@ -17565,7 +17565,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 		printf ("\n");
 
-                aux=aux->next;
+                aux=aux->siguiente_item;
         } while (aux!=NULL);
 
 	printf ("\n");
@@ -17686,7 +17686,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
         do {
                 //printf ("Liberando %x\n",aux);
-                nextfree=aux->next;
+                nextfree=aux->siguiente_item;
                 free(aux);
                 aux=nextfree;
         } while (aux!=NULL);
@@ -17718,7 +17718,7 @@ int menu_retorna_atajo(menu_item *m,z80_byte tecla)
 		}
 
         if (menu_item_retornar_avanzados(m)) linea++;
-		m=m->next;
+		m=m->siguiente_item;
 	}
 
 	//no encontrado atajo. escribir entradas de menu con atajos para informar al usuario
@@ -17819,7 +17819,7 @@ void menu_escribe_opciones_zxvision(zxvision_window *ventana,menu_item *aux,int 
             }
             
 			
-			aux=aux->next;
+			aux=aux->siguiente_item;
 
         }
 
@@ -18261,7 +18261,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		//printf ("%s\n",aux->texto);
         if (menu_item_retornar_avanzados(aux)) max_opciones++;
 
-		aux=aux->next;
+		aux=aux->siguiente_item;
 		
 	} while (aux!=NULL);
 
@@ -18964,7 +18964,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
     do {
         //printf ("Liberando %x\n",aux);
-        nextfree=aux->next;
+        nextfree=aux->siguiente_item;
         free(aux);
         aux=nextfree;
     } while (aux!=NULL);
@@ -19034,7 +19034,7 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     
     m->menu_funcion_espacio=NULL;
 
-    m->next=NULL;
+    m->siguiente_item=NULL;
 
     ////    
 }
@@ -19076,9 +19076,9 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 {
 	//busca el ultimo item i le añade el indicado. O hasta que encuentre uno con MENU_OPCION_UNASSIGNED, que tendera a ser el ultimo
 
-	while (m->next!=NULL && m->tipo_opcion!=MENU_OPCION_UNASSIGNED)
+	while (m->siguiente_item!=NULL && m->tipo_opcion!=MENU_OPCION_UNASSIGNED)
 	{
-		m=m->next;
+		m=m->siguiente_item;
 	}
 
 	menu_item *next;
@@ -19096,7 +19096,7 @@ void menu_add_item_menu(menu_item *m,char *texto,int tipo_opcion,t_menu_funcion 
 
 		if (next==NULL) cpu_panic("Cannot allocate menu item");
 
-		m->next=next;
+		m->siguiente_item=next;
 	}
 
 
@@ -19131,9 +19131,9 @@ void menu_add_item_menu_ayuda(menu_item *m,char *texto_ayuda)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
 	m->texto_ayuda=texto_ayuda;
@@ -19144,9 +19144,9 @@ void menu_add_item_menu_tooltip(menu_item *m,char *texto_tooltip)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
         m->texto_tooltip=texto_tooltip;
@@ -19157,9 +19157,9 @@ void menu_add_item_menu_shortcut(menu_item *m,z80_byte tecla)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
         m->atajo_tecla=tecla;
@@ -19170,9 +19170,9 @@ void menu_add_item_menu_tiene_submenu(menu_item *m)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
         m->tiene_submenu=1;
@@ -19182,9 +19182,9 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
 {
     //busca el ultimo item i le añade el indicado
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
-            m=m->next;
+            m=m->siguiente_item;
     }
 
     m->item_avanzado=1;    
@@ -19203,10 +19203,10 @@ void old_menu_add_item_menu_es_avanzado(menu_item *m)
 
     //busca el ultimo item. si no tenemos el modo avanzado, quitarlo
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
         previo=m;
-        m=m->next;
+        m=m->siguiente_item;
     }
 
     if (menu_show_advanced_items.v==0) {
@@ -19217,7 +19217,7 @@ void old_menu_add_item_menu_es_avanzado(menu_item *m)
             //Liberar este ultimo
             free(m);
             //Indicar al previo que no hay siguiente
-            previo->next=NULL;
+            previo->siguiente_item=NULL;
         }
         else {
             debug_printf(VERBOSE_DEBUG,"Can not remove advanced item because it is the first one");
@@ -19270,9 +19270,9 @@ void menu_add_item_menu_spanish(menu_item *m,char *s)
 {
     //busca el ultimo item i le añade el indicado
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
-            m=m->next;
+            m=m->siguiente_item;
     }
 
     strcpy(m->texto_opcion_spanish,s);
@@ -19298,9 +19298,9 @@ void menu_add_item_menu_catalan(menu_item *m,char *s)
 {
     //busca el ultimo item i le añade el indicado
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
-            m=m->next;
+            m=m->siguiente_item;
     }
 
     strcpy(m->texto_opcion_catalan,s);
@@ -19332,9 +19332,9 @@ void menu_add_item_menu_prefijo(menu_item *m,char *s)
 {
     //busca el ultimo item i le añade el indicado
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
-            m=m->next;
+            m=m->siguiente_item;
     }
 
     strcpy(m->texto_opcion_prefijo,s);
@@ -19360,9 +19360,9 @@ void menu_add_item_menu_sufijo(menu_item *m,char *s)
 {
     //busca el ultimo item i le añade el indicado
 
-    while (m->next!=NULL)
+    while (m->siguiente_item!=NULL)
     {
-            m=m->next;
+            m=m->siguiente_item;
     }
 
     strcpy(m->texto_opcion_sufijo,s);
@@ -19387,9 +19387,9 @@ void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio
 {
 //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
         m->menu_funcion_espacio=menu_funcion_espacio;
@@ -19401,9 +19401,9 @@ void menu_add_item_menu_tabulado(menu_item *m,int x,int y)
 {
 //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
         m->es_menu_tabulado=1;
@@ -19419,9 +19419,9 @@ void menu_add_item_menu_valor_opcion(menu_item *m,int valor_opcion)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
 	//printf ("temp. agregar valor opcion %d\n",valor_opcion);
@@ -19436,9 +19436,9 @@ void menu_add_item_menu_misc(menu_item *m,char *texto_misc)
 {
        //busca el ultimo item i le añade el indicado
 
-        while (m->next!=NULL)
+        while (m->siguiente_item!=NULL)
         {
-                m=m->next;
+                m=m->siguiente_item;
         }
 
 		

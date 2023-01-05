@@ -860,7 +860,7 @@ struct s_menu_item {
 	t_menu_funcion menu_funcion_espacio;
 
 	//siguiente item
-	struct s_menu_item *next;
+	struct s_menu_item *siguiente_item;
 
     //si este item de menu desplega otro menu
     int tiene_submenu;
