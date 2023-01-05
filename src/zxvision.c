@@ -18252,14 +18252,16 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	max_opciones=0;
 	do {
 		
+        if (menu_item_retornar_avanzados(aux)) {
+
+		    ancho_calculado=menu_calcular_ancho_string_item(menu_retorna_item_language(aux))+2; //+2 espacios
 
 
-		ancho_calculado=menu_calcular_ancho_string_item(menu_retorna_item_language(aux))+2; //+2 espacios
+		    if (ancho_calculado>ancho) ancho=ancho_calculado;
+		    //printf ("%s\n",aux->texto);
+            max_opciones++;
 
-
-		if (ancho_calculado>ancho) ancho=ancho_calculado;
-		//printf ("%s\n",aux->texto);
-        if (menu_item_retornar_avanzados(aux)) max_opciones++;
+        }
 
 		aux=aux->siguiente_item;
 		
