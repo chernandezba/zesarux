@@ -204,6 +204,8 @@ mwa=16385
 
 Porque se queda la ultima direccion mwa escrita de ese opcode
 
+lo mismo pasaria con mwv, mra, mrv
+
 
 -Read track
 * A determinar flags que se activan según petición inicial chrn
@@ -221,7 +223,9 @@ Porque se queda la ultima direccion mwa escrita de ese opcode
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 
--Icono de aplicación que se vea distinto si la aplicación está abierta 
+-Icono de aplicación que se vea distinto si la aplicación está abierta. Cómo de distinto?
+En la estructura de lista de iconos, indicar si un icono tiene un nombre (geometryname) de aplicación asociado.
+Si la tiene, buscar en las ventanas abiertas ese geometry name
 
 
 -Breakpoints de memorias absolutas - Gunther stube
@@ -231,8 +235,6 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
-
--modo avanzado no por defecto: nuevo first aid que avise de eso
 
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero 
 
@@ -246,5 +248,3 @@ de las ventanas, incluido la ventana actual. Esto implicaria que las ventanas no
 quieren en su estructura de zxvision_window. Esto también permitiria un parámetro en zxvision_window que dijera cada cuanto se redibuja
 cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en cada función de overlay.
 Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
-
--opcion vaciar papelera al salir
