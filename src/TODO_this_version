@@ -223,11 +223,6 @@ lo mismo pasaria con mwv, mra, mrv
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
 
--Icono de aplicación que se vea distinto si la aplicación está abierta. Cómo de distinto?
-En la estructura de lista de iconos, indicar si un icono tiene un nombre (geometryname) de aplicación asociado.
-Si la tiene, buscar en las ventanas abiertas ese geometry name
-
-
 -Breakpoints de memorias absolutas - Gunther stube
 
 --nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
@@ -250,5 +245,3 @@ cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en
 Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
 
 
--en segint_signal_handler y segterm_signal_handler buscar un sustituto para detener la emulacion.. quiza no porque hace un quickexit y por 
-tanto sale rapido

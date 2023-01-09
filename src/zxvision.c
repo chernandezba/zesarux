@@ -5488,27 +5488,31 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
 
     //Si se indica que la app está abierta
-    char *geometry_name;
 
-    //Caso especial icono que dice de abrir ventana generica
-    if (defined_direct_functions_array[id_accion].id_funcion==F_FUNCION_OPEN_WINDOW) {
-        geometry_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
-    }
+    if (zxdesktop_icon_show_app_open.v) {
+        char *geometry_name;
 
-    else {
-        geometry_name=defined_direct_functions_array[id_accion].geometry_name;
-    }
+        //Caso especial icono que dice de abrir ventana generica
+        if (defined_direct_functions_array[id_accion].id_funcion==F_FUNCION_OPEN_WINDOW) {
+            geometry_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
+        }
 
-    if (geometry_name[0]) {
-        zxvision_window *buscar_ventana_abierta;
-        buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
-        
-        //buscar si esta abierta
-        if (buscar_ventana_abierta!=NULL) {
-            int y_app_abierta=y+menu_get_ext_desktop_icons_size();
+        else {
+            geometry_name=defined_direct_functions_array[id_accion].geometry_name;
+        }
 
-            menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
-                1*zoom_y,ESTILO_GUI_COLOR_AVISO);        
+        if (geometry_name[0]) {
+            zxvision_window *buscar_ventana_abierta;
+            buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
+            
+            //buscar si esta abierta
+            if (buscar_ventana_abierta!=NULL) {
+                int y_app_abierta=y+menu_get_ext_desktop_icons_size();
+
+                //Una linea por debajo
+                menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
+                    1*zoom_y,ESTILO_GUI_COLOR_AVISO);        
+            }
         }
     }
 

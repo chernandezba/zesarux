@@ -9936,6 +9936,11 @@ void menu_ext_desk_settings_empty_trash_exit(MENU_ITEM_PARAMETERS)
     zxdesktop_empty_trash_on_exit.v ^=1;
 }
 
+void menu_ext_desk_settings_show_app_open(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_icon_show_app_open.v ^=1;
+}
+
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_ext_desktop_settings;
@@ -10053,13 +10058,13 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 "Icons on ZX Desktop","Iconos en ZX Desktop","Icones al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
 
-            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
-                "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
-            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
-
                 
             if (zxdesktop_configurable_icons_enabled.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
+                    "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);                
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
                     "Transparent icons","Iconos transparentes","Icones transparents");
@@ -10069,6 +10074,11 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
                     "Icon text background","Fondo de texto de iconos","Fons de text de icones");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_show_app_open,NULL,
+                    "Show indicators for open apps","Mostrar indicadores en apps abiertas","Mostrar indicadors en apps obertes");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_icon_show_app_open.v ? 'X' : ' ' ) );                              
                 menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 

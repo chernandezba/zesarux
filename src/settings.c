@@ -310,6 +310,9 @@ z80_bit zxdesktop_configurable_icons_enabled={1};
 
 z80_bit zxdesktop_empty_trash_on_exit={0};
 
+
+z80_bit zxdesktop_icon_show_app_open={1};
+
 //
 // General Settings
 //
