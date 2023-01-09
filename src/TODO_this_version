@@ -234,7 +234,7 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero 
 
 
--Al inicio de ventanas quizá no borrarla y crearla de nuevo si existe, sino que simplemente no recrearla de nuevo, mantener la que había , moviéndola al top
+
 
 -Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
 
@@ -245,6 +245,8 @@ cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en
 Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
 
 
+-Al inicio de ventanas quizá no borrarla y crearla de nuevo si existe, sino que simplemente no recrearla de nuevo, mantener la que había , moviéndola al top. Esto esta relacionado con el bug siguiente
+
 -indicador de app abierta: parece que cuando se reabre una aplicacion, a veces desaparece por un momento el indicador.
 Esto quiza es normal porque realmente la app se borra y se crea de nuevo... Pero deberia haber algun redraw de zxdesktop despues de recrearla
-(menu_draw_ext_desktop() )
+(menu_draw_ext_desktop() ). Esto esta relacionado con el bug anterior
