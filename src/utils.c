@@ -3545,6 +3545,8 @@ int util_write_configfile(void)
     if (zxdesktop_draw_scrfile_disable_flash)           ADD_STRING_CONFIG,"--zxdesktop-scr-disable-flash");
 
     if (zxdesktop_configurable_icons_enabled.v==0)      ADD_STRING_CONFIG,"--zxdesktop-disable-configurable-icons");
+
+    if (zxdesktop_empty_trash_on_exit.v)                ADD_STRING_CONFIG,"--zxdesktop-empty-trash-on-exit");
     
 
     if (zxdesktop_configurable_icons_enabled.v) {

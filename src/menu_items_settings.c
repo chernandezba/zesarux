@@ -10056,6 +10056,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
                 "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 
             if (zxdesktop_configurable_icons_enabled.v) {

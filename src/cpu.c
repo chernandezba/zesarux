@@ -2460,7 +2460,8 @@ printf (
         "--zxdesktop-scr-mixbackground                  Mix SCR image with background\n"
         "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
         "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
-        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"  
+        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"
+        "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"         
 
@@ -6079,6 +6080,10 @@ int parse_cmdline_options(void) {
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-configurable-icons")) {
                 zxdesktop_configurable_icons_enabled.v=0;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-empty-trash-on-exit")) {
+                zxdesktop_empty_trash_on_exit.v=1;
             }
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
