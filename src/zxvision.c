@@ -24142,6 +24142,10 @@ char *first_aid_string_snapshot_save_zsf="When saving snapshots, the recommended
     "with a .zsf extension. But if you want to overwrite a snapshot that already exists, just select it";
 
 
+int first_aid_no_advanced_menu=0;
+char *first_aid_string_advanced_menu="The menu interface has many items which are hidden by default. You can show them by "
+    "enabling Settings-> Advanced menu items";
+
 
 void menu_first_aid_init(void)
 {
@@ -24186,6 +24190,7 @@ void menu_first_aid_init(void)
 	menu_first_aid_add("backgroundwindows",&first_aid_no_backgroundwindows,first_aid_string_backgroundwindows,1);
     menu_first_aid_add("zxdesktop",&first_aid_no_zxdesktop,first_aid_string_zxdesktop,1);
     menu_first_aid_add("zxdesktopcustombuttons",&first_aid_no_zxdesktop_custombuttons,first_aid_string_zxdesktop_custombuttons,1);
+    menu_first_aid_add("advancedmenu",&first_aid_no_advanced_menu,first_aid_string_advanced_menu,1);
 
 }
 
