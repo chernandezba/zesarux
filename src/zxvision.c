@@ -5504,6 +5504,18 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         if (geometry_name[0]) {
             zxvision_window *buscar_ventana_abierta;
             buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
+
+            //temp
+            /*
+            if (!strcasecmp(geometry_name,"hexeditor")) {
+                if (buscar_ventana_abierta==NULL) {
+                    printf("No window found for hexeditor\n");
+                }
+                else {
+                    printf("Window found for hexeditor\n");
+                }
+            }
+            */
             
             //buscar si esta abierta
             if (buscar_ventana_abierta!=NULL) {

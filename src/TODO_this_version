@@ -245,3 +245,5 @@ cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en
 Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
 
 
+-indicador de app abierta: parece que cuando se reabre una aplicacion, a veces desaparece por un momento el indicador.
+Esto quiza es normal porque realmente la app se borra y se crea de nuevo... Pero deberia haber algun redraw de zxdesktop despues de recrearla

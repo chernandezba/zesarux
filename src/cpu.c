@@ -2462,6 +2462,7 @@ printf (
         "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
         "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
+        "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"         
 
@@ -6092,6 +6093,11 @@ int parse_cmdline_options(void) {
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-empty-trash-on-exit")) {
                 zxdesktop_empty_trash_on_exit.v=1;
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-show-indicators-open-apps")) {
+                zxdesktop_icon_show_app_open.v=0;
+            }            
+            
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
                 //get_defined_direct_functions

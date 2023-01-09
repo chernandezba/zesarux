@@ -28,7 +28,7 @@ Improved changing pointer on some windows: can use an expression when changing m
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
-- When an app is open, its icon it's highlighted on ZX Desktop
+- Show icon indicators for open apps on ZX Desktop
 - Added setting to empty Trash on exit
 
 Improved ZX Vision:
