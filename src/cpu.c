@@ -5495,6 +5495,8 @@ void segint_signal_handler(int sig)
         //para evitar warnings al compilar
         sig++;
 
+    //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
+
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
 /*
@@ -5523,6 +5525,8 @@ void segterm_signal_handler(int sig)
 
         //para evitar warnings al compilar
         sig++;
+
+        //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
 
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
