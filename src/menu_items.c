@@ -11332,41 +11332,44 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 	if (!MACHINE_IS_ZX8081) view_sprites_zx81_pseudohires.v=0;
 
-        if (!zxvision_if_window_already_exists(ventana)) {
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	
-    if (!util_find_window_geometry("sprites",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=SPRITES_X;
-        y=SPRITES_Y;
-        ancho=SPRITES_ANCHO;
-        alto=SPRITES_ALTO_VENTANA;
+        
+        if (!util_find_window_geometry("sprites",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=SPRITES_X;
+            y=SPRITES_Y;
+            ancho=SPRITES_ANCHO;
+            alto=SPRITES_ALTO_VENTANA;
+        }
+
+
+        //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,64,64+2,"Sprites");
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,64,64+2,"Sprites","sprites",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"sprites");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+        //Permitir hotkeys desde raton
+        ventana->can_mouse_send_hotkeys=1;
+
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        //ventana->must_clear_cache_on_draw=1;        
     }
 
-
-	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,64,64+2,"Sprites");
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,64,64+2,"Sprites","sprites",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-
-	ventana->can_be_backgrounded=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"sprites");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
-
-	//Permitir hotkeys desde raton
-	ventana->can_mouse_send_hotkeys=1;
-
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    //ventana->must_clear_cache_on_draw=1;        
-        }
-        else {
-            zxvision_activate_this_window(ventana);
-        }
-        
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }
+    
 	zxvision_draw_window(ventana);
 
 	z80_byte tecla;
