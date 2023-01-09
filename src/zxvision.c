@@ -5497,7 +5497,7 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
             int y_app_abierta=y+menu_get_ext_desktop_icons_size();
 
             menu_draw_ext_desktop_one_configurable_icon_background(x,y_app_abierta,menu_get_ext_desktop_icons_size(),
-                1*zoom_y,2);        
+                1*zoom_y,ESTILO_GUI_COLOR_AVISO);        
         }
     }
 
