@@ -308,7 +308,7 @@ int zxdesktop_disable_show_frame_around_display=0;
 
 z80_bit zxdesktop_configurable_icons_enabled={1};
 
-
+z80_bit zxdesktop_empty_trash_on_exit={0};
 
 //
 // General Settings

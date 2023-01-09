@@ -846,6 +846,9 @@ void zxvision_recover_configurable_icon_from_trash(int indice_icono)
 
 void zxvision_empty_trash(void)
 {
+
+    debug_printf(VERBOSE_DEBUG,"Emptying trash");
+
     int i;
 
     for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {

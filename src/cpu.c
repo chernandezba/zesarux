@@ -10476,6 +10476,9 @@ void end_emulator_saveornot_config(int saveconfig)
 // }
 //#endif
 
+    if (zxdesktop_empty_trash_on_exit.v) zxvision_empty_trash();
+
+
 	menu_abierto=0;
 
 	if (saveconfig && save_configuration_file_on_exit.v) {
