@@ -16505,13 +16505,15 @@ menu_item *menu_retorna_item_tabulado_xy(menu_item *m,int x,int y,int *linea_bus
 
         	else {
 
+                if (menu_item_retornar_avanzados(m)) indice++;
+
         		//printf ("m: %p i: %d\n",m,i);
         		item_next=m->siguiente_item;
 	        	if (item_next==NULL) return NULL;  //Controlar si final
 
                 m=item_next;
                 //i--;
-                indice++;
+                
 		    }
         }
 

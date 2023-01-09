@@ -866,6 +866,10 @@ struct s_menu_item {
     int tiene_submenu;
 
     //Si es un item avanzado
+    //TODO: Quiza en menus tipo tabulado se ha probado poco
+    //en caso que se usase, hacerle mas pruebas. Esto es poco probable,
+    //porque los menus avanzados se usan en items de menu normales,
+    //pero en cambio los items tabulados suelen ser para opciones de ventanas
     int item_avanzado;
 };
 

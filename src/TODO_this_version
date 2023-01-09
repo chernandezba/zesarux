@@ -80,7 +80,7 @@ usar la que si considera movimiento raton
 
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
--opcion vaciar papelera al salir
+
 
 -exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
 
@@ -232,14 +232,19 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
 
--si modo avanzado no por defecto, nuevo first aid que avise de eso
+-modo avanzado no por defecto: nuevo first aid que avise de eso
 
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero 
 
--Revisar que ítem de tipo avanzado hay que definirlo siempre al final: quiza cambiarlo y hacer que al marcar un item
-avanzado no lo borre, le pone un flag, y luego al buscarlo siempre hay que ignorarlo
-Si lo mantenemos como está ahora, implica que SIEMPRE hay que definirlo al final de ese item, porque lo borrara. Cualquier accion sobre ese item
-que esté erroneamente despues, aplicará al item anterior logicamente:
-* menu_retorna_item: no debe contar los que esten marcados como avanzados (y si no estamos en modo avanzado logicamente)
-->Corregido. Marca el item en vez de borrarlo. Probar que todo funcione
-->creo que hay que revisar menu_retorna_item_tabulado_xy y el retorno de linea cuando hay avanzados no visibles
+
+-Al inicio de ventanas quizá no borrarla y crearla de nuevo si existe, sino que simplemente no recrearla de nuevo, mantener la que había , moviéndola al top
+
+-Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
+
+-Nueva manera de redibujar todas ventanas: ya sea con menu abierto o cerrado, al llamar a normal_overlay, este luego llama a todos los overlays
+de las ventanas, incluido la ventana actual. Esto implicaria que las ventanas no deberían alterar el normal_overlay, solo indicar qué overlay
+quieren en su estructura de zxvision_window. Esto también permitiria un parámetro en zxvision_window que dijera cada cuanto se redibuja
+cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en cada función de overlay.
+Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
+
+-opcion vaciar papelera al salir
