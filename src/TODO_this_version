@@ -248,3 +248,7 @@ de las ventanas, incluido la ventana actual. Esto implicaria que las ventanas no
 quieren en su estructura de zxvision_window. Esto también permitiria un parámetro en zxvision_window que dijera cada cuanto se redibuja
 cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en cada función de overlay.
 Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
+
+
+-en segint_signal_handler y segterm_signal_handler buscar un sustituto para detener la emulacion.. quiza no porque hace un quickexit y por 
+tanto sale rapido

@@ -5496,13 +5496,14 @@ void segint_signal_handler(int sig)
 
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
+/*
 #ifdef USE_PTHREADS
         if (si_thread_main_loop) {
         	debug_printf (VERBOSE_INFO,"Ending main loop thread");
 		pthread_cancel(thread_main_loop);
 	}
 #endif
-
+*/
     //salir sin fadeout, no queremos hacerlo en caso de salir desde aqui para que sea mas rapido
     //nota: dado que estamos saliendo sin guardar config, podemos alterar parametros de configuracion
     //desde aqui sin que se graben en el archivo de configuración
@@ -5524,13 +5525,19 @@ void segterm_signal_handler(int sig)
 
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
+/*
 #ifdef USE_PTHREADS
         if (si_thread_main_loop) {
         	debug_printf (VERBOSE_INFO,"Ending main loop thread");
 		pthread_cancel(thread_main_loop);
 	}
 #endif
+*/
 
+    //salir sin fadeout, no queremos hacerlo en caso de salir desde aqui para que sea mas rapido
+    //nota: dado que estamos saliendo sin guardar config, podemos alterar parametros de configuracion
+    //desde aqui sin que se graben en el archivo de configuración
+    quickexit.v=1;
 
         //salir sin guardar config
         end_emulator_saveornot_config(0);
@@ -10455,7 +10462,7 @@ void dump_ram_file_on_exit(void)
 	}
 }
 
-int ending_emulator_flag=0;
+//int ending_emulator_flag=0;
 
 //Se pasa parametro que dice si guarda o no la configuración.
 //antes se guardaba siempre, pero ahora en casos de recepcion de señales de terminar, no se guarda,
@@ -10463,8 +10470,7 @@ int ending_emulator_flag=0;
 void end_emulator_saveornot_config(int saveconfig)
 {
 	debug_printf (VERBOSE_INFO,"End emulator");
-	
-    ending_emulator_flag=1;
+    //ending_emulator_flag=1;
 	
 	
 	

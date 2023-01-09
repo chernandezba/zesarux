@@ -5490,9 +5490,10 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
     //Si se indica que la app está abierta
     char *geometry_name=defined_direct_functions_array[id_accion].geometry_name;
     if (geometry_name[0]) {
-        zxvision_window *buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
-
-        //TODO buscar si esta abierta
+        zxvision_window *buscar_ventana_abierta;
+        buscar_ventana_abierta=zxvision_find_window_in_background(geometry_name);
+        
+        //buscar si esta abierta
         if (buscar_ventana_abierta!=NULL) {
             int y_app_abierta=y+menu_get_ext_desktop_icons_size();
 
@@ -6401,6 +6402,10 @@ void menu_draw_ext_desktop(void)
 
 	//Si no escritorio extendido, salir
 	if (!screen_ext_desktop_enabled || !scr_driver_can_ext_desktop() ) return;
+
+    //esto peta desde end_emulator si se sale con ctrl+c con menu principal abierto
+    //Es porque el thread thread_main_loop se ha terminado
+    //if (ending_emulator_flag) return;    
 
     int xstart_zxdesktop=screen_get_ext_desktop_start_x();
 
@@ -9636,9 +9641,9 @@ void zxvision_set_flag_dirty_must_draw_contents(zxvision_window *w)
 void zxvision_set_all_flag_dirty_must_draw_contents(void)
 {
 
-    //TODO: Por alguna razon que desconozco, esto peta desde end_emulator si se sale con ctrl+c con menu principal abierto
-    //Quiza porque zxvision_current_window se ha liberado de memoria y ya no existe
-    if (ending_emulator_flag) return;
+    //esto peta desde end_emulator si se sale con ctrl+c con menu principal abierto
+    //Es porque el thread thread_main_loop se ha terminado
+    //if (ending_emulator_flag) return;
 
 	//Podemos empezar desde la de arriba por ejemplo, da igual
 	zxvision_window *ventana;
