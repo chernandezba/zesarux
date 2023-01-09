@@ -4681,38 +4681,47 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-	if (!util_find_window_geometry("waveform",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		x=SOUND_WAVE_X;
-		y=SOUND_WAVE_Y-2;
-		ancho=SOUND_WAVE_ANCHO;
-		alto=SOUND_WAVE_ALTO+4;    
-	}
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("waveform",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=SOUND_WAVE_X;
+            y=SOUND_WAVE_Y-2;
+            ancho=SOUND_WAVE_ANCHO;
+            alto=SOUND_WAVE_ALTO+4;    
+        }
 
 
-    //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Waveform","waveform",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Waveform","waveform",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Waveform");
+        //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Waveform");
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"waveform");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"waveform");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
 
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    //77% cpu con esto a 1
-    //37% cpu con esto a 0
-    //42% cpu con esto a 0 y borrando pixeles anteriores
-    //ventana->must_clear_cache_on_draw=1;
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        //77% cpu con esto a 1
+        //37% cpu con esto a 0
+        //42% cpu con esto a 0 y borrando pixeles anteriores
+        //ventana->must_clear_cache_on_draw=1;
 
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
 
 	//printf("despues zxvision_new_window_nocheck_staticsize\n");
 	zxvision_draw_window(ventana);		
@@ -5373,29 +5382,39 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
 
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-
-	if (!util_find_window_geometry("visualmem",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		x=VISUALMEM_DEFAULT_X;
-		y=visualmem_y_variable;
-		ancho=VISUALMEM_DEFAULT_WINDOW_ANCHO;
-		alto=VISUALMEM_DEFAULT_WINDOW_ALTO;       
-	}
-
-    //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual memory","visualmem",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;;
 
 
-	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual memory");
-    
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"visualmem");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;
+        if (!util_find_window_geometry("visualmem",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=VISUALMEM_DEFAULT_X;
+            y=visualmem_y_variable;
+            ancho=VISUALMEM_DEFAULT_WINDOW_ANCHO;
+            alto=VISUALMEM_DEFAULT_WINDOW_ALTO;       
+        }
+
+        //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual memory","visualmem",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+
+        //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual memory");
+        
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"visualmem");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);				
 
@@ -16638,6 +16657,7 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 void menu_display_window_list_info(zxvision_window *w)
 {
     menu_generic_message_format("Window information",
+        "PID: %d\n"
         "Title: %s\n"
         "Name: %s\n"
         "Position: %d,%d\n"
@@ -16649,7 +16669,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Always visible: %s\n"
         "Can be resized: %s\n"
         ,
-        w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
+        w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
         w->offset_x,w->offset_y,
         (w->is_minimized ? "Yes" : "No"),
         (w->is_maximized ? "Yes" : "No"),
