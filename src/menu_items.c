@@ -16662,20 +16662,31 @@ void menu_display_window_list_info(zxvision_window *w)
 
 void menu_display_window_list_create_window(zxvision_window *ventana)
 {
-    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        ancho=54;
-        alto=20;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-        x=menu_center_x()-ancho/2;
-        y=menu_center_y()-alto/2;
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho=54;
+            alto=20;
+
+            x=menu_center_x()-ancho/2;
+            y=menu_center_y()-alto/2;
+        }
+
+
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Process Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
     }
 
-
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Process Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-    ventana->can_be_backgrounded=1;
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
 
     zxvision_draw_window(ventana);
 }
@@ -17007,7 +17018,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
     menu_display_window_list_create_window(ventana);
 
@@ -34051,26 +34062,35 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
 
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("toyzxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=19;
-		alto_ventana=19;
+        if (!util_find_window_geometry("toyzxeyes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=19;
+            alto_ventana=19;
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;        
-	}
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;        
+        }
 
-        
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZXEyes",
-        "toyzxeyes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZXEyes",
+            "toyzxeyes",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	ventana->can_be_backgrounded=1;
-         
-    ventana->can_use_all_width=1;
+        ventana->can_be_backgrounded=1;
+            
+        ventana->can_use_all_width=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);
 
