@@ -11326,11 +11326,13 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
 	if (!MACHINE_IS_TBBLUE && !MACHINE_IS_TSCONF && !MACHINE_HAS_VDP_9918A) view_sprites_hardware=0;
 
 	if (!MACHINE_IS_ZX8081) view_sprites_zx81_pseudohires.v=0;
+
+        if (!zxvision_if_window_already_exists(ventana)) {
 
 	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
@@ -11360,7 +11362,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
     //por tanto es como decirle que no use cache de putchar
     //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
     //ventana->must_clear_cache_on_draw=1;        
-
+        }
+        else {
+            zxvision_activate_this_window(ventana);
+        }
+        
 	zxvision_draw_window(ventana);
 
 	z80_byte tecla;
@@ -16656,7 +16662,7 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
     int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
     if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        ancho=49;
+        ancho=54;
         alto=20;
 
         x=menu_center_x()-ancho/2;
@@ -16824,8 +16830,9 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
 
     else porcentaje=((item_ventana_puntero->last_spent_time_overlay)*100)/menu_display_get_total_time();
 
+    //TODO: de momento 4 digitos para el pid
     sprintf(texto_destino,
-        "%-*s%*s %7ld us (%3d %%)",menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
+        "%4d %-*s%*s %7ld us (%3d %%)",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
         menu_display_window_list_espacios_flags,window_flags,
         item_ventana_puntero->last_spent_time_overlay,porcentaje);    
 }
@@ -16891,7 +16898,7 @@ void menu_display_window_list_overlay(void)
         zxvision_cls(menu_display_window_list_window);
 
 		
-        menu_display_window_list_print_item(menu_display_window_list_window,0,"Process name           Flags  Time spent");
+        menu_display_window_list_print_item(menu_display_window_list_window,0,"PID  Process name           Flags  Time spent");
         menu_display_window_list_print_item(menu_display_window_list_window,1,"---Top---");
         
 
@@ -16950,14 +16957,14 @@ void menu_display_window_list_overlay(void)
         if (!menu_display_get_total_time()) porcentaje=0;
         else porcentaje=(normal_overlay_time_total_drawing_overlay*100)/menu_display_get_total_time();
 
-        sprintf(buffer_additional_items,"ZX Vision text render  [SYS] %7ld us (%3d %%)",normal_overlay_time_total_drawing_overlay,porcentaje);
+        sprintf(buffer_additional_items,"     ZX Vision text render  [SYS] %7ld us (%3d %%)",normal_overlay_time_total_drawing_overlay,porcentaje);
         menu_display_window_list_print_item(menu_display_window_list_window,linea+1,buffer_additional_items);
 
 
         if (!menu_display_get_total_time()) porcentaje=0;
         else porcentaje=(core_cpu_timer_frame_difftime*100)/menu_display_get_total_time();
 
-        sprintf(buffer_additional_items,"Emulation frame        [SYS] %7ld us (%3d %%)",core_cpu_timer_frame_difftime,porcentaje);
+        sprintf(buffer_additional_items,"     Emulation frame        [SYS] %7ld us (%3d %%)",core_cpu_timer_frame_difftime,porcentaje);
         menu_display_window_list_print_item(menu_display_window_list_window,linea+2,buffer_additional_items);
 
 
@@ -16965,14 +16972,14 @@ void menu_display_window_list_overlay(void)
         if (!menu_display_get_total_time()) porcentaje=0;
         else porcentaje=(emulated_display_render*100)/menu_display_get_total_time();
 
-        sprintf(buffer_additional_items,"Render emulated display[SYS] %7ld us (%3d %%)",emulated_display_render,porcentaje);
+        sprintf(buffer_additional_items,"     Render emulated display[SYS] %7ld us (%3d %%)",emulated_display_render,porcentaje);
         menu_display_window_list_print_item(menu_display_window_list_window,linea+3,buffer_additional_items);        
 
 
         //TODO: este tiempo total no es perfecto,
         //deberia coincidir con la suma de todos los procesos
         //hay algún otro tiempo que se me escapa y no se está considerando
-        sprintf(buffer_additional_items,"Total time:                  %7ld us",menu_display_get_total_time());
+        sprintf(buffer_additional_items,"Total time:                       %7ld us",menu_display_get_total_time());
         menu_display_window_list_print_item(menu_display_window_list_window,linea+4,buffer_additional_items);
 
     }
@@ -17026,7 +17033,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 	do {
 
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Process name           Flags  Time spent");
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"PID  Process name           Flags  Time spent");
         menu_add_item_menu_tabulado(array_menu_common,1,0);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"---Top---");

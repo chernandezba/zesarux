@@ -9689,6 +9689,8 @@ void zxvision_set_all_flag_dirty_must_draw_contents(void)
     
 }
 
+int zxvision_last_pid=0;
+
 void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title)
 {
 
@@ -9748,6 +9750,7 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->height_before_max_min_imize=visible_height;	
 	w->width_before_max_min_imize=visible_width;	
 
+    w->pid=zxvision_last_pid++;
 
     //printf("zxvision_new_window_no_check_range. before min: %d X %d\n",w->width_before_max_min_imize,w->height_before_max_min_imize);
 
@@ -9934,6 +9937,15 @@ void zxvision_window_move_this_window_on_top(zxvision_window *ventana)
 		zxvision_redraw_all_windows();
 }
 
+void zxvision_activate_this_window(zxvision_window *ventana)
+{
+        
+    zxvision_window_move_this_window_on_top(ventana);
+    zxvision_keys_event_not_send_to_machine=1;
+
+    ventana_tipo_activa=1;
+          
+}
 
 void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana)
 {

@@ -115,6 +115,9 @@ struct s_zxvision_window {
 	int visible_width,visible_height;
 	int x,y;
 
+    //identificador de proceso. TODO: siempre se incrementa, hay que detectar que no use pids ya existentes
+    unsigned int pid;
+
     //las primeras posiciones especificadas aqui seran de upper margin
 	int upper_margin;
     //las siguientes seran de lower margin
@@ -350,8 +353,6 @@ typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
 
 
 
-
-
 extern void zxvision_new_window(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title);
 //extern void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize);
 extern void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize);
@@ -371,6 +372,7 @@ extern int zxvision_draw_overlay_if_exists(zxvision_window *w);
 
 extern void zxvision_window_move_this_window_on_top(zxvision_window *ventana);
 extern void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana);
+extern void zxvision_activate_this_window(zxvision_window *ventana);
 extern int zxvision_if_window_already_exists(zxvision_window *w);
 extern void zxvision_window_delete_this_window(zxvision_window *ventana);
 extern zxvision_window *zxvision_return_n_window_from_top(int indice);
