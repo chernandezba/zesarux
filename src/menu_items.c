@@ -11430,7 +11430,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
         //decimos que tiene que borrar fondo cada vez al redibujar
         //por tanto es como decirle que no use cache de putchar
         //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-        //ventana->must_clear_cache_on_draw=1;        
+        //ventana->must_clear_cache_on_draw=1;
     }
 
     //Si ya existe, activar esta ventana
