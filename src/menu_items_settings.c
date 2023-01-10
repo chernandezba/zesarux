@@ -9134,7 +9134,9 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     //userdef_button_func_action_opcion_seleccionada=defined_buttons_functions_array[valor_opcion];
     userdef_button_func_action_opcion_seleccionada=accion_inicial_seleccionada;
 
-    set_menu_overlay_function(menu_zxdesktop_set_userdef_button_func_action_overlay);
+    //set_menu_overlay_function(menu_zxdesktop_set_userdef_button_func_action_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_zxdesktop_set_userdef_button_func_action_overlay);    
 
     menu_item *array_menu_zxdesktop_set_userdef_button_func_action;
     menu_item item_seleccionado;
@@ -9166,7 +9168,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     retorno_menu=menu_dibuja_menu(&userdef_button_func_action_opcion_seleccionada,&item_seleccionado,array_menu_zxdesktop_set_userdef_button_func_action,"Set Action" );
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
