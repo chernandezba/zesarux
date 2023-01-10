@@ -2855,9 +2855,6 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    									
@@ -2871,7 +2868,9 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 
 	//Cambiamos funcion overlay de texto de menu
 	//Se establece a la de funcion de onda + texto
-	set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_videoregisters_overlay);
+	//old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_videoregisters_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_tsconf_tbblue_msx_videoregisters_overlay);
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -2895,10 +2894,10 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);	
+	//old zxvision_set_window_overlay_from_current(ventana);	
 
     //restauramos modo normal de texto de menu
-	set_menu_overlay_function(normal_overlay_texto_menu);
+	//old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     	
@@ -3373,14 +3372,17 @@ void menu_debug_spritenav_new_window(zxvision_window *ventana)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
 
 	zxvision_draw_window(ventana);	
+
+    menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+    //old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,  menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites);      
 }
 
 
@@ -3408,9 +3410,6 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
 
 	menu_debug_spritenav_new_window(ventana);	
 
-    set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites);
-
-	menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
        //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
