@@ -2852,7 +2852,6 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 
 	//Cambiamos funcion overlay de texto de menu
 	//Se establece a la de funcion de onda + texto
-	//old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_videoregisters_overlay);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_tsconf_tbblue_msx_videoregisters_overlay);
 
@@ -3359,7 +3358,7 @@ void menu_debug_spritenav_new_window(zxvision_window *ventana)
 
     menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
-    //old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,  menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites);      
 }
@@ -4103,7 +4102,6 @@ void menu_debug_tsconf_tbblue_msx_tilenav_new_window(zxvision_window *ventana)
 
     menu_debug_tsconf_tbblue_msx_tilenav_lista_tiles_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
 
-	//old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles);
 	
@@ -6058,7 +6056,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de audio ay player
-	//old set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_audio_new_ayplayer_overlay);
 
@@ -7922,7 +7920,7 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
     menu_debug_dma_tsconf_zxuno_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui			
 
     //Cambiamos funcion overlay de texto de menu
-	//old set_menu_overlay_function(menu_debug_dma_tsconf_zxuno_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(&ventana,menu_debug_dma_tsconf_zxuno_overlay);
 	
@@ -8439,7 +8437,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
     menu_tsconf_layer_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
 
     //Cambiamos funcion overlay de texto de menu
-    //old set_menu_overlay_function(menu_tsconf_layer_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(&ventana,menu_tsconf_layer_overlay);
 
@@ -8937,7 +8935,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 
     menu_display_total_palette_draw_barras_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
-	//old set_menu_overlay_function(menu_display_total_palette_draw_barras);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_display_total_palette_draw_barras);
 
@@ -11455,7 +11453,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de ver sprites
-    //old set_menu_overlay_function(menu_debug_draw_sprites);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_draw_sprites);  
 
@@ -12654,7 +12652,7 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de piano + texto
-    //old set_menu_overlay_function(menu_ay_partitura_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_ay_partitura_overlay);
 
@@ -17094,7 +17092,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     menu_display_window_list_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
-    //old set_menu_overlay_function(menu_display_window_list_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_display_window_list_overlay);
 
@@ -18461,7 +18459,7 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de piano + texto
-    //old set_menu_overlay_function(menu_ay_pianokeyboard_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_ay_pianokeyboard_overlay);
 
@@ -18752,7 +18750,7 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 	//Cambiamos funcion overlay de texto de menu
 	//Se establece a la de funcion de piano + texto
-	//old set_menu_overlay_function(menu_beeper_pianokeyboard_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_beeper_pianokeyboard_overlay);
 
@@ -19490,7 +19488,7 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    //old set_menu_overlay_function(menu_help_keyboard_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_help_keyboard_overlay);
 
@@ -20047,7 +20045,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    //old set_menu_overlay_function(menu_debug_unnamed_console_overlay);   
+ 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_unnamed_console_overlay);
 
@@ -20423,7 +20421,7 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    //old set_menu_overlay_function(menu_audio_general_sound_overlay);   
+ 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_audio_general_sound_overlay);
 
@@ -20633,7 +20631,7 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    //old set_menu_overlay_function(menu_debug_ioports_overlay);   
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_ioports_overlay);
 
@@ -20935,7 +20933,7 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 
     //Cambiamos funcion overlay de texto de menu
-    //old set_menu_overlay_function(menu_new_about_window_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_new_about_window_overlay);
 
@@ -22325,7 +22323,7 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     menu_debug_view_sensors_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //Cambiamos funcion overlay de texto de menu
-    //old set_menu_overlay_function(menu_debug_view_sensors_overlay_window_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_view_sensors_overlay_window_overlay);
 
@@ -26099,7 +26097,7 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 
 
     //Cambiamos funcion overlay de texto de menu
-	//old set_menu_overlay_function(menu_shortcuts_helper_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_shortcuts_helper_overlay);
 
@@ -31680,7 +31678,7 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     menu_hilow_convert_audio_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	//old set_menu_overlay_function(menu_hilow_convert_audio_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_hilow_convert_audio_overlay);
 	
@@ -34939,7 +34937,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
     menu_visual_floppy_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	//old set_menu_overlay_function(menu_visual_floppy_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_visual_floppy_overlay);
 

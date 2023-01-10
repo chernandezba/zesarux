@@ -9168,7 +9168,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     retorno_menu=menu_dibuja_menu(&userdef_button_func_action_opcion_seleccionada,&item_seleccionado,array_menu_zxdesktop_set_userdef_button_func_action,"Set Action" );
 
     //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
+
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
