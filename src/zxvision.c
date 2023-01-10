@@ -7026,7 +7026,7 @@ void normal_overlay_texto_menu_final(void)
 
 	//Dibujar ventanas en background pero solo si menu está abierto, esto evita que aparezcan las ventanas cuando hay un 
 	//mensaje de splash y el menú está cerrado
-	if (menu_allow_background_windows && 
+	if (/*menu_allow_background_windows && */
 	  (menu_abierto || overlay_visible_when_menu_closed)
 	) {
 		//printf("redrawing windows on normal_overlay\n");
@@ -7039,7 +7039,28 @@ void normal_overlay_texto_menu_final(void)
 
 }
 
+void old_normal_overlay_texto_menu_final(void)
+{
 
+	if (cuadrado_activo && ventana_tipo_activa) {
+		menu_dibuja_cuadrado(cuadrado_x1,cuadrado_y1,cuadrado_x2,cuadrado_y2,cuadrado_color);
+
+	}
+
+	//Dibujar ventanas en background pero solo si menu está abierto, esto evita que aparezcan las ventanas cuando hay un 
+	//mensaje de splash y el menú está cerrado
+	if (menu_allow_background_windows && 
+	  (menu_abierto || overlay_visible_when_menu_closed)
+	) {
+		//printf("redrawing windows on normal_overlay\n");
+		//Conservar estado de tecla pulsada o no para el speech
+		int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
+		menu_draw_background_windows_overlay_after_normal();
+		menu_speech_tecla_pulsada=antes_menu_speech_tecla_pulsada;
+	}
+ 
+
+}
 
 #ifdef DEBUG_ZXVISION_USE_CACHE_OVERLAY_TEXT
 z80_byte debug_zxvision_cache_overlay_caracter=33;
@@ -12180,7 +12201,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	zxvision_window *pointer_window;
 
 
-	//if (w!=NULL) printf ("\nDraw with overlay. original window: %p. Title: %s\n",w,w->window_title);
+	if (w!=NULL) printf ("\nDraw below windows with overlay. original window: %p. Title: %s\n",w,w->window_title);
 
 
 	//Si no hay ventanas, volver
@@ -12231,7 +12252,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		//en principio no hace falta. Ya se redibuja por el redibujado normal
 		//zxvision_draw_window_contents(pointer_window);
 
-        //printf ("drawing overlay name: %s\n",pointer_window->window_title);
+        printf ("drawing overlay %p name: %s\n",pointer_window,pointer_window->window_title);
 
         struct timeval zxvision_time_antes,zxvision_time_despues;
 
@@ -12243,11 +12264,15 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		int existe=zxvision_draw_overlay_if_exists(pointer_window);
 	
 	    if (existe) {
+            printf("existe\n");
             long transcurrido=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
             pointer_window->last_spent_time_overlay=transcurrido;
             //printf ("tiempo transcurrido: %ld microsec\n\n",transcurrido);
 
             zxvision_time_total_drawing_overlay_except_current +=transcurrido;
+        }
+        else {
+            printf("no existe\n");
         }
 
     	
@@ -12256,7 +12281,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		pointer_window=pointer_window->next_window;
 	}
 
-    
+    if (w!=NULL) printf ("\nEND Draw below windows with overlay. original window: %p. Title: %s\n\n",w,w->window_title);    
 
     //printf ("tiempo TOTAL transcurrido: %ld microsec\n",zxvision_time_total_drawing_overlay);
 
@@ -12266,6 +12291,79 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	ventana_tipo_activa=antes_ventana_tipo_activa;
 
 }
+
+void old_zxvision_draw_overlays_below_windows(zxvision_window *w)
+{
+
+
+        //Primero ir a buscar la de abajo del todo
+        zxvision_window *pointer_window;
+
+
+        //if (w!=NULL) printf ("\nDraw with overlay. original window: %p. Title: %s\n",w,w->window_title);
+
+
+        //Si no hay ventanas, volver
+        if (zxvision_current_window==NULL) return;
+
+        pointer_window=w;
+
+        while (pointer_window->previous_window!=NULL) {
+                        //debug_printf (VERBOSE_PARANOID,"zxvision_draw_overlays_below_windows below window: %p",pointer_window->previous_window);
+                        pointer_window=pointer_window->previous_window;
+        }
+
+        int antes_ventana_tipo_activa=ventana_tipo_activa;
+        ventana_tipo_activa=0; //Redibujar las de debajo como inactivas
+
+        //Redibujar diciendo que estan por debajo
+        ventana_es_background=1;
+
+        //Y ahora de ahi hacia arriba, incluido la ultima
+
+
+        //printf ("\n");
+
+        zxvision_drawing_in_background=1;
+
+        //Dibujar todas ventanas excepto la de mas arriba.
+        //while (pointer_window!=w && pointer_window!=NULL) {
+
+        //Dibujar todas ventanas.
+        while (pointer_window!=NULL) {
+                //while (pointer_window!=w) {
+                                //printf ("window from bottom to top %p. next: %p nombre: %s\n",pointer_window,pointer_window->next_window,pointer_window->window_title);
+
+                //Somos la ventana de mas arriba
+                if (pointer_window==w) {
+                        ventana_es_background=0;
+                        ventana_tipo_activa=antes_ventana_tipo_activa;
+                };
+
+                //en principio no hace falta. Ya se redibuja por el redibujado normal
+                //zxvision_draw_window(pointer_window);
+
+                //Dibujamos contenido anterior, ya que draw_window la borra con espacios
+                //en principio no hace falta. Ya se redibuja por el redibujado normal
+                //zxvision_draw_window_contents(pointer_window);
+
+
+                zxvision_draw_overlay_if_exists(pointer_window);
+
+
+
+                pointer_window=pointer_window->next_window;
+        }
+
+
+
+        zxvision_drawing_in_background=0;
+
+        ventana_es_background=0;
+
+    ventana_tipo_activa=antes_ventana_tipo_activa;
+
+}                
 
 void zxvision_message_put_window_background(void)
 {

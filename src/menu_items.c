@@ -934,31 +934,44 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
-		
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {		
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		x=menu_origin_x();
-		y=1;
-		ancho=32;
-		alto=18;
-	}		
+        if (!util_find_window_geometry("cpucompactstatistics",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=menu_origin_x();
+            y=1;
+            ancho=32;
+            alto=18;
+        }		
 
-	//int originx=menu_origin_x();
+        //int originx=menu_origin_x();
 
-	//zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics");
+        //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics");
 
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics","cpucompactstatistics",
-        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"CPU Compact Statistics","cpucompactstatistics",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"cpucompactstatistics");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;  
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"cpucompactstatistics");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;  
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
+
     //Y dibujar la ventana
     zxvision_draw_window(ventana);  
 
@@ -1747,31 +1760,46 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    //zxvision_delete_window_if_exists(ventana);    
 
-    int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-    //Recuperar geometria
-    if (!util_find_window_geometry("corestatistics",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        alto_ventana=16;
-        ancho_ventana=32;
+        int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        x_ventana=menu_center_x()-ancho_ventana/2; 
-        y_ventana=menu_center_y()-alto_ventana/2; 
+        //Recuperar geometria
+        if (!util_find_window_geometry("corestatistics",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            alto_ventana=16;
+            ancho_ventana=32;
+
+            x_ventana=menu_center_x()-ancho_ventana/2; 
+            y_ventana=menu_center_y()-alto_ventana/2; 
+        }    
+
+        //Crear ventana
+        //zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Core Statistics");
+
+        zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Core Statistics","corestatistics",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                                
+
+        //Se puede ir a background
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"corestatistics");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
     }    
 
-    //Crear ventana
-	//zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Core Statistics");
-
-    zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Core Statistics","corestatistics",
-        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                                
-
-    //Se puede ir a background
-    ventana->can_be_backgrounded=1;
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"corestatistics");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
     //Y dibujar la ventana
     zxvision_draw_window(ventana);
 
@@ -2338,59 +2366,62 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
 
     int total_chips=audio_get_total_chips();
     if (total_chips>3) total_chips=3;
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-    if (!util_find_window_geometry("ayregisters",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (total_chips==1) {
-            yventana=5;
+        if (!util_find_window_geometry("ayregisters",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+
+            if (total_chips==1) {
+                yventana=5;
+            }
+            else {
+                yventana=0;
+            }
+
+            xventana=menu_origin_x()+1;
+            ancho_ventana=30;
+
+            //El alto lo cambiamos segun el numero de chips
+            if (total_chips==1) {
+                    alto_ventana=14;
+            }
+            else {
+                    alto_ventana=24;
+            }					
+
         }
-        else {
-            yventana=0;
-        }
 
-        xventana=menu_origin_x()+1;
-        ancho_ventana=30;
 
-        //El alto lo cambiamos segun el numero de chips
-        if (total_chips==1) {
-                alto_ventana=14;
-        }
-        else {
-                alto_ventana=24;
-        }					
+
+        //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
+        //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
+        //garantiza que se podra leer todo el texto
+        //int alto_anterior=alto_ventana;
+        //int ancho_anterior=ancho_ventana;
+
+	
+        menu_ay_registers_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     }
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-
-    //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
-    //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
-    //int ancho_ventana_inicial=ancho_ventana;
-    //int alto_ventana_inicial=alto_ventana;
-
-
-
-
-    //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Registers");
-    //ventana->can_be_backgrounded=1;	
-    ////indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"ayregisters");
-
-    //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
-    //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
-    //garantiza que se podra leer todo el texto
-    //int alto_anterior=alto_ventana;
-    //int ancho_anterior=ancho_ventana;
+        zxvision_activate_this_window(ventana);
+    }
 
     int alto_anterior;
-    int ancho_anterior;		
-    menu_ay_registers_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+    int ancho_anterior;	    
 
     zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
@@ -2780,48 +2811,62 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);		
+	//zxvision_delete_window_if_exists(ventana);		
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-	if (!util_find_window_geometry("videoinfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {	
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-		ancho_ventana=32;
-		xventana=menu_center_x()-ancho_ventana/2;
+        if (!util_find_window_geometry("videoinfo",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {	
 
-		if (MACHINE_IS_TBBLUE) {
-			alto_ventana=24;
-		}
+            ancho_ventana=32;
+            xventana=menu_center_x()-ancho_ventana/2;
 
-		else if (MACHINE_HAS_VDP_9918A) {
-			alto_ventana=12;
-		}		
+            if (MACHINE_IS_TBBLUE) {
+                alto_ventana=24;
+            }
 
-		else if (MACHINE_IS_CPC) {
-			alto_ventana=9;
-		}	        
+            else if (MACHINE_HAS_VDP_9918A) {
+                alto_ventana=12;
+            }		
 
-		else {
-			//yventana=7;
-			alto_ventana=8;
-		}
+            else if (MACHINE_IS_CPC) {
+                alto_ventana=9;
+            }	        
 
-		yventana=menu_center_y()-alto_ventana/2;
+            else {
+                //yventana=7;
+                alto_ventana=8;
+            }
 
-	}
+            yventana=menu_center_y()-alto_ventana/2;
+
+        }
 
 
 
-	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info");
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info");
 
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info",
-        "videoinfo",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                        	
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Video Info",
+            "videoinfo",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                        	
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"videoinfo");	
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    										
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"videoinfo");	
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    	
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    									
 
 	zxvision_draw_window(ventana);
 
@@ -3301,30 +3346,45 @@ zxvision_window zxvision_window_tsconf_tbblue_spritenav;
 
 void menu_debug_spritenav_new_window(zxvision_window *ventana)
 {
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("tsconftbbluespritenav",&xventana,&yventana,&ancho_ventana,&alto_ventana,
-            &is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		xventana=TSCONF_SPRITENAV_WINDOW_X;
-		yventana=TSCONF_SPRITENAV_WINDOW_Y;
-		ancho_ventana=TSCONF_SPRITENAV_WINDOW_ANCHO;
-		alto_ventana=TSCONF_SPRITENAV_WINDOW_ALTO;
-	}
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("tsconftbbluespritenav",&xventana,&yventana,&ancho_ventana,&alto_ventana,
+                &is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xventana=TSCONF_SPRITENAV_WINDOW_X;
+            yventana=TSCONF_SPRITENAV_WINDOW_Y;
+            ancho_ventana=TSCONF_SPRITENAV_WINDOW_ANCHO;
+            alto_ventana=TSCONF_SPRITENAV_WINDOW_ALTO;
+        }
 
 
-	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,
-	//						TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator");
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,
+        //						TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator");
 
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,
-							TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator",
-                            "tsconftbbluespritenav",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,
+                                TSCONF_SPRITENAV_WINDOW_ANCHO-1,menu_debug_tsconf_tbblue_msx_spritenav_get_total_height_win(),"Sprite navigator",
+                                "tsconftbbluespritenav",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
 
-	ventana->can_be_backgrounded=1;
-	ventana->upper_margin=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"tsconftbbluespritenav");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;
+        ventana->upper_margin=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"tsconftbbluespritenav");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);	
 }
@@ -3350,7 +3410,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
 
 	menu_debug_spritenav_new_window(ventana);	
 
@@ -4016,37 +4076,50 @@ void menu_debug_tsconf_tbblue_msx_tilenav_new_window(zxvision_window *ventana)
 
     //total_height+=2;
 
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!util_find_window_geometry("tsconftbbluetilenav",&xventana,&yventana,&ancho_ventana,&alto_ventana,
-            &is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        xventana=TSCONF_TILENAV_WINDOW_X;
-        yventana=TSCONF_TILENAV_WINDOW_Y;
-        ancho_ventana=TSCONF_TILENAV_WINDOW_ANCHO;
-        alto_ventana=TSCONF_TILENAV_WINDOW_ALTO;
+        if (!util_find_window_geometry("tsconftbbluetilenav",&xventana,&yventana,&ancho_ventana,&alto_ventana,
+                &is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xventana=TSCONF_TILENAV_WINDOW_X;
+            yventana=TSCONF_TILENAV_WINDOW_Y;
+            ancho_ventana=TSCONF_TILENAV_WINDOW_ANCHO;
+            alto_ventana=TSCONF_TILENAV_WINDOW_ALTO;
+        }
+
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,total_height,titulo);
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,
+                            ancho_ventana,alto_ventana,
+                            total_width,total_height,titulo,"tsconftbbluetilenav",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                        
+
+
+        //Establecer leyenda en la parte de abajo
+        ventana->lower_margin=2;
+        //Texto sera el de la primera linea
+        ventana->upper_margin=1;
+
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"tsconftbbluetilenav");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;        
+
+        //Permitir hotkeys desde raton
+        ventana->can_mouse_send_hotkeys=1;			
+
     }
 
-    //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,total_height,titulo);
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,
-                        ancho_ventana,alto_ventana,
-                        total_width,total_height,titulo,"tsconftbbluetilenav",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                        
-
-
-    //Establecer leyenda en la parte de abajo
-    ventana->lower_margin=2;
-    //Texto sera el de la primera linea
-    ventana->upper_margin=1;
-
-    ventana->can_be_backgrounded=1;
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"tsconftbbluetilenav");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;        
-
-    //Permitir hotkeys desde raton
-    ventana->can_mouse_send_hotkeys=1;			
+        zxvision_activate_this_window(ventana);
+    }    
     
     //Leyenda inferior
     //zxvision_print_string_defaults_fillspc(ventana,1,1,"-----");
@@ -4084,7 +4157,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);	
+    //zxvision_delete_window_if_exists(ventana);	
 
 	menu_debug_tsconf_tbblue_msx_tilenav_new_window(ventana);
 
@@ -4720,6 +4793,10 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
         zxvision_activate_this_window(ventana);
     }    
 
@@ -5092,7 +5169,13 @@ void menu_visualmem_putpixel(zxvision_window *ventana,int x,int y,int color_pixe
 void menu_debug_draw_visualmem(void)
 {
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+	if (!zxvision_drawing_in_background) {
+        printf("Not drawing in background %d\n",contador_segundo);
+        normal_overlay_texto_menu();
+    }
+    else {
+        printf("Drawing in background %d\n",contador_segundo);
+    }
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_draw_visualmem_window->is_minimized) return;
@@ -5174,7 +5257,7 @@ void menu_debug_draw_visualmem(void)
 	//Calcular cuantos bytes modificados representa un pixel, teniendo en cuenta maximo buffer
 	int max_valores=(final_puntero_membuffer-inicio_puntero_membuffer)/tamanyo_total;
 
-	//printf ("max_valores: %d\n",max_valores);
+	printf ("max_valores: %d\n",max_valores);
 	//printf ("tamanyo total: %d\n",tamanyo_total);
 	//le damos uno mas para poder llenar la ventana
 	//printf ("inicio: %06XH final: %06XH\n",inicio_puntero_membuffer,final_puntero_membuffer);
@@ -5413,6 +5496,10 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
         zxvision_activate_this_window(ventana);
     }    
 
@@ -5984,32 +6071,46 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);	
+    //zxvision_delete_window_if_exists(ventana);	
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-
-	if (!util_find_window_geometry("ayplayer",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=32;
-		alto_ventana=20;	 
-
-		xventana=menu_center_x()-ancho_ventana/2;
-		yventana=menu_center_y()-alto_ventana/2; 
-	}	
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 
+        if (!util_find_window_geometry("ayplayer",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=32;
+            alto_ventana=20;	 
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2; 
+        }	
 
 
-	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player");
 
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player","ayplayer",
-        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"ayplayer");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player");
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"AY Player","ayplayer",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
+
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"ayplayer");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;  
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }      
 
 	zxvision_draw_window(ventana);	
 
@@ -6779,28 +6880,41 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    //zxvision_delete_window_if_exists(ventana);  
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-    //no usamos ancho_antes_minimize ni alto_antes_minimize porque usamos zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {      
 
-	
-	if (!util_find_window_geometry("hexeditor",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		xventana=DEBUG_HEXDUMP_WINDOW_X;
-		yventana=DEBUG_HEXDUMP_WINDOW_Y;
-		ancho_ventana=DEBUG_HEXDUMP_WINDOW_ANCHO;
-		alto_ventana=DEBUG_HEXDUMP_WINDOW_ALTO;
-	}
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        //no usamos ancho_antes_minimize ni alto_antes_minimize porque usamos zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
-    //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
-    //int ancho_ventana_inicial=ancho_ventana;
-    //int alto_ventana_inicial=alto_ventana;    
+        
+        if (!util_find_window_geometry("hexeditor",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xventana=DEBUG_HEXDUMP_WINDOW_X;
+            yventana=DEBUG_HEXDUMP_WINDOW_Y;
+            ancho_ventana=DEBUG_HEXDUMP_WINDOW_ANCHO;
+            alto_ventana=DEBUG_HEXDUMP_WINDOW_ALTO;
+        }
+
+        //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
+        //int ancho_ventana_inicial=ancho_ventana;
+        //int alto_ventana_inicial=alto_ventana;    
 
 
-	//asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
-	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho,alto-2,"Hexadecimal Editor");
-	menu_debug_hexdump_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        //asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
+        //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho,alto-2,"Hexadecimal Editor");
+        menu_debug_hexdump_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }
 
     //Esto es un poco diferente que otras ventanas, ya que solo hay overlay cuando la ventana esta en segundo plano
     //Ademas, cuando se crea la ventana al haber hecho restore al iniciar el emulador,
@@ -6821,10 +6935,13 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
     //de la propia ventana que está activa
 
 	//Nos guardamos alto y ancho anterior. Si el usuario redimensiona la ventana, la redibujamos
-	int alto_anterior=alto_ventana;
-	int ancho_anterior=ancho_ventana;
+	//int alto_anterior=alto_ventana;
+	//int ancho_anterior=ancho_ventana;
 
-	
+    int alto_anterior;
+    int ancho_anterior;	    
+
+    zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);	
 
 	//ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
 
@@ -7191,8 +7308,8 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 		//Si ha cambiado el alto
         //Redibujar ventana, aunque no recrearla, pues zxvision ya recrea la ventana al ampliarla
         
-		alto_ventana=ventana->visible_height;
-		ancho_ventana=ventana->visible_width;
+		int alto_ventana=ventana->visible_height;
+		int ancho_ventana=ventana->visible_width;
 		//xventana=ventana->x;
 		//yventana=ventana->y;
 		if (alto_ventana!=alto_anterior || ancho_ventana!=ancho_anterior) {
@@ -8830,38 +8947,50 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("displaypalettes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xventana=TOTAL_PALETTE_WINDOW_X;
+            yventana=TOTAL_PALETTE_WINDOW_Y;
+            ancho_ventana=TOTAL_PALETTE_WINDOW_ANCHO;
+            alto_ventana=TOTAL_PALETTE_WINDOW_ALTO;
+        }
+
+        //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
+        //int ancho_ventana_inicial=ancho_ventana;
+        //int alto_ventana_inicial=alto_ventana;
 
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        
 
-	if (!util_find_window_geometry("displaypalettes",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		xventana=TOTAL_PALETTE_WINDOW_X;
-		yventana=TOTAL_PALETTE_WINDOW_Y;
-		ancho_ventana=TOTAL_PALETTE_WINDOW_ANCHO;
-		alto_ventana=TOTAL_PALETTE_WINDOW_ALTO;
-	}
+        //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
+        //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
+        //garantiza que se podra leer todo el texto
+        //int alto_anterior=alto_ventana;
+        //int ancho_anterior=ancho_ventana;
+        //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
 
-    //guardar tamanyo inicial para cuando se recrea la ventana indicarlo como tamanyo de antes minimizado
-    //int ancho_ventana_inicial=ancho_ventana;
-    //int alto_ventana_inicial=alto_ventana;
+        //int alto_anterior;
+        //int ancho_anterior;
 
+        //zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
 
-    menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-    
+    }
 
-    //Para poder controlar redimensionamientos de ventana y recrearla de nuevo
-    //No es necesario, pero es mas bonito... asi se recrea la ventana, si era muy pequeña, hacerla mas grande
-    //garantiza que se podra leer todo el texto
-    //int alto_anterior=alto_ventana;
-    //int ancho_anterior=ancho_ventana;
-    //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-    //int alto_anterior;
-    //int ancho_anterior;
-
-    //zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
-
+        zxvision_activate_this_window(ventana);
+    }
 
 	zxvision_draw_window(ventana);
 
@@ -11386,6 +11515,10 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
         zxvision_activate_this_window(ventana);
     }
     
@@ -12525,64 +12658,76 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_ay_partitura;
 
+    //Inicializar array de estado
+    menu_ay_partitura_init_state();
 
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
 
-
-    //Inicializar array de estado
-    menu_ay_partitura_init_state();
-
-    char *titulo_ventana="Au. Chip Sheet (60 BPM)";
+        char *titulo_ventana="Au. Chip Sheet (60 BPM)";
 
 
-    if (!util_find_window_geometry("aysheet",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("aysheet",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+                        
+            xventana=PIANO_PARTITURA_GRAPHIC_BASE_X;
+            yventana=PIANO_PARTITURA_GRAPHIC_BASE_Y;
+            ancho_ventana=PIANO_PARTITURA_ANCHO_VENTANA;
+            alto_ventana=PIANO_PARTITURA_ALTO_VENTANA;	
+
+            int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
+
+            //Para que se lea el titulo de la ventana en tamaño por defecto
+            if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;											
+
+        }
                     
-        xventana=PIANO_PARTITURA_GRAPHIC_BASE_X;
-        yventana=PIANO_PARTITURA_GRAPHIC_BASE_Y;
-        ancho_ventana=PIANO_PARTITURA_ANCHO_VENTANA;
-        alto_ventana=PIANO_PARTITURA_ALTO_VENTANA;	
 
-        int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
 
-        //Para que se lea el titulo de la ventana en tamaño por defecto
-        if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;											
+            
+        //int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
+
+        //Para que siempre se lea el titulo de la ventana
+        //No alteramos el ancho, que sea el que tenga por geometria
+        //if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;
+
+        //printf ("ancho %d\n",ancho_ventana);
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
+            "aysheet",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        //zxvision_new_window_nocheck_staticsize(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
+
+
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"aysheet");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;        
+
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        ventana->must_clear_cache_on_draw=1;    
 
     }
-				
 
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-		
-    //int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
-
-    //Para que siempre se lea el titulo de la ventana
-    //No alteramos el ancho, que sea el que tenga por geometria
-    //if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;
-
-    //printf ("ancho %d\n",ancho_ventana);
-
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana,
-        "aysheet",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-    //zxvision_new_window_nocheck_staticsize(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,titulo_ventana);
-
-
-    ventana->can_be_backgrounded=1;	
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"aysheet");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;        
-
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;      
+        zxvision_activate_this_window(ventana);
+    }      
 
     zxvision_draw_window(ventana);	
 
@@ -16705,6 +16850,10 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
 
     //Si ya existe, activar esta ventana
     else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
         zxvision_activate_this_window(ventana);
     }    
 
@@ -18314,19 +18463,25 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
     zxvision_window *ventana;
     ventana=&zxvision_window_ay_piano;		
 
+    int total_chips=audio_get_total_chips();
+    //Max 3 ay chips
+    if (total_chips>3) total_chips=3;    
+
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
+
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
     int xventana,yventana,ancho_ventana,alto_ventana;
 
 
 
-    int total_chips=audio_get_total_chips();
-    //Max 3 ay chips
-    if (total_chips>3) total_chips=3;
+
 
     char *titulo_ventana="Audio Chip Piano";
 
@@ -18387,6 +18542,17 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
         is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
     ventana->can_be_backgrounded=1;	
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 
     zxvision_draw_window(ventana);						
@@ -18628,54 +18794,69 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
 
 
 	//Como si fuera 1 solo chip
 
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-	char *titulo_ventana="Wave Piano";
-	if (!util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        if (!si_mostrar_ay_piano_grafico()) {
-            ancho_ventana=14;
-            alto_ventana=9;
+
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        char *titulo_ventana="Wave Piano";
+        if (!util_find_window_geometry("wavepiano",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            if (!si_mostrar_ay_piano_grafico()) {
+                ancho_ventana=14;
+                alto_ventana=9;
+
+            }
+
+            else {
+                ancho_ventana=AY_PIANO_ANCHO_VENTANA;
+                int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
+                alto_ventana=text_separation_lines+AUDIOCHIP_PIANO_LINE_START+4+1;        //+1 para indicar Hz de la nota     
+
+            }
+
+            ancho_antes_minimize=ancho_ventana;
+            alto_antes_minimize=alto_ventana;
+
+
+            int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
+            
+            //Para que se lea el titulo de la ventana cuando tamaño por defecto
+            if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;					
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;  
 
         }
 
-        else {
-            ancho_ventana=AY_PIANO_ANCHO_VENTANA;
-            int text_separation_lines=menu_audiochip_piano_get_text_separation_lines();
-            alto_ventana=text_separation_lines+AUDIOCHIP_PIANO_LINE_START+4+1;        //+1 para indicar Hz de la nota     
-
-        }
-
-        ancho_antes_minimize=ancho_ventana;
-        alto_antes_minimize=alto_ventana;
-
-
-		int ancho_titulo=menu_da_ancho_titulo(titulo_ventana);
-		
-		//Para que se lea el titulo de la ventana cuando tamaño por defecto
-		if (ancho_ventana<ancho_titulo) ancho_ventana=ancho_titulo;					
-
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;  
-
-	}
 
 
 
+        //Suficiente para que quepan todas las octavas, y texto de octava y cursores
+        int total_width=5+AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
 
-    //Suficiente para que quepan todas las octavas, y texto de octava y cursores
-    int total_width=5+AUDIOCHIP_PIANO_ANCHO_UNA_OCTAVA*PIANO_ZOOM_X*AUDIO_CHIP_PIANO_TOTAL_OCTAVAS/menu_char_width;
-
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,alto_ventana-2,titulo_ventana,
-                "wavepiano",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);		
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,total_width,alto_ventana-2,titulo_ventana,
+                    "wavepiano",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);		
 
 
-	ventana->can_be_backgrounded=1;
+        ventana->can_be_backgrounded=1;
+
+    }
+
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 
 	zxvision_draw_window(ventana);						
@@ -19350,7 +19531,7 @@ void menu_help_keyboard_create_window(zxvision_window *ventana,int x,int y,int a
     //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
     //zxvision_fill_window_transparent(ventana);
 
-    zxvision_draw_window(ventana);
+
 }
 
 
@@ -19377,31 +19558,47 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
 		
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		//x=menu_origin_x();
-
-
-		//540x201 es lo que ocupa el bmp de spectrum 48k
-
-		ancho=1+1+540/menu_char_width/zoom_x;
-
-		alto=1+2+201/8/zoom_y;
-
-		//printf ("ancho %d alto %d\n",ancho,alto);
-
-        x=menu_center_x_from_width(ancho);
-        y=menu_center_y()-alto/2;
-
-	}		
+        if (!util_find_window_geometry("helpshowkeyboard",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            //x=menu_origin_x();
 
 
+            //540x201 es lo que ocupa el bmp de spectrum 48k
 
-    menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            ancho=1+1+540/menu_char_width/zoom_x;
+
+            alto=1+2+201/8/zoom_y;
+
+            //printf ("ancho %d alto %d\n",ancho,alto);
+
+            x=menu_center_x_from_width(ancho);
+            y=menu_center_y()-alto/2;
+
+        }		
+
+
+
+        menu_help_keyboard_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
+
+    zxvision_draw_window(ventana);
 
     int ancho_anterior,alto_anterior;
     zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
@@ -19918,47 +20115,61 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    //zxvision_delete_window_if_exists(ventana);    
 
-    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-    if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=menu_origin_x();
-        y=0;
-        ancho=32;
-        alto=18;
-    }    
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    //DEBUG_UNNAMED_CONSOLE_HEIGHT+2 porque hay dos lineas de leyenda superior
-    //DEBUG_UNNAMED_CONSOLE_WIDTH+1 porque damos 1 espacio con margen por la izquierda
-    //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
+        if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=menu_origin_x();
+            y=0;
+            ancho=32;
+            alto=18;
+        }    
 
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
-        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
-  
-    //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas
+        //DEBUG_UNNAMED_CONSOLE_HEIGHT+2 porque hay dos lineas de leyenda superior
+        //DEBUG_UNNAMED_CONSOLE_WIDTH+1 porque damos 1 espacio con margen por la izquierda
+        //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
 
-    //Con esto llegara mas alla del limite
-    //dado que debug_unnamed_console_current_y, si esta al maximo, es mas de lo que se puede bajar
-
-    int linea_scroll=debug_unnamed_console_current_y;
-
-    //-4 para asegurarnos que siempre vaya por debajo
-    linea_scroll -=(alto-4);
-    if (linea_scroll<0) linea_scroll=0;
-    zxvision_set_offset_y_or_maximum(ventana,linea_scroll);
-
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
     
+        //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas
 
-    ventana->can_be_backgrounded=1;
-    ventana->upper_margin=2;
-    //Permitir hotkeys desde raton
-    ventana->can_mouse_send_hotkeys=1;	
+        //Con esto llegara mas alla del limite
+        //dado que debug_unnamed_console_current_y, si esta al maximo, es mas de lo que se puede bajar
 
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"debugconsole");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        int linea_scroll=debug_unnamed_console_current_y;
+
+        //-4 para asegurarnos que siempre vaya por debajo
+        linea_scroll -=(alto-4);
+        if (linea_scroll<0) linea_scroll=0;
+        zxvision_set_offset_y_or_maximum(ventana,linea_scroll);
+
+        
+
+        ventana->can_be_backgrounded=1;
+        ventana->upper_margin=2;
+        //Permitir hotkeys desde raton
+        ventana->can_mouse_send_hotkeys=1;	
+
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"debugconsole");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
     zxvision_draw_window(ventana);
 
@@ -20303,33 +20514,47 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    //zxvision_delete_window_if_exists(ventana);    
 
-    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-    if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=menu_origin_x();
-        y=1;
-        ancho=33;
-        alto=22;   
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("audiogensound",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=menu_origin_x();
+            y=1;
+            ancho=33;
+            alto=22;   
+        }    
+
+
+        //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound","audiogensound",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+
+        //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound");
+
+        ventana->can_be_backgrounded=1;
+        //ventana->upper_margin=2;
+        //Permitir hotkeys desde raton
+        ventana->can_mouse_send_hotkeys=1;	
+
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"audiogensound");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
     }    
-
-
-    //Crear nueva ventana, asignando ademas geometry name y gestionando si se crea minimizada
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound","audiogensound",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-
-    //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,alto-2,"General sound");
-
-    ventana->can_be_backgrounded=1;
-    //ventana->upper_margin=2;
-    //Permitir hotkeys desde raton
-    ventana->can_mouse_send_hotkeys=1;	
-
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"audiogensound");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
 
     zxvision_draw_window(ventana);
 
@@ -20486,55 +20711,70 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
-
-    int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-
-    if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=menu_origin_x();
-        y=1;
-        ancho=33;
-        alto=22;
-    }    
+    //zxvision_delete_window_if_exists(ventana);    
 
 
-    char titulo_ventana[64];
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-    if (CPU_IS_MOTOROLA) strcpy(titulo_ventana,"IO Addresses");
-    else strcpy(titulo_ventana,"IO Ports");
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    int total_alto=alto-2;
+        if (!util_find_window_geometry("debugioports",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=menu_origin_x();
+            y=1;
+            ancho=33;
+            alto=22;
+        }    
 
-    //Calculo de minimo alto total, segun las lineas
-    //Esta ventana tiene la particularidad que no sabemos a priori cuanto ocupara en alto total
-    //dependera de la cantidad de lineas de i/o ports
-    //Y o bien lo calculamos aqui al empezar, cosa que implicaria meter codigo redundante de la funcion de overlay,
-    //o bien obtenemos el ultimo valor que muestra la funcion de overlay
-    //Si lo obtenemos de overlay, implica que siempre habra que entrar una primera vez, con tamaño quiza menor,
-    //y luego volver a entrar para que la ventana se recree
-    //Mejor es reusar codigo para calcular ese alto
 
-    //llamamos una primera vez para obtener total de lineas
-    menu_debug_ioports_overlay_get_lines();
+        char titulo_ventana[64];
 
-    if (total_alto<total_lineas_menu_debug_ioports) {
-        total_alto=total_lineas_menu_debug_ioports;
-        debug_printf(VERBOSE_DEBUG,"Increasing total Debug I/O window height to: %d",total_alto);
+        if (CPU_IS_MOTOROLA) strcpy(titulo_ventana,"IO Addresses");
+        else strcpy(titulo_ventana,"IO Ports");
+
+        int total_alto=alto-2;
+
+        //Calculo de minimo alto total, segun las lineas
+        //Esta ventana tiene la particularidad que no sabemos a priori cuanto ocupara en alto total
+        //dependera de la cantidad de lineas de i/o ports
+        //Y o bien lo calculamos aqui al empezar, cosa que implicaria meter codigo redundante de la funcion de overlay,
+        //o bien obtenemos el ultimo valor que muestra la funcion de overlay
+        //Si lo obtenemos de overlay, implica que siempre habra que entrar una primera vez, con tamaño quiza menor,
+        //y luego volver a entrar para que la ventana se recree
+        //Mejor es reusar codigo para calcular ese alto
+
+        //llamamos una primera vez para obtener total de lineas
+        menu_debug_ioports_overlay_get_lines();
+
+        if (total_alto<total_lineas_menu_debug_ioports) {
+            total_alto=total_lineas_menu_debug_ioports;
+            debug_printf(VERBOSE_DEBUG,"Increasing total Debug I/O window height to: %d",total_alto);
+        }
+
+        //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana);
+    
+
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana,"debugioports",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
+
+        ventana->can_be_backgrounded=1;
+
+
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"debugioports");    
+
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;
+
     }
 
-    //zxvision_new_window(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana);
-  
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,total_alto,titulo_ventana,"debugioports",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
-
-    ventana->can_be_backgrounded=1;
-
-
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"debugioports");    
-
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;
+        zxvision_activate_this_window(ventana);
+    }    
 
     zxvision_draw_window(ventana);
 
@@ -22194,42 +22434,56 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);    
+    //zxvision_delete_window_if_exists(ventana);    
 
-    int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-    //Recuperar geometria
-    if (!util_find_window_geometry("viewsensors",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        alto_ventana=MENU_VIEW_SENSORS_TOTAL_ROWS*MENU_SENSORS_SEPARACION_ENTRE_FILAS+MENU_VIEW_SENSORS_START_Y;
-        ancho_ventana=MENU_VIEW_SENSORS_TOTAL_COLUMNS*MENU_SENSORS_SEPARACION_ENTRE_COLUMNAS+MENU_VIEW_SENSORS_START_X+1;
-        
-        x_ventana=scr_get_menu_width()-ancho_ventana; //Al ser tan ancho no cabe centrado. Hacemos que quede pegado a la derecha 
-        y_ventana=menu_center_y()-alto_ventana/2; 
+        int x_ventana,y_ventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        
-    }   
+        //Recuperar geometria
+        if (!util_find_window_geometry("viewsensors",&x_ventana,&y_ventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            alto_ventana=MENU_VIEW_SENSORS_TOTAL_ROWS*MENU_SENSORS_SEPARACION_ENTRE_FILAS+MENU_VIEW_SENSORS_START_Y;
+            ancho_ventana=MENU_VIEW_SENSORS_TOTAL_COLUMNS*MENU_SENSORS_SEPARACION_ENTRE_COLUMNAS+MENU_VIEW_SENSORS_START_X+1;
+            
+            x_ventana=scr_get_menu_width()-ancho_ventana; //Al ser tan ancho no cabe centrado. Hacemos que quede pegado a la derecha 
+            y_ventana=menu_center_y()-alto_ventana/2; 
 
-    //printf("%d %d %d %d\n",x_ventana,y_ventana,ancho_ventana,alto_ventana); 
+            
+        }   
 
-    //Crear ventana
-	//zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors");
+        //printf("%d %d %d %d\n",x_ventana,y_ventana,ancho_ventana,alto_ventana); 
 
-    zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors","viewsensors",
-        is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
+        //Crear ventana
+        //zxvision_new_window(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors");
 
-    //Se puede ir a background
-    ventana->can_be_backgrounded=1;
-    //indicar nombre del grabado de geometria
-    //strcpy(ventana->geometry_name,"viewsensors");
-    //Permitir hotkeys desde raton. Parece que incompatible con pulsar boton y simular enter
-    //ventana->can_mouse_send_hotkeys=1;    
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        zxvision_new_window_gn_cim(ventana,x_ventana,y_ventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"View Sensors","viewsensors",
+            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);                            
 
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;    
+        //Se puede ir a background
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"viewsensors");
+        //Permitir hotkeys desde raton. Parece que incompatible con pulsar boton y simular enter
+        //ventana->can_mouse_send_hotkeys=1;    
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        ventana->must_clear_cache_on_draw=1;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
     //Y dibujar la ventana
     zxvision_draw_window(ventana);
@@ -22922,28 +23176,43 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-	if (!util_find_window_geometry("visualrealtape",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=VISUALREALTAPE_X;
-        y=VISUALREALTAPE_Y-2;
-        ancho=VISUALREALTAPE_ANCHO;
-        alto=VISUALREALTAPE_ALTO+4;      
-	}
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("visualrealtape",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=VISUALREALTAPE_X;
+            y=VISUALREALTAPE_Y-2;
+            ancho=VISUALREALTAPE_ANCHO;
+            alto=VISUALREALTAPE_ALTO+4;      
+        }
 
 
-	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape");
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape","visualrealtape",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape");
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Visual Real Tape","visualrealtape",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	ventana->can_be_backgrounded=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"visualrealtape");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"visualrealtape");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
 
-	//printf("despues zxvision_new_window_nocheck_staticsize\n");
+        //printf("despues zxvision_new_window_nocheck_staticsize\n");
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }
+
 	zxvision_draw_window(ventana);
 
 
@@ -25971,27 +26240,42 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);
+	//zxvision_delete_window_if_exists(ventana);
 
-	int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
-	if (!util_find_window_geometry("shortcutshelper",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-        x=SHORTCUTS_HELPER_X;
-        y=SHORTCUTS_HELPER_Y;
-        ancho=SHORTCUTS_HELPER_ANCHO;
-        alto=SHORTCUTS_HELPER_ALTO;      
-	}
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("shortcutshelper",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            x=SHORTCUTS_HELPER_X;
+            y=SHORTCUTS_HELPER_Y;
+            ancho=SHORTCUTS_HELPER_ANCHO;
+            alto=SHORTCUTS_HELPER_ALTO;      
+        }
 
 
-    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Shortcuts helper","shortcutshelper",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Shortcuts helper","shortcutshelper",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	ventana->can_be_backgrounded=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"shortcutshelper");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"shortcutshelper");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
 
-	//printf("despues zxvision_new_window_nocheck_staticsize\n");
+        //printf("despues zxvision_new_window_nocheck_staticsize\n");
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }
+
 	zxvision_draw_window(ventana);
 
 
@@ -31536,24 +31820,39 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=55;
-		alto_ventana=25;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;             
-	}
+        if (!util_find_window_geometry("hilowconvertaudio",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=55;
+            alto_ventana=25;
 
-        
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"HiLow Convert Audio",
-        "hilowconvertaudio",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;             
+        }
 
-	ventana->can_be_backgrounded=1;
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"HiLow Convert Audio",
+            "hilowconvertaudio",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
          
 
 
@@ -34109,9 +34408,15 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
         zxvision_activate_this_window(ventana);
     }    
 
+    //prueba overlay
+    ventana->overlay_function=menu_toy_follow_mouse_overlay;
 	zxvision_draw_window(ventana);
 
 	z80_byte tecla;
@@ -34123,7 +34428,7 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
     menu_toy_follow_mouse_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	set_menu_overlay_function(menu_toy_follow_mouse_overlay);
+	//prueba overlay set_menu_overlay_function(menu_toy_follow_mouse_overlay);
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -34164,10 +34469,10 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);		
+	//prueba overlay zxvision_set_window_overlay_from_current(ventana);		
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //prueba overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
@@ -34793,28 +35098,42 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=30;
-		alto_ventana=20;
+        if (!util_find_window_geometry("visualfloppy",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;        
-	}
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;        
+        }
 
-        
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Floppy",
-        "visualfloppy",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Visual Floppy",
+            "visualfloppy",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-	ventana->can_be_backgrounded=1;
-         
-    //definir color de papel de fondo
-    ventana->default_paper=HEATMAP_INDEX_FIRST_COLOR;
-    zxvision_cls(ventana);
+        ventana->can_be_backgrounded=1;
+            
+        //definir color de papel de fondo
+        ventana->default_paper=HEATMAP_INDEX_FIRST_COLOR;
+        zxvision_cls(ventana);
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);
 
@@ -36771,26 +37090,36 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
 	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
 	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-	zxvision_delete_window_if_exists(ventana);	
+	//zxvision_delete_window_if_exists(ventana);	
 
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        if (!util_find_window_geometry("template_window_name",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=30;
+            alto_ventana=20;
 
-	if (!util_find_window_geometry("template_window_name",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		ancho_ventana=30;
-		alto_ventana=20;
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;        
+        }
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;        
-	}
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Window title",
+            "template_window_name",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
-        
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Window title",
-        "template_window_name",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-	ventana->can_be_backgrounded=1;
+        ventana->can_be_backgrounded=1;
          
+    }
 
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);
 

@@ -3215,38 +3215,52 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
 {
 
 
-	int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-    //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
-    //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-	if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		xorigin=menu_origin_x();
-		yorigin=0;
-		ancho_ventana=32;
-		alto_ventana=24;
-	}
+        int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
+        //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
-
-	//asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
-	//zxvision_new_window_nocheck_staticsize(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU");
-
-    zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
-        "debugcpu",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xorigin=menu_origin_x();
+            yorigin=0;
+            ancho_ventana=32;
+            alto_ventana=24;
+        }
 
 
-	//Preservar ancho y alto anterior
-	//menu_debug_registers_ventana_common(ventana);
+        //asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
+        //zxvision_new_window_nocheck_staticsize(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU");
+
+        zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
+            "debugcpu",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-	ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
-	ventana->can_be_backgrounded=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"debugcpu");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        //Preservar ancho y alto anterior
+        //menu_debug_registers_ventana_common(ventana);
 
-	//Puede enviar hotkeys con raton
-	ventana->can_mouse_send_hotkeys=1;
+
+        ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"debugcpu");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+        //Puede enviar hotkeys con raton
+        ventana->can_mouse_send_hotkeys=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 
 }
@@ -3432,31 +3446,45 @@ void menu_watches(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
-        xventana=menu_origin_x();
-        yventana=1;
+            xventana=menu_origin_x();
+            yventana=1;
 
-        ancho_ventana=32;
-        alto_ventana=22;
-	}
+            ancho_ventana=32;
+            alto_ventana=22;
+        }
 
 
 
-	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
-            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
+                is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"watches");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"watches");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);		
 
@@ -7232,7 +7260,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
 
 	menu_debug_registers_zxvision_ventana(ventana);
@@ -9936,78 +9964,93 @@ void menu_debug_textadventure_map_connections_teleport(void)
 
 void menu_debug_textadventure_map_connections_create_window(zxvision_window *ventana)
 {
-    int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!util_find_window_geometry("textadvmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-        ancho_ventana=40;
+        int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        alto_ventana=22;
+        if (!util_find_window_geometry("textadvmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
+            ancho_ventana=40;
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;
-
-    }    
+            alto_ventana=22;
 
 
-    //obener ancho y alto total
-    int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
-    
-    textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
 
-    //de momento fuerzo alto y ancho total
-    int alto_total; //=400;
-    int ancho_total; //=300;     
+        }    
 
 
-    if (menu_debug_textadventure_map_connections_zoom==0) {
-        ancho_total=ancho_mapa/2;  //de 8/4 pixeles por cada ubicacion
-        alto_total=alto_mapa/2;
+        //obener ancho y alto total
+        int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
+        
+        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
+
+        //de momento fuerzo alto y ancho total
+        int alto_total; //=400;
+        int ancho_total; //=300;     
+
+
+        if (menu_debug_textadventure_map_connections_zoom==0) {
+            ancho_total=ancho_mapa/2;  //de 8/4 pixeles por cada ubicacion
+            alto_total=alto_mapa/2;
+        }
+
+        else {
+            int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
+
+            tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
+
+            ancho_total=ancho_mapa;
+            alto_total=alto_mapa;        
+
+            ancho_total *=tamanyo_celda;  
+            alto_total *=tamanyo_celda;  
+
+            //pasar a caracteres
+            ancho_total /=menu_char_width;
+            alto_total /=menu_char_height;
+        }
+
+        //darle mas para los offsets
+        ancho_total +=map_adventure_offset_x/menu_char_width;
+        alto_total +=map_adventure_offset_y/menu_char_height;
+
+        //1 mas por cada, de los decimales al dividir
+        ancho_total++;
+        alto_total++;
+
+        //Y un minimo asegurado
+        if (ancho_total<50) ancho_total=50;
+        if (alto_total<20) alto_total=20;
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
+                "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+        //No refrescar contenido al cambiar scroll. Esto permite que la parte superior de la ventana, donde estan
+        //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
+        //refrescara convenientemente
+        ventana->no_refresh_change_offset=1;
+
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        ventana->must_clear_cache_on_draw=1;   
+
     }
 
+    //Si ya existe, activar esta ventana
     else {
-        int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
 
-        tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
-
-        ancho_total=ancho_mapa;
-        alto_total=alto_mapa;        
-
-        ancho_total *=tamanyo_celda;  
-        alto_total *=tamanyo_celda;  
-
-        //pasar a caracteres
-        ancho_total /=menu_char_width;
-        alto_total /=menu_char_height;
-    }
-
-    //darle mas para los offsets
-    ancho_total +=map_adventure_offset_x/menu_char_width;
-    alto_total +=map_adventure_offset_y/menu_char_height;
-
-    //1 mas por cada, de los decimales al dividir
-    ancho_total++;
-    alto_total++;
-
-    //Y un minimo asegurado
-    if (ancho_total<50) ancho_total=50;
-    if (alto_total<20) alto_total=20;
-
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
-            "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-    ventana->can_be_backgrounded=1;
-
-    //No refrescar contenido al cambiar scroll. Esto permite que la parte superior de la ventana, donde estan
-    //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
-    //refrescara convenientemente
-    ventana->no_refresh_change_offset=1;
-
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;    
+        zxvision_activate_this_window(ventana);
+    }     
 }
 
 
@@ -10176,7 +10219,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
 
 

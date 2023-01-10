@@ -9510,6 +9510,9 @@ void screen_render_menu_overlay_if_active(void)
        //activa, que es la que llamará a normal_overlay, que es la que redibuja todas las ventanas MENOS la actual
        //TODO: quiza mejorar el redibujado de ventanas, tanto cuando esta menu abierto como cerrado, que lo hiciera siempre igual
 
+
+        //Corregido, ya no hace falta
+        /*
         if (menu_abierto) {
         long diferencia=core_render_menu_overlay_difftime-zxvision_time_total_drawing_overlay_except_current-normal_overlay_time_total_drawing_overlay;
         if (zxvision_current_window!=NULL) {
@@ -9520,6 +9523,7 @@ void screen_render_menu_overlay_if_active(void)
             //printf("Menu abierto. calculado tiempo para ventana activa %s: %ld\n",zxvision_current_window->window_title,diferencia);
         }
         }
+        */
 
     }
 }
