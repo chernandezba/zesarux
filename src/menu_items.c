@@ -26618,13 +26618,13 @@ void menu_snapshot_load(MENU_ITEM_PARAMETERS)
 		snapfile=snapshot_load_file;
 
 		//sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-		reset_menu_overlay_function();
+		//reset_menu_overlay_function();
 
 
 			snapshot_load();
 
 		//restauramos modo normal de texto de menu
-		set_menu_overlay_function(normal_overlay_texto_menu);
+		//set_menu_overlay_function(normal_overlay_texto_menu);
 
 		//Y salimos de todos los menus
 		salir_todos_menus=1;
@@ -27794,7 +27794,7 @@ void menu_msxcart_load(MENU_ITEM_PARAMETERS)
 		//                sprintf (last_msx_cart,"%s",msxcart_load_file);
 
                 //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-                reset_menu_overlay_function();
+                //reset_menu_overlay_function();
 
 
 				if (MACHINE_IS_MSX) {
@@ -27817,7 +27817,7 @@ void menu_msxcart_load(MENU_ITEM_PARAMETERS)
 				}
 
                 //restauramos modo normal de texto de menu
-                set_menu_overlay_function(normal_overlay_texto_menu);
+                //set_menu_overlay_function(normal_overlay_texto_menu);
 
                 //Y salimos de todos los menus
                 salir_todos_menus=1;
@@ -29647,13 +29647,13 @@ void menu_timexcart_load(MENU_ITEM_PARAMETERS)
 		//                sprintf (last_timex_cart,"%s",timexcart_load_file);
 
                 //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-                reset_menu_overlay_function();
+                //reset_menu_overlay_function();
 
 
                         timex_insert_dck_cartridge(last_timex_cart);
 
                 //restauramos modo normal de texto de menu
-                set_menu_overlay_function(normal_overlay_texto_menu);
+                //set_menu_overlay_function(normal_overlay_texto_menu);
 
                 //Y salimos de todos los menus
                 salir_todos_menus=1;
@@ -31546,7 +31546,7 @@ void menu_hilow_convert_audio_input_file(void)
     }   
 
     //Se pierde el overlay cada vez que se abre file selector
-    set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
+    //set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
 
 }
 
@@ -31593,7 +31593,7 @@ void menu_hilow_convert_audio_output_file(void)
     }   
 
     //Se pierde el overlay cada vez que se abre file selector
-    set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
+    //set_menu_overlay_function(menu_hilow_convert_audio_overlay);           
 
 }
 
@@ -35149,7 +35149,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 			quickfile=quickload_file;
 
             //sin overlay de texto, que queremos ver las franjas de carga con el color normal (no apagado)
-            reset_menu_overlay_function();
+            //reset_menu_overlay_function();
 
 
 			if (quickload(quickload_file)) {
@@ -35157,7 +35157,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 			}
 
                 //restauramos modo normal de texto de menu
-                set_menu_overlay_function(normal_overlay_texto_menu);
+                //set_menu_overlay_function(normal_overlay_texto_menu);
 
                 //Y salimos de todos los menus si conviene
                 if (no_close_menu_after_smartload.v==0) salir_todos_menus=1;
