@@ -5946,13 +5946,13 @@ void menu_audio_new_ayplayer_load(MENU_ITEM_PARAMETERS)
 {
 
 	//restauramos modo normal de texto de menu
-        set_menu_overlay_function(normal_overlay_texto_menu);
+        //set_menu_overlay_function(normal_overlay_texto_menu);
 
 	
 	menu_ay_player_load(0);
 
 	//Restauramos funcion de overlay
-	set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
 
 }
 
@@ -5997,7 +5997,7 @@ void menu_audio_new_ayplayer_cpcmode(MENU_ITEM_PARAMETERS)
 void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 {
 	//restauramos modo normal de texto de menu
-        set_menu_overlay_function(normal_overlay_texto_menu);
+        //set_menu_overlay_function(normal_overlay_texto_menu);
 
 	
 	char string_length[5];
@@ -6015,14 +6015,14 @@ void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 	
 
 	//Restauramos funcion de overlay
-	set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
 }
 
 void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 {
 
 	//restauramos modo normal de texto de menu
-        set_menu_overlay_function(normal_overlay_texto_menu);
+        //set_menu_overlay_function(normal_overlay_texto_menu);
 
 	char string_length[5];
 	sprintf(string_length,"%d",ay_player_limit_any_track/50);
@@ -6038,7 +6038,7 @@ void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 
 
 	//Restauramos funcion de overlay
-	set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
 }
 
 zxvision_window zxvision_window_ayplayer;
@@ -6096,23 +6096,21 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }      
 
 	zxvision_draw_window(ventana);	
 
-	
+    menu_audio_new_ayplayer_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui		
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de audio ay player
-	set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+	//old set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_audio_new_ayplayer_overlay);
 
-
-	menu_audio_new_ayplayer_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui		
+	
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -6249,10 +6247,10 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
+	//old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -7742,7 +7740,7 @@ zxvision_window *menu_debug_dma_tsconf_zxuno_overlay_window;
 void menu_debug_dma_tsconf_zxuno_overlay(void)
 {
 
-    normal_overlay_texto_menu();
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
     int linea=0;
    
@@ -7973,11 +7971,13 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
 	zxvision_draw_window(&ventana);			
 
 
+    menu_debug_dma_tsconf_zxuno_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui			
 
     //Cambiamos funcion overlay de texto de menu
-	set_menu_overlay_function(menu_debug_dma_tsconf_zxuno_overlay);
-
-	menu_debug_dma_tsconf_zxuno_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui			
+	//old set_menu_overlay_function(menu_debug_dma_tsconf_zxuno_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(&ventana,menu_debug_dma_tsconf_zxuno_overlay);
+	
 
 
 
@@ -8036,7 +8036,7 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
 
 
        //restauramos modo normal de texto de menu
-       set_menu_overlay_function(normal_overlay_texto_menu);
+       //set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
         

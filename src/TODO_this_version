@@ -271,3 +271,8 @@ ventana->overlay_function=menu_toy_follow_mouse_overlay;
 
 
 set_menu_overlay_function solo deberia quedarse en pocos casos muy concretos
+
+-al principio de cada overlay esto tiene que desaparecer
+if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
+buscar todos los normal_overlay_texto_menu sueltos
