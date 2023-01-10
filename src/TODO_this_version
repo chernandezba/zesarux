@@ -247,7 +247,14 @@ Esto afectaria a ventanas que usan overlay pero no se van a background? como por
 
 
 -indicador de app abierta: al abrir una app que no estaba abierta, no aparece el indicador a no ser que se mueva la ventana u otro evento
-de repintado de ZX desktop. quiza al abrir una app habría que hacer que se redibujase siempre el zx desktop. como?
+de repintado de ZX desktop. quiza al abrir una app habría que hacer que se redibujase siempre el zx desktop con menu_draw_ext_desktop(). como? Alternativas:
+a) al final de zxvision_new_window_gn_cim. no me convence.. estamos haciendo dibujado en una funcion no pensada para ello
+b) en la app, antes de llamar a zxvision_draw_window(ventana); un poco chapuza porque hay que meter la llamada siempre ahi antes
+quiza simplificarlo con una llamada nueva que llame a las dos
+Igualmente esta solución puede que muestre parpadeos (sobre todo mas en xwindow) porque dibujara el desktop, borrando todo,  y luego encima la ventana
+Y cuando pase unos segundos redibujara todo
+c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hasta hacer algun evento de redibujado de zxdesktop ;)
+Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
 
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
 quiza boton o accion nueva sobre ventana para reajustar tamaño...
@@ -258,3 +265,4 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 
 -visual real tape no actualiza bien si menu cerrado y top speed
 
+-on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
