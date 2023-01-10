@@ -9062,7 +9062,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
     ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
 
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 

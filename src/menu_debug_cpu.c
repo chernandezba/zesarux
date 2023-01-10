@@ -3383,7 +3383,7 @@ void menu_watches_overlay_mostrar_texto(void)
 void menu_watches_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
  	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -5919,7 +5919,7 @@ int new_plot_moves[8][2]={
 void menu_debug_daad_view_graphics_render_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_daad_view_graphics_render_overlay_window->is_minimized) return;
@@ -9718,7 +9718,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 {
     //printf("overlay %d\n",contador_segundo);
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_textadventure_map_connections_overlay_window->is_minimized) return;

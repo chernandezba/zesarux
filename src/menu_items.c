@@ -774,7 +774,7 @@ zxvision_window *menu_debug_cpu_resumen_stats_overlay_window;
 
 void menu_debug_cpu_resumen_stats_overlay(void)
 {
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -1447,7 +1447,7 @@ int core_statistics_linea_mostrar_estadisticas_chars=-1;
 //La funcion de overlay
 void menu_about_core_statistics_overlay_window_overlay(void)
 {
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -1859,7 +1859,7 @@ void menu_ay_registers_overlay(void)
 
 	//NOTA: //Hemos de suponer que current window es esta de ay registers
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech    
@@ -2512,7 +2512,7 @@ zxvision_window *menu_debug_tsconf_tbblue_msx_videoregisters_overlay_window;
 
 void menu_debug_tsconf_tbblue_msx_videoregisters_overlay(void)
 {
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_tsconf_tbblue_msx_videoregisters_overlay_window->is_minimized) return;
@@ -3321,7 +3321,7 @@ void menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites(void)
 
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_tsconf_tbblue_msx_spritenav_draw_sprites_window->is_minimized) return;
@@ -4005,7 +4005,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles(void)
 {
     
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -4345,7 +4345,7 @@ int menu_audio_draw_sound_wave_si_scroll_hilow_audio;
 void menu_audio_draw_sound_wave(void)
 {
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
 
 	char buffer_texto_medio[40]; //32+3+margen de posible color rojo del maximo
@@ -5750,7 +5750,7 @@ zxvision_window *menu_audio_new_ayplayer_overlay_window;
 void menu_audio_new_ayplayer_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -6674,7 +6674,7 @@ zxvision_window *menu_debug_hexdump_overlay_window;
 
 void menu_debug_hexdump_overlay(void)
 {
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -7744,7 +7744,7 @@ zxvision_window *menu_debug_dma_tsconf_zxuno_overlay_window;
 void menu_debug_dma_tsconf_zxuno_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     int linea=0;
    
@@ -8875,7 +8875,6 @@ void menu_display_total_palette_draw_barras(void)
 
     //Esto tiene que estar despues de escribir la lista de colores, para que se refresque y se vea
     //Si estuviese antes, al mover el cursor hacia abajo dejándolo pulsado, el texto no se vería hasta que no se soltase la tecla
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_display_total_palette_draw_barras_window->is_minimized) return;  
@@ -10626,7 +10625,6 @@ int menu_draw_sprites_get_origin_y(void)
 void menu_debug_draw_sprites(void)
 {
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech	
@@ -12448,7 +12446,6 @@ void menu_ay_partitura_overlay(void)
 {
 
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
@@ -18299,7 +18296,6 @@ void menu_ay_pianokeyboard_overlay(void)
 {
 
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech, en el caso que se habilite piano de tipo texto
@@ -18691,7 +18687,6 @@ int menu_beeper_piano_offset_octava_visble=2;
 
 void menu_beeper_pianokeyboard_overlay(void)
 {
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -19451,7 +19446,6 @@ zxvision_window *menu_help_keyboard_overlay_window;
 
 void menu_help_keyboard_overlay(void)
 {
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     if (!si_complete_video_driver() ) return;
@@ -19984,7 +19978,6 @@ void menu_debug_unnamed_console_show_legend(zxvision_window *ventana)
 void menu_debug_unnamed_console_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_unnamed_console_overlay_window->is_minimized) return; //Sustituir xxxx_overlay_window por lo que convenga
@@ -20242,7 +20235,6 @@ int menu_audio_general_sound_contador_segundo_anterior;
 void menu_audio_general_sound_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
  
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -20645,7 +20637,6 @@ void menu_debug_ioports_overlay_get_lines(void)
 void menu_debug_ioports_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
  
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -20824,7 +20815,6 @@ int new_about_window_ancho_mostrar=0;
 
 void menu_new_about_window_overlay(void)
 {
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     if (!si_complete_video_driver() ) return;
