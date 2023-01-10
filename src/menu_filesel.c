@@ -4871,7 +4871,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                 
 			if (menu_filesel_show_previews.v) {
 				menu_filesel_overlay_window=ventana;
-				//old set_menu_overlay_function(menu_filesel_overlay);
+				
                 //cambio overlay
                 zxvision_set_window_overlay(ventana,menu_filesel_overlay);
 			}

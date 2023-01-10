@@ -1796,7 +1796,6 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
     menu_about_core_statistics_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //Cambiamos funcion overlay de texto de menu
-    //old cambio overlay set_menu_overlay_function(menu_about_core_statistics_overlay_window_overlay);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_about_core_statistics_overlay_window_overlay);
 
@@ -2412,7 +2411,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    //old cambio overlay set_menu_overlay_function(menu_ay_registers_overlay);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_ay_registers_overlay); 
 
@@ -4767,7 +4765,6 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
     
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de audio waveform
-	//old cambio overlay set_menu_overlay_function(menu_audio_draw_sound_wave);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_audio_draw_sound_wave);
 
@@ -5464,7 +5461,6 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 
 	//Cambiamos funcion overlay de texto de menu
 	//Se establece a la de funcion de visualmem + texto
-	//old cambio overlay set_menu_overlay_function(menu_debug_draw_visualmem);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_draw_visualmem);
 
@@ -34219,9 +34215,14 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }    
 
-    //prueba overlay
-    ventana->overlay_function=menu_toy_follow_mouse_overlay;
-	zxvision_draw_window(ventana);
+
+zxvision_draw_window(ventana);
+
+    //cambio overlay
+    
+    menu_toy_follow_mouse_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+    zxvision_set_window_overlay(ventana,menu_toy_follow_mouse_overlay);
+	
 
 	z80_byte tecla;
 
@@ -34229,10 +34230,8 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
 	int salir=0;
 
 
-    menu_toy_follow_mouse_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+    
 
-
-	//prueba overlay set_menu_overlay_function(menu_toy_follow_mouse_overlay);
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -36837,8 +36836,6 @@ zxvision_window *menu_template_window_can_be_backgrounded_window;
 void menu_template_window_can_be_backgrounded_overlay(void)
 {
 
-
-
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
@@ -36914,7 +36911,6 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     menu_template_window_can_be_backgrounded_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	//old cambio overlay set_menu_overlay_function(menu_template_window_can_be_backgrounded_overlay);
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_template_window_can_be_backgrounded_overlay);
 	
@@ -36956,7 +36952,6 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	
 	util_add_window_geometry_compact(ventana);
 
 	if (tecla==3) {
