@@ -12409,6 +12409,12 @@ void zxvision_set_window_overlay(zxvision_window *ventana,void (*overlay_functio
     ventana->overlay_function=overlay_function;
 }
 
+//Quita de la estructura de ventana la funcion de overlay
+void zxvision_reset_window_overlay(zxvision_window *ventana)
+{
+    ventana->overlay_function=NULL;
+}
+
 void zxvision_redraw_window_on_move(zxvision_window *w)
 {
 	cls_menu_overlay();

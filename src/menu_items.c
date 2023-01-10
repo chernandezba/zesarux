@@ -6839,12 +6839,13 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
-
         zxvision_activate_this_window(ventana);
     }
+
+    zxvision_draw_window(ventana);
+
+    menu_debug_hexdump_overlay_window=ventana;    
+    zxvision_set_window_overlay(ventana,menu_debug_hexdump_overlay);
 
     //Esto es un poco diferente que otras ventanas, ya que solo hay overlay cuando la ventana esta en segundo plano
     //Ademas, cuando se crea la ventana al haber hecho restore al iniciar el emulador,
@@ -6857,6 +6858,9 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
         return;
     }
+
+    //Este es un tanto peculiar porque no hace overlay cuando la ventana esta en primer plano
+    zxvision_reset_window_overlay(ventana);
 
     //Mas info: al entrar en esta ventana por segunda vez, despues de tenerla en background, alguien podria pensar que 
     //la ventana se mostrara entonces dos veces: 1 por estar en background, y 2 por las propias rutinas que hay aqui para dibujarla
@@ -6875,7 +6879,6 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
 	//ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
 
-	//zxvision_draw_window(ventana);
 
 
     z80_byte tecla;
@@ -7278,7 +7281,7 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
     
     //En este caso es un poco diferente, esta ventana tiene overlay solo cuando
     //esta en background
-    menu_debug_hexdump_overlay_window=ventana;
+    
     zxvision_set_window_overlay(ventana,menu_debug_hexdump_overlay);
     
 
