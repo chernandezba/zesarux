@@ -22151,7 +22151,6 @@ void menu_debug_view_sensors_print_cursor(zxvision_window *ventana)
 //La funcion de overlay
 void menu_debug_view_sensors_overlay_window_overlay(void)
 {
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -22702,7 +22701,6 @@ long long int menu_visual_realtape_bloque_posicion_final=-1;
 void menu_visual_realtape_overlay(void)
 {
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 	char buffer_texto_medio[40]; 
 
@@ -26175,7 +26173,6 @@ zxvision_window *menu_audio_shortcuts_helper_window;
 void menu_shortcuts_helper_overlay(void)
 {
 
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
 	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -31497,7 +31494,6 @@ zxvision_window *menu_hilow_convert_audio_window;
 void menu_hilow_convert_audio_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -34254,7 +34250,6 @@ int menu_toy_follow_last_mouse_y=-1;
 void menu_toy_follow_mouse_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -34782,7 +34777,6 @@ int last_pd765_motor_status=0;
 void menu_visual_floppy_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
@@ -37023,7 +37017,6 @@ zxvision_window *menu_template_window_can_be_backgrounded_window;
 void menu_template_window_can_be_backgrounded_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
