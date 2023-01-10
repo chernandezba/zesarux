@@ -292,7 +292,7 @@ extern void menu_about_about_load_editionamegame(void);
 //extern int menu_cond_simpletext(void);
 //extern int menu_cond_curses(void);
 
-extern int zxvision_drawing_in_background;
+//extern int zxvision_drawing_in_background;
 
 
 extern void menu_interface_rgb_inverse_common(void);

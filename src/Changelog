@@ -38,6 +38,7 @@ Improved ZX Vision:
 - Added function to maximize all windows
 - Allow reducing character height
 - Improve window list showing spent time on each window
+- Improve rendering background windows
 
 * Fixes:
 

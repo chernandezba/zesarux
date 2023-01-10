@@ -12159,7 +12159,7 @@ void zxvision_draw_below_windows(zxvision_window *w)
 }
 
 
-int zxvision_drawing_in_background=0;
+//int zxvision_drawing_in_background=0;
 
 
 //Llama al overlay de la ventana, si es que existe
@@ -12225,7 +12225,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
 	//printf ("\n");
 
-	zxvision_drawing_in_background=1;
+	//zxvision_drawing_in_background=1;
 
 
     zxvision_time_total_drawing_overlay_except_current=0;
@@ -12285,7 +12285,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
     //printf ("tiempo TOTAL transcurrido: %ld microsec\n",zxvision_time_total_drawing_overlay);
 
-	zxvision_drawing_in_background=0;
+	//zxvision_drawing_in_background=0;
 
 	ventana_es_background=0;
 	ventana_tipo_activa=antes_ventana_tipo_activa;
@@ -12324,7 +12324,7 @@ void old_zxvision_draw_overlays_below_windows(zxvision_window *w)
 
         //printf ("\n");
 
-        zxvision_drawing_in_background=1;
+        //zxvision_drawing_in_background=1;
 
         //Dibujar todas ventanas excepto la de mas arriba.
         //while (pointer_window!=w && pointer_window!=NULL) {
@@ -12357,7 +12357,7 @@ void old_zxvision_draw_overlays_below_windows(zxvision_window *w)
 
 
 
-        zxvision_drawing_in_background=0;
+        //zxvision_drawing_in_background=0;
 
         ventana_es_background=0;
 

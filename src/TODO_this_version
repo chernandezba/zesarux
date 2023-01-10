@@ -257,13 +257,7 @@ quiza boton o accion nueva sobre ventana para reajustar tamaño...
 -cambio redibujado overlay ventanas para que redibujen todas las ventanas incluso la actual.
 
 set_menu_overlay_function solo deberia quedarse en pocos casos muy concretos
-
-
--al principio de cada overlay esto tiene que desaparecer
-if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
-
 buscar todos los normal_overlay_texto_menu sueltos
 
 -visual real tape no actualiza bien si menu cerrado y top speed
 
--zxvision_drawing_in_background ya no se usa??
