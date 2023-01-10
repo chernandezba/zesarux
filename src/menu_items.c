@@ -5124,13 +5124,8 @@ void menu_visualmem_putpixel(zxvision_window *ventana,int x,int y,int color_pixe
 void menu_debug_draw_visualmem(void)
 {
 
-	if (!zxvision_drawing_in_background) {
-        printf("Not drawing in background %d\n",contador_segundo);
-        normal_overlay_texto_menu();
-    }
-    else {
-        printf("Drawing in background %d\n",contador_segundo);
-    }
+
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_draw_visualmem_window->is_minimized) return;
@@ -16950,10 +16945,7 @@ int menu_display_window_list_overlay_do_not_update=0;
 void menu_display_window_list_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) {
-        //printf("No dibujando en background. Dibujando ventanas background cuando primer plano Window List\n");
-        normal_overlay_texto_menu();
-    }
+
     
     //de tal manera que solo llame a normal_overlay de texto cuando no estan en background
 

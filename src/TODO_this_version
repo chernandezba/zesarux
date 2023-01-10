@@ -254,23 +254,10 @@ Esto quiza es normal porque realmente la app se borra y se crea de nuevo... Pero
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
 quiza boton o accion nueva sobre ventana para reajustar tamaño...
 
--cambio redibujado overlay ventanas para que redibujen todas las ventanas incluso la actual:
-
-ventana->overlay_function=NULL; esto va fuera
-
-
-
-ventana->overlay_function=menu_toy_follow_mouse_overlay;
-//cambio overlay set_menu_overlay_function(menu_toy_follow_mouse_overlay);
-
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//cambio overlay zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
-
+-cambio redibujado overlay ventanas para que redibujen todas las ventanas incluso la actual.
 
 set_menu_overlay_function solo deberia quedarse en pocos casos muy concretos
+
 
 -al principio de cada overlay esto tiene que desaparecer
 if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
