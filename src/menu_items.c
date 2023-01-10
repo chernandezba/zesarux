@@ -3445,10 +3445,10 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
 	} while (tecla!=2 && tecla!=3);  
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);	
+	//old zxvision_set_window_overlay_from_current(ventana);	
 
 	//restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);		
+    //old set_menu_overlay_function(normal_overlay_texto_menu);		
 
     
     
@@ -4127,6 +4127,13 @@ void menu_debug_tsconf_tbblue_msx_tilenav_new_window(zxvision_window *ventana)
     //y no hay que activar inverse color cada vez que se redibuja ventana,
     //pues al redibujar ventana está leyendo el contenido de la memoria de la ventana, y ahí ya está con color inverso		
 
+    menu_debug_tsconf_tbblue_msx_tilenav_lista_tiles_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
+
+	//old set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles);
+	
+
 }
 
 
@@ -4154,9 +4161,7 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 	menu_debug_tsconf_tbblue_msx_tilenav_new_window(ventana);
 
-	set_menu_overlay_function(menu_debug_tsconf_tbblue_msx_tilenav_draw_tiles);
 
-	menu_debug_tsconf_tbblue_msx_tilenav_lista_tiles_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
        //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -4215,10 +4220,10 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 	} while (tecla!=2 && tecla!=3); 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);	
+	//old zxvision_set_window_overlay_from_current(ventana);	
 
 	//restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);		
+    //old set_menu_overlay_function(normal_overlay_texto_menu);		
 
     
 
