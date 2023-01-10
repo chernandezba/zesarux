@@ -22579,7 +22579,7 @@ long long int menu_visual_realtape_bloque_posicion_final=-1;
 void menu_visual_realtape_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+    //if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 	char buffer_texto_medio[40]; 
 
@@ -23005,7 +23005,7 @@ void menu_visual_realtape_insert(MENU_ITEM_PARAMETERS)
     menu_realtape_open(0);
 
     //reestablecer overlay por que al llamar a menu_realtape_open, en el filesel, se resetea funcion overlay
-    set_menu_overlay_function(menu_visual_realtape_overlay);
+    //set_menu_overlay_function(menu_visual_realtape_overlay);
 }
 
 void menu_visual_realtape_stopbegin(MENU_ITEM_PARAMETERS)
@@ -23070,7 +23070,9 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //TODO: esta es un tanto peculiar porque al insertar cinta se cambia overlay??
-	set_menu_overlay_function(menu_visual_realtape_overlay);
+	//set_menu_overlay_function(menu_visual_realtape_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_visual_realtape_overlay);
 
 	
 

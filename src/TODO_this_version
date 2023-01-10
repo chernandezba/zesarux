@@ -276,3 +276,5 @@ set_menu_overlay_function solo deberia quedarse en pocos casos muy concretos
 if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 buscar todos los normal_overlay_texto_menu sueltos
+
+-visual real tape no actualiza bien si menu cerrado y top speed
