@@ -8235,7 +8235,7 @@ void menu_tsconf_layer_overlay_mostrar_texto(void)
 void menu_tsconf_layer_overlay(void)
 {
 
-    normal_overlay_texto_menu();
+    //normal_overlay_texto_menu();
 
  	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -8489,12 +8489,14 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 
 
 
-
+    menu_tsconf_layer_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
 
     //Cambiamos funcion overlay de texto de menu
-    set_menu_overlay_function(menu_tsconf_layer_overlay);
+    //old set_menu_overlay_function(menu_tsconf_layer_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(&ventana,menu_tsconf_layer_overlay);
 
-	menu_tsconf_layer_overlay_window=&ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
+	
 
     menu_item *array_menu_tsconf_layer_settings;
     menu_item item_seleccionado;
@@ -8674,7 +8676,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
        //restauramos modo normal de texto de menu
-       set_menu_overlay_function(normal_overlay_texto_menu);
+       //set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 	   
@@ -8976,9 +8978,6 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }
@@ -8991,8 +8990,11 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 	int salir=0;
 
 
-	set_menu_overlay_function(menu_display_total_palette_draw_barras);
-	menu_display_total_palette_draw_barras_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+    menu_display_total_palette_draw_barras_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+	//old set_menu_overlay_function(menu_display_total_palette_draw_barras);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_display_total_palette_draw_barras);
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -9223,10 +9225,10 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
     window_colour_palette_left_mouse=0;
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);		
+	//old zxvision_set_window_overlay_from_current(ventana);		
 
 				//restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
@@ -11506,9 +11508,6 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }
@@ -11517,12 +11516,15 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 	z80_byte tecla;
 
+    menu_debug_draw_sprites_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de ver sprites
-    set_menu_overlay_function(menu_debug_draw_sprites);
+    //old set_menu_overlay_function(menu_debug_draw_sprites);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_draw_sprites);  
 
-	menu_debug_draw_sprites_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
+	
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -11651,11 +11653,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					case 'z':
 							//restauramos modo normal de texto de menu, sino, el selector de zona se vera
 								//con el sprite encima
-						set_menu_overlay_function(normal_overlay_texto_menu);
+						//set_menu_overlay_function(normal_overlay_texto_menu);
 
 						menu_debug_change_memory_zone();
 
-						set_menu_overlay_function(menu_debug_draw_sprites);
+						//set_menu_overlay_function(menu_debug_draw_sprites);
 
 						break;
 
@@ -11672,7 +11674,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 							if (view_sprites_bpp==1 && !view_sprites_scr_sprite) {
 								//restauramos modo normal de texto de menu, sino, el selector de archivos se vera
 								//con el sprite encima
-								set_menu_overlay_function(normal_overlay_texto_menu);
+								//set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 								if (menu_debug_view_sprites_save(view_sprites_direccion,view_sprites_ancho_sprite,view_sprites_alto_sprite,view_sprites_ppb,view_sprite_incremento)) {
@@ -11682,7 +11684,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 								
 
 								//menu_debug_view_sprites_ventana();
-								set_menu_overlay_function(menu_debug_draw_sprites);
+								//set_menu_overlay_function(menu_debug_draw_sprites);
 								zxvision_draw_window(ventana);
 							}
 
@@ -11753,10 +11755,10 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
     //if (copia_video_interlaced_mode.v) enable_interlace();
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
+	//old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     
 
@@ -12713,10 +12715,6 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
-
         zxvision_activate_this_window(ventana);
     }      
 
@@ -12737,8 +12735,9 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de piano + texto
-    set_menu_overlay_function(menu_ay_partitura_overlay);
-
+    //old set_menu_overlay_function(menu_ay_partitura_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_ay_partitura_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -12808,10 +12807,10 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);				
+	//zxvision_set_window_overlay_from_current(ventana);				
 
 	//restauramos modo normal de texto de menu
-	set_menu_overlay_function(normal_overlay_texto_menu);
+	//set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -16841,9 +16840,6 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -17182,9 +17178,13 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
     menu_display_window_list_create_window(ventana);
 
-    set_menu_overlay_function(menu_display_window_list_overlay);
-
     menu_display_window_list_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+    //old set_menu_overlay_function(menu_display_window_list_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_display_window_list_overlay);
+
+    
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -17272,10 +17272,10 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
         !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND && !menu_display_window_conmutar_ventana);
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
+    //old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //menu_display_window_list_excluirnos_nosotros=0;
 
@@ -18538,9 +18538,6 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -18555,7 +18552,9 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de piano + texto
-    set_menu_overlay_function(menu_ay_pianokeyboard_overlay);
+    //old set_menu_overlay_function(menu_ay_pianokeyboard_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_ay_pianokeyboard_overlay);
 
 
 
@@ -18640,10 +18639,10 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
+	//old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -18842,23 +18841,21 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
-
         zxvision_activate_this_window(ventana);
     }    
 
 
 	zxvision_draw_window(ventana);						
 
-
+    menu_beeper_pianokeyboard_overlay_window=ventana; 
 
 	//Cambiamos funcion overlay de texto de menu
 	//Se establece a la de funcion de piano + texto
-	set_menu_overlay_function(menu_beeper_pianokeyboard_overlay);
+	//old set_menu_overlay_function(menu_beeper_pianokeyboard_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_beeper_pianokeyboard_overlay);
 
-	menu_beeper_pianokeyboard_overlay_window=ventana; 
+	
 
 
 	int valor_contador_segundo_anterior;
@@ -18936,10 +18933,10 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
+	//old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -19582,9 +19579,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -19603,7 +19597,9 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    set_menu_overlay_function(menu_help_keyboard_overlay);
+    //old set_menu_overlay_function(menu_help_keyboard_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_help_keyboard_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -19642,10 +19638,10 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);	
+	//old zxvision_set_window_overlay_from_current(ventana);	
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     	
@@ -20155,9 +20151,6 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -20169,7 +20162,9 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    set_menu_overlay_function(menu_debug_unnamed_console_overlay);   
+    //old set_menu_overlay_function(menu_debug_unnamed_console_overlay);   
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_unnamed_console_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20203,10 +20198,10 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
 	//(siempre que esta funcion tenga overlay realmente)
-	zxvision_set_window_overlay_from_current(ventana);    
+	//old zxvision_set_window_overlay_from_current(ventana);    
 
     //restauramos modo normal de texto de menu
-     set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     
     
@@ -20540,9 +20535,6 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -20554,7 +20546,9 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    set_menu_overlay_function(menu_audio_general_sound_overlay);   
+    //old set_menu_overlay_function(menu_audio_general_sound_overlay);   
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_audio_general_sound_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20580,10 +20574,10 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
 	//(siempre que esta funcion tenga overlay realmente)
-	zxvision_set_window_overlay_from_current(ventana);    
+	//old zxvision_set_window_overlay_from_current(ventana);    
 
     //restauramos modo normal de texto de menu
-     set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     
     
@@ -20760,10 +20754,6 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
-
         zxvision_activate_this_window(ventana);
     }    
 
@@ -20774,7 +20764,9 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
                                                 
     //Cambiamos funcion overlay de texto de menu
     //Se establece a la de funcion de onda + texto
-    set_menu_overlay_function(menu_debug_ioports_overlay);   
+    //old set_menu_overlay_function(menu_debug_ioports_overlay);   
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_ioports_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -20796,10 +20788,10 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
 	//(siempre que esta funcion tenga overlay realmente)
-	zxvision_set_window_overlay_from_current(ventana);    
+	//old zxvision_set_window_overlay_from_current(ventana);    
 
     //restauramos modo normal de texto de menu
-     set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     
     
@@ -21082,8 +21074,9 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 
 
     //Cambiamos funcion overlay de texto de menu
-    //Se establece a la de funcion de onda + texto
-    set_menu_overlay_function(menu_new_about_window_overlay);
+    //old set_menu_overlay_function(menu_new_about_window_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_new_about_window_overlay);
 
 
 
@@ -21123,10 +21116,10 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);	
+	//old zxvision_set_window_overlay_from_current(ventana);	
 
     //restauramos modo normal de texto de menu
-     set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     	
@@ -22469,9 +22462,6 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -22483,7 +22473,9 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     menu_debug_view_sensors_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //Cambiamos funcion overlay de texto de menu
-    set_menu_overlay_function(menu_debug_view_sensors_overlay_window_overlay);
+    //old set_menu_overlay_function(menu_debug_view_sensors_overlay_window_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_view_sensors_overlay_window_overlay);
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -22658,10 +22650,10 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
 
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
+    //old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -26260,9 +26252,6 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }
@@ -26271,8 +26260,9 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 
 
     //Cambiamos funcion overlay de texto de menu
-    //Se establece a la de funcion de audio waveform
-	set_menu_overlay_function(menu_shortcuts_helper_overlay);
+	//old set_menu_overlay_function(menu_shortcuts_helper_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_shortcuts_helper_overlay);
 
 	menu_audio_shortcuts_helper_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
@@ -26287,10 +26277,10 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
 
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
+    //old zxvision_set_window_overlay_from_current(ventana);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -31838,9 +31828,6 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -31860,7 +31847,9 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     menu_hilow_convert_audio_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	set_menu_overlay_function(menu_hilow_convert_audio_overlay);
+	//old set_menu_overlay_function(menu_hilow_convert_audio_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_hilow_convert_audio_overlay);
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -32201,10 +32190,10 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);		
+	//old zxvision_set_window_overlay_from_current(ventana);		
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
@@ -35119,9 +35108,6 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -35134,7 +35120,9 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
     menu_visual_floppy_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
 
-	set_menu_overlay_function(menu_visual_floppy_overlay);
+	//old set_menu_overlay_function(menu_visual_floppy_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_visual_floppy_overlay);
 
     //forzar a escribir el fondo desde overlay
     //menu_visual_floppy_fondo_asignado=0;
@@ -35215,10 +35203,10 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);		
+	//old zxvision_set_window_overlay_from_current(ventana);		
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
