@@ -9082,7 +9082,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
         int offset_y=ventana->offset_y;
 
         //Desplazar putpixel segun el offset de scroll
-        offset_y *=8;
+        offset_y *=menu_char_height;
 
         //Primero poner todo el fondo del botón en color blanco
         int x,y;
