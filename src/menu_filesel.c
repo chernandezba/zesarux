@@ -4717,7 +4717,7 @@ void menu_filesel_overlay(void)
 void menu_filesel_preexit(zxvision_window *ventana)
 {
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //set_menu_overlay_function(normal_overlay_texto_menu);
 
     zxvision_destroy_window(ventana);
 
@@ -4804,7 +4804,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 		if (ret) {
 			//Error leyendo directorio
 			//restauramos modo normal de texto de menu
-     		set_menu_overlay_function(normal_overlay_texto_menu);
+     		//set_menu_overlay_function(normal_overlay_texto_menu);
 			
 			menu_espera_no_tecla();
 			zvfs_chdir(filesel_directorio_inicial);
@@ -4871,7 +4871,9 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                 
 			if (menu_filesel_show_previews.v) {
 				menu_filesel_overlay_window=ventana;
-				set_menu_overlay_function(menu_filesel_overlay);
+				//old set_menu_overlay_function(menu_filesel_overlay);
+                //cambio overlay
+                zxvision_set_window_overlay(ventana,menu_filesel_overlay);
 			}
 
 		}
