@@ -1007,11 +1007,6 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla(); //Si no, se va al menu anterior.
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old cambio overlay zxvision_set_window_overlay_from_current(ventana);	
-
-    //restauramos modo normal de texto de menu
-    //old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     	
@@ -1821,11 +1816,6 @@ void menu_about_core_statistics(MENU_ITEM_PARAMETERS)
             //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //old cambio overlay zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -2480,12 +2470,6 @@ void menu_ay_registers(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla(); //Si no, se va al menu anterior.
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old cambio overlay zxvision_set_window_overlay_from_current(ventana);	
-
-    //restauramos modo normal de texto de menu
-     //old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
-
 
     	
 
@@ -2893,11 +2877,6 @@ void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla(); //Si no, se va al menu anterior.
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);	
-
-    //restauramos modo normal de texto de menu
-	//old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     	
@@ -3444,11 +3423,6 @@ void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS)
         }     
 	} while (tecla!=2 && tecla!=3);  
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);	
-
-	//restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);		
 
     
     
@@ -4219,11 +4193,6 @@ void menu_debug_tsconf_tbblue_msx_tilenav(MENU_ITEM_PARAMETERS)
 
 	} while (tecla!=2 && tecla!=3); 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);	
-
-	//restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);		
 
     
 
@@ -4869,11 +4838,6 @@ void menu_audio_new_waveform(MENU_ITEM_PARAMETERS)
 
 	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old cambio overlay zxvision_set_window_overlay_from_current(ventana);
-
-	//restauramos modo normal de texto de menu
-    //old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -5603,11 +5567,6 @@ void menu_debug_new_visualmem(MENU_ITEM_PARAMETERS)
 	menu_dibuja_menu_permite_repeticiones_hotk=0;
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old cambio overlay zxvision_set_window_overlay_from_current(ventana);
-
-	//restauramos modo normal de texto de menu
-	//old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -6250,11 +6209,6 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -7338,11 +7292,12 @@ void menu_debug_hexdump(MENU_ITEM_PARAMETERS)
 
     } while (salir==0);
 
-    //zxvision_set_window_overlay_from_current(ventana);
+    
     //En este caso es un poco diferente, esta ventana tiene overlay solo cuando
     //esta en background
-    ventana->overlay_function=menu_debug_hexdump_overlay;
     menu_debug_hexdump_overlay_window=ventana;
+    zxvision_set_window_overlay(ventana,menu_debug_hexdump_overlay);
+    
 
 
 
@@ -9227,11 +9182,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
     //Asegurarnos que al salir esto no queda activado, si no, el overlay no dibujaria nada
     window_colour_palette_left_mouse=0;
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);		
 
-				//restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
@@ -11753,14 +11704,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 
 
-    //Restauramos modo interlace
-    //if (copia_video_interlaced_mode.v) enable_interlace();
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     
 
@@ -12807,11 +12751,6 @@ void menu_ay_partitura(MENU_ITEM_PARAMETERS)
 
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//zxvision_set_window_overlay_from_current(ventana);				
-
-	//restauramos modo normal de texto de menu
-	//set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -17272,11 +17211,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && 
         !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND && !menu_display_window_conmutar_ventana);
 
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //old zxvision_set_window_overlay_from_current(ventana);
 
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //menu_display_window_list_excluirnos_nosotros=0;
 
@@ -18638,13 +18573,6 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-
     
 
     util_add_window_geometry_compact(ventana);
@@ -18929,13 +18857,6 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
-
-
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
@@ -19635,13 +19556,6 @@ void menu_help_show_keyboard(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla(); //Si no, se va al menu anterior.
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);	
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-
     	
 
 	//Grabar geometria ventana
@@ -20193,14 +20107,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//(siempre que esta funcion tenga overlay realmente)
-	//old zxvision_set_window_overlay_from_current(ventana);    
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-    
+   
     
 
     //Grabar geometria ventana
@@ -20568,14 +20475,7 @@ void menu_audio_general_sound(MENU_ITEM_PARAMETERS)
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//(siempre que esta funcion tenga overlay realmente)
-	//old zxvision_set_window_overlay_from_current(ventana);    
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-    
+   
     
 
     //Grabar geometria ventana
@@ -20781,14 +20681,7 @@ void menu_debug_ioports(MENU_ITEM_PARAMETERS)
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//(siempre que esta funcion tenga overlay realmente)
-	//old zxvision_set_window_overlay_from_current(ventana);    
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-    
+   
     
 
     //Grabar geometria ventana
@@ -21109,14 +21002,6 @@ void menu_about_new(MENU_ITEM_PARAMETERS)
 	menu_espera_no_tecla(); //Si no, se va al menu anterior.
 	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);	
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-
-    	
 
 
 
@@ -22642,13 +22527,6 @@ void menu_debug_view_sensors(MENU_ITEM_PARAMETERS)
     menu_view_sensors_fondo_cursor(ventana,ESTILO_GUI_TINTA_NORMAL,ESTILO_GUI_PAPEL_NORMAL);
 
 
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
-
     
     util_add_window_geometry_compact(ventana);
 
@@ -22701,6 +22579,7 @@ long long int menu_visual_realtape_bloque_posicion_final=-1;
 void menu_visual_realtape_overlay(void)
 {
 
+    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
 
 	char buffer_texto_medio[40]; 
 
@@ -23181,21 +23060,19 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }
 
 	zxvision_draw_window(ventana);
 
+    menu_audio_visual_realtape_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
 
     //Cambiamos funcion overlay de texto de menu
-    //Se establece a la de funcion de audio waveform
+    //TODO: esta es un tanto peculiar porque al insertar cinta se cambia overlay??
 	set_menu_overlay_function(menu_visual_realtape_overlay);
 
-	menu_audio_visual_realtape_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+	
 
 	//Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
 	//Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -23281,11 +23158,6 @@ void menu_visual_realtape(MENU_ITEM_PARAMETERS)
 
 	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -26267,11 +26139,6 @@ void menu_shortcuts_window(MENU_ITEM_PARAMETERS)
     int tecla=zxvision_wait_until_esc(ventana);
 
 
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //old zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -32179,12 +32046,6 @@ void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);		
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
-
 
 	
 	util_add_window_geometry_compact(ventana);
@@ -34437,12 +34298,6 @@ void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS)
     } while (salir==0);
 
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//prueba overlay zxvision_set_window_overlay_from_current(ventana);		
-
-    //restauramos modo normal de texto de menu
-    //prueba overlay set_menu_overlay_function(normal_overlay_texto_menu);
-
 
 	
 	util_add_window_geometry_compact(ventana);
@@ -35186,15 +35041,6 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
-
-
-
-
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old zxvision_set_window_overlay_from_current(ventana);		
-
-    //restauramos modo normal de texto de menu
-    //old set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	
@@ -37134,13 +36980,6 @@ void menu_template_window_can_be_backgrounded(MENU_ITEM_PARAMETERS)
 
 
     } while (salir==0);
-
-
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//old cambio overlay zxvision_set_window_overlay_from_current(ventana);		
-
-    //restauramos modo normal de texto de menu
-    //old cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
 	

@@ -3587,11 +3587,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//cambio overlay zxvision_set_window_overlay_from_current(ventana);
 
-       //restauramos modo normal de texto de menu
-       //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 	   
@@ -8702,9 +8698,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 		menu_debug_delete_daad_parse_breakpoint();
 	}	
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//NO: dado que no tenemos overlay en esta ventana
-	//zxvision_set_window_overlay_from_current(ventana);
+
 
 
     
@@ -10340,17 +10334,6 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);    
-
-
-    
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    //antiguo cambio overlay zxvision_set_window_overlay_from_current(ventana);
-
-
- 
-
-        //restauramos modo normal de texto de menu
-    //antiguo cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
