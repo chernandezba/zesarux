@@ -789,7 +789,7 @@ void cpu_panic(char *mensaje)
 
 
 			
-			//set_menu_overlay_function(normal_overlay_texto_menu);
+			
 			//no tiene sentido tener el menu overlay abierto... o si?
 
 			menu_overlay_activo=0;

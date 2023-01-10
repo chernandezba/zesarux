@@ -3493,8 +3493,6 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 	menu_watches_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
 
     //Cambiamos funcion overlay de texto de menu
-    //cambio overlay set_menu_overlay_function(menu_watches_overlay);
-    //cambio overlay
     zxvision_set_window_overlay(ventana,menu_watches_overlay);    
 
 
@@ -3566,16 +3564,9 @@ void menu_watches(MENU_ITEM_PARAMETERS)
                                 //printf ("actuamos por funcion\n");
 
 
-
-									//restauramos modo normal de texto de menu para llamar al editor de watch
-                                                                //con el sprite encima
-                                    //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
-
-
                                       
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-								//cambio overlay set_menu_overlay_function(menu_watches_overlay);
 								zxvision_clear_window_contents(ventana); //limpiar de texto anterior en linea de watch
 								zxvision_draw_window(ventana);
 
@@ -6138,7 +6129,7 @@ void menu_debug_daad_view_graphics(void)
 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_daad_view_graphics_render_overlay);
-    //set_menu_overlay_function(menu_debug_daad_view_graphics_render_overlay);
+   
 
 
     //zxvision_wait_until_esc(ventana);
@@ -6346,8 +6337,6 @@ void menu_debug_daad_view_graphics(void)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-        //restauramos modo normal de texto de menu
-    //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
@@ -10047,7 +10036,7 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
 
         //cambio overlay
         zxvision_set_window_overlay(ventana,menu_debug_textadventure_map_connections_overlay);
-        //set_menu_overlay_function(menu_debug_textadventure_map_connections_overlay);    
+            
 
 
     }

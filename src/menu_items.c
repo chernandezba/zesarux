@@ -983,7 +983,7 @@ void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS)
     //Se establece a la de funcion de onda + texto
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_cpu_resumen_stats_overlay);
-    //set_menu_overlay_function(menu_debug_cpu_resumen_stats_overlay);
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -5908,14 +5908,10 @@ void menu_audio_new_ayplayer_overlay(void)
 void menu_audio_new_ayplayer_load(MENU_ITEM_PARAMETERS)
 {
 
-	//restauramos modo normal de texto de menu
-        //set_menu_overlay_function(normal_overlay_texto_menu);
-
 	
 	menu_ay_player_load(0);
 
-	//Restauramos funcion de overlay
-	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
+
 
 }
 
@@ -5959,8 +5955,7 @@ void menu_audio_new_ayplayer_cpcmode(MENU_ITEM_PARAMETERS)
 
 void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 {
-	//restauramos modo normal de texto de menu
-        //set_menu_overlay_function(normal_overlay_texto_menu);
+
 
 	
 	char string_length[5];
@@ -5976,16 +5971,12 @@ void menu_audio_new_ayplayer_inftracks(MENU_ITEM_PARAMETERS)
 	else ay_player_limit_infinite_tracks=l*50;
 
 	
-
-	//Restauramos funcion de overlay
-	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
 }
 
 void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 {
 
-	//restauramos modo normal de texto de menu
-        //set_menu_overlay_function(normal_overlay_texto_menu);
+
 
 	char string_length[5];
 	sprintf(string_length,"%d",ay_player_limit_any_track/50);
@@ -6000,8 +5991,6 @@ void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 	else ay_player_limit_any_track=l*50;
 
 
-	//Restauramos funcion de overlay
-	//set_menu_overlay_function(menu_audio_new_ayplayer_overlay);
 }
 
 zxvision_window zxvision_window_ayplayer;
@@ -7994,8 +7983,7 @@ void menu_debug_dma_tsconf_zxuno(MENU_ITEM_PARAMETERS)
 
 
 
-       //restauramos modo normal de texto de menu
-       //set_menu_overlay_function(normal_overlay_texto_menu);
+
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
         
@@ -8634,8 +8622,7 @@ void menu_tsconf_layer_settings(MENU_ITEM_PARAMETERS)
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-       //restauramos modo normal de texto de menu
-       //set_menu_overlay_function(normal_overlay_texto_menu);
+
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 	   
@@ -10959,10 +10946,7 @@ char *menu_debug_sprites_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
 menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
 {
 
-       //restauramos modo normal de texto de menu, porque sino, tendriamos la ventana
-        //del cambio de direccion, y encima los sprites
-        //esto ya no hace falta....
-       //set_menu_overlay_function(normal_overlay_texto_menu);
+
 
 
         char string_address[10];
@@ -10991,8 +10975,6 @@ menu_z80_moto_int menu_debug_view_sprites_change_pointer(menu_z80_moto_int p)
         }
 
 
-
-        //set_menu_overlay_function(menu_debug_draw_sprites);
 
 
         return p;
@@ -11604,13 +11586,11 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					break;
 
 					case 'z':
-							//restauramos modo normal de texto de menu, sino, el selector de zona se vera
-								//con el sprite encima
-						//set_menu_overlay_function(normal_overlay_texto_menu);
+						
 
 						menu_debug_change_memory_zone();
 
-						//set_menu_overlay_function(menu_debug_draw_sprites);
+
 
 						break;
 
@@ -11625,19 +11605,13 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 							//Solo graba sprites de 1bpp (monocromos)
 							if (view_sprites_bpp==1 && !view_sprites_scr_sprite) {
-								//restauramos modo normal de texto de menu, sino, el selector de archivos se vera
-								//con el sprite encima
-								//set_menu_overlay_function(normal_overlay_texto_menu);
-
+								
 
 								if (menu_debug_view_sprites_save(view_sprites_direccion,view_sprites_ancho_sprite,view_sprites_alto_sprite,view_sprites_ppb,view_sprite_incremento)) {
 									menu_error_message("Unknown file format");
 								}
 
 								
-
-								//menu_debug_view_sprites_ventana();
-								//set_menu_overlay_function(menu_debug_draw_sprites);
 								zxvision_draw_window(ventana);
 							}
 

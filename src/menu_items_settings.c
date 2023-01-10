@@ -9134,7 +9134,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     //userdef_button_func_action_opcion_seleccionada=defined_buttons_functions_array[valor_opcion];
     userdef_button_func_action_opcion_seleccionada=accion_inicial_seleccionada;
 
-    //set_menu_overlay_function(menu_zxdesktop_set_userdef_button_func_action_overlay);
+
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_zxdesktop_set_userdef_button_func_action_overlay);    
 
