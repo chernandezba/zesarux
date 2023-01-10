@@ -12403,6 +12403,11 @@ void zxvision_set_window_overlay_from_current(zxvision_window *ventana)
 	}
 }
 
+//Pone en la estructura de ventana la funcion de overlay indicada
+void zxvision_set_window_overlay(zxvision_window *ventana,void (*overlay_function) (void))
+{
+    ventana->overlay_function=overlay_function;
+}
 
 void zxvision_redraw_window_on_move(zxvision_window *w)
 {

@@ -3479,9 +3479,6 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
 
         zxvision_activate_this_window(ventana);
     }    
@@ -3490,10 +3487,15 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 
 
-    //Cambiamos funcion overlay de texto de menu
-    set_menu_overlay_function(menu_watches_overlay);
+
+
 
 	menu_watches_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
+
+    //Cambiamos funcion overlay de texto de menu
+    //cambio overlay set_menu_overlay_function(menu_watches_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_watches_overlay);    
 
 
 	//Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -3567,13 +3569,13 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
 									//restauramos modo normal de texto de menu para llamar al editor de watch
                                                                 //con el sprite encima
-                                    set_menu_overlay_function(normal_overlay_texto_menu);
+                                    //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
                                       
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-								set_menu_overlay_function(menu_watches_overlay);
+								//cambio overlay set_menu_overlay_function(menu_watches_overlay);
 								zxvision_clear_window_contents(ventana); //limpiar de texto anterior en linea de watch
 								zxvision_draw_window(ventana);
 
@@ -3586,10 +3588,10 @@ void menu_watches(MENU_ITEM_PARAMETERS)
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
+	//cambio overlay zxvision_set_window_overlay_from_current(ventana);
 
        //restauramos modo normal de texto de menu
-       set_menu_overlay_function(normal_overlay_texto_menu);
+       //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 	   
@@ -6138,7 +6140,9 @@ void menu_debug_daad_view_graphics(void)
     //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
     menu_debug_daad_view_graphics_render_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
 
-    set_menu_overlay_function(menu_debug_daad_view_graphics_render_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_daad_view_graphics_render_overlay);
+    //set_menu_overlay_function(menu_debug_daad_view_graphics_render_overlay);
 
 
     //zxvision_wait_until_esc(ventana);
@@ -6347,7 +6351,7 @@ void menu_debug_daad_view_graphics(void)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
         //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
@@ -10039,16 +10043,23 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         //decimos que tiene que borrar fondo cada vez al redibujar
         //por tanto es como decirle que no use cache de putchar
         //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-        ventana->must_clear_cache_on_draw=1;   
+        ventana->must_clear_cache_on_draw=1; 
+
+        //Cambiamos funcion overlay de texto de menu
+        //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
+        //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
+        //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
+        menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui         
+
+        //cambio overlay
+        zxvision_set_window_overlay(ventana,menu_debug_textadventure_map_connections_overlay);
+        //set_menu_overlay_function(menu_debug_textadventure_map_connections_overlay);    
+
 
     }
 
     //Si ya existe, activar esta ventana
     else {
-        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
-        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
-        ventana->overlay_function=NULL;
-
         zxvision_activate_this_window(ventana);
     }     
 }
@@ -10227,13 +10238,9 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
-    //Cambiamos funcion overlay de texto de menu
-    //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
-    //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
-    //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
-    menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
+   
 
-    set_menu_overlay_function(menu_debug_textadventure_map_connections_overlay);
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -10337,13 +10344,13 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
     
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
+    //antiguo cambio overlay zxvision_set_window_overlay_from_current(ventana);
 
 
  
 
         //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //antiguo cambio overlay set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     
