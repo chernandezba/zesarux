@@ -35038,12 +35038,79 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_process_switcher_window;
 
-//Para hacer un preview del boton
+void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+{
+    //El color es el del estilo
+    zxvision_putpixel(menu_process_switcher_window,x,y,ESTILO_GUI_TINTA_NORMAL);
+}
+    
+
 void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
 {
 
     zxvision_putpixel(menu_process_switcher_window,x,y,color);
 }
+
+//Escribir texto del icono
+void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,char *texto)
+{
+    
+
+    int zoom=1;
+
+    //darle el nivel de zoom x o y, el que sea menor
+    //if (zoom_x<zoom_y) zoom=zoom_x;
+    //else zoom=zoom_y;    
+
+    int ancho_caracter=CHARSET_ICONS_ANCHO;
+    int alto_caracter=CHARSET_ICONS_ALTO;
+
+
+    while (*texto) {
+        unsigned char c=*texto;
+        texto++;
+
+        if (ESTILO_GUI_SOLO_MAYUSCULAS) c=letra_mayuscula(c);
+
+        if (c<32 || c>126) c='?';
+        
+        int offset=(c-32)*alto_caracter;
+        printf("c %d offset %d\n",c,offset);
+
+
+        //TODO: esta funcion no permite zoom X y zoom Y diferentes, solo permite uno
+        //en el caso del texto le enviamos el zoom que sea mas pequeño
+        //screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 0,
+        //    menu_process_switcher_draw_icon_putpixel,zoom,0,offset);    
+
+        screen_put_asciibitmap_generic_offset_inicio(charset_icons_text,NULL,x,y,ancho_caracter,alto_caracter, 
+            0,menu_process_switcher_draw_icon_text_putpixel,zoom,0,offset);            
+        
+
+        x +=(ancho_caracter+1)*zoom;     //El ancho de caracter +1 para que no queden pegados
+
+    }
+
+
+}
+
+#define PROCESS_SWITCHER_ICON_SEPARATION_X (ZESARUX_ASCII_LOGO_ANCHO*2)
+#define PROCESS_SWITCHER_ICON_SEPARATION_Y (ZESARUX_ASCII_LOGO_ANCHO*2)
+
+//retorna posicion x,y en posicion de icono para un indice dado
+void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_icono,int *pos_x,int *pos_y)
+{
+
+    int window_width_pixels=ventana->visible_width*menu_char_width;
+    int max_icons_per_row=window_width_pixels/PROCESS_SWITCHER_ICON_SEPARATION_X;
+
+    if (max_icons_per_row==0) max_icons_per_row=1;
+
+    
+    *pos_x=indice_icono % max_icons_per_row;
+    *pos_y=indice_icono / max_icons_per_row;    
+}
+
 
 void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono)
 {
@@ -35054,12 +35121,17 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
 
     if (puntero_bitmap==NULL) puntero_bitmap=bitmap_button_ext_desktop_userdefined;
 
+   //int separacion_entre_iconos=ZESARUX_ASCII_LOGO_ANCHO*2;
 
-    
-    int offset_x=indice_icono*ZESARUX_ASCII_LOGO_ANCHO;
-    int offset_y=0;
+    int offset_x;
+    int offset_y;
 
-    
+
+    menu_process_switcher_draw_icon_get_xy(ventana,indice_icono,&offset_x,&offset_y);
+
+
+    offset_x *=PROCESS_SWITCHER_ICON_SEPARATION_X;
+    offset_y *=PROCESS_SWITCHER_ICON_SEPARATION_Y;
 
     //Primero poner todo el fondo del botón en color blanco
     int x,y;
@@ -35074,6 +35146,9 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     int nivel_zoom=1;
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 
         0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0);
+
+    //Y texto
+    menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name);
 
 }
 
