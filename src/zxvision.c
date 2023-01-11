@@ -16214,6 +16214,19 @@ void zxvision_window_save_size(zxvision_window *ventana,int *ventana_ancho_antes
 	*ventana_alto_antes=ventana->visible_height;
 }
 
+//Retornar la posicion x en pixeles de esa ventana
+int zxvision_window_get_pixel_x_position(zxvision_window *ventana)
+{
+    int this_win_x=(ventana->x)*menu_char_width*menu_gui_zoom*zoom_x;
+    return this_win_x;
+}
+
+//Retornar la posicion y en pixeles de esa ventana
+int zxvision_window_get_pixel_y_position(zxvision_window *ventana)
+{
+    int this_win_y=(ventana->y)*menu_char_height*menu_gui_zoom*zoom_y;    
+    return this_win_y;
+}
 
 
 //Funcion comun que usan algunas ventanas para movimiento de cursores y pgup/dn

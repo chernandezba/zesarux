@@ -35075,7 +35075,7 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
         if (c<32 || c>126) c='?';
         
         int offset=(c-32)*alto_caracter;
-        printf("c %d offset %d\n",c,offset);
+        //printf("c %d offset %d\n",c,offset);
 
 
         //TODO: esta funcion no permite zoom X y zoom Y diferentes, solo permite uno
@@ -35097,8 +35097,36 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
 #define PROCESS_SWITCHER_ICON_SEPARATION_X (ZESARUX_ASCII_LOGO_ANCHO*2)
 #define PROCESS_SWITCHER_ICON_SEPARATION_Y (ZESARUX_ASCII_LOGO_ANCHO*2)
 
-//retorna posicion x,y en posicion de icono para un indice dado
-void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_icono,int *pos_x,int *pos_y)
+
+//Retorna las coordenadas del raton solo reduciendo por zoom gui
+void menu_process_switcher_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_y)
+{
+	int x,y;
+
+	menu_calculate_mouse_xy_absolute_interface_pixel(&x,&y);
+
+
+	//x /=menu_char_width;
+	//y /=menu_char_height;
+
+	x /= menu_gui_zoom;
+	y /= menu_gui_zoom;
+
+    //multiplicamos por zoom
+    x *=zoom_x;
+    y *=zoom_y;    
+
+	//printf ("antes de restar: %d,%d\n",x,y);
+	*resultado_x=x;
+	*resultado_y=y;
+
+
+
+	
+}
+
+
+int menu_process_switcher_get_max_icons_per_row(zxvision_window *ventana)
 {
 
     int window_width_pixels=ventana->visible_width*menu_char_width;
@@ -35106,9 +35134,31 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
 
     if (max_icons_per_row==0) max_icons_per_row=1;
 
-    
+    return max_icons_per_row;
+
+}
+
+//retorna posicion x,y en posicion de icono para un indice dado
+void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_icono,int *pos_x,int *pos_y)
+{
+
+    int max_icons_per_row=menu_process_switcher_get_max_icons_per_row(ventana);
+
+
     *pos_x=indice_icono % max_icons_per_row;
     *pos_y=indice_icono / max_icons_per_row;    
+}
+
+void menu_process_switcher_handle_click(zxvision_window *ventana)
+{
+    int cursor_mouse_x; //=menu_mouse_x;
+    int cursor_mouse_y; //=menu_mouse_y;
+    menu_process_switcher_calculate_mouse_xy_absolute_interface(&cursor_mouse_x,&cursor_mouse_y);
+
+    int this_win_x=zxvision_window_get_pixel_x_position(ventana);
+    int this_win_y=zxvision_window_get_pixel_y_position(ventana);
+    printf("clicked on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
+    printf("Window starts at %d,%d\n",this_win_x,this_win_y);
 }
 
 
@@ -35179,7 +35229,7 @@ void menu_process_switcher_overlay(void)
 
         while(pointer_window!=NULL) {
             if (pointer_window->can_be_backgrounded) {
-                printf("Ventana %d %s\n",indice_icono,pointer_window->geometry_name);
+                //printf("Ventana %d %s\n",indice_icono,pointer_window->geometry_name);
 
                 menu_process_switcher_draw_icon(w,pointer_window->geometry_name,indice_icono);
 
@@ -35294,7 +35344,13 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
             //O tecla background
             case 3:
                 salir=1;
-            break;					
+            break;		
+
+            case 0:
+                if (mouse_left) {
+                    menu_process_switcher_handle_click(ventana);
+                }
+            break;			
         }
 
 

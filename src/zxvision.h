@@ -459,6 +459,8 @@ extern void zxvision_set_resizable(zxvision_window *w);
 
 
 extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_ancho_antes,int *ventana_alto_antes);
+extern int zxvision_window_get_pixel_x_position(zxvision_window *ventana);
+extern int zxvision_window_get_pixel_y_position(zxvision_window *ventana);
 
 //Maximo de ventanas que se pueden restaurar
 #define MAX_RESTORE_WINDOWS_START 50
