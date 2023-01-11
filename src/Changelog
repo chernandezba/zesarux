@@ -37,7 +37,7 @@ Improved ZX Vision:
 - Some text input fields now have history of last items, and history is saved on configuration file
 - Added function to maximize all windows
 - Allow reducing character height
-- Improve window list showing spent time on each window
+- Improve window list showing spent time on each window and pid of each window/process
 - Improve rendering background windows
 
 * Fixes:

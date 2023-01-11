@@ -5207,7 +5207,7 @@ void menu_debug_draw_visualmem(void)
 	//Calcular cuantos bytes modificados representa un pixel, teniendo en cuenta maximo buffer
 	int max_valores=(final_puntero_membuffer-inicio_puntero_membuffer)/tamanyo_total;
 
-	printf ("max_valores: %d\n",max_valores);
+	//printf ("max_valores: %d\n",max_valores);
 	//printf ("tamanyo total: %d\n",tamanyo_total);
 	//le damos uno mas para poder llenar la ventana
 	//printf ("inicio: %06XH final: %06XH\n",inicio_puntero_membuffer,final_puntero_membuffer);
@@ -6504,6 +6504,7 @@ void menu_debug_hexdump_crea_ventana(zxvision_window *ventana,int x,int y,int an
 	//zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,ancho,alto-2,"Hexadecimal Editor");
 
     //printf("hexdump crea ventana antes_minimize: %d X %d\n",ancho_antes_minimize,alto_antes_minimize);
+
 
     zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho,alto-2,"Hexadecimal Editor","hexeditor",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
@@ -16698,7 +16699,7 @@ void menu_unpaws_ungac(MENU_ITEM_PARAMETERS)
 void menu_display_window_list_info(zxvision_window *w)
 {
     menu_generic_message_format("Window information",
-        "PID: %d\n"
+        "PID: %u\n"
         "Title: %s\n"
         "Name: %s\n"
         "Position: %d,%d\n"
@@ -16908,7 +16909,7 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
 
     //TODO: de momento 4 digitos para el pid
     sprintf(texto_destino,
-        "%4d %-*s%*s %7ld us (%3d %%)",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
+        "%4u %-*s%*s %7ld us (%3d %%)",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
         menu_display_window_list_espacios_flags,window_flags,
         item_ventana_puntero->last_spent_time_overlay,porcentaje);    
 }

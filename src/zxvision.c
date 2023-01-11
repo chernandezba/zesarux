@@ -9710,12 +9710,65 @@ void zxvision_set_all_flag_dirty_must_draw_contents(void)
     
 }
 
-int zxvision_last_pid=0;
+//Siguiente pid a usar
+unsigned int zxvision_last_pid=0;
+
+
+//Buscar si el pid está asignada a alguna ventana
+zxvision_window *zxvision_search_window_by_pid(unsigned int pid_to_search)
+{
+    //printf("Buscar si existe pid %u\n",pid_to_search);
+
+    zxvision_window *w;
+    w=zxvision_current_window;
+
+    //Empezamos de arriba hacia abajo
+
+    while (w!=NULL) {
+
+        if (w->pid==pid_to_search) {
+            //printf("Existe pid %u en ventana %s\n",pid_to_search,w->window_title);
+            return w;
+        }
+
+        zxvision_window *lower_window;
+
+        lower_window=w->previous_window;
+
+        w=lower_window;
+
+    }
+
+    return NULL;
+
+}
+
+//Buscar siguiente pid para una ventana
+//Nos basamos en zxvision_last_pid pero descartando que ese no exista ya
+//Eso puede suceder cuando el contador de pid "da la vuelta", cosa altamente improbable, siendo un contador de 32 bits,
+//pero podria pasar
+unsigned int zxvision_get_next_pid(void)
+{
+    //TODO: este while se quedaria sin salir cuando hubiera tantas ventanas como permite el contador de pid = 2^32 = 4294967296
+    //cosa completamente absurda, pero que sepamos que si se llena todo eso de ventanas, el bucle no acabara nunca
+    //pues no encontrará ningun pid libre
+    //En otros entornos con menos "cantidad" de pid libre se deberia tener un escape del bucle con un error indicando
+    //que no hay pids libres y por tanto no se podria crear la ventana
+    while (zxvision_search_window_by_pid(zxvision_last_pid)!=NULL) {
+        zxvision_last_pid++;
+    }
+
+    //printf("Proximo pid: %u\n",zxvision_last_pid);
+
+    return zxvision_last_pid;
+}
+
 
 void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title)
 {
 
 	//Alto visible se reduce en 1 - por el titulo de ventana
+    //printf("--Crear ventana %s\n",title);
 	
 	w->x=x;
 	w->y=y;
@@ -9727,6 +9780,9 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
 	w->offset_x=0;
 	w->offset_y=0;
+
+    //Asignar pid al principio, antes de meterla en la lista de ventanas activas
+    w->pid=zxvision_get_next_pid();
 
     w->default_paper=ESTILO_GUI_PAPEL_NORMAL;
 
@@ -9771,7 +9827,6 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 	w->height_before_max_min_imize=visible_height;	
 	w->width_before_max_min_imize=visible_width;	
 
-    w->pid=zxvision_last_pid++;
 
     //printf("zxvision_new_window_no_check_range. before min: %d X %d\n",w->width_before_max_min_imize,w->height_before_max_min_imize);
 
@@ -12201,7 +12256,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 	zxvision_window *pointer_window;
 
 
-	if (w!=NULL) printf ("\nDraw below windows with overlay. original window: %p. Title: %s\n",w,w->window_title);
+	//if (w!=NULL) printf ("\nDraw below windows with overlay. original window: %p. Title: %s\n",w,w->window_title);
 
 
 	//Si no hay ventanas, volver
@@ -12252,7 +12307,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		//en principio no hace falta. Ya se redibuja por el redibujado normal
 		//zxvision_draw_window_contents(pointer_window);
 
-        printf ("drawing overlay %p name: %s\n",pointer_window,pointer_window->window_title);
+        //printf ("drawing overlay %p name: %s\n",pointer_window,pointer_window->window_title);
 
         struct timeval zxvision_time_antes,zxvision_time_despues;
 
@@ -12264,7 +12319,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		int existe=zxvision_draw_overlay_if_exists(pointer_window);
 	
 	    if (existe) {
-            printf("existe\n");
+            //printf("existe\n");
             long transcurrido=timer_stats_diference_time(&zxvision_time_antes,&zxvision_time_despues);
             pointer_window->last_spent_time_overlay=transcurrido;
             //printf ("tiempo transcurrido: %ld microsec\n\n",transcurrido);
@@ -12272,7 +12327,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
             zxvision_time_total_drawing_overlay_except_current +=transcurrido;
         }
         else {
-            printf("no existe\n");
+            //printf("no existe\n");
         }
 
     	
@@ -12281,7 +12336,7 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 		pointer_window=pointer_window->next_window;
 	}
 
-    if (w!=NULL) printf ("\nEND Draw below windows with overlay. original window: %p. Title: %s\n\n",w,w->window_title);    
+    //if (w!=NULL) printf ("\nEND Draw below windows with overlay. original window: %p. Title: %s\n\n",w,w->window_title);    
 
     //printf ("tiempo TOTAL transcurrido: %ld microsec\n",zxvision_time_total_drawing_overlay);
 

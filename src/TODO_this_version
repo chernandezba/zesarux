@@ -257,7 +257,10 @@ c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hast
 Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
 
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
-quiza boton o accion nueva sobre ventana para reajustar tamaño...
+quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
+(y de ahi que al reducirla tenga scroll)
+De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
+Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana
 
 -cambio redibujado overlay ventanas para que redibujen todas las ventanas incluso la actual.
 set_menu_overlay_function solo deberia quedarse en pocos casos muy concretos
@@ -266,3 +269,7 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 -visual real tape no actualiza bien si menu cerrado y top speed
 
 -on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
+
+-revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
+
+-quiza icono de openapp deberia adoptar la imagen de la app que abre
