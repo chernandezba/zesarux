@@ -35149,6 +35149,37 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
     *pos_y=indice_icono / max_icons_per_row;    
 }
 
+zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
+{
+    if (zxvision_current_window!=NULL) {
+
+        int indice_icono=0;
+
+        zxvision_window *pointer_window;
+
+        pointer_window=zxvision_find_first_window_below_this(zxvision_current_window); 
+
+        //sacar una por una, las que permiten background
+
+        while(pointer_window!=NULL && indice_icono!=indice_buscar) {
+            printf("%p\n",pointer_window);
+            if (pointer_window->can_be_backgrounded) {
+
+                indice_icono++;
+                
+            }
+
+            pointer_window=pointer_window->next_window;
+        }
+
+        return pointer_window;
+
+    }    
+
+    else return NULL;
+
+}
+
 void menu_process_switcher_handle_click(zxvision_window *ventana)
 {
     int cursor_mouse_x; //=menu_mouse_x;
@@ -35182,6 +35213,12 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
         int indice_total_icono=offset_in_window_y*max_icons_per_row+offset_in_window_x;
 
         printf("Pulsado en icono indice %d\n",indice_total_icono);
+
+        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono);
+
+        if (ventana_pulsada!=NULL) {
+            printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
+        }
     }
 }
 
