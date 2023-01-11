@@ -35258,11 +35258,11 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     //Primero poner todo el fondo del botón en color blanco
     int x,y;
 
-    /*for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
+    for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
         for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
             zxvision_putpixel(ventana,offset_x+x,offset_y+y,7);
         }
-    }*/
+    }
 
     //Y dibujar dicho botón
     int nivel_zoom=1;
