@@ -32,6 +32,7 @@ Improved ZX Desktop:
 - Added setting to empty Trash on exit
 
 Improved ZX Vision:
+- Added windows TaskBar
 - Added Process ID (PID) for all windows
 - Text input fields now handle repeated keys
 - Some text input fields now have history of last items, and history is saved on configuration file

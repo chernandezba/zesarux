@@ -35362,6 +35362,9 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
             "processswitcher",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
+
+        //TODO: prueba siempre visible. esto quiza controlar con un setting
+        ventana->always_visible=1;
          
     }
 
