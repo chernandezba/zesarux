@@ -35157,8 +35157,32 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
     int this_win_x=zxvision_window_get_pixel_x_position(ventana);
     int this_win_y=zxvision_window_get_pixel_y_position(ventana);
+
+    //saltar la linea de titulo
+    this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
+
     printf("clicked on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
     printf("Window starts at %d,%d\n",this_win_x,this_win_y);
+
+    int offset_in_window_x=cursor_mouse_x-this_win_x;
+    int offset_in_window_y=cursor_mouse_y-this_win_y;
+
+    offset_in_window_x /=zoom_x;
+    offset_in_window_y /=zoom_y;
+
+    //Obtener coordenada del icono pulsado dentro de la ventana
+    if (offset_in_window_x>=0 && offset_in_window_y>=0) {
+        offset_in_window_x /=PROCESS_SWITCHER_ICON_SEPARATION_X;
+        offset_in_window_y /=PROCESS_SWITCHER_ICON_SEPARATION_Y;
+
+        printf("Pulsado en icono %d,%d\n",offset_in_window_x,offset_in_window_y);
+
+        int max_icons_per_row=menu_process_switcher_get_max_icons_per_row(ventana);
+
+        int indice_total_icono=offset_in_window_y*max_icons_per_row+offset_in_window_x;
+
+        printf("Pulsado en icono indice %d\n",indice_total_icono);
+    }
 }
 
 
