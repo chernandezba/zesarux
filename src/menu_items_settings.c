@@ -2146,56 +2146,7 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
 
 
 
-/*
 
-Funcion ya no usada. Se usa la comun menu_zxdesktop_set_userdef_button_func_action para botones y teclas F
-
-void menu_hardware_set_f_func_action(MENU_ITEM_PARAMETERS)
-{
-    hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
-
-
-    menu_item *array_menu_hardware_set_f_func_action;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-    char buffer_texto[40];
-
-    int i;
-    for (i=0;i<MAX_F_FUNCTIONS;i++) {
-
-        //enum defined_f_function_ids accion=defined_f_functions_keys_array[i];
-
-        sprintf (buffer_texto,"%s",defined_direct_functions_array[i].texto_funcion);
-
-
-            if (i==0) menu_add_item_menu_inicial_format(&array_menu_hardware_set_f_func_action,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-            else menu_add_item_menu_format(array_menu_hardware_set_f_func_action,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-
-    }
-
-
-    menu_add_item_menu(array_menu_hardware_set_f_func_action,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-    //menu_add_item_menu(array_menu_hardware_set_f_func_action,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-    menu_add_ESC_item(array_menu_hardware_set_f_func_action);
-
-    retorno_menu=menu_dibuja_menu(&hardware_set_f_func_action_opcion_seleccionada,&item_seleccionado,array_menu_hardware_set_f_func_action,"Set Action" );
-
-                
-
-
-    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-        //Si se pulsa Enter
-        int indice=hardware_set_f_func_action_opcion_seleccionada;
-        defined_f_functions_keys_array[valor_opcion]=indice;
-
-												
-    }
-
-}
-*/
 
 
 
