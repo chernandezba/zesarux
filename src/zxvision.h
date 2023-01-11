@@ -474,6 +474,7 @@ struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
 	void (*start)(MENU_ITEM_PARAMETERS);
+    char **bitmap_button;
 };
 
 //#define MAX_KNOWN_WINDOWS 100

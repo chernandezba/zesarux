@@ -8986,48 +8986,48 @@ char restore_window_array[MAX_RESTORE_WINDOWS_START][MAX_NAME_WINDOW_GEOMETRY];
 
 int total_restore_window_array_elements=0;
 
-//Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio
+//Ventanas conocidas y sus funciones que las inicializan y sus iconos. Usado al restaurar ventanas al inicio
 //Y tambien al reabrir todas ventanas en el cambio de estilo de GUI style
 //La ultima siempre finaliza con funcion NULL
 zxvision_known_window_names zxvision_known_window_names_array[]={
-	{"waveform",menu_audio_new_waveform},
-	{"ayregisters",menu_ay_registers},
-	{"aypiano",menu_ay_pianokeyboard},
-	{"aysheet",menu_ay_partitura},
-	{"ayplayer",menu_audio_new_ayplayer},
-	{"wavepiano",menu_beeper_pianokeyboard},
+	{"waveform",menu_audio_new_waveform,bitmap_button_ext_desktop_userdefined},
+	{"ayregisters",menu_ay_registers,bitmap_button_ext_desktop_userdefined},
+	{"aypiano",menu_ay_pianokeyboard,bitmap_button_ext_desktop_userdefined},
+	{"aysheet",menu_ay_partitura,bitmap_button_ext_desktop_userdefined},
+	{"ayplayer",menu_audio_new_ayplayer,bitmap_button_ext_desktop_userdefined},
+	{"wavepiano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_userdefined},
 
 #ifdef EMULATE_VISUALMEM
-	{"visualmem",menu_debug_new_visualmem},
+	{"visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_userdefined},
 #endif
 
 #ifdef EMULATE_CPU_STATS
-	{"cpucompactstatistics",menu_debug_cpu_resumen_stats},
+	{"cpucompactstatistics",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_userdefined},
 #endif
 
-	{"sprites",menu_debug_view_sprites},
-	{"watches",menu_watches},
-	{"displaypalettes",menu_display_total_palette},
-	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters},
-	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav},
-	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav},
-	{"debugcpu",menu_debug_registers},
-	{"helpshowkeyboard",menu_help_show_keyboard},
-    {"debugconsole",menu_debug_unnamed_console},
-    {"audiogensound",menu_audio_general_sound},
-    {"debugioports",menu_debug_ioports},
-    {"hexeditor",menu_debug_hexdump},
-    {"corestatistics",menu_about_core_statistics},
-    {"viewsensors",menu_debug_view_sensors},
-    {"visualrealtape",menu_visual_realtape},
-    {"textadvmap",menu_debug_textadventure_map_connections},
-    {"shortcutshelper",menu_shortcuts_window},
-    {"windowlist",menu_display_window_list},
-    {"hilowconvertaudio",menu_hilow_convert_audio},
-    {"visualfloppy",menu_visual_floppy},
-    {"toyzxeyes",menu_toy_follow_mouse},
+	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_userdefined},
+	{"watches",menu_watches,bitmap_button_ext_desktop_userdefined},
+	{"displaypalettes",menu_display_total_palette,bitmap_button_ext_desktop_userdefined},
+	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_userdefined},
+	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_userdefined},
+	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_userdefined},
+	{"debugcpu",menu_debug_registers,bitmap_button_ext_desktop_userdefined},
+	{"helpshowkeyboard",menu_help_show_keyboard,bitmap_button_ext_desktop_userdefined},
+    {"debugconsole",menu_debug_unnamed_console,bitmap_button_ext_desktop_userdefined},
+    {"audiogensound",menu_audio_general_sound,bitmap_button_ext_desktop_userdefined},
+    {"debugioports",menu_debug_ioports,bitmap_button_ext_desktop_userdefined},
+    {"hexeditor",menu_debug_hexdump,bitmap_button_ext_desktop_userdefined},
+    {"corestatistics",menu_about_core_statistics,bitmap_button_ext_desktop_userdefined},
+    {"viewsensors",menu_debug_view_sensors,bitmap_button_ext_desktop_userdefined},
+    {"visualrealtape",menu_visual_realtape,bitmap_button_ext_desktop_userdefined},
+    {"textadvmap",menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_userdefined},
+    {"shortcutshelper",menu_shortcuts_window,bitmap_button_ext_desktop_userdefined},
+    {"windowlist",menu_display_window_list,bitmap_button_ext_desktop_userdefined},
+    {"hilowconvertaudio",menu_hilow_convert_audio,bitmap_button_ext_desktop_userdefined},
+    {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_userdefined},
+    {"toyzxeyes",menu_toy_follow_mouse,bitmap_button_ext_desktop_userdefined},
 
-	{"",NULL} //NO BORRAR ESTA!!
+	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
 
 
