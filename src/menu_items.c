@@ -35149,7 +35149,7 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
     *pos_y=indice_icono / max_icons_per_row;    
 }
 
-zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
+zxvision_window *menu_process_switcher_get_window_n(int indice_buscar,zxvision_window *w)
 {
     if (zxvision_current_window!=NULL) {
 
@@ -35162,8 +35162,9 @@ zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
         //sacar una por una, las que permiten background
 
         while(pointer_window!=NULL && indice_icono!=indice_buscar) {
-            printf("%p\n",pointer_window);
-            if (pointer_window->can_be_backgrounded) {
+            //printf("%p\n",pointer_window);
+            //Si es una ventana que permite background y ademas no somos nosotros mismos
+            if (pointer_window->can_be_backgrounded && pointer_window!=w) {
 
                 indice_icono++;
                 
@@ -35216,7 +35217,7 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
         printf("Pulsado en icono indice %d\n",indice_total_icono);
 
-        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono);
+        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono,ventana);
 
         if (ventana_pulsada!=NULL) {
             printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
@@ -35299,7 +35300,8 @@ void menu_process_switcher_overlay(void)
         //sacar una por una, las que permiten background
 
         while(pointer_window!=NULL) {
-            if (pointer_window->can_be_backgrounded) {
+            //Si es una ventana que permite background y ademas no somos nosotros mismos
+            if (pointer_window->can_be_backgrounded && pointer_window!=w) {
                 //printf("Ventana %d %s\n",indice_icono,pointer_window->geometry_name);
 
                 menu_process_switcher_draw_icon(w,pointer_window->geometry_name,indice_icono);
