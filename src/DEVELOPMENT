@@ -399,8 +399,6 @@ Para soportar background en una ventana:
 Para poder enviar una ventana a background:
 
 -ventanas en funcion de overlay hacen al principio
-if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
-de tal manera que solo llame a normal_overlay de texto cuando no estan en background
 
 //si ventana minimizada, no ejecutar todo el codigo de overlay
 if (xxxx_overlay_window->is_minimized) return; //sustituir xxxx_overlay_window por lo que convenga
@@ -414,26 +412,29 @@ al estilo por ejemplo de: "zxvision_window zxvision_window_view_sprites;". Luego
 
 -justo despues de asignar ventana a la estructura, ver si ventana ya existe con:
 
-    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
-    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
-    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
--pueden o no usar salvado de geometria. Si lo usan, hacerlo justo despues de zxvision_delete_window_if_exists
+        if (!util_find_window_geometry("processswitcher",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+           ...
+         
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
+
+	zxvision_draw_window(ventana);
+
+-pueden o no usar salvado de geometria. Si lo usan, hacerlo justo despues de zxvision_if_window_already_exists
 
 
 -Activar para poder usar boton de background "!":  ventana->can_be_backgrounded=1;
 
 -menu ventanas finalizan con:
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//(siempre que esta funcion tenga overlay realmente)
-	zxvision_set_window_overlay_from_current(ventana);
-
-    //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
-
-	.....
 
 	if (tecla==3) {
 		//zxvision_ay_registers_overlay
@@ -450,15 +451,7 @@ al estilo por ejemplo de: "zxvision_window zxvision_window_view_sprites;". Luego
 
 -Si se quiere que una ventana pueda enviarse a background:
 
-Despues de crear overlay e inicializar variables necesarias para overlay:
-+       //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
-+       //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
-+       if (zxvision_currently_restoring_windows_on_start) {
-+               //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
-+               return;
-+       }
-
-Y definirla en zxvision_known_window_names_array
+Definirla en zxvision_known_window_names_array
 
 -para poder restaurar al inicio, despues de activar can_be_backgrounded, agregar:
 +	//indicar nombre del grabado de geometria

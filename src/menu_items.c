@@ -35047,9 +35047,35 @@ void menu_process_switcher_overlay(void)
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_process_switcher_window->is_minimized) return;  
 
+    zxvision_window *w=menu_process_switcher_window;
 
     //Print....      
-    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...                      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...         
+
+    //Primero ir a buscar la ventana de abajo del todo
+
+    if (zxvision_current_window!=NULL) {
+
+        int indice_ventana=0;
+
+        zxvision_window *pointer_window;
+
+        pointer_window=zxvision_find_first_window_below_this(zxvision_current_window); 
+
+        //sacar una por una, las que permiten background
+
+        while(pointer_window!=NULL) {
+            if (pointer_window->can_be_backgrounded) {
+                printf("Ventana %d %s\n",indice_ventana,pointer_window->geometry_name);
+
+                indice_ventana++;
+                pointer_window=pointer_window->next_window;
+            }
+        }
+
+    }
+
+    
 
 
     //Mostrar colores

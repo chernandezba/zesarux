@@ -9036,6 +9036,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"hilowconvertaudio",menu_hilow_convert_audio,bitmap_button_ext_desktop_userdefined},
     {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_userdefined},
     {"toyzxeyes",menu_toy_follow_mouse,bitmap_button_ext_desktop_userdefined},
+    {"processswitcher",menu_process_switcher,bitmap_button_ext_desktop_userdefined},
 
 	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
