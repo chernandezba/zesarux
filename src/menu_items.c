@@ -35038,6 +35038,44 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_process_switcher_window;
 
+//Para hacer un preview del boton
+void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+{
+
+    zxvision_putpixel(menu_process_switcher_window,x,y,color);
+}
+
+void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono)
+{
+
+    char **puntero_bitmap;
+
+    puntero_bitmap=zxvision_find_icon_for_known_window(geometry_name);
+
+    if (puntero_bitmap==NULL) puntero_bitmap=bitmap_button_ext_desktop_userdefined;
+
+
+    
+    int offset_x=indice_icono*ZESARUX_ASCII_LOGO_ANCHO;
+    int offset_y=0;
+
+    
+
+    //Primero poner todo el fondo del botón en color blanco
+    int x,y;
+
+    /*for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
+        for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
+            zxvision_putpixel(ventana,offset_x+x,offset_y+y,7);
+        }
+    }*/
+
+    //Y dibujar dicho botón
+    int nivel_zoom=1;
+    screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 
+        0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0);
+
+}
 
 void menu_process_switcher_overlay(void)
 {
@@ -35056,7 +35094,7 @@ void menu_process_switcher_overlay(void)
 
     if (zxvision_current_window!=NULL) {
 
-        int indice_ventana=0;
+        int indice_icono=0;
 
         zxvision_window *pointer_window;
 
@@ -35066,9 +35104,11 @@ void menu_process_switcher_overlay(void)
 
         while(pointer_window!=NULL) {
             if (pointer_window->can_be_backgrounded) {
-                printf("Ventana %d %s\n",indice_ventana,pointer_window->geometry_name);
+                printf("Ventana %d %s\n",indice_icono,pointer_window->geometry_name);
 
-                indice_ventana++;
+                menu_process_switcher_draw_icon(w,pointer_window->geometry_name,indice_icono);
+
+                indice_icono++;
                 
             }
 
