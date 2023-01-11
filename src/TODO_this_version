@@ -272,6 +272,3 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
 
--quiza icono de openapp deberia adoptar la imagen de la app que abre
-
--al cambiar estilo de gui, no redibuja colores correctamente de todas apps. creo que es porque se debe actualizar ventana->default_paper
