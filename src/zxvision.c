@@ -5484,6 +5484,16 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 		y+=2;
 	}
 
+    //Dibujar el icono
+    //Si icono es OPEN_WINDOW, adoptar icono de la ventana que se va a abrir
+    if (defined_direct_functions_array[id_accion].id_funcion==F_FUNCION_OPEN_WINDOW) {
+        char *geometry_name;
+        geometry_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
+        char **possible_bitmap=zxvision_find_icon_for_known_window(geometry_name);
+        if (possible_bitmap!=NULL) bitmap=possible_bitmap;
+    }
+
+
     menu_draw_ext_desktop_one_icon(x,y,bitmap);    
 
 
@@ -9005,7 +9015,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"cpucompactstatistics",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_userdefined},
 #endif
 
-	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_userdefined},
+	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
 	{"watches",menu_watches,bitmap_button_ext_desktop_userdefined},
 	{"displaypalettes",menu_display_total_palette,bitmap_button_ext_desktop_userdefined},
 	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_userdefined},
@@ -9051,6 +9061,21 @@ int zxvision_find_known_window(char *nombre)
 
 	}
 	return -1;
+}
+
+//Retorna bitmap de zxvision_known_window_names_array si se encuentra
+//NULL si no
+char **zxvision_find_icon_for_known_window(char *nombre)
+{
+	int i;
+
+
+	for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++) {
+
+		 if (!strcasecmp(zxvision_known_window_names_array[i].nombre,nombre)) return zxvision_known_window_names_array[i].bitmap_button;
+
+	}
+	return NULL;
 }
 
 //Funcion en casos de debug. Agregar todas las ventanas para restaurar

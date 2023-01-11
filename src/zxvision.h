@@ -480,6 +480,8 @@ struct s_zxvision_known_window_names {
 //#define MAX_KNOWN_WINDOWS 100
 typedef struct s_zxvision_known_window_names zxvision_known_window_names;
 
+extern char **zxvision_find_icon_for_known_window(char *nombre);
+
 extern int total_restore_window_array_elements;
 
 extern int zxvision_currently_restoring_windows_on_start;
