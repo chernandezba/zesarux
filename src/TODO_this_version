@@ -271,4 +271,4 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 -on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
-
+-process switcher deberia ordenar procesos por antiguedad. quiza ordenar por pid?
