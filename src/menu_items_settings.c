@@ -9872,7 +9872,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
                 strcpy(estado_icono,"Not Exists");
             }
             else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
-                strcpy(estado_icono,"Exists");
+                strcpy(estado_icono,"Exists ");
             }
             else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
                 strcpy(estado_icono,"Deleted");
@@ -9882,7 +9882,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
                 strcpy(estado_icono,"Unknown");
             }
 
-            sprintf (buffer_texto,"Icon %2d %d,%d %s [%s]",i,zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
+            sprintf (buffer_texto,"Icon %2d %4d,%4d %s [%s]",i,zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
                     estado_icono,defined_direct_functions_array[indice_funcion].texto_funcion);
 
 
