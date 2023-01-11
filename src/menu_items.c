@@ -35180,6 +35180,8 @@ zxvision_window *menu_process_switcher_get_window_n(int indice_buscar)
 
 }
 
+int menu_process_switcher_conmutar_ventana=0;
+
 void menu_process_switcher_handle_click(zxvision_window *ventana)
 {
     int cursor_mouse_x; //=menu_mouse_x;
@@ -35218,6 +35220,14 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
         if (ventana_pulsada!=NULL) {
             printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
+
+
+                //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
+                clicked_on_background_windows=1;
+                which_window_clicked_on_background=ventana_pulsada;            
+
+                //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
+                menu_process_switcher_conmutar_ventana=1;                
         }
     }
 }
@@ -35408,8 +35418,15 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
             break;		
 
             case 0:
+            //TODO: comprobar que realmente se pulsa dentro de ventana
                 if (mouse_left) {
                     menu_process_switcher_handle_click(ventana);
+                    if (menu_process_switcher_conmutar_ventana) {
+                        salir=1;
+
+                        //y tecla como background
+                        tecla=3;
+                    }
                 }
             break;			
         }
@@ -35429,6 +35446,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 		zxvision_destroy_window(ventana);
 	}
 
+    menu_process_switcher_conmutar_ventana=0;
 
 }
 
