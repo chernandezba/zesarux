@@ -61,6 +61,8 @@ extern void menu_visualfloppy_increment_rotation(void);
 
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
 
+extern void menu_process_switcher(MENU_ITEM_PARAMETERS);
+
 extern void menu_settings_display(MENU_ITEM_PARAMETERS);
 
 extern void menu_draw_background_windows(MENU_ITEM_PARAMETERS);
