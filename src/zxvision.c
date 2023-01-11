@@ -9360,21 +9360,11 @@ void zxvision_restart_all_background_windows(void)
                         debug_printf(VERBOSE_DEBUG,"Closing and reopening window %s",nombre);
 
                         //Hay que borrar la ventana de esta manera para que se recree de nuevo con el color de fondo correspondiente
+                        //Nota: no se usa destroy_window porque esta designada para destruir la ventana current
+                        //en cambio, zxvision_delete_window_if_exists, borra la ventana independientemente de si es la current, la del medio, la de abajo...
                         zxvision_delete_window_if_exists(pointer_window);
                         zxvision_known_window_names_array[indice].start(0);
 
-                        //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background,
-                        //siempre que no sea la de normal overlay o null
-                        //zxvision_set_window_overlay_from_current(zxvision_current_window);
-
-                        //restauramos modo normal de texto de menu
-                        //set_menu_overlay_function(normal_overlay_texto_menu);
-
-
-                        //Esa ventana ya viene de background por tanto no hay que guardar nada en la ventana.,
-                        //es más, si estamos aquí es que se ha salido de la ventana con escape (y la current window ya no estará)
-                        //o con f6. Total que no hay que guardar nada.
-                        //Pero si que conviene dejar el overlay como estaba antes
                     }
                     else {
                         //printf("Window %s not found\n",nombre);
