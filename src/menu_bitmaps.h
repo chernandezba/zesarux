@@ -48,6 +48,7 @@ extern char *bitmap_button_ext_desktop_fullscreen[];
 extern char *bitmap_button_ext_desktop_waveform[];
 extern char *bitmap_button_ext_desktop_audioregisters[];
 extern char *bitmap_button_ext_desktop_audiosheet[];
+extern char *bitmap_button_ext_desktop_zxeyes[];
 extern char *bitmap_button_ext_desktop_audiopiano[];
 extern char *bitmap_button_ext_desktop_wavepiano[];
 extern char *bitmap_button_ext_desktop_aymixer[];

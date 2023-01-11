@@ -2448,6 +2448,38 @@ char *bitmap_button_ext_desktop_colour_palettes[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"       xwwwwwwwwx         ",
     "        xxxxxxxx          ",    //25 
 };
+
+
+char *bitmap_button_ext_desktop_zxeyes[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"     xxx          xxx     ",		
+	"    xx xx        xx xx    ",	
+	"   x     x      x     x   ",			
+	"  x       x    x       x  ",			
+	" x         x  x         x ", 		
+	" x         x  x         x ",		
+	" x         x  x         x ",		
+	"x           xx           x",	//10	
+	"x           xx           x",		
+	"x       xx  xx       xx  x",		
+	"x      xxxx xx      xxxx x",		
+	"x       xx  xx       xx  x",		
+	"x           xx           x",		
+	"x           xx           x",		
+	" x         x  x         x ",		
+	" x         x  x         x ",		
+	"  x       x    x       x  ",		
+	"   x     x      x     x   ",    //20
+	"    xx xx        xx xx    ",		
+	"     xxx          xxx     ",		
+	"                          ",		
+	"                          ",
+	"                          " 	 //25
+};
+
 	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
