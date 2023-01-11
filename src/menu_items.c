@@ -35069,8 +35069,10 @@ void menu_process_switcher_overlay(void)
                 printf("Ventana %d %s\n",indice_ventana,pointer_window->geometry_name);
 
                 indice_ventana++;
-                pointer_window=pointer_window->next_window;
+                
             }
+
+            pointer_window=pointer_window->next_window;
         }
 
     }
@@ -35079,7 +35081,7 @@ void menu_process_switcher_overlay(void)
 
 
     //Mostrar colores
-    zxvision_draw_window_contents(menu_process_switcher_window);
+    zxvision_draw_window_contents(w);
     
 }
 
