@@ -35200,10 +35200,11 @@ zxvision_window *menu_process_switcher_get_window_n(int indice_buscar/*,zxvision
 
 int menu_process_switcher_conmutar_ventana=0;
 
-void menu_process_switcher_handle_click(zxvision_window *ventana)
+int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
 {
-    int cursor_mouse_x; //=menu_mouse_x;
-    int cursor_mouse_y; //=menu_mouse_y;
+
+    int cursor_mouse_x; 
+    int cursor_mouse_y; 
     menu_process_switcher_calculate_mouse_xy_absolute_interface(&cursor_mouse_x,&cursor_mouse_y);
 
     int this_win_x=zxvision_window_get_pixel_x_position(ventana);
@@ -35234,6 +35235,21 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
         printf("Pulsado en icono indice %d\n",indice_total_icono);
 
+        return indice_total_icono;
+
+    }
+
+    return -1;
+}
+
+
+void menu_process_switcher_handle_click(zxvision_window *ventana)
+{
+
+    int indice_total_icono=menu_process_switcher_get_index_icon_on_mouse(ventana);
+    if (indice_total_icono>=0) {
+
+
         zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono/*,ventana*/);
 
         if (ventana_pulsada!=NULL) {
@@ -35251,7 +35267,7 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 }
 
 
-void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono)
+void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono,int seleccionado_indice_icono)
 {
 
     char **puntero_bitmap;
@@ -35281,10 +35297,27 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
         }
     }
 
+
+
     //Y dibujar dicho botón
     int nivel_zoom=1;
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 
         0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0);
+
+    if (indice_icono==seleccionado_indice_icono) {
+        //recuadro alrededor
+        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;//+CHARSET_ICONS_ALTO;
+        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;//+CHARSET_ICONS_ANCHO;
+        int color_recuadro=2;
+        for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
+            zxvision_putpixel(ventana,offset_x+x,offset_y,color_recuadro);
+            zxvision_putpixel(ventana,offset_x+x,offset_y+alto_recuadro-1,color_recuadro);
+        }
+        for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
+            zxvision_putpixel(ventana,offset_x,offset_y+y,color_recuadro);
+            zxvision_putpixel(ventana,offset_x+ancho_recuadro-1,offset_y+y,color_recuadro);
+        }        
+    }
 
     //Y texto
     menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name);
@@ -35407,6 +35440,9 @@ void menu_process_switcher_overlay(void)
     }
 */
 
+
+    int seleccionado_indice_icono=menu_process_switcher_get_index_icon_on_mouse(w);
+
     int i;
     for (i=0;i<menu_process_switcher_total_icons;i++) {
 
@@ -35417,7 +35453,7 @@ void menu_process_switcher_overlay(void)
 
             //printf("Pid %u window %s\n",pointer_window->pid,pointer_window->geometry_name);
 
-            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i);
+            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono);
         }
 
     }
