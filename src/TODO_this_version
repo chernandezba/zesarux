@@ -276,3 +276,5 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 *boton derecho: minimize y maximize no lo hace del todo bien parece
 
 -renombrar geometry name de windowlist? que sucede al hacer restore? se restauran todas menos esa? todo la config carga bien?
+
+-color palettes parpadea al mover raton. normal?
