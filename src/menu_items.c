@@ -35098,8 +35098,9 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
 
 }
 
-#define PROCESS_SWITCHER_ICON_SEPARATION_X (ZESARUX_ASCII_LOGO_ANCHO*2)
-#define PROCESS_SWITCHER_ICON_SEPARATION_Y (ZESARUX_ASCII_LOGO_ANCHO*2)
+//*1.75
+#define PROCESS_SWITCHER_ICON_SEPARATION_X ((ZESARUX_ASCII_LOGO_ANCHO*175)/100)
+#define PROCESS_SWITCHER_ICON_SEPARATION_Y ((ZESARUX_ASCII_LOGO_ANCHO*175)/100)
 
 
 //Retorna las coordenadas del raton 
@@ -35224,15 +35225,15 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
         zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono/*,ventana*/);
 
         if (ventana_pulsada!=NULL) {
-            printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
+            //printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
 
 
-                //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
-                clicked_on_background_windows=1;
-                which_window_clicked_on_background=ventana_pulsada;            
+            //TODO: esto funciona aunque no estoy del todo seguro que vaya a ir bien siempre...
+            clicked_on_background_windows=1;
+            which_window_clicked_on_background=ventana_pulsada;            
 
-                //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
-                menu_process_switcher_conmutar_ventana=1;                
+            //Decir que hay que salir de aqui yendo a background, pero sin tener que dejar flag de background para la siguiente ventana
+            menu_process_switcher_conmutar_ventana=1;                
         }
     }
 }
