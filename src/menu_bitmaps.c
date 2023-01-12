@@ -2727,6 +2727,36 @@ char *bitmap_button_ext_desktop_watches[EXT_DESKTOP_BUTTONS_ANCHO]={
     "                   x      "   //25 
 };
 
+char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW XX XX XX WW WW WW  ",
+	" WW WW XX XX XX WW WW WW  ",
+	"                          ",			
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",			
+	" WW WW WW WW WW WW WW WW  ",	//10		
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+    " WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW XX WW WW  ",
+	" WW WW WW WW WW XX WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",    //20
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",
+	"                          " 	 //25
+};
+
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 	"                          ",	//0

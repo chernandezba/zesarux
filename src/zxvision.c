@@ -9008,7 +9008,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"wavepiano",menu_beeper_pianokeyboard,bitmap_button_ext_desktop_wavepiano},
 
 #ifdef EMULATE_VISUALMEM
-	{"visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_userdefined},
+	{"visualmem",menu_debug_new_visualmem,bitmap_button_ext_desktop_visualmem},
 #endif
 
 #ifdef EMULATE_CPU_STATS
