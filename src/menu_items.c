@@ -35272,11 +35272,29 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
             switch (respuesta) {
 
                 case 1:
+                    //decimos que la ventana a minimizar no se dibujara como si fuera activa
+                    zxvision_reset_ventana_tipo_activa();
                     zxvision_minimize_window(ventana_pulsada);
+                    //despues del maximize, se ha redibujado esa ventana maximizada
+                    //de alguna manera afectando a la ventana que es activa ahora
+                    //hacer draw_window de nuestra ventana para corregir esto
+                    //TODO: esto no se hace igual desde process management, al hacer maximize o minimize,
+                    //no estoy seguro por que alli no hace falta
+
+                    zxvision_set_ventana_tipo_activa();
+                    zxvision_draw_window(ventana);               
                 break;
 
                 case 2:
+                    //decimos que la ventana a maximizar no se dibujara como si fuera activa
+                    zxvision_reset_ventana_tipo_activa();
                     zxvision_maximize_window(ventana_pulsada);
+                    //despues del maximize, se ha redibujado esa ventana maximizada
+                    //de alguna manera afectando a la ventana que es activa ahora
+                    //hacer draw_window de nuestra ventana para corregir esto
+
+                    zxvision_set_ventana_tipo_activa();
+                    zxvision_draw_window(ventana);
                 break;
 
                 case 3:
@@ -35290,7 +35308,6 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
 
                 case 5:
                     zxvision_window_delete_this_window(ventana_pulsada);
-                
                 break;
             }
      

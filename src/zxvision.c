@@ -9782,6 +9782,16 @@ unsigned int zxvision_get_next_pid(void)
     return zxvision_last_pid;
 }
 
+void zxvision_set_ventana_tipo_activa(void)
+{
+    ventana_tipo_activa=1;
+}
+
+void zxvision_reset_ventana_tipo_activa(void)
+{
+    ventana_tipo_activa=0;
+}
+
 
 void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title)
 {
