@@ -35272,7 +35272,22 @@ int menu_process_switcher_mouse_en_ventana(zxvision_window *w)
     else return 0;
 }
 
-void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono,int seleccionado_indice_icono)
+void menu_process_switcher_draw_recuadro(zxvision_window *ventana,int offset_x,int offset_y,int ancho_recuadro,int alto_recuadro,int color_recuadro)
+{
+    int x,y;
+
+    for (x=0;x<ancho_recuadro;x++) {
+        zxvision_putpixel(ventana,offset_x+x,offset_y,color_recuadro);
+        zxvision_putpixel(ventana,offset_x+x,offset_y+alto_recuadro-1,color_recuadro);
+    }
+    for (y=0;y<alto_recuadro;y++) {
+        zxvision_putpixel(ventana,offset_x,offset_y+y,color_recuadro);
+        zxvision_putpixel(ventana,offset_x+ancho_recuadro-1,offset_y+y,color_recuadro);
+    }    
+}
+
+void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono,
+    int seleccionado_indice_icono,int si_tarea_actual)
 {
 
     char **puntero_bitmap;
@@ -35309,20 +35324,26 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     screen_put_asciibitmap_generic(puntero_bitmap,NULL,offset_x,offset_y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, 
         0,menu_process_switcher_draw_icon_putpixel,nivel_zoom,0);
 
+    //marca alrededor del seleccionado
     if (indice_icono==seleccionado_indice_icono) {
         //recuadro alrededor
         int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
         int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
         int color_recuadro=ESTILO_GUI_COLOR_AVISO;
-        for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
-            zxvision_putpixel(ventana,offset_x+x,offset_y,color_recuadro);
-            zxvision_putpixel(ventana,offset_x+x,offset_y+alto_recuadro-1,color_recuadro);
-        }
-        for (y=0;y<ZESARUX_ASCII_LOGO_ALTO;y++) {
-            zxvision_putpixel(ventana,offset_x,offset_y+y,color_recuadro);
-            zxvision_putpixel(ventana,offset_x+ancho_recuadro-1,offset_y+y,color_recuadro);
-        }        
+        menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
     }
+
+    //marca alrededor del icono activo. como la teoria y la logica dice que no se puede estar seleccionando un icono
+    //(logicamente esta es la ventana activa y esta como tal no tiene icono) y ademas ser esa la ventana activa, el recuadro
+    //va a parar a la misma posicion y tamaño, porque los dos no se dan a la vez
+    if (si_tarea_actual) {
+        //recuadro alrededor
+        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
+        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
+        int color_recuadro=ESTILO_GUI_PAPEL_SELECCIONADO;
+        menu_process_switcher_draw_recuadro(ventana,offset_x,offset_y,ancho_recuadro,alto_recuadro,color_recuadro);
+    }
+
 
     //Y texto
     menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name);
@@ -35466,7 +35487,11 @@ void menu_process_switcher_overlay(void)
 
             //printf("Pid %u window %s\n",pointer_window->pid,pointer_window->geometry_name);
 
-            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono);
+            int si_tarea_actual=0;
+
+            if (pointer_window==zxvision_current_window) si_tarea_actual=1;
+
+            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i,seleccionado_indice_icono,si_tarea_actual);
         }
 
     }
