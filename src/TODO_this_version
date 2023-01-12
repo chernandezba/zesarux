@@ -272,8 +272,6 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
 
--process switcher:
-*boton derecho: minimize y maximize no lo hace del todo bien parece
 
 -renombrar geometry name de windowlist? que sucede al hacer restore? se restauran todas menos esa? todo la config carga bien?
 
