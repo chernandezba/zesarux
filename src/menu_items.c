@@ -35181,8 +35181,8 @@ int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
     //saltar la linea de titulo
     this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
 
-    printf("mouse on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
-    printf("Window starts at %d,%d\n",this_win_x,this_win_y);
+    //printf("mouse on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
+    //printf("Window starts at %d,%d\n",this_win_x,this_win_y);
 
     int offset_in_window_x=cursor_mouse_x-this_win_x;
     int offset_in_window_y=cursor_mouse_y-this_win_y;
@@ -35198,13 +35198,13 @@ int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
         offset_in_window_x /=PROCESS_SWITCHER_ICON_SEPARATION_X;
         offset_in_window_y /=PROCESS_SWITCHER_ICON_SEPARATION_Y;
 
-        printf("Pulsado en icono %d,%d\n",offset_in_window_x,offset_in_window_y);
+        //printf("Pulsado en icono %d,%d\n",offset_in_window_x,offset_in_window_y);
 
         int max_icons_per_row=menu_process_switcher_get_max_icons_per_row(ventana);
 
         int indice_total_icono=offset_in_window_y*max_icons_per_row+offset_in_window_x;
 
-        printf("Pulsado en icono indice %d\n",indice_total_icono);
+        //printf("Pulsado en icono indice %d\n",indice_total_icono);
 
         return indice_total_icono;
 
@@ -35419,11 +35419,11 @@ void menu_process_switcher_overlay(void)
     int seleccionado_indice_icono=menu_process_switcher_get_index_icon_on_mouse(w);
 
     if (!menu_process_switcher_mouse_en_ventana(w)) {
-        printf("no en ventana\n");
+        //printf("no en ventana\n");
         seleccionado_indice_icono=-1;
     }
     else {
-        printf("si en ventana\n");
+        //printf("si en ventana\n");
     }
 
     int i;
@@ -35550,7 +35550,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
             case 0:
             
-                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana)) {
+                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
+                    //printf("mouse_is_dragging: %d\n",mouse_is_dragging);
                     menu_process_switcher_handle_click(ventana);
                     if (menu_process_switcher_conmutar_ventana) {
                         salir=1;
