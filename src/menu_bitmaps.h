@@ -52,6 +52,7 @@ extern char *bitmap_button_ext_desktop_zxeyes[];
 extern char *bitmap_button_ext_desktop_watches[];
 extern char *bitmap_button_ext_desktop_visualmem[];
 extern char *bitmap_button_ext_desktop_view_sensors[];
+extern char *bitmap_button_ext_desktop_visualfloppy[];
 extern char *bitmap_button_ext_desktop_audiopiano[];
 extern char *bitmap_button_ext_desktop_wavepiano[];
 extern char *bitmap_button_ext_desktop_aymixer[];
