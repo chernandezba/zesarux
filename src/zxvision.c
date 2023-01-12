@@ -14740,6 +14740,11 @@ void zxvision_set_next_menu_position(int x,int y)
     force_next_menu_position_y=y;
 }
 
+void zxvision_reset_set_next_menu_position(void)
+{
+    force_next_menu_position.v=0;
+}
+
 
 void zxvision_set_next_menu_position_from_current_mouse(void)
 {

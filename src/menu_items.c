@@ -35250,13 +35250,22 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
         if (ventana_pulsada!=NULL) {
             //printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
 
-            //int respuesta=menu_simple_two_choices("Windows action","What do you want to?","Close","Null");
+            
+
+            //Quiero que el menu aparezca cerca del raton
+            zxvision_set_next_menu_position_from_current_mouse();
+
+            //Pero si process switcher esta siempre visible, apareceria por encima, desactivarlo temporalmente
+            int antes_always_visible=ventana->always_visible;
+
+            ventana->always_visible=0;
 
             //Esto muy parecido a process management pero no igual
-
-
             int respuesta=menu_simple_five_choices("Action","Do you want to",
                 "Minimize","Maximize","Switch always visible","Information","Close");
+
+            ventana->always_visible=antes_always_visible;
+            zxvision_reset_set_next_menu_position();
 
 
             switch (respuesta) {
@@ -35545,7 +35554,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
         ventana->can_be_backgrounded=1;
 
-        //TODO: prueba siempre visible. esto quiza controlar con un setting
+        //siempre visible. esto quiza controlar con un setting
         ventana->always_visible=1;
          
     }
