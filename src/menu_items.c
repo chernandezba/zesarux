@@ -35266,6 +35266,11 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
     }
 }
 
+int menu_process_switcher_mouse_en_ventana(zxvision_window *w)
+{
+    if (zxvision_current_window==w && si_menu_mouse_en_ventana()) return 1;
+    else return 0;
+}
 
 void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_name,int indice_icono,int seleccionado_indice_icono)
 {
@@ -35306,9 +35311,9 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
 
     if (indice_icono==seleccionado_indice_icono) {
         //recuadro alrededor
-        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;//+CHARSET_ICONS_ALTO;
-        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;//+CHARSET_ICONS_ANCHO;
-        int color_recuadro=2;
+        int alto_recuadro=ZESARUX_ASCII_LOGO_ALTO;
+        int ancho_recuadro=ZESARUX_ASCII_LOGO_ANCHO;
+        int color_recuadro=ESTILO_GUI_COLOR_AVISO;
         for (x=0;x<ZESARUX_ASCII_LOGO_ANCHO;x++) {
             zxvision_putpixel(ventana,offset_x+x,offset_y,color_recuadro);
             zxvision_putpixel(ventana,offset_x+x,offset_y+alto_recuadro-1,color_recuadro);
@@ -35443,6 +35448,14 @@ void menu_process_switcher_overlay(void)
 
     int seleccionado_indice_icono=menu_process_switcher_get_index_icon_on_mouse(w);
 
+    if (!menu_process_switcher_mouse_en_ventana(w)) {
+        printf("no en ventana\n");
+        seleccionado_indice_icono=-1;
+    }
+    else {
+        printf("si en ventana\n");
+    }
+
     int i;
     for (i=0;i<menu_process_switcher_total_icons;i++) {
 
@@ -35569,8 +35582,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
             break;		
 
             case 0:
-            //TODO: comprobar que realmente se pulsa dentro de ventana
-                if (mouse_left) {
+            
+                if (mouse_left && menu_process_switcher_mouse_en_ventana(ventana)) {
                     menu_process_switcher_handle_click(ventana);
                     if (menu_process_switcher_conmutar_ventana) {
                         salir=1;
