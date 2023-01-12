@@ -35279,7 +35279,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
                 break;
 
                 case 3:
-                    ventana->always_visible ^=1;
+                    ventana_pulsada->always_visible ^=1;
                 break;
 
                 case 4:
