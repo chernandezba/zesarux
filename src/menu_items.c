@@ -15509,6 +15509,7 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_network_http_request,NULL,
                 "Test Http request","Test peticion Http","Test peticio Http");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
 //Fin de condicion si hay pthreads
 #endif
@@ -36489,7 +36490,6 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"Network related actions");
             menu_add_item_menu_ayuda(array_menu_principal,"Network related actions");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
-            menu_add_item_menu_es_avanzado(array_menu_principal);
 
 
             if (menu_allow_background_windows) {
