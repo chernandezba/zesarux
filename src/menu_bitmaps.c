@@ -2757,6 +2757,41 @@ char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_view_sensors[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"                          ",		
+	"         gggggggg         ",	
+	"      gggggggggggggg      ",			
+	"    ggg            ggg    ",		
+    "   ggg              ggg   ",			
+	"  gg                  gg  ", 		
+	"  gg x                gg  ",		
+	" gg   x                gg ",		
+	" gg    x               gg ",	//10	
+	" gg     x              gg ",		
+	"gg       x              gg",		
+	"gg        x             gg",		
+	"gg         x            gg",		
+	"gg          x           gg",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",    //20
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",
+	"                          " 	 //25
+};
+
+
+
+
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 	"                          ",	//0
