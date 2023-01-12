@@ -9016,7 +9016,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #endif
 
 	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
-	{"watches",menu_watches,bitmap_button_ext_desktop_userdefined},
+	{"watches",menu_watches,bitmap_button_ext_desktop_watches},
 	{"displaypalettes",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
 	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_userdefined},
 	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_userdefined},
