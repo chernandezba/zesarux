@@ -35052,7 +35052,7 @@ void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,
 }
 
 //Escribir texto del icono
-void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,char *texto)
+void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,char *texto,int max_texto)
 {
     
 
@@ -35066,9 +35066,10 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
     int alto_caracter=CHARSET_ICONS_ALTO;
 
 
-    while (*texto) {
+    while (*texto && max_texto>0) {
         unsigned char c=*texto;
         texto++;
+        max_texto--;
 
         //if (ESTILO_GUI_SOLO_MAYUSCULAS) c=letra_mayuscula(c);
 
@@ -35313,7 +35314,12 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
 
 
     //Y texto
-    menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name);
+    int max_texto=PROCESS_SWITCHER_ICON_SEPARATION_X/(CHARSET_ICONS_ANCHO+1);
+
+    //quitar 1 caracter para que no quede pegado
+    max_texto--;
+
+    menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name,max_texto);
 
 }
 
