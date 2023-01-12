@@ -35238,6 +35238,56 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
     }
 }
 
+void menu_process_switcher_handle_click_right(zxvision_window *ventana)
+{
+
+    int indice_total_icono=menu_process_switcher_get_index_icon_on_mouse(ventana);
+    if (indice_total_icono>=0) {
+
+
+        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono/*,ventana*/);
+
+        if (ventana_pulsada!=NULL) {
+            //printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
+
+            //int respuesta=menu_simple_two_choices("Windows action","What do you want to?","Close","Null");
+
+            //Esto muy parecido a process management pero no igual
+
+
+            int respuesta=menu_simple_five_choices("Action","Do you want to",
+                "Minimize","Maximize","Switch always visible","Information","Close");
+
+
+            switch (respuesta) {
+
+                case 1:
+                    zxvision_minimize_window(ventana_pulsada);
+                break;
+
+                case 2:
+                    zxvision_maximize_window(ventana_pulsada);
+                break;
+
+                case 3:
+                    ventana->always_visible ^=1;
+                break;
+
+                case 4:
+                    menu_display_window_list_info(ventana_pulsada);
+                break;
+            
+
+                case 5:
+                    zxvision_window_delete_this_window(ventana_pulsada);
+                
+                break;
+            }
+     
+        }
+    }
+}
+
 int menu_process_switcher_mouse_en_ventana(zxvision_window *w)
 {
     if (zxvision_current_window==w && si_menu_mouse_en_ventana()) return 1;
@@ -35561,6 +35611,12 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
                         tecla=3;
                     }
                 }
+
+                if (mouse_right && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
+                    //printf("mouse_is_dragging: %d\n",mouse_is_dragging);
+                    menu_process_switcher_handle_click_right(ventana);
+                }
+
             break;			
         }
 
