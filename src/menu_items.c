@@ -35123,9 +35123,6 @@ void menu_process_switcher_calculate_mouse_xy_absolute_interface(int *resultado_
 	*resultado_x=x;
 	*resultado_y=y;
 
-
-
-	
 }
 
 
@@ -35165,36 +35162,6 @@ zxvision_window *menu_process_switcher_get_window_n(int indice_buscar/*,zxvision
     if (indice_buscar<0 || indice_buscar>=menu_process_switcher_total_icons) return NULL;
 
     else return menu_process_switcher_sorted_list[indice_buscar];
-
-    /*
-    if (zxvision_current_window!=NULL) {
-
-        int indice_icono=0;
-
-        zxvision_window *pointer_window;
-
-        pointer_window=zxvision_find_first_window_below_this(zxvision_current_window); 
-
-        //sacar una por una, las que permiten background
-
-        while(pointer_window!=NULL && indice_icono!=indice_buscar) {
-            //printf("%p\n",pointer_window);
-            //Si es una ventana que permite background y ademas no somos nosotros mismos
-            if (pointer_window->can_be_backgrounded && pointer_window!=w) {
-
-                indice_icono++;
-                
-            }
-
-            pointer_window=pointer_window->next_window;
-        }
-
-        return pointer_window;
-
-    }    
-
-    else return NULL;
-    */
 
 }
 
@@ -35409,7 +35376,6 @@ void menu_process_switcher_overlay(void)
     //Print....      
     //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...         
 
-    //Primero ir a buscar la ventana de abajo del todo
 
     int total_icons=menu_process_switcher_get_total_tasks(w);
     //printf("Total icons: %d\n",total_icons);
@@ -35438,33 +35404,7 @@ void menu_process_switcher_overlay(void)
         //printf("After sort\n");
     }
 
-/*
-    if (zxvision_current_window!=NULL) {
 
-        int indice_icono=0;
-
-        zxvision_window *pointer_window;
-
-        pointer_window=zxvision_find_first_window_below_this(zxvision_current_window); 
-
-        //sacar una por una, las que permiten background
-
-        while(pointer_window!=NULL) {
-            //Si es una ventana que permite background y ademas no somos nosotros mismos
-            if (pointer_window->can_be_backgrounded && pointer_window!=w) {
-                //printf("Ventana %d %s\n",indice_icono,pointer_window->geometry_name);
-
-                menu_process_switcher_draw_icon(w,pointer_window->geometry_name,indice_icono);
-
-                indice_icono++;
-                
-            }
-
-            pointer_window=pointer_window->next_window;
-        }
-
-    }
-*/
 
 
     int seleccionado_indice_icono=menu_process_switcher_get_index_icon_on_mouse(w);
@@ -35588,13 +35528,6 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
 
         switch (tecla) {
-
-            case 11:
-                //arriba
-                //blablabla          
-            break;
-
-
 
             //Salir con ESC
             case 2:
