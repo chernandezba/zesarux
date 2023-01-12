@@ -35070,7 +35070,10 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
         unsigned char c=*texto;
         texto++;
 
-        if (ESTILO_GUI_SOLO_MAYUSCULAS) c=letra_mayuscula(c);
+        //if (ESTILO_GUI_SOLO_MAYUSCULAS) c=letra_mayuscula(c);
+
+        //Fuerzo mayusculas porque se leen mejor
+        c=letra_mayuscula(c);
 
         if (c<32 || c>126) c='?';
         
@@ -35149,8 +35152,21 @@ void menu_process_switcher_draw_icon_get_xy(zxvision_window *ventana,int indice_
     *pos_y=indice_icono / max_icons_per_row;    
 }
 
-zxvision_window *menu_process_switcher_get_window_n(int indice_buscar,zxvision_window *w)
+#define PROCESS_SWITCHER_MAXIMUM_ICONS 256
+
+//Array de punteros a ventanas zxvision, donde se ordenaran por antiguedad
+zxvision_window *menu_process_switcher_sorted_list[PROCESS_SWITCHER_MAXIMUM_ICONS];
+
+int menu_process_switcher_total_icons=0;
+
+zxvision_window *menu_process_switcher_get_window_n(int indice_buscar/*,zxvision_window *w*/)
 {
+
+    if (indice_buscar<0 || indice_buscar>=menu_process_switcher_total_icons) return NULL;
+
+    else return menu_process_switcher_sorted_list[indice_buscar];
+
+    /*
     if (zxvision_current_window!=NULL) {
 
         int indice_icono=0;
@@ -35178,6 +35194,7 @@ zxvision_window *menu_process_switcher_get_window_n(int indice_buscar,zxvision_w
     }    
 
     else return NULL;
+    */
 
 }
 
@@ -35217,7 +35234,7 @@ void menu_process_switcher_handle_click(zxvision_window *ventana)
 
         printf("Pulsado en icono indice %d\n",indice_total_icono);
 
-        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono,ventana);
+        zxvision_window *ventana_pulsada=menu_process_switcher_get_window_n(indice_total_icono/*,ventana*/);
 
         if (ventana_pulsada!=NULL) {
             printf("Ventana pulsada: %s\n",ventana_pulsada->geometry_name);
@@ -35274,6 +35291,52 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
 
 }
 
+
+
+
+int menu_process_switcher_get_total_tasks(zxvision_window *w)
+{
+    int total_tasks=0;
+
+    if (zxvision_current_window!=NULL) {
+
+        zxvision_window *pointer_window;
+
+        pointer_window=zxvision_find_first_window_below_this(zxvision_current_window); 
+
+        //sacar una por una, las que permiten background
+
+        while(pointer_window!=NULL) {
+            //Si es una ventana que permite background y ademas no somos nosotros mismos
+            if (pointer_window->can_be_backgrounded && pointer_window!=w) {
+
+                //La metemos en el array que se va a ordenar despues
+                menu_process_switcher_sorted_list[total_tasks]=pointer_window;
+
+                total_tasks++;
+                
+            }
+
+            pointer_window=pointer_window->next_window;
+        }
+
+    }
+
+    return total_tasks;        
+}
+
+int menu_process_switcher_sort_funct(const zxvision_window **d1, const zxvision_window **d2)
+{
+
+	//printf ("menu_filesel_alphasort %s %s\n",(*d1)->d_name,(*d2)->d_name );
+
+	//compara pid
+    //printf("Comparar %u con %u\n",d1->pid,d2->pid);
+	return  ((*d1)->pid)  - ((*d2)->pid);
+}
+
+
+
 void menu_process_switcher_overlay(void)
 {
 
@@ -35289,6 +35352,34 @@ void menu_process_switcher_overlay(void)
 
     //Primero ir a buscar la ventana de abajo del todo
 
+    int total_icons=menu_process_switcher_get_total_tasks(w);
+    //printf("Total icons: %d\n",total_icons);
+
+    if (total_icons>PROCESS_SWITCHER_MAXIMUM_ICONS) {
+        //Maximum reached. Do nothing
+        //printf("Maximum reached. Do nothing\n");
+        menu_process_switcher_total_icons=0;
+        return;
+    }
+
+    menu_process_switcher_total_icons=total_icons;
+
+    //ordenar la lista de aplicaciones, para tenerla ordenada por "antigüedad", o sea, por el pid
+    //en vez de la ordenacion que tiene de "desde abajo hasta arriba"
+    //TODO: en caso que el contador de pid diera la vuelta (32 bits), cosa altamente improbable, a no ser
+    //que se abrieran mas de 2^32 ventanas, quedarian ordenadas mal las ventanas posteriores
+    if (menu_process_switcher_total_icons>0) {
+        //printf("Before sort\n");
+	    int (*funcion_compar)(const void *, const void *);
+
+	    funcion_compar=( int (*)(const void *, const void *)  )menu_process_switcher_sort_funct;
+
+	    qsort(menu_process_switcher_sorted_list,menu_process_switcher_total_icons,sizeof( zxvision_window *), funcion_compar);    
+
+        //printf("After sort\n");
+    }
+
+/*
     if (zxvision_current_window!=NULL) {
 
         int indice_icono=0;
@@ -35314,7 +35405,22 @@ void menu_process_switcher_overlay(void)
         }
 
     }
+*/
 
+    int i;
+    for (i=0;i<menu_process_switcher_total_icons;i++) {
+
+        zxvision_window *pointer_window;
+        pointer_window=menu_process_switcher_get_window_n(i);
+
+        if (pointer_window!=NULL) {
+
+            //printf("Pid %u window %s\n",pointer_window->pid,pointer_window->geometry_name);
+
+            menu_process_switcher_draw_icon(w,pointer_window->geometry_name,i);
+        }
+
+    }
     
 
 
@@ -35388,6 +35494,10 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
 
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_process_switcher_overlay);
+
+    //Por si acaso, si alguien pulsase en la ventana, antes de que se dibujase el primer overlay y cargada lista de ventanas,
+    //si hubiera una lista anterior con algun puntero invalido, mejor decimos que de momento no hay iconos hasta que se ejecute el overlay
+    menu_process_switcher_total_icons=0;
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
