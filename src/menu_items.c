@@ -35038,7 +35038,7 @@ void menu_visual_floppy(MENU_ITEM_PARAMETERS)
 
 zxvision_window *menu_process_switcher_window;
 
-void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
+void menu_process_switcher_draw_icon_text_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color GCC_UNUSED)
 {
     //El color es el del estilo
     zxvision_putpixel(menu_process_switcher_window,x,y,ESTILO_GUI_TINTA_NORMAL);
@@ -35052,7 +35052,7 @@ void menu_process_switcher_draw_icon_putpixel(z80_int *destino GCC_UNUSED,int x,
 }
 
 //Escribir texto del icono
-void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,char *texto,int max_texto)
+void menu_process_switcher_draw_icon_text(int x,int y,char *texto,int max_texto)
 {
     
 
@@ -35323,7 +35323,7 @@ void menu_process_switcher_draw_icon(zxvision_window *ventana,char *geometry_nam
     //quitar 1 caracter para que no quede pegado
     max_texto--;
 
-    menu_process_switcher_draw_icon_text(ventana,offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name,max_texto);
+    menu_process_switcher_draw_icon_text(offset_x,offset_y+ZESARUX_ASCII_LOGO_ALTO,geometry_name,max_texto);
 
 }
 
