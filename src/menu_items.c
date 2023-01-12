@@ -35102,7 +35102,7 @@ void menu_process_switcher_draw_icon_text(zxvision_window *ventana,int x,int y,c
 #define PROCESS_SWITCHER_ICON_SEPARATION_Y (ZESARUX_ASCII_LOGO_ANCHO*2)
 
 
-//Retorna las coordenadas del raton solo reduciendo por zoom gui
+//Retorna las coordenadas del raton 
 void menu_process_switcher_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_y)
 {
 	int x,y;
@@ -35113,8 +35113,8 @@ void menu_process_switcher_calculate_mouse_xy_absolute_interface(int *resultado_
 	//x /=menu_char_width;
 	//y /=menu_char_height;
 
-	x /= menu_gui_zoom;
-	y /= menu_gui_zoom;
+	//x /= menu_gui_zoom;
+	//y /= menu_gui_zoom;
 
     //multiplicamos por zoom
     x *=zoom_x;
@@ -35181,7 +35181,7 @@ int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
     //saltar la linea de titulo
     this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
 
-    printf("clicked on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
+    printf("mouse on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
     printf("Window starts at %d,%d\n",this_win_x,this_win_y);
 
     int offset_in_window_x=cursor_mouse_x-this_win_x;
@@ -35189,6 +35189,9 @@ int menu_process_switcher_get_index_icon_on_mouse(zxvision_window *ventana)
 
     offset_in_window_x /=zoom_x;
     offset_in_window_y /=zoom_y;
+
+    offset_in_window_x /=menu_gui_zoom;
+    offset_in_window_y /=menu_gui_zoom;    
 
     //Obtener coordenada del icono pulsado dentro de la ventana
     if (offset_in_window_x>=0 && offset_in_window_y>=0) {
