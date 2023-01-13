@@ -3565,11 +3565,23 @@ int util_write_configfile(void)
                 int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
                 strcpy(texto_funcion,defined_direct_functions_array[indice_funcion].texto_funcion);
 
-                //--zxdesktop-add-icon x y a n e s                  Add icon to position x,y, to function f, icon name n, extra parameters e, status s
-                ADD_STRING_CONFIG,"--zxdesktop-add-icon %d %d \"%s\" \"%s\" \"%s\" \"%s\"",
-                    zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
-                    texto_funcion,zxdesktop_configurable_icons_list[i].text_icon,zxdesktop_configurable_icons_list[i].extra_info,
-                    buffer_status);
+                //--zxdesktop-add-icon x y a n e s    Add icon to position x,y, to function f, icon name n, extra parameters e, status s
+                //Si opcion de vaciar papelera al salir, significa no grabar items que esten borrados
+
+                int saveicon=1;
+
+                if (zxdesktop_empty_trash_on_exit.v && zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
+                    saveicon=0;
+                }
+
+                if (saveicon) {
+
+                    ADD_STRING_CONFIG,"--zxdesktop-add-icon %d %d \"%s\" \"%s\" \"%s\" \"%s\"",
+                        zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
+                        texto_funcion,zxdesktop_configurable_icons_list[i].text_icon,zxdesktop_configurable_icons_list[i].extra_info,
+                        buffer_status);
+
+                }
             }
         }
     }

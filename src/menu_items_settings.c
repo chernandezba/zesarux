@@ -9912,18 +9912,22 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');      
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);      
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_height);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
-			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");            
+			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);            
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,menu_ext_desktop_cond,"C~~ustom Height");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');   
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);      
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
