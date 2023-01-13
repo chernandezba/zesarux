@@ -67,6 +67,7 @@ extern char *bitmap_button_ext_desktop_snapinramrewind[];
 extern char *bitmap_button_ext_desktop_snapinramffw[];
 extern char *bitmap_button_ext_desktop_pause[];
 extern char *bitmap_button_ext_desktop_debugcpu[];
+extern char *bitmap_button_ext_desktop_ioports[];
 extern char *bitmap_button_ext_desktop_debugcpu_view_adventure[];
 extern char *bitmap_button_ext_desktop_text_adventure_map[];
 extern char *bitmap_button_ext_desktop_hexeditor[];

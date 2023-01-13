@@ -2697,6 +2697,36 @@ char *bitmap_button_ext_desktop_debugcpu[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       R    R             "   //25 
 };
 
+char *bitmap_button_ext_desktop_ioports[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"  x   x   x   x   x   x   ",	//0
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xwxxxxxxxxxxxwxwxxwxwxxwxx",		
+	"xwwxxxxxxxxxwxxxwwxxwxxwxx",		
+	"xwxxxxxxxxxwxxxwxxwxwxxwxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   ",
+    "  x   x   x               ",
+    "  x   x   x       xx      ",
+    "  x   x   xxxxxx   x xxxxx",
+  	"  x   x            x      ",
+	"  x   x                   ",
+	"  x   x           xx      ",
+	"  x   xxxxxxxxxx   x xxxxx",
+	"  x                x      ",	//20		
+	"  x                       ",
+	"  x              xxx      ",
+	"  x              x x      ",
+	"  xxxxxxxxxxxxxx x x xxxxx",
+    "                 xxx      "   //25 
+};
+
 char *bitmap_button_ext_desktop_watches[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 	"  x   x   x   x   x   x   ",	//0
