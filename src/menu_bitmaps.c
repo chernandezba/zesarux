@@ -4003,6 +4003,36 @@ char *bitmap_button_ext_desktop_my_machine_generic[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_helpkeyboard[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",		
+	"  x  x  xxxx  x     xxxx  ",
+	"  x  x  x     x     x   x ",
+	"  xxxx  xx    x     xxxx  ",
+	"  x  x  x     x     x     ",
+    "  x  x  xxxx  xxxx  x     ",	
+    "                          ",	
+    "                          ",
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwxry",		
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",		
+	"xxxxxxwwxwwwwwwwwxwwxxrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
 //Icono "My machine" para un gomas
 char *bitmap_button_ext_desktop_my_machine_gomas[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

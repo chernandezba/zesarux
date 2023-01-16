@@ -9022,7 +9022,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_userdefined},
 	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_userdefined},
 	{"debugcpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
-	{"helpshowkeyboard",menu_help_show_keyboard,bitmap_button_ext_desktop_userdefined},
+	{"helpshowkeyboard",menu_help_show_keyboard,bitmap_button_ext_desktop_helpkeyboard},
     {"debugconsole",menu_debug_unnamed_console,bitmap_button_ext_desktop_userdefined},
     {"audiogensound",menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
     {"debugioports",menu_debug_ioports,bitmap_button_ext_desktop_ioports},
