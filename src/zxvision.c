@@ -9110,10 +9110,10 @@ void zxvision_restore_windows_on_startup_aux_launch_window(int indice)
 
     //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background,
     //siempre que no sea la de normal overlay o null
-    zxvision_set_window_overlay_from_current(zxvision_current_window);
+    //zxvision_set_window_overlay_from_current(zxvision_current_window);
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //set_menu_overlay_function(normal_overlay_texto_menu);
 
     /*
     Esa ventana ya viene de background por tanto no hay que guardar nada en la ventana., 
