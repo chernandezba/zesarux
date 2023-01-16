@@ -277,3 +277,5 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 -Nuevo "lanzador" de aplicaciones mediante iconos de cada app
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
+
+-Escribir sector. Si sector size es menor que lo que va a escribir, error 
