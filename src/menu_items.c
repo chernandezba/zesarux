@@ -35573,7 +35573,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
         ventana->can_be_backgrounded=1;
 
         //siempre visible. esto quiza controlar con un setting
-        ventana->always_visible=1;
+        //TODO: de momento esto no
+        //ventana->always_visible=1;
          
     }
 
