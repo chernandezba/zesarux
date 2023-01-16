@@ -2195,7 +2195,36 @@ void pd765_read_parameters_write_data(z80_byte value)
 
     else if (pd765_input_parameters_index>=9) {   
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
+
+        //TODO: meter dato en buffer
+        //TODO: ver final y 
+        //- escribir sector en dsk
+        // -cambiar a fase result metiendo valores chrn
         pd765_input_parameters_index++;
+
+        //TODO prueba chapuza 512 bytes
+        if (pd765_input_parameters_index>=9+512) {
+            printf("End of sector\n");
+
+
+                //E indicar fase ejecucion ha finalizado
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+                pd765_interrupt_pending=1;    
+
+                //Cambiamos a fase de resultado
+                pd765_phase=PD765_PHASE_RESULT;
+
+                //E indicar que hay que leer datos
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+                pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
+
+                //TODO: meter datos chrn
+
+
+        }
     }
 
 
