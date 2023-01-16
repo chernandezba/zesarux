@@ -324,12 +324,14 @@ pd765_signal_counter signal_se={
 
 //Maximo sector es de 8kb, esto hay mas que suficiente
 #define PD765_MAX_RESULT_BUFFER 9000
-//El buffer
+//El buffer de resultado
 z80_byte pd765_result_buffer[PD765_MAX_RESULT_BUFFER];
 //Y cuantos datos hay en el buffer para retornarlos
 int pd765_result_buffer_length=0;
 
 int pd765_result_bufer_read_pointer=0;
+
+//int pd765_result_bufer_write_pointer=0;
 
 //Por si acaso funciones para escribir y leer del buffer y que no nos salgamos
 void pd765_reset_buffer(void)
@@ -2740,6 +2742,122 @@ z80_byte pd765_read_result_command_read_data(void)
 }
 
 
+z80_byte pd765_read_result_command_write_data(void)
+{
+
+    //TODO visual floppy
+    /*if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
+        //notificar buffer de visual floppy
+        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_result_bufer_write_pointer);
+
+        //Estadisticas lectura
+        pd765_write_stats_bytes_sec_acumulated++;
+    }*/
+
+
+    z80_byte return_value=pd765_get_buffer();
+    printf("PD765: Return byte from %s at index %d: %02XH\n",
+        pd765_last_command_name(),
+        pd765_result_bufer_read_pointer-1,return_value);
+    //pd765_output_parameters_index++;
+
+
+
+    //printf("Buscando sector size para pista %d\n",pd765_pcn);
+
+
+    int sector_size=pd765_last_sector_size_write_data;
+
+    if (sector_size==0) printf("SIZE: %d\n",sector_size);
+    //sleep(5);
+
+    if (pd765_buffer_read_is_final()) {
+        printf("PD765: End of result buffer of %s\n",
+        pd765_last_command_name()
+        );
+
+        //Fin de buffer de lectura
+        pd765_reset_buffer();
+
+        //Estaba leyendo datos de sector
+        if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
+
+            int condition_end_sector=0;
+
+            //Si leyendo pista, acabamos cuando el conteo total de sectores llega a EOT
+            //TODO write track
+            if (0/*pd765_command_received==PD765_COMMAND_WRITE_TRACK*/) {
+                if (pd765_total_sectors_write_track==pd765_input_parameter_eot) {
+                    condition_end_sector=1;
+                }
+            }
+
+            else {
+                //Cumple EOT. No leer mas
+                if (pd765_input_parameter_eot==pd765_write_command_searching_parameter_r) {
+                    condition_end_sector=1;
+                }
+            }
+   
+            if (condition_end_sector || pd765_write_command_must_stop_anormal_termination) {
+                printf("PD765: Stopping writing next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN\n",
+                    pd765_write_command_searching_parameter_r,pd765_input_parameter_eot);
+
+
+                //TODO: COMPLETAR esto
+                //pd765_handle_command_read_data_write_chrn_etc(pd765_ultimo_sector_fisico_write,1);
+
+
+                //E indicar fase ejecucion ha finalizado
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+                pd765_interrupt_pending=1;    
+
+                //Cambiamos a fase de resultado
+                pd765_phase=PD765_PHASE_RESULT;
+
+                //E indicar que hay que leer datos
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+                pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
+            }
+            else {
+                printf("PD765: Reading next sector because R (%02XH) is not EOT (%02XH)\n",
+                    pd765_write_command_searching_parameter_r,pd765_input_parameter_eot);
+                //sleep(5);
+
+                //pd765_input_parameter_r++;
+                pd765_write_command_searching_parameter_r++;
+
+                pd765_handle_command_write_data();
+            }
+
+        }
+
+
+        //Estaba enviando valores ST1, ..CHRN 
+        else {
+            printf("PD765: End returning output parameters ST0,1,2, CHRN\n");
+
+            //Y decir que ya no hay que devolver mas datos
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+            //Decir que ya no esta busy
+            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+
+            //Y pasamos a fase command
+            pd765_phase=PD765_PHASE_COMMAND;
+
+                   
+
+        }
+    }
+
+
+    return return_value;        
+
+}
 
 z80_byte pd765_read_handle_phase_result(void)
 {
@@ -2772,7 +2890,11 @@ z80_byte pd765_read_handle_phase_result(void)
         case PD765_COMMAND_READ_DELETED_DATA:
         case PD765_COMMAND_READ_TRACK:
             return pd765_read_result_command_read_data();
-        break;     
+        break;
+
+        case PD765_COMMAND_WRITE_DATA:
+            return pd765_read_result_command_write_data();
+        break;             
 
         case PD765_COMMAND_INVALID:
             return pd765_read_result_command_invalid();
