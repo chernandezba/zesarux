@@ -22597,11 +22597,11 @@ int zxvision_simple_window_manager(int reopen_menu)
                 //Lanzar funcion que la crea
 
                     //Guardar funcion de texto overlay activo, para menus como el de visual memory por ejemplo, para desactivar  temporalmente
-                    void (*previous_function)(void);
+                    //void (*previous_function)(void);
 
-                    previous_function=menu_overlay_function;
+                    //previous_function=menu_overlay_function;
 
-                    int antes_menu_overlay_activo=menu_overlay_activo;
+                    //int antes_menu_overlay_activo=menu_overlay_activo;
 
                     debug_printf (VERBOSE_DEBUG,"Starting window %s",geometry_name);
                     menu_window_manager_window_went_background=0;
@@ -22610,9 +22610,9 @@ int zxvision_simple_window_manager(int reopen_menu)
 
 
                     //Restauramos funcion anterior de overlay
-                    set_menu_overlay_function(previous_function);
+                    //set_menu_overlay_function(previous_function);
 
-                    menu_overlay_activo=antes_menu_overlay_activo;
+                    //menu_overlay_activo=antes_menu_overlay_activo;
 
 
                     //Y reabriremos el menu cuando dejemos de conmutar entre ventanas
