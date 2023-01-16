@@ -127,6 +127,10 @@ int pd765_pcn=0;
 //Ultimo sector fisico leido. En principio esto solo se usa para debug
 int pd765_debug_last_sector_read=0;
 
+//Ultimo sector fisico escrito. En principio esto solo se usa para debug
+int pd765_debug_last_sector_write=0;
+
+
 //Ultimos id de sector leidos. En principio esto solo se usa para debug
 z80_byte pd765_debug_last_sector_id_c_read=0;
 z80_byte pd765_debug_last_sector_id_h_read=0;
@@ -135,6 +139,10 @@ z80_byte pd765_debug_last_sector_id_n_read=0;
 
 //Ultimo sector fisico leido por comandos read data y read_id
 int pd765_ultimo_sector_fisico_read=-1;
+
+//Ultimo sector fisico leido por comandos write data
+int pd765_ultimo_sector_fisico_write=-1;
+
 
 //int tempp_estados=0;
 
@@ -372,6 +380,7 @@ void pd765_reset(void)
     pd765_interrupt_pending=0;
     pd765_motor_status=0;
     pd765_ultimo_sector_fisico_read=-1;
+    pd765_ultimo_sector_fisico_write=-1;
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
@@ -576,6 +585,10 @@ void pd765_handle_command_sense_interrupt_status(void)
 //R de sector a buscar en siguiente comando de read 
 z80_byte pd765_read_command_searching_parameter_r;
 
+//R de sector a buscar en siguiente comando de write
+z80_byte pd765_write_command_searching_parameter_r;
+
+
 void pd765_read_put_chrn_in_bus(void)
 {
     //Segun la tabla pagina 9
@@ -655,7 +668,7 @@ void pd765_read_chrn_put_return_in_bus(z80_byte leido_st0,z80_byte leido_id_st1,
 
 
 
-int pd765_common_dsk_not_inserted_read(void)
+int pd765_common_dsk_not_inserted_readwrite(void)
 {
     //Si DSK no insertado
     if (dskplusthree_emulation.v==0) {
@@ -691,28 +704,7 @@ int pd765_common_dsk_not_inserted_read(void)
 
         pd765_read_put_chrn_in_bus();
 
-        /*
 
-        return_value=pd765_input_parameter_c;
-        printf("PD765: Returning C: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_h;
-        printf("PD765: Returning H: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_r;
-        printf("PD765: Returning R: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-
-        return_value=pd765_input_parameter_n;
-        printf("PD765: Returning N: %02XH\n",return_value);
-        pd765_put_buffer(return_value);
-
-        */
 
         return 1;
     }
@@ -831,7 +823,7 @@ void pd765_handle_command_read_id(void)
    pd765_reset_buffer();
 
     //Si DSK no insertado
-    if (pd765_common_dsk_not_inserted_read()) {
+    if (pd765_common_dsk_not_inserted_readwrite()) {
         return;
     }
 
@@ -1130,6 +1122,8 @@ void pd765_handle_command_seek(void)
 
 //Indica que el comando read data se debe detener (no leer sectores siguientes) despues de este
 int pd765_read_command_must_stop_anormal_termination=0;
+//Lo mismo pero para write
+int pd765_write_command_must_stop_anormal_termination=0;
 
 void pd765_handle_command_read_data_put_sector_data_in_bus(int sector_size, int iniciosector)
 {
@@ -1412,7 +1406,11 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
 int pd765_total_sectors_read_track=0;
 
+int pd765_total_sectors_write_track=0;
+
 int pd765_last_sector_size_read_data=0;
+
+int pd765_last_sector_size_write_data=0;
 
 
 //Los dos posibles estados al leer datos
@@ -1421,6 +1419,13 @@ int pd765_last_sector_size_read_data=0;
 //Devolviendo ST0, ST1, ST2..
 #define PD765_READ_COMMAND_STATE_ENDING_READING_DATA 2
 int pd765_read_command_state=PD765_READ_COMMAND_STATE_READING_DATA;
+
+//Los dos posibles estados al escribir datos
+//Leyendo valores sector
+#define PD765_WRITE_COMMAND_STATE_WRITING_DATA 1
+//Devolviendo ST0, ST1, ST2..
+#define PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA 2
+int pd765_write_command_state=PD765_WRITE_COMMAND_STATE_WRITING_DATA;
 
 
 
@@ -1446,7 +1451,7 @@ field are not checked when SK = 1.
     //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
     pd765_last_sector_size_read_data=0;
 
-    if (pd765_common_dsk_not_inserted_read()) {
+    if (pd765_common_dsk_not_inserted_readwrite()) {
 
         pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA; 
 
@@ -1684,6 +1689,268 @@ field are not checked when SK = 1.
    
 }
 
+
+void pd765_write_put_chrn_in_bus(void)
+{
+  
+    z80_byte return_value;
+
+    return_value=pd765_input_parameter_c+1;
+    printf("PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    printf("PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=1;
+    printf("PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    printf("PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);    
+    
+
+  
+}
+
+void pd765_handle_command_write_data(void)
+{
+
+
+    pd765_write_command_must_stop_anormal_termination=0;
+
+    //Inicializar buffer retorno
+    pd765_reset_buffer();    
+
+
+    //de momento esto a 0 por si el comando no lee (por dsk no insertado, seek beyond limit, etc)
+    pd765_last_sector_size_write_data=0;
+
+    if (pd765_common_dsk_not_inserted_readwrite()) {
+
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA; 
+
+        pd765_write_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination dsk no insertado\n");
+
+
+        return;
+    }
+
+    //Si pista no formateada
+    //TODO: de momento solo cara 0
+    if (pd765_common_if_track_unformatted(pd765_pcn,0)) {
+
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA; 
+
+        pd765_write_command_must_stop_anormal_termination=1;
+
+        printf("Anormal termination porque pista no formateada\n");
+
+
+        return;
+    }    
+
+
+    pd765_interrupt_pending=1;    
+
+    //Cambiamos a fase de resultado
+    //TODO: realmente la fase seria ejecucion, arreglar esto
+    pd765_phase=PD765_PHASE_RESULT;
+
+    pd765_write_command_state=PD765_WRITE_COMMAND_STATE_WRITING_DATA;
+
+    //E indicar que hay que leer datos
+    //pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+    //E indice a 0
+    pd765_output_parameters_index=0;
+
+    //E indicar fase ejecucion ha empezado
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;    
+
+    //Mientras dura, indicar que FDC esta busy
+    //TODO: aunque creo que esto iria en la fase de ejecucion y no en la de resultado
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
+
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+    //Metemos resultado de leer en buffer de salida
+
+    /*
+    ST0
+    ST1
+    ST2
+    C
+    H
+    R
+    N
+
+    */
+
+
+   //TODO: esto solo es asi cuando N es 0
+   int sector_size=pd765_input_parameter_dtl;
+
+
+
+   sector_size=dsk_get_sector_size_track(pd765_pcn,0); //TODO: de momento una cara solamente; 
+
+ 
+    z80_byte sector_fisico;
+
+
+    //primero intentar obtener sector siguiente dentro de la pista
+    int iniciosector;
+
+    int search_deleted=0;
+
+    //TODO: write deleted data command
+    //if (pd765_command_received==PD765_COMMAND_WRITE_DELETED_DATA) search_deleted=1;
+
+    if (search_deleted) {
+        printf("search deleted\n");
+        //sleep(5);
+    }
+
+
+    //TODO: write track command
+    if (0/*pd765_command_received==PD765_COMMAND_WRITE_TRACK*/) {
+        //Obtener el siguiente sector sin comparar R
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_write,search_deleted,pd765_input_parameter_sk,0);
+    }
+
+    else {
+
+
+        printf("Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
+        iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_write,search_deleted,pd765_input_parameter_sk,1);
+
+        
+        if (iniciosector<0) {
+            //no hay siguiente, volver a girar la pista
+            printf("Next sector with asked ID not found. Starting from the beginning of track\n");
+            iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
+        }
+
+    }
+
+    //gestionar error si sector no encontrado
+    //Megaphoenix esta dando este error: 
+    //NOT Found sector ID 02H on track 4
+    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
+    //Tambien abadia del crimen
+    if (iniciosector<0) {
+        /*
+        If the FDC detects the Index Hole twice without finding the right sector, (indicated in "R"), 
+        then the FDC sets the ND (No Data) flag in Status Register 1 to a 1 (high), and terminates the Read Data Command.
+        (Status Register 0 also has bits 7 and 6 set to 0 and 1 respectively.)
+        */
+
+       //TODO: valores de retorno de CRHN son correctos? Que se devuelve en este caso?
+       //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si 
+       //por ejemplo no hemos ni transferido un sector, que habria que poner entonces?
+
+        printf("PD765: sector not found\n");
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+           
+
+        z80_byte return_value=pd765_get_st0();
+
+        //abnormal termination
+        return_value |=PD765_STATUS_REGISTER_ZERO_AT;
+        printf("PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        pd765_put_buffer(return_value);
+
+
+        return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
+        printf("PD765: Returning ST1: %02XH\n",return_value);
+        pd765_put_buffer(return_value);
+
+        return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
+        printf("PD765: Returning ST2: %02XH\n",return_value);
+        pd765_put_buffer(return_value);     
+
+
+        pd765_write_put_chrn_in_bus();
+
+
+        pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;  
+
+        return;
+
+    }
+
+    pd765_total_sectors_write_track++;
+
+    //Indicar ultimo sector leido para debug
+    pd765_debug_last_sector_write=sector_fisico;
+
+    //Ultimo sector leido 
+    pd765_ultimo_sector_fisico_write=sector_fisico;
+
+
+    //anormal_termination=0;
+
+    //Tamanyo real para caso discos extendidos
+    if (dsk_file_type_extended) {
+        //printf("sector size before: %d\n",sector_size);
+        //Tamanyo que dice el sector realmente
+        int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
+
+        //sector_size es el tamaño que decia del sector en la info de pista
+
+        //TODO: esto tambien pasa cuando es mayor?
+        //cuando es mayor lo que sucede es que es un sector escrito varias veces con diferentes datos,
+        //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
+        //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
+        if (real_sector_size<sector_size) {
+            printf("Reading less data than the track size says. Setting abnormal termination flag\n");
+            //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
+        }
+
+        sector_size=real_sector_size;
+        //printf("sector size after: %d\n",sector_size);
+
+        //se van a leer menos datos
+    }
+
+    
+
+    pd765_last_sector_size_write_data=sector_size;
+
+    printf("REAL sector size: %d\n",pd765_last_sector_size_write_data);
+
+
+    //TODO
+    //pd765_handle_command_write_data_put_sector_data_in_bus(sector_size, iniciosector);
+
+
+    //Evaluar condiciones que hacen abortar el comando
+    //TODO
+    //pd765_handle_command_write_data_write_chrn_etc(pd765_ultimo_sector_fisico_write,0);
+
+   
+}
+
+
 void pd765_read_parameters_seek(z80_byte value)
 {
     printf("PD765: Receiving command parameters for SEEK\n");
@@ -1713,6 +1980,7 @@ void pd765_read_parameters_seek(z80_byte value)
 
 const char *pd765_last_command_name_read_data="READ_DATA";
 const char *pd765_last_command_name_read_deleted_data="READ_DELETED_DATA";
+const char *pd765_last_command_name_write_data="WRITE_DATA";
 const char *pd765_last_command_name_read_track="READ_TRACK";
 const char *pd765_last_command_name_unknown="UNKNOWN";
 
@@ -1730,6 +1998,10 @@ const char *pd765_last_command_name(void)
         case PD765_COMMAND_READ_DATA:
             return pd765_last_command_name_read_data;
         break;
+
+        case PD765_COMMAND_WRITE_DATA:
+            return pd765_last_command_name_write_data;
+        break;        
 
 
         default:
@@ -1833,6 +2105,93 @@ void pd765_read_parameters_read_data(z80_byte value)
 
 
 }
+
+
+void pd765_read_parameters_write_data(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for %s\n",
+    pd765_last_command_name()
+    );
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_c=value;
+        printf("PD765: C=%XH\n",pd765_input_parameter_c);
+
+        pd765_input_parameters_index++;;
+    }  
+
+    else if (pd765_input_parameters_index==3) {
+        pd765_input_parameter_h=value;
+        printf("PD765: H=%XH\n",pd765_input_parameter_h);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==4) {
+        pd765_input_parameter_r=value;
+        printf("PD765: R=%XH\n",pd765_input_parameter_r);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==5) {
+        pd765_input_parameter_n=value;
+        printf("PD765: N=%XH\n",pd765_input_parameter_n);
+
+        if (pd765_input_parameter_n==0) {
+            //TODO
+            printf("N=0 not handled yet!!\n");
+            sleep(5);
+        }
+
+        pd765_input_parameters_index++;;
+    }   
+
+    else if (pd765_input_parameters_index==6) {
+        pd765_input_parameter_eot=value;
+        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==7) {
+        pd765_input_parameter_gpl=value;
+        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==8) {
+        pd765_input_parameter_dtl=value;
+        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for %s\n",
+        pd765_last_command_name()
+        );
+
+
+        pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
+
+        pd765_handle_command_write_data();
+    }       
+
+
+}
+
 
 void pd765_write_handle_phase_command(z80_byte value)
 {
@@ -1949,7 +2308,25 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_command_received=PD765_COMMAND_READ_TRACK;
 
             pd765_input_parameters_index++;         
-        }                  
+        }
+
+        else if ((value & 0x3F)==0x05) {
+            //write data
+            //TODO: bits MT, MF
+            pd765_input_parameter_mt=(value>>7)&1;
+            pd765_input_parameter_mf=(value>>6)&1;
+            printf("---PD765: WRITE DATA command. MT=%d MF=%d Current track: %02XH\n",
+                pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_pcn);
+            if (pd765_input_parameter_mt) {
+                printf("MT parameter not handled yet\n");
+                sleep(3);
+            }
+
+
+            pd765_command_received=PD765_COMMAND_WRITE_DATA;
+
+            pd765_input_parameters_index++;         
+        }                           
 
         else if (value==0x0F) {
             //Seek
@@ -2002,7 +2379,11 @@ void pd765_write_handle_phase_command(z80_byte value)
             case PD765_COMMAND_READ_DELETED_DATA:
             case PD765_COMMAND_READ_TRACK:
                 pd765_read_parameters_read_data(value); 
-            break;     
+            break;
+
+            case PD765_COMMAND_WRITE_DATA:
+                pd765_read_parameters_write_data(value); 
+            break;                 
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
