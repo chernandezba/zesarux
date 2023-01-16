@@ -9012,7 +9012,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 #endif
 
 #ifdef EMULATE_CPU_STATS
-	{"cpucompactstatistics",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_userdefined},
+	{"cpucompactstatistics",menu_debug_cpu_resumen_stats,bitmap_button_ext_desktop_cpustatistics},
 #endif
 
 	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
@@ -9024,10 +9024,10 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"debugcpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},
 	{"helpshowkeyboard",menu_help_show_keyboard,bitmap_button_ext_desktop_userdefined},
     {"debugconsole",menu_debug_unnamed_console,bitmap_button_ext_desktop_userdefined},
-    {"audiogensound",menu_audio_general_sound,bitmap_button_ext_desktop_userdefined},
+    {"audiogensound",menu_audio_general_sound,bitmap_button_ext_desktop_geneneralsoundregisters},
     {"debugioports",menu_debug_ioports,bitmap_button_ext_desktop_ioports},
     {"hexeditor",menu_debug_hexdump,bitmap_button_ext_desktop_hexeditor},
-    {"corestatistics",menu_about_core_statistics,bitmap_button_ext_desktop_userdefined},
+    {"corestatistics",menu_about_core_statistics,bitmap_button_ext_desktop_corestatistics},
     {"viewsensors",menu_debug_view_sensors,bitmap_button_ext_desktop_view_sensors},
     {"visualrealtape",menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
     {"textadvmap",menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},

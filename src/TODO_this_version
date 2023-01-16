@@ -278,3 +278,5 @@ buscar todos los normal_overlay_texto_menu sueltos -> en principio todos ok
 -color palettes parpadea al mover raton. normal?
 
 -au chip sheet descuadra en la lista de process management. quiza falta 1 espacio mas en la columna?
+
+-click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
