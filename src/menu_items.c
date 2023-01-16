@@ -16731,7 +16731,7 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
 
         int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("windowlist",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("processmanagement",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho=54;
             alto=20;
 
@@ -16740,7 +16740,7 @@ void menu_display_window_list_create_window(zxvision_window *ventana)
         }
 
 
-        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Process Management","windowlist",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Process Management","processmanagement",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
 
@@ -16777,7 +16777,7 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 
     int selected_ourself=0;
 
-    if (!strcmp(menu_display_window_list_selected_window,"windowlist")) {
+    if (!strcmp(menu_display_window_list_selected_window,"processmanagement")) {
         //Se ha seleccionado la propia ventana, hay acciones que no se pueden hacer
         selected_ourself=1;
     }

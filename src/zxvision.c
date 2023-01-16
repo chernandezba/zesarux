@@ -9032,7 +9032,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"visualrealtape",menu_visual_realtape,bitmap_button_ext_desktop_visualrealtape},
     {"textadvmap",menu_debug_textadventure_map_connections,bitmap_button_ext_desktop_text_adventure_map},
     {"shortcutshelper",menu_shortcuts_window,bitmap_button_ext_desktop_userdefined},
-    {"windowlist",menu_display_window_list,bitmap_button_ext_desktop_userdefined},
+    {"processmanagement",menu_display_window_list,bitmap_button_ext_desktop_userdefined},
     {"hilowconvertaudio",menu_hilow_convert_audio,bitmap_button_ext_desktop_userdefined},
     {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
     {"toyzxeyes",menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
