@@ -1720,7 +1720,163 @@ void pd765_write_put_chrn_in_bus(void)
   
 }
 
-void pd765_handle_command_write_data(void)
+
+void pd765_read_parameters_seek(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for SEEK\n");
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_ncn=value;
+        printf("PD765: NCN=%XH\n",pd765_input_parameter_ncn);
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for SEEK\n");
+
+        pd765_handle_command_seek();
+    }       
+}
+
+const char *pd765_last_command_name_read_data="READ_DATA";
+const char *pd765_last_command_name_read_deleted_data="READ_DELETED_DATA";
+const char *pd765_last_command_name_write_data="WRITE_DATA";
+const char *pd765_last_command_name_read_track="READ_TRACK";
+const char *pd765_last_command_name_unknown="UNKNOWN";
+
+const char *pd765_last_command_name(void)
+{
+    switch (pd765_command_received) {
+        case PD765_COMMAND_READ_DELETED_DATA:
+            return pd765_last_command_name_read_deleted_data;
+        break;
+
+        case PD765_COMMAND_READ_TRACK:
+            return pd765_last_command_name_read_track;
+        break;
+
+        case PD765_COMMAND_READ_DATA:
+            return pd765_last_command_name_read_data;
+        break;
+
+        case PD765_COMMAND_WRITE_DATA:
+            return pd765_last_command_name_write_data;
+        break;        
+
+
+        default:
+            return pd765_last_command_name_unknown;
+        break;
+
+    }
+
+}
+
+void pd765_read_parameters_read_data(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for %s\n",
+    pd765_last_command_name()
+    );
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_c=value;
+        printf("PD765: C=%XH\n",pd765_input_parameter_c);
+
+        pd765_input_parameters_index++;;
+    }  
+
+    else if (pd765_input_parameters_index==3) {
+        pd765_input_parameter_h=value;
+        printf("PD765: H=%XH\n",pd765_input_parameter_h);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==4) {
+        pd765_input_parameter_r=value;
+        printf("PD765: R=%XH\n",pd765_input_parameter_r);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==5) {
+        pd765_input_parameter_n=value;
+        printf("PD765: N=%XH\n",pd765_input_parameter_n);
+
+        if (pd765_input_parameter_n==0) {
+            //TODO
+            printf("N=0 not handled yet!!\n");
+            sleep(5);
+        }
+
+        pd765_input_parameters_index++;;
+    }   
+
+    else if (pd765_input_parameters_index==6) {
+        pd765_input_parameter_eot=value;
+        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==7) {
+        pd765_input_parameter_gpl=value;
+        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+
+        pd765_input_parameters_index++;;
+    } 
+
+    else if (pd765_input_parameters_index==8) {
+        pd765_input_parameter_dtl=value;
+        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+
+
+        //Fin de comando
+        pd765_input_parameters_index=0;
+        
+        printf("PD765: End command parameters for %s\n",
+        pd765_last_command_name()
+        );
+
+
+        //Si read track, indicar que ultimo sector es el 0 tal cual
+        if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
+            //Decir anterior sector leido de esa pista
+            pd765_ultimo_sector_fisico_read=-1;
+
+            //Y conteo total de sectores a 0
+            pd765_total_sectors_read_track=0;
+        }
+
+        pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
+
+        pd765_handle_command_read_data();
+    }       
+
+
+}
+
+void pd765_handle_command_start_write_data(void)
 {
 
 
@@ -1764,7 +1920,7 @@ void pd765_handle_command_write_data(void)
 
     //Cambiamos a fase de resultado
     //TODO: realmente la fase seria ejecucion, arreglar esto
-    pd765_phase=PD765_PHASE_RESULT;
+    //pd765_phase=PD765_PHASE_RESULT;
 
     pd765_write_command_state=PD765_WRITE_COMMAND_STATE_WRITING_DATA;
 
@@ -1782,8 +1938,8 @@ void pd765_handle_command_write_data(void)
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_CB_MASK;    
 
 
-    //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+    //E indicar que hay que escribir datos
+    pd765_main_status_register &=(255-PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
     //Metemos resultado de leer en buffer de salida
 
@@ -1953,161 +2109,6 @@ void pd765_handle_command_write_data(void)
 }
 
 
-void pd765_read_parameters_seek(z80_byte value)
-{
-    printf("PD765: Receiving command parameters for SEEK\n");
-
-    if (pd765_input_parameters_index==1) {
-        pd765_input_parameter_hd=(value>>2) & 0x01;
-        pd765_input_parameter_us1=(value>>1) & 0x01;
-        pd765_input_parameter_us0=value  & 0x01;
-        
-        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
-
-        pd765_input_parameters_index++;
-    }
-
-    else if (pd765_input_parameters_index==2) {
-        pd765_input_parameter_ncn=value;
-        printf("PD765: NCN=%XH\n",pd765_input_parameter_ncn);
-
-        //Fin de comando
-        pd765_input_parameters_index=0;
-        
-        printf("PD765: End command parameters for SEEK\n");
-
-        pd765_handle_command_seek();
-    }       
-}
-
-const char *pd765_last_command_name_read_data="READ_DATA";
-const char *pd765_last_command_name_read_deleted_data="READ_DELETED_DATA";
-const char *pd765_last_command_name_write_data="WRITE_DATA";
-const char *pd765_last_command_name_read_track="READ_TRACK";
-const char *pd765_last_command_name_unknown="UNKNOWN";
-
-const char *pd765_last_command_name(void)
-{
-    switch (pd765_command_received) {
-        case PD765_COMMAND_READ_DELETED_DATA:
-            return pd765_last_command_name_read_deleted_data;
-        break;
-
-        case PD765_COMMAND_READ_TRACK:
-            return pd765_last_command_name_read_track;
-        break;
-
-        case PD765_COMMAND_READ_DATA:
-            return pd765_last_command_name_read_data;
-        break;
-
-        case PD765_COMMAND_WRITE_DATA:
-            return pd765_last_command_name_write_data;
-        break;        
-
-
-        default:
-            return pd765_last_command_name_unknown;
-        break;
-
-    }
-
-}
-
-void pd765_read_parameters_read_data(z80_byte value)
-{
-    printf("PD765: Receiving command parameters for %s\n",
-    pd765_last_command_name()
-    );
-
-    if (pd765_input_parameters_index==1) {
-        pd765_input_parameter_hd=(value>>2) & 0x01;
-        pd765_input_parameter_us1=(value>>1) & 0x01;
-        pd765_input_parameter_us0=value  & 0x01;
-        
-        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
-
-        pd765_input_parameters_index++;
-    }
-
-    else if (pd765_input_parameters_index==2) {
-        pd765_input_parameter_c=value;
-        printf("PD765: C=%XH\n",pd765_input_parameter_c);
-
-        pd765_input_parameters_index++;;
-    }  
-
-    else if (pd765_input_parameters_index==3) {
-        pd765_input_parameter_h=value;
-        printf("PD765: H=%XH\n",pd765_input_parameter_h);
-
-        pd765_input_parameters_index++;;
-    }
-
-    else if (pd765_input_parameters_index==4) {
-        pd765_input_parameter_r=value;
-        printf("PD765: R=%XH\n",pd765_input_parameter_r);
-
-        pd765_input_parameters_index++;;
-    }
-
-    else if (pd765_input_parameters_index==5) {
-        pd765_input_parameter_n=value;
-        printf("PD765: N=%XH\n",pd765_input_parameter_n);
-
-        if (pd765_input_parameter_n==0) {
-            //TODO
-            printf("N=0 not handled yet!!\n");
-            sleep(5);
-        }
-
-        pd765_input_parameters_index++;;
-    }   
-
-    else if (pd765_input_parameters_index==6) {
-        pd765_input_parameter_eot=value;
-        printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
-
-        pd765_input_parameters_index++;;
-    } 
-
-    else if (pd765_input_parameters_index==7) {
-        pd765_input_parameter_gpl=value;
-        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
-
-        pd765_input_parameters_index++;;
-    } 
-
-    else if (pd765_input_parameters_index==8) {
-        pd765_input_parameter_dtl=value;
-        printf("PD765: DTL=%XH\n",pd765_input_parameter_dtl);
-
-
-        //Fin de comando
-        pd765_input_parameters_index=0;
-        
-        printf("PD765: End command parameters for %s\n",
-        pd765_last_command_name()
-        );
-
-
-        //Si read track, indicar que ultimo sector es el 0 tal cual
-        if (pd765_command_received==PD765_COMMAND_READ_TRACK) {
-            //Decir anterior sector leido de esa pista
-            pd765_ultimo_sector_fisico_read=-1;
-
-            //Y conteo total de sectores a 0
-            pd765_total_sectors_read_track=0;
-        }
-
-        pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
-
-        pd765_handle_command_read_data();
-    }       
-
-
-}
-
 
 void pd765_read_parameters_write_data(z80_byte value)
 {
@@ -2170,7 +2171,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameter_gpl=value;
         printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==8) {
@@ -2179,17 +2180,23 @@ void pd765_read_parameters_write_data(z80_byte value)
 
 
         //Fin de comando
-        pd765_input_parameters_index=0;
+        //pd765_input_parameters_index=0;
+        pd765_input_parameters_index++;
         
         printf("PD765: End command parameters for %s\n",
         pd765_last_command_name()
         );
 
 
-        pd765_read_command_searching_parameter_r=pd765_input_parameter_r;
+        pd765_write_command_searching_parameter_r=pd765_input_parameter_r;
 
-        pd765_handle_command_write_data();
-    }       
+        pd765_handle_command_start_write_data();
+    }    
+
+    else if (pd765_input_parameters_index>=9) {   
+        printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
+        pd765_input_parameters_index++;
+    }
 
 
 }
@@ -2353,7 +2360,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         }
     }
     else {
-        //Recibiendo parametros de comando
+        //Recibiendo parametros de comando o en el caso de write, tambien escribiendo datos de sector
         printf("PD765: Receiving command parameters. Index=%d\n",pd765_input_parameters_index);
         switch(pd765_command_received) {
             case PD765_COMMAND_SPECIFY:
@@ -2780,7 +2787,9 @@ z80_byte pd765_read_result_command_write_data(void)
         pd765_reset_buffer();
 
         //Estaba leyendo datos de sector
-        if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
+        //TODO: este estado no se deberia dar (esto viene del copy-paste de read data) pues en read result solo hay chrn.. de resultado,
+        //pero aqui no se gestiona escritura de sector
+        if (0/*pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA*/) {
 
             int condition_end_sector=0;
 
@@ -2823,14 +2832,15 @@ z80_byte pd765_read_result_command_write_data(void)
                 pd765_write_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
             }
             else {
-                printf("PD765: Reading next sector because R (%02XH) is not EOT (%02XH)\n",
+                printf("PD765: Writing next sector because R (%02XH) is not EOT (%02XH)\n",
                     pd765_write_command_searching_parameter_r,pd765_input_parameter_eot);
                 //sleep(5);
 
                 //pd765_input_parameter_r++;
                 pd765_write_command_searching_parameter_r++;
 
-                pd765_handle_command_write_data();
+
+                pd765_handle_command_start_write_data();
             }
 
         }
