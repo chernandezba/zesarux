@@ -2233,7 +2233,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
 
         //notificar visualmem
-        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
+        menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
 
         //Estadisticas escritura
         pd765_write_stats_bytes_sec_acumulated++;        
@@ -2753,7 +2753,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         //notificar buffer de visual floppy
-        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
+        menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
 
         //Estadisticas lectura
         pd765_read_stats_bytes_sec_acumulated++;
@@ -2871,7 +2871,7 @@ z80_byte pd765_read_result_command_write_data(void)
     //TODO visual floppy
     /*if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
         //notificar buffer de visual floppy
-        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_result_bufer_write_pointer);
+        menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_result_bufer_write_pointer);
 
         //Estadisticas lectura
         pd765_write_stats_bytes_sec_acumulated++;

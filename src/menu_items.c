@@ -34475,7 +34475,7 @@ void menu_visual_floppy_buffer_reset(void)
 }
 
 
-void menu_visual_floopy_buffer_add(int pista,int sector,int byte_en_sector)
+void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector)
 {
     if (menu_visual_floppy_buffer_length>=MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER) {
         printf("Visual floppy buffer is full\n");
