@@ -415,6 +415,8 @@ extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indi
 extern void zxvision_set_ventana_tipo_activa(void);
 extern void zxvision_reset_ventana_tipo_activa(void);
 
+extern int zxvision_pressed_right_mouse_button(void);
+
 extern void zxvision_set_next_menu_position_from_current_mouse(void);
 extern void zxvision_reset_set_next_menu_position(void);
 extern void zxvision_set_offset_x(zxvision_window *w,int offset_x);

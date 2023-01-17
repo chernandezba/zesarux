@@ -12346,6 +12346,8 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
 
 
 		int existe=zxvision_draw_overlay_if_exists(pointer_window);
+
+        //TODO: posible implementacion para parametro frameskip de cada overlay de zxvision_window
 	
 	    if (existe) {
             //printf("existe\n");
@@ -12357,6 +12359,8 @@ void zxvision_draw_overlays_below_windows(zxvision_window *w)
         }
         else {
             //printf("no existe\n");
+            //Si no tiene overlay se puede decir que el tiempo transcurrido es tal cual, 0
+            pointer_window->last_spent_time_overlay=0;
         }
 
     	
@@ -15307,6 +15311,11 @@ void zxvision_handle_mouse_events_on_icons(void)
 
 }
 
+int zxvision_pressed_right_mouse_button(void)
+{
+    if (mouse_right && menu_mouse_right_send_esc.v==0) return 1;
+    else return 0;
+}
 
 //TODO: tiene sentido pasarle el parametro de ventana w, si siempre que llamamos aqui es con el mismo parametro? (zxvision_current_window)
 void zxvision_handle_mouse_events(zxvision_window *w)
@@ -16080,7 +16089,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 		}
 	}
 
-    if (mouse_right && menu_mouse_right_send_esc.v==0) {
+    if (zxvision_pressed_right_mouse_button()) {
         //acciones con boton derecho    
         //printf("Pulsado boton derecho\n");
 

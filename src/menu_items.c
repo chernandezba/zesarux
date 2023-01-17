@@ -35640,7 +35640,7 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
                     }
                 }
 
-                if (mouse_right && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
+                if (zxvision_pressed_right_mouse_button() && menu_process_switcher_mouse_en_ventana(ventana) && !mouse_is_dragging) {
                     //printf("mouse_is_dragging: %d\n",mouse_is_dragging);
                     menu_process_switcher_handle_click_right(ventana);
                 }

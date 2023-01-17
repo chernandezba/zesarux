@@ -272,10 +272,18 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 
 -au chip sheet descuadra en la lista de process management. quiza falta 1 espacio mas en la columna?
 
--click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
+-error: click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
 
 -Nuevo "lanzador" de aplicaciones mediante iconos de cada app
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
+
+
+-Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
+-Botón derecho solo deberia funcionar cuando setting de "enviar ESC con boton derecho" desactivado. esto afecta a :
+*boton derecho sobre escritorio
+*boton derecho sobre iconos de escritorio
+*boton derecho sobre iconos de process switcher
+ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
 -Escribir sector. Si sector size es menor que lo que va a escribir, error 
