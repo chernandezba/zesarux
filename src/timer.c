@@ -718,6 +718,7 @@ void timer_check_interrupt(void)
             menu_window_splash_counter++;
 
             pd765_read_stats_update();
+            pd765_write_stats_update();
 
             //resetear texto splash
             reset_welcome_message();

@@ -119,6 +119,9 @@ extern int pd765_debug_last_sector_read;
 extern int pd765_read_stats_bytes_sec;
 extern void pd765_read_stats_update(void);
 
+extern int pd765_write_stats_bytes_sec;
+extern void pd765_write_stats_update(void);
+
 extern z80_byte pd765_debug_last_sector_id_c_read;
 extern z80_byte pd765_debug_last_sector_id_h_read;
 extern z80_byte pd765_debug_last_sector_id_r_read;

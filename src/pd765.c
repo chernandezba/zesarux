@@ -193,6 +193,20 @@ void pd765_read_stats_update(void)
     pd765_read_stats_bytes_sec_acumulated=0;
 }
 
+
+//ultimo valor de bytes/segundo
+int pd765_write_stats_bytes_sec=0;
+//Acumulado hasta ahora
+int pd765_write_stats_bytes_sec_acumulated=0;
+
+//Estadisticas de lectura de pd765
+void pd765_write_stats_update(void)
+{
+    pd765_write_stats_bytes_sec=pd765_write_stats_bytes_sec_acumulated;
+
+    pd765_write_stats_bytes_sec_acumulated=0;
+}
+
 //
 //Gestion de tratamiento de senyales con contador
 //
@@ -2215,20 +2229,23 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_handle_command_start_write_data();
     }    
 
-    else if (pd765_input_parameters_index>=9) {   
+    else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+512) {   
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
+
+        //notificar visualmem
+        menu_visual_floopy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
+
+        //Estadisticas escritura
+        pd765_write_stats_bytes_sec_acumulated++;        
 
         //meter dato en buffer
         pd765_put_buffer(value);
 
-
-    
-        
-    
         pd765_input_parameters_index++;
+    }
 
-        //TODO ver final. prueba chapuza 512 bytes
-        if (pd765_input_parameters_index>=9+512) {
+    //TODO ver final. prueba chapuza 512 bytes
+    else if (pd765_input_parameters_index>=9+512) {
             printf("End of sector on write data\n");
 
                 //- escribir sector en dsk
@@ -2294,7 +2311,7 @@ void pd765_read_parameters_write_data(z80_byte value)
                               
 
 
-        }
+        
     }
 
 
