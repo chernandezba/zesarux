@@ -74,7 +74,25 @@ int dsk_memory_zone_dsk_sector_size=0;
 z80_bit dsk_memory_zone_dsk_sector_enabled={0};
 
 
+void dsk_change_creator(char *texto)
+{
+    //14 bytes desde offset 22h
+    int longitud_maxima=14;
+    int start_offset=0x22;
 
+    //primero llenar con espacios
+    int i;
+    for (i=0;i<longitud_maxima;i++) {
+        plus3dsk_put_byte_disk(start_offset+i,' ');
+    }
+
+    //Y luego llenar con texto
+    for (i=0;i<longitud_maxima && *texto;i++) {
+        plus3dsk_put_byte_disk(start_offset+i,*texto);
+        texto++;
+    }
+
+}
 
 void dskplusthree_flush_contents_to_disk(void)
 {
@@ -95,6 +113,12 @@ void dskplusthree_flush_contents_to_disk(void)
 
 
         debug_printf (VERBOSE_INFO,"Flushing DSK to disk");
+        printf ("Flushing DSK to disk\n");
+
+        //Cambiamos el Creator del DSK
+        char buffer_creator[30];
+        sprintf(buffer_creator,"ZEsarUX " EMULATOR_VERSION);
+        dsk_change_creator(buffer_creator);
 
 
         FILE *ptr_dskplusthreefile;

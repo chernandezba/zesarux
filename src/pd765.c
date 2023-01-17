@@ -2207,7 +2207,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         printf("PD765: End command parameters for %s. Writing to CHRN=%02XH %02XH %02XH %02XH \n",
         pd765_last_command_name(),pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n
         );
-        sleep(1);
+        //sleep(1);
 
 
         pd765_write_command_searching_parameter_r=pd765_input_parameter_r;
@@ -2961,7 +2961,7 @@ z80_byte pd765_read_result_command_write_data(void)
             //Fin de comando
             pd765_input_parameters_index=0;            
 
-            sleep(1);
+            //sleep(1);
 
                    
 
