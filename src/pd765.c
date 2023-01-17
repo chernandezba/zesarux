@@ -1876,6 +1876,8 @@ void pd765_read_parameters_read_data(z80_byte value)
 
 }
 
+int pd765_last_inicio_sector_read=0;
+
 void pd765_handle_command_start_write_data(void)
 {
 
@@ -2105,9 +2107,28 @@ void pd765_handle_command_start_write_data(void)
     //TODO
     //pd765_handle_command_write_data_write_chrn_etc(pd765_ultimo_sector_fisico_write,0);
 
+    pd765_last_inicio_sector_read=iniciosector;
+
    
 }
 
+
+void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, int iniciosector)
+{
+    int indice;
+
+    for (indice=0;indice<sector_size;indice++) {
+        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+        z80_byte byte_sector=pd765_get_buffer();
+
+        printf("%c",(byte_sector>=32 && byte_sector<=126 ? byte_sector : '?'));
+    
+        plus3dsk_put_byte_disk(iniciosector+indice,byte_sector);
+        
+
+    }    
+    printf("\n");
+}
 
 
 void pd765_read_parameters_write_data(z80_byte value)
@@ -2197,15 +2218,25 @@ void pd765_read_parameters_write_data(z80_byte value)
     else if (pd765_input_parameters_index>=9) {   
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
 
-        //TODO: meter dato en buffer
-        //TODO: ver final y 
-        //- escribir sector en dsk
-        // -cambiar a fase result metiendo valores chrn
+        //meter dato en buffer
+        pd765_put_buffer(value);
+
+
+    
+        
+    
         pd765_input_parameters_index++;
 
-        //TODO prueba chapuza 512 bytes
+        //TODO ver final. prueba chapuza 512 bytes
         if (pd765_input_parameters_index>=9+512) {
             printf("End of sector on write data\n");
+
+                //- escribir sector en dsk
+                int longitud=512;
+
+                pd765_handle_command_write_data_put_sector_data_from_bus(longitud,pd765_last_inicio_sector_read);
+
+
 
 
                 //E indicar fase ejecucion ha finalizado
@@ -2223,6 +2254,8 @@ void pd765_read_parameters_write_data(z80_byte value)
                 pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
                 // meter datos st0,st1, st2,chrn
+                pd765_reset_buffer();
+
                 z80_byte leido_st0=pd765_get_st0();
                 z80_byte leido_st1=pd765_get_st1();
                 z80_byte leido_st2=pd765_get_st2();                
