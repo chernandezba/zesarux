@@ -288,5 +288,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -PD765: formatear
 -PD765: control de EOT? se puede escribir mas de un sector a la vez?
+-PD765: implementar write protect del menu con error de write protect del chip? o ambos?
+-PD765: probar con dsk extendido escribir
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
