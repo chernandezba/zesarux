@@ -1456,7 +1456,10 @@ void menu_file_dsk_browser_show(char *filename)
 
  	sprintf(buffer_texto,"\nCreator:");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
 	util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    
 
 	sprintf(buffer_texto,"\nTracks: %d",dsk_file_memory[0x30]);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
