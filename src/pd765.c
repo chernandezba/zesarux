@@ -2900,21 +2900,21 @@ z80_byte pd765_read_result_command_write_data(void)
        
         //Estaba enviando valores ST1, ..CHRN 
         
-            printf("PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA\n");
+        printf("PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA\n");
 
-            //Y decir que ya no hay que devolver mas datos
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
-            //Decir que ya no esta busy
-            pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+        //Decir que ya no esta busy
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
 
-            //Y pasamos a fase command
-            pd765_phase=PD765_PHASE_COMMAND;
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
 
-            //Fin de comando
-            pd765_input_parameters_index=0;            
+        //Fin de comando
+        pd765_input_parameters_index=0;            
 
-            //sleep(1);
+        //sleep(1);
 
                    
 
