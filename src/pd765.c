@@ -2110,7 +2110,8 @@ void pd765_handle_command_start_write_data(void)
 
     pd765_last_sector_size_write_data=sector_size;
 
-    printf("REAL sector size: %d\n",pd765_last_sector_size_write_data);
+    printf("REAL sector size to write: %d\n",pd765_last_sector_size_write_data);
+    //sleep(2);
 
 
     //TODO
@@ -2227,9 +2228,11 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_write_command_searching_parameter_r=pd765_input_parameter_r;
 
         pd765_handle_command_start_write_data();
+
     }    
 
-    else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+512) {   
+    //Leyendo datos de sector a escribir
+    else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+pd765_last_sector_size_write_data) {   
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
 
         //notificar visualmem
@@ -2244,12 +2247,13 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameters_index++;
     }
 
-    //TODO ver final. prueba chapuza 512 bytes
-    else if (pd765_input_parameters_index>=9+512) {
+    //Si llega al final del disco
+    //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
+    else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
             printf("End of sector on write data\n");
 
                 //- escribir sector en dsk
-                int longitud=512;
+                int longitud=pd765_last_sector_size_write_data;
 
                 pd765_handle_command_write_data_put_sector_data_from_bus(longitud,pd765_last_inicio_sector_read);
 
