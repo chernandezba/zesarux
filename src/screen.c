@@ -3030,6 +3030,13 @@ int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
         saltar_pixeles_size6[1]=1;
     }
 
+    if (char_set==char_set_spectrum) {
+        saltar_pixeles_size7=0;
+
+        saltar_pixeles_size6[0]=0;
+        saltar_pixeles_size6[1]=7;        
+    }
+
 
 	if (menu_char_height==8) {
 		return 1;
