@@ -286,5 +286,4 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 *boton derecho sobre iconos de process switcher
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
--Escribir sector. Si sector size es menor que lo que va a escribir, error 
 -PD765: formatear
