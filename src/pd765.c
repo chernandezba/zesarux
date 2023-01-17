@@ -2164,7 +2164,7 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameter_eot=value;
         printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==7) {
@@ -2183,9 +2183,10 @@ void pd765_read_parameters_write_data(z80_byte value)
         //pd765_input_parameters_index=0;
         pd765_input_parameters_index++;
         
-        printf("PD765: End command parameters for %s\n",
-        pd765_last_command_name()
+        printf("PD765: End command parameters for %s. Writing to CHRN=%02XH %02XH %02XH %02XH \n",
+        pd765_last_command_name(),pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n
         );
+        sleep(1);
 
 
         pd765_write_command_searching_parameter_r=pd765_input_parameter_r;
@@ -2204,7 +2205,7 @@ void pd765_read_parameters_write_data(z80_byte value)
 
         //TODO prueba chapuza 512 bytes
         if (pd765_input_parameters_index>=9+512) {
-            printf("End of sector\n");
+            printf("End of sector on write data\n");
 
 
                 //E indicar fase ejecucion ha finalizado
@@ -2221,7 +2222,43 @@ void pd765_read_parameters_write_data(z80_byte value)
 
                 pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
 
-                //TODO: meter datos chrn
+                // meter datos st0,st1, st2,chrn
+                z80_byte leido_st0=pd765_get_st0();
+                z80_byte leido_st1=pd765_get_st1();
+                z80_byte leido_st2=pd765_get_st2();                
+
+                printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                pd765_put_buffer(leido_st0);    
+
+                printf("PD765: Returning ST1: %02XH\n",leido_st1);
+                pd765_put_buffer(leido_st1);    
+
+                printf("PD765: Returning ST2: %02XH\n",leido_st2);
+                pd765_put_buffer(leido_st2);
+
+
+                z80_byte return_value;
+
+                return_value=pd765_input_parameter_c;
+                printf("PD765: Returning C: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_h;
+                printf("PD765: Returning H: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_r+1;
+                printf("PD765: Returning R: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_n;
+                printf("PD765: Returning N: %02XH\n",return_value);
+                pd765_put_buffer(return_value);  
+
+                              
 
 
         }
@@ -2877,7 +2914,7 @@ z80_byte pd765_read_result_command_write_data(void)
 
         //Estaba enviando valores ST1, ..CHRN 
         else {
-            printf("PD765: End returning output parameters ST0,1,2, CHRN\n");
+            printf("PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA\n");
 
             //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -2887,6 +2924,11 @@ z80_byte pd765_read_result_command_write_data(void)
 
             //Y pasamos a fase command
             pd765_phase=PD765_PHASE_COMMAND;
+
+            //Fin de comando
+            pd765_input_parameters_index=0;            
+
+            sleep(1);
 
                    
 
