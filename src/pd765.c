@@ -2627,7 +2627,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameters_index++;         
         }
 
-        else if ((value & 0x4F)==0x0D) {
+        else if ((value & 0xBF)==0x0D) {
             //format track
             //TODO: bit MF
             pd765_input_parameter_mf=(value>>6)&1;
