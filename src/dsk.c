@@ -725,6 +725,45 @@ int dsk_extended_get_track_size(int pista,int cara)
 }
 
 
+int dsk_get_physical_sector(int pista,int sector)
+{
+        //if (condition_r_equals && sector>minimo_sector && match_condition) {
+            //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
+            //printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
+            int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
+
+            int offset=iniciopista+0x100;
+
+            int sector_size;
+
+            //Ejemplos en los que es necesario leer el tamanyo de esta manera: Riptoff Master Disk.dsk
+            //En esos casos , el sector_size "normal" del dsk basico, esta a 0
+            if (dsk_file_type_extended) {
+                //TODO: cara 0 de momento solamente
+                sector_size=dsk_get_real_sector_size_extended(pista,0,sector);
+            }
+
+            else {
+                sector_size=dsk_get_sector_size_track_from_offset(iniciopista);
+            }
+
+
+            if (sector_size<0) {
+                debug_printf(VERBOSE_ERR,"dsk_get_sector: Sector size not supported on track %d sector %d",pista,sector);
+                return -1;
+            }                        
+
+            //int iniciopista=traps_plus3dos_getoff_start_track(pista);
+            int offset_retorno=offset+sector_size*sector;
+            //printf("Offset sector: %XH\n",offset_retorno);
+
+            //*sector_fisico=sector;
+            //printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
+            return offset_retorno;
+        
+
+}
+
 //Retorna el offset al dsk segun la pista y sector id dados 
 //Retorna tambien el sector fisico: 0,1,2,3....
 //Parametro minimo_sector permite escoger un sector mayor que dicho parametro

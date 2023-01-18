@@ -2365,6 +2365,43 @@ int pd765_formatting_total_sectores=9;
 
 int pd765_formatting_currentsector=0;
 
+
+void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fill_byte)
+{
+    //TODO escribir valores CHRN sector y otros necesarios
+
+
+    //Rellenamos sector con byte
+
+    //calcular inicio sector
+
+    int iniciosector=dsk_get_physical_sector(track,sector);
+
+    //gestionar error si sector no encontrado
+    //Megaphoenix esta dando este error: 
+    //NOT Found sector ID 02H on track 4
+    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
+    //Tambien abadia del crimen
+    if (iniciosector<0) {
+        printf("TODO gestion error\n");
+        return;
+    }   
+
+
+
+    int indice;
+
+    for (indice=0;indice<sector_size;indice++) {
+        //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+
+        plus3dsk_put_byte_disk(iniciosector+indice,fill_byte);
+
+
+    }
+    printf("\n");
+  
+}
+
 void pd765_read_parameters_format_track(z80_byte value)
 {
     printf("PD765: Receiving command parameters for %s\n",
@@ -2473,6 +2510,11 @@ void pd765_read_parameters_format_track(z80_byte value)
         if (chrn_id==3) {
             //TODO: hacer efectivo el formateo de ese sector
             printf("Formatting sector %d. Current track: %02XH\n",sector,pd765_pcn);
+
+            //TODO obtener esto correctamente
+            int sector_size=512;
+
+            pd765_format_sector_track(pd765_pcn,sector,sector_size,pd765_input_parameter_d);
         }
 
         //si final
