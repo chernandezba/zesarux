@@ -293,3 +293,5 @@ y tener creado al inicializar un dsk.
 -PD765: probar con dsk extendido escribir
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
+
+-menu debug i/o: que calcule lineas totales y redimensione total height ventana (solo ampliar, no hace falta reducir) si no cabe. visible height no tocar
