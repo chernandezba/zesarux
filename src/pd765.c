@@ -2431,7 +2431,7 @@ void pd765_read_parameters_format_track(z80_byte value)
         pd765_input_parameters_index=0;   
         */
 
-        sleep(3);
+        //sleep(3);
       
 
     //E indicar fase ejecucion para recibir valores CHRN de este sector a formatear
@@ -2530,12 +2530,12 @@ void pd765_read_parameters_format_track(z80_byte value)
                 pd765_put_buffer(return_value);                                
 
 
-            sleep(5);
+            //sleep(5);
         }
 
         else {
             pd765_input_parameters_index++;
-            sleep(1);
+            //sleep(1);
         }
     } 
     
@@ -3075,7 +3075,7 @@ z80_byte pd765_read_result_command_format_track(void)
 
     //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
     if (pd765_buffer_read_is_final()) {        
-        printf("PD765: End of result buffer of READ_ID\n");
+        printf("PD765: End of result buffer of FORMAT_TRACK\n");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3086,7 +3086,7 @@ z80_byte pd765_read_result_command_format_track(void)
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
 
-        sleep(2);
+        //sleep(2);
 
     }
 
