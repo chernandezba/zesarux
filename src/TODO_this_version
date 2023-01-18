@@ -287,7 +287,7 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
 -PD765: formatear
--PD765: control de EOT? se puede escribir mas de un sector a la vez?
+-PD765: control de EOT? se puede escribir mas de un sector seguido?
 -PD765: implementar write protect del menu con error de write protect del chip? o ambos?
 -PD765: probar con dsk extendido escribir
 

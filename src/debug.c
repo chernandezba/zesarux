@@ -5333,10 +5333,13 @@ void debug_get_ioports(char *stats_buffer)
 
     if (pd765_enabled.v) {
   		sprintf (buf_linea,"\nPD765 status:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Motor: %s\n",(pd765_motor_status ? "On" : "Off"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	            
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"Last command: %s\n",pd765_last_command_name() );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  

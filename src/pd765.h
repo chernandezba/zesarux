@@ -107,8 +107,11 @@ enum pd765_command_list {
     PD765_COMMAND_READ_DELETED_DATA,
     PD765_COMMAND_READ_TRACK,
     PD765_COMMAND_WRITE_DATA,
+    PD765_COMMAND_FORMAT_TRACK,
     PD765_COMMAND_INVALID
 };
+
+extern const char *pd765_last_command_name(void);
 
 extern enum pd765_command_list pd765_command_received;
 

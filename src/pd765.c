@@ -108,6 +108,8 @@ z80_byte pd765_input_parameter_hut;
 z80_byte pd765_input_parameter_hlt;
 z80_byte pd765_input_parameter_nd;
 z80_byte pd765_input_parameter_ncn;
+z80_byte pd765_input_parameter_sc;
+z80_byte pd765_input_parameter_d;
 
 
 z80_byte pd765_input_parameter_mt;
@@ -1762,15 +1764,48 @@ void pd765_read_parameters_seek(z80_byte value)
     }       
 }
 
+
+
 const char *pd765_last_command_name_read_data="READ_DATA";
 const char *pd765_last_command_name_read_deleted_data="READ_DELETED_DATA";
 const char *pd765_last_command_name_write_data="WRITE_DATA";
 const char *pd765_last_command_name_read_track="READ_TRACK";
+const char *pd765_last_command_name_format_track="FORMAT_TRACK";
+const char *pd765_last_command_name_specify="SPECIFY";
+const char *pd765_last_command_name_sense_drive_status="SENSE_DRIVE_STATUS";
+const char *pd765_last_command_name_recalibrate="RECALIBRATE";
+const char *pd765_last_command_name_sense_interrupt_status="SENSE_INTERRUPT_STATUS";
+const char *pd765_last_command_name_seek="SEEK";
+const char *pd765_last_command_name_read_id="READ_ID";
 const char *pd765_last_command_name_unknown="UNKNOWN";
 
 const char *pd765_last_command_name(void)
 {
     switch (pd765_command_received) {
+
+        case PD765_COMMAND_SPECIFY:
+            return pd765_last_command_name_specify;
+        break;
+
+        case PD765_COMMAND_SENSE_DRIVE_STATUS:
+            return pd765_last_command_name_sense_drive_status;
+        break;
+        case PD765_COMMAND_RECALIBRATE:
+            return pd765_last_command_name_recalibrate;
+        break;
+
+        case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
+            return pd765_last_command_name_sense_interrupt_status;
+        break;
+
+        case PD765_COMMAND_SEEK:
+            return pd765_last_command_name_seek;
+        break;
+
+        case PD765_COMMAND_READ_ID:
+            return pd765_last_command_name_read_id;
+        break;
+
         case PD765_COMMAND_READ_DELETED_DATA:
             return pd765_last_command_name_read_deleted_data;
         break;
@@ -1787,6 +1822,9 @@ const char *pd765_last_command_name(void)
             return pd765_last_command_name_write_data;
         break;        
 
+        case PD765_COMMAND_FORMAT_TRACK:
+            return pd765_last_command_name_format_track;
+        break;
 
         default:
             return pd765_last_command_name_unknown;
@@ -2322,6 +2360,138 @@ void pd765_read_parameters_write_data(z80_byte value)
 }
 
 
+void pd765_read_parameters_format_track(z80_byte value)
+{
+    printf("PD765: Receiving command parameters for %s\n",
+    pd765_last_command_name()
+    );
+
+    if (pd765_input_parameters_index==1) {
+        pd765_input_parameter_hd=(value>>2) & 0x01;
+        pd765_input_parameter_us1=(value>>1) & 0x01;
+        pd765_input_parameter_us0=value  & 0x01;
+        
+        printf("PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+
+        pd765_input_parameters_index++;
+    }
+
+    else if (pd765_input_parameters_index==2) {
+        pd765_input_parameter_n=value;
+        printf("PD765: N=%XH\n",pd765_input_parameter_n);
+
+        pd765_input_parameters_index++;;
+    }  
+
+    else if (pd765_input_parameters_index==3) {
+        pd765_input_parameter_sc=value;
+        printf("PD765: SC=%XH\n",pd765_input_parameter_sc);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==4) {
+        pd765_input_parameter_gpl=value;
+        printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+
+        pd765_input_parameters_index++;;
+    }
+
+    else if (pd765_input_parameters_index==5) {
+        pd765_input_parameter_d=value;
+        printf("PD765: D=%XH\n",pd765_input_parameter_d);
+
+        pd765_input_parameters_index++;;
+    }   
+
+    else if (pd765_input_parameters_index>=6) {
+        //Recepcion de cada chrn de cada sector
+        printf("PD765: CHRN=%XH\n",value);
+
+        pd765_input_parameters_index++;
+        sleep(1);
+    } 
+
+
+
+
+
+    //Si llega al final del disco
+    //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
+    /*
+    else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
+            printf("End of sector on write data\n");
+
+                //- escribir sector en dsk
+                int longitud=pd765_last_sector_size_write_data;
+
+                pd765_handle_command_write_data_put_sector_data_from_bus(longitud,pd765_last_inicio_sector_read);
+
+
+
+
+                //E indicar fase ejecucion ha finalizado
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+                pd765_interrupt_pending=1;    
+
+                //Cambiamos a fase de resultado
+                pd765_phase=PD765_PHASE_RESULT;
+
+                //E indicar que hay que leer datos
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+                pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
+
+                // meter datos st0,st1, st2,chrn
+                pd765_reset_buffer();
+
+                z80_byte leido_st0=pd765_get_st0();
+                z80_byte leido_st1=pd765_get_st1();
+                z80_byte leido_st2=pd765_get_st2();                
+
+                printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                pd765_put_buffer(leido_st0);    
+
+                printf("PD765: Returning ST1: %02XH\n",leido_st1);
+                pd765_put_buffer(leido_st1);    
+
+                printf("PD765: Returning ST2: %02XH\n",leido_st2);
+                pd765_put_buffer(leido_st2);
+
+
+                z80_byte return_value;
+
+                return_value=pd765_input_parameter_c;
+                printf("PD765: Returning C: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_h;
+                printf("PD765: Returning H: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_r+1;
+                printf("PD765: Returning R: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_n;
+                printf("PD765: Returning N: %02XH\n",return_value);
+                pd765_put_buffer(return_value);  
+
+                              
+
+
+        
+    }
+    */
+
+
+}
+
 void pd765_write_handle_phase_command(z80_byte value)
 {
     //Hay que recibir comando aun
@@ -2455,7 +2625,20 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_command_received=PD765_COMMAND_WRITE_DATA;
 
             pd765_input_parameters_index++;         
-        }                           
+        }
+
+        else if ((value & 0x4F)==0x0D) {
+            //format track
+            //TODO: bit MF
+            pd765_input_parameter_mf=(value>>6)&1;
+            printf("---PD765: FORMAT TRACK command. MF=%d Current track: %02XH\n",
+                pd765_input_parameter_mf,pd765_pcn);
+
+
+            pd765_command_received=PD765_COMMAND_FORMAT_TRACK;
+
+            pd765_input_parameters_index++;         
+        }                                    
 
         else if (value==0x0F) {
             //Seek
@@ -2512,7 +2695,11 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             case PD765_COMMAND_WRITE_DATA:
                 pd765_read_parameters_write_data(value); 
-            break;                 
+            break;
+
+            case PD765_COMMAND_FORMAT_TRACK:
+                pd765_read_parameters_format_track(value); 
+            break;                             
 
             case PD765_COMMAND_SEEK:
                 pd765_read_parameters_seek(value); 
