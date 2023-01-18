@@ -2368,7 +2368,10 @@ int pd765_formatting_currentsector=0;
 
 void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fill_byte)
 {
-    //TODO escribir valores CHRN sector y otros necesarios
+    //TODO escribir valores CHRN sector y otros necesarios... realmente solo seria CHRN, 
+    //resto de info del dsk se tiene que conservar y tener creado al inicializar un dsk.
+    //O no? por si partimos de un dsk con formato extraño y lo queremos inicializar entero? por tanto hay que escribir mas cosas aparte de CHRN
+    //tal y como dice la especificacion, meter formato IBM noseque...
 
 
     //Rellenamos sector con byte
@@ -2378,10 +2381,7 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     int iniciosector=dsk_get_physical_sector(track,sector);
 
     //gestionar error si sector no encontrado
-    //Megaphoenix esta dando este error: 
-    //NOT Found sector ID 02H on track 4
-    //Rainbow islands tambien, intenta leer de pista 39, que no esta formateada
-    //Tambien abadia del crimen
+
     if (iniciosector<0) {
         printf("TODO gestion error\n");
         return;
