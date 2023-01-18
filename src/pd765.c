@@ -2380,37 +2380,57 @@ void pd765_read_parameters_format_track(z80_byte value)
         pd765_input_parameter_n=value;
         printf("PD765: N=%XH\n",pd765_input_parameter_n);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_sc=value;
         printf("PD765: SC=%XH\n",pd765_input_parameter_sc);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_gpl=value;
         printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
         pd765_input_parameter_d=value;
         printf("PD765: D=%XH\n",pd765_input_parameter_d);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
+
+        //Envio de interrupcion 
+        pd765_interrupt_pending=1; 
+
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+        //Decir que ya no esta busy
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);            
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
+
+        //Fin de comando
+        pd765_input_parameters_index=0;   
+
+        //sleep(3);
+
+
     }   
 
-    else if (pd765_input_parameters_index>=6) {
+    /*else if (pd765_input_parameters_index>=6) {
         //Recepcion de cada chrn de cada sector
         printf("PD765: CHRN=%XH\n",value);
 
         pd765_input_parameters_index++;
         sleep(1);
-    } 
+    } */
 
 
 
