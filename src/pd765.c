@@ -1854,21 +1854,21 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_input_parameter_c=value;
         printf("PD765: C=%XH\n",pd765_input_parameter_c);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
         printf("PD765: H=%XH\n",pd765_input_parameter_h);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_r=value;
         printf("PD765: R=%XH\n",pd765_input_parameter_r);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
@@ -1881,21 +1881,21 @@ void pd765_read_parameters_read_data(z80_byte value)
             sleep(5);
         }
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }   
 
     else if (pd765_input_parameters_index==6) {
         pd765_input_parameter_eot=value;
         printf("PD765: EOT=%XH\n",pd765_input_parameter_eot);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==7) {
         pd765_input_parameter_gpl=value;
         printf("PD765: GPL=%XH\n",pd765_input_parameter_gpl);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==8) {
@@ -2204,21 +2204,21 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameter_c=value;
         printf("PD765: C=%XH\n",pd765_input_parameter_c);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
         printf("PD765: H=%XH\n",pd765_input_parameter_h);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_r=value;
         printf("PD765: R=%XH\n",pd765_input_parameter_r);
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
@@ -2231,7 +2231,7 @@ void pd765_read_parameters_write_data(z80_byte value)
             sleep(5);
         }
 
-        pd765_input_parameters_index++;;
+        pd765_input_parameters_index++;
     }   
 
     else if (pd765_input_parameters_index==6) {
