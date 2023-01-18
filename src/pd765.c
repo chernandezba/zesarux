@@ -2273,7 +2273,7 @@ void pd765_read_parameters_write_data(z80_byte value)
     else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+pd765_last_sector_size_write_data) {   
         printf("PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
 
-        //notificar visualmem
+        //notificar visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
 
         //Estadisticas escritura
@@ -2395,6 +2395,12 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
         //printf("PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
 
         plus3dsk_put_byte_disk(iniciosector+indice,fill_byte);
+
+        //notificar visual floppy
+        menu_visual_floppy_buffer_add(track,sector,indice);
+
+        //Estadisticas escritura
+        pd765_write_stats_bytes_sec_acumulated++;        
 
 
     }
