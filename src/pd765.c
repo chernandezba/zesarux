@@ -2360,6 +2360,11 @@ void pd765_read_parameters_write_data(z80_byte value)
 }
 
 
+
+int pd765_formatting_total_sectores=9;
+
+int pd765_formatting_currentsector=0;
+
 void pd765_read_parameters_format_track(z80_byte value)
 {
     printf("PD765: Receiving command parameters for %s\n",
@@ -2406,8 +2411,14 @@ void pd765_read_parameters_format_track(z80_byte value)
         //Envio de interrupcion 
         pd765_interrupt_pending=1; 
 
+        //TODO calcular bien este valore
+        pd765_formatting_total_sectores=9;
+
+        pd765_formatting_currentsector=0;
+
 
         //Y decir que ya no hay que devolver mas datos
+        /*
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
 
         //Decir que ya no esta busy
@@ -2418,19 +2429,116 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         //Fin de comando
         pd765_input_parameters_index=0;   
+        */
 
-        //sleep(3);
+        sleep(3);
+      
 
+    //E indicar fase ejecucion para recibir valores CHRN de este sector a formatear
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_EXM_MASK;        
+    
 
     }   
-
-    /*else if (pd765_input_parameters_index>=6) {
+    
+    else if (pd765_input_parameters_index>=6) {
         //Recepcion de cada chrn de cada sector
-        printf("PD765: CHRN=%XH\n",value);
+        int indice=pd765_input_parameters_index-6;
+        int sector=indice/4;
+        int chrn_id=indice%4;
 
-        pd765_input_parameters_index++;
-        sleep(1);
-    } */
+        switch (chrn_id) {
+            case 0:
+                pd765_input_parameter_c=value;
+                printf("PD765: C=%XH\n",value);
+            break;
+
+            case 1:
+                pd765_input_parameter_h=value;
+                printf("PD765: H=%XH\n",value);
+            break;
+
+            case 2:
+                pd765_input_parameter_r=value;
+                printf("PD765: R=%XH\n",value);
+            break;
+
+            case 3:
+                pd765_input_parameter_n=value;
+                printf("PD765: N=%XH\n",value);
+            break;
+
+        }
+
+        //Hemos leido el valor de N
+        if (chrn_id==3) {
+            //TODO: hacer efectivo el formateo de ese sector
+            printf("Formatting sector %d. Current track: %02XH\n",sector,pd765_pcn);
+        }
+
+        //si final
+        if (sector==pd765_formatting_total_sectores-1 && chrn_id==3) {
+            printf("---Fin de formateo pista\n");
+
+                //Cambiamos a fase de resultado
+                pd765_phase=PD765_PHASE_RESULT;
+
+                //E indicar que hay que leer datos
+                pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
+
+                //E indicar fase ejecucion ha finalizado
+                pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
+
+                //No esperamos mas parametros de input
+                //Fin de comando
+                pd765_input_parameters_index=0;
+
+                // meter datos st0,st1, st2,chrn
+                pd765_reset_buffer();
+
+                z80_byte leido_st0=pd765_get_st0();
+                z80_byte leido_st1=pd765_get_st1();
+                z80_byte leido_st2=pd765_get_st2();
+
+                printf("PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                pd765_put_buffer(leido_st0);
+
+                printf("PD765: Returning ST1: %02XH\n",leido_st1);
+                pd765_put_buffer(leido_st1);
+
+                printf("PD765: Returning ST2: %02XH\n",leido_st2);
+                pd765_put_buffer(leido_st2);
+
+                z80_byte return_value;
+
+                return_value=pd765_input_parameter_c;
+                printf("PD765: Returning C: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_h;
+                printf("PD765: Returning H: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_r+1;
+                printf("PD765: Returning R: %02XH\n",return_value);
+                pd765_put_buffer(return_value);
+
+
+                return_value=pd765_input_parameter_n;
+                printf("PD765: Returning N: %02XH\n",return_value);
+                pd765_put_buffer(return_value);                                
+
+
+            sleep(5);
+        }
+
+        else {
+            pd765_input_parameters_index++;
+            sleep(1);
+        }
+    } 
+    
 
 
 
@@ -2956,7 +3064,36 @@ z80_byte pd765_read_result_command_read_id(void)
 
 }
 
+z80_byte pd765_read_result_command_format_track(void)
+{
 
+
+    z80_byte return_value=pd765_get_buffer();
+    printf("PD765: Return byte from FORMAT_TRACK at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    pd765_output_parameters_index++;
+
+
+    //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
+    if (pd765_buffer_read_is_final()) {        
+        printf("PD765: End of result buffer of READ_ID\n");
+
+        //Y decir que ya no hay que devolver mas datos
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
+
+        //Decir que ya no esta busy
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_CB_MASK);
+
+        //Y pasamos a fase command
+        pd765_phase=PD765_PHASE_COMMAND;
+
+        sleep(2);
+
+    }
+
+
+    return return_value;        
+
+}
 
 
 z80_byte pd765_read_result_command_read_data(void)
@@ -3168,6 +3305,10 @@ z80_byte pd765_read_handle_phase_result(void)
 
         case PD765_COMMAND_WRITE_DATA:
             return pd765_read_result_command_write_data();
+        break;
+
+        case PD765_COMMAND_FORMAT_TRACK:
+            return pd765_read_result_command_format_track();
         break;             
 
         case PD765_COMMAND_INVALID:
