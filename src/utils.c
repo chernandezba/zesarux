@@ -3603,6 +3603,10 @@ int util_write_configfile(void)
   if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_INCLUDE) ADD_STRING_CONFIG,"--debug-filter include");
 
 
+                                                ADD_STRING_CONFIG,"--debug-filter-exclude-mask %d",debug_mascara_clase_exclude);
+                                                ADD_STRING_CONFIG,"--debug-filter-include-mask %d",debug_mascara_clase_include);
+
+
   if (debug_unnamed_console_enabled.v==0)     ADD_STRING_CONFIG,"--disable-debug-console-win");
 
   if (debug_always_show_messages_in_console.v) ADD_STRING_CONFIG,"--verbose-always-console");

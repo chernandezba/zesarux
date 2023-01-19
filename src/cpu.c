@@ -1793,6 +1793,8 @@ printf (
 		"\n"
 		"--verbose n                         Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
         "--debug-filter s                    Filter type for debug messages, can be exclude or include\n"
+        "--debug-filter-exclude-mask n       Filter mask for excluding debug messages\n"
+        "--debug-filter-include-mask n       Filter mask for including debug messages\n"
         "--disable-debug-console-win         Disable debug console window\n"
 		"--verbose-always-console            Always show messages in console (using simple printf) additionally to the default video driver, interesting in some cases as curses, aa or caca video drivers\n"
 		"--debugregisters                    Debug CPU Registers on text console\n"
@@ -6259,6 +6261,23 @@ int parse_cmdline_options(void) {
                     exit(1);
                 }
             }
+
+
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter-exclude-mask")) {
+                siguiente_parametro();
+
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                debug_mascara_clase_exclude=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter-include-mask")) {
+                siguiente_parametro();
+
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                debug_mascara_clase_include=valor;
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--disable-debug-console-win")) {
                 //Por defecto esta habilitado, por tanto lo desactivamos
