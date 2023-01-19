@@ -2379,6 +2379,14 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     //TODO: solo una cara 
     dsk_put_chrn(track,0,sector,parametro_c,parametro_h,parametro_r,parametro_n);
 
+    //Escribir valores ST1 y ST2
+    //TODO: metemos esto siempre a 0, tecnicamente ya estaria bien,
+    //aunque si se guarda algun disco "especial" tipo protegido o speedlock, se tiene que poder escribir tal cual
+    //el st1 y st2 de la controladora, con sus errores si conviene
+    //TODO: solo una cata
+    dsk_put_st12(track,0,sector,0,0);
+
+
     //Rellenamos sector con byte
 
     //calcular inicio sector

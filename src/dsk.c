@@ -990,7 +990,6 @@ void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_
 
 
 //Devolver st1,2 de una pista y sector concreto
-
 void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2)
 {
 
@@ -999,9 +998,19 @@ void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z
     *parametro_st1=plus3dsk_get_byte_disk(offset+4); 
     *parametro_st2=plus3dsk_get_byte_disk(offset+5);             
             
-
-
 }
+
+//Escribir st1,2 de una pista y sector concreto
+void dsk_put_st12(int pista,int cara,int sector_fisico,z80_byte parametro_st1,z80_byte parametro_st2)
+{
+
+    int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
+
+    plus3dsk_put_byte_disk(offset+4,parametro_st1); 
+    plus3dsk_put_byte_disk(offset+5,parametro_st2);             
+            
+}
+
 
 //Devolver tamaño real de una pista y sector concreto, para tipo extendido
 

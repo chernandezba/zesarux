@@ -74,6 +74,7 @@ extern int dsk_get_start_sector_info(int pista,int cara,int sector_fisico);
 extern int dsk_get_sector_size_from_n_value(int n_value);
 
 extern void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2);
+extern void dsk_put_st12(int pista,int cara,int sector_fisico,z80_byte parametro_st1,z80_byte parametro_st2);
 
 extern int dsk_get_total_tracks(void);
 
