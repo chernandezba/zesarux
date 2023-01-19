@@ -2356,7 +2356,16 @@ void menu_debug_verbose_excludeinclude(MENU_ITEM_PARAMETERS)
 
 void menu_debug_verbose_filter_item(MENU_ITEM_PARAMETERS)
 {
+    //Obtener bit de mascara que vamos a cambiar
+    int class_mask=debug_get_class_mask_value(valor_opcion);
 
+    //Conmutar valor
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        debug_mascara_clase_exclude ^= class_mask;
+    }
+    else {
+        debug_mascara_clase_include ^= class_mask;
+    }
 }
 
 void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
@@ -2382,6 +2391,8 @@ void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
                 (valor_mascara_config & class_mask ? 'X' : ' '),
                 debug_get_class_mask_name(i)
             );
+
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
         }
 
         
