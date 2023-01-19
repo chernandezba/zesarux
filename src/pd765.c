@@ -2520,8 +2520,7 @@ void pd765_read_parameters_format_track(z80_byte value)
             //hacer efectivo el formateo de ese sector
             DBG_PRINT_PD765 VERBOSE_DEBUG,"Formatting sector %d. Current track: %02XH\n",sector,pd765_pcn);
 
-            //TODO obtener esto correctamente
-            int sector_size=512;
+            int sector_size=dsk_get_sector_size_from_n_value(pd765_input_parameter_n_format);
 
             pd765_format_sector_track(pd765_pcn,sector,sector_size,pd765_input_parameter_d,
                 pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n);
