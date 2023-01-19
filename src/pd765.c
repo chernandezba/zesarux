@@ -2191,6 +2191,8 @@ void pd765_read_parameters_write_data(z80_byte value)
     pd765_last_command_name()
     );
 
+    if (pd765_if_write_protected()) return;
+
     if (pd765_input_parameters_index==1) {
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
@@ -2425,11 +2427,76 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
   
 }
 
+int pd765_if_write_protected(void)
+{
+    if (dskplusthree_write_protection.v==0) return 0;
+
+
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
+
+    //E indicar fase ejecucion ha finalizado
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
+
+    //No esperamos mas parametros de input
+    //Fin de comando
+    pd765_input_parameters_index=0;
+
+    // meter datos st0,st1, st2,chrn
+    pd765_reset_buffer();
+
+    z80_byte leido_st0=pd765_get_st0();
+    z80_byte leido_st1=pd765_get_st1();
+    z80_byte leido_st2=pd765_get_st2();
+
+    leido_st0 |=0x40;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    pd765_put_buffer(leido_st0);
+
+    
+    leido_st1 |=PD765_STATUS_REGISTER_ONE_NW_MASK;
+
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+    pd765_put_buffer(leido_st1);
+
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+    pd765_put_buffer(leido_st2);
+
+    z80_byte return_value;
+
+    return_value=pd765_input_parameter_c;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_r+1;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);                                
+
+    return 1;
+
+}
+
 void pd765_read_parameters_format_track(z80_byte value)
 {
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s\n",
     pd765_last_command_name()
     );
+
+    if (pd765_if_write_protected()) return;
 
     if (pd765_input_parameters_index==1) {
         pd765_input_parameter_hd=(value>>2) & 0x01;
