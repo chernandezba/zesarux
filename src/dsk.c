@@ -100,20 +100,19 @@ void dskplusthree_flush_contents_to_disk(void)
         if (dskplusthree_emulation.v==0) return;
 
         if (dskplusthree_must_flush_to_disk==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush DSK to disk but no changes made");
+                DBG_PRINT_DSK VERBOSE_DEBUG,"Trying to flush DSK to disk but no changes made");
                 return;
         }
 
 
         if (dskplusthree_persistent_writes.v==0) {
-                debug_printf (VERBOSE_DEBUG,"Trying to flush DSK to disk but persistent writes disabled");
+                DBG_PRINT_DSK VERBOSE_DEBUG,"Trying to flush DSK to disk but persistent writes disabled");
                 return;
         }
 
 
 
-        debug_printf (VERBOSE_INFO,"Flushing DSK to disk");
-        printf ("Flushing DSK to disk\n");
+        DBG_PRINT_DSK VERBOSE_INFO,"Flushing DSK to disk");
 
         //Cambiamos el Creator del DSK
         char buffer_creator[30];
@@ -123,7 +122,7 @@ void dskplusthree_flush_contents_to_disk(void)
 
         FILE *ptr_dskplusthreefile;
 
-        debug_printf (VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
+        DBG_PRINT_DSK VERBOSE_INFO,"Opening DSK File for writing: %s",dskplusthree_file_name);
         ptr_dskplusthreefile=fopen(dskplusthree_file_name,"wb");
 
 
@@ -142,6 +141,8 @@ void dskplusthree_flush_contents_to_disk(void)
                 dskplusthree_must_flush_to_disk=0;
 
                 escritos=fwrite(puntero,1,size,ptr_dskplusthreefile);
+
+                DBG_PRINT_DSK VERBOSE_INFO,"Closing DSK File for writing: %s",dskplusthree_file_name);
 
                 fclose(ptr_dskplusthreefile);
 
@@ -165,7 +166,7 @@ void dskplusthree_disable(void)
 
 	if (dskplusthree_emulation.v==0) return;
 
-	debug_printf (VERBOSE_INFO,"Disabling DSK emulation");
+	DBG_PRINT_DSK VERBOSE_INFO,"Disabling DSK emulation");
 
 	dskplusthree_emulation.v=0;
 
@@ -212,8 +213,8 @@ void dskplusthree_enable(void)
 
 	if (dskplusthree_emulation.v) return;
 
-	debug_printf (VERBOSE_INFO,"Enabling DSK emulation");
-	debug_printf (VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
+	DBG_PRINT_DSK VERBOSE_INFO,"Enabling DSK emulation");
+	DBG_PRINT_DSK VERBOSE_INFO,"Opening DSK File %s",dskplusthree_file_name);
 
 	long long int tamanyo=get_file_size(dskplusthree_file_name);
 
@@ -240,12 +241,12 @@ void dskplusthree_enable(void)
     const int signature_check_length=8;
 
     if (!memcmp(dsk_signature_basic,p3dsk_buffer_disco,signature_check_length)) {
-        printf("Detected Basic DSK\n");
+        DBG_PRINT_DSK VERBOSE_INFO,"Detected Basic DSK");
         dsk_file_type_extended=0;
     }
 
     else if (!memcmp(dsk_signature_extended,p3dsk_buffer_disco,signature_check_length)) {
-        printf("Detected Extended DSK\n");
+        DBG_PRINT_DSK VERBOSE_INFO,"Detected Extended DSK");
         dsk_file_type_extended=1;
     }
 
@@ -257,13 +258,13 @@ void dskplusthree_enable(void)
     //Mostrar firma ocultando caracteres no validos
     char buffer_signature[DSK_SIGNATURE_LENGTH+1];
     dsk_get_signature(buffer_signature);
-    printf("DSK signature: %s\n",buffer_signature);
+    DBG_PRINT_DSK VERBOSE_INFO,"DSK signature: %s",buffer_signature);
 
     char buffer_creator[DSK_CREATOR_LENGTH+1];
     dsk_get_creator(buffer_creator);
-    printf("DSK creator: %s\n",buffer_creator);    
+    DBG_PRINT_DSK VERBOSE_INFO,"DSK creator: %s",buffer_creator);    
 
-    printf("DSK total tracks: %d total sides: %d\n",dsk_get_total_tracks(),dsk_get_total_sides());
+    DBG_PRINT_DSK VERBOSE_INFO,"DSK total tracks: %d total sides: %d",dsk_get_total_tracks(),dsk_get_total_sides());
 
     char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
     int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
@@ -271,7 +272,7 @@ void dskplusthree_enable(void)
         debug_printf(VERBOSE_ERR,"This disk is protected with an unsupported method: %s. It probably won't be readable",buffer_esquema_proteccion);
     }
 
-    printf("Protection system: %s\n",buffer_esquema_proteccion);
+    DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",buffer_esquema_proteccion);
 
 	p3dsk_buffer_disco_size=tamanyo;
 
@@ -775,11 +776,11 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
     int iniciopista=dsk_get_start_track(pista,0); //TODO: de momento solo cara 0
 
-    printf("Inicio pista %d: %XH\n",pista,iniciopista);
+    DBG_PRINT_DSK VERBOSE_PARANOID,"DSK Start track %d: %XH",pista,iniciopista);
 
     int total_sectors=dsk_get_total_sectors_track_from_offset(iniciopista);   
 
-    printf("Total sectors: %d\n",total_sectors); 
+    DBG_PRINT_DSK VERBOSE_PARANOID,"DSK Start track: %d",total_sectors); 
 
 
     int sector_information_list=iniciopista+0x18;
@@ -788,7 +789,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
     for (sector=0;sector<total_sectors;sector++) {
 
-        printf("Buscando sector ID %02XH on track %d estamos en pos sector %d\n",parametro_r,pista,sector);
+        DBG_PRINT_DSK VERBOSE_PARANOID,"Looking for sector ID %02XH on track %d we are in position sector %d",parametro_r,pista,sector);
 
 
         z80_byte sector_id=plus3dsk_get_byte_disk(sector_information_list+2); 
@@ -819,7 +820,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
         //Aun no me he encontrado ningun disco con esto, pero por si acaso
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_MD_MASK) || (leido_id_st1 & PD765_STATUS_REGISTER_ONE_MA_MASK)) {
             match_condition=0;
-            printf("DSK: sector does not have deleted nor not deleted mask\n");
+            DBG_PRINT_DSK VERBOSE_DEBUG,"DSK: sector does not have deleted nor not deleted mask");
             //sleep(3);
         }
 
@@ -842,7 +843,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
         if (condition_r_equals && sector>minimo_sector && match_condition) {
             //debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
-            printf("Found sector ID %02XH on track %d at pos sector %d\n",parametro_r,pista,sector);
+            DBG_PRINT_DSK VERBOSE_PARANOID,"Found sector ID %02XH on track %d at pos sector %d",parametro_r,pista,sector);
 
 
             int offset=iniciopista+0x100;
@@ -871,7 +872,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
             //printf("Offset sector: %XH\n",offset_retorno);
 
             *sector_fisico=sector;
-            printf("Found sector ID %02XH on track %d at offset in DSK: %XH\n",parametro_r,pista,offset_retorno);
+            DBG_PRINT_DSK VERBOSE_PARANOID,"Found sector ID %02XH on track %d at offset in DSK: %XH",parametro_r,pista,offset_retorno);
             return offset_retorno;
         }
 
@@ -881,7 +882,7 @@ int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_
 
 
 
-    printf("NOT Found sector ID %02XH on track %d (max sectors: %d)\n",parametro_r,pista,total_sectors);
+    DBG_PRINT_DSK VERBOSE_DEBUG,"NOT Found sector ID %02XH on track %d (max sectors: %d)",parametro_r,pista,total_sectors);
 	return -1;
 
 }

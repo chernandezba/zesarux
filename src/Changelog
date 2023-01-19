@@ -14,6 +14,7 @@ Added XEyes "Toy" to follow mouse
 * Improvements:
 
 Improved Debug Console: better refresh, dynamic width??
+Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug CPU:
 - switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
 - added (hl), (de), (bc)

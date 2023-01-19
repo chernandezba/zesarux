@@ -69,6 +69,9 @@ extern z80_bit pd765_enabled;
 extern void pd765_enable(void);
 extern void pd765_disable(void);
 
+//Para poder hacer debug_printf con la clase PD765 adecuada
+#define DBG_PRINT_PD765 debug_printf(VERBOSE_CLASS_PD765|
+
 extern z80_byte pd765_read(void);
 extern z80_byte pd765_read_status_register(void);
 extern void pd765_out_port_1ffd(z80_byte value);

@@ -1050,6 +1050,45 @@ void debug_unnamed_console_init(void)
 
 }
 
+//Parametros de inclusion/exclusion de clases de mensajes (dsk, pd765, etc)
+//Por defecto modo excluir
+int debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+
+
+//Por defecto no excluimos nada
+int debug_mascara_clase_exclude=VERBOSE_CLASS_ANYTHINGELSE;
+//Si se activa modo include, incluimos todo
+
+int debug_mascara_clase_include=0xFFFFFF00; //32 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara
+
+
+int debug_printf_check_exclude_include(unsigned int clase_mensaje)
+{
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        //Excluimos tipos mensaje
+        clase_mensaje &=debug_mascara_clase_exclude;
+
+        if (clase_mensaje) {
+            //queda el bit activo, por tanto, se trata de ese mensaje que queremos excluir
+            return 0; //lo excluimos
+        }
+        else {
+            return 1; //lo incluimos
+        }
+    }
+    else {
+        //Incluimos tipos mensaje
+        clase_mensaje &=debug_mascara_clase_include;
+
+        if (clase_mensaje) {
+            //queda el bit activo, por tanto, se trata de ese mensaje que queremos incluir
+            return 1; //lo incluimos
+        }
+        else {
+            return 0; //lo excluimos
+        }
+    }
+}
 
 void debug_printf (int debuglevel, const char * format , ...)
 {
@@ -1057,13 +1096,37 @@ void debug_printf (int debuglevel, const char * format , ...)
 	while(z_atomic_test_and_set(&debug_printf_semaforo)) {
 		//printf("Esperando a liberar lock en debug_printf\n");
 	} 
+
+
+
+    int clase_mensaje;
+
+    if (debuglevel<256){
+        clase_mensaje=VERBOSE_CLASS_ANYTHINGELSE;
+    }
+    else {
+        clase_mensaje=debuglevel & 0xFFFFFF00;
+    }
+
+    //Y nuestro level realmente son los 8 bits inferiores
+    debuglevel &=0xFF;
+
+    //Validar exclude/include y si hay que mostrar ese mensaje entonces
+
+    //Clase de mensaje le llega dentro de debuglevel, si tiene mascara de bits a partir de valores 256
+    int mostrar_mensaje;    
+    mostrar_mensaje=debug_printf_check_exclude_include(clase_mensaje);
+
+    //Mensajes con VERBOSE_ERR, siempre se ven, independientemente de cual sea la class
+    if (debuglevel==VERBOSE_ERR) mostrar_mensaje=1;
+
   	int copia_verbose_level;
 
   	copia_verbose_level=verbose_level;
 
     //VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW siempre muestra el mensaje y no indica en el texto la prioridad (Error, Warning, etc del mensaje)
 
-  	if (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW) {
+  	if ((mostrar_mensaje) && (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW)) {
 		//tamaño del buffer bastante mas grande que el valor constante definido
 	    char buffer_final[DEBUG_MAX_MESSAGE_LENGTH*2];
 	    char buffer_inicial[DEBUG_MAX_MESSAGE_LENGTH*2+64];

@@ -36,6 +36,9 @@
 
 #define DSK_MAX_PROTECTION_SCHEME 100
 
+//Para poder hacer debug_printf con la clase DSK adecuada
+#define DBG_PRINT_DSK debug_printf(VERBOSE_CLASS_DSK|
+
 extern void dsk_insert_disk(char *nombre);
 
 extern char dskplusthree_file_name[];

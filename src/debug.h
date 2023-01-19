@@ -52,6 +52,9 @@ extern void debug_printf (int debuglevel,__const char *__restrict __format, ...)
 extern void debug_printf_source (int debuglevel, char *archivo, int linea, const char *funcion, const char * format , ...);
 #define VERBOSE_DEBUG_SOURCE VERBOSE_DEBUG, __FILE__, __LINE__, __FUNCTION__
 
+//Este esta solo aqui como extern para poder acceder desde codetests
+extern int debug_printf_check_exclude_include(unsigned int clase_mensaje);
+
 extern z80_bit menu_breakpoint_exception;
 
 //breakpoints maximos de pc. no tiene mucho sentido porque se puede hacer con condicion pc=
@@ -144,6 +147,21 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 
 //Para enviar mensaje a debug console window
 #define VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW 99
+
+//Clasificacion de mensajes por tipo. Uso de mascaras con valores altos. Valores a partir de 256 indica que hay mascara
+#define VERBOSE_CLASS_DSK   (1<<8)
+#define VERBOSE_CLASS_PD765 (1<<9)
+
+//Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
+#define VERBOSE_CLASS_ANYTHINGELSE (1<<30)
+
+#define VERBOSE_MASK_CLASS_TYPE_EXCLUDE 0
+#define VERBOSE_MASK_CLASS_TYPE_INCLUDE 1
+
+
+extern int debug_mascara_modo_exclude_include;
+extern int debug_mascara_clase_exclude;
+extern int debug_mascara_clase_include;
 
 //Igualados por la derecha asi salen mensajes alineados
 #define VERBOSE_MESSAGE_ERR         "Error:    "

@@ -1700,6 +1700,69 @@ void codetests_acosine(void)
     
 }
 
+void codetests_debug_printf_exclude_include(void)
+{
+
+    //Probar exclusiones primero
+    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+
+    debug_mascara_clase_exclude=0;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==0) {
+        printf("error exclude anything else when mask=0\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==0) {
+        printf("error exclude class dsk when mask=0\n");
+        exit(1);
+    }
+
+    debug_mascara_clase_exclude=VERBOSE_CLASS_DSK;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==0) {
+        printf("error exclude anything else when mask=dsk\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==1) {
+        printf("error exclude class dsk when mask=dsk\n");
+        exit(1);
+    }    
+
+    //Probar inclusiones
+    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+
+    debug_mascara_clase_include=0;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==1) {
+        printf("error include anything else when mask=0\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==1) {
+        printf("error include class dsk when mask=0\n");
+        exit(1);
+    }
+
+    debug_mascara_clase_include=VERBOSE_CLASS_DSK;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==1) {
+        printf("error include anything else when mask=dsk\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==0) {
+        printf("error include class dsk when mask=dsk\n");
+        exit(1);
+    }    
+
+    //Dejamos luego valores por defecto
+    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+
+    //Por defecto no excluimos nada
+    debug_mascara_clase_exclude=0;
+    //Si se activa modo include, incluimos todo
+    debug_mascara_clase_include=0xFFFFFF00; 
+
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -1797,6 +1860,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning acosine tests\n");
     codetests_acosine();
+
+    printf("\nRunning debug printf exclude/include class tests\n");
+    codetests_debug_printf_exclude_include();
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");
