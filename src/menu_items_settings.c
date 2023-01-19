@@ -216,7 +216,7 @@ int ext_desktop_settings_opcion_seleccionada=0;
 int cpu_settings_opcion_seleccionada=0;
 int zxdesktop_set_configurable_icons_opcion_seleccionada=0;
 int fileselector_settings_opcion_seleccionada=0;
-
+int debug_verbose_filter_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -2354,11 +2354,58 @@ void menu_debug_verbose_excludeinclude(MENU_ITEM_PARAMETERS)
     
 }
 
+void menu_debug_verbose_filter_item(MENU_ITEM_PARAMETERS)
+{
+
+}
+
 void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
 {
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int valor_mascara_config=(debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? debug_mascara_clase_exclude : debug_mascara_clase_include);
+
+
+        int total_masks=debug_get_total_class_masks();
+        int i;
+        for (i=0;i<total_masks;i++) {
+            int class_mask=debug_get_class_mask_value(i);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_verbose_filter_item,NULL,"[%c] %s",
+                (valor_mascara_config & class_mask ? 'X' : ' '),
+                debug_get_class_mask_name(i)
+            );
+        }
+
+        
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&debug_verbose_filter_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filter mask");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}    
     
-    
-}
 
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
