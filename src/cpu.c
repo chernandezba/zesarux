@@ -1792,6 +1792,7 @@ printf (
 		"---------\n"
 		"\n"
 		"--verbose n                         Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
+        "--debug-filter s                    Filter type for debug messages, can be exclude or include\n"
         "--disable-debug-console-win         Disable debug console window\n"
 		"--verbose-always-console            Always show messages in console (using simple printf) additionally to the default video driver, interesting in some cases as curses, aa or caca video drivers\n"
 		"--debugregisters                    Debug CPU Registers on text console\n"
@@ -6241,6 +6242,22 @@ int parse_cmdline_options(void) {
 					printf ("Invalid Verbose level\n");
 					exit(1);
 				}
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter")) {
+                siguiente_parametro();
+                if (!strcasecmp(argv[puntero_parametro],"exclude")) {
+                    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+                }
+
+                else if (!strcasecmp(argv[puntero_parametro],"include")) {
+                    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+                }
+
+                else {
+                    printf("Invalid debug filter type\n");
+                    exit(1);
+                }
             }
 
             else if (!strcmp(argv[puntero_parametro],"--disable-debug-console-win")) {
