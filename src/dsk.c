@@ -929,8 +929,7 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
 }
 
 
-//Devolver CHRN de una pista y sector concreto
-void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n)
+int dsk_get_start_sector(int pista,int cara,int sector_fisico)
 {
 
 
@@ -948,16 +947,41 @@ void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80
 
     //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
-    *parametro_c=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); 
-    *parametro_h=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+1); 
-    *parametro_r=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); 
-    *parametro_n=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+3);             
+    return iniciopista+offset_tabla_sector;            
             
-
 
 
 }
 
+//Devolver CHRN de una pista y sector concreto
+void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n)
+{
+
+
+    int offset=dsk_get_start_sector(pista,cara,sector_fisico);
+
+    *parametro_c=plus3dsk_get_byte_disk(offset); 
+    *parametro_h=plus3dsk_get_byte_disk(offset+1); 
+    *parametro_r=plus3dsk_get_byte_disk(offset+2); 
+    *parametro_n=plus3dsk_get_byte_disk(offset+3);             
+            
+
+}
+
+//Escribir CHRN en una pista y sector concreto
+void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_byte parametro_h,z80_byte parametro_r,z80_byte parametro_n)
+{
+
+
+    int offset=dsk_get_start_sector(pista,cara,sector_fisico);
+
+    plus3dsk_put_byte_disk(offset,parametro_c);
+    plus3dsk_put_byte_disk(offset+1,parametro_h);
+    plus3dsk_put_byte_disk(offset+2,parametro_r);
+    plus3dsk_put_byte_disk(offset+3,parametro_n);
+            
+
+}
 
 
 

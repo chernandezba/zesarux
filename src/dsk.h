@@ -68,6 +68,8 @@ extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int 
 extern int dsk_get_physical_sector(int pista,int sector);
 
 extern void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n);
+extern void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_byte parametro_h,z80_byte parametro_r,z80_byte parametro_n);
+extern int dsk_get_start_sector(int pista,int cara,int sector_fisico);
 
 extern void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2);
 

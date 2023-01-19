@@ -2366,13 +2366,17 @@ int pd765_formatting_total_sectores=9;
 int pd765_formatting_currentsector=0;
 
 
-void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fill_byte)
+void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fill_byte,
+    z80_byte parametro_c,z80_byte parametro_h,z80_byte parametro_r,z80_byte parametro_n)
 {
     //TODO escribir valores CHRN sector y otros necesarios... realmente solo seria CHRN, 
     //resto de info del dsk se tiene que conservar y tener creado al inicializar un dsk.
     //O no? por si partimos de un dsk con formato extraño y lo queremos inicializar entero? por tanto hay que escribir mas cosas aparte de CHRN
     //tal y como dice la especificacion, meter formato IBM noseque...
 
+    //Escribir CHRN
+    //TODO: solo una cara 
+    dsk_put_chrn(track,0,sector,parametro_c,parametro_h,parametro_r,parametro_n);
 
     //Rellenamos sector con byte
 
@@ -2386,8 +2390,6 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
         DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO gestion error\n");
         return;
     }   
-
-
 
     int indice;
 
@@ -2514,13 +2516,14 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         //Hemos leido el valor de N
         if (chrn_id==3) {
-            //TODO: hacer efectivo el formateo de ese sector
+            //hacer efectivo el formateo de ese sector
             DBG_PRINT_PD765 VERBOSE_DEBUG,"Formatting sector %d. Current track: %02XH\n",sector,pd765_pcn);
 
             //TODO obtener esto correctamente
             int sector_size=512;
 
-            pd765_format_sector_track(pd765_pcn,sector,sector_size,pd765_input_parameter_d);
+            pd765_format_sector_track(pd765_pcn,sector,sector_size,pd765_input_parameter_d,
+                pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n);
         }
 
         //si final
