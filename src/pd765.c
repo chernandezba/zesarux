@@ -2383,7 +2383,13 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     //TODO: metemos esto siempre a 0, tecnicamente ya estaria bien,
     //aunque si se guarda algun disco "especial" tipo protegido o speedlock, se tiene que poder escribir tal cual
     //el st1 y st2 de la controladora, con sus errores si conviene
-    //TODO: solo una cata
+    //TODO: solo una cara
+    //Nota: si por lo que fuera, los valores de st1 o st2 fueran corruptos, dando error de crc,
+    //desde +3 basic no deja formatear, pues intenta leer primero si hay datos, antes de formatear,
+    //y como lee esos crc error de los st1 y st2 corruptos, cree que el disco esta estropeado
+    //Creo que la unica manera de corregir el disco seria lanzando comando de formateo directamente a la controladora de disco,
+    //sin usar comando del +3 basic format "a:"
+    //TODO: hacer un item de menu que haga el formateo de un disco
     dsk_put_st12(track,0,sector,0,0);
 
 
