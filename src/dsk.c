@@ -933,7 +933,7 @@ int dsk_get_sector_fisico(int pista,int cara,int sector_fisico)
 }
 
 
-int dsk_get_start_sector(int pista,int cara,int sector_fisico)
+int dsk_get_start_sector_info(int pista,int cara,int sector_fisico)
 {
 
 
@@ -962,7 +962,7 @@ void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80
 {
 
 
-    int offset=dsk_get_start_sector(pista,cara,sector_fisico);
+    int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
     *parametro_c=plus3dsk_get_byte_disk(offset); 
     *parametro_h=plus3dsk_get_byte_disk(offset+1); 
@@ -977,7 +977,7 @@ void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_
 {
 
 
-    int offset=dsk_get_start_sector(pista,cara,sector_fisico);
+    int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
     plus3dsk_put_byte_disk(offset,parametro_c);
     plus3dsk_put_byte_disk(offset+1,parametro_h);
@@ -994,23 +994,10 @@ void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_
 void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2)
 {
 
-    int iniciopista=dsk_get_start_track(pista,cara); 
+    int offset=dsk_get_start_sector_info(pista,cara,sector_fisico);
 
-    //printf("En dsk_get_st12 Inicio pista %d: %XH\n",pista,iniciopista);
-
-    //saltar 0x18
-    iniciopista +=0x18;
-
-
-    int offset_tabla_sector=sector_fisico*8; 
-    //z80_byte pista_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector); //Leemos pista id
-    //z80_byte sector_id=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+2); //Leemos c1, c2, etc
-
-    //debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
-
-
-    *parametro_st1=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+4); 
-    *parametro_st2=plus3dsk_get_byte_disk(iniciopista+offset_tabla_sector+5);             
+    *parametro_st1=plus3dsk_get_byte_disk(offset+4); 
+    *parametro_st2=plus3dsk_get_byte_disk(offset+5);             
             
 
 
