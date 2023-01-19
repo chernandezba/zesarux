@@ -1101,7 +1101,7 @@ int debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
 int debug_mascara_clase_exclude=0;
 
 //Por defecto incluimos todo
-int debug_mascara_clase_include=0xFFFFFF00; //32 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara
+int debug_mascara_clase_include=0x7FFFFF00; //31 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara y bit de signo
 
 
 
@@ -5444,7 +5444,9 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"Motor: %s\n",(pd765_motor_status ? "On" : "Off"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-        sprintf (buf_linea,"Last command: %s\n",pd765_last_command_name() );
+        sprintf (buf_linea,"%s command: %s\n",
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "Running" : "Last   "),
+            pd765_last_command_name() );
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
@@ -5475,7 +5477,11 @@ void debug_get_ioports(char *stats_buffer)
                  ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
 
-*/
+        sprintf (buf_linea,"Writing: %s\n",(
+                 ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_WRITE_DATA) ? "Yes" : "No"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);   
+
+*/        
 
         sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
