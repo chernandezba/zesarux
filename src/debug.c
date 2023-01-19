@@ -1054,12 +1054,19 @@ void debug_unnamed_console_init(void)
 //Por defecto modo excluir
 int debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
 
-
 //Por defecto no excluimos nada
-int debug_mascara_clase_exclude=VERBOSE_CLASS_ANYTHINGELSE;
-//Si se activa modo include, incluimos todo
+int debug_mascara_clase_exclude=0;
 
+//Por defecto incluimos todo
 int debug_mascara_clase_include=0xFFFFFF00; //32 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara
+
+
+debug_masks_class debug_masks_class_list[]={
+    {"DSK",VERBOSE_CLASS_DSK},
+    {"PD765",VERBOSE_CLASS_PD765},
+    {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
+    {"",0}  //Siempre este al final
+};
 
 
 int debug_printf_check_exclude_include(unsigned int clase_mensaje)

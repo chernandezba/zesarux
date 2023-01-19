@@ -158,6 +158,13 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 #define VERBOSE_MASK_CLASS_TYPE_EXCLUDE 0
 #define VERBOSE_MASK_CLASS_TYPE_INCLUDE 1
 
+//Listado de mascaras
+struct s_debug_masks_class {
+    char name[32];
+    int value;
+};
+
+typedef struct s_debug_masks_class debug_masks_class;
 
 extern int debug_mascara_modo_exclude_include;
 extern int debug_mascara_clase_exclude;

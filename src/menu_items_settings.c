@@ -2343,6 +2343,23 @@ void menu_debug_settings_show_fired_halt(MENU_ITEM_PARAMETERS)
     debug_settings_show_fired_halt.v ^=1;
 }
 
+void menu_debug_verbose_excludeinclude(MENU_ITEM_PARAMETERS)
+{
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+    }
+    else {
+        debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+    }
+    
+}
+
+void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
+{
+    
+    
+}
+
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
 {
@@ -2453,6 +2470,25 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_excludeinclude,NULL,
+            "Message filter","Filtro mensajes","Filtre missatges");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",
+            (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? "Exclude" : "Include") );
+		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter type for debug messages");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Filter type for debug messages");
+
+        int valor_mascara=(debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? debug_mascara_clase_exclude : debug_mascara_clase_include);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_filter,NULL,
+            "Filter mask","Máscara filtro","Màscara filtre");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%08X] ",valor_mascara);
+		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter mask for debug messages");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Filter mask for debug messages");
+
+
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console_enable,NULL,
             "Debug console window","Ventana de consola depuración","Finestra de consola depuració");
