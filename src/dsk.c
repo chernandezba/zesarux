@@ -447,16 +447,7 @@ void dsk_show_activity(void)
 	}	
 }
 
-const int dsk_sector_sizes_numbers[]={
-    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
-    256,  //1
-    512,  //2
-    1024, //3
-    2048, //4
-    4096, //5
-    8192, //6
-    16384 //7
-};
+
 
 
 //entrada: offset a track information block
@@ -547,23 +538,36 @@ int dsk_get_total_sectors_track(int pista,int cara)
 }
 
 
-//entrada: offset a track information block
-int dsk_get_sector_size_track_from_offset(int offset)
+const int dsk_sector_sizes_numbers[]={
+    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
+    256,  //1
+    512,  //2
+    1024, //3
+    2048, //4
+    4096, //5
+    8192, //6
+    16384 //7
+};
+
+int dsk_get_sector_size_from_n_value(int n_value)
 {
-    int sector_size=plus3dsk_get_byte_disk(offset+0x14);
 
     //It is assumed that sector sizes are defined as 3 bits only, so that a sector size of N="8" is equivalent to N="0".
     //Mot o Mundial de futbol tienen algunos sectores con tamaño 8
-    sector_size &=7;
+    n_value &=7;
 
-    /*if (sector_size>6) {
-        printf("Sector size %d unsupported\n",sector_size);
-        return -1;
-    }*/
-
-    sector_size=dsk_sector_sizes_numbers[sector_size];
+    int sector_size=dsk_sector_sizes_numbers[n_value];
 
     return sector_size;
+}
+
+//entrada: offset a track information block
+int dsk_get_sector_size_track_from_offset(int offset)
+{
+    int sector_size_byte=plus3dsk_get_byte_disk(offset+0x14);
+
+
+    return dsk_get_sector_size_from_n_value(sector_size_byte);
 }
 
 int dsk_get_sector_size_track(int pista,int cara)

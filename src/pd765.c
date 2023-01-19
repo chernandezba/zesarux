@@ -100,6 +100,7 @@ z80_byte pd765_input_parameter_c;
 z80_byte pd765_input_parameter_h;
 z80_byte pd765_input_parameter_r;
 z80_byte pd765_input_parameter_n;
+z80_byte pd765_input_parameter_n_format;
 z80_byte pd765_input_parameter_eot;
 z80_byte pd765_input_parameter_gpl;
 z80_byte pd765_input_parameter_dtl;
@@ -2427,8 +2428,8 @@ void pd765_read_parameters_format_track(z80_byte value)
     }
 
     else if (pd765_input_parameters_index==2) {
-        pd765_input_parameter_n=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",pd765_input_parameter_n);
+        pd765_input_parameter_n_format=value;
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",pd765_input_parameter_n_format);
 
         pd765_input_parameters_index++;
     }  
