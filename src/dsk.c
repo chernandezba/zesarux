@@ -269,7 +269,7 @@ void dskplusthree_enable(void)
     char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
     int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
     if (protegido_no_soportado) {
-        debug_printf(VERBOSE_ERR,"This disk is protected with an unsupported method: %s. It probably won't be readable",buffer_esquema_proteccion);
+        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with an unsupported method: %s. It probably won't be readable",buffer_esquema_proteccion);
     }
 
     DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",buffer_esquema_proteccion);
