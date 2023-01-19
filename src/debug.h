@@ -170,6 +170,10 @@ extern int debug_mascara_modo_exclude_include;
 extern int debug_mascara_clase_exclude;
 extern int debug_mascara_clase_include;
 
+extern int debug_get_total_class_masks(void);
+extern char *debug_get_class_mask_name(int i);
+extern int debug_get_class_mask_value(int i);
+
 //Igualados por la derecha asi salen mensajes alineados
 #define VERBOSE_MESSAGE_ERR         "Error:    "
 #define VERBOSE_MESSAGE_WARN        "Warning:  "

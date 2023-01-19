@@ -1050,6 +1050,49 @@ void debug_unnamed_console_init(void)
 
 }
 
+char *debug_mask_beyond_should_not_happen="BEYONDLIMIT";
+
+debug_masks_class debug_masks_class_list[]={
+    {"DSK",VERBOSE_CLASS_DSK},
+    {"PD765",VERBOSE_CLASS_PD765},
+    {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
+    {"",0}  //Siempre este al final
+};
+
+int debug_get_total_class_masks(void)
+{
+    int i;
+
+    //limite 10000 al que nunca se deberia llegar
+    for (i=0;i<10000 && debug_masks_class_list[i].name[0]!=0;i++);
+
+    return i;
+}
+
+char *debug_get_class_mask_name(int i)
+{
+    int total=debug_get_total_class_masks();
+
+    if (i>=total) {
+        debug_printf(VERBOSE_ERR,"Querying mask name beyond masks limit");
+        return debug_mask_beyond_should_not_happen;
+    }
+
+    return debug_masks_class_list[i].name;
+}
+
+int debug_get_class_mask_value(int i)
+{
+    int total=debug_get_total_class_masks();
+
+    if (i>=total) {
+        debug_printf(VERBOSE_ERR,"Querying mask value beyond masks limit");
+        return 0;
+    }
+
+    return debug_masks_class_list[i].value;
+}
+
 //Parametros de inclusion/exclusion de clases de mensajes (dsk, pd765, etc)
 //Por defecto modo excluir
 int debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
@@ -1060,13 +1103,6 @@ int debug_mascara_clase_exclude=0;
 //Por defecto incluimos todo
 int debug_mascara_clase_include=0xFFFFFF00; //32 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara
 
-
-debug_masks_class debug_masks_class_list[]={
-    {"DSK",VERBOSE_CLASS_DSK},
-    {"PD765",VERBOSE_CLASS_PD765},
-    {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
-    {"",0}  //Siempre este al final
-};
 
 
 int debug_printf_check_exclude_include(unsigned int clase_mensaje)
