@@ -199,6 +199,14 @@ z80_bit realtape_algorithm_new={0};
 
 
 //
+// PD765 Settings
+//
+
+//Si al activar proteccion de escritura en dsk, la controladora no retorna error a la cpu (silent mode)
+z80_bit pd765_silent_write_protection={0};
+
+
+//
 // Audio Settings
 //
 

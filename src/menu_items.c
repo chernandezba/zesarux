@@ -27642,6 +27642,13 @@ void menu_plusthreedisk_info(MENU_ITEM_PARAMETERS)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
+
+
+void menu_storage_dsk_pd765_silent_write_protection(MENU_ITEM_PARAMETERS)
+{
+    pd765_silent_write_protection.v ^=1;
+}
+
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_plusthreedisk;
@@ -27654,44 +27661,58 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 						
 
         menu_tape_settings_trunc_name(dskplusthree_file_name,string_dskplusthree_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,"~~DSK File: %s",string_dskplusthree_file_shown);
+        menu_add_item_menu_inicial_format(&array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_file,NULL,"~~DSK File: [%s]",string_dskplusthree_file_shown);
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'d');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation file");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation file");
 
 
         menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_emulation,
-        menu_storage_dskplusthree_emulation_cond,"DSK ~~Emulation: %s", (dskplusthree_emulation.v ? "Yes" : "No"));
+        menu_storage_dskplusthree_emulation_cond,"[%c] DSK ~~Emulation", (dskplusthree_emulation.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'e');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,"~~Write protect: %s", (dskplusthree_write_protection.v ? "Yes" : "No"));
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,
+            "[%c] ~~Write protect", (dskplusthree_write_protection.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'w');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"If DSK disk is write protected");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"If DSK disk is write protected");
 
+        if (dskplusthree_write_protection.v) {
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_pd765_silent_write_protection,NULL,
+                "[%c] ~~Silent protection", (pd765_silent_write_protection.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_plusthreedisk,'s');
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)");
+        }
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,"Persistent Writes: %s",(dskplusthree_persistent_writes.v ? "Yes" : "No") );
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_persistent_writes,NULL,
+            "[%c] Persistent Writes",(dskplusthree_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Tells if DSK writes are saved to disk. "
-        "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
-        );
+            "Note: all writing operations to DSK are always saved to internal memory (unless you disable write permission), but this setting "
+            "tells if these changes are written to disk or not."
+            );
 
 
                                
         menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,"~~PLUS3DOS Traps: %s", (plus3dos_traps.v ? "Yes" : "No"));
-        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'k');
-        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable plusthreedisk");
-        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable plusthreedisk");
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,
+            "[%c] +3DOS ~~Traps", (plus3dos_traps.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'t');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps");
 
 
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,"PD765 enabled: %s",(pd765_enabled.v ? "Yes" : "No") );
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
+            "[%c] ~~PD765 enabled",(pd765_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'p');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable PD765 Disk controller");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable PD765 Disk controller");
 
 
         menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);

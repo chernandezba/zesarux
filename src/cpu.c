@@ -2224,10 +2224,11 @@ printf (
 		"--------------------------\n"
 		"\n"
 
-        "--dsk-file f                    Set +3 DSK image file\n"
-        "--enable-dsk                    Enable +3 DSK emulation. Usually requires --dsk-file\n"
-        "--dsk-write-protection          Enable +3 DSK write protection\n"
-		"--dsk-no-persistent-writes      Disable +3 DSK persistent writes\n"
+        "--dsk-file f                     Set +3 DSK image file\n"
+        "--enable-dsk                     Enable +3 DSK emulation. Usually requires --dsk-file\n"
+        "--dsk-write-protection           Enable +3 DSK write protection\n"
+        "--pd765-silent-write-protection  When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)\n"
+		"--dsk-no-persistent-writes       Disable +3 DSK persistent writes\n"
 
 
 		"\n"
@@ -7376,6 +7377,10 @@ int parse_cmdline_options(void) {
 
                         else if (!strcmp(argv[puntero_parametro],"--dsk-write-protection")) {
 				dskplusthree_write_protection.v=1;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--pd765-silent-write-protection")) {
+				pd765_silent_write_protection.v=1;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--dsk-no-persistent-writes")) {

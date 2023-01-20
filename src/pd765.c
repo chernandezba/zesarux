@@ -19,6 +19,56 @@
 
 */
 
+/*
+
+Hello there... I'm glad you are curious and want to know more about my code. 
+
+First what you have to know is that this pd765.c code is not optimized, but created
+in order to be an understandable code. In fact, this is the second version of this code, there
+was a first version, that you may find on ZEsarUX versions before 10.3, that had the first version of this code,
+which didn't work at all. 
+
+That first version of the code was started on ZEsarUX 4.1 (16 July 2016), it didn't worked at all,
+and was left untouched until version 7.0 (25 May 2018) where I added +3DOS Traps. 
+That was a quick way to have it working, actually it was trapping
+all +3DOS calls and simulate to use disk. That was far from being perfect and only 10% of games were working.
+Also, the pd765 layer was not fixed. That code was left untouched again during 4 years...
+
+Then, when I started ZEsarUX 10.3 (27 October 2022), I wanted to fix pd765 emulation, so I had to rewrite it from scratch.
+I erased the old pd765.c and created a new blank one. Started again to read the chip specifications and slowly created, this time,
+a new pd765 emulation layer that really worked.
+
+Fun fact: The old code didn't work because I was interpreting the READ DATA command in a bad way: instead of returning first the sector data, 
+and then the ST0,1,2,CHRN values, I was returning them inverted: first ST0,1,2,CHRN values and then the sector data... Funny, isn't it?
+
+Anyway, as I said, don't expect it to be an optimized code, it was created to be understandable.
+Also, there are some chip commands that are not implemented yet. There's a reason: I don't have any program or game that uses them.
+So, instead of adding them and not trying with a real program (I could create a test program but it would work according to what
+I understand from the chip, that could be wrong), I prefer to have them unemulated. 
+So, if you have a real test program, which works on a real +3 Spectrum machine, and there in ZEsarUX shows an error like 
+"Invalid command", please tell me, so I could add that command and test it.
+
+So, the list of the unemulated commands are:
+
+WRITE DELETED DATA
+SCAN EQUAL
+SCAN LOW OR EQUAL
+SCAN HIGH OR EQUAL
+
+Also, there could be (probably) some features or behaviour of some commands that are not emulated the right way.
+I have tested my code with lots of disks (943 exactly) and tried to have it working the best way. 
+There are still known bugs and disks that can't be read right, I have collected my results in the following list:
+
+-Unprotected games:              98.3 % working
+-Paul Owens protected games:     85.7 % working
+-Speedlock protected games:      54.2 % working
+-Alkatraz protected games:          0 % working
+-Unknown method protected games:    0 % working (a total of 15 disks that seem to be protected but don't know the method)
+
+Enjoy reading!
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -33,6 +83,7 @@
 #include "dsk.h"
 #include "menu_items.h"
 #include "screen.h"
+#include "settings.h"
 
 z80_bit pd765_enabled={0};
 
@@ -2184,6 +2235,74 @@ void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, i
     DBG_PRINT_PD765 VERBOSE_DEBUG,"\n");
 }
 
+int pd765_if_write_protected(void)
+{
+    //Si no tiene proteccion habilitada, volver tal cual
+    if (dskplusthree_write_protection.v==0) return 0;
+
+    //Y si tiene modo silent protection, volver tambien, pues hay que aparentar que se sigue escribiendo igual
+    //luego desde plus3dsk_put_byte_disk se revisara que dskplusthree_write_protection.v esta activo y no escribira el dato realmente
+    if (pd765_silent_write_protection.v) return 0;
+
+    //Cambiamos a fase de resultado
+    pd765_phase=PD765_PHASE_RESULT;
+
+    //E indicar que hay que leer datos
+    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
+
+    //E indicar fase ejecucion ha finalizado
+    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
+
+    //No esperamos mas parametros de input
+    //Fin de comando
+    pd765_input_parameters_index=0;
+
+    // meter datos st0,st1, st2,chrn
+    pd765_reset_buffer();
+
+    z80_byte leido_st0=pd765_get_st0();
+    z80_byte leido_st1=pd765_get_st1();
+    z80_byte leido_st2=pd765_get_st2();
+
+    leido_st0 |=0x40;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    pd765_put_buffer(leido_st0);
+
+    
+    leido_st1 |=PD765_STATUS_REGISTER_ONE_NW_MASK;
+
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+    pd765_put_buffer(leido_st1);
+
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+    pd765_put_buffer(leido_st2);
+
+    z80_byte return_value;
+
+    return_value=pd765_input_parameter_c;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_h;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_r+1;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+    pd765_put_buffer(return_value);
+
+
+    return_value=pd765_input_parameter_n;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+    pd765_put_buffer(return_value);                                
+
+    return 1;
+
+}
+
+
 
 void pd765_read_parameters_write_data(z80_byte value)
 {
@@ -2427,68 +2546,6 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
   
 }
 
-int pd765_if_write_protected(void)
-{
-    if (dskplusthree_write_protection.v==0) return 0;
-
-
-    //Cambiamos a fase de resultado
-    pd765_phase=PD765_PHASE_RESULT;
-
-    //E indicar que hay que leer datos
-    pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
-
-    //E indicar fase ejecucion ha finalizado
-    pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);                       
-
-    //No esperamos mas parametros de input
-    //Fin de comando
-    pd765_input_parameters_index=0;
-
-    // meter datos st0,st1, st2,chrn
-    pd765_reset_buffer();
-
-    z80_byte leido_st0=pd765_get_st0();
-    z80_byte leido_st1=pd765_get_st1();
-    z80_byte leido_st2=pd765_get_st2();
-
-    leido_st0 |=0x40;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
-    pd765_put_buffer(leido_st0);
-
-    
-    leido_st1 |=PD765_STATUS_REGISTER_ONE_NW_MASK;
-
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
-    pd765_put_buffer(leido_st1);
-
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
-    pd765_put_buffer(leido_st2);
-
-    z80_byte return_value;
-
-    return_value=pd765_input_parameter_c;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_h;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_r+1;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
-    pd765_put_buffer(return_value);
-
-
-    return_value=pd765_input_parameter_n;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
-    pd765_put_buffer(return_value);                                
-
-    return 1;
-
-}
 
 void pd765_read_parameters_format_track(z80_byte value)
 {

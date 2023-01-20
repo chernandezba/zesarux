@@ -3915,6 +3915,9 @@ int util_write_configfile(void)
   if (dskplusthree_file_name[0]!=0)           ADD_STRING_CONFIG,"--dsk-file \"%s\"",dskplusthree_file_name);		
   if (dskplusthree_emulation.v)               ADD_STRING_CONFIG,"--enable-dsk");
   if (dskplusthree_write_protection.v)	      ADD_STRING_CONFIG,"--dsk-write-protection");
+
+  if (pd765_silent_write_protection.v)        ADD_STRING_CONFIG,"--pd765-silent-write-protection");
+
   if (dskplusthree_persistent_writes.v==0)    ADD_STRING_CONFIG,"--dsk-no-persistent-writes");
 
   if (superupgrade_rom_file_name[0]!=0)       ADD_STRING_CONFIG,"--superupgrade-flash \"%s\"",superupgrade_rom_file_name);

@@ -289,11 +289,8 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -PD765: formatear
 y tener creado al inicializar un dsk.
 
--PD765: control de EOT? se puede escribir mas de un sector seguido?
+-PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 
--PD765: implementar write protect del menu con error de write protect del chip? o ambos?
-pd765_if_write_protected() - ver como meter el flag
-quiza algo como "Notify controller of Write protect"
 
 -PD765: probar con dsk extendido escribir. ok
 -PD765: al crear un nuevo dsk tiene que hacer:
@@ -307,3 +304,5 @@ De momento solo haremos dsk formato basico
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
 
 -menu debug i/o: que calcule lineas totales y redimensione total height ventana (solo ampliar, no hace falta reducir) si no cabe. visible height no tocar
+
+-implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
