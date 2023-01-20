@@ -41,7 +41,8 @@ a new pd765 emulation layer that really worked.
 Fun fact: The old code didn't work because I was interpreting the READ DATA command in a bad way: instead of returning first the sector data, 
 and then the ST0,1,2,CHRN values, I was returning them inverted: first ST0,1,2,CHRN values and then the sector data... Funny, isn't it?
 
-Anyway, as I said, don't expect it to be an optimized code, it was created to be understandable.
+Anyway, as I said, don't expect it to be an optimized code, it was created to be understandable, and also
+as a way to know how the PD765 chip worked, as I knew almost nothing before.
 Also, there are some chip commands that are not implemented yet. There's a reason: I don't have any program or game that uses them.
 So, instead of adding them and not trying with a real program (I could create a test program but it would work according to what
 I understand from the chip, that could be wrong), I prefer to have them unemulated. 

@@ -286,8 +286,7 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 *boton derecho sobre iconos de process switcher
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
--PD765: formatear
-y tener creado al inicializar un dsk.
+
 
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 

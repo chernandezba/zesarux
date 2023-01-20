@@ -3589,7 +3589,9 @@ void set_machine_params(void)
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
-		dskplusthree_emulation.v=0;
+
+        //para que iba a querer desactivar esto ?
+		//dskplusthree_emulation.v=0;
 
 		//nota: combiene que allow_write_rom.v sea 0 al desactivar superupgrade
 		//porque si estaba activo allow_write_rom.v antes, y desactivamos superupgrade,
