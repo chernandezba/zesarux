@@ -5448,6 +5448,8 @@ int quickload_continue(char *nombre) {
                       
                        
         }
+
+        dskplusthree_disable();
         dsk_insert_disk(nombre);
         //strcpy(dskplusthree_file_name,nombre);
                 
