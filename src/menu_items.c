@@ -27258,27 +27258,68 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 
 		if (!si_existe_archivo(dskfile)) {
 
-			menu_warn_message("File does not exist");
-			return;
+			//menu_warn_message("File does not exist");
+			//return;
+
+            if (menu_confirm_yesno_texto("DSK does not exists","Create?")) {
+                char buffer_numeros[5];
+                        
+                //Pistas
+                strcpy (buffer_numeros,"40");
+                menu_ventana_scanf("Tracks?",buffer_numeros,3);
+                int pistas=parse_string_to_number(buffer_numeros);
+
+                //Caras
+                strcpy (buffer_numeros,"1");
+                menu_ventana_scanf("Sides?",buffer_numeros,2);
+                int caras=parse_string_to_number(buffer_numeros);
+
+                if (caras!=1) {
+                    debug_printf(VERBOSE_ERR,"You can only create disks of 1 sides!");
+
+                    //TODO permitir discos de 2 caras
+                    return;
+                }
 
 
-			//Crear archivo vacio
-			/*
-		        FILE *ptr_dskplusthreefile;
-			ptr_dskplusthreefile=fopen(dskplusthree_file_name,"wb");
+                if (caras!=1 && caras!=2) {
+                    debug_printf(VERBOSE_ERR,"You can only create disks of 1 or 2 sides!");
 
-		        long long int totalsize=640*1024;
-			
-			z80_byte valor_grabar=0;
+                    return;
+                }
 
-		        if (ptr_dskplusthreefile!=NULL) {
-				while (totalsize) {
-					fwrite(&valor_grabar,1,1,ptr_dskplusthreefile);
-					totalsize--;
-				}
-		                fclose(ptr_dskplusthreefile);
-		        }
-				*/
+                //Sectors/track
+                strcpy (buffer_numeros,"9");
+                menu_ventana_scanf("Sectors per track?",buffer_numeros,2);
+                int sectores_pista=parse_string_to_number(buffer_numeros);
+                if (sectores_pista<1 && sectores_pista>9) {
+                    debug_printf(VERBOSE_ERR,"Invalid sectors per track number");
+                    return;
+                }   
+
+
+
+                           
+                int opcion=menu_simple_six_choices("Sector size?","One of:","256","512","1024","2048","4096","8192");
+                if (opcion<1) return;
+
+                /*
+                256,  //1
+                512,  //2
+                1024, //3
+                2048, //4
+                4096, //5
+                8192, //6
+                */
+                
+                int sector_size=128<<opcion;
+
+                dsk_create(dskfile,pistas,caras,sectores_pista,sector_size);
+
+                //void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector)
+            }
+
+
 
 		}
 		dsk_insert_disk(dskfile);
@@ -27293,8 +27334,6 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
         else {
                 //Quitar nombre
                 dskplusthree_file_name[0]=0;
-
-
         }
 }
 
