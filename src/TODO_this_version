@@ -292,13 +292,6 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 
 -PD765: probar con dsk extendido escribir. ok
--PD765: al crear un nuevo dsk tiene que hacer:
-*pedir numero de pistas, sectores y bytes por pista (y caras?)
-*inicializar todo dsk con ceros
-*Escribir el Disk information block inicial
-*Escribir el track information block para cada pista
-*Lo restante queda pendiente para el usuario de hacer un format "a:"
-De momento solo haremos dsk formato basico
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
 
