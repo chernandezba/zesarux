@@ -255,6 +255,19 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
             newdsk[offset_track+0x16]=0x4e;
             newdsk[offset_track+0x17]=0xe5;
 
+            //Lo siguiente es necesario para poder hacer format desde +3DOS, espera que los valores CHRN existan...
+            int offset_sector_info=offset_track+0x18;
+
+            int sector;
+            for (sector=0;sector<sectors_track;sector++) {
+                newdsk[offset_sector_info++]=pista; //C
+                newdsk[offset_sector_info++]=cara; //H
+                newdsk[offset_sector_info++]=sector+1; //R
+                newdsk[offset_sector_info++]=parameter_n; //N
+
+                offset_sector_info+=4;
+            }
+
 
         }
     }
