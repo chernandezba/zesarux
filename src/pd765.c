@@ -217,7 +217,7 @@ int pd765_motor_speed=0;
 //Gestion de velocidad del motor.
 void pd765_handle_speed_motor(void)
 {
-    //DBG_PRINT_PD765 VERBOSE_DEBUG,"estados: %d speed: %d\n",tempp_estados++,pd765_motor_speed);
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"estados: %d speed: %d",tempp_estados++,pd765_motor_speed);
 
     if (pd765_motor_status) {
         //Iniciado. Llevar hasta 100% velocidad
@@ -640,14 +640,14 @@ void pd765_handle_command_sense_interrupt_status(void)
     //Quitar flags de seek siempre que seek esté finalizado
     /*
     if (pd765_sc_get(&signal_se)) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
 
         pd765_sc_reset(&signal_se);
     }
     */
 
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc\n");
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
         //pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);    
 
 
@@ -838,22 +838,22 @@ int pd765_common_if_track_unformatted(int pista,int cara)
         /*
 
         return_value=0;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=0;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=0;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=0;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
         pd765_put_buffer(return_value);
 
         */
@@ -991,11 +991,11 @@ void pd765_handle_command_read_id(void)
 
 
     /*if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark");
         //sleep(1);
     }
     else {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark");
     } */   
     
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",leido_id_c);
@@ -1273,7 +1273,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     /*if (anormal_termination) {
         leido_st0 |= PD765_STATUS_REGISTER_ZERO_AT;
         pd765_read_command_must_stop_anormal_termination=1;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por anormal_termination\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por anormal_termination");
         sleep(2);
 
     }*/
@@ -1284,7 +1284,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
     
     if (leido_id_c!=pd765_input_parameter_c) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"#####Cylinder read from disk (%02XH) is not what asked (%02XH)\n",leido_id_c,pd765_input_parameter_c);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"#####Cylinder read from disk (%02XH) is not what asked (%02XH)",leido_id_c,pd765_input_parameter_c);
         //Wrong cylinder
         leido_id_st2 |= PD765_STATUS_REGISTER_TWO_WC_MASK;
 
@@ -1301,10 +1301,10 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
     if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark");
     }
     else {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark");
     }
 
 
@@ -1338,7 +1338,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
                 //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector not deleted and SK=1\n");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector not deleted and SK=1");
                     sleep(5);
             }
             else {
@@ -1352,7 +1352,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                 pd765_read_command_must_stop_anormal_termination=1;
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector normal y sk=0\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector normal y sk=0");
                 //sleep(2);
 
 
@@ -1366,7 +1366,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         else {
             //Leido un sector con marca de borrado
             if (pd765_input_parameter_sk) {
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector deleted and SK=1\n");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector deleted and SK=1");
             }
             else {
                 leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
@@ -1374,7 +1374,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
                 //TODO: cargas con speedlock no requieren que no se detenga la carga de multiples sectores, ejemplo Pang.dsk
                 //Creo que esto deberia estar activado para todos discos pero para speed lock no...
                 //pd765_read_command_must_stop_anormal_termination=1;
-                //DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector borrado y sk=0\n");
+                //DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector borrado y sk=0");
                 //sleep(2);
 
 
@@ -1413,7 +1413,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
                     //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector deleted and sk=1\n");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector deleted and sk=1");
                     sleep(5);
             }
             else {
@@ -1429,23 +1429,23 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                     pd765_read_command_must_stop_anormal_termination=1;
 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por read data, sector borrado y sk=0\n");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por read data, sector borrado y sk=0");
                     //sleep(2);
 
 
 
-                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector deleted and SK=0\n");
+                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector deleted and SK=0");
                     //sleep(5);                          
             }
         }
         else {
             //leido un sector normal
             if (pd765_input_parameter_sk) {
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector not deleted and sk=1\n");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector not deleted and sk=1");
             }
             else {
                     //leer tal cual
-                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector not deleted and SK=0\n");
+                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector not deleted and SK=0");
                     //sleep(5);                          
             }            
         }
@@ -1464,7 +1464,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     if ((leido_id_st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) || (leido_id_st2 & PD765_STATUS_REGISTER_TWO_DD_MASK)) {
         leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
         pd765_read_command_must_stop_anormal_termination=1;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Abnormal termination por CRC error\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Abnormal termination por CRC error");
         //sleep(1);
     }
 
@@ -1528,7 +1528,7 @@ field are not checked when SK = 1.
 
         pd765_read_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado");
 
 
         return;
@@ -1542,7 +1542,7 @@ field are not checked when SK = 1.
 
         pd765_read_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada");
 
 
         return;
@@ -1607,7 +1607,7 @@ field are not checked when SK = 1.
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
 
     if (search_deleted) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted");
         //sleep(5);
     }
 
@@ -1620,13 +1620,13 @@ field are not checked when SK = 1.
     else {
 
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
 
         
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track");
             iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
@@ -1648,7 +1648,7 @@ field are not checked when SK = 1.
        //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si 
        //por ejemplo no hemos ni transferido un sector, que habria que poner entonces?
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found");
 
         //E indicar fase ejecucion ha finalizado
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
@@ -1665,16 +1665,16 @@ field are not checked when SK = 1.
 
         //abnormal termination
         return_value |=PD765_STATUS_REGISTER_ZERO_AT;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",return_value,(return_value & 32 ? "SE" : ""));
         pd765_put_buffer(return_value);
 
 
         return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
         return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
         pd765_put_buffer(return_value);     
 
 
@@ -1683,22 +1683,22 @@ field are not checked when SK = 1.
         /*
 
         return_value=pd765_input_parameter_c;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=pd765_input_parameter_h;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=pd765_input_parameter_r;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
         pd765_put_buffer(return_value);
 
 
         return_value=pd765_input_parameter_n;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
         pd765_put_buffer(return_value);       
         */  
 
@@ -1723,7 +1723,7 @@ field are not checked when SK = 1.
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d\n",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
@@ -1734,12 +1734,12 @@ field are not checked when SK = 1.
         //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
         //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag");
             //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
         }
 
         sector_size=real_sector_size;
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d\n",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d",sector_size);
 
         //se van a leer menos datos
     }
@@ -1748,7 +1748,7 @@ field are not checked when SK = 1.
 
     pd765_last_sector_size_read_data=sector_size;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size: %d\n",pd765_last_sector_size_read_data);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size: %d",pd765_last_sector_size_read_data);
 
 
     pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
@@ -1767,22 +1767,22 @@ void pd765_write_put_chrn_in_bus(void)
     z80_byte return_value;
 
     return_value=pd765_input_parameter_c+1;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_h;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=1;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_n;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
     pd765_put_buffer(return_value);    
     
 
@@ -1792,26 +1792,26 @@ void pd765_write_put_chrn_in_bus(void)
 
 void pd765_read_parameters_seek(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for SEEK\n");
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for SEEK");
 
     if (pd765_input_parameters_index==1) {
         pd765_input_parameter_hd=(value>>2) & 0x01;
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==2) {
         pd765_input_parameter_ncn=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: NCN=%XH\n",pd765_input_parameter_ncn);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: NCN=%XH",pd765_input_parameter_ncn);
 
         //Fin de comando
         pd765_input_parameters_index=0;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for SEEK\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for SEEK");
 
         pd765_handle_command_seek();
     }       
@@ -1889,7 +1889,7 @@ const char *pd765_last_command_name(void)
 
 void pd765_read_parameters_read_data(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s\n",
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s",
     pd765_last_command_name()
     );
 
@@ -1898,39 +1898,39 @@ void pd765_read_parameters_read_data(z80_byte value)
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==2) {
         pd765_input_parameter_c=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH\n",pd765_input_parameter_c);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH",pd765_input_parameter_c);
 
         pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH\n",pd765_input_parameter_h);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH",pd765_input_parameter_h);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_r=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH\n",pd765_input_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH",pd765_input_parameter_r);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
         pd765_input_parameter_n=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",pd765_input_parameter_n);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH",pd765_input_parameter_n);
 
         if (pd765_input_parameter_n==0) {
             //TODO
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!");
             sleep(5);
         }
 
@@ -1939,27 +1939,27 @@ void pd765_read_parameters_read_data(z80_byte value)
 
     else if (pd765_input_parameters_index==6) {
         pd765_input_parameter_eot=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH\n",pd765_input_parameter_eot);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH",pd765_input_parameter_eot);
 
         pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==7) {
         pd765_input_parameter_gpl=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH",pd765_input_parameter_gpl);
 
         pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==8) {
         pd765_input_parameter_dtl=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DTL=%XH",pd765_input_parameter_dtl);
 
 
         //Fin de comando
         pd765_input_parameters_index=0;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s\n",
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s",
         pd765_last_command_name()
         );
 
@@ -2002,7 +2002,7 @@ void pd765_handle_command_start_write_data(void)
 
         pd765_write_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado");
 
 
         return;
@@ -2016,7 +2016,7 @@ void pd765_handle_command_start_write_data(void)
 
         pd765_write_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada");
 
 
         return;
@@ -2082,7 +2082,7 @@ void pd765_handle_command_start_write_data(void)
     //if (pd765_command_received==PD765_COMMAND_WRITE_DELETED_DATA) search_deleted=1;
 
     if (search_deleted) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted");
         //sleep(5);
     }
 
@@ -2096,13 +2096,13 @@ void pd765_handle_command_start_write_data(void)
     else {
 
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH\n",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_write,search_deleted,pd765_input_parameter_sk,1);
 
         
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track");
             iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
@@ -2124,7 +2124,7 @@ void pd765_handle_command_start_write_data(void)
        //Creo que no aplicaria la tabla de la pagina 9, porque siempre habla de "ultimo sector transferido", y si 
        //por ejemplo no hemos ni transferido un sector, que habria que poner entonces?
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector not found");
 
         //E indicar fase ejecucion ha finalizado
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
@@ -2141,16 +2141,16 @@ void pd765_handle_command_start_write_data(void)
 
         //abnormal termination
         return_value |=PD765_STATUS_REGISTER_ZERO_AT;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",return_value,(return_value & 32 ? "SE" : ""));
         pd765_put_buffer(return_value);
 
 
         return_value=PD765_STATUS_REGISTER_ONE_ND_MASK|PD765_STATUS_REGISTER_ONE_MA_MASK;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",return_value);
         pd765_put_buffer(return_value);
 
         return_value=PD765_STATUS_REGISTER_TWO_MD_MASK;        
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",return_value);
         pd765_put_buffer(return_value);     
 
 
@@ -2176,7 +2176,7 @@ void pd765_handle_command_start_write_data(void)
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d\n",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
@@ -2187,12 +2187,12 @@ void pd765_handle_command_start_write_data(void)
         //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
         //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag");
             //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
         }
 
         sector_size=real_sector_size;
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d\n",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d",sector_size);
 
         //se van a leer menos datos
     }
@@ -2201,7 +2201,7 @@ void pd765_handle_command_start_write_data(void)
 
     pd765_last_sector_size_write_data=sector_size;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size to write: %d\n",pd765_last_sector_size_write_data);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size to write: %d",pd765_last_sector_size_write_data);
     //sleep(2);
 
 
@@ -2224,7 +2224,7 @@ void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, i
     int indice;
 
     for (indice=0;indice<sector_size;indice++) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
         z80_byte byte_sector=pd765_get_buffer();
 
         DBG_PRINT_PD765 VERBOSE_DEBUG,"%c",(byte_sector>=32 && byte_sector<=126 ? byte_sector : '?'));
@@ -2233,7 +2233,7 @@ void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, i
         
 
     }    
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"\n");
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"");
 }
 
 int pd765_if_write_protected(void)
@@ -2266,37 +2266,37 @@ int pd765_if_write_protected(void)
     z80_byte leido_st2=pd765_get_st2();
 
     leido_st0 |=0x40;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
     pd765_put_buffer(leido_st0);
 
     
     leido_st1 |=PD765_STATUS_REGISTER_ONE_NW_MASK;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
     pd765_put_buffer(leido_st1);
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
     pd765_put_buffer(leido_st2);
 
     z80_byte return_value;
 
     return_value=pd765_input_parameter_c;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_h;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_r+1;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
     pd765_put_buffer(return_value);
 
 
     return_value=pd765_input_parameter_n;
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
     pd765_put_buffer(return_value);                                
 
     return 1;
@@ -2307,7 +2307,7 @@ int pd765_if_write_protected(void)
 
 void pd765_read_parameters_write_data(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s\n",
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s",
     pd765_last_command_name()
     );
 
@@ -2318,39 +2318,39 @@ void pd765_read_parameters_write_data(z80_byte value)
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==2) {
         pd765_input_parameter_c=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH\n",pd765_input_parameter_c);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH",pd765_input_parameter_c);
 
         pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_h=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH\n",pd765_input_parameter_h);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH",pd765_input_parameter_h);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_r=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH\n",pd765_input_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH",pd765_input_parameter_r);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
         pd765_input_parameter_n=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",pd765_input_parameter_n);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH",pd765_input_parameter_n);
 
         if (pd765_input_parameter_n==0) {
             //TODO
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!");
             sleep(5);
         }
 
@@ -2359,28 +2359,28 @@ void pd765_read_parameters_write_data(z80_byte value)
 
     else if (pd765_input_parameters_index==6) {
         pd765_input_parameter_eot=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH\n",pd765_input_parameter_eot);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: EOT=%XH",pd765_input_parameter_eot);
 
         pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==7) {
         pd765_input_parameter_gpl=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH",pd765_input_parameter_gpl);
 
         pd765_input_parameters_index++;
     } 
 
     else if (pd765_input_parameters_index==8) {
         pd765_input_parameter_dtl=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DTL=%XH\n",pd765_input_parameter_dtl);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DTL=%XH",pd765_input_parameter_dtl);
 
 
         //Fin de comando
         //pd765_input_parameters_index=0;
         pd765_input_parameters_index++;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s. Writing to CHRN=%02XH %02XH %02XH %02XH \n",
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s. Writing to CHRN=%02XH %02XH %02XH %02XH ",
         pd765_last_command_name(),pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n
         );
         //sleep(1);
@@ -2394,7 +2394,7 @@ void pd765_read_parameters_write_data(z80_byte value)
 
     //Leyendo datos de sector a escribir
     else if (pd765_input_parameters_index>=9 && pd765_input_parameters_index<9+pd765_last_sector_size_write_data) {   
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Writing sector index %d\n",pd765_input_parameters_index-9);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Writing sector index %d",pd765_input_parameters_index-9);
 
         //notificar visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_write,pd765_input_parameters_index-9);
@@ -2411,7 +2411,7 @@ void pd765_read_parameters_write_data(z80_byte value)
     //Si llega al final del disco
     //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
     else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data");
 
                 //- escribir sector en dsk
                 int longitud=pd765_last_sector_size_write_data;
@@ -2442,35 +2442,35 @@ void pd765_read_parameters_write_data(z80_byte value)
                 z80_byte leido_st1=pd765_get_st1();
                 z80_byte leido_st2=pd765_get_st2();                
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
                 pd765_put_buffer(leido_st0);    
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
                 pd765_put_buffer(leido_st1);    
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
                 pd765_put_buffer(leido_st2);
 
 
                 z80_byte return_value;
 
                 return_value=pd765_input_parameter_c;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_h;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_r+1;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_n;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
                 pd765_put_buffer(return_value);  
 
                               
@@ -2524,14 +2524,14 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     //gestionar error si sector no encontrado
 
     if (iniciosector<0) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO gestion error\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO gestion error");
         return;
     }   
 
     int indice;
 
     for (indice=0;indice<sector_size;indice++) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH\n",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
 
         plus3dsk_put_byte_disk(iniciosector+indice,fill_byte);
 
@@ -2543,14 +2543,14 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
 
 
     }
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"\n");
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"");
   
 }
 
 
 void pd765_read_parameters_format_track(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s\n",
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s",
     pd765_last_command_name()
     );
 
@@ -2561,35 +2561,35 @@ void pd765_read_parameters_format_track(z80_byte value)
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH\n",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==2) {
         pd765_input_parameter_n_format=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",pd765_input_parameter_n_format);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH",pd765_input_parameter_n_format);
 
         pd765_input_parameters_index++;
     }  
 
     else if (pd765_input_parameters_index==3) {
         pd765_input_parameter_sc=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: SC=%XH\n",pd765_input_parameter_sc);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: SC=%XH",pd765_input_parameter_sc);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==4) {
         pd765_input_parameter_gpl=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH\n",pd765_input_parameter_gpl);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: GPL=%XH",pd765_input_parameter_gpl);
 
         pd765_input_parameters_index++;
     }
 
     else if (pd765_input_parameters_index==5) {
         pd765_input_parameter_d=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: D=%XH\n",pd765_input_parameter_d);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: D=%XH",pd765_input_parameter_d);
 
         pd765_input_parameters_index++;
 
@@ -2634,22 +2634,22 @@ void pd765_read_parameters_format_track(z80_byte value)
         switch (chrn_id) {
             case 0:
                 pd765_input_parameter_c=value;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH\n",value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: C=%XH",value);
             break;
 
             case 1:
                 pd765_input_parameter_h=value;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH\n",value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: H=%XH",value);
             break;
 
             case 2:
                 pd765_input_parameter_r=value;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH\n",value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: R=%XH",value);
             break;
 
             case 3:
                 pd765_input_parameter_n=value;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH\n",value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=%XH",value);
             break;
 
         }
@@ -2657,7 +2657,7 @@ void pd765_read_parameters_format_track(z80_byte value)
         //Hemos leido el valor de N
         if (chrn_id==3) {
             //hacer efectivo el formateo de ese sector
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Formatting sector %d. Current track: %02XH\n",sector,pd765_pcn);
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"Formatting sector %d. Current track: %02XH",sector,pd765_pcn);
 
             int sector_size=dsk_get_sector_size_from_n_value(pd765_input_parameter_n_format);
 
@@ -2667,7 +2667,7 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         //si final
         if (sector==pd765_formatting_total_sectores-1 && chrn_id==3) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---Fin de formateo pista\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---Fin de formateo pista");
 
                 //Cambiamos a fase de resultado
                 pd765_phase=PD765_PHASE_RESULT;
@@ -2689,34 +2689,34 @@ void pd765_read_parameters_format_track(z80_byte value)
                 z80_byte leido_st1=pd765_get_st1();
                 z80_byte leido_st2=pd765_get_st2();
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
                 pd765_put_buffer(leido_st0);
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
                 pd765_put_buffer(leido_st1);
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
                 pd765_put_buffer(leido_st2);
 
                 z80_byte return_value;
 
                 return_value=pd765_input_parameter_c;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_h;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_r+1;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_n;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
                 pd765_put_buffer(return_value);                                
 
 
@@ -2738,7 +2738,7 @@ void pd765_read_parameters_format_track(z80_byte value)
     //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
     /*
     else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data");
 
                 //- escribir sector en dsk
                 int longitud=pd765_last_sector_size_write_data;
@@ -2769,35 +2769,35 @@ void pd765_read_parameters_format_track(z80_byte value)
                 z80_byte leido_st1=pd765_get_st1();
                 z80_byte leido_st2=pd765_get_st2();                
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",leido_st0,(leido_st0 & 32 ? "SE" : ""));
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",leido_st0,(leido_st0 & 32 ? "SE" : ""));
                 pd765_put_buffer(leido_st0);    
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH\n",leido_st1);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST1: %02XH",leido_st1);
                 pd765_put_buffer(leido_st1);    
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH\n",leido_st2);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST2: %02XH",leido_st2);
                 pd765_put_buffer(leido_st2);
 
 
                 z80_byte return_value;
 
                 return_value=pd765_input_parameter_c;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_h;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning H: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_r+1;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning R: %02XH",return_value);
                 pd765_put_buffer(return_value);
 
 
                 return_value=pd765_input_parameter_n;
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH\n",return_value);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning N: %02XH",return_value);
                 pd765_put_buffer(return_value);  
 
                               
@@ -2815,45 +2815,45 @@ void pd765_write_handle_phase_command(z80_byte value)
     //Hay que recibir comando aun
     if (pd765_input_parameters_index==0) {
         //Hay que recibir el comando
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Byte command: %02XH\n",value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Byte command: %02XH",value);
         
         //si esta haciendo seek y se lanza otro comando no seek, no aceptar
         if (signal_se.running) {
             if (value!=7 && value!=0xf) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: Ignore command on seek phase. Counter to finish seek: %d\n",signal_se.current_counter);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: Ignore command on seek phase. Counter to finish seek: %d",signal_se.current_counter);
                 return;
             }
         }
         
 
         if (value==8 && !pd765_interrupt_pending) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: SENSE INTERRUPT command without interrupt pending. Will generate invalid command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: SENSE INTERRUPT command without interrupt pending. Will generate invalid command");
         }
 
         if (value==3) {
             //Specify
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SPECIFY command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SPECIFY command");
             pd765_command_received=PD765_COMMAND_SPECIFY;
             pd765_input_parameters_index++;
         }
 
         else if (value==4) {
             //Sense drive status
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE DRIVE STATUS command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE DRIVE STATUS command");
             pd765_command_received=PD765_COMMAND_SENSE_DRIVE_STATUS;
             pd765_input_parameters_index++;            
         }
 
         else if (value==7) {
             //Recalibrate
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: RECALIBRATE command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: RECALIBRATE command");
             pd765_command_received=PD765_COMMAND_RECALIBRATE;
             pd765_input_parameters_index++;            
         }
 
         else if (value==8 && pd765_interrupt_pending) {
             //Sense interrupt status
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE INTERRUPT STATUS command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE INTERRUPT STATUS command");
             pd765_command_received=PD765_COMMAND_SENSE_INTERRUPT_STATUS;
 
             pd765_interrupt_pending=0;
@@ -2866,7 +2866,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         else if ((value & 0xBF)==0x0A) {
             //Read id
             //TODO: bit MF
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ ID command. Current track: %02XH\n",pd765_pcn);
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ ID command. Current track: %02XH",pd765_pcn);
             pd765_command_received=PD765_COMMAND_READ_ID;
             pd765_input_parameters_index++; ;            
         }
@@ -2877,10 +2877,10 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
                 sleep(3);
             }
 
@@ -2896,12 +2896,12 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DELETED DATA command. MT=%d MF=%d SK=%d. Current track: %02XH\n",
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DELETED DATA command. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             //sleep(10);
             
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
                 sleep(3);
             }
 
@@ -2918,7 +2918,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=0;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ TRACK command. MF=%d SK=%d. Current track: %02XH\n",
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ TRACK command. MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
            
 
@@ -2932,10 +2932,10 @@ void pd765_write_handle_phase_command(z80_byte value)
             //TODO: bits MT, MF
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: WRITE DATA command. MT=%d MF=%d Current track: %02XH\n",
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: WRITE DATA command. MT=%d MF=%d Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_pcn);
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
                 sleep(3);
             }
 
@@ -2949,7 +2949,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             //format track
             //TODO: bit MF
             pd765_input_parameter_mf=(value>>6)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: FORMAT TRACK command. MF=%d Current track: %02XH\n",
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: FORMAT TRACK command. MF=%d Current track: %02XH",
                 pd765_input_parameter_mf,pd765_pcn);
 
 
@@ -2960,13 +2960,13 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if (value==0x0F) {
             //Seek
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SEEK command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SEEK command");
             pd765_command_received=PD765_COMMAND_SEEK;
             pd765_input_parameters_index++;            
         }                
 
         else {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: INVALID command\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: INVALID command");
 
             pd765_command_received=PD765_COMMAND_INVALID;
 
@@ -2976,13 +2976,13 @@ void pd765_write_handle_phase_command(z80_byte value)
             if (value!=8) {
                 //sleep(3);
                 debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
-                //DBG_PRINT_PD765 VERBOSE_DEBUG,"!!!!!!PD765: Invalid command %02XH on PC=%04XH\n",value,reg_pc);
+                //DBG_PRINT_PD765 VERBOSE_DEBUG,"!!!!!!PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
             }
         }
     }
     else {
         //Recibiendo parametros de comando o en el caso de write, tambien escribiendo datos de sector
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters. Index=%d\n",pd765_input_parameters_index);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters. Index=%d",pd765_input_parameters_index);
         switch(pd765_command_received) {
             case PD765_COMMAND_SPECIFY:
                 pd765_read_parameters_specify(value); 
@@ -2997,7 +2997,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             break;
 
             case PD765_COMMAND_SENSE_INTERRUPT_STATUS:
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: ERROR SENSE_INTERRUPT_STATUS has no input parameters\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: ERROR SENSE_INTERRUPT_STATUS has no input parameters");
             break;
 
 
@@ -3024,7 +3024,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             break;   
 
             case PD765_COMMAND_INVALID:
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: ERROR INVALID command has no input parameters\n");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: ERROR INVALID command has no input parameters");
             break;                                         
         }
     }
@@ -3032,7 +3032,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
 void pd765_write(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on pc %04XH: %02XH\n",reg_pc,value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on pc %04XH: %02XH",reg_pc,value);
 
     switch (pd765_phase) {
         case PD765_PHASE_COMMAND:
@@ -3040,7 +3040,7 @@ void pd765_write(z80_byte value)
         break;
 
         case PD765_PHASE_EXECUTION:
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on phase execution SHOULD NOT happen\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on phase execution SHOULD NOT happen");
             //TODO: no se puede escribir en este estado?
 
             //temporal
@@ -3048,7 +3048,7 @@ void pd765_write(z80_byte value)
         break;
 
         case PD765_PHASE_RESULT:
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on phase result SHOULD NOT happen\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Write command on phase result SHOULD NOT happen");
             //TODO: no se puede escribir en este estado?
         break;
     }
@@ -3067,7 +3067,7 @@ z80_byte pd765_read_result_command_sense_drive_status(void)
 {
     if (pd765_output_parameters_index==0) {
         z80_byte return_value=pd765_get_st3();
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST3: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST3: %02XH",return_value);
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3087,7 +3087,7 @@ z80_byte pd765_read_result_command_invalid(void)
     if (pd765_output_parameters_index==0) {
 
         //Retornar ST0=80H
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Command invalid return 80H\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Command invalid return 80H");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3160,7 +3160,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
 
     if (pd765_output_parameters_index==0) {
         /*if (pd765_sc_get(&signal_se)) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset DB0 etc");
 
             pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_D0B_MASK - PD765_MAIN_STATUS_REGISTER_D1B_MASK - PD765_MAIN_STATUS_REGISTER_D2B_MASK - PD765_MAIN_STATUS_REGISTER_D3B_MASK);                
         }*/
@@ -3177,13 +3177,13 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
             anormal_termination=0;
         } */ 
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)\n",return_value,(return_value & 32 ? "SE" : ""));
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning ST0: %02XH (%s)",return_value,(return_value & 32 ? "SE" : ""));
 
         pd765_output_parameters_index++;
 
         //Quitar flags de seek siempre que seek esté finalizado
         if (pd765_sc_get(&signal_se)) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset SE etc\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reset SE etc");
 
             //TODO: realmente hay que quitar señal SE  al leerlo desde sense interrupt?
             pd765_sc_reset(&signal_se);
@@ -3205,7 +3205,7 @@ z80_byte pd765_read_result_command_sense_interrupt_status(void)
 
     else if (pd765_output_parameters_index==1) {
         z80_byte return_value=pd765_pcn;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning PCN: %02XH\n",return_value);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning PCN: %02XH",return_value);
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3230,13 +3230,13 @@ z80_byte pd765_read_result_command_read_id(void)
 
 
     z80_byte return_value=pd765_get_buffer();
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from READ_ID at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from READ_ID at index %d: %02XH",pd765_output_parameters_index,return_value);
     pd765_output_parameters_index++;
 
 
     //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
     if (pd765_buffer_read_is_final()) {        
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of READ_ID\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of READ_ID");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3259,13 +3259,13 @@ z80_byte pd765_read_result_command_format_track(void)
 
 
     z80_byte return_value=pd765_get_buffer();
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from FORMAT_TRACK at index %d: %02XH\n",pd765_output_parameters_index,return_value);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from FORMAT_TRACK at index %d: %02XH",pd765_output_parameters_index,return_value);
     pd765_output_parameters_index++;
 
 
     //if (pd765_output_parameters_index>=pd765_result_buffer_length) {
     if (pd765_buffer_read_is_final()) {        
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of FORMAT_TRACK\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of FORMAT_TRACK");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3299,23 +3299,23 @@ z80_byte pd765_read_result_command_read_data(void)
 
 
     z80_byte return_value=pd765_get_buffer();
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from %s at index %d: %02XH\n",
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from %s at index %d: %02XH",
         pd765_last_command_name(),
         pd765_result_bufer_read_pointer-1,return_value);
     //pd765_output_parameters_index++;
 
 
 
-    //DBG_PRINT_PD765 VERBOSE_DEBUG,"Buscando sector size para pista %d\n",pd765_pcn);
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"Buscando sector size para pista %d",pd765_pcn);
 
 
     int sector_size=pd765_last_sector_size_read_data;
 
-    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d\n",sector_size);
+    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d",sector_size);
     //sleep(5);
 
     if (pd765_buffer_read_is_final()) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of %s\n",
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of %s",
         pd765_last_command_name()
         );
 
@@ -3342,7 +3342,7 @@ z80_byte pd765_read_result_command_read_data(void)
             }
    
             if (condition_end_sector || pd765_read_command_must_stop_anormal_termination) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN\n",
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Stopping reading next sector because R (%02XH) is EOT (%02XH) or Anormal termination, and send output parameters ST0,1,2, CHRN",
                     pd765_read_command_searching_parameter_r,pd765_input_parameter_eot);
 
                 //pd765_input_parameter_r++;
@@ -3366,7 +3366,7 @@ z80_byte pd765_read_result_command_read_data(void)
                 pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
             }
             else {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading next sector because R (%02XH) is not EOT (%02XH)\n",
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading next sector because R (%02XH) is not EOT (%02XH)",
                     pd765_read_command_searching_parameter_r,pd765_input_parameter_eot);
                 //sleep(5);
 
@@ -3381,7 +3381,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         //Estaba enviando valores ST1, ..CHRN 
         else {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN\n");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN");
 
             //Y decir que ya no hay que devolver mas datos
             pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3408,23 +3408,23 @@ z80_byte pd765_read_result_command_write_data(void)
 
  
     z80_byte return_value=pd765_get_buffer();
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from %s at index %d: %02XH\n",
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Return byte from %s at index %d: %02XH",
         pd765_last_command_name(),
         pd765_result_bufer_read_pointer-1,return_value);
     //pd765_output_parameters_index++;
 
 
 
-    //DBG_PRINT_PD765 VERBOSE_DEBUG,"Buscando sector size para pista %d\n",pd765_pcn);
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"Buscando sector size para pista %d",pd765_pcn);
 
 
     int sector_size=pd765_last_sector_size_write_data;
 
-    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d\n",sector_size);
+    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d",sector_size);
     //sleep(5);
 
     if (pd765_buffer_read_is_final()) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of %s\n",
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of result buffer of %s",
         pd765_last_command_name()
         );
 
@@ -3434,7 +3434,7 @@ z80_byte pd765_read_result_command_write_data(void)
        
         //Estaba enviando valores ST1, ..CHRN 
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA\n");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End returning output parameters ST0,1,2, CHRN from WRITE_DATA");
 
         //Y decir que ya no hay que devolver mas datos
         pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_DIO_MASK);
@@ -3511,7 +3511,7 @@ z80_byte pd765_read_handle_phase_result(void)
 
 z80_byte pd765_read(void)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Read command on pc %04XH\n",reg_pc);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Read command on pc %04XH",reg_pc);
     dsk_show_activity();
 
     switch (pd765_phase) {
@@ -3543,12 +3543,12 @@ z80_byte pd765_read_status_register(void)
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
-        DBG_PRINT_PD765 VERBOSE_DEBUG," PD765: mantener pd765_interrupt_pending pues esta seek activo. Counter to finish seek: %d\n",signal_se.current_counter);
+        DBG_PRINT_PD765 VERBOSE_DEBUG," PD765: mantener pd765_interrupt_pending pues esta seek activo. Counter to finish seek: %d",signal_se.current_counter);
         pd765_interrupt_pending=1;
     }
 
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)\n",reg_pc,pd765_main_status_register,
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading main status register on pc %04XH: %02XH (%s %s %s %s %s %s %s %s)",reg_pc,pd765_main_status_register,
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : ""),
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_DIO_MASK ? "DIO" : ""),
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "EXM" : ""),

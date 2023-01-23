@@ -305,3 +305,5 @@ De momento solo haremos dsk formato basico
 -menu debug i/o: que calcule lineas totales y redimensione total height ventana (solo ampliar, no hace falta reducir) si no cabe. visible height no tocar
 
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
+
+-ver si se puede hacer pgup/dn con autorepeticion en debug cpu
