@@ -2227,13 +2227,13 @@ void pd765_handle_command_write_data_put_sector_data_from_bus(int sector_size, i
         //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Inicio sector de C: %d R: %d : %XH",pd765_input_parameter_c,pd765_input_parameter_r,iniciosector);
         z80_byte byte_sector=pd765_get_buffer();
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"%c",(byte_sector>=32 && byte_sector<=126 ? byte_sector : '?'));
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"%c",(byte_sector>=32 && byte_sector<=126 ? byte_sector : '?'));
     
         plus3dsk_put_byte_disk(iniciosector+indice,byte_sector);
         
 
     }    
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"");
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"");
 }
 
 int pd765_if_write_protected(void)
@@ -2543,7 +2543,7 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
 
 
     }
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"");
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"");
   
 }
 
