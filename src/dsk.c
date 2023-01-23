@@ -164,6 +164,28 @@ void dskplusthree_flush_contents_to_disk(void)
 
 }
 
+const int dsk_sector_sizes_numbers[]={
+    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
+    256,  //1
+    512,  //2
+    1024, //3
+    2048, //4
+    4096, //5
+    8192, //6
+    16384 //7
+};
+
+int dsk_get_n_from_sector_size(int sector_size)
+{
+    int i;
+
+    for (i=0;i<8;i++) {
+        if (dsk_sector_sizes_numbers[i]==sector_size) return i;
+    }
+
+    return 0;
+}
+
 
 void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector)
 {
@@ -218,9 +240,27 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
             newdsk[offset_track+0x10]=pista;
             newdsk[offset_track+0x11]=cara;
 
+
+            //Obtener sector size en formato "N"
+            int parameter_n=dsk_get_n_from_sector_size(bytes_sector);
+            if (parameter_n<=0) {
+                debug_printf(VERBOSE_ERR,"Can not translate sector size to N parameter");
+                return;
+            }
+
+            newdsk[offset_track+0x14]=parameter_n;
+            newdsk[offset_track+0x15]=sectors_track;
+
+            //TODO: quiza estos dos parametrizables? o quiza se ponen al formatear?
+            newdsk[offset_track+0x16]=0x4e;
+            newdsk[offset_track+0x17]=0xe5;
+
+
         }
     }
-    
+
+
+
 
     //Crear archivo 
 
@@ -620,16 +660,7 @@ int dsk_get_total_sectors_track(int pista,int cara)
 }
 
 
-const int dsk_sector_sizes_numbers[]={
-    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
-    256,  //1
-    512,  //2
-    1024, //3
-    2048, //4
-    4096, //5
-    8192, //6
-    16384 //7
-};
+
 
 int dsk_get_sector_size_from_n_value(int n_value)
 {
