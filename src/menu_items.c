@@ -27262,6 +27262,10 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 			//return;
 
             if (menu_confirm_yesno_texto("DSK does not exists","Create?")) {
+
+                //Parece que a +3DOS no le gusta nada discos que se salen del formato estandard
+                dsk_create(dskfile,40,1,9,512);
+                /*
                 char buffer_numeros[5];
                         
                 //Pistas
@@ -27303,20 +27307,23 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
                 int opcion=menu_simple_six_choices("Sector size?","One of:","256","512","1024","2048","4096","8192");
                 if (opcion<1) return;
 
-                /*
-                256,  //1
-                512,  //2
-                1024, //3
-                2048, //4
-                4096, //5
-                8192, //6
-                */
+                
+                //256   //1
+                //512,  //2
+                //1024, //3
+                //2048, //4
+                //4096, //5
+                //8192, //6
+                
                 
                 int sector_size=128<<opcion;
 
-                dsk_create(dskfile,pistas,caras,sectores_pista,sector_size);
+                
 
-                //void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector)
+                dsk_create(dskfile,pistas,caras,sectores_pista,sector_size);
+                */
+
+                
             }
 
 
