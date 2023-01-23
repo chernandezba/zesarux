@@ -94,6 +94,16 @@ void dsk_change_creator(char *texto)
 
 }
 
+void dsk_change_creator_to_zesarux(void)
+{
+
+    //Cambiamos el Creator del DSK
+    char buffer_creator[30];
+    sprintf(buffer_creator,"ZEsarUX " EMULATOR_VERSION);
+    dsk_change_creator(buffer_creator);
+}
+
+
 void dskplusthree_flush_contents_to_disk(void)
 {
 
@@ -114,11 +124,7 @@ void dskplusthree_flush_contents_to_disk(void)
 
         DBG_PRINT_DSK VERBOSE_INFO,"Flushing DSK to disk");
 
-        //Cambiamos el Creator del DSK
-        char buffer_creator[30];
-        sprintf(buffer_creator,"ZEsarUX " EMULATOR_VERSION);
-        dsk_change_creator(buffer_creator);
-
+        dsk_change_creator_to_zesarux();
 
         FILE *ptr_dskplusthreefile;
 
@@ -158,6 +164,82 @@ void dskplusthree_flush_contents_to_disk(void)
 
 }
 
+
+void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector)
+{
+    //Primero calcular espacio total
+    int total_size=0;
+
+    total_size +=256; //Del Disk Information block
+
+    int size_of_a_track=256+sectors_track*bytes_sector;
+
+    total_size +=sides*tracks*size_of_a_track;
+
+    printf("total_size: %d\n",total_size);
+
+    //Asignar memoria
+    z80_byte *newdsk;
+    newdsk=util_malloc_fill(total_size,"Can not allocate memory for new DSK",0);
+
+    //Meter firma inicial
+    memcpy(newdsk,"MV - CPCEMU Disk-File\r\nDisk-Info\r\n",34);
+
+    //Meter creador
+
+    //Cambiamos el Creator del DSK
+    char buffer_creator[30];
+    strcpy(buffer_creator,"              "); //14 espacios
+    sprintf(buffer_creator,"ZEsarUX " EMULATOR_VERSION);
+
+    int longitud_maxima=14;
+    int i;
+    //Y luego llenar con texto
+    for (i=0;i<longitud_maxima && buffer_creator[i];i++) {
+        newdsk[0x22+i]=buffer_creator[i];
+    }    
+    
+    newdsk[0x30]=tracks;
+    newdsk[0x31]=sides;
+    newdsk[0x32]=value_16_to_8l(size_of_a_track);
+    newdsk[0x33]=value_16_to_8h(size_of_a_track);
+
+
+    //Por cada pista
+    int start_tracks=0x100;
+
+    int pista,cara;
+
+    for (pista=0;pista<tracks;pista++) {
+        for (cara=0;cara<sides;cara++) {
+            int offset_track=start_tracks+pista*size_of_a_track*sides+cara*size_of_a_track;
+            memcpy(&newdsk[offset_track],"Track-Info\r\n",12);
+
+            newdsk[offset_track+0x10]=pista;
+            newdsk[offset_track+0x11]=cara;
+
+        }
+    }
+    
+
+    //Crear archivo 
+
+    FILE *ptr_dskplusthreefile;
+    ptr_dskplusthreefile=fopen(filename,"wb");
+
+    z80_byte valor_grabar=0;
+
+    if (ptr_dskplusthreefile!=NULL) {
+    
+        fwrite(newdsk,1,total_size,ptr_dskplusthreefile);
+    
+    
+        fclose(ptr_dskplusthreefile);
+    }
+                                    
+
+    free(newdsk);
+}
 
 
 

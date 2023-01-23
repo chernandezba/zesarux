@@ -63,6 +63,8 @@ extern z80_byte p3dsk_buffer_disco[];
 
 extern void dsk_show_activity(void);
 
+extern void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector);
+
 extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector,int search_deleted,int skip_not_match,int check_r_parameter);
 
 extern int dsk_get_physical_sector(int pista,int sector);

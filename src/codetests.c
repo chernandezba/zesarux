@@ -1864,6 +1864,9 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning debug printf exclude/include class tests\n");
     codetests_debug_printf_exclude_include();
 
+    //temporal crear dsk
+    dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
+
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");
     //codetests_get_pixel_color_scr();
