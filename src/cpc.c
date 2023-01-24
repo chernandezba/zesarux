@@ -364,6 +364,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
     }
     else {
         //Entra ROM 
+        //TODO: en 6128 ver si entra amsdos rom
         cpc_memory_paged_read[3]=cpc_rom_mem_table[1];
 		debug_cpc_type_memory_paged_read[3]=CPC_MEMORY_TYPE_ROM;
 		debug_cpc_paginas_memoria_mapeadas_read[3]=1;

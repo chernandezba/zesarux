@@ -294,3 +294,9 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -ver si se puede hacer pgup/dn con autorepeticion en debug cpu
 
 -En visor de disco con archivos, que en visual floppy marque dónde están los sectores del archivo
+
+-rom cpc6128: os+basic+amsdos
+
+-pendiente 6128:
+*keyboard help
+*machine icon
