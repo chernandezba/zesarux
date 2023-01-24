@@ -1698,6 +1698,7 @@ void gestionar_autoload_spectrum(void)
 
 
 			case MACHINE_ID_SPECTRUM_P2A_40:
+            case MACHINE_ID_SPECTRUM_P3_40:
 
 				//Para maquina +2A English rom 4.0
 				actual_rom=get_actual_rom_p2a();
@@ -1710,6 +1711,7 @@ void gestionar_autoload_spectrum(void)
 				break;
 
 			case MACHINE_ID_SPECTRUM_P2A_41:
+            case MACHINE_ID_SPECTRUM_P3_41:
 
                 //Para maquina +2A English rom 4.1
                 actual_rom=get_actual_rom_p2a();
@@ -1723,6 +1725,7 @@ void gestionar_autoload_spectrum(void)
 
 
 			case MACHINE_ID_SPECTRUM_P2A_SPA:
+            case MACHINE_ID_SPECTRUM_P3_SPA:
 
 				//Para maquina +2A Spanish
 				actual_rom=get_actual_rom_p2a();
