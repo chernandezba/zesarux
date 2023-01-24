@@ -4062,6 +4062,10 @@ You don't need timings for H/V sync =)
                         ula_contend_port_early=ula_contend_port_early_cpc;
                         ula_contend_port_late=ula_contend_port_late_cpc;
 
+                        if (MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
+                            pd765_enable();
+                        }
+
 
                 }
 
