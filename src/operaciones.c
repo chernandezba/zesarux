@@ -3463,6 +3463,11 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
                 cpc_out_ppi(puerto_h,value);
         }
 
+    if (puerto_h==0xDF) {
+        printf("Out port DF value %02XH\n",value);
+        cpc_out_port_df(value);
+    }
+
 	//printf ("fin out_port_cpc_no_time\n");
 
 }

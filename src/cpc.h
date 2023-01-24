@@ -34,6 +34,8 @@ extern z80_byte *cpc_ram_mem_table[];
 extern z80_byte *cpc_memory_paged_read[];
 extern z80_byte *cpc_memory_paged_write[];
 
+extern void cpc_out_port_df(z80_byte value);
+
 #define CPC_MEMORY_TYPE_ROM 0
 #define CPC_MEMORY_TYPE_RAM 1
 

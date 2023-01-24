@@ -3193,7 +3193,7 @@ int get_ram_size(void)
         total_ram=64*1024;
     }
 
-    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL | MACHINE_IS_CPC_4128 | MACHINE_IS_CHLOE_140SE) {
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128 || MACHINE_IS_CHLOE_140SE) {
         total_ram=128*1024;
     }
 
@@ -12420,7 +12420,11 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_CPC_4128) {
         size=131072;
-      }      
+      }  
+
+      if (MACHINE_IS_CPC_6128) {
+        size=131072;
+      }           
 
       if (MACHINE_IS_INVES) {
 	size=65536;
@@ -12496,7 +12500,11 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_CPC_4128) {
         size=32768;
-      }      
+      } 
+
+      if (MACHINE_IS_CPC_6128) {
+        size=49152;
+      }           
 
       if (MACHINE_IS_SAM) {
 	size=32768;
@@ -12974,7 +12982,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
       if (MACHINE_IS_CPC_4128) {
         z80_byte *start=cpc_ram_mem_table[0];
         p=&start[address];
-      }      
+      } 
+
+      if (MACHINE_IS_CPC_6128) {
+        z80_byte *start=cpc_ram_mem_table[0];
+        p=&start[address];
+      }           
 
       if (MACHINE_IS_INVES) {
 	p=&memoria_spectrum[address];

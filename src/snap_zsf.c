@@ -5326,7 +5326,7 @@ Byte Fields:
   */
 
   int paginas=4;
-  if (MACHINE_IS_CPC_4128) paginas=8;
+  if (MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) paginas=8;
   z80_byte ram_page;
 
   for (ram_page=0;ram_page<paginas;ram_page++) {
