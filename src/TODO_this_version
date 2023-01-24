@@ -237,13 +237,6 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 
 -Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
 
--Nueva manera de redibujar todas ventanas: ya sea con menu abierto o cerrado, al llamar a normal_overlay, este luego llama a todos los overlays
-de las ventanas, incluido la ventana actual. Esto implicaria que las ventanas no deberían alterar el normal_overlay, solo indicar qué overlay
-quieren en su estructura de zxvision_window. Esto también permitiria un parámetro en zxvision_window que dijera cada cuanto se redibuja
-cada overlay (tipo frameskip o fps), sin tener que usar contadores de segundo en cada función de overlay.
-Esto afectaria a ventanas que usan overlay pero no se van a background? como por ejemplo ventana About o Paws graphic
-->hecho
-
 
 -indicador de app abierta: al abrir una app que no estaba abierta, no aparece el indicador a no ser que se mueva la ventana u otro evento
 de repintado de ZX desktop. quiza al abrir una app habría que hacer que se redibujase siempre el zx desktop con menu_draw_ext_desktop(). como? Alternativas:
@@ -274,7 +267,6 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 
 -error: click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
 
--Nuevo "lanzador" de aplicaciones mediante iconos de cada app
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
 
@@ -300,3 +292,5 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
 -ver si se puede hacer pgup/dn con autorepeticion en debug cpu
+
+-En visor de disco con archivos, que en visual floppy marque dónde están los sectores del archivo

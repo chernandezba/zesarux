@@ -1703,6 +1703,15 @@ void codetests_acosine(void)
 void codetests_debug_printf_exclude_include(void)
 {
 
+    //Preservar settings de filtros
+    
+    int antes_debug_mascara_modo_exclude_include=debug_mascara_modo_exclude_include;
+
+    int antes_debug_mascara_clase_exclude=debug_mascara_clase_exclude;
+    
+    int antes_debug_mascara_clase_include=debug_mascara_clase_include;     
+
+
     //Probar exclusiones primero
     debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
 
@@ -1753,13 +1762,12 @@ void codetests_debug_printf_exclude_include(void)
         exit(1);
     }    
 
-    //Dejamos luego valores por defecto
-    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+    //Dejamos luego settings iniciales
+    debug_mascara_modo_exclude_include=antes_debug_mascara_modo_exclude_include;
 
-    //Por defecto no excluimos nada
-    debug_mascara_clase_exclude=0;
-    //Si se activa modo include, incluimos todo
-    debug_mascara_clase_include=0xFFFFFF00; 
+    debug_mascara_clase_exclude=antes_debug_mascara_clase_exclude;
+    
+    debug_mascara_clase_include=antes_debug_mascara_clase_include;
 
 }
 
@@ -1865,7 +1873,7 @@ void codetests_main(int main_argc,char *main_argv[])
     codetests_debug_printf_exclude_include();
 
     //temporal crear dsk
-    dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
+    //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");
