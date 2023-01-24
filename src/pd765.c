@@ -60,6 +60,7 @@ Also, there could be (probably) some features or behaviour of some commands that
 I have tested my code with lots of disks (943 exactly) and tried to have it working the best way. 
 There are still known bugs and disks that can't be read right, I have collected my results in the following list:
 
+Spectrum +3 Disks:
 -Unprotected games:              98.3 % working
 -Paul Owens protected games:     85.7 % working
 -Speedlock protected games:      54.2 % working
