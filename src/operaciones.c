@@ -3393,6 +3393,8 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
 
 	debug_fired_in=1;
 
+    z80_int puerto=value_8_to_16(puerto_h,puerto_l);
+
 	//z80_int puerto=(puerto_h<<8)||puerto_l;
 	//if (puerto==0xFA7E || puerto==0xFB7E || puerto==0xFB7F) printf ("Puerto FDC\n");
 
@@ -3404,6 +3406,31 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
 	}
 
 	//printf ("Returning unused cpc port %02X%02XH\n",puerto_h,puerto_l);
+
+    //Puertos PD765
+    /*
+    Port FA7Eh - Floppy Motor On/Off Flipflop
+    Port FB7Eh - FDC 765 Main Status Register (read only)
+    Port FB7Fh - FDC 765 Data Register (read/write)
+    */
+    if (MACHINE_IS_CPC_6128) {
+        //Puertos disco 
+        if (pd765_enabled.v) {
+            if (puerto==0xFB7E) return pd765_read_status_register();
+
+            
+            if (puerto==0xFB7F) return pd765_read();
+        }
+
+
+        else {
+            if (puerto==0xFB7E) return 255;
+
+            
+            if (puerto==0xFB7F) return 255;
+        }
+    }
+
 	return 255;
 
 }
@@ -3475,12 +3502,12 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
     Port FB7Eh - FDC 765 Main Status Register (read only)
     Port FB7Fh - FDC 765 Data Register (read/write)
     */
-   if (MACHINE_IS_CPC_6128) {
+   if (MACHINE_IS_CPC_6128 && pd765_enabled.v) {
         if (puerto==0xFA7E) {
             cpc_out_port_fa7e(value);
         }
 
-        if (puerto==0xFB7F && pd765_enabled.v) {
+        if (puerto==0xFB7F) {
             pd765_out_port_data_register(value);
         }        
    }
