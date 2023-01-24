@@ -721,12 +721,14 @@ int dsk_get_sector_size_track(int pista,int cara)
 
 
 
-const char *dsk_track_info_signature="Track-Info\r\n";
+//const char *dsk_track_info_signature="Track-Info\r\n";
+const char *dsk_track_info_signature="Track-Info";
 
 int dsk_check_track_signature(int offset)
 {
     int i;
-    for (i=0;i<12;i++) {
+    //La teoria dice que serian 12 contando \r y \n final pero veo varios dsk (de cpc por ejemplo zaptballs) que acaban con dos espacios
+    for (i=0;i<10;i++) {
         int leido_firma=dsk_track_info_signature[i];
         int leido_pista=plus3dsk_get_byte_disk(offset+i);
         if (leido_firma!=leido_pista) return -1;
