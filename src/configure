@@ -1340,7 +1340,7 @@ mk14.o: mk14.c mk14.h cpu.h debug.h scmp.h utils.h zxvision.h
 core_z88.o: core_z88.c core_z88.h cpu.h debug.h tape.h audio.h screen.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h z88.h audio.h utils.h settings.h
 	\$(CC) \$(CFLAGS) -c core_z88.c
 
-core_cpc.o: core_cpc.c core_cpc.h cpu.h debug.h tape.h audio.h screen.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio.h utils.h tape.h cpc.h realjoystick.h settings.h snap_zsf.h zeng.h snap_ram.h
+core_cpc.o: core_cpc.c core_cpc.h cpu.h debug.h tape.h audio.h screen.h operaciones.h snap.h timer.h zxvision.h chardetect.h compileoptions.h contend.h ula.h utils.h audio.h utils.h tape.h cpc.h realjoystick.h settings.h snap_zsf.h zeng.h snap_ram.h pd765.h
 	\$(CC) \$(CFLAGS) -c core_cpc.c
 
 

@@ -51,6 +51,7 @@
 #include "snap_zsf.h"
 #include "zeng.h"
 #include "snap_ram.h"
+#include "pd765.h"
 
 z80_byte byte_leido_core_cpc;
 
@@ -434,7 +435,8 @@ void cpu_core_loop_cpc(void)
     else {
         if (esperando_tiempo_final_t_estados.v==0) {
 
-
+            //Eventos de la controladora de disco
+            pd765_next_event_from_core();
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
