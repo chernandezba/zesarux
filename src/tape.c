@@ -64,6 +64,7 @@
 #include "ramjet.h"
 #include "interface007.h"
 #include "dinamid3.h"
+#include "dsk.h"
 
 #include "autoselectoptions.h"
 
@@ -1578,7 +1579,7 @@ void gestionar_autoload_spectrum(void)
 {
 
 	if (initial_tap_load.v==1 && initial_tap_sequence==0 &&
-		( (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0  || (realtape_inserted.v==1) )
+		( (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0  || (realtape_inserted.v==1)  || (dskplusthree_emulation.v))
 
 		) {
 

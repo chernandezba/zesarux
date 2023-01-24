@@ -40,6 +40,8 @@ DSK emulation
 #include "menu_items.h"
 #include "screen.h"
 #include "pd765.h"
+#include "settings.h"
+#include "timer.h"
 
 
 char dskplusthree_file_name[PATH_MAX]="";
@@ -58,11 +60,27 @@ int p3dsk_buffer_disco_size=DSK_MAX_BUFFER_DISCO; //Tamanyo del dsk leido. De mo
 
 void dsk_insert_disk(char *nombre)
 {
-                strcpy(dskplusthree_file_name,nombre);
+    strcpy(dskplusthree_file_name,nombre);
                 
     if (noautoload.v==0) {
-		reset_cpu();
+
+        debug_printf (VERBOSE_INFO,"Restarting autoload");
+        initial_tap_load.v=1;
+        initial_tap_sequence=0;
+
+        debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+        reset_cpu();
+
+        //Activamos top speed si conviene
+        if (fast_autoload.v) {
+            debug_printf (VERBOSE_INFO,"Set top speed");
+            top_speed_timer.v=1;
+        }        
 	}
+
+    else {
+        initial_tap_load.v=0;
+    }    
 }
 
 
@@ -280,7 +298,6 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
     FILE *ptr_dskplusthreefile;
     ptr_dskplusthreefile=fopen(filename,"wb");
 
-    z80_byte valor_grabar=0;
 
     if (ptr_dskplusthreefile!=NULL) {
     

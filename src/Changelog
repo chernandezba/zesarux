@@ -45,6 +45,7 @@ Improved ZX Vision:
 * Fixes:
 
 Fixed +3 disk (and CPC6128?) (PD765) emulation: TODO: add more details here
+Fixed autoload on Spectrum +3
 Fixed showing creator on DSK file viewer
 Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
