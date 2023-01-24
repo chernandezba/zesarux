@@ -1697,7 +1697,7 @@ void gestionar_autoload_spectrum(void)
                                 break;
 
 
-			case 11:
+			case MACHINE_ID_SPECTRUM_P2A_40:
 
 				//Para maquina +2A English rom 4.0
 				actual_rom=get_actual_rom_p2a();
@@ -1709,20 +1709,20 @@ void gestionar_autoload_spectrum(void)
 
 				break;
 
-			case 12:
+			case MACHINE_ID_SPECTRUM_P2A_41:
 
-                                //Para maquina +2A English rom 4.1
-                                actual_rom=get_actual_rom_p2a();
-                                if (actual_rom==0) {
-                                        if (reg_pc==0x187a) gestionar_autoload_spectrum_start_enter();
-                                }
+                //Para maquina +2A English rom 4.1
+                actual_rom=get_actual_rom_p2a();
+                if (actual_rom==0) {
+                        if (reg_pc==0x187a) gestionar_autoload_spectrum_start_enter();
+                }
 
-                                else if (actual_rom==3) gestionar_autoload_spectrum_48kmode();
+                else if (actual_rom==3) gestionar_autoload_spectrum_48kmode();
 
-                                break;
+                break;
 
 
-			case 13:
+			case MACHINE_ID_SPECTRUM_P2A_SPA:
 
 				//Para maquina +2A Spanish
 				actual_rom=get_actual_rom_p2a();
