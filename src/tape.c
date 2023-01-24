@@ -468,31 +468,31 @@ int tap_open(void)
 
     if (tapefile!=0) {
 
-	tape_block_open();
+        tape_block_open();
 
 
-	//if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
+        //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
         if (noautoload.v==0) { 
-		debug_printf (VERBOSE_INFO,"Restarting autoload");
-		initial_tap_load.v=1;
-		initial_tap_sequence=0;
+            debug_printf (VERBOSE_INFO,"Restarting autoload");
+            initial_tap_load.v=1;
+            initial_tap_sequence=0;
 
-		debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
-		reset_cpu();
+            debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+            reset_cpu();
 
-		//Activamos top speed si conviene
-		if (fast_autoload.v && !MACHINE_IS_MSX) {
-                        debug_printf (VERBOSE_INFO,"Set top speed");
-                        top_speed_timer.v=1;
-                }
+            //Activamos top speed si conviene
+            if (fast_autoload.v && !MACHINE_IS_MSX) {
+                debug_printf (VERBOSE_INFO,"Set top speed");
+                top_speed_timer.v=1;
+            }
 
-	}
+        }
 
-	else {
-		initial_tap_load.v=0;
-	}
+        else {
+            initial_tap_load.v=0;
+        }
 
-	insert_tape_load();
+        insert_tape_load();
     }
 
 
