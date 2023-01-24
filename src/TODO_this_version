@@ -302,3 +302,4 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *machine icon
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
+*si no hay pd765 enabled, se cuelga al hacer cat
