@@ -619,7 +619,7 @@ int array_maquinas_sega[]={
 
 int array_maquinas_amstrad[]={
 	8,9,10,11,12,13,MACHINE_ID_SPECTRUM_P3_40,MACHINE_ID_SPECTRUM_P3_41,MACHINE_ID_SPECTRUM_P3_SPA,
-    MACHINE_ID_CPC_464,MACHINE_ID_CPC_4128,MACHINE_ID_CPC_6128,255
+    MACHINE_ID_CPC_464,MACHINE_ID_CPC_4128,MACHINE_ID_CPC_664,MACHINE_ID_CPC_6128,255
 };
 
 int array_maquinas_jupiter_cantab[]={
@@ -821,6 +821,7 @@ int return_fabricante_maquina(int maquina)
 		case MACHINE_ID_SPECTRUM_P3_SPA:
 		case MACHINE_ID_CPC_464:
         case MACHINE_ID_CPC_4128:
+        case MACHINE_ID_CPC_664:
         case MACHINE_ID_CPC_6128:
 			return FABRICANTE_AMSTRAD;
 		break;
@@ -3189,7 +3190,7 @@ int get_ram_size(void)
         total_ram=16*1024;
     }
 
-    else if (MACHINE_IS_CPC_464) {
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_664) {
         total_ram=64*1024;
     }
 
@@ -10806,6 +10807,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"Z88",130},
    {"CPC464",MACHINE_ID_CPC_464},
    {"CPC4128",MACHINE_ID_CPC_4128},
+   {"CPC664",MACHINE_ID_CPC_664},
    {"CPC6128",MACHINE_ID_CPC_6128},
    {"SAM",150},
    {"QL",160},
@@ -12420,7 +12422,11 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_CPC_4128) {
         size=131072;
-      }  
+      } 
+
+      if (MACHINE_IS_CPC_664) {
+        size=65536;
+      }       
 
       if (MACHINE_IS_CPC_6128) {
         size=131072;
@@ -12501,6 +12507,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       if (MACHINE_IS_CPC_4128) {
         size=32768;
       } 
+
+      if (MACHINE_IS_CPC_664) {
+        size=49152;
+      }      
 
       if (MACHINE_IS_CPC_6128) {
         size=49152;
@@ -12983,6 +12993,11 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         z80_byte *start=cpc_ram_mem_table[0];
         p=&start[address];
       } 
+
+      if (MACHINE_IS_CPC_664) {
+        z80_byte *start=cpc_ram_mem_table[0];
+        p=&start[address];
+      }       
 
       if (MACHINE_IS_CPC_6128) {
         z80_byte *start=cpc_ram_mem_table[0];

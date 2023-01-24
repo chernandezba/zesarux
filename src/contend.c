@@ -1482,8 +1482,8 @@ z80_byte *contend_table_no_mreq;
 		return;
         }    
 
-	//TODO cpc464. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
-	if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) {
+	//TODO cpc. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
+	if (MACHINE_IS_CPC) {
 		return;
 
         }

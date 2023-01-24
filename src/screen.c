@@ -12962,7 +12962,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
     }
 
 
-    if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) {
+    if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
         puntero_printchar_caracter(caracter&127);
             }
 
@@ -13219,7 +13219,7 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
         }
 
         //Para Amstrad cpc 464
-        if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) {
+        if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
             if (reg_pc==0xBB5A) {
                 screen_text_printchar_next(reg_a,puntero_printchar_caracter);
             }

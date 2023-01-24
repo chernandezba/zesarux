@@ -423,8 +423,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_ID_CPC_464	        		140
 #define MACHINE_ID_CPC_4128	        		141
-#define MACHINE_ID_CPC_6128	        		142
-#define MACHINE_ID_CPC_664	        		143
+#define MACHINE_ID_CPC_664	        		142
+#define MACHINE_ID_CPC_6128	        		143
 
 #define MACHINE_ID_SAM		        		150
 

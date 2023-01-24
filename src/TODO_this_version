@@ -297,9 +297,10 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -rom cpc6128: os+basic+amsdos
 
--pendiente 6128:
+-pendiente 6128,664:
 *keyboard help
 *machine icon
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
-*si no hay pd765 enabled, se cuelga al hacer cat
+*si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
+*snap.c ver cosas de cpc 464 y si faltan para 6128 y 664

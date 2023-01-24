@@ -1476,6 +1476,7 @@ char *string_machines_list_description=
 
 							" CPC464   Amstrad CPC 464\n"
 							" CPC4128  Amstrad CPC 4128\n"
+                            " CPC664   Amstrad CPC 664\n"
                             " CPC6128  Amstrad CPC 6128\n"
 							
 							" MSX1     MSX1\n"
@@ -3042,6 +3043,7 @@ struct s_machine_names machine_names[]={
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
+    {"CPC 664",  			MACHINE_ID_CPC_664},
     {"CPC 6128",  			MACHINE_ID_CPC_6128},
     {"Sam Coupe", 			150},
     {"QL",				160},
@@ -3392,7 +3394,21 @@ void malloc_mem_machine(void) {
                 cpc_set_memory_pages();
 
 
-        }        
+        }  
+
+	else if (MACHINE_IS_CPC_664) {
+
+		//48 kb rom
+		//128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
+
+                malloc_machine(176*1024);
+                random_ram(memoria_spectrum,176*1024);
+
+                cpc_init_memory_tables();
+                cpc_set_memory_pages();
+
+
+        }              
         
         else if (MACHINE_IS_MSX1) {
                 //total 64kb * 4
@@ -3558,7 +3574,8 @@ void set_machine_params(void)
 130=z88 (old 30)
 140=amstrad cpc464 
 141=amstrad cpc4128 
-142=amstrad cpc6128 
+142=amstrad cpc664
+143=amstrad cpc6128 
 150=Sam Coupe (old 50)
 151-59 reservado para otros sam (old 51-59)
 160=QL Standard
@@ -4037,7 +4054,7 @@ You don't need timings for H/V sync =)
                 }
 
 
-		else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) {
+		else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
                         contend_read=contend_read_cpc;
                         contend_read_no_mreq=contend_read_no_mreq_cpc;
                         contend_write_no_mreq=contend_write_no_mreq_cpc;
@@ -4595,6 +4612,22 @@ You don't need timings for H/V sync =)
 		//temp
 		//screen_testados_linea=228;
                 break;
+
+		//CPC664
+        case MACHINE_ID_CPC_664:
+                poke_byte=poke_byte_cpc;
+                peek_byte=peek_byte_cpc;
+                peek_byte_no_time=peek_byte_no_time_cpc;
+                poke_byte_no_time=poke_byte_no_time_cpc;
+                lee_puerto=lee_puerto_cpc;
+		        out_port=out_port_cpc;
+                ay_chip_present.v=1;
+                fetch_opcode=fetch_opcode_cpc;
+                //4Mhz
+                screen_testados_linea=256;
+
+
+        break;
 
 		//CPC6128
         case MACHINE_ID_CPC_6128:
@@ -5166,6 +5199,10 @@ void rom_load(char *romfilename)
             romfilename="cpc464.rom";
             break;
 
+            case MACHINE_ID_CPC_664:
+            romfilename="cpc664.rom";
+            break;            
+
             case MACHINE_ID_CPC_6128:
             romfilename="cpc6128.rom";
             break;            		
@@ -5481,7 +5518,17 @@ Total 20 pages=320 Kb
                                 debug_printf(VERBOSE_ERR,"Error loading ROM");
                             }
 
-                }                
+                }
+
+	      else if (MACHINE_IS_CPC_664) {
+                //48k rom
+
+                        leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
+                        if (leidos!=49152) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+
+                }                                
 
 
               else if (MACHINE_IS_SAM) {
