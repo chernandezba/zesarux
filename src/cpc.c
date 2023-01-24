@@ -2541,3 +2541,23 @@ void cpc_if_autoenable_realvideo_on_changeborder(void)
         }
     }
 }
+
+
+void cpc_out_port_fa7e(z80_byte value)
+{
+
+    //Port FA7Eh - Floppy Motor On/Off Flipflop
+    //Writing 00h to Port FA7Eh turns all disk drive motors off, 
+    //writing 01h turns all motors on. It is not possible to turn on/off the motor of a specific drive separately.
+
+
+    if (value&1) {
+        dsk_show_activity();
+        pd765_motor_on();
+    }
+    else {
+        //Pues realmente si motor va a off, no hay actividad
+        pd765_motor_off();
+    }
+ 
+}

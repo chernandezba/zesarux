@@ -3463,10 +3463,27 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
                 cpc_out_ppi(puerto_h,value);
         }
 
+    //Puerto upper rom select
     if (puerto_h==0xDF) {
         printf("Out port DF value %02XH\n",value);
         cpc_out_port_df(value);
     }
+
+    //Puertos PD765
+    /*
+    Port FA7Eh - Floppy Motor On/Off Flipflop
+    Port FB7Eh - FDC 765 Main Status Register (read only)
+    Port FB7Fh - FDC 765 Data Register (read/write)
+    */
+   if (MACHINE_IS_CPC_6128) {
+        if (puerto==0xFA7E) {
+            cpc_out_port_fa7e(value);
+        }
+
+        if (puerto==0xFB7F && pd765_enabled.v) {
+            pd765_out_port_data_register(value);
+        }        
+   }
 
 	//printf ("fin out_port_cpc_no_time\n");
 
@@ -8710,7 +8727,7 @@ Port: 10-- ---- ---- --0-
         //el valor de puerto que se envia sera 3efd, y segun esta mascara, funcionara bien.
         //si en cambio solo detectasemos puerto 3ffd, no cargarian
         if ((puerto & 0xF002) == 0x3000 && pd765_enabled.v) {
-            pd765_out_port_3ffd(value);
+            pd765_out_port_data_register(value);
         }
 
 	}

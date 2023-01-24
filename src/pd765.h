@@ -75,7 +75,7 @@ extern void pd765_disable(void);
 extern z80_byte pd765_read(void);
 extern z80_byte pd765_read_status_register(void);
 extern void pd765_out_port_1ffd(z80_byte value);
-extern void pd765_out_port_3ffd(z80_byte value);
+extern void pd765_out_port_data_register(z80_byte value);
 
 extern void pd765_reset(void);
 

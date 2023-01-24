@@ -3583,7 +3583,7 @@ void pd765_out_port_1ffd(z80_byte value)
  
 }
 
-void pd765_out_port_3ffd(z80_byte value)
+void pd765_out_port_data_register(z80_byte value)
 {
     dsk_show_activity();
 
