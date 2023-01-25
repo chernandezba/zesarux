@@ -4054,7 +4054,7 @@ You don't need timings for H/V sync =)
                 }
 
 
-		else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
+		else if (MACHINE_IS_CPC) {
                         contend_read=contend_read_cpc;
                         contend_read_no_mreq=contend_read_no_mreq_cpc;
                         contend_write_no_mreq=contend_write_no_mreq_cpc;
@@ -4062,7 +4062,7 @@ You don't need timings for H/V sync =)
                         ula_contend_port_early=ula_contend_port_early_cpc;
                         ula_contend_port_late=ula_contend_port_late_cpc;
 
-                        if (MACHINE_IS_CPC_664 || MACHINE_IS_CPC_6128) {
+                        if (MACHINE_IS_CPC_HAS_FLOPPY) {
                             pd765_enable();
                         }
 

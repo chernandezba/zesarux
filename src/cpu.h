@@ -496,6 +496,10 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_CPC_6128                 (current_machine_type==MACHINE_ID_CPC_6128)
 #define MACHINE_IS_CPC_664                  (current_machine_type==MACHINE_ID_CPC_664)
 
+#define MACHINE_IS_CPC_HAS_FLOPPY           (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664)
+#define MACHINE_IS_CPC_HAS_128K             (MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128)
+#define MACHINE_IS_CPC_HAS_64K              (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_664)
+
 #define MACHINE_IS_SAM                      (current_machine_type==MACHINE_ID_SAM)
 
 #define MACHINE_IS_QL_STANDARD              (current_machine_type==MACHINE_ID_QL_STANDARD)

@@ -3413,7 +3413,7 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
     Port FB7Eh - FDC 765 Main Status Register (read only)
     Port FB7Fh - FDC 765 Data Register (read/write)
     */
-    if (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) {
+    if (MACHINE_IS_CPC_HAS_FLOPPY) {
         //Puertos disco 
         if (pd765_enabled.v) {
             if (puerto==0xFB7E) return pd765_read_status_register();
@@ -3502,7 +3502,7 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
     Port FB7Eh - FDC 765 Main Status Register (read only)
     Port FB7Fh - FDC 765 Data Register (read/write)
     */
-   if ((MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) && pd765_enabled.v) {
+   if (MACHINE_IS_CPC_HAS_FLOPPY && pd765_enabled.v) {
         if (puerto==0xFA7E) {
             cpc_out_port_fa7e(value);
         }

@@ -3190,11 +3190,11 @@ int get_ram_size(void)
         total_ram=16*1024;
     }
 
-    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_664) {
+    else if (MACHINE_IS_CPC_HAS_64K) {
         total_ram=64*1024;
     }
 
-    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL || MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128 || MACHINE_IS_CHLOE_140SE) {
+    else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
         total_ram=128*1024;
     }
 
@@ -5444,7 +5444,7 @@ int quickload_continue(char *nombre) {
 		!util_compare_file_extension(nombre,"dsk")
 	) {
 		//Aqui el autoload da igual. cambiamos siempre a P3 si conviene
-		if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_6128 && !MACHINE_IS_CPC_664) {
+		if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_HAS_FLOPPY) {
 			current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
 			set_machine(NULL);
 
@@ -12416,22 +12416,14 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=QL_MEM_LIMIT+1-131072;
       }
 
-      if (MACHINE_IS_CPC_464) {
+      if (MACHINE_IS_CPC_HAS_64K) {
         size=65536;
       }
 
-      if (MACHINE_IS_CPC_4128) {
+      if (MACHINE_IS_CPC_HAS_128K) {
         size=131072;
       } 
-
-      if (MACHINE_IS_CPC_664) {
-        size=65536;
-      }       
-
-      if (MACHINE_IS_CPC_6128) {
-        size=131072;
-      }           
-
+ 
       if (MACHINE_IS_INVES) {
 	size=65536;
       }
@@ -12508,13 +12500,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=32768;
       } 
 
-      if (MACHINE_IS_CPC_664) {
+      if (MACHINE_IS_CPC_HAS_FLOPPY) {
         size=49152;
       }      
 
-      if (MACHINE_IS_CPC_6128) {
-        size=49152;
-      }           
 
       if (MACHINE_IS_SAM) {
 	size=32768;
@@ -12984,25 +12973,12 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         p=&memoria_spectrum[address+131072];
       }
 
-      if (MACHINE_IS_CPC_464) {
+      if (MACHINE_IS_CPC) {
         z80_byte *start=cpc_ram_mem_table[0];
         p=&start[address];
       }
 
-      if (MACHINE_IS_CPC_4128) {
-        z80_byte *start=cpc_ram_mem_table[0];
-        p=&start[address];
-      } 
-
-      if (MACHINE_IS_CPC_664) {
-        z80_byte *start=cpc_ram_mem_table[0];
-        p=&start[address];
-      }       
-
-      if (MACHINE_IS_CPC_6128) {
-        z80_byte *start=cpc_ram_mem_table[0];
-        p=&start[address];
-      }           
+       
 
       if (MACHINE_IS_INVES) {
 	p=&memoria_spectrum[address];

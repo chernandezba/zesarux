@@ -232,7 +232,7 @@ void cpc_set_memory_pages()
 
 
 	//Si es maquina de 128kb, reasignar paginas
-	if (MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128) {
+	if (MACHINE_IS_CPC_HAS_128K) {
 		z80_byte ram_config=cpc_gate_registers[3] & 7;
 
 		//printf ("Setting 128k ram config value %d\n",ram_config);
@@ -367,7 +367,7 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
     else {
         //Entra ROM 
         //en 6128 y 664 ver si entra amsdos rom
-        if ((MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) && cpc_port_df==7) {
+        if ((MACHINE_IS_CPC_HAS_FLOPPY) && cpc_port_df==7) {
             //Entra AMSDOS
             cpc_memory_paged_read[3]=cpc_rom_mem_table[2];
         }
@@ -402,7 +402,7 @@ void cpc_init_memory_tables()
         cpc_rom_mem_table[1]=puntero;
         puntero +=16384;
 
-        if (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) {
+        if (MACHINE_IS_CPC_HAS_FLOPPY) {
             cpc_rom_mem_table[2]=puntero;
             puntero +=16384;
         }
