@@ -136,4 +136,7 @@ extern z80_byte pd765_debug_last_sector_id_n_read;
 extern int pd765_motor_speed;
 extern void pd765_handle_speed_motor(void);
 
+extern void pd765_motor_on(void);
+extern void pd765_motor_off(void);
+
 #endif

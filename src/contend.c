@@ -233,6 +233,47 @@ void ula_contend_port_late_cpc( z80_int port GCC_UNUSED )
 
 }
 
+//PCW
+void contend_read_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+void contend_read_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+
+void contend_write_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+
+void ula_contend_port_early_pcw( z80_int port GCC_UNUSED )
+{
+  t_estados++;
+}
+
+void ula_contend_port_late_pcw( z80_int port GCC_UNUSED )
+{
+        t_estados += 2;
+
+}
 
 //SAM COUPE
 void contend_read_sam(z80_int direccion GCC_UNUSED,int time)

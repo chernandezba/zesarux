@@ -33817,7 +33817,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}
 
 
-		if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY) {
+		if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
 			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"+3 ~~Disk");
 			menu_add_item_menu_shortcut(array_menu_storage,'d');
 			menu_add_item_menu_tooltip(array_menu_storage,"+3 Disk emulation");
@@ -37109,7 +37109,7 @@ void zxdesktop_lowericon_cassete_accion(void)
 
 int zxdesktop_lowericon_plus3_flp_is_visible(void)
 {
-	if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY) return 1;
+	if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) return 1;
 	else return 0;
 }
 

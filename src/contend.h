@@ -181,6 +181,14 @@ extern void contend_write_no_mreq_sms(z80_int direccion,int time);
 extern void ula_contend_port_early_sms( z80_int port );
 extern void ula_contend_port_late_sms( z80_int port );
 
+
+extern void contend_read_pcw(z80_int direccion GCC_UNUSED,int time);
+extern void contend_read_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time);
+extern void contend_write_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time);
+extern void ula_contend_port_early_pcw( z80_int port GCC_UNUSED );
+extern void ula_contend_port_late_pcw( z80_int port GCC_UNUSED );
+
+
 extern int port_from_ula_48k (z80_int puerto);
 extern int port_from_ula_p2a (z80_int puerto);
 

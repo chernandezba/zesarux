@@ -4090,14 +4090,14 @@ You don't need timings for H/V sync =)
 
                 }
 
-        //TODO de momento funciones spectrum
+        
 		else if (MACHINE_IS_PCW) {
-			contend_read=contend_read_48k;
-			contend_read_no_mreq=contend_read_no_mreq_48k;
-			contend_write_no_mreq=contend_write_no_mreq_48k;
+			contend_read=contend_read_pcw;
+			contend_read_no_mreq=contend_read_no_mreq_pcw;
+			contend_write_no_mreq=contend_write_no_mreq_pcw;
 
-			ula_contend_port_early=ula_contend_port_early_48k;
-			ula_contend_port_late=ula_contend_port_late_48k;
+			ula_contend_port_early=ula_contend_port_early_pcw;
+			ula_contend_port_late=ula_contend_port_late_pcw;
 
             pd765_enable();
 

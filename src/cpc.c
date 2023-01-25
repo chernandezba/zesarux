@@ -34,7 +34,8 @@
 #include "audio.h"
 #include "ay38912.h"
 #include "tape.h"
-
+#include "dsk.h"
+#include "pd765.h"
 
 //Direcciones donde estan cada pagina de rom. 2 o 3 paginas de 16 kb
 z80_byte *cpc_rom_mem_table[3];

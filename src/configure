@@ -1493,7 +1493,7 @@ jupiterace.o: jupiterace.c jupiterace.h cpu.h screen.h debug.h audio.h core_ace.
 z88.o: z88.c z88.h cpu.h screen.h debug.h core_z88.h contend.h joystick.h zxvision.h operaciones.h utils.h timer.h compileoptions.h
 	\$(CC) \$(CFLAGS) -c z88.c
 
-cpc.o: cpc.c cpc.h cpu.h screen.h debug.h core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h
+cpc.o: cpc.c cpc.h cpu.h screen.h debug.h core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h tape.h dsk.h pd765.h
 	\$(CC) \$(CFLAGS) -c cpc.c
 
 sam.o: sam.c sam.h cpu.h screen.h debug.h core_sam.h contend.h joystick.h zxvision.h operaciones.h utils.h
