@@ -3848,6 +3848,104 @@ void out_port_sam(z80_int puerto,z80_byte value)
 
 
 
+
+void poke_byte_no_time_pcw_8256(z80_int dir,z80_byte valor)
+{
+        if (dir>16383) {
+		memoria_spectrum[dir]=valor;
+
+/*#ifdef EMULATE_VISUALMEM
+
+set_visualmembuffer(dir);
+
+#endif*/
+	}
+}
+
+void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
+{
+
+
+        //Y sumamos estados normales
+        t_estados += 3;
+
+
+/*#ifdef EMULATE_VISUALMEM
+
+set_visualmembuffer(dir);
+
+#endif*/
+		memoria_spectrum[dir]=valor;
+
+
+}
+
+void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
+{
+	debug_fired_out=1;
+	
+
+    z80_byte puerto_l=puerto&0xFF;
+
+
+}
+
+
+void out_port_pcw_8256(z80_int puerto,z80_byte value)
+{
+  ula_contend_port_early( puerto );
+  out_port_pcw_8256_no_time(puerto,value);
+  ula_contend_port_late( puerto ); t_estados++;
+}
+
+
+z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
+{
+
+	debug_fired_in=1;
+
+
+        //debug_printf (VERBOSE_DEBUG,"In Port %x unknown asked, PC after=0x%x",puerto_l+256*puerto_h,reg_pc);
+        return 255;
+
+
+}
+
+z80_byte lee_puerto_pcw_8256(z80_byte puerto_h,z80_byte puerto_l)
+{
+  z80_int port=value_8_to_16(puerto_h,puerto_l);
+  ula_contend_port_early( port );
+  ula_contend_port_late( port );
+  z80_byte valor = lee_puerto_pcw_8256_no_time( puerto_h, puerto_l );
+
+  t_estados++;
+
+  return valor;
+
+}
+
+z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
+{
+/*    
+#ifdef EMULATE_VISUALMEM
+	set_visualmemreadbuffer(dir);
+#endif
+*/
+
+        return memoria_spectrum[dir];
+
+}
+
+
+z80_byte peek_byte_pcw_8256(z80_int dir)
+{
+
+        t_estados +=3;
+
+        return peek_byte_no_time_pcw_8256(dir);
+
+}
+
 z80_int peek_word(z80_int dir)
 {
         z80_byte h,l;

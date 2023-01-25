@@ -365,6 +365,13 @@ extern void poke_word(z80_int dir,z80_int valor);
 extern z80_int peek_word(z80_int dir);
 extern z80_int peek_word_no_time(z80_int dir);
 
+extern void poke_byte_pcw_8256(z80_int dir,z80_byte valor);
+extern void poke_byte_no_time_pcw_8256(z80_int dir,z80_byte valor);
+extern z80_byte peek_byte_pcw_8256(z80_int dir);
+extern z80_byte peek_byte_no_time_pcw_8256(z80_int dir);
+extern void out_port_pcw_8256(z80_int puerto,z80_byte value);
+extern z80_byte lee_puerto_pcw_8256(z80_byte puerto_h,z80_byte puerto_l);
+
 
 extern z80_int lee_word_pc(void);
 
