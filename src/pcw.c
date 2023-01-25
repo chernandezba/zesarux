@@ -123,7 +123,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     //TODO: numeracion bancos??
 
-    bank &=15;
+    value &=15;
 
     pcw_bank_registers[bank]=value;
 

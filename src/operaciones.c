@@ -1154,10 +1154,10 @@ z80_byte fetch_opcode_pcw(void)
         set_visualmemopcodebuffer(reg_pc);
 #endif
 */
-printf("antes %p\n",peek_byte_no_time);
-z80_byte value= peek_byte_no_time_pcw_8256 (reg_pc);
+//printf("antes %p\n",peek_byte_no_time);
+z80_byte value= peek_byte_no_time (reg_pc);
 
-        printf("despues %p\n",peek_byte_no_time);
+        //printf("despues %p\n",peek_byte_no_time);
         return value;
 }
 
