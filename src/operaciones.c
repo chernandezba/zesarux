@@ -3887,7 +3887,10 @@ void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
 
     z80_byte puerto_l=puerto&0xFF;
 
-
+    if (puerto_l==0x01) {
+        printf("OUT FDC data register %02XH\n",value);
+        pd765_out_port_data_register(value);
+    }
 }
 
 
@@ -3904,9 +3907,19 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	debug_fired_in=1;
 
+    if (puerto_l==0x00) {
+        printf("IN FDC status register\n");
+        return pd765_read_status_register();
+    }
 
-        //debug_printf (VERBOSE_DEBUG,"In Port %x unknown asked, PC after=0x%x",puerto_l+256*puerto_h,reg_pc);
-        return 255;
+    if (puerto_l==0x01) {
+        printf("IN FDC data register\n");
+        return pd765_read();
+    }
+
+
+    printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+    return 255;
 
 
 }
