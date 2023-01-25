@@ -4,6 +4,7 @@ Version 10.3 - xxxx edition. 02 November 2022
 
 Added Machine Amstrad CPC 6128
 Added Machine Amstrad CPC 664
+Added Machine Amstrad PCW 8256
 Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
 Added Visual Floppy to see +3 disk (and CPC6128?) activity
 Added Poke F-Function

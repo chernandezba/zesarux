@@ -432,6 +432,9 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_ID_MK14_STANDARD	    	180
 
+#define MACHINE_ID_PCW_8256                 190
+
+
 //
 //Condiciones de maquinas activas
 //De maquinas únicas
@@ -506,7 +509,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_MK14_STANDARD            (current_machine_type==MACHINE_ID_MK14_STANDARD)
 
-
+#define MACHINE_IS_PCW_8256                 (current_machine_type==MACHINE_ID_PCW_8256)
 
 //
 //Condiciones de maquinas activas
@@ -563,6 +566,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_MK14                         (current_machine_type>=MACHINE_ID_MK14_STANDARD && current_machine_type<=189)
 
+#define MACHINE_IS_PCW                          (current_machine_type>=MACHINE_ID_PCW_8256 && current_machine_type<=199)
+
 
 //
 //Condiciones de CPU
@@ -590,6 +595,7 @@ enum machine_families_list
     MACHINE_FAMILY_ACE,
     MACHINE_FAMILY_Z88,
     MACHINE_FAMILY_CPC,
+    MACHINE_FAMILY_PCW,
     MACHINE_FAMILY_QL,
     MACHINE_FAMILY_MK14,
 

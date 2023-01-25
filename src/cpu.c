@@ -1478,6 +1478,7 @@ char *string_machines_list_description=
 							" CPC4128  Amstrad CPC 4128\n"
                             " CPC664   Amstrad CPC 664\n"
                             " CPC6128  Amstrad CPC 6128\n"
+                            " PCW8256  Amstrad PCW 8256\n"
 							
 							" MSX1     MSX1\n"
 							" Coleco   Colecovision\n"
@@ -3045,6 +3046,7 @@ struct s_machine_names machine_names[]={
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
     {"CPC 664",  			MACHINE_ID_CPC_664},
     {"CPC 6128",  			MACHINE_ID_CPC_6128},
+    {"PCW 8256",            MACHINE_ID_PCW_8256},
     {"Sam Coupe", 			150},
     {"QL",				160},
     {"MK14", MACHINE_ID_MK14_STANDARD},
@@ -3408,7 +3410,20 @@ void malloc_mem_machine(void) {
                 cpc_set_memory_pages();
 
 
-        }              
+        }   
+
+	else if (MACHINE_IS_PCW_8256) {
+
+		//256kb todo ram
+
+                malloc_machine(256*1024);
+                random_ram(memoria_spectrum,256*1024);
+
+                //cpc_init_memory_tables();
+                //cpc_set_memory_pages();
+
+
+        }                     
         
         else if (MACHINE_IS_MSX1) {
                 //total 64kb * 4
@@ -3583,6 +3598,8 @@ void set_machine_params(void)
 
 180=MK14 Standard
 181-189 reservado para otros MK14
+190=Amstrad PCW 8256
+191-199 reservado para otros PCW
 */
 
 		char mensaje_error[200];
@@ -3705,6 +3722,10 @@ void set_machine_params(void)
 			cpu_core_loop_active=CPU_CORE_SMS;
 		}	        	
 
+        //TODO: de momento core Spectrum
+		else if (MACHINE_IS_PCW) {
+			cpu_core_loop_active=CPU_CORE_SPECTRUM;
+		}
 
 		else {
 			cpu_core_loop_active=CPU_CORE_Z88;
@@ -4068,6 +4089,19 @@ You don't need timings for H/V sync =)
 
 
                 }
+
+        //TODO de momento funciones spectrum
+		else if (MACHINE_IS_PCW) {
+			contend_read=contend_read_48k;
+			contend_read_no_mreq=contend_read_no_mreq_48k;
+			contend_write_no_mreq=contend_write_no_mreq_48k;
+
+			ula_contend_port_early=ula_contend_port_early_48k;
+			ula_contend_port_late=ula_contend_port_late_48k;
+
+            pd765_enable();
+
+		}        
 
 		else if (MACHINE_IS_MSX) {
 			contend_read=contend_read_msx1;
@@ -4647,7 +4681,17 @@ You don't need timings for H/V sync =)
                 screen_testados_linea=256;
 
 
-        break;                
+        break;        
+
+        //TODO
+        case MACHINE_ID_PCW_8256:
+		poke_byte=poke_byte_spectrum_48k;
+		peek_byte=peek_byte_spectrum_48k;
+		peek_byte_no_time=peek_byte_no_time_spectrum_48k;
+		poke_byte_no_time=poke_byte_no_time_spectrum_48k;
+		lee_puerto=lee_puerto_spectrum;
+
+		break;                
 
 		case 150:
                 poke_byte=poke_byte_sam;
@@ -5227,6 +5271,10 @@ void rom_load(char *romfilename)
             romfilename="mk14.rom";
             break;
 
+            case MACHINE_ID_PCW_8256:
+            romfilename="pcw_boot.rom";
+            break;
+
             default:
             //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
             sprintf (mensaje_error,"ROM for Machine id %d not supported. Exiting",current_machine_type);
@@ -5564,6 +5612,14 @@ Total 20 pages=320 Kb
 			}
 
 		}
+
+		else if (MACHINE_IS_PCW_8256) {
+			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+			if (leidos!=275) {
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
+			}
+
+		}        
 
 
     fclose(ptr_romfile);

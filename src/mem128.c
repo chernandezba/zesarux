@@ -298,6 +298,11 @@ z80_byte *get_base_mem_pantalla_continue(void)
 		return cpc_ram_mem_table[0];
 	}
 
+    //TODO
+	if (MACHINE_IS_PCW) {
+		return memoria_spectrum;
+	}    
+
 	if (MACHINE_IS_SAM) {
 		return sam_ram_memory[0];
 	}

@@ -1488,6 +1488,12 @@ z80_byte *contend_table_no_mreq;
 
         }
 
+	//TODO pcw
+	if (MACHINE_IS_PCW) {
+		return;
+
+        }        
+
 	//TODO msx, coleco , sg1000 y sms. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
 	if (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS) {
 
