@@ -241,6 +241,7 @@ extern z80_byte fetch_opcode_coleco(void);
 extern z80_byte fetch_opcode_sg1000(void);
 extern z80_byte fetch_opcode_sms(void);
 extern z80_byte fetch_opcode_svi(void);
+extern z80_byte fetch_opcode_pcw(void);
 
 extern void poke_byte_spectrum_48k(z80_int dir,z80_byte valor);
 

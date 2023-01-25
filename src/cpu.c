@@ -1232,7 +1232,11 @@ void reset_cpu(void)
 
 	if (MACHINE_IS_SMS) {
 		sms_reset();
-	}	    
+	}	  
+
+    if (MACHINE_IS_PCW) {
+        pcw_reset();
+    }  
 
 	vdp_9918a_reset();	
 
@@ -3419,8 +3423,8 @@ void malloc_mem_machine(void) {
                 malloc_machine(256*1024);
                 random_ram(memoria_spectrum,256*1024);
 
-                //cpc_init_memory_tables();
-                //cpc_set_memory_pages();
+                pcw_init_memory_tables();
+                pcw_set_memory_pages();
 
 
         }                     
@@ -4683,7 +4687,7 @@ You don't need timings for H/V sync =)
 
         break;        
 
-        //TODO
+        
         case MACHINE_ID_PCW_8256:
 		poke_byte=poke_byte_pcw_8256;
 		peek_byte=peek_byte_pcw_8256;
@@ -4691,6 +4695,7 @@ You don't need timings for H/V sync =)
 		poke_byte_no_time=poke_byte_no_time_pcw_8256;
 		lee_puerto=lee_puerto_pcw_8256;
         out_port=out_port_pcw_8256;
+        fetch_opcode=fetch_opcode_pcw;
 
 		break;                
 

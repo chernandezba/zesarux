@@ -89,6 +89,7 @@
 #include "phoenix.h"
 #include "ramjet.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -1146,6 +1147,19 @@ z80_byte fetch_opcode_sam(void)
         return peek_byte_no_time (reg_pc);
 }
 
+z80_byte fetch_opcode_pcw(void)
+{
+    /*
+#ifdef EMULATE_VISUALMEM
+        set_visualmemopcodebuffer(reg_pc);
+#endif
+*/
+printf("antes %p\n",peek_byte_no_time);
+z80_byte value= peek_byte_no_time_pcw_8256 (reg_pc);
+
+        printf("despues %p\n",peek_byte_no_time);
+        return value;
+}
 
 z80_byte fetch_opcode_coleco(void)
 {
@@ -3851,15 +3865,21 @@ void out_port_sam(z80_int puerto,z80_byte value)
 
 void poke_byte_no_time_pcw_8256(z80_int dir,z80_byte valor)
 {
-        if (dir>16383) {
-		memoria_spectrum[dir]=valor;
+
+    z80_byte *puntero;
+
+    puntero=pcw_get_memory_offset(dir);
+
+    *puntero=valor;
+       
+
 
 /*#ifdef EMULATE_VISUALMEM
 
 set_visualmembuffer(dir);
 
 #endif*/
-	}
+	
 }
 
 void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
@@ -3870,12 +3890,7 @@ void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
         t_estados += 3;
 
 
-/*#ifdef EMULATE_VISUALMEM
-
-set_visualmembuffer(dir);
-
-#endif*/
-		memoria_spectrum[dir]=valor;
+	poke_byte_no_time_pcw_8256(dir,valor);
 
 
 }
@@ -3891,6 +3906,18 @@ void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
         printf("OUT FDC data register %02XH\n",value);
         pd765_out_port_data_register(value);
     }
+
+    /*
+
+&F0	O	Select bank for &0000
+&F1	O	Select bank for &4000
+&F2	O	Select bank for &8000
+&F3	O	Select bank for &C000. Usually &87.
+    */
+
+   if (puerto_l>=0xF0 && puerto_l<=0xF3) {
+    pcw_out_port_bank(puerto_l,value);
+   }
 }
 
 
@@ -3963,8 +3990,11 @@ z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
 	set_visualmemreadbuffer(dir);
 #endif
 */
+    z80_byte *puntero;
 
-        return memoria_spectrum[dir];
+    puntero=pcw_get_memory_offset(dir);
+
+    return *puntero;
 
 }
 
