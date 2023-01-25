@@ -48,8 +48,11 @@ z80_byte pcw_bank_registers[4];
 //Direcciones actuales mapeadas para lectura, bloques de 16 kb
 z80_byte *pcw_memory_paged_read[4];
 
+//Direcciones actuales mapeadas para lectura, bloques de 16 kb
+z80_byte *pcw_memory_paged_write[4];
 
-z80_byte *pcw_get_memory_offset(z80_int dir)
+
+z80_byte *pcw_get_memory_offset_read(z80_int dir)
 {
     int segmento=dir/16384;
 
@@ -64,23 +67,53 @@ z80_byte *pcw_get_memory_offset(z80_int dir)
     return puntero;
 }
 
+z80_byte *pcw_get_memory_offset_write(z80_int dir)
+{
+    int segmento=dir/16384;
+
+    int offset=dir & 16383;
+
+    z80_byte *puntero;
+
+    puntero=pcw_memory_paged_write[segmento];
+
+    puntero +=offset;
+
+    return puntero;
+}
+
+
 void pcw_set_memory_pages()
 {
 
 
     z80_byte bank;
 
-    bank=pcw_bank_registers[0];
-    pcw_memory_paged_read[0]=pcw_ram_mem_table[bank];
+    int i;
 
-    bank=pcw_bank_registers[1];
-    pcw_memory_paged_read[1]=pcw_ram_mem_table[bank];
+    for (i=0;i<4;i++) {
 
-    bank=pcw_bank_registers[2];
-    pcw_memory_paged_read[2]=pcw_ram_mem_table[bank];
+        //Sending the bank number (with b7 set) to one of ports &F0-&F3 selects that bank for reading and writing. 
+        //Sending the bank number for writing to b0-2 of a port and the bank for reading to b4-b6 (with b7 reset) 
+        //maps separate banks in for reading and writing: this can only be used for the first 8 banks.
 
-    bank=pcw_bank_registers[3];
-    pcw_memory_paged_read[3]=pcw_ram_mem_table[bank];
+        bank=pcw_bank_registers[i];
+
+        if (bank & 128) {
+            bank &=15;
+            pcw_memory_paged_read[i]=pcw_ram_mem_table[bank];
+            pcw_memory_paged_write[i]=pcw_ram_mem_table[bank];
+        }
+        else {
+            z80_byte bank_write=bank & 7;
+            z80_byte bank_read=(bank >> 4) & 7;
+
+            pcw_memory_paged_read[i]=pcw_ram_mem_table[bank_read];
+            pcw_memory_paged_write[i]=pcw_ram_mem_table[bank_write];
+
+        }
+
+    }
 
 
 }
@@ -123,7 +156,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     //TODO: numeracion bancos??
 
-    value &=15;
+    //value &=15;
 
     pcw_bank_registers[bank]=value;
 

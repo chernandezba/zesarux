@@ -3868,7 +3868,7 @@ void poke_byte_no_time_pcw_8256(z80_int dir,z80_byte valor)
 
     z80_byte *puntero;
 
-    puntero=pcw_get_memory_offset(dir);
+    puntero=pcw_get_memory_offset_write(dir);
 
     *puntero=valor;
        
@@ -3992,7 +3992,7 @@ z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
 */
     z80_byte *puntero;
 
-    puntero=pcw_get_memory_offset(dir);
+    puntero=pcw_get_memory_offset_read(dir);
 
     return *puntero;
 

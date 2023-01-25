@@ -26,6 +26,7 @@
 #include "cpu.h"
 
 
-extern z80_byte *pcw_get_memory_offset(z80_int dir);
+extern z80_byte *pcw_get_memory_offset_read(z80_int dir);
+extern z80_byte *pcw_get_memory_offset_write(z80_int dir);
 
 #endif
