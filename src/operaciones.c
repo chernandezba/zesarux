@@ -3901,6 +3901,7 @@ void out_port_pcw_8256(z80_int puerto,z80_byte value)
   ula_contend_port_late( puerto ); t_estados++;
 }
 
+z80_byte temp_pcw_f8_b6;
 
 z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
@@ -3915,6 +3916,24 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
     if (puerto_l==0x01) {
         printf("IN FDC data register\n");
         return pd765_read();
+    }
+
+    if (puerto_l==0xF8) {
+        //b6: 1 line flyback, read twice in succession indicates frame flyback. 
+        //b5: FDC interrupt. 
+        //b4: indicates 32-line screen. 
+        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)
+        z80_byte return_value=0;        
+
+        if (pd765_interrupt_pending) return_value|=0x20;
+
+        //temporal b6 invertir valor
+        temp_pcw_f8_b6 ^=0x40;
+
+        return_value|=temp_pcw_f8_b6;
+
+        return return_value;
+        
     }
 
 
