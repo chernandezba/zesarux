@@ -86,6 +86,7 @@ Enjoy reading!
 #include "menu_items.h"
 #include "screen.h"
 #include "settings.h"
+#include "pcw.h"
 
 z80_bit pd765_enabled={0};
 
@@ -336,6 +337,10 @@ int pd765_sc_get(pd765_signal_counter *s)
 void pd765_set_interrupt_pending(void)
 {
     pd765_interrupt_pending=1;
+
+    if (MACHINE_IS_PCW) {
+        pcw_interrupt_from_pd765();
+    }
 }
 
 //Decir que el seek que se estaba ejecutando era un recalibrate

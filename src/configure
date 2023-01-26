@@ -1625,7 +1625,7 @@ mmc.o: mmc.c mmc.h cpu.h debug.h utils.h zxvision.h screen.h divmmc.h compileopt
 ide.o: ide.c ide.h cpu.h debug.h utils.h zxvision.h screen.h divide.h menu_items.h
 	\$(CC) \$(CFLAGS) -c ide.c
 
-pd765.o: pd765.c pd765.h cpu.h debug.h utils.h dsk.h menu_items.h screen.h settings.h
+pd765.o: pd765.c pd765.h cpu.h debug.h utils.h dsk.h menu_items.h screen.h settings.h pcw.h
 	\$(CC) \$(CFLAGS) -c pd765.c
 
 dsk.o: dsk.c dsk.h cpu.h debug.h utils.h tape.h menu_items.h screen.h pd765.h settings.h timer.h

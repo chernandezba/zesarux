@@ -98,6 +98,8 @@ z80_byte pcw_bank_registers[4];
 //Bits 3-0: unused
 z80_byte pcw_port_f4_value;
 
+z80_byte pcw_interrupt_from_pd765_type=0;
+
 //
 // Fin de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -189,6 +191,8 @@ void pcw_reset(void)
     pcw_bank_registers[0]=pcw_bank_registers[1]=pcw_bank_registers[2]=pcw_bank_registers[3]=0;
     pcw_port_f4_value=0;
 
+    pcw_interrupt_from_pd765_type=0;
+
     pcw_set_memory_pages();
 
     //Recargar contenido del boot de RAM
@@ -244,6 +248,22 @@ void pcw_out_port_f4(z80_byte value)
     pcw_set_memory_pages();
 }
 
+void pcw_interrupt_from_pd765(void)
+{
+    if (pcw_interrupt_from_pd765_type==1) {
+        printf("Generate NMI triggered from pd765\n");
+        generate_nmi();
+        //sleep(2);
+        
+    }
+        
+    if (pcw_interrupt_from_pd765_type==2) {
+        printf("Generate Maskable interrupt triggered from pd765\n");
+        interrupcion_maskable_generada.v=1;
+        //sleep(2);
+        
+    }
+}
 
 void pcw_out_port_f8(z80_byte value)
 {
@@ -278,17 +298,20 @@ void pcw_out_port_f8(z80_byte value)
 
         case 2:
             printf("Connect FDC to NMI\n");
-            sleep(5);
+            pcw_interrupt_from_pd765_type=1;
+            //sleep(5);
         break;
 
         case 3:
             printf("Connect FDC to standard interrupts\n");
-            sleep(5);
+            pcw_interrupt_from_pd765_type=2;
+            //sleep(5);
         break;
 
         case 4:
             printf("Connect FDC to nothing\n");
-            sleep(5);
+            pcw_interrupt_from_pd765_type=0;
+            //sleep(5);
         break;
 
 
