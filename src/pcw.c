@@ -253,6 +253,15 @@ void pcw_out_port_f8(z80_byte value)
     */
 
     switch (value) {
+        case 5:
+            pd765_set_terminal_count_signal();
+        break;
+
+        case 6:
+            pd765_reset_terminal_count_signal();
+        break;
+
+
         case 9:
             dsk_show_activity();
             pd765_motor_on();        

@@ -177,6 +177,10 @@ z80_bit pd765_signal_ts0={0};
 //Interrupcion pendiente de la controladora
 int pd765_interrupt_pending=0;
 
+//Terminal Count Signal. Usado por PCW
+//Que yo sepa, +3 o CPC no tienen manera de acceder a esta señal
+z80_bit pd765_terminal_count_signal={0};
+
 //Cilindro actual
 int pd765_pcn=0;
 
@@ -456,6 +460,7 @@ void pd765_reset(void)
 
     pd765_sc_reset(&signal_se);
     pd765_seek_was_recalibrating.v=0;
+    pd765_terminal_count_signal.v=0;
     pd765_reset_buffer();
 }
 
@@ -3294,6 +3299,39 @@ z80_byte pd765_read_result_command_format_track(void)
 z80_byte pd765_read_result_command_read_data(void)
 {
 
+    //Si finalizado por Terminal Count Signal
+    if (pd765_terminal_count_signal.v) {
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Stopping reading data because a Terminal Count signal has been fired");
+        sleep(10);
+
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
+
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        pd765_interrupt_pending=1;    
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+        pd765_read_command_state=PD765_READ_COMMAND_STATE_ENDING_READING_DATA;
+
+        z80_byte return_value=pd765_get_buffer();
+
+        //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
+        //otro comando para hacer el clear si ya lo hace aqui automaticamente?
+        pd765_reset_terminal_count_signal();
+
+        return return_value;
+
+    }
+
+
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         //notificar buffer de visual floppy
         menu_visual_floppy_buffer_add(pd765_pcn,pd765_ultimo_sector_fisico_read,pd765_result_bufer_read_pointer);
@@ -3598,3 +3636,12 @@ void pd765_out_port_data_register(z80_byte value)
     pd765_write(value);
 }
 
+void pd765_set_terminal_count_signal(void)
+{
+    pd765_terminal_count_signal.v=1;
+}
+
+void pd765_reset_terminal_count_signal(void)
+{
+    pd765_terminal_count_signal.v=0;
+}
