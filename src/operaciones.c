@@ -3898,35 +3898,39 @@ void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
 
 void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
 {
-	debug_fired_out=1;
-	
+    debug_fired_out=1;
+
 
     z80_byte puerto_l=puerto&0xFF;
 
     if (puerto_l==0x01) {
-        printf("OUT FDC data register %02XH\n",value);
+        //printf("OUT FDC data register %02XH\n",value);
         pd765_out_port_data_register(value);
     }
 
     /*
 
-&F0	O	Select bank for &0000
-&F1	O	Select bank for &4000
-&F2	O	Select bank for &8000
-&F3	O	Select bank for &C000. Usually &87.
+    &F0 O   Select bank for &0000
+    &F1 O   Select bank for &4000
+    &F2 O   Select bank for &8000
+    &F3 O   Select bank for &C000. Usually &87.
     */
 
-   if (puerto_l>=0xF0 && puerto_l<=0xF3) {
-    pcw_out_port_bank(puerto_l,value);
-   }
+    if (puerto_l>=0xF0 && puerto_l<=0xF3) {
+        pcw_out_port_bank(puerto_l,value);
+    }
 
-   if (puerto_l==0xF4) {
-    pcw_out_port_f4(value);
-   }
+    if (puerto_l==0xF4) {
+        pcw_out_port_f4(value);
+    }
 
-   if (puerto_l==0xF8) {
-    pcw_out_port_f8(value);
-   }
+    if (puerto_l==0xF8) {
+        pcw_out_port_f8(value);
+    }
+
+    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l<0xf0 && puerto_l>0xf3) {
+        printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
+    }
    
 }
 
@@ -3946,12 +3950,12 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 	debug_fired_in=1;
 
     if (puerto_l==0x00) {
-        printf("IN FDC status register\n");
+        //printf("IN FDC status register\n");
         return pd765_read_status_register();
     }
 
     if (puerto_l==0x01) {
-        printf("IN FDC data register\n");
+        //printf("IN FDC data register\n");
         return pd765_read();
     }
 

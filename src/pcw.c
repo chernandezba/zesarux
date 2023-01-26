@@ -263,5 +263,5 @@ void pcw_out_port_f8(z80_byte value)
         break;
     }
    
-    
+    if (value==5) sleep(10);
 }

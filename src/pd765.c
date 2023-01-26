@@ -1960,8 +1960,12 @@ void pd765_read_parameters_read_data(z80_byte value)
         //Fin de comando
         pd765_input_parameters_index=0;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End command parameters for %s",
-        pd765_last_command_name()
+        DBG_PRINT_PD765 VERBOSE_INFO,"PD765: End receiving command parameters for %s."
+        " C=%02XH H=%02XH R=%02XH N=%02XH EOT=%02XH GPL=%02XH DTL=%02XH. Current track: %02XH",
+        pd765_last_command_name(),
+        pd765_input_parameter_c,pd765_input_parameter_h,pd765_input_parameter_r,pd765_input_parameter_n,
+        pd765_input_parameter_eot,pd765_input_parameter_gpl,pd765_input_parameter_dtl,pd765_pcn
+        
         );
 
 
