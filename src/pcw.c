@@ -261,6 +261,21 @@ void pcw_out_port_f8(z80_byte value)
     */
 
     switch (value) {
+        case 0:
+            printf("End bootstrap\n");
+            sleep(2);
+        break;
+
+        case 1:
+            printf("Reboot\n");
+            //sleep(2);
+
+            reg_pc=0;
+
+            //Recargar contenido del boot de RAM
+            rom_load(NULL);            
+        break;
+
         case 5:
             pd765_set_terminal_count_signal();
         break;
@@ -281,11 +296,13 @@ void pcw_out_port_f8(z80_byte value)
 
         case 11:
             //temporal
+            printf("set beeper\n");
             value_beeper=100;
         break;
 
         case 12:
             //temporal
+            printf("reset beeper\n");
             value_beeper=0;
         break;
 
@@ -327,7 +344,7 @@ b3-b0 low bits of vertical movement counter.
     z80_byte return_value=255;
 
     printf("PCW return read row %XH value %02XH\n",fila,return_value);
-    //sleep(3);
+    //sleep(1);
 
 
    
