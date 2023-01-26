@@ -248,7 +248,7 @@ void pcw_out_port_f4(z80_byte value)
 void pcw_out_port_f8(z80_byte value)
 {
     
-    printf("PCW set port F8 value %02XH\n",value);
+    printf("PCW set port F8 value %02XH reg_pc %04XH\n",value,reg_pc);
 
     /*
     0 end bootstrap, 
@@ -263,7 +263,7 @@ void pcw_out_port_f8(z80_byte value)
     switch (value) {
         case 0:
             printf("End bootstrap\n");
-            sleep(2);
+            //sleep(2);
         break;
 
         case 1:
@@ -343,7 +343,7 @@ b3-b0 low bits of vertical movement counter.
     //de momento
     z80_byte return_value=255;
 
-    printf("PCW return read row %XH value %02XH\n",fila,return_value);
+    printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
     //sleep(1);
 
 

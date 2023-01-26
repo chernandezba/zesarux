@@ -3304,6 +3304,8 @@ z80_byte pd765_read_result_command_read_data(void)
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping reading data because a Terminal Count signal has been fired");
         //sleep(10);
 
+        pd765_reset_buffer();
+
         pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_read,1);
 
 

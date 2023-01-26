@@ -4006,7 +4006,7 @@ z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
 */
     //Lectura de teclado
     int offset=dir & 16383;
-    if (offset>=0x3FF0 && offset<=0x3FFA) {
+    if (offset>=0x3FF0) {
         int segmento=dir/16384;
 
         if (pcw_banks_paged_read[segmento]==3) {
