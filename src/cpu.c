@@ -149,6 +149,7 @@
 #include "dinamid3.h"
 #include "dsk.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -5619,6 +5620,7 @@ Total 20 pages=320 Kb
 
 		}
 
+        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
 		else if (MACHINE_IS_PCW_8256) {
 			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
 			if (leidos!=275) {

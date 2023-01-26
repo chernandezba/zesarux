@@ -3568,6 +3568,7 @@ z80_byte pd765_read_status_register(void)
     return pd765_main_status_register;
 }
 
+/*
 void pd765_out_port_1ffd(z80_byte value)
 {
     //0x1ffd: Setting bit 3 high will turn the drive motor (or motors, if you have more than one drive attached) on. 
@@ -3583,6 +3584,7 @@ void pd765_out_port_1ffd(z80_byte value)
     }
  
 }
+*/
 
 void pd765_out_port_data_register(z80_byte value)
 {

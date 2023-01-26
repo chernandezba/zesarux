@@ -90,6 +90,7 @@
 #include "ramjet.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "dsk.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -3918,6 +3919,15 @@ void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
    if (puerto_l>=0xF0 && puerto_l<=0xF3) {
     pcw_out_port_bank(puerto_l,value);
    }
+
+   if (puerto_l==0xF4) {
+    pcw_out_port_f4(value);
+   }
+
+   if (puerto_l==0xF8) {
+    pcw_out_port_f8(value);
+   }
+   
 }
 
 
@@ -8901,7 +8911,17 @@ Port: 10-- ---- ---- --0-
 
             //Puertos disco +3. Motor on/off
             if (pd765_enabled.v) {
-			    pd765_out_port_1ffd(value);
+
+                if (value&8) {
+                    dsk_show_activity();
+                    pd765_motor_on();
+                }
+                else {
+                    //Pues realmente si motor va a off, no hay actividad
+                    pd765_motor_off();
+                }
+
+			    //pd765_out_port_1ffd(value);
             }
 
 		}

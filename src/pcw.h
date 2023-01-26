@@ -28,5 +28,11 @@
 
 extern z80_byte *pcw_get_memory_offset_read(z80_int dir);
 extern z80_byte *pcw_get_memory_offset_write(z80_int dir);
+extern void pcw_reset(void);
+extern void pcw_init_memory_tables(void);
+extern void pcw_set_memory_pages(void);
+extern void pcw_out_port_bank(z80_byte puerto_l,z80_byte value);
+extern void pcw_out_port_f4(z80_byte value);
+extern void pcw_out_port_f8(z80_byte value);
 
 #endif

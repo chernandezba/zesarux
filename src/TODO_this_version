@@ -303,4 +303,11 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
 *si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
-*snap.c ver cosas de cpc 464 y si faltan para 6128 y 664
+*snap ver cosas de cpc 464 y si faltan para 6128 y 664
+
+
+-pendiente pcw:
+*keyboard help
+*machine icon
+*snapshot zsf
+*indicacion correcta de pagina rom en debug
