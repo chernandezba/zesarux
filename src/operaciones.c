@@ -3949,6 +3949,8 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	debug_fired_in=1;
 
+    printf("LEE puerto %02XH\n",puerto_l);
+
     if (puerto_l==0x00) {
         //printf("IN FDC status register\n");
         return pd765_read_status_register();

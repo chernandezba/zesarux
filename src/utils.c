@@ -12428,6 +12428,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
       if (MACHINE_IS_CPC_HAS_128K) {
         size=131072;
       } 
+
+      if (MACHINE_IS_PCW_8256) {
+        size=256*1024;
+      }
  
       if (MACHINE_IS_INVES) {
 	size=65536;

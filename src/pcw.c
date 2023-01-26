@@ -276,6 +276,22 @@ void pcw_out_port_f8(z80_byte value)
             rom_load(NULL);            
         break;
 
+        case 2:
+            printf("Connect FDC to NMI\n");
+            sleep(5);
+        break;
+
+        case 3:
+            printf("Connect FDC to standard interrupts\n");
+            sleep(5);
+        break;
+
+        case 4:
+            printf("Connect FDC to nothing\n");
+            sleep(5);
+        break;
+
+
         case 5:
             pd765_set_terminal_count_signal();
         break;
