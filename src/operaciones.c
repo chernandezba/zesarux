@@ -4004,6 +4004,18 @@ z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
 	set_visualmemreadbuffer(dir);
 #endif
 */
+    //Lectura de teclado
+    int offset=dir & 16383;
+    if (offset>=0x3FF0 && offset<=0x3FFA) {
+        int segmento=dir/16384;
+
+        if (pcw_banks_paged_read[segmento]==3) {
+            return pcw_read_keyboard(offset);
+        }
+        
+    }
+
+
     z80_byte *puntero;
 
     puntero=pcw_get_memory_offset_read(dir);

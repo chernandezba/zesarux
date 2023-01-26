@@ -79,6 +79,10 @@ z80_byte *pcw_memory_paged_read[4];
 //Direcciones actuales mapeadas para lectura, bloques de 16 kb
 z80_byte *pcw_memory_paged_write[4];
 
+
+//Paginas mapeadas para lectura en los 4 segmentos, usado para lectura de teclado
+z80_byte pcw_banks_paged_read[4];
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -153,6 +157,8 @@ void pcw_set_memory_pages(void)
             bank &=15;
             pcw_memory_paged_read[i]=pcw_ram_mem_table[bank];
             pcw_memory_paged_write[i]=pcw_ram_mem_table[bank];
+
+            pcw_banks_paged_read[i]=bank;
         }
         else {
             //CPC (“standard”) paging mode
@@ -166,6 +172,8 @@ void pcw_set_memory_pages(void)
 
             pcw_memory_paged_read[i]=pcw_ram_mem_table[bank_read];
             pcw_memory_paged_write[i]=pcw_ram_mem_table[bank_write];
+
+            pcw_banks_paged_read[i]=bank_read;
 
         }
 
@@ -270,7 +278,58 @@ void pcw_out_port_f8(z80_byte value)
         case 10:
             pd765_motor_off();
         break;
+
+        case 11:
+            //temporal
+            value_beeper=100;
+        break;
+
+        case 12:
+            //temporal
+            value_beeper=0;
+        break;
+
     }
    
-    if (value==5) sleep(10);
+}
+
+
+z80_byte pcw_read_keyboard(z80_int dir)
+{
+    /*
+The PCW's keyboard is directly mapped into the last 16 bytes of bank 3, even when interrupts are disabled. Each key is reflected by one bit in bytes &3FF0-&3FFA.
+b7:   k2     k1     [+]    .      ,      space  V      X      Z      del<   alt
+b6:   k3     k5     1/2    /      M      N      B      C      lock          k.
+b5:   k6     k4     shift  ;      K      J      F      D      A             enter
+b4:   k9     k8     k7     ¤      L      H      G      S      tab           f8
+b3:   paste  copy   #      P      I      Y      T      W      Q             [-]
+b2:   f2     cut    return [      O      U      R      E      stop          can
+b1:   k0     ptr    ]      -      9      7      5      3      2             extra
+b0:   f4     exit   del>   =      0      8      6      4      1             f6
+      &3FF0  &3FF1  &3FF2  &3FF3  &3FF4  &3FF5  &3FF6  &3FF7  &3FF8  &3FF9  &3FFA
+Bytes &3FFB-&3FFF reflect the keyboard in a different, incomplete way. These bytes are also used by Creative Technology's KeyMouse (in its standard "MicroDesign mode") and the Teqniche 102-key keyboard to provide additional functionality, creating some incompatibilities along the way. Among the more interesting mappings are the following:
+&3FFB	Standard keyboard  
+KeyMouse	b7-b0 unused (0)
+b6-b0 horizontal movement counter.
+&3FFC	KeyMouse	b7-b6 high bits of vertical movement counter.
+&3FFD	All
+Standard keyboard 
+KeyMouse	b7 always set; b6 current state of SHIFT LOCK 
+b3-b0 cursor keys, b4 matrix key 
+b3-b0 low bits of vertical movement counter.
+&3FFE	KeyMouse	b7 left button, b6 right button.    
+    */
+
+    //Quedarnos con ultimo byte de la direccion
+    int fila=dir & 0xF;
+
+    //de momento
+    z80_byte return_value=255;
+
+    printf("PCW return read row %XH value %02XH\n",fila,return_value);
+    //sleep(3);
+
+
+   
+    return return_value;
 }
