@@ -7613,7 +7613,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         svi_keyboard_table[6] &=(255-128);
 
           // 1|   Ret   Left     Up    Esc  Right      \  Space   Down
-                                        ql_keyboard_table[1] &= (255-2);
+                                        ql_keyboard_table[1] &= (255-2);                                    
                                 }
                                 else {
                                         //puerto_65278 |=1;
