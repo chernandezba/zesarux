@@ -11416,7 +11416,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 
         //zxvision_new_window_nocheck_staticsize(ventana,x,y,ancho,alto,64,64+2,"Sprites");
-        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,64,64+2,"Sprites","sprites",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,1024/menu_char_width,(1024/menu_char_height)+2,"Sprites","sprites",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
         ventana->can_be_backgrounded=1;
@@ -11625,7 +11625,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 
 					case 'p':
 
-						if (view_sprites_ancho_sprite<512) view_sprites_ancho_sprite +=view_sprites_ppb;
+						if (view_sprites_ancho_sprite<1024) view_sprites_ancho_sprite +=view_sprites_ppb;
 					break;
 
                     case 'q':
@@ -11636,7 +11636,7 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
                     break;
 
                     case 'a':
-						if (view_sprites_alto_sprite<512)  view_sprites_alto_sprite++;
+						if (view_sprites_alto_sprite<1024)  view_sprites_alto_sprite++;
                     break;
 
 					case 'c':
