@@ -3943,13 +3943,15 @@ void out_port_pcw_8256(z80_int puerto,z80_byte value)
 }
 
 z80_byte temp_pcw_f8_b6;
+z80_byte temp_pcw_f8_b30;
+int temp_pcw_f8_b30_cccc;
 
 z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
 	debug_fired_in=1;
 
-    printf("LEE puerto %02XH\n",puerto_l);
+    //printf("LEE puerto %02XH\n",puerto_l);
 
     if (puerto_l==0x00) {
         //printf("IN FDC status register\n");
@@ -3960,12 +3962,23 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
         //printf("IN FDC data register\n");
         return pd765_read();
     }
+    if (puerto_l==0xF4) {
+        //TODO completar
+        printf("LEE puerto %02XH\n",puerto_l);
+        //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
+
+        temp_pcw_f8_b30=0;
+
+        //??? parece que sin esto, cpm no llega a mostrar el prompt
+        return 255;
+    }
 
     if (puerto_l==0xF8) {
         //b6: 1 line flyback, read twice in succession indicates frame flyback. 
         //b5: FDC interrupt. 
         //b4: indicates 32-line screen. 
         //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)
+        printf("LEE puerto %02XH\n",puerto_l);
         z80_byte return_value=0;        
 
         if (pd765_interrupt_pending) return_value|=0x20;
@@ -3975,8 +3988,28 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
         return_value|=temp_pcw_f8_b6;
 
+
+        //TODO: este contador temp_pcw_f8_b30 se tiene que incrementar cada 300Hz
+        temp_pcw_f8_b30_cccc++;
+        if ((temp_pcw_f8_b30_cccc % 100)==0) {
+            if (temp_pcw_f8_b30!=0x0F) {
+                temp_pcw_f8_b30++;
+            }
+        }
+
+        printf("counter at %XH\n",temp_pcw_f8_b30);
+
+        return_value |=temp_pcw_f8_b30;
+
+
         return return_value;
         
+    }
+
+    if (puerto_l==0xFD) {
+        //printf("LEE puerto %02XH\n",puerto_l);
+        //Impresora. TODO completar
+        return 0x40; //bit 6: If 1, printer has finished.
     }
 
 

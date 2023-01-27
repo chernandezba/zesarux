@@ -233,6 +233,8 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     printf("PCW set bank %d value %02XH\n",bank,value);
 
+    //if (bank==0) sleep(1);
+
     pcw_set_memory_pages();
 
 
@@ -255,7 +257,8 @@ void pcw_interrupt_from_pd765(void)
         
     }
         
-    if (pcw_interrupt_from_pd765_type==2) {
+    //TODO Revisar esto. solo se genera cuando esta EI???
+    if (pcw_interrupt_from_pd765_type==2 && iff1.v) {
         printf("Generate Maskable interrupt triggered from pd765\n");
         interrupcion_maskable_generada.v=1;
         //sleep(2);
