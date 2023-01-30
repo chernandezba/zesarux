@@ -427,3 +427,102 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
    
     return return_value;
 }
+
+
+void scr_refresca_border_pcw(unsigned int color)
+{
+    /*
+//      printf ("Refresco border cpc\n");
+
+
+    int alto_caracter,ancho_pantalla,alto_pantalla,offset_x_pantalla;
+	scr_cpc_return_ancho_alto(&ancho_pantalla,&alto_pantalla,&alto_caracter,&offset_x_pantalla);
+
+	//Control minimos
+	if (ancho_pantalla==0) ancho_pantalla=640;
+	if (alto_pantalla==0) alto_pantalla=200;
+
+
+	int ancho_border=CPC_LEFT_BORDER_NO_ZOOM+   (640-ancho_pantalla)/2;
+	int alto_border=CPC_TOP_BORDER_NO_ZOOM+ (200-alto_pantalla)/2;
+
+	//printf ("ancho pantalla: %d alto_pantalla: %d offset_x_pantalla: %d anchoborder: %d altoborder: %d\n",ancho_pantalla,alto_pantalla,offset_x_pantalla,ancho_border,alto_border);
+
+
+
+        int x,y;
+
+	int x_borde_derecho=(ancho_border+ancho_pantalla)*zoom_x;
+	//printf ("x borde derecho: %d total ventana: %d\n",x_borde_derecho,(640+CPC_LEFT_BORDER_NO_ZOOM*2)*zoom_x);
+
+
+        //parte superior e inferior
+        for (y=0;y<alto_border*zoom_y;y++) {
+                for (x=0;x<(CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2)*zoom_x;x++) {
+				//printf ("x: %d y: %d\n",x,y);
+                                cpc_putpixel_border(x,y,color);
+				cpc_putpixel_border(x,(alto_border+alto_pantalla*2)*zoom_y+y,color);
+                }
+        }
+
+        //laterales
+        for (y=0;y<alto_pantalla*2*zoom_y;y++) {
+                for (x=0;x<ancho_border*zoom_x;x++) {
+                        cpc_putpixel_border(x,alto_border*zoom_y+y,color);
+                        cpc_putpixel_border(x_borde_derecho+x,alto_border*zoom_y+y,color);
+                }
+
+        }
+*/
+}
+
+
+
+
+//Refresco sin rainbow
+void scr_refresca_pantalla_pcw(void)
+{
+
+}
+
+void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
+{
+
+    //Refrescar border si conviene
+    if (border_enabled.v) {
+        if (modificado_border.v) {
+            //Dibujar border. Color 0
+            //unsigned int color=pcw_border_color;
+
+            //TODO
+            unsigned int color=0;
+
+            //color=cpc_palette_table[color];
+            //color +=CPC_INDEX_FIRST_COLOR;
+
+            scr_refresca_border_pcw(color);
+            modificado_border.v=0;
+        }
+	}
+
+
+        scr_refresca_pantalla_pcw();
+}
+
+
+
+void scr_refresca_pantalla_y_border_pcw(void)
+{
+
+    //TODO : de momento sin rainbow
+    scr_refresca_pantalla_y_border_pcw_no_rainbow();
+
+    /*
+    if (rainbow_enabled.v) {
+        scr_refresca_pantalla_y_border_pcw_rainbow();
+    }
+    else {
+        scr_refresca_pantalla_y_border_pcw_no_rainbow();
+    }
+    */
+}

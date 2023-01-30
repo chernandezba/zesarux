@@ -1933,7 +1933,7 @@ fi
 
 if [ "$MAINSOURCE" == "scrcocoa" ]; then
 cat >> Makefile << _EOF
-scrcocoa.o: scrcocoa.m joystick.h compileoptions.h cpu.h screen.h charset.h debug.h utils.h timer.h zxvision.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h realjoystick.h
+scrcocoa.o: scrcocoa.m joystick.h compileoptions.h cpu.h screen.h charset.h debug.h utils.h timer.h zxvision.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h realjoystick.h pcw.h
 	clang scrcocoa.m -c -o scrcocoa.o
 
 _EOF

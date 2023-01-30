@@ -64,4 +64,6 @@ extern z80_byte pcw_scanline_counter;
 
 extern z80_bit pcw_pending_interrupt;
 
+extern void scr_refresca_pantalla_y_border_pcw(void);
+
 #endif
