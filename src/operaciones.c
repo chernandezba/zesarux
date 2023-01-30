@@ -3507,7 +3507,7 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
 
     //Puerto upper rom select
     if (puerto_h==0xDF) {
-        printf("Out port DF value %02XH\n",value);
+        //printf("Out port DF value %02XH\n",value);
         cpc_out_port_df(value);
     }
 
