@@ -562,6 +562,22 @@ void scr_refresca_pantalla_pcw(void)
                 if (x<9) {
                     printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
                 }
+
+                z80_byte *puntero_byte=pcw_memory_paged_read[address_block]+address;
+
+                z80_byte byte_leido=*puntero_byte;
+
+                int bit;
+
+                for (bit=0;bit<8;bit++) {
+                    int color;
+
+                    if (byte_leido & 128) color=7;
+                    else color=0;
+                    scr_putpixel_zoom(x+bit,y+scanline,color);
+
+                    byte_leido=byte_leido<<1;
+                }
             }
         }
     }
