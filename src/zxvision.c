@@ -79,6 +79,7 @@
 #include "network.h"
 #include "ql.h"
 #include "zvfs.h"
+#include "pcw.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -8226,6 +8227,12 @@ margenx_izq=margeny_arr=0;
 margenx_izq=CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 					margeny_arr=CPC_TOP_BORDER_NO_ZOOM*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+//margenes para realvideo
+margenx_izq=PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+					margeny_arr=PCW_TOP_BORDER_NO_ZOOM*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 //margenes para realvideo

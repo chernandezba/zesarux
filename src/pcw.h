@@ -36,7 +36,9 @@
 
 
 #define PCW_DISPLAY_WIDTH 720
-#define PCW_DISPLAY_HEIGHT 256
+
+//Doblamos pixeles *2 en alto
+#define PCW_DISPLAY_HEIGHT 512
 
 //#define PCW_TOTAL_SCANLINES ((PCW_DISPLAY_HEIGHT+PCW_TOP_BORDER_NO_ZOOM*2)/2)
 
