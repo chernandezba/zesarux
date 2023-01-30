@@ -13002,7 +13002,10 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         p=&start[address];
       }
 
-       
+      if (MACHINE_IS_PCW) {
+        z80_byte *start=pcw_ram_mem_table[0];
+        p=&start[address];
+      }       
 
       if (MACHINE_IS_INVES) {
 	p=&memoria_spectrum[address];

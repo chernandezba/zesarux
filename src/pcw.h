@@ -53,7 +53,12 @@ extern void pcw_init_memory_tables(void);
 extern void pcw_set_memory_pages(void);
 extern void pcw_out_port_bank(z80_byte puerto_l,z80_byte value);
 extern void pcw_out_port_f4(z80_byte value);
+extern void pcw_out_port_f5(z80_byte value);
+extern void pcw_out_port_f6(z80_byte value);
+extern void pcw_out_port_f7(z80_byte value);
 extern void pcw_out_port_f8(z80_byte value);
+
+extern z80_byte *pcw_ram_mem_table[];
 
 extern z80_byte pcw_banks_paged_read[];
 extern z80_byte pcw_read_keyboard(z80_int dir);

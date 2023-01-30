@@ -3924,6 +3924,18 @@ void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
         pcw_out_port_f4(value);
     }
 
+    if (puerto_l==0xF5) {
+        pcw_out_port_f5(value);
+    }
+
+    if (puerto_l==0xF6) {
+        pcw_out_port_f6(value);
+    }
+
+    if (puerto_l==0xF7) {
+        pcw_out_port_f7(value);
+    }        
+
     if (puerto_l==0xF8) {
         pcw_out_port_f8(value);
     }

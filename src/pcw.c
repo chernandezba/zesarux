@@ -109,6 +109,15 @@ z80_byte pcw_bank_registers[4];
 //Bits 3-0: unused
 z80_byte pcw_port_f4_value;
 
+//Address of roller RAM. b7-5: bank (0-7). b4-1: address / 512.
+z80_byte pcw_port_f5_value;
+
+//Vertical screen position
+z80_byte pcw_port_f6_value;
+
+//b7: reverse video. b6: screen enable.
+z80_byte pcw_port_f7_value;
+
 z80_byte pcw_interrupt_from_pd765_type=0;
 
 //
@@ -262,6 +271,26 @@ void pcw_out_port_f4(z80_byte value)
 
     pcw_set_memory_pages();
 }
+
+void pcw_out_port_f5(z80_byte value)
+{
+    pcw_port_f5_value=value;
+    printf("PCW set port F5 value %02XH\n",value);
+}
+
+void pcw_out_port_f6(z80_byte value)
+{
+    pcw_port_f6_value=value;
+    printf("PCW set port F6 value %02XH\n",value);
+}
+
+
+void pcw_out_port_f7(z80_byte value)
+{
+    pcw_port_f7_value=value;
+    printf("PCW set port F7 value %02XH\n",value);
+}
+
 
 void pcw_interrupt_from_pd765(void)
 {
@@ -477,12 +506,65 @@ void scr_refresca_border_pcw(unsigned int color)
 }
 
 
+void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int roller_ram_offset,
+    z80_byte *address_block, z80_int *address)
+{
+    z80_byte *puntero_roller_ram;
 
+    puntero_roller_ram=pcw_memory_paged_read[roller_ram_bank];
+    puntero_roller_ram +=roller_ram_offset;    
+
+    z80_int valor=*puntero_roller_ram+256*puntero_roller_ram[1];
+
+    //descomponer en bloque y addres
+
+    *address_block=(valor>>13) & 0x07;
+
+    //15 14 13 12 11 10 9  8  7  6  5  4  3  2  1  0
+    //block   |  offset /16                 | offset
+
+    *address=(valor & 7) +2 *(valor & 0x1FF8);
+}
 
 //Refresco sin rainbow
 void scr_refresca_pantalla_pcw(void)
 {
 
+    
+
+    //Address of roller RAM. b7-5: bank (0-7). b4-1: address / 512.
+    z80_byte roller_ram_bank=(pcw_port_f5_value >> 5) & 0x07;
+
+    z80_int roller_ram_offset=(pcw_port_f5_value & 0x1F) * 512;
+
+    printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
+
+
+
+    int x,y,scanline;
+
+    for (y=0;y<256;y+=8) {
+        z80_byte address_block;
+        z80_int address;
+
+
+        //roller_ram_offset+=2;
+        for (x=0;x<720;x+=8) {
+            
+            for (scanline=0;scanline<8;scanline++) {
+                int yfinal=y+scanline;
+
+                scr_refresca_pant_pcw_return_line_pointer(roller_ram_bank,roller_ram_offset+yfinal*2,&address_block,&address);
+
+                address +=x;
+
+                
+                if (x<9) {
+                    printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
+                }
+            }
+        }
+    }
 }
 
 void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
