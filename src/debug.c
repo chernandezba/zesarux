@@ -46,6 +46,7 @@
 #include "core_z88.h"
 #include "core_ace.h"
 #include "core_cpc.h"
+#include "core_pcw.h"
 #include "core_sam.h"
 #include "core_ql.h"
 #include "disassemble.h"
@@ -1918,6 +1919,12 @@ void set_cpu_core_loop(void)
                         cpu_core_loop=cpu_core_loop_cpc;
                         cpu_core_loop_name="CPC";
                 break;
+
+                case CPU_CORE_PCW:
+                        debug_printf(VERBOSE_INFO,"Setting PCW core");
+                        cpu_core_loop=cpu_core_loop_pcw;
+                        cpu_core_loop_name="PCW";
+                break;                
 
                 case CPU_CORE_Z88:
                         debug_printf(VERBOSE_INFO,"Setting Z88 CPU core");

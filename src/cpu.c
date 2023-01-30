@@ -3695,6 +3695,10 @@ void set_machine_params(void)
 			cpu_core_loop_active=CPU_CORE_CPC;
 		}
 
+		else if (MACHINE_IS_PCW) {
+			cpu_core_loop_active=CPU_CORE_PCW;
+		}        
+
 		else if (MACHINE_IS_SAM) {
 			cpu_core_loop_active=CPU_CORE_SAM;
 		}
