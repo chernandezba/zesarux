@@ -40,4 +40,8 @@ extern z80_byte pcw_read_keyboard(z80_int dir);
 
 extern z80_byte pcw_keyboard_table[];
 
+extern z80_byte pcw_scanline_counter;
+
+extern z80_bit pcw_pending_interrupt;
+
 #endif

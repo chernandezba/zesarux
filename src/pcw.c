@@ -83,6 +83,11 @@ z80_byte *pcw_memory_paged_write[4];
 //Paginas mapeadas para lectura en los 4 segmentos, usado para lectura de teclado
 z80_byte pcw_banks_paged_read[4];
 
+//Contador de linea para lanzar interrupcion.
+z80_byte pcw_scanline_counter;
+
+z80_bit pcw_pending_interrupt={0};
+
 
 z80_byte pcw_keyboard_table[16]={
     0,0,0,0,0,0,0,0,
@@ -198,6 +203,10 @@ void pcw_reset(void)
     pcw_port_f4_value=0;
 
     pcw_interrupt_from_pd765_type=0;
+
+    pcw_scanline_counter=0;
+
+    pcw_pending_interrupt.v=0;
 
     pcw_set_memory_pages();
 

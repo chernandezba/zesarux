@@ -27,6 +27,7 @@
 #include <errno.h>
 
 
+#include "core_pcw.h"
 #include "cpu.h"
 #include "debug.h"
 #include "tape.h"
@@ -60,13 +61,7 @@ void core_pcw_final_frame(void)
 
 
 
-    //Con ay player, interrupciones a 50 Hz
-    if (ay_player_playing.v==1) {
-        if (iff1.v==1) {
-            //printf ("Generamos interrupcion en scanline: %d pcw_scanline_counter: %d\n",t_scanline,pcw_scanline_counter);
-            interrupcion_maskable_generada.v=1;
-        }
-    }
+
 
 
 
@@ -158,25 +153,26 @@ void core_pcw_end_scanline_stuff(void)
 
     //audio_valor_enviar_sonido +=da_output_ay();
 
-	audio_valor_enviar_sonido_izquierdo +=da_output_ay_izquierdo();
-	audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();    
+  
 
-    if (realtape_inserted.v && realtape_playing.v) {
-        realtape_get_byte();
-        if (realtape_loading_sound.v) {
-            audio_valor_enviar_sonido_izquierdo /=2;
-            audio_valor_enviar_sonido_izquierdo += realtape_last_value/2;
 
-            audio_valor_enviar_sonido_derecho /=2;
-            audio_valor_enviar_sonido_derecho += realtape_last_value/2;   
 
-            //Sonido alterado cuando top speed
-            if (timer_condicion_top_speed() ) {
-                audio_valor_enviar_sonido_izquierdo=audio_change_top_speed_sound(audio_valor_enviar_sonido_izquierdo);
-                audio_valor_enviar_sonido_derecho=audio_change_top_speed_sound(audio_valor_enviar_sonido_derecho);
-            }
-        }
-    }
+    //TODO real beeper
+    if (beeper_enabled.v) {
+        //if (beeper_real_enabled==0) {
+            audio_valor_enviar_sonido_izquierdo += value_beeper;
+            audio_valor_enviar_sonido_derecho += value_beeper;
+        //}
+
+        /*else {
+            char suma_beeper=get_value_beeper_sum_array();
+            audio_valor_enviar_sonido_izquierdo += suma_beeper;
+            audio_valor_enviar_sonido_derecho += suma_beeper;
+            beeper_new_line();
+        }*/
+
+
+    }    
 
     //Ajustar volumen
     if (audiovolume!=100) {
@@ -193,7 +189,7 @@ void core_pcw_end_scanline_stuff(void)
     }    
 
 
-    ay_chip_siguiente_ciclo();
+    
 
 
 
@@ -213,9 +209,10 @@ void core_pcw_end_scanline_stuff(void)
 
     t_scanline_next_line();
 
-    //pcw_scanline_counter++;
+    pcw_scanline_counter++;
 
     //pcw_handle_vsync_state();
+
 
 
 
@@ -237,9 +234,9 @@ void core_pcw_end_scanline_stuff(void)
 
     //Con ay player, interrupciones a 50 Hz
 
-    /*
+    
     if (pcw_scanline_counter>=52 && ay_player_playing.v==0) {
-        pcw_crt_pending_interrupt.v=1;
+        pcw_pending_interrupt.v=1;
 
         //printf ("Llega interrupcion crtc del Z80 en counter: %d pcw_crtc_contador_scanline: %d t: %d scanline_draw: %d\n",
         //pcw_scanline_counter,pcw_crtc_contador_scanline,t_estados,t_scanline_draw);
@@ -255,7 +252,7 @@ void core_pcw_end_scanline_stuff(void)
         }
         pcw_scanline_counter=0;
     }
-    */
+    
 
 /*
     //Ver si resetear t_scanline_draw
@@ -500,22 +497,19 @@ void cpu_core_loop_pcw(void)
 
 
     //Si habia interrupcion pendiente de crtc y están las interrupciones habilitadas
-    /*
-    if (pcw_crt_pending_interrupt.v && iff1.v==1) {
-        //printf("Llega Se genera interrupcion del Z80 pendiente de crtc en contador: %d t: %d pcw_crtc_contador_scanline %d t_scanline_draw %d\n",
-        //pcw_scanline_counter,t_estados,pcw_crtc_contador_scanline,t_scanline_draw);
+    
+    if (pcw_pending_interrupt.v && iff1.v==1) {
 
-        pcw_crt_pending_interrupt.v=0;
+
+        pcw_pending_interrupt.v=0;
+
         interrupcion_maskable_generada.v=1;
 
-        //Ademas:
-        //When the interrupt is acknowledged, this is sensed by the Gate-Array. The top bit (bit 5), of the counter is set to "0" and the interrupt request is cleared. This prevents the next interrupt from occuring closer than 32 HSYNCs time.
-        //http://pcwtech.pcwwiki.de/docs/ints.html
 
-        pcw_scanline_counter &=(255-32);
+        pcw_scanline_counter=0;
 
     }
-    */
+    
 
 
     //Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en pcw o al cambio de bit6 de R en zx80/81
