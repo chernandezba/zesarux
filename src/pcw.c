@@ -568,7 +568,7 @@ void scr_refresca_pantalla_pcw(void)
 
                 
                 if (x<9) {
-                    printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
+                    //printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
                 }
 
                 z80_byte *puntero_byte=pcw_memory_paged_read[address_block]+address;
