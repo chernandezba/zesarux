@@ -26,6 +26,24 @@
 #include "cpu.h"
 
 
+//Hacer que estos valores de border sean multiples de 8
+#define PCW_LEFT_BORDER_NO_ZOOM 16
+//#define CPC_LEFT_BORDER_NO_ZOOM 192
+
+
+#define PCW_TOP_BORDER_NO_ZOOM 24
+
+
+
+#define PCW_DISPLAY_WIDTH 720
+#define PCW_DISPLAY_HEIGHT 256
+
+//#define PCW_TOTAL_SCANLINES ((PCW_DISPLAY_HEIGHT+PCW_TOP_BORDER_NO_ZOOM*2)/2)
+
+#define PCW_LEFT_BORDER PCW_LEFT_BORDER_NO_ZOOM*zoom_x
+#define PCW_TOP_BORDER  PCW_TOP_BORDER_NO_ZOOM*zoom_y
+
+
 extern z80_byte *pcw_get_memory_offset_read(z80_int dir);
 extern z80_byte *pcw_get_memory_offset_write(z80_int dir);
 extern void pcw_reset(void);

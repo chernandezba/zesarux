@@ -60,6 +60,7 @@
 #include "ql_zx8302.h"
 #include "stats.h"
 #include "chardetect.h"
+#include "pcw.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -919,6 +920,10 @@ void recalcular_get_total_ancho_rainbow(void)
                 get_total_ancho_rainbow_cached=2*CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+CPC_DISPLAY_WIDTH;
         }
 
+	else if (MACHINE_IS_PCW) {
+                get_total_ancho_rainbow_cached=2*PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+PCW_DISPLAY_WIDTH;
+        }        
+
 	else if (MACHINE_IS_PRISM) {
 		get_total_ancho_rainbow_cached=(screen_total_borde_izquierdo+screen_total_borde_derecho)*border_enabled.v+512;
         }
@@ -961,6 +966,10 @@ void recalcular_get_total_alto_rainbow(void)
         else if (MACHINE_IS_CPC) {
                 get_total_alto_rainbow_cached=2*CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+CPC_DISPLAY_HEIGHT;
         }
+
+        else if (MACHINE_IS_PCW) {
+                get_total_alto_rainbow_cached=2*PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+PCW_DISPLAY_HEIGHT;
+        }        
 
         else if (MACHINE_IS_PRISM) {
                 //get_total_alto_rainbow_cached=2*PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+PRISM_DISPLAY_HEIGHT;
@@ -1960,6 +1969,10 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 		indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
         }
 
+	else if (MACHINE_IS_PCW) {
+		indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }        
+
 	else if (MACHINE_IS_PRISM) {
 		indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
         }
@@ -2003,6 +2016,11 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 		offsetx=CPC_LEFT_BORDER*border_enabled.v;
                 offsety=CPC_TOP_BORDER*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+		offsetx=PCW_LEFT_BORDER*border_enabled.v;
+        offsety=PCW_TOP_BORDER*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
@@ -2070,6 +2088,13 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
 		//sleep(1);
         }
 
+	else if (MACHINE_IS_PCW) {
+                indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
+		//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
+		//sleep(1);
+        }        
+
 	else if (MACHINE_IS_PRISM) {
                 indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
 		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
@@ -2124,6 +2149,11 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
                 offsetx=CPC_LEFT_BORDER*border_enabled.v;
                 offsety=CPC_TOP_BORDER*border_enabled.v;
         }
+
+	else if (MACHINE_IS_PCW) {
+                offsetx=PCW_LEFT_BORDER*border_enabled.v;
+                offsety=PCW_TOP_BORDER*border_enabled.v;
+        }        
 
 	else if (MACHINE_IS_PRISM) {
                 offsetx=PRISM_LEFT_BORDER*border_enabled.v;
@@ -2833,6 +2863,11 @@ if (MACHINE_IS_Z88) {
 		*margenx_izq=CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 		*margeny_arr=CPC_TOP_BORDER_NO_ZOOM*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+		*margenx_izq=PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+		*margeny_arr=PCW_TOP_BORDER_NO_ZOOM*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 		*margenx_izq=PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v;
@@ -11522,6 +11557,10 @@ int screen_get_emulated_display_width_no_zoom(void)
         return CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2;
 	}
 
+	else if (MACHINE_IS_PCW) {
+        return PCW_DISPLAY_WIDTH+PCW_LEFT_BORDER_NO_ZOOM*2;
+	}    
+
 	else if (MACHINE_IS_PRISM) {
         return PRISM_DISPLAY_WIDTH+PRISM_LEFT_BORDER_NO_ZOOM*2;
 	}
@@ -11558,6 +11597,10 @@ int screen_get_emulated_display_height_no_zoom(void)
 	else if (MACHINE_IS_CPC) {
         return CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2;
 	}
+
+	else if (MACHINE_IS_PCW) {
+        return PCW_DISPLAY_HEIGHT+PCW_TOP_BORDER_NO_ZOOM*2;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
         return PRISM_DISPLAY_HEIGHT+PRISM_TOP_BORDER_NO_ZOOM*2;
@@ -11601,6 +11644,10 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
 	return CPC_DISPLAY_WIDTH+(CPC_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
 
+	else if (MACHINE_IS_PCW) {
+	return PCW_DISPLAY_WIDTH+(PCW_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
+	}    
+
 	else if (MACHINE_IS_PRISM) {
 	return PRISM_DISPLAY_WIDTH+(PRISM_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
@@ -11643,6 +11690,10 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
+        else if (MACHINE_IS_PCW) {
+        return alto_extdesktop+PCW_DISPLAY_HEIGHT+(PCW_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        }        
+
         else if (MACHINE_IS_PRISM) {
         return alto_extdesktop+PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
@@ -11683,6 +11734,10 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
 	else if (MACHINE_IS_CPC) {
 	return CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+	return PCW_DISPLAY_HEIGHT+(PCW_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 	return PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;

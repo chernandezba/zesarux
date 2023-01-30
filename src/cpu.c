@@ -4790,7 +4790,7 @@ void set_menu_gui_zoom(void)
 	//printf ("calling set_menu_gui_zoom. driver: %s\n",scr_new_driver_name);
 
 	if (si_complete_video_driver() ) {
-		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
+		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
 	}
 
 	debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);
@@ -4857,129 +4857,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
         
 }
 
-/*
-Vieja funcion
-Reabrir ventana en caso de que maquina seleccionada tenga tamanyo diferente que la anterior
-TODO: Quiza se podria simplificar esto, se empezó con Z88 a spectrum y se han ido agregando,
-se exponen todos los casos de maquinas con diferentes tamanyos de ventana,
-pero quiza simplemente habria que ver que el tamanyo anterior fuera diferente al actual y entonces reabrir ventana
-O que la maquina actual es diferente de la anterior
-*/
-void old_post_set_machine_no_rom_load_reopen_window(void)
-{
 
-	set_menu_gui_zoom();
-
-
-	//si se cambia de maquina Z88 o a maquina Z88, redimensionar ventana
-	if (last_machine_type!=255) {
-
-		if ( (MACHINE_IS_Z88 && last_machine_type!=130)  || (last_machine_type==130 && !(MACHINE_IS_Z88) ) ) {
-			debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing Z88 to/from other machine)");
-			post_set_mach_reopen_screen();
-			return;
-		}
-	}
-
-
-	//si se cambia de maquina CPC o a maquina CPC, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_CPC && !(last_machine_type>=140 && last_machine_type<=149) )  || (  (last_machine_type>=140 && last_machine_type<=149) && !(MACHINE_IS_CPC) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing CPC to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina SAM o a maquina SAM, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_SAM && !(last_machine_type>=150 && last_machine_type<=159) )  || (  (last_machine_type>=150 && last_machine_type<=159) && !(MACHINE_IS_SAM) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing SAM to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina QL o a maquina QL, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_QL && !(last_machine_type>=160 && last_machine_type<=179) )  || (  (last_machine_type>=160 && last_machine_type<=179) && !(MACHINE_IS_QL) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing QL to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-
-
-							//si se cambia de maquina Prism o a maquina Prism, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_PRISM && last_machine_type!=18)   || (last_machine_type==18 && !(MACHINE_IS_PRISM)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing PRISM to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina TBBLUE o a maquina TBBLUE, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_TBBLUE && last_machine_type!=MACHINE_ID_TBBLUE)   || (last_machine_type==MACHINE_ID_TBBLUE && !(MACHINE_IS_TBBLUE)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing TBBLUE to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina TSconf o a maquina tsconf, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_TSCONF && last_machine_type!=MACHINE_ID_TSCONF)   || (last_machine_type==MACHINE_ID_TSCONF && !(MACHINE_IS_TSCONF)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing TSCONF to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-
-							//si se cambia de maquina MK14 o a maquina mk14, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_MK14 && last_machine_type!=MACHINE_ID_MK14_STANDARD)   || (last_machine_type==MACHINE_ID_MK14_STANDARD && !(MACHINE_IS_MK14)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing MK14 to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//Si se cambia de maquina Spectrum o a maquina Spectrum - afecta especialmente a spectrum
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_SPECTRUM && !(last_machine_type<30) )  || (  (last_machine_type<30) && !(MACHINE_IS_SPECTRUM) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing Spectrum to/from other machine)");
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-}
 
 void post_set_machine_no_rom_load(void)
 {

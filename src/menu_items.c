@@ -4976,6 +4976,10 @@ void menu_visualmem_get_start_end(int *inicio,int *final)
 		inicio_puntero_membuffer=0;
 	}
 
+	if (MACHINE_IS_PCW) {
+		inicio_puntero_membuffer=0;
+	}    
+
 	if (MACHINE_IS_SAM) {
                 inicio_puntero_membuffer=0;
         }
@@ -33854,10 +33858,10 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
-			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"+3 ~~Disk");
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" ~~Disk");
 			menu_add_item_menu_shortcut(array_menu_storage,'d');
-			menu_add_item_menu_tooltip(array_menu_storage,"+3 Disk emulation");
-			menu_add_item_menu_ayuda(array_menu_storage,"+3 Disk emulation");
+			menu_add_item_menu_tooltip(array_menu_storage,"3\" Disk emulation");
+			menu_add_item_menu_ayuda(array_menu_storage,"3\" Disk emulation");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 
