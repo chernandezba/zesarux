@@ -526,6 +526,14 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     *address=(valor & 7) +2 *(valor & 0x1FF8);
 }
 
+void pcw_refresca_putpixel(int x,int y,int color)
+{
+    y*=2;
+
+    scr_putpixel_zoom(x,y,color);
+    scr_putpixel_zoom(x,y+1,color);
+}
+
 //Refresco sin rainbow
 void scr_refresca_pantalla_pcw(void)
 {
@@ -574,7 +582,7 @@ void scr_refresca_pantalla_pcw(void)
 
                     if (byte_leido & 128) color=7;
                     else color=0;
-                    scr_putpixel_zoom(x+bit,y+scanline,color);
+                    pcw_refresca_putpixel(x+bit,y+scanline,color);
 
                     byte_leido=byte_leido<<1;
                 }
