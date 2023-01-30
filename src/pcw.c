@@ -83,6 +83,12 @@ z80_byte *pcw_memory_paged_write[4];
 //Paginas mapeadas para lectura en los 4 segmentos, usado para lectura de teclado
 z80_byte pcw_banks_paged_read[4];
 
+
+z80_byte pcw_keyboard_table[16]={
+    0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0
+};
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -317,10 +323,12 @@ void pcw_out_port_f8(z80_byte value)
 
 
         case 5:
+            printf("Set Terminal count\n");
             pd765_set_terminal_count_signal();
         break;
 
         case 6:
+            printf("Reset Terminal count\n"); 
             pd765_reset_terminal_count_signal();
         break;
 
@@ -354,7 +362,8 @@ void pcw_out_port_f8(z80_byte value)
 z80_byte pcw_read_keyboard(z80_int dir)
 {
     /*
-The PCW's keyboard is directly mapped into the last 16 bytes of bank 3, even when interrupts are disabled. Each key is reflected by one bit in bytes &3FF0-&3FFA.
+The PCW's keyboard is directly mapped into the last 16 bytes of bank 3, even when interrupts are disabled. 
+Each key is reflected by one bit in bytes &3FF0-&3FFA.
 b7:   k2     k1     [+]    .      ,      space  V      X      Z      del<   alt
 b6:   k3     k5     1/2    /      M      N      B      C      lock          k.
 b5:   k6     k4     shift  ;      K      J      F      D      A             enter
@@ -381,7 +390,26 @@ b3-b0 low bits of vertical movement counter.
     int fila=dir & 0xF;
 
     //de momento
-    z80_byte return_value=255;
+    z80_byte return_value=0;
+
+    //Teclas al pulsar activan bit
+
+    
+    /*
+
+3FFFh bit 7 is 1 if the keyboard is currently transmitting its state to the PCW, 0 if it is scanning its keys.
+If no keyboard is present, all 16 bytes of the memory map are zero.
+    */
+
+    //temp
+    //if (fila==8) return_value=temp_row_8;
+    //if (fila==5) return_value=temp_row_5;
+
+    return_value=pcw_keyboard_table[fila];
+
+    if (fila==0xF) return_value=128;
+
+
 
     printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
     //sleep(1);

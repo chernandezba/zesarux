@@ -3310,7 +3310,7 @@ z80_byte pd765_read_result_command_read_data(void)
 {
 
     //Si finalizado por Terminal Count Signal
-    if (pd765_terminal_count_signal.v) {
+    if (pd765_terminal_count_signal.v && pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping reading data because a Terminal Count signal has been fired");
         //sleep(10);
 
@@ -3337,7 +3337,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
         //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
         //otro comando para hacer el clear si ya lo hace aqui automaticamente?
-        pd765_reset_terminal_count_signal();
+        //pd765_reset_terminal_count_signal();
 
         return return_value;
 

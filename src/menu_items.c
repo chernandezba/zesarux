@@ -9879,6 +9879,9 @@ int view_sprites_hardware=0;
 
 z80_bit view_sprites_inverse={0};
 
+//formato pantalla pcw
+z80_bit menu_sprites_modo_pcw_pantalla={0};
+
 //Incremento al moverse al siguiente byte
 //Normalmente 1 , pero quiza poner a 2 para sprites que se guardan como:
 //byte sprite, byte mascara, byte sprite, byte mascara
@@ -10843,7 +10846,10 @@ void menu_debug_draw_sprites(void)
 				}
 				*/
 
-				puntero +=view_sprite_incremento;
+                if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) puntero +=8;
+
+				else puntero +=view_sprite_incremento;
+                
 
 				int incx=0;
 
@@ -10922,8 +10928,27 @@ void menu_debug_draw_sprites(void)
                                     
 			}
 
-			puntero=puntero_inicio_linea;
-			puntero +=tamanyo_linea;
+			//puntero=puntero_inicio_linea;
+
+
+            if (menu_sprites_modo_pcw_pantalla.v && MACHINE_IS_PCW) {
+                //Cada 8 lineas, se incrementa diferente
+                if ((y%8)==7) {
+                    //puntero+=view_sprites_ancho_sprite;
+                    //puntero+=(720/8);
+                    //Ya viene incrementado +8. Entonces se deberia incrementar en +1
+                    puntero-=7;
+                }
+                else {
+                    puntero=puntero_inicio_linea;
+                    puntero++;
+                }
+            }
+			else {
+                puntero=puntero_inicio_linea;
+                puntero +=tamanyo_linea;
+            }
+            
 
 		}
 	
@@ -11307,6 +11332,13 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
 		if (MACHINE_IS_ZX8081) {
 			sprintf(mensaje_texto_zx81_pseudohires,"[%c] Ps~~eudohires",(view_sprites_zx81_pseudohires.v ? 'X' : ' ') );
 		}
+
+        char mensaje_texto_pcw_screen[33];
+        //por defecto
+        mensaje_texto_pcw_screen[0]=0;
+        if (MACHINE_IS_PCW) {
+            sprintf(mensaje_texto_pcw_screen,"[%c] PC~~W",(menu_sprites_modo_pcw_pantalla.v ? 'X' : ' '));
+        }
 		
 		sprintf(buffer_primera_linea,"~~memptr In~~c+%d ~~o~~p~~q~~a:Size ~~bpp %s",
 		view_sprite_incremento,
@@ -11326,10 +11358,10 @@ void menu_debug_view_sprites_textinfo(zxvision_window *ventana)
         }
 
 
-		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s",
+		sprintf(buffer_segunda_linea, "[%c] ~~inv [%c] Sc~~r %s%s%s%s",
 					(view_sprites_inverse.v ? 'X' : ' '),
 					(view_sprites_scr_sprite ? 'X' : ' '),
-					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires);
+					mensaje_texto_hardware,mensaje_texto_sms,mensaje_texto_zx81_pseudohires,mensaje_texto_pcw_screen);
 
 
 		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_primera_linea);
@@ -11577,6 +11609,10 @@ void menu_debug_view_sprites(MENU_ITEM_PARAMETERS)
 					case 'i':
 						view_sprites_inverse.v ^=1;
 					break;
+
+                    case 'w':
+                        menu_sprites_modo_pcw_pantalla.v ^=1;
+                    break;
 
 					case 'z':
 						

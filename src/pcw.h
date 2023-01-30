@@ -38,4 +38,6 @@ extern void pcw_out_port_f8(z80_byte value);
 extern z80_byte pcw_banks_paged_read[];
 extern z80_byte pcw_read_keyboard(z80_int dir);
 
+extern z80_byte pcw_keyboard_table[];
+
 #endif

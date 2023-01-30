@@ -152,6 +152,7 @@
 #include "dinamid3.h"
 #include "dsk.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -7286,6 +7287,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[1] &= (255-64);
                                         msx_keyboard_table[8] &= (255-1);
                                         svi_keyboard_table[8] &= (255-1);
+                                        pcw_keyboard_table[5] |=128;
                                 }
                                 else {
                                         puerto_32766 |=1;
@@ -7294,6 +7296,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[1] |= 64;
                                         msx_keyboard_table[8] |= 1;
                                         svi_keyboard_table[8] |= 1;
+                                        pcw_keyboard_table[5] &=(255-128);
                                 }
                         break;
 
@@ -7971,12 +7974,18 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[0] &= (255-2);
                                         msx_keyboard_table[6] &= (255-32);
                                         svi_keyboard_table[7] &=(255-1);
+
+                                        //temporal simular 1 con F1
+                                        pcw_keyboard_table[8] |=1;
                                 }
                                 else {
                                         blink_kbd_a14 |= 128;
                                         ql_keyboard_table[0] |= 2;
                                         msx_keyboard_table[6] |= 32;
                                         svi_keyboard_table[7] |=1;
+
+                                        //temporal simular 1 con F1
+                                        pcw_keyboard_table[8] &=(255-1);
                                 }
                         break;
 
@@ -7988,12 +7997,18 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[0] &= (255-8);
                                         msx_keyboard_table[6] &= (255-64);
                                         svi_keyboard_table[7] &=(255-2);
+
+                                        //temporal simular 2 con F2
+                                        pcw_keyboard_table[8] |=2;
                                 }
                                 else {
                                         blink_kbd_a15 |= 16;
                                         ql_keyboard_table[0] |= 8;
                                         msx_keyboard_table[6] |= 64;
                                         svi_keyboard_table[7] |=2;
+
+                                         //temporal simular 2 con F2
+                                        pcw_keyboard_table[8] &=(255-2);
                                 }
                         break;
 
