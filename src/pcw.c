@@ -94,6 +94,8 @@ z80_byte pcw_keyboard_table[16]={
     0,0,0,0,0,0,0,0
 };
 
+z80_byte pcw_interrupt_from_pd765_type=0;
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -118,9 +120,9 @@ z80_byte pcw_port_f6_value;
 //b7: reverse video. b6: screen enable.
 z80_byte pcw_port_f7_value;
 
-z80_byte pcw_port_f8_value;
+//z80_byte pcw_port_f8_value;
 
-z80_byte pcw_interrupt_from_pd765_type=0;
+z80_byte pcw_interrupt_counter;
 
 //
 // Fin de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
@@ -212,6 +214,10 @@ void pcw_reset(void)
 {
     pcw_bank_registers[0]=pcw_bank_registers[1]=pcw_bank_registers[2]=pcw_bank_registers[3]=0;
     pcw_port_f4_value=0;
+    pcw_port_f5_value=0;
+    pcw_port_f6_value=0;
+    pcw_port_f7_value=0;
+    //pcw_port_f8_value=0;
 
     pcw_interrupt_from_pd765_type=0;
 
@@ -257,7 +263,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     pcw_bank_registers[bank]=value;
 
-    printf("PCW set bank %d value %02XH\n",bank,value);
+    //printf("PCW set bank %d value %02XH\n",bank,value);
 
     //if (bank==0) sleep(1);
 
@@ -400,14 +406,14 @@ void pcw_out_port_f8(z80_byte value)
 
 void pcw_increment_interrupt_counter(void)
 {
-    printf("scanline: %d F8 port: %02XH\n",t_scanline,pcw_port_f8_value);
+    //printf("scanline: %d F8 port: %02XH\n",t_scanline,pcw_port_f8_value);
 
-    z80_byte counter=pcw_port_f8_value & 0xF;
+    z80_byte counter=pcw_interrupt_counter & 0xF;
 
     if (counter!=0x0F) counter++;
 
-    pcw_port_f8_value &=0xF0;
-    pcw_port_f8_value |=counter;
+    pcw_interrupt_counter &=0xF0;
+    pcw_interrupt_counter |=counter;
 }
 
 //z80_byte temp_pcw_f8_b6;
@@ -420,12 +426,14 @@ z80_byte pcw_in_port_f8(void)
         //b6: 1 line flyback, read twice in succession indicates frame flyback. 
         //b5: FDC interrupt. 
         //b4: indicates 32-line screen. 
-        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)
+        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)???
         //printf("LEE puerto %02XH\n",puerto_l);
-        z80_byte return_value=pcw_port_f8_value;        
+        z80_byte return_value=0; //pcw_port_f8_value;        
 
         if (pd765_interrupt_pending) return_value|=0x20;
 
+        //TODO:no se si realmente esto es asi
+        //return_value |=pcw_interrupt_counter;
 
 
         //bit 6 Frame flyback; this is set while the screen is not being drawn
@@ -442,14 +450,15 @@ z80_byte pcw_in_port_f8(void)
 z80_byte pcw_in_port_f4(void)
 {
 
-        
+        z80_byte return_value=pcw_interrupt_counter;
         //printf("LEE puerto %02XH\n",puerto_l);
         //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
 
-        pcw_port_f8_value &=0xF0;
+        pcw_interrupt_counter &=0xF0;
+        //sleep(1);
 
-        //??? parece que sin esto, cpm no llega a mostrar el prompt
-        return 255;
+
+        return return_value;
 
 }
 
@@ -505,7 +514,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
 
 
-    printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
+    //printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
     //sleep(1);
 
 
@@ -514,22 +523,23 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 }
 
 
+
+void pcw_putpixel_border(int x,int y,unsigned int color)
+{
+
+        scr_putpixel(x,y,color);
+
+}
+
 void scr_refresca_border_pcw(unsigned int color)
 {
-    /*
-//      printf ("Refresco border cpc\n");
 
 
-    int alto_caracter,ancho_pantalla,alto_pantalla,offset_x_pantalla;
-	scr_cpc_return_ancho_alto(&ancho_pantalla,&alto_pantalla,&alto_caracter,&offset_x_pantalla);
+    int ancho_pantalla=PCW_DISPLAY_WIDTH;
+    int alto_pantalla=PCW_DISPLAY_HEIGHT;
 
-	//Control minimos
-	if (ancho_pantalla==0) ancho_pantalla=640;
-	if (alto_pantalla==0) alto_pantalla=200;
-
-
-	int ancho_border=CPC_LEFT_BORDER_NO_ZOOM+   (640-ancho_pantalla)/2;
-	int alto_border=CPC_TOP_BORDER_NO_ZOOM+ (200-alto_pantalla)/2;
+	int ancho_border=PCW_LEFT_BORDER_NO_ZOOM;
+	int alto_border=PCW_TOP_BORDER_NO_ZOOM;
 
 	//printf ("ancho pantalla: %d alto_pantalla: %d offset_x_pantalla: %d anchoborder: %d altoborder: %d\n",ancho_pantalla,alto_pantalla,offset_x_pantalla,ancho_border,alto_border);
 
@@ -543,23 +553,27 @@ void scr_refresca_border_pcw(unsigned int color)
 
         //parte superior e inferior
         for (y=0;y<alto_border*zoom_y;y++) {
-                for (x=0;x<(CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2)*zoom_x;x++) {
-				//printf ("x: %d y: %d\n",x,y);
-                                cpc_putpixel_border(x,y,color);
-				cpc_putpixel_border(x,(alto_border+alto_pantalla*2)*zoom_y+y,color);
+                for (x=0;x<(PCW_DISPLAY_WIDTH+PCW_LEFT_BORDER_NO_ZOOM*2)*zoom_x;x++) {
+				    //printf ("x: %d y: %d\n",x,y);
+                    pcw_putpixel_border(x,y,color);
+				    pcw_putpixel_border(x,(alto_border+alto_pantalla)*zoom_y+y,color);
                 }
         }
 
         //laterales
-        for (y=0;y<alto_pantalla*2*zoom_y;y++) {
+        
+        for (y=0;y<alto_pantalla*zoom_y;y++) {
                 for (x=0;x<ancho_border*zoom_x;x++) {
-                        cpc_putpixel_border(x,alto_border*zoom_y+y,color);
-                        cpc_putpixel_border(x_borde_derecho+x,alto_border*zoom_y+y,color);
+                        pcw_putpixel_border(x,alto_border*zoom_y+y,color);
+                        pcw_putpixel_border(x_borde_derecho+x,alto_border*zoom_y+y,color);
                 }
 
         }
-*/
+        
+
 }
+
+
 
 
 void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int roller_ram_offset,
@@ -594,14 +608,13 @@ void pcw_refresca_putpixel(int x,int y,int color)
 void scr_refresca_pantalla_pcw(void)
 {
 
-    
 
     //Address of roller RAM. b7-5: bank (0-7). b4-1: address / 512.
     z80_byte roller_ram_bank=(pcw_port_f5_value >> 5) & 0x07;
 
     z80_int roller_ram_offset=(pcw_port_f5_value & 0x1F) * 512;
 
-    printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
+    //printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
 
 
 
@@ -657,7 +670,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
             //unsigned int color=pcw_border_color;
 
             //TODO
-            unsigned int color=0;
+            unsigned int color=2;
 
             //color=cpc_palette_table[color];
             //color +=CPC_INDEX_FIRST_COLOR;
