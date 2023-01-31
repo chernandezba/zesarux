@@ -408,41 +408,36 @@ void pcw_increment_interrupt_counter(void)
 {
     //printf("scanline: %d F8 port: %02XH\n",t_scanline,pcw_port_f8_value);
 
-    z80_byte counter=pcw_interrupt_counter & 0xF;
 
-    if (counter!=0x0F) counter++;
+    if (pcw_interrupt_counter!=0x0F) pcw_interrupt_counter++;
 
-    pcw_interrupt_counter &=0xF0;
-    pcw_interrupt_counter |=counter;
 }
 
-//z80_byte temp_pcw_f8_b6;
-//z80_byte temp_pcw_f8_b30;
-//int temp_pcw_f8_b30_cccc;
+
 
 z80_byte pcw_in_port_f8(void)
 {
 
-        //b6: 1 line flyback, read twice in succession indicates frame flyback. 
-        //b5: FDC interrupt. 
-        //b4: indicates 32-line screen. 
-        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)???
-        //printf("LEE puerto %02XH\n",puerto_l);
-        z80_byte return_value=0; //pcw_port_f8_value;        
+    //b6: 1 line flyback, read twice in succession indicates frame flyback. 
+    //b5: FDC interrupt. 
+    //b4: indicates 32-line screen. 
+    //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)???
+    //printf("LEE puerto %02XH\n",puerto_l);
+    z80_byte return_value=0; //pcw_port_f8_value;        
 
-        if (pd765_interrupt_pending) return_value|=0x20;
+    if (pd765_interrupt_pending) return_value|=0x20;
 
-        //TODO:no se si realmente esto es asi
-        //return_value |=pcw_interrupt_counter;
+    //TODO:no se si realmente esto es asi
+    //return_value |=pcw_interrupt_counter;
 
 
-        //bit 6 Frame flyback; this is set while the screen is not being drawn
-        //TODO: de momento calculo chapucero
-        if (t_scanline>200) return_value |=0x40;
+    //bit 6 Frame flyback; this is set while the screen is not being drawn
+    //TODO: de momento calculo chapucero
+    if (t_scanline>200) return_value |=0x40;
 
-        
+    
 
-        return return_value;
+    return return_value;
         
     
 }
@@ -450,15 +445,15 @@ z80_byte pcw_in_port_f8(void)
 z80_byte pcw_in_port_f4(void)
 {
 
-        z80_byte return_value=pcw_interrupt_counter;
-        //printf("LEE puerto %02XH\n",puerto_l);
-        //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
+    z80_byte return_value=pcw_interrupt_counter;
+    //printf("LEE puerto %02XH\n",puerto_l);
+    //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
 
-        pcw_interrupt_counter &=0xF0;
-        //sleep(1);
+    pcw_interrupt_counter=0;
+    //sleep(1);
 
 
-        return return_value;
+    return return_value;
 
 }
 
@@ -527,7 +522,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 void pcw_putpixel_border(int x,int y,unsigned int color)
 {
 
-        scr_putpixel(x,y,color);
+    scr_putpixel(x,y,color);
 
 }
 
@@ -545,30 +540,30 @@ void scr_refresca_border_pcw(unsigned int color)
 
 
 
-        int x,y;
+    int x,y;
 
 	int x_borde_derecho=(ancho_border+ancho_pantalla)*zoom_x;
 	//printf ("x borde derecho: %d total ventana: %d\n",x_borde_derecho,(640+CPC_LEFT_BORDER_NO_ZOOM*2)*zoom_x);
 
 
-        //parte superior e inferior
-        for (y=0;y<alto_border*zoom_y;y++) {
-                for (x=0;x<(PCW_DISPLAY_WIDTH+PCW_LEFT_BORDER_NO_ZOOM*2)*zoom_x;x++) {
-				    //printf ("x: %d y: %d\n",x,y);
-                    pcw_putpixel_border(x,y,color);
-				    pcw_putpixel_border(x,(alto_border+alto_pantalla)*zoom_y+y,color);
-                }
+    //parte superior e inferior
+    for (y=0;y<alto_border*zoom_y;y++) {
+        for (x=0;x<(PCW_DISPLAY_WIDTH+PCW_LEFT_BORDER_NO_ZOOM*2)*zoom_x;x++) {
+        //printf ("x: %d y: %d\n",x,y);
+        pcw_putpixel_border(x,y,color);
+        pcw_putpixel_border(x,(alto_border+alto_pantalla)*zoom_y+y,color);
+        }
+    }
+
+    //laterales
+    
+    for (y=0;y<alto_pantalla*zoom_y;y++) {
+        for (x=0;x<ancho_border*zoom_x;x++) {
+            pcw_putpixel_border(x,alto_border*zoom_y+y,color);
+            pcw_putpixel_border(x_borde_derecho+x,alto_border*zoom_y+y,color);
         }
 
-        //laterales
-        
-        for (y=0;y<alto_pantalla*zoom_y;y++) {
-                for (x=0;x<ancho_border*zoom_x;x++) {
-                        pcw_putpixel_border(x,alto_border*zoom_y+y,color);
-                        pcw_putpixel_border(x_borde_derecho+x,alto_border*zoom_y+y,color);
-                }
-
-        }
+    }
         
 
 }
@@ -670,7 +665,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
             //unsigned int color=pcw_border_color;
 
             //TODO
-            unsigned int color=2;
+            unsigned int color=0;
 
             //color=cpc_palette_table[color];
             //color +=CPC_INDEX_FIRST_COLOR;
@@ -681,7 +676,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
 	}
 
 
-        scr_refresca_pantalla_pcw();
+    scr_refresca_pantalla_pcw();
 }
 
 
