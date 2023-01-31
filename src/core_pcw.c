@@ -498,7 +498,7 @@ void cpu_core_loop_pcw(void)
 
 
 
-    //Si habia interrupcion pendiente de crtc y están las interrupciones habilitadas
+    //Si habia interrupcion pendiente  y están las interrupciones habilitadas
     
     if (pcw_pending_interrupt.v && iff1.v==1) {
 
