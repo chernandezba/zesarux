@@ -312,7 +312,8 @@ void pcw_interrupt_from_pd765(void)
     //TODO Revisar esto. solo se genera cuando esta EI???
     if (pcw_interrupt_from_pd765_type==2 && iff1.v) {
         printf("Generate Maskable interrupt triggered from pd765\n");
-        interrupcion_maskable_generada.v=1;
+        //If the Z80 has disabled interrupts, the interrupt line stays high until the Z80 enables them again.
+        pcw_pending_interrupt.v=1;
         //sleep(2);
         
     }
