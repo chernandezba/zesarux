@@ -5449,7 +5449,7 @@ int quickload_continue(char *nombre) {
 		!util_compare_file_extension(nombre,"dsk")
 	) {
 		//Aqui el autoload da igual. cambiamos siempre a P3 si conviene
-		if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_HAS_FLOPPY) {
+		if (!MACHINE_IS_SPECTRUM_P3 && !MACHINE_IS_CPC_HAS_FLOPPY && !MACHINE_IS_PCW) {
 			current_machine_type=MACHINE_ID_SPECTRUM_P3_40;
 			set_machine(NULL);
 
