@@ -251,6 +251,8 @@ void core_pcw_end_scanline_stuff(void)
             //printf ("Llega interrupcion crtc con interrupciones DESHABILITADAS del Z80 en counter: %d t: %d\n",pcw_scanline_counter,t_estados);
         }
         pcw_scanline_counter=0;
+
+        pcw_increment_interrupt_counter();
     }
     
 

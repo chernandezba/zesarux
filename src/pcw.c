@@ -118,6 +118,8 @@ z80_byte pcw_port_f6_value;
 //b7: reverse video. b6: screen enable.
 z80_byte pcw_port_f7_value;
 
+z80_byte pcw_port_f8_value;
+
 z80_byte pcw_interrupt_from_pd765_type=0;
 
 //
@@ -381,14 +383,14 @@ void pcw_out_port_f8(z80_byte value)
         break;
 
         case 11:
-            //temporal
-            printf("set beeper\n");
+            
+            //printf("set beeper\n");
             value_beeper=100;
         break;
 
         case 12:
-            //temporal
-            printf("reset beeper\n");
+            
+            //printf("reset beeper\n");
             value_beeper=0;
         break;
 
@@ -396,6 +398,60 @@ void pcw_out_port_f8(z80_byte value)
    
 }
 
+void pcw_increment_interrupt_counter(void)
+{
+    printf("scanline: %d F8 port: %02XH\n",t_scanline,pcw_port_f8_value);
+
+    z80_byte counter=pcw_port_f8_value & 0xF;
+
+    if (counter!=0x0F) counter++;
+
+    pcw_port_f8_value &=0xF0;
+    pcw_port_f8_value |=counter;
+}
+
+//z80_byte temp_pcw_f8_b6;
+//z80_byte temp_pcw_f8_b30;
+//int temp_pcw_f8_b30_cccc;
+
+z80_byte pcw_in_port_f8(void)
+{
+
+        //b6: 1 line flyback, read twice in succession indicates frame flyback. 
+        //b5: FDC interrupt. 
+        //b4: indicates 32-line screen. 
+        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)
+        //printf("LEE puerto %02XH\n",puerto_l);
+        z80_byte return_value=pcw_port_f8_value;        
+
+        if (pd765_interrupt_pending) return_value|=0x20;
+
+
+
+        //bit 6 Frame flyback; this is set while the screen is not being drawn
+        //TODO: de momento calculo chapucero
+        if (t_scanline>200) return_value |=0x40;
+
+        
+
+        return return_value;
+        
+    
+}
+
+z80_byte pcw_in_port_f4(void)
+{
+
+        
+        //printf("LEE puerto %02XH\n",puerto_l);
+        //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
+
+        pcw_port_f8_value &=0xF0;
+
+        //??? parece que sin esto, cpm no llega a mostrar el prompt
+        return 255;
+
+}
 
 z80_byte pcw_read_keyboard(z80_int dir)
 {
