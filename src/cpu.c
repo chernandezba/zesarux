@@ -3419,11 +3419,11 @@ void malloc_mem_machine(void) {
 
 	else if (MACHINE_IS_PCW_8256) {
 
-		//256kb todo ram
+		//256kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
                 pcw_total_ram=256*1024;
 
-                malloc_machine(256*1024);
-                random_ram(memoria_spectrum,256*1024);
+                malloc_machine(2*1024*1024);
+                random_ram(memoria_spectrum,2*1024*1024);
 
                 pcw_init_memory_tables();
                 pcw_set_memory_pages();

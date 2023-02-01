@@ -133,6 +133,7 @@
 #include "samram.h"
 #include "snap_zx8081.h"
 #include "menu_bitmaps.h"
+#include "pcw.h"
 
 
 #ifdef COMPILE_ALSA
@@ -4207,8 +4208,13 @@ int menu_inves_cond(void)
 }
 
 
+void menu_hardware_pcw_ram(MENU_ITEM_PARAMETERS)
+{
 
+    if (pcw_total_ram==2*1024*1024) pcw_total_ram=256*1024;
+    else pcw_total_ram *=2;
 
+}
 //menu hardware settings
 void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 {
@@ -4233,6 +4239,10 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_TBBLUE) {
 			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_ram,NULL,"RAM size [%d KB]",tbblue_get_current_ram() );
 		}
+
+		if (MACHINE_IS_PCW) {
+			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_pcw_ram,NULL,"RAM size [%d KB]",pcw_total_ram/1024 );
+		}        
 
 		if (menu_cond_zx8081() ) {
 

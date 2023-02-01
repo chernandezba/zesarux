@@ -66,8 +66,9 @@ https://www.seasip.info/Unix/Joyce/hardware.pdf
 
 */
 
-//Direcciones donde estan cada pagina de ram. 16 paginas de 16 kb cada una
-z80_byte *pcw_ram_mem_table[16];
+//Direcciones donde estan cada pagina de ram. 128 paginas de 16 kb cada una
+//asignamos 2 MB para tener el máximo de memoria ya disponible
+z80_byte *pcw_ram_mem_table[PCW_MAX_RAM_PAGES];
 
 
 
@@ -253,7 +254,7 @@ void pcw_init_memory_tables(void)
 
 
     int i;
-    for (i=0;i<16;i++) {
+    for (i=0;i<PCW_MAX_RAM_PAGES;i++) {
             pcw_ram_mem_table[i]=puntero;
             puntero +=16384;
     }
