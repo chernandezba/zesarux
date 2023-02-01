@@ -59,6 +59,12 @@ extern void pcw_out_port_f6(z80_byte value);
 extern void pcw_out_port_f7(z80_byte value);
 extern void pcw_out_port_f8(z80_byte value);
 
+extern z80_byte pcw_in_port_f4(void);
+extern z80_byte pcw_in_port_f8(void);
+
+extern void pcw_increment_interrupt_counter(void);
+extern void pcw_keyboard_ticker_update(void);
+
 extern z80_byte *pcw_ram_mem_table[];
 
 extern int pcw_total_ram;
@@ -71,6 +77,8 @@ extern z80_byte pcw_keyboard_table[];
 extern z80_byte pcw_scanline_counter;
 
 extern z80_bit pcw_pending_interrupt;
+
+extern void pcw_interrupt_from_pd765(void);
 
 extern void scr_refresca_pantalla_y_border_pcw(void);
 
