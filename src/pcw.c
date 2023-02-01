@@ -96,6 +96,9 @@ z80_byte pcw_keyboard_table[16]={
 
 z80_byte pcw_interrupt_from_pd765_type=0;
 
+//Total ram. Para un 8256, 256k. Para un 8512, 512k
+int pcw_total_ram=256*1024;
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -159,6 +162,15 @@ z80_byte *pcw_get_memory_offset_write(z80_int dir)
     return puntero;
 }
 
+z80_byte pcw_get_mask_bank_ram(void)
+{
+    //Si pcw_total_ram=256*1024, mascara 15
+    //Si pcw_total_ram=512*1024, mascara 31
+    
+    int max_banks=pcw_total_ram/16384;
+
+    return max_banks-1;
+}
 
 void pcw_set_memory_pages(void)
 {
@@ -180,7 +192,8 @@ void pcw_set_memory_pages(void)
 
         if (bank & 128) {
             //PCW (“extended”) paging mode
-            bank &=15;
+            bank &=pcw_get_mask_bank_ram();
+            //printf("mask %d\n",pcw_get_mask_bank_ram());
             pcw_memory_paged_read[i]=pcw_ram_mem_table[bank];
             pcw_memory_paged_write[i]=pcw_ram_mem_table[bank];
 

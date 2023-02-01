@@ -60,6 +60,8 @@ extern void pcw_out_port_f8(z80_byte value);
 
 extern z80_byte *pcw_ram_mem_table[];
 
+extern int pcw_total_ram;
+
 extern z80_byte pcw_banks_paged_read[];
 extern z80_byte pcw_read_keyboard(z80_int dir);
 

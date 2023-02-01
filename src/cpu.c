@@ -3420,6 +3420,7 @@ void malloc_mem_machine(void) {
 	else if (MACHINE_IS_PCW_8256) {
 
 		//256kb todo ram
+                pcw_total_ram=256*1024;
 
                 malloc_machine(256*1024);
                 random_ram(memoria_spectrum,256*1024);
