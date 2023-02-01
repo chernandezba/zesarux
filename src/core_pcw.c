@@ -60,12 +60,6 @@ void core_pcw_final_frame(void)
 {
 
 
-
-
-
-
-
-
     t_scanline=0;
     set_t_scanline_draw_zero();
 
@@ -98,10 +92,7 @@ void core_pcw_final_frame(void)
     }
 
 
-
-
     t_estados -=screen_testados_total;
-
 
 
     cpu_loop_refresca_pantalla();
@@ -190,9 +181,6 @@ void core_pcw_end_scanline_stuff(void)
 
 
     
-
-
-
     
     //printf("Llega Info %d t: %d pcw_crtc_contador_scanline %d t_scanline_draw %d\n",
     //    pcw_scanline_counter,t_estados,pcw_crtc_contador_scanline,t_scanline_draw);
@@ -399,60 +387,49 @@ void cpu_core_loop_pcw(void)
     if (chardetect_printchar_enabled.v) chardetect_printchar();
 
 
-    //Gestionar autoload
-    //gestionar_autoload_pcw();
-		
-
-    if (0) {
-            
-  
-    }
+	
 
 
+    if (esperando_tiempo_final_t_estados.v==0) {
 
-
-    else {
-        if (esperando_tiempo_final_t_estados.v==0) {
-
-            //Eventos de la controladora de disco
-            pd765_next_event_from_core();
+        //Eventos de la controladora de disco
+        pd765_next_event_from_core();
 
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
-        //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 
-        //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
+    //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 
+    //hay que definir este DEBUG_SECOND_TRAP_STDOUT manualmente en compileoptions.h despues de ejecutar el configure
 
-	        scr_stdout_debug_print_char_routine();
+        scr_stdout_debug_print_char_routine();
 
 #endif
 
 
-
-            contend_read( reg_pc, 4 );
-            byte_leido_core_pcw=fetch_opcode();
+        contend_read( reg_pc, 4 );
+        byte_leido_core_pcw=fetch_opcode();
 
 
 
 #ifdef EMULATE_CPU_STATS
-            util_stats_increment_counter(stats_codsinpr,byte_leido_core_pcw);
+        util_stats_increment_counter(stats_codsinpr,byte_leido_core_pcw);
 #endif
 
-            //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
-            if (z80_halt_signal.v) {
-                byte_leido_core_pcw=0;            
-            }
-            else {
-                reg_pc++;
-            }
-
-            reg_r++;
-
-			z80_no_ejecutado_block_opcodes();	
-            codsinpr[byte_leido_core_pcw]  () ;
-
-
+        //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
+        if (z80_halt_signal.v) {
+            byte_leido_core_pcw=0;            
         }
+        else {
+            reg_pc++;
+        }
+
+        reg_r++;
+
+        z80_no_ejecutado_block_opcodes();	
+        codsinpr[byte_leido_core_pcw]  () ;
+
+
     }
+    
 
 
 		
@@ -515,7 +492,8 @@ void cpu_core_loop_pcw(void)
 
     }
     
-
+    //TODO si habia interrupcion pendiente y no se atiende por estar en DI, la perdemos??
+    //if (pcw_pending_interrupt.v) pcw_pending_interrupt.v=0;
 
     //Interrupcion de cpu. gestion im0/1/2. Esto se hace al final de cada frame en pcw o al cambio de bit6 de R en zx80/81
     if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
