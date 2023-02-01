@@ -336,6 +336,8 @@ int pd765_sc_get(pd765_signal_counter *s)
 
 void pd765_set_interrupt_pending(void)
 {
+    if (pd765_interrupt_pending) return;
+
     pd765_interrupt_pending=1;
 
     if (MACHINE_IS_PCW) {
