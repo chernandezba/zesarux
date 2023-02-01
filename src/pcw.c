@@ -602,7 +602,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
 
 
-    printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
+    //printf("PCW return read row %XH value %02XH reg_pc=%04XH\n",fila,return_value,reg_pc);
     //sleep(1);
 
 
