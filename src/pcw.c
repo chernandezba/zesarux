@@ -261,6 +261,8 @@ void pcw_reset(void)
 
     pcw_interrupt_from_pd765_type=0;
 
+    pcw_interrupt_counter=0;
+
     pd765_set_terminal_count_signal();
 
     pcw_scanline_counter=0;
@@ -642,7 +644,7 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
 {
     z80_byte *puntero_roller_ram;
 
-    puntero_roller_ram=pcw_memory_paged_read[roller_ram_bank];
+    puntero_roller_ram=pcw_ram_mem_table[roller_ram_bank];
     puntero_roller_ram +=roller_ram_offset;    
 
     z80_int valor=*puntero_roller_ram+256*puntero_roller_ram[1];
@@ -701,7 +703,7 @@ void scr_refresca_pantalla_pcw(void)
                     //printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
                 }
 
-                z80_byte *puntero_byte=pcw_memory_paged_read[address_block]+address;
+                z80_byte *puntero_byte=pcw_ram_mem_table[address_block]+address;
 
                 z80_byte byte_leido=*puntero_byte;
 
