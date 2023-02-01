@@ -508,7 +508,8 @@ z80_byte pcw_in_port_f8(void)
 
     //bit 6 Frame flyback; this is set while the screen is not being drawn
     //TODO: de momento calculo chapucero
-    if (t_scanline>200) return_value |=0x40;
+    //printf("t_scanline %d\n",t_scanline);
+    if (t_scanline>280) return_value |=0x40;
 
     
 
@@ -704,8 +705,7 @@ void scr_refresca_pantalla_pcw(void)
 
     //printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
 
-
-
+    //TODO Vertical screen position puerto F6
     int x,y,scanline;
 
     for (y=0;y<256;y+=8) {
@@ -723,10 +723,6 @@ void scr_refresca_pantalla_pcw(void)
 
                 address +=x;
 
-                
-                if (x<9) {
-                    //printf("Line %d x %d Block %02XH Address %04XH\n",yfinal,x,address_block,address);
-                }
 
                 z80_byte *puntero_byte=pcw_ram_mem_table[address_block]+address;
 
