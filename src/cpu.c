@@ -1484,6 +1484,7 @@ char *string_machines_list_description=
                             " CPC664   Amstrad CPC 664\n"
                             " CPC6128  Amstrad CPC 6128\n"
                             " PCW8256  Amstrad PCW 8256\n"
+                            " PCW8512  Amstrad PCW 8512\n"
 							
 							" MSX1     MSX1\n"
 							" Coleco   Colecovision\n"
@@ -3052,6 +3053,7 @@ struct s_machine_names machine_names[]={
     {"CPC 664",  			MACHINE_ID_CPC_664},
     {"CPC 6128",  			MACHINE_ID_CPC_6128},
     {"PCW 8256",            MACHINE_ID_PCW_8256},
+    {"PCW 8512",            MACHINE_ID_PCW_8512},
     {"Sam Coupe", 			150},
     {"QL",				160},
     {"MK14", MACHINE_ID_MK14_STANDARD},
@@ -3429,7 +3431,21 @@ void malloc_mem_machine(void) {
                 pcw_set_memory_pages();
 
 
-        }                     
+        }   
+
+	else if (MACHINE_IS_PCW_8512) {
+
+		//512kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
+                pcw_total_ram=512*1024;
+
+                malloc_machine(2*1024*1024);
+                random_ram(memoria_spectrum,2*1024*1024);
+
+                pcw_init_memory_tables();
+                pcw_set_memory_pages();
+
+
+        }
         
         else if (MACHINE_IS_MSX1) {
                 //total 64kb * 4
@@ -3605,7 +3621,8 @@ void set_machine_params(void)
 180=MK14 Standard
 181-189 reservado para otros MK14
 190=Amstrad PCW 8256
-191-199 reservado para otros PCW
+191=Amstrad PCW 8512
+192-199 reservado para otros PCW
 */
 
 		char mensaje_error[200];
@@ -4703,7 +4720,18 @@ You don't need timings for H/V sync =)
         out_port=out_port_pcw;
         fetch_opcode=fetch_opcode_pcw;
 
-		break;                
+		break;
+
+        case MACHINE_ID_PCW_8512:
+		poke_byte=poke_byte_pcw;
+		peek_byte=peek_byte_pcw;
+		peek_byte_no_time=peek_byte_no_time_pcw;
+		poke_byte_no_time=poke_byte_no_time_pcw;
+		lee_puerto=lee_puerto_pcw;
+        out_port=out_port_pcw;
+        fetch_opcode=fetch_opcode_pcw;
+
+		break;                        
 
 		case 150:
                 poke_byte=poke_byte_sam;
@@ -5165,6 +5193,10 @@ void rom_load(char *romfilename)
             romfilename="pcw_boot.rom";
             break;
 
+            case MACHINE_ID_PCW_8512:
+            romfilename="pcw_boot.rom";
+            break;            
+
             default:
             //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
             sprintf (mensaje_error,"ROM for Machine id %d not supported. Exiting",current_machine_type);
@@ -5510,7 +5542,16 @@ Total 20 pages=320 Kb
 					debug_printf(VERBOSE_ERR,"Error loading ROM");
 			}
 
-		}        
+		}
+
+        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
+		else if (MACHINE_IS_PCW_8512) {
+			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+			if (leidos!=275) {
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
+			}
+
+		}                
 
 
     fclose(ptr_romfile);

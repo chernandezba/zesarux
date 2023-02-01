@@ -434,6 +434,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_ID_MK14_STANDARD	    	180
 
 #define MACHINE_ID_PCW_8256                 190
+#define MACHINE_ID_PCW_8512                 191
 
 
 //
@@ -511,6 +512,7 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 #define MACHINE_IS_MK14_STANDARD            (current_machine_type==MACHINE_ID_MK14_STANDARD)
 
 #define MACHINE_IS_PCW_8256                 (current_machine_type==MACHINE_ID_PCW_8256)
+#define MACHINE_IS_PCW_8512                 (current_machine_type==MACHINE_ID_PCW_8512)
 
 //
 //Condiciones de maquinas activas

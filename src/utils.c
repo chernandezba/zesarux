@@ -620,7 +620,7 @@ int array_maquinas_sega[]={
 
 int array_maquinas_amstrad[]={
 	8,9,10,11,12,13,MACHINE_ID_SPECTRUM_P3_40,MACHINE_ID_SPECTRUM_P3_41,MACHINE_ID_SPECTRUM_P3_SPA,
-    MACHINE_ID_CPC_464,MACHINE_ID_CPC_4128,MACHINE_ID_CPC_664,MACHINE_ID_CPC_6128,MACHINE_ID_PCW_8256,255
+    MACHINE_ID_CPC_464,MACHINE_ID_CPC_4128,MACHINE_ID_CPC_664,MACHINE_ID_CPC_6128,MACHINE_ID_PCW_8256,MACHINE_ID_PCW_8512,255
 };
 
 int array_maquinas_jupiter_cantab[]={
@@ -825,6 +825,7 @@ int return_fabricante_maquina(int maquina)
         case MACHINE_ID_CPC_664:
         case MACHINE_ID_CPC_6128:
         case MACHINE_ID_PCW_8256:
+        case MACHINE_ID_PCW_8512:
 			return FABRICANTE_AMSTRAD;
 		break;
 
@@ -10829,6 +10830,7 @@ struct s_machines_short_names_id machines_short_names_id[]={
    {"CPC664",MACHINE_ID_CPC_664},
    {"CPC6128",MACHINE_ID_CPC_6128},
    {"PCW8256",MACHINE_ID_PCW_8256},
+   {"PCW8512",MACHINE_ID_PCW_8512},
    {"SAM",150},
    {"QL",160},
    {"MK14",MACHINE_ID_MK14_STANDARD},
@@ -12444,7 +12446,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         size=131072;
       } 
 
-      if (MACHINE_IS_PCW_8256) {
+      if (MACHINE_IS_PCW) {
         size=pcw_total_ram;
       }
  

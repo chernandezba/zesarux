@@ -306,7 +306,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *snap ver cosas de cpc 464 y si faltan para 6128 y 664
 
 
--pendiente pcw:
+-pendiente pcw 8256,8512:
 *keyboard help
 *machine icon
 *snapshot zsf
