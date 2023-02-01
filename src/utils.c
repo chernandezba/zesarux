@@ -7309,6 +7309,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[1] &= (255-1);
                                         msx_keyboard_table[7] &= (255-128);
                                         svi_keyboard_table[6] &= (255-64);
+                                        pcw_keyboard_table[2] |=4;
 
 					//Avisar de envio enter especial para rutinas de speech, para que envien sonido
 					textspeech_send_new_line();
@@ -7322,6 +7323,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[1] |= 1;
                                         msx_keyboard_table[7] |= 128;
                                         svi_keyboard_table[6] |= 64;
+                                        pcw_keyboard_table[2] &=(255-4);
                                 }
 
 
