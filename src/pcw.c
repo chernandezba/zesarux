@@ -181,7 +181,7 @@ void pcw_set_memory_pages(void)
 
     int i;
 
-    z80_byte port_f4_mask=0x10;
+    //z80_byte port_f4_mask=0x10;
 
     for (i=0;i<4;i++) {
 
@@ -206,7 +206,33 @@ void pcw_set_memory_pages(void)
             z80_byte bank_read=(bank >> 4) & 7;
 
             //Port F4: If a memory range is set as “locked”, then the “block to read” bits are ignored; memory is read from the “block to write”.
+            /*
+                    D7              RW3  (CPU bank C000h to FFFFh)
+                    D6              RW0  (CPU bank 0000h to 3FFFh)
+                    D5              RW2  (CPU hank B000h to BFFFh)
+	                D4		RW1  (CPU bank 4000h to 7FFFh)
+            */
+            z80_byte port_f4_mask;
+            switch(i) {
+                case 0:
+                    port_f4_mask=0x40;
+                break;
+
+                case 1:
+                    port_f4_mask=0x10;
+                break;
+
+                case 2:
+                    port_f4_mask=0x20;
+                break;
+
+                default:
+                    port_f4_mask=0x80;
+                break;
+            }
             if (pcw_port_f4_value & port_f4_mask) {
+                //printf("memory locked\n");
+                //sleep(2);
                 bank_read=bank_write;
             }
 
@@ -217,7 +243,7 @@ void pcw_set_memory_pages(void)
 
         }
 
-        port_f4_mask=port_f4_mask<<1;
+        //port_f4_mask=port_f4_mask<<1;
 
     }
 
@@ -234,6 +260,8 @@ void pcw_reset(void)
     //pcw_port_f8_value=0;
 
     pcw_interrupt_from_pd765_type=0;
+
+    pd765_set_terminal_count_signal();
 
     pcw_scanline_counter=0;
 
@@ -318,7 +346,19 @@ void pcw_interrupt_from_pd765(void)
 {
     if (pcw_interrupt_from_pd765_type==1) {
         printf("Generate NMI triggered from pd765\n");
+        sleep(2);
         generate_nmi();
+
+        //TODO: se supone que se desactivan todas al recibir una nmi
+        /*
+        Command 2 will enable non-maskable interrupts from the Floppy
+        Disc Controller until Command 3 is issued to enable maskable
+        interrupts instead, or Command 4 is issued to disable all
+        interrupts from the Floppy Disc Controller, or until the first
+        non-maskable interrupt occurs.  On power-up and system reset all
+        Floppy Disc Controller Interrupts are disabled.
+            */
+        pcw_interrupt_from_pd765_type=0;
         //sleep(2);
         
     }
@@ -328,6 +368,9 @@ void pcw_interrupt_from_pd765(void)
         printf("Generate Maskable interrupt triggered from pd765\n");
         //If the Z80 has disabled interrupts, the interrupt line stays high until the Z80 enables them again.
         pcw_pending_interrupt.v=1;
+
+        //temp
+        //pcw_interrupt_from_pd765_type=0;
         //sleep(2);
         
     }
@@ -364,6 +407,14 @@ void pcw_out_port_f8(z80_byte value)
             rom_load(NULL);            
         break;
 
+        /*
+        Command 2 will enable non-maskable interrupts from the Floppy
+        Disc Controller until Command 3 is issued to enable maskable
+        interrupts instead, or Command 4 is issued to disable all
+        interrupts from the Floppy Disc Controller, or until the first
+        non-maskable interrupt occurs.  On power-up and system reset all
+        Floppy Disc Controller Interrupts are disabled.
+        */
         case 2:
             printf("Connect FDC to NMI\n");
             pcw_interrupt_from_pd765_type=1;
@@ -436,7 +487,7 @@ z80_byte pcw_in_port_f8(void)
     //b6: 1 line flyback, read twice in succession indicates frame flyback. 
     //b5: FDC interrupt. 
     //b4: indicates 32-line screen. 
-    //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above)???
+    
     //printf("LEE puerto %02XH\n",puerto_l);
     z80_byte return_value=0; //pcw_port_f8_value;        
 
