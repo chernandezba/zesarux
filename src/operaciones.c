@@ -3864,7 +3864,7 @@ void out_port_sam(z80_int puerto,z80_byte value)
 
 
 
-void poke_byte_no_time_pcw_8256(z80_int dir,z80_byte valor)
+void poke_byte_no_time_pcw(z80_int dir,z80_byte valor)
 {
 
     z80_byte *puntero;
@@ -3883,7 +3883,7 @@ set_visualmembuffer(dir);
 	
 }
 
-void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
+void poke_byte_pcw(z80_int dir,z80_byte valor)
 {
 
 
@@ -3891,12 +3891,12 @@ void poke_byte_pcw_8256(z80_int dir,z80_byte valor)
         t_estados += 3;
 
 
-	poke_byte_no_time_pcw_8256(dir,valor);
+	poke_byte_no_time_pcw(dir,valor);
 
 
 }
 
-void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
+void out_port_pcw_no_time(z80_int puerto,z80_byte value)
 {
     debug_fired_out=1;
 
@@ -3947,16 +3947,16 @@ void out_port_pcw_8256_no_time(z80_int puerto,z80_byte value)
 }
 
 
-void out_port_pcw_8256(z80_int puerto,z80_byte value)
+void out_port_pcw(z80_int puerto,z80_byte value)
 {
   ula_contend_port_early( puerto );
-  out_port_pcw_8256_no_time(puerto,value);
+  out_port_pcw_no_time(puerto,value);
   ula_contend_port_late( puerto ); t_estados++;
 }
 
 
 
-z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
+z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
 {
 
 	debug_fired_in=1;
@@ -3995,12 +3995,12 @@ z80_byte lee_puerto_pcw_8256_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 }
 
-z80_byte lee_puerto_pcw_8256(z80_byte puerto_h,z80_byte puerto_l)
+z80_byte lee_puerto_pcw(z80_byte puerto_h,z80_byte puerto_l)
 {
   z80_int port=value_8_to_16(puerto_h,puerto_l);
   ula_contend_port_early( port );
   ula_contend_port_late( port );
-  z80_byte valor = lee_puerto_pcw_8256_no_time( puerto_h, puerto_l );
+  z80_byte valor = lee_puerto_pcw_no_time( puerto_h, puerto_l );
 
   t_estados++;
 
@@ -4008,7 +4008,7 @@ z80_byte lee_puerto_pcw_8256(z80_byte puerto_h,z80_byte puerto_l)
 
 }
 
-z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
+z80_byte peek_byte_no_time_pcw(z80_int dir)
 {
 /*    
 #ifdef EMULATE_VISUALMEM
@@ -4036,12 +4036,12 @@ z80_byte peek_byte_no_time_pcw_8256(z80_int dir)
 }
 
 
-z80_byte peek_byte_pcw_8256(z80_int dir)
+z80_byte peek_byte_pcw(z80_int dir)
 {
 
         t_estados +=3;
 
-        return peek_byte_no_time_pcw_8256(dir);
+        return peek_byte_no_time_pcw(dir);
 
 }
 

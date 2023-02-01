@@ -4695,12 +4695,12 @@ You don't need timings for H/V sync =)
 
         
         case MACHINE_ID_PCW_8256:
-		poke_byte=poke_byte_pcw_8256;
-		peek_byte=peek_byte_pcw_8256;
-		peek_byte_no_time=peek_byte_no_time_pcw_8256;
-		poke_byte_no_time=poke_byte_no_time_pcw_8256;
-		lee_puerto=lee_puerto_pcw_8256;
-        out_port=out_port_pcw_8256;
+		poke_byte=poke_byte_pcw;
+		peek_byte=peek_byte_pcw;
+		peek_byte_no_time=peek_byte_no_time_pcw;
+		poke_byte_no_time=poke_byte_no_time_pcw;
+		lee_puerto=lee_puerto_pcw;
+        out_port=out_port_pcw;
         fetch_opcode=fetch_opcode_pcw;
 
 		break;                
