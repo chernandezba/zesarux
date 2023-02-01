@@ -7619,7 +7619,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         svi_keyboard_table[6] &=(255-128);
 
           // 1|   Ret   Left     Up    Esc  Right      \  Space   Down
-                                        ql_keyboard_table[1] &= (255-2);                                    
+                                        ql_keyboard_table[1] &= (255-2);  
+                                        pcw_keyboard_table[1] |=128;
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -7630,6 +7631,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=16;
                                         svi_keyboard_table[6] |=128;
                                         ql_keyboard_table[1] |= 2;
+                                        pcw_keyboard_table[1] &=(255-128);
                                 }
                         break;
                         case UTIL_KEY_RIGHT:
@@ -7642,6 +7644,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-128);
                                         svi_keyboard_table[8] &=(255-128);
                                         ql_keyboard_table[1] &= (255-16);
+                                        pcw_keyboard_table[0] |=64;
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -7651,7 +7654,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         cpc_keyboard_table[0] |=2;
                                         msx_keyboard_table[8] |=128;
                                         svi_keyboard_table[8] |=128;
-                                        ql_keyboard_table[1] |= 16;                                      
+                                        ql_keyboard_table[1] |= 16;
+                                        pcw_keyboard_table[0] &=(255-64);                                      
                                 }
                         break;
 
@@ -7666,6 +7670,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-64);
                                         svi_keyboard_table[7] &=(255-128);
                                         ql_keyboard_table[1] &= (255-128);
+                                        pcw_keyboard_table[0xA] |=64;
 
                                 }
                                 else {
@@ -7678,6 +7683,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=64;
                                         svi_keyboard_table[7] |=128;
                                         ql_keyboard_table[1] |= 128;
+                                        pcw_keyboard_table[0xA] &=(255-64);
                                 }
                         break;
 
@@ -7691,6 +7697,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] &=(255-32);
                                         svi_keyboard_table[5] &=(255-128);
                                         ql_keyboard_table[1] &= (255-4);
+                                        pcw_keyboard_table[1] |=64;
                                 }
                                 else {
                                         //puerto_65278 |=1;
@@ -7701,6 +7708,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=32;
                                         svi_keyboard_table[5] |=128;
                                         ql_keyboard_table[1] |=4;
+                                        pcw_keyboard_table[1] &=(255-64);
                                 }
                         break;
 

@@ -593,7 +593,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
     return_value=pcw_keyboard_table[fila];
 
-    if (fila==0xF) return_value=128;
+    //if (fila==0xF) sleep(1);
 
     //3FFDh bit 7 is 0 if LK2 is present, 1 if not.
     
