@@ -478,6 +478,9 @@ void cpu_core_loop_pcw(void)
         //y de momento actualizamos tablas de teclado segun tecla leida
         scr_actualiza_tablas_teclado();
 
+        //TODO: no estoy seguro cuando hay que ejecutar esto
+        pcw_keyboard_ticker_update();
+
 
         //lectura de joystick
         realjoystick_main();

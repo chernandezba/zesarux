@@ -252,7 +252,13 @@ void pcw_set_memory_pages(void)
 
 void pcw_reset(void)
 {
-    pcw_bank_registers[0]=pcw_bank_registers[1]=pcw_bank_registers[2]=pcw_bank_registers[3]=0;
+    //pcw_bank_registers[0]=pcw_bank_registers[1]=pcw_bank_registers[2]=pcw_bank_registers[3]=0;
+
+    pcw_bank_registers[0]=0x80;
+    pcw_bank_registers[1]=0x81;
+    pcw_bank_registers[2]=0x82;
+    pcw_bank_registers[3]=0x83;
+
     pcw_port_f4_value=0;
     pcw_port_f5_value=0;
     pcw_port_f6_value=0;
@@ -523,6 +529,20 @@ z80_byte pcw_in_port_f4(void)
 
     return return_value;
 
+}
+
+int pcw_keyboard_ticker_update_counter;
+
+void pcw_keyboard_ticker_update(void)
+{
+	pcw_keyboard_ticker_update_counter++;
+
+
+    //3FFFh bit 6 toggles with each update from the keyboard to the PCW.
+    //3FFFh bit 7 is 1 if the keyboard is currently transmitting its state to the PCW, 0 if it is scanning its keys.
+	pcw_keyboard_table[15] &= 0x3F;
+	if (pcw_keyboard_ticker_update_counter & 1) pcw_keyboard_table[15] |= 0x80;
+	if (pcw_keyboard_ticker_update_counter & 2) pcw_keyboard_table[15] |= 0x40;    
 }
 
 z80_byte pcw_read_keyboard(z80_int dir)
