@@ -354,7 +354,7 @@ void pcw_interrupt_from_pd765(void)
 {
     if (pcw_interrupt_from_pd765_type==1) {
         printf("Generate NMI triggered from pd765\n");
-        sleep(2);
+        //sleep(2);
         generate_nmi();
 
         //TODO: se supone que se desactivan todas al recibir una nmi
