@@ -2021,7 +2021,7 @@ fi
 if [ "$OPTIONOBJXWINDOWS" != "" ]; then
 
 cat >> Makefile << _EOF
-scrxwindows.o: scrxwindows.c cpu.h scrxwindows.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h cpc.h prism.h z88.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrxwindows.o: scrxwindows.c cpu.h scrxwindows.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h cpc.h prism.h z88.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -I/usr/X11R6/include -I/opt/X11/include -c scrxwindows.c
 
 _EOF

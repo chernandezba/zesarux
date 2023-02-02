@@ -47,6 +47,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 
 #include <X11/Xlib.h> // Every Xlib program must include this
@@ -936,6 +937,10 @@ void scrxwindows_refresca_pantalla(void)
 	else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
+
+    else if (MACHINE_IS_PCW) {
+            scr_refresca_pantalla_y_border_pcw();
+    }           
 
 	else if (MACHINE_IS_SAM) {
 		scr_refresca_pantalla_y_border_sam();

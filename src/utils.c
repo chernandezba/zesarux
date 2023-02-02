@@ -7448,6 +7448,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
+                                        pcw_keyboard_table[2] |=32;
                                 }
                                 else  {
                                         puerto_65278 |=1;
@@ -7456,6 +7457,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 					cpc_keyboard_table[2] |=32;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
+                                        pcw_keyboard_table[2] &=(255-32);
 
                                     //Si se libera left shift, reiniciamos contador de conmutacion de ventanas
                                     menu_contador_conmutar_ventanas=0;
@@ -7474,6 +7476,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] &= (255-1);
                                         msx_keyboard_table[6] &=(255-1);
                                         svi_keyboard_table[6] &=(255-1);
+                                        pcw_keyboard_table[2] |=32;
                                 }
                                 else  {
                                         puerto_65278 |=1;
@@ -7482,6 +7485,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         ql_keyboard_table[7] |= 1;
                                         msx_keyboard_table[6] |=1;
                                         svi_keyboard_table[6] |=1;
+                                        pcw_keyboard_table[2] &=(255-32);
                                 }
                         break;
 
@@ -8447,9 +8451,11 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 			case UTIL_KEY_KP_ENTER:
 				if (pressrelease) {
 					cpc_keyboard_table[0] &=(255-64);
+                    pcw_keyboard_table[0xA] |=32;
 				}
 				else {
 					cpc_keyboard_table[0] |=64;
+                    pcw_keyboard_table[0xA] &=(255-32);
 				}
 			break;
 

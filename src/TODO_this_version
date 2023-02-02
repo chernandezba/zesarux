@@ -311,6 +311,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *machine icon
 *snapshot zsf
 *indicacion correcta de pagina rom en debug
+*refresco pantalla en todos drivers
 
 
 -guardar en config indicación de versión anterior usada (tanto build como id version)
@@ -318,3 +319,4 @@ Si se ha hecho downgrade:
 *avisar por consola
 *errores al parsear la config no finalizan ZEsarUX
 *inicia ZEsarUX con un aviso del downgrade y ¿desactivando auto guardado de configuración?
+
