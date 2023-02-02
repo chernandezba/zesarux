@@ -195,7 +195,8 @@ void pcw_set_memory_pages(void)
         //TODO. algo no he entendido bien....  gonzalezz y otros de opera
         //hacen out F3,3, cuando realmente lo que quieren hacer es paginar en el modo extendido (sin tener el bit 7 alzado)
         //Con eso cargan los de opera, batman y demas...
-        bank |=128;
+        //bank |=128;
+        
 
         if (bank & 128) {
             //PCW (“extended”) paging mode
@@ -208,6 +209,7 @@ void pcw_set_memory_pages(void)
         }
         else {
             //CPC (“standard”) paging mode
+            //Juegos de Opera Soft, Batman etc usan este modo
             z80_byte bank_write=bank & 7;
             z80_byte bank_read=(bank >> 4) & 7;
 
@@ -263,9 +265,11 @@ void pcw_reset(void)
     pcw_bank_registers[0]=0x80;
     pcw_bank_registers[1]=0x81;
     pcw_bank_registers[2]=0x82;
-    pcw_bank_registers[3]=0x83;
+    pcw_bank_registers[3]=0x83; 
 
-    pcw_port_f4_value=0;
+    //Importante esto en arranque
+    pcw_port_f4_value=0xF1;
+
     pcw_port_f5_value=0;
     pcw_port_f6_value=0;
     pcw_port_f7_value=0;
@@ -319,7 +323,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     pcw_bank_registers[bank]=value;
 
-    //printf("PCW set bank %d value %02XH\n",bank,value);
+    printf("PCW set bank %d value %02XH\n",bank,value);
 
     //if (bank==0) sleep(1);
 
