@@ -5445,6 +5445,31 @@ void debug_get_ioports(char *stats_buffer)
 		}
   	}
 
+    if (MACHINE_IS_PCW) {
+        int i;
+        for (i=0;i<4;i++) {
+            sprintf (buf_linea,"PCW port %02XH: %02X\n",0x80+i,pcw_bank_registers[i]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
+        }   
+        sprintf (buf_linea,"PCW port F4H: %02X\n",pcw_port_f4_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F5H: %02X\n",pcw_port_f5_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F6H: %02X\n",pcw_port_f6_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F7H: %02X\n",pcw_port_f7_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        
+
+        sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+    }
+
     if (pd765_enabled.v) {
   		sprintf (buf_linea,"\nPD765 status:\n");
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);

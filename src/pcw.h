@@ -82,4 +82,11 @@ extern void pcw_interrupt_from_pd765(void);
 
 extern void scr_refresca_pantalla_y_border_pcw(void);
 
+extern z80_byte pcw_bank_registers[];
+extern z80_byte pcw_port_f4_value;
+extern z80_byte pcw_port_f5_value;
+extern z80_byte pcw_port_f6_value;
+extern z80_byte pcw_port_f7_value;
+extern z80_byte pcw_interrupt_counter;
+
 #endif
