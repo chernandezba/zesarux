@@ -284,8 +284,20 @@ struct x_tabla_teclado cpc_tabla_teclado_numeros[]={
 
 };
 
+//Teclado de pcw y cpc iguales...
+struct x_tabla_teclado pcw_tabla_teclado_numeros[]={
+        {&pcw_keyboard_table[4],1}, //0
+        {&pcw_keyboard_table[8],1},
+        {&pcw_keyboard_table[8],2},
+        {&pcw_keyboard_table[7],2},
+        {&pcw_keyboard_table[7],1},
+        {&pcw_keyboard_table[6],2},     //5
+        {&pcw_keyboard_table[6],1},
+        {&pcw_keyboard_table[5],2},
+        {&pcw_keyboard_table[5],1},
+        {&pcw_keyboard_table[4],2}
 
-
+};
 
 
 struct x_tabla_teclado z88_tabla_teclado_letras[]={
@@ -347,7 +359,35 @@ struct x_tabla_teclado cpc_tabla_teclado_letras[]={
         {&cpc_keyboard_table[8],128}
 };
 
-
+//Teclado de pcw y cpc iguales...
+struct x_tabla_teclado pcw_tabla_teclado_letras[]={
+	{&pcw_keyboard_table[8],32}, //A
+	{&pcw_keyboard_table[6],64},
+        {&pcw_keyboard_table[7],64},
+        {&pcw_keyboard_table[7],32}, //D
+        {&pcw_keyboard_table[7],4},
+        {&pcw_keyboard_table[6],32},
+        {&pcw_keyboard_table[6],16},
+        {&pcw_keyboard_table[5],16}, //H
+        {&pcw_keyboard_table[4],8},
+        {&pcw_keyboard_table[5],32},
+        {&pcw_keyboard_table[4],32},
+        {&pcw_keyboard_table[4],16}, //L
+        {&pcw_keyboard_table[4],64},
+        {&pcw_keyboard_table[5],64}, //N
+        {&pcw_keyboard_table[4],4},  //O
+        {&pcw_keyboard_table[3],8}, //P
+        {&pcw_keyboard_table[8],8},
+        {&pcw_keyboard_table[6],4},
+        {&pcw_keyboard_table[7],16},
+        {&pcw_keyboard_table[6],8}, //T
+        {&pcw_keyboard_table[5],4},
+        {&pcw_keyboard_table[6],128},
+        {&pcw_keyboard_table[7],8},
+        {&pcw_keyboard_table[7],128}, //X
+        {&pcw_keyboard_table[5],8},
+        {&pcw_keyboard_table[8],128}
+};
 
 struct x_tabla_teclado msx_tabla_teclado_letras[]={
 	{&msx_keyboard_table[2],64}, //A
@@ -3038,6 +3078,9 @@ void reset_keyboard_ports(void)
 	//De QL
 	for (i=0;i<8;i++) ql_keyboard_table[i]=255;
 
+    //De pcw
+    for (i=0;i<16;i++) pcw_keyboard_table[i]=0;
+
         menu_symshift.v=0;
         menu_capshift.v=0;
         menu_backspace.v=0;
@@ -4813,6 +4856,15 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                 else *puerto |=mascara;
          }
 
+        if (MACHINE_IS_PCW) {
+                puerto=pcw_tabla_teclado_letras[indice].puerto;
+                mascara=pcw_tabla_teclado_letras[indice].mascara;
+
+                if (pressrelease) *puerto |=mascara;
+                else *puerto &=255-mascara;
+                
+         }         
+
         if (MACHINE_IS_MSX) {
                 puerto=msx_tabla_teclado_letras[indice].puerto;
                 mascara=msx_tabla_teclado_letras[indice].mascara;
@@ -4953,6 +5005,15 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
                                                 if (pressrelease) *puerto &=255-mascara;
                                                 else *puerto |=mascara;
   }
+
+	if (MACHINE_IS_PCW) {
+                                                puerto=pcw_tabla_teclado_numeros[indice].puerto;
+                                                mascara=pcw_tabla_teclado_numeros[indice].mascara;
+
+                                                if (pressrelease) *puerto |=mascara;
+                                                else *puerto &=255-mascara;
+                                                
+  }  
 
 	if (MACHINE_IS_MSX) {
                                                 puerto=msx_tabla_teclado_numeros[indice].puerto;
@@ -7993,8 +8054,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] &= (255-32);
                                         svi_keyboard_table[7] &=(255-1);
 
-                                        //temporal simular 1 con F1
-                                        pcw_keyboard_table[8] |=1;
+
                                 }
                                 else {
                                         blink_kbd_a14 |= 128;
@@ -8002,8 +8062,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] |= 32;
                                         svi_keyboard_table[7] |=1;
 
-                                        //temporal simular 1 con F1
-                                        pcw_keyboard_table[8] &=(255-1);
+
                                 }
                         break;
 
@@ -8016,8 +8075,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] &= (255-64);
                                         svi_keyboard_table[7] &=(255-2);
 
-                                        //temporal simular 2 con F2
-                                        pcw_keyboard_table[8] |=2;
+
                                 }
                                 else {
                                         blink_kbd_a15 |= 16;
@@ -8025,8 +8083,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[6] |= 64;
                                         svi_keyboard_table[7] |=2;
 
-                                         //temporal simular 2 con F2
-                                        pcw_keyboard_table[8] &=(255-2);
+
                                 }
                         break;
 
