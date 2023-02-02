@@ -192,6 +192,11 @@ void pcw_set_memory_pages(void)
 
         bank=pcw_bank_registers[i];
 
+        //TODO. algo no he entendido bien....  gonzalezz y otros de opera
+        //hacen out F3,3, cuando realmente lo que quieren hacer es paginar en el modo extendido (sin tener el bit 7 alzado)
+        //Con eso cargan los de opera, batman y demas...
+        bank |=128;
+
         if (bank & 128) {
             //PCW (“extended”) paging mode
             bank &=pcw_get_mask_bank_ram();
