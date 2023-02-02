@@ -5358,9 +5358,14 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_inves;
     }  
 
-    else if (MACHINE_IS_CPC) {
-        bitmap=bitmap_button_ext_desktop_my_machine_cpc;
+    else if (MACHINE_IS_CPC_464) {
+        bitmap=bitmap_button_ext_desktop_my_machine_cpc_464;
     }      
+
+    else if (MACHINE_IS_CPC_6128) {
+        bitmap=bitmap_button_ext_desktop_my_machine_cpc_6128;
+    }      
+
 
     else if (MACHINE_IS_SMS) {
         bitmap=bitmap_button_ext_desktop_my_machine_sms;
@@ -23400,6 +23405,32 @@ void menu_inicio(void)
         //printf("Iniciando ventana tal cual porque no tenemos multitarea o no permitido background windows\n");
         zxvision_known_window_names_array[indice_abrir_ventana_sin_multitarea].start(0);
     }
+
+    if (zesarux_has_been_downgraded.v) {
+        zesarux_has_been_downgraded.v=0;
+
+        if (save_configuration_file_on_exit.v==0) {
+            menu_generic_message_format("Downgraded version","It seems you have downgraded ZEsarUX from %s to %s.\n"
+                "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read\n",
+                last_version_text_string,EMULATOR_VERSION);
+        }
+        else {
+            char buffer_mensaje[1024];
+            sprintf(buffer_mensaje,"It seems you have downgraded ZEsarUX from %s to %s.\n"
+                "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read.\n"
+                "Autosave configuration is enabled. Do you want to keep it enabled?",
+                last_version_text_string,EMULATOR_VERSION);
+
+                int valor_opcion=1;
+                zxvision_menu_generic_message_setting("Downgraded version",buffer_mensaje,"Keep autosave",&valor_opcion);
+
+                if (!valor_opcion) {
+                    save_configuration_file_on_exit.v=0;
+                    menu_generic_message_format("Disabled save settings","Ok. Current configuration settings will NOT be saved on exit");
+                }
+        }
+
+    }      
 
 //printf ("4inicio menu_inicio. salir_todos_menus=%d\n",salir_todos_menus);
 

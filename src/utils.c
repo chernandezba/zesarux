@@ -3482,6 +3482,13 @@ int util_write_configfile(void)
   if (save_configuration_file_on_exit.v)      ADD_STRING_CONFIG,"--saveconf-on-exit");
 
 
+    //Estos dos justo al principio para poder avisar si se ha hecho downgrade
+    //Ademas el --last-version-text antes
+    ADD_STRING_CONFIG,"--last-version-text \"%s\"",EMULATOR_VERSION);
+    ADD_STRING_CONFIG,"--last-version \"%s\"",BUILDNUMBER);
+                          
+
+
   //TODO: por que no estamos guardando zoom_x y zoom_y??
                                               ADD_STRING_CONFIG,"--zoom %d",zoom_x);
   if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
@@ -4210,7 +4217,7 @@ int util_write_configfile(void)
   if (stats_last_remote_version[0]!=0)       ADD_STRING_CONFIG,"--stats-last-avail-version %s",stats_last_remote_version);
    
 
-					      ADD_STRING_CONFIG,"--last-version \"%s\"",BUILDNUMBER);
+
 
   if (do_no_show_changelog_when_update.v)     ADD_STRING_CONFIG,"--no-show-changelog");
 

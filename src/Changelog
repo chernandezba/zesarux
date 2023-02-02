@@ -16,6 +16,7 @@ Added XEyes "Toy" to follow mouse
 
 * Improvements:
 
+Improved Configuration parsing: warning when ZEsarUX has been downgraded
 Improved Debug Console: better refresh, dynamic width??
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug CPU:

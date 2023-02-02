@@ -683,8 +683,11 @@ int exit_emulator_after_seconds=0;
 
 int exit_emulator_after_seconds_counter=0;
 
-
+//el build number segun la config
 char last_version_string[255]="";
+
+//el id de version (por ejemplo "10.2") segun la config
+char last_version_text_string[255]="";
 
 
 z80_bit do_no_show_changelog_when_update={0};
@@ -2599,7 +2602,8 @@ printf (
 		"--saveconf-on-exit                       Always save configuration when exiting emulator\n"
 		"--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 		"--exit-after n                           Exit emulator after n seconds\n"
-		"--last-version s                         String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
+		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
+        "--last-version-text s                    String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
 		"--no-show-changelog                      Do not show changelog when updating version\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
@@ -9134,12 +9138,25 @@ int parse_cmdline_options(void) {
 			
 
                          
-			
+			else if (!strcmp(argv[puntero_parametro],"--last-version-text")) {
+				siguiente_parametro_argumento();
+				strcpy(last_version_text_string,argv[puntero_parametro]);
+			}   			
 			
 			
 			else if (!strcmp(argv[puntero_parametro],"--last-version")) {
 				siguiente_parametro_argumento();
 				strcpy(last_version_string,argv[puntero_parametro]);
+
+                last_buildnumber_int=atoi(last_version_string);
+
+                if (buildnumber_int<last_buildnumber_int) {
+                    printf("It seems you have downgraded ZEsarUX from %s to %s\n"
+                    "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read\n",
+                        last_version_text_string,EMULATOR_VERSION);
+                    zesarux_has_been_downgraded.v=1;
+                    sleep(3);
+                }
 			}	
 
 			else if (!strcmp(argv[puntero_parametro],"--no-show-changelog")) {
@@ -9639,6 +9656,14 @@ void check_christmas_mode(void)
 
 char macos_path_to_executable[PATH_MAX];
 
+//Valor asignado desde BUILDNUMBER
+unsigned int buildnumber_int=0;
+
+//Ultima version ejecutada segun la config
+unsigned int last_buildnumber_int=0;
+
+z80_bit zesarux_has_been_downgraded={0};
+
 //Proceso inicial
 int zesarux_main (int main_argc,char *main_argv[]) {
 
@@ -9744,6 +9769,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     sleep (3);
 #endif
 
+    //conversion de valor BUILDNUMBER a entero
+    buildnumber_int=atoi(BUILDNUMBER);
+    //printf("build number %u\n",buildnumber_int);
 
 
 	//Unos cuantos valores por defecto
@@ -10007,7 +10035,11 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         if (parse_cmdline_options()) {
             //debug_printf(VERBOSE_ERR,"Error parsing configuration file. Disabling autosave feature");
             //Desactivamos autoguardado para evitar que se genere una configuración incompleta
-            save_configuration_file_on_exit.v=0;
+            //Pero solo si no ha habido downgrade
+            //Si hay un downgrade, se avisara al usuario
+            if (zesarux_has_been_downgraded.v==0) {
+                save_configuration_file_on_exit.v=0;
+            }
         }
 	}
 
@@ -10431,15 +10463,20 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		if (strcmp(last_version_string,BUILDNUMBER) && last_version_string[0]!=0) {  //Si son diferentes y last_version_string no es nula
 			//Y si driver permite menu normal
 			if (si_normal_menu_video_driver()) {
-				menu_event_new_version_show_changes.v=1;
-				menu_set_menu_abierto(1);
+                //Y si version actual es mayor que la anterior
+                if (buildnumber_int>last_buildnumber_int) {
+                    menu_event_new_version_show_changes.v=1;
+                    menu_set_menu_abierto(1);
+                }
 				//menu_abierto=1;
 			}
 		}
 	}
 
-
-
+    //Si la version actual es mas vieja, aviso del downgrade
+    if (zesarux_has_been_downgraded.v) {
+       menu_set_menu_abierto(1); 
+    }
 
 	start_timer_thread();
 

@@ -4632,8 +4632,8 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO
 
 
 
-//Icono "My machine" para un CPC
-char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
+//Icono "My machine" para un CPC 464
+char *bitmap_button_ext_desktop_my_machine_cpc_464[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
   	"                          ", 		
@@ -4663,6 +4663,37 @@ char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
+
+//Icono "My machine" para un CPC 6128
+char *bitmap_button_ext_desktop_my_machine_cpc_6128[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwxxxxxxrgbxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwxwwxwwxwxxrrrrrrx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwxwxxxxxxxxx",		
+	"xxxxxxxxxxxxxxwxxxxggggggx",    //20
+	"xxwwxwwxwwxwwxwxwxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwwwxwwxwwxxbbbbbbx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
 
 //Icono "My machine" para SMS 
 char *bitmap_button_ext_desktop_my_machine_sms[EXT_DESKTOP_BUTTONS_ANCHO]={

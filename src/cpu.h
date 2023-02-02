@@ -180,6 +180,11 @@ extern int core_refetch;
 extern int cpu_duracion_pulso_interrupcion;
 extern z80_bit core_end_frame_check_zrcp_zeng_snap;
 
+extern unsigned int buildnumber_int;
+extern unsigned int last_buildnumber_int;
+extern z80_bit zesarux_has_been_downgraded;
+extern char last_version_text_string[];
+
 extern z80_int get_im2_interrupt_vector(void);
 
 #ifndef GCC_UNUSED
