@@ -2177,7 +2177,7 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
 
     //Caso DJNZ dis, que no usa flag
     if (opcode==16 && reg_b!=1) {
-        strcpy(buffer,"-> satisfy B!=1");
+        sprintf(buffer,"-> satisfy B=%02X!=1",reg_b);
         return 1;        
     }
 

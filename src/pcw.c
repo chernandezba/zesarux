@@ -82,7 +82,7 @@ z80_byte *pcw_memory_paged_read[4];
 z80_byte *pcw_memory_paged_write[4];
 
 
-//Paginas mapeadas para lectura en los 4 segmentos, usado para lectura de teclado
+//Paginas mapeadas para lectura en los 4 segmentos, usado para lectura de teclado y en debug
 z80_byte pcw_banks_paged_read[4];
 
 //Contador de linea para lanzar interrupcion.

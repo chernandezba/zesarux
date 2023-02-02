@@ -6924,6 +6924,22 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
             }
 
+  			if (MACHINE_IS_PCW) {
+                
+                segmentos_totales=4;
+                int pagina;
+                for (pagina=0;pagina<4;pagina++) {
+            
+                    sprintf (segmentos[pagina].shortname,"RAM%d",pcw_banks_paged_read[pagina]);
+                    sprintf (segmentos[pagina].longname,"RAM %d",pcw_banks_paged_read[pagina]);
+    
+                    segmentos[pagina].length=16384;
+                    segmentos[pagina].start=16384*pagina;
+
+                }
+
+            }            
+
   			//Paginas RAM en SAM
   			if (MACHINE_IS_SAM) {
   				//char texto_paginas[4][6];
