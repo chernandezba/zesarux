@@ -112,6 +112,7 @@
 #include "dinamid3.h"
 #include "interface007.h"
 #include "pd765.h"
+#include "pcw.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 

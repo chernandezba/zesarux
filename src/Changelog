@@ -26,6 +26,7 @@ Improved Debug CPU:
 - added (ix+d), (iy+d) when selecting an opcode like: ld reg,(IX+d), etc
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
 - show last memory pointer when changing it
+- show B register on satisfy condition for DJNZ
 
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer
