@@ -9220,7 +9220,12 @@ Bit 6 GRN1 most  significant bit of green.
     //Colores RiscOs
     for (i=0;i<RISCOS_TOTAL_PALETTE_COLOURS;i++) {
         screen_set_colour_normal(RISCOS_INDEX_FIRST_COLOR+i,riscos_colortable_original[i]);
-    }                
+    }
+
+    //Colores PCW
+    for (i=0;i<PCW_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(PCW_INDEX_FIRST_COLOR+i,pcw_rgb_table[i]);
+    }                      
 
 
 		//}

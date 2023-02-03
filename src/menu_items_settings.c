@@ -6077,6 +6077,20 @@ void menu_settings_display_z88_shortcuts(MENU_ITEM_PARAMETERS)
     screen_z88_draw_lower_screen();
 }
 
+void menu_display_pcw_black_white(MENU_ITEM_PARAMETERS)
+{
+    pcw_black_white_display.v ^=1;
+}
+
+void menu_display_pcw_always_on(MENU_ITEM_PARAMETERS)
+{
+    pcw_always_on_display.v ^=1;
+}
+
+void menu_display_pcw_do_not_inverse(MENU_ITEM_PARAMETERS)
+{
+    pcw_do_not_inverse_display.v ^=1;
+}
 
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
@@ -6241,14 +6255,16 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 			if (menu_cond_realvideo() ) {
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,"[%c] ~~Interlaced mode", (video_interlaced_mode.v==1 ? 'X' : ' '));
-				menu_add_item_menu_shortcut(array_menu_settings_display,'i');
-				menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
-				menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
-					"Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
-					"to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
-					"This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
-                menu_add_item_menu_es_avanzado(array_menu_settings_display);
+                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,"[%c] ~~Interlaced mode", (video_interlaced_mode.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_shortcut(array_menu_settings_display,'i');
+                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
+                    menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
+                        "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
+                        "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
+                        "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
+                }
 
 
 				if (video_interlaced_mode.v) {
@@ -6260,7 +6276,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				}
 
 
-				if (!MACHINE_IS_TBBLUE) {
+				if (MACHINE_IS_SPECTRUM) {
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_gigascreen,NULL,"[%c] ~~Gigascreen",(gigascreen_enabled.v==1 ? 'X' : ' '));
 					menu_add_item_menu_shortcut(array_menu_settings_display,'g');
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable gigascreen colours");
@@ -6295,6 +6311,18 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 				}
+
+                if (MACHINE_IS_PCW) {
+					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
+                        "[%c] Black & White monitor",(pcw_black_white_display.v ? 'X' : ' '));
+
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
+                        "[%c] Always on monitor",(pcw_always_on_display.v ? 'X' : ' '));
+
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
+                        "[%c] Do not allow inverse",(pcw_do_not_inverse_display.v ? 'X' : ' '));                        
+
+                }
 
 
 

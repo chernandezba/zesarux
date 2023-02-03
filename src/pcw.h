@@ -89,4 +89,9 @@ extern z80_byte pcw_port_f6_value;
 extern z80_byte pcw_port_f7_value;
 extern z80_byte pcw_interrupt_counter;
 
+extern int pcw_rgb_table[];
+extern z80_bit pcw_black_white_display;
+extern z80_bit pcw_always_on_display;
+extern z80_bit pcw_do_not_inverse_display;
+
 #endif

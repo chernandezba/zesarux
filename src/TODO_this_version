@@ -312,7 +312,10 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *snapshot zsf
 *indicacion correcta de pagina rom en debug
 *refresco pantalla en todos drivers
+*si foco en el menu que no llegue la tecla
 
+
+-iconos en desktop que aplique zoom gui
 
 -guardar en config indicación de versión anterior usada (tanto build como id version)
 Si se ha hecho downgrade:

@@ -101,6 +101,23 @@ z80_byte pcw_interrupt_from_pd765_type=0;
 //Total ram. Para un 8256, 256k. Para un 8512, 512k
 int pcw_total_ram=256*1024;
 
+//Tabla de colores
+int pcw_rgb_table[2]={
+
+    0x000000, //negro
+    0x41FF00  //verde
+};
+
+//Mostrar colores en blanco y negro
+z80_bit pcw_black_white_display={0};
+
+
+//Siempre ver la pantalla aunque bit de F7 diga lo contrario
+z80_bit pcw_always_on_display={0};
+
+//No dejar que se invierta el color
+z80_bit pcw_do_not_inverse_display={0};
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -355,8 +372,15 @@ void pcw_out_port_f6(z80_byte value)
 
 void pcw_out_port_f7(z80_byte value)
 {
+    /*if ((pcw_port_f7_value & 128) != (value&128)) {
+        printf("Cambio inversion\n");
+        sleep(1);
+    }*/
+
     pcw_port_f7_value=value;
     printf("PCW set port F7 value %02XH\n",value);
+
+    
 }
 
 
@@ -694,12 +718,24 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     *address=(valor & 7) +2 *(valor & 0x1FF8);
 }
 
+int pcw_get_rgb_color(int i)
+{
+    //0 o 1
+    if (pcw_black_white_display.v) {
+        return (i ? 7 : 0);
+    }
+
+    else return (i ? PCW_COLOUR_GREEN : PCW_COLOUR_BLACK);
+}
+
 void pcw_refresca_putpixel(int x,int y,int color)
 {
     y*=2;
 
-    scr_putpixel_zoom(x,y,color);
-    scr_putpixel_zoom(x,y+1,color);
+    int color_final=pcw_get_rgb_color(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
 }
 
 //Refresco sin rainbow
@@ -740,11 +776,25 @@ void scr_refresca_pantalla_pcw(void)
                 int bit;
 
                 for (bit=0;bit<8;bit++) {
-                    int color;
+                    int pixel;
 
-                    if (byte_leido & 128) color=7;
-                    else color=0;
-                    pcw_refresca_putpixel(x+bit,y+scanline,color);
+                    if (byte_leido & 128) pixel=1;
+                    else pixel=0;
+
+                    //Reverse video
+                    if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
+                        //printf("antes pixel :%d\n",pixel);
+                        
+                        pixel ^=1;
+                        //printf("despues pixel :%d\n",pixel);
+
+                        //sleep(1);
+                    }
+
+                    //Si pantalla no activa
+                    if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) pixel=0;
+
+                    pcw_refresca_putpixel(x+bit,y+scanline,pixel);
 
                     byte_leido=byte_leido<<1;
                 }
