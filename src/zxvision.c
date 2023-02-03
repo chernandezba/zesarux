@@ -5157,6 +5157,9 @@ int menu_get_ext_desktop_icons_zoom(void)
     if (zoom_x>zoom_y) zoom=zoom_x;
     else zoom=zoom_y;
 
+    //Tamaño iconos multiplicado por el zoom de la interfaz
+    zoom *=menu_gui_zoom;
+
     return zoom;    
 }
 
