@@ -4848,6 +4848,37 @@ char *bitmap_button_ext_desktop_my_machine_cpc_664[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+//Icono "My machine" PCW 8256, 8512
+char *bitmap_button_ext_desktop_my_machine_pcw_8256[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWrrWWWWWwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWwWWwWWwWWWwWWwWWwWw",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWWwWWwWWwWWwWWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwWwwwwwwwww",    //20
+	"wwWwWWwWWwWWwWWwWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWWWWWWWWWwWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+};
+
 //Icono "My machine" para SMS 
 char *bitmap_button_ext_desktop_my_machine_sms[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
