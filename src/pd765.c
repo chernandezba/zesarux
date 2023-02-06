@@ -3659,3 +3659,18 @@ void pd765_reset_terminal_count_signal(void)
 {
     pd765_terminal_count_signal.v=0;
 }
+
+
+void cf2_floppy_icon_activity(void)
+{
+    //printf("Cinta\n");
+    lowericon_cf2_floppy_frame++;
+    if (lowericon_cf2_floppy_frame==4) lowericon_cf2_floppy_frame=0;
+
+    if (pd765_motor_status) {
+        if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
+            menu_draw_ext_desktop();      
+        }
+    }
+
+}

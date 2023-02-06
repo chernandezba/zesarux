@@ -1252,6 +1252,7 @@ extern z80_bit menu_ext_desktop_transparent_configurable_icons;
 extern z80_bit menu_ext_desktop_configurable_icons_text_background;
 
 extern int lowericon_realtape_frame;
+extern int lowericon_cf2_floppy_frame;
 
 extern int menu_pressed_zxdesktop_lower_icon_which;
 extern int menu_pressed_zxdesktop_button_which;

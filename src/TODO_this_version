@@ -313,13 +313,13 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *indicacion correcta de pagina rom en debug
 *refresco pantalla en todos drivers
 *si foco en el menu que no llegue la tecla
+Pcw opción selección boot cpm o loco script 
+First aid también para ello
 
-
--iconos en desktop que aplique zoom gui
 
 -guardar en config indicación de versión anterior usada (tanto build como id version)
 Si se ha hecho downgrade:
 *avisar por consola
 *errores al parsear la config no finalizan ZEsarUX
 *inicia ZEsarUX con un aviso del downgrade y ¿desactivando auto guardado de configuración?
-
+ok

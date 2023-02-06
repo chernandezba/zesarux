@@ -145,4 +145,6 @@ extern void pd765_handle_speed_motor(void);
 extern void pd765_motor_on(void);
 extern void pd765_motor_off(void);
 
+extern void cf2_floppy_icon_activity(void);
+
 #endif

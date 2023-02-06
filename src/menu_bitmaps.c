@@ -1590,11 +1590,132 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
-	"  wxxxxxxxxxwwxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
 	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxx xxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_frameone[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxx xWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxx xxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWx xxxxxxw  ",		
 	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		

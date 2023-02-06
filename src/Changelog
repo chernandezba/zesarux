@@ -38,6 +38,8 @@ Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
 - Show icon indicators for open apps on ZX Desktop
 - Added setting to empty Trash on exit
+- Fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (CPC, QL, etc)
+- CF2 Floppy icon (+3, CPC, PCW) now is animated when motor is on
 
 Improved ZX Vision:
 - Added windows TaskBar

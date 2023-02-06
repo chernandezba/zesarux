@@ -80,6 +80,8 @@
 #include "ql.h"
 #include "zvfs.h"
 #include "pcw.h"
+#include "pd765.h"
+#include "dsk.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -330,8 +332,8 @@ int zxvision_if_configurable_icon_on_valid_position(int x,int y)
     xinicio_botones -=ZESARUX_ASCII_LOGO_ANCHO;
 
 
-    if (y<=alto_boton && x>=xinicio_botones && x<=xfinal_botones) {
-        //printf("Check icon position: %d,%d on upper buttons position\n",x,y);
+    if (y<alto_boton && x>=xinicio_botones && x<xfinal_botones) {
+        //printf("Check icon position: %d,%d on upper buttons position (y<%d)\n",x,y,alto_boton);
         return 0;        
     }    
 
@@ -418,23 +420,14 @@ int zxvision_si_icono_cerca(int x,int y)
 
 }
 
-#define ZXVISION_SEPARACION_ICONOS_AL_ORDENAR (ZESARUX_ASCII_LOGO_ANCHO*2)
-#define ZXVISION_OFFSET_ICONOS_REPETIR_POSICION 2
-
-void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
+void zxvision_get_start_valid_positions_icons(int *p_xinicial,int *p_xfinal,int *p_yinicial,int *p_yfinal)
 {
     /*
-        Al crear un icono ubicarlo inteligentemente:
-    -en ZX desktop (derecha de máquina emulada) y arriba por debajo de botones menú 
-    -que no haya otro icono medianamente cerca
 
-    Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
-    Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+    Zona de forma cuadrada delimitada por:
+    x: desde derecha pantalla emulada hasta final x
+    y: desde debajo botones superiores hasta por encima botones inferiores
 
-    Las funciones zxvision_get_next_free_icon_position y zxvision_get_next_free_icon_position utilizan
-    la misma separación de posicionamiento de iconos,
-    solo que zxvision_get_next_free_icon_position busca el siguiente hueco libre mientras que zxvision_reorder_configurable_icons
-    reordena uno a uno cada icono
     */
 
 
@@ -454,13 +447,7 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
 
     int yinicial=alto_boton+16;
 
-    //int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
-    //Hasta tocar a botones dispositivos
-    //int alto_dispositivo;
-    //menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
-    //alto_dispositivo /=zoom_y;
 
-    //int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;
 
     //Hasta llegar a los iconos de dispositivos inferiores
     int yfinal;
@@ -470,6 +457,65 @@ void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
     //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
     yfinal -=ZESARUX_ASCII_LOGO_ANCHO;
 
+    *p_xinicial=xinicial;
+    *p_xfinal=xfinal;
+    *p_yinicial=yinicial;
+    *p_yfinal=yfinal;
+
+}
+
+#define ZXVISION_SEPARACION_ICONOS_AL_ORDENAR (ZESARUX_ASCII_LOGO_ANCHO*2*menu_gui_zoom)
+#define ZXVISION_OFFSET_ICONOS_REPETIR_POSICION 2
+
+void zxvision_get_next_free_icon_position(int *p_x,int *p_y)
+{
+    /*
+
+
+    Si hay uno cerca, mover a derecha. Si no hay en en toda esa línea, incrementar Y y seguir
+    Si finalmente no se encuentra hueco, ponerlo en posición inicial 
+
+    Las funciones zxvision_get_next_free_icon_position y zxvision_get_next_free_icon_position utilizan
+    la misma separación de posicionamiento de iconos,
+    solo que zxvision_get_next_free_icon_position busca el siguiente hueco libre mientras que zxvision_reorder_configurable_icons
+    reordena uno a uno cada icono
+    */
+
+
+/*
+
+    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
+    
+
+    //Empezar a ubicarlos con algo de margen
+    int xinicial=inicio_x_zxdesktop+24;
+
+    int xfinal=screen_get_total_width_window_plus_zxdesktop_no_zoom()-ZESARUX_ASCII_LOGO_ANCHO;
+
+    //yinicial debajo de botones superiores
+	int alto_boton;
+	menu_ext_desktop_buttons_get_geometry(NULL,&alto_boton,NULL,NULL,NULL);
+    alto_boton /=zoom_y;
+
+
+    int yinicial=alto_boton+16;
+
+
+
+    //Hasta llegar a los iconos de dispositivos inferiores
+    int yfinal;
+    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    //Posiciones menos el zoom
+    yfinal /=zoom_y;
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+    yfinal -=ZESARUX_ASCII_LOGO_ANCHO;
+
+    */
+
+    int xinicial,xfinal,yinicial,yfinal;
+
+
+    zxvision_get_start_valid_positions_icons(&xinicial,&xfinal,&yinicial,&yfinal);
 
 
     int x,y;
@@ -517,6 +563,8 @@ void zxvision_reorder_configurable_icons(void)
     reordena uno a uno cada icono    
     */
 
+
+/*
     int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
 
     //Empezar a ubicarlos con algo de margen
@@ -532,13 +580,25 @@ void zxvision_reorder_configurable_icons(void)
 
 
     int yinicial=alto_boton+16;
-    //int yfinal=screen_get_emulated_display_height_no_zoom_border_en()-24-ZESARUX_ASCII_LOGO_ANCHO;
-    //Hasta tocar a botones dispositivos
-    int alto_dispositivo;
-    menu_ext_desktop_lower_icons_get_geometry(NULL,&alto_dispositivo,NULL,NULL,NULL,NULL);
-    alto_dispositivo /=zoom_y;
 
-    int yfinal=screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom()-alto_dispositivo-16;    
+
+
+    //Hasta llegar a los iconos de dispositivos inferiores
+    int yfinal;
+    menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yfinal);
+    //Posiciones menos el zoom
+    yfinal /=zoom_y;
+    //Consideramos el tamanyo del icono (ZESARUX_ASCII_LOGO_ANCHO) para que no se pueda ubicar medio icono fuera de rango por ejemplo
+    yfinal -=ZESARUX_ASCII_LOGO_ANCHO;    
+
+*/
+    int xinicial,xfinal,yinicial,yfinal;
+
+
+    zxvision_get_start_valid_positions_icons(&xinicial,&xfinal,&yinicial,&yfinal);
+
+
+
 
     int i;
 
@@ -753,31 +813,12 @@ void create_default_zxdesktop_configurable_icons(void)
 
     int indice_icono;
 
-    int inicio_x_zxdesktop=screen_get_emulated_display_width_no_zoom_border_en();
-
-    //Empezar a ubicarlos con algo de margen
-    int x=inicio_x_zxdesktop+24;
-
-    //int final_y=screen_get_emulated_display_height_no_zoom_border_en();
-
-
 
 
     //My Machine
-    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_MY_MACHINE);
-    if (indice_icono>=0) {
-        strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"My Machine");
-
-        //Y posicion un tanto arbitraria
-        zxvision_set_configurable_icon_position(indice_icono,x,96);  
-    }
-
+    int indice_my_machine=zxvision_add_configurable_icon_by_id_action(F_FUNCION_DESKTOP_MY_MACHINE);
     //Quicksave
-    indice_icono=zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
-    if (indice_icono>=0) {
-        //Y posicion un tanto arbitraria
-        zxvision_set_configurable_icon_position(indice_icono,x,96+ZESARUX_ASCII_LOGO_ANCHO*2);
-    }    
+    zxvision_add_configurable_icon_by_id_action(F_FUNCION_QUICKSAVE);
 
 
     //Add Trash
@@ -786,13 +827,27 @@ void create_default_zxdesktop_configurable_icons(void)
     if (indice_icono>=0) {
         strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,"Trash Can");
 
+        //Solo alterar y
+        //La x pillarla del primer icono
+        int x;
+        if (indice_my_machine>=0) {
+            x=zxdesktop_configurable_icons_list[indice_my_machine].pos_x;
+        }
+        else {
+            //Cosa extraña. primer icono no valido. pues dejar la x tal cual
+            x=zxdesktop_configurable_icons_list[indice_icono].pos_x;
+        }
+
         //La papelera queda a la posicion y algo por encima de los lower device icons
         int yinicio_botones;
         menu_ext_desktop_lower_icons_get_geometry(NULL,NULL,NULL,NULL,NULL,&yinicio_botones);
         yinicio_botones /=zoom_y;
 
+        int separacion_y_iconos=ZESARUX_ASCII_LOGO_ANCHO*2*menu_gui_zoom;
+  
+
         //printf("Y trash: %d\n",yinicio_botones);
-        zxvision_set_configurable_icon_position(indice_icono,x,yinicio_botones-ZESARUX_ASCII_LOGO_ANCHO-24);
+        zxvision_set_configurable_icon_position(indice_icono,x,yinicio_botones-separacion_y_iconos);
     }
 
 
@@ -4753,6 +4808,7 @@ int zxdesktop_lowericon_find_index(int icono)
 }
 
 int lowericon_realtape_frame=0;
+int lowericon_cf2_floppy_frame=0;
 
 void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
 {
@@ -4875,6 +4931,19 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
             inverso=0;
         }
     }
+
+    //Caso especial para disco moviendose
+    if (puntero_bitmap==bitmap_lowericon_ext_desktop_plus3_flp_active/* && inverso*/) {
+        
+        if (dskplusthree_emulation.v && pd765_motor_status) {
+
+            if (lowericon_cf2_floppy_frame==0) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framezero;
+            if (lowericon_cf2_floppy_frame==1) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frameone;
+            if (lowericon_cf2_floppy_frame==2) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo;
+            if (lowericon_cf2_floppy_frame==3) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framethree;
+            inverso=0;
+        }
+    }    
 
     //Caso especial para slots z88 con tapa abierta. Al abrir la tapa 
     //no se ve el numero
@@ -5192,6 +5261,8 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
     if (zoom_x<zoom_y) zoom=zoom_x;
     else zoom=zoom_y;    
 
+    zoom *=menu_gui_zoom;
+
     int ancho_caracter=CHARSET_ICONS_ANCHO;
     int alto_caracter=CHARSET_ICONS_ALTO;
 
@@ -5214,7 +5285,7 @@ void menu_draw_ext_desktop_one_icon_text(int x,int y,char *texto)
             menu_draw_ext_desktop_putpixel_bitmap_icon_text,zoom,0,offset);    
         
 
-        x +=(ancho_caracter+1)*zoom_x;     //El ancho de caracter +1 para que no queden pegados
+        x +=(ancho_caracter+1)*zoom_x*menu_gui_zoom;     //El ancho de caracter +1 para que no queden pegados
 
     }
 
@@ -5570,8 +5641,8 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
 
         //int zoom_iconos=menu_get_ext_desktop_icons_zoom();
 
-        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_x,
-            CHARSET_ICONS_ALTO*zoom_y,ESTILO_GUI_PAPEL_NORMAL);
+        menu_draw_ext_desktop_one_configurable_icon_background(x,y_texto_icono,(CHARSET_ICONS_ANCHO+1)*longitud_texto*zoom_x*menu_gui_zoom,
+            CHARSET_ICONS_ALTO*zoom_y*menu_gui_zoom,ESTILO_GUI_PAPEL_NORMAL);
     }
 
 

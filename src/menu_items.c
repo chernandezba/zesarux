@@ -27832,7 +27832,7 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         menu_add_ESC_item(array_menu_plusthreedisk);
 
-        retorno_menu=menu_dibuja_menu(&plusthreedisk_opcion_seleccionada,&item_seleccionado,array_menu_plusthreedisk,"+3 Disk" );
+        retorno_menu=menu_dibuja_menu(&plusthreedisk_opcion_seleccionada,&item_seleccionado,array_menu_plusthreedisk,"3\" CF2 Floppy" );
 
                 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
@@ -33858,10 +33858,10 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM_P2A_P3 || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
-			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" ~~Disk");
-			menu_add_item_menu_shortcut(array_menu_storage,'d');
-			menu_add_item_menu_tooltip(array_menu_storage,"3\" Disk emulation");
-			menu_add_item_menu_ayuda(array_menu_storage,"3\" Disk emulation");
+			menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_plusthreedisk,NULL,"3\" CF2 F~~loppy");
+			menu_add_item_menu_shortcut(array_menu_storage,'l');
+			menu_add_item_menu_tooltip(array_menu_storage,"3\" Compact Floppy Disc emulation");
+			menu_add_item_menu_ayuda(array_menu_storage,"3\" Compact Floppy Disc emulation, used on Spectrum +3, Amstrad CPC 6128,664, Amstrad PCW");
             menu_add_item_menu_tiene_submenu(array_menu_storage);
 		}
 

@@ -817,6 +817,8 @@ void timer_check_interrupt(void)
 
             realtape_print_footer();
 
+            cf2_floppy_icon_activity();
+
 
             //escritura de contenido de flash de superupgrade a disco
             superupgrade_flush_flash_to_disk();

@@ -31,6 +31,7 @@ And also:
 * ZX Spectrum Next
 * Jupiter Ace
 * Amstrad CPC 464, CPC 4128, CPC 664, CPC 6128
+* Amstrad PCW 8256, PCW 8512
 * MSX1 
 * Spectravideo 318/328
 * Colecovision
@@ -117,6 +118,7 @@ __FEATURES__
     * ZX Spectrum Next
     * Jupiter Ace
     * Amstrad CPC 464, CPC 4128, CPC 664, CPC 6128
+    * Amstrad PCW 8256, PCW 8512
     * MSX1 
     * Spectravideo 318/328
     * Colecovision
