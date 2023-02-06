@@ -148,6 +148,7 @@
 #include "dinamid3.h"
 #include "dsk.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -23452,8 +23453,19 @@ void hotswap_any_machine_to_spec128(void)
 
 
 
+void hotswap_pcw_to_8256(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_PCW_8256;
+    pcw_total_ram=256*1024;
+    //No hay mas diferencias entre las dos
+}
 
-
+void hotswap_pcw_to_8512(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_PCW_8512;
+    pcw_total_ram=512*1024;
+    //No hay mas diferencias entre las dos
+}
 
 
 void hotswap_cpc_to_464(MENU_ITEM_PARAMETERS)
@@ -23466,6 +23478,20 @@ void hotswap_cpc_to_464(MENU_ITEM_PARAMETERS)
 void hotswap_cpc_to_4128(MENU_ITEM_PARAMETERS)
 {
     current_machine_type=MACHINE_ID_CPC_4128;
+    set_machine_params();
+    post_set_machine(NULL);   
+}
+
+void hotswap_cpc_to_664(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_CPC_664;
+    set_machine_params();
+    post_set_machine(NULL);
+}
+
+void hotswap_cpc_to_6128(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_CPC_6128;
     set_machine_params();
     post_set_machine(NULL);   
 }
@@ -23795,11 +23821,24 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_p2a_to_48k,NULL);
         }
 
-        //maquinas cpc
-        if (MACHINE_IS_CPC) {
+        //maquinas cpc 4*
+        if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
             menu_add_item_menu_inicial(&array_menu_machine_selection,"Amstrad CPC 464",MENU_OPCION_NORMAL,hotswap_cpc_to_464,NULL);
             menu_add_item_menu(array_menu_machine_selection,"Amstrad CPC 4128",MENU_OPCION_NORMAL,hotswap_cpc_to_4128,NULL);
-        }			
+        }
+
+        //maquinas cpc 6*
+        if (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Amstrad CPC 664",MENU_OPCION_NORMAL,hotswap_cpc_to_664,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Amstrad CPC 6128",MENU_OPCION_NORMAL,hotswap_cpc_to_6128,NULL);
+        }
+
+
+        //maquinas pcw
+        if (MACHINE_IS_PCW) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Amstrad PCW 8256",MENU_OPCION_NORMAL,hotswap_pcw_to_8256,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Amstrad PCW 8512",MENU_OPCION_NORMAL,hotswap_pcw_to_8512,NULL);
+        }        			
 
         //maquinas zxuno
         if (MACHINE_IS_ZXUNO) {
@@ -24145,6 +24184,7 @@ int menu_hotswap_machine_cond(void) {
 	if (MACHINE_IS_CHROME)  return 1;
 	if (MACHINE_IS_ZXEVO)  return 1;
 	if (MACHINE_IS_CPC)  return 1;
+    if (MACHINE_IS_PCW) return 1;
 
 
 	return 0;
