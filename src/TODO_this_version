@@ -299,7 +299,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -pendiente 6128,664:
 *keyboard help
-*machine icon. ok 6128
+ok *machine icon.
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
 *si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
@@ -316,10 +316,3 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 Pcw opción selección boot cpm o loco script 
 First aid también para ello
 
-
--guardar en config indicación de versión anterior usada (tanto build como id version)
-Si se ha hecho downgrade:
-*avisar por consola
-*errores al parsear la config no finalizan ZEsarUX
-*inicia ZEsarUX con un aviso del downgrade y ¿desactivando auto guardado de configuración?
-ok

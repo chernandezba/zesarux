@@ -5432,9 +5432,13 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_inves;
     }  
 
-    else if (MACHINE_IS_CPC_464) {
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
         bitmap=bitmap_button_ext_desktop_my_machine_cpc_464;
-    }      
+    }
+
+    else if (MACHINE_IS_CPC_664) {
+        bitmap=bitmap_button_ext_desktop_my_machine_cpc_664;
+    }          
 
     else if (MACHINE_IS_CPC_6128) {
         bitmap=bitmap_button_ext_desktop_my_machine_cpc_6128;
