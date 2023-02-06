@@ -105,7 +105,7 @@ int pcw_total_ram=256*1024;
 int pcw_rgb_table[2]={
 
     0x000000, //negro
-    0x41FF00  //verde
+    0x41FF00  //verde. Tipico color de green "P1" phosphor
 };
 
 //Mostrar colores en blanco y negro
@@ -142,9 +142,9 @@ z80_byte pcw_port_f6_value;
 //b7: reverse video. b6: screen enable.
 z80_byte pcw_port_f7_value;
 
-//z80_byte pcw_port_f8_value;
+z80_byte pcw_port_f8_value;
 
-z80_byte pcw_interrupt_counter;
+//z80_byte pcw_interrupt_counter;
 
 //
 // Fin de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
@@ -290,11 +290,11 @@ void pcw_reset(void)
     pcw_port_f5_value=0;
     pcw_port_f6_value=0;
     pcw_port_f7_value=0;
-    //pcw_port_f8_value=0;
+    pcw_port_f8_value=0;
 
     pcw_interrupt_from_pd765_type=0;
 
-    pcw_interrupt_counter=0;
+    //pcw_interrupt_counter=0;
 
     pd765_set_terminal_count_signal();
 
@@ -340,7 +340,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 
     pcw_bank_registers[bank]=value;
 
-    printf("PCW set bank %d value %02XH\n",bank,value);
+    //printf("PCW set bank %d value %02XH\n",bank,value);
 
     //if (bank==0) sleep(1);
 
@@ -515,51 +515,45 @@ void pcw_out_port_f8(z80_byte value)
 void pcw_increment_interrupt_counter(void)
 {
     //printf("scanline: %d F8 port: %02XH\n",t_scanline,pcw_port_f8_value);
-
+    z80_byte pcw_interrupt_counter=pcw_port_f8_value & 0xF;
 
     if (pcw_interrupt_counter!=0x0F) pcw_interrupt_counter++;
 
+    pcw_port_f8_value &=0xF0;
+    pcw_port_f8_value |=pcw_interrupt_counter;
+
 }
 
-
-
-z80_byte pcw_in_port_f8(void)
+z80_byte pcw_get_port_f8_value(void)
 {
-
-    //b6: 1 line flyback, read twice in succession indicates frame flyback. 
-    //b5: FDC interrupt. 
-    //b4: indicates 32-line screen. 
-    
-    //printf("LEE puerto %02XH\n",puerto_l);
-    z80_byte return_value=0; //pcw_port_f8_value;        
+    z80_byte return_value=pcw_port_f8_value;
 
     if (pd765_interrupt_pending) return_value|=0x20;
-
-    //TODO:no se si realmente esto es asi
-    //return_value |=pcw_interrupt_counter;
-
 
     //bit 6 Frame flyback; this is set while the screen is not being drawn
     //TODO: de momento calculo chapucero
     //printf("t_scanline %d\n",t_scanline);
-    if (t_scanline>280) return_value |=0x40;
-
-    
+    if (t_scanline_draw<64) return_value |=0x40;
 
     return return_value;
-        
+
+}
+
+z80_byte pcw_in_port_f8(void)
+{
     
+    return pcw_get_port_f8_value();
+        
+
 }
 
 z80_byte pcw_in_port_f4(void)
 {
 
-    z80_byte return_value=pcw_interrupt_counter;
-    //printf("LEE puerto %02XH\n",puerto_l);
-    //As &F8, with the proviso that b3-0 are reset when the port is read. Hence read to re-enable interrupts.
+    z80_byte return_value=pcw_get_port_f8_value();
 
-    pcw_interrupt_counter=0;
-    //sleep(1);
+    pcw_port_f8_value &=0xF0;
+
 
 
     return return_value;

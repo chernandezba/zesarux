@@ -5462,10 +5462,13 @@ void debug_get_ioports(char *stats_buffer)
 
         sprintf (buf_linea,"PCW port F7H: %02X\n",pcw_port_f7_value);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        
 
-        sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        
+        sprintf (buf_linea,"PCW port F8H: %02X\n",pcw_get_port_f8_value() );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
+        //sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
+        //sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
     }
