@@ -3961,7 +3961,7 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 	debug_fired_in=1;
 
-    printf("LEE puerto %02XH\n",puerto_l);
+    //printf("LEE puerto %02XH\n",puerto_l);
 
     if (puerto_l==0x00) {
         //printf("IN FDC status register\n");
@@ -3983,9 +3983,7 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
     }
 
     if (puerto_l==0xFD) {
-        //printf("LEE puerto %02XH\n",puerto_l);
-        //Impresora. TODO completar
-        return 0x40; //bit 6: If 1, printer has finished.
+        return pcw_in_port_fd();
     }
 
 
