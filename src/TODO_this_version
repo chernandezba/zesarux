@@ -279,11 +279,8 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
 
-
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 
-
--PD765: probar con dsk extendido escribir. ok
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
 
