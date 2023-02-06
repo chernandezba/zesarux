@@ -541,7 +541,7 @@ z80_byte pcw_get_port_f8_value(void)
 
 z80_byte pcw_in_port_f8(void)
 {
-    printf("LEE puerto F8H\n");
+    //printf("LEE puerto F8H\n");
     return pcw_get_port_f8_value();
         
 
@@ -551,7 +551,7 @@ z80_byte pcw_in_port_f8(void)
 z80_byte pcw_in_port_f4(void)
 {
 
-    printf("LEE puerto F4\n");
+    //printf("LEE puerto F4\n");
 
     z80_byte return_value=pcw_get_port_f8_value();
 
@@ -565,8 +565,8 @@ z80_byte pcw_in_port_f4(void)
 
 z80_byte pcw_in_port_fd(void)
 {
-    printf("LEE puerto FDH\n");
-    //Impresora. TODO completar
+    printf("LEE puerto FDH on PC=%04XH\n",reg_pc);
+    //Impresora. TODO completar    
     return 0x40; //bit 6: If 1, printer has finished.
 }
 
