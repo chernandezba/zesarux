@@ -33889,7 +33889,7 @@ void menu_storage(MENU_ITEM_PARAMETERS)
 		}
 
 
-		else if (!MACHINE_IS_CHLOE && !MACHINE_IS_COLECO && !MACHINE_IS_SG1000 && !MACHINE_IS_SMS) {
+		else if (!MACHINE_IS_CHLOE && !MACHINE_IS_COLECO && !MACHINE_IS_SG1000 && !MACHINE_IS_SMS && !MACHINE_IS_PCW) {
             menu_add_item_menu_format(array_menu_storage,MENU_OPCION_NORMAL,menu_storage_tape,menu_tape_settings_cond,"~~Tape");
             menu_add_item_menu_shortcut(array_menu_storage,'t');
             menu_add_item_menu_tooltip(array_menu_storage,"Select tape and options");
