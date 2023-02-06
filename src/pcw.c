@@ -533,7 +533,7 @@ z80_byte pcw_get_port_f8_value(void)
     //bit 6 Frame flyback; this is set while the screen is not being drawn
     //TODO: de momento calculo chapucero
     //printf("t_scanline %d\n",t_scanline);
-    if (t_scanline_draw<64) return_value |=0x40;
+    if (t_scanline_draw<56) return_value |=0x40;
 
     return return_value;
 
