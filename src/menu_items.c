@@ -37167,7 +37167,8 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
 
 int zxdesktop_lowericon_cassete_is_visible(void)
 {
-	if (!MACHINE_IS_Z88 && !MACHINE_IS_QL && !MACHINE_IS_CHLOE && !MACHINE_IS_COLECO && !MACHINE_IS_SG1000 && !MACHINE_IS_SMS) return 1;
+	if (!MACHINE_IS_Z88 && !MACHINE_IS_QL && !MACHINE_IS_CHLOE && !MACHINE_IS_COLECO 
+        && !MACHINE_IS_SG1000 && !MACHINE_IS_SMS && !MACHINE_IS_PCW) return 1;
 	else return 0;
 }
 
