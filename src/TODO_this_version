@@ -298,7 +298,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -rom cpc6128: os+basic+amsdos
 
 -pendiente 6128,664:
-*keyboard help
+ok *keyboard help
 ok *machine icon.
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
@@ -308,7 +308,7 @@ ok *machine icon.
 
 
 -pendiente pcw 8256,8512:
-*keyboard help
+ok *keyboard help
 ok *machine icon
 *snapshot zsf
 *indicacion correcta de pagina rom en debug
