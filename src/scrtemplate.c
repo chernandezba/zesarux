@@ -41,6 +41,7 @@ videoname with the video driver name in lowercase letters, like "xwindows"
 #include "debug.h"
 #include "zxvision.h"
 #include "cpc.h"
+#include "pcw.h"
 #include "settings.h"
 
 #include <string.h>
@@ -206,6 +207,10 @@ void scrvideoname_refresca_pantalla(void)
 	else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
+
+        else if (MACHINE_IS_PCW) {
+                scr_refresca_pantalla_y_border_pcw();
+        }         
 
 
         //printf ("%d\n",spectrum_colortable[1]);

@@ -1987,7 +1987,7 @@ fi
 if [ "$OPTIONOBJFBDEV" != "" ]; then
 
 cat >> Makefile << _EOF
-scrfbdev.o: scrfbdev.c cpu.h scrfbdev.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrfbdev.o: scrfbdev.c cpu.h scrfbdev.h operaciones.h mem128.h charset.h debug.h zx8081.h screen.h audio.h zxvision.h utils.h joystick.h ula.h z88.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -c scrfbdev.c
 
 _EOF
@@ -1998,7 +1998,7 @@ fi
 if [ "$OPTIONOBJAA" != "" ]; then
 
 cat >> Makefile << _EOF
-scraa.o: scraa.c cpu.h scraa.h operaciones.h mem128.h charset.h debug.h zx8081.h audio.h zxvision.h screen.h utils.h joystick.h ula.h z88.h textspeech.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scraa.o: scraa.c cpu.h scraa.h operaciones.h mem128.h charset.h debug.h zx8081.h audio.h zxvision.h screen.h utils.h joystick.h ula.h z88.h textspeech.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -c scraa.c
 
 _EOF
@@ -2008,7 +2008,7 @@ fi
 if [ "$OPTIONOBJCACA" != "" ]; then
 
 cat >> Makefile << _EOF
-scrcaca.o: scrcaca.c cpu.h scrcaca.h operaciones.h mem128.h charset.h debug.h zx8081.h audio.h zxvision.h screen.h utils.h joystick.h z88.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrcaca.o: scrcaca.c cpu.h scrcaca.h operaciones.h mem128.h charset.h debug.h zx8081.h audio.h zxvision.h screen.h utils.h joystick.h z88.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -c scrcaca.c
 
 _EOF
@@ -2032,7 +2032,7 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL" ]; then
 
 cat >> Makefile << _EOF
-scrsdl.o: scrsdl.c cpu.h scrsdl.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrsdl.o: scrsdl.c cpu.h scrsdl.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -c scrsdl.c
 
 audiosdl.o: audiosdl.c audiosdl.h cpu.h audio.h compileoptions.h debug.h common_sdl.h
@@ -2048,7 +2048,7 @@ fi
 if [ "$OPTIONOBJSDL" != "" ] && [ "$LIBSDL" == "SDL2" ]; then
 
 cat >> Makefile << _EOF
-scrsdl2.o: scrsdl2.c cpu.h scrsdl2.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl2.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h
+scrsdl2.o: scrsdl2.c cpu.h scrsdl2.h debug.h screen.h mem128.h compileoptions.h zx8081.h audio.h charset.h zxvision.h timer.h utils.h joystick.h common_sdl2.h cpc.h prism.h sam.h ql.h settings.h msx.h svi.h coleco.h sg1000.h sms.h pcw.h
 	\$(CC) \$(CFLAGS) -c scrsdl2.c
 
 audiosdl2.o: audiosdl2.c audiosdl2.h cpu.h audio.h compileoptions.h debug.h common_sdl2.h utils.h settings.h

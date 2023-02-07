@@ -121,6 +121,7 @@ The scancodes in translated scancode set 2 are given in hex. Between parentheses
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 //donde apunta el puntero de doble buffer. O si no hay doble buffer, apunta directamente a memoria de pantalla
 /*
@@ -507,6 +508,10 @@ void scrfbdev_refresca_pantalla(void)
 	else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
+
+        else if (MACHINE_IS_PCW) {
+                scr_refresca_pantalla_y_border_pcw();
+        }         
 
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();

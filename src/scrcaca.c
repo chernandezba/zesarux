@@ -294,6 +294,10 @@ void scrcaca_refresca_pantalla(void)
                 scr_refresca_pantalla_y_border_cpc();
         }
 
+        else if (MACHINE_IS_PCW) {
+                scr_refresca_pantalla_y_border_pcw();
+        }         
+
         else if (MACHINE_IS_SAM) {
                 scr_refresca_pantalla_y_border_sam();
         }
