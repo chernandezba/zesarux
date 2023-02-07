@@ -3953,6 +3953,11 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
     Bit 2 0 if the joystick is pushed to the left. Bit 1 Ignored.
     Bit 0 Ignored.
     */
+   /*
+   Usado en:
+   Abadia del Crimen
+   Head Over Heels
+   */
     if (ay_chip_present.v) {
         if (puerto_l==0xAA) out_port_ay(65533,value);
         if (puerto_l==0xAB) out_port_ay(49149,value);
