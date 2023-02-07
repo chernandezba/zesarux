@@ -336,7 +336,9 @@ int pd765_sc_get(pd765_signal_counter *s)
 
 void pd765_set_interrupt_pending(void)
 {
-    if (pd765_interrupt_pending) return;
+
+    //if (pd765_interrupt_pending) return;
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Set Interrupt pending");
 
     pd765_interrupt_pending=1;
 
@@ -770,6 +772,8 @@ int pd765_common_dsk_not_inserted_readwrite(void)
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
 
+        pd765_set_interrupt_pending();
+
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
@@ -1039,6 +1043,8 @@ void pd765_handle_command_invalid(void)
     //Cambiamos a fase de resultado
     pd765_phase=PD765_PHASE_RESULT;
 
+    pd765_set_interrupt_pending();
+
     //E indicar que hay que leer datos
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
 
@@ -1058,6 +1064,8 @@ void pd765_handle_command_sense_drive_status(void)
 
     //E indice a 0
     pd765_output_parameters_index=0;
+
+    pd765_set_interrupt_pending();
 }
 
 void pd765_read_parameters_sense_drive_status(z80_byte value)
@@ -1147,7 +1155,8 @@ void pd765_handle_command_recalibrate(void)
     //pd765_phase=PD765_PHASE_EXECUTION;
 
     //En fase de ejecucion se activa interrupt
-    pd765_set_interrupt_pending();
+    //TODO: no tengo claro que en un seek o recalibrate se haga tambien
+    //pd765_set_interrupt_pending();
 
     //pd765_interrupt_pending=0;
 
@@ -1200,7 +1209,8 @@ void pd765_handle_command_seek(void)
     //En fase de ejecucion se activa interrupt
     //TODO: siempre hay que activarlo cuando se esta en este estado?
     //TODO2: por que no estoy haciendo pd765_phase=PD765_PHASE_EXECUTION ?
-    pd765_set_interrupt_pending();    
+    //TODO: no tengo claro que en un seek o recalibrate se haga tambien
+    //pd765_set_interrupt_pending();    
 
     //pd765_interrupt_pending=0;
 
@@ -1567,6 +1577,7 @@ field are not checked when SK = 1.
     }    
 
 
+    //En fase de ejecucion se activa
     pd765_set_interrupt_pending();    
 
     //Cambiamos a fase de resultado
@@ -1674,6 +1685,8 @@ field are not checked when SK = 1.
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
+
+        pd765_set_interrupt_pending();
 
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
@@ -2044,7 +2057,7 @@ void pd765_handle_command_start_write_data(void)
         return;
     }    
 
-
+    //En fase de ejecucion se activa
     pd765_set_interrupt_pending();    
 
     //Cambiamos a fase de resultado
@@ -2154,6 +2167,8 @@ void pd765_handle_command_start_write_data(void)
 
         //Cambiamos a fase de resultado
         pd765_phase=PD765_PHASE_RESULT;
+
+        pd765_set_interrupt_pending();
 
         //E indicar que hay que leer datos
         pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
@@ -2269,6 +2284,8 @@ int pd765_if_write_protected(void)
 
     //Cambiamos a fase de resultado
     pd765_phase=PD765_PHASE_RESULT;
+
+    pd765_set_interrupt_pending();
 
     //E indicar que hay que leer datos
     pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;     
@@ -2615,8 +2632,8 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         pd765_input_parameters_index++;
 
-        //Envio de interrupcion 
-        pd765_set_interrupt_pending(); 
+        //En fase de ejecucion se activa 
+        pd765_set_interrupt_pending();
 
         //TODO calcular bien este valore
         pd765_formatting_total_sectores=9;
@@ -2703,6 +2720,8 @@ void pd765_read_parameters_format_track(z80_byte value)
                 //No esperamos mas parametros de input
                 //Fin de comando
                 pd765_input_parameters_index=0;
+
+                pd765_set_interrupt_pending();    
 
                 // meter datos st0,st1, st2,chrn
                 pd765_reset_buffer();
@@ -3269,6 +3288,9 @@ z80_byte pd765_read_result_command_read_id(void)
         //Y pasamos a fase command
         pd765_phase=PD765_PHASE_COMMAND;
 
+
+        //pd765_set_interrupt_pending();
+
     }
 
 
@@ -3601,7 +3623,7 @@ z80_byte pd765_read_status_register(void)
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
         DBG_PRINT_PD765 VERBOSE_DEBUG," PD765: mantener pd765_interrupt_pending pues esta seek activo. Counter to finish seek: %d",signal_se.current_counter);
-        pd765_set_interrupt_pending();
+        //TODO no estoy seguro de esto pd765_set_interrupt_pending();
     }
 
 

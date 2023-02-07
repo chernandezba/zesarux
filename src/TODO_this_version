@@ -295,23 +295,18 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -rom cpc6128: os+basic+amsdos
 
 -pendiente 6128,664:
-ok *keyboard help
-ok *machine icon.
 *puerto DF en snapshot zsf
 *indicacion correcta de pagina rom en debug
 *si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
 *snap ver cosas de cpc 464 y si faltan para 6128 y 664
-ok *hotswaps
-quiza probar entre cpc 4* y 6*
+
 
 
 -pendiente pcw 8256,8512:
-ok *keyboard help
-ok *machine icon
 *snapshot zsf
 *indicacion correcta de pagina rom en debug
 *refresco pantalla en todos drivers
 *si foco en el menu que no llegue la tecla
 Pcw opción selección boot cpm o loco script 
 First aid también para ello
-ok *hotswaps
+

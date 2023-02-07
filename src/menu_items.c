@@ -26262,7 +26262,13 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
 
     //Memoria ROM
     int total_rom=get_rom_size(current_machine_type);
-    sprintf(buf_linea,"Total ROM: %d KB\n",total_rom/1024);
+
+    if (total_rom>=1024) {
+        sprintf(buf_linea,"Total ROM: %d KB\n",total_rom/1024);
+    }
+    else {
+        sprintf(buf_linea,"Total ROM: %d B\n",total_rom);
+    }
     util_concat_string(text_buffer,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
 
 	menu_generic_message("Machine Information",text_buffer);

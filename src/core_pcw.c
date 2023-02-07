@@ -490,6 +490,9 @@ void cpu_core_loop_pcw(void)
 
         pcw_scanline_counter=0;
 
+        //printf("Generada interrupcion maskable y atendida en core\n");
+        //sleep(2);
+
     }
     
     //TODO si habia interrupcion pendiente y no se atiende por estar en DI, la perdemos??

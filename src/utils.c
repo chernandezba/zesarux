@@ -3162,6 +3162,9 @@ int get_rom_size(int machine)
 
 	//PCW8256
 	else if (machine==MACHINE_ID_PCW_8256) return 275;    
+	//PCW8512
+	else if (machine==MACHINE_ID_PCW_8512) return 275;    
+
 
     //Spectrum +3
     else if (machine==MACHINE_ID_SPECTRUM_P3_40 || machine==MACHINE_ID_SPECTRUM_P3_41 || machine==MACHINE_ID_SPECTRUM_P3_SPA) return 65536;
@@ -3189,7 +3192,10 @@ int get_rom_size(int machine)
 	else if (machine==MACHINE_ID_CPC_464) return 32768;
 
 	//CPC 4128
-	else if (machine==MACHINE_ID_CPC_4128) return 32768;        
+	else if (machine==MACHINE_ID_CPC_4128) return 32768;
+
+	//CPC 664
+	else if (machine==MACHINE_ID_CPC_664) return 49152;            
 
 	//CPC 6128
 	else if (machine==MACHINE_ID_CPC_6128) return 49152;
@@ -3245,6 +3251,10 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_QL || MACHINE_IS_CPC_HAS_128K || MACHINE_IS_CHLOE_140SE) {
         total_ram=128*1024;
+    }
+
+    else if (MACHINE_IS_PCW) {
+        total_ram=pcw_total_ram;
     }
 
     else if (MACHINE_IS_SVI_328) {

@@ -284,7 +284,7 @@ void pcw_reset(void)
     pcw_bank_registers[2]=0x82;
     pcw_bank_registers[3]=0x83; 
 
-    //Importante esto en arranque
+    //Importante esto en arranque, si no, no van juegos de Opera por ejemplo
     pcw_port_f4_value=0xF1;
 
     pcw_port_f5_value=0;
@@ -378,7 +378,7 @@ void pcw_out_port_f7(z80_byte value)
     }*/
 
     pcw_port_f7_value=value;
-    printf("PCW set port F7 value %02XH\n",value);
+    //printf("PCW set port F7 value %02XH\n",value);
 
     
 }
@@ -388,8 +388,9 @@ void pcw_interrupt_from_pd765(void)
 {
     if (pcw_interrupt_from_pd765_type==1) {
         printf("Generate NMI triggered from pd765\n");
-        //sleep(2);
+        //
         generate_nmi();
+        //sleep(2);
 
         //TODO: se supone que se desactivan todas al recibir una nmi
         /*
@@ -400,7 +401,9 @@ void pcw_interrupt_from_pd765(void)
         non-maskable interrupt occurs.  On power-up and system reset all
         Floppy Disc Controller Interrupts are disabled.
             */
-        pcw_interrupt_from_pd765_type=0;
+
+        //TODO: No estoy seguro de lo siguiente
+        //pcw_interrupt_from_pd765_type=0;
         //sleep(2);
         
     }
@@ -413,7 +416,7 @@ void pcw_interrupt_from_pd765(void)
 
         //temp
         //pcw_interrupt_from_pd765_type=0;
-        //sleep(2);
+        sleep(3);
         
     }
 }
@@ -460,19 +463,19 @@ void pcw_out_port_f8(z80_byte value)
         case 2:
             printf("Connect FDC to NMI\n");
             pcw_interrupt_from_pd765_type=1;
-            //sleep(5);
+            sleep(2);
         break;
 
         case 3:
             printf("Connect FDC to standard interrupts\n");
             pcw_interrupt_from_pd765_type=2;
-            //sleep(5);
+            sleep(2);
         break;
 
         case 4:
             printf("Connect FDC to nothing\n");
             pcw_interrupt_from_pd765_type=0;
-            //sleep(5);
+            sleep(2);
         break;
 
 
@@ -528,7 +531,16 @@ z80_byte pcw_get_port_f8_value(void)
 {
     z80_byte return_value=pcw_port_f8_value;
 
-    if (pd765_interrupt_pending) return_value|=0x20;
+    if (pd765_interrupt_pending) {
+        
+        printf("Return F8 FDC interrupt\n");
+        return_value|=0x20;
+        
+        //sleep(1);
+    }
+    else {
+        //printf("Return F8 FDC NO interrupt\n");
+    }
 
     //bit 6 Frame flyback; this is set while the screen is not being drawn
     //TODO: de momento calculo chapucero
@@ -565,7 +577,7 @@ z80_byte pcw_in_port_f4(void)
 
 z80_byte pcw_in_port_fd(void)
 {
-    printf("LEE puerto FDH on PC=%04XH\n",reg_pc);
+    //printf("LEE puerto FDH on PC=%04XH\n",reg_pc);
     //Impresora. TODO completar    
     return 0x40; //bit 6: If 1, printer has finished.
 }

@@ -3940,8 +3940,9 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
         pcw_out_port_f8(value);
     }
 
-    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l<0xf0 && puerto_l>0xf3) {
+    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && (puerto_l<0xf0 || puerto_l>0xf8)) {
         printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
+        //sleep(3);
     }
    
 }
