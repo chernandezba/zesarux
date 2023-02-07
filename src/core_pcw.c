@@ -144,7 +144,8 @@ void core_pcw_end_scanline_stuff(void)
 
     //audio_valor_enviar_sonido +=da_output_ay();
 
-  
+    audio_valor_enviar_sonido_izquierdo +=da_output_ay_izquierdo();
+    audio_valor_enviar_sonido_derecho +=da_output_ay_derecho();
 
 
 
@@ -179,7 +180,7 @@ void core_pcw_end_scanline_stuff(void)
         audio_send_stereo_sample(audio_valor_enviar_sonido_izquierdo,audio_valor_enviar_sonido_derecho);
     }    
 
-
+    ay_chip_siguiente_ciclo();
     
     
     //printf("Llega Info %d t: %d pcw_crtc_contador_scanline %d t_scanline_draw %d\n",

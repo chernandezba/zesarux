@@ -3940,10 +3940,29 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
         pcw_out_port_f8(value);
     }
 
-    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && (puerto_l<0xf0 || puerto_l>0xf8)) {
+    //13.1 DKTronics sound generator
+    //TODO: Registro 0E para lectura de joystick dk tronics
+    //
+    /*
+    Bit 7 Ignored.
+    Bit 6 0 if the fire button is pressed.
+    Bit 5 0 if the joystick is pushed up.
+    Bit 4 0 if the joystick is pushed down.
+    Bit 3 0 if the joystick is pushed to the right.
+    27
+    Bit 2 0 if the joystick is pushed to the left. Bit 1 Ignored.
+    Bit 0 Ignored.
+    */
+    if (ay_chip_present.v) {
+        if (puerto_l==0xAA) out_port_ay(65533,value);
+        if (puerto_l==0xAB) out_port_ay(49149,value);
+    }
+
+
+    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {
         printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
         //sleep(3);
-    }
+    }    
    
 }
 
@@ -3985,6 +4004,12 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
     if (puerto_l==0xFD) {
         return pcw_in_port_fd();
+    }
+
+    if (ay_chip_present.v) {
+        if (puerto_l==0xA9) {
+            return in_port_ay(0xFF);
+        }
     }
 
 

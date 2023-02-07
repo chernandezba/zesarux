@@ -475,7 +475,7 @@ void pcw_out_port_f8(z80_byte value)
         case 4:
             printf("Connect FDC to nothing\n");
             pcw_interrupt_from_pd765_type=0;
-            sleep(2);
+            //sleep(2);
         break;
 
 
