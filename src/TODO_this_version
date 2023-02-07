@@ -305,8 +305,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -pendiente pcw 8256,8512:
 *snapshot zsf
 *indicacion correcta de pagina rom en debug
-*refresco pantalla en todos drivers
-*si foco en el menu que no llegue la tecla
+
 Pcw opción selección boot cpm o loco script 
 First aid también para ello
 

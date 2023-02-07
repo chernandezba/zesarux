@@ -642,7 +642,13 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //if (fila==8) return_value=temp_row_8;
     //if (fila==5) return_value=temp_row_5;
 
-    return_value=pcw_keyboard_table[fila];
+
+    //si estamos en el menu, no devolver tecla
+    if (!zxvision_key_not_sent_emulated_mach() ) {
+
+        return_value=pcw_keyboard_table[fila];
+
+    }
 
     //if (fila==0xF) sleep(1);
 
