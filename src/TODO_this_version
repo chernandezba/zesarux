@@ -147,10 +147,6 @@ Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, s
 lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
 Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
--Emulación pcw 8256
-Requiere antes floppy
-
--6128. Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
 con la mascara quitada al buscar sector_id, plus3dos handler fallara con carlos sainz por ejemplo
@@ -186,9 +182,6 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 *Para icono ya está. Hacerlo para tecla F??, parámetro adicional para funciones que permita usar parámetros
 *Crear imagen del icono
 
--Ventana parecida a Window Information pero solo para conmutar de ventanas (como un panel de tareas): con iconos de cada aplicación cargada
-
--autoload en +3 de cinta no va, seguramente porque al tener un dsk insertado, la rutina salta diferente (o le envia el enter antes)
 
 -releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
 
