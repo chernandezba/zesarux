@@ -27806,6 +27806,19 @@ void menu_storage_dsk_pd765_silent_write_protection(MENU_ITEM_PARAMETERS)
     pd765_silent_write_protection.v ^=1;
 }
 
+void menu_pcw_boot_cpm(MENU_ITEM_PARAMETERS)
+{
+    pcw_boot_cpm();
+    salir_todos_menus=1;
+}
+
+void menu_pcw_boot_locoscript(MENU_ITEM_PARAMETERS)
+{
+    pcw_boot_locoscript();
+    salir_todos_menus=1;
+}
+
+
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_plusthreedisk;
@@ -27829,6 +27842,14 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_plusthreedisk,'e');
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
+        
+        if (MACHINE_IS_PCW) {
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
+                NULL,"    Boot CP/M");
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
+                NULL,"    Boot LocoScript");
+
+        }
 
 
         menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,

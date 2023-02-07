@@ -498,6 +498,8 @@ void pcw_out_port_f8(z80_byte value)
 
         case 10:
             pd765_motor_off();
+            printf("Motor off on %04XH\n",reg_pc);
+            //sleep(2);
         break;
 
         case 11:
@@ -868,4 +870,41 @@ void scr_refresca_pantalla_y_border_pcw(void)
         scr_refresca_pantalla_y_border_pcw_no_rainbow();
     }
     */
+}
+
+void pcw_boot_dsk_generic(char *filename)
+{
+    //TODO: conservar nombre anterior insertado, y restaurarlo despues de haber hecho boot totalmente
+
+	char buffer_nombre[PATH_MAX];
+
+	if (find_sharedfile(filename,buffer_nombre)) {
+		//Asignar la MMC
+		//TODO: esto mete ruta relativa (en caso de . o ../Resources). Se podria meter ruta absoluta
+		//strcpy(mmc_file_name,buffer_nombre);
+
+        dskplusthree_disable();
+
+		dsk_insert_disk(buffer_nombre);
+
+		dskplusthree_enable();
+		pd765_enable();  
+
+        //este o no el autoload, hacemos reset   
+        reset_cpu();   
+	}
+
+	else {
+        debug_printf(VERBOSE_ERR,"%s image not found",filename);
+	}    
+}
+
+void pcw_boot_locoscript(void)
+{
+    pcw_boot_dsk_generic("pcw_8x_boot1.dsk");
+}
+
+void pcw_boot_cpm(void)
+{
+    pcw_boot_dsk_generic("pcw_8x_boot2.dsk");
 }
