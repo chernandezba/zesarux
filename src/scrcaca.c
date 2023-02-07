@@ -41,6 +41,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 int scrcaca_imgwidth,scrcaca_imgheight;
 

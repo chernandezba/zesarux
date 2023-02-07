@@ -45,6 +45,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 
 aa_context *context;
