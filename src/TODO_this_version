@@ -281,10 +281,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 
-
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
-
--menu debug i/o: que calcule lineas totales y redimensione total height ventana (solo ampliar, no hace falta reducir) si no cabe. visible height no tocar
 
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
@@ -296,16 +293,12 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -pendiente 6128,664:
 *puerto DF en snapshot zsf
-*indicacion correcta de pagina rom en debug
 *si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
 *snap ver cosas de cpc 464 y si faltan para 6128 y 664
 
 
-
 -pendiente pcw 8256,8512:
 *snapshot zsf
-*indicacion correcta de pagina rom en debug
-
-Pcw opción selección boot cpm o loco script 
+*Pcw opción selección boot cpm o loco script 
 First aid también para ello
 

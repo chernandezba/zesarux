@@ -58,6 +58,7 @@ extern void pcw_out_port_f5(z80_byte value);
 extern void pcw_out_port_f6(z80_byte value);
 extern void pcw_out_port_f7(z80_byte value);
 extern void pcw_out_port_f8(z80_byte value);
+extern z80_byte pcw_get_port_f8_value(void);
 
 extern z80_byte pcw_in_port_f4(void);
 extern z80_byte pcw_in_port_f8(void);

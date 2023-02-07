@@ -12781,6 +12781,29 @@ void zxvision_set_visible_height(zxvision_window *w,int visible_height)
 
 }
 
+//Funcion que cambia alto total de la ventana
+//Corresponde a la funcion que llama aqui, redibujar la ventana, idealmente llamando a:
+//	zxvision_redraw_window_on_move(w);
+//zxvision_set_all_flag_dirty_must_draw_contents();
+//Esto se hace asi para que desde donde llama, pueda ser un overlay de ventana, sin tener que redibujar
+//ni alterar otra escritura de ventana que este por encima
+void zxvision_set_total_height(zxvision_window *w,int total_height)
+{
+	
+	if (total_height<1) return;
+
+    if (w->contents_can_be_enlarged) {
+        debug_printf(VERBOSE_DEBUG,"Window set total height new: %d previous total_height: %d",total_height,w->total_height);
+
+        zxvision_enlarge_common(w,0,total_height);
+        
+    }
+    
+	w->total_height=total_height;
+
+
+}
+
 /*char *zxvision_get_text_margin(zxvision_window *w,int linea)
 {
 	int i;

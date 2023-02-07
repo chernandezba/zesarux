@@ -20516,6 +20516,7 @@ zxvision_window *menu_debug_ioports_overlay_window;
 //Ultimo valor de lineas totales obtenido desde overlay
 //Inicializado con algo por si acaso
 int total_lineas_menu_debug_ioports=10;
+int antes_total_lineas_menu_debug_ioports=10;
 
 
 //texto que contiene cada linea con ajuste de palabra. Al trocear las lineas aumentan
@@ -20568,6 +20569,20 @@ void menu_debug_ioports_overlay(void)
 
     //Obtener lineas de debug y separar cada linea
     menu_debug_ioports_overlay_get_lines();
+
+    //Si necesita aumentar total height de ventana
+    if (total_lineas_menu_debug_ioports>antes_total_lineas_menu_debug_ioports) {
+        debug_printf(VERBOSE_DEBUG,"Need to enlarge Debug I/O ports window total height to %d",total_lineas_menu_debug_ioports);
+        zxvision_set_total_height(ventana,total_lineas_menu_debug_ioports);
+    }
+
+    //Si ha cambiado (tanto para mayor como menor), borrar contenido para rellenarlo de nuevo
+    if (total_lineas_menu_debug_ioports!=antes_total_lineas_menu_debug_ioports) {
+        zxvision_cls(ventana);
+    }    
+
+
+    antes_total_lineas_menu_debug_ioports=total_lineas_menu_debug_ioports;
   
     int i;
   

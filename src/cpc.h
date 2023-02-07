@@ -36,6 +36,7 @@ extern z80_byte *cpc_memory_paged_write[];
 
 extern void cpc_out_port_df(z80_byte value);
 extern void cpc_out_port_fa7e(z80_byte value);
+extern z80_byte cpc_port_df;
 
 #define CPC_MEMORY_TYPE_ROM 0
 #define CPC_MEMORY_TYPE_RAM 1
