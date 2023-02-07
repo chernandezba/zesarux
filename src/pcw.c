@@ -416,7 +416,7 @@ void pcw_interrupt_from_pd765(void)
 
         //temp
         //pcw_interrupt_from_pd765_type=0;
-        sleep(3);
+        //sleep(3);
         
     }
 }
@@ -463,13 +463,13 @@ void pcw_out_port_f8(z80_byte value)
         case 2:
             printf("Connect FDC to NMI\n");
             pcw_interrupt_from_pd765_type=1;
-            sleep(2);
+            //sleep(2);
         break;
 
         case 3:
             printf("Connect FDC to standard interrupts\n");
             pcw_interrupt_from_pd765_type=2;
-            sleep(2);
+            //sleep(2);
         break;
 
         case 4:
@@ -486,7 +486,8 @@ void pcw_out_port_f8(z80_byte value)
 
         case 6:
             printf("Reset Terminal count\n"); 
-            pd765_reset_terminal_count_signal();
+            //Tal y como tenemos implementado el set, esto ya no tiene sentido
+            //pd765_reset_terminal_count_signal();
         break;
 
 
@@ -534,6 +535,8 @@ z80_byte pcw_get_port_f8_value(void)
     if (pd765_interrupt_pending) {
         
         printf("Return F8 FDC interrupt\n");
+
+        //printf("pd765_terminal_count_signal.v: %d\n",pd765_terminal_count_signal.v);
         return_value|=0x20;
         
         //sleep(1);
