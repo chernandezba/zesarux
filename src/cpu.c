@@ -4722,6 +4722,7 @@ You don't need timings for H/V sync =)
 		poke_byte_no_time=poke_byte_no_time_pcw;
 		lee_puerto=lee_puerto_pcw;
         out_port=out_port_pcw;
+        ay_chip_present.v=1;
         fetch_opcode=fetch_opcode_pcw;
 
 		break;
@@ -4733,6 +4734,7 @@ You don't need timings for H/V sync =)
 		poke_byte_no_time=poke_byte_no_time_pcw;
 		lee_puerto=lee_puerto_pcw;
         out_port=out_port_pcw;
+        ay_chip_present.v=1;
         fetch_opcode=fetch_opcode_pcw;
 
 		break;                        
