@@ -4,7 +4,8 @@ Version 10.3 - xxxx edition. 02 November 2022
 
 Added Machine Amstrad CPC 6128
 Added Machine Amstrad CPC 664
-Added Machines Amstrad PCW 8256, PCW 8512
+Added Machine Amstrad PCW 8256
+Added Machine Amstrad PCW 8512
 Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
 Added Visual Floppy to see +3 disk (and CPC6128?) activity
 Added Poke F-Function
@@ -54,7 +55,7 @@ Improved ZX Vision:
 
 * Fixes:
 
-Fixed +3 disk (and CPC6128?) (PD765) emulation: TODO: add more details here
+Fixed Spectrum +3 disk emulation: TODO: add more details here
 Fixed autoload on Spectrum +3
 Fixed showing creator on DSK file viewer
 Fixed pause: can now return when pressing mouse button too

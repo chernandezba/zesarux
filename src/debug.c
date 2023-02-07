@@ -5651,23 +5651,7 @@ void debug_get_ioports(char *stats_buffer)
 
 
 
-  	//Esto no en Z88
-  	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
-  		int chips=ay_retorna_numero_chips();
-  		int j;
-  		for (j=0;j<chips;j++) {
-  			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-
-                  	int i;
-  	                for (i=0;i<16;i++) {
-          	                sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
-                  	        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	                }
-
-  		}
-  	}
 
   	if (sn_chip_present.v) {
 
@@ -5866,7 +5850,24 @@ void debug_get_ioports(char *stats_buffer)
 
         sprintf (buf_linea,"MC_STAT: %02X\n",ql_mc_stat);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
-    } 	  
+    } 	
+
+  	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
+  		int chips=ay_retorna_numero_chips();
+  		int j;
+  		for (j=0;j<chips;j++) {
+  			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
+  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+                  	int i;
+  	                for (i=0;i<16;i++) {
+          	                sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
+                  	        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+  	                }
+
+  		}
+  	}      
 
 
     stats_buffer[index_buffer]=0;
