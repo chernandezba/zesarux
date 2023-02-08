@@ -7637,7 +7637,6 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         break;
 
 
-        case UTIL_KEY_CONTROL_R:
         case UTIL_KEY_CONTROL_L:                
 
             util_press_menu_symshift(pressrelease);
@@ -7685,6 +7684,54 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                 }
             }
         break;
+
+        case UTIL_KEY_CONTROL_R:
+
+            util_press_menu_symshift(pressrelease);
+
+            //printf ("Pulsado ctrl");
+            if (MACHINE_IS_ZX8081) {
+                //para zx80/81
+                //aqui hace lo mismo que mayusculas
+                if (pressrelease) puerto_65278  &=255-1;
+                else  puerto_65278 |=1;
+            }
+
+            //En sam es otra tecla
+
+            else if (MACHINE_IS_SAM) {
+                if (pressrelease) puerto_65534 &=255-1;
+                else puerto_65534 |=1;
+            }
+
+
+            else {
+
+
+
+                //puerto_32766    db              255  ; B    N    M    Simb Space ;7
+
+                if (pressrelease) {
+                    puerto_32766  &=255-2;
+                    blink_kbd_a14 &= (255-16);
+                    cpc_keyboard_table[2] &=(255-128);
+                    msx_keyboard_table[6] &=(255-2);
+                    ql_keyboard_table[7] &= (255-2);
+
+
+                }
+
+
+                else  {
+                    puerto_32766 |=2;
+                    blink_kbd_a14 |= 16;
+                    cpc_keyboard_table[2] |=128;
+                    msx_keyboard_table[6] |=2;
+                    ql_keyboard_table[7] |= 2;
+
+                }
+            }
+        break;        
 
                         //Teclas que generan doble pulsacion
                         case UTIL_KEY_BACKSPACE:
