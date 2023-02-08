@@ -145,6 +145,11 @@ extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[];
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_frameone[];
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo[];
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framezero[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frameone[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frametwo[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framethree[];
+
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_inactive[];
 
 extern char *bitmap_lowericon_ext_desktop_betadisk_active[];

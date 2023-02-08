@@ -294,4 +294,12 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 *snapshot zsf
 *Pcw opción selección boot cpm o loco script 
 First aid también para ello
+-teclas f5-f8...
+-en motor off, refresco icono floppy para que desparezca el puntito
+-caps lock no va...
+-teclas     UTIL_KEY_KP_NUMLOCK,
+    UTIL_KEY_KP_DIVIDE,
+    UTIL_KEY_KP_MULTIPLY,
+    UTIL_KEY_KP_MINUS, en todos los drivers
 
+-proximidad a icono papelera tiene en cuenta zoom gui?

@@ -4937,10 +4937,20 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
         
         if (dskplusthree_emulation.v && pd765_motor_status) {
 
-            if (lowericon_cf2_floppy_frame==0) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framezero;
-            if (lowericon_cf2_floppy_frame==1) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frameone;
-            if (lowericon_cf2_floppy_frame==2) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo;
-            if (lowericon_cf2_floppy_frame==3) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framethree;
+            //Iconos cuando esta grabando (write, format...)
+            if (cf2_floppy_icon_is_saving) {
+                if (lowericon_cf2_floppy_frame==0) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_save_framezero;
+                if (lowericon_cf2_floppy_frame==1) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_save_frameone;
+                if (lowericon_cf2_floppy_frame==2) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_save_frametwo;
+                if (lowericon_cf2_floppy_frame==3) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_save_framethree;
+            }
+
+            else {
+                if (lowericon_cf2_floppy_frame==0) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framezero;
+                if (lowericon_cf2_floppy_frame==1) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frameone;
+                if (lowericon_cf2_floppy_frame==2) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo;
+                if (lowericon_cf2_floppy_frame==3) puntero_bitmap=bitmap_lowericon_ext_desktop_plus3_flp_active_framethree;
+            }
             inverso=0;
         }
     }    

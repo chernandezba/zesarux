@@ -659,7 +659,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
     //3FFDh bit 7 is 0 if LK2 is present, 1 if not.
     
-    if (fila==0xD) return_value=128;
+    if (fila==0xD) return_value |=128;
 
 
 

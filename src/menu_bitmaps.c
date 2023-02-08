@@ -1621,8 +1621,8 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[EXT_DESKTOP_BUTTON
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
-	"  wxxxxxxxxx  xxxxxxxxxw  ", 		
-	"  wxxxxxxxxx  xxxxxxxxxw  ",		
+	"  wxxxxxxxxxggxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxggxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
 	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
@@ -1655,8 +1655,8 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active_frameone[EXT_DESKTOP_BUTTONS
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
-	"  wxxxxx  xWWWWxxxxxxxxw  ",		
-	"  wxxxxx  xWWWWxxxxxxxxw  ",		
+	"  wxxxxxggxWWWWxxxxxxxxw  ",		
+	"  wxxxxxggxWWWWxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
@@ -1689,8 +1689,8 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo[EXT_DESKTOP_BUTTONS
 	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
-	"  wxxxxxxxxx  xxxxxxxxxw  ",			
-	"  wxxxxxxxxx  xxxxxxxxxw  ",		
+	"  wxxxxxxxxxggxxxxxxxxxw  ",			
+	"  wxxxxxxxxxggxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
 	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
@@ -1715,8 +1715,8 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[EXT_DESKTOP_BUTTO
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
-	"  wxxxxxxxxWWWWx  xxxxxw  ",		
-	"  wxxxxxxxxWWWWx  xxxxxw  ",		
+	"  wxxxxxxxxWWWWxggxxxxxw  ",		
+	"  wxxxxxxxxWWWWxggxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
@@ -1731,6 +1731,127 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[EXT_DESKTOP_BUTTO
 	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
 	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
 };
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framezero[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxrrxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frameone[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxrrxWWWWxxxxxxxxw  ",		
+	"  wxxxxxrrxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frametwo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",			
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framethree[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxrrxxxxxw  ",		
+	"  wxxxxxxxxWWWWxrrxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
 
 char *bitmap_lowericon_ext_desktop_plus3_flp_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345

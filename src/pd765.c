@@ -2983,6 +2983,9 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             pd765_command_received=PD765_COMMAND_WRITE_DATA;
 
+            //Indicamos que el icono es el de grabado, 3 segundos de tiempo
+            cf2_floppy_icon_is_saving=3;            
+
             pd765_input_parameters_index++;         
         }
 
@@ -2995,6 +2998,9 @@ void pd765_write_handle_phase_command(z80_byte value)
 
 
             pd765_command_received=PD765_COMMAND_FORMAT_TRACK;
+
+            //Indicamos que el icono es el de grabado, 3 segundos de tiempo
+            cf2_floppy_icon_is_saving=3;
 
             pd765_input_parameters_index++;         
         }                                    
@@ -3715,6 +3721,12 @@ void pd765_reset_terminal_count_signal(void)
 }
 */
 
+//Para indicar que en los ultimos 3 segundos estabamos grabando (write_data, format, ...)
+//Aunque se cuele algun comando de lectura en los ultimos 3 segundos, mientras haya escrituras en ese intervalo,
+//el icono sera el de salvado
+//Icono de lectura: "Puntito" circular verde
+//Icono de escritura: "Puntito" circular rojo
+int cf2_floppy_icon_is_saving=0;
 
 void cf2_floppy_icon_activity(void)
 {
@@ -3727,5 +3739,8 @@ void cf2_floppy_icon_activity(void)
             menu_draw_ext_desktop();      
         }
     }
+
+    //Decrementar contador de salvado
+    if (cf2_floppy_icon_is_saving!=0) cf2_floppy_icon_is_saving--;
 
 }

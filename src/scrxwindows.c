@@ -1086,7 +1086,7 @@ void scrxwindows_z88_cpc_load_keymap(void)
 	switch (z88_cpc_keymap_type) {
 
 		case 1:
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI)  {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
 				scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
 				scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
 				scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
@@ -1144,7 +1144,7 @@ void scrxwindows_z88_cpc_load_keymap(void)
 
 		default:
 			//0 o default
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI)  {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
 				scrxwindows_keymap_z88_cpc_minus=XK_minus;
 				scrxwindows_keymap_z88_cpc_equal=XK_equal;
 				scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
@@ -1296,7 +1296,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
         int tecla_gestionada_sam_ql=0;
-        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
                 tecla_gestionada_sam_ql=1;
 
                         if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -1320,6 +1320,8 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                         else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
                 else tecla_gestionada_sam_ql=0;
@@ -1415,22 +1417,22 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 			case XK_minus:
 			case XK_KP_Subtract:
-				util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
                         break;
 
 			case XK_plus:
 			case XK_KP_Add:
-				util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
                         break;
 
                         case XK_slash:
                         case XK_KP_Divide:
-				util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
                         break;
 
                         case XK_asterisk:
                         case XK_KP_Multiply:
-				util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
 

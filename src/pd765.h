@@ -147,4 +147,6 @@ extern void pd765_motor_off(void);
 
 extern void cf2_floppy_icon_activity(void);
 
+extern int cf2_floppy_icon_is_saving;
+
 #endif

@@ -247,7 +247,7 @@ void scrfbdev_z88_cpc_load_keymap(void)
 	//y los codigos raw de retorno siempre son los mismos.
 	//por tanto, devolvemos lo mismo que con keymap english siempre:
 
-	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 		scrfbdev_keymap_z88_cpc_minus=RAWKEY_minus;
 		scrfbdev_keymap_z88_cpc_equal=RAWKEY_equal;
 		scrfbdev_keymap_z88_cpc_backslash=RAWKEY_grave;
@@ -901,7 +901,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 
 
         int tecla_gestionada_sam_ql=0;
-        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
                 tecla_gestionada_sam_ql=1;
 
                         if (teclaraw==scrfbdev_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -925,6 +925,8 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
                         else if (teclaraw==scrfbdev_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                         else if (teclaraw==scrfbdev_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                        else if (teclaraw==scrfbdev_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
                 else tecla_gestionada_sam_ql=0;
@@ -1018,11 +1020,11 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 
 
 			case RAWKEY_KP_Subtract:
-				util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
 				break;
 
 			case RAWKEY_KP_Add:
-				util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
 				break;
 
 			case RAWKEY_KP_Divide:
@@ -1031,7 +1033,7 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				break;
 
 			case RAWKEY_KP_Multiply:
-				util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
 				break;
 
 

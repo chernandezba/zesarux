@@ -1525,7 +1525,7 @@ int scrcocoa_keymap_z88_cpc_slash;
 int scrcocoa_keymap_z88_cpc_circunflejo;
 int scrcocoa_keymap_z88_cpc_colon;
 int scrcocoa_keymap_z88_cpc_arroba;
-int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en Chloe
+int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chloe y PCW
 
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
@@ -1560,7 +1560,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 	if (pressrelease) notificar_tecla_interrupcion_si_z88();
 
-    //printf ("teclareal %d pressrelease: %d\n",teclareal,pressrelease);
+    printf ("teclareal %d pressrelease: %d\n",teclareal,pressrelease);
 
 	//Teclas que necesitan conversion de teclado para Chloe
 	int tecla_gestionada_chloe=0;
@@ -1600,7 +1600,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
 	int tecla_gestionada_sam_ql=0;
-	if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+	if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 		tecla_gestionada_sam_ql=1;
 
                 if (teclareal==scrcocoa_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -1624,6 +1624,8 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
                 else if (teclareal==scrcocoa_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                 else if (teclareal==scrcocoa_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                else if (teclareal==scrcocoa_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
 		else tecla_gestionada_sam_ql=0;
@@ -1748,22 +1750,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
 
-                case COCOA_KEY_KP_MINUS:
-                        util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_PLUS:
-                        util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_DIVIDE:
-                        util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_MULTIPLY:
-                        util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
-                break;
-
                 case COCOA_KEY_DELETE:
                         util_set_reset_key(UTIL_KEY_DEL,pressrelease);
                 break;
@@ -1860,6 +1846,31 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
                 //Teclas del keypad
+                case COCOA_KEY_NUMLOCK:
+                        util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_MINUS:
+                        util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_PLUS:
+                        util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_DIVIDE:
+                        util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_MULTIPLY:
+                        util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
+                break;
+
+                
+
+
+                                             
+
                 case COCOA_KEY_KP0:
                         util_set_reset_key(UTIL_KEY_KP0,pressrelease);
                 break;
@@ -2927,7 +2938,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
         //y los codigos raw de retorno siempre son los mismos.
         //por tanto, devolvemos lo mismo que con keymap english siempre:
 
-	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 	                scrcocoa_keymap_z88_cpc_minus='-';
                         scrcocoa_keymap_z88_cpc_equal='=';
 			scrcocoa_keymap_z88_cpc_backslash=COCOA_SECOND_BACKSLASH;
@@ -2940,7 +2951,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
                         scrcocoa_keymap_z88_cpc_comma=',';
                         scrcocoa_keymap_z88_cpc_period='.';
                         scrcocoa_keymap_z88_cpc_slash='/';
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
 	}
 
 	else if (MACHINE_IS_CPC) {
@@ -2957,7 +2968,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
 			scrcocoa_keymap_z88_cpc_slash='/';
 
 			scrcocoa_keymap_z88_cpc_backslash=COCOA_SECOND_BACKSLASH;
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
 	}
 
 	//Para Chloe
@@ -2974,7 +2985,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
                         scrcocoa_keymap_z88_cpc_comma=',';
                         scrcocoa_keymap_z88_cpc_period='.';
                         scrcocoa_keymap_z88_cpc_slash='/';
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
         }
 
 
