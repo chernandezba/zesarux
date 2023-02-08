@@ -7399,31 +7399,30 @@ void util_set_reset_key_continue(enum util_teclas tecla,int pressrelease)
 void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrelease)
 {
 
-        //temp reasignacion
-        //if (tecla==UTIL_KEY_ALT_R) tecla=UTIL_KEY_ENTER;
 
-	switch (tecla) {
-                        case UTIL_KEY_SPACE:
-                       	case 32:
-                                if (pressrelease) {
-                                        puerto_32766 &=255-1;
-                                        blink_kbd_a13 &= (255-64);
-				        cpc_keyboard_table[5] &= (255-128);
-                                        ql_keyboard_table[1] &= (255-64);
-                                        msx_keyboard_table[8] &= (255-1);
-                                        svi_keyboard_table[8] &= (255-1);
-                                        pcw_keyboard_table[5] |=128;
-                                }
-                                else {
-                                        puerto_32766 |=1;
-                                        blink_kbd_a13 |= 64;
-					                              cpc_keyboard_table[5] |= 128;
-                                        ql_keyboard_table[1] |= 64;
-                                        msx_keyboard_table[8] |= 1;
-                                        svi_keyboard_table[8] |= 1;
-                                        pcw_keyboard_table[5] &=(255-128);
-                                }
-                        break;
+
+    switch (tecla) {
+        case UTIL_KEY_SPACE:
+        case 32:
+            if (pressrelease) {
+                    puerto_32766 &=255-1;
+                    blink_kbd_a13 &= (255-64);
+                    cpc_keyboard_table[5] &= (255-128);
+                    ql_keyboard_table[1] &= (255-64);
+                    msx_keyboard_table[8] &= (255-1);
+                    svi_keyboard_table[8] &= (255-1);
+                    pcw_keyboard_table[5] |=128;
+            }
+            else {
+                    puerto_32766 |=1;
+                    blink_kbd_a13 |= 64;
+                                cpc_keyboard_table[5] |= 128;
+                    ql_keyboard_table[1] |= 64;
+                    msx_keyboard_table[8] |= 1;
+                    svi_keyboard_table[8] |= 1;
+                    pcw_keyboard_table[5] &=(255-128);
+            }
+        break;
 
                         case UTIL_KEY_ENTER:
                                 if (pressrelease) {
@@ -7545,147 +7544,147 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 }
                         break;
 
-                        case UTIL_KEY_ALT_L:
+        case UTIL_KEY_ALT_L:
 
-                                util_press_menu_symshift(pressrelease);
+            util_press_menu_symshift(pressrelease);
 
-                                //printf ("Pulsado ctrl o Alt");
-                                if (MACHINE_IS_ZX8081) {
-                                       //para zx80/81
-                                        //aqui hace lo mismo que mayusculas
-                                       if (pressrelease) puerto_65278  &=255-1;
-                                        else  puerto_65278 |=1;
-                                }
-
-
-                                else {
-
-//puerto_32766    db              255  ; B    N    M    Simb Space ;7
-
-                                        if (pressrelease) {
-                                                puerto_32766  &=255-2;
-                                                blink_kbd_a15 &= (255-64);
-
-						//ALT en CPC es CLR
-						cpc_keyboard_table[2] &=(255-1);
-                                                ql_keyboard_table[7] &= (255-4);
-
-                                                //ALT en MSX es stop
-                                                msx_keyboard_table[7] &= (255-16);
-                                                svi_keyboard_table[6] &= (255-32);
-                                        }
+            //printf ("Pulsado ctrl o Alt");
+            if (MACHINE_IS_ZX8081) {
+                //para zx80/81
+                //aqui hace lo mismo que mayusculas
+                if (pressrelease) puerto_65278  &=255-1;
+                else  puerto_65278 |=1;
+            }
 
 
-                                        else  {
-                                                puerto_32766 |=2;
-                                                blink_kbd_a15 |= 64;
+            else {
 
-						//ALT en CPC es CLR
-						cpc_keyboard_table[2] |=1;
-                                                ql_keyboard_table[7] |= 4;
+                //puerto_32766    db              255  ; B    N    M    Simb Space ;7
 
-                                                //ALT en MSX es stop
-                                                msx_keyboard_table[7] |= 16;
-                                                svi_keyboard_table[6] |= 32;
-                                        }
-                                }
-                        break;
+                if (pressrelease) {
+                    puerto_32766  &=255-2;
+                    blink_kbd_a15 &= (255-64);
 
-                        case UTIL_KEY_ALT_R:
-                                util_press_menu_symshift(pressrelease);
+                    //ALT en CPC es CLR
+                    cpc_keyboard_table[2] &=(255-1);
+                    ql_keyboard_table[7] &= (255-4);
 
-                                //printf ("Pulsado ctrl o Alt");
-                                if (MACHINE_IS_ZX8081) {
-                                       //para zx80/81
-                                        //aqui hace lo mismo que mayusculas
-                                       if (pressrelease) puerto_65278  &=255-1;
-                                        else  puerto_65278 |=1;
-                                }
+                    //ALT en MSX es stop
+                    msx_keyboard_table[7] &= (255-16);
+                    svi_keyboard_table[6] &= (255-32);
+                }
 
 
-				//En SAM coupe, alt derecha es Edit
-				else if (MACHINE_IS_SAM) {
-					if (pressrelease) {
-						puerto_teclado_sam_bff9 &= 255-128;
-					}
-					else	puerto_teclado_sam_bff9 |=128;
-				}
+                else  {
+                    puerto_32766 |=2;
+                    blink_kbd_a15 |= 64;
+
+                    //ALT en CPC es CLR
+                    cpc_keyboard_table[2] |=1;
+                    ql_keyboard_table[7] |= 4;
+
+                    //ALT en MSX es stop
+                    msx_keyboard_table[7] |= 16;
+                    svi_keyboard_table[6] |= 32;
+                }
+            }
+        break;
+
+        case UTIL_KEY_ALT_R:
+            util_press_menu_symshift(pressrelease);
+
+            //printf ("Pulsado ctrl o Alt");
+            if (MACHINE_IS_ZX8081) {
+                //para zx80/81
+                //aqui hace lo mismo que mayusculas
+                if (pressrelease) puerto_65278  &=255-1;
+                else  puerto_65278 |=1;
+            }
 
 
-                                else {
-
-//puerto_32766    db              255  ; B    N    M    Simb Space ;7
-
-                                        if (pressrelease) {
-                                                puerto_32766  &=255-2;
-                                                blink_kbd_a15 &= (255-64);
-
-                                                //ALT en CPC es CLR
-                                                cpc_keyboard_table[2] &=(255-1);
-                                                ql_keyboard_table[7] &= (255-4);
-                                        }
+            //En SAM coupe, alt derecha es Edit
+            else if (MACHINE_IS_SAM) {
+                if (pressrelease) {
+                    puerto_teclado_sam_bff9 &= 255-128;
+                }
+                else	puerto_teclado_sam_bff9 |=128;
+            }
 
 
-                                        else  {
-                                                puerto_32766 |=2;
-                                                blink_kbd_a15 |= 64;
+            else {
 
-                                                //ALT en CPC es CLR
-                                                cpc_keyboard_table[2] |=1;
-                                                ql_keyboard_table[7] |= 4;
-                                        }
-                                }
-                        break;
+                //puerto_32766    db              255  ; B    N    M    Simb Space ;7
 
+                if (pressrelease) {
+                    puerto_32766  &=255-2;
+                    blink_kbd_a15 &= (255-64);
 
-                        case UTIL_KEY_CONTROL_R:
-                        case UTIL_KEY_CONTROL_L:                
-
-                                util_press_menu_symshift(pressrelease);
-
-                                //printf ("Pulsado ctrl");
-                                if (MACHINE_IS_ZX8081) {
-                                       //para zx80/81
-                                        //aqui hace lo mismo que mayusculas
-                                        if (pressrelease) puerto_65278  &=255-1;
-                                        else  puerto_65278 |=1;
-                                }
-
-				//En sam es otra tecla
-
-				else if (MACHINE_IS_SAM) {
-					if (pressrelease) puerto_65534 &=255-1;
-					else puerto_65534 |=1;
-				}
+                    //ALT en CPC es CLR
+                    cpc_keyboard_table[2] &=(255-1);
+                    ql_keyboard_table[7] &= (255-4);
+                }
 
 
-                                else {
+                else  {
+                    puerto_32766 |=2;
+                    blink_kbd_a15 |= 64;
+
+                    //ALT en CPC es CLR
+                    cpc_keyboard_table[2] |=1;
+                    ql_keyboard_table[7] |= 4;
+                }
+            }
+        break;
+
+
+        case UTIL_KEY_CONTROL_R:
+        case UTIL_KEY_CONTROL_L:                
+
+            util_press_menu_symshift(pressrelease);
+
+            //printf ("Pulsado ctrl");
+            if (MACHINE_IS_ZX8081) {
+                //para zx80/81
+                //aqui hace lo mismo que mayusculas
+                if (pressrelease) puerto_65278  &=255-1;
+                else  puerto_65278 |=1;
+            }
+
+            //En sam es otra tecla
+
+            else if (MACHINE_IS_SAM) {
+                if (pressrelease) puerto_65534 &=255-1;
+                else puerto_65534 |=1;
+            }
+
+
+            else {
 
 
 
-//puerto_32766    db              255  ; B    N    M    Simb Space ;7
+                //puerto_32766    db              255  ; B    N    M    Simb Space ;7
 
-                                        if (pressrelease) {
-                                                puerto_32766  &=255-2;
-                                                blink_kbd_a14 &= (255-16);
-						cpc_keyboard_table[2] &=(255-128);
-                                                msx_keyboard_table[6] &=(255-2);
-                                                ql_keyboard_table[7] &= (255-2);
-
-
-                                        }
+                if (pressrelease) {
+                    puerto_32766  &=255-2;
+                    blink_kbd_a14 &= (255-16);
+                    cpc_keyboard_table[2] &=(255-128);
+                    msx_keyboard_table[6] &=(255-2);
+                    ql_keyboard_table[7] &= (255-2);
 
 
-                                        else  {
-                                                puerto_32766 |=2;
-                                                blink_kbd_a14 |= 16;
-						cpc_keyboard_table[2] |=128;
-                                                msx_keyboard_table[6] |=2;
-                                                ql_keyboard_table[7] |= 2;
+                }
 
-                                        }
-                                }
-                        break;
+
+                else  {
+                    puerto_32766 |=2;
+                    blink_kbd_a14 |= 16;
+                    cpc_keyboard_table[2] |=128;
+                    msx_keyboard_table[6] |=2;
+                    ql_keyboard_table[7] |= 2;
+
+                }
+            }
+        break;
 
                         //Teclas que generan doble pulsacion
                         case UTIL_KEY_BACKSPACE:
