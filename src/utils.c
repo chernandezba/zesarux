@@ -7572,6 +7572,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en MSX es stop
                     msx_keyboard_table[7] &= (255-16);
                     svi_keyboard_table[6] &= (255-32);
+                    pcw_keyboard_table[0xA] |=128;
                 }
 
 
@@ -7586,6 +7587,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en MSX es stop
                     msx_keyboard_table[7] |= 16;
                     svi_keyboard_table[6] |= 32;
+                    pcw_keyboard_table[0xA] &=(255-128);
                 }
             }
         break;
@@ -7622,6 +7624,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en CPC es CLR
                     cpc_keyboard_table[2] &=(255-1);
                     ql_keyboard_table[7] &= (255-4);
+                    pcw_keyboard_table[1] |=2;
                 }
 
 
@@ -7632,6 +7635,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     //ALT en CPC es CLR
                     cpc_keyboard_table[2] |=1;
                     ql_keyboard_table[7] |= 4;
+                    pcw_keyboard_table[1] &=(255-2);
                 }
             }
         break;
@@ -7669,6 +7673,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] &=(255-128);
                     msx_keyboard_table[6] &=(255-2);
                     ql_keyboard_table[7] &= (255-2);
+                    pcw_keyboard_table[0xA] |=2;
 
 
                 }
@@ -7680,6 +7685,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] |=128;
                     msx_keyboard_table[6] |=2;
                     ql_keyboard_table[7] |= 2;
+                    pcw_keyboard_table[0xA] &=(255-2);
 
                 }
             }
@@ -7717,6 +7723,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] &=(255-128);
                     msx_keyboard_table[6] &=(255-2);
                     ql_keyboard_table[7] &= (255-2);
+                    pcw_keyboard_table[1] |=1;
 
 
                 }
@@ -7728,6 +7735,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] |=128;
                     msx_keyboard_table[6] |=2;
                     ql_keyboard_table[7] |= 2;
+                    pcw_keyboard_table[1] &=(255-1);
 
                 }
             }
