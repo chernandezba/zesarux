@@ -1366,9 +1366,13 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         break;
 
 			case XK_Super_L:
-			case XK_Super_R:
 				util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
                         break;
+
+			case XK_Super_R:
+				util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+                        break;
+
 
 			case XK_Delete:
 				util_set_reset_key(UTIL_KEY_DEL,pressrelease);

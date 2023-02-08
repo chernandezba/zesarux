@@ -1050,9 +1050,12 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                         break;
 
                         case SDLK_LGUI:
-                        case SDLK_RGUI:
                                 util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
                         break;
+
+                        case SDLK_RGUI:
+                                util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+                        break;                        
 
                         case SDLK_DELETE:
                                 util_set_reset_key(UTIL_KEY_DEL,pressrelease);

@@ -301,5 +301,6 @@ First aid también para ello
     UTIL_KEY_KP_DIVIDE,
     UTIL_KEY_KP_MULTIPLY,
     UTIL_KEY_KP_MINUS, en todos los drivers
+    resto de teclas en todos los drivers
 
 -proximidad a icono papelera tiene en cuenta zoom gui?

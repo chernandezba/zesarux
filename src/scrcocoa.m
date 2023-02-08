@@ -2002,7 +2002,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 //inicializarlos con valores 0 al principio
 int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0;
-int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0; //,scrcocoa_antespulsadocapslock=0;
+int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0,scrcocoa_antespulsadocmd_r=0; //,scrcocoa_antespulsadocapslock=0;
 
 - (void) migestionEvento:(NSEvent *)event
 {
@@ -2010,9 +2010,9 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 
 
     //asumimos teclas de control no pulsadas
-    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd_l; //,pulsadocapslock;
+    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd_l,pulsadocmd_r; //,pulsadocapslock;
 
-    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=0;
+    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=pulsadocmd_r=0;
 
     int event_keycode,event_type,event_modifier_flags;
     NSPoint p = [event locationInWindow];
@@ -2125,14 +2125,29 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 		}       
 
 	}
-	if (event_modifier_flags & NSEventModifierFlagCommand) {
-		printf ("Cmd key is pressed. event_modifier_flags=%X NSEventModifierFlagCommand=%X\n",
-            event_modifier_flags,NSEventModifierFlagCommand);
-		//Al pulsar cmd no se liberan teclas. liberamos a mano
-		pulsadocmd_l=1;
-        //left cmd:  event_modifier_flags=100108 
-        //right cmd: event_modifier_flags=100110 
-	}
+
+    //TODO: valores basados en mi propia experimentacion para comprobar right cmd
+    //Si se cumple condicion, sera right. Si no, sera left
+    //Asi al menos, si esto falla en otras maquinas, al menos left siempre funcionara
+    //left cmd:  event_modifier_flags=0x100108 
+    //right cmd: event_modifier_flags=0x100110    
+    if (event_modifier_flags & NSEventModifierFlagCommand) {
+        int right_cmd_value=0x10;
+        if ((event_modifier_flags & 0xFF) != right_cmd_value) {
+            //printf ("Cmd_l key is pressed. event_modifier_flags=%XH\n",event_modifier_flags);
+            //Al pulsar cmd no se liberan teclas. liberamos a mano
+            pulsadocmd_l=1;
+
+        }
+
+        if ((event_modifier_flags & 0xFF) == right_cmd_value) {
+            //printf ("Cmd_r key is pressed. event_modifier_flags=%XH\n",event_modifier_flags);
+            //Al pulsar cmd no se liberan teclas. liberamos a mano
+            pulsadocmd_r=1;
+            //left cmd:  event_modifier_flags=100108 
+            //right cmd: event_modifier_flags=100110 
+        }    
+    }
 
 	//if (pulsadoctrl) printf ("Control key is pressed\n");
 	//else printf ("Control key is NOT pressed\n");
@@ -2176,14 +2191,20 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 
 
 	if (pulsadocmd_l!=scrcocoa_antespulsadocmd_l) {
-		printf ("notificar cambio cmd. ahora: %d\n",pulsadocmd_l);
+		//printf ("notificar cambio cmd_l. ahora: %d\n",pulsadocmd_l);
 		reset_keyboard_ports();
 	        //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
         	//por tanto, cuando se esta pulsada, liberar teclas
 		util_set_reset_key(UTIL_KEY_WINKEY_L,pulsadocmd_l);
 	}
 
-
+	if (pulsadocmd_r!=scrcocoa_antespulsadocmd_r) {
+		//printf ("notificar cambio cmd_r. ahora: %d\n",pulsadocmd_r);
+		reset_keyboard_ports();
+	        //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
+        	//por tanto, cuando se esta pulsada, liberar teclas
+		util_set_reset_key(UTIL_KEY_WINKEY_R,pulsadocmd_r);
+	}
 
 	scrcocoa_antespulsadoctrl_l=pulsadoctrl_l;
     scrcocoa_antespulsadoctrl_r=pulsadoctrl_r;
@@ -2195,6 +2216,7 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
 	scrcocoa_antespulsadoshift_r=pulsadoshift_r;
 
 	scrcocoa_antespulsadocmd_l=pulsadocmd_l;
+    scrcocoa_antespulsadocmd_r=pulsadocmd_r;
 
 	//printf ("\nfin migestionEvento\n\n");
 

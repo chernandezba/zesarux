@@ -7743,13 +7743,25 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         break;   
 
         case UTIL_KEY_WINKEY_L:
-        printf("winkey L\n");
-            //Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
+            //printf("winkey L\n");
+            if (pressrelease) {
+                pcw_keyboard_table[2] |=128;
+            }
+            else {
+                pcw_keyboard_table[2] &=(255-128);
+            }
+            
         break;             
 
         case UTIL_KEY_WINKEY_R:
-        printf("winkey L\n");
-            //Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
+            //printf("winkey R\n");
+            if (pressrelease) {
+                pcw_keyboard_table[0xA] |=8;
+            }
+            else {
+                pcw_keyboard_table[0xA] &=(255-8);
+            }
+            
         break;             
 
 
