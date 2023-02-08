@@ -399,6 +399,8 @@ void cpu_core_loop_pcw(void)
         //Eventos de boot disco, volver a disco anterior si alcanzada una direccion concreta
         pcw_handle_end_boot_disk();
 
+        pcw_boot_check_dsk_not_bootable();
+
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
     //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 

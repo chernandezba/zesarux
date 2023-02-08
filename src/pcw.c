@@ -305,6 +305,8 @@ void pcw_reset(void)
 
     pcw_set_memory_pages();
 
+    pcw_boot_timer=10;
+
     //Recargar contenido del boot de RAM
     rom_load(NULL);
 }
@@ -537,7 +539,7 @@ z80_byte pcw_get_port_f8_value(void)
 
     if (pd765_interrupt_pending) {
         
-        printf("Return F8 FDC interrupt\n");
+        //printf("Return F8 FDC interrupt\n");
 
         //printf("pd765_terminal_count_signal.v: %d\n",pd765_terminal_count_signal.v);
         return_value|=0x20;
@@ -957,4 +959,40 @@ void pcw_boot_cpm(void)
     pcw_boot_dsk_generic("pcw_8x_boot2.dsk",0x607);
 }
 
+
+//Cuenta segundos desde el boot
+int pcw_boot_timer=0;
+
+void pcw_boot_timer_handle(void)
+{
+
+    if (pcw_boot_timer==0) return;
+
+    pcw_boot_timer--;
+
+    printf("pcw_boot_timer %d\n",pcw_boot_timer);
+
+}
+
+void pcw_boot_check_dsk_not_bootable(void)
+{
+
+    //Si ha pasado ya el tiempo desde el boot, no comprobar mas
+
+    if (pcw_boot_timer==0) return;
+
+
+    if (reg_pc!=0x3D) return;
+
+    /*
+    3DH BIT 7,(HL)
+    CB 7E
+    */
+
+   if (peek_byte_no_time(reg_pc)==0xCB && peek_byte_no_time(reg_pc+1)==0x7E) {
+        pcw_boot_timer=0;
+        printf("Seems you have selected a non bootable disk\n");
+   }
+
+}
 
