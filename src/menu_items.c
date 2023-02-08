@@ -27818,6 +27818,10 @@ void menu_pcw_boot_locoscript(MENU_ITEM_PARAMETERS)
     salir_todos_menus=1;
 }
 
+void menu_pcw_boot_cpm_reinsert_previous(MENU_ITEM_PARAMETERS)
+{
+    pcw_boot_reinsert_previous_dsk.v ^=1;
+}
 
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
@@ -27843,13 +27847,6 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_plusthreedisk,"DSK Emulation");
         menu_add_item_menu_ayuda(array_menu_plusthreedisk,"DSK Emulation");
         
-        if (MACHINE_IS_PCW) {
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
-                NULL,"    Boot CP/M");
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
-                NULL,"    Boot LocoScript");
-
-        }
 
 
         menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dsk_write_protect,NULL,
@@ -27877,6 +27874,18 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
                                
         menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        if (MACHINE_IS_PCW) {
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
+                NULL,"    Boot CP/M");
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
+            "[%c] Reinsert previous dsk after boot",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
+                NULL,"    Boot LocoScript");
+
+            menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        }        
 
         //Esto que no aparezca en cpc
         if (MACHINE_IS_SPECTRUM) {

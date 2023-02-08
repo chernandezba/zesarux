@@ -881,6 +881,9 @@ char dskplusthree_before_boot_file_name[PATH_MAX]="";
 //Si antes de insertar habia disco
 z80_bit dskplusthree_emulation_before_boot={0};
 
+//Si hay que reinsertar disco previo despues de boot
+z80_bit pcw_boot_reinsert_previous_dsk={1};
+
 void pcw_handle_end_boot_disk(void)
 {
     if (!pcw_was_booting_disk_enabled) return;
@@ -931,7 +934,7 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
         reset_cpu();  
 
         
-        if (address_end_boot) {
+        if (address_end_boot && pcw_boot_reinsert_previous_dsk.v) {
             pcw_was_booting_disk_enabled=1;
             pcw_was_booting_disk_address=address_end_boot;
         }

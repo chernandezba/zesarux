@@ -98,5 +98,6 @@ extern z80_bit pcw_do_not_inverse_display;
 
 extern void pcw_boot_locoscript(void);
 extern void pcw_boot_cpm(void);
+extern z80_bit pcw_boot_reinsert_previous_dsk;
 
 #endif
