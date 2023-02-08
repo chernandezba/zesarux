@@ -307,3 +307,4 @@ First aid también para ello
 -todo: opcion en boot cp/m que diga si vuelve a disco anterior o no
 
 -proximidad a icono papelera tiene en cuenta zoom gui?
+-detectar si disco no es de boot y salir aviso
