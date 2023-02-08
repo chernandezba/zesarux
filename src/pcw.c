@@ -930,8 +930,11 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
         //este o no el autoload, hacemos reset   
         reset_cpu();  
 
-        pcw_was_booting_disk_enabled=1;
-        pcw_was_booting_disk_address=address_end_boot;
+        
+        if (address_end_boot) {
+            pcw_was_booting_disk_enabled=1;
+            pcw_was_booting_disk_address=address_end_boot;
+        }
 
 	}
 
@@ -942,7 +945,8 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 
 void pcw_boot_locoscript(void)
 {
-    pcw_boot_dsk_generic("pcw_8x_boot1.dsk",0x607);
+    //Con locoscript no hacemos cambio de disco al finalizar
+    pcw_boot_dsk_generic("pcw_8x_boot1.dsk",0);
 }
 
 void pcw_boot_cpm(void)

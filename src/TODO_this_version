@@ -304,5 +304,6 @@ First aid también para ello
     resto de teclas en todos los drivers
 -basic: save "aa.bas" no parece que lo grabe
 -error signature siempre con autoload dsk
+-todo: opcion en boot cp/m que diga si vuelve a disco anterior o no
 
 -proximidad a icono papelera tiene en cuenta zoom gui?
