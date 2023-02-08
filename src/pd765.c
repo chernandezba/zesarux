@@ -3711,7 +3711,38 @@ void pd765_set_terminal_count_signal(void)
         //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
         //otro comando para hacer el clear si ya lo hace aqui automaticamente?  
         //pd765_reset_terminal_count_signal();   
-    }   
+    }
+
+    if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
+        DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping writing data because a Terminal Count signal has been fired");
+        //sleep(10);
+
+        pd765_reset_buffer();
+
+        //TODO: no estoy seguro de esto
+        pd765_handle_command_read_data_read_chrn_etc(pd765_ultimo_sector_fisico_write,1);
+
+
+        //E indicar fase ejecucion ha finalizado
+        pd765_main_status_register &=(0xFF - PD765_MAIN_STATUS_REGISTER_EXM_MASK);
+
+
+        pd765_set_interrupt_pending();    
+
+        //Cambiamos a fase de resultado
+        pd765_phase=PD765_PHASE_RESULT;
+
+        //E indicar que hay que leer datos
+        pd765_main_status_register |=PD765_MAIN_STATUS_REGISTER_DIO_MASK;
+
+        pd765_read_command_state=PD765_WRITE_COMMAND_STATE_ENDING_WRITING_DATA;
+
+        
+
+        //TODO: no se si realmente hay que hacer clear, porque en este caso, para que querria el PCW
+        //otro comando para hacer el clear si ya lo hace aqui automaticamente?  
+        //pd765_reset_terminal_count_signal();   
+    }         
 }
 
 /*

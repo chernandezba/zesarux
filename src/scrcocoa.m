@@ -1560,7 +1560,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 
 	if (pressrelease) notificar_tecla_interrupcion_si_z88();
 
-    printf ("teclareal %d pressrelease: %d\n",teclareal,pressrelease);
+    //printf ("teclareal %d pressrelease: %d\n",teclareal,pressrelease);
 
 	//Teclas que necesitan conversion de teclado para Chloe
 	int tecla_gestionada_chloe=0;
@@ -2144,8 +2144,6 @@ int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antes
             //printf ("Cmd_r key is pressed. event_modifier_flags=%XH\n",event_modifier_flags);
             //Al pulsar cmd no se liberan teclas. liberamos a mano
             pulsadocmd_r=1;
-            //left cmd:  event_modifier_flags=100108 
-            //right cmd: event_modifier_flags=100110 
         }    
     }
 

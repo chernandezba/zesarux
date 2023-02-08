@@ -96,4 +96,7 @@ extern z80_bit pcw_black_white_display;
 extern z80_bit pcw_always_on_display;
 extern z80_bit pcw_do_not_inverse_display;
 
+extern void pcw_boot_locoscript(void);
+extern void pcw_boot_cpm(void);
+
 #endif
