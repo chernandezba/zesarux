@@ -982,7 +982,7 @@ void pcw_boot_check_dsk_not_bootable(void)
     if (pcw_boot_timer==0) return;
 
 
-    if (reg_pc!=0x3D) return;
+    if (reg_pc!=0x3D && reg_pc!=0xF13B) return;
 
     /*
     3DH BIT 7,(HL)
