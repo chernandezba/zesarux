@@ -6929,7 +6929,7 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 		}
 
 		//Ver si se pulsa tecla Windows (o cmd en mac)
-		else if (tecla==UTIL_KEY_WINKEY) {
+		else if (tecla==UTIL_KEY_WINKEY_L) {
 			//Ver si se pulsa o se libera
                         if (pressrelease==0) {
 				//printf ("Liberada winkey\n");
@@ -7740,7 +7740,18 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                 }
             }
-        break;        
+        break;   
+
+        case UTIL_KEY_WINKEY_L:
+        printf("winkey L\n");
+            //Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
+        break;             
+
+        case UTIL_KEY_WINKEY_R:
+        printf("winkey L\n");
+            //Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
+        break;             
+
 
                         //Teclas que generan doble pulsacion
                         case UTIL_KEY_BACKSPACE:
@@ -8710,9 +8721,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 				}
 			break;
 
-			case UTIL_KEY_WINKEY:
-				//Esto no se usa aqui, solo lo usa en la rutina de Chloe. Lo pongo para que no se queje de Warning al compilar
-			break;
+
 
 
 			case UTIL_KEY_NONE:

@@ -1535,14 +1535,14 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 	//La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
 	//por tanto, cuando se esta pulsada, liberar teclas y volver
 	/*
-	if (scrcocoa_antespulsadocmd==1) {
+	if (scrcocoa_antespulsadocmd_l==1) {
 		//printf ("cmd key pressed. resetting all keys\n");
 		reset_keyboard_ports();
 		return;
 	}
 	*/
 
-	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd);
+	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
 
     int buttons = 0;
     int cocoakeycode;
@@ -2001,7 +2001,8 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chlo
 }
 
 //inicializarlos con valores 0 al principio
-int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0,scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd=0; //,scrcocoa_antespulsadocapslock=0;
+int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0;
+int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0; //,scrcocoa_antespulsadocapslock=0;
 
 - (void) migestionEvento:(NSEvent *)event
 {
@@ -2009,9 +2010,9 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 
     //asumimos teclas de control no pulsadas
-    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd; //,pulsadocapslock;
+    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd_l; //,pulsadocapslock;
 
-    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd=0;
+    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=0;
 
     int event_keycode,event_type,event_modifier_flags;
     NSPoint p = [event locationInWindow];
@@ -2125,9 +2126,12 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 	}
 	if (event_modifier_flags & NSEventModifierFlagCommand) {
-		//printf ("Cmd key is pressed\n");
+		printf ("Cmd key is pressed. event_modifier_flags=%X NSEventModifierFlagCommand=%X\n",
+            event_modifier_flags,NSEventModifierFlagCommand);
 		//Al pulsar cmd no se liberan teclas. liberamos a mano
-		pulsadocmd=1;
+		pulsadocmd_l=1;
+        //left cmd:  event_modifier_flags=100108 
+        //right cmd: event_modifier_flags=100110 
 	}
 
 	//if (pulsadoctrl) printf ("Control key is pressed\n");
@@ -2171,12 +2175,12 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 
 
-	if (pulsadocmd!=scrcocoa_antespulsadocmd) {
-		//printf ("notificar cambio cmd. ahora: %d\n",pulsadocmd);
+	if (pulsadocmd_l!=scrcocoa_antespulsadocmd_l) {
+		printf ("notificar cambio cmd. ahora: %d\n",pulsadocmd_l);
 		reset_keyboard_ports();
 	        //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
         	//por tanto, cuando se esta pulsada, liberar teclas
-		util_set_reset_key(UTIL_KEY_WINKEY,pulsadocmd);
+		util_set_reset_key(UTIL_KEY_WINKEY_L,pulsadocmd_l);
 	}
 
 
@@ -2190,7 +2194,7 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 	scrcocoa_antespulsadoshift_l=pulsadoshift_l;
 	scrcocoa_antespulsadoshift_r=pulsadoshift_r;
 
-	scrcocoa_antespulsadocmd=pulsadocmd;
+	scrcocoa_antespulsadocmd_l=pulsadocmd_l;
 
 	//printf ("\nfin migestionEvento\n\n");
 
