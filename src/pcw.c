@@ -991,7 +991,7 @@ void pcw_boot_check_dsk_not_bootable(void)
 
    if (peek_byte_no_time(reg_pc)==0xCB && peek_byte_no_time(reg_pc+1)==0x7E) {
         pcw_boot_timer=0;
-        printf("Seems you have selected a non bootable disk\n");
+        debug_printf(VERBOSE_ERR,"Seems you have selected a non bootable disk");
    }
 
 }
