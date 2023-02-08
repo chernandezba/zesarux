@@ -7595,7 +7595,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         case UTIL_KEY_ALT_R:
             util_press_menu_symshift(pressrelease);
 
-            //printf ("Pulsado ctrl o Alt");
+            //printf ("Pulsado ALT R\n");
             if (MACHINE_IS_ZX8081) {
                 //para zx80/81
                 //aqui hace lo mismo que mayusculas
@@ -7625,6 +7625,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                     cpc_keyboard_table[2] &=(255-1);
                     ql_keyboard_table[7] &= (255-4);
                     pcw_keyboard_table[1] |=2;
+                    //printf("PTR\n");
                 }
 
 

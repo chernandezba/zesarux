@@ -25,6 +25,7 @@
 #include "cpu.h"
 
 #define JOYSTICK_TOTAL 14
+#define JOYSTICK_NONE 0
 #define JOYSTICK_KEMPSTON 1
 #define JOYSTICK_SINCLAIR_1 2
 #define JOYSTICK_SINCLAIR_2 3

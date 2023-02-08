@@ -4833,7 +4833,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,"~~Joystick type [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");

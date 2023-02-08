@@ -2160,12 +2160,12 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 
 	if (pulsadoalt_l!=scrcocoa_antespulsadoalt_l) {
-		//printf ("notificar cambio alt\n");
+		//printf ("notificar cambio alt l\n");
 		util_set_reset_key(UTIL_KEY_ALT_L,pulsadoalt_l);
 	}
 
 	if (pulsadoalt_r!=scrcocoa_antespulsadoalt_r) {
-		//printf ("notificar cambio alt\n");
+		//printf ("notificar cambio alt r\n");
 		joystick_possible_rightalt_key(pulsadoalt_r);
 	}
 
