@@ -887,7 +887,7 @@ void pcw_handle_end_boot_disk(void)
 
     if (reg_pc==pcw_was_booting_disk_address) {
         printf("Reached end of boot\n");
-        pcw_was_booting_disk_address=0; 
+        pcw_was_booting_disk_enabled=0; 
 
 
         //Si habia disco insertado antes, reinsertar
