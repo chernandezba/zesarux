@@ -36,6 +36,7 @@
 #include "dsk.h"
 #include "pd765.h"
 #include "ula.h"
+#include "tape.h"
 
 /*
 
@@ -872,16 +873,52 @@ void scr_refresca_pantalla_y_border_pcw(void)
     */
 }
 
-void pcw_boot_dsk_generic(char *filename)
+int pcw_was_booting_disk_enabled=0;
+z80_int pcw_was_booting_disk_address=0;
+//Nombre anterior que habia antes de insertar disco boot
+char dskplusthree_before_boot_file_name[PATH_MAX]="";
+
+//Si antes de insertar habia disco
+z80_bit dskplusthree_emulation_before_boot={0};
+
+void pcw_handle_end_boot_disk(void)
+{
+    if (!pcw_was_booting_disk_enabled) return;
+
+    if (reg_pc==pcw_was_booting_disk_address) {
+        printf("Reached end of boot\n");
+        pcw_was_booting_disk_address=0; 
+
+
+        //Si habia disco insertado antes, reinsertar
+        if (dskplusthree_emulation_before_boot.v) {
+            printf("Reinserting disk before boot: %s\n",dskplusthree_before_boot_file_name);
+
+            //Desactivamos autoload para que no haga reset
+            int antes_noautoload=noautoload.v;
+            noautoload.v=1;
+            dskplusthree_disable();
+
+    		dsk_insert_disk(dskplusthree_before_boot_file_name);
+
+	    	dskplusthree_enable();
+
+            noautoload.v=antes_noautoload;
+        }
+		
+    }
+}
+
+void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 {
     //TODO: conservar nombre anterior insertado, y restaurarlo despues de haber hecho boot totalmente
 
 	char buffer_nombre[PATH_MAX];
 
 	if (find_sharedfile(filename,buffer_nombre)) {
-		//Asignar la MMC
-		//TODO: esto mete ruta relativa (en caso de . o ../Resources). Se podria meter ruta absoluta
-		//strcpy(mmc_file_name,buffer_nombre);
+        //Copiar nombre anterior de disco
+        strcpy(dskplusthree_before_boot_file_name,dskplusthree_file_name);
+        dskplusthree_emulation_before_boot.v=dskplusthree_emulation.v;
 
         dskplusthree_disable();
 
@@ -891,7 +928,11 @@ void pcw_boot_dsk_generic(char *filename)
 		pd765_enable();  
 
         //este o no el autoload, hacemos reset   
-        reset_cpu();   
+        reset_cpu();  
+
+        pcw_was_booting_disk_enabled=1;
+        pcw_was_booting_disk_address=address_end_boot;
+
 	}
 
 	else {
@@ -901,10 +942,12 @@ void pcw_boot_dsk_generic(char *filename)
 
 void pcw_boot_locoscript(void)
 {
-    pcw_boot_dsk_generic("pcw_8x_boot1.dsk");
+    pcw_boot_dsk_generic("pcw_8x_boot1.dsk",0x607);
 }
 
 void pcw_boot_cpm(void)
 {
-    pcw_boot_dsk_generic("pcw_8x_boot2.dsk");
+    pcw_boot_dsk_generic("pcw_8x_boot2.dsk",0x607);
 }
+
+

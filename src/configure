@@ -1499,7 +1499,7 @@ z88.o: z88.c z88.h cpu.h screen.h debug.h core_z88.h contend.h joystick.h zxvisi
 cpc.o: cpc.c cpc.h cpu.h screen.h debug.h core_cpc.h contend.h joystick.h zxvision.h operaciones.h utils.h ay38912.h tape.h dsk.h pd765.h
 	\$(CC) \$(CFLAGS) -c cpc.c
 
-pcw.o: pcw.c pcw.h cpu.h screen.h debug.h core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio.h dsk.h pd765.h ula.h
+pcw.o: pcw.c pcw.h cpu.h screen.h debug.h core_pcw.h contend.h joystick.h zxvision.h operaciones.h utils.h audio.h dsk.h pd765.h ula.h tape.h
 	\$(CC) \$(CFLAGS) -c pcw.c
 
 sam.o: sam.c sam.h cpu.h screen.h debug.h core_sam.h contend.h joystick.h zxvision.h operaciones.h utils.h

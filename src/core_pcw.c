@@ -396,6 +396,9 @@ void cpu_core_loop_pcw(void)
         //Eventos de la controladora de disco
         pd765_next_event_from_core();
 
+        //Eventos de boot disco, volver a disco anterior si alcanzada una direccion concreta
+        pcw_handle_end_boot_disk();
+
 #ifdef DEBUG_SECOND_TRAP_STDOUT
 
     //Para poder debugar rutina que imprima texto. Util para aventuras conversacionales 
