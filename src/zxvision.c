@@ -4933,7 +4933,8 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
     }
 
     //Caso especial para disco moviendose
-    if (puntero_bitmap==bitmap_lowericon_ext_desktop_plus3_flp_active/* && inverso*/) {
+    
+    if (puntero_bitmap==bitmap_lowericon_ext_desktop_plus3_flp_active) {
         
         if (dskplusthree_emulation.v && pd765_motor_status) {
 
@@ -4953,7 +4954,7 @@ void menu_ext_desktop_draw_lower_icon(int numero_boton,int pulsado)
             }
             inverso=0;
         }
-    }    
+    } 
 
     //Caso especial para slots z88 con tapa abierta. Al abrir la tapa 
     //no se ve el numero

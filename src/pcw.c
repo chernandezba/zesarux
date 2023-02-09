@@ -491,12 +491,12 @@ void pcw_out_port_f8(z80_byte value)
 
 
         case 5:
-            printf("Set Terminal count\n");
+            //printf("Set Terminal count\n");
             pd765_set_terminal_count_signal();
         break;
 
         case 6:
-            printf("Reset Terminal count\n"); 
+            //printf("Reset Terminal count\n"); 
             //Tal y como tenemos implementado el set, esto ya no tiene sentido
             //pd765_reset_terminal_count_signal();
         break;

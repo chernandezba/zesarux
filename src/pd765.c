@@ -508,9 +508,6 @@ void pd765_motor_off(void)
     if (pd765_motor_status) {
         pd765_motor_status=0;
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Motor off PC=%04XH",reg_pc);
-
-        //Refrescar para hacer desaparecer el "puntito" del icono de floppy cuando esta motor encendido
-        menu_draw_ext_desktop(); 
     }
 }
 
@@ -3764,17 +3761,38 @@ void pd765_reset_terminal_count_signal(void)
 //Icono de escritura: "Puntito" circular rojo
 int cf2_floppy_icon_is_saving=0;
 
+int cf2_floppy_icon_activity_antes_motor=0;
+
 void cf2_floppy_icon_activity(void)
 {
+
+    if (!(MACHINE_IS_SPECTRUM || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW)) return;
+
     //printf("Cinta\n");
     lowericon_cf2_floppy_frame++;
     if (lowericon_cf2_floppy_frame==4) lowericon_cf2_floppy_frame=0;
 
     if (pd765_motor_status) {
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC_HAS_FLOPPY || MACHINE_IS_PCW) {
-            menu_draw_ext_desktop();      
-        }
+        printf("Refrescar icono floppy con motor encendido\n");
+        menu_draw_ext_desktop();      
     }
+
+    else {
+        //Si ha cambiado de encendido a apagado
+        if (cf2_floppy_icon_activity_antes_motor!=pd765_motor_status) {
+    
+            //Refrescar para hacer desaparecer el "puntito" del icono de floppy cuando se apaga motor
+            //Y no quiero que salga el icono en color inverso, vendria inverso por el envio de algun comando final
+
+            printf("Refrescar icono floppy cuano se apaga motor\n");
+            
+            zxdesktop_icon_plus3_inverse=0;
+            menu_draw_ext_desktop(); 
+        }
+    
+    }
+
+   cf2_floppy_icon_activity_antes_motor=pd765_motor_status;
 
     //Decrementar contador de salvado
     if (cf2_floppy_icon_is_saving!=0) cf2_floppy_icon_is_saving--;
