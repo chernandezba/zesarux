@@ -389,6 +389,8 @@ void pcw_out_port_f7(z80_byte value)
     pcw_port_f7_value=value;
     //printf("PCW set port F7 value %02XH\n",value);
 
+    modificado_border.v=1;
+
     
 }
 
@@ -859,14 +861,17 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
     //Refrescar border si conviene
     if (border_enabled.v) {
         if (modificado_border.v) {
-            //Dibujar border. Color 0
-            //unsigned int color=pcw_border_color;
 
-            //TODO
-            unsigned int color=0;
 
-            //color=cpc_palette_table[color];
-            //color +=CPC_INDEX_FIRST_COLOR;
+            int border_col=0;
+
+            //Reverse video
+            //Ejemplo de juego que usa reverse video: skywar.dsk
+            if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) border_col=1;
+
+
+            int color=pcw_get_rgb_color(border_col);
+
 
             scr_refresca_border_pcw(color);
             modificado_border.v=0;
