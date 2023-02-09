@@ -18,6 +18,10 @@ Added XEyes "Toy" to follow mouse
 * Improvements:
 
 Improved Configuration parsing: warning when ZEsarUX has been downgraded
+Improved DSK viewer:
+- better filesystem detection
+- show disk specification format
+
 Improved Debug Console: better refresh, dynamic width??
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug I/O ports window: autoresize content height when do not fit in window

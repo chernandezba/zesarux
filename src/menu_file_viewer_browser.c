@@ -1325,6 +1325,12 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 
 }
 
+char *menu_dsk_spec_formats[]={
+    "Standard PCW range DD SS ST (and +3)",
+	"Standard CPC range DD SS ST system format",
+    "Standard CPC range DD SS ST data only format",
+    "Standard PCW range DD DS DT"
+};
 
 void menu_file_dsk_browser_show(char *filename)
 {
@@ -1469,13 +1475,98 @@ void menu_file_dsk_browser_show(char *filename)
 	sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
 
+    //Si tiene Especificacion de formato PCW/+3
+    int puntero;
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+    puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
 
-    sprintf(buffer_texto,"\nFirst PLUS3 entries:");
+    z80_byte spec_disk_type=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+    z80_byte spec_disk_sides=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1) & 3;
+    z80_byte spec_tracks_side=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+2);
+    z80_byte spec_sectors_track=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+3);
+
+    if (spec_disk_type>=0 && spec_disk_type<=3 && spec_disk_sides<=2 && spec_tracks_side<50 && spec_sectors_track<10) {
+        /*
+        Byte 0		Disk type
+			0 = Standard PCW range DD SS ST (and +3)
+			1 = Standard CPC range DD SS ST system format
+			2 = Standard CPC range DD SS ST data only format
+			3 = Standard PCW range DD DS DT
+			All other values reserved
+
+        Byte 1		Bits 0...1 Sidedness
+                    0 = Single sided
+                    1 = Double sided (alternating sides)
+                    2 = Double sided (successive sides)
+                Bits 2...6 Reserved (set to 0)
+                Bit 7 Double track
+
+        Byte 2		Number of tracks per side
+
+        Byte 3		Number of sectors per track
+
+        Byte 4		Log2(sector size) - 7
+
+        Byte 5		Number of reserved tracks
+
+        Byte 6		Log2(block size / 128)
+
+        Byte 7		Number of directory blocks
+
+        Byte 8		Gap length (read/write)
+
+        Byte 9		Gap length (format)
+
+        Bytes 10...14	Reserved
+
+        Byte 15		Checksum (used only if disk is bootable)
+*/
+        sprintf(buffer_texto,"\nKnown disc format:");
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);  
+
+        sprintf(buffer_texto," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        int sides_show=spec_disk_sides;
+        if (sides_show>=2) sides_show=1;
+        sprintf(buffer_texto," Sides: %d%s",sides_show,(spec_disk_sides==2 ? "(successive sides)" : ""));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
+
+        sprintf(buffer_texto," Tracks/Sides: %d",spec_tracks_side);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        sprintf(buffer_texto," Sectors/Track: %d",spec_sectors_track);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto); 
+
+        sprintf(buffer_texto," Sector Size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Reserved Tracks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Block size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Directory blocks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Gap length (rw): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Gap length (format): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+
+        sprintf(buffer_texto," Checksum: %02XH",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15));
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);                                         
+                                                  
+    }
+
+    sprintf(buffer_texto,"\nFirst Filesystem entries:");
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
 
-	int puntero,i;
+	int i;
 	//puntero=0x201;
 
 	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
@@ -1509,7 +1600,7 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
 			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-            int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+            
 
             puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
 
