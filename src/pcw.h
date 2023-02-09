@@ -95,10 +95,12 @@ extern int pcw_rgb_table[];
 extern z80_bit pcw_black_white_display;
 extern z80_bit pcw_always_on_display;
 extern z80_bit pcw_do_not_inverse_display;
+extern z80_bit pcw_do_not_scroll;
 
 extern void pcw_boot_locoscript(void);
 extern void pcw_boot_cpm(void);
 extern z80_bit pcw_boot_reinsert_previous_dsk;
 extern int pcw_boot_timer;
+extern z80_bit pcw_fallback_cpm_when_no_boot;
 
 #endif

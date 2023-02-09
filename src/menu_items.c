@@ -27823,6 +27823,11 @@ void menu_pcw_boot_cpm_reinsert_previous(MENU_ITEM_PARAMETERS)
     pcw_boot_reinsert_previous_dsk.v ^=1;
 }
 
+void menu_pcw_fallback_cpm_when_no_boot(MENU_ITEM_PARAMETERS)
+{
+    pcw_fallback_cpm_when_no_boot.v ^=1;
+}
+
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_plusthreedisk;
@@ -27880,6 +27885,10 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
                 NULL,"    Boot CP/M");
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
             "[%c] Reinsert previous dsk after boot",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
+
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_fallback_cpm_when_no_boot,NULL,
+            "[%c] Fallback to CP/M if no boot",(pcw_fallback_cpm_when_no_boot.v ? 'X' : ' ') );
+
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
                 NULL,"    Boot LocoScript");
 

@@ -119,6 +119,9 @@ z80_bit pcw_always_on_display={0};
 //No dejar que se invierta el color
 z80_bit pcw_do_not_inverse_display={0};
 
+//No dejar usar scroll
+z80_bit pcw_do_not_scroll={0};
+
 //
 // Inicio de variables necesarias para preservar el estado (o sea las que tienen que ir en un snapshot)
 //
@@ -297,7 +300,10 @@ void pcw_reset(void)
 
     //pcw_interrupt_counter=0;
 
-    pd765_set_terminal_count_signal();
+    //En reset deberia activar la señal de Terminal Count, pero, tal
+    //y como gestionamos esa señal, en que lanzamos una accion al recibirla, y no se mantiene una linea de señal, tal cual,
+    //esto aqui no hay que lanzarlo. Ademas al hacer reset de una maquina ya se hace reset de la controladora de disco
+    //pd765_set_terminal_count_signal();
 
     pcw_scanline_counter=0;
 
@@ -427,7 +433,7 @@ void pcw_interrupt_from_pd765(void)
 void pcw_out_port_f8(z80_byte value)
 {
     
-    printf("PCW set port F8 value %02XH reg_pc %04XH\n",value,reg_pc);
+    //printf("PCW set port F8 value %02XH reg_pc %04XH\n",value,reg_pc);
 
     /*
     0 end bootstrap, 
@@ -780,7 +786,7 @@ void scr_refresca_pantalla_pcw(void)
 
     //printf("Roller ram: bank: %02XH Offset: %02XH\n",roller_ram_bank,roller_ram_offset);
 
-    //TODO Vertical screen position puerto F6
+    
     int x,y,scanline;
 
     for (y=0;y<256;y+=8) {
@@ -794,7 +800,20 @@ void scr_refresca_pantalla_pcw(void)
             for (scanline=0;scanline<8;scanline++) {
                 int yfinal=y+scanline;
 
-                scr_refresca_pant_pcw_return_line_pointer(roller_ram_bank,roller_ram_offset+yfinal*2,&address_block,&address);
+                //Tener en cuenta scroll vertical
+                // puerto F6
+                //Ejemplo de juego que usa scroll vertical: skywar.dsk
+
+                z80_byte linea_scroll=pcw_port_f6_value;
+
+                if (pcw_do_not_scroll.v) linea_scroll=0;
+
+                int linea_roller_bank_elegir=(yfinal+linea_scroll) % 256;
+
+                int offset_a_linea_roller_bank=linea_roller_bank_elegir*2; //*2 porque hay punteros de 16 bits
+
+
+                scr_refresca_pant_pcw_return_line_pointer(roller_ram_bank,roller_ram_offset+offset_a_linea_roller_bank,&address_block,&address);
 
                 address +=x;
 
@@ -812,6 +831,7 @@ void scr_refresca_pantalla_pcw(void)
                     else pixel=0;
 
                     //Reverse video
+                    //Ejemplo de juego que usa reverse video: skywar.dsk
                     if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
                         //printf("antes pixel :%d\n",pixel);
                         
@@ -886,6 +906,11 @@ z80_bit dskplusthree_emulation_before_boot={0};
 //Si hay que reinsertar disco previo despues de boot
 z80_bit pcw_boot_reinsert_previous_dsk={1};
 
+//Si hay que cargar cpm cuando disco no arrancable
+z80_bit pcw_fallback_cpm_when_no_boot={1};
+
+
+//Comprueba cuando se ha iniciado del todo el disco de CP/M y reinserta el disco anterior que habia
 void pcw_handle_end_boot_disk(void)
 {
     if (!pcw_was_booting_disk_enabled) return;
@@ -916,12 +941,12 @@ void pcw_handle_end_boot_disk(void)
 
 void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 {
-    //TODO: conservar nombre anterior insertado, y restaurarlo despues de haber hecho boot totalmente
+    
 
 	char buffer_nombre[PATH_MAX];
 
 	if (find_sharedfile(filename,buffer_nombre)) {
-        //Copiar nombre anterior de disco
+        //Copiar nombre anterior de disco, y restaurarlo despues de haber hecho boot totalmente
         strcpy(dskplusthree_before_boot_file_name,dskplusthree_file_name);
         dskplusthree_emulation_before_boot.v=dskplusthree_emulation.v;
 
@@ -932,7 +957,7 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 		dskplusthree_enable();
 		pd765_enable();  
 
-        //este o no el autoload, hacemos reset   
+        //esté o no el autoload, hacemos reset   
         reset_cpu();  
 
         
@@ -963,6 +988,7 @@ void pcw_boot_cpm(void)
 //Cuenta segundos desde el boot
 int pcw_boot_timer=0;
 
+//Llamado desde el timer cada segundo
 void pcw_boot_timer_handle(void)
 {
 
@@ -974,6 +1000,8 @@ void pcw_boot_timer_handle(void)
 
 }
 
+//Comprueba que el disco no sea arrancable (cuando llega a ciertas direcciones y ejecuta opcode concreto)
+//Y en ese caso puede hacer fallback a CP/M
 void pcw_boot_check_dsk_not_bootable(void)
 {
 
@@ -991,7 +1019,20 @@ void pcw_boot_check_dsk_not_bootable(void)
 
    if (peek_byte_no_time(reg_pc)==0xCB && peek_byte_no_time(reg_pc+1)==0x7E) {
         pcw_boot_timer=0;
-        debug_printf(VERBOSE_ERR,"Seems you have selected a non bootable disk");
+        printf("Seems you have selected a non bootable disk\n");
+
+        //Si hay que autoinsertar cpm
+        if (pcw_fallback_cpm_when_no_boot.v) {
+            printf("Autobooting CP/M\n");
+            //sleep(2);
+            pcw_boot_cpm();
+
+            //Y no autodetectar de nuevo si disco no botable,
+            //Esto no deberia suceder, pues CP/M es botable,
+            //pero si por algo fallase, nos quedariamos en un bucle continuo de reinicios
+            pcw_boot_timer=0;
+        }
+
    }
 
 }

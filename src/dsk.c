@@ -745,7 +745,7 @@ int dsk_basic_get_start_track(int pista_encontrar,int cara_encontrar)
         //Validar que estemos en informacion de pista realmente mirando la firma
         //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
         if (dsk_check_track_signature(offset)) {
-            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH offset %XH",pista,offset);
+            debug_printf(VERBOSE_ERR,"DSK: Basic DSK, track signature not found on track %XH offset %XH",pista,offset);
         }    
 
         z80_byte track_number=plus3dsk_get_byte_disk(offset+0x10);
@@ -814,7 +814,7 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
         //Validar que estemos en informacion de pista realmente mirando la firma
         //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
         if (dsk_check_track_signature(offset)) {
-            debug_printf(VERBOSE_ERR,"DSK: Track signature not found on track %XH size %d offset %XH",pista,cara,offset);
+            debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
         } 
 
         z80_byte track_number=dsk_get_track_number_from_offset(offset);

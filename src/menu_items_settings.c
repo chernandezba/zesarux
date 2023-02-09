@@ -6092,6 +6092,11 @@ void menu_display_pcw_do_not_inverse(MENU_ITEM_PARAMETERS)
     pcw_do_not_inverse_display.v ^=1;
 }
 
+void menu_display_pcw_do_not_scroll(MENU_ITEM_PARAMETERS)
+{
+    pcw_do_not_scroll.v ^=1;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -6320,8 +6325,10 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                         "[%c] Always on monitor",(pcw_always_on_display.v ? 'X' : ' '));
 
                     menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
-                        "[%c] Do not allow inverse",(pcw_do_not_inverse_display.v ? 'X' : ' '));                        
+                        "[%c] Do not allow inverse",(pcw_do_not_inverse_display.v ? 'X' : ' '));    
 
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_scroll,NULL,
+                        "[%c] Do not allow scroll",(pcw_do_not_scroll.v ? 'X' : ' '));    
                 }
 
 

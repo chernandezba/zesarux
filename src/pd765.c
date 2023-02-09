@@ -2346,8 +2346,8 @@ int pd765_if_write_protected(void)
 
 void pd765_read_parameters_write_data(z80_byte value)
 {
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s",
-    pd765_last_command_name()
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Receiving command parameters for %s. Value=%02XH",
+    pd765_last_command_name(),value
     );
 
     if (pd765_if_write_protected()) return;
@@ -2449,7 +2449,7 @@ void pd765_read_parameters_write_data(z80_byte value)
 
     //Si llega al final del disco
     //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
-    else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
+    if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
             DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data");
 
                 //- escribir sector en dsk
@@ -3682,6 +3682,8 @@ void pd765_out_port_data_register(z80_byte value)
 
 void pd765_set_terminal_count_signal(void)
 {
+
+    
     
     if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping reading data because a Terminal Count signal has been fired");

@@ -396,7 +396,7 @@ void cpu_core_loop_pcw(void)
         //Eventos de la controladora de disco
         pd765_next_event_from_core();
 
-        //Eventos de boot disco, volver a disco anterior si alcanzada una direccion concreta
+        //Eventos de boot disco, volver a disco anterior cuando se haya iniciado CP/M
         pcw_handle_end_boot_disk();
 
         pcw_boot_check_dsk_not_bootable();
