@@ -1303,23 +1303,25 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 
 }
 
+int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+    return total_pistas;
+}
 
 int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 {
 
-                        int total_pistas=longitud_dsk/4864;
-
-                        //tenemos sector total en variable bloque
-                        //sacar pista
-
-                        //printf ("pista: %d sector en pista: %d\n",pista,sector_en_pista);
-
-                        //offset a los datos dentro del dsk
-                        //int offset=pista*4864+sector_en_pista*512;
+    //int total_pistas=longitud_dsk/4864;
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+    //printf("total pistas: %d\n",total_pistas);
 
 
+    int pista_offset=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
 
-                        return menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
+    printf("pista_offset: %XH\n",pista_offset);
+
+    return pista_offset;
 
 }
 
@@ -1489,18 +1491,22 @@ SPECTRUM +3    Reserved          Directory             -
 Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 */
-
+    printf("puntero: %XH\n",puntero);
 	if (puntero==-1) {
-		//printf ("Filesystem track/sector not found. Guessing it\n");
+		printf ("Filesystem track/sector not found. Guessing it\n");
 		//no encontrado. probar con lo habitual
 		puntero=0x200;
 	}
 
 	//else {
 		//Si contiene e5 en el nombre, nos vamos a pista 1
-		if (dsk_file_memory[puntero+1]==0xe5) {
+        //O si segundo caracter no es ascii
+
+        z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
+
+		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
 			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-            int total_pistas=bytes_to_load/4864;
+            int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
 
             puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,1,0,longitud_dsk);
 
