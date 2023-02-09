@@ -281,6 +281,11 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -ver si se puede hacer pgup/dn con autorepeticion en debug cpu
 
 -En visor de disco con archivos, que en visual floppy marque dónde están los sectores del archivo
+-En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
+-O incluso mejor un browser/viewer de formato CP/M, que indique:
+*extent number
+*date file 
+*etc
 
 -rom cpc6128: os+basic+amsdos
 

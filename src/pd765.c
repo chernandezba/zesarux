@@ -3784,7 +3784,7 @@ void cf2_floppy_icon_activity(void)
             //Refrescar para hacer desaparecer el "puntito" del icono de floppy cuando se apaga motor
             //Y no quiero que salga el icono en color inverso, vendria inverso por el envio de algun comando final
 
-            printf("Refrescar icono floppy cuano se apaga motor\n");
+            printf("Refrescar icono floppy cuando se apaga motor\n");
             
             zxdesktop_icon_plus3_inverse=0;
             menu_draw_ext_desktop(); 
