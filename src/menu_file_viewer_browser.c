@@ -1455,7 +1455,7 @@ void menu_file_dsk_browser_show(char *filename)
 	sprintf(buffer_texto,"Free sectors on disk: %d",dsk_file_memory[start_track_8+229]+256*dsk_file_memory[start_track_8+230]);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);*/
 
- 	sprintf(buffer_texto,"Disk information:");
+ 	sprintf(buffer_texto,"Signature:");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 	util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
@@ -1469,10 +1469,10 @@ void menu_file_dsk_browser_show(char *filename)
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
     
 
-	sprintf(buffer_texto,"\nTracks: %d",dsk_file_memory[0x30]);
+	sprintf(buffer_texto,"\nTotal tracks: %d",dsk_file_memory[0x30]);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-	sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
+	sprintf(buffer_texto,"Total sides: %d",dsk_file_memory[0x31]);
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
 
     //Si tiene Especificacion de formato PCW/+3
