@@ -1319,7 +1319,7 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 
     int pista_offset=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
 
-    printf("pista_offset: %XH\n",pista_offset);
+    //printf("pista_offset: %XH\n",pista_offset);
 
     return pista_offset;
 
@@ -1491,14 +1491,17 @@ SPECTRUM +3    Reserved          Directory             -
 Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 */
-    printf("puntero: %XH\n",puntero);
+    //printf("puntero: %XH\n",puntero);
 	if (puntero==-1) {
-		printf ("Filesystem track/sector not found. Guessing it\n");
+		//printf ("Filesystem track/sector not found. Guessing it\n");
 		//no encontrado. probar con lo habitual
 		puntero=0x200;
 	}
 
-	//else {
+    int pista_buscar;
+
+    for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
+	
 		//Si contiene e5 en el nombre, nos vamos a pista 1
         //O si segundo caracter no es ascii
 
@@ -1508,17 +1511,21 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
             int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
 
-            puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,1,0,longitud_dsk);
+            puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
 
 			if (puntero==-1) {
-		                //printf ("Filesystem track/sector not found. Guessing it\n");
-		                //no encontrado. probar con lo habitual
-	                	puntero=0x200;
+                //printf ("Filesystem track/sector not found. Guessing it\n");
+                //no encontrado. probar con lo habitual
+                puntero=0x200;
 			}
-			//else 	printf ("Filesystem found at offset %XH\n",puntero);
+			
 		}
-		//else printf ("Filesystem found at offset %XH\n",puntero);
-	//}
+
+        else break;
+
+    }
+
+    //printf("puntero: %XH\n",puntero);
 	
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 
