@@ -3958,10 +3958,10 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
    Abadia del Crimen
    Head Over Heels
    */
-    if (ay_chip_present.v) {
-        if (puerto_l==0xAA) out_port_ay(65533,value);
-        if (puerto_l==0xAB) out_port_ay(49149,value);
-    }
+    
+    if (puerto_l==0xAA && ay_chip_present.v) out_port_ay(65533,value);
+    if (puerto_l==0xAB && ay_chip_present.v) out_port_ay(49149,value);
+    
 
 
     if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {

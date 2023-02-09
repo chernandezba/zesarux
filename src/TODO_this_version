@@ -301,7 +301,5 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
     resto de teclas en todos los drivers
 
 -nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
-
--proximidad a icono papelera tiene en cuenta zoom gui?
 -en i/o ports informacion flags de cada puerto
 -cpm spanish (version superior a 1??) no va

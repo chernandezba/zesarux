@@ -15190,7 +15190,7 @@ int zxvision_si_icono_cerca_de_papelera(int icono,int mouse_pixel_x,int mouse_pi
 
             //printf("Distancia a la papelera: %d,%d\n",deltax,deltay);
 
-            if (deltax<=20 && deltay<=20) {           
+            if (deltax<=20*menu_gui_zoom && deltay<=20*menu_gui_zoom) {           
                 return 1;
             }
         }
