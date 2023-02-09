@@ -1529,7 +1529,7 @@ void menu_file_dsk_browser_show(char *filename)
 
         int sides_show=spec_disk_sides;
         if (sides_show>=2) sides_show=1;
-        sprintf(buffer_texto," Sides: %d%s",sides_show,(spec_disk_sides==2 ? "(successive sides)" : ""));
+        sprintf(buffer_texto," Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
 
         sprintf(buffer_texto," Tracks/Sides: %d",spec_tracks_side);
