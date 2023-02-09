@@ -1415,7 +1415,7 @@ sms.o: sms.c sms.h cpu.h debug.h vdp_9918a.h tape.h screen.h audio.h sn76489an.h
 saa_simul.o: saa_simul.c saa_simul.h ay38912.h cpu.h audio.h debug.h
 	\$(CC) \$(CFLAGS) -c saa_simul.c
 
-screen.o: screen.c screen.h cpu.h debug.h mem128.h chloe.h prism.h timex.h cpc.h prism.h operaciones.h zx8081.h charset.h zxvision.h menu_bitmaps.h audio.h contend.h ula.h tape_smp.h z88.h ulaplus.h zxuno.h spectra.h spritechip.h timer.h sam.h ql.h chrome.h zxevo.h tsconf.h baseconf.h mk14.h vdp_9918a.h msx.h coleco.h ql_zx8302.h stats.h vdp_9918a_sms.h menu_items.h chardetect.h
+screen.o: screen.c screen.h cpu.h debug.h mem128.h chloe.h prism.h timex.h cpc.h prism.h operaciones.h zx8081.h charset.h zxvision.h menu_bitmaps.h audio.h contend.h ula.h tape_smp.h z88.h ulaplus.h zxuno.h spectra.h spritechip.h timer.h sam.h ql.h chrome.h zxevo.h tsconf.h baseconf.h mk14.h vdp_9918a.h msx.h coleco.h ql_zx8302.h stats.h vdp_9918a_sms.h menu_items.h chardetect.h pcw.h
 	\$(CC) \$(CFLAGS) -c screen.c
 
 mem128.o: mem128.c cpu.h mem128.h debug.h contend.h zxuno.h chloe.h prism.h timex.h sam.h ula.h tbblue.h superupgrade.h chrome.h zxevo.h tsconf.h baseconf.h msx.h coleco.h sg1000.h sms.h svi.h

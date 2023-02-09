@@ -27,8 +27,9 @@
 
 
 //Hacer que estos valores de border sean multiples de 8
-#define PCW_LEFT_BORDER_NO_ZOOM 16
-//#define CPC_LEFT_BORDER_NO_ZOOM 192
+//TODO: no tengo claro del ancho del border pero le pongo suficiente para que quepa el logo de ZEsarUX a la izquierda
+#define PCW_LEFT_BORDER_NO_ZOOM 32
+
 
 #define PCW_MAX_RAM_PAGES 128
 

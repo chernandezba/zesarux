@@ -3974,7 +3974,7 @@ void menu_clear_footer(void)
             //return +(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
         }
 
-        if (MACHINE_IS_PCW) {
+        /*if (MACHINE_IS_PCW) {
             //Pegado a la derecha casi, dejando espacio a la derecha del todo para los botones de switch zxdesktop
             xlogo=zoom_x*(PCW_DISPLAY_WIDTH+(PCW_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v-ZESARUX_ASCII_LOGO_ANCHO-8*3);
 
@@ -3983,7 +3983,7 @@ void menu_clear_footer(void)
 
 
             //return +(QL_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
-        }        
+        } */       
 
         //Contemplar si hay espacio a la izquierda. Esto es por si no hay border
         if (margenx_izq>0) {
