@@ -6336,14 +6336,13 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
                                   ql_keyboard_table[1] &=255-32;
                                   msx_keyboard_table[1] &= 255-16;
                                   svi_keyboard_table[5] &= 255-16;
-                                  //En pcw tecla borrar hacia derecha
-                                  pcw_keyboard_table[2] |=1;
+
                                 }
                                 else {
                                   ql_keyboard_table[1] |=32;
                                   msx_keyboard_table[1] |=16;
                                   svi_keyboard_table[5] |= 16;
-                                  pcw_keyboard_table[2] &=(255-1);
+
                                 }
                         break;
 
@@ -7481,10 +7480,15 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //&49	DEL	Joy 1 Fire 3 (CPC only)	Joy 1 Fire 2	Joy1 Fire 1	Joy1 right	Joy1 left	Joy1 down	Joy1 up
                                         //En cpc hacemos que tanto del y backspace del teclado sean el DEL del cpc
                                         cpc_keyboard_table[9] &=(255-128);
+
+                                        //En pcw tecla borrar hacia derecha
+                                        pcw_keyboard_table[2] |=1;                                        
                                 }
                                 else {
                                         //del en cpc es del
                                         cpc_keyboard_table[9] |=128;
+
+                                        pcw_keyboard_table[2] &=(255-1);
                                 }
                                 //printf("%d\n",cpc_keyboard_table[9]);
                         break;  

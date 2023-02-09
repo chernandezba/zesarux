@@ -292,19 +292,15 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -pendiente pcw 8256,8512:
 *snapshot zsf
-*Pcw opción selección boot cpm o loco script 
-First aid también para ello
 -teclas f5-f8...
--en motor off, refresco icono floppy para que desparezca el puntito
 -caps lock no va...
 -teclas     UTIL_KEY_KP_NUMLOCK,
     UTIL_KEY_KP_DIVIDE,
     UTIL_KEY_KP_MULTIPLY,
     UTIL_KEY_KP_MINUS, en todos los drivers
     resto de teclas en todos los drivers
--revisar lectura disco mismo error que escritura??
--tecla "borrar a derecha" es Del. no tenemos gestionada esa tecla en utils?
--si pantalla inversa, border inverso tambien?
+
+-nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
 
 -proximidad a icono papelera tiene en cuenta zoom gui?
 -en i/o ports informacion flags de cada puerto

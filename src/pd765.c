@@ -508,6 +508,9 @@ void pd765_motor_off(void)
     if (pd765_motor_status) {
         pd765_motor_status=0;
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Motor off PC=%04XH",reg_pc);
+
+        //Refrescar para hacer desaparecer el "puntito" del icono de floppy cuando esta motor encendido
+        menu_draw_ext_desktop(); 
     }
 }
 
