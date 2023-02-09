@@ -1326,10 +1326,10 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 }
 
 char *menu_dsk_spec_formats[]={
-    "Standard PCW range DD SS ST (and +3)",
-	"Standard CPC range DD SS ST system format",
-    "Standard CPC range DD SS ST data only format",
-    "Standard PCW range DD DS DT"
+    "Std PCW range DD SS ST (and +3)",
+	"Std CPC range DD SS ST system format",
+    "Std CPC range DD SS ST data only format",
+    "Std PCW range DD DS DT"
 };
 
 void menu_file_dsk_browser_show(char *filename)
