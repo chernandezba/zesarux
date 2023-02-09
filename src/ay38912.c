@@ -290,6 +290,7 @@ int i;
 
 	//Establecemos frecuencia
 	if (MACHINE_IS_CPC) ay_chip_frequency=FRECUENCIA_CPC_AY;
+    else if (MACHINE_IS_PCW) ay_chip_frequency=FRECUENCIA_PCW_AY;
 	else if (MACHINE_IS_ZX8081) ay_chip_frequency=FRECUENCIA_ZX81_AY;
 	else if (MACHINE_IS_MSX) ay_chip_frequency=FRECUENCIA_MSX_AY;
 	else if (MACHINE_IS_SVI) ay_chip_frequency=FRECUENCIA_SVI_AY;
