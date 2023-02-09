@@ -216,7 +216,7 @@ void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_
 
     total_size +=sides*tracks*size_of_a_track;
 
-    printf("total_size: %d\n",total_size);
+    //printf("total_size: %d\n",total_size);
 
     //Asignar memoria
     z80_byte *newdsk;

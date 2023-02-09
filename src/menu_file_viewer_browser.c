@@ -1487,7 +1487,7 @@ void menu_file_dsk_browser_show(char *filename)
 
     int i;
 
-    if (spec_disk_type>=0 && spec_disk_type<=3 && spec_disk_sides<=2 && spec_tracks_side<50 && spec_sectors_track<10) {
+    if (spec_disk_type<=3 && spec_disk_sides<=2 && spec_tracks_side<50 && spec_sectors_track<10) {
         /*
         Byte 0		Disk type
 			0 = Standard PCW range DD SS ST (and +3)
