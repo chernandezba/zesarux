@@ -1485,6 +1485,8 @@ void menu_file_dsk_browser_show(char *filename)
     z80_byte spec_tracks_side=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+2);
     z80_byte spec_sectors_track=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+3);
 
+    int i;
+
     if (spec_disk_type>=0 && spec_disk_type<=3 && spec_disk_sides<=2 && spec_tracks_side<50 && spec_sectors_track<10) {
         /*
         Byte 0		Disk type
@@ -1538,7 +1540,8 @@ void menu_file_dsk_browser_show(char *filename)
         sprintf(buffer_texto," Sectors/Track: %d",spec_sectors_track);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto); 
 
-        sprintf(buffer_texto," Sector Size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4));
+        int sector_size=128 << util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4);
+        sprintf(buffer_texto," Sector Size: %d",sector_size);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
 
         sprintf(buffer_texto," Reserved Tracks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
@@ -1554,10 +1557,30 @@ void menu_file_dsk_browser_show(char *filename)
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
 
         sprintf(buffer_texto," Gap length (format): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);   
 
-        sprintf(buffer_texto," Checksum: %02XH",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);                                         
+        //Calcular checksum de todo el sector
+        int i;
+        z80_byte calculated_checksum=0;
+
+        for (i=0;i<sector_size;i++) {
+            calculated_checksum +=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+i);
+        }
+
+        calculated_checksum ^=255;
+        calculated_checksum +=4;
+
+        //printf("calculated_checksum: %02XH\n",calculated_checksum);
+
+        z80_byte checksum_in_disk=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
+
+        sprintf(buffer_texto," Checksum: %02XH",checksum_in_disk);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+        if (calculated_checksum==checksum_in_disk) {
+            sprintf(buffer_texto," Bootable disk");
+            indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);            
+        }                                    
                                                   
     }
 
@@ -1566,7 +1589,7 @@ void menu_file_dsk_browser_show(char *filename)
 
 
 
-	int i;
+
 	//puntero=0x201;
 
 	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
