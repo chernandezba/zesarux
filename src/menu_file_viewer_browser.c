@@ -1235,7 +1235,7 @@ sectores van alternados:
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				//printf("Found sector %d/%d at %d/%d",pista_buscar,sector_buscar,pista,sector);
+				//printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
