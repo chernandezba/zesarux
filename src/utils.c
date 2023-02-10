@@ -18032,7 +18032,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 
 	int tamanyo_dsk_entry=32;
 
-	int max_entradas_dsk=16;
+	int max_entradas_dsk=64;
 
 	//Asignamos para 16 entradas
 	//int bytes_to_load=tamanyo_dsk_entry*max_entradas_dsk;
@@ -18412,7 +18412,7 @@ Byte 12
 
                     //printf("longitud_final despues ajustar: %d\n",longitud_final);
 
-                    debug_printf (VERBOSE_DEBUG,"File entry is the first. Saving %d bytes on file",longitud_final);
+                    debug_printf (VERBOSE_DEBUG,"File entry is the first. Saving %d bytes on file %s",longitud_final,buffer_nombre_destino);
                     util_save_file(buffer_temp,longitud_final,buffer_nombre_destino);
 
 
@@ -18428,7 +18428,7 @@ Byte 12
 			    }
 			
                 else {
-                    debug_printf (VERBOSE_DEBUG,"File entry is not the first. Adding %d bytes to the file",longitud_en_bloques);
+                    debug_printf (VERBOSE_DEBUG,"File entry is not the first. Adding %d bytes to the file %s",longitud_en_bloques,buffer_nombre_destino);
                     util_file_append(buffer_nombre_destino,buffer_temp,longitud_en_bloques);
                     //TODO: al guardar entradas de archivo diferentes a la primera, 
                     //se agregan siempre longitudes en bloques de 1kb

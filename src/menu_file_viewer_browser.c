@@ -1398,7 +1398,7 @@ void menu_file_dsk_browser_show(char *filename)
 
 	int tamanyo_dsk_entry=32;
 
-	int max_entradas_dsk=16;
+	int max_entradas_dsk=64;
 
 	//Asignamos para 16 entradas
 	//int bytes_to_load=tamanyo_dsk_entry*max_entradas_dsk;
@@ -1702,14 +1702,15 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
     //printf("puntero: %XH\n",puntero);
 
     //Para saber donde acabar
-    int limite_sector=puntero+512;
+    //int limite_sector=puntero+512;
 	
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 
+    //int entradas_leidas_filesystem=0;
 
-    while (puntero<limite_sector) {
 
-	//for (i=0;i<max_entradas_dsk;i++) {
+    //while (puntero<limite_sector && entradas_leidas_filesystem<64) {
+    for (i=0;i<max_entradas_dsk;i++) {
 
         //Solo mostrar entradas de archivo con primer extent
         z80_byte extent_ex=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+11);
@@ -1723,7 +1724,8 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 		    }
         }
 
-		puntero +=tamanyo_dsk_entry;	
+		puntero +=tamanyo_dsk_entry;
+        //entradas_leidas_filesystem++;	
 
 
 	}
