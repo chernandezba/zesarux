@@ -309,3 +309,4 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -en i/o ports informacion flags de cada puerto
 -cpm spanish (version superior a 1??) no va
 -extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
+lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560

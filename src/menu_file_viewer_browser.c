@@ -1267,11 +1267,18 @@ sectores van alternados:
 
 }
 
+int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+    return total_pistas;
+}
 
 void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2)
 {
 
-			int total_pistas=longitud_dsk/4864;
+			//int total_pistas=longitud_dsk/4864;
+            int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+            //printf("total_pistas: %d\n",total_pistas);
 			int pista;
 			int sector_en_pista;
 
@@ -1303,11 +1310,7 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 
 }
 
-int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
-{
-    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
-    return total_pistas;
-}
+
 
 int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 {
