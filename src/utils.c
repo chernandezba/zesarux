@@ -18169,6 +18169,10 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
 
     //printf("puntero: %d\n",puntero);
 
+    //int total_pistas=bytes_to_load/4864;
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+    //printf("total pistas: %d\n",total_pistas);
+
 
 	if (puntero==-1) {
 		//printf ("Filesystem track/sector 0/0 not found. Guessing it\n");
@@ -18176,15 +18180,48 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
 		puntero=0x200;
 	}
 
+
+
+    int pista_buscar;
+
+    for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
+	
+		//Si contiene e5 en el nombre, nos vamos a pista 1
+        //O si segundo caracter no es ascii
+
+        z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
+
+		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
+			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
+            
+
+            puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
+
+			if (puntero==-1) {
+                //printf ("Filesystem track/sector not found. Guessing it\n");
+                //no encontrado. probar con lo habitual
+                puntero=0x200;
+			}
+			
+		}
+
+        else break;
+
+    }
+
+
+
+/*
+
     //Si contiene e5 en el nombre, nos vamos a pista 1
     if (util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1)==0xe5) {
     
         //printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-        int total_pistas=bytes_to_load/4864;
+      
 
         puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,1,0,longitud_dsk);
 
-        //printf ("puntero after menu_dsk_getoff_track_sector: %d\n",puntero);
+        //printf ("puntero after menu_dsk_getoff_track_sector: %XH\n",puntero);
 
         if (puntero==-1) {
             //printf ("Filesystem track/sector 1/0 not found. Guessing it\n");
@@ -18201,6 +18238,7 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
         //printf ("Filesystem found at offset %XH\n",puntero);
     }
 
+*/
 	
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 

@@ -20,7 +20,10 @@ Added XEyes "Toy" to follow mouse
 Improved Configuration parsing: warning when ZEsarUX has been downgraded
 Improved DSK viewer:
 - better filesystem detection
+- show hidden and read only files
 - show disk specification format
+Improved DSK extractor:
+- better filesystem detection
 
 Improved Debug Console: better refresh, dynamic width??
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)

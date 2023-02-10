@@ -1332,6 +1332,66 @@ char *menu_dsk_spec_formats[]={
     "Std PCW range DD DS DT"
 };
 
+//Parecido a menu_file_mmc_browser_show_file pero considerando archivos de filesystem +3, CPC, PCW... que siguen estandar de CP/M
+
+void menu_file_dsk_browser_show_file(z80_byte *origen,char *destino,int sipuntoextension)
+{
+	int i;
+	int salir=0;
+
+    int file_readonly=0;
+    int file_system=0;
+
+    int longitud=11;
+
+	for (i=0;i<longitud && !salir;i++) {
+		char caracter;
+		caracter=*origen;
+
+            //Si en extension, primer byte bit 7: read only. segundo byte: system
+            if (i==8 && (caracter & 128)) file_readonly=1;
+            if (i==9 && (caracter & 128)) file_system=1;
+
+            caracter &=127;
+
+            if (caracter<32 || caracter>126) caracter='?';
+		
+			origen++;
+
+            /*
+			if (caracter<32 || caracter>126) {
+				//Si detectamos final de texto y siempre que no este en primer caracter
+				if (i) salir=1;
+				else caracter='?';
+			}
+            */
+
+			if (!salir) {
+				*destino=caracter;
+				destino++;
+			
+				if (sipuntoextension && i==7) {
+					*destino='.';
+					destino++;
+				}
+			}
+		
+	}
+
+    if (file_readonly) {
+        strcpy(destino," (RO)");
+        destino +=5;
+    }
+
+    if (file_system) {
+        strcpy(destino," (SYS)");
+        destino +=6;
+    }
+
+
+	*destino=0;
+}
+
 void menu_file_dsk_browser_show(char *filename)
 {
 
@@ -1640,17 +1700,28 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
     }
 
     //printf("puntero: %XH\n",puntero);
+
+    //Para saber donde acabar
+    int limite_sector=puntero+512;
 	
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 
 
+    while (puntero<limite_sector) {
 
-	for (i=0;i<max_entradas_dsk;i++) {
+	//for (i=0;i<max_entradas_dsk;i++) {
 
-		menu_file_mmc_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1,11);
-		if (buffer_texto[0]!='?') {
-			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-		}
+        //Solo mostrar entradas de archivo con primer extent
+        z80_byte extent_ex=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+11);
+        z80_byte extent_s2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12);
+
+        if (extent_ex==0 && extent_s2==0) {
+
+		    menu_file_dsk_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1);
+		    if (buffer_texto[0]!='?') {
+    			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+		    }
+        }
 
 		puntero +=tamanyo_dsk_entry;	
 
