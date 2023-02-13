@@ -1145,7 +1145,170 @@ void menu_file_flash_browser_show(char *filename)
 
 }
 
+const int menu_dsk_sector_sizes_numbers[]={
+    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
+    256,  //1
+    512,  //2
+    1024, //3
+    2048, //4
+    4096, //5
+    8192, //6
+    16384 //7
+};
 
+int menu_dsk_get_sector_size_from_n_value(int n_value)
+{
+
+    //It is assumed that sector sizes are defined as 3 bits only, so that a sector size of N="8" is equivalent to N="0".
+    //Mot o Mundial de futbol tienen algunos sectores con tamaño 8
+    n_value &=7;
+
+    int sector_size=menu_dsk_sector_sizes_numbers[n_value];
+
+    return sector_size;
+}
+
+//entrada: offset a track information block
+int menu_dsk_get_total_sectors_track_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    int total_sectors=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x15);
+
+    return total_sectors;
+}
+
+int menu_dsk_detect_extended_dsk(z80_byte *dsk_memoria)
+{
+
+
+    if (!memcmp("EXTENDED",dsk_memoria,8)) {
+        printf("Detected Extended DSK\n");
+        return 1;
+    }    
+
+    else return 0;
+}
+
+//entrada: offset a track information block
+int menu_dsk_get_sector_size_track_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    int sector_size_byte=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x14);
+
+
+    return dsk_get_sector_size_from_n_value(sector_size_byte);
+}
+
+//Retorna numero de pista. 
+//Entrada: offset: offset a track-info
+int menu_dsk_get_track_number_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
+    return track_number;
+}
+
+//Retorna numero de cata. 
+//Entrada: offset: offset a track-info
+int menu_dsk_get_track_side_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    z80_byte side_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x11);
+    return side_number;
+}
+
+int menu_dsk_get_total_sides(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    return util_get_byte_protect(dsk_file_memory,longitud_dsk,0x31);
+}
+
+int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista_encontrar,int cara_encontrar)
+{
+    int pista,cara;
+    int offset=0x100;
+    int offset_track_table=0x34;
+
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+
+    for (pista=0;pista<total_pistas;pista++) {
+        for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
+            //Validar que estemos en informacion de pista realmente mirando la firma
+            //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+            if (dsk_check_track_signature(offset)) {
+                debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
+            } 
+
+            z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
+            z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
+
+            //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+            //    pista,track_number,offset,pista_encontrar);        
+
+            if (track_number==pista_encontrar && side_number==cara_encontrar) {
+                //printf("dsk_extended_get_start_track: return %X\n",offset);
+                return offset;
+            }
+
+            int sector_size=menu_dsk_get_sector_size_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+            if (sector_size<0) {
+                debug_printf(VERBOSE_ERR,"DSK Extended: Sector size not supported on track %d side %d",pista,cara);
+                return -1;
+            }
+
+            
+            int saltar=util_get_byte_protect(dsk_file_memory,longitud_dsk,(offset_track_table)*256);
+            offset +=saltar;
+
+            
+            offset_track_table++;
+
+
+        }
+    }
+
+    return -1;
+
+}
+
+
+int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista_encontrar,int cara_encontrar)
+{
+    int pista;
+    int offset=0x100;
+
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+
+    for (pista=0;pista<total_pistas;pista++) {
+   
+ 
+        z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
+        z80_byte side_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x11);
+
+        if (track_number==pista_encontrar && side_number==cara_encontrar) {
+            return offset;
+        }
+
+        int sector_size=menu_dsk_get_sector_size_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+        if (sector_size<0) {
+            debug_printf(VERBOSE_ERR,"DSK Basic: Sector size not supported on track %d",pista);
+            return -1;
+        }
+
+        int total_sectors=menu_dsk_get_total_sectors_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+
+        int saltar=total_sectors*sector_size+256; //256 ocupa el sector block
+
+        offset +=saltar;
+    }
+
+    return -1;
+
+}
+
+//Retorna -1 si pista no encontrada
+//Retorna offset al Track information block
+int menu_dsk_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista,int cara)
+{
+    //Hacerlo diferente si dsk basico o extendido
+    if (menu_dsk_detect_extended_dsk(dsk_file_memory)) return menu_dsk_extended_get_start_track(dsk_file_memory,longitud_dsk,pista,cara);
+    else return menu_dsk_basic_get_start_track(dsk_file_memory,longitud_dsk,pista,cara);
+}
 
 
 //Retorna el offset al dsk segun la pista y sector dados (ambos desde 0...)
@@ -1174,19 +1337,24 @@ sectores van alternados:
 	int pista;
 	int sector;
 
-	int iniciopista_orig=256;
+	//int iniciopista_orig=256;
+
+    printf("menu_dsk_getoff_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
 
 	//Buscamos en todo el archivo dsk
 	for (pista=0;pista<total_pistas;pista++) {
 
-        //printf("before getting sectores_en_pista iniciopista_orig=%d\n",iniciopista_orig);
+        //TODO: de momento cara 0
+        int iniciopista_orig=menu_dsk_extended_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
+
+        printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
 		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
 
         int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
 		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
-        //printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+        printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
 		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
 		int iniciopista=iniciopista_orig;
@@ -1228,7 +1396,7 @@ sectores van alternados:
 			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
-            //printf("%02X \n",sector_id);
+            printf("C: %02XH R: %02X \n",pista_id,sector_id);
 
 			sector_id &=0xF;
 

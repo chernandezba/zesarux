@@ -18186,19 +18186,18 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
 
     for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
 	
+        printf("Pista: %d\n",pista_buscar);
 		//Si contiene e5 en el nombre, nos vamos a pista 1
         //O si segundo caracter no es ascii
 
         z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
 
-		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
-			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-            
+		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {        
 
             puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
 
 			if (puntero==-1) {
-                //printf ("Filesystem track/sector not found. Guessing it\n");
+                printf ("Filesystem track/sector not found. Guessing it\n");
                 //no encontrado. probar con lo habitual
                 puntero=0x200;
 			}
@@ -18209,7 +18208,7 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
 
     }
 
-
+    printf("Found filesystem at track %d. Puntero=%X\n",pista_buscar,puntero);
 
 /*
 
