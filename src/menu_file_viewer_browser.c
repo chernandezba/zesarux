@@ -1194,7 +1194,7 @@ int menu_dsk_get_sector_size_track_from_offset(z80_byte *dsk_file_memory,int lon
     int sector_size_byte=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x14);
 
 
-    return dsk_get_sector_size_from_n_value(sector_size_byte);
+    return menu_dsk_get_sector_size_from_n_value(sector_size_byte);
 }
 
 //Retorna numero de pista. 
@@ -1218,6 +1218,12 @@ int menu_dsk_get_total_sides(z80_byte *dsk_file_memory,int longitud_dsk)
     return util_get_byte_protect(dsk_file_memory,longitud_dsk,0x31);
 }
 
+int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+    return total_pistas;
+}
+
 int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista_encontrar,int cara_encontrar)
 {
     int pista,cara;
@@ -1228,11 +1234,7 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
 
     for (pista=0;pista<total_pistas;pista++) {
         for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
-            //Validar que estemos en informacion de pista realmente mirando la firma
-            //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
-            if (dsk_check_track_signature(offset)) {
-                debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
-            } 
+            
 
             z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
             z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
@@ -1435,11 +1437,7 @@ sectores van alternados:
 
 }
 
-int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
-{
-    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
-    return total_pistas;
-}
+
 
 void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista)
 {
