@@ -1235,7 +1235,7 @@ sectores van alternados:
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				//printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
+				printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
@@ -1273,9 +1273,8 @@ int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
     return total_pistas;
 }
 
-void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2)
+void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista)
 {
-
 			//int total_pistas=longitud_dsk/4864;
             int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
             //printf("total_pistas: %d\n",total_pistas);
@@ -1285,6 +1284,9 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 			int sector_total;
 
 			sector_total=bloque*2; //cada bloque es de 2 sectores
+
+            //Incremento_pista indica sumar x pistas de desplazamiento al bloque
+            sector_total +=9*incremento_pista;
 
 			//tenemos sector total en variable bloque
 			//sacar pista

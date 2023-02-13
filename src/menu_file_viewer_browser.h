@@ -47,6 +47,7 @@ extern void menu_file_mmc_browser_show(char *filename,char *tipo_imagen);
 extern void menu_file_viewer_read_text_file(char *title,char *file_name);
 extern void menu_file_dsk_browser_show(char *filename);
 extern void menu_hilow_datadrive_browser(z80_byte *puntero_memoria);
+extern void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista);
 
 
 #endif

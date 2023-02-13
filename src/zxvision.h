@@ -1426,7 +1426,7 @@ extern int menu_hardware_autofire_cond(void);
 
 //extern void menu_file_viewer_read_text_file(char *title,char *file_name);
 
-extern void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2);
+
 
 extern int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk);
 

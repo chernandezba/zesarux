@@ -319,3 +319,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 -En visor dsk que solo muestre primer extent de un archivo. ya esta??
 -parseo de config, si error en una linea, seguir con la siguiente
+-al refrescar zx desktop no debería hacer framedrop (pero sí al mover iconos)

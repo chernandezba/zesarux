@@ -18288,6 +18288,8 @@ en que empieza en 1300H. Porque??
 
                             //printf("puntero: %d\n",puntero);
 
+                printf ("File %s\n",buffer_texto);                            
+
                 z80_byte continuation_marker=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12-1); //-1 porque empezamos el puntero en primera posicion
 
                 //Averiguar inicio de los datos
@@ -18296,6 +18298,8 @@ en que empieza en 1300H. Porque??
                 int bloque;
 
                 bloque=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
+
+                printf ("Bloque %02XH\n",bloque);  
 
                 //printf("after dsk_file_memory[puntero+15];\n");
 
@@ -18317,9 +18321,12 @@ en que empieza en 1300H. Porque??
                     int offset1,offset2;
 
                     //printf("before menu_dsk_getoff_block\n");
-                    menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2);
+                    //Si filesystem ha empezado en pista 1, pista_buscar-1=0 por tanto no desplazamos nada
+                    //Si filesystem ha empezado en pista 2, pista_buscar-1=1 por tanto desplazamos una pista
+                    menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2,pista_buscar-1);
 
-                    //printf("offset1 %d offset2 %d\n",offset1,offset2);
+                    printf("offset1 %XH offset2 %XH\n",offset1,offset2);
+
 
                     if (offset1<0 || offset2<0) {
                         debug_printf(VERBOSE_DEBUG,"Error reading dsk offset block");
@@ -18331,8 +18338,11 @@ en que empieza en 1300H. Porque??
                     //contienen 512 bytes de datos. El sector final puede contener 512 bytes o menos
                     if (total_bloques==1 && continuation_marker==0) {
                         int offset_a_longitud=offset1+16;
+                        printf("Offset a longitud: %XH\n",offset_a_longitud);
                         longitud_real_archivo=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_a_longitud)+256*util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_a_longitud+1);
                         debug_printf (VERBOSE_DEBUG,"Real length file %s read from PLUS3DOS header: %d",buffer_texto,longitud_real_archivo);
+
+                        printf ("Real length file %s read from PLUS3DOS header: %d\n",buffer_texto,longitud_real_archivo);
 
                         util_memcpy_protect_origin(buffer_temp,dsk_file_memory,longitud_dsk,offset1+128,512-128);
                         //memcpy(buffer_temp,&dsk_file_memory[offset1+128],512-128);
