@@ -1234,13 +1234,14 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
 
     for (pista=0;pista<total_pistas;pista++) {
         for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
+            printf("Pista: %d cara: %d\n",pista,cara);
             
 
             z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
             z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
 
-            //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-            //    pista,track_number,offset,pista_encontrar);        
+            printf("menu_dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+                pista,track_number,offset,pista_encontrar);        
 
             if (track_number==pista_encontrar && side_number==cara_encontrar) {
                 //printf("dsk_extended_get_start_track: return %X\n",offset);
@@ -1254,7 +1255,7 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
             }
 
             
-            int saltar=util_get_byte_protect(dsk_file_memory,longitud_dsk,(offset_track_table)*256);
+            int saltar=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_track_table)*256;
             offset +=saltar;
 
             
@@ -1277,6 +1278,7 @@ int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,in
     int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
 
     for (pista=0;pista<total_pistas;pista++) {
+        printf("Pista: %d\n",pista);
    
  
         z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
@@ -1288,7 +1290,7 @@ int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,in
 
         int sector_size=menu_dsk_get_sector_size_track_from_offset(dsk_file_memory,longitud_dsk,offset);
         if (sector_size<0) {
-            debug_printf(VERBOSE_ERR,"DSK Basic: Sector size not supported on track %d",pista);
+            debug_printf(VERBOSE_ERR,"MENU DSK Basic: Sector size not supported on track %d",pista);
             return -1;
         }
 
@@ -1347,7 +1349,7 @@ sectores van alternados:
 	for (pista=0;pista<total_pistas;pista++) {
 
         //TODO: de momento cara 0
-        int iniciopista_orig=menu_dsk_extended_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
+        int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
 
         printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
