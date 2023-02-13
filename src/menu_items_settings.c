@@ -382,6 +382,18 @@ void menu_settings_config_file_show(MENU_ITEM_PARAMETERS)
 	}
 }
 
+void menu_settings_config_file_show_location(MENU_ITEM_PARAMETERS)
+{
+
+    char configfile[PATH_MAX];
+
+    if (util_get_configfile_name(configfile)==0)  {
+        sprintf(configfile,"Unknown");
+    }
+
+	menu_generic_message_format("Config Path",configfile);    
+}
+
 
 void menu_settings_config_file_reset(MENU_ITEM_PARAMETERS)
 {
@@ -428,6 +440,13 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
         menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show_location,NULL,
+            "    Show config file ~~path","    Ver ~~path archivo configuración","    Veure ~~path arxiu configuració");
+		menu_add_item_menu_shortcut(array_menu_settings_config_file,'p');
+		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Show config file location");
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Show config file location");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);        
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,

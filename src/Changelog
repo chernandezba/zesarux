@@ -17,17 +17,22 @@ Added XEyes "Toy" to follow mouse
 
 * Improvements:
 
-Improved Configuration parsing: warning when ZEsarUX has been downgraded
+Improved Configuration:
+- better parsing: warning when ZEsarUX has been downgraded
+- moved showing Configuration file from Running info menu to Settings-> Configuration file
+
 Improved DSK viewer:
 - better filesystem detection
 - show hidden and read only files
 - show disk specification format
+
 Improved DSK extractor:
 - better filesystem detection
 
 Improved Debug Console: better refresh, dynamic width??
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug I/O ports window: autoresize content height when do not fit in window
+
 Improved Debug CPU:
 - switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
 - added (hl), (de), (bc)
@@ -40,6 +45,7 @@ Improved Debug CPU:
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer
 - you can view sprites up to 1024x1024
+- show PCW common format screen
 
 Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump and Disassemble
 
