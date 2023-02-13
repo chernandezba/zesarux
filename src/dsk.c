@@ -811,38 +811,38 @@ int dsk_extended_get_start_track(int pista_encontrar,int cara_encontrar)
 
     for (pista=0;pista<dsk_get_total_tracks();pista++) {
         for (cara=0;cara<dsk_get_total_sides();cara++) {
-        //Validar que estemos en informacion de pista realmente mirando la firma
-        //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
-        if (dsk_check_track_signature(offset)) {
-            debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
-        } 
+            //Validar que estemos en informacion de pista realmente mirando la firma
+            //TODO: quiza esta validacion se pueda quitar y/o hacerla al abrir el dsk 
+            if (dsk_check_track_signature(offset)) {
+                debug_printf(VERBOSE_ERR,"DSK: Extended DSK, track signature not found on track %XH size %d offset %XH",pista,cara,offset);
+            } 
 
-        z80_byte track_number=dsk_get_track_number_from_offset(offset);
-        z80_byte side_number=dsk_get_track_side_from_offset(offset);
+            z80_byte track_number=dsk_get_track_number_from_offset(offset);
+            z80_byte side_number=dsk_get_track_side_from_offset(offset);
 
-        //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-        //    pista,track_number,offset,pista_encontrar);        
+            //printf("dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+            //    pista,track_number,offset,pista_encontrar);        
 
-        if (track_number==pista_encontrar && side_number==cara_encontrar) {
-            //printf("dsk_extended_get_start_track: return %X\n",offset);
-            return offset;
+            if (track_number==pista_encontrar && side_number==cara_encontrar) {
+                //printf("dsk_extended_get_start_track: return %X\n",offset);
+                return offset;
+            }
+
+            int sector_size=dsk_get_sector_size_track_from_offset(offset);
+            if (sector_size<0) {
+                debug_printf(VERBOSE_ERR,"DSK Extended: Sector size not supported on track %d side %d",pista,cara);
+                return -1;
+            }
+
+            
+            int saltar=plus3dsk_get_byte_disk(offset_track_table)*256;
+            offset +=saltar;
+
+            
+            offset_track_table++;
+
+
         }
-
-        int sector_size=dsk_get_sector_size_track_from_offset(offset);
-        if (sector_size<0) {
-            debug_printf(VERBOSE_ERR,"DSK Extended: Sector size not supported on track %d side %d",pista,cara);
-            return -1;
-        }
-
-        
-        int saltar=plus3dsk_get_byte_disk(offset_track_table)*256;
-        offset +=saltar;
-
-        
-        offset_track_table++;
-
-
-    }
     }
 
     return -1;
