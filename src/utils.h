@@ -800,6 +800,8 @@ extern int util_extract_trd(char *filename,char *tempdir);
 
 extern void util_file_append(char *filename,z80_byte *puntero, int tamanyo);
 
+extern int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z80_byte *bloques,int entrada_obtener);
+
 extern int util_extract_dsk(char *filename,char *tempdir);
 
 extern int util_extract_z88_card(char *filename,char *tempdir);

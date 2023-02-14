@@ -17990,6 +17990,48 @@ int util_extract_trd(char *filename,char *tempdir)
 
 }
 
+//Obtener los bloques que usa una entrada del directorio
+//Bloques de CP/M de 128 bytes cada uno
+//Retorna cantidad de bloques como valor de retorno
+//En array de bloques rellena los bloques
+int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z80_byte *bloques,int entrada_obtener)
+{
+    int pista_filesystem;    
+    int puntero=menu_dsk_get_start_filesystem(dsk_file_memory,longitud_dsk,&pista_filesystem);   
+
+    //Saltar a la entrada indicada
+    int saltar=32*entrada_obtener;
+
+    puntero +=saltar;
+
+    z80_byte records_entry;
+
+    int total_bloques=0;
+
+
+    do {
+        records_entry=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
+
+        //Nos ubicamos en la posicion del primer bloque
+        puntero +=16;
+
+        z80_byte restantes_records_entry=records_entry;
+
+        while (restantes_records_entry>0)  {
+            bloques[total_bloques++]=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+            puntero++;
+            //Cada record son de 128 bytes. Cada bloque son de 1024 bytes
+            //Por tanto cada bloque son 8 records
+        } 
+
+        puntero+=16;
+
+    } while (records_entry>=0x80);
+
+
+    return total_bloques;
+}
+
 void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoextension,int longitud)
 {
 	int i;

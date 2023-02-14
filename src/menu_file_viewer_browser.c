@@ -1873,6 +1873,18 @@ void menu_file_dsk_browser_show(char *filename)
                 menu_file_dsk_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1);
                 if (buffer_texto[0]!='?') {
                     menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+                    z80_byte bloques[256];
+
+                    int total_bloques=util_dsk_get_blocks_entry_file(dsk_file_memory,longitud_dsk,bloques,i);
+
+                    printf("Archivo %s bloques:\n",buffer_texto);
+
+                    int j;
+                    for (j=0;j<total_bloques;j++) {
+                        printf("Bloque %d : %02XH\n",j,bloques[j]);
+                    }
+
                 }
             }
 
