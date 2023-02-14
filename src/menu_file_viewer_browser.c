@@ -1876,9 +1876,11 @@ void menu_file_dsk_browser_show(char *filename)
 
                     z80_byte bloques[256];
 
+                    printf("\n\nArchivo %s bloques:\n",buffer_texto);
+
                     int total_bloques=util_dsk_get_blocks_entry_file(dsk_file_memory,longitud_dsk,bloques,i);
 
-                    printf("Archivo %s bloques:\n",buffer_texto);
+                    
 
                     int j;
                     for (j=0;j<total_bloques;j++) {

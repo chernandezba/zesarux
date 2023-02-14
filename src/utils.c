@@ -18004,7 +18004,7 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
     puntero +=saltar;
 
-    z80_byte records_entry;
+    int records_entry;
 
     int total_bloques=0;
 
@@ -18012,19 +18012,30 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
     do {
         records_entry=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
+        printf("Entry %d Total bloques %d\n",total_bloques,records_entry);
+
         //Nos ubicamos en la posicion del primer bloque
         puntero +=16;
 
-        z80_byte restantes_records_entry=records_entry;
+        int restantes_records_entry=records_entry;
 
         while (restantes_records_entry>0)  {
-            bloques[total_bloques++]=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+            z80_byte block_id=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+
+            printf("Entry %d block %02XH\n",total_bloques,block_id);
+
+            bloques[total_bloques++]=block_id;
+
+            
+
             puntero++;
             //Cada record son de 128 bytes. Cada bloque son de 1024 bytes
             //Por tanto cada bloque son 8 records
+
+            restantes_records_entry -=8;
         } 
 
-        puntero+=16;
+        //puntero+=16;
 
     } while (records_entry>=0x80);
 
