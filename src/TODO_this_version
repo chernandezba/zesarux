@@ -328,3 +328,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -Tecla file selector para carpetas recientes 
 -Opción para listar máquinas en una línea separadas por espacios
 -cambiar de spectrum a next en linux peta, entiendo que por cambio de tamaños
+-visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
