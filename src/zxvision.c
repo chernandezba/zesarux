@@ -3567,11 +3567,11 @@ void menu_put_switch_zxdesktop_footer(void)
             caracter_reducir_alto=' ';               
         }
 
-        if (screen_ext_desktop_width>=ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
+        if (zxdesktop_width>=ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
             caracter_ampliar_ancho=' ';
         }
 
-        if (screen_ext_desktop_height>=ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
+        if (zxdesktop_height>=ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
             caracter_ampliar_alto=' ';
         }        
 
@@ -10932,13 +10932,13 @@ int zxvision_generic_message_cursor_up(zxvision_window *ventana)
 //Retorna el ancho en caracteres del ext desktop
 int menu_get_width_characters_ext_desktop(void)
 {
-	return screen_ext_desktop_width/menu_char_width/menu_gui_zoom;
+	return get_effective_zxdesktop_width()/menu_char_width/menu_gui_zoom;
 }
 
 //Retorna el alto en caracteres del ext desktop
 int menu_get_height_characters_ext_desktop(void)
 {
-	return screen_ext_desktop_height/menu_char_height/menu_gui_zoom;
+	return get_effective_zxdesktop_height()/menu_char_height/menu_gui_zoom;
 }
 
 int menu_get_origin_x_zxdesktop_aux(int divisor)
@@ -10948,7 +10948,7 @@ int menu_get_origin_x_zxdesktop_aux(int divisor)
 
 	//Quitamos el tamaño maximo ventana (normalmente 32), entre 2
 	//int pos_x=ancho_total-ZXVISION_MAX_ANCHO_VENTANA/2;
-	//int restar=screen_ext_desktop_width/menu_char_width/menu_gui_zoom;
+	
 	int restar=menu_get_width_characters_ext_desktop();
 	//printf ("restar: %d\n",restar);
 	//al menos 32 de ancho para zona de menu
@@ -16698,7 +16698,7 @@ void zxvision_rearrange_background_windows(void)
 
     //Si ZX Desktop habilitado y si los menús se abren en el ZX Desktop
 	if (menu_ext_desktop_enabled_place_menu() ) {
-		//ancho=screen_ext_desktop_width/menu_char_width/menu_gui_zoom;
+		
 		ancho=menu_get_width_characters_ext_desktop();
 
         //+1 para que no queden pegadas a la pantalla emulada
@@ -23207,7 +23207,7 @@ void menu_inicio(void)
 
                     //establecemos un minimo de ancho de zxdesktop (512/zoom_x) al habilitar
                     //ideal para maquinas que usualmente usan zoom 1, como tbblue o ql
-                    screen_ext_desktop_width=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON;
+                    zxdesktop_width=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON;
                     //printf("Generando valor nuevo\n");
                 
 
@@ -23227,7 +23227,7 @@ void menu_inicio(void)
 
                 //Si ya habilitado, aumentar zx desktop de ancho
                 else {
-                    if (screen_ext_desktop_width<ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
+                    if (zxdesktop_width<ZXDESKTOP_MAXIMUM_WIDTH_BY_BUTTON) {
                         menu_ext_desk_settings_width_enlarge_reduce(1); 
                     }
                 }
@@ -23271,11 +23271,11 @@ void menu_inicio(void)
                 //Si esta habilitado
                 if (screen_ext_desktop_enabled) {
                     //lo va a ocultar. Preservar valor anterior
-                    //screen_ext_desktop_width_before_disabling=screen_ext_desktop_width;
+                    
                     //printf("Conservando valor anterior\n");
 
                     //Si esta por debajo del limite, desactivar zx desktop
-                    if (screen_ext_desktop_width<=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON) {
+                    if (zxdesktop_width<=ZXDESKTOP_MINIMUM_WIDTH_BY_BUTTON) {
                         //Desactivar zx desktop
                         menu_ext_desk_settings_enable(0);                    
                     }
@@ -23312,7 +23312,7 @@ void menu_inicio(void)
             
                 //aumentar zx desktop de alto
                 
-                if (screen_ext_desktop_height<ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
+                if (zxdesktop_height<ZXDESKTOP_MAXIMUM_HEIGHT_BY_BUTTON) {
                     menu_ext_desk_settings_height_enlarge_reduce(1); 
                 }
                 
@@ -23340,8 +23340,8 @@ void menu_inicio(void)
                 menu_espera_no_tecla();
 
                 //Si esta por debajo del limite, ponerlo a 0
-                if (screen_ext_desktop_height<=ZXDESKTOP_MINIMUM_HEIGHT_BY_BUTTON) {
-                    screen_ext_desktop_height=0;
+                if (zxdesktop_height<=ZXDESKTOP_MINIMUM_HEIGHT_BY_BUTTON) {
+                    zxdesktop_height=0;
                 }
 
                 //Si esta en el limite, reducir ancho
@@ -24818,40 +24818,40 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 
 
 	//Cambio ancho
-	//screen_ext_desktop_width *=2;
-	//if (screen_ext_desktop_width>=2048) screen_ext_desktop_width=128;
+	//zxdesktop_width *=2;
+	//if (zxdesktop_width>=2048) zxdesktop_width=128;
 
 	//Incrementos de 128 hasta llegar a ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS
 	//Hacerlo multiple de 127 para evitar valores no multiples de custom width
 
-	screen_ext_desktop_width &=(65535-127);
+	zxdesktop_width &=(65535-127);
 
     if (enlarge_reduce) {
 
         //Si pasa de cierto limite (1280 a la fecha de escribir este comentario), saltar a 2560, y ese es el limite
-        if (screen_ext_desktop_width>=ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS && screen_ext_desktop_width<ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) screen_ext_desktop_width=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
+        if (zxdesktop_width>=ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS && zxdesktop_width<ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) zxdesktop_width=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
         
         //si pasa del limite maximo, volver a tamaño pequeño
-        else if (screen_ext_desktop_width>=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) {
-            screen_ext_desktop_width=128;
+        else if (zxdesktop_width>=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) {
+            zxdesktop_width=128;
             reorganize_windows=1;
         }
 
         //resto de casos, simplemente incrementar
-        else screen_ext_desktop_width +=128;
+        else zxdesktop_width +=128;
 
     }
 
     else {
         //Si esta entre cierto limite (1280..2560 a la fecha de escribir este comentario), saltar a 1280
-        if (screen_ext_desktop_width>ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS && screen_ext_desktop_width<=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) {
-            screen_ext_desktop_width=ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS;
+        if (zxdesktop_width>ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS && zxdesktop_width<=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT) {
+            zxdesktop_width=ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS;
             reorganize_windows=1;
         }
 
         //Si >=256, decrementar
-        else if (screen_ext_desktop_width>=256) {
-            screen_ext_desktop_width -=128;
+        else if (zxdesktop_width>=256) {
+            zxdesktop_width -=128;
             reorganize_windows=1;
         }
 
@@ -24904,49 +24904,49 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
 
 	//Cambio ancho
-	//screen_ext_desktop_width *=2;
-	//if (screen_ext_desktop_width>=2048) screen_ext_desktop_width=128;
+	//zxdesktop_width *=2;
+	//if (zxdesktop_width>=2048) zxdesktop_width=128;
 
 	//Incrementos de 128 hasta llegar a ZXDESKTOP_MAX_WIDTH_MENU_FIXED_INCREMENTS
 	//Hacerlo multiple de 127 para evitar valores no multiples de custom width
 
-	screen_ext_desktop_height &=(65535-(incremento-1));
+	zxdesktop_height &=(65535-(incremento-1));
 
     if (enlarge_reduce) {
 
         //Si pasa de cierto limite (1280 a la fecha de escribir este comentario), saltar a 2560, y ese es el limite
-        /*if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) screen_ext_desktop_height=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
+        /*if (zxdesktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && zxdesktop_height<ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) zxdesktop_height=ZXDESKTOP_MAX_WIDTH_MENU_LIMIT;
         
         //si pasa del limite maximo, volver a tamaño pequeño
         else*/ 
         
             //no hacer ese salto de 1280 a 2560 que si se hace en horizontal
-        if (screen_ext_desktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT ) {
-            screen_ext_desktop_height=0;
+        if (zxdesktop_height>=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT ) {
+            zxdesktop_height=0;
             reorganize_windows=1;
         }
 
         //resto de casos, simplemente incrementar
-        else screen_ext_desktop_height +=incremento;
+        else zxdesktop_height +=incremento;
 
     }
 
     else {
         //Si esta entre cierto limite (1280..2560 a la fecha de escribir este comentario), saltar a 1280
-        if (screen_ext_desktop_height>ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && screen_ext_desktop_height<=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
-            screen_ext_desktop_height=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS;
+        if (zxdesktop_height>ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS && zxdesktop_height<=ZXDESKTOP_MAX_HEIGHT_MENU_LIMIT) {
+            zxdesktop_height=ZXDESKTOP_MAX_HEIGHT_MENU_FIXED_INCREMENTS;
             reorganize_windows=1;
         }
 
         //Si >=256, decrementar
-        else if (screen_ext_desktop_height>=incremento) {
-            screen_ext_desktop_height -=incremento;
+        else if (zxdesktop_height>=incremento) {
+            zxdesktop_height -=incremento;
             reorganize_windows=1;
         }
 
         else {
             //resto de casos, pasar a 0
-            screen_ext_desktop_height=0;
+            zxdesktop_height=0;
         }
 
         

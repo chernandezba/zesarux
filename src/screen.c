@@ -2238,7 +2238,6 @@ int running_realloc=0;
 void scr_reallocate_layers_menu(int ancho,int alto)
 {
 
-	//ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width*zoom_x;
 
 	debug_printf (VERBOSE_DEBUG,"Allocating memory for menu layers %d X %d",ancho,alto);
 	//debug_exec_show_backtrace();
@@ -2345,11 +2344,11 @@ void scr_init_layers_menu(void)
 
 	ancho=screen_get_window_size_width_zoom_border_en();
 
-	ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width*zoom_x;
+	ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_width()*zoom_x;
 
   alto=screen_get_window_size_height_zoom_border_en();
 
-    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height*zoom_y;
+    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_height()*zoom_y;
 
 	scr_reallocate_layers_menu(ancho,alto);
 
@@ -2770,18 +2769,37 @@ int if_zxdesktop_enabled_and_driver_allows(void)
 int screen_ext_desktop_enabled=0;
 
 
-int screen_ext_desktop_width=256; //se multiplicara por zoom
-int screen_ext_desktop_height=0; //se multiplicara por zoom
+int zxdesktop_width=256; //se multiplicara por zoom y zoom gui
+int zxdesktop_height=0; //se multiplicara por zoom y zoom gui
 
-//valor anterior si el usuario lo ha ocultado con el boton del footer
-//int screen_ext_desktop_width_before_disabling=-1;
+//Obtener valores efectivos de zxdesktop width y height. Esto lo hago para que, al cambiar
+//de una maquina Spectrum (con zoom_x=zoom_y=2 y gui zoom=1) a CPC por ejemplo (con zoom_x=zoom_y=1 y gui zoom=2),
+//el tamaño del ZX Desktop sea el mismo, o casi el mismo, y no se pierda espacio del ZX Desktop
+//Si no multiplicase el tamaño por el gui zoom, dado que el zx desktop multiplica por zoom_x (y este ha pasado de 2 a 1),
+//tendriamos la mitad de ancho en ZX Desktop
+//Nota: quiza queda confuso las funciones screen_get_ext_desktop_width_no_zoom y screen_get_ext_desktop_width_zoom
+//pues usan solo zoom_x o zoom_y pero no gui zoom.. Esto es lo que pasa cuando se decide, tiempo mas tarde, que el zoom de gui
+//aplica al zxdesktop y antes no lo hacia...
+//Recordemos que:
+//-sea con zoom_x=1 o 2, o 3... el espacio que hay disponible en zx desktop para texto de menu es el mismo, 
+// misma cantidad de caracteres (solo que logicamente sale mas grande o mas pequeño)
+//zoom de gui amplia realmente el espacio disponible en zx desktop
+int get_effective_zxdesktop_width(void)
+{
+    return zxdesktop_width*menu_gui_zoom;
+}
+
+int get_effective_zxdesktop_height(void)
+{
+    return zxdesktop_height*menu_gui_zoom;
+}
 
 
 int screen_ext_desktop_place_menu=0; //Si abrimos siempre ventanas en la zona de desktop por defecto
 
 int screen_get_ext_desktop_width_no_zoom(void)
 {
-	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width;
+	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_width();
 }
 
 int screen_get_ext_desktop_width_zoom(void)
@@ -2828,7 +2846,7 @@ int screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom(void)
 
 int screen_get_ext_desktop_height_no_zoom(void)
 {
-	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height;
+	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_height();
 }
 
 int screen_get_ext_desktop_height_zoom(void)

@@ -893,6 +893,11 @@ void menu_interface_frameskip_draw_zxdesktop_background(MENU_ITEM_PARAMETERS)
     frameskip_draw_zxdesktop_background.v ^=1;
 }
 
+void menu_interface_zoom_autochange_big_display(MENU_ITEM_PARAMETERS)
+{
+    autochange_zoom_big_display.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -995,6 +1000,11 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_window_settings,'z');
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
                 menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
+                    "[%c] Autochange Zoom big display",(autochange_zoom_big_display.v ? 'X' : ' ' )); 
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
         }
 
 
@@ -9521,7 +9531,7 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 
 	char string_width[5];
 
-	sprintf (string_width,"%d",screen_ext_desktop_width);
+	sprintf (string_width,"%d",zxdesktop_width);
 
 
 	menu_ventana_scanf("Width",string_width,5);
@@ -9534,9 +9544,9 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 	}
 
 
-	if (valor<screen_ext_desktop_width) reorganize_windows=1;
+	if (valor<zxdesktop_width) reorganize_windows=1;
 
-	screen_ext_desktop_width=valor;
+	zxdesktop_width=valor;
 
 
     menu_ext_desk_settings_custom_width_height(reorganize_windows);
@@ -9552,7 +9562,7 @@ void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
 
 	char string_height[5];
 
-	sprintf (string_height,"%d",screen_ext_desktop_height);
+	sprintf (string_height,"%d",zxdesktop_height);
 
 
 	menu_ventana_scanf("Height",string_height,5);
@@ -9568,9 +9578,9 @@ void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
     valor &=(65535-7);
 
 
-	if (valor<screen_ext_desktop_height) reorganize_windows=1;
+	if (valor<zxdesktop_height) reorganize_windows=1;
 
-	screen_ext_desktop_height=valor;
+	zxdesktop_height=valor;
 
 
     menu_ext_desk_settings_custom_width_height(reorganize_windows);
@@ -10066,7 +10076,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 		if (screen_ext_desktop_enabled) {
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"~~Width");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_width);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_width);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
@@ -10077,7 +10087,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);      
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_height);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_height);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");

@@ -99,6 +99,8 @@ typedef struct s_z80_bit z80_bit;
 extern int zoom_x,zoom_y;
 extern int zoom_x_original,zoom_y_original;
 
+extern z80_bit autochange_zoom_big_display;
+
 
 extern z80_registro registro_hl;
 #define reg_h registro_hl.b.h

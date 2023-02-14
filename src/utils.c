@@ -3554,6 +3554,9 @@ int util_write_configfile(void)
 
   //TODO: por que no estamos guardando zoom_x y zoom_y??
                                               ADD_STRING_CONFIG,"--zoom %d",zoom_x);
+
+  if (autochange_zoom_big_display.v==0)       ADD_STRING_CONFIG,"--no-autochange-zoom-big-display");
+
   if (frameskip)                              ADD_STRING_CONFIG,"--frameskip %d",frameskip);
 
 
@@ -3575,8 +3578,8 @@ int util_write_configfile(void)
 
 
   if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");   
-                                              ADD_STRING_CONFIG,"--zxdesktop-width %d",screen_ext_desktop_width);  
-                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",screen_ext_desktop_height);  
+                                              ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);  
+                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",zxdesktop_height);  
 
 
 

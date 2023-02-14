@@ -72,8 +72,8 @@ extern int scr_driver_can_ext_desktop (void);
 
 extern int screen_este_driver_permite_ext_desktop;
 
-extern int screen_ext_desktop_width;
-extern int screen_ext_desktop_height;
+extern int zxdesktop_width;
+extern int zxdesktop_height;
 //extern int screen_ext_desktop_width_before_disabling;
 extern int screen_ext_desktop_enabled;
 

@@ -48,12 +48,14 @@ Improved View Sprites:
 - show PCW common format screen
 
 Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump and Disassemble
+Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
 - Show icon indicators for open apps on ZX Desktop
 - Added setting to empty Trash on exit
-- Fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (CPC, QL, etc)
+- Fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (Next, CPC, QL, etc)
+- ZX Desktop size now is multiplied by GUI Zoom (Zoom 2 on machines like Next, CPC, QL, etc)
 - CF2 Floppy icon (+3, CPC, PCW) now is animated when motor is on
 
 Improved ZX Vision:

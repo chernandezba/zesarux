@@ -269,6 +269,9 @@ char *scrfile;
 int zoom_x=2,zoom_y=2;
 int zoom_x_original,zoom_y_original;
 
+//Cambiar zoom a 1 cuando cambio a máquina Next, o QL, o cualquiera con GUI zoom a 2
+z80_bit autochange_zoom_big_display={1};
+
 struct timeval z80_interrupts_timer_antes, z80_interrupts_timer_ahora;
 
 struct timeval zesarux_start_time;
@@ -2033,36 +2036,37 @@ printf (
 		"----------------\n"
 		"\n"
 
-		"--zoomx n                      Horizontal Zoom Factor\n"
-		"--zoomy n                      Vertical Zoom Factor\n"
+		"--zoomx n                         Horizontal Zoom Factor\n"
+		"--zoomy n                         Vertical Zoom Factor\n"
+        "--no-autochange-zoom-big-display  No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 		
-		"--reduce-075                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-		"--reduce-075-no-antialias      Disable antialias for reduction, enabled by default\n"
-		"--reduce-075-offset-x n        Destination offset x on reduced display\n"
-		"--reduce-075-offset-y n        Destination offset y on reduced display\n"
+		"--reduce-075                      Reduce display size 4/3 (divide by 4, multiply by 3)\n"
+		"--reduce-075-no-antialias         Disable antialias for reduction, enabled by default\n"
+		"--reduce-075-offset-x n           Destination offset x on reduced display\n"
+		"--reduce-075-offset-y n           Destination offset y on reduced display\n"
 
-		"--frameskip n                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-        "--no-frameskip-zxdesktop-back  Disable apply frameskip drawing ZX Desktop Background\n"
-		"--disable-autoframeskip        Disable autoframeskip\n"
-        "--no-autoframeskip-moving-win  Disable autoframeskip even when moving windows\n"
-        "--disable-flash                Disable flash\n"
-		"--fullscreen                   Enable full screen\n"
-		"--disableborder                Disable Border\n"   
-        "--disablefooter                Disable window footer\n"             
-        "--ignoremouseclickopenmenu     Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
-        "--limitopenmenu                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
-		"--advancedmenus                Show advanced menu items\n"
-        "--language language            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
-        "--online-download-path p       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
+		"--frameskip n                     Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
+        "--no-frameskip-zxdesktop-back     Disable apply frameskip drawing ZX Desktop Background\n"
+		"--disable-autoframeskip           Disable autoframeskip\n"
+        "--no-autoframeskip-moving-win     Disable autoframeskip even when moving windows\n"
+        "--disable-flash                   Disable flash\n"
+		"--fullscreen                      Enable full screen\n"
+		"--disableborder                   Disable Border\n"   
+        "--disablefooter                   Disable window footer\n"             
+        "--ignoremouseclickopenmenu        Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
+        "--limitopenmenu                   Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
+		"--advancedmenus                   Show advanced menu items\n"
+        "--language language               Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
+        "--online-download-path p          Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
 #ifndef MINGW
-		"--no-cpu-usage                 Do not show host CPU usage on footer\n"
+		"--no-cpu-usage                    Do not show host CPU usage on footer\n"
 #endif
 
-		"--no-cpu-temp                  Do not show host CPU temperature on footer\n"
-		"--no-fps                       Do not show FPS on footer\n"
-        "--nowelcomemessage             Disable welcome message\n"
-        "--disablemenufileutils         Disable File Utilities menu\n"  
+		"--no-cpu-temp                     Do not show host CPU temperature on footer\n"
+		"--no-fps                          Do not show FPS on footer\n"
+        "--nowelcomemessage                Disable welcome message\n"
+        "--disablemenufileutils            Disable File Utilities menu\n"  
 
 
 		"\n"
@@ -4860,6 +4864,19 @@ void post_set_machine_no_rom_load_reopen_window(void)
 	//printf ("last: %d current: %d\n",last_machine_type,current_machine_type);
 
 	if (last_machine_type!=255 && last_machine_type!=current_machine_type) {
+        //Si máquina con gui zoom a 2, cambiar zoom_x y zoom_y a 1, para no exceder tamaños
+        if (autochange_zoom_big_display.v) {
+            if (antes_menu_gui_zoom !=menu_gui_zoom && menu_gui_zoom==2) {
+                if (zoom_x!=1 || zoom_y!=1) {
+                    debug_printf (VERBOSE_INFO,"Setting zoom_x and zoom_y to 1 because selected machine has a big display");
+                    printf ("Setting zoom_x and zoom_y to 1\n");
+                    zoom_x=zoom_y=1;
+                    set_putpixel_zoom();
+                }
+            }
+        }
+
+
 		debug_printf (VERBOSE_INFO,"Reopening window so current machine is different and may have different window size");
 		//printf ("Reopening window so current machine is different and may have different window size\n");
 		post_set_mach_reopen_screen();
@@ -6016,6 +6033,10 @@ int parse_cmdline_options(void) {
 				zoom_y=atoi(argv[puntero_parametro]);
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--no-autochange-zoom-big-display")) {
+                autochange_zoom_big_display.v=0;
+            }
+
 			else if (!strcmp(argv[puntero_parametro],"--reduce-075")) {
 				screen_reduce_075.v=1;
 			}
@@ -6050,7 +6071,7 @@ int parse_cmdline_options(void) {
 					printf ("Invalid value for ZX Desktop width\n");
 					exit(1);
 				}
-				screen_ext_desktop_width=valor;
+				zxdesktop_width=valor;
 			}		
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-height")) {
@@ -6061,7 +6082,7 @@ int parse_cmdline_options(void) {
 					printf ("Invalid value for ZX Desktop height\n");
 					exit(1);
 				}
-				screen_ext_desktop_height=valor;
+				zxdesktop_height=valor;
 			}	            
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-type")) {
