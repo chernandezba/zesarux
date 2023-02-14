@@ -156,6 +156,7 @@ int menu_recent_files_opcion_seleccionada=0;
 
 
 
+void menu_filesel_set_overlay(zxvision_window *ventana);
 
 
 filesel_item *menu_get_filesel_item(int index);
@@ -2352,7 +2353,7 @@ void menu_filesel_copy_recursive_start(char *archivo,char *nombre_final,int simu
 //si 0, move
 //si 1, es rename
 //si 2, copy
-void file_utils_move_rename_copy_file(char *archivo,int rename_move)
+void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
 {
 	char nombre_sin_dir[PATH_MAX];
 	char directorio[PATH_MAX];
@@ -2434,7 +2435,9 @@ void file_utils_move_rename_copy_file(char *archivo,int rename_move)
         //eso evita que se envie el siguiente texto a speech
         menu_speech_tecla_pulsada=0;   
 
-		if (menu_confirm_yesno_texto("Confirm operation","Sure?")==0) return;
+		if (menu_confirm_yesno_texto("Confirm operation","Sure?")==0) {
+            return;
+        }
 
         //Ver si ruta origen y destino es la misma, en el caso de copy y move
         if (rename_move==0 || rename_move==2) {
@@ -2516,6 +2519,25 @@ void file_utils_move_rename_copy_file(char *archivo,int rename_move)
 	}
 }
 
+
+
+void file_utils_move_rename_copy_file(char *archivo,int rename_move,zxvision_window *ventana)
+{
+
+
+    //TODO: da problemas al tener la ventana anterior y esta apuntando al mismo overlay
+    //Por que ? No estoy seguro, creo que es la propia rutina de overlay la que entra en conflicto
+    //Quito el overlay temporalmente para que no de problemas
+    zxvision_reset_window_overlay(ventana);
+
+
+    file_utils_move_rename_copy_file_post(archivo,rename_move);
+
+
+    //Volver a poner overlay de previews
+    menu_filesel_set_overlay(ventana);
+
+}
 
 void file_utils_delete(char *nombre)
 {
@@ -4688,7 +4710,6 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 //Overlay para mostrar los previews
 void menu_filesel_overlay(void)
 {
-	
 	//Y el procesado de nueva preview no tan seguido
 	//esto hara ejecutar esto 5 veces por segundo
 	if ( ((contador_segundo%200) == 0 && menu_filesel_overlay_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
@@ -4716,9 +4737,25 @@ void menu_filesel_preexit(zxvision_window *ventana)
 {
     //restauramos modo normal de texto de menu
     //set_menu_overlay_function(normal_overlay_texto_menu);
+    zxvision_reset_window_overlay(ventana);
 
     zxvision_destroy_window(ventana);
 
+}
+
+void menu_filesel_set_overlay(zxvision_window *ventana)
+{
+    //Overlay para los previews. Siempre que tengamos video driver completo
+    if (si_complete_video_driver() ) {
+            
+        if (menu_filesel_show_previews.v) {
+            menu_filesel_overlay_window=ventana;
+            
+            //cambio overlay
+            zxvision_set_window_overlay(ventana,menu_filesel_overlay);
+        }
+
+    }    
 }
 
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
@@ -4803,6 +4840,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 			//Error leyendo directorio
 			//restauramos modo normal de texto de menu
      		//set_menu_overlay_function(normal_overlay_texto_menu);
+            zxvision_reset_window_overlay(ventana);
 			
 			menu_espera_no_tecla();
 			zvfs_chdir(filesel_directorio_inicial);
@@ -4865,16 +4903,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 
 		//Overlay para los previews. Siempre que tengamos video driver completo
-        if (si_complete_video_driver() ) {
-                
-			if (menu_filesel_show_previews.v) {
-				menu_filesel_overlay_window=ventana;
-				
-                //cambio overlay
-                zxvision_set_window_overlay(ventana,menu_filesel_overlay);
-			}
-
-		}
+        menu_filesel_set_overlay(ventana);
 
 		zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 		zxvision_menu_filesel_print_text_contents(ventana);
@@ -5414,13 +5443,13 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
                                 //Rename para cualquier tipo de archivo
                                 if (tecla=='N') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,1);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,1,ventana);
                                     releer_directorio=1;
                                 }
 
                                 //Copy para cualquier tipo de origen. Si es directorio, hara copy recursive
                                 if (tecla=='C') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,2);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,2,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
                                     filesel_filtros_iniciales=filtros;
@@ -5431,7 +5460,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
                                 //Move para cualquier tipo de origen. Aunque no permitimos mover carpetas entre diferentes filesystems
                                 if (tecla=='M') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,0);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,0,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
                                     filesel_filtros_iniciales=filtros;
