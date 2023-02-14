@@ -1788,7 +1788,6 @@ void menu_file_dsk_browser_show(char *filename)
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Known disc format:");
             
-
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
             
 
@@ -1798,29 +1797,31 @@ void menu_file_dsk_browser_show(char *filename)
                 " Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
             
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Tracks/Sides: %d",spec_tracks_side);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Tracks/Sides: %d",
+                spec_tracks_side);
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sectors/Track: %d",spec_sectors_track);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sectors/Track: %d",
+                spec_sectors_track);
             
 
             int sector_size=128 << util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4);
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sector Size: %d",sector_size);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sector Size: %d",
+                sector_size);
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Reserved Tracks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Reserved Tracks: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Block size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Block size: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Directory blocks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Directory blocks: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (rw): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (rw): %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
             
-
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (format): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (format): %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
             
 
             //Calcular checksum de todo el sector
@@ -1842,8 +1843,7 @@ void menu_file_dsk_browser_show(char *filename)
             
 
             if (calculated_checksum==checksum_in_disk) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Bootable disk");
-
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Bootable disk");
             }                                    
                                                     
         }
@@ -1857,9 +1857,7 @@ void menu_file_dsk_browser_show(char *filename)
         puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
 
 
-    
-
-        printf("Inicio filesystem: %XH\n",puntero);
+        //printf("Inicio filesystem: %XH\n",puntero);
 
         
         puntero++; //Saltar el primer byte en la entrada de filesystem
