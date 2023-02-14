@@ -1482,7 +1482,49 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 
 
 
-int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
+int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int *p_pista)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+
+    int pista;
+
+    int puntero;
+
+    for (pista=0;pista<=2;pista++) {
+	
+        printf("Pista: %d\n",pista);
+
+        puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista,0,longitud_dsk);
+		//Si contiene e5 en el nombre, nos vamos a pista 1
+        //O si segundo caracter no es ascii
+
+        if (puntero>=0) {
+     
+            z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
+
+            if (byte_name!=0xe5 && (byte_name>=32 && byte_name<=127)) {        
+
+                break;
+                
+            }
+
+        }
+
+    }
+
+    //Por defecto
+    if (puntero<0) {
+        printf ("Filesystem track/sector not found. Guessing it\n");
+        puntero=0x200;
+    }
+    *p_pista=pista;
+
+    printf("Found filesystem at track %d. Puntero=%X\n",pista,puntero);
+
+    return puntero;
+}
+
+int old_menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 {
 
     //int total_pistas=longitud_dsk/4864;
@@ -1590,7 +1632,7 @@ void menu_file_dsk_browser_show(char *filename)
 	int longitud_dsk=bytes_to_load;
 	
 	//Leemos archivo dsk
-        FILE *ptr_file_dsk_browser;
+    FILE *ptr_file_dsk_browser;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -1605,46 +1647,29 @@ void menu_file_dsk_browser_show(char *filename)
         return;
     }
 
-    /*
-        ptr_file_dsk_browser=fopen(filename,"rb");
-
-        if (!ptr_file_dsk_browser) {
-		debug_printf(VERBOSE_ERR,"Unable to open file");
-		free(dsk_file_memory);
-		return;
-	}
-    */
 
 
-        int leidos;
-        
-        leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
-        //leidos=fread(dsk_file_memory,1,bytes_to_load,ptr_file_dsk_browser);
+
+    int leidos;
+    
+    leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
+    
 
 	if (leidos==0) {
-                debug_printf(VERBOSE_ERR,"Error reading file");
-                return;
-        }
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
 
-        zvfs_fclose(in_fatfs,ptr_file_dsk_browser,&fil);
-        //fclose(ptr_file_dsk_browser);
-
-
-        
-
+    zvfs_fclose(in_fatfs,ptr_file_dsk_browser,&fil);
+    
 
 	char buffer_texto[64]; //2 lineas, por si acaso
 
-	//int longitud_bloque;
-
-	//int longitud_texto;
 
 	char *texto_browser=util_malloc_max_texto_browser();
 	int indice_buffer=0;
 
 	
-
-
  	sprintf(buffer_texto,"DSK disk image");
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
@@ -1820,12 +1845,8 @@ void menu_file_dsk_browser_show(char *filename)
     sprintf(buffer_texto,"\nFirst Filesystem entries:");
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
-
-
-
-	//puntero=0x201;
-
-	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
+    int pista_filesystem;    
+	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
 /*
 en teoria , el directorio empieza en pista 0 sector 0, aunque esta info dice otra cosa:
 
@@ -1838,6 +1859,9 @@ SPECTRUM +3    Reserved          Directory             -
 Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 */
+
+    /*
+
     //printf("puntero: %XH\n",puntero);
 	if (puntero==-1) {
 		//printf ("Filesystem track/sector not found. Guessing it\n");
@@ -1871,8 +1895,9 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
         else break;
 
     }
+    */
 
-    //printf("puntero: %XH\n",puntero);
+    printf("Inicio filesystem: %XH\n",puntero);
 
     //Para saber donde acabar
     //int limite_sector=puntero+512;

@@ -1428,8 +1428,6 @@ extern int menu_hardware_autofire_cond(void);
 
 
 
-extern int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk);
-
 extern int menu_dsk_getoff_track_sector(z80_byte *dsk_memoria,int total_pistas,int pista_buscar,int sector_buscar,int longitud_dsk);
 
 

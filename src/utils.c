@@ -18149,10 +18149,14 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 */
 
 
-	int puntero,i;
+	int i;
+
+    int pista_filesystem;
+
+    int puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
 	
 
-	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
+	
 /*
 en teoria , el directorio empieza en pista 0 sector 0, aunque esta info dice otra cosa:
 
@@ -18169,6 +18173,11 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 /*
 TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualmente solo hago 1
 */
+
+
+    /*
+
+    puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
 
     //printf("puntero: %d\n",puntero);
 
@@ -18212,35 +18221,9 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
     }
 
     printf("Found filesystem at track %d. Puntero=%X\n",pista_buscar,puntero);
-
-/*
-
-    //Si contiene e5 en el nombre, nos vamos a pista 1
-    if (util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1)==0xe5) {
-    
-        //printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-      
-
-        puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,1,0,longitud_dsk);
-
-        //printf ("puntero after menu_dsk_getoff_track_sector: %XH\n",puntero);
-
-        if (puntero==-1) {
-            //printf ("Filesystem track/sector 1/0 not found. Guessing it\n");
-            //no encontrado. probar con lo habitual
-            puntero=0x200;
-        }
-        else 	{
-            //printf ("Filesystem found at offset %XH\n",puntero);
-        }
-    }
+    */
 
 
-    else {
-        //printf ("Filesystem found at offset %XH\n",puntero);
-    }
-
-*/
 	
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 
@@ -18251,7 +18234,6 @@ en que empieza en 1300H. Porque??
 */
 
 
-	//z80_byte buffer_temp[80000];
 	z80_byte *buffer_temp;
 	buffer_temp=malloc(80000);
 	
@@ -18325,7 +18307,9 @@ en que empieza en 1300H. Porque??
                     //printf("before menu_dsk_getoff_block\n");
                     //Si filesystem ha empezado en pista 1, pista_buscar-1=0 por tanto no desplazamos nada
                     //Si filesystem ha empezado en pista 2, pista_buscar-1=1 por tanto desplazamos una pista
-                    menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2,pista_buscar-1);
+                    
+
+                    menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2,pista_filesystem);
 
                     printf("offset1 %XH offset2 %XH\n",offset1,offset2);
 
