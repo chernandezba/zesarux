@@ -99,7 +99,7 @@
 
 * Emula Datagear/MB02 DMA, ZX-Uno DMA
 
-* Emula Disco +3
+* Emula controladora de disco Nec PD765, utilizada en Spectrum +3, CPC 664, CPC 6128, PCW
 
 * Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
 

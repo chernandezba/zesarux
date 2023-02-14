@@ -325,3 +325,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos)
 -zx desktop tamaño deberia multiplicarse por gui zoom? ok en principio
 -footer que tambien amplie tamaño segun menu_gui_zoom
+-Tecla file selector para carpetas recientes 
+-Opción para listar máquinas en una línea separadas por espacios

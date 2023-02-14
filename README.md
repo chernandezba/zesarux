@@ -195,7 +195,7 @@ __FEATURES__
 
 * Emulates Datagear/MB02 DMA, ZX-Uno DMA
 
-* Emulates +3 Disk
+* Emulates Nec PD765 floppy disk controller, used on Spectrum +3, CPC 664, CPC 6128, PCW
 
 * Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be converted from file selector pressing space
 
