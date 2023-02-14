@@ -327,3 +327,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -footer que tambien amplie tamaño segun menu_gui_zoom
 -Tecla file selector para carpetas recientes 
 -Opción para listar máquinas en una línea separadas por espacios
+-cambiar de spectrum a next en linux peta, entiendo que por cambio de tamaños

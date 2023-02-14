@@ -1666,12 +1666,27 @@ void menu_file_dsk_browser_show(char *filename)
 	char buffer_texto[64]; //2 lineas, por si acaso
 
 
-	char *texto_browser=util_malloc_max_texto_browser();
-	int indice_buffer=0;
+	//char *texto_browser=util_malloc_max_texto_browser();
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=0;
+
+     do {
+
+        
+
+
+	//int indice_buffer=0;
 
 	
- 	sprintf(buffer_texto,"DSK disk image");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+ 	//sprintf(buffer_texto,"DSK disk image");
+	//indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+
+     menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"DSK disk image");
 
 
 /*
@@ -1713,25 +1728,29 @@ void menu_file_dsk_browser_show(char *filename)
 	sprintf(buffer_texto,"Free sectors on disk: %d",dsk_file_memory[start_track_8+229]+256*dsk_file_memory[start_track_8+230]);
         indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);*/
 
- 	sprintf(buffer_texto,"Signature:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
+
 
 	util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
+    menu_add_item_menu_separator(array_menu_common);
 
- 	sprintf(buffer_texto,"\nCreator:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+ 	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Creator:");
+	
 
 	util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+    menu_add_item_menu_separator(array_menu_common);
     
 
-	sprintf(buffer_texto,"\nTotal tracks: %d",dsk_file_memory[0x30]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_file_memory[0x30]);
+	
 
-	sprintf(buffer_texto,"Total sides: %d",dsk_file_memory[0x31]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
+	menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_file_memory[0x31]);
+	
 
     //Si tiene Especificacion de formato PCW/+3
     int puntero;
@@ -1781,41 +1800,45 @@ void menu_file_dsk_browser_show(char *filename)
 
         Byte 15		Checksum (used only if disk is bootable)
 */
-        sprintf(buffer_texto,"\nKnown disc format:");
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);  
 
-        sprintf(buffer_texto," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Known disc format:");
+        
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
+        
 
         int sides_show=spec_disk_sides;
         if (sides_show>=2) sides_show=1;
-        sprintf(buffer_texto," Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);    
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+            " Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
+        
 
-        sprintf(buffer_texto," Tracks/Sides: %d",spec_tracks_side);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Tracks/Sides: %d",spec_tracks_side);
+        
 
-        sprintf(buffer_texto," Sectors/Track: %d",spec_sectors_track);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto); 
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sectors/Track: %d",spec_sectors_track);
+        
 
         int sector_size=128 << util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4);
-        sprintf(buffer_texto," Sector Size: %d",sector_size);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sector Size: %d",sector_size);
+        
 
-        sprintf(buffer_texto," Reserved Tracks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Reserved Tracks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
+        
 
-        sprintf(buffer_texto," Block size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Block size: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
+        
 
-        sprintf(buffer_texto," Directory blocks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Directory blocks: %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
+        
 
-        sprintf(buffer_texto," Gap length (rw): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);         
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (rw): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
+        
 
-        sprintf(buffer_texto," Gap length (format): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);   
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (format): %d",util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
+        
 
         //Calcular checksum de todo el sector
         int i;
@@ -1832,70 +1855,26 @@ void menu_file_dsk_browser_show(char *filename)
 
         z80_byte checksum_in_disk=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
-        sprintf(buffer_texto," Checksum: %02XH",checksum_in_disk);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Checksum: %02XH",checksum_in_disk);
+        
 
         if (calculated_checksum==checksum_in_disk) {
-            sprintf(buffer_texto," Bootable disk");
-            indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);            
+           menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Bootable disk");
+
         }                                    
                                                   
     }
 
-    sprintf(buffer_texto,"\nFirst Filesystem entries:");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    menu_add_item_menu_separator(array_menu_common);
+
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"First Filesystem entries:");
+    
 
     int pista_filesystem;    
 	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
-/*
-en teoria , el directorio empieza en pista 0 sector 0, aunque esta info dice otra cosa:
-
-                TRACK 0          TRACK 1             TRACK 2
-
-SPECTRUM +3    Reserved          Directory             -
-                               (sectors 0-3)
 
 
-Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
-
-*/
-
-    /*
-
-    //printf("puntero: %XH\n",puntero);
-	if (puntero==-1) {
-		//printf ("Filesystem track/sector not found. Guessing it\n");
-		//no encontrado. probar con lo habitual
-		puntero=0x200;
-	}
-
-    int pista_buscar;
-
-    for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
-	
-		//Si contiene e5 en el nombre, nos vamos a pista 1
-        //O si segundo caracter no es ascii
-
-        z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
-
-		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
-			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-            
-
-            puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
-
-			if (puntero==-1) {
-                //printf ("Filesystem track/sector not found. Guessing it\n");
-                //no encontrado. probar con lo habitual
-                puntero=0x200;
-			}
-			
-		}
-
-        else break;
-
-    }
-    */
+ 
 
     printf("Inicio filesystem: %XH\n",puntero);
 
@@ -1918,7 +1897,7 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 
 		    menu_file_dsk_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1);
 		    if (buffer_texto[0]!='?') {
-    			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 		    }
         }
 
@@ -1930,15 +1909,33 @@ Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
 	
 
 
-	texto_browser[indice_buffer]=0;
+	//texto_browser[indice_buffer]=0;
 
 
-	//  menu_generic_message_tooltip("DSK file browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("DSK file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"DSK file viewer");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+	//zxvision_generic_message_tooltip("DSK file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
 
 
 	free(dsk_file_memory);
-    free(texto_browser);
+    //free(texto_browser);
 
 }
 
