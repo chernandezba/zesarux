@@ -1623,6 +1623,18 @@ z80_byte *menu_file_dsk_browser_show_click_file_dsk_file_memory;
 int menu_file_dsk_browser_show_click_file_longitud_dsk;
 int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
 
+void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionado)
+{
+
+    int sector=(item_seleccionado->valor_opcion) & 0xFF;
+    int pista=(item_seleccionado->valor_opcion)>>8;
+
+    printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
+
+    menu_visual_floppy_buffer_reset();
+    menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
+}
+
 void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
@@ -1698,10 +1710,22 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
                 &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
             printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
 
+            //Cada bloque son dos sectores:
 
-            //Info pistas y sectores
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
             
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X",pista1,sector1);
+            //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
+            //Indica con opcion pista y sector
+            menu_add_item_menu_valor_opcion(array_menu_common,pista1*256+sector1);
+
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X",pista2,sector2);
+            //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
+            //Indica con opcion pista y sector
+            menu_add_item_menu_valor_opcion(array_menu_common,pista2*256+sector2);
+
 
         }  
 

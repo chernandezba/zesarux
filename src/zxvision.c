@@ -18840,7 +18840,13 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 		}
 
 
-
+        menu_item *funcion_seleccionado_item=menu_retorna_item(m,(*opcion_inicial));
+        if (funcion_seleccionado_item!=NULL) {
+            if (funcion_seleccionado_item->menu_funcion_seleccionada!=NULL) {
+                printf("Llamando a funcion de item seleccionado\n");
+                funcion_seleccionado_item->menu_funcion_seleccionada(funcion_seleccionado_item);
+            }
+        }
 
 
 		//escribir todas opciones
@@ -19459,6 +19465,8 @@ void menu_add_item_menu_common_defaults(menu_item *m,int tipo_opcion,t_menu_func
     
     m->menu_funcion_espacio=NULL;
 
+    m->menu_funcion_seleccionada=NULL;
+
     m->siguiente_item=NULL;
 
     ////    
@@ -19818,6 +19826,20 @@ void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio
         }
 
         m->menu_funcion_espacio=menu_funcion_espacio;
+}
+
+
+//Agregar funcion de gestion de salto a funcion cuando se selecciona un item con el cursor (sin tener que pulsar Enter)
+void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *))
+{
+//busca el ultimo item i le añade el indicado
+
+        while (m->siguiente_item!=NULL)
+        {
+                m=m->siguiente_item;
+        }
+
+        m->menu_funcion_seleccionada=menu_funcion_seleccionada;
 }
 
 
