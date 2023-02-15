@@ -1635,6 +1635,36 @@ void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionad
     menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
 }
 
+void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
+{
+
+    z80_byte bloques[256];
+
+    int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+        menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,archivo_seleccionado);
+
+    int indice_buffer=0;
+
+    int i;
+    for (i=0;i<total_bloques;i++) {
+        z80_byte bloque=bloques[i];
+        printf("---Bloque %d : %02XH\n",i,bloque);
+
+        //de cada bloque obtener pista y sector
+        int pista1,sector1,pista2,sector2;
+        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+        menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
+        menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
+
+
+
+    }      
+}
+
 void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
@@ -1654,6 +1684,8 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
     do {
 
+
+        menu_file_dsk_browser_visualmem_all_blocks(valor_opcion);
         
         int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
             menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
@@ -1679,9 +1711,6 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
                 menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
                 &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
             printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
-
-            menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
-            menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
 
             sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
             indice_buffer +=3;
