@@ -1626,13 +1626,13 @@ int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
 void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
-    char *texto_browser=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
+    //char *texto_browser=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
 
     //char *texto_pistas_sectores=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
     //texto_pistas_sectores[0]=0;
 
 
-    int indice_buffer=0;
+    //int indice_buffer=0;
     //int indice_buffer_pistas_sectores=0;
 
     char buffer_texto[64]; //2 lineas, por si acaso
@@ -1642,13 +1642,23 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
     //printf("\n\nArchivo %s bloques:\n",buffer_texto);
 
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=0;
+
+    do {
+
+        
+        
+
     int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
         menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
 
-    sprintf(buffer_texto,"Total Blocks: %d (KB)",total_bloques);
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total Blocks: %d (KB)",total_bloques);
 
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"Used blocks:");    
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
 
 
 
@@ -1656,7 +1666,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
     int j;
 
-
+    int indice_buffer=0;
     for (j=0;j<total_bloques;j++) {
         z80_byte bloque=bloques[j];
         printf("---Bloque %d : %02XH\n",j,bloque);
@@ -1671,19 +1681,20 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
         menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
         menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
 
-        sprintf(&texto_browser[indice_buffer],"%02X ",bloque);
+        sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
         indice_buffer +=3;
 
         //Cada 8 bloques salto de linea
         if (((j+1)%8)==0) {
-            strcpy(&texto_browser[indice_buffer],"\n");
-            indice_buffer +=1;
+            //strcpy(&texto_browser[indice_buffer],"\n");
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            indice_buffer=0;
         }
 
     }    
 
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],
-        "\nTracks and physical sectors for every block: (Note: Open visual floppy to see real location on disk)");
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
+    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
 
 
     for (j=0;j<total_bloques;j++) {
@@ -1699,16 +1710,33 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
 
         //Info pistas y sectores
-        sprintf(buffer_texto,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);        
-
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
+        
 
     }  
 
 
-    zxvision_generic_message_tooltip("Blocks" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Blocks");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+    //zxvision_generic_message_tooltip("Blocks" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
     
-    free(texto_browser);
+    //free(texto_browser);
 
 
     menu_visual_floppy_buffer_reset();
