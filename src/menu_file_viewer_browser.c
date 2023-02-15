@@ -1628,12 +1628,12 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
     char *texto_browser=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
 
-    char *texto_pistas_sectores=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
-    texto_pistas_sectores[0]=0;
+    //char *texto_pistas_sectores=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
+    //texto_pistas_sectores[0]=0;
 
 
     int indice_buffer=0;
-    int indice_buffer_pistas_sectores=0;
+    //int indice_buffer_pistas_sectores=0;
 
     char buffer_texto[64]; //2 lineas, por si acaso
 
@@ -1674,11 +1674,6 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
         sprintf(&texto_browser[indice_buffer],"%02X ",bloque);
         indice_buffer +=3;
 
-        //Info pistas y sectores
-        sprintf(buffer_texto,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
-        indice_buffer_pistas_sectores +=util_add_string_newline(&texto_pistas_sectores[indice_buffer_pistas_sectores],buffer_texto);        
-
-
         //Cada 8 bloques salto de linea
         if (((j+1)%8)==0) {
             strcpy(&texto_browser[indice_buffer],"\n");
@@ -1690,12 +1685,31 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
     indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],
         "\nTracks and physical sectors for every block: (Note: Open visual floppy to see real location on disk)");
 
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],texto_pistas_sectores);
+
+    for (j=0;j<total_bloques;j++) {
+        z80_byte bloque=bloques[j];
+        printf("---Bloque %d : %02XH\n",j,bloque);
+
+        //de cada bloque obtener pista y sector
+        int pista1,sector1,pista2,sector2;
+        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+
+        //Info pistas y sectores
+        sprintf(buffer_texto,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
+        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);        
+
+
+    }  
+
 
     zxvision_generic_message_tooltip("Blocks" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
     
     free(texto_browser);
-    free(texto_pistas_sectores);
+
 
     menu_visual_floppy_buffer_reset();
 
