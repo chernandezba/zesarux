@@ -322,7 +322,10 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -al refrescar zx desktop no debería hacer framedrop (pero sí al mover iconos)
 -en plus3doshandler, cuando filesystem empieza en pista 2, todos los bloques van desplazados una pista en adelante
 (igual que utils.c y llamada a menu_dsk_getoff_block). y lo mismo para buscar inicio pista
--extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos)
+
+-extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
+
+
 -zx desktop tamaño deberia multiplicarse por gui zoom? ok en principio
 -footer que tambien amplie tamaño segun menu_gui_zoom
 -Tecla file selector para carpetas recientes 

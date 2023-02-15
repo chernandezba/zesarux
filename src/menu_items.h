@@ -57,7 +57,9 @@ extern void menu_debug_assemble(MENU_ITEM_PARAMETERS);
 
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
 extern void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector);
+extern void menu_visual_floppy_buffer_add_persistent(int pista,int sector,int byte_en_sector);
 extern void menu_visualfloppy_increment_rotation(void);
+extern void menu_visual_floppy_buffer_reset(void);
 
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
 

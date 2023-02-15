@@ -40,6 +40,7 @@
 
 #include "menu_file_viewer_browser.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "compileoptions.h"
 #include "screen.h"
 #include "cpu.h"
@@ -1632,7 +1633,7 @@ void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
     int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
         menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,archivo_seleccionado);
 
-    int indice_buffer=0;
+    //int indice_buffer=0;
 
     int i;
     for (i=0;i<total_bloques;i++) {
@@ -1656,7 +1657,7 @@ void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
 
 
 //Aqui entra al pasar el cursor por cualquier de las lineas que no tienen pista y sector
-void menu_file_dsk_browser_all_sectors(struct s_menu_item *item_seleccionado)
+void menu_file_dsk_browser_all_sectors(struct s_menu_item *item_seleccionado GCC_UNUSED)
 {
     menu_visual_floppy_buffer_reset();
     menu_file_dsk_browser_visualmem_all_blocks(menu_file_dsk_browser_show_click_file_archivo_seleccionado);

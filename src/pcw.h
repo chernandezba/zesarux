@@ -103,5 +103,8 @@ extern void pcw_boot_cpm(void);
 extern z80_bit pcw_boot_reinsert_previous_dsk;
 extern int pcw_boot_timer;
 extern z80_bit pcw_fallback_cpm_when_no_boot;
+extern void pcw_handle_end_boot_disk(void);
+extern void pcw_boot_check_dsk_not_bootable(void);
+extern void pcw_boot_timer_handle(void);
 
 #endif

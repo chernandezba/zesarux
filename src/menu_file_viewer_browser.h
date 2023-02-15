@@ -49,6 +49,7 @@ extern void menu_file_dsk_browser_show(char *filename);
 extern void menu_hilow_datadrive_browser(z80_byte *puntero_memoria);
 extern void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista);
 extern int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int *p_pista);
-
+extern int menu_dsk_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista,int cara);
+extern int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk);
 
 #endif
