@@ -34679,6 +34679,7 @@ struct s_menu_visual_floppy_buffer {
     int sector;
     int byte_en_sector;
     int intensidad; //intensidad de color en porcentaje: 100%: cuando se agrega. Va bajando hasta 0
+    int persistent; //Si no 0, no decrementa el color
 };
 
 struct s_menu_visual_floppy_buffer menu_visual_floppy_buffer[MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER];
@@ -34688,8 +34689,7 @@ void menu_visual_floppy_buffer_reset(void)
     menu_visual_floppy_buffer_length=0;
 }
 
-
-void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector)
+void menu_visual_floppy_buffer_add_common(int pista,int sector,int byte_en_sector,int persistent)
 {
     if (menu_visual_floppy_buffer_length>=MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER) {
         printf("Visual floppy buffer is full\n");
@@ -34701,8 +34701,23 @@ void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector)
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].sector=sector;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].byte_en_sector=byte_en_sector;
     menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].intensidad=100;
+    menu_visual_floppy_buffer[menu_visual_floppy_buffer_length].persistent=persistent;
 
     menu_visual_floppy_buffer_length++;
+}
+
+void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector)
+{
+
+    menu_visual_floppy_buffer_add_common(pista,sector,byte_en_sector,0);
+
+}
+
+void menu_visual_floppy_buffer_add_persistent(int pista,int sector,int byte_en_sector)
+{
+
+    menu_visual_floppy_buffer_add_common(pista,sector,byte_en_sector,1);
+
 }
 
 void menu_visual_floppy_dibujar_index_hole(int centro_disco_x,int centro_disco_y,
@@ -34940,6 +34955,8 @@ void menu_visual_floppy_overlay(void)
         
         int intensidad;
 
+        int persistent;
+
         int ultimo_color_no_cero=-1;
 
         //printf("menu_visual_floppy_buffer_length: %d\n",menu_visual_floppy_buffer_length);
@@ -34949,6 +34966,7 @@ void menu_visual_floppy_overlay(void)
             sector=menu_visual_floppy_buffer[i].sector;
             byte_en_sector=menu_visual_floppy_buffer[i].byte_en_sector;
             intensidad=menu_visual_floppy_buffer[i].intensidad;
+            persistent=menu_visual_floppy_buffer[i].persistent;
 
             if (intensidad!=0) {
                 total_bytes_mostrados++;
@@ -34969,8 +34987,8 @@ void menu_visual_floppy_overlay(void)
             menu_visual_floppy_putpixel_track_sector(centro_disco_x,centro_disco_y,radio_fin_datos,radio_exterior_disco,
             pista,sector,byte_en_sector,color);
 
-            //Y decrementar intensidad
-            if (intensidad>0) intensidad--;
+            //Y decrementar intensidad, si no esta persistente
+            if (!persistent && intensidad>0) intensidad--;
             menu_visual_floppy_buffer[i].intensidad=intensidad;
 
         }

@@ -801,6 +801,7 @@ extern int util_extract_trd(char *filename,char *tempdir);
 extern void util_file_append(char *filename,z80_byte *puntero, int tamanyo);
 
 extern int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z80_byte *bloques,int entrada_obtener);
+extern void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *sector1,int *pista1,int *sector2,int *pista2,int incremento_pista);
 
 extern int util_extract_dsk(char *filename,char *tempdir);
 

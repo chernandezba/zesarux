@@ -17990,6 +17990,199 @@ int util_extract_trd(char *filename,char *tempdir)
 
 }
 
+
+//Retorna el sector fisico que corresponde a un sector logico
+//-1 si no se encuentra
+int util_dsk_getphysical_track_sector(z80_byte *dsk_memoria,int total_pistas,int pista_buscar,int sector_buscar,int longitud_dsk)
+{
+
+/*
+sectores van alternados:
+00000100  54 72 61 63 6b 2d 49 6e  66 6f 0d 0a 00 00 00 00  |Track-Info......|
+00000110  00 00 00 00 02 09 4e e5  00 00 c1 02 00 00 00 02  |......N.........|
+00000120  00 00 c6 02 00 00 00 02  00 00 c2 02 00 00 00 02  |................|
+00000130  00 00 c7 02 00 00 00 02  00 00 c3 02 00 00 00 02  |................|
+00000140  00 00 c8 02 00 00 00 02  00 00 c4 02 00 00 00 02  |................|
+00000150  00 00 c9 02 00 00 00 02  00 00 c5 02 00 00 00 02  |................|
+00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+
+1,6,2,7,3,8
+
+
+0 1 2 3 4 5 6 7 8  
+0,5,1,6,2,7,3,8,4
+
+*/
+
+	int pista;
+	int sector;
+
+	//int iniciopista_orig=256;
+
+    printf("util_dsk_getphysical_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
+
+	//Buscamos en todo el archivo dsk
+	for (pista=0;pista<total_pistas;pista++) {
+
+        //TODO: de momento cara 0
+        int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
+
+        printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
+
+		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
+
+        int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
+		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+
+        printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+
+		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
+		int iniciopista=iniciopista_orig;
+		//saltar 0x18
+		iniciopista +=0x18;
+
+		for (sector=0;sector<sectores_en_pista;sector++) {
+			int offset_tabla_sector=sector*8; 
+
+			//printf("before getting pista_id sumando %d %d\n",iniciopista,offset_tabla_sector);
+
+			int offset_leer_dsk;
+
+			offset_leer_dsk=iniciopista+offset_tabla_sector;
+			//Validar offset
+			if (offset_leer_dsk>=longitud_dsk) return -1;
+
+            //printf("before getting pistaid\n");
+			//z80_byte pista_id=dsk_memoria[offset_leer_dsk]; //Leemos pista id
+
+            z80_byte pista_id=util_get_byte_protect(dsk_memoria,longitud_dsk,offset_leer_dsk); //Leemos pista id
+
+
+			//printf("after getting pistaid\n");
+
+
+			//Validar offset
+			offset_leer_dsk=iniciopista+offset_tabla_sector+2;
+			if (offset_leer_dsk>=longitud_dsk) return -1;
+
+
+            //printf("before getting sector_id\n");
+			//z80_byte sector_id=dsk_memoria[offset_leer_dsk]; //Leemos c1, c2, etc
+
+            z80_byte sector_id=util_get_byte_protect(dsk_memoria,longitud_dsk,offset_leer_dsk); //Leemos c1, c2, etc
+
+			//printf("after getting sector_id\n");
+
+			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
+
+
+            printf("C: %02XH R: %02X \n",pista_id,sector_id);
+
+			sector_id &=0xF;
+
+			sector_id--;  //empiezan en 1...
+
+			if (pista_id==pista_buscar && sector_id==sector_buscar) {
+				printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
+		                return sector;
+			}
+
+            //printf("after if\n");
+
+		}
+
+        //printf("after for\n");
+
+		//debug_printf(VERBOSE_DEBUG,"");
+
+		iniciopista_orig +=256;
+		iniciopista_orig +=512*sectores_en_pista;
+	}
+
+    //printf("Not found sector %d/%d\n",pista_buscar,sector_buscar);
+
+	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);	
+	
+	//retornamos offset fuera de rango
+	//printf("returning -1\n");
+	return -1;
+
+
+}
+
+//Retorna los dos sectores (fisicos, no logicos) que ocupa un bloque de 1kb
+void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *sector1,int *pista1,int *sector2,int *pista2,int incremento_pista)
+{
+			//int total_pistas=longitud_dsk/4864;
+            int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+            //printf("total_pistas: %d\n",total_pistas);
+			int pista;
+			int sector_en_pista;
+
+			int sector_total;
+
+			sector_total=bloque*2; //cada bloque es de 2 sectores
+
+            //Incremento_pista indica sumar x pistas de desplazamiento al bloque
+            sector_total +=9*incremento_pista;
+
+			//tenemos sector total en variable bloque
+			//sacar pista
+			pista=sector_total/9; //9 sectores por pista
+			sector_en_pista=sector_total % 9;
+
+			//printf ("pista: %d sector en pista: %d\n",pista,sector_en_pista);
+
+			//offset a los datos dentro del dsk
+			//int offset=pista*4864+sector_en_pista*512;
+
+
+			//printf("before getting offset1\n");
+            *pista1=pista;
+			*sector1=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
+
+			sector_total++;
+			pista=sector_total/9; //9 sectores por pista
+			sector_en_pista=sector_total % 9;			
+
+			//printf("before getting offset2\n");
+            *pista2=pista;
+			*sector2=util_dsk_getphysical_track_sector(dsk_file_memory,total_pistas,pista,sector_en_pista,longitud_dsk);
+			//printf("after getting offset2\n");
+
+}
+
+//parecido memcmp pero usando funciones protegidas de acceso
+int util_dsk_memcmp(z80_byte *dsk_file_memory,int longitud_dsk,int puntero1,int puntero2)
+{
+    printf("util_dsk_memcmp %XH to %XH\n",puntero1,puntero2);
+
+    int i;
+
+    int resta=0;
+
+    for (i=0;i<11;i++) {
+        int byte1=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero1); 
+        int byte2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero2); 
+
+
+
+        int parcial=byte2-byte1;
+
+        resta +=parcial;
+
+        printf("i: %d %02XH %02XH resta: %d\n",i,byte1,byte2,resta);
+
+        puntero1++;
+        puntero2++;
+
+        //no hace falta comparar la string entera. En el momento que 1 caracter cambie, volver
+        if (resta!=0) return resta;
+    }
+
+    return resta;
+}
+
 //Obtener los bloques que usa una entrada del directorio
 //Bloques de CP/M de 128 bytes cada uno
 //Retorna cantidad de bloques como valor de retorno
@@ -18008,6 +18201,9 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
     int total_bloques=0;
 
+    int puntero_a_nombre=puntero+1;
+
+    int mismo_nombre_comp;
 
     do {
         records_entry=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
@@ -18019,8 +18215,9 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
         int restantes_records_entry=records_entry;
 
+        int puntero_bloques=puntero;
         while (restantes_records_entry>0)  {
-            z80_byte block_id=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+            z80_byte block_id=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero_bloques);
 
             printf("Entry %d block %02XH\n",total_bloques,block_id);
 
@@ -18028,16 +18225,21 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
             
 
-            puntero++;
+            puntero_bloques++;
             //Cada record son de 128 bytes. Cada bloque son de 1024 bytes
             //Por tanto cada bloque son 8 records
 
             restantes_records_entry -=8;
         } 
 
-        //puntero+=16;
+        puntero+=16;
 
-    } while (records_entry>=0x80);
+        //Comparar si siguiente entrada es mismo archivo
+        mismo_nombre_comp=util_dsk_memcmp(dsk_file_memory,longitud_dsk,puntero+1,puntero_a_nombre);
+
+        puntero_a_nombre=puntero+1;
+
+    } while (mismo_nombre_comp==0);
 
 
     return total_bloques;

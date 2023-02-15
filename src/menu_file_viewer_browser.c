@@ -1440,7 +1440,7 @@ sectores van alternados:
 }
 
 
-
+//Retorna los dos sectores, indicando los offset de ambos que ocupa un bloque de 1kb
 void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista)
 {
 			//int total_pistas=longitud_dsk/4864;
@@ -1607,6 +1607,100 @@ void menu_file_dsk_browser_show_file(z80_byte *origen,char *destino,int sipuntoe
 	*destino=0;
 }
 
+
+void menu_file_dsk_browser_add_sector_visual_floppy(int pista,int sector)
+{
+    int i;
+
+    for (i=0;i<512;i++) {
+        menu_visual_floppy_buffer_add_persistent(pista,sector,i);
+    }
+}
+
+
+
+z80_byte *menu_file_dsk_browser_show_click_file_dsk_file_memory;
+int menu_file_dsk_browser_show_click_file_longitud_dsk;
+int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
+
+void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
+{
+
+    char *texto_browser=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
+
+    char *texto_pistas_sectores=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
+    texto_pistas_sectores[0]=0;
+
+
+    int indice_buffer=0;
+    int indice_buffer_pistas_sectores=0;
+
+    char buffer_texto[64]; //2 lineas, por si acaso
+
+
+    z80_byte bloques[256];
+
+    //printf("\n\nArchivo %s bloques:\n",buffer_texto);
+
+    int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+        menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
+
+    sprintf(buffer_texto,"Total Blocks: %d (KB)",total_bloques);
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],"Used blocks:");    
+
+
+
+    printf("Total bloques: %d\n",total_bloques);
+
+    int j;
+
+
+    for (j=0;j<total_bloques;j++) {
+        z80_byte bloque=bloques[j];
+        printf("---Bloque %d : %02XH\n",j,bloque);
+
+        //de cada bloque obtener pista y sector
+        int pista1,sector1,pista2,sector2;
+        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+        menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
+        menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
+
+        sprintf(&texto_browser[indice_buffer],"%02X ",bloque);
+        indice_buffer +=3;
+
+        //Info pistas y sectores
+        sprintf(buffer_texto,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
+        indice_buffer_pistas_sectores +=util_add_string_newline(&texto_pistas_sectores[indice_buffer_pistas_sectores],buffer_texto);        
+
+
+        //Cada 8 bloques salto de linea
+        if (((j+1)%8)==0) {
+            strcpy(&texto_browser[indice_buffer],"\n");
+            indice_buffer +=1;
+        }
+
+    }    
+
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],
+        "\nTracks and physical sectors for every block: (Note: Open visual floppy to see real location on disk)");
+
+    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],texto_pistas_sectores);
+
+    zxvision_generic_message_tooltip("Blocks" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+    
+    free(texto_browser);
+    free(texto_pistas_sectores);
+
+    menu_visual_floppy_buffer_reset();
+
+}
+
 void menu_file_dsk_browser_show(char *filename)
 {
 
@@ -1630,6 +1724,9 @@ void menu_file_dsk_browser_show(char *filename)
 	}
 
 	int longitud_dsk=bytes_to_load;
+
+    menu_file_dsk_browser_show_click_file_longitud_dsk=longitud_dsk;
+    menu_file_dsk_browser_show_click_file_dsk_file_memory=dsk_file_memory;
 	
 	//Leemos archivo dsk
     FILE *ptr_file_dsk_browser;
@@ -1851,6 +1948,7 @@ void menu_file_dsk_browser_show(char *filename)
         menu_add_item_menu_separator(array_menu_common);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"First Filesystem entries:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Enter on any for more info)");
         
 
         int pista_filesystem;    
@@ -1860,32 +1958,25 @@ void menu_file_dsk_browser_show(char *filename)
         //printf("Inicio filesystem: %XH\n",puntero);
 
         
-        puntero++; //Saltar el primer byte en la entrada de filesystem
+        //puntero++; //Saltar el primer byte en la entrada de filesystem
 
+        menu_file_dsk_browser_show_click_file_incremento_pista_filesystem=pista_filesystem;
         for (i=0;i<max_entradas_dsk;i++) {
 
+            z80_byte user_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+
             //Solo mostrar entradas de archivo con primer extent
-            z80_byte extent_ex=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+11);
-            z80_byte extent_s2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12);
+            z80_byte extent_ex=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12);
+            z80_byte extent_s2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+13);
 
-            if (extent_ex==0 && extent_s2==0) {
+            if (extent_ex==0 && extent_s2==0 && user_number!=0xE5) {
 
-                menu_file_dsk_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1);
+                menu_file_dsk_browser_show_file(&dsk_file_memory[puntero+1],buffer_texto,1);
                 if (buffer_texto[0]!='?') {
-                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-
-                    z80_byte bloques[256];
-
-                    printf("\n\nArchivo %s bloques:\n",buffer_texto);
-
-                    int total_bloques=util_dsk_get_blocks_entry_file(dsk_file_memory,longitud_dsk,bloques,i);
-
-                    
-
-                    int j;
-                    for (j=0;j<total_bloques;j++) {
-                        printf("Bloque %d : %02XH\n",j,bloques[j]);
-                    }
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+                        menu_file_dsk_browser_show_click_file,NULL,buffer_texto);
+                    //Le indicamos el numero de bloque como opcion
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
 
                 }
             }
