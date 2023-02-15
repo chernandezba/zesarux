@@ -1626,15 +1626,7 @@ int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
 void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
-    //char *texto_browser=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
-
-    //char *texto_pistas_sectores=util_malloc(MAX_TEXTO_GENERIC_MESSAGE-1024,"Can not allocate memory for view sectors");
-    //texto_pistas_sectores[0]=0;
-
-
-    //int indice_buffer=0;
-    //int indice_buffer_pistas_sectores=0;
-
+ 
     char buffer_texto[64]; //2 lineas, por si acaso
 
 
@@ -1651,69 +1643,67 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
     do {
 
         
-        
+        int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
 
-    int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
-        menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total Blocks: %d (KB)",total_bloques);
 
-    menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total Blocks: %d (KB)",total_bloques);
-
-    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
 
 
 
-    printf("Total bloques: %d\n",total_bloques);
+        printf("Total bloques: %d\n",total_bloques);
 
-    int j;
+        int j;
 
-    int indice_buffer=0;
-    for (j=0;j<total_bloques;j++) {
-        z80_byte bloque=bloques[j];
-        printf("---Bloque %d : %02XH\n",j,bloque);
+        int indice_buffer=0;
+        for (j=0;j<total_bloques;j++) {
+            z80_byte bloque=bloques[j];
+            printf("---Bloque %d : %02XH\n",j,bloque);
 
-        //de cada bloque obtener pista y sector
-        int pista1,sector1,pista2,sector2;
-        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
-            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
-            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
-        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+            //de cada bloque obtener pista y sector
+            int pista1,sector1,pista2,sector2;
+            util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+                menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+                &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
 
-        menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
-        menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
+            menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
+            menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
 
-        sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
-        indice_buffer +=3;
+            sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
+            indice_buffer +=3;
 
-        //Cada 8 bloques salto de linea
-        if (((j+1)%8)==0) {
-            //strcpy(&texto_browser[indice_buffer],"\n");
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-            indice_buffer=0;
-        }
+            //Cada 8 bloques salto de linea
+            if (((j+1)%8)==0) {
+                //strcpy(&texto_browser[indice_buffer],"\n");
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+                indice_buffer=0;
+            }
 
-    }    
+        }    
 
-    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
-    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
-
-
-    for (j=0;j<total_bloques;j++) {
-        z80_byte bloque=bloques[j];
-        printf("---Bloque %d : %02XH\n",j,bloque);
-
-        //de cada bloque obtener pista y sector
-        int pista1,sector1,pista2,sector2;
-        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
-            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
-            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
-        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
 
 
-        //Info pistas y sectores
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
-        
+        for (j=0;j<total_bloques;j++) {
+            z80_byte bloque=bloques[j];
+            printf("---Bloque %d : %02XH\n",j,bloque);
 
-    }  
+            //de cada bloque obtener pista y sector
+            int pista1,sector1,pista2,sector2;
+            util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+                menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+                &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+
+            //Info pistas y sectores
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X T%02X S%X",pista1,sector1,pista2,sector2);
+            
+
+        }  
 
 
 
@@ -1733,10 +1723,6 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
         }
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-    //zxvision_generic_message_tooltip("Blocks" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
-    
-    //free(texto_browser);
 
 
     menu_visual_floppy_buffer_reset();
