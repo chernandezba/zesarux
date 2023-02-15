@@ -7,7 +7,7 @@ Added Machine Amstrad CPC 664
 Added Machine Amstrad PCW 8256
 Added Machine Amstrad PCW 8512
 Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
-Added Visual Floppy to see +3 disk (and CPC6128?) activity
+Added Visual Floppy to see floppy disk (+3, CPC, PCW) activity
 Added Poke F-Function
 Added Visual Real Tape F-Function
 Added DSK disk info menu: to get tracks and sectors of a disk
@@ -25,6 +25,7 @@ Improved DSK viewer:
 - better filesystem detection
 - show hidden and read only files
 - show disk specification format
+- show where files are located on Visual Floppy
 
 Improved DSK extractor:
 - better filesystem detection
