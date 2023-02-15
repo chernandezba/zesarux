@@ -1622,18 +1622,7 @@ void menu_file_dsk_browser_add_sector_visual_floppy(int pista,int sector)
 z80_byte *menu_file_dsk_browser_show_click_file_dsk_file_memory;
 int menu_file_dsk_browser_show_click_file_longitud_dsk;
 int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
-
-void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionado)
-{
-
-    int sector=(item_seleccionado->valor_opcion) & 0xFF;
-    int pista=(item_seleccionado->valor_opcion)>>8;
-
-    printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
-
-    menu_visual_floppy_buffer_reset();
-    menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
-}
+int menu_file_dsk_browser_show_click_file_archivo_seleccionado;
 
 void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
 {
@@ -1665,9 +1654,33 @@ void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
     }      
 }
 
+
+//Aqui entra al pasar el cursor por cualquier de las lineas que no tienen pista y sector
+void menu_file_dsk_browser_all_sectors(struct s_menu_item *item_seleccionado)
+{
+    menu_visual_floppy_buffer_reset();
+    menu_file_dsk_browser_visualmem_all_blocks(menu_file_dsk_browser_show_click_file_archivo_seleccionado);
+}
+
+//Aqui entra al pasar el cursor por una linea con pista y sector
+void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionado)
+{
+
+    int sector=(item_seleccionado->valor_opcion) & 0xFF;
+    int pista=(item_seleccionado->valor_opcion)>>8;
+
+    printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
+
+    menu_visual_floppy_buffer_reset();
+    menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
+}
+
+
+
 void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 {
 
+    menu_file_dsk_browser_show_click_file_archivo_seleccionado=valor_opcion;
  
     char buffer_texto[64]; //2 lineas, por si acaso
 
@@ -1685,14 +1698,18 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
     do {
 
 
-        menu_file_dsk_browser_visualmem_all_blocks(valor_opcion);
+        //menu_file_dsk_browser_visualmem_all_blocks(valor_opcion);
         
         int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
             menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total Blocks: %d (KB)",total_bloques);
+        //Gestion de visual floppy que muestra todos los bloques
+        menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
+        //Gestion de visual floppy que muestra todos los bloques
+        menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
 
 
 
@@ -1719,6 +1736,9 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
             if (((j+1)%8)==0) {
                 //strcpy(&texto_browser[indice_buffer],"\n");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+                //Gestion de visual floppy que muestra todos los bloques
+                menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
+
                 indice_buffer=0;
             }
 
