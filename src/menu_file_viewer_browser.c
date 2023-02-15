@@ -1718,6 +1718,8 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
         int j;
 
         int indice_buffer=0;
+        int items_en_linea=0;
+
         for (j=0;j<total_bloques;j++) {
             z80_byte bloque=bloques[j];
             printf("---Bloque %d : %02XH\n",j,bloque);
@@ -1740,9 +1742,20 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
 
                 indice_buffer=0;
+                items_en_linea=0;
+            }
+            else {
+                items_en_linea++;
             }
 
-        }    
+        }  
+
+        //Si queda algun item por agregar de la linea
+        if (items_en_linea) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            //Gestion de visual floppy que muestra todos los bloques
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);            
+        }  
 
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
         menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
@@ -1762,14 +1775,14 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
             //Cada bloque son dos sectores:
 
             
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X",pista1,sector1);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista1,sector1);
             //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
             menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
             //Indica con opcion pista y sector
             menu_add_item_menu_valor_opcion(array_menu_common,pista1*256+sector1);
 
             
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"T%02X S%X",pista2,sector2);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista2,sector2);
             //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
             menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
             //Indica con opcion pista y sector
