@@ -4827,10 +4827,15 @@ void set_menu_gui_zoom(void)
 	//Ajustar zoom del gui. por defecto 1
 	menu_gui_zoom=1;
 	//printf ("calling set_menu_gui_zoom. driver: %s\n",scr_new_driver_name);
+	//printf("machine id: %d si_complete_video_driver: %d\n",current_machine_type ,si_complete_video_driver() );
 
-	if (si_complete_video_driver() ) {
+	//Realmente da igual mirar si driver video completo: como el menu gui zoom solo se usa en drivers
+	//completos, no hace falta testear. Ademas, aqui al iniciar el emulador se llama
+	//antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
+	//esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2 
+	//if (si_complete_video_driver() ) {
 		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
-	}
+	//}
 
 	debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);
 }
@@ -10199,13 +10204,16 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//Algun parametro que se resetea con reset_cpu y/o set_machine y se puede haber especificado por linea de comandos
 	if (command_line_zx8081_vsync_sound.v) zx8081_vsync_sound.v=1;
 
+    //llamar a set_menu_gui_zoom para establecer zoom menu. Ya se ha llamado desde set_machine pero como no hay driver de video aun ahi,
+    //no se aplica zoom de gui dado que eso solo es para driver xwindows, sdl etc y no para curses y otros
+	//Esto tiene que ir justo aqui antes de init driver video pues al cambiar a veces gui zoom a 2 (caso tbblue o cpc por ejemplo),
+	//el tamaño de zx desktop se multiplica por el gui zoom y entonces la memoria a asignar del driver de video es mayor
+    set_menu_gui_zoom();
+
 
     //Inicializamos Video antes que el resto de cosas.
     main_init_video();
 
-    //llamar a set_menu_gui_zoom para establecer zoom menu. Ya se ha llamado desde set_machine pero como no hay driver de video aun ahi,
-    //no se aplica zoom de gui dado que eso solo es para driver xwindows, sdl etc y no para curses y otros
-    set_menu_gui_zoom();
 
   //Activar deteccion automatica de rutina de impresion de caracteres, si conviene
 	//Esto se hace tambien al inicializar cpu... Pero como al inicializar cpu aun no hemos inicializado driver video,

@@ -810,17 +810,29 @@ scr_refresca_pantalla_y_border_zx8081();
 
 }
 
+void scrxwindows_get_display_size(int *p_ancho,int *p_alto)
+{
+	int ancho=screen_get_window_size_width_zoom_border_en();
+
+	ancho +=screen_get_ext_desktop_width_zoom();
+
+	int alto=screen_get_window_size_height_zoom_border_en();
+
+	alto +=screen_get_ext_desktop_height_zoom();   
+
+	*p_ancho=ancho;
+	*p_alto=alto;  	
+}
+
 void scrxwindows_refresca_pantalla_solo_driver(void)
 {
    //Dibujar normal toda la pantalla entera
 
-	 int ancho=screen_get_window_size_width_zoom_border_en();
+	 int ancho;
 
-	 ancho +=screen_get_ext_desktop_width_zoom();
+	 int alto;
 
-	 int alto=screen_get_window_size_height_zoom_border_en();
-
-	 alto +=screen_get_ext_desktop_height_zoom();     
+	 scrxwindows_get_display_size(&ancho,&alto);  
 
         if( shm_used ) {
 
@@ -2120,11 +2132,13 @@ static int try_shm (void)
 
   shm_eventtype = XShmGetEventBase( dpy ) + ShmCompletion;
 
-int ancho=screen_get_window_size_width_zoom_border_en();
-ancho +=screen_get_ext_desktop_width_zoom();
+int ancho;
 
-int alto=screen_get_window_size_height_zoom_border_en();
-alto +=screen_get_ext_desktop_height_zoom();
+int alto;
+
+scrxwindows_get_display_size(&ancho,&alto);
+
+
 
 image = XShmCreateImage( dpy, xdisplay_visual,
                            xdisplay_depth, ZPixmap,
