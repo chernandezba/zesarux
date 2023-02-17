@@ -73,6 +73,8 @@ Improved ZX Vision:
 
 Fixed Spectrum +3 disk emulation: TODO: add more details here
 Fixed autoload on Spectrum +3
+Fixed bug that may crash ZEsarUX when changing to a machine with bigger resolution. It seems to affect Linux and Windows but not Mac. This is a bug that has always existed (a "long life bug" XD)
+
 Fixed showing creator on DSK file viewer
 Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number

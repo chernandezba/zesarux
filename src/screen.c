@@ -862,6 +862,9 @@ z80_int *rainbow_buffer_two=NULL;
 //cache de putpixel. Solo usado en modos rainbow (segun recuerdo)
 z80_int *putpixel_cache=NULL;
 
+//Tamaño de dicha cache de putpixel
+int putpixel_cache_size=0;
+
 
 //funcion con debug. usada en el macro con debug
 
@@ -1054,7 +1057,6 @@ void init_rainbow(void)
 
 void init_cache_putpixel(void)
 {
-
 #ifdef PUTPIXELCACHE
 	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache");
 	if (putpixel_cache!=NULL) {
@@ -1084,11 +1086,18 @@ void init_cache_putpixel(void)
 	//para poder hacer putpixel cache con modo timex 512x192
 	tamanyo *=2;
 
+	putpixel_cache_size=tamanyo*2; //*2 porque es z80_int
 
-	putpixel_cache=malloc(tamanyo*2); //*2 porque es z80_int
+	//TODO: parece que la memoria que asignamos es mayor de la que luego usamos en clear_putpixel_cache
+	//normal? o es un error?
+	//De todas maneras, asignar mas memoria de la que usamos no provoca fallos, es un desperdicio, si,
+	//pero no generará ningun segfault ni nada parecido
 
 
-	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache of size: %d bytes",tamanyo);
+	putpixel_cache=malloc(putpixel_cache_size); 
+
+
+	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache of size: %d bytes",putpixel_cache_size);
 
 	if (putpixel_cache==NULL) {
 		cpu_panic("Error allocating putpixel_cache video buffer");
@@ -1846,6 +1855,18 @@ void clear_putpixel_cache(void)
 
 	//Alternativa con memset mas rapido
 	int longitud=tamanyo_y*tamanyo_x*2; //*2 porque es un z80_int
+
+	//Si la longitud de lo que vamos a inicializar es mayor que el tamaño
+	//propiamente de la memoria asignada, no borrar todo
+	//Esto puede suceder momentaneamente al cambiar a maquina con resolucion mayor, cuando se 
+	//ha cambiado la definición de la máquina, se inicializa realvideo (por ejemplo)
+	//pero aun no se ha llamado a init_cache_putpixel
+	if (longitud>putpixel_cache_size) {
+		debug_printf (VERBOSE_INFO,"Allocated memory for putpixel cache is smaller than we are trying to clear, can be normal");
+		longitud=putpixel_cache_size;
+	}
+
+
 	memset(putpixel_cache,255,longitud);
 
 	//printf ("clear putpixel cache get_total_ancho_rainbow=%d get_total_alto_rainbow=%d \n",get_total_ancho_rainbow(),get_total_alto_rainbow() );
