@@ -1007,6 +1007,7 @@ void pcw_boot_timer_handle(void)
 
 //Comprueba que el disco no sea arrancable (cuando llega a ciertas direcciones y ejecuta opcode concreto)
 //Y en ese caso puede hacer fallback a CP/M
+//Tambien detectar si no hay disco insertado
 void pcw_boot_check_dsk_not_bootable(void)
 {
 
@@ -1015,7 +1016,17 @@ void pcw_boot_check_dsk_not_bootable(void)
     if (pcw_boot_timer==0) return;
 
 
-    if (reg_pc!=0x3D && reg_pc!=0xF13B) return;
+    if (reg_pc!=0x3D && reg_pc!=0xF13B && reg_pc!=0xF9) return;
+
+    int autoboot=0;
+
+    //Cuando no hay disco insertado
+    //OUT (C),A, cuando hace el recalibrate
+    if (reg_pc==0xF9 && peek_byte_no_time(reg_pc)==0xED && peek_byte_no_time(reg_pc+1)==0x79) {
+        pcw_boot_timer=0;
+        printf("Seems you do not have selected any DSK\n");
+        autoboot=1;
+    }
 
     /*
     3DH BIT 7,(HL)
@@ -1026,19 +1037,20 @@ void pcw_boot_check_dsk_not_bootable(void)
         pcw_boot_timer=0;
         printf("Seems you have selected a non bootable disk\n");
 
-        //Si hay que autoinsertar cpm
-        if (pcw_fallback_cpm_when_no_boot.v) {
-            printf("Autobooting CP/M\n");
-            //sleep(2);
-            pcw_boot_cpm();
-
-            //Y no autodetectar de nuevo si disco no botable,
-            //Esto no deberia suceder, pues CP/M es botable,
-            //pero si por algo fallase, nos quedariamos en un bucle continuo de reinicios
-            pcw_boot_timer=0;
-        }
-
+        autoboot=1;
    }
+
+    //Si hay que autoinsertar cpm
+    if (autoboot & pcw_fallback_cpm_when_no_boot.v) {
+        printf("Autobooting CP/M\n");
+        //sleep(2);
+        pcw_boot_cpm();
+
+        //Y no autodetectar de nuevo si disco no botable,
+        //Esto no deberia suceder, pues CP/M es botable,
+        //pero si por algo fallase, nos quedariamos en un bucle continuo de reinicios
+        pcw_boot_timer=0;
+    }   
 
 }
 

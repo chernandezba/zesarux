@@ -1136,6 +1136,10 @@ void pd765_handle_command_recalibrate(void)
     as described in the SEEK Command, also applies to the RECALIBRATE Command.    
     */
    
+    if (pd765_common_dsk_not_inserted_readwrite()) {
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on recalibrate");
+        return;
+    }
    //Inicialmente decimos no senyal TS0
    pd765_signal_ts0.v=0;
 
@@ -1190,6 +1194,11 @@ void pd765_handle_command_seek(void)
     Parecido a recalibrate pero vamos al track indicado
     */
 
+    //Si DSK no insertado
+    if (pd765_common_dsk_not_inserted_readwrite()) {
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on seek");
+        return;
+    }
 
    pd765_sc_initialize_running(&signal_se);
    pd765_seek_was_recalibrating.v=0;
