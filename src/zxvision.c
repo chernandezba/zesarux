@@ -1092,6 +1092,9 @@ z80_bit auto_frameskip_even_when_movin_windows={1};
 //Hacer autoframeskip al dibujar fondo zx deskop
 z80_bit frameskip_draw_zxdesktop_background={1};
 
+//Decir que el siguiente refresco de zx desktop no se hara frameskip
+z80_bit no_next_frameskip_draw_zxdesktop_background={0};
+
 //Aunque este siempre se asignara primero, pero por si acaso le damos valor por defecto
 z80_bit autoframeskip_setting_before_moving_windows={1};
 
@@ -6557,9 +6560,16 @@ void menu_draw_ext_desktop(void)
 
     int dibujar_zxdesktop_background=1;
 
-    if (frameskip_draw_zxdesktop_background.v) {
+	//if (frameskip_draw_zxdesktop_background.v && no_next_frameskip_draw_zxdesktop_background.v) {
+	//	printf("No se hace frameskip del siguiente refresco de zx desktop\n");
+	//}
+
+	//Si frameskip al zx desktop, pero a no ser que se haya hecho un destroy window y por tanto no hay frameskip
+    if (frameskip_draw_zxdesktop_background.v && no_next_frameskip_draw_zxdesktop_background.v==0) {
         if (!screen_if_refresh()) dibujar_zxdesktop_background=0;
     }
+
+	no_next_frameskip_draw_zxdesktop_background.v=0;
 
     //No hago frameskip de ZX Desktop si la emulacion esta detenida en el menu, pues en ese caso
     //no hay "nadie" ejecutando el core de cpu que diga que hay que descartar frames o no
@@ -10348,6 +10358,9 @@ void zxvision_destroy_window(zxvision_window *w)
 	int antes_menu_speech_tecla_pulsada=menu_speech_tecla_pulsada;
 
 	menu_speech_tecla_pulsada=1; //Para no leer las ventanas de detrás al cerrar la actual
+
+	//Siguiente refresco de zxdesktop no hay framedrop, para forzar que se vea el cambio de cerrar ventana
+	no_next_frameskip_draw_zxdesktop_background.v=1;
 
 	if (zxvision_current_window!=NULL) {
 		//Dibujar las de detras
