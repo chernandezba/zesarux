@@ -8676,6 +8676,9 @@ zxvision_window *menu_display_total_palette_draw_barras_window;
 //se pensara que se redimensiona y por tanto no dibujara el contenido
 int window_colour_palette_left_mouse=0;
 
+
+int menu_display_total_palette_total_colores_por_ventana=0;
+
 //Muestra lista de colores o barras de colores, para una paleta total, o para la paleta mapeada
 int menu_display_total_palette_lista_colores(int linea,int si_barras)
 {
@@ -8684,6 +8687,8 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
     //Redibujar esto solo si no estamos redimensionando o arrastrando ventana
     //esto solo lo hago para evitar sobrecargar la cpu y provocaria que no muestra nada al redimensionar
     if (!window_colour_palette_left_mouse) {
+
+		//printf("Escribir lista colores %d\n",contador_segundo);
 
 	char dumpmemoria[33];
 
@@ -8700,16 +8705,26 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 
     int total_colores_mostrar;
 
+	//Borramos lista de colores con espacios por si hay estos de antes
+	if (!si_barras) {
+		int i;
+		for (i=0;i<menu_display_total_palette_total_colores_por_ventana;i++) {
+			zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,
+				0,TOTAL_PALETTE_WINDOW_Y+3+i,"");
+		}
+	}
+
+
     //total_colores_mostrar=TOTAL_PALETTE_COLORS_PER_WINDOW;
 
     //Con total visible 24, 16 colores 
 
-    total_colores_mostrar=(menu_display_total_palette_draw_barras_window->visible_height)-8;
+    //total_colores_mostrar=(menu_display_total_palette_draw_barras_window->visible_height)-8;
 
     //por si acaso
-    if (total_colores_mostrar<1) total_colores_mostrar=1;    
+    //if (total_colores_mostrar<1) total_colores_mostrar=1;    
 
-		for (linea_color=0;linea_color<total_colores_mostrar &&
+		for (linea_color=0;linea_color<menu_display_total_palette_total_colores_por_ventana &&
 				menu_display_total_palette_current_colour+linea_color<limite;
 				linea_color++) {
 
@@ -8959,17 +8974,15 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
     if (!mouse_left) {
         window_colour_palette_left_mouse=0;
 
- 		//Borramos lista de colores con espacios por si hay estos de antes
+		//printf("Redibujar %d\n",contador_segundo);
 
         //Forzar a mostrar atajos
         z80_bit antes_menu_writing_inverse_color;
         antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
         menu_writing_inverse_color.v=1;		
 
-
+		menu_display_total_palette_total_colores_por_ventana=total_colores_por_ventana;
 		
-		int i;
-		for (i=0;i<total_colores_por_ventana;i++) zxvision_print_string_defaults_fillspc(ventana,0,TOTAL_PALETTE_WINDOW_Y+3+i,"");
 
         menu_speech_tecla_pulsada=0; //Que envie a speech
 
@@ -9011,7 +9024,7 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 
 		char buffer_linea[40];
 
-        //Nos situamos justo despues de la lisa de colores
+        //Nos situamos justo despues de la lista de colores
 		linea=TOTAL_PALETTE_WINDOW_Y+total_colores_por_ventana+3;
 
         //Y meter una linea en blanco

@@ -4874,7 +4874,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
             if (antes_menu_gui_zoom !=menu_gui_zoom && menu_gui_zoom==2) {
                 if (zoom_x!=1 || zoom_y!=1) {
                     debug_printf (VERBOSE_INFO,"Setting zoom_x and zoom_y to 1 because selected machine has a big display");
-                    printf ("Setting zoom_x and zoom_y to 1\n");
+                    //printf ("Setting zoom_x and zoom_y to 1\n");
                     zoom_x=zoom_y=1;
                     set_putpixel_zoom();
                 }

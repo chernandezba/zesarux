@@ -254,7 +254,6 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
 
--color palettes parpadea al mover raton. normal?
 
 -au chip sheet descuadra en la lista de process management. quiza falta 1 espacio mas en la columna?
 
@@ -280,7 +279,6 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -ver si se puede hacer pgup/dn con autorepeticion en debug cpu
 
--En visor de disco con archivos, que en visual floppy marque dónde están los sectores del archivo
 -En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
 *extent number
@@ -312,14 +310,14 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
 -faq zoom 1 de Next
--en cuadros confirmacion yes/no, que cambien a si/no en Spanish y Catalan
+-en cuadros confirmacion yes/no, que cambien a si/no en Spanish y Catalan. o no ?
 
 -Snapshots de pcw o cpc? que formatos existen?
 -timer de sdl para windows?
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 -En visor dsk que solo muestre primer extent de un archivo. ya esta??
 -parseo de config, si error en una linea, seguir con la siguiente
--al refrescar zx desktop no debería hacer framedrop (pero sí al mover iconos)
+-al refrescar zx desktop no debería hacer framedrop (pero sí al mover iconos).ok
 -en plus3doshandler, cuando filesystem empieza en pista 2, todos los bloques van desplazados una pista en adelante
 (igual que utils.c y llamada a menu_dsk_getoff_block). y lo mismo para buscar inicio pista
 
@@ -330,5 +328,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -footer que tambien amplie tamaño segun menu_gui_zoom
 -Tecla file selector para carpetas recientes 
 -Opción para listar máquinas en una línea separadas por espacios
--cambiar de spectrum a next en linux peta, entiendo que por cambio de tamaños
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
