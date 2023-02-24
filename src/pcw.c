@@ -1022,11 +1022,11 @@ void pcw_boot_check_dsk_not_bootable(void)
 
     //Cuando no hay disco insertado
     //OUT (C),A, cuando hace el recalibrate
-    if (reg_pc==0xF9 && peek_byte_no_time(reg_pc)==0xED && peek_byte_no_time(reg_pc+1)==0x79) {
+    /*if (reg_pc==0xF9 && peek_byte_no_time(reg_pc)==0xED && peek_byte_no_time(reg_pc+1)==0x79) {
         pcw_boot_timer=0;
         printf("Seems you do not have selected any DSK\n");
         autoboot=1;
-    }
+    }*/
 
     /*
     3DH BIT 7,(HL)

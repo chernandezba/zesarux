@@ -1136,10 +1136,12 @@ void pd765_handle_command_recalibrate(void)
     as described in the SEEK Command, also applies to the RECALIBRATE Command.    
     */
    
-    if (pd765_common_dsk_not_inserted_readwrite()) {
+    //esto no bien en +3 aunque bien en PCW. 
+    //TODO: tengo la duda de si un recalibrate/seek sin disco, deberia retornar error o no
+    /*if (pd765_common_dsk_not_inserted_readwrite()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on recalibrate");
         return;
-    }
+    }*/
    //Inicialmente decimos no senyal TS0
    pd765_signal_ts0.v=0;
 
@@ -1195,10 +1197,12 @@ void pd765_handle_command_seek(void)
     */
 
     //Si DSK no insertado
-    if (pd765_common_dsk_not_inserted_readwrite()) {
+    //esto no bien en +3 aunque bien en PCW. 
+    //TODO: tengo la duda de si un recalibrate/seek sin disco, deberia retornar error o no    
+    /*if (pd765_common_dsk_not_inserted_readwrite()) {
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: DSK not inserted on seek");
         return;
-    }
+    }*/
 
    pd765_sc_initialize_running(&signal_se);
    pd765_seek_was_recalibrating.v=0;
@@ -3694,7 +3698,7 @@ void pd765_set_terminal_count_signal(void)
 
     
     
-    if (pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
+    if (pd765_command_received==PD765_COMMAND_READ_DATA && pd765_read_command_state==PD765_READ_COMMAND_STATE_READING_DATA) {
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping reading data because a Terminal Count signal has been fired");
         //sleep(10);
 
@@ -3724,7 +3728,7 @@ void pd765_set_terminal_count_signal(void)
         //pd765_reset_terminal_count_signal();   
     }
 
-    if (pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
+    if (pd765_command_received==PD765_COMMAND_WRITE_DATA && pd765_write_command_state==PD765_WRITE_COMMAND_STATE_WRITING_DATA) {
         DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Stopping writing data because a Terminal Count signal has been fired");
         //sleep(10);
 
