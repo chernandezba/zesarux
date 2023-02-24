@@ -78,6 +78,11 @@ extern void menu_debug_view_sprites(MENU_ITEM_PARAMETERS);
 
 extern char *menu_debug_sprites_change_ptr_historial[];
 
+
+extern char *menu_debug_poke_address_historial[];
+
+extern char *menu_debug_poke_value_historial[];
+
 extern void menu_breakpoint_fired(char *s);
 
 

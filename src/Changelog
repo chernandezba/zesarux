@@ -48,7 +48,7 @@ Improved View Sprites:
 - you can view sprites up to 1024x1024
 - show PCW common format screen
 
-Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump and Disassemble
+Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
 Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
 
 Improved ZX Desktop:

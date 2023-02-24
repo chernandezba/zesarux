@@ -2634,6 +2634,9 @@ printf (
         "--history-item-add-debugcpu-ptr s        Add string as history for debug cpu change pointer\n"
         "--history-item-add-hexeditor-ptr s       Add string as history for hexeditor change pointer\n"
         "--history-item-add-sprites-ptr s         Add string as history for sprites change pointer\n"
+		"--history-item-add-poke-ptr s            Add string as history for poke pointer\n"
+		"--history-item-add-poke-value s          Add string as history for poke value\n"
+
 
 		"\n\n"
 
@@ -9447,7 +9450,18 @@ int parse_cmdline_options(void) {
 			else if (!strcmp(argv[puntero_parametro],"--history-item-add-sprites-ptr")) {
 				siguiente_parametro_argumento();
                 util_scanf_history_insert(menu_debug_sprites_change_ptr_historial,argv[puntero_parametro]);
-			}                                     
+			}          
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_poke_address_historial,argv[puntero_parametro]);
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-value")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_poke_value_historial,argv[puntero_parametro]);
+			}
+		
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx")) {
                 siguiente_parametro_argumento();

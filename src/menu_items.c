@@ -299,8 +299,83 @@ char tape_out_open_file[PATH_MAX];
 char last_timex_cart[PATH_MAX]="";
 
 
- 
+char *menu_debug_poke_address_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
+
+char *menu_debug_poke_value_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
+
 void menu_debug_poke(MENU_ITEM_PARAMETERS)
+{
+
+	int veces;
+	menu_z80_moto_int dir,valor_poke;
+
+    char string_address[10];
+
+	string_address[0]=0;
+
+    //menu_ventana_scanf("Value?",string_address,10);
+    int tecla=zxvision_scanf_history("Address?",string_address,10,menu_debug_poke_address_historial);
+
+	if (tecla==2) return; //sale con ESC
+    
+
+	//Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+	int result=menu_debug_cpu_calculate_expression(string_address,&dir);
+
+	if (result!=0) return; //Error parseando
+            
+        
+
+
+
+    char string_value[10];
+
+	string_value[0]=0;
+
+    //menu_ventana_scanf("Value?",string_address,10);
+    tecla=zxvision_scanf_history("Poke value?",string_value,10,menu_debug_poke_value_historial);
+
+	if (tecla==2) return; //sale con ESC
+    
+
+	//Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+	result=menu_debug_cpu_calculate_expression(string_value,&valor_poke);
+
+	if (result!=0) return; //Error parseando
+    
+
+	if (valor_poke<0 || valor_poke>255) {
+			debug_printf (VERBOSE_ERR,"Invalid value %d",valor_poke);
+			return;
+	}
+
+	char string_veces[6];
+	sprintf (string_veces,"1");
+
+	menu_ventana_scanf("How many bytes?",string_veces,6);
+
+	veces=parse_string_to_number(string_veces);
+
+	if (veces<1 || veces>65536) {
+                debug_printf (VERBOSE_ERR,"Invalid quantity %d",veces);
+		return;
+	}
+
+
+	for (;veces;veces--,dir++) {
+		menu_debug_write_mapped_byte(dir,valor_poke);
+
+	}
+
+}
+
+
+ 
+void old_menu_debug_poke(MENU_ITEM_PARAMETERS)
 {
 
         int valor_poke,dir,veces;
