@@ -8765,39 +8765,39 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 
 		//printf("Escribir lista colores %d\n",contador_segundo);
 
-	char dumpmemoria[33];
+		char dumpmemoria[33];
 
-	int linea_color;
-	int limite;
+		int linea_color;
+		int limite;
 
 
-	limite=menu_display_total_palette_get_total_colors();
+		limite=menu_display_total_palette_get_total_colors();
 
-	int current_color;
-	int indice_paleta;
-	int indice_color_final_rgb;
-	int color_final_rgb;
+		int current_color;
+		int indice_paleta;
+		int indice_color_final_rgb;
+		int color_final_rgb;
 
-    int total_colores_mostrar;
+		int total_colores_mostrar;
 
-	//Borramos lista de colores con espacios por si hay estos de antes
-	if (!si_barras) {
-		int i;
-		for (i=0;i<menu_display_total_palette_total_colores_por_ventana;i++) {
-			zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,
-				0,TOTAL_PALETTE_WINDOW_Y+3+i,"");
+		//Borramos lista de colores con espacios por si hay estos de antes
+		if (!si_barras) {
+			int i;
+			for (i=0;i<menu_display_total_palette_total_colores_por_ventana;i++) {
+				zxvision_print_string_defaults_fillspc(menu_display_total_palette_draw_barras_window,
+					0,TOTAL_PALETTE_WINDOW_Y+3+i,"");
+			}
 		}
-	}
 
 
-    //total_colores_mostrar=TOTAL_PALETTE_COLORS_PER_WINDOW;
+		//total_colores_mostrar=TOTAL_PALETTE_COLORS_PER_WINDOW;
 
-    //Con total visible 24, 16 colores 
+		//Con total visible 24, 16 colores 
 
-    //total_colores_mostrar=(menu_display_total_palette_draw_barras_window->visible_height)-8;
+		//total_colores_mostrar=(menu_display_total_palette_draw_barras_window->visible_height)-8;
 
-    //por si acaso
-    //if (total_colores_mostrar<1) total_colores_mostrar=1;    
+		//por si acaso
+		//if (total_colores_mostrar<1) total_colores_mostrar=1;    
 
 		for (linea_color=0;linea_color<menu_display_total_palette_total_colores_por_ventana &&
 				menu_display_total_palette_current_colour+linea_color<limite;
@@ -9044,87 +9044,87 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
         //por si acaso
         if (total_colores_por_ventana<1) total_colores_por_ventana=1;
 
-    //Redibujar esto solo si no estamos redimensionando o arrastrando ventana
-    //esto solo lo hago para evitar sobrecargar la cpu y provocaria que no muestra nada al redimensionar
-    if (!mouse_left) {
-        window_colour_palette_left_mouse=0;
+		//Redibujar esto solo si no estamos redimensionando o arrastrando ventana
+		//esto solo lo hago para evitar sobrecargar la cpu y provocaria que no muestra nada al redimensionar
+		if (!mouse_left) {
+			window_colour_palette_left_mouse=0;
 
-		//printf("Redibujar %d\n",contador_segundo);
+			//printf("Redibujar %d\n",contador_segundo);
 
-        //Forzar a mostrar atajos
-        z80_bit antes_menu_writing_inverse_color;
-        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
-        menu_writing_inverse_color.v=1;		
+			//Forzar a mostrar atajos
+			z80_bit antes_menu_writing_inverse_color;
+			antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+			menu_writing_inverse_color.v=1;		
 
-		menu_display_total_palette_total_colores_por_ventana=total_colores_por_ventana;
-		
+			menu_display_total_palette_total_colores_por_ventana=total_colores_por_ventana;
+			
 
-        menu_speech_tecla_pulsada=0; //Que envie a speech
+			menu_speech_tecla_pulsada=0; //Que envie a speech
 
-		int linea=0;
+			int linea=0;
 
-		char textoshow[64];
+			char textoshow[64];
 
-		char nombre_paleta[33];
+			char nombre_paleta[33];
 
-		if (menu_display_total_palette_show_mapped==0) {
-			strcpy(nombre_paleta,total_palette_colours_array[menu_display_total_palette_current_palette].nombre_paleta);
+			if (menu_display_total_palette_show_mapped==0) {
+				strcpy(nombre_paleta,total_palette_colours_array[menu_display_total_palette_current_palette].nombre_paleta);
+			}
+			else {
+				menu_debug_sprites_get_palette_name(menu_display_total_palette_current_palette,nombre_paleta);
+			}
+
+			sprintf (textoshow,"Palette %d: %s",menu_display_total_palette_current_palette,nombre_paleta);
+			
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,textoshow);
+
+			if (menu_display_total_palette_show_mapped==0) {
+				sprintf (textoshow,"%s",total_palette_colours_array[menu_display_total_palette_current_palette].descripcion_paleta);
+			}
+			else {
+				sprintf (textoshow,"Total colours in array: %d",menu_display_total_palette_get_total_colors() );
+			}
+			
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,textoshow);
+
+			
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,"");
+
+			
+			linea +=16;
+
+
+
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,"");
+
+			char buffer_linea[40];
+
+			//Nos situamos justo despues de la lista de colores
+			linea=TOTAL_PALETTE_WINDOW_Y+total_colores_por_ventana+3;
+
+			//Y meter una linea en blanco
+			zxvision_print_string_defaults(ventana,1,linea++,"");
+
+																// 01234567890123456789012345678901
+			sprintf (buffer_linea,"Move: Cursors,Q,A,PgUp,PgDn");
+
+			
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
+
+			sprintf (buffer_linea,"[%c] ~~Mapped palette",(menu_display_total_palette_show_mapped ? 'X' : ' ') );
+			
+			zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
+
+			//Restaurar comportamiento atajos
+			menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
+
+			zxvision_draw_window_contents(ventana);
+
 		}
+
 		else {
-			menu_debug_sprites_get_palette_name(menu_display_total_palette_current_palette,nombre_paleta);
+			window_colour_palette_left_mouse=1;
 		}
-
-		sprintf (textoshow,"Palette %d: %s",menu_display_total_palette_current_palette,nombre_paleta);
-       	
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,textoshow);
-
-		if (menu_display_total_palette_show_mapped==0) {
-			sprintf (textoshow,"%s",total_palette_colours_array[menu_display_total_palette_current_palette].descripcion_paleta);
-		}
-		else {
-			sprintf (textoshow,"Total colours in array: %d",menu_display_total_palette_get_total_colors() );
-		}
-		
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,textoshow);
-
-   		
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,"");
-
-		
-		linea +=16;
-
-
-
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,"");
-
-		char buffer_linea[40];
-
-        //Nos situamos justo despues de la lista de colores
-		linea=TOTAL_PALETTE_WINDOW_Y+total_colores_por_ventana+3;
-
-        //Y meter una linea en blanco
-        zxvision_print_string_defaults(ventana,1,linea++,"");
-
-															// 01234567890123456789012345678901
-		sprintf (buffer_linea,"Move: Cursors,Q,A,PgUp,PgDn");
-
-		
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
-
-		sprintf (buffer_linea,"[%c] ~~Mapped palette",(menu_display_total_palette_show_mapped ? 'X' : ' ') );
-		
-		zxvision_print_string_defaults_fillspc(ventana,1,linea++,buffer_linea);
-
-        //Restaurar comportamiento atajos
-        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
-
-		zxvision_draw_window_contents(ventana);
-
-    }
-
-    else {
-        window_colour_palette_left_mouse=1;
-    }
 
 
 			
@@ -9135,127 +9135,125 @@ void menu_display_total_palette(MENU_ITEM_PARAMETERS)
 		int aux_pgdnup;
 		int limite;
 
-				switch (tecla) {
+		switch (tecla) {
 
-					case 11:
-						//arriba
-						menu_display_total_palette_cursor_arriba();
+			case 11:
+				//arriba
+				menu_display_total_palette_cursor_arriba();
 
-						
-					break;
+				
+			break;
 
-					case 10:
-						//abajo
-						menu_display_total_palette_cursor_abajo();
-
-
-
-					break;
-
-					case 24:
-						//PgUp
-						for (aux_pgdnup=0;aux_pgdnup<total_colores_por_ventana;aux_pgdnup++) {
-							menu_display_total_palette_cursor_arriba();
-						}
-
-					break;
-
-					case 25:
-						//PgDn
-						for (aux_pgdnup=0;aux_pgdnup<total_colores_por_ventana;aux_pgdnup++) {
-							menu_display_total_palette_cursor_abajo();
-						}
-					
-					break;
-
-					case 'q':
-						if (menu_display_total_palette_current_palette>0) {
-							menu_display_total_palette_current_palette--;
-							menu_display_total_palette_current_colour=0;
-						}
-
-						
-					break;
-
-					case 'a':
-						if (menu_display_total_palette_show_mapped==0) {
-							limite=TOTAL_PALETAS_COLORES;
-						}
-
-						else {
-							limite=MENU_TOTAL_MAPPED_PALETTES;
-						}
-
-						if (menu_display_total_palette_current_palette<limite-1) {
-							menu_display_total_palette_current_palette++;
-							menu_display_total_palette_current_colour=0;
-						}
+			case 10:
+				//abajo
+				menu_display_total_palette_cursor_abajo();
 
 
-					break;
 
-					case 'm':
-						menu_display_total_palette_show_mapped ^=1;
-						menu_display_total_palette_current_palette=0;
-						menu_display_total_palette_current_colour=0;
-					
-					break;
+			break;
 
-
-					//Salir con ESC
-					case 2:
-						salir=1;
-					break;
-
-					//O tecla background
-					case 3:
-						salir=1;
-					break;					
+			case 24:
+				//PgUp
+				for (aux_pgdnup=0;aux_pgdnup<total_colores_por_ventana;aux_pgdnup++) {
+					menu_display_total_palette_cursor_arriba();
 				}
 
-                //Si ha cambiado el tamaño
-                //Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
-                /*
-                alto_ventana=ventana->visible_height;
-                ancho_ventana=ventana->visible_width;
-                xventana=ventana->x;
-                yventana=ventana->y;
-                if (alto_ventana!=alto_anterior || ancho_ventana!=ancho_anterior) {
-                        //printf ("recrear ventana\n");
-                        //Recrear ventana
-                        int is_minimized=ventana->is_minimized;
+			break;
 
-                        //printf("is minimized: %d\n",is_minimized);
-                        
+			case 25:
+				//PgDn
+				for (aux_pgdnup=0;aux_pgdnup<total_colores_por_ventana;aux_pgdnup++) {
+					menu_display_total_palette_cursor_abajo();
+				}
+			
+			break;
 
-                        zxvision_destroy_window(ventana);
+			case 'q':
+				if (menu_display_total_palette_current_palette>0) {
+					menu_display_total_palette_current_palette--;
+					menu_display_total_palette_current_colour=0;
+				}
 
-                        alto_anterior=alto_ventana;
-                        ancho_anterior=ancho_ventana;
+				
+			break;
 
-                        menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize);
-                        
+			case 'a':
+				if (menu_display_total_palette_show_mapped==0) {
+					limite=TOTAL_PALETAS_COLORES;
+				}
 
-                        zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+				else {
+					limite=MENU_TOTAL_MAPPED_PALETTES;
+				}
 
-                        zxvision_draw_window(ventana);
-
-                        //Indicar tamanyo de antes minimizado, que es el que tenia al inicio
-                        //dado que se recrea la ventana siempre que cambia tamaño (y si se minimiza tambien),
-                        //queremos que se indique el tamaño que tenia antes de minimizar por si se deshace el minimizado
-                        //ventana->height_before_max_min_imize=alto_ventana_inicial;
-                        //ventana->width_before_max_min_imize=ancho_ventana_inicial;
-                        
-                }        
-                */        
+				if (menu_display_total_palette_current_palette<limite-1) {
+					menu_display_total_palette_current_palette++;
+					menu_display_total_palette_current_colour=0;
+				}
 
 
-        } while (salir==0);
+			break;
+
+			case 'm':
+				menu_display_total_palette_show_mapped ^=1;
+				menu_display_total_palette_current_palette=0;
+				menu_display_total_palette_current_colour=0;
+			
+			break;
+
+
+			//Salir con ESC
+			case 2:
+				salir=1;
+			break;
+
+			//O tecla background
+			case 3:
+				salir=1;
+			break;					
+		}
+
+		//Si ha cambiado el tamaño
+		//Ya NO hace falta esto, pues zxvision ya recrea la ventana al ampliarla
+		/*
+		alto_ventana=ventana->visible_height;
+		ancho_ventana=ventana->visible_width;
+		xventana=ventana->x;
+		yventana=ventana->y;
+		if (alto_ventana!=alto_anterior || ancho_ventana!=ancho_anterior) {
+				//printf ("recrear ventana\n");
+				//Recrear ventana
+				int is_minimized=ventana->is_minimized;
+
+				//printf("is minimized: %d\n",is_minimized);
+				
+
+				zxvision_destroy_window(ventana);
+
+				alto_anterior=alto_ventana;
+				ancho_anterior=ancho_ventana;
+
+				menu_display_total_palette_crea_ventana(ventana,xventana,yventana,ancho_ventana,alto_ventana,is_minimized,ancho_antes_minimize,alto_antes_minimize);
+				
+
+				zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+
+				zxvision_draw_window(ventana);
+
+				//Indicar tamanyo de antes minimizado, que es el que tenia al inicio
+				//dado que se recrea la ventana siempre que cambia tamaño (y si se minimiza tambien),
+				//queremos que se indique el tamaño que tenia antes de minimizar por si se deshace el minimizado
+				//ventana->height_before_max_min_imize=alto_ventana_inicial;
+				//ventana->width_before_max_min_imize=ancho_ventana_inicial;
+				
+		}        
+		*/        
+
+
+	} while (salir==0);
 
     //Asegurarnos que al salir esto no queda activado, si no, el overlay no dibujaria nada
     window_colour_palette_left_mouse=0;
-
-
 
 
 	
