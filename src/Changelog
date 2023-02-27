@@ -21,6 +21,9 @@ Improved Configuration:
 - better parsing: warning when ZEsarUX has been downgraded
 - moved showing Configuration file from Running info menu to Settings-> Configuration file
 
+Improved File selector: 
+-Add hotkey to select recent folders
+
 Improved DSK viewer:
 - better filesystem detection
 - show hidden and read only files

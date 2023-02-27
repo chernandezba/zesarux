@@ -326,6 +326,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -zx desktop tamaño deberia multiplicarse por gui zoom? ok en principio
 -footer que tambien amplie tamaño segun menu_gui_zoom
--Tecla file selector para carpetas recientes 
+-Tecla file selector para carpetas recientes. ok acabar de determinar tecla y texto leyenda, que tecla no entre en conflicto con file utils
 -Opción para listar máquinas en una línea separadas por espacios
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta

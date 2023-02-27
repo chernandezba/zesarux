@@ -1231,7 +1231,7 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 	//Drive también mostrado en Linux y Mac
     //01234567890123456789012345678901
     // TAB: Section R: Recent D: Drive
-	sprintf (leyenda_inferior,"~^T~^A~^B:Section ~^Recent ~^Drives%s",buffer_expand);
+	sprintf (leyenda_inferior,"~^T~^A~^B:Section ~^Recentfiles recent~^Folders ~^Drives%s",buffer_expand);
 
 	zxvision_print_string_defaults_fillspc(ventana,1,posicion_leyenda,leyenda_inferior);
 
@@ -3510,7 +3510,9 @@ void menu_filesel_recent_files_clear(MENU_ITEM_PARAMETERS)
 	menu_generic_message_splash("Clear List","OK. List cleared");
 }
 
-char *menu_filesel_recent_files(void)
+//Si tipo=0, files
+//Si tipo=1, folders
+char *menu_filesel_recent_files_folders(int tipo)
 {
 	menu_item *array_menu_recent_files;
     menu_item item_seleccionado;
@@ -3528,18 +3530,22 @@ char *menu_filesel_recent_files(void)
     for (i=0;i<MAX_LAST_FILESUSED;i++) {
 		if (last_files_used_array[i][0]!=0) {
 
-			//Mostrar solo nombre de archivo sin path
-			char archivo_sin_dir[PATH_MAX];
-			util_get_file_no_directory(last_files_used_array[i],archivo_sin_dir);
+			//Mostrar solo nombre de archivo sin path, o directorio sin archivo
+			char elemento_mostrar[PATH_MAX];
 
-            //menu_tape_settings_trunc_name(archivo_sin_dir,string_last_file_shown,MAX_RECENT_FILE_CHAR_LENGHT);
-            //menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,string_last_file_shown);
+            if (tipo==0) {
+			    util_get_file_no_directory(last_files_used_array[i],elemento_mostrar);
+            }
+            else {
+                util_get_dir(last_files_used_array[i],elemento_mostrar);
+            }
+
 
             //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
-            util_trunc_name_right(archivo_sin_dir,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
+            util_trunc_name_right(elemento_mostrar,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
 
             //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
-            menu_add_item_menu(array_menu_recent_files,archivo_sin_dir,MENU_OPCION_NORMAL,NULL,NULL);
+            menu_add_item_menu(array_menu_recent_files,elemento_mostrar,MENU_OPCION_NORMAL,NULL,NULL);
 
 			//Agregar tooltip con ruta entera
 			menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
@@ -3556,7 +3562,15 @@ char *menu_filesel_recent_files(void)
     menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
     menu_add_ESC_item(array_menu_recent_files);
 
-    retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,"Recent files" );
+    char nombre_ventana[30];
+    if (tipo==0) {
+        strcpy(nombre_ventana,"Recent files");
+    }
+    else {
+        strcpy(nombre_ventana,"Recent folders");
+    }
+
+    retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
 
     if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
@@ -3584,7 +3598,7 @@ char *menu_filesel_recent_files(void)
 		//Por tanto el indice final sera 0
 		indice=0;
 
-		//Y cursor ponerloa arriba entonces tambien
+		//Y cursor ponerlo arriba entonces tambien
 		menu_recent_files_opcion_seleccionada=0;
 
 			debug_printf (VERBOSE_INFO,"Returning recent file %s",last_files_used_array[indice]);
@@ -3745,7 +3759,7 @@ int old_menu_filesel_cambiar_unidad_o_volumen(void)
 int menu_filesel_cambiar_unidad_o_volumen(void)
 {
 
-	int releer_directorio=0;
+	//int releer_directorio=0;
 
     char directorio[PATH_MAX];
 
@@ -3813,7 +3827,7 @@ int menu_filesel_cambiar_unidad_o_volumen(void)
 #endif
 */
 
-	return releer_directorio;
+	//return releer_directorio;
 }
 
 //Ultimas coordenadas de filesel
@@ -5387,7 +5401,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				if (tecla=='R') {	
 
 					//Archivos recientes
-					char *archivo_reciente=menu_filesel_recent_files();
+					char *archivo_reciente=menu_filesel_recent_files_folders(0);
 					if (archivo_reciente!=NULL) {
 						//printf ("Loading file %s\n",archivo_reciente);
 						strcpy(archivo,archivo_reciente);
@@ -5400,6 +5414,22 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
                         menu_filesel_preexit(ventana);
                         return 1;
 
+					}
+				}
+
+                if (tecla=='F') {	
+
+					//Carpetas recientes
+					char *archivo_reciente=menu_filesel_recent_files_folders(1);
+					if (archivo_reciente!=NULL) {
+
+			            char directorio_reciente[PATH_MAX];
+                        util_get_dir(archivo_reciente,directorio_reciente);        
+
+                        zvfs_chdir(directorio_reciente);
+                        releer_directorio=1;
+
+                
 					}
 				}
 
