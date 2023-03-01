@@ -9207,7 +9207,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 if (buildnumber_int<last_buildnumber_int) {
                     printf("It seems you have downgraded ZEsarUX from %s to %s\n"
-                    "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read\n",
+                    "If there is any unknown parameter on the configuration file, from the moment that parameter is detected, the rest of the parameters are tried to be read\n",
                         last_version_text_string,EMULATOR_VERSION);
                     zesarux_has_been_downgraded.v=1;
                     sleep(3);

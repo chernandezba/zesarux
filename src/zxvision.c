@@ -23562,13 +23562,13 @@ void menu_inicio(void)
 
         if (save_configuration_file_on_exit.v==0) {
             menu_generic_message_format("Downgraded version","It seems you have downgraded ZEsarUX from %s to %s.\n"
-                "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read\n",
+                "If there is any unknown parameter on the configuration file, from the moment that parameter is detected, the rest of the parameters are tried to be read\n",
                 last_version_text_string,EMULATOR_VERSION);
         }
         else {
             char buffer_mensaje[1024];
             sprintf(buffer_mensaje,"It seems you have downgraded ZEsarUX from %s to %s.\n"
-                "If there is any unknown parameter, from the moment that parameter is detected, the rest of the parameters are not read.\n"
+                "If there is any unknown parameter on the configuration file, from the moment that parameter is detected, the rest of the parameters are tried to be read.\n"
                 "Autosave configuration is enabled. Do you want to keep it enabled?",
                 last_version_text_string,EMULATOR_VERSION);
 
