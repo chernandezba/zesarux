@@ -1212,7 +1212,8 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
     }
 
-	char leyenda_inferior[64];
+    //mas que suficiente para albergar la linea inferior, incluso cuando incluye el texto de SPC: Expand
+	char leyenda_inferior[200];
 
 
     //Si se puede expandir
@@ -1231,7 +1232,7 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 	//Drive también mostrado en Linux y Mac
     //01234567890123456789012345678901
     // TAB: Section R: Recent D: Drive
-	sprintf (leyenda_inferior,"~^T~^A~^B:Section ~^Recentfiles recent~^Folders ~^Drives%s",buffer_expand);
+	sprintf (leyenda_inferior,"~^T~^A~^B:Section ~^Recent ~^Drives%s",buffer_expand);
 
 	zxvision_print_string_defaults_fillspc(ventana,1,posicion_leyenda,leyenda_inferior);
 
@@ -3512,75 +3513,112 @@ void menu_filesel_recent_files_clear(MENU_ITEM_PARAMETERS)
 
 //Si tipo=0, files
 //Si tipo=1, folders
-char *menu_filesel_recent_files_folders(int tipo)
+int menu_filesel_recent_files_folders_tipo_seleccionado=0;
+
+//Indica que hemos seleccionado uno con enter
+//TODO: esto se hace porque no puedo distinguir desde la funcion de gestion de menu si se ha pulsado Enter o Espacio
+int menu_filesel_recent_files_folders_seleccionado_enter=0;
+
+void menu_filesel_recent_files_folders_switch(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_recent_files_folders_tipo_seleccionado ^=1;
+}
+
+void menu_filesel_recent_files_folders_enter(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_recent_files_folders_seleccionado_enter=1;
+}
+
+char *menu_filesel_recent_files_folders(int *tipo)
 {
 	menu_item *array_menu_recent_files;
     menu_item item_seleccionado;
     int retorno_menu;
 
+    int hay_alguno;
 
-	menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+    menu_filesel_recent_files_folders_seleccionado_enter=0;
 
-    #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
-    //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
+    do {
+
+        hay_alguno=0;
+
+        menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
+        //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
 
 
-    int i;
-	int hay_alguno=0;
-    for (i=0;i<MAX_LAST_FILESUSED;i++) {
-		if (last_files_used_array[i][0]!=0) {
+        int i;
+        
+        for (i=0;i<MAX_LAST_FILESUSED;i++) {
+            if (last_files_used_array[i][0]!=0) {
 
-			//Mostrar solo nombre de archivo sin path, o directorio sin archivo
-			char elemento_mostrar[PATH_MAX];
+                //Mostrar solo nombre de archivo sin path, o directorio sin archivo
+                char elemento_mostrar[PATH_MAX];
 
-            if (tipo==0) {
-			    util_get_file_no_directory(last_files_used_array[i],elemento_mostrar);
+                if (menu_filesel_recent_files_folders_tipo_seleccionado==0) {
+                    util_get_file_no_directory(last_files_used_array[i],elemento_mostrar);
+                }
+                else {
+                    util_get_dir(last_files_used_array[i],elemento_mostrar);
+                }
+
+
+                //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
+                util_trunc_name_right(elemento_mostrar,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
+
+                //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
+                menu_add_item_menu(array_menu_recent_files,elemento_mostrar,MENU_OPCION_NORMAL,menu_filesel_recent_files_folders_enter,NULL);
+
+                //Espacio conmutar entre archivos o directorios
+                menu_add_item_menu_espacio(array_menu_recent_files,menu_filesel_recent_files_folders_switch);
+
+                //Agregar tooltip con ruta entera
+                menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
+
+                hay_alguno=1;
             }
-            else {
-                util_get_dir(last_files_used_array[i],elemento_mostrar);
-            }
-
-
-            //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
-            util_trunc_name_right(elemento_mostrar,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
-
-            //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
-            menu_add_item_menu(array_menu_recent_files,elemento_mostrar,MENU_OPCION_NORMAL,NULL,NULL);
-
-			//Agregar tooltip con ruta entera
-			menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
-
-			hay_alguno=1;
-		}
-	}
-
-	if (!hay_alguno) menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
-
-	menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-	menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");
-
-    menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-    menu_add_ESC_item(array_menu_recent_files);
-
-    char nombre_ventana[30];
-    if (tipo==0) {
-        strcpy(nombre_ventana,"Recent files");
-    }
-    else {
-        strcpy(nombre_ventana,"Recent folders");
-    }
-
-    retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
-
-    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-		//Seleccion de borrar lista
-		if (item_seleccionado.menu_funcion!=NULL) {
-            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
         }
 
+        if (!hay_alguno) menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
+
+        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");
+
+        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_recent_files);
+
+        char nombre_ventana[30];
+        if (menu_filesel_recent_files_folders_tipo_seleccionado==0) {
+            strcpy(nombre_ventana,"Recent files (SPC switch)");
+        }
+        else {
+            strcpy(nombre_ventana,"Recent folders (SPC switch)");
+        }
+
+        retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && 
+        !salir_todos_menus && !menu_filesel_recent_files_folders_seleccionado_enter);    
+
+    *tipo=menu_filesel_recent_files_folders_tipo_seleccionado;
+
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0 && menu_filesel_recent_files_folders_seleccionado_enter) {
+
+
 		//Seleccion de un archivo
-		else if (hay_alguno) {
+		if (hay_alguno) {
         	int indice=menu_recent_files_opcion_seleccionada;
 
 //lastfilesuser_scrolldown
@@ -5400,37 +5438,37 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 				if (tecla=='R') {	
 
-					//Archivos recientes
-					char *archivo_reciente=menu_filesel_recent_files_folders(0);
+					//Archivos y carpetas recientes
+                    int tipo;
+					char *archivo_reciente=menu_filesel_recent_files_folders(&tipo);
+
+                    
 					if (archivo_reciente!=NULL) {
-						//printf ("Loading file %s\n",archivo_reciente);
-						strcpy(archivo,archivo_reciente);
+                        if (tipo==0) {
+                            //printf ("Loading file %s\n",archivo_reciente);
+                            strcpy(archivo,archivo_reciente);
 
-                        zvfs_chdir(filesel_directorio_inicial);
-                        menu_filesel_free_mem();
+                            zvfs_chdir(filesel_directorio_inicial);
+                            menu_filesel_free_mem();
 
-                        //return menu_avisa_si_extension_no_habitual(filtros,archivo);
+                            //return menu_avisa_si_extension_no_habitual(filtros,archivo);
 
-                        menu_filesel_preexit(ventana);
-                        return 1;
+                            menu_filesel_preexit(ventana);
+                            return 1;
+                        }
 
-					}
-				}
+                        if (tipo==1) {
+				
 
-                if (tecla=='F') {	
+                            char directorio_reciente[PATH_MAX];
+                            util_get_dir(archivo_reciente,directorio_reciente);        
 
-					//Carpetas recientes
-					char *archivo_reciente=menu_filesel_recent_files_folders(1);
-					if (archivo_reciente!=NULL) {
-
-			            char directorio_reciente[PATH_MAX];
-                        util_get_dir(archivo_reciente,directorio_reciente);        
-
-                        zvfs_chdir(directorio_reciente);
-                        releer_directorio=1;
+                            zvfs_chdir(directorio_reciente);
+                            releer_directorio=1;
 
                 
-					}
+					    }
+                    }
 				}
 
 				//Si esta filesel, opciones en mayusculas

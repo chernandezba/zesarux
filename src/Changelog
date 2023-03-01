@@ -22,7 +22,7 @@ Improved Configuration:
 - moved showing Configuration file from Running info menu to Settings-> Configuration file
 
 Improved File selector: 
--Add hotkey to select recent folders
+- Can show recent folders (press space on recent files)
 
 Improved DSK viewer:
 - better filesystem detection
