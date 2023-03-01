@@ -6033,12 +6033,29 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomx")) {
 				siguiente_parametro_argumento();
-				zoom_x=atoi(argv[puntero_parametro]);
+				
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+                zoom_x=valor;
+
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomy")) {
 				siguiente_parametro_argumento();
-				zoom_y=atoi(argv[puntero_parametro]);
+				
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+                zoom_y=valor;
 			}
 
             else if (!strcmp(argv[puntero_parametro],"--no-autochange-zoom-big-display")) {
@@ -6314,7 +6331,14 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zoom")) {
 				siguiente_parametro_argumento();
-				zoom_y=zoom_x=atoi(argv[puntero_parametro]);
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+				zoom_y=zoom_x=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
