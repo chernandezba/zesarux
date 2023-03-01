@@ -19,6 +19,7 @@ Added XEyes "Toy" to follow mouse
 
 Improved Configuration:
 - better parsing: warning when ZEsarUX has been downgraded
+- if unknown parameter on configuration file, warn the user but start anyway
 - moved showing Configuration file from Running info menu to Settings-> Configuration file
 
 Improved File selector: 

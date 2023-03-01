@@ -5987,8 +5987,8 @@ z80_bit added_some_osd_text_keyboard={0};
 int joystickkey_definidas=0;
 
 
-//void parse_cmdline_options(int argc,char *argv[]) {
-int parse_cmdline_options(void) {
+//desde_commandline: si parsea desde commandline (1) o desde archivo de config (0)
+int parse_cmdline_options(int desde_commandline) {
 
 		while (!siguiente_parametro()) {
 			if (!strcmp(argv[puntero_parametro],"--help")) {
@@ -9574,11 +9574,48 @@ int parse_cmdline_options(void) {
 
 			else {
 
-				//parametro desconocido
-				debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
-				return 1;
-				//cpu_help();
-				//exit(1);
+
+                if (desde_commandline) {
+				    //parametro desconocido por linea de comandos, avisar con error 
+				    debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
+                    return 1;
+                }
+
+                else {
+
+
+                    //si en cambio estamos parseando archivo de configuracion, hacerlo mas tolerante, arrancar pero con aviso
+                    debug_printf (VERBOSE_ERR,"Unknown parameter : %s",argv[puntero_parametro]);
+
+                    //Nos vamos hasta siguiente parametro que empiece con "--"
+                    int salir=0;
+
+                    do {
+
+                        //Tenemos que situarnos justo antes del siguiente parametro, pues el bucle es tal cual lo parsea
+
+                        if (argc<=1) {
+                            //printf("Fin desde argc<=1\n");
+                            salir=1;
+                        }
+
+                        else {
+                            if (argv[puntero_parametro+1][0]=='-' && argv[puntero_parametro+1][1]=='-') {
+                                //printf("Fin desde encontrado siguiente --\n");
+                                salir=1; //encontrado siguiente
+                            }
+                            else {
+                                argc--;
+                                puntero_parametro++;    
+                            }
+                        }
+
+                    } while (!salir);
+
+                }
+
+                
+
 			}
 
 
@@ -10074,8 +10111,14 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         argv=configfile_argv;
         puntero_parametro=0;
 
-        if (parse_cmdline_options()) {
-            //debug_printf(VERBOSE_ERR,"Error parsing configuration file. Disabling autosave feature");
+        //Desde parseo de archivo de config no se genera error nunca, se es mas tolerante, avisando del error, pero
+        //parseando siguientes parametros
+
+        parse_cmdline_options(0);
+
+        /*
+
+        if (parse_cmdline_options(0)) {
             //Desactivamos autoguardado para evitar que se genere una configuración incompleta
             //Pero solo si no ha habido downgrade
             //Si hay un downgrade, se avisara al usuario
@@ -10083,6 +10126,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
                 save_configuration_file_on_exit.v=0;
             }
         }
+        */
 	}
 
 
@@ -10091,7 +10135,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
   	argv=main_argv;
   	puntero_parametro=0;
 
-  	if (parse_cmdline_options()) {
+  	if (parse_cmdline_options(1)) {
 		printf ("\n\n");
         cpu_help();
         exit(1);
