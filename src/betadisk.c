@@ -580,6 +580,9 @@ A=0 read, A=255 write
 	for (;numero_sectores>0;numero_sectores--) {
 		for (byte_en_sector=0;byte_en_sector<betadisk_bytes_por_sector;byte_en_sector++) {
 
+            //Notificar visualfloppy
+            menu_visual_floppy_buffer_add(pista,sector,byte_en_sector);
+
 			if (reg_a==0) {
 			z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);
 			poke_byte_no_time(destino,byte_leido);

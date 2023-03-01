@@ -32615,6 +32615,9 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
 
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_visual_floppy,NULL,
+            "Visual Floppy","Visual Floppy","Visual Floppy");        
+
         menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         menu_add_ESC_item(array_menu_betadisk);

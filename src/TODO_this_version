@@ -331,3 +331,4 @@ se "pierde" la separación en lineas. quizá se podria hacer que interpretase ha
 
 -Opción para listar máquinas en una línea separadas por espacios
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
+-visualfloppy en betadisk que se mueva el disco
