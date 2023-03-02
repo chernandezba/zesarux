@@ -313,4 +313,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 -FAQ de midi. ejemplo de Mac:
--probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
+-probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
+copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
