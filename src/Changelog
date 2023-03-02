@@ -54,6 +54,7 @@ Improved View Sprites:
 
 Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
 Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
+Improved joystick type selection
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)

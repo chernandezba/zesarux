@@ -3969,7 +3969,37 @@ int menu_hardware_autofire_cond(void)
 
 void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 {
-	joystick_cycle_next_type();
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=joystick_emulation;
+
+
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    int i;
+
+    for (i=0;i<=JOYSTICK_TOTAL;i++) {
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,joystick_texto[i]);
+
+    }
+
+    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+    menu_add_ESC_item(array_menu_common);
+
+    retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Joystick");
+
+     
+
+    if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
+        joystick_emulation=opcion_seleccionada;
+        joystick_cycle_next_type_autofire();
+    }
+    
 }
 
 void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
