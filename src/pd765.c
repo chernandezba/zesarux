@@ -71,6 +71,29 @@ Enjoy reading!
 
 */
 
+/*
+
+Some useful documentation:
+
+EL CONTROLADOR DE DISQUETES NEC 765
+http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
+
+
+Format:DSK disk image file format - CPCWiki
+https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
+
+More information
+https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
+
+Operating Systems Development Series
+http://www.brokenthorn.com/Resources/OSDev20.html
+
+
+http://dunfield.classiccmp.org/r/765.pdf
+
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>

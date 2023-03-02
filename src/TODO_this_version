@@ -84,8 +84,6 @@ usar la que si considera movimiento raton
 
 -exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
 
-
-
 -smartload de un pok file
 
 -parpadeos en driver xwindow en zx desktop al moverse por menus
@@ -121,25 +119,10 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 -Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
 
--Emulación floppy:
 
 
-EL CONTROLADOR DE DISQUETES NEC 765
-http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
 
-
-Format:DSK disk image file format - CPCWiki
-https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
-
-More information
-https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
-
-Operating Systems Development Series
-http://www.brokenthorn.com/Resources/OSDev20.html
-
-
-http://dunfield.classiccmp.org/r/765.pdf
-￼
+-Emulación floppy:￼
 Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
 
 lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
@@ -150,15 +133,16 @@ Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta d
 con la mascara quitada al buscar sector_id, plus3dos handler fallara con carlos sainz por ejemplo
 quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro (y pd765 siempre use mascara 255)
 
--mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
-hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
-Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
-
-
 -Test unitario +3 que cargue un disco autoarrancable y espere output concreto
 
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
+
+
+
+-mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
+hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
+Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
 
 
 -Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
@@ -201,8 +185,6 @@ lo mismo pasaria con mwv, mra, mrv
 -Read track
 * A determinar flags que se activan según petición inicial chrn
 * A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
-
--Football Manager 2.dsk con pista con C=FFH
 
 
 -error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
@@ -328,3 +310,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -Opción para listar máquinas en una línea separadas por espacios
 
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
+
+
+-FAQ de midi. ejemplo de Mac:
+-probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth) y copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
