@@ -820,6 +820,8 @@ void timer_check_interrupt(void)
 
             cf2_floppy_icon_activity();
 
+            if (betadisk_simulated_motor>0) betadisk_simulated_motor--;
+
             if (MACHINE_IS_PCW) pcw_boot_timer_handle();
 
 

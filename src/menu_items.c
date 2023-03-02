@@ -34900,6 +34900,15 @@ void menu_visualfloppy_increment_rotation(void)
 
     }
 
+    //rotacion simulada betadisk
+    else {
+        if (betadisk_simulated_motor && betadisk_enabled.v) {
+            int incremento_grados;
+            incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
+            menu_visualfloppy_rotacion_disco +=incremento_grados;
+        }
+    }
+
     //limitar siempre a 360
     menu_visualfloppy_rotacion_disco = menu_visualfloppy_rotacion_disco % 360;
 
