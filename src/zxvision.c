@@ -174,6 +174,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	{"Quicksave",F_FUNCION_QUICKSAVE,bitmap_button_ext_desktop_quicksave,""}, 
 	{"LoadBinary",F_FUNCION_LOADBINARY,bitmap_button_ext_desktop_loadbinary,""}, 
 	{"SaveBinary",F_FUNCION_SAVEBINARY,bitmap_button_ext_desktop_savebinary,""}, 
+    {"Settings",F_FUNCION_SETTINGS,bitmap_button_ext_desktop_settings,""}, 
     //menu audio
     {"AudioChipRegisters",F_FUNCION_AUDIO_REGISTERS,bitmap_button_ext_desktop_audioregisters,"ayregisters"},
     {"AudioChipSheet",F_FUNCION_AUDIO_SHEET,bitmap_button_ext_desktop_audiosheet,"aysheet"},

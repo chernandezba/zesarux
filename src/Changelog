@@ -10,6 +10,7 @@ Added Advanced menu items: now by default, advanced menu items are hidden, you s
 Added Visual Floppy to see floppy disk (+3, CPC, PCW, Betadisk) activity
 Added Poke F-Function
 Added Visual Real Tape F-Function
+Added Settings F-Function
 Added DSK disk info menu: to get tracks and sectors of a disk
 Added ZRCP command: "close-all-menus"
 Added icon/F-key to open any window identified by its name (TODO: now F-keys can have parameters, like window name)
