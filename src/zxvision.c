@@ -14986,41 +14986,6 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 		mouse_pixel_y *=zoom_y;		
 
 		
-
-        //si pulsa en algun icono configurable	
-        //aqui tanto entra cuando se pulsa como cuando se libera
-        //printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
-        int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
-        //printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
-
-        //Si se pulsa alguno 
-        if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
-            //printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
-
-            //y si no habiamos pulsado ya (estamos arrastrando)
-            if (menu_pressed_zxdesktop_configurable_icon_which==-1) {
-
-                //debug_exec_show_backtrace();
-
-                menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
-                menu_pressed_zxdesktop_configurable_icon_right_button=1;
-
-                //Para saber si se arrastra
-                menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
-                menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
-
-
-                zxvision_set_next_menu_position_from_current_mouse();     
-
-            }      
-
-
-            return 1;
-        }
-
-
-
-
         //Si se pulsa boton derecho en alguna ventana
         int absolute_mouse_x,absolute_mouse_y;
             
@@ -15042,11 +15007,43 @@ int zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button(void)
 
         //if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
         if (ventana_pulsada!=NULL) {            
-            printf("Pulsado boton derecho sobre ventana\n");
+            //printf("Pulsado boton derecho sobre ventana\n");
 
         }	
         else {
-            //No se pulsa ni en icono ni en ventanas. 
+            //No se pulsa en ventanas. 
+
+            //Ver si en iconos del zx desktop
+            //si pulsa en algun icono configurable, con menu cerrado	
+            //aqui tanto entra cuando se pulsa como cuando se libera
+            //printf("mouse %d %d\n",mouse_pixel_x,mouse_pixel_y);
+            int icono_pulsado=if_position_in_desktop_icons(mouse_pixel_x,mouse_pixel_y);
+            //printf("Icono pulsado %d menu_pressed_zxdesktop_configurable_icon_which %d\n",icono_pulsado,menu_pressed_zxdesktop_configurable_icon_which);
+
+            //Si se pulsa alguno 
+            if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {
+                //printf("Icono pulsado desde zxvision_if_mouse_in_zlogo_or_buttons_desktop_right_button: %d\n",icono_pulsado);
+
+                //y si no habiamos pulsado ya (estamos arrastrando)
+                if (menu_pressed_zxdesktop_configurable_icon_which==-1) {
+
+                    //debug_exec_show_backtrace();
+
+                    menu_pressed_zxdesktop_configurable_icon_which=icono_pulsado;
+                    menu_pressed_zxdesktop_configurable_icon_right_button=1;
+
+                    //Para saber si se arrastra
+                    menu_pressed_zxdesktop_configurable_icon_where_x=mouse_pixel_x;
+                    menu_pressed_zxdesktop_configurable_icon_where_y=mouse_pixel_y;         
+
+
+                    zxvision_set_next_menu_position_from_current_mouse();     
+
+                }      
+
+
+                return 1;
+            }
 
             //Ver si en fondo desktop
 
@@ -16244,7 +16241,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
     if (zxvision_pressed_right_mouse_button()) {
         //acciones con boton derecho, con menu abierto   
-        printf("Pulsado boton derecho\n");
+        //printf("Pulsado boton derecho\n");
 
 
         //Si se pulsa boton derecho en alguna ventana
@@ -16258,7 +16255,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
         ventana_pulsada=zxvision_coords_in_below_windows(zxvision_current_window,absolute_mouse_x,absolute_mouse_y);
         if (ventana_pulsada!=NULL || si_menu_mouse_en_ventana()) {
             //Se pulsa en ventana de abajo o bien en la ventana actual
-            printf("Pulsado boton derecho sobre ventana\n");
+            //printf("Pulsado boton derecho sobre ventana\n");
 
         }	
         else {
@@ -16282,7 +16279,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
 
                 //Si se pulsa alguno 
                 if (icono_pulsado>=0 && zxdesktop_configurable_icons_enabled_and_visible()) {      
-                    printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
+                    //printf("Icono pulsado desde handle_mouse_events: %d\n",icono_pulsado);
 
                     menu_pressed_zxdesktop_configurable_icon_right_button=1;
 
@@ -16324,7 +16321,7 @@ void zxvision_handle_mouse_events(zxvision_window *w)
                 
 
                     if (zxvision_if_mouse_in_background() ) {
-                        printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
+                        //printf("Pulsado en ZX desktop con boton derecho desde handle mouse events\n");
                         
                         menu_pressed_zxdesktop_right_button_background=1;
 
