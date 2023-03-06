@@ -316,4 +316,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
 copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 
--error: click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
+ok corregido -error: click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
