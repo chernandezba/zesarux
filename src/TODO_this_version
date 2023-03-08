@@ -233,7 +233,8 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 -on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
-
+->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
+->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
 
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
