@@ -126,6 +126,7 @@ token_parser_textos_indices tpti_funciones[]={
 	{TPI_F_ABS,"ABS("},
 	{TPI_F_BYTE,"BYTE("},
 	{TPI_F_WORD,"WORD("},
+    {TPI_F_OPMWA,"OPMWA("},
 
 
     {TPI_FIN,""}
@@ -1661,7 +1662,12 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 
                     case TPI_F_WORD:
         				return valor & 0xFFFF;
-                    break;                                                
+                    break;
+
+                    case TPI_F_OPMWA:
+                        if (debug_mmu_mwa==valor || anterior_debug_mmu_mwa==valor) return 1;
+                        else return 0;
+                    break;
 
                     default:
                         //Para que no se queje el compilador por demas valores enum no tratados
