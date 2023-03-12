@@ -323,4 +323,4 @@ Quiza nuevas variables que den el valor anterior? ejemplo pmra para "previous mr
 y/o nuevas funciones que signifiquen (mra or pmra)=xx
 ejemplo : opmra(xx) devuelve 1 si mra or pmra=xx. en caso contrario devuelve 0. nombre viene de "opcode mra",
 queriendo decir que en el ultimo opcode se ha modificado xx
-->Testeo opmwa
+->Testeo opmwa, opmra, opmwv, opmrv
