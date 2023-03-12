@@ -47,6 +47,7 @@ Improved Debug CPU:
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
 - show last memory pointer when changing it
 - show B register on satisfy condition for DJNZ
+- added new expressions opmra, opmwa
 
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer

@@ -204,7 +204,8 @@ enum token_parser_indice {
 	TPI_F_ABS,
 	TPI_F_BYTE,
 	TPI_F_WORD,
-	TPI_F_OPMWA
+	TPI_F_OPMWA,
+	TPI_F_OPMRA
 
 };
 
