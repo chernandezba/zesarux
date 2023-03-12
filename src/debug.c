@@ -186,10 +186,12 @@ unsigned int debug_mmu_pwa=65536; //Port Write Address (direccion usada en out_p
 unsigned int debug_mmu_mra=65536; //Memory Read Addres (direccion usada peek)
 unsigned int debug_mmu_mwa=65536; //Memory Write Address (direccion usada en poke)
 
-//Anteriores valores para mra y mwa. Solo usado en los nuevos memory-breakpoints
+//Anteriores valores para mra y mwa y mrv y mwv. 
 //Si es -1, no hay valor anterior
 unsigned int anterior_debug_mmu_mra=65536;
 unsigned int anterior_debug_mmu_mwa=65536;
+unsigned int anterior_debug_mmu_mrv=65536;
+unsigned int anterior_debug_mmu_mwv=65536;
 
 //Array usado en memory-breakpoints
 /*
@@ -1370,6 +1372,7 @@ z80_byte peek_byte_no_time_debug (z80_int dir,z80_byte value GCC_UNUSED)
 	//valor=peek_byte_no_time_no_debug(dir);
 	valor=debug_nested_peek_byte_no_time_call_previous(debug_nested_id_peek_byte_no_time,dir);
 
+    anterior_debug_mmu_mrv=debug_mmu_mrv;
 	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
@@ -1388,6 +1391,7 @@ z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
         //valor=peek_byte_no_debug(dir);
 	valor=debug_nested_peek_byte_call_previous(debug_nested_id_peek_byte,dir);
 
+    anterior_debug_mmu_mrv=debug_mmu_mrv;
 	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
@@ -1401,6 +1405,7 @@ z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
 
 z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 {
+    anterior_debug_mmu_mwv=debug_mmu_mwv;
 	debug_mmu_mwv=value;
 	anterior_debug_mmu_mwa=debug_mmu_mwa;
 	debug_mmu_mwa=dir;
@@ -1415,6 +1420,7 @@ z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 
 z80_byte poke_byte_debug(z80_int dir,z80_byte value)
 {
+    anterior_debug_mmu_mwv=debug_mmu_mwv;
 	debug_mmu_mwv=value;
 	anterior_debug_mmu_mwa=debug_mmu_mwa;
 	debug_mmu_mwa=dir;

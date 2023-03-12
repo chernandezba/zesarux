@@ -128,6 +128,8 @@ token_parser_textos_indices tpti_funciones[]={
 	{TPI_F_WORD,"WORD("},
     {TPI_F_OPMWA,"OPMWA("},
     {TPI_F_OPMRA,"OPMRA("},
+    {TPI_F_OPMWV,"OPMWV("},
+    {TPI_F_OPMRV,"OPMRV("},    
 
 
     {TPI_FIN,""}
@@ -1673,7 +1675,17 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                     case TPI_F_OPMRA:
                         if (debug_mmu_mra==valor || anterior_debug_mmu_mra==valor) return 1;
                         else return 0;
-                    break;                    
+                    break;    
+
+                    case TPI_F_OPMWV:
+                        if (debug_mmu_mwv==valor || anterior_debug_mmu_mwv==valor) return 1;
+                        else return 0;
+                    break;
+
+                    case TPI_F_OPMRV:
+                        if (debug_mmu_mrv==valor || anterior_debug_mmu_mrv==valor) return 1;
+                        else return 0;
+                    break;                                      
 
                     default:
                         //Para que no se queje el compilador por demas valores enum no tratados
