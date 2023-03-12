@@ -372,6 +372,7 @@ extern z80_byte peek_byte_pcw(z80_int dir);
 extern z80_byte peek_byte_no_time_pcw(z80_int dir);
 extern void out_port_pcw(z80_int puerto,z80_byte value);
 extern z80_byte lee_puerto_pcw(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l);
 
 
 extern z80_int lee_word_pc(void);

@@ -1622,6 +1622,10 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                         return lee_puerto_cpc_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
                     }
 
+                    else if (MACHINE_IS_PCW) {
+                        return lee_puerto_pcw_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
+                    }
+
                     else if (MACHINE_IS_SAM) {
                         return lee_puerto_sam_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
                     }                                                            
