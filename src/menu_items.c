@@ -23883,6 +23883,23 @@ void hotswap_1648_to_128k(MENU_ITEM_PARAMETERS)
     hotswap_any_machine_to_spec128();    
 }
 
+void hotswap_timex2068_to_tc2068(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_TIMEX_TC2068;
+
+    set_machine_params();
+    post_set_machine(NULL);	
+}
+
+void hotswap_timex2068_to_ts2068(MENU_ITEM_PARAMETERS)
+{
+    current_machine_type=MACHINE_ID_TIMEX_TS2068;
+
+    set_machine_params();
+    post_set_machine(NULL);	
+}
+
+
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
 
@@ -23991,8 +24008,15 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 
         }
 
+        //Timex 2068
+        if (MACHINE_IS_TIMEX_TS_TC_2068) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Timex Computer 2068",MENU_OPCION_NORMAL,hotswap_timex2068_to_tc2068,NULL);
+			menu_add_item_menu(array_menu_machine_selection,"Timex Sinclair 2068",MENU_OPCION_NORMAL,hotswap_timex2068_to_ts2068,NULL);
+			menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_resto_a_48k,NULL);
+        }		
+
         //Diferentes maquinas que solo pueden saltar a spectrum 48k
-        if (MACHINE_IS_PRISM || MACHINE_IS_TIMEX_TS_TC_2068 || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
+        if (MACHINE_IS_PRISM || MACHINE_IS_TBBLUE || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
             menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_resto_a_48k,NULL);
         }
 
