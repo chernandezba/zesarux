@@ -76,7 +76,7 @@ usar la que si considera movimiento raton
 
 
 
--mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
+
 
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
@@ -324,3 +324,5 @@ y/o nuevas funciones que signifiquen (mra or pmra)=xx
 ejemplo : opmra(xx) devuelve 1 si mra or pmra=xx. en caso contrario devuelve 0. nombre viene de "opcode mra",
 queriendo decir que en el ultimo opcode se ha modificado xx
 ->Testeo opmwa, opmra, opmwv, opmrv
+
+ok -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)

@@ -23899,6 +23899,74 @@ void hotswap_timex2068_to_ts2068(MENU_ITEM_PARAMETERS)
     post_set_machine(NULL);	
 }
 
+void hotswap_zx80_to_zx80(MENU_ITEM_PARAMETERS)
+{
+
+
+    switch(valor_opcion)
+    {
+        case 0:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK80;
+        break;
+
+        case 1:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK82;
+        break;
+
+        case 2:
+            current_machine_type=MACHINE_ID_ZX80;
+        break;
+
+
+    }
+
+	//maquinas las emulo igual, ni cambia la rom
+    //set_machine_params();
+    //post_set_machine(NULL);
+			
+
+}
+
+
+void hotswap_zx81_to_zx81(MENU_ITEM_PARAMETERS)
+{
+
+    switch(valor_opcion)
+    {
+        case 0:
+            current_machine_type=MACHINE_ID_TIMEX_TS1000;
+        break;
+
+        case 1:
+            current_machine_type=MACHINE_ID_TIMEX_TS1500;
+        break;
+
+        case 2:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK82C;
+        break;
+
+        case 3:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK83;
+        break;
+
+        case 4:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK85;
+        break;
+
+        case 5:
+            current_machine_type=MACHINE_ID_ZX81;
+        break;		
+
+
+    }
+
+	//maquinas las emulo igual, por tanto solo cambia la rom
+    //set_machine_params();
+    post_set_machine(NULL);
+			
+
+}
+
 
 void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 {
@@ -23991,12 +24059,33 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
         }
 
 
-        //maquinas zx80, zx81
-        if (MACHINE_IS_ZX8081) {
-            menu_add_item_menu_inicial(&array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx80,NULL);
+        //maquinas zx80
+        if (MACHINE_IS_ZX80_TYPE) {
+            menu_add_item_menu_inicial(&array_menu_machine_selection,"Microdigital TK80",MENU_OPCION_NORMAL,hotswap_zx80_to_zx80,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
+			menu_add_item_menu(array_menu_machine_selection,"Microdigital TK82",MENU_OPCION_NORMAL,hotswap_zx80_to_zx80,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
+			menu_add_item_menu(array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx80_to_zx80,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
             menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx81,NULL);
         }
 
+        //maquinas zx81
+        if (MACHINE_IS_ZX81_TYPE) {
+			menu_add_item_menu_inicial(&array_menu_machine_selection,"Timex Sinclair 1000",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
+			menu_add_item_menu(array_menu_machine_selection,"Timex Sinclair 1500",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
+			menu_add_item_menu(array_menu_machine_selection,"Microdigital TK82C",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
+			menu_add_item_menu(array_menu_machine_selection,"Microdigital TK83",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
+			menu_add_item_menu(array_menu_machine_selection,"Microdigital TK85",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
+			menu_add_item_menu(array_menu_machine_selection,"ZX81",MENU_OPCION_NORMAL,hotswap_zx81_to_zx81,NULL);
+			menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
+            menu_add_item_menu(array_menu_machine_selection,"ZX80",MENU_OPCION_NORMAL,hotswap_zx8081_to_zx80,NULL);
+        }
                 
 
         //maquinas chloe
