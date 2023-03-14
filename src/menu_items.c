@@ -23773,11 +23773,11 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
 {
 
     //Caso especial cuando se cambia entre maquina Inves, porque la asignacion de memoria es diferente
-    if (MACHINE_IS_INVES || valor_opcion==2) {
+    if (MACHINE_IS_INVES || valor_opcion==4) {
         //si misma maquina inves origen o destino, no hacer nada
 
         //Cambiamos de Inves a otra
-        if (MACHINE_IS_INVES && valor_opcion!=2) {
+        if (MACHINE_IS_INVES && valor_opcion!=4) {
             //Asignamos 64kb RAM
             z80_byte *memoria_spectrum_final;
                 memoria_spectrum_final=malloc(65536);
@@ -23800,7 +23800,7 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         }
 
         //Cambiamos de otra a Inves
-        if (!(MACHINE_IS_INVES) && valor_opcion==2) {
+        if (!(MACHINE_IS_INVES) && valor_opcion==4) {
             //Asignamos 80 kb RAM
             z80_byte *memoria_spectrum_final;
             memoria_spectrum_final=malloc(65536+16384);
@@ -23838,22 +23838,30 @@ void hotswap_1648_to_1648(MENU_ITEM_PARAMETERS)
         break;
 
         case 2:
-            current_machine_type=MACHINE_ID_INVES;
+            current_machine_type=MACHINE_ID_SPECTRUM_48_PLUS_ENG;
         break;
 
         case 3:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
+            current_machine_type=MACHINE_ID_SPECTRUM_48_PLUS_SPA;
         break;
 
         case 4:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_SPA;
+            current_machine_type=MACHINE_ID_INVES;
         break;
 
         case 5:
-            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95;
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X;
         break;
 
         case 6:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK90X_SPA;
+        break;
+
+        case 7:
+            current_machine_type=MACHINE_ID_MICRODIGITAL_TK95;
+        break;
+
+        case 8:
             current_machine_type=MACHINE_ID_MICRODIGITAL_TK95_SPA;
         break;        
 
@@ -23888,16 +23896,20 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,0);
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum 48k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,1);
-            menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 48k",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,2);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 48k (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,3);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Inves Spectrum +",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,4);
-            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
             menu_add_item_menu_valor_opcion(array_menu_machine_selection,5);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK90X (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,6);
+            menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,7);
             menu_add_item_menu(array_menu_machine_selection,"Microdigital TK95 (Spanish)",MENU_OPCION_NORMAL,hotswap_1648_to_1648,NULL);
-            menu_add_item_menu_valor_opcion(array_menu_machine_selection,6);                
+            menu_add_item_menu_valor_opcion(array_menu_machine_selection,8);                
             menu_add_item_menu(array_menu_machine_selection,"ZX Spectrum+ 128",MENU_OPCION_NORMAL,hotswap_1648_to_128k,NULL);
 
         }
