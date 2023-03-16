@@ -9984,6 +9984,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     debug_printf_sem_init();
 
+	omplir_adr_internet_semaforo_init();
+
     debug_unnamed_console_init();
 
 

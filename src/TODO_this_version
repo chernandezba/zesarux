@@ -326,3 +326,15 @@ queriendo decir que en el ultimo opcode se ha modificado xx
 ->Testeo opmwa, opmra, opmwv, opmrv
 
 ok -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
+
+ok en teoria -segfaults a veces al iniciar y comprobar version por red (o usuarios?), se muere el hilo aparte. quiza fallo dns?
+
+
+-segfault en linux al hacer ctr-c
+
+ ZEsarUX kernel panic: Segmentation fault 
+PC=0046 SP=7ffa AF=dd02 BC=0807 HL=c04b DE=c04c IX=ffff IY=4000 AF'=ffff BC'=402f HL'=4030 DE'=d8f0 I=0e R=84  F=------N- F'=SZ5H3PNC MEMPTR=0045 IM0 IFF-- VPS: 50 MMU=00000000000000000000000000000000
+./zesarux(debug_exec_show_backtrace+0xed)[0x561f2f7fb6e8]
+./zesarux(cpu_panic+0x3e)[0x561f2f7fba61]
+./zesarux(segfault_signal_handler+0x1f)[0x561f2f795792]
+/lib/x86_64-linux-gnu/libc.so.6(+0x46210)[0x7f9e9ae46210]
