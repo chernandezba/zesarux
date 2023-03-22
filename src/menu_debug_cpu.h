@@ -117,6 +117,12 @@ extern int map_adventure_offset_y;
 "ABS(e): returns absolute value of expression e\n" \
 "BYTE(e): same as (e)&FFH\n" \
 "WORD(e): same as (e)&FFFFH\n" \
+"The following functions are complementary to MRV, MWV, MRA, MWA: if you want to know if the last opcode has " \
+"set any of these variables to a known value, use: \n" \
+"OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e. \n"\
+"For example consider opcode ld hl,(16384) and condition: OPMRA(16384). At the end of the opcode, MRA will be set to 16385, "\
+"as we are reading 2 bytes (and MRA was 16384 when reading the first byte), "\
+"but OPMRA(16384) will return 1 after the opcode. Also, OPMRA(16385) will also return 1\n" \
 "\n" \
 "[NUMERICVALUE] must be a numeric value, it can have a suffix indicating the numeric base, otherwise it's decimal:\n" \
 "suffix H: hexadecimal\n" \
