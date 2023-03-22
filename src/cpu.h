@@ -341,7 +341,7 @@ extern z80_bit tape_loading_simulate_fast;
 extern void end_emulator(void);
 extern void end_emulator_saveornot_config(int saveconfig);
 extern void end_emulator_autosave_snapshot(void);
-//extern int ending_emulator_flag;
+extern int ending_emulator_flag;
 
 extern z80_bit snow_effect_enabled;
 

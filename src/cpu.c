@@ -9658,10 +9658,17 @@ void emulator_main_loop(void)
 		if (menu_abierto==1) menu_inicio();
 
     		//Bucle principal de ejecución de la cpu
-    		while (menu_abierto==0) {
+    		while (menu_abierto==0 && ending_emulator_flag==0) {
     			cpu_core_loop();
     		}
 
+			//Nos quedamos aqui cerrados cuando se ha salido con ctrl-c, donde este
+			//thread aun sigue vivo, pero no hay que andar refrescando ya nada del emulador, para 
+			//no generar segfault en cuanto se cierre el driver de video
+			while (ending_emulator_flag) {
+				//printf("Finalizando\n");
+				sleep(1);
+			}
 
 	}
 
@@ -10753,7 +10760,7 @@ void dump_ram_file_on_exit(void)
 	}
 }
 
-//int ending_emulator_flag=0;
+int ending_emulator_flag=0;
 
 //Se pasa parametro que dice si guarda o no la configuración.
 //antes se guardaba siempre, pero ahora en casos de recepcion de señales de terminar, no se guarda,
@@ -10761,9 +10768,15 @@ void dump_ram_file_on_exit(void)
 void end_emulator_saveornot_config(int saveconfig)
 {
 	debug_printf (VERBOSE_INFO,"End emulator");
-    //ending_emulator_flag=1;
-	
-	
+
+	//Para indicar al thread de emulacion que tiene que salir, esto es valido cuando se llega aqui con ctrl-c
+	//Si no, se quedaria el loop de emulacion por debajo y en cuanto aqui cerramos el driver de video,
+	//petaria con segfault al intentar refrescar la pantalla o similar
+    ending_emulator_flag=1;
+	//Dejamos un ligero tiempo para que el thread se entere
+	//1 milisegundo mas que suficiente
+	usleep(1000);
+
 	
 
 	dump_ram_file_on_exit();
