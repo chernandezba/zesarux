@@ -302,31 +302,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
 copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 
-ok corregido -error: click boton derecho en una ventana, si debajo hay un icono del desktop, lanza accion del icono
-
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
-
-
--en breakpoints, condicion tipo: mwa=16384, no salta si opcode escribe 16 bits de golpe, como:
-
-ld (16384),HL
-
-en este caso si que saltaria con:
-
-mwa=16385
-
-Porque se queda la ultima direccion mwa escrita de ese opcode
-
-lo mismo pasaria con mwv, mra, mrv, pwa, pwv, pra, prv
-
-Quiza nuevas variables que den el valor anterior? ejemplo pmra para "previous mra"?
-y/o nuevas funciones que signifiquen (mra or pmra)=xx
-ejemplo : opmra(xx) devuelve 1 si mra or pmra=xx. en caso contrario devuelve 0. nombre viene de "opcode mra",
-queriendo decir que en el ultimo opcode se ha modificado xx
-->Testeo opmwa, opmra, opmwv, opmrv
-
-ok -mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
-
-ok en teoria -segfaults a veces al iniciar y comprobar version por red (o usuarios?), se muere el hilo aparte. quiza fallo dns?
 
 
