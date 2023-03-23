@@ -1432,7 +1432,7 @@ int hilow_load_device_file(void)
     }
 
     FILE *ptr_hilowfile;
-    unsigned int leidos=0;
+    //unsigned int leidos=0;
 
     debug_printf (VERBOSE_INFO,"Opening HiLow Data Drive File %s",hilow_file_name);
     ptr_hilowfile=fopen(hilow_file_name,"rb");
@@ -1446,7 +1446,8 @@ int hilow_load_device_file(void)
         return 1;
     }
 
-    leidos=fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
+    //leidos=fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
+    fread(hilow_device_buffer,1,bytes_a_leer,ptr_hilowfile);
     fclose(ptr_hilowfile);
 
 
