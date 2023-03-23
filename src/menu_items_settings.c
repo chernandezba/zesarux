@@ -9185,8 +9185,8 @@ zxvision_window menu_zxdesktop_set_userdef_button_func_action_ventana;
 void menu_zxdesktop_set_userdef_button_func_action_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
 {
 	//scr_putpixel(x,y,color);
-    zxvision_window *ventana;
-    ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
+    //zxvision_window *ventana;
+    //ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
 
 
     zxvision_putpixel(&menu_zxdesktop_set_userdef_button_func_action_ventana,x,y,color);
@@ -9744,9 +9744,10 @@ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 
 
 
-    int ret;
+    //int ret;
 
-    ret=menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
+    //ret=menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
+    menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
