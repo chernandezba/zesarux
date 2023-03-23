@@ -28035,9 +28035,9 @@ void menu_pcw_boot_cpm_reinsert_previous(MENU_ITEM_PARAMETERS)
     pcw_boot_reinsert_previous_dsk.v ^=1;
 }
 
-void menu_pcw_fallback_cpm_when_no_boot(MENU_ITEM_PARAMETERS)
+void menu_pcw_failback_cpm_when_no_boot(MENU_ITEM_PARAMETERS)
 {
-    pcw_fallback_cpm_when_no_boot.v ^=1;
+    pcw_failback_cpm_when_no_boot.v ^=1;
 }
 
 void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
@@ -28094,15 +28094,24 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_PCW) {
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm,
-                NULL,"    Boot CP/M");
+                NULL,"    Boot CP/M now");
+			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot CP/M");
+			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot CP/M");
+
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_cpm_reinsert_previous,NULL,
             "[%c] Reinsert previous dsk after boot",(pcw_boot_reinsert_previous_dsk.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
+			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Reinsert previous dsk after booting CP/M");
 
-            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_fallback_cpm_when_no_boot,NULL,
-            "[%c] Fallback to CP/M if no boot",(pcw_fallback_cpm_when_no_boot.v ? 'X' : ' ') );
+            menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_failback_cpm_when_no_boot,NULL,
+            "[%c] Failback to CP/M if no boot",(pcw_failback_cpm_when_no_boot.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
+			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Insert CP/M disk if selected disk is not bootable");
 
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_pcw_boot_locoscript,
-                NULL,"    Boot LocoScript");
+                NULL,"    Boot LocoScript now");
+			menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Boot LocoScript");
+			menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Boot LocoScript");
 
             menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

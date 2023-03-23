@@ -2240,12 +2240,14 @@ printf (
 		"--------------------------\n"
 		"\n"
 
-        "--dsk-file f                     Set +3 DSK image file\n"
-        "--enable-dsk                     Enable +3 DSK emulation. Usually requires --dsk-file\n"
-        "--dsk-write-protection           Enable +3 DSK write protection\n"
-        "--pd765-silent-write-protection  When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)\n"
-		"--dsk-no-persistent-writes       Disable +3 DSK persistent writes\n"
+        "--dsk-file f                             Set 3\" CF2 Floppy DSK image file\n"
+        "--enable-dsk                             Enable 3\" CF2 Floppy DSK emulation. Usually requires --dsk-file\n"
+        "--dsk-write-protection                   Enable 3\" CF2 Floppy DSK write protection\n"
+        "--pd765-silent-write-protection          When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)\n"
+		"--dsk-no-persistent-writes               Disable 3\" CF2 Floppy DSK persistent writes\n"
 
+		"--dsk-pcw-no-boot-reinsert-previous-dsk  Do not reinsert previous dsk after booting CP/M\n"
+		"--dsk-pcw-no-failback-cpm-when-no-boot   Do not insert CP/M disk if selected disk is not bootable\n"
 
 		"\n"
 		"\n"
@@ -7532,6 +7534,14 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--dsk-no-persistent-writes")) {
 				dskplusthree_persistent_writes.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-boot-reinsert-previous-dsk")) {
+				pcw_boot_reinsert_previous_dsk.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-failback-cpm-when-no-boot")) {
+				pcw_failback_cpm_when_no_boot.v=0;
 			}
 
 

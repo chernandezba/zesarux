@@ -4005,6 +4005,9 @@ int util_write_configfile(void)
 
   if (dskplusthree_persistent_writes.v==0)    ADD_STRING_CONFIG,"--dsk-no-persistent-writes");
 
+  if (pcw_boot_reinsert_previous_dsk.v==0)    ADD_STRING_CONFIG,"--dsk-pcw-no-boot-reinsert-previous-dsk");
+  if (pcw_failback_cpm_when_no_boot.v==0)     ADD_STRING_CONFIG,"--dsk-pcw-no-failback-cpm-when-no-boot");
+
   if (superupgrade_rom_file_name[0]!=0)       ADD_STRING_CONFIG,"--superupgrade-flash \"%s\"",superupgrade_rom_file_name);
   if (superupgrade_enabled.v)                 ADD_STRING_CONFIG,"--enable-superupgrade");
 

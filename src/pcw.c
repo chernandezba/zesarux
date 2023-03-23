@@ -912,7 +912,7 @@ z80_bit dskplusthree_emulation_before_boot={0};
 z80_bit pcw_boot_reinsert_previous_dsk={1};
 
 //Si hay que cargar cpm cuando disco no arrancable
-z80_bit pcw_fallback_cpm_when_no_boot={1};
+z80_bit pcw_failback_cpm_when_no_boot={1};
 
 
 //Comprueba cuando se ha iniciado del todo el disco de CP/M y reinserta el disco anterior que habia
@@ -1041,7 +1041,7 @@ void pcw_boot_check_dsk_not_bootable(void)
    }
 
     //Si hay que autoinsertar cpm
-    if (autoboot & pcw_fallback_cpm_when_no_boot.v) {
+    if (autoboot & pcw_failback_cpm_when_no_boot.v) {
         printf("Autobooting CP/M\n");
         //sleep(2);
         pcw_boot_cpm();
