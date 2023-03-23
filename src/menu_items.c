@@ -8778,7 +8778,7 @@ int menu_display_total_palette_lista_colores(int linea,int si_barras)
 		int indice_color_final_rgb;
 		int color_final_rgb;
 
-		int total_colores_mostrar;
+		//int total_colores_mostrar;
 
 		//Borramos lista de colores con espacios por si hay estos de antes
 		if (!si_barras) {
@@ -18591,9 +18591,9 @@ void menu_ay_pianokeyboard(MENU_ITEM_PARAMETERS)
 
 
 
-    int valor_contador_segundo_anterior;
+    //int valor_contador_segundo_anterior;
 
-    valor_contador_segundo_anterior=contador_segundo;
+    //valor_contador_segundo_anterior=contador_segundo;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -18883,9 +18883,9 @@ void menu_beeper_pianokeyboard(MENU_ITEM_PARAMETERS)
 	
 
 
-	int valor_contador_segundo_anterior;
+	//int valor_contador_segundo_anterior;
 
-	valor_contador_segundo_anterior=contador_segundo;
+	//valor_contador_segundo_anterior=contador_segundo;
 
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -25194,7 +25194,8 @@ void menu_about_about(MENU_ITEM_PARAMETERS)
 {
 
 	char mensaje_about[1024];
-	unsigned char letra_enye,letra_e_acentuada,letra_a_acentuada,letra_o_acentuada;
+	//unsigned char letra_enye,letra_e_acentuada,letra_a_acentuada,letra_o_acentuada;
+	unsigned char letra_enye;
 
 
 	if (si_complete_video_driver() ) {
@@ -25202,17 +25203,17 @@ void menu_about_about(MENU_ITEM_PARAMETERS)
         //TODO: arreglar los charset para que los acentos sean letras igual en cada charset con acento
         //TODO: hacer lo mismo cuando zx desktop activo (menu_about_new)
 		letra_enye=129;
-        letra_e_acentuada=143;
-        letra_a_acentuada=142;
-        letra_o_acentuada=145;
+        //letra_e_acentuada=143;
+        //letra_a_acentuada=142;
+        //letra_o_acentuada=145;
 	}
 
 	else {
 		//mensaje con n en vez de enye, y acentos
 		letra_enye='n';
-        letra_e_acentuada='e';
-        letra_a_acentuada='a';
-        letra_o_acentuada='o';        
+        //letra_e_acentuada='e';
+        //letra_a_acentuada='a';
+        //letra_o_acentuada='o';        
 	} 
 
 	sprintf (mensaje_about,"ZEsarUX v." EMULATOR_VERSION " (" EMULATOR_SHORT_DATE ")\n"
@@ -30810,11 +30811,11 @@ int menu_storage_hilow_chkdsk_sectors_free[256];
 void menu_storage_hilow_chkdsk(MENU_ITEM_PARAMETERS)
 {
 
-    z80_byte *p_sector_zero;
-    z80_byte *p_sector_one;
+    //z80_byte *p_sector_zero;
+    //z80_byte *p_sector_one;
 
-    p_sector_zero=hilow_device_buffer;
-    p_sector_one=&hilow_device_buffer[2048];
+    //p_sector_zero=hilow_device_buffer;
+    //p_sector_one=&hilow_device_buffer[2048];
 
 	char *texto_chkdsk=util_malloc_max_texto_browser();
 	int indice_buffer=0;
