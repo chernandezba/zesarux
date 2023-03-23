@@ -1672,22 +1672,22 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                     break;
 
                     case TPI_F_OPMWA:
-                        if (debug_mmu_mwa==valor || anterior_debug_mmu_mwa==valor) return 1;
+                        if (debug_mmu_mwa==(unsigned int)valor || anterior_debug_mmu_mwa==(unsigned int)valor) return 1;
                         else return 0;
                     break;
 
                     case TPI_F_OPMRA:
-                        if (debug_mmu_mra==valor || anterior_debug_mmu_mra==valor) return 1;
+                        if (debug_mmu_mra==(unsigned int)valor || anterior_debug_mmu_mra==(unsigned int)valor) return 1;
                         else return 0;
                     break;    
 
                     case TPI_F_OPMWV:
-                        if (debug_mmu_mwv==valor || anterior_debug_mmu_mwv==valor) return 1;
+                        if (debug_mmu_mwv==(unsigned int)valor || anterior_debug_mmu_mwv==(unsigned int)valor) return 1;
                         else return 0;
                     break;
 
                     case TPI_F_OPMRV:
-                        if (debug_mmu_mrv==valor || anterior_debug_mmu_mrv==valor) return 1;
+                        if (debug_mmu_mrv==(unsigned int)valor || anterior_debug_mmu_mrv==(unsigned int)valor) return 1;
                         else return 0;
                     break;                                      
 
