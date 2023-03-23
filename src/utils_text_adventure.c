@@ -3527,6 +3527,7 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
             texto_localidad[25]=0;
             //printf("%s\n",texto_localidad);
             sprintf(buffer_linea,"%s\n",texto_localidad);
+            
             salir=util_concat_string(texto,buffer_linea,max_string);
 
 
@@ -3569,10 +3570,11 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
                   
                 
                 salir=util_concat_string(texto,palabra_sin_espacios,max_string);
-                //salir=util_concat_string(texto,", ",max_string);
+                
 
                 //printf(" destino %d\n",destino);
                 sprintf(buffer_linea," %d, ",destino);
+
                 salir=util_concat_string(texto,buffer_linea,max_string);
 
             }
