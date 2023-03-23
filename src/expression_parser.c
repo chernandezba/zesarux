@@ -1223,16 +1223,17 @@ int exp_par_calculate_numvarreg(token_parser *token)
 		    //TODO. condiciones especiales para mapeo de paginas del +2A tipo ram en rom
 	    }
 
-    case TPI_V_PD765_PCN:
-        return pd765_pcn;
-    break;
-
 	//ram mapeada en 49152-65535 de Prism
         if (MACHINE_IS_PRISM) {
                 return prism_retorna_ram_entra()*2;
 	    }
 
-    break;    
+    break;
+
+    case TPI_V_PD765_PCN:
+        return pd765_pcn;
+    break;
+
 
                     default:
                         //Para que no se queje el compilador por demas valores enum no tratados
