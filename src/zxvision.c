@@ -3310,11 +3310,11 @@ no se renderizara desde nomal_overlay_texto_menu. Dado que es mismo caracter, ah
 void putchar_menu_overlay_parpadeo_cache_or_not(int x,int y,z80_byte caracter,int tinta,int papel,int parpadeo,int use_cache_mismo_caracter)
 {
 
-	int xusado=x;
+	//int xusado=x;
 
-	if (menu_char_width!=8) {
-		xusado=(x*menu_char_width)/8;		
-	}
+	//if (menu_char_width!=8) {
+		//xusado=(x*menu_char_width)/8;		
+	//}
 
 	//int xfinal=((x*menu_char_width)+menu_char_width-1)/8;
 
@@ -19638,6 +19638,7 @@ void menu_add_item_menu_es_avanzado(menu_item *m)
 }
 
 //Agregar decirle que es un item avanzado al ultimo item de menu
+/*
 void old_menu_add_item_menu_es_avanzado(menu_item *m)
 {
 
@@ -19672,6 +19673,7 @@ void old_menu_add_item_menu_es_avanzado(menu_item *m)
     }
         
 }
+*/
 
 char *menu_text_string_sure_spanish="Seguro?";
 char *menu_text_string_sure_catalan="Segur?";

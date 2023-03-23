@@ -16582,7 +16582,7 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                         return 1;
                 }            
 
-                int leidos;
+                //int leidos;
 
                 //Load File
                 /*
@@ -16594,7 +16594,8 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                 */
 
                 //48k y 128k tienen misma cabecera al principio
-                leidos=zvfs_fread(in_fatfs_origen,sna_48k_header,SNA_48K_HEADER_SIZE,ptr_snafile,&fil_origen);
+                //leidos=zvfs_fread(in_fatfs_origen,sna_48k_header,SNA_48K_HEADER_SIZE,ptr_snafile,&fil_origen);
+                zvfs_fread(in_fatfs_origen,sna_48k_header,SNA_48K_HEADER_SIZE,ptr_snafile,&fil_origen);
                 //leidos=fread(sna_48k_header,1,SNA_48K_HEADER_SIZE,ptr_snafile);
                 
 
@@ -16662,7 +16663,7 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
 
 
 
-        int leidos;
+        //int leidos;
 
 
         //Soporte para FatFS
@@ -16685,7 +16686,8 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
         }
         */
 
-        leidos=zvfs_fread(in_fatfs,sp_header,SP_HEADER_SIZE,ptr_spfile,&fil);
+        //leidos=zvfs_fread(in_fatfs,sp_header,SP_HEADER_SIZE,ptr_spfile,&fil);
+        zvfs_fread(in_fatfs,sp_header,SP_HEADER_SIZE,ptr_spfile,&fil);
         //leidos=fread(sp_header,1,SP_HEADER_SIZE,ptr_spfile);
         
 
@@ -17362,7 +17364,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
 
 
 
-        int leidos;
+        //int leidos;
 
 
         //Soporte para FatFS
@@ -17387,7 +17389,8 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         }
         */
 
-        leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+        //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
+        zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
         //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
         
 
@@ -18961,9 +18964,10 @@ int file_is_z88_basic(char *filename)
         }
 */
 
-        int leidos;
+        //int leidos;
 
-        leidos=zvfs_fread(in_fatfs,flash_file_memory,bytes_to_load,ptr_file_flash_browser,&fil);        
+        //leidos=zvfs_fread(in_fatfs,flash_file_memory,bytes_to_load,ptr_file_flash_browser,&fil);
+        zvfs_fread(in_fatfs,flash_file_memory,bytes_to_load,ptr_file_flash_browser,&fil);
         
         //leidos=fread(flash_file_memory,1,bytes_to_load,ptr_file_flash_browser);
 
