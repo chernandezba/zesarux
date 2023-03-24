@@ -4442,13 +4442,14 @@ void menu_debug_registers_if_cls(void)
             int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
             menu_emulation_paused_on_menu=1;
             //menu_espera_no_tecla_no_cpu_loop();
-            menu_espera_no_tecla();
+            menu_espera_no_tecla_con_repeticion();
             menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
             //printf ("Despues esperamos cpu_step_mode=1\n");
         }
         else {
             //printf ("Esperamos cpu_step_mode.v=0\n");
-            menu_espera_no_tecla();
+            menu_espera_no_tecla_con_repeticion();
+            //printf ("Despues Esperamos cpu_step_mode.v=0\n");
         }
     }
 
@@ -7375,7 +7376,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	do {
 
 	
-
+        //printf("Al principio del do while\n");
 
 		//Si es la vista 8, siempre esta en cpu step mode, y zona de memoria es la mapped
 		if (menu_debug_registers_current_view==8) {
@@ -7507,12 +7508,20 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 mouse_wheel_vertical=0;
             }
 
+			//No hay tecla pulsada
+			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA ) {    
+                //Para poder usar repeticiones
+                menu_reset_counters_tecla_repeticion();                  
+            }      
+
 			//Hay tecla pulsada
 			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) !=MENU_PUERTO_TECLADO_NINGUNA ) {
 				//tecla=zxvision_common_getkey_refresh();
                 if (!accion_mouse_pulsado) { 
                     //printf("Antes zxvision_common_getkey_refresh_noesperanotec. wheel: %d acumulado: %d movido: %d\n",
                     //    mouse_wheel_vertical,acumulado,mouse_movido);
+
+                    //printf("Antes zxvision_common_getkey_refresh_noesperanotec\n");
 
 				    tecla=zxvision_common_getkey_wheel_refresh_noesperanotec();
 
@@ -7527,7 +7536,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 else {
                     //printf ("tecla: %d\n",tecla);
                     //A cada pulsacion de tecla, mostramos la pantalla del ordenador emulado
+                    //printf("Antes menu_debug_registers_if_cls\n");
                     menu_debug_registers_if_cls();
+                    //printf("Despues menu_debug_registers_if_cls\n");
                     //menu_espera_no_tecla_no_cpu_loop();
 
                     //para forzar refresco rapido de pantalla
@@ -7943,6 +7954,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
 					si_ejecuta_una_instruccion=0;
+
+                    //Para poder usar repeticiones
+                    menu_reset_counters_tecla_repeticion();
 				}
 
 				else {
@@ -8675,6 +8689,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	//Hacer mientras step mode este activo o no haya tecla pulsada o no haya un salir_todos_menus
 	//printf ("acumulado %d cpu_ste_mode: %d\n",acumulado,cpu_step_mode.v);
     //} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA || cpu_step_mode.v==1);
+
+    //printf("Antes del while final\n");
     } while ( ((acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA || cpu_step_mode.v==1) && !salir_todos_menus);
 
 	//Si no estamos haciendo stepping de daad, quitar breakpoint del parser

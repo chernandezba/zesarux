@@ -48,7 +48,8 @@ Improved Debug CPU:
 - added continuos speed 4 (run 10 opcodes every time, with no pause)
 - show last memory pointer when changing it
 - show B register on satisfy condition for DJNZ
-- added new functions OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e. 
+- added new functions OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e.
+- allow holding keys for quick cursor move, etc 
 
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer
