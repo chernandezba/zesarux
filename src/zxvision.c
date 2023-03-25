@@ -997,6 +997,20 @@ int menu_define_key_function(int tecla,char *funcion)
 	return 0;
 }
 
+//Definir una tecla a una extra info de una funcion
+//Entrada: tecla: 1...15 F1...15   
+//Devuelve 0 si ok
+int menu_define_key_function_extra_info(int tecla,char *extra_info)
+{
+	if (tecla<1 || tecla>MAX_F_FUNCTIONS_KEYS) return 1;
+
+
+
+    strcpy(defined_f_functions_keys_array_extra_info[tecla-1],extra_info);
+
+	return 0;
+}
+
 //Definir una boton a una funcion
 //Entrada: buton 0...   funcion: string correspondiente a defined_f_functions_array
 //Devuelve 0 si ok

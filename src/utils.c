@@ -4390,6 +4390,13 @@ int util_write_configfile(void)
     }
   }
 
+  for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
+    if (defined_f_functions_keys_array_extra_info[i][0]!=0) {
+                                              ADD_STRING_CONFIG,"--def-f-function-extra-info F%d \"%s\"",i+1,defined_f_functions_keys_array_extra_info[i]);
+    }
+  }
+
+
   for (i=0;i<MAX_USERDEF_BUTTONS;i++) {
     int indice=defined_buttons_functions_array[i];
     enum defined_f_function_ids accion=menu_da_accion_direct_functions_indice(indice);

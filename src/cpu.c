@@ -2015,7 +2015,7 @@ printf (
 
         int i;
 		printf (
-	    "--def-f-function key action  Define F key to do an action. action can be: ");
+	    "--def-f-function key action                 Define F key to do an action. action can be: ");
 
 
         for (i=0;i<MAX_F_FUNCTIONS;i++) {
@@ -2027,7 +2027,7 @@ printf (
 		printf (
 		"\n"
 
-
+		"--def-f-function-extra-info key extra-info  Define extra info associated to an action of a F key"
 
 
 		"\n"
@@ -7195,6 +7195,30 @@ int parse_cmdline_options(int desde_commandline) {
 
 
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--def-f-function-extra-info")) {
+				siguiente_parametro_argumento();
+				if (argv[puntero_parametro][0]!='F' && argv[puntero_parametro][0]!='f') {
+					printf ("Unknown key\n");
+					exit(1);
+				}
+
+				int valor=atoi(&argv[puntero_parametro][1]);
+
+				if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
+					printf ("Invalid key\n");
+					exit(1);
+				}
+
+				siguiente_parametro_argumento();
+
+				if (menu_define_key_function_extra_info(valor,argv[puntero_parametro])) {
+					printf ("Invalid f-function action extra info: %s\n",argv[puntero_parametro]);
+					exit(1);
+				}
+
+
+			}			
 
 			else if (!strcmp(argv[puntero_parametro],"--def-button-function")) {
 				siguiente_parametro_argumento();

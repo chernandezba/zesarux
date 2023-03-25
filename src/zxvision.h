@@ -717,6 +717,7 @@ extern int defined_buttons_functions_array[];
 extern int get_defined_direct_functions(char *funcion);
 
 extern int menu_define_key_function(int tecla,char *funcion);
+extern int menu_define_key_function_extra_info(int tecla,char *extra_info);
 extern int menu_define_button_function(int tecla,char *funcion);
 extern void menu_inicio_handle_button_presses(void);
 extern void menu_inicio_handle_lower_icon_presses(void);
