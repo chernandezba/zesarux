@@ -711,6 +711,7 @@ extern char **get_direct_function_icon_bitmap_final(int id_accion);
 
 //Array de teclas F mapeadas
 extern int defined_f_functions_keys_array[];
+extern char defined_f_functions_keys_array_extra_info[MAX_F_FUNCTIONS_KEYS][PATH_MAX];
 
 extern int defined_buttons_functions_array[];
 extern int get_defined_direct_functions(char *funcion);

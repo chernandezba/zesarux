@@ -162,6 +162,8 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 -Abrir ventana arbitraria. 
 *Para icono ya está. Hacerlo para tecla F??, parámetro adicional para funciones que permita usar parámetros
+    //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
+    char extra_info[PATH_MAX];
 *Crear imagen del icono
 
 
@@ -244,7 +246,6 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
 
 
--ver si se puede hacer pgup/dn con autorepeticion en debug cpu
 
 -En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
@@ -254,13 +255,13 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -rom cpc6128: os+basic+amsdos
 
--pendiente 6128,664:
+--pendiente 6128,664:
 *puerto DF en snapshot zsf
 *si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
 *snap ver cosas de cpc 464 y si faltan para 6128 y 664
 
 
--pendiente pcw 8256,8512:
+--pendiente pcw 8256,8512:
 *snapshot zsf
 -teclas f5-f8...
 -caps lock no va...
@@ -272,7 +273,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
 -en i/o ports informacion flags de cada puerto pcw
 -cpm spanish (version superior a 1??) no va
--fin pendiente pcw 8256,8512
+--fin pendiente pcw 8256,8512
 
 
 
@@ -308,3 +309,4 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
 
 
+-al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX

@@ -264,6 +264,26 @@ int defined_f_functions_keys_array[MAX_F_FUNCTIONS_KEYS]={
 	0 //F15
 };
 
+//Extra info de las Funciones de teclas F mapeadas. Desde F1 hasta F15
+//Esto de momento solo se usa al asignar tecla F a accion Openwindow, y el nombre de la ventana se asigna aqui
+char defined_f_functions_keys_array_extra_info[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
+	"",
+	"",
+	"",
+	"",
+	"", //F5
+	"",
+	"",
+	"",
+	"",
+	"", //F10
+	"",
+	"",
+	"",
+	"",
+	"" //F15
+};
+
 
 //Botones a teclas F mapeadas. 11 botones. Desde smartload hasta help
 //apuntan a indices sobre la tabla defined_direct_functions_array
@@ -22588,7 +22608,7 @@ void menu_inicio_handle_configurable_icon_presses(void)
 
         zxdesktop_configurable_icons_current_executing=pulsado_boton;
 
-        menu_process_f_functions_by_action_name(id_funcion,1);
+        menu_process_f_functions_by_action_name(id_funcion,1,-1);
         //printf("Despues procesar funcion\n");
     }
 
@@ -23054,7 +23074,7 @@ void menu_process_f_functions_by_action_index(int indice)
 
     int id_funcion=menu_da_accion_direct_functions_indice(indice);
 
-    menu_process_f_functions_by_action_name(id_funcion,0);
+    menu_process_f_functions_by_action_name(id_funcion,0,menu_button_f_function_index);
 }
 
 void menu_process_f_functions(void)
@@ -23799,7 +23819,7 @@ void menu_inicio(void)
             if (menu_button_f_function_action==0) menu_process_f_functions();
             else {
                 //O procesar cuando se envia una accion concreta, normalmente viene de evento de joystick
-                menu_process_f_functions_by_action_name(menu_button_f_function_action,0);
+                menu_process_f_functions_by_action_name(menu_button_f_function_action,0,-1);
                 menu_button_f_function_action=0;
             }
 

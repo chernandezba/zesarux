@@ -37147,7 +37147,7 @@ void menu_process_f_function_topspeed(void)
 
 
 //Procesar accion tecla F, o pulsado de boton superior reconfigurado, o pulsado de icono en ZX Desktop
-void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop)
+void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada)
 {
 
     //printf("enum: %d\n",id_funcion);
@@ -37212,7 +37212,12 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                 }
             }
             else {
-                debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
+				if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
+				else {
+					char *nombre=defined_f_functions_keys_array_extra_info[id_tecla_f_pulsada];
+					zxvision_open_window_by_name(nombre);
+				}
+
             }
         break;
 
