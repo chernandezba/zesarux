@@ -37247,7 +37247,23 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
                 }
             }
             else {
-                debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
+				if (id_tecla_f_pulsada<0) debug_printf(VERBOSE_ERR,"This action can only be fired from a ZX Desktop icon");
+				else {
+					char *nombre=defined_f_functions_keys_array_extra_info[id_tecla_f_pulsada];
+                    strcpy(quickload_file,nombre);
+
+                    quickfile=quickload_file;
+
+                    //Ver si es un zip que viene de una descarga online por ejemplo
+                    if (!util_compare_file_extension(nombre,"zip")) {
+                        menu_smartload(0);
+                    }
+
+                    else {
+                        quickload(quickload_file);
+                    }
+				}
+
             }
         break;
 
