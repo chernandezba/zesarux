@@ -13,7 +13,7 @@ Added Visual Real Tape F-Function
 Added Settings F-Function
 Added DSK disk info menu: to get tracks and sectors of a disk
 Added ZRCP command: "close-all-menus"
-Added icon/F-key to open any window identified by its name (TODO: now F-keys can have parameters, like window name)
+Added icon/F-key to open any window identified by its name
 Added XEyes "Toy" to follow mouse
 Added more Hotswap combinations
 

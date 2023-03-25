@@ -9427,7 +9427,18 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i);
 
-                 
+
+            if (defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW) {
+                char string_extra_info[16];
+                menu_tape_settings_trunc_name(defined_f_functions_keys_array_extra_info[i],string_extra_info,16);
+
+                menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Extra: %s",string_extra_info);
+                menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Extra info for some actions, like window name for OpenWindow action");
+                menu_add_item_menu_ayuda(array_menu_hardware_set_f_functions,"Extra info for some actions, like window name for OpenWindow action");
+
+                //Esto es un poco chapuza... para indicar que es extra info, la opcion tiene bit 8 alzado
+                menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i | 256);
+            }
         }
 
 
@@ -9442,7 +9453,18 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion. Se llama a la funcion de elegir accion siempre
+            //Se llama a la funcion de elegir accion o establecer extra info
+            if (item_seleccionado.valor_opcion>=256) {
+                //Establecer extra info
+                //char defined_f_functions_keys_array_extra_info[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
+
+                int indice=item_seleccionado.valor_opcion & 0xFF;
+
+                menu_ventana_scanf("Extra info",defined_f_functions_keys_array_extra_info[indice],PATH_MAX);
+	            
+            }
+
+            else {
             
             //printf ("actuamos por funcion\n");
 
@@ -9455,6 +9477,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
             if (indice_retorno>=0) {
                 //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
                 defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
+            }
             }
             
         }
