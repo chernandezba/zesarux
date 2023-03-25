@@ -160,11 +160,6 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
 
 
--Abrir ventana arbitraria. 
-*Para icono ya está. Hacerlo para tecla F??, parámetro adicional para funciones que permita usar parámetros
-    //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
-    char extra_info[PATH_MAX];
-*Crear imagen del icono
 
 
 -releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
@@ -310,3 +305,7 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 
 -al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+
+-Abrir ventana arbitraria. 
+*Para icono ya está. Para F tambien, testear mas
+*TODO: Crear imagen del icono
