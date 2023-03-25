@@ -9427,7 +9427,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i);
 
-
+            //Algunas acciones que permiten extra info
             if (
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW ||
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
