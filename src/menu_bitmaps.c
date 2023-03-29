@@ -5638,3 +5638,34 @@ char *bitmap_button_ext_desktop_processmanagement[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25
 };
 
+
+
+char *bitmap_button_ext_desktop_processswitcher[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	" xxxxxxxxxxxxxxxxxxx      ",   //0
+	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwwwwwwwwwwxwx    ",
+	" xwwwwwwwwwwwwwwwwwxwwx   ",
+	" xwwwwwwwwwwwwwwwwwxwwwx  ",
+	" xwwwwwwwwxxxxxxwwwxxxxxx ",
+	" xwwwwwwxxxxxxxxxxwwwwwwx ",
+	" xwwwwwxxcccxxcccxxwwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",  //10
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwwwwwwwxxccccxxwwwwx ",
+	" xwwwbwwbwwwxxccccxxwwwwx ",
+	" xwwbbwwbbwwxxxxxxxxwwwwx ",
+	" xwbbbbbbbbwxxxxxxxxwwwwx ",  //20
+	" xwbbbbbbbbwwwwwwwwwwwwwx ",
+	" xwwbbwwbbwwxxxxxxxxxwwwx ",
+	" xwwwbwwbwwwxxxxxxxxxwwwx ",
+	" xwwwwwwwwwwwwwwwwwwwwwwx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25
+};

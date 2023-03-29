@@ -106,6 +106,7 @@ extern char *bitmap_button_ext_desktop_visualrealtape[];
 extern char *bitmap_button_ext_desktop_poke[];
 extern char *bitmap_button_ext_desktop_openwindow[];
 extern char *bitmap_button_ext_desktop_processmanagement[];
+extern char *bitmap_button_ext_desktop_processswitcher[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 

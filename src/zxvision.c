@@ -9197,7 +9197,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"hilowconvertaudio",menu_hilow_convert_audio,bitmap_lowericon_ext_desktop_hilow_convert},
     {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
     {"toyzxeyes",menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
-    {"processswitcher",menu_process_switcher,bitmap_button_ext_desktop_userdefined},
+    {"processswitcher",menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
 
 	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
