@@ -270,7 +270,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -cpm spanish (version superior a 1??) no va
 --fin pendiente pcw 8256,8512
 
-
+-Snapshots de pcw o cpc? que formatos existen?
 
 -extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
@@ -278,7 +278,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -faq zoom 1 de Next
 -en cuadros confirmacion yes/no, que cambien a si/no en Spanish y Catalan. o no ?
 
--Snapshots de pcw o cpc? que formatos existen?
+
 -timer de sdl para windows?
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 -En visor dsk que solo muestre primer extent de un archivo. ya esta??
