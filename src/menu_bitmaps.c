@@ -5732,7 +5732,7 @@ char *bitmap_button_ext_desktop_processswitcher[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"      xxxxxxxxxxxxxx      ",		
 	"      xxccccxxccccxx      ",		
 	"      xxccccxxccccxx      ",		
-	"  wwwwwwwwwwxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
 	"  wwwwwwwwwwxxccccxx      ",		
 	"  wwwbwwbwwwxxccccxx      ",		
 	"  wwbbwwbbwwxxxxxxxx      ",    //20
