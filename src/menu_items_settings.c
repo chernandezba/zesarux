@@ -9435,7 +9435,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                 defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD 
             ) {
                 char string_extra_info[16];
-                menu_tape_settings_trunc_name(defined_f_functions_keys_array_extra_info[i],string_extra_info,16);
+                menu_tape_settings_trunc_name(defined_f_functions_keys_array_parameters[i],string_extra_info,16);
 
                 menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Parameters: %s",string_extra_info);
                 menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
@@ -9461,11 +9461,11 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
             //Se llama a la funcion de elegir accion o establecer extra info
             if (item_seleccionado.valor_opcion>=256) {
                 //Establecer extra info
-                //char defined_f_functions_keys_array_extra_info[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
+                //char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
 
                 int indice=item_seleccionado.valor_opcion & 0xFF;
 
-                menu_ventana_scanf("Extra info",defined_f_functions_keys_array_extra_info[indice],PATH_MAX);
+                menu_ventana_scanf("Extra info",defined_f_functions_keys_array_parameters[indice],PATH_MAX);
 	            
             }
 

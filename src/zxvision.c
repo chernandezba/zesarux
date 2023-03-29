@@ -266,7 +266,7 @@ int defined_f_functions_keys_array[MAX_F_FUNCTIONS_KEYS]={
 
 //Extra info de las Funciones de teclas F mapeadas. Desde F1 hasta F15
 //Esto de momento solo se usa al asignar tecla F a accion Openwindow, y el nombre de la ventana se asigna aqui
-char defined_f_functions_keys_array_extra_info[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
+char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
 	"",
 	"",
 	"",
@@ -1006,7 +1006,7 @@ int menu_define_key_function_extra_info(int tecla,char *extra_info)
 
 
 
-    strcpy(defined_f_functions_keys_array_extra_info[tecla-1],extra_info);
+    strcpy(defined_f_functions_keys_array_parameters[tecla-1],extra_info);
 
 	return 0;
 }

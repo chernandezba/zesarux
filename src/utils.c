@@ -4391,8 +4391,8 @@ int util_write_configfile(void)
   }
 
   for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
-    if (defined_f_functions_keys_array_extra_info[i][0]!=0) {
-                                              ADD_STRING_CONFIG,"--def-f-function-parameters F%d \"%s\"",i+1,defined_f_functions_keys_array_extra_info[i]);
+    if (defined_f_functions_keys_array_parameters[i][0]!=0) {
+                                              ADD_STRING_CONFIG,"--def-f-function-parameters F%d \"%s\"",i+1,defined_f_functions_keys_array_parameters[i]);
     }
   }
 
