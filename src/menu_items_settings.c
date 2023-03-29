@@ -9471,18 +9471,18 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
             else {
             
-            //printf ("actuamos por funcion\n");
+                //printf ("actuamos por funcion\n");
 
-            int accion_seleccionada=defined_f_functions_keys_array[item_seleccionado.valor_opcion];
+                int accion_seleccionada=defined_f_functions_keys_array[item_seleccionado.valor_opcion];
 
-            //hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
+                //hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
 
-            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+                int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
 
-            if (indice_retorno>=0) {
-                //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
-                defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
-            }
+                if (indice_retorno>=0) {
+                    //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+                    defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
+                }
             }
             
         }
