@@ -9437,11 +9437,11 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                 char string_extra_info[16];
                 menu_tape_settings_trunc_name(defined_f_functions_keys_array_extra_info[i],string_extra_info,16);
 
-                menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Extra: %s",string_extra_info);
-                menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Extra info for some actions, like window name for OpenWindow action");
-                menu_add_item_menu_ayuda(array_menu_hardware_set_f_functions,"Extra info for some actions, like window name for OpenWindow action");
+                menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Parameters: %s",string_extra_info);
+                menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
+                menu_add_item_menu_ayuda(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
 
-                //Esto es un poco chapuza... para indicar que es extra info, la opcion tiene bit 8 alzado
+                //Esto es un poco chapuza... para indicar que es Parameters, la opcion tiene bit 8 alzado
                 menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i | 256);
             }
         }

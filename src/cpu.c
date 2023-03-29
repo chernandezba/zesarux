@@ -2027,7 +2027,7 @@ printf (
 		printf (
 		"\n"
 
-		"--def-f-function-extra-info key extra-info  Define extra info associated to an action of a F key"
+		"--def-f-function-parameters key extra-info  Define extra info associated to an action of a F key"
 
 
 		"\n"
@@ -7196,7 +7196,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			}
 
-			else if (!strcmp(argv[puntero_parametro],"--def-f-function-extra-info")) {
+			else if (!strcmp(argv[puntero_parametro],"--def-f-function-parameters")) {
 				siguiente_parametro_argumento();
 				if (argv[puntero_parametro][0]!='F' && argv[puntero_parametro][0]!='f') {
 					printf ("Unknown key\n");
