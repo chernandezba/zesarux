@@ -216,7 +216,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
 	//Para el usuario, mejor esta descripcion de ShowBackgroundWindows en vez de overlay_windows
 	{"ShowBackgroundWindows",F_FUNCION_OVERLAY_WINDOWS,bitmap_button_ext_desktop_userdefined,""}, 
     //Abrir una ventana cualquiera. Necesita nombre de la ventana en la extra info del icono
-    {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_userdefined,""},
+    {"OpenWindow",F_FUNCION_OPEN_WINDOW,bitmap_button_ext_desktop_openwindow,""},
     
     //Misc
     {"ZengMessage",F_FUNCION_ZENG_SENDMESSAGE,bitmap_button_ext_desktop_zengmessage,""}, 

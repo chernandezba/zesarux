@@ -104,6 +104,7 @@ extern char *bitmap_button_ext_desktop_speccy_online[];
 extern char *bitmap_button_ext_desktop_zx81_online[];
 extern char *bitmap_button_ext_desktop_visualrealtape[];
 extern char *bitmap_button_ext_desktop_poke[];
+extern char *bitmap_button_ext_desktop_openwindow[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 
