@@ -2611,6 +2611,7 @@ printf (
 		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
         "--last-version-text s                    String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
 		"--no-show-changelog                      Do not show changelog when updating version\n"
+		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
 		
@@ -9815,6 +9816,12 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 		if (!strcmp(main_argv[1],"--version")) {
 		//	printf ("ZEsarUX Version: " EMULATOR_VERSION " Date: " EMULATOR_DATE " - " EMULATOR_EDITION_NAME "\n");
 			printf ("ZEsarUX v." EMULATOR_VERSION " - " EMULATOR_EDITION_NAME ". " EMULATOR_DATE  "\n");
+			exit(0);
+		}
+
+		if (!strcmp(main_argv[1],"--machinelist")) {
+			get_machine_list_whitespace();
+			printf("\n");
 			exit(0);
 		}
 	}

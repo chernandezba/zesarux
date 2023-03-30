@@ -11250,6 +11250,22 @@ int get_machine_id_by_name(char *machine_name)
 
 }
 
+
+//Devuelve listado de ids de maquinas separado por espacios
+void get_machine_list_whitespace(void)
+{
+
+        int i=0;
+
+        while (machines_short_names_id[i].machine_id>=0) {
+                printf("%s ",machines_short_names_id[i].machine_name);
+
+                i++;
+        }
+
+
+}
+
 //Devuelve 0 si ok
 int set_machine_type_by_name(char *machine_name)
 {

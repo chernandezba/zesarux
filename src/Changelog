@@ -17,6 +17,7 @@ Added icon/F-key to open any window identified by its name
 Allow F-keys to assign extra info for actions (like window name on openwindow action, or snapshot name on linktosnapshot action)
 Added XEyes "Toy" to follow mouse
 Added more Hotswap combinations
+Added command line setting --machinelist to get machines list names whitespace separated
 
 * Improvements:
 
