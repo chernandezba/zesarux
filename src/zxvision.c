@@ -9179,7 +9179,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
 	{"sprites",menu_debug_view_sprites,bitmap_button_ext_desktop_viewsprites},
 	{"watches",menu_watches,bitmap_button_ext_desktop_watches},
 	{"displaypalettes",menu_display_total_palette,bitmap_button_ext_desktop_colour_palettes},
-	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_userdefined},
+	{"videoinfo",menu_debug_tsconf_tbblue_msx_videoregisters,bitmap_button_ext_desktop_videoinfo},
 	{"tsconftbbluespritenav",menu_debug_tsconf_tbblue_msx_spritenav,bitmap_button_ext_desktop_userdefined},
 	{"tsconftbbluetilenav",menu_debug_tsconf_tbblue_msx_tilenav,bitmap_button_ext_desktop_userdefined},
 	{"debugcpu",menu_debug_registers,bitmap_button_ext_desktop_debugcpu},

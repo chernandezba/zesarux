@@ -5743,3 +5743,33 @@ char *bitmap_button_ext_desktop_processswitcher[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wwwwwwwwwwxxxxxxxxx     " 	 //25
 };
 
+
+char *bitmap_button_ext_desktop_videoinfo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"RRRRRRRRRRRRRRRRRRRRRRRRRR",		
+	"RrrrrrrrrrrrrrrrrrrrrrrrrR",		
+	"Rr                      rR",	
+	"Rr         mmmm         rR",			
+	"Rr         mmmmm        rR",			
+	"Rr         mmmm         rR", 		
+	"Rr         xx           rR",		
+	"Rr         xx           rR",		
+	"Rr  xxxxxxxxxxxxxxxxx   rR",	//10	
+	"Rr  xxxxxxxxxxxxxxxxx   rR",		
+	"Rr   xxxxxxxxxxxxxxx    rR",		
+	"Rr    xxxxxxxxxxxxx     rR",		
+	"RrbbbbbbbbbbbbbbbbbbbbbbrR",		
+	"RrBBccccccbbbcccccccccccrR",		
+	"RrBBBBbbbbbbccBBBBBbbbbbrR",		
+	"wwwwwwbbbBBBBcBBBBBBBBBBrR",		
+	"wwbbwwBBBBBBBBBBBBBBBBBBrR",		
+	"wwwwwwBBBBBBBBBBBBBBBBBBrR",		
+	"wbbbwwrrrrrrrrrrrrrrrrrrrR",    //20
+	"wwbbwwRRRRRRRRRRRRRRRRRRRR",		
+	"wwbbww  RRRRRRRRRR        ",		
+	"wwbbww RRRRRRRRRRRR       ",		
+	"wbbbbw RRRRRRRRRRRRRR     ",
+	"wwwwwwrrrrrrrrrrrrrrr     " 	 //25
+};
