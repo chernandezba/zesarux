@@ -507,7 +507,7 @@ extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,
 extern void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados);
 
 
-#define ZXVISION_TOTAL_WIDGET_TYPES 10
+#define ZXVISION_TOTAL_WIDGET_TYPES 11
 #define ZXVISION_WIDGET_TYPE_SPEEDOMETER 0
 #define ZXVISION_WIDGET_TYPE_SPEAKER 1
 #define ZXVISION_WIDGET_TYPE_CIRCLE 2
@@ -518,6 +518,7 @@ extern void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int 
 #define ZXVISION_WIDGET_TYPE_PARTICLES 7
 #define ZXVISION_WIDGET_TYPE_VOLUME 8
 #define ZXVISION_WIDGET_TYPE_VALUE 9
+#define ZXVISION_WIDGET_TYPE_SIERPINSKY 10
 
 extern char *zxvision_widget_types_names[];
 
@@ -531,6 +532,7 @@ extern int zxvision_widget_find_name_type(char *name);
 #define ZXVISION_WIDGET_TYPE_CIRCLE_RADIUS 16
 #define ZXVISION_WIDGET_TYPE_CURVE_LENGTH 32
 #define ZXVISION_WIDGET_TYPE_PARTICLES_RADIUS 32
+#define ZXVISION_WIDGET_TYPE_SIERPINSKY_LENGTH 32
 
 extern void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,int xorigen_linea,int yorigen_linea,int percentaje,int color_linea,int color_contorno);
 extern void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,int columna_texto,int fila_texto,char *short_name,int tipo,int valor_en_vez_de_perc,int tinta_texto_descripcion,int papel_texto_descripcion,int escribir_espacios);

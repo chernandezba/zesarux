@@ -14186,6 +14186,58 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
 }
 
 
+int zxvision_widgets_draw_sierpinsky_last_x=0;
+int zxvision_widgets_draw_sierpinsky_last_y=0;
+
+//A cada iteracción dibujamos 1 pixel
+void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widget,int yinicio_widget,int percentaje,int color,int longitud_linea)
+{
+
+	int i;
+
+	for (i=0;i<percentaje;i++) {
+
+		//Sacar random
+		ay_randomize(0);
+
+		//randomize_noise es valor de 16 bits. sacar uno de 8 bits
+		int punto=value_16_to_8h(randomize_noise[0]) % 3;
+		int x2,y2;
+
+
+		switch(punto) {
+			case 0:
+				//abajo izquierda
+				x2=0;
+				y2=longitud_linea-1;
+			break;
+
+			case 1:
+				//abajo derecha
+				x2=longitud_linea-1;
+				y2=longitud_linea-1;
+			break;
+
+			default:
+				//arriba en medio
+				x2=(longitud_linea-1)/2;
+				y2=0;
+			break;
+				
+		}
+
+		int x=(zxvision_widgets_draw_sierpinsky_last_x+x2)/2;
+		int y=(zxvision_widgets_draw_sierpinsky_last_y+y2)/2;
+
+		zxvision_widgets_draw_sierpinsky_last_x=x;
+		zxvision_widgets_draw_sierpinsky_last_y=y;
+
+		zxvision_putpixel(ventana,xinicio_widget+x,yinicio_widget+y,color); //es -y porque si y es positiva, restamos (hacia arriba, pues el 0 de la y esta arriba del todo)
+
+	}
+ 
+}
+
 char *zxvision_widget_types_names[ZXVISION_TOTAL_WIDGET_TYPES]={
     "Speedometer",
     "Speaker",
@@ -14196,7 +14248,8 @@ char *zxvision_widget_types_names[ZXVISION_TOTAL_WIDGET_TYPES]={
     "Curve",
     "3DParticles",
     "Volume",
-    "Only Value"
+    "Only Value",
+	"Sierpinsky"
 };
 
 void widget_list_print(void)
@@ -14360,6 +14413,16 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
         zxvision_widgets_draw_particles(ventana,xorigen_widget,yorigen_linea,media_cpu_perc,color_pixeles,longitud_linea);                   
 
     }     
+
+    if (tipo==ZXVISION_WIDGET_TYPE_SIERPINSKY) {
+        int longitud_linea=ZXVISION_WIDGET_TYPE_SIERPINSKY_LENGTH;
+
+        int xorigen_widget=(columna_texto*menu_char_width);
+		int yorigen_widget=(fila_texto*menu_char_height)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto;
+
+		zxvision_widgets_draw_sierpinsky(ventana,xorigen_widget,yorigen_widget,media_cpu_perc,color_pixeles,longitud_linea);                   
+
+    }  	
 
     if (tipo==ZXVISION_WIDGET_TYPE_VOLUME) {
         zxvision_widgets_draw_volumen_maxmin(ventana,columna_texto,fila_texto,tinta_texto,ESTILO_GUI_PAPEL_NORMAL,media_cpu_perc,15);

@@ -94,8 +94,7 @@ usar la que si considera movimiento raton
 
 -incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
 
--Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
-Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
+
 
 Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
 
@@ -149,7 +148,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 del mensaje lo obtiene de la ventana
 
 
--text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
 
 
 
@@ -305,3 +304,7 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 -al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
+
+
+-Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
+Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
