@@ -304,7 +304,3 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 -al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
-
-
--Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
-Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
