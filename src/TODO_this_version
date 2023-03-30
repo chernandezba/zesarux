@@ -292,7 +292,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -footer que tambien amplie tamaño segun menu_gui_zoom
 
--Opción para listar máquinas en una línea separadas por espacios
 
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
 
