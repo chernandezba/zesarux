@@ -14189,13 +14189,17 @@ void zxvision_widgets_draw_particles(zxvision_window *ventana,int xinicio_widget
 int zxvision_widgets_draw_sierpinsky_last_x=0;
 int zxvision_widgets_draw_sierpinsky_last_y=0;
 
-//A cada iteracción dibujamos 1 pixel
-void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widget,int yinicio_widget,int percentaje,int color,int longitud_linea)
+
+void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widget,int yinicio_widget,int percentaje,int color)
 {
 
 	int i;
 
-	for (i=0;i<percentaje;i++) {
+	int ancho=64;
+	int alto=48;
+
+	//Cantidad de iteracciones depende del porcentaje
+	for (i=0;i<percentaje*2;i++) {
 
 		//Sacar random
 		ay_randomize(0);
@@ -14209,18 +14213,18 @@ void zxvision_widgets_draw_sierpinsky(zxvision_window *ventana,int xinicio_widge
 			case 0:
 				//abajo izquierda
 				x2=0;
-				y2=longitud_linea-1;
+				y2=alto-1;
 			break;
 
 			case 1:
 				//abajo derecha
-				x2=longitud_linea-1;
-				y2=longitud_linea-1;
+				x2=ancho-1;
+				y2=alto-1;
 			break;
 
 			default:
 				//arriba en medio
-				x2=(longitud_linea-1)/2;
+				x2=(ancho-1)/2;
 				y2=0;
 			break;
 				
@@ -14415,12 +14419,11 @@ void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,i
     }     
 
     if (tipo==ZXVISION_WIDGET_TYPE_SIERPINSKY) {
-        int longitud_linea=ZXVISION_WIDGET_TYPE_SIERPINSKY_LENGTH;
 
         int xorigen_widget=(columna_texto*menu_char_width);
 		int yorigen_widget=(fila_texto*menu_char_height)+menu_char_height*2;  //menu_char_height*2 para que este dos lineas por debajo del texto;
 
-		zxvision_widgets_draw_sierpinsky(ventana,xorigen_widget,yorigen_widget,media_cpu_perc,color_pixeles,longitud_linea);                   
+		zxvision_widgets_draw_sierpinsky(ventana,xorigen_widget,yorigen_widget,media_cpu_perc,color_pixeles);                   
 
     }  	
 
