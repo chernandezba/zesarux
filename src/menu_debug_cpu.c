@@ -3368,7 +3368,7 @@ void menu_watches_overlay_mostrar_texto(void)
 
 
 
-	                sprintf (buf_linea,"  Result: %d",resultado); 
+	                sprintf (buf_linea,"  Result: %XH",resultado); 
 					zxvision_print_string_defaults_fillspc(menu_watches_overlay_window,1,linea,buf_linea);
 
 					linea+=2;

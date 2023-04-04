@@ -356,3 +356,10 @@ Ejemplos:
 
 EPC=0301111 indica ram 3 y offset 1111
 EPC=0211111 indica rom 2 y offset 1111
+
+*añadido EPC para Z88, spectrum 128k,+2. completar para otros....
+spectrum 128k:
+
+EPC=XXZYYYY donde XX es la página de ram o rom, Z vale 0 para ram y 1 para rom, y YYYY es el offset
+
+*pendiente agregar EPC a ayuda

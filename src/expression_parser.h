@@ -174,6 +174,9 @@ enum token_parser_indice {
 	//De Tbblue
 	TPI_R_COPPERPC,
 
+	//Extended PC que incluye pagina de memoria
+	TPI_R_EPC,
+
 	//de tipo operador logico
 	TPI_OL_AND,
 	TPI_OL_OR,

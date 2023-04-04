@@ -275,6 +275,7 @@ token_parser_textos_indices tpti_registros[]={
     //De Tbblue
     {TPI_R_COPPERPC,"COPPERPC"},
 
+    {TPI_R_EPC,"EPC"},
              
 
 
@@ -1419,6 +1420,44 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
 
                 case TPI_R_COPPERPC: return tbblue_copper_get_pc(); break;
+
+                case TPI_R_EPC:
+                    if (MACHINE_IS_Z88) {
+                        //Obtener primero el segmento 0-3
+                        int segmento=reg_pc/16384;
+
+                        //Y el offset
+                        int offset=reg_pc & 16383;                        
+
+                        int banco=blink_mapped_memory_banks[segmento];
+
+                        //Formato EPC en caso de Z88: XXYYYYH, donde XX es banco, YYYY es segmento
+                        return (banco<<16) | offset;
+                    }
+
+                    if (MACHINE_IS_SPECTRUM_128_P2) {
+                        //EPC=XXZYYYY donde XX es la página de ram o rom, Z vale 0 para ram y 1 para rom, y YYYY es el offset
+                        //2 paginas de rom, 8 de ram
+                        //Obtener primero el segmento 0-3
+                        int segmento=reg_pc/16384; 
+
+                        //Y el offset
+                        int offset=reg_pc & 16383;
+
+                        int banco=debug_paginas_memoria_mapeadas[segmento];
+                        int romram;
+
+                        //Bancos: rom, 5, 2 , ram
+                        if (segmento==0) {
+                            romram=1;
+                        }
+                        else {
+                            romram=0;
+                        }
+
+                        return (banco<<20) | (romram<<16) | offset;
+                    }
+                break;
 
 
                 default:

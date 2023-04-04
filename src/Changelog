@@ -52,7 +52,9 @@ Improved Debug CPU:
 - show last memory pointer when changing it
 - show B register on satisfy condition for DJNZ
 - added new functions OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e.
+- added pseudoregister EPC to parser to match memory bank and offset for PC register
 - allow holding keys for quick cursor move, etc 
+- watches now show numbers in hexadecimal format
 
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer
