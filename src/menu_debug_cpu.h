@@ -74,14 +74,17 @@ extern int map_adventure_offset_y;
 "[VARIABLE] can be a CPU register or some pseudo variables: A,B,C,D,E,F,H,L,AF,BC,DE,HL,A',B',C',D',E',F',H',L',AF',BC',DE',HL',I,R,SP,PC,IX,IY," \
 "D0,D1,D2,D3,D4,D5,D6,D7,A0,A1,A2,A3,A4,A5,A6,A7,AC,ER,SR,P1,P2,P3\n" \
 "FS,FZ,FP,FV,FH,FN,FC: Flags\n" \
-"IFF1, IFF2: Interrupt bits,\n" \
-"COPPERPC: returns the Copper PC register from TBBlue,\n" \
-"OPCODE1: returns the byte at address PC, so the byte of the opcode being read,\n" \
-"OPCODE2: returns the word at address PC, MSB order,\n" \
-"OPCODE3: returns the three byte at adress PC, MSB order,\n" \
-"OPCODE4: returns the four bytes at adress PC, MSB order,\n" \
-"RAM: RAM mapped on 49152-65535 on Spectrum 128 or Prism,\n" \
-"ROM: ROM mapped on 0-16383 on Spectrum 128,\n" \
+"IFF1, IFF2: Interrupt bits\n" \
+"EPC: returns PC register and RAM/ROM segment following the format:\n" \
+"-Z88 machine: XXYYYYH, where XX is memory bank and YYYY is offset in the bank\n" \
+"-Other machines: XXZYYYYH, where XX is memory bank, Z is 0 for ram banks and 1 for rom banks, YYYY is offset in the bank\n" \
+"COPPERPC: returns the Copper PC register from TBBlue\n" \
+"OPCODE1: returns the byte at address PC, so the byte of the opcode being read\n" \
+"OPCODE2: returns the word at address PC, MSB order\n" \
+"OPCODE3: returns the three byte at adress PC, MSB order\n" \
+"OPCODE4: returns the four bytes at adress PC, MSB order\n" \
+"RAM: RAM mapped on 49152-65535 on Spectrum 128 or Prism\n" \
+"ROM: ROM mapped on 0-16383 on Spectrum 128\n" \
 "SEG0, SEG1, SEG2, SEG3: memory banks mapped on each 4 memory segments on Z88\n" \
 "SEG0, SEG1, ...., SEG7: memory banks mapped on each 8 memory segments on TBBlue\n" \
 "HILOWMAPPED: returns 1 if HiLow ROM & RAM is mapped\n" \
