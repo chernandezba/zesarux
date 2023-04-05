@@ -43,6 +43,7 @@
 #include "tbblue.h"
 #include "hilow_datadrive.h"
 #include "pd765.h"
+#include "superupgrade.h"
 
 /*
 
@@ -1435,7 +1436,7 @@ int exp_par_calculate_numvarreg(token_parser *token)
                         return (banco<<16) | offset;
                     }
 
-                    if (MACHINE_IS_SPECTRUM_128_P2) {
+                    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 ||  superupgrade_enabled.v || MACHINE_IS_CHROME) {
                         //EPC=XXZYYYY donde XX es la página de ram o rom, Z vale 0 para ram y 1 para rom, y YYYY es el offset
                         //2 paginas de rom, 8 de ram
                         //Obtener primero el segmento 0-3
