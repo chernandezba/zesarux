@@ -1432,6 +1432,29 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
                         int banco=blink_mapped_memory_banks[segmento];
 
+
+                        //Segmento 0 es especial
+                        if (segmento==0) {
+
+                            //caso segmento 0-16383
+                            if (reg_pc<8192) {
+                                //ROM0 o RAM20H
+                                if ((blink_com & 4)==0) {//ROM0
+                                    banco=0;
+                                }
+                                else {
+                                    banco=0x20;
+                                }
+
+                            }
+
+                            else {
+                                //8kb superiores
+                                if ((banco&1)==0) offset &= 0x1FFF;
+                                banco=banco&254;
+                            }
+                        }
+
                         //Formato EPC en caso de Z88: XXYYYYH, donde XX es banco, YYYY es segmento
                         return (banco<<16) | offset;
                     }
