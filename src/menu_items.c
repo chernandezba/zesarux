@@ -447,27 +447,28 @@ void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
 
     ret=menu_filesel("Select POK File",filtros,pokfile);
 
-	
-	//contenido
-	//MAX_LINEAS_POK_FILE es maximo de lineas de pok file
-	//normalmente la tabla de pokes sera menor que el numero de lineas en el archivo .pok
-	//struct s_pokfile tabla_pokes[MAX_LINEAS_POK_FILE];
-	struct s_pokfile *tabla_pokes;
-	tabla_pokes=malloc(sizeof(struct s_pokfile)*MAX_LINEAS_POK_FILE);	
-
-	//punteros
-	//struct s_pokfile *punteros_pokes[MAX_LINEAS_POK_FILE];
-	struct s_pokfile **punteros_pokes;
-	punteros_pokes=malloc(sizeof(struct s_pokfile *)*MAX_LINEAS_POK_FILE);
-
-
-	if (tabla_pokes==NULL || punteros_pokes==NULL) cpu_panic("Can not allocate memory for poke table");
-
-	int i;
-	for (i=0;i<MAX_LINEAS_POK_FILE;i++) punteros_pokes[i]=&tabla_pokes[i];
-
-
     if (ret==1) {
+	
+        //contenido
+        //MAX_LINEAS_POK_FILE es maximo de lineas de pok file
+        //normalmente la tabla de pokes sera menor que el numero de lineas en el archivo .pok
+        //struct s_pokfile tabla_pokes[MAX_LINEAS_POK_FILE];
+        struct s_pokfile *tabla_pokes;
+        tabla_pokes=malloc(sizeof(struct s_pokfile)*MAX_LINEAS_POK_FILE);	
+
+        //punteros
+        //struct s_pokfile *punteros_pokes[MAX_LINEAS_POK_FILE];
+        struct s_pokfile **punteros_pokes;
+        punteros_pokes=malloc(sizeof(struct s_pokfile *)*MAX_LINEAS_POK_FILE);
+
+
+        if (tabla_pokes==NULL || punteros_pokes==NULL) cpu_panic("Can not allocate memory for poke table");
+
+        int i;
+        for (i=0;i<MAX_LINEAS_POK_FILE;i++) punteros_pokes[i]=&tabla_pokes[i];
+
+
+
 
                 
 		int total=util_parse_pok_file(pokfile,punteros_pokes);
@@ -497,105 +498,105 @@ void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
         menu_item *array_menu_debug_pok_file;
         menu_item item_seleccionado;
         int retorno_menu;
-	//Resetear siempre ultima linea = 0
-	debug_pok_file_opcion_seleccionada=0;
+        //Resetear siempre ultima linea = 0
+        debug_pok_file_opcion_seleccionada=0;
 
-	//temporal para mostrar todos los caracteres 0-255
-	//int temp_conta=1;
+        //temporal para mostrar todos los caracteres 0-255
+        //int temp_conta=1;
 
         do {
 
 
-
-		//Meter primer item de menu
-		//truncar texto a 28 caracteres si excede de eso
-		if (strlen(punteros_pokes[0]->texto)>28) punteros_pokes[0]->texto[28]=0;
-                menu_add_item_menu_inicial_format(&array_menu_debug_pok_file,MENU_OPCION_NORMAL,NULL,NULL,"%s", punteros_pokes[0]->texto);
-
-
-		//Luego recorrer array de pokes y cuando el numero de poke se incrementa, agregar
-		int poke_anterior=0;
-
-		int total_elementos=1;
-
-		for (j=1;j<total;j++) {
-			if (punteros_pokes[j]->indice_accion!=poke_anterior) {
-
-				//temp para mostrar todos los caracteres 0-255
-				//int kk;
-				//for (kk=0;kk<strlen(punteros_pokes[j]->texto);kk++) {
-				//	punteros_pokes[j]->texto[kk]=temp_conta++;
-				//	if (temp_conta==256) temp_conta=1;
-				//}
-
-				poke_anterior=punteros_pokes[j]->indice_accion;
-				//truncar texto a 28 caracteres si excede de eso
-				if (strlen(punteros_pokes[j]->texto)>28) punteros_pokes[j]->texto[28]=0;
-				menu_add_item_menu_format(array_menu_debug_pok_file,MENU_OPCION_NORMAL,NULL,NULL,"%s", punteros_pokes[j]->texto);
-
-				total_elementos++;
-				if (total_elementos==20) {
-					debug_printf (VERBOSE_DEBUG,"Too many pokes to show on Window. Showing only first 20");
-					menu_warn_message("Too many pokes to show on Window. Showing only first 20");
-					break;
-				}
+            //Meter primer item de menu
+            //truncar texto a 28 caracteres si excede de eso
+            if (strlen(punteros_pokes[0]->texto)>28) punteros_pokes[0]->texto[28]=0;
+            
+            menu_add_item_menu_inicial_format(&array_menu_debug_pok_file,MENU_OPCION_NORMAL,NULL,NULL,"%s", punteros_pokes[0]->texto);
 
 
-			}
-		}
+            //Luego recorrer array de pokes y cuando el numero de poke se incrementa, agregar
+            int poke_anterior=0;
+
+            int total_elementos=1;
+
+            for (j=1;j<total;j++) {
+                if (punteros_pokes[j]->indice_accion!=poke_anterior) {
+
+                    //temp para mostrar todos los caracteres 0-255
+                    //int kk;
+                    //for (kk=0;kk<strlen(punteros_pokes[j]->texto);kk++) {
+                    //	punteros_pokes[j]->texto[kk]=temp_conta++;
+                    //	if (temp_conta==256) temp_conta=1;
+                    //}
+
+                    poke_anterior=punteros_pokes[j]->indice_accion;
+                    //truncar texto a 28 caracteres si excede de eso
+                    if (strlen(punteros_pokes[j]->texto)>28) punteros_pokes[j]->texto[28]=0;
+                    menu_add_item_menu_format(array_menu_debug_pok_file,MENU_OPCION_NORMAL,NULL,NULL,"%s", punteros_pokes[j]->texto);
+
+                    total_elementos++;
+                    if (total_elementos==20) {
+                        debug_printf (VERBOSE_DEBUG,"Too many pokes to show on Window. Showing only first 20");
+                        menu_warn_message("Too many pokes to show on Window. Showing only first 20");
+                        break;
+                    }
 
 
-
-                menu_add_item_menu(array_menu_debug_pok_file,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-                //menu_add_item_menu(array_menu_debug_pok_file,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_debug_pok_file);
-
-                retorno_menu=menu_dibuja_menu(&debug_pok_file_opcion_seleccionada,&item_seleccionado,array_menu_debug_pok_file,"Select Poke" );
-
-                
-
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-
-			//Hacer poke sabiendo la linea seleccionada. Desde ahi, ejecutar todos los pokes de dicha accion
-			debug_printf (VERBOSE_DEBUG,"Doing poke/s from line %d",debug_pok_file_opcion_seleccionada);
-
-			z80_byte banco;
-			z80_int direccion;
-			z80_byte valor;
-
-			//buscar indice_accion
-			int result_poke=0;
-			for (j=0;j<total && result_poke==0;j++) {
-
-				debug_printf (VERBOSE_DEBUG,"index %d looking %d current %d",j,debug_pok_file_opcion_seleccionada,punteros_pokes[j]->indice_accion);
-
-				if (punteros_pokes[j]->indice_accion==debug_pok_file_opcion_seleccionada) {
-					banco=punteros_pokes[j]->banco;
-					direccion=punteros_pokes[j]->direccion;
-					valor=punteros_pokes[j]->valor;
-					debug_printf (VERBOSE_DEBUG,"Doing poke bank %d address %d value %d",banco,direccion,valor);
-					result_poke=util_poke(banco,direccion,valor);
-				}
-
-
-                      
-
-			}
-			if (result_poke==0) menu_generic_message("Poke","OK. Poke applied");
                 }
+            }
+
+
+
+            menu_add_item_menu(array_menu_debug_pok_file,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+            //menu_add_item_menu(array_menu_debug_pok_file,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+            menu_add_ESC_item(array_menu_debug_pok_file);
+
+            retorno_menu=menu_dibuja_menu(&debug_pok_file_opcion_seleccionada,&item_seleccionado,array_menu_debug_pok_file,"Select Poke" );
+
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                            //llamamos por valor de funcion
+
+                //Hacer poke sabiendo la linea seleccionada. Desde ahi, ejecutar todos los pokes de dicha accion
+                debug_printf (VERBOSE_DEBUG,"Doing poke/s from line %d",debug_pok_file_opcion_seleccionada);
+
+                z80_byte banco;
+                z80_int direccion;
+                z80_byte valor;
+
+                //buscar indice_accion
+                int result_poke=0;
+                for (j=0;j<total && result_poke==0;j++) {
+
+                    debug_printf (VERBOSE_DEBUG,"index %d looking %d current %d",j,debug_pok_file_opcion_seleccionada,punteros_pokes[j]->indice_accion);
+
+                    if (punteros_pokes[j]->indice_accion==debug_pok_file_opcion_seleccionada) {
+                        banco=punteros_pokes[j]->banco;
+                        direccion=punteros_pokes[j]->direccion;
+                        valor=punteros_pokes[j]->valor;
+                        debug_printf (VERBOSE_DEBUG,"Doing poke bank %d address %d value %d",banco,direccion,valor);
+                        result_poke=util_poke(banco,direccion,valor);
+                    }
+
+
+                        
+
+                }
+                
+                if (result_poke==0) menu_generic_message("Poke","OK. Poke applied");
+            }
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
-
+        free(tabla_pokes);
+        free(punteros_pokes);
 
     }
 
-	free(tabla_pokes);
-	free(punteros_pokes);
 
 }
 
