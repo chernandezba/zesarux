@@ -432,23 +432,9 @@ void old_menu_debug_poke(MENU_ITEM_PARAMETERS)
 }
 
 
-
-void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
+void menu_debug_poke_pok_file_select(char *pokfile)
 {
 
-    char *filtros[2];
-
-    filtros[0]="pok";
-    filtros[1]=0;
-
-	char pokfile[PATH_MAX];
-
-    int ret;
-
-    ret=menu_filesel("Select POK File",filtros,pokfile);
-
-    if (ret==1) {
-	
         //contenido
         //MAX_LINEAS_POK_FILE es maximo de lineas de pok file
         //normalmente la tabla de pokes sera menor que el numero de lineas en el archivo .pok
@@ -594,6 +580,29 @@ void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
 
         free(tabla_pokes);
         free(punteros_pokes);
+
+    
+
+
+}
+
+
+void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="pok";
+    filtros[1]=0;
+
+	char pokfile[PATH_MAX];
+
+    int ret;
+
+    ret=menu_filesel("Select POK File",filtros,pokfile);
+
+    if (ret==1) {
+        menu_debug_poke_pok_file_select(pokfile);
 
     }
 
