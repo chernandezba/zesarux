@@ -309,17 +309,5 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 -quiza un widget de sensors con la Z del logo?
 
 
--Breakpoints de memorias absolutas - Gunther stube
-EPC=xxx” (for “extended pc”)
-
-Z88:
-Yes, EPC=BBOOOO
-where 
-BB = bank number 00-FF
-OO = bank offset (or just PC with embedded S0-S3)
-
-
-the Segment 0 has special handling:
-0000-1FFF (lower 8K): this may be pointing to 00 0000 or 20 0000 in Z88 memory model
-2000-3FFF: upper 8K bank mapping of S0
+-registro EPC para tbblue, zxuno, ....
 
