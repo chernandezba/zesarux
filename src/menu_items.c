@@ -17539,7 +17539,10 @@ void menu_zxdesktop_trash(MENU_ITEM_PARAMETERS)
         }
         else {
             menu_add_item_menu_separator(array_menu_common);
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_empty,NULL,"Empty Trash");
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_empty,NULL,
+                "Empty Trash","Vaciar Papelera","Buidar Paperera");
+
         }
 
         menu_add_item_menu_separator(array_menu_common);

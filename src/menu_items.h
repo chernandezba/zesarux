@@ -60,6 +60,7 @@ extern void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_secto
 extern void menu_visual_floppy_buffer_add_persistent(int pista,int sector,int byte_en_sector);
 extern void menu_visualfloppy_increment_rotation(void);
 extern void menu_visual_floppy_buffer_reset(void);
+extern void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS);
 
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
 

@@ -9996,7 +9996,15 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
         }
 
-    
+        //Si icono es Papelera
+        if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_empty,NULL,
+                "Empty Trash","Vaciar Papelera","Buidar Paperera");
+
+        }
 
         menu_add_item_menu_separator(array_menu_common);
         menu_add_ESC_item(array_menu_common);
