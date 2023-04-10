@@ -323,5 +323,3 @@ the Segment 0 has special handling:
 0000-1FFF (lower 8K): this may be pointing to 00 0000 or 20 0000 in Z88 memory model
 2000-3FFF: upper 8K bank mapping of S0
 
-
--smartload de un pok file: pero envia a menu poke from .pok

@@ -36157,7 +36157,7 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
 	menu_first_aid("smartload");
 
-        char *filtros[38];
+        char *filtros[39];
 
         filtros[0]="zx";
         filtros[1]="sp";
@@ -36220,7 +36220,9 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
 
     filtros[36]="bin";
 
-	filtros[37]=0;
+	filtros[37]="pok";
+
+    filtros[38]=0;
 
 
         //guardamos directorio actual
@@ -36274,9 +36276,19 @@ void menu_smartload(MENU_ITEM_PARAMETERS)
             //reset_menu_overlay_function();
 
 
-			if (quickload(quickload_file)) {
-				debug_printf (VERBOSE_ERR,"Unknown file format");
-			}
+            //Caso especial para los .pok file, se abre otra ventana
+            if (!util_compare_file_extension(quickload_file,"pok")) {
+                menu_debug_poke_pok_file_select(quickload_file);
+            }
+
+            else {
+
+
+                if (quickload(quickload_file)) {
+                    debug_printf (VERBOSE_ERR,"Unknown file format");
+                }
+
+            }
 
                 //restauramos modo normal de texto de menu
                 //set_menu_overlay_function(normal_overlay_texto_menu);
