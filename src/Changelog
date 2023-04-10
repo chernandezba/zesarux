@@ -40,7 +40,7 @@ Improved DSK viewer:
 Improved DSK extractor:
 - better filesystem detection
 
-Improved Debug Console: better refresh, dynamic width??
+Improved Debug Console: better refresh, dynamic width?? (TODO)
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug I/O ports window: autoresize content height when do not fit in window
 
@@ -83,7 +83,7 @@ Improved ZX Vision:
 - Allow reducing character height
 - Improve window list showing spent time on each window and pid of each window/process
 - Improve rendering background windows
-- Yes/no confirmation dialogs are translated to Si/no in Spanish and Catalan
+- Yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
 
 * Fixes:
 
