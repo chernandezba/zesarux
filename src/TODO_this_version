@@ -6,7 +6,7 @@ Para esta version:
 
 -conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
 
--Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
+-Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting...
 
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
@@ -84,7 +84,7 @@ usar la que si considera movimiento raton
 
 -exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
 
--smartload de un pok file
+
 
 -parpadeos en driver xwindow en zx desktop al moverse por menus
 
@@ -113,7 +113,6 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
--Opción rpi que baje framedrop por defecto no hacerlo?
 
 -Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
@@ -186,6 +185,8 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 --nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
 opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
+-Opción rpi que baje framedrop por defecto no hacerlo?
+
 
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
@@ -206,6 +207,7 @@ Igualmente esta solución puede que muestre parpadeos (sobre todo mas en xwindow
 Y cuando pase unos segundos redibujara todo
 c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hasta hacer algun evento de redibujado de zxdesktop ;)
 Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
+
 
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
 quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
@@ -275,7 +277,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
 -faq zoom 1 de Next
--en cuadros confirmacion yes/no, que cambien a si/no en Spanish y Catalan. o no ?
+
 
 
 -timer de sdl para windows?
@@ -302,7 +304,7 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
 
 
--al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+-Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
 -quiza un widget de sensors con la Z del logo?
 
@@ -321,3 +323,5 @@ the Segment 0 has special handling:
 0000-1FFF (lower 8K): this may be pointing to 00 0000 or 20 0000 in Z88 memory model
 2000-3FFF: upper 8K bank mapping of S0
 
+
+-smartload de un pok file

@@ -20947,58 +20947,66 @@ int menu_confirm_yesno_texto(char *texto_ventana,char *texto_interior)
 
 	//printf ("confirm\n");
 
-        //En caso de stdout, es mas simple, mostrar texto y esperar tecla
-        if (!strcmp(scr_new_driver_name,"stdout")) {
+    //En caso de stdout, es mas simple, mostrar texto y esperar tecla
+    if (!strcmp(scr_new_driver_name,"stdout")) {
 		char buffer_texto[256];
-                printf ("%s\n%s\n",texto_ventana,texto_interior);
+        printf ("%s\n%s\n",texto_ventana,texto_interior);
 
 		scrstdout_menu_print_speech_macro(texto_ventana);
 		scrstdout_menu_print_speech_macro(texto_interior);
 
 		fflush(stdout);
-                scanf("%s",buffer_texto);
+        scanf("%s",buffer_texto);
 		if (buffer_texto[0]=='y' || buffer_texto[0]=='Y') return 1;
 		return 0;
-        }
+    }
 
 
         
 
-        menu_espera_no_tecla();
+    menu_espera_no_tecla();
 
 
 	menu_item *array_menu_confirm_yes_no;
-        menu_item item_seleccionado;
-        int retorno_menu;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
 	//Siempre indicamos el NO
 	int confirm_yes_no_opcion_seleccionada=2;
-        do {
+    do {
 
 		menu_add_item_menu_inicial_format(&array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
 
-                menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~Yes");
-		menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'y');
 
-                menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~No");
+        if (gui_language==GUI_LANGUAGE_SPANISH || gui_language==GUI_LANGUAGE_CATALAN) {
+            menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~Si");
+		    menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'s');
+        }
+
+        else {
+            menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~Yes");
+		    menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'y');
+        }
+
+        menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_NORMAL,NULL,NULL,"~~No");
 		menu_add_item_menu_shortcut(array_menu_confirm_yes_no,'n');
 
-                //separador adicional para que quede mas grande la ventana y mas mono
-                menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+        //separador adicional para que quede mas grande la ventana y mas mono
+        menu_add_item_menu_format(array_menu_confirm_yes_no,MENU_OPCION_SEPARADOR,NULL,NULL," ");
 
 
 
-                retorno_menu=menu_dibuja_menu(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
+        retorno_menu=menu_dibuja_menu(&confirm_yes_no_opcion_seleccionada,&item_seleccionado,array_menu_confirm_yes_no,texto_ventana);
 
                 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
 			if (confirm_yes_no_opcion_seleccionada==1) return 1;
 			else return 0;
-                }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 	return 0;
 

@@ -82,6 +82,7 @@ Improved ZX Vision:
 - Allow reducing character height
 - Improve window list showing spent time on each window and pid of each window/process
 - Improve rendering background windows
+- Yes/no confirmation dialogs are translated to Si/no in Spanish and Catalan
 
 * Fixes:
 
