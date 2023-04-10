@@ -436,16 +436,16 @@ void old_menu_debug_poke(MENU_ITEM_PARAMETERS)
 void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
 {
 
-        char *filtros[2];
+    char *filtros[2];
 
-        filtros[0]="pok";
-        filtros[1]=0;
+    filtros[0]="pok";
+    filtros[1]=0;
 
 	char pokfile[PATH_MAX];
 
-        int ret;
+    int ret;
 
-        ret=menu_filesel("Select POK File",filtros,pokfile);
+    ret=menu_filesel("Select POK File",filtros,pokfile);
 
 	
 	//contenido
@@ -467,7 +467,7 @@ void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
 	for (i=0;i<MAX_LINEAS_POK_FILE;i++) punteros_pokes[i]=&tabla_pokes[i];
 
 
-        if (ret==1) {
+    if (ret==1) {
 
                 
 		int total=util_parse_pok_file(pokfile,punteros_pokes);
@@ -592,7 +592,7 @@ void menu_debug_poke_pok_file(MENU_ITEM_PARAMETERS)
 
 
 
-        }
+    }
 
 	free(tabla_pokes);
 	free(punteros_pokes);
