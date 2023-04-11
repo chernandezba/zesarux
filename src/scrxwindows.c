@@ -1451,6 +1451,9 @@ void deal_with_keys(XEvent *event,int pressrelease)
 				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
+            case XK_Num_Lock:
+                util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+            break;
 
 
 			//F1 pulsado
