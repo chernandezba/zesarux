@@ -259,7 +259,6 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 --pendiente pcw 8256,8512:
 *snapshot zsf
--teclas f5-f8...
 -caps lock no va...
 -teclas     UTIL_KEY_KP_NUMLOCK,
     UTIL_KEY_KP_DIVIDE,
@@ -310,6 +309,3 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 
 -registro EPC para tbblue, zxuno, ....
-
--desde process switcher y process management, botón derecho en app abierta para "crear enlace en escritorio"
-->ok falta refrescar escritorio

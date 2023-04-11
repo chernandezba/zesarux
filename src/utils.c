@@ -8351,21 +8351,29 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         break;
 
 
-			//F8 pulsado. On Screen keyboard, De momento solo en spectrum
+			//F8 pulsado. On Screen keyboard, pero en pcw no
                         case UTIL_KEY_F8:
-				                      if (pressrelease) {
-				                            menu_abierto=1;
-				                             menu_button_osdkeyboard.v=1;
 
+                            if (MACHINE_IS_PCW) {
+                                if (pressrelease) {
                                     //F8 en pcw es F7+Shift
-                                   pcw_keyboard_table[0xA] |=16;
-                                   pcw_keyboard_table[2] |=32; //shift
-                     	        }
-                              else {
-                                   pcw_keyboard_table[0xA] &=(255-16);
-                                   pcw_keyboard_table[2] &=(255-32); //shift
+                                    pcw_keyboard_table[0xA] |=16;
+                                    pcw_keyboard_table[2] |=32; //shift
+                                }
+                                else {
+                                    pcw_keyboard_table[0xA] &=(255-16);
+                                    pcw_keyboard_table[2] &=(255-32); //shift
+                                }
+                            }
 
-                              }
+                            else {
+
+                                if (pressrelease) {
+                                    menu_abierto=1;
+                                    menu_button_osdkeyboard.v=1;
+                                }
+                               
+                            }
 
                         break;
 
