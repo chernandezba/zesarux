@@ -1089,7 +1089,9 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                                 util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
-
+                        case SDLK_NUMLOCK:
+                            util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+                        break;
 
                         //F1 pulsado
                         case SDLK_F1:

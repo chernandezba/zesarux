@@ -1036,6 +1036,9 @@ void scrfbdev_actualiza_tablas_teclado_rawmode(void){
 				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
 				break;
 
+            case RAWKEY_KP_Num_Lock:
+                util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+            break;
 
 				//F1 pulsado
 			case RAWKEY_F1:
