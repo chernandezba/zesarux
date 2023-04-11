@@ -754,9 +754,36 @@ int zxvision_add_configurable_icon_by_id_action(enum defined_f_function_ids id_f
     return zxvision_add_configurable_icon(indice_accion);
 }
 
+//Crear un icono con parametros "nombre" y con extra_info
+void zxvision_create_configurable_icon(enum defined_f_function_ids id_funcion,char *nombre,char *extra_info)
+{
+    if (if_zxdesktop_enabled_and_driver_allows() ) {
+        int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
+
+        if (indice_icono>=0) {
+            
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].extra_info,extra_info);
+            //Agregarle texto
+
+            strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,nombre);
+        }    
+    }    
+}
+
 //Crear un icono con parametros "nombre" y de nombre del icono obtener ese nombre sin path
 //usado especialmente en creacion de iconos de tipo file link
 void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre)
+{
+
+    char name_no_dir[PATH_MAX];
+    util_get_file_no_directory(nombre,name_no_dir);    
+
+    zxvision_create_configurable_icon(id_funcion,name_no_dir,nombre);
+}
+
+//Crear un icono con parametros "nombre" y de nombre del icono obtener ese nombre sin path
+//usado especialmente en creacion de iconos de tipo file link
+void old_zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre)
 {
     if (if_zxdesktop_enabled_and_driver_allows() ) {
         int indice_icono=zxvision_add_configurable_icon_by_id_action(id_funcion);
@@ -771,6 +798,15 @@ void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_
             strcpy(zxdesktop_configurable_icons_list[indice_icono].text_icon,name_no_dir);
         }    
     }    
+}
+
+//Crear icono en el escritorio que abre ventana indicada
+void zxvision_create_link_desktop_from_window(zxvision_window *w)
+{
+         
+    zxvision_create_configurable_icon(F_FUNCION_OPEN_WINDOW,w->window_title,w->geometry_name);
+    menu_draw_ext_desktop();
+         
 }
 
 //Indicar todos los iconos como no presentes

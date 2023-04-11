@@ -1287,6 +1287,7 @@ extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
 extern int zxdesktop_configurable_icons_enabled_and_visible(void);
 extern void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre);
+extern void zxvision_create_link_desktop_from_window(zxvision_window *w);
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 

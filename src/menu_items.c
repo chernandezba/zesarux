@@ -16922,8 +16922,8 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     //printf("Ventana pulsada: %s\n",ventana->window_title);
 
 
-    int tipo=menu_simple_eight_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
-        "Minimize","Maximize","Switch always visible","Information","Close");
+    int tipo=menu_simple_nine_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
+        "Minimize","Maximize","Switch always visible","Information","Close","Create link on ZX Desktop");
 
     if (tipo==0) return; //ESC	
 
@@ -16989,6 +16989,10 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 	            zxvision_window_delete_this_window(ventana);
             }
         break;
+
+        case 9:
+            zxvision_create_link_desktop_from_window(ventana);
+        break;        
 
     }
 }
@@ -35746,8 +35750,8 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
             ventana->always_visible=0;
 
             //Esto muy parecido a process management pero no igual
-            int respuesta=menu_simple_five_choices("Action","Do you want to",
-                "Minimize","Maximize","Switch always visible","Information","Close");
+            int respuesta=menu_simple_six_choices("Action","Do you want to",
+                "Minimize","Maximize","Switch always visible","Information","Close","Create link on ZX Desktop");
 
             ventana->always_visible=antes_always_visible;
             zxvision_reset_set_next_menu_position();
@@ -35792,6 +35796,10 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
 
                 case 5:
                     zxvision_window_delete_this_window(ventana_pulsada);
+                break;
+
+                case 6:
+                    zxvision_create_link_desktop_from_window(ventana_pulsada);
                 break;
             }
      
