@@ -1,17 +1,6 @@
 Para esta version:
 
---Mejoras
 
--algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
-
--conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
-
--Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting...
-
--Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
-
-
---Fin mejoras
 
 
 --Errores
@@ -52,57 +41,15 @@ Y cierra menus pero no sale
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
--Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
-
--Para ZENG con más de 2 pcs:
-*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
-*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
-
-
-
--Funciones de utils no deberían involucrar nada del menú
-
-
--quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
-usar la que si considera movimiento raton
-
- 
-- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
-
-
--A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
 
 -Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
-
-
-
 
 
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
 
 
--exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
-
-
-
--parpadeos en driver xwindow en zx desktop al moverse por menus
-
--cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
-
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
-
--incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
-
-
-
-Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
-
-
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
-
--paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
--daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
 
 
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
@@ -113,13 +60,10 @@ Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O u
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
-
 -Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
 
-
-
-
+--------------
 -Emulación floppy:￼
 Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
 
@@ -136,11 +80,24 @@ quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro 
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 
+-releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
+
+-ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
 
 
--mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
-hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
-Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+
+
+-Read track
+* A determinar flags que se activan según petición inicial chrn
+* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
+
+-PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
+-implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
+
+
+Fin Emulación floppy
+--------------
+
 
 
 -Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
@@ -160,18 +117,6 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 
 
--releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
-
--ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
-
-
-
-
--Read track
-* A determinar flags que se activan según petición inicial chrn
-* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
-
-
 -error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
 *step mode
 *funcion z (memory zone) o tecla (o) por ejemplo
@@ -188,10 +133,9 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 -Opción rpi que baje framedrop por defecto no hacerlo?
 
 
--combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
 
--Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero 
+-Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
 
 
 
@@ -236,8 +180,6 @@ Esto también comporta cosas buenas, como que la posición de scroll se mantiene
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
 
--PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
--implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
 -en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
 
@@ -260,15 +202,12 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 --pendiente pcw 8256,8512:
 *snapshot zsf
 -caps lock no va...
--teclas     UTIL_KEY_KP_NUMLOCK,
-    UTIL_KEY_KP_DIVIDE,
-    UTIL_KEY_KP_MULTIPLY,
-    UTIL_KEY_KP_MINUS, en todos los drivers
-    resto de teclas en todos los drivers
+-tecla keypad_enter en fbdev no la distingue del enter normal,
 -nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
 -en i/o ports informacion flags de cada puerto pcw
 -cpm spanish (version superior a 1??) no va
 --fin pendiente pcw 8256,8512
+
 
 -Snapshots de pcw o cpc? que formatos existen?
 
@@ -278,8 +217,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -faq zoom 1 de Next
 
 
-
--timer de sdl para windows?
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 -En visor dsk que solo muestre primer extent de un archivo. ya esta??
 
@@ -309,3 +246,5 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 
 -registro EPC para tbblue, zxuno, ....
+
+-timer de sdl para windows? Para corregir sincronización?

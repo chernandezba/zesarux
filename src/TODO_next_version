@@ -1,0 +1,56 @@
+--Mejoras
+
+-algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
+
+-conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
+
+-Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting...
+
+-Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
+
+--Fin mejoras
+
+-Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
+
+-Para ZENG con más de 2 pcs:
+*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
+
+
+-Funciones de utils no deberían involucrar nada del menú
+
+
+-quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
+usar la que si considera movimiento raton
+
+ 
+- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
+
+
+-A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
+
+
+
+-Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+-paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
+
+-mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
+hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
+Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+
+-combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
