@@ -282,7 +282,9 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 	
 		
 			//printf ("audiosdl_callback. enviando sonido\n");
-			audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
+            if (leer) {
+			    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
+            }
 		
 
             indice+=leer;
