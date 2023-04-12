@@ -280,7 +280,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
 		    //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
 	    	if (leer>tamanyo_fifo) {
-                printf ("FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
+                //printf ("FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
                 leer=tamanyo_fifo;
             }
 	
