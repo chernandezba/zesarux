@@ -286,8 +286,13 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
                 //Aviso solo la primera vez
                 if (!warned_fifo) {
                     printf ("FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
-                    warned_fifo=1;
+                    //warned_fifo=1;
                 }
+
+                //le damos un tiempo para ver si llena la fifo
+                SDL_Delay(1);
+
+
                 leer=tamanyo_fifo;
             }
 	
