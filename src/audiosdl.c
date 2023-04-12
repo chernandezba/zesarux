@@ -295,6 +295,9 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
                 leer=tamanyo_fifo;
             }
+            else {
+                printf("FIFO OK\n");
+            }
 	
 		
 			//printf ("audiosdl_callback. enviando sonido\n");
