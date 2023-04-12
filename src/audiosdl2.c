@@ -281,6 +281,12 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
+//Callback para windows
+//Tecnicamente este deberia ser para todos pero esta visto que en Linux produce clicks
+
+
+#ifdef MINGW
+
 void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 {
 
@@ -359,8 +365,11 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
 }
 
+#else
 
-void old_audiosdl_callback(void *udata, Uint8 *stream, int len)
+//Callback para el resto
+
+void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
 
 	//printf ("audiosdl_callback\n");
@@ -409,3 +418,5 @@ void old_audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
 }
+
+#endif
