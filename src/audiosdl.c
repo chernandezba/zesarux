@@ -244,7 +244,7 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
 
-	//printf ("audiosdl_callback\n");
+	printf ("audiosdl_callback\n");
 
 	//para que no se queje el compilador de no usado
 	udata++;
@@ -264,20 +264,26 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 	else {
 
-        while (len>=0) {
+        int indice=0;
+
+        while (len>0) {
 
             int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
 
             int leer=len;
 
 		    //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-	    	if (leer>tamanyo_fifo) leer=tamanyo_fifo;
+	    	if (leer>tamanyo_fifo) {
+                printf ("FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
+                leer=tamanyo_fifo;
+            }
 	
 		
 			//printf ("audiosdl_callback. enviando sonido\n");
-			audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,leer);
+			audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
 		
 
+            indice+=leer;
             len -=leer;
         }
 
