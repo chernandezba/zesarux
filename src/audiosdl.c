@@ -246,7 +246,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
     int len=total_len;
 
-	printf ("audiosdl_callback\n");
+	//printf ("audiosdl_callback\n");
 
 	//para que no se queje el compilador de no usado
 	udata++;
@@ -268,13 +268,12 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
         int indice=0;
 
+        int warned_fifo=0;
+
         //Esperamos a llenar todo el sonido que nos solicitan
         //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
         //al final acabara llenandose
         //Esto corrige los clicks famosos que se escuchaban en Windows
-
-        int warned_fifo=0;
-
         while (len>0 && audio_playing.v) {
 
             int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
@@ -285,8 +284,8 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 	    	if (leer>tamanyo_fifo) {
                 //Aviso solo la primera vez
                 if (!warned_fifo) {
-                    printf ("FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
-                    //warned_fifo=1;
+                    debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d\n",leer,tamanyo_fifo );
+                    warned_fifo=1;
                 }
 
                 //le damos un tiempo para ver si llena la fifo
@@ -296,7 +295,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
                 leer=tamanyo_fifo;
             }
             else {
-                printf("FIFO OK\n");
+                //printf("FIFO OK\n");
             }
 	
 		

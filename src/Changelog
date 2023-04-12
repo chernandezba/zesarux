@@ -88,6 +88,7 @@ Improved ZX Vision:
 
 * Fixes:
 
+Fixed Windows Audio clicking :) This bug affected not only Windows but any other Operating System using SDL audio driver
 Fixed random crash on startup on Linux when executing some network operations (check updates, check last users, send updates)
 Fixed segfaults when exiting using CTRL-C
 Fixed Spectrum +3 disk emulation: TODO: add more details here
