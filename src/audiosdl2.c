@@ -37,7 +37,6 @@
 #include "debug.h"
 #include "utils.h"
 #include "settings.h"
-#include "timer.h"
 
 
 //char *buffer_actual;
@@ -281,99 +280,6 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
-//Callback para windows
-//Tecnicamente este deberia ser para todos pero esta visto que en Linux produce clicks
-
-
-#ifdef MINGW
-
-void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
-{
-
-    int len=total_len;
-
-	//printf ("audiosdl_callback\n");
-
-	//para que no se queje el compilador de no usado
-	udata++;
-
-	//si esta el sonido desactivado, enviamos silencio
-	if (audio_playing.v==0) {
-		unsigned char *puntero_salida;
-		puntero_salida = (unsigned char *) temporary_audiosdl_fifo_sdl_buffer;
-		int longitud=len;
-		while (longitud>0) {
-			*puntero_salida=128;
-			puntero_salida++;
-			longitud--;
-		}
-		//printf ("audio_playing.v=0 en audiosdl\n");
-	}
-
-	else {
-
-        int indice=0;
-
-        int warned_fifo=0;
-
-        //Para dar un limite en espera del bucle while, por si acaso no se quede dentro siempre
-        int max_wait=1000;        
-
-        //Esperamos a llenar todo el sonido que nos solicitan
-        //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
-        //al final acabara llenandose
-        //Esto corrige los clicks famosos que se escuchaban en Windows
-        while (len>0 && audio_playing.v && max_wait>0) {
-
-            int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
-
-            int leer=len;
-
-		    //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-	    	if (leer>tamanyo_fifo) {
-                //Aviso solo la primera vez
-                if (!warned_fifo) {
-                    debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
-                    warned_fifo=1;
-                }
-
-                //le damos un tiempo para ver si llena la fifo
-                timer_sleep(1);
-
-
-                leer=tamanyo_fifo;
-            }
-            else {
-                //printf("FIFO OK\n");
-            }
-	
-		
-			//printf ("audiosdl_callback. enviando sonido\n");
-            if (leer) {
-			    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
-            }
-		
-
-            indice+=leer;
-            len -=leer;
-
-            max_wait--;
-        }
-
-	}
-
-
-	SDL_memset(stream, 0, len); //necesario??? parece que en mac os x si que hace falta
-	SDL_MixAudioFormat(stream, (Uint8 *)temporary_audiosdl_fifo_sdl_buffer, AUDIOSDL_AUDIO_FORMAT, total_len, SDL_MIX_MAXVOLUME);
-
-
-
-}
-
-#else
-
-//Callback para el resto
-
 void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
 
@@ -423,5 +329,3 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
 }
-
-#endif

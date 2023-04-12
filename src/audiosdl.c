@@ -279,7 +279,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
         int warned_fifo=0;
 
         //Para dar un limite en espera del bucle while, por si acaso no se quede dentro siempre
-        int max_wait=1000;
+        int max_wait=100;
 
         //Esperamos a llenar todo el sonido que nos solicitan
         //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
