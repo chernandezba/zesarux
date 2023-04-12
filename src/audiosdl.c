@@ -278,11 +278,14 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
         int warned_fifo=0;
 
+        //Para dar un limite en espera del bucle while, por si acaso no se quede dentro siempre
+        int max_wait=1000;
+
         //Esperamos a llenar todo el sonido que nos solicitan
         //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
         //al final acabara llenandose
         //Esto corrige los clicks famosos que se escuchaban en Windows
-        while (len>0 && audio_playing.v) {
+        while (len>0 && audio_playing.v && max_wait>0) {
 
             int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
 
@@ -315,6 +318,8 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
             indice+=leer;
             len -=leer;
+
+            max_wait--;
         }
 
 	}
