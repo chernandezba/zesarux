@@ -1760,14 +1760,14 @@ hilow_datadrive_audio.o: hilow_datadrive_audio.c
 
 clean:
 	rm -f *.o zesarux zesarux.exe smpatap sp_z80 tapabin bin_sprite_to_c leezx81 lee_hilow_datadrive_audio file_to_eprom bmp_to_prism_4_planar bmp_to_sprite spedtotxt install.sh 
-	rm -fR bintargztemp/ sourcetargztemp/ ZEsarUX_windows-\$(EMULATOR_VERSION)/
+	rm -fR bintargztemp/ sourcetargztemp/ ZEsarUX_win-\$(EMULATOR_VERSION)/
 	rm -fR macos/zesarux.app
 	rm -f macos/zesarux-noncompressed.dmg
 	rm -f macos/zesarux-noncompressed.dmg.gz
 	rm -f macos/ZEsarUX_macos-\$(EMULATOR_VERSION).dmg
 	rm -f ZEsarUX_`uname -s`-\$(EMULATOR_VERSION)_`uname -m`.tar.gz
 	rm -f ZEsarUX_src-\$(EMULATOR_VERSION).tar.gz
-	rm -f ZEsarUX_windows-\$(EMULATOR_VERSION).zip
+	rm -f ZEsarUX_win-\$(EMULATOR_VERSION).zip
 	rm -f ZEsarUX_extras-\$(EMULATOR_VERSION).zip
 
 COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info licenses Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk speech_filters my_soft docs zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp z88_shortcuts.bmp zesarux.pdf
@@ -1809,11 +1809,11 @@ extra_files:
 	echo "Generated file will be: /tmp/ZEsarUX_extras-\$(EMULATOR_VERSION).zip"
 
 windows:
-	mkdir -p ZEsarUX_windows-\$(EMULATOR_VERSION)
-	cp -a \$(COMMONFILES) \$(ONLYWINBINARIES) ZEsarUX_windows-\$(EMULATOR_VERSION)/
-	zip -r ZEsarUX_windows-\$(EMULATOR_VERSION).zip ZEsarUX_windows-\$(EMULATOR_VERSION)/
+	mkdir -p ZEsarUX_win-\$(EMULATOR_VERSION)
+	cp -a \$(COMMONFILES) \$(ONLYWINBINARIES) ZEsarUX_win-\$(EMULATOR_VERSION)/
+	zip -r ZEsarUX_win-\$(EMULATOR_VERSION).zip ZEsarUX_win-\$(EMULATOR_VERSION)/
 	echo
-	echo "Generated file is: ZEsarUX_windows-\$(EMULATOR_VERSION).zip"
+	echo "Generated file is: ZEsarUX_win-\$(EMULATOR_VERSION).zip"
 
 macapp: all
 	mkdir -p macos/zesarux.app
