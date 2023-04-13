@@ -24754,7 +24754,7 @@ char *first_aid_string_backgroundwindows="You can enable background windows and 
 		"Go to Settings-> ZX Vision settings-> Background windows to enable it";
 
 int first_aid_no_zxdesktop=0;
-char *first_aid_string_zxdesktop="Have you enabled ZX Desktop? It allows you to have a space on the right to place "
+char *first_aid_string_zxdesktop="Have you enabled ZX Desktop? It allows you to have a space on the right and on the bottom to place "
 				"zxvision windows, menus or other widgets. Go to Settings-> ZX Desktop settings to enable it";
 
 int first_aid_no_zxdesktop_custombuttons=0;
