@@ -1773,8 +1773,8 @@ printf (
 		"--sdlsamplesize n           SDL audio sample size (128 to 2048). Default %d. Lower values reduce latency but can increase cpu usage\n",DEFAULT_AUDIOSDL_SAMPLES);
 		printf (
 		"--fifosdlbuffersize n       SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
-        "--sdl-use-callback-new      SDL audio use new callback (the default on Windows)\n"
-        "--sdl-use-callback-old      SDL audio use old callback (the default on non Windows)\n"
+        "--sdl-use-callback-new      SDL audio use new callback (usually better results on Windows)\n"
+        "--sdl-use-callback-old      SDL audio use old callback\n"
 		"--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
 
 
@@ -9775,7 +9775,7 @@ void print_funny_message(void)
         "Z80 panic: shut her down Scotty, she's sucking mud again", //28
         "Not enough memory to display the error m",
         "ERROR 1164 HOW IN THE HELL DID YOU GET HERE", //30
-        "Good afternoon, gentelman, I’m a HAL 9000 Computer"
+        "Good afternoon, gentelman, I'm a HAL 9000 Computer"
 	};
 
 

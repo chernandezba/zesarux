@@ -21,6 +21,7 @@ Added more Hotswap combinations
 Added command line setting --machinelist to get machines list names whitespace separated
 Added Sierpinsky Meter Type to View Sensors
 Added .POK file Smartloading
+Added SDL Audio Callback type setting in order to fix Windows Audio clicking
 
 * Improvements:
 
@@ -88,7 +89,6 @@ Improved ZX Vision:
 
 * Fixes:
 
-Fixed Windows Audio clicking
 Fixed random crash on startup on Linux when executing some network operations (check updates, check last users, send updates)
 Fixed segfaults when exiting using CTRL-C
 Fixed Spectrum +3 disk emulation: TODO: add more details here
