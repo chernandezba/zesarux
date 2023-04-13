@@ -7752,8 +7752,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		if (scr_driver_can_ext_desktop() ) {
 			menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");
 			menu_add_item_menu_shortcut(array_menu_settings,'k');
-			menu_add_item_menu_tooltip(array_menu_settings,"Expand the program window having a ZX Desktop space to the right");
-			menu_add_item_menu_ayuda(array_menu_settings,"ZX Desktop enables you to have a space on the right to place "
+			menu_add_item_menu_tooltip(array_menu_settings,"Expand the program window having a ZX Desktop space to the right and on the bottom");
+			menu_add_item_menu_ayuda(array_menu_settings,"ZX Desktop enables you to have a space on the right and on the bottom to place "
 				"zxvision windows, menus or other widgets");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
 		}
