@@ -24700,7 +24700,7 @@ int first_aid_no_documentation=0;
 char *first_aid_string_documentation="You can find a lot of info, videos, documentation, etc on:\n"
   "-Menu entries with help (pressing F1 in most of them) and item tooltips when no key is pressed\n"
   "-FAQ file\n"
-  "-docs folder (on the extra package)\n"
+  "-docs folder (on the extras package)\n"
   "-Youtube channel: https://www.youtube.com/user/chernandezba\n"
   "-Twitter: @zesarux\n"
   "-Facebook: ZEsarUX group\n";

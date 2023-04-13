@@ -25331,7 +25331,7 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 			"Symbols on menu must be written according to the Spectrum keyboard mapping, so for example, to write the symbol minus (<), you have to press "
 			"ctrl(symbol shift)+r. You should use ctrl/alt (no need to Spectrum extended mode) to write any of the following: ~|\\{}[], located on letters asdfgyu\n\n"
 			"\n"
-			"On ZX-Vision windows:\n"
+			"On ZX Vision windows:\n"
 			"- Use mouse to move windows dragging from the title bar\n"
 			"- Drag mouse from the bottom-right part of the window to resize it\n"
             "- Click on the minimize button (-) to minimize the window\n"
@@ -25340,9 +25340,15 @@ void menu_about_help(MENU_ITEM_PARAMETERS)
 			"- Click out of the window to put the focus on the emulated machine and send there keyboard presses\n"
 			"- Can also be moved with the keyboard: Shift+QAOP\n"
 			"- Can also be resized with the keyboard: Shift+WSKL\n"
-			"Note: non ZX-Vision windows are marked with a small pixel in the right of the title bar\n"
 
 			"\n"
+
+			"On ZX Desktop:\n"
+			"- Left mouse button click on an icon to open it or trigger an action\n"
+			"- Right mouse button click on an icon to get properties or actions of that icon; "
+            "right click on the ZX Desktop for icon actions or desktop properties\n"
+
+			"\n"            
 
 			"Inside a machine, the keys are mapped this way:\n"
 			"ESC: If text to speech is not enabled, sends Shift+Space (break) on Spectrum. If enabled, stops playing text to speech\n"
