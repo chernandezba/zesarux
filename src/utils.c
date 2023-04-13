@@ -3680,6 +3680,7 @@ int util_write_configfile(void)
   if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
                 
   if (no_cambio_parametros_maquinas_lentas.v) ADD_STRING_CONFIG,"--nochangeslowparameters");
+  else                                        ADD_STRING_CONFIG,"--changeslowparameters");
   if (ventana_fullscreen)                     ADD_STRING_CONFIG,"--fullscreen");
   if (verbose_level)                          ADD_STRING_CONFIG,"--verbose %d",verbose_level);
 

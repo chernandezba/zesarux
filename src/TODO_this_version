@@ -122,9 +122,7 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 -text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
 
 
---nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
-opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
--Opción rpi que baje framedrop por defecto no hacerlo?
+
 
 
 
@@ -220,3 +218,10 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -registro EPC para tbblue, zxuno, ....
 
 -nuevo callback para sdl2 también
+
+--nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
+opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
+-Opción rpi que baje framedrop por defecto no hacerlo?
+*hecho. probar en rpi
+*para hacer que cambie a slow parameters, especificar --changeslowparameters
+*agregar a changelog

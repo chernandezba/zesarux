@@ -635,8 +635,9 @@ z80_bit z88_slotcard_inicial;
 char *z88_slotcard_inicial_nombre;
 int z88_slotcard_inicial_slot;
 
-//Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry, cocoa mac os x, etc)
-z80_bit no_cambio_parametros_maquinas_lentas={0};
+//Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry)
+//Desde ZEsarUX 10.3 no cambiar dichos parametros
+z80_bit no_cambio_parametros_maquinas_lentas={1};
 
 
 
@@ -2451,6 +2452,8 @@ printf (
 		"--nochangeslowparameters    Do not change any performance parameters (frameskip, realvideo, etc) "
 		"on slow machines like raspberry, etc\n"
 
+		"--changeslowparameters      Change some performance parameters (frameskip, realvideo, etc) "
+		"on slow machines like raspberry, etc\n"
 
       
 
@@ -6384,6 +6387,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--nochangeslowparameters")) {
 				no_cambio_parametros_maquinas_lentas.v=1;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--changeslowparameters")) {
+				no_cambio_parametros_maquinas_lentas.v=0;
+			}            
 
 
 			else if (!strcmp(argv[puntero_parametro],"--fullscreen")) {
