@@ -9,7 +9,7 @@
 -Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
 
 
---Fin mejoras
+
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
@@ -30,12 +30,6 @@ usar la que si considera movimiento raton
 
 -A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
 
--exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
-
-
--parpadeos en driver xwindow en zx desktop al moverse por menus
-
--cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
 
 -incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
 
@@ -44,7 +38,7 @@ usar la que si considera movimiento raton
 -Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
 
 
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
 
 -paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
 -daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
@@ -54,3 +48,27 @@ hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow
 Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
 
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
+
+-footer que tambien amplie tamaño segun menu_gui_zoom
+
+
+--Fin mejoras
+
+
+
+
+--Errores
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+
+-ZENG soporte para QL. ok aunque no envia teclas extendidas
+-ZENG para msx se leen los cursores en destino
+-ZENG colecovision no va bien

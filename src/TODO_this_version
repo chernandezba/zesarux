@@ -9,9 +9,6 @@ Para esta version:
 Luego pulsar botón salir emulador
 Y cierra menus pero no sale
 
--ZENG soporte para QL. ok aunque no envia teclas extendidas
--ZENG para msx se leen los cursores en destino
--ZENG colecovision no va bien
 
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
@@ -38,6 +35,8 @@ Y cierra menus pero no sale
 --Fin Errores
 
 
+
+
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
@@ -52,6 +51,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
 
 
+--Documentación/Ayuda
 -Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
 
 -Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
@@ -60,8 +60,13 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 -First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
 
--Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
+-faq zoom 1 de Next
 
+-FAQ de midi. ejemplo de Mac:
+-probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
+copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
+
+--Fin Documentación/Ayuda
 
 --------------
 -Emulación floppy:￼
@@ -94,6 +99,7 @@ quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro 
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
+-Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
 
 Fin Emulación floppy
 --------------
@@ -104,16 +110,11 @@ Fin Emulación floppy
 del mensaje lo obtiene de la ventana
 
 
--text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
-
-
-
 -cambio en menu_inicio y zxvision_switch_to_window_on_open_menu:
 
 https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d2719ffbb2#diff-521337e1d39e077ccafa540faa6e18649b8c776cc3b4865ec4f648e4dca04216
 
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
-
 
 
 
@@ -125,7 +126,7 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
-
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
 
 
 --nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
@@ -141,23 +142,6 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 
 -Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
 
-
--indicador de app abierta: al abrir una app que no estaba abierta, no aparece el indicador a no ser que se mueva la ventana u otro evento
-de repintado de ZX desktop. quiza al abrir una app habría que hacer que se redibujase siempre el zx desktop con menu_draw_ext_desktop(). como? Alternativas:
-a) al final de zxvision_new_window_gn_cim. no me convence.. estamos haciendo dibujado en una funcion no pensada para ello
-b) en la app, antes de llamar a zxvision_draw_window(ventana); un poco chapuza porque hay que meter la llamada siempre ahi antes
-quiza simplificarlo con una llamada nueva que llame a las dos
-Igualmente esta solución puede que muestre parpadeos (sobre todo mas en xwindow) porque dibujara el desktop, borrando todo,  y luego encima la ventana
-Y cuando pase unos segundos redibujara todo
-c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hasta hacer algun evento de redibujado de zxdesktop ;)
-Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
-
-
--con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
-quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
-(y de ahi que al reducirla tenga scroll)
-De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
-Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana
 
 
 -visual real tape no actualiza bien si menu cerrado y top speed
@@ -214,28 +198,23 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
--faq zoom 1 de Next
 
 
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
--En visor dsk que solo muestre primer extent de un archivo. ya esta??
+
 
 
 -en plus3doshandler, cuando filesystem empieza en pista 2, todos los bloques van desplazados una pista en adelante
 (igual que utils.c y llamada a menu_dsk_getoff_block). y lo mismo para buscar inicio pista
 
+
+-En visor dsk que solo muestre primer extent de un archivo. ya esta??
 -extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
 -extractor dsk que use misma manera que visor dsk?
-
--footer que tambien amplie tamaño segun menu_gui_zoom
 
 
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
 
-
--FAQ de midi. ejemplo de Mac:
--probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
-copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
 
@@ -247,3 +226,4 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 -registro EPC para tbblue, zxuno, ....
 
+-nuevo callback para sdl2 también
