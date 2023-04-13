@@ -1773,6 +1773,8 @@ printf (
 		"--sdlsamplesize n           SDL audio sample size (128 to 2048). Default %d. Lower values reduce latency but can increase cpu usage\n",DEFAULT_AUDIOSDL_SAMPLES);
 		printf (
 		"--fifosdlbuffersize n       SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
+        "--sdl-use-callback-new      SDL audio use new callback (the default on Windows)\n"
+        "--sdl-use-callback-old      SDL audio use old callback (the default on non Windows)\n"
 		"--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
 
 
@@ -8676,6 +8678,16 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--sdlrawkeyboard")) {
 					sdl_raw_keyboard_read.v=1;
 			}
+
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-new")) {
+                audiosdl_use_new_callback.v=1;
+            }      
+
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-old")) {
+                audiosdl_use_new_callback.v=0;
+            }      
 
             else if (!strcmp(argv[puntero_parametro],"--no-fallbacktorealtape")) {
                 standard_to_real_tape_fallback.v=0;

@@ -3156,6 +3156,11 @@ z80_byte gs_memory_mapping_mask_pages=15;
 
 }
 
+void menu_audiosdl_callback_type(MENU_ITEM_PARAMETERS)
+{
+    audiosdl_use_new_callback.v ^=1;
+}
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_settings_audio;
@@ -3396,6 +3401,22 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
         menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
         menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+
+			if (!strcmp(audio_new_driver_name,"sdl")) {
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"--Audio SDL settings--",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
+                    "Callback Type","Tipo Callback","Tipus Callback");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
+                    (audiosdl_use_new_callback.v ? "New" : "Old"));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);         
+                           
+			}	
 
 
 			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {

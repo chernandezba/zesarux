@@ -217,6 +217,14 @@ z80_bit setting_mostrar_ay_piano_grafico={1};
 int audiochip_piano_zoom_x=3;
 int audiochip_piano_zoom_y=3;
 
+//SDL usar callback de audio antiguo o nuevo
+#ifdef MINGW
+//En Windows usar el nuevo, para evitar clicks
+z80_bit audiosdl_use_new_callback={1};
+#else
+//En Linux usar el viejo, porque el nuevo produce clicks
+z80_bit audiosdl_use_new_callback={0};
+#endif
 
 //
 // Hardware Settings

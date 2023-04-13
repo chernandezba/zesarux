@@ -117,6 +117,8 @@ extern int zxdesktop_disable_show_frame_around_display;
 extern int audiochip_piano_zoom_x;
 extern int audiochip_piano_zoom_y;
 
+extern z80_bit audiosdl_use_new_callback;
+
 extern char online_download_path[];
 
 extern z80_bit zxdesktop_configurable_icons_enabled;

@@ -4184,6 +4184,13 @@ int util_write_configfile(void)
   //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
   if (sdl_raw_keyboard_read.v)                ADD_STRING_CONFIG,"--sdlrawkeyboard");
 
+
+  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+  if (audiosdl_use_new_callback.v)              ADD_STRING_CONFIG,"--sdl-use-callback-new");
+  //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda,
+  if (audiosdl_use_new_callback.v==0)           ADD_STRING_CONFIG,"--sdl-use-callback-old");
+
+
   if (standard_to_real_tape_fallback.v==0)    ADD_STRING_CONFIG,"--no-fallbacktorealtape");
   if (tape_any_flag_loading.v)                ADD_STRING_CONFIG,"--anyflagloading");
   if (tape_auto_rewind.v)                     ADD_STRING_CONFIG,"--autorewind");

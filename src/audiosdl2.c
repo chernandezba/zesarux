@@ -280,7 +280,7 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
-//TODO: este callback es el comun para todos pero en SDL1 este es el usado en no-windows, y hay otro de Windows
+//TODO: este callback es el comun para todos pero en SDL1 este es el usado por defecto en no-windows, y hay otro de Windows
 //Aqui se probó la variante de callback de windows, 
 //pero ejecutandose en Linux, y sucedia que se quedaba dentro del bucle while
 //Testear ese nuevo callback tanto para Linux como Windows y ver que funciona

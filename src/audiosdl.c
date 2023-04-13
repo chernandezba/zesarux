@@ -243,11 +243,7 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
 
-//Callback para windows
-//Tecnicamente este deberia ser para todos pero esta visto que en Linux produce clicks
 
-
-#ifdef MINGW
 
 void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 {
@@ -274,52 +270,75 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
 	else {
 
-        int indice=0;
+        if (audiosdl_use_new_callback.v) {
 
-        int warned_fifo=0;
+            int indice=0;
 
-        //Para dar un limite en espera del bucle while, por si acaso no se quede dentro siempre
-        int max_wait=100;
+            int warned_fifo=0;
 
-        //Esperamos a llenar todo el sonido que nos solicitan
-        //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
-        //al final acabara llenandose
-        //Esto corrige los clicks famosos que se escuchaban en Windows
-        while (len>0 && audio_playing.v && max_wait>0) {
+            //Para dar un limite en espera del bucle while, por si acaso no se quede dentro siempre
+            int max_wait=100;
 
-            int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
+            //Esperamos a llenar todo el sonido que nos solicitan
+            //Puede suceder que el callback nos pida mas sonido del que tenemos; como el buffer lo llenamos desde otro thread,
+            //al final acabara llenandose
+            //Esto corrige los clicks famosos que se escuchaban en Windows
+            while (len>0 && audio_playing.v && max_wait>0) {
 
-            int leer=len;
+                int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
 
-		    //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-	    	if (leer>tamanyo_fifo) {
-                //Aviso solo la primera vez
-                if (!warned_fifo) {
-                    debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
-                    warned_fifo=1;
+                int leer=len;
+
+                //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+                if (leer>tamanyo_fifo) {
+                    //Aviso solo la primera vez
+                    if (!warned_fifo) {
+                        debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
+                        warned_fifo=1;
+                    }
+
+                    //le damos un tiempo para ver si llena la fifo
+                    timer_sleep(1);
+
+
+                    leer=tamanyo_fifo;
                 }
+                else {
+                    //printf("FIFO OK\n");
+                }
+        
+            
+                //printf ("audiosdl_callback. enviando sonido\n");
+                if (leer) {
+                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
+                }
+            
 
-                //le damos un tiempo para ver si llena la fifo
-                timer_sleep(1);
+                indice+=leer;
+                len -=leer;
 
-
-                leer=tamanyo_fifo;
+                max_wait--;
             }
+
+        }
+
+        else {
+            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+            if (len>audiosdl_fifo_sdl_return_size()) {
+                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
+                //esto puede pasar con el detector de silencio
+
+                //retornar solo lo que tenemos
+                //audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
+
+                return ;
+            }
+
+
             else {
-                //printf("FIFO OK\n");
+                //printf ("audiosdl_callback. enviando sonido\n");
+                audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
             }
-	
-		
-			//printf ("audiosdl_callback. enviando sonido\n");
-            if (leer) {
-			    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);
-            }
-		
-
-            indice+=leer;
-            len -=leer;
-
-            max_wait--;
         }
 
 	}
@@ -329,55 +348,3 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
 }
 
-
-#else
-
-//Callback para el resto
-void audiosdl_callback(void *udata, Uint8 *stream, int len)
-{
-
-	//printf ("audiosdl_callback\n");
-
-	//para que no se queje el compilador de no usado
-	udata++;
-
-	//si esta el sonido desactivado, enviamos silencio
-	if (audio_playing.v==0) {
-		char *puntero_salida;
-		puntero_salida = temporary_audiosdl_fifo_sdl_buffer;
-		int longitud=len;
-		while (longitud>0) {
-			*puntero_salida=0;
-			puntero_salida++;
-			longitud--;
-		}
-		//printf ("audio_playing.v=0 en audiosdl\n");
-	}
-
-	else {
-
-		//printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-		if (len>audiosdl_fifo_sdl_return_size()) {
-			//debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
-			//esto puede pasar con el detector de silencio
-
-			//retornar solo lo que tenemos
-			//audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
-
-			return ;
-		}
-
-
-		else {
-			//printf ("audiosdl_callback. enviando sonido\n");
-			audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
-		}
-
-	}
-
-	SDL_MixAudio(stream, (Uint8 *) temporary_audiosdl_fifo_sdl_buffer, len, SDL_MIX_MAXVOLUME);
-
-
-}
-
-#endif
