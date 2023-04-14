@@ -10690,47 +10690,49 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
     int retorno_menu;
     do {
 
-
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_dirs,NULL,"[%c] Show ~~directories",
-            (menu_filesel_hide_dirs.v==0 ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_dirs,NULL,
+            "Show ~~directories","Mostrar ~~directorios","Veure ~~directoris");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_hide_dirs.v==0 ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'d');	
         menu_add_item_menu_tooltip(array_menu_common,"Hide directories from file browser menus");
         menu_add_item_menu_ayuda(array_menu_common,"Hide directories from file browser menus. "
                                 "Useful on demo environments and you don't want the user to be able to navigate the filesystem");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_size,NULL,"[%c] Show file ~~size",
-            (menu_filesel_hide_size.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_size,NULL,
+            "Show file ~~size","Mostrar e~~spacio archivos","Veure e~~spai arxius");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_hide_size.v==0 ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'s');    
         menu_add_item_menu_tooltip(array_menu_common,"Hide file size from file selector menus");
         menu_add_item_menu_ayuda(array_menu_common,"Hide file size from file browser menus");      
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews,NULL,"[%c] Show file ~~previews",
-            (menu_filesel_show_previews.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews,NULL,
+            "Show file ~~previews","Mostrar ~~previews archivos","Veure ~~previews arxius");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'p');
         menu_add_item_menu_tooltip(array_menu_common,"Show file previews in the file selector");
         menu_add_item_menu_ayuda(array_menu_common,"Show file previews for .scr, .tap, .tzx, etc...\n"
                             "Note that the fileselector window must be big enough to hold that preview, if not, it will not be shown");
 
         if (menu_filesel_show_previews.v) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_reduce,NULL,"[%c] Red~~uce previews to half size",
-                (menu_filesel_show_previews_reduce.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_reduce,NULL,
+                "Red~~uce previews to half size","Red~~ucir previews a la mitad","Red~~uir previews a la meitat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews_reduce.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_common,'u');
             menu_add_item_menu_tooltip(array_menu_common,"Reduce previews to half size instead of full size");
             menu_add_item_menu_ayuda(array_menu_common,"Reduce previews to half size instead of full size");
         }
 
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,"[%c] ~~Hexadecimal file viewer",
-            (menu_file_viewer_always_hex.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,
+            "~~Hexadecimal file viewer","Visor archivos ~~Hexadecimal","Visor arxius ~~Hexadecimal");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_file_viewer_always_hex.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'h');
         menu_add_item_menu_tooltip(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
         menu_add_item_menu_ayuda(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
 
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_allow_delete_folders,NULL,"[%c] Allow ~~folder delete",
-            (menu_filesel_utils_allow_folder_delete.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'f');
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_allow_delete_folders,NULL,
+            "Allow fold~~ers delete","Permitir borrar dir~~ectorios","Permetre esborrar dir~~ectoris");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_utils_allow_folder_delete.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_common,'e');
         menu_add_item_menu_tooltip(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
         menu_add_item_menu_ayuda(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
 

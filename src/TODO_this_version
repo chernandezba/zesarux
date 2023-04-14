@@ -225,3 +225,7 @@ opcion de raspberry en compilacion no debe activar modo slow parameters, tienen 
 *hecho. probar en rpi
 *para hacer que cambie a slow parameters, especificar --changeslowparameters
 *agregar a changelog
+
+
+-en snapshot zsf opcion para poder guardar la rom en snapshot, por ejemplo para cuando has iniciado con una rom personalizada y quieres
+que el snapshot la restaure
