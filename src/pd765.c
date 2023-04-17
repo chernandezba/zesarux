@@ -386,7 +386,13 @@ void pd765_signal_se_function_triggered(void)
     //se controla luego que al hacer un read data no estemos leyendo mas alla del total de pistas...
     if (pd765_pcn>=dsk_get_total_tracks()) {
         //TODO: ni deberia empezar el seek con esto
-        debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
+        //Solo muestro el error cuando realmente hay un dsk insertado
+        ///Si lo mostrase siempre, en PCW resulta que intenta hacer seek sin disco insertado y por tanto
+        //saltaria el error cuando se inicia PCW sin disco (y con parametro --dsk-pcw-no-failback-cpm-when-no-boot)
+        if (dskplusthree_emulation.v) {
+            debug_printf(VERBOSE_ERR,"PD765: seek BEYOND limit: %d",pd765_pcn);
+        }
+
     }
 
 
