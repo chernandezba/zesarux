@@ -245,10 +245,8 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 
 
 
-void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
+void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
-
-    int len=total_len;
 
 	//printf ("audiosdl_callback\n");
 
@@ -319,7 +317,7 @@ void audiosdl_callback(void *udata, Uint8 *stream, int total_len)
 
 	}
 
-	SDL_MixAudio(stream, (Uint8 *) temporary_audiosdl_fifo_sdl_buffer, total_len, SDL_MIX_MAXVOLUME);
+	SDL_MixAudio(stream, (Uint8 *) temporary_audiosdl_fifo_sdl_buffer, len, SDL_MIX_MAXVOLUME);
 
 
 }

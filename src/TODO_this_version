@@ -219,13 +219,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -nuevo callback para sdl2 también
 
---nochangeslowparameters por defecto. Opción nueva --changeslowparameters y/o opcion compilacion en configure por defecto no slow.
-opcion de raspberry en compilacion no debe activar modo slow parameters, tienen que ser cosas distintas ahora
--Opción rpi que baje framedrop por defecto no hacerlo?
-*hecho. probar en rpi
-*para hacer que cambie a slow parameters, especificar --changeslowparameters
-*agregar a changelog
-
-
 -en snapshot zsf opcion para poder guardar la rom en snapshot, por ejemplo para cuando has iniciado con una rom personalizada y quieres
 que el snapshot la restaure
