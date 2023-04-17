@@ -9727,8 +9727,8 @@ void screen_print(int x,int y,int tinta,int papel,char *mensaje)
 void screen_set_parameters_slow_machines(void)
 {
 
-	if (no_cambio_parametros_maquinas_lentas.v==1) {
-		debug_printf (VERBOSE_INFO,"Parameter nochangeslowparameters enabled. Do not change any frameskip or realvideo parameters");
+	if (cambio_parametros_maquinas_lentas.v==0) {
+		debug_printf (VERBOSE_INFO,"Parameter changeslowparameters not enabled. Do not change any frameskip or realvideo parameters");
 		return;
 	}
 

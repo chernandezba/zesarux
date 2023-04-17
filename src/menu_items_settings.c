@@ -898,6 +898,11 @@ void menu_interface_zoom_autochange_big_display(MENU_ITEM_PARAMETERS)
     autochange_zoom_big_display.v ^=1;
 }
 
+void menu_interface_rpi_performance_params(MENU_ITEM_PARAMETERS)
+{
+    cambio_parametros_maquinas_lentas.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -963,6 +968,17 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 "can make objects disappear or not refresh quickly. Disabling it enhances refreshing objects when moving but uses more cpu and may slow down emulation");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
+
+
+#ifdef EMULATE_RASPBERRY
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_rpi_performance_params,NULL,
+            "RPi slow improve performance","RPi lenta mejorar rendimiento","RPi lenta millorar rendiment");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(cambio_parametros_maquinas_lentas.v ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Change some performance parameters (frameskip, realvideo, etc) on slow machines like Rpi 1");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Change some performance parameters (frameskip, realvideo, etc) on slow machines like Rpi 1");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+#endif        
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
             "Flash enabled","Parpadeo activado","Parpelleig activat");

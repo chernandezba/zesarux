@@ -655,7 +655,7 @@ extern char *z80_cpu_types_strings[];
 
 
 extern int zesarux_main (int main_argc,char *main_argv[]);
-extern z80_bit no_cambio_parametros_maquinas_lentas;
+extern z80_bit cambio_parametros_maquinas_lentas;
 extern z80_bit opcion_no_welcome_message;
 
 extern int argc;

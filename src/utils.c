@@ -3679,8 +3679,8 @@ int util_write_configfile(void)
 
   if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
                 
-  if (no_cambio_parametros_maquinas_lentas.v) ADD_STRING_CONFIG,"--nochangeslowparameters");
-  else                                        ADD_STRING_CONFIG,"--changeslowparameters");
+  if (cambio_parametros_maquinas_lentas.v)    ADD_STRING_CONFIG,"--changeslowparameters");
+  else                                        ADD_STRING_CONFIG,"--nochangeslowparameters");
   if (ventana_fullscreen)                     ADD_STRING_CONFIG,"--fullscreen");
   if (verbose_level)                          ADD_STRING_CONFIG,"--verbose %d",verbose_level);
 
@@ -5289,8 +5289,8 @@ int quickload_continue(char *nombre) {
 
 #ifdef EMULATE_RASPBERRY
 	//desactivar realvideo por defecto en raspberry. Si hace falta, el realvideo se activara desde el archivo snapshot o en la deteccion por ssl
-	if (no_cambio_parametros_maquinas_lentas.v==1) {
-		debug_printf (VERBOSE_INFO,"Parameter nochangeslowparameters enabled. Do not change any frameskip or realvideo parameters");
+	if (cambio_parametros_maquinas_lentas.v==0) {
+		debug_printf (VERBOSE_INFO,"Parameter changeslowparameters not enabled. Do not change any frameskip or realvideo parameters");
 	}
     else {
 	    disable_rainbow();

@@ -637,7 +637,7 @@ int z88_slotcard_inicial_slot;
 
 //Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry)
 //Desde ZEsarUX 10.3 no cambiar dichos parametros
-z80_bit no_cambio_parametros_maquinas_lentas={1};
+z80_bit cambio_parametros_maquinas_lentas={0};
 
 
 
@@ -6385,11 +6385,11 @@ int parse_cmdline_options(int desde_commandline) {
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--nochangeslowparameters")) {
-				no_cambio_parametros_maquinas_lentas.v=1;
+				cambio_parametros_maquinas_lentas.v=0;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--changeslowparameters")) {
-				no_cambio_parametros_maquinas_lentas.v=0;
+				cambio_parametros_maquinas_lentas.v=1;
 			}            
 
 
