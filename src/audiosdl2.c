@@ -307,22 +307,55 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 	else {
 
-		//printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-		if (len>audiosdl_fifo_sdl_return_size()) {
-			//debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
-			//esto puede pasar con el detector de silencio
+        //Nuevo Callback. Ver las notas sobre el nuevo callback justo despues de esta funcion en audiosdl.c
+        if (audiosdl_use_new_callback.v) {
 
-			//retornar solo lo que tenemos
-			//audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
+            int indice=0;
+  
 
-			return ;
-		}
+            int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
+
+            int leer=len;
+
+            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+            if (leer>tamanyo_fifo) {
+                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
+
+                //Si se pide mas audio del que tenemos, dejamos nuestro buffer anterior (llegará a SDL_MixAudio) y no metemos audio nuevo, esto hace que se note menos el corte
+                //Esto podria parecer algo sin sentido pero no es asi, cuando sucede esto, es mejor retornar el mismo buffer que teniamos,
+                //en vez de hacer un llenado parcial, porque en este caso se notarian los clicks, tanto en Windows como en Linux
+            }
+
+
+            else {
+                
+                //printf ("audiosdl_callback. enviando sonido\n");
+                if (leer) {
+                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);       
+                }
+                
+            }
+        }
+
+        //Viejo Callback        
+        else {
+            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+            if (len>audiosdl_fifo_sdl_return_size()) {
+                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
+                //esto puede pasar con el detector de silencio
+
+                //retornar solo lo que tenemos
+                //audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
+                return;
+            }
 
 
 		else {
 			//printf ("audiosdl_callback. enviando sonido\n");
 			audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
 		}
+
+        }
 
 	}
 
