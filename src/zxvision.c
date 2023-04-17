@@ -10512,7 +10512,10 @@ z80_byte zxvision_read_keyboard(void)
     //Decimos que de momento no se pulsa shift+left/right
     menu_pressed_shift_left=menu_pressed_shift_right=0;
 
-    z80_byte tecla;
+    //A 0 por defecto aunque la mayoria de casos estan gestionados, pero por ejemplo si mouse_pressed_hotkey_window
+    //Se iria hasta casi el final de la funcion donde hay el if (mouse_pressed_hotkey_window) pasando por algun (if tecla==4)
+    //donde tecla si no pusieramos a 0 podria tener un valor indeterminado
+    z80_byte tecla=0; 
 	
 	if (!mouse_pressed_close_window && !mouse_pressed_background_window && !mouse_pressed_hotkey_window) {
 		tecla=menu_get_pressed_key();
