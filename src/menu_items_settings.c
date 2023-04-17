@@ -4930,7 +4930,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,"~~Joystick type [%s]",joystick_texto[joystick_emulation]);
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
+                "~~Joystick type","Tipo ~~Joystick","Tipus ~~Joystick");
+			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
                 	menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"
@@ -4939,9 +4941,14 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			);
         }
 
-        if (joystick_autofire_frequency==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,menu_hardware_autofire_cond,"[ ] Joystick ~~Autofire");
+        if (joystick_autofire_frequency==0) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,menu_hardware_autofire_cond,
+                "[ ] Joystick ~~Autofire","[ ] Joystick ~~Autodisparo","[ ] Joystick ~~Autofoc");
+        }
         else {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,"[%d Hz] Joystick ~~Autofire",50/joystick_autofire_frequency);
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,
+            "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autofire_frequency);
         }
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
@@ -4950,7 +4957,9 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
                                         "autofire because this function can interfiere with the menu (it might think a key is pressed)");
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-        menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,"[%d Hz] Joystick ~~AutoLeftRight",50/joystick_autoleftright_frequency);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
+            "Joystick AutoLeftRight","Joystick AutoIzqDer","Joystick AutoEsqDreta");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autoleftright_frequency);
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
