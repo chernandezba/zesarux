@@ -34,10 +34,11 @@
 #include "audio.h"
 #include "ay38912.h"
 #include "tape.h"
+#include "dsk.h"
+#include "pd765.h"
 
-
-//Direcciones donde estan cada pagina de rom. 2 paginas de 16 kb
-z80_byte *cpc_rom_mem_table[2];
+//Direcciones donde estan cada pagina de rom. 2 o 3 paginas de 16 kb
+z80_byte *cpc_rom_mem_table[3];
 
 //Direcciones donde estan cada pagina de ram. 8 paginas de 16 kb cada una
 z80_byte *cpc_ram_mem_table[8];
@@ -63,6 +64,8 @@ z80_byte cpc_forzar_modo_video_modo=0;
 
 z80_byte cpc_gate_registers[4];
 
+//Controla paginación upper rom
+z80_byte cpc_port_df=0;
 
 //Contador de linea para lanzar interrupcion.
 z80_byte cpc_scanline_counter;
@@ -230,7 +233,7 @@ void cpc_set_memory_pages()
 
 
 	//Si es maquina de 128kb, reasignar paginas
-	if (MACHINE_IS_CPC_4128) {
+	if (MACHINE_IS_CPC_HAS_128K) {
 		z80_byte ram_config=cpc_gate_registers[3] & 7;
 
 		//printf ("Setting 128k ram config value %d\n",ram_config);
@@ -364,13 +367,29 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
     }
     else {
         //Entra ROM 
-        cpc_memory_paged_read[3]=cpc_rom_mem_table[1];
+        //en 6128 y 664 ver si entra amsdos rom
+        if ((MACHINE_IS_CPC_HAS_FLOPPY) && cpc_port_df==7) {
+            //Entra AMSDOS
+            cpc_memory_paged_read[3]=cpc_rom_mem_table[2];
+        }
+        else {
+            cpc_memory_paged_read[3]=cpc_rom_mem_table[1];
+        }
+
 		debug_cpc_type_memory_paged_read[3]=CPC_MEMORY_TYPE_ROM;
 		debug_cpc_paginas_memoria_mapeadas_read[3]=1;
     }
 
 }
 
+
+void cpc_out_port_df(z80_byte value)
+{
+    cpc_port_df=value;
+
+    cpc_set_memory_pages();
+
+}
 
 void cpc_init_memory_tables()
 {
@@ -383,6 +402,11 @@ void cpc_init_memory_tables()
         puntero +=16384;
         cpc_rom_mem_table[1]=puntero;
         puntero +=16384;
+
+        if (MACHINE_IS_CPC_HAS_FLOPPY) {
+            cpc_rom_mem_table[2]=puntero;
+            puntero +=16384;
+        }
 
 
         int i;
@@ -2475,6 +2499,7 @@ void screen_store_scanline_rainbow_cpc_border_and_display(void)
 void cpc_reset(void)
 {
 		cpc_gate_registers[0]=cpc_gate_registers[1]=cpc_gate_registers[2]=cpc_gate_registers[3]=0;
+        cpc_port_df=0;
 		cpc_set_memory_pages();
 		cpc_scanline_counter=0;
         cpc_crt_pending_interrupt.v=0;
@@ -2516,4 +2541,24 @@ void cpc_if_autoenable_realvideo_on_changeborder(void)
             enable_rainbow();            
         }
     }
+}
+
+
+void cpc_out_port_fa7e(z80_byte value)
+{
+
+    //Port FA7Eh - Floppy Motor On/Off Flipflop
+    //Writing 00h to Port FA7Eh turns all disk drive motors off, 
+    //writing 01h turns all motors on. It is not possible to turn on/off the motor of a specific drive separately.
+
+
+    if (value&1) {
+        dsk_show_activity();
+        pd765_motor_on();
+    }
+    else {
+        //Pues realmente si motor va a off, no hay actividad
+        pd765_motor_off();
+    }
+ 
 }

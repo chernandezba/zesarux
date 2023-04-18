@@ -40,6 +40,7 @@
 
 #include "menu_file_viewer_browser.h"
 #include "zxvision.h"
+#include "menu_items.h"
 #include "compileoptions.h"
 #include "screen.h"
 #include "cpu.h"
@@ -1145,7 +1146,174 @@ void menu_file_flash_browser_show(char *filename)
 
 }
 
+const int menu_dsk_sector_sizes_numbers[]={
+    0,    //0: TODO: no tengo claro que 0 sea tal cual sector size 0
+    256,  //1
+    512,  //2
+    1024, //3
+    2048, //4
+    4096, //5
+    8192, //6
+    16384 //7
+};
 
+int menu_dsk_get_sector_size_from_n_value(int n_value)
+{
+
+    //It is assumed that sector sizes are defined as 3 bits only, so that a sector size of N="8" is equivalent to N="0".
+    //Mot o Mundial de futbol tienen algunos sectores con tamaño 8
+    n_value &=7;
+
+    int sector_size=menu_dsk_sector_sizes_numbers[n_value];
+
+    return sector_size;
+}
+
+//entrada: offset a track information block
+int menu_dsk_get_total_sectors_track_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    int total_sectors=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x15);
+
+    return total_sectors;
+}
+
+int menu_dsk_detect_extended_dsk(z80_byte *dsk_memoria)
+{
+
+
+    if (!memcmp("EXTENDED",dsk_memoria,8)) {
+        printf("Detected Extended DSK\n");
+        return 1;
+    }    
+
+    else return 0;
+}
+
+//entrada: offset a track information block
+int menu_dsk_get_sector_size_track_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    int sector_size_byte=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x14);
+
+
+    return menu_dsk_get_sector_size_from_n_value(sector_size_byte);
+}
+
+//Retorna numero de pista. 
+//Entrada: offset: offset a track-info
+int menu_dsk_get_track_number_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
+    return track_number;
+}
+
+//Retorna numero de cata. 
+//Entrada: offset: offset a track-info
+int menu_dsk_get_track_side_from_offset(z80_byte *dsk_file_memory,int longitud_dsk,int offset)
+{
+    z80_byte side_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x11);
+    return side_number;
+}
+
+int menu_dsk_get_total_sides(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    return util_get_byte_protect(dsk_file_memory,longitud_dsk,0x31);
+}
+
+int menu_dsk_get_total_pistas(z80_byte *dsk_file_memory,int longitud_dsk)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+    return total_pistas;
+}
+
+int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista_encontrar,int cara_encontrar)
+{
+    int pista,cara;
+    int offset=0x100;
+    int offset_track_table=0x34;
+
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+
+    for (pista=0;pista<total_pistas;pista++) {
+        for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
+            printf("Pista: %d cara: %d\n",pista,cara);
+            
+
+            z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
+            z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
+
+            printf("menu_dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+                pista,track_number,offset,pista_encontrar);        
+
+            if (track_number==pista_encontrar && side_number==cara_encontrar) {
+                //printf("dsk_extended_get_start_track: return %X\n",offset);
+                return offset;
+            }
+
+            int sector_size=menu_dsk_get_sector_size_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+            if (sector_size<0) {
+                debug_printf(VERBOSE_ERR,"DSK Extended: Sector size not supported on track %d side %d",pista,cara);
+                return -1;
+            }
+
+            
+            int saltar=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_track_table)*256;
+            offset +=saltar;
+
+            
+            offset_track_table++;
+
+
+        }
+    }
+
+    return -1;
+
+}
+
+
+int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista_encontrar,int cara_encontrar)
+{
+    int pista;
+    int offset=0x100;
+
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+
+    for (pista=0;pista<total_pistas;pista++) {
+        printf("Pista: %d\n",pista);
+   
+ 
+        z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
+        z80_byte side_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x11);
+
+        if (track_number==pista_encontrar && side_number==cara_encontrar) {
+            return offset;
+        }
+
+        int sector_size=menu_dsk_get_sector_size_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+        if (sector_size<0) {
+            debug_printf(VERBOSE_ERR,"MENU DSK Basic: Sector size not supported on track %d",pista);
+            return -1;
+        }
+
+        int total_sectors=menu_dsk_get_total_sectors_track_from_offset(dsk_file_memory,longitud_dsk,offset);
+
+        int saltar=total_sectors*sector_size+256; //256 ocupa el sector block
+
+        offset +=saltar;
+    }
+
+    return -1;
+
+}
+
+//Retorna -1 si pista no encontrada
+//Retorna offset al Track information block
+int menu_dsk_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,int pista,int cara)
+{
+    //Hacerlo diferente si dsk basico o extendido
+    if (menu_dsk_detect_extended_dsk(dsk_file_memory)) return menu_dsk_extended_get_start_track(dsk_file_memory,longitud_dsk,pista,cara);
+    else return menu_dsk_basic_get_start_track(dsk_file_memory,longitud_dsk,pista,cara);
+}
 
 
 //Retorna el offset al dsk segun la pista y sector dados (ambos desde 0...)
@@ -1174,19 +1342,24 @@ sectores van alternados:
 	int pista;
 	int sector;
 
-	int iniciopista_orig=256;
+	//int iniciopista_orig=256;
+
+    printf("menu_dsk_getoff_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
 
 	//Buscamos en todo el archivo dsk
 	for (pista=0;pista<total_pistas;pista++) {
 
-        //printf("before getting sectores_en_pista iniciopista_orig=%d\n",iniciopista_orig);
+        //TODO: de momento cara 0
+        int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
+
+        printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
 		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
 
         int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
 		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
-        //printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+        printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
 		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
 		int iniciopista=iniciopista_orig;
@@ -1228,14 +1401,14 @@ sectores van alternados:
 			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
-            //printf("%02X \n",sector_id);
+            printf("C: %02XH R: %02X \n",pista_id,sector_id);
 
 			sector_id &=0xF;
 
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				//printf("Found sector %d/%d at %d/%d",pista_buscar,sector_buscar,pista,sector);
+				printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
@@ -1268,16 +1441,21 @@ sectores van alternados:
 }
 
 
-void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2)
+//Retorna los dos sectores, indicando los offset de ambos que ocupa un bloque de 1kb
+void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2,int incremento_pista)
 {
-
-			int total_pistas=longitud_dsk/4864;
+			//int total_pistas=longitud_dsk/4864;
+            int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+            //printf("total_pistas: %d\n",total_pistas);
 			int pista;
 			int sector_en_pista;
 
 			int sector_total;
 
 			sector_total=bloque*2; //cada bloque es de 2 sectores
+
+            //Incremento_pista indica sumar x pistas de desplazamiento al bloque
+            sector_total +=9*incremento_pista;
 
 			//tenemos sector total en variable bloque
 			//sacar pista
@@ -1304,25 +1482,339 @@ void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque
 }
 
 
-int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
+
+int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int *p_pista)
+{
+    int total_pistas=util_get_byte_protect(dsk_file_memory,longitud_dsk,0x30);
+
+    int pista;
+
+    int puntero;
+
+    for (pista=0;pista<=2;pista++) {
+	
+        printf("Pista: %d\n",pista);
+
+        puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista,0,longitud_dsk);
+		//Si contiene e5 en el nombre, nos vamos a pista 1
+        //O si segundo caracter no es ascii
+
+        if (puntero>=0) {
+     
+            z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
+
+            if (byte_name!=0xe5 && (byte_name>=32 && byte_name<=127)) {        
+
+                break;
+                
+            }
+
+        }
+
+    }
+
+    //Por defecto
+    if (puntero<0) {
+        printf ("Filesystem track/sector not found. Guessing it\n");
+        puntero=0x200;
+    }
+    *p_pista=pista;
+
+    printf("Found filesystem at track %d. Puntero=%X\n",pista,puntero);
+
+    return puntero;
+}
+
+int old_menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk)
 {
 
-                        int total_pistas=longitud_dsk/4864;
-
-                        //tenemos sector total en variable bloque
-                        //sacar pista
-
-                        //printf ("pista: %d sector en pista: %d\n",pista,sector_en_pista);
-
-                        //offset a los datos dentro del dsk
-                        //int offset=pista*4864+sector_en_pista*512;
+    //int total_pistas=longitud_dsk/4864;
+    int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+    //printf("total pistas: %d\n",total_pistas);
 
 
+    int pista_offset=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
 
-                        return menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
+    //printf("pista_offset: %XH\n",pista_offset);
+
+    return pista_offset;
 
 }
 
+char *menu_dsk_spec_formats[]={
+    "Std PCW range DD SS ST (and +3)",
+	"Std CPC range DD SS ST system format",
+    "Std CPC range DD SS ST data only format",
+    "Std PCW range DD DS DT"
+};
+
+//Parecido a menu_file_mmc_browser_show_file pero considerando archivos de filesystem +3, CPC, PCW... que siguen estandar de CP/M
+
+void menu_file_dsk_browser_show_file(z80_byte *origen,char *destino,int sipuntoextension)
+{
+	int i;
+	int salir=0;
+
+    int file_readonly=0;
+    int file_system=0;
+
+    int longitud=11;
+
+	for (i=0;i<longitud && !salir;i++) {
+		char caracter;
+		caracter=*origen;
+
+            //Si en extension, primer byte bit 7: read only. segundo byte: system
+            if (i==8 && (caracter & 128)) file_readonly=1;
+            if (i==9 && (caracter & 128)) file_system=1;
+
+            caracter &=127;
+
+            if (caracter<32 || caracter>126) caracter='?';
+		
+			origen++;
+
+            /*
+			if (caracter<32 || caracter>126) {
+				//Si detectamos final de texto y siempre que no este en primer caracter
+				if (i) salir=1;
+				else caracter='?';
+			}
+            */
+
+			if (!salir) {
+				*destino=caracter;
+				destino++;
+			
+				if (sipuntoextension && i==7) {
+					*destino='.';
+					destino++;
+				}
+			}
+		
+	}
+
+    if (file_readonly) {
+        strcpy(destino," (RO)");
+        destino +=5;
+    }
+
+    if (file_system) {
+        strcpy(destino," (SYS)");
+        destino +=6;
+    }
+
+
+	*destino=0;
+}
+
+
+void menu_file_dsk_browser_add_sector_visual_floppy(int pista,int sector)
+{
+    int i;
+
+    for (i=0;i<512;i++) {
+        menu_visual_floppy_buffer_add_persistent(pista,sector,i);
+    }
+}
+
+
+
+z80_byte *menu_file_dsk_browser_show_click_file_dsk_file_memory;
+int menu_file_dsk_browser_show_click_file_longitud_dsk;
+int menu_file_dsk_browser_show_click_file_incremento_pista_filesystem;
+int menu_file_dsk_browser_show_click_file_archivo_seleccionado;
+
+void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
+{
+
+    z80_byte bloques[256];
+
+    int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+        menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,archivo_seleccionado);
+
+    //int indice_buffer=0;
+
+    int i;
+    for (i=0;i<total_bloques;i++) {
+        z80_byte bloque=bloques[i];
+        printf("---Bloque %d : %02XH\n",i,bloque);
+
+        //de cada bloque obtener pista y sector
+        int pista1,sector1,pista2,sector2;
+        util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+            &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+        menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
+        menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
+
+
+
+    }      
+}
+
+
+//Aqui entra al pasar el cursor por cualquier de las lineas que no tienen pista y sector
+void menu_file_dsk_browser_all_sectors(struct s_menu_item *item_seleccionado GCC_UNUSED)
+{
+    menu_visual_floppy_buffer_reset();
+    menu_file_dsk_browser_visualmem_all_blocks(menu_file_dsk_browser_show_click_file_archivo_seleccionado);
+}
+
+//Aqui entra al pasar el cursor por una linea con pista y sector
+void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionado)
+{
+
+    int sector=(item_seleccionado->valor_opcion) & 0xFF;
+    int pista=(item_seleccionado->valor_opcion)>>8;
+
+    printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
+
+    menu_visual_floppy_buffer_reset();
+    menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
+}
+
+
+
+void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
+{
+
+    menu_file_dsk_browser_show_click_file_archivo_seleccionado=valor_opcion;
+ 
+    char buffer_texto[64]; //2 lineas, por si acaso
+
+
+    z80_byte bloques[256];
+
+    //printf("\n\nArchivo %s bloques:\n",buffer_texto);
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+    int opcion_seleccionada=0;
+
+    do {
+
+
+        //menu_file_dsk_browser_visualmem_all_blocks(valor_opcion);
+        
+        int total_bloques=util_dsk_get_blocks_entry_file(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+            menu_file_dsk_browser_show_click_file_longitud_dsk,bloques,valor_opcion);
+
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total Blocks: %d (KB)",total_bloques);
+        //Gestion de visual floppy que muestra todos los bloques
+        menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Used blocks:");    
+        //Gestion de visual floppy que muestra todos los bloques
+        menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
+
+
+
+        printf("Total bloques: %d\n",total_bloques);
+
+        int j;
+
+        int indice_buffer=0;
+        int items_en_linea=0;
+
+        for (j=0;j<total_bloques;j++) {
+            z80_byte bloque=bloques[j];
+            printf("---Bloque %d : %02XH\n",j,bloque);
+
+            //de cada bloque obtener pista y sector
+            int pista1,sector1,pista2,sector2;
+            util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+                menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+                &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+            sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
+            indice_buffer +=3;
+
+            //Cada 8 bloques salto de linea
+            if (((j+1)%8)==0) {
+                //strcpy(&texto_browser[indice_buffer],"\n");
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+                //Gestion de visual floppy que muestra todos los bloques
+                menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);
+
+                indice_buffer=0;
+                items_en_linea=0;
+            }
+            else {
+                items_en_linea++;
+            }
+
+        }  
+
+        //Si queda algun item por agregar de la linea
+        if (items_en_linea) {
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            //Gestion de visual floppy que muestra todos los bloques
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);            
+        }  
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
+
+
+        for (j=0;j<total_bloques;j++) {
+            z80_byte bloque=bloques[j];
+            printf("---Bloque %d : %02XH\n",j,bloque);
+
+            //de cada bloque obtener pista y sector
+            int pista1,sector1,pista2,sector2;
+            util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
+                menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
+                &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
+            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+
+            //Cada bloque son dos sectores:
+
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista1,sector1);
+            //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
+            //Indica con opcion pista y sector
+            menu_add_item_menu_valor_opcion(array_menu_common,pista1*256+sector1);
+
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Track %02X Sector %X",pista2,sector2);
+            //Gestion de visual floppy para cada item separado, al seleccionar, sin tener que pulsar enter
+            menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_separate_sectors);
+            //Indica con opcion pista y sector
+            menu_add_item_menu_valor_opcion(array_menu_common,pista2*256+sector2);
+
+
+        }  
+
+
+
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Blocks");
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+    menu_visual_floppy_buffer_reset();
+
+}
 
 void menu_file_dsk_browser_show(char *filename)
 {
@@ -1330,7 +1822,7 @@ void menu_file_dsk_browser_show(char *filename)
 
 	int tamanyo_dsk_entry=32;
 
-	int max_entradas_dsk=16;
+	int max_entradas_dsk=64;
 
 	//Asignamos para 16 entradas
 	//int bytes_to_load=tamanyo_dsk_entry*max_entradas_dsk;
@@ -1347,9 +1839,12 @@ void menu_file_dsk_browser_show(char *filename)
 	}
 
 	int longitud_dsk=bytes_to_load;
+
+    menu_file_dsk_browser_show_click_file_longitud_dsk=longitud_dsk;
+    menu_file_dsk_browser_show_click_file_dsk_file_memory=dsk_file_memory;
 	
 	//Leemos archivo dsk
-        FILE *ptr_file_dsk_browser;
+    FILE *ptr_file_dsk_browser;
 
     //Soporte para FatFS
     FIL fil;        /* File object */
@@ -1364,180 +1859,270 @@ void menu_file_dsk_browser_show(char *filename)
         return;
     }
 
-    /*
-        ptr_file_dsk_browser=fopen(filename,"rb");
-
-        if (!ptr_file_dsk_browser) {
-		debug_printf(VERBOSE_ERR,"Unable to open file");
-		free(dsk_file_memory);
-		return;
-	}
-    */
 
 
-        int leidos;
-        
-        leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
-        //leidos=fread(dsk_file_memory,1,bytes_to_load,ptr_file_dsk_browser);
+
+    int leidos;
+    
+    leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
+    
 
 	if (leidos==0) {
-                debug_printf(VERBOSE_ERR,"Error reading file");
-                return;
-        }
+        debug_printf(VERBOSE_ERR,"Error reading file");
+        return;
+    }
 
-        zvfs_fclose(in_fatfs,ptr_file_dsk_browser,&fil);
-        //fclose(ptr_file_dsk_browser);
-
-
-        
-
+    zvfs_fclose(in_fatfs,ptr_file_dsk_browser,&fil);
+    
 
 	char buffer_texto[64]; //2 lineas, por si acaso
 
-	//int longitud_bloque;
 
-	//int longitud_texto;
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-	char *texto_browser=util_malloc_max_texto_browser();
-	int indice_buffer=0;
+    int opcion_seleccionada=0;
 
-	
+    do {
 
-
- 	sprintf(buffer_texto,"DSK disk image");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-
-
-/*
-00000000  45 58 54 45 4e 44 45 44  20 43 50 43 20 44 53 4b  |EXTENDED CPC DSK|
-00000010  20 46 69 6c 65 0d 0a 44  69 73 6b 2d 49 6e 66 6f  | File..Disk-Info|
-00000020  0d 0a 43 50 44 52 65 61  64 20 76 33 2e 32 34 00  |..CPDRead v3.24.|
-00000030  2d 01 00 00 13 13 13 13  13 13 13 13 13 13 13 13  |-...............|
-00000040  13 13 13 13 13 13 13 13  13 13 13 13 13 13 13 13  |................|
-00000050  13 13 13 13 13 13 13 13  13 13 13 13 00 00 00 00  |................|
-00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-*
-00000100  54 72 61 63 6b 2d 49 6e  66 6f 0d 0a 00 00 00 00  |Track-Info......|
-00000110  00 00 00 00 02 09 4e e5  00 00 c1 02 00 00 00 02  |......N.........|
-00000120  00 00 c6 02 00 00 00 02  00 00 c2 02 00 00 00 02  |................|
-00000130  00 00 c7 02 00 00 00 02  00 00 c3 02 00 00 00 02  |................|
-00000140  00 00 c8 02 00 00 00 02  00 00 c4 02 00 00 00 02  |................|
-00000150  00 00 c9 02 00 00 00 02  00 00 c5 02 00 00 00 02  |................|
-00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-*
-00000200  00 43 4f 4d 50 49 4c 45  52 c2 49 4e 00 00 00 80  |.COMPILER.IN....|
-00000210  02 03 04 05 06 07 08 09  0a 0b 0c 0d 0e 0f 10 11  |................|
-00000220  00 43 4f 4d 50 49 4c 45  52 c2 49 4e 01 00 00 59  |.COMPILER.IN...Y|
-00000230  12 13 14 15 16 17 18 19  1a 1b 1c 1d 00 00 00 00  |................|
-00000240  00 4b 49 54 31 32 38 4c  44 c2 49 4e 00 00 00 03  |.KIT128LD.IN....|
-00000250  1e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-00000260  00 4b 49 54 31 32 38 20  20 c2 49 4e 00 00 00 80  |.KIT128  .IN....|
-00000270  1f 20 21 22 23 24 25 26  27 28 29 2a 2b 2c 2d 2e  |. !"#$%&'()*+,-.|
-00000280  00 4b 49 54 31 32 38 20  20 c2 49 4e 01 00 00 59  |.KIT128  .IN...Y|
-*/
-
-	//La extension es de 1 byte
+        
+        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"DSK disk image");
 
 
-	/*
-        sprintf(buffer_texto,"DSK Label: %s",dsk_label);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+        /*
+        00000000  45 58 54 45 4e 44 45 44  20 43 50 43 20 44 53 4b  |EXTENDED CPC DSK|
+        00000010  20 46 69 6c 65 0d 0a 44  69 73 6b 2d 49 6e 66 6f  | File..Disk-Info|
+        00000020  0d 0a 43 50 44 52 65 61  64 20 76 33 2e 32 34 00  |..CPDRead v3.24.|
+        00000030  2d 01 00 00 13 13 13 13  13 13 13 13 13 13 13 13  |-...............|
+        00000040  13 13 13 13 13 13 13 13  13 13 13 13 13 13 13 13  |................|
+        00000050  13 13 13 13 13 13 13 13  13 13 13 13 00 00 00 00  |................|
+        00000060  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+        *
+        00000100  54 72 61 63 6b 2d 49 6e  66 6f 0d 0a 00 00 00 00  |Track-Info......|
+        00000110  00 00 00 00 02 09 4e e5  00 00 c1 02 00 00 00 02  |......N.........|
+        00000120  00 00 c6 02 00 00 00 02  00 00 c2 02 00 00 00 02  |................|
+        00000130  00 00 c7 02 00 00 00 02  00 00 c3 02 00 00 00 02  |................|
+        00000140  00 00 c8 02 00 00 00 02  00 00 c4 02 00 00 00 02  |................|
+        00000150  00 00 c9 02 00 00 00 02  00 00 c5 02 00 00 00 02  |................|
+        00000160  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+        *
+        00000200  00 43 4f 4d 50 49 4c 45  52 c2 49 4e 00 00 00 80  |.COMPILER.IN....|
+        00000210  02 03 04 05 06 07 08 09  0a 0b 0c 0d 0e 0f 10 11  |................|
+        00000220  00 43 4f 4d 50 49 4c 45  52 c2 49 4e 01 00 00 59  |.COMPILER.IN...Y|
+        00000230  12 13 14 15 16 17 18 19  1a 1b 1c 1d 00 00 00 00  |................|
+        00000240  00 4b 49 54 31 32 38 4c  44 c2 49 4e 00 00 00 03  |.KIT128LD.IN....|
+        00000250  1e 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+        00000260  00 4b 49 54 31 32 38 20  20 c2 49 4e 00 00 00 80  |.KIT128  .IN....|
+        00000270  1f 20 21 22 23 24 25 26  27 28 29 2a 2b 2c 2d 2e  |. !"#$%&'()*+,-.|
+        00000280  00 4b 49 54 31 32 38 20  20 c2 49 4e 01 00 00 59  |.KIT128  .IN...Y|
+        */
+
+        //La extension es de 1 byte
 
 
-	sprintf(buffer_texto,"Free sectors on disk: %d",dsk_file_memory[start_track_8+229]+256*dsk_file_memory[start_track_8+230]);
-        indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);*/
-
- 	sprintf(buffer_texto,"Disk information:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-
-	util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+    
 
 
- 	sprintf(buffer_texto,"\nCreator:");
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-	util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
-
-	sprintf(buffer_texto,"\nTracks: %d",dsk_file_memory[0x30]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-
-	sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Signature:");
 
 
-    sprintf(buffer_texto,"\nFirst PLUS3 entries:");
-    indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+        util_binary_to_ascii(&dsk_file_memory[0], buffer_texto, 34, 34);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Creator:");
+        
+
+        util_binary_to_ascii(&dsk_file_memory[0x22], buffer_texto, 14, 14);
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+
+        menu_add_item_menu_separator(array_menu_common);
+        
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total tracks: %d",dsk_file_memory[0x30]);
+        
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Total sides: %d",dsk_file_memory[0x31]);
+        
+
+        //Si tiene Especificacion de formato PCW/+3
+        int puntero;
+        int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
+        puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,0,0,longitud_dsk);
+
+        z80_byte spec_disk_type=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+        z80_byte spec_disk_sides=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1) & 3;
+        z80_byte spec_tracks_side=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+2);
+        z80_byte spec_sectors_track=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+3);
+
+        int i;
+
+        if (spec_disk_type<=3 && spec_disk_sides<=2 && spec_tracks_side<50 && spec_sectors_track<10) {
+            /*
+            Byte 0		Disk type
+                0 = Standard PCW range DD SS ST (and +3)
+                1 = Standard CPC range DD SS ST system format
+                2 = Standard CPC range DD SS ST data only format
+                3 = Standard PCW range DD DS DT
+                All other values reserved
+
+            Byte 1		Bits 0...1 Sidedness
+                        0 = Single sided
+                        1 = Double sided (alternating sides)
+                        2 = Double sided (successive sides)
+                    Bits 2...6 Reserved (set to 0)
+                    Bit 7 Double track
+
+            Byte 2		Number of tracks per side
+
+            Byte 3		Number of sectors per track
+
+            Byte 4		Log2(sector size) - 7
+
+            Byte 5		Number of reserved tracks
+
+            Byte 6		Log2(block size / 128)
+
+            Byte 7		Number of directory blocks
+
+            Byte 8		Gap length (read/write)
+
+            Byte 9		Gap length (format)
+
+            Bytes 10...14	Reserved
+
+            Byte 15		Checksum (used only if disk is bootable)
+    */
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Known disc format:");
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Type: %s",menu_dsk_spec_formats[spec_disk_type]);
+            
+
+            int sides_show=spec_disk_sides;
+            if (sides_show>=2) sides_show=1;
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,
+                " Sides: %d%s",sides_show+1,(spec_disk_sides==2 ? "(successive sides)" : ""));
+            
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Tracks/Sides: %d",
+                spec_tracks_side);
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sectors/Track: %d",
+                spec_sectors_track);
+            
+
+            int sector_size=128 << util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+4);
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Sector Size: %d",
+                sector_size);
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Reserved Tracks: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+5));
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Block size: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+6));
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Directory blocks: %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+7));
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (rw): %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+8));
+            
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Gap length (format): %d",
+                util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+9));
+            
+
+            //Calcular checksum de todo el sector
+            int i;
+            z80_byte calculated_checksum=0;
+
+            for (i=0;i<sector_size;i++) {
+                calculated_checksum +=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+i);
+            }
+
+            calculated_checksum ^=255;
+            calculated_checksum +=4;
+
+            //printf("calculated_checksum: %02XH\n",calculated_checksum);
+
+            z80_byte checksum_in_disk=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Checksum: %02XH",checksum_in_disk);
+            
+
+            if (calculated_checksum==checksum_in_disk) {
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL," Bootable disk");
+            }                                    
+                                                    
+        }
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"First Filesystem entries:");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Enter on any for more info)");
+        
+
+        int pista_filesystem;    
+        puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
+
+
+        //printf("Inicio filesystem: %XH\n",puntero);
+
+        
+        //puntero++; //Saltar el primer byte en la entrada de filesystem
+
+        menu_file_dsk_browser_show_click_file_incremento_pista_filesystem=pista_filesystem;
+        for (i=0;i<max_entradas_dsk;i++) {
+
+            z80_byte user_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero);
+
+            //Solo mostrar entradas de archivo con primer extent
+            z80_byte extent_ex=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12);
+            z80_byte extent_s2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+13);
+
+            if (extent_ex==0 && extent_s2==0 && user_number!=0xE5) {
+
+                menu_file_dsk_browser_show_file(&dsk_file_memory[puntero+1],buffer_texto,1);
+                if (buffer_texto[0]!='?') {
+                    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,
+                        menu_file_dsk_browser_show_click_file,NULL,buffer_texto);
+                    //Le indicamos el numero de bloque como opcion
+                    menu_add_item_menu_valor_opcion(array_menu_common,i);
+
+                }
+            }
+
+            puntero +=tamanyo_dsk_entry;
 
 
 
-	int puntero,i;
-	//puntero=0x201;
+        }
+        
 
-	puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load);
-/*
-en teoria , el directorio empieza en pista 0 sector 0, aunque esta info dice otra cosa:
+        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                TRACK 0          TRACK 1             TRACK 2
+        menu_add_ESC_item(array_menu_common);
 
-SPECTRUM +3    Reserved          Directory             -
-                               (sectors 0-3)
+        retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"DSK file viewer");
 
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-Me encuentro con algunos discos en que empiezan en pista 1 y otros en pista 0 ??
+            }
+        }
 
-*/
-
-	if (puntero==-1) {
-		//printf ("Filesystem track/sector not found. Guessing it\n");
-		//no encontrado. probar con lo habitual
-		puntero=0x200;
-	}
-
-	//else {
-		//Si contiene e5 en el nombre, nos vamos a pista 1
-		if (dsk_file_memory[puntero+1]==0xe5) {
-			//printf ("Filesystem doesnt seem to be at track 0. Trying with track 1\n");
-            int total_pistas=bytes_to_load/4864;
-
-            puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,1,0,longitud_dsk);
-
-			if (puntero==-1) {
-		                //printf ("Filesystem track/sector not found. Guessing it\n");
-		                //no encontrado. probar con lo habitual
-	                	puntero=0x200;
-			}
-			//else 	printf ("Filesystem found at offset %XH\n",puntero);
-		}
-		//else printf ("Filesystem found at offset %XH\n",puntero);
-	//}
-	
-	puntero++; //Saltar el primer byte en la entrada de filesystem
-
-
-
-	for (i=0;i<max_entradas_dsk;i++) {
-
-		menu_file_mmc_browser_show_file(&dsk_file_memory[puntero],buffer_texto,1,11);
-		if (buffer_texto[0]!='?') {
-			indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
-		}
-
-		puntero +=tamanyo_dsk_entry;	
-
-
-	}
-	
-
-
-	texto_browser[indice_buffer]=0;
-
-
-	//  menu_generic_message_tooltip("DSK file browser", 0, 0, 1, NULL, "%s", texto_browser);
-	zxvision_generic_message_tooltip("DSK file viewer" , 0 , 0, 0, 1, NULL, 1, "%s", texto_browser);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 	free(dsk_file_memory);
-    free(texto_browser);
+
 
 }
 

@@ -51,12 +51,36 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
+-indicador de app abierta: al abrir una app que no estaba abierta, no aparece el indicador a no ser que se mueva la ventana u otro evento
+de repintado de ZX desktop. quiza al abrir una app habría que hacer que se redibujase siempre el zx desktop con menu_draw_ext_desktop(). como? Alternativas:
+a) al final de zxvision_new_window_gn_cim. no me convence.. estamos haciendo dibujado en una funcion no pensada para ello
+b) en la app, antes de llamar a zxvision_draw_window(ventana); un poco chapuza porque hay que meter la llamada siempre ahi antes
+quiza simplificarlo con una llamada nueva que llame a las dos
+Igualmente esta solución puede que muestre parpadeos (sobre todo mas en xwindow) porque dibujara el desktop, borrando todo,  y luego encima la ventana
+Y cuando pase unos segundos redibujara todo
+c) dejarlo asi tal cual. no es un bug sino una feature: no se vera la marca hasta hacer algun evento de redibujado de zxdesktop ;)
+Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la marca se ve siempre
+
+
+
 
 --- FIN ZX Desktop
 
 
 
 --- ZX Vision
+
+-con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
+quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
+(y de ahi que al reducirla tenga scroll)
+De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
+Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana.
+Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
+
+-caracter dieresis i (ï) para mensaje como :
+No tots els missages estan traduits
+Debe ser:
+No tots els missages estan traduïts
 
 -ideas para zx vision: https://telcontar.net/Misc/GUI/RISCOS/
 

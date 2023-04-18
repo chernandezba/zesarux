@@ -25,6 +25,7 @@
 #include "cpu.h"
 
 #define JOYSTICK_TOTAL 14
+#define JOYSTICK_NONE 0
 #define JOYSTICK_KEMPSTON 1
 #define JOYSTICK_SINCLAIR_1 2
 #define JOYSTICK_SINCLAIR_2 3
@@ -102,6 +103,7 @@ extern z80_byte kempston_mouse_x,kempston_mouse_y;
 extern void joystick_print_types(void);
 
 extern void joystick_cycle_next_type(void);
+extern void joystick_cycle_next_type_autofire(void);
 
 #define JOYSTICK_KEY_FIRE_IS_HOME 0
 #define JOYSTICK_KEY_FIRE_IS_RIGHTALT 1

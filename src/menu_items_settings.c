@@ -133,6 +133,7 @@
 #include "samram.h"
 #include "snap_zx8081.h"
 #include "menu_bitmaps.h"
+#include "pcw.h"
 
 
 #ifdef COMPILE_ALSA
@@ -216,7 +217,7 @@ int ext_desktop_settings_opcion_seleccionada=0;
 int cpu_settings_opcion_seleccionada=0;
 int zxdesktop_set_configurable_icons_opcion_seleccionada=0;
 int fileselector_settings_opcion_seleccionada=0;
-
+int debug_verbose_filter_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -381,6 +382,18 @@ void menu_settings_config_file_show(MENU_ITEM_PARAMETERS)
 	}
 }
 
+void menu_settings_config_file_show_location(MENU_ITEM_PARAMETERS)
+{
+
+    char configfile[PATH_MAX];
+
+    if (util_get_configfile_name(configfile)==0)  {
+        sprintf(configfile,"Unknown");
+    }
+
+	menu_generic_message_format("Config Path",configfile);    
+}
+
 
 void menu_settings_config_file_reset(MENU_ITEM_PARAMETERS)
 {
@@ -418,6 +431,7 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'s');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Overwrite your configuration file with current settings");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show,NULL,
@@ -425,13 +439,22 @@ void menu_settings_config_file(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'v');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"View configuration file");
 		menu_add_item_menu_ayuda(array_menu_settings_config_file,"View configuration file");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_show_location,NULL,
+            "    Show config file ~~path","    Ver ~~path archivo configuración","    Veure ~~path arxiu configuració");
+		menu_add_item_menu_shortcut(array_menu_settings_config_file,'p');
+		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Show config file location");
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Show config file location");
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);        
 
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_config_file,MENU_OPCION_NORMAL,menu_settings_config_file_reset,NULL,
             "    ~~Reset config file","    ~~Resetear archivo config","    ~~Resetejar arxiu config");
 		menu_add_item_menu_shortcut(array_menu_settings_config_file,'r');
 		menu_add_item_menu_tooltip(array_menu_settings_config_file,"Reset configuration file to default values");
-		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");		
+		menu_add_item_menu_ayuda(array_menu_settings_config_file,"Reset configuration file to default values");	
+        menu_add_item_menu_es_avanzado(array_menu_settings_config_file);	
 
 
 
@@ -870,6 +893,16 @@ void menu_interface_frameskip_draw_zxdesktop_background(MENU_ITEM_PARAMETERS)
     frameskip_draw_zxdesktop_background.v ^=1;
 }
 
+void menu_interface_zoom_autochange_big_display(MENU_ITEM_PARAMETERS)
+{
+    autochange_zoom_big_display.v ^=1;
+}
+
+void menu_interface_rpi_performance_params(MENU_ITEM_PARAMETERS)
+{
+    cambio_parametros_maquinas_lentas.v ^=1;
+}
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -883,7 +916,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
 		menu_add_item_menu_shortcut(array_menu_window_settings,'f');
 
-		if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC) {
+		if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
 	        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
                 "~~Border enabled","~~Borde activado","~~Border activat");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ", (border_enabled.v==1 ? 'X' : ' ') );
@@ -904,13 +937,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'r');
         menu_add_item_menu_tooltip(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Sets the number of frames to skip every time the screen needs to be refreshed");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
         menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_frameskip_draw_zxdesktop_background,NULL,
             "Frameskip to ZX Desktop background","Frameskip en fondo ZX Desktop","Frameskip al fons del ZX Desktop");
-        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')                
-        );
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c]  ",(frameskip_draw_zxdesktop_background.v ? 'X' : ' ')  );
         menu_add_item_menu_tooltip(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Apply frameskip when drawing ZX Desktop background");        
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 		menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_autoframeskip,NULL,"[%c] ~~%s",        
@@ -918,9 +952,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 menu_get_string_language("Auto Frameskip")
         );
 
-
- 
-				menu_add_item_menu_shortcut(array_menu_window_settings,'a');	
+		menu_add_item_menu_shortcut(array_menu_window_settings,'a');	
         menu_add_item_menu_tooltip(array_menu_window_settings,"Let ZEsarUX decide when to skip frames");
         menu_add_item_menu_ayuda(array_menu_window_settings,"ZEsarUX skips frames when the host cpu use is too high. Then skiping frames the cpu use decreases");
 
@@ -934,13 +966,26 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Autoframeskip even when moving icons or windows or resizing windows. Enabling it uses less cpu when moving or resizing objects but "
                 "can make objects disappear or not refresh quickly. Disabling it enhances refreshing objects when moving but uses more cpu and may slow down emulation");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
+
+
+#ifdef EMULATE_RASPBERRY
+        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_rpi_performance_params,NULL,
+            "RPi slow improve performance","RPi lenta mejorar rendimiento","RPi lenta millorar rendiment");
+        menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(cambio_parametros_maquinas_lentas.v ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_window_settings,"Change some performance parameters (frameskip, realvideo, etc) on slow machines like Rpi 1");
+        menu_add_item_menu_ayuda(array_menu_window_settings,"Change some performance parameters (frameskip, realvideo, etc) on slow machines like Rpi 1");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+#endif        
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_flash,NULL,
             "Flash enabled","Parpadeo activado","Parpelleig activat");
         menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_change_flash.v==0 ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
         menu_add_item_menu_ayuda(array_menu_window_settings,"Disables flash for emulated machines and also for menu interface");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
         if (mouse_menu_disabled.v==0) {
@@ -953,6 +998,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_shortcut(array_menu_window_settings,'i');
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disabling this will make mouse be ignored when clicking on "
                 "the window to open menu or pressing ZX Desktop buttons. The mouse can still be used when the menu is open");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
         }
 
 		menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_setting_limit_menu_open,NULL,
@@ -961,6 +1007,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'m');	
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button)");			
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 
@@ -969,6 +1016,11 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_shortcut(array_menu_window_settings,'z');
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Change Window Zoom");
                 menu_add_item_menu_ayuda(array_menu_window_settings,"Changes Window Size Zoom (width and height)");
+
+                menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_zoom_autochange_big_display,NULL,
+                    "[%c] Autochange Zoom big display",(autochange_zoom_big_display.v ? 'X' : ' ' )); 
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)");
         }
 
 
@@ -976,14 +1028,19 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark");
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Reduce machine display output by 0.75. Enables realvideo and forces watermark. This feature has been used on a large bulb display for the RunZX 2018 event");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 		if (screen_reduce_075.v) {
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_antialias,NULL,"[%c]  Antialias",(screen_reduce_075_antialias.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"Antialias is only applied to the standard 16 Spectrum colors");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofx,NULL,"[%d]  Offset x",screen_reduce_offset_x);
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
 			menu_add_item_menu_format(array_menu_window_settings,MENU_OPCION_NORMAL,menu_window_settings_reduce_075_ofy,NULL,"[%d]  Offset y",screen_reduce_offset_y);
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 		
 
@@ -997,6 +1054,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'o');
 		menu_add_item_menu_tooltip(array_menu_window_settings,"Show on footer some machine information");
 		menu_add_item_menu_ayuda(array_menu_window_settings,"Show on footer some machine information, like tape loading");
+        menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
 
 		if (menu_footer) {
@@ -1005,6 +1063,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_window_settings,'p');
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show FPS on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the current FPS");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 												
 		}
 
@@ -1019,6 +1078,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU usage on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells you how much host cpu machine is using ZEsarUX. So it's better to have it low. "
 															"Higher values mean you need a faster host machine to use ZEsarUX");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 #endif
 
@@ -1030,6 +1090,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 			//menu_add_item_menu_shortcut(array_menu_window_settings,'c');
 			menu_add_item_menu_tooltip(array_menu_window_settings,"Show CPU temperature on footer");
 			menu_add_item_menu_ayuda(array_menu_window_settings,"It tells the temperature of the main CPU");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 												
 		}
 #endif
@@ -1062,6 +1123,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
 			menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_change_video_driver,menu_change_video_driver_cond,
                 "Change Video Driver","Cambiar Driver Video","Canviar Driver Video");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
 		}
 
 
@@ -1465,6 +1527,17 @@ void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_interface_charheight(MENU_ITEM_PARAMETERS)
+{
+	menu_char_height--;
+
+	if (menu_char_height==5) menu_char_height=8;
+
+    menu_interface_charwidth_after_width_change();
+
+
+}
+
 
 void menu_interface_hide_submenu_indicator(MENU_ITEM_PARAMETERS)
 {
@@ -1611,14 +1684,19 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
     do {
 
 	
-		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char w~~idth");
-        menu_add_item_menu_spanish_catalan(array_menu_common,"Ampl~~itud de caracter de menu","Ampl~~itud de caracter de menu");
+		menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_interface_charwidth,NULL,"Menu char width");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Ancho de caracter de menú","Ample de caracter de menú");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_width);
-		menu_add_item_menu_shortcut(array_menu_common,'i');	
+		//menu_add_item_menu_shortcut(array_menu_common,'i');	
 		menu_add_item_menu_tooltip(array_menu_common,"Menu character width");
 		menu_add_item_menu_ayuda(array_menu_common,"Menu character width. You can reduce it so allowing more text columns in a window");
 
 
+		menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charheight,NULL,"Menu char height");
+        menu_add_item_menu_spanish_catalan(array_menu_common,"Altura de caracter de menú","Alçada de caracter de menú");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",menu_char_height);
+		menu_add_item_menu_tooltip(array_menu_common,"Menu character height");
+		menu_add_item_menu_ayuda(array_menu_common,"Menu character height. You can reduce it so allowing more text rows in a window");
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_first_aid,NULL,
             "First aid help","Ayuda de primeros auxilios","Ajuda de primers auxilis");
@@ -1633,6 +1711,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                 "    Restore all 1st aid mess.","    Restaurar todos mens. 1r auxi.","    Restaurar tots miss. 1r auxi.");
             menu_add_item_menu_tooltip(array_menu_common,"Restore all First Aid help messages");
             menu_add_item_menu_ayuda(array_menu_common,"Restore all First Aid help messages");
+            menu_add_item_menu_es_avanzado(array_menu_common);
 
         }
 
@@ -1640,9 +1719,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_select_machine_by_name,NULL,
             "Select machine by name","Seleccionar maquina por nombre","Escollir maquina pel nom");
 		menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_machine_selection_by_name.v ? 'X' : ' ') );
-
 		menu_add_item_menu_tooltip(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
 		menu_add_item_menu_ayuda(array_menu_common,"Select machine by name instead of manufacturer on menu Machine");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
@@ -1651,6 +1730,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_common,'q');	
 		menu_add_item_menu_tooltip(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");			
 		menu_add_item_menu_ayuda(array_menu_common,"Exit emulator quickly: no yes/no confirmation and no fadeout");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_change_gui_style,NULL,
@@ -1705,6 +1785,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset,NULL,
             "    Custom charset","    Charset personalizado","    Charset personalitzat");
         menu_add_item_menu_sufijo(array_menu_common,temp_charset);
+        menu_add_item_menu_es_avanzado(array_menu_common);
     
 
 
@@ -1712,8 +1793,9 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_disable_menu_mouse,NULL,
-            "Use mouse on menu","Usar raton en el menu","Usar ratolí al menu");
+            "Use mouse on menu","Usar ratón en el menu","Usar ratolí al menu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_menu_disabled.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
         //menu_add_item_menu_shortcut(array_menu_common,'u');      
 
         if (mouse_menu_disabled.v==0) {
@@ -1722,6 +1804,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
                     "Mouse pointer","Puntero del raton","Punter del ratolí");
                 menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ", (mouse_pointer_shown.v==1 ? 'X' : ' ') );
                 //menu_add_item_menu_shortcut(array_menu_common,'m');
+                menu_add_item_menu_es_avanzado(array_menu_common);
             }
         }
 
@@ -1736,12 +1819,14 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_shortcut(array_menu_common,'h');
 		menu_add_item_menu_tooltip(array_menu_common,"Force always show hotkeys");
 		menu_add_item_menu_ayuda(array_menu_common,"Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_force_confirm_yes,NULL,
             "Force confirm yes","Forzar confirmaciones a si","Forçar confirmacions a si");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(force_confirm_yes.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Force confirmation dialogs yes/no always to yes");
 		menu_add_item_menu_ayuda(array_menu_common,"Force confirmation dialogs yes/no always to yes");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 
@@ -1751,25 +1836,31 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 		//menu_add_item_menu_shortcut(array_menu_common,'p');
 		menu_add_item_menu_tooltip(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
 		menu_add_item_menu_ayuda(array_menu_common,"Shows vertical percentage bar on the right of text windows and file browser");
+        menu_add_item_menu_es_avanzado(array_menu_common);
+
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_submenu_indicator,NULL,
             "Submenu indicator","Indicador de submenu","Indicador de submenu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_submenu_indicator.v==0 ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
         menu_add_item_menu_ayuda(array_menu_common,"Shows submenu indicator character (>) on menu items with submenus");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
             "Minimize button","Boton de minimizar","Boto de minimitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
             "Maximize button","Boton de maximizar","Boto de maximitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 		
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
             "Close button","Boton de cerrar","Boto de tancar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
@@ -1777,18 +1868,20 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
         menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_invert_mouse_scroll,NULL,
             "Invert mouse scroll","Invertir scroll raton","Invertir scroll ratoli");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_invert_mouse_scroll.v ? 'X' : ' ') );
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_mouse_right_esc,NULL,
             "Right mouse sends ESC","Boton derecho envia ESC","Botó dret envia ESC");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_mouse_right_send_esc.v ? 'X' : ' ') ); 
-
         menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -1825,7 +1918,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
         if (menu_allow_background_windows && menu_multitarea) {
            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_allow_background_windows_always_force,NULL,
-            "Even when menu closed","Incluso con menu cerrado","Inclus amb menu tancat");
+            "Even when menu closed","Incluso con menu cerrado","Inclús amb menu tancat");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%c]  ",(always_force_overlay_visible_when_menu_closed ? 'X' : ' ') ); 
            menu_add_item_menu_tooltip(array_menu_common,"Shows background window even when menu closed");
            menu_add_item_menu_ayuda(array_menu_common,"Shows background window even when menu closed");
@@ -1841,6 +1934,7 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             "    Restore windows geometry","    Restaurar geometria ventanas","    Restaurar geometria finestres");
 		menu_add_item_menu_tooltip(array_menu_common,"Restore all windows positions and sizes to their default values");
 		menu_add_item_menu_ayuda(array_menu_common,"Restore all windows positions and sizes to their default values");
+        menu_add_item_menu_es_avanzado(array_menu_common);
 
         
 
@@ -2098,56 +2192,7 @@ void menu_external_tools_config(MENU_ITEM_PARAMETERS)
 
 
 
-/*
 
-Funcion ya no usada. Se usa la comun menu_zxdesktop_set_userdef_button_func_action para botones y teclas F
-
-void menu_hardware_set_f_func_action(MENU_ITEM_PARAMETERS)
-{
-    hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
-
-
-    menu_item *array_menu_hardware_set_f_func_action;
-    menu_item item_seleccionado;
-    int retorno_menu;
-
-
-    char buffer_texto[40];
-
-    int i;
-    for (i=0;i<MAX_F_FUNCTIONS;i++) {
-
-        //enum defined_f_function_ids accion=defined_f_functions_keys_array[i];
-
-        sprintf (buffer_texto,"%s",defined_direct_functions_array[i].texto_funcion);
-
-
-            if (i==0) menu_add_item_menu_inicial_format(&array_menu_hardware_set_f_func_action,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-            else menu_add_item_menu_format(array_menu_hardware_set_f_func_action,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-
-    }
-
-
-    menu_add_item_menu(array_menu_hardware_set_f_func_action,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-    //menu_add_item_menu(array_menu_hardware_set_f_func_action,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-    menu_add_ESC_item(array_menu_hardware_set_f_func_action);
-
-    retorno_menu=menu_dibuja_menu(&hardware_set_f_func_action_opcion_seleccionada,&item_seleccionado,array_menu_hardware_set_f_func_action,"Set Action" );
-
-                
-
-
-    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-        //Si se pulsa Enter
-        int indice=hardware_set_f_func_action_opcion_seleccionada;
-        defined_f_functions_keys_array[valor_opcion]=indice;
-
-												
-    }
-
-}
-*/
 
 
 
@@ -2344,6 +2389,81 @@ void menu_debug_settings_show_fired_halt(MENU_ITEM_PARAMETERS)
     debug_settings_show_fired_halt.v ^=1;
 }
 
+void menu_debug_verbose_excludeinclude(MENU_ITEM_PARAMETERS)
+{
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+    }
+    else {
+        debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+    }
+    
+}
+
+void menu_debug_verbose_filter_item(MENU_ITEM_PARAMETERS)
+{
+    //Obtener bit de mascara que vamos a cambiar
+    int class_mask=debug_get_class_mask_value(valor_opcion);
+
+    //Conmutar valor
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        debug_mascara_clase_exclude ^= class_mask;
+    }
+    else {
+        debug_mascara_clase_include ^= class_mask;
+    }
+}
+
+void menu_debug_verbose_filter(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        int valor_mascara_config=(debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? debug_mascara_clase_exclude : debug_mascara_clase_include);
+
+
+        int total_masks=debug_get_total_class_masks();
+        int i;
+        for (i=0;i<total_masks;i++) {
+            int class_mask=debug_get_class_mask_value(i);
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_verbose_filter_item,NULL,"[%c] %s",
+                (valor_mascara_config & class_mask ? 'X' : ' '),
+                debug_get_class_mask_name(i)
+            );
+
+            menu_add_item_menu_valor_opcion(array_menu_common,i);
+        }
+
+        
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&debug_verbose_filter_opcion_seleccionada,&item_seleccionado,array_menu_common,"Filter mask");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}    
+    
+
 //menu debug settings
 void menu_settings_debug(MENU_ITEM_PARAMETERS)
 {
@@ -2454,6 +2574,25 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
         menu_add_item_menu_tooltip(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
         menu_add_item_menu_ayuda(array_menu_settings_debug,"Verbose level for debug messages. Usually shown on terminal console or on debug console window");
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_excludeinclude,NULL,
+            "Message filter","Filtro mensajes","Filtre missatges");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%s] ",
+            (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? "Exclude" : "Include") );
+		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter type for debug messages");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Filter type for debug messages");
+
+        int valor_mascara=(debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE ? debug_mascara_clase_exclude : debug_mascara_clase_include);
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_verbose_filter,NULL,
+            "Filter mask","Máscara filtro","Màscara filtre");
+        menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%08X] ",valor_mascara);
+		menu_add_item_menu_shortcut(array_menu_settings_debug,'l');	
+        menu_add_item_menu_tooltip(array_menu_settings_debug,"Filter mask for debug messages");
+        menu_add_item_menu_ayuda(array_menu_settings_debug,"Filter mask for debug messages");
+
+
 
 		menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL,menu_debug_unnamed_console_enable,NULL,
             "Debug console window","Ventana de consola depuración","Finestra de consola depuració");
@@ -3033,6 +3172,11 @@ z80_byte gs_memory_mapping_mask_pages=15;
 
 }
 
+void menu_audiosdl_callback_type(MENU_ITEM_PARAMETERS)
+{
+    audiosdl_use_new_callback.v ^=1;
+}
+
 void menu_settings_audio(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_settings_audio;
@@ -3077,6 +3221,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Total number of AY Chips");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Total number of AY Chips");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
         }
 
@@ -3091,20 +3236,22 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_setting_ay_piano_grafico,NULL,"    ~~Piano Type");
             menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Tipo ~~Piano","    Tipus ~~Piano");
 			menu_add_item_menu_sufijo_format(array_menu_settings_audio," [%s]",(setting_mostrar_ay_piano_grafico.v ? "Graphic" : "Text") );
-
 			menu_add_item_menu_shortcut(array_menu_settings_audio,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"Shows AY/Beeper Piano menu with graphic or with text");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 		}
 
 
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_enable,NULL,"[%c] General Sound", (gs_enabled.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
             if (gs_enabled.v) {
                 menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_general_sound_mem,NULL,"[%4d KB] General Sound RAM",
                 (gs_memory_mapping_mask_pages+1)*32 );
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
             }
         }
 
@@ -3116,6 +3263,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_SPECTRUM) {
 
 			menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 			char string_audiodac[32];
 
@@ -3129,8 +3277,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_type,NULL,"[%c] ~~DAC%s",(audiodac_enabled.v ? 'X' : ' ' ),
 						string_audiodac);
 				menu_add_item_menu_shortcut(array_menu_settings_audio,'d');
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
 				if (audiodac_enabled.v) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_audiodac_set_port,NULL,"[%02XH] DAC port",audiodac_types[audiodac_selected_type].port);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				}
 
 
@@ -3199,6 +3350,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_audio,"Apply filter on ROM save routines");
 			menu_add_item_menu_ayuda(array_menu_settings_audio,"It detects when on ROM save routines and alter audio output to use only "
 					"the MIC bit of the FEH port");
+            menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 //extern z80_bit output_beep_filter_alter_volume;
 //extern char output_beep_filter_volume;
@@ -3210,10 +3362,12 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_tooltip(array_menu_settings_audio,"Alter output beeper volume");
 				menu_add_item_menu_ayuda(array_menu_settings_audio,"Alter output beeper volume. You can set to a maximum to "
 							"send the audio to a real spectrum to load it");
+                menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 				if (output_beep_filter_alter_volume.v) {
 					menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_beep_volume,NULL,"[%d] Beeper volume",output_beep_filter_volume);
+                    menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 				}
 			}
 
@@ -3223,9 +3377,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audio_resample_1bit,NULL,"[%c] 1 bit filter",(audio_resample_1bit.v ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Resample audio output to 1 bit only");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"Resample audio output to 1 bit only");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 		
 	
 		menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 		char string_aofile_shown[10];
@@ -3237,6 +3393,7 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_audio,"Saves the generated sound to a file");
 		menu_add_item_menu_ayuda(array_menu_settings_audio,"You can save .raw format and if compiled with sndfile, to .wav format. "
 					"You can see the file parameters on the console enabling verbose debug level to 2 minimum");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
 
@@ -3244,19 +3401,38 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Archivo audio ~~insertado","Arxiu audio ~~insertat");
         menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(aofile_inserted.v ? 'X' : ' ' ));
 		menu_add_item_menu_shortcut(array_menu_settings_audio,'i');
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
 
-				menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
-                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
-                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
-				menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
-				menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
-				menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_silence_detector,NULL,"Si~~lence detector");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"Detector de silencio","Detector de silenci");
+        menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%c] ",(silence_detector_setting.v ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_settings_audio,'l');
+        menu_add_item_menu_tooltip(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_ayuda(array_menu_settings_audio,"Change this setting if you are listening some audio 'clicks'");
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
 
-                menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
-                menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
-				menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
-                menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
+        menu_add_item_menu_format(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_change_audio_driver,NULL,"    Change Audio Driv~~er");
+        menu_add_item_menu_spanish_catalan(array_menu_settings_audio,"    Cambiar Driv~~er Audio","    Canviar Driv~~er Audio");
+        menu_add_item_menu_shortcut(array_menu_settings_audio,'e');
+        menu_add_item_menu_tiene_submenu(array_menu_settings_audio);
+        menu_add_item_menu_es_avanzado(array_menu_settings_audio);
+
+
+			if (!strcmp(audio_new_driver_name,"sdl")) {
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                menu_add_item_menu(array_menu_settings_audio,"--Audio SDL settings--",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+                menu_add_item_menu_en_es_ca(array_menu_settings_audio,MENU_OPCION_NORMAL,menu_audiosdl_callback_type,NULL,
+                    "Callback Type","Tipo Callback","Tipus Callback");
+                menu_add_item_menu_prefijo_format(array_menu_settings_audio,"[%s] ",
+                    (audiosdl_use_new_callback.v ? "New" : "Old"));
+                menu_add_item_menu_tooltip(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+                menu_add_item_menu_ayuda(array_menu_settings_audio,"Use Old Callback or New. New Callback is usually better on Windows\n");
+
+                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);         
+                           
+			}	
 
 
 			if (!strcmp(audio_new_driver_name,"onebitspeaker")) {
@@ -3338,11 +3514,11 @@ void menu_settings_audio(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_settings_audio,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 		menu_add_ESC_item(array_menu_settings_audio);
 
-                retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,"Audio Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_audio_opcion_seleccionada,&item_seleccionado,array_menu_settings_audio,"Audio Settings" );
 
                 
 
@@ -3830,7 +4006,37 @@ int menu_hardware_autofire_cond(void)
 
 void menu_hardware_joystick(MENU_ITEM_PARAMETERS)
 {
-	joystick_cycle_next_type();
+
+
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    int opcion_seleccionada=joystick_emulation;
+
+
+    menu_add_item_menu_inicial(&array_menu_common,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+    int i;
+
+    for (i=0;i<=JOYSTICK_TOTAL;i++) {
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,joystick_texto[i]);
+
+    }
+
+    menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+    menu_add_ESC_item(array_menu_common);
+
+    retorno_menu=menu_dibuja_menu(&opcion_seleccionada,&item_seleccionado,array_menu_common,"Joystick");
+
+     
+
+    if (retorno_menu==MENU_RETORNO_NORMAL && (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0) {
+        joystick_emulation=opcion_seleccionada;
+        joystick_cycle_next_type_autofire();
+    }
+    
 }
 
 void menu_hardware_gunstick(MENU_ITEM_PARAMETERS)
@@ -4098,8 +4304,13 @@ int menu_inves_cond(void)
 }
 
 
+void menu_hardware_pcw_ram(MENU_ITEM_PARAMETERS)
+{
 
+    if (pcw_total_ram==2*1024*1024) pcw_total_ram=256*1024;
+    else pcw_total_ram *=2;
 
+}
 //menu hardware settings
 void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 {
@@ -4124,6 +4335,10 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 		if (MACHINE_IS_TBBLUE) {
 			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_ram,NULL,"RAM size [%d KB]",tbblue_get_current_ram() );
 		}
+
+		if (MACHINE_IS_PCW) {
+			menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_pcw_ram,NULL,"RAM size [%d KB]",pcw_total_ram/1024 );
+		}        
 
 		if (menu_cond_zx8081() ) {
 
@@ -4635,7 +4850,7 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 		}
 
-		if (MACHINE_IS_Z88 || MACHINE_IS_CPC || chloe_keyboard.v || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI)  {
+		if (MACHINE_IS_Z88 || MACHINE_IS_CPC || MACHINE_IS_PCW || chloe_keyboard.v || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
 			//keymap solo hace falta con xwindows y sdl. fbdev y cocoa siempre leen en raw como teclado english
 			if (!strcmp(scr_new_driver_name,"xwindows")  || !strcmp(scr_new_driver_name,"sdl") ) {
 				
@@ -4714,8 +4929,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI) {
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,"~~Joystick type [%s]",joystick_texto[joystick_emulation]);
+		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_SAM || MACHINE_IS_CPC || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick,NULL,
+                "~~Joystick type","Tipo ~~Joystick","Tipus ~~Joystick");
+			menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%s]",joystick_texto[joystick_emulation]);
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'j');
         	        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Decide which joystick type is emulated");
                 	menu_add_item_menu_ayuda(array_menu_hardware_settings,"Joystick is emulated with:\n"
@@ -4724,21 +4941,28 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			);
         }
 
-        if (joystick_autofire_frequency==0) menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,menu_hardware_autofire_cond,"[ ] Joystick ~~Autofire");
+        if (joystick_autofire_frequency==0) {
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,menu_hardware_autofire_cond,
+                "[ ] Joystick ~~Autofire","[ ] Joystick ~~Autodisparo","[ ] Joystick ~~Autofoc");
+        }
         else {
-                menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,"[%d Hz] Joystick ~~Autofire",50/joystick_autofire_frequency);
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autofire,NULL,
+            "Joystick ~~Autofire","Joystick ~~Autodisparo","Joystick ~~Autofoc");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autofire_frequency);
         }
         menu_add_item_menu_shortcut(array_menu_hardware_settings,'a');
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"Frequency for the joystick autofire");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"Times per second (Hz) the joystick fire is auto-switched from pressed to not pressed and viceversa. "
                                         "Autofire can only be enabled on Kempston, Fuller, Zebra and Mikrogen; Sinclair, Cursor, and OPQA can not have "
                                         "autofire because this function can interfiere with the menu (it might think a key is pressed)");
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-        menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,"[%d Hz] Joystick ~~AutoLeftRight",50/joystick_autoleftright_frequency);
-
-
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_autoleftright,NULL,
+            "Joystick AutoLeftRight","Joystick AutoIzqDer","Joystick AutoEsqDreta");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%d Hz] ",50/joystick_autoleftright_frequency);
         menu_add_item_menu_tooltip(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
         menu_add_item_menu_ayuda(array_menu_hardware_settings,"You have to define a F-key or a button to trigger the action: JoyLeftRight");
+        menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		
 		
 
@@ -4764,13 +4988,18 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Lightgun emulation supports the following two models:\n\n"
 					"Gunstick from MHT Ingenieros S.L: all types except AYChip\n\n"
 					"Magnum Light Phaser (experimental): supported by AYChip type");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
 			if (menu_hardware_gunstick_aychip_cond()) {
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_x,NULL," X Range: %d",gunstick_range_x);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_range_y,NULL," Y Range: %d",gunstick_range_y);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_y_offset,NULL," Y Offset: %s%d",(gunstick_y_offset ? "-" : "" ), gunstick_y_offset);
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 				menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_gunstick_solo_brillo,NULL," Detect only white bright: %s",(gunstick_solo_brillo ? "On" : "Off"));
+                menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		}
 
 
@@ -4780,14 +5009,17 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 			if (kempston_mouse_emulation.v) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_kempston_mouse_sensibilidad,NULL,"[%2d] Mouse Sensitivity",kempston_mouse_factor_sensibilidad);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 			}
 
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_datagear_dma,NULL,"[%c] Datagear DMA emulation",(datagear_dma_emulation.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_dinamic_sd1,NULL,"[%c] Dinamic SD1 emulation",(dinamic_sd1.v ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 		}		
 
 
@@ -4796,17 +5028,21 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			(tbblue_fast_boot_mode.v ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%d] Next machine id",tbblue_machine_id); 
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			//menu_hardware_tbblue_core_version
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_tbblue_core_version,NULL,"[%d.%d.%d] Next core version",
 									tbblue_core_current_version_major,tbblue_core_current_version_minor,tbblue_core_current_version_subminor);
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 
 			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_rtc_traps,NULL,"[%c] Next RTC traps",(tbblue_use_rtc_traps ? 'X' : ' ') );
 			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM");
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Allows RTC trap for NextOS ROM and any program that uses RTC.SYS");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 		}
 
@@ -4842,6 +5078,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,"Sync Z88 clock");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
+            menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
         }
 
 
@@ -5945,6 +6182,25 @@ void menu_settings_display_z88_shortcuts(MENU_ITEM_PARAMETERS)
     screen_z88_draw_lower_screen();
 }
 
+void menu_display_pcw_black_white(MENU_ITEM_PARAMETERS)
+{
+    pcw_black_white_display.v ^=1;
+}
+
+void menu_display_pcw_always_on(MENU_ITEM_PARAMETERS)
+{
+    pcw_always_on_display.v ^=1;
+}
+
+void menu_display_pcw_do_not_inverse(MENU_ITEM_PARAMETERS)
+{
+    pcw_do_not_inverse_display.v ^=1;
+}
+
+void menu_display_pcw_do_not_scroll(MENU_ITEM_PARAMETERS)
+{
+    pcw_do_not_scroll.v ^=1;
+}
 
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
@@ -6023,11 +6279,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Allow legacy hi-color effects on pixel/attribute display zone on TBBlue");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Allows you to make hi-res effects on pixel/attribute display zone on TBBlue, like overscan demo for example. "
 										"It is not needed for Spectrum Next games, but needed for Timex 8x1 mode. Disabling it reduces cpu usage");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tbblue_store_scanlines_border,NULL,"[%c] Legacy border effects",(tbblue_store_scanlines_border.v ? 'X' : ' '));	
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Allow legacy border effects on TBBlue");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Allows you to make hi-res effects on border zone on TBBlue, like overscan demo or load/save border stripes for example. "
 										"It is not needed for Spectrum Next games. Disabling it reduces cpu usage");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			/*
 			Benchmark of this: compiled without optimization O2, with:
 			./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl 
@@ -6061,7 +6319,8 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enable optimized sprite rendering. Usually you don't need to disable this");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Optimized render walks on the sprite list until the last visible sprite. "
                                     "Besides, non-optimized rendering walk on the whole sprite list all the time, no matter the last visible sprite. "
-                                    "Usually don't want to disable this optimization");            
+                                    "Usually don't want to disable this optimization");    
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);        
 
 		}
 
@@ -6072,10 +6331,12 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables full vdac colour palette or PWM style");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Full vdac colour palette gives you different colour levels for every 5 bit colour component.\n"
 					"With PWM mode it gives you 5 bit values different from 0..23, but from 24 to 31 are all set to value 255");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_tsconf_pal_depth,NULL,
 					 "[%d] TSConf palette depth",tsconf_palette_depth);
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6089,7 +6350,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				else
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_cpc_force_mode,NULL,"[%d] Force Video Mode",
 						cpc_forzar_modo_video_modo);
-
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				//menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_cpc_double_vsync,NULL,"[%c] Double Vsync",(cpc_send_double_vsync.v==1 ? 'X' : ' ') );
 				//menu_add_item_menu_tooltip(array_menu_settings_display,"Workaround to avoid hang on some games");
 				//menu_add_item_menu_ayuda(array_menu_settings_display,"Workaround to avoid hang on some games");
@@ -6104,13 +6365,16 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 
 			if (menu_cond_realvideo() ) {
-				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,"[%c] ~~Interlaced mode", (video_interlaced_mode.v==1 ? 'X' : ' '));
-				menu_add_item_menu_shortcut(array_menu_settings_display,'i');
-				menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
-				menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
-					"Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
-					"to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
-					"This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081) {
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_interlace,menu_cond_realvideo,"[%c] ~~Interlaced mode", (video_interlaced_mode.v==1 ? 'X' : ' '));
+                    menu_add_item_menu_shortcut(array_menu_settings_display,'i');
+                    menu_add_item_menu_tooltip(array_menu_settings_display,"Enable interlaced mode");
+                    menu_add_item_menu_ayuda(array_menu_settings_display,"Interlaced mode draws the screen like the machine on a real TV: "
+                        "Every odd frame, odd lines on TV are drawn; every even frame, even lines on TV are drawn. It can be used "
+                        "to emulate twice the vertical resolution of the machine (384) or simulate different colours. "
+                        "This effect is only emulated with vertical zoom multiple of two: 2,4,6... etc");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
+                }
 
 
 				if (video_interlaced_mode.v) {
@@ -6118,15 +6382,17 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_shortcut(array_menu_settings_display,'c');
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable scanlines on interlaced mode");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Scanlines draws odd lines a bit darker than even lines");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				}
 
 
-				if (!MACHINE_IS_TBBLUE) {
+				if (MACHINE_IS_SPECTRUM) {
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_gigascreen,NULL,"[%c] ~~Gigascreen",(gigascreen_enabled.v==1 ? 'X' : ' '));
 					menu_add_item_menu_shortcut(array_menu_settings_display,'g');
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Enable gigascreen colours");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Gigascreen enables more than 15 colours by combining pixels "
 							"of even and odd frames. The total number of different colours is 102");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 				}
 
 
@@ -6139,9 +6405,11 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"(models except +2A and +3) that draws corrupted pixels when I register is pointed to "
 						"slow RAM.");
 						// Even on 48k models it resets the machine after some seconds drawing corrupted pixels");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 					if (snow_effect_enabled.v==1) {
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_snow_effect_margin,NULL,"[%d] Snow effect threshold",snow_effect_min_value);
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 					}
 				}
 
@@ -6150,12 +6418,25 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_inves_ula_bright_error,NULL,"[%c] Inves bright error",(inves_ula_bright_error.v ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Emulate Inves oddity when black colour and change from bright 0 to bright 1. Seems it only happens with RF or RGB connection");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 				}
 
-
-
 			}
+
+            if (MACHINE_IS_PCW) {
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
+                    "[%c] Black & White monitor",(pcw_black_white_display.v ? 'X' : ' '));
+
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
+                    "[%c] Always on monitor",(pcw_always_on_display.v ? 'X' : ' '));
+
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
+                    "[%c] Do not allow inverse",(pcw_do_not_inverse_display.v ? 'X' : ' '));
+
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_scroll,NULL,
+                    "[%c] Do not allow scroll",(pcw_do_not_scroll.v ? 'X' : ' '));
+            }
 		}
 
 		//para stdout
@@ -6192,6 +6473,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"LNCTR video adjust");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"LNCTR video adjust change sprite offset when drawing video images. "
 				"If you see your hi-res image is not displayed well, try changing it");
+            
 
 
 
@@ -6199,11 +6481,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_x_offset,menu_cond_zx8081_realvideo,"[%d] Video x_offset",offset_zx8081_t_coordx);
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video horizontal image offset");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video horizontal image offset, usually you don't need to change this");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_minimo_vsync,menu_cond_zx8081_realvideo,"[%d] Video min. vsync length",minimo_duracion_vsync);
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Video minimum vsync length in t-states");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Video minimum vsync length in t-states");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_autodetect_wrx,NULL,"[%c] Autodetect WRX",(autodetect_wrx.v==1 ? 'X' : ' '));
@@ -6228,6 +6512,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_emulate_fast_zx8081,menu_cond_zx8081_no_realvideo,"[%c] ZX80/81 detect fast mode", (video_fast_mode_emulation.v==1 ? 'X' : ' '));
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Detect fast mode and simulate it, on non-realvideo mode");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 		}
@@ -6258,12 +6543,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"Mode 7: Linear mode 128x192, 16 colours per pixel (ZEsarUX mode 1)\n"
 						"Mode 9: Linear mode 256x192, 16 colours per pixel (ZEsarUX mode 2)\n"
 			);
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_PENTAGON) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_16c_mode,NULL,"[%c] 16C mode support",(pentagon_16c_mode_available.v ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Enables 16C video mode support");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Enables 16C video mode support. That brings you mode 256x192x16 colour on Pentagon");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
@@ -6278,12 +6565,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				"Mode 1: Video data at address 24576 and 8x8 color attributes at address 30720\n"
 				"Mode 2: Multicolor mode: video data at address 16384 and 8x1 color attributes at address 24576\n"
 				"Mode 6: Hi-res mode 512x192, monochrome.");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 				if (timex_video_emulation.v && !MACHINE_IS_TBBLUE) {
 					menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_video_512192,NULL,"[%c] Timex Real 512x192",(timex_mode_512192_real.v ? 'X' : ' '));
 					menu_add_item_menu_tooltip(array_menu_settings_display,"Selects between real 512x192 or scaled 256x192");
 					menu_add_item_menu_ayuda(array_menu_settings_display,"Real 512x192 does not support scanline effects (it draws the display at once). "
 								"If not enabled real, it draws scaled 256x192 but does support scanline effects");
+                    menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6292,11 +6581,13 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_ugly_hack,NULL,"[%c] Ugly hack",(timex_ugly_hack_enabled ? 'X' : ' ') );
 						menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
 						menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 						if (timex_ugly_hack_enabled) {
 						menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_timex_force_line_512192,NULL,"[%d] Force 512x192 at",timex_ugly_hack_last_hires);
 						menu_add_item_menu_tooltip(array_menu_settings_display,"EXPERIMENTAL feature");
 						menu_add_item_menu_ayuda(array_menu_settings_display,"EXPERIMENTAL feature");
+                        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 						}
 					}
 
@@ -6310,12 +6601,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_shortcut(array_menu_settings_display,'e');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables Spectra video modes");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Enables Spectra video modes. All video modes are fully emulated");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 				menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_spritechip,NULL,"[%c] ~~ZGX Sprite Chip",(spritechip_enabled.v ? 'X' : ' ') );
 				menu_add_item_menu_shortcut(array_menu_settings_display,'z');
 				menu_add_item_menu_tooltip(array_menu_settings_display,"Enables ZGX Sprite Chip");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Enables ZGX Sprite Chip");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 
@@ -6332,6 +6625,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates the resolution of ZX80/81 on the Spectrum");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"It makes the resolution of display on Spectrum like a ZX80/81, with no colour. "
 					"This mode is not supported with real video enabled");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 			if (menu_display_emulate_zx8081_cond() ){
@@ -6340,12 +6634,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 						"when ZX80/81 Display on Speccy enabled");
 				menu_add_item_menu_ayuda(array_menu_settings_display,"Pixel Threshold to draw black or white in a 4x4 rectangle, "
 						"when ZX80/81 Display on Speccy enabled");
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			}
 
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_refresca_sin_colores,NULL,"[%c] Colours enabled",(scr_refresca_sin_colores.v==0 ? 'X' : ' '));
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Disables colours for Spectrum display");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Disables colours for Spectrum display");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 
@@ -6355,31 +6651,33 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_length,NULL,"[%d] OSD Adventure KB length",adventure_keyboard_key_length);
-
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Define the duration for every key press on the Adventure Text OSD Keyboard, in 1/50 seconds (default 50)");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_osd_word_kb_finalspc,NULL,"[%c] OSD Adv. final space",
 				(adventure_keyboard_send_final_spc ? 'X' : ' '));
-					
-
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Sends a space after every word on the Adventure Text OSD Keyboard");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 			
 
 		}
 
 		if (MACHINE_HAS_VDP_9918A) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_vdp_9918a_unlimited_sprites_line,NULL,"[%c] Unlimited sprites per line", (vdp_9918a_unlimited_sprites_line.v ? 'X' : ' ') );	
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
         if (MACHINE_IS_SMS) {
             //Corrige tambien el cuelgue del space harrier al iniciar
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_disable_raster_interrupt,NULL,"[%c] Disable raster interrupt", (sms_disable_raster_interrupt.v ? 'X' : ' ') );	
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
             if (sms_disable_raster_interrupt.v==0) {
                 menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_sms_only_one_raster_int_frame,NULL,
                     "[%c] One interrupt / frame", (sms_only_one_raster_int_frame.v ? 'X' : ' ') );	
+                menu_add_item_menu_es_avanzado(array_menu_settings_display);
             }
 
             //wonder boy, astro flash
@@ -6388,12 +6686,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
                 (sms_wonderboy_scroll_hack.v ? 'X' : ' ') );	
             menu_add_item_menu_tooltip(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
             menu_add_item_menu_ayuda(array_menu_settings_display,"Fix scroll in some games, like Astro Flash or Wonder Boy in Monster World");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}
 
 		if (MACHINE_IS_MSX) {
 			menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_msx_loading_stripes,NULL,"[%c] Loading stripes", (msx_loading_stripes.v ? 'X' : ' ') );	
 			menu_add_item_menu_tooltip(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_display,"Simulates loading border stripes when loading from real tape");
+            menu_add_item_menu_es_avanzado(array_menu_settings_display);
 		}		
 
         /*
@@ -6417,6 +6717,7 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_display,"Tells to look for an alternate character set other than the ROM default on OCR functions. "
 							"It will look also for another character set which table is set on sysvar 23606/7. It may generate false positives "
 							"on some games. It's used on text drivers (curses, stdout, simpletext) but also on OCR function");
+        menu_add_item_menu_es_avanzado(array_menu_settings_display);
 
 
 		if (menu_display_cursesstdoutsimpletext_cond() || menu_display_aa_cond() ) {
@@ -7334,7 +7635,10 @@ void menu_accessibility_settings(MENU_ITEM_PARAMETERS)
 
 }
 
-
+void menu_zxvision_settings_advanced_enable(MENU_ITEM_PARAMETERS)
+{
+    menu_show_advanced_items.v ^=1;
+}
 
 
 //menu settings
@@ -7372,12 +7676,14 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 	    	menu_add_item_menu_tooltip(array_menu_settings,"Change some CPU settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Change some CPU settings");		
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu(array_menu_settings,"D~~ebug",MENU_OPCION_NORMAL,menu_settings_debug,NULL);
 		menu_add_item_menu_shortcut(array_menu_settings,'e');
 		menu_add_item_menu_tooltip(array_menu_settings,"Debug settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Debug settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu(array_menu_settings,"~~Display",MENU_OPCION_NORMAL,menu_settings_display,NULL);
 		menu_add_item_menu_shortcut(array_menu_settings,'d');
@@ -7391,6 +7697,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_ayuda(array_menu_settings,"External tools paths settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_fileselector_settings,NULL,
             "~~File Browser","Navegador de ~~ficheros","Navegador de ~~fitxers");
@@ -7398,6 +7705,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Settings for the File browser");
 		menu_add_item_menu_ayuda(array_menu_settings,"These settings are related to the File Browser");   
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 		//Set F keys functions
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_hardware_set_f_functions,NULL,
@@ -7423,7 +7731,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_osd_settings,NULL,"~~OSD");
 		menu_add_item_menu_shortcut(array_menu_settings,'o');
-        menu_add_item_menu_tiene_submenu(array_menu_settings);	        
+        menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);	        
 
 		menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_settings_snapshot,NULL,
             "~~Snapshot","In~~stantánea","Instantània");
@@ -7431,6 +7740,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings,"Snapshot settings");
 		menu_add_item_menu_ayuda(array_menu_settings,"Snapshot settings");
         menu_add_item_menu_tiene_submenu(array_menu_settings);
+        menu_add_item_menu_es_avanzado(array_menu_settings);
 
 #ifndef NETWORKING_DISABLED	
 
@@ -7459,6 +7769,7 @@ void menu_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tooltip(array_menu_settings,"Change some ULA settings");
             menu_add_item_menu_ayuda(array_menu_settings,"Change some ULA settings");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
+            menu_add_item_menu_es_avanzado(array_menu_settings);
 
 
 		}	
@@ -7466,8 +7777,8 @@ void menu_settings(MENU_ITEM_PARAMETERS)
 		if (scr_driver_can_ext_desktop() ) {
 			menu_add_item_menu_format(array_menu_settings,MENU_OPCION_NORMAL,menu_ext_desktop_settings,NULL,"ZX Des~~ktop");
 			menu_add_item_menu_shortcut(array_menu_settings,'k');
-			menu_add_item_menu_tooltip(array_menu_settings,"Expand the program window having a ZX Desktop space to the right");
-			menu_add_item_menu_ayuda(array_menu_settings,"ZX Desktop enables you to have a space on the right to place "
+			menu_add_item_menu_tooltip(array_menu_settings,"Expand the program window having a ZX Desktop space to the right and on the bottom");
+			menu_add_item_menu_ayuda(array_menu_settings,"ZX Desktop enables you to have a space on the right and on the bottom to place "
 				"zxvision windows, menus or other widgets");
             menu_add_item_menu_tiene_submenu(array_menu_settings);
 		}
@@ -7480,7 +7791,16 @@ void menu_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tiene_submenu(array_menu_settings);
 
 
-  menu_add_item_menu(array_menu_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_separator(array_menu_settings);
+
+        menu_add_item_menu_en_es_ca(array_menu_settings,MENU_OPCION_NORMAL,menu_zxvision_settings_advanced_enable,NULL,
+            "Advanced menu items","Items de menú avanzados","Items de menú avançats");
+        menu_add_item_menu_prefijo_format(array_menu_settings,"[%c] ",(menu_show_advanced_items.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_settings,"Shows advanced menu items");
+        menu_add_item_menu_ayuda(array_menu_settings,"Shows advanced menu items");
+
+
+        menu_add_item_menu_separator(array_menu_settings);
 
 
                 //menu_add_item_menu(array_menu_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
@@ -8773,11 +9093,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_settings_tape,'n');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag. You must enable it on Tape Copy programs and also on Rocman game");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,"[%c] ~~Autorewind", (tape_auto_rewind.v ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_settings_tape,'a');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
         menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
                 //menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -8787,14 +9109,17 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_tape,'s');
 			menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes");
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes. You can skip simulation pressing any key (and the data is loaded)");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load_fast,menu_tape_simulate_real_load_cond,"[%c] Fast Simulate real load", (tape_loading_simulate_fast.v==1 ? 'X' : ' '));
-                        menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
-                        menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_tzx_suppress_pause,NULL,"[%c] TZX delete pause", (tzx_suppress_pause.v==1 ? 'X' : ' '));
-                        menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
-                        menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
             if (MACHINE_IS_ZX8081) {
 			    menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_zx8081_disable_tape_traps,NULL,"[%c] Tape traps", (zx8081_disable_tape_traps.v==1 ? ' ' : 'X'));
@@ -8804,7 +9129,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
 
-        	        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,"--Input Real Tape--");
@@ -8818,11 +9143,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new,NULL,"[%c] Improved algorithm", (realtape_algorithm_new.v==1 ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Use improved loading algorithm");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Use improved loading algorithm. Gives better results with non-zero centered audio tapes but without noise");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
         if (realtape_algorithm_new.v) {
             menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new_noise_reduction,NULL,"[%d] Noise reduction",realtape_algorithm_new_noise_reduction);
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Noise reduction value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Noise reduction value. Set a value >0 when you need to reduce noise");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
 
 
@@ -8834,6 +9161,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
                         "normally as 1 if the value is in range 0...+127, and 0 if it is in range -127...-1. This setting "
                         "increases this 0 (of range 0...+127) to consider it is a bit 1. I have found this value is better to be 0 "
                         "on Spectrum, and 2 on ZX80/81");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
         }
 
 
@@ -8842,11 +9170,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Apply offset to sound value read");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Indicates some value (positive or negative) to sum to the raw value read "
 					"(considering range from -128 to +127) to the input audio value read");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
 		if (MACHINE_IS_MSX) {
 			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_msx_loading_noise_reduction,NULL,"[%c] MSX Loading noise reduction",
 			(msx_loading_noise_reduction.v==1 ? 'X' : ' '));
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
@@ -8855,6 +9185,7 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_settings_tape,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_tape,"Set top speed setting when loading a real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");
+            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
 
 
@@ -8900,8 +9231,8 @@ zxvision_window menu_zxdesktop_set_userdef_button_func_action_ventana;
 void menu_zxdesktop_set_userdef_button_func_action_putpixel(z80_int *destino GCC_UNUSED,int x,int y,int ancho GCC_UNUSED,int color)
 {
 	//scr_putpixel(x,y,color);
-    zxvision_window *ventana;
-    ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
+    //zxvision_window *ventana;
+    //ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
 
 
     zxvision_putpixel(&menu_zxdesktop_set_userdef_button_func_action_ventana,x,y,color);
@@ -8924,7 +9255,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
     ventana=&menu_zxdesktop_set_userdef_button_func_action_ventana;
 
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -8944,7 +9275,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
         int offset_y=ventana->offset_y;
 
         //Desplazar putpixel segun el offset de scroll
-        offset_y *=8;
+        offset_y *=menu_char_height;
 
         //Primero poner todo el fondo del botón en color blanco
         int x,y;
@@ -8996,7 +9327,9 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     //userdef_button_func_action_opcion_seleccionada=defined_buttons_functions_array[valor_opcion];
     userdef_button_func_action_opcion_seleccionada=accion_inicial_seleccionada;
 
-    set_menu_overlay_function(menu_zxdesktop_set_userdef_button_func_action_overlay);
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_zxdesktop_set_userdef_button_func_action_overlay);    
 
     menu_item *array_menu_zxdesktop_set_userdef_button_func_action;
     menu_item item_seleccionado;
@@ -9028,7 +9361,7 @@ int menu_zxdesktop_set_userdef_button_func_action(int accion_inicial_seleccionad
     retorno_menu=menu_dibuja_menu(&userdef_button_func_action_opcion_seleccionada,&item_seleccionado,array_menu_zxdesktop_set_userdef_button_func_action,"Set Action" );
 
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
     
@@ -9140,7 +9473,23 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i);
 
-                 
+            //Algunas acciones que permiten extra info
+            if (
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_OPEN_WINDOW ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_SNAPSHOT ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_TAPE ||
+                defined_direct_functions_array[indice_tabla].id_funcion==F_FUNCION_DESKTOP_GENERIC_SMARTLOAD 
+            ) {
+                char string_extra_info[16];
+                menu_tape_settings_trunc_name(defined_f_functions_keys_array_parameters[i],string_extra_info,16);
+
+                menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Parameters: %s",string_extra_info);
+                menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
+                menu_add_item_menu_ayuda(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
+
+                //Esto es un poco chapuza... para indicar que es Parameters, la opcion tiene bit 8 alzado
+                menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i | 256);
+            }
         }
 
 
@@ -9155,19 +9504,31 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
 
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-            //llamamos por valor de funcion. Se llama a la funcion de elegir accion siempre
+            //Se llama a la funcion de elegir accion o establecer extra info
+            if (item_seleccionado.valor_opcion>=256) {
+                //Establecer extra info
+                //char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX]={
+
+                int indice=item_seleccionado.valor_opcion & 0xFF;
+
+                menu_ventana_scanf("Extra info",defined_f_functions_keys_array_parameters[indice],PATH_MAX);
+	            
+            }
+
+            else {
             
-            //printf ("actuamos por funcion\n");
+                //printf ("actuamos por funcion\n");
 
-            int accion_seleccionada=defined_f_functions_keys_array[item_seleccionado.valor_opcion];
+                int accion_seleccionada=defined_f_functions_keys_array[item_seleccionado.valor_opcion];
 
-            //hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
+                //hardware_set_f_func_action_opcion_seleccionada=defined_f_functions_keys_array[valor_opcion];
 
-            int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
+                int indice_retorno=menu_zxdesktop_set_userdef_button_func_action(accion_seleccionada);
 
-            if (indice_retorno>=0) {
-                //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
-                defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
+                if (indice_retorno>=0) {
+                    //printf("definimos fkey. tecla f %d accion %d\n",item_seleccionado.valor_opcion,indice_retorno);
+                    defined_f_functions_keys_array[item_seleccionado.valor_opcion]=indice_retorno;
+                }
             }
             
         }
@@ -9272,7 +9633,7 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 
 	char string_width[5];
 
-	sprintf (string_width,"%d",screen_ext_desktop_width);
+	sprintf (string_width,"%d",zxdesktop_width);
 
 
 	menu_ventana_scanf("Width",string_width,5);
@@ -9285,9 +9646,9 @@ void menu_ext_desk_settings_custom_width(MENU_ITEM_PARAMETERS)
 	}
 
 
-	if (valor<screen_ext_desktop_width) reorganize_windows=1;
+	if (valor<zxdesktop_width) reorganize_windows=1;
 
-	screen_ext_desktop_width=valor;
+	zxdesktop_width=valor;
 
 
     menu_ext_desk_settings_custom_width_height(reorganize_windows);
@@ -9303,7 +9664,7 @@ void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
 
 	char string_height[5];
 
-	sprintf (string_height,"%d",screen_ext_desktop_height);
+	sprintf (string_height,"%d",zxdesktop_height);
 
 
 	menu_ventana_scanf("Height",string_height,5);
@@ -9319,9 +9680,9 @@ void menu_ext_desk_settings_custom_height(MENU_ITEM_PARAMETERS)
     valor &=(65535-7);
 
 
-	if (valor<screen_ext_desktop_height) reorganize_windows=1;
+	if (valor<zxdesktop_height) reorganize_windows=1;
 
-	screen_ext_desktop_height=valor;
+	zxdesktop_height=valor;
 
 
     menu_ext_desk_settings_custom_width_height(reorganize_windows);
@@ -9457,9 +9818,10 @@ void menu_zxdesktop_scrfile(MENU_ITEM_PARAMETERS)
 
 
 
-    int ret;
+    //int ret;
 
-    ret=menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
+    //ret=menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
+    menu_filesel("Select file",filtros,zxdesktop_draw_scrfile_name);
     //volvemos a directorio inicial
     zvfs_chdir(directorio_actual);
 
@@ -9680,7 +10042,15 @@ void menu_zxdesktop_set_configurable_icons_modify(MENU_ITEM_PARAMETERS)
 
         }
 
-    
+        //Si icono es Papelera
+        if (id_funcion==F_FUNCION_DESKTOP_TRASH) {
+
+            menu_add_item_menu_separator(array_menu_common);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash_empty,NULL,
+                "Empty Trash","Vaciar Papelera","Buidar Paperera");
+
+        }
 
         menu_add_item_menu_separator(array_menu_common);
         menu_add_ESC_item(array_menu_common);
@@ -9732,7 +10102,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
                 strcpy(estado_icono,"Not Exists");
             }
             else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_EXISTS) {
-                strcpy(estado_icono,"Exists");
+                strcpy(estado_icono,"Exists ");
             }
             else if (zxdesktop_configurable_icons_list[i].status==ZXDESKTOP_CUSTOM_ICON_DELETED) {
                 strcpy(estado_icono,"Deleted");
@@ -9742,7 +10112,7 @@ void menu_zxdesktop_set_configurable_icons(MENU_ITEM_PARAMETERS)
                 strcpy(estado_icono,"Unknown");
             }
 
-            sprintf (buffer_texto,"Icon %2d %d,%d %s [%s]",i,zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
+            sprintf (buffer_texto,"Icon %2d %4d,%4d %s [%s]",i,zxdesktop_configurable_icons_list[i].pos_x,zxdesktop_configurable_icons_list[i].pos_y,
                     estado_icono,defined_direct_functions_array[indice_funcion].texto_funcion);
 
 
@@ -9793,6 +10163,16 @@ void menu_zxdesktop_degraded_inverted(MENU_ITEM_PARAMETERS)
     menu_ext_desktop_degraded_inverted.v ^=1;
 }
 
+void menu_ext_desk_settings_empty_trash_exit(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_empty_trash_on_exit.v ^=1;
+}
+
+void menu_ext_desk_settings_show_app_open(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_icon_show_app_open.v ^=1;
+}
+
 void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_ext_desktop_settings;
@@ -9807,36 +10187,43 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 
 		if (screen_ext_desktop_enabled) {
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_width,menu_ext_desktop_cond,"~~Width");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_width);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_width);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'w');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the width of the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final width is this value in pixels X current horizontal zoom");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_width,menu_ext_desktop_cond,"~~Custom Width");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');      
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'c');
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);      
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_height,menu_ext_desktop_cond,"~~Height");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",screen_ext_desktop_height);
+            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%4d] ",zxdesktop_height);
             menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'h');
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Tells the height of the ZX Desktop space");
-			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");            
+			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Final height is this value in pixels X current vertical zoom");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);            
 
 			menu_add_item_menu_format(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_custom_height,menu_ext_desktop_cond,"C~~ustom Height");
-            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');   
+            menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'u');
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);      
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 		
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
                 "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. It will be enabled again going back from full screen");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 	
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
                 "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(screen_ext_desktop_place_menu ? 'X' : ' ' ) );
 			menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
 			menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Try to place new menu items on the ZX Desktop space");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
         }
 
         menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_switch_button,NULL,
@@ -9844,6 +10231,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_switch_button_enabled.v ? 'X' : ' ' ) );
         menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");
         menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable buttons on footer to enlarge/reduce ZX Desktop (visible when menu closed)");        
+        menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
         if (screen_get_ext_desktop_height_zoom()>=ZXDESKTOP_MINIMUM_HEIGHT_SHOW_FRAME) {
@@ -9852,6 +10240,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(!zxdesktop_disable_show_frame_around_display ? 'X' : ' ' ) );
             menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
             menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Enable showing a frame around the emulated machine display");
+            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
         }
 
         if (screen_ext_desktop_enabled) {
@@ -9867,17 +10256,21 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_transparent,NULL,
                     "Transparent upper buttons","Botones superiores transparentes","Botons superiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_upper_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_upper_box,NULL,
                     "Box on upper buttons","Caja en botones superiores","Caixa als botons superiors");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_upper_icons.v ? ' ' : 'X' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_userdef_buttons_functions,NULL,
                     "    Customize ~~buttons","    Personalizar ~~botones","    Personalitzar ~~botons");
                 menu_add_item_menu_shortcut(array_menu_ext_desktop_settings,'b');
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_separator(array_menu_ext_desktop_settings);
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
 
@@ -9885,10 +10278,12 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_transparent,NULL,
                     "Transparent lower buttons","Botones inferiores transparentes","Botons inferiors transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_lower_icons.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_lower_box,NULL,
                     "Box on lower buttons","Caja en botones inferiores","Caixa als botons inferiors");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_disable_box_lower_icons.v ? ' ' : 'X' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 			}
 
@@ -9898,21 +10293,35 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_enabled,NULL,
                 "Icons on ZX Desktop","Iconos en ZX Desktop","Icones al ZX Desktop");
             menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_configurable_icons_enabled.v ? 'X' : ' ' ) );
+
                 
             if (zxdesktop_configurable_icons_enabled.v) {
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_empty_trash_exit,NULL,
+                    "Empty trash on exit","Vaciar papelera al salir","Buidar paperera al sortir");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_empty_trash_on_exit.v ? 'X' : ' ' ) );
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);                
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_transparent,NULL,
                     "Transparent icons","Iconos transparentes","Icones transparents");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_transparent_configurable_icons.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_configurable_icons_text_background,NULL,
                     "Icon text background","Fondo de texto de iconos","Fons de text de icones");
                 menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_configurable_icons_text_background.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
+
+                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_show_app_open,NULL,
+                    "Show indicators for open apps","Mostrar indicadores en apps abiertas","Mostrar indicadors en apps obertes");
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_icon_show_app_open.v ? 'X' : ' ' ) );                              
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_set_configurable_icons,NULL,
                     "    Modify icons","    Modificar iconos","    Modificar icones");
                 menu_add_item_menu_tiene_submenu(array_menu_ext_desktop_settings);  
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
             }
 
@@ -9990,7 +10399,8 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             if (menu_ext_desktop_fill==7) {
                 menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_degraded_inverted,NULL,
                     "Inverted Degraded","Degradado invertido","Degradat invertit");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));                
+                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(menu_ext_desktop_degraded_inverted.v ? 'X' : ' ' ));
+                menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);                
             }
 
 			if (seleccion_secondary) {
@@ -10037,11 +10447,13 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_mix_background,NULL,
                         "SCR background mix","SCR mezclar con fondo","SCR mesclar amb fons");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_mix_background ? 'X' : ' ' ));
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                     menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_zxdesktop_scrfile_disable_flash,NULL,
                         "SCR allow flash","SCR permitir parpadeo","SCR permetre parpelleig");
                     menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_draw_scrfile_disable_flash==0 ? 'X' : ' ' ));
+                    menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
 
                 }
@@ -10303,47 +10715,49 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
     int retorno_menu;
     do {
 
-
-
-        menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_dirs,NULL,"[%c] Show ~~directories",
-            (menu_filesel_hide_dirs.v==0 ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_dirs,NULL,
+            "Show ~~directories","Mostrar ~~directorios","Veure ~~directoris");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_hide_dirs.v==0 ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'d');	
         menu_add_item_menu_tooltip(array_menu_common,"Hide directories from file browser menus");
         menu_add_item_menu_ayuda(array_menu_common,"Hide directories from file browser menus. "
                                 "Useful on demo environments and you don't want the user to be able to navigate the filesystem");
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_size,NULL,"[%c] Show file ~~size",
-            (menu_filesel_hide_size.v==0 ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_no_show_size,NULL,
+            "Show file ~~size","Mostrar e~~spacio archivos","Veure e~~spai arxius");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_hide_size.v==0 ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'s');    
         menu_add_item_menu_tooltip(array_menu_common,"Hide file size from file selector menus");
         menu_add_item_menu_ayuda(array_menu_common,"Hide file size from file browser menus");      
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews,NULL,"[%c] Show file ~~previews",
-            (menu_filesel_show_previews.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews,NULL,
+            "Show file ~~previews","Mostrar ~~previews archivos","Veure ~~previews arxius");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'p');
         menu_add_item_menu_tooltip(array_menu_common,"Show file previews in the file selector");
         menu_add_item_menu_ayuda(array_menu_common,"Show file previews for .scr, .tap, .tzx, etc...\n"
                             "Note that the fileselector window must be big enough to hold that preview, if not, it will not be shown");
 
         if (menu_filesel_show_previews.v) {
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_reduce,NULL,"[%c] Red~~uce previews to half size",
-                (menu_filesel_show_previews_reduce.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_previews_reduce,NULL,
+                "Red~~uce previews to half size","Red~~ucir previews a la mitad","Red~~uir previews a la meitat");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_show_previews_reduce.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_common,'u');
             menu_add_item_menu_tooltip(array_menu_common,"Reduce previews to half size instead of full size");
             menu_add_item_menu_ayuda(array_menu_common,"Reduce previews to half size instead of full size");
         }
 
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,"[%c] ~~Hexadecimal file viewer",
-            (menu_file_viewer_always_hex.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_fileviewer_hex,NULL,
+            "~~Hexadecimal file viewer","Visor archivos ~~Hexadecimal","Visor arxius ~~Hexadecimal");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_file_viewer_always_hex.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_common,'h');
         menu_add_item_menu_tooltip(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
         menu_add_item_menu_ayuda(array_menu_common,"File viewer always shows file contents in hexadecimal+ascii");
 
-
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_allow_delete_folders,NULL,"[%c] Allow ~~folder delete",
-            (menu_filesel_utils_allow_folder_delete.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_common,'f');
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_setting_filesel_allow_delete_folders,NULL,
+            "Allow fold~~ers delete","Permitir borrar dir~~ectorios","Permetre esborrar dir~~ectoris");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_filesel_utils_allow_folder_delete.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_common,'e');
         menu_add_item_menu_tooltip(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
         menu_add_item_menu_ayuda(array_menu_common,"Allows deleting folders on the file utilities browser. Enable it AT YOUR OWN RISK");
 

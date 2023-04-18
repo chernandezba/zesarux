@@ -64,6 +64,7 @@
 #include "ramjet.h"
 #include "interface007.h"
 #include "dinamid3.h"
+#include "dsk.h"
 
 #include "autoselectoptions.h"
 
@@ -468,31 +469,31 @@ int tap_open(void)
 
     if (tapefile!=0) {
 
-	tape_block_open();
+        tape_block_open();
 
 
-	//if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
+        //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
         if (noautoload.v==0) { 
-		debug_printf (VERBOSE_INFO,"Restarting autoload");
-		initial_tap_load.v=1;
-		initial_tap_sequence=0;
+            debug_printf (VERBOSE_INFO,"Restarting autoload");
+            initial_tap_load.v=1;
+            initial_tap_sequence=0;
 
-		debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
-		reset_cpu();
+            debug_printf (VERBOSE_INFO,"Reset cpu due to autoload");
+            reset_cpu();
 
-		//Activamos top speed si conviene
-		if (fast_autoload.v && !MACHINE_IS_MSX) {
-                        debug_printf (VERBOSE_INFO,"Set top speed");
-                        top_speed_timer.v=1;
-                }
+            //Activamos top speed si conviene
+            if (fast_autoload.v && !MACHINE_IS_MSX) {
+                debug_printf (VERBOSE_INFO,"Set top speed");
+                top_speed_timer.v=1;
+            }
 
-	}
+        }
 
-	else {
-		initial_tap_load.v=0;
-	}
+        else {
+            initial_tap_load.v=0;
+        }
 
-	insert_tape_load();
+        insert_tape_load();
     }
 
 
@@ -1578,7 +1579,7 @@ void gestionar_autoload_spectrum(void)
 {
 
 	if (initial_tap_load.v==1 && initial_tap_sequence==0 &&
-		( (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0  || (realtape_inserted.v==1) )
+		( (tape_loadsave_inserted & TAPE_LOAD_INSERTED)!=0  || (realtape_inserted.v==1)  || (dskplusthree_emulation.v))
 
 		) {
 
@@ -1697,7 +1698,8 @@ void gestionar_autoload_spectrum(void)
                                 break;
 
 
-			case 11:
+			case MACHINE_ID_SPECTRUM_P2A_40:
+            case MACHINE_ID_SPECTRUM_P3_40:
 
 				//Para maquina +2A English rom 4.0
 				actual_rom=get_actual_rom_p2a();
@@ -1709,20 +1711,22 @@ void gestionar_autoload_spectrum(void)
 
 				break;
 
-			case 12:
+			case MACHINE_ID_SPECTRUM_P2A_41:
+            case MACHINE_ID_SPECTRUM_P3_41:
 
-                                //Para maquina +2A English rom 4.1
-                                actual_rom=get_actual_rom_p2a();
-                                if (actual_rom==0) {
-                                        if (reg_pc==0x187a) gestionar_autoload_spectrum_start_enter();
-                                }
+                //Para maquina +2A English rom 4.1
+                actual_rom=get_actual_rom_p2a();
+                if (actual_rom==0) {
+                        if (reg_pc==0x187a) gestionar_autoload_spectrum_start_enter();
+                }
 
-                                else if (actual_rom==3) gestionar_autoload_spectrum_48kmode();
+                else if (actual_rom==3) gestionar_autoload_spectrum_48kmode();
 
-                                break;
+                break;
 
 
-			case 13:
+			case MACHINE_ID_SPECTRUM_P2A_SPA:
+            case MACHINE_ID_SPECTRUM_P3_SPA:
 
 				//Para maquina +2A Spanish
 				actual_rom=get_actual_rom_p2a();

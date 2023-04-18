@@ -64,6 +64,8 @@
 #include "snap_ram.h"
 #include "hilow_datadrive.h"
 #include "dsk.h"
+#include "menu_items.h"
+#include "pcw.h"
 
 #include "autoselectoptions.h"
 
@@ -716,6 +718,8 @@ void timer_check_interrupt(void)
             //Temporizador para ventanas splash
             menu_window_splash_counter++;
 
+            pd765_read_stats_update();
+            pd765_write_stats_update();
 
             //resetear texto splash
             reset_welcome_message();
@@ -813,6 +817,12 @@ void timer_check_interrupt(void)
             rzx_print_footer();
 
             realtape_print_footer();
+
+            cf2_floppy_icon_activity();
+
+            if (betadisk_simulated_motor>0) betadisk_simulated_motor--;
+
+            if (MACHINE_IS_PCW) pcw_boot_timer_handle();
 
 
             //escritura de contenido de flash de superupgrade a disco

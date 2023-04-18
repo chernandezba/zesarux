@@ -65,6 +65,8 @@ extern z80_bit fast_autoload;
 extern z80_bit tzx_suppress_pause;
 extern z80_bit realtape_algorithm_new;
 
+extern z80_bit pd765_silent_write_protection;
+
 extern z80_bit setting_mostrar_ay_piano_grafico;
 
 extern int kempston_mouse_factor_sensibilidad;
@@ -115,13 +117,21 @@ extern int zxdesktop_disable_show_frame_around_display;
 extern int audiochip_piano_zoom_x;
 extern int audiochip_piano_zoom_y;
 
+extern z80_bit audiosdl_use_new_callback;
+
 extern char online_download_path[];
 
 extern z80_bit zxdesktop_configurable_icons_enabled;
 
+extern z80_bit zxdesktop_empty_trash_on_exit;
+
+extern z80_bit zxdesktop_icon_show_app_open;
+
 extern z80_bit z88_hide_keys_shortcuts;
 
 extern z80_bit sync_clock_to_z88;
+
+extern z80_bit menu_show_advanced_items;
 
 #endif
 

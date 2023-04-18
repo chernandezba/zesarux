@@ -1,8 +1,109 @@
-Version 10.3 - xxxx edition. 02 November 2022
+Version 10.3 - Beta1 - xxxx edition. 13 April 2023
 
+* New things added:
+
+Added Machine Amstrad CPC 6128
+Added Machine Amstrad CPC 664
+Added Machine Amstrad PCW 8256
+Added Machine Amstrad PCW 8512
+Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
+Added Visual Floppy to see floppy disk (+3, CPC, PCW, Betadisk) activity
 Added Poke F-Function
+Added Visual Real Tape F-Function
+Added Process Switcher window, which is like a "Taskbar" on the ZX Desktop
+Added Settings F-Function
+Added DSK disk info menu: to get tracks and sectors of a disk
+Added ZRCP command: "close-all-menus"
+Added icon/F-key to open any window identified by its name
+Allow F-keys to assign extra info for actions (like window name on openwindow action, or snapshot name on linktosnapshot action)
+Added XEyes "Toy" to follow mouse
+Added more Hotswap combinations
+Added command line setting --machinelist to get machines list names whitespace separated
+Added Sierpinsky Meter Type to View Sensors
+Added .POK file Smartloading
+Added SDL Audio Callback type setting in order to fix Windows Audio clicking
 
-Fixed PD765 emulation: TODO: add more details here
+* Improvements:
+
+Improved Configuration:
+- better parsing: warning when ZEsarUX has been downgraded
+- if unknown parameter on configuration file, warn the user but start anyway
+- moved showing Configuration file from Running info menu to Settings-> Configuration file
+
+Improved File selector: 
+- Can show recent folders (press space on recent files)
+
+Improved DSK viewer:
+- better filesystem detection
+- show hidden and read only files
+- show disk specification format
+- show where files are located on Visual Floppy
+
+Improved DSK extractor:
+- better filesystem detection
+
+Improved Debug Console: better refresh, dynamic width?? (TODO)
+Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
+Improved Debug I/O ports window: autoresize content height when do not fit in window
+
+Improved Debug CPU:
+- switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
+- added (hl), (de), (bc)
+- added (nn) when selecting an opcode like: ld reg,(nn) and ld (nn),reg
+- added (ix+d), (iy+d) when selecting an opcode like: ld reg,(IX+d), etc
+- added continuos speed 4 (run 10 opcodes every time, with no pause)
+- show last memory pointer when changing it
+- show B register on satisfy condition for DJNZ
+- added new functions OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e.
+- added pseudoregister EPC to parser to match memory bank and offset for PC register
+- allow holding keys for quick cursor move, etc 
+- watches now show numbers in hexadecimal format
+
+Improved View Sprites: 
+- sprite is no longer disabled when changing memory pointer
+- you can view sprites up to 1024x1024
+- show PCW common format screen
+
+Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
+Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
+Improved joystick type selection
+Improved Rpi emulation: by default performance parameters are not changed, you must use "--changeslowparameters" on slow Rpi like Rpi1 or 2
+
+Improved ZX Desktop:
+- Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
+- Show icon indicators for open apps on ZX Desktop
+- Added setting to empty Trash on exit
+- Fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (Next, CPC, QL, etc)
+- ZX Desktop size now is multiplied by GUI Zoom (Zoom 2 on machines like Next, CPC, QL, etc)
+- CF2 Floppy icon (+3, CPC, PCW) now is animated when motor is on
+
+Improved ZX Vision:
+- Added windows TaskBar
+- Added Process ID (PID) for all windows
+- Text input fields now handle repeated keys
+- Some text input fields now have history of last items, and history is saved on configuration file
+- Added function to maximize all windows
+- Allow reducing character height
+- Improve window list showing spent time on each window and pid of each window/process
+- Improve rendering background windows
+- Yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
+
+* Fixes:
+
+Fixed random crash on startup on Linux when executing some network operations (check updates, check last users, send updates)
+Fixed segfaults when exiting using CTRL-C
+Fixed Spectrum +3 disk emulation: TODO: add more details here
+Fixed autoload on Spectrum +3
+Fixed bug that may crash ZEsarUX when changing to a machine with bigger resolution. It seems to affect Linux and Windows but not Mac. This is a bug that has always existed (a "long life bug" XD)
+
+Fixed showing creator on DSK file viewer
+Fixed pause: can now return when pressing mouse button too
+Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
+
+
+* As always, there are some other minor bugfixes and improvements
+
+----------------------------------------
 
 
 Version 10.2 - Hysteria edition. 26 October 2022

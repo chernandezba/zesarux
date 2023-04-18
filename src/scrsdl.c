@@ -52,6 +52,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 
 
@@ -193,7 +194,8 @@ void scrsdl_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 
 }
 
-void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
+/*
+void old_scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
 
     int yorigen;
@@ -212,8 +214,12 @@ void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
     //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
     scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
+*/
 
-
+void scrsdl_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+{
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+}
 
 void scrsdl_set_fullscreen(void)
 {
@@ -348,6 +354,10 @@ void scrsdl_refresca_pantalla(void)
             scr_refresca_pantalla_y_border_cpc();
     }
 
+    else if (MACHINE_IS_PCW) {
+            scr_refresca_pantalla_y_border_pcw();
+    }     
+
     else if (MACHINE_IS_SAM) {
             scr_refresca_pantalla_y_border_sam();
     }
@@ -455,7 +465,7 @@ void scrsdl_z88_cpc_load_keymap(void)
         switch (z88_cpc_keymap_type) {
 
                 case 1:
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 	                        scrsdl_keymap_z88_cpc_minus=SDLK_QUOTE;
         	                scrsdl_keymap_z88_cpc_equal=SDLK_WORLD_1;
                 	        scrsdl_keymap_z88_cpc_backslash=SDLK_WORLD_26;
@@ -510,7 +520,7 @@ void scrsdl_z88_cpc_load_keymap(void)
 
                 default:
                         //0 o default
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 	                        scrsdl_keymap_z88_cpc_minus=SDLK_MINUS;
         	                scrsdl_keymap_z88_cpc_equal=SDLK_EQUALS;
                 	        scrsdl_keymap_z88_cpc_backslash=SDLK_BACKSLASH;
@@ -941,7 +951,7 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
 
 
         int tecla_gestionada_sam_ql=0;
-        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
                 tecla_gestionada_sam_ql=1;
 
                         if (tecla==scrsdl_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -965,6 +975,8 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                         else if (tecla==scrsdl_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                         else if (tecla==scrsdl_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                        else if (tecla==scrsdl_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
                 else tecla_gestionada_sam_ql=0;
@@ -1009,9 +1021,12 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                         break;
 
                         case SDLK_LSUPER:
-                        case SDLK_RSUPER:
-                                util_set_reset_key(UTIL_KEY_WINKEY,pressrelease);
+                                util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
                         break;
+
+                        case SDLK_RSUPER:
+                                util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+                        break;                        
 
                         case SDLK_DELETE:
                                 util_set_reset_key(UTIL_KEY_DEL,pressrelease);
@@ -1059,22 +1074,24 @@ void scrsdl_deal_keys(int pressrelease,int tecla)
                         break;
 
                         case SDLK_MINUS:
-                                util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
+                                util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
                         break;
 
                         case SDLK_PLUS:
-                                util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
+                                util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
                         break;
 
                         case SDLK_SLASH:
-                                util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
+                                util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
                         break;
 
                         case SDLK_ASTERISK:
-                                util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
+                                util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
-
+                        case SDLK_NUMLOCK:
+                            util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+                        break;
 
                         //F1 pulsado
                         case SDLK_F1:

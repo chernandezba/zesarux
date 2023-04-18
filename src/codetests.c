@@ -1562,6 +1562,215 @@ void codetests_get_pixel_color_scr(void)
 
 }
 
+char *codetests_scanf_history_array[UTIL_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
+
+
+void codetests_scanf_history(void)
+{
+    //compruebo que cadena inicial llegue al final, y que luego rote
+
+    int total_elelements=UTIL_SCANF_HISTORY_MAX_LINES-1;
+
+    util_scanf_history_insert(codetests_scanf_history_array,"1234");
+    printf("\n");
+    util_scanf_history_insert(codetests_scanf_history_array,"4567");
+    printf("\n");
+
+    int i;
+
+    //Inserto total_elements-2, asi con los anteriores anterior ya he llenado la lista
+    for (i=0;i<total_elelements-2;i++) {
+        util_scanf_history_insert(codetests_scanf_history_array,"9876");
+        printf("\n");
+    }
+
+    //ultima cadena tiene que ser la inicial
+    if (strcmp(codetests_scanf_history_array[total_elelements-1],"1234")) {
+        printf ("error. last element is not initial\n");
+        exit(1);
+    }
+
+    //inserto de nuevo. ultimo elemento tiene que ser el segundo
+    util_scanf_history_insert(codetests_scanf_history_array,"4444");
+    printf("\n");
+
+    if (strcmp(codetests_scanf_history_array[total_elelements-1],"4567")) {
+        printf ("error. last element is rotated properly\n");
+        exit(1);
+    }
+
+    //Y primer elemento tiene que ser el ultimo insertado
+    if (strcmp(codetests_scanf_history_array[0],"4444")) {
+        printf ("error. first element is not what expected\n");
+        exit(1);
+    }    
+}
+
+int codetests_sqrt_aux(int valor)
+{
+    int result_type;
+
+    int square=util_sqrt(valor,&result_type);
+    printf("Square of %d is %d\n",valor,square);  
+
+    //Tipo resultado: 0 exacto, 1 aproximado, -1 valor negativo
+    if (result_type==0) printf("Exact\n");
+    else if (result_type==1) printf("Aproximate\n");
+    else if (result_type==-1) printf("Negative error\n");
+    printf("\n");
+
+    return square;
+}
+
+void codetests_sqrt(void)
+{
+
+    //primer mostrar tabla
+    int i;
+
+    for (i=0;i<=100;i++) {
+        codetests_sqrt_aux(i);
+        //printf("Square root of %d: %d\n",i,util_sqrt(i));
+    }
+
+    //luego comprobar algunos valores exactos
+    int square;
+
+    square=codetests_sqrt_aux(25);
+    if (square!=5) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }
+
+    square=codetests_sqrt_aux(144);
+    if (square!=12) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }   
+
+    square=codetests_sqrt_aux(1089);
+    if (square!=33) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    }     
+
+    //Y una prueba sin parametro de tipo resultado
+    square=util_sqrt(10000,NULL);
+    printf("Square of 10000 is %d\n",square);  
+    if (square!=100) {
+        printf ("error calculating square root\n");
+        exit(1);        
+    } 
+    printf("\n");       
+
+    //Y prueba con valor negativo
+    int result_type;
+    square=util_sqrt(-1,&result_type);
+    printf("Square of -1 is %d\n",square);  
+    if (result_type==-1) {
+        printf("Ok negative no result\n");
+    }
+    else {
+        printf ("error returning negative square root\n");
+        exit(1);        
+    }       
+
+
+}
+
+void codetests_acosine(void)
+{
+    int i;
+
+    for (i=0;i<=10000;i+=1000) {
+        printf("Acosine of %d: %d\n",i,util_get_acosine(i));
+    }
+
+    if (util_get_acosine(8660)!=30) {
+        printf ("error calculating acosine\n");
+        exit(1);         
+    }
+
+    if (util_get_acosine(-349)!=92) {
+        printf ("error calculating acosine\n");
+        exit(1);         
+    }
+    
+}
+
+void codetests_debug_printf_exclude_include(void)
+{
+
+    //Preservar settings de filtros
+    
+    int antes_debug_mascara_modo_exclude_include=debug_mascara_modo_exclude_include;
+
+    int antes_debug_mascara_clase_exclude=debug_mascara_clase_exclude;
+    
+    int antes_debug_mascara_clase_include=debug_mascara_clase_include;     
+
+
+    //Probar exclusiones primero
+    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+
+    debug_mascara_clase_exclude=0;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==0) {
+        printf("error exclude anything else when mask=0\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==0) {
+        printf("error exclude class dsk when mask=0\n");
+        exit(1);
+    }
+
+    debug_mascara_clase_exclude=VERBOSE_CLASS_DSK;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==0) {
+        printf("error exclude anything else when mask=dsk\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==1) {
+        printf("error exclude class dsk when mask=dsk\n");
+        exit(1);
+    }    
+
+    //Probar inclusiones
+    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+
+    debug_mascara_clase_include=0;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==1) {
+        printf("error include anything else when mask=0\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==1) {
+        printf("error include class dsk when mask=0\n");
+        exit(1);
+    }
+
+    debug_mascara_clase_include=VERBOSE_CLASS_DSK;
+
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_ANYTHINGELSE)==1) {
+        printf("error include anything else when mask=dsk\n");
+        exit(1);
+    }
+    if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==0) {
+        printf("error include class dsk when mask=dsk\n");
+        exit(1);
+    }    
+
+    //Dejamos luego settings iniciales
+    debug_mascara_modo_exclude_include=antes_debug_mascara_modo_exclude_include;
+
+    debug_mascara_clase_exclude=antes_debug_mascara_clase_exclude;
+    
+    debug_mascara_clase_include=antes_debug_mascara_clase_include;
+
+}
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -1651,6 +1860,20 @@ void codetests_main(int main_argc,char *main_argv[])
     printf("\nRunning cosine table tests\n");
     codetests_cosine_table();
 
+    printf("\nRunning zxvision scanf history tests\n");
+    codetests_scanf_history();
+
+    printf("\nRunning square root tests\n");
+    codetests_sqrt();
+
+    printf("\nRunning acosine tests\n");
+    codetests_acosine();
+
+    printf("\nRunning debug printf exclude/include class tests\n");
+    codetests_debug_printf_exclude_include();
+
+    //temporal crear dsk
+    //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
 
     //Este es solo un test para probar velocidad, no valida realmente que funcione
     //printf("\nRunning int util_get_pixel_color_scr time tests\n");

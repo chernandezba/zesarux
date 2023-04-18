@@ -3507,7 +3507,7 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
 
         int i;
 
-        int salir;
+        //int salir;
 
         for (i=0;i<total_locations;i++) {
             z80_int connection_table=util_textadventure_get_location_connections(i);
@@ -3521,13 +3521,15 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
 
             sprintf(buffer_linea,"-Location %3d: ",i);
 
-            salir=util_concat_string(texto,buffer_linea,max_string);
+            //salir=util_concat_string(texto,buffer_linea,max_string);
+            util_concat_string(texto,buffer_linea,max_string);
 
             //solo ver un trozo de la localidad
             texto_localidad[25]=0;
             //printf("%s\n",texto_localidad);
             sprintf(buffer_linea,"%s\n",texto_localidad);
-            salir=util_concat_string(texto,buffer_linea,max_string);
+            //salir=util_concat_string(texto,buffer_linea,max_string);
+            util_concat_string(texto,buffer_linea,max_string);
 
 
 
@@ -3568,18 +3570,22 @@ int util_textdaventure_dump_connections(char *texto,int max_string)
 
                   
                 
-                salir=util_concat_string(texto,palabra_sin_espacios,max_string);
-                //salir=util_concat_string(texto,", ",max_string);
+                //salir=util_concat_string(texto,palabra_sin_espacios,max_string);
+                util_concat_string(texto,palabra_sin_espacios,max_string);
+                
 
                 //printf(" destino %d\n",destino);
                 sprintf(buffer_linea," %d, ",destino);
-                salir=util_concat_string(texto,buffer_linea,max_string);
+
+                //salir=util_concat_string(texto,buffer_linea,max_string);
+                util_concat_string(texto,buffer_linea,max_string);
 
             }
 
 
             //printf("\n");
-            salir=util_concat_string(texto,"\n\n",max_string);
+            //salir=util_concat_string(texto,"\n\n",max_string);
+            util_concat_string(texto,"\n\n",max_string);
         }
 
         //temporal
@@ -4275,9 +4281,11 @@ void textadventure_follow_connections(int follow_rooms_no_connections)
     //coords iniciales
     x=y=z=0;
 
-    int offset_x,offset_y;
+    //int offset_x;
+    //int offset_y;
 
-    offset_x=offset_y=0;
+    //offset_x=0;
+    //offset_y=0;
 
     //text_adventure_connections_table[i].mapa
 

@@ -1121,6 +1121,8 @@ void menu_debug_registers_print_register_aux_moto(zxvision_window *w,char *texto
 
 z80_bit menu_debug_follow_pc={1}; //Si puntero de direccion sigue al registro pc
 menu_z80_moto_int menu_debug_memory_pointer=0; //Puntero de direccion
+//Ultima direccion asignada a la variable
+menu_z80_moto_int last_menu_debug_memory_pointer=0;
 
 //linea en menu debug que tiene el cursor (indicado por >), desde 0 hasta 23 como mucho
 int menu_debug_line_cursor=0;
@@ -1147,22 +1149,57 @@ void menu_debug_change_registers(void)
 }
 
 
+//Evalua la expresion y retorna su valor. Retorna 0 si ok. 1 si error parseando, 2 si error evaluando,
+//y muestra en pantalla si hay error
+int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *output_value)
+{
+	char buffer_salida[256]; //mas que suficiente
+	char string_detoken[MAX_BREAKPOINT_CONDITION_LENGTH];
+
+	int result=exp_par_evaluate_expression(string_address,buffer_salida,string_detoken);
+	if (result==0) {
+		//menu_generic_message_format("Result","Parsed string: %s\nResult: %s",string_detoken,buffer_salida);		
+        *output_value=parse_string_to_number(buffer_salida);
+        return 0;
+	}
+
+	else if (result==1) {
+		menu_error_message(buffer_salida);
+        return 1;
+	}
+
+	else {
+		menu_generic_message_format("Error","%s parsed string: %s",buffer_salida,string_detoken);
+        return 2;
+	}
+}
+
+char *menu_debug_registers_change_ptr_historial[UTIL_SCANF_HISTORY_MAX_LINES]={
+    NULL
+};  
 
 void menu_debug_registers_change_ptr(void)
 {
 
+    char string_address[10];
 
+    util_sprintf_address_hex(last_menu_debug_memory_pointer,string_address);
 
-        char string_address[10];
+    //menu_ventana_scanf("Value?",string_address,10);
+    int tecla=zxvision_scanf_history("Value?",string_address,10,menu_debug_registers_change_ptr_historial);
 
+    //No sale con ESC
+    if (tecla!=2) {
 
-                                        util_sprintf_address_hex(menu_debug_memory_pointer,string_address);
-                menu_ventana_scanf("Address?",string_address,10);
+        //Evaluar la dirección como una expresión, así podemos usar registros, sumas, etc
+        int result=menu_debug_cpu_calculate_expression(string_address,&last_menu_debug_memory_pointer);
 
-        menu_debug_memory_pointer=parse_string_to_number(string_address);
+        if (result==0) {
+            menu_debug_memory_pointer=last_menu_debug_memory_pointer;
+        }
 
-
-        return;
+    }
+    
 
 }
 
@@ -1201,21 +1238,38 @@ void menu_debug_registers_change_ptr(void)
 #define MOD_REG_IY_H        (1<<20)
 #define MOD_REG_IY          (MOD_REG_IY_L|MOD_REG_IY_H)
 
+//para (HL)
+#define MOD_REG_HL_MEM      (1<<21)
+#define MOD_REG_DE_MEM      (1<<22)
+#define MOD_REG_BC_MEM      (1<<23)
+
+//Para (NN) byte y 16 bits, lecturas
+#define MOD_READ_NN_MEM8    (1<<24)
+#define MOD_READ_NN_MEM16   (1<<25)
+//Para (NN) byte y 16 bits, escrituras
+#define MOD_WRITE_NN_MEM8    (1<<26)
+#define MOD_WRITE_NN_MEM16   (1<<27)
+
+//Para (IX+d),(IY+d), lectura
+#define MOD_READ_IXIY_d_MEM8 (1<<28)
+//Para (IX+d),(IY+d), escritura
+#define MOD_WRITE_IXIY_d_MEM8 (1<<28)
+
 
 //Tabla de los registros modificados en los 256 opcodes sin prefijo
 z80_long_int debug_modified_registers_list[256]={
     //0 NOP
-    0,MOD_REG_B|MOD_REG_C,0,        MOD_REG_BC,MOD_REG_B|MOD_REG_F,MOD_REG_B|MOD_REG_F,MOD_REG_B,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_B|MOD_REG_C,MOD_REG_BC_MEM,MOD_REG_BC,MOD_REG_B|MOD_REG_F,MOD_REG_B|MOD_REG_F,MOD_REG_B,MOD_REG_A|MOD_REG_F,
     MOD_REG_AF|MOD_REG_AF_SHADOW,   MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_BC,MOD_REG_C|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_C,MOD_REG_A|MOD_REG_F,
     //16 DJNZ dis
-    MOD_REG_B,MOD_REG_DE,0,MOD_REG_DE,MOD_REG_D|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_D,MOD_REG_A|MOD_REG_F,
+    MOD_REG_B,MOD_REG_DE,MOD_REG_DE_MEM,MOD_REG_DE,MOD_REG_D|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_D,MOD_REG_A|MOD_REG_F,
     0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_DE,MOD_REG_E|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_E,MOD_REG_A|MOD_REG_F,
     //32 JR NZ,DIS
-    0,MOD_REG_HL,0,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
-    0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_HL,MOD_WRITE_NN_MEM16,MOD_REG_HL,MOD_REG_H|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_H,MOD_REG_A|MOD_REG_F,
+    0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_HL,MOD_REG_L|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_L,MOD_REG_A|MOD_REG_F,
     //48 JR NC,DIS
-    0,MOD_REG_SP,0,MOD_REG_SP,MOD_REG_F,MOD_REG_F,0,MOD_REG_F,
-    0,MOD_REG_HL|MOD_REG_F,MOD_REG_A,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
+    0,MOD_REG_SP,MOD_WRITE_NN_MEM8,MOD_REG_SP,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_F,
+    0,MOD_REG_HL|MOD_REG_F,MOD_REG_A|MOD_READ_NN_MEM8,MOD_REG_SP,MOD_REG_A|MOD_REG_F,MOD_REG_A|MOD_REG_F,MOD_REG_A,MOD_REG_F,
     //64 LD B,B
     MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,MOD_REG_B,
     MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,MOD_REG_C,
@@ -1226,7 +1280,7 @@ z80_long_int debug_modified_registers_list[256]={
     MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,MOD_REG_H,
     MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,MOD_REG_L,
     //112 LD (HL),B
-    0,0,0,0,0,0,0,0,
+    MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,MOD_REG_HL_MEM,0,MOD_REG_HL_MEM,
     MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,MOD_REG_A,0,
     //128 ADD A,B
     MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,
@@ -1257,17 +1311,17 @@ z80_long_int debug_modified_registers_list[256]={
 //Tabla de los registros modificados para opcodes con prefijo CB y tambien para DD/FD + CB
 z80_long_int debug_modified_registers_cb_list[256]={
     //0 RLC B
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
     //16 RL B
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
     //32 SLA B
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
     //48 SLL B
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
-    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
+    MOD_REG_B|MOD_REG_F,MOD_REG_C|MOD_REG_F,MOD_REG_D|MOD_REG_F,MOD_REG_E|MOD_REG_F,MOD_REG_H|MOD_REG_F,MOD_REG_L|MOD_REG_F,MOD_REG_F|MOD_REG_HL_MEM,MOD_REG_AF,
     //64 BIT 0,B
     MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,
     MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,
@@ -1281,29 +1335,29 @@ z80_long_int debug_modified_registers_cb_list[256]={
     MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,
     MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,MOD_REG_F,
     //128 RES 0,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //144 RES 2,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //160 RES 4,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //176 RES 6,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //192 SET 0,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //208 SET 2,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //224 SET 4,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
     //240 SET 6,B
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A,
-    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,0,MOD_REG_A
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A,
+    MOD_REG_B,MOD_REG_C,MOD_REG_D,MOD_REG_E,MOD_REG_H,MOD_REG_L,MOD_REG_HL_MEM,MOD_REG_A
 };
 
 //Tabla de los registros modificados para opcodes con prefijo ED
@@ -1321,29 +1375,44 @@ z80_long_int debug_modified_registers_ed_list[256]={
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
     //64 IN B,(C)
-    MOD_REG_B|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_I,
-    MOD_REG_C|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
+    MOD_REG_B|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_I,
+    MOD_REG_C|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP,MOD_REG_IM_MODE,MOD_REG_R,
     //80 IN D,(C)
-    MOD_REG_D|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_E|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_D|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_E|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_DE|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //96 IN H,(C)
-    MOD_REG_H|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,         MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
-    MOD_REG_L|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_H|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,          MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
+    MOD_REG_L|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_HL|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,MOD_REG_AF,
     //112 IN F,(C)
-    MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,0,                   MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
-    MOD_REG_A|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
+    MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_WRITE_NN_MEM16,                    MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
+    MOD_REG_A|MOD_REG_F,0,MOD_REG_HL|MOD_REG_F,MOD_REG_SP|MOD_READ_NN_MEM16,MOD_REG_AF,MOD_REG_SP|MOD_REG_IFF,MOD_REG_IM_MODE,0,
     //128
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
     //144
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
-    //160 LDI
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    //176 LDIR
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
-    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F,MOD_REG_BC|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //160 LDI, CPI
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INI, OUTI, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //168 LDD, CPD
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //IND, OUTD, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //176 LDIR, CPIR
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INIR, OTIR, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
+    //184 LDDR, CPDR
+    MOD_REG_BC|MOD_REG_DE|MOD_REG_HL|MOD_REG_F|MOD_REG_DE_MEM, MOD_REG_BC|MOD_REG_HL|MOD_REG_F, 
+    //INDR, OTDR, NOP, NOP, NOP
+    MOD_REG_B|MOD_REG_HL|MOD_REG_F|MOD_REG_HL_MEM, MOD_REG_B|MOD_REG_HL|MOD_REG_F,0,0,0,0,
+
     //192
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1368,35 +1437,35 @@ z80_long_int debug_modified_registers_dd_fd_list[256]={
     0,0,0,0,0,0,0,0,
     0,MOD_REG_IX|MOD_REG_F,0,0,0,0,0,0,
     //32 NOPD
-    0,MOD_REG_IX,0,         MOD_REG_IX,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,
-    0,MOD_REG_IX,MOD_REG_IX,MOD_REG_IX,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,
+    0,MOD_REG_IX,MOD_WRITE_NN_MEM16,MOD_REG_IX,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,
+    0,MOD_REG_IX,MOD_REG_IX|MOD_READ_NN_MEM16,MOD_REG_IX,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,
     //48 NOPD
-    0,0,0,0,MOD_REG_F,MOD_REG_F,0,0,
+    0,0,0,0,MOD_REG_F|MOD_WRITE_IXIY_d_MEM8,MOD_REG_F|MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,0,
     0,MOD_REG_IX,0,0,0,0,0,0,
     //64 NOPD
-    0,0,0,0,MOD_REG_B,MOD_REG_B,MOD_REG_B,0,
-    0,0,0,0,MOD_REG_C,MOD_REG_C,MOD_REG_C,0,
+    0,0,0,0,MOD_REG_B,MOD_REG_B,MOD_REG_B|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_C,MOD_REG_C,MOD_REG_C|MOD_READ_IXIY_d_MEM8,0,
     //80 NOPD
-    0,0,0,0,MOD_REG_D,MOD_REG_D,MOD_REG_D,0,
-    0,0,0,0,MOD_REG_E,MOD_REG_E,MOD_REG_E,0,
+    0,0,0,0,MOD_REG_D,MOD_REG_D,MOD_REG_D|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_E,MOD_REG_E,MOD_REG_E|MOD_READ_IXIY_d_MEM8,0,
     //96 LD IXh,B
-    MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,MOD_REG_IX_H,MOD_REG_H,MOD_REG_IX_H,
-    MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,MOD_REG_L,MOD_REG_IX_L,
-    //112 NOPD
-    0,0,0,0,0,0,0,0,
-    0,0,0,0,MOD_REG_A,MOD_REG_A,MOD_REG_A,0,
+    MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,MOD_REG_IX_H,0,MOD_REG_IX_H,MOD_REG_H|MOD_READ_IXIY_d_MEM8,MOD_REG_IX_H,
+    MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,MOD_REG_IX_L,0,MOD_REG_L|MOD_READ_IXIY_d_MEM8,MOD_REG_IX_L,
+    //112 LD (IX+d),B
+    MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,MOD_WRITE_IXIY_d_MEM8,0,MOD_WRITE_IXIY_d_MEM8,
+    0,0,0,0,MOD_REG_A,MOD_REG_A,MOD_REG_A|MOD_READ_IXIY_d_MEM8,0,
     //128 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //144 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //160 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //176 NOPD
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
-    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
+    0,0,0,0,MOD_REG_AF,MOD_REG_AF,MOD_REG_AF|MOD_READ_IXIY_d_MEM8,0,
     //192 NOPD
     0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,
@@ -1451,6 +1520,15 @@ z80_long_int menu_debug_get_modified_registers(menu_z80_moto_int direccion)
             direccion=adjust_address_memory_size(direccion);
             opcode=menu_debug_get_mapped_byte(direccion);
             modificados=debug_modified_registers_cb_list[opcode];
+            //En este caso tambien se agregan flags de lectura o escritura de (ix/iy+d) 
+            if (opcode>=0x40 && opcode<=0x80) {
+                //lectura de bits BIT 0,(IX+d)...
+                modificados |=MOD_READ_IXIY_d_MEM8;
+            }
+            else {
+                //resto son escrituras RLC (IX+d)...
+                modificados |=MOD_WRITE_IXIY_d_MEM8;
+            }
         }
 
         else {
@@ -1624,25 +1702,106 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                 if (registros_modificados & MOD_REG_IM_MODE)      *columnas_modificadas |=1|(2<<4);      //columna 1,2 registro IM
             break;
 
-            /*case 12:
-            case 13:
-                menu_debug_get_memory_pages(textopaginasmem);
-                menu_util_cut_line_at_spaces(12,textopaginasmem,textopaginasmem_linea1,textopaginasmem_linea2);
-                if (linea==12) sprintf (textoregistros,"%s",textopaginasmem_linea1 );
-                if (linea==13) sprintf (textoregistros,"%s",textopaginasmem_linea2 );
-            break;*/
-
             case 11:
+                sprintf (textoregistros,"(HL) %02X %02X",peek_byte_z80_moto(HL),peek_byte_z80_moto(HL+1));
+                //mostrar cuando se modifica (HL)
+                //columna 1,2,3,4 registro (HL)
+                if (registros_modificados & MOD_REG_HL_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);      
+            break;      
+
+            case 12:
+                sprintf (textoregistros,"(DE) %02X %02X",peek_byte_z80_moto(DE),peek_byte_z80_moto(DE+1));
+                //mostrar cuando se modifica (DE)
+                //columna 1,2,3,4 registro (DE)
+                if (registros_modificados & MOD_REG_DE_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
+            break; 
+
+            case 13:
+                sprintf (textoregistros,"(BC) %02X %02X",peek_byte_z80_moto(BC),peek_byte_z80_moto(BC+1));
+                //mostrar cuando se modifica (BC)    
+                //columna 1,2,3,4 registro (BC)
+                if (registros_modificados & MOD_REG_BC_MEM)          *columnas_modificadas |=1|(2<<4)|(3<<8)|(4<<12);                      
+            break;               
+
+    
+            case 14:
+                //Aqui mostrar referencias a ld xx,(NN) y similares. y ld (nn),xx
+                if ((registros_modificados & MOD_READ_NN_MEM8) || (registros_modificados & MOD_WRITE_NN_MEM8)) {
+                    //puntero
+                    z80_int puntero=peek_byte_z80_moto(menu_debug_memory_pointer+1)+256*peek_byte_z80_moto(menu_debug_memory_pointer+2);
+                    
+                    sprintf (textoregistros,"(%04X) %02X",puntero,peek_byte_z80_moto(puntero));
+                }
+
+                else if ((registros_modificados & MOD_READ_NN_MEM16) || (registros_modificados & MOD_WRITE_NN_MEM16)) {
+                    //puntero
+                    z80_int dir_leer=menu_debug_memory_pointer+1;
+
+                    //si prefijo 237 o 221 o 253, como por ejemplo en opcodes ld de,(nn)
+                    if (peek_byte_z80_moto(menu_debug_memory_pointer)==237 ||
+                        peek_byte_z80_moto(menu_debug_memory_pointer)==221 ||
+                        peek_byte_z80_moto(menu_debug_memory_pointer)==253
+                    ) {
+                        dir_leer++;
+                    }
+
+                    z80_int puntero=peek_byte_z80_moto(dir_leer)+256*peek_byte_z80_moto(dir_leer+1);
+
+                    sprintf (textoregistros,"(%04X) %02X%02X",puntero,
+                        peek_byte_z80_moto(puntero+1),peek_byte_z80_moto(puntero));
+                }
+
+
+                else if ((registros_modificados & MOD_READ_IXIY_d_MEM8) || (registros_modificados & MOD_WRITE_IXIY_d_MEM8)) {
+                    //+d con signo (char)
+                    char desplazamiento=peek_byte_z80_moto(menu_debug_memory_pointer+2);
+
+
+                    char texto_ix_iy[10];
+                    z80_int puntero;
+
+                    //si prefijo IY
+                    if (peek_byte_z80_moto(menu_debug_memory_pointer)==253) {
+                        strcpy(texto_ix_iy,"IY");
+                        puntero=reg_iy+desplazamiento;
+                    }
+                    else {
+                        strcpy(texto_ix_iy,"IX");
+                        puntero=reg_ix+desplazamiento;
+                    }
+
+                    char string_offset[10];
+                    if (desplazamiento>=0) {
+                        sprintf(string_offset,"+%02X",desplazamiento);
+                    }
+                    else {
+                        desplazamiento=-desplazamiento;
+                        sprintf(string_offset,"-%02X",desplazamiento);
+                    }
+
+
+                    sprintf (textoregistros,"(%s%s) %02X",texto_ix_iy,string_offset,
+                        peek_byte_z80_moto(puntero));
+                }                
+
+                
+
+                else {
+                    //Nada. Esta linea es opcional solo para cuando hay registros tipo MOD_READ*
+                }
+            break;
+
+            case 15:
                 sprintf (textoregistros,"TSTATE %d",t_estados);
             break;
 
-            case 12:
-            case 13:
-            case 14:
-            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
                 //Por defecto, cad
                 //Mostrar en una linea, dos bloques de memoria mapeadas
-                offset_bloque=linea-12;  //este 12 debe coincidir con el primer case de este bloque
+                offset_bloque=linea-16;  //este 16 debe coincidir con el primer case de este bloque
                                         //para que la primera linea de este bloque sea offset_bloque=0
                 
                 offset_bloque *=2; //2 bloques por cada linea
@@ -1658,27 +1817,6 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
                     }
                 }
             break;
-    /*
-    //Retorna paginas mapeadas (nombres cortos)
-    void menu_debug_get_memory_pages(char *s)
-    {
-
-            int i;
-            int longitud;
-            int indice=0;
-
-            for (i=0;i<total_segmentos;i++) {
-                    longitud=strlen(segmentos[i].shortname)+1;
-                    sprintf(&s[indice],"%s ",segmentos[i].shortname);
-
-                    indice +=longitud;
-
-            }
-
-    }
-    */
-
-                    
             
 
         }
@@ -1884,25 +2022,7 @@ menu_z80_moto_int menu_debug_register_decrement_half(menu_z80_moto_int posicion,
 
  
 
-int menu_debug_hexdump_change_pointer(int p)
-{
 
-
-        char string_address[10];
-
-        sprintf (string_address,"%XH",p);
-
-
-        //menu_ventana_scanf("Address? (in hex)",string_address,6);
-        menu_ventana_scanf("Address?",string_address,10);
-
-	//p=strtol(string_address, NULL, 16);
-	p=parse_string_to_number(string_address);
-
-
-	return p;
-
-}
 
 
 //Ajustar cuando se pulsa hacia arriba por debajo de direccion 0.
@@ -2057,7 +2177,7 @@ int menu_debug_get_condicion_satisfy(z80_byte opcode,char *buffer)
 
     //Caso DJNZ dis, que no usa flag
     if (opcode==16 && reg_b!=1) {
-        strcpy(buffer,"-> satisfy B!=1");
+        sprintf(buffer,"-> satisfy B=%02X",reg_b);
         return 1;        
     }
 
@@ -2077,6 +2197,7 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     int columna1=columnas_modificadas & 0xF;
     int columna2=(columnas_modificadas>>4) & 0xF;
     int columna3=(columnas_modificadas>>8) & 0xF;
+    int columna4=(columnas_modificadas>>12) & 0xF;
 
     if (columna1) {
         columna1--;
@@ -2091,7 +2212,12 @@ void menu_debug_registros_colorea_columnas_modificadas(zxvision_window *w,int li
     if (columna3) {
         columna3--;
         zxvision_set_attr(w,xinicial+columna3,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
-    }        
+    }
+
+    if (columna4) {
+        columna4--;
+        zxvision_set_attr(w,xinicial+columna4,linea,ESTILO_GUI_TINTA_OPCION_MARCADA,ESTILO_GUI_PAPEL_OPCION_MARCADA,0);
+    }            
 }
 
 int menu_debug_registers_print_registers(zxvision_window *w,int linea)
@@ -3089,38 +3215,52 @@ void menu_debug_registers_zxvision_ventana(zxvision_window *ventana)
 {
 
 
-	int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
-    //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
-    //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-	if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-		xorigin=menu_origin_x();
-		yorigin=0;
-		ancho_ventana=32;
-		alto_ventana=24;
-	}
+        int xorigin,yorigin,alto_ventana,ancho_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        //en este caso no usamos ancho_antes_minimize,alto_antes_minimize, pues estamos usando 
+        //zxvision_new_window_nocheck_staticsize en vez de zxvision_new_window_gn_cim
 
-
-	//asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
-	//zxvision_new_window_nocheck_staticsize(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU");
-
-    zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
-        "debugcpu",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+        if (!util_find_window_geometry("debugcpu",&xorigin,&yorigin,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            xorigin=menu_origin_x();
+            yorigin=0;
+            ancho_ventana=32;
+            alto_ventana=24;
+        }
 
 
-	//Preservar ancho y alto anterior
-	//menu_debug_registers_ventana_common(ventana);
+        //asignamos mismo ancho visible que ancho total para poder usar la ultima columna de la derecha, donde se suele poner scroll vertical
+        //zxvision_new_window_nocheck_staticsize(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU");
+
+        zxvision_new_window_gn_cim(ventana,xorigin,yorigin,ancho_ventana,alto_ventana,ancho_ventana,alto_ventana-2,"Debug CPU",
+            "debugcpu",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
 
-	ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
-	ventana->can_be_backgrounded=1;
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"debugcpu");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        //Preservar ancho y alto anterior
+        //menu_debug_registers_ventana_common(ventana);
 
-	//Puede enviar hotkeys con raton
-	ventana->can_mouse_send_hotkeys=1;
+
+        ventana->can_use_all_width=1; //Para poder usar la ultima columna de la derecha donde normalmente aparece linea scroll
+        ventana->can_be_backgrounded=1;
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"debugcpu");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+        //Puede enviar hotkeys con raton
+        ventana->can_mouse_send_hotkeys=1;
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 
 }
@@ -3228,7 +3368,7 @@ void menu_watches_overlay_mostrar_texto(void)
 
 
 
-	                sprintf (buf_linea,"  Result: %d",resultado); 
+	                sprintf (buf_linea,"  Result: %XH",resultado); 
 					zxvision_print_string_defaults_fillspc(menu_watches_overlay_window,1,linea,buf_linea);
 
 					linea+=2;
@@ -3243,7 +3383,7 @@ void menu_watches_overlay_mostrar_texto(void)
 void menu_watches_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
  	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
 
@@ -3306,40 +3446,54 @@ void menu_watches(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
 
 
-    int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-	if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("watches",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
-        xventana=menu_origin_x();
-        yventana=1;
+            xventana=menu_origin_x();
+            yventana=1;
 
-        ancho_ventana=32;
-        alto_ventana=22;
-	}
+            ancho_ventana=32;
+            alto_ventana=22;
+        }
 
 
 
-	//zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
-            is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
+        //zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches");
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Watches","watches",
+                is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);  
 
-	ventana->can_be_backgrounded=1;	
-	//indicar nombre del grabado de geometria
-	//strcpy(ventana->geometry_name,"watches");
-    //restaurar estado minimizado de ventana
-    //ventana->is_minimized=is_minimized;    
+        ventana->can_be_backgrounded=1;	
+        //indicar nombre del grabado de geometria
+        //strcpy(ventana->geometry_name,"watches");
+        //restaurar estado minimizado de ventana
+        //ventana->is_minimized=is_minimized;    
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+
+        zxvision_activate_this_window(ventana);
+    }    
 
 	zxvision_draw_window(ventana);		
 
 
 
-    //Cambiamos funcion overlay de texto de menu
-    set_menu_overlay_function(menu_watches_overlay);
+
+
 
 	menu_watches_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui	
+
+    //Cambiamos funcion overlay de texto de menu
+    zxvision_set_window_overlay(ventana,menu_watches_overlay);    
 
 
 	//Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
@@ -3410,16 +3564,9 @@ void menu_watches(MENU_ITEM_PARAMETERS)
                                 //printf ("actuamos por funcion\n");
 
 
-
-									//restauramos modo normal de texto de menu para llamar al editor de watch
-                                                                //con el sprite encima
-                                    set_menu_overlay_function(normal_overlay_texto_menu);
-
-
                                       
                                 item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-								set_menu_overlay_function(menu_watches_overlay);
 								zxvision_clear_window_contents(ventana); //limpiar de texto anterior en linea de watch
 								zxvision_draw_window(ventana);
 
@@ -3431,11 +3578,7 @@ void menu_watches(MENU_ITEM_PARAMETERS)
 
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	zxvision_set_window_overlay_from_current(ventana);
 
-       //restauramos modo normal de texto de menu
-       set_menu_overlay_function(normal_overlay_texto_menu);
 
         //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
 	   
@@ -3975,10 +4118,10 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 
 				if (util_daad_detect() || util_textadv_detect_paws_quill() ) maxima_vista='8';
 
-								sprintf(buffer_mensaje_short,"P~~tr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
+								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
 
-								sprintf(buffer_mensaje_long,"Poin~~ter:%sH [%c] ~~FollowPC ~~1-~~%c:View",
+								sprintf(buffer_mensaje_long,"~~Memptr:%sH [%c] ~~FollowPC ~~1-~~%c:View",
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
 
 
@@ -4047,12 +4190,12 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 					menu_get_legend_short_long(s,ancho_visible,
 							//01234567890123456789012345678901
 							// StM DAsm En:Stp StOvr CntSt Md	
-							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt ~~Md",
+							"~~StM ~~D~~Asm ~~E~~n:Stp St~~Ovr ~~CntSt H~~x",
 								//          10        20        30        40        50        60
 								//012345678901234567890123456789012345678901234567890123456789012
 							//     StepMode DisAssemble Enter:Step StepOver ContinuosStep Mode
 
-							"~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep ~~Mode"
+							"~~StepMode ~~Dis~~Assemble ~~E~~n~~t~~e~~r:Step Step~~Over ~~ContinousStep He~~x"
 					
 					); 
 
@@ -4084,11 +4227,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 							//01234567890123456789012345678901
 							// Stepmode Disassem Assem Mode
-							"~~StepMode ~~Disassem ~~Assem ~~Mode",
+							"~~StepMode ~~Disassem ~~Assem He~~x",
 
 							//012345678901234567890123456789012345678901234567890123456789012
 							// StepMode Disassemble Assemble Mode
-							"~~StepMode ~~Disassemble ~~Assemble ~~Mode"
+							"~~StepMode ~~Disassemble ~~Assemble He~~x"
 					);
 
 
@@ -4267,7 +4410,7 @@ int menu_debug_continuous_speed_step=0;
 void menu_debug_registers_next_cont_speed(void)
 {
 	menu_debug_continuous_speed++;
-	if (menu_debug_continuous_speed==4) menu_debug_continuous_speed=0;
+	if (menu_debug_continuous_speed==5) menu_debug_continuous_speed=0;
 }
 
  
@@ -4299,13 +4442,14 @@ void menu_debug_registers_if_cls(void)
             int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
             menu_emulation_paused_on_menu=1;
             //menu_espera_no_tecla_no_cpu_loop();
-            menu_espera_no_tecla();
+            menu_espera_no_tecla_con_repeticion();
             menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
             //printf ("Despues esperamos cpu_step_mode=1\n");
         }
         else {
             //printf ("Esperamos cpu_step_mode.v=0\n");
-            menu_espera_no_tecla();
+            menu_espera_no_tecla_con_repeticion();
+            //printf ("Despues Esperamos cpu_step_mode.v=0\n");
         }
     }
 
@@ -5763,7 +5907,7 @@ int new_plot_moves[8][2]={
 void menu_debug_daad_view_graphics_render_overlay(void)
 {
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_daad_view_graphics_render_overlay_window->is_minimized) return;
@@ -5984,7 +6128,9 @@ void menu_debug_daad_view_graphics(void)
     //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
     menu_debug_daad_view_graphics_render_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
 
-    set_menu_overlay_function(menu_debug_daad_view_graphics_render_overlay);
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_debug_daad_view_graphics_render_overlay);
+   
 
 
     //zxvision_wait_until_esc(ventana);
@@ -6192,8 +6338,6 @@ void menu_debug_daad_view_graphics(void)
 
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
-        //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
@@ -6697,7 +6841,7 @@ void menu_debug_help(void)
         "En la mayoría de las vistas, hay diferentes teclas que realizan acciones. Hay que tener en cuenta que se distingue mayúsculas "
         "de minúsculas, por tanto, las teclas en mayúsculas hay que accionarlas junto con la tecla Caps shift:\n"
         "\n"
-        "t: cambiar el puntero donde estamos visualizando el listado\n"
+        "m: cambiar el puntero donde estamos visualizando el listado\n"
         "\n"
         "f: habilita/deshabilita el seguimiento del puntero con la posición del registro PC de la cpu\n"
         "\n"
@@ -6705,6 +6849,13 @@ void menu_debug_help(void)
         "o también se entra de manera automática siempre que se tenga deshabilitado el Multitask menu o se tenga habilitada opción de Stop emulation on menu.\n"
         "Cuando no se está en modo paso a paso, la emulación de la máquina sigue ejecutándose. En cambio, en modo paso a paso, "
         "la emulación está detenida, y se ejecuta una instrucción a cada pulsación de la tecla Enter\n"
+        "\n"
+        "c: modo continuo: Ejecuta continuamente el modo paso a paso pero sin requerir ninguna pulsación de tecla. Tiene varias velocidades:\n"
+        "0: pausa de 0.5 segundos entre cada opcode\n"
+        "1: pausa de 0.1 segundos entre cada opcode\n"
+        "2: pausa de 0.02 segundos entre cada opcode\n"
+        "3: sin pausa entre cada opcode\n"
+        "4: sin pausa entre cada grupo de 10 opcodes\n"
         "\n"
         "d: desensamblar: Se tiene una ventana adicional de desensamblado y exportación del listado a archivo de texto\n"
         "\n"
@@ -6714,7 +6865,7 @@ void menu_debug_help(void)
         "\n"
         "o: Ejecutar hasta volver de la siguiente instrucción, útil por ejemplo para volver justo después de un CALL\n"
         "\n"
-        "m: Cambiar entre los diferentes modos de la vista 1\n"
+        "x: Cambiar entre los diferentes modos de la vista 1\n"
         "\n"
         "r: Modificar registros\n"
         "\n"
@@ -6797,7 +6948,7 @@ void menu_debug_help(void)
         "A la majoria de les vistes, hi ha diferents tecles que realitzen accions. Cal tenir en compte que es distingeix majúscules"
         "de minúscules, per tant, les tecles en majúscules cal accionar-les juntament amb la tecla Caps shift:\n"
         "\n"
-        "t: canviar el punter on estem visualitzant el llistat\n"
+        "m: canviar el punter on estem visualitzant el llistat\n"
         "\n"
         "f: habilita/deshabilita el seguiment del punter amb la posició del registre PC de la cpu\n"
         "\n"
@@ -6806,6 +6957,13 @@ void menu_debug_help(void)
         "Quan no s'està en mode pas a pas, l'emulació de la màquina continua executant-se. En canvi, en mode pas a pas,"
         "l'emulació està aturada, i s'executa una instrucció a cada clic de la tecla Enter\n"
         "\n"
+        "c: mode continu: Executa continuament el mode pas a pas sense necessitar prémer cap tecla. Té varies velocitats:\n"
+        "0: pausa de 0.5 segons entre cada instrucció\n"
+        "1: pausa de 0.1 segons entre cada instrucció\n"
+        "2: pausa de 0.02 segons entre cada instrucció\n"
+        "3: sense pausa entre cada instrucció\n"
+        "4: sense pausa entre cada grup de 10 instruccions\n"
+        "\n"        
         "d: desassemblar: Es té una finestra addicional de desassemblat i exportació del llistat a fitxer de text\n"
         "\n"
         "a: assemblar: Es pot assemblar codi màquina, línia a línia\n"
@@ -6814,7 +6972,7 @@ void menu_debug_help(void)
         "\n"
         "o: Executar fins a tornar de la següent instrucció, útil per exemple per tornar just després d'un CALL\n"
         "\n"
-        "m: Canviar entre els diferents modes de la vista 1\n"
+        "x: Canviar entre els diferents modes de la vista 1\n"
         "\n"
         "r: Modificar registres\n"
         "\n"
@@ -6898,7 +7056,7 @@ void menu_debug_help(void)
         "In most of the views, there are some keys which run actions. Capitalisation in keys is taken care "
         "so, capital keys must be fired pressing Caps shift too:\n"
         "\n"
-        "t: Change the listing pointer\n"
+        "m: Change the listing pointer\n"
         "\n"
         "f: enable/disable following pointer with the PC cpu register\n"
         "\n"
@@ -6907,6 +7065,13 @@ void menu_debug_help(void)
         "When not in step mode, machine emulated continues running. Besides, on step mode, "
         "emulation is stopped, and an opcode is run on every pressing of key Enter\n"
         "\n"
+        "c: continuos mode: Repeated execution of step mode without pressing any key. It has different speeds:\n"
+        "0: 0.5 pause between every opcode\n"
+        "1: 0.1 pause between every opcode\n"
+        "2: 0.02 pause between every opcode\n"
+        "3: no pause between every opcode\n"
+        "4: no pause between every group of 10 opcodes\n"
+        "\n"        
         "d: disassemble: An additional window for disassembly and exporting listings to text files\n"
         "\n"
         "a: assemble: You can assemble machine code, line by line\n"
@@ -6915,7 +7080,7 @@ void menu_debug_help(void)
         "\n"
         "o: Run until returning from the next opcode, useful, for example, to return after a CALL opcode\n"
         "\n"
-        "m: Switch between different modes of view 1\n"
+        "x: Switch between different modes of view 1\n"
         "\n"
         "r: Modify registers\n"
         "\n"
@@ -7085,7 +7250,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
 
 	menu_debug_registers_zxvision_ventana(ventana);
@@ -7211,7 +7376,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	do {
 
 	
-
+        //printf("Al principio del do while\n");
 
 		//Si es la vista 8, siempre esta en cpu step mode, y zona de memoria es la mapped
 		if (menu_debug_registers_current_view==8) {
@@ -7343,12 +7508,20 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 mouse_wheel_vertical=0;
             }
 
+			//No hay tecla pulsada
+			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA ) {    
+                //Para poder usar repeticiones
+                menu_reset_counters_tecla_repeticion();                  
+            }      
+
 			//Hay tecla pulsada
 			if ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) !=MENU_PUERTO_TECLADO_NINGUNA ) {
 				//tecla=zxvision_common_getkey_refresh();
                 if (!accion_mouse_pulsado) { 
                     //printf("Antes zxvision_common_getkey_refresh_noesperanotec. wheel: %d acumulado: %d movido: %d\n",
                     //    mouse_wheel_vertical,acumulado,mouse_movido);
+
+                    //printf("Antes zxvision_common_getkey_refresh_noesperanotec\n");
 
 				    tecla=zxvision_common_getkey_wheel_refresh_noesperanotec();
 
@@ -7363,7 +7536,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 else {
                     //printf ("tecla: %d\n",tecla);
                     //A cada pulsacion de tecla, mostramos la pantalla del ordenador emulado
+                    //printf("Antes menu_debug_registers_if_cls\n");
                     menu_debug_registers_if_cls();
+                    //printf("Despues menu_debug_registers_if_cls\n");
                     //menu_espera_no_tecla_no_cpu_loop();
 
                     //para forzar refresco rapido de pantalla
@@ -7428,7 +7603,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
                 }                
 
-				if (tecla=='m' && menu_debug_registers_current_view==1) {
+				if (tecla=='x' && menu_debug_registers_current_view==1) {
                     menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
@@ -7570,7 +7745,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 				}
 
-				if (tecla=='t') {
+				if (tecla=='m') {
 					menu_debug_follow_pc.v=0; //se deja de seguir pc
 					menu_debug_registers_change_ptr();
 					//Decimos que no hay tecla pulsada
@@ -7709,10 +7884,14 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				//1= pausa de 0.1
 				//2= pausa de 0.02
 				//3= sin pausa
+                //4= sin pausa, ejecutando cada vez 10 opcodes de golpe
 
 				if (menu_debug_continuous_speed==0) usleep(500000); //0.5 segundo
 				else if (menu_debug_continuous_speed==1) usleep(100000); //0.1 segundo
 				else if (menu_debug_continuous_speed==2) usleep(20000); //0.02 segundo
+
+                //velocidad 3, sin pausa
+                //velocidad 4, sin pausa y ejecutando 4 opcodes cada vez
 			}
 
 
@@ -7775,6 +7954,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
 					si_ejecuta_una_instruccion=0;
+
+                    //Para poder usar repeticiones
+                    menu_reset_counters_tecla_repeticion();
 				}
 
 				else {
@@ -7943,13 +8125,31 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                 }
 
 
-				if (tecla=='m' && menu_debug_registers_current_view==1) {
+				if (tecla=='x' && menu_debug_registers_current_view==1) {
 		            menu_debug_next_dis_show_hexa();
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
 					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
                     si_ejecuta_una_instruccion=0;
                 }
+
+		        if (tecla=='m' && menu_debug_registers_current_view!=8) {
+                    menu_debug_follow_pc.v=0; //se deja de seguir pc
+					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
+					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
+					menu_emulation_paused_on_menu=1;
+                    menu_debug_registers_change_ptr();
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                                        
+					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;
+
+                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
+                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
+					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
+                }                
 
 
 				//Mensaje al que apunta instruccion de condact
@@ -8205,23 +8405,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     si_ejecuta_una_instruccion=0;
 				}
 
-		        if (tecla=='t') {
-                    menu_debug_follow_pc.v=0; //se deja de seguir pc
-					//Detener multitarea, porque si no, se input ejecutara opcodes de la cpu, al tener que leer el teclado
-					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
-					menu_emulation_paused_on_menu=1;
-                    menu_debug_registers_change_ptr();
 
-                    //Decimos que no hay tecla pulsada
-                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
-                                        
-					//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    si_ejecuta_una_instruccion=0;
-
-                    //Restaurar estado multitarea despues de menu_debug_registers_ventana, pues si hay algun error derivado
-                    //de cambiar registros, se mostraria ventana de error, y se ejecutaria opcodes de la cpu, al tener que leer el teclado
-					menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
-                }
 
 
                 //Ver stack
@@ -8384,7 +8568,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 			}
 
-			else {
+			//Modo continuo
+            else {
 				//Cualquier tecla Detiene el continuous loop excepto C
 				//printf ("continuos loop\n");
 				acumulado=menu_da_todas_teclas();
@@ -8461,6 +8646,17 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
                     //printf("ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
                     menu_debug_registers_run_cpu_opcode();
                     //printf("despues ejecutando cpu_core_loop. PC=%XH\n",reg_pc);
+
+                    if (continuous_step) {
+                        //Si speed 4, ejecutar 10 opcodes
+                        if (menu_debug_continuous_speed==4) {
+                            int i;
+                            //1 opcode ya lo hemos ejecutado antes. faltan 9
+                            for (i=0;i<9 && !menu_breakpoint_exception.v;i++) {
+                                menu_debug_registers_run_cpu_opcode();
+                            }
+                        }
+                    }
                 }
 
 				//Ver si se ha disparado interrupcion (nmi o maskable)
@@ -8493,6 +8689,8 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 	//Hacer mientras step mode este activo o no haya tecla pulsada o no haya un salir_todos_menus
 	//printf ("acumulado %d cpu_ste_mode: %d\n",acumulado,cpu_step_mode.v);
     //} while ( (acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA || cpu_step_mode.v==1);
+
+    //printf("Antes del while final\n");
     } while ( ((acumulado & MENU_PUERTO_TECLADO_NINGUNA) ==MENU_PUERTO_TECLADO_NINGUNA || cpu_step_mode.v==1) && !salir_todos_menus);
 
 	//Si no estamos haciendo stepping de daad, quitar breakpoint del parser
@@ -8505,9 +8703,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 		menu_debug_delete_daad_parse_breakpoint();
 	}	
 
-	//Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-	//NO: dado que no tenemos overlay en esta ventana
-	//zxvision_set_window_overlay_from_current(ventana);
+
 
 
     
@@ -8655,7 +8851,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
     //asumimos por defecto que no se ven
     int mostrar_dibujos=0;
 
-    //temporal. hacer 4 pixeles de cada
+    //hacer 4 pixeles de cada
     //mapa para zoom mas reducido (zoom=0). pixeles de 4x4
     if (menu_debug_textadventure_map_connections_zoom==0) {
         int ancho,alto;
@@ -8825,7 +9021,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
         else if (menu_debug_textadventure_map_connections_zoom>=5) {
             //Si no se ven los dibujos, al menos mostrar descripción de las localidades
-            int y_location=(inicio_celda_y/8)+1;
+            int y_location=(inicio_celda_y/menu_char_height)+1;
             int x_location=inicio_celda_x/menu_char_width+1;
 
             int maxima_longitud=(tamanyo_interior_celda/menu_char_width)-2;
@@ -8865,7 +9061,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
             int total_lineas=zxvision_generic_message_aux_justificar_lineas(texto_localidad,strlen(texto_localidad),maxima_longitud,punteros_lineas);
 
-            int maximo_permitido_alto=(((tamanyo_celda/2)-1)/8)-1; //-1 de margen de arriba
+            int maximo_permitido_alto=(((tamanyo_celda/2)-1)/menu_char_height)-1; //-1 de margen de arriba
 
             if (total_lineas>maximo_permitido_alto) total_lineas=maximo_permitido_alto;
             
@@ -9353,7 +9549,7 @@ void old_textadv_map_putpixel(zxvision_window *w,int x,int y,int color)
 void textadv_map_putpixel(zxvision_window *w,int x,int y,int color)
 {
     //calcular la posicion y donde se ve en pantalla, o sea, considerando scroll vertical
-    int efectiva_y=y-w->offset_y*8;
+    int efectiva_y=y-w->offset_y*menu_char_height;
 
     if (efectiva_y>=0 && efectiva_y<map_adventure_offset_y) return;
 
@@ -9374,7 +9570,7 @@ void menu_debug_textadventure_map_connections_draw_map_compass(zxvision_window *
       
 
     int pos_x_linea=texto_x*menu_char_width-textadv_map_get_space_compass_right();
-    int pos_y_linea=(texto_y+(map_adventure_offset_y/8))*8;
+    int pos_y_linea=(texto_y+(map_adventure_offset_y/menu_char_height))*menu_char_height;
 
 
     int p1_x;
@@ -9521,7 +9717,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 {
     //printf("overlay %d\n",contador_segundo);
 
-    if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
+
 
     //si ventana minimizada, no ejecutar todo el codigo de overlay
     if (menu_debug_textadventure_map_connections_overlay_window->is_minimized) return;
@@ -9628,7 +9824,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
                     //justo el centro de la habitacion
                     int offset_x=(x*tamanyo_habitacion+map_adventure_offset_x+tamanyo_habitacion/2)/menu_char_width;
-                    int offset_y=(y*tamanyo_habitacion+map_adventure_offset_y+tamanyo_habitacion/2)/8;
+                    int offset_y=(y*tamanyo_habitacion+map_adventure_offset_y+tamanyo_habitacion/2)/menu_char_height;
                     
                     //cuanto es la mitad de pantalla
                     int mitad_ancho=(w->visible_width)/2;
@@ -9771,78 +9967,100 @@ void menu_debug_textadventure_map_connections_teleport(void)
 
 void menu_debug_textadventure_map_connections_create_window(zxvision_window *ventana)
 {
-    int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-    if (!util_find_window_geometry("textadvmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
 
-        ancho_ventana=40;
+        int ancho_ventana,alto_ventana,xventana,yventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        alto_ventana=22;
+        if (!util_find_window_geometry("textadvmap",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
 
+            ancho_ventana=40;
 
-        xventana=menu_center_x()-ancho_ventana/2;
-        yventana=menu_center_y()-alto_ventana/2;
-
-    }    
+            alto_ventana=22;
 
 
-    //obener ancho y alto total
-    int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
-    
-    textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;
 
-    //de momento fuerzo alto y ancho total
-    int alto_total; //=400;
-    int ancho_total; //=300;     
+        }    
 
 
-    if (menu_debug_textadventure_map_connections_zoom==0) {
-        ancho_total=ancho_mapa/2;  //de 8/4 pixeles por cada ubicacion
-        alto_total=alto_mapa/2;
+        //obener ancho y alto total
+        int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
+        
+        textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
+
+        //de momento fuerzo alto y ancho total
+        int alto_total; //=400;
+        int ancho_total; //=300;     
+
+
+        if (menu_debug_textadventure_map_connections_zoom==0) {
+            ancho_total=ancho_mapa/2;  //de 8/4 pixeles por cada ubicacion
+            alto_total=alto_mapa/2;
+        }
+
+        else {
+            int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
+
+            tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
+
+            ancho_total=ancho_mapa;
+            alto_total=alto_mapa;        
+
+            ancho_total *=tamanyo_celda;  
+            alto_total *=tamanyo_celda;  
+
+            //pasar a caracteres
+            ancho_total /=menu_char_width;
+            alto_total /=menu_char_height;
+        }
+
+        //darle mas para los offsets
+        ancho_total +=map_adventure_offset_x/menu_char_width;
+        alto_total +=map_adventure_offset_y/menu_char_height;
+
+        //1 mas por cada, de los decimales al dividir
+        ancho_total++;
+        alto_total++;
+
+        //Y un minimo asegurado
+        if (ancho_total<50) ancho_total=50;
+        if (alto_total<20) alto_total=20;
+
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
+                "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+
+        //No refrescar contenido al cambiar scroll. Esto permite que la parte superior de la ventana, donde estan
+        //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
+        //refrescara convenientemente
+        ventana->no_refresh_change_offset=1;
+
+        //decimos que tiene que borrar fondo cada vez al redibujar
+        //por tanto es como decirle que no use cache de putchar
+        //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
+        ventana->must_clear_cache_on_draw=1; 
+
+        //Cambiamos funcion overlay de texto de menu
+        //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
+        //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
+        //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
+        menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui         
+
+        //cambio overlay
+        zxvision_set_window_overlay(ventana,menu_debug_textadventure_map_connections_overlay);
+            
+
+
     }
 
+    //Si ya existe, activar esta ventana
     else {
-        int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
-
-        tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
-
-        ancho_total=ancho_mapa;
-        alto_total=alto_mapa;        
-
-        ancho_total *=tamanyo_celda;  
-        alto_total *=tamanyo_celda;  
-
-        //pasar a caracteres
-        ancho_total /=menu_char_width;
-        alto_total /=8;
-    }
-
-    //darle mas para los offsets
-    ancho_total +=map_adventure_offset_x/menu_char_width;
-    alto_total +=map_adventure_offset_y/8;
-
-    //1 mas por cada, de los decimales al dividir
-    ancho_total++;
-    alto_total++;
-
-    //Y un minimo asegurado
-    if (ancho_total<50) ancho_total=50;
-    if (alto_total<20) alto_total=20;
-
-    zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
-            "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
-
-    ventana->can_be_backgrounded=1;
-
-    //No refrescar contenido al cambiar scroll. Esto permite que la parte superior de la ventana, donde estan
-    //las teclas y la leyenda no se mueva temporalmente al cambiar scroll. Total la funcion de overlay ya 
-    //refrescara convenientemente
-    ventana->no_refresh_change_offset=1;
-
-    //decimos que tiene que borrar fondo cada vez al redibujar
-    //por tanto es como decirle que no use cache de putchar
-    //dado que el fondo de texto es casi todo texto con caracter " " eso borra los pixeles que metemos con overlay del frame anterior
-    ventana->must_clear_cache_on_draw=1;    
+        zxvision_activate_this_window(ventana);
+    }     
 }
 
 
@@ -10011,7 +10229,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
     //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
     //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
-    zxvision_delete_window_if_exists(ventana);
+    //zxvision_delete_window_if_exists(ventana);
 
 
 
@@ -10019,13 +10237,9 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
     zxvision_draw_window(ventana);
 
-    //Cambiamos funcion overlay de texto de menu
-    //Por cierto que esta ventana no la permitimos que se haga background. Por que? Quizá no tiene sentido,
-    //pues no el contenido no varia a no ser que se esté en la ventana y tocando opciones
-    //Ademas, creo que puede provocar efectos inesperados si esta la ventana abierta y cargamos otro juego
-    menu_debug_textadventure_map_connections_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui    
+   
 
-    set_menu_overlay_function(menu_debug_textadventure_map_connections_overlay);
+
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
@@ -10125,17 +10339,6 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
         //printf ("tecla: %d\n",tecla);
     } while (tecla!=2 && tecla!=3);    
-
-
-    
-    //Antes de restaurar funcion overlay, guardarla en estructura ventana, por si nos vamos a background
-    zxvision_set_window_overlay_from_current(ventana);
-
-
- 
-
-        //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
 
 
     

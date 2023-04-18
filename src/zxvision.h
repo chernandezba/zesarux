@@ -115,6 +115,9 @@ struct s_zxvision_window {
 	int visible_width,visible_height;
 	int x,y;
 
+    //identificador de proceso. TODO: siempre se incrementa, hay que detectar que no use pids ya existentes
+    unsigned int pid;
+
     //las primeras posiciones especificadas aqui seran de upper margin
 	int upper_margin;
     //las siguientes seran de lower margin
@@ -182,6 +185,9 @@ struct s_zxvision_window {
 	int visible_cursor;
 	int cursor_line;
 
+    //tiempo total transcurrido, en microsegundos, dibujando overlay
+    long last_spent_time_overlay;
+
 	//Ventana anterior. Se van poniendo una encima de otra
 	struct s_zxvision_window *previous_window;
 
@@ -197,7 +203,9 @@ typedef struct s_zxvision_window zxvision_window;
 
 
 
-
+//extern long zxvision_time_total_drawing_overlay;
+extern long zxvision_time_total_drawing_overlay_except_current;
+extern long normal_overlay_time_total_drawing_overlay;
 
 //Aqui hay un problema, y es que en utils.h se esta usando zxvision_window, y hay que declarar este tipo de ventana antes
 #include "utils.h"
@@ -231,6 +239,7 @@ extern z80_bit menu_desactivado_file_utilities;
 extern int zxvision_switch_to_window_on_open_menu;
 extern char zxvision_switch_to_window_on_open_menu_name[];
 extern void zxvision_open_menu_with_window(char *geometry_name);
+extern void zxvision_open_window_by_name(char *nombre);
 
 extern void set_menu_overlay_function(void (*funcion)(void) );
 extern void reset_menu_overlay_function(void);
@@ -283,7 +292,7 @@ extern void menu_about_about_load_editionamegame(void);
 //extern int menu_cond_simpletext(void);
 //extern int menu_cond_curses(void);
 
-extern int zxvision_drawing_in_background;
+//extern int zxvision_drawing_in_background;
 
 
 extern void menu_interface_rgb_inverse_common(void);
@@ -344,8 +353,6 @@ typedef struct s_generic_message_tooltip_return generic_message_tooltip_return;
 
 
 
-
-
 extern void zxvision_new_window(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title);
 //extern void legacy_zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int width_before_max_min_imize,int height_before_max_min_imize);
 extern void zxvision_new_window_gn_cim(zxvision_window *w,int x,int y,int visible_width,int visible_height,int total_width,int total_height,char *title,char *geometry_name,int is_minimized,int is_maximized,int width_before_max_min_imize,int height_before_max_min_imize);
@@ -360,11 +367,12 @@ extern void zxvision_draw_window_contents(zxvision_window *w);
 extern void zxvision_draw_window_contents_no_speech(zxvision_window *ventana);
 extern int zxvision_wait_until_esc(zxvision_window *w);
 
-extern void zxvision_draw_overlay_if_exists(zxvision_window *w);
+extern int zxvision_draw_overlay_if_exists(zxvision_window *w);
 //extern void menu_draw_background_windows_overlay(void);
 
 extern void zxvision_window_move_this_window_on_top(zxvision_window *ventana);
 extern void zxvision_window_move_this_window_to_bottom(zxvision_window *ventana);
+extern void zxvision_activate_this_window(zxvision_window *ventana);
 extern int zxvision_if_window_already_exists(zxvision_window *w);
 extern void zxvision_window_delete_this_window(zxvision_window *ventana);
 extern zxvision_window *zxvision_return_n_window_from_top(int indice);
@@ -374,7 +382,14 @@ extern int zxvision_window_can_be_backgrounded(zxvision_window *w);
 extern void zxvision_message_put_window_background(void);
 extern void zxvision_window_delete_all_windows(void);
 extern void zxvision_window_delete_all_windows_and_clear_geometry(void);
-extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco);
+extern int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length,int max_length_shown,int x,int y,int volver_si_fuera_foco,int volver_si_flecha_abajo);
+extern int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos_historial);
+//extern void zxvision_scanf_history_insert(char **textos_historial,char *texto);
+
+//Contando el NULL del final
+//#define ZXVISION_SCANF_HISTORY_MAX_LINES 11
+
+extern int zxvision_clicked_mouse_button(void);
 
 extern zxvision_window *zxvision_coords_in_below_windows(zxvision_window *w,int x,int y);
 extern zxvision_window *zxvision_find_window_in_background(char *geometry_name);
@@ -384,6 +399,8 @@ extern int clicked_on_background_windows;
 extern zxvision_window *which_window_clicked_on_background;
 
 extern void zxvision_set_window_overlay_from_current(zxvision_window *ventana);
+extern void zxvision_set_window_overlay(zxvision_window *ventana,void (*overlay_function) (void));
+extern void zxvision_reset_window_overlay(zxvision_window *ventana);
 
 extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w);
 
@@ -395,6 +412,13 @@ extern zxvision_window *zxvision_find_first_window_below_this(zxvision_window *w
 
 extern void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int opcion_actual,int opcion_activada,char *texto_entrada,int tiene_submenu);
 
+extern void zxvision_set_ventana_tipo_activa(void);
+extern void zxvision_reset_ventana_tipo_activa(void);
+
+extern int zxvision_pressed_right_mouse_button(void);
+
+extern void zxvision_set_next_menu_position_from_current_mouse(void);
+extern void zxvision_reset_set_next_menu_position(void);
 extern void zxvision_set_offset_x(zxvision_window *w,int offset_x);
 extern void zxvision_set_offset_y(zxvision_window *w,int offset_y);
 extern int zxvision_maximum_offset_x(zxvision_window *w);
@@ -405,13 +429,17 @@ extern void zxvision_set_x_position(zxvision_window *w,int x);
 extern void zxvision_set_y_position(zxvision_window *w,int y);
 extern void zxvision_set_visible_width(zxvision_window *w,int visible_width);
 extern void zxvision_set_visible_height(zxvision_window *w,int visible_height);
+extern void zxvision_set_total_height(zxvision_window *w,int total_height);
+
 extern void zxvision_print_string(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,char *texto);
 extern void zxvision_print_string_format (zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo, const char * format , ...);
 extern void zxvision_print_string_defaults(zxvision_window *w,int x,int y,char *texto);
 extern void zxvision_print_string_defaults_format (zxvision_window *w,int x,int y, const char * format , ...);
 extern void zxvision_print_char_defaults(zxvision_window *w,int x,int y,char c);
+extern void zxvision_print_string_fillspc(zxvision_window *w,int x,int y,int tinta,int papel,int parpadeo,char *texto);
 extern void zxvision_print_string_defaults_fillspc(zxvision_window *w,int x,int y,char *texto);
 extern void zxvision_print_string_defaults_fillspc_format(zxvision_window *w,int x,int y,const char * format , ...);
+
 extern void zxvision_handle_mouse_events(zxvision_window *w);
 extern void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, int resizable, const char * texto_format , ...);
 extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int longitud,int max_ancho_texto,char **buffer_lineas);
@@ -419,6 +447,7 @@ extern int zxvision_generic_message_aux_justificar_lineas(char *orig_texto,int l
 extern void zxvision_handle_click_minimize(zxvision_window *w);
 extern void zxvision_minimize_window(zxvision_window *w);
 extern void zxvision_maximize_window(zxvision_window *w);
+extern void zxvision_handle_maximize(zxvision_window *w);
 
 extern int zxvision_trocear_string_lineas(char *texto,char *buffer_lineas[]);
 extern void zxvision_print_mensaje_lineas_troceado(zxvision_window *ventana,char *mensaje_entrada);
@@ -438,6 +467,8 @@ extern void zxvision_set_resizable(zxvision_window *w);
 
 
 extern void zxvision_window_save_size(zxvision_window *ventana,int *ventana_ancho_antes,int *ventana_alto_antes);
+extern int zxvision_window_get_pixel_x_position(zxvision_window *ventana);
+extern int zxvision_window_get_pixel_y_position(zxvision_window *ventana);
 
 //Maximo de ventanas que se pueden restaurar
 #define MAX_RESTORE_WINDOWS_START 50
@@ -453,10 +484,13 @@ struct s_zxvision_known_window_names {
 //Ventanas conocidas y sus funciones que las inicializan. Usado al restaurar ventanas al inicio
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
 	void (*start)(MENU_ITEM_PARAMETERS);
+    char **bitmap_button;
 };
 
 //#define MAX_KNOWN_WINDOWS 100
 typedef struct s_zxvision_known_window_names zxvision_known_window_names;
+
+extern char **zxvision_find_icon_for_known_window(char *nombre);
 
 extern int total_restore_window_array_elements;
 
@@ -470,9 +504,10 @@ extern void zxvision_putpixel(zxvision_window *w,int x,int y,int color);
 extern void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color);
 extern void zxvision_draw_line(zxvision_window *w,int x1,int y1,int x2,int y2,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) );
 extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int limite_grados);
+extern void zxvision_draw_arc(zxvision_window *w,int x1,int y1,int radius_x,int radius_y,int c, void (*fun_putpixel) (zxvision_window *w,int x,int y,int color) ,int inicio_grados,int limite_grados);
 
 
-#define ZXVISION_TOTAL_WIDGET_TYPES 10
+#define ZXVISION_TOTAL_WIDGET_TYPES 11
 #define ZXVISION_WIDGET_TYPE_SPEEDOMETER 0
 #define ZXVISION_WIDGET_TYPE_SPEAKER 1
 #define ZXVISION_WIDGET_TYPE_CIRCLE 2
@@ -483,6 +518,7 @@ extern void zxvision_draw_ellipse(zxvision_window *w,int x1,int y1,int radius_x,
 #define ZXVISION_WIDGET_TYPE_PARTICLES 7
 #define ZXVISION_WIDGET_TYPE_VOLUME 8
 #define ZXVISION_WIDGET_TYPE_VALUE 9
+#define ZXVISION_WIDGET_TYPE_SIERPINSKY 10
 
 extern char *zxvision_widget_types_names[];
 
@@ -501,6 +537,7 @@ extern void zxvision_widgets_draw_speedometer_common(zxvision_window *ventana,in
 extern void zxvision_widgets_draw_metter_common_by_shortname(zxvision_window *ventana,int columna_texto,int fila_texto,char *short_name,int tipo,int valor_en_vez_de_perc,int tinta_texto_descripcion,int papel_texto_descripcion,int escribir_espacios);
 extern void zxvision_widgets_erase_speedometer(zxvision_window *ventana,int xcentro_widget,int ycentro_widget);
 extern void zxvision_draw_filled_rectangle(zxvision_window *ventana,int xinicio,int yinicio,int ancho,int alto,int color);
+extern void zxvision_widgets_draw_particles_3d_convert(int x,int y,int z,int *xfinal,int *yfinal);
 
 extern z80_byte zxvision_read_keyboard(void);
 void zxvision_handle_cursors_pgupdn(zxvision_window *ventana,z80_byte tecla);
@@ -542,7 +579,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 58
+#define MAX_F_FUNCTIONS 60
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -560,6 +597,7 @@ enum defined_f_function_ids {
     F_FUNCION_FFW,
 	F_FUNCION_LOADBINARY, 
 	F_FUNCION_SAVEBINARY,
+    F_FUNCION_SETTINGS,
     F_FUNCION_WAVEFORM,
     F_FUNCION_AUDIO_REGISTERS,
     F_FUNCION_AUDIO_SHEET,
@@ -584,7 +622,7 @@ enum defined_f_function_ids {
     F_FUNCION_REINSERTREALTAPE,
     F_FUNCION_REWINDREALTAPE, 
     F_FUNCION_FFWDREALTAPE,
-    F_FUNCION_SHOWVISUALTAPE,
+    F_FUNCION_VISUALREALTAPE,
     F_FUNCION_DEBUGCPU,
 	F_FUNCION_PAUSE,    
 	F_FUNCION_TOPSPEED,  
@@ -604,6 +642,7 @@ enum defined_f_function_ids {
     F_FUNCION_SET_MACHINE,
     F_FUNCION_DESKTOP_MY_MACHINE,
     F_FUNCION_POKE,
+    F_FUNCION_OPEN_WINDOW
 };
 //Nota: F_FUNCION_BACKGROUND_WINDOW no se llama de la misma manera que las otras funciones F
 //solo esta aqui para evitar que una misma tecla F se asigne a una funcion F normal y tambien a background window
@@ -616,6 +655,10 @@ struct s_defined_f_function {
 	enum defined_f_function_ids id_funcion;
 
     char **bitmap_button;
+
+    //Indica el nombre asociado a esa app/ventana (si es que es una ventana que se puede quedar en background)
+    char geometry_name[MAX_NAME_WINDOW_GEOMETRY];
+
 };
 
 typedef struct s_defined_f_function defined_f_function;
@@ -659,6 +702,7 @@ extern int zxdesktop_configurable_icons_current_executing;
 
 
 extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
+extern char **get_direct_function_icon_bitmap_final(int id_accion);
 
 //Maximo de teclas F posibles a mapear
 #define MAX_F_FUNCTIONS_KEYS 15
@@ -668,11 +712,13 @@ extern char **menu_get_extdesktop_button_bitmap(int numero_boton);
 
 //Array de teclas F mapeadas
 extern int defined_f_functions_keys_array[];
+extern char defined_f_functions_keys_array_parameters[MAX_F_FUNCTIONS_KEYS][PATH_MAX];
 
 extern int defined_buttons_functions_array[];
 extern int get_defined_direct_functions(char *funcion);
 
 extern int menu_define_key_function(int tecla,char *funcion);
+extern int menu_define_key_function_extra_info(int tecla,char *extra_info);
 extern int menu_define_button_function(int tecla,char *funcion);
 extern void menu_inicio_handle_button_presses(void);
 extern void menu_inicio_handle_lower_icon_presses(void);
@@ -839,10 +885,21 @@ struct s_menu_item {
 	t_menu_funcion menu_funcion_espacio;
 
 	//siguiente item
-	struct s_menu_item *next;
+	struct s_menu_item *siguiente_item;
+
+    //funcion que salta al seleccionar un item
+    //Esto es, al mover el cursor sobre esa opción, podemos hacer que llame a una función
+    void (*menu_funcion_seleccionada)(struct s_menu_item *item_seleccionado);
 
     //si este item de menu desplega otro menu
     int tiene_submenu;
+
+    //Si es un item avanzado
+    //TODO: Quiza en menus tipo tabulado se ha probado poco
+    //en caso que se usase, hacerle mas pruebas. Esto es poco probable,
+    //porque los menus avanzados se usan en items de menu normales,
+    //pero en cambio los items tabulados suelen ser para opciones de ventanas
+    int item_avanzado;
 };
 
 typedef struct s_menu_item menu_item;
@@ -870,7 +927,9 @@ extern void menu_add_item_menu_tabulado(menu_item *m,int x,int y);
 extern void menu_add_item_menu_espacio(menu_item *m,t_menu_funcion menu_funcion_espacio);
 extern void menu_add_item_menu_misc(menu_item *m,char *texto_misc);
 extern void menu_add_item_menu_tiene_submenu(menu_item *m);
+extern void menu_add_item_menu_es_avanzado(menu_item *m);
 extern void menu_add_item_menu_separator(menu_item *m);
+extern void menu_add_item_menu_seleccionado(menu_item *m,void (*menu_funcion_seleccionada)(struct s_menu_item *));
 
 extern void menu_add_item_menu_spanish(menu_item *m,char *s);
 extern void menu_add_item_menu_spanish_format(menu_item *m,const char * format , ...);
@@ -881,6 +940,7 @@ extern void menu_add_item_menu_catalan_format(menu_item *m,const char * format ,
 extern void menu_add_item_menu_spanish_catalan(menu_item *m,char *spanish,char *catalan);
 
 extern void menu_add_item_menu_en_es_ca(menu_item *m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo,char *english,char *spanish,char *catalan);
+extern void menu_add_item_menu_en_es_ca_inicial(menu_item **m,int tipo_opcion,t_menu_funcion menu_funcion,t_menu_funcion_activo menu_funcion_activo,char *english,char *spanish,char *catalan);
 
 extern void menu_add_item_menu_prefijo(menu_item *m,char *s);
 extern void menu_add_item_menu_prefijo_format(menu_item *m,const char * format , ...);
@@ -1203,6 +1263,7 @@ extern z80_bit menu_ext_desktop_transparent_configurable_icons;
 extern z80_bit menu_ext_desktop_configurable_icons_text_background;
 
 extern int lowericon_realtape_frame;
+extern int lowericon_cf2_floppy_frame;
 
 extern int menu_pressed_zxdesktop_lower_icon_which;
 extern int menu_pressed_zxdesktop_button_which;
@@ -1227,6 +1288,7 @@ extern void zxvision_set_configurable_icon_text(int indice_icono,char *texto);
 extern void zxvision_set_configurable_icon_extra_info(int indice_icono,char *extra_info);
 extern int zxdesktop_configurable_icons_enabled_and_visible(void);
 extern void zxvision_create_configurable_icon_file_type(enum defined_f_function_ids id_funcion,char *nombre);
+extern void zxvision_create_link_desktop_from_window(zxvision_window *w);
 
 extern int pulsado_alguna_ventana_con_menu_cerrado;
 
@@ -1375,9 +1437,7 @@ extern int menu_hardware_autofire_cond(void);
 
 //extern void menu_file_viewer_read_text_file(char *title,char *file_name);
 
-extern void menu_dsk_getoff_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *offset1,int *offset2);
 
-extern int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk);
 
 extern int menu_dsk_getoff_track_sector(z80_byte *dsk_memoria,int total_pistas,int pista_buscar,int sector_buscar,int longitud_dsk);
 

@@ -233,6 +233,47 @@ void ula_contend_port_late_cpc( z80_int port GCC_UNUSED )
 
 }
 
+//PCW
+void contend_read_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+void contend_read_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+
+void contend_write_no_mreq_pcw(z80_int direccion GCC_UNUSED,int time)
+{
+
+        //No contention
+
+        //Y sumamos estados normales
+        t_estados += time;
+
+}
+
+
+void ula_contend_port_early_pcw( z80_int port GCC_UNUSED )
+{
+  t_estados++;
+}
+
+void ula_contend_port_late_pcw( z80_int port GCC_UNUSED )
+{
+        t_estados += 2;
+
+}
 
 //SAM COUPE
 void contend_read_sam(z80_int direccion GCC_UNUSED,int time)
@@ -1482,11 +1523,17 @@ z80_byte *contend_table_no_mreq;
 		return;
         }    
 
-	//TODO cpc464. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
-	if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+	//TODO cpc. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
+	if (MACHINE_IS_CPC) {
 		return;
 
         }
+
+	//TODO pcw
+	if (MACHINE_IS_PCW) {
+		return;
+
+        }        
 
 	//TODO msx, coleco , sg1000 y sms. de momento sin contend y no inicializamos tabla porque sino se sale de testados y se sale de la tabla
 	if (MACHINE_IS_MSX || MACHINE_IS_COLECO || MACHINE_IS_SG1000 || MACHINE_IS_SVI || MACHINE_IS_SMS) {

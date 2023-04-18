@@ -52,6 +52,9 @@ extern void debug_printf (int debuglevel,__const char *__restrict __format, ...)
 extern void debug_printf_source (int debuglevel, char *archivo, int linea, const char *funcion, const char * format , ...);
 #define VERBOSE_DEBUG_SOURCE VERBOSE_DEBUG, __FILE__, __LINE__, __FUNCTION__
 
+//Este esta solo aqui como extern para poder acceder desde codetests
+extern int debug_printf_check_exclude_include(unsigned int clase_mensaje);
+
 extern z80_bit menu_breakpoint_exception;
 
 //breakpoints maximos de pc. no tiene mucho sentido porque se puede hacer con condicion pc=
@@ -145,6 +148,32 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 //Para enviar mensaje a debug console window
 #define VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW 99
 
+//Clasificacion de mensajes por tipo. Uso de mascaras con valores altos. Valores a partir de 256 indica que hay mascara
+#define VERBOSE_CLASS_DSK   (1<<8)
+#define VERBOSE_CLASS_PD765 (1<<9)
+
+//Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
+#define VERBOSE_CLASS_ANYTHINGELSE (1<<30)
+
+#define VERBOSE_MASK_CLASS_TYPE_EXCLUDE 0
+#define VERBOSE_MASK_CLASS_TYPE_INCLUDE 1
+
+//Listado de mascaras
+struct s_debug_masks_class {
+    char name[32];
+    int value;
+};
+
+typedef struct s_debug_masks_class debug_masks_class;
+
+extern int debug_mascara_modo_exclude_include;
+extern int debug_mascara_clase_exclude;
+extern int debug_mascara_clase_include;
+
+extern int debug_get_total_class_masks(void);
+extern char *debug_get_class_mask_name(int i);
+extern int debug_get_class_mask_value(int i);
+
 //Igualados por la derecha asi salen mensajes alineados
 #define VERBOSE_MESSAGE_ERR         "Error:    "
 #define VERBOSE_MESSAGE_WARN        "Warning:  "
@@ -161,7 +190,8 @@ extern char *debug_unnamed_console_memory_pointer;
 extern int debug_unnamed_console_current_x;
 extern int debug_unnamed_console_current_y;
 extern void debug_unnamed_console_init(void);
-extern int debug_unnamed_console_modified;
+extern int debug_unnamed_console_refresh;
+extern int debug_unnamed_console_new_messages;
 extern z80_bit debug_unnamed_console_enabled;
 extern void debug_unnamed_console_end(void);
 
@@ -445,6 +475,9 @@ extern unsigned int debug_mmu_mwa;
 
 extern unsigned int anterior_debug_mmu_mra;
 extern unsigned int anterior_debug_mmu_mwa;
+extern unsigned int anterior_debug_mmu_mrv;
+extern unsigned int anterior_debug_mmu_mwv;
+
 
 //4 MB maximo
 #define MEMORY_ZONE_DEBUG_MAX_SIZE 4194304

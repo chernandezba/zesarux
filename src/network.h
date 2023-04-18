@@ -81,6 +81,7 @@ extern int zsock_http(char *host, char *url,int *http_code,char **mem,int *t_lei
     
 extern char *z_sock_get_error(int error);
 extern int z_sock_assign_socket(void);
+extern void omplir_adr_internet_semaforo_init(void);
 
 //el -1 es un error generico
 #define Z_ERR_NUM_TCP_SOCK -2

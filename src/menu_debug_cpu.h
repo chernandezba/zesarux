@@ -51,10 +51,12 @@ extern void menu_debug_print_address_memory_zone(char *texto, menu_z80_moto_int 
 extern void menu_debug_set_memory_zone(int zone);
 extern int menu_debug_show_memory_zones;
 extern menu_z80_moto_int adjust_address_memory_size(menu_z80_moto_int direccion);
-extern int menu_debug_hexdump_change_pointer(int p);
+//extern menu_z80_moto_int menu_debug_hexdump_change_pointer(menu_z80_moto_int p);
+extern int menu_debug_cpu_calculate_expression(char *string_address,menu_z80_moto_int *output_value);
 extern void menu_debug_change_memory_zone(void);
 extern int menu_debug_get_total_digits_hexa(int valor);
 extern int menu_get_current_memory_zone_name_number(char *s);
+extern char *menu_debug_registers_change_ptr_historial[];
 
 
 extern int map_adventure_offset_x;
@@ -72,17 +74,21 @@ extern int map_adventure_offset_y;
 "[VARIABLE] can be a CPU register or some pseudo variables: A,B,C,D,E,F,H,L,AF,BC,DE,HL,A',B',C',D',E',F',H',L',AF',BC',DE',HL',I,R,SP,PC,IX,IY," \
 "D0,D1,D2,D3,D4,D5,D6,D7,A0,A1,A2,A3,A4,A5,A6,A7,AC,ER,SR,P1,P2,P3\n" \
 "FS,FZ,FP,FV,FH,FN,FC: Flags\n" \
-"IFF1, IFF2: Interrupt bits,\n" \
-"COPPERPC: returns the Copper PC register from TBBlue,\n" \
-"OPCODE1: returns the byte at address PC, so the byte of the opcode being read,\n" \
-"OPCODE2: returns the word at address PC, MSB order,\n" \
-"OPCODE3: returns the three byte at adress PC, MSB order,\n" \
-"OPCODE4: returns the four bytes at adress PC, MSB order,\n" \
-"RAM: RAM mapped on 49152-65535 on Spectrum 128 or Prism,\n" \
-"ROM: ROM mapped on 0-16383 on Spectrum 128,\n" \
+"IFF1, IFF2: Interrupt bits\n" \
+"EPC: returns PC register and RAM/ROM segment following the format:\n" \
+"-Z88 machine: XXYYYYH, where XX is memory bank and YYYY is offset in the bank\n" \
+"-Other machines: XXZYYYYH, where XX is memory bank, Z is 0 for ram banks and 1 for rom banks, YYYY is offset in the bank\n" \
+"COPPERPC: returns the Copper PC register from TBBlue\n" \
+"OPCODE1: returns the byte at address PC, so the byte of the opcode being read\n" \
+"OPCODE2: returns the word at address PC, MSB order\n" \
+"OPCODE3: returns the three byte at adress PC, MSB order\n" \
+"OPCODE4: returns the four bytes at adress PC, MSB order\n" \
+"RAM: RAM mapped on 49152-65535 on Spectrum 128 or Prism\n" \
+"ROM: ROM mapped on 0-16383 on Spectrum 128\n" \
 "SEG0, SEG1, SEG2, SEG3: memory banks mapped on each 4 memory segments on Z88\n" \
 "SEG0, SEG1, ...., SEG7: memory banks mapped on each 8 memory segments on TBBlue\n" \
 "HILOWMAPPED: returns 1 if HiLow ROM & RAM is mapped\n" \
+"PD765PCN: current cylinder of PD765 floppy drive\n" \
 "MRV: value returned on read memory operation\n" \
 "MWV: value written on write memory operation\n" \
 "MRA: address used on read memory operation\n" \
@@ -114,6 +120,12 @@ extern int map_adventure_offset_y;
 "ABS(e): returns absolute value of expression e\n" \
 "BYTE(e): same as (e)&FFH\n" \
 "WORD(e): same as (e)&FFFFH\n" \
+"The following functions are complementary to MRV, MWV, MRA, MWA: if you want to know if the last opcode has " \
+"set any of these variables to a known value, use: \n" \
+"OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e. \n"\
+"For example consider opcode ld hl,(16384) and condition: OPMRA(16384). At the end of the opcode, MRA will be set to 16385, "\
+"as we are reading 2 bytes (and MRA was 16384 when reading the first byte), "\
+"but OPMRA(16384) will return 1 after the opcode. Also, OPMRA(16385) will also return 1\n" \
 "\n" \
 "[NUMERICVALUE] must be a numeric value, it can have a suffix indicating the numeric base, otherwise it's decimal:\n" \
 "suffix H: hexadecimal\n" \

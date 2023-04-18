@@ -42,6 +42,8 @@
 #include "prism.h"
 #include "tbblue.h"
 #include "hilow_datadrive.h"
+#include "pd765.h"
+#include "superupgrade.h"
 
 /*
 
@@ -125,6 +127,10 @@ token_parser_textos_indices tpti_funciones[]={
 	{TPI_F_ABS,"ABS("},
 	{TPI_F_BYTE,"BYTE("},
 	{TPI_F_WORD,"WORD("},
+    {TPI_F_OPMWA,"OPMWA("},
+    {TPI_F_OPMRA,"OPMRA("},
+    {TPI_F_OPMWV,"OPMWV("},
+    {TPI_F_OPMRV,"OPMRV("},    
 
 
     {TPI_FIN,""}
@@ -182,6 +188,8 @@ token_parser_textos_indices tpti_variables[]={
 
     {TPI_V_RAM,"RAM"},
     {TPI_V_ROM,"ROM"},
+
+    {TPI_V_PD765_PCN,"PD765PCN"},
     	
 
     {TPI_FIN,""}
@@ -268,6 +276,7 @@ token_parser_textos_indices tpti_registros[]={
     //De Tbblue
     {TPI_R_COPPERPC,"COPPERPC"},
 
+    {TPI_R_EPC,"EPC"},
              
 
 
@@ -1072,165 +1081,170 @@ int exp_par_calculate_numvarreg(token_parser *token)
     enum token_parser_tipo tipo=token->tipo;
     enum token_parser_indice indice=token->indice;
 
-        int resultado=0; //asumimos cero
+    int resultado=0; //asumimos cero
 
-        switch (tipo) {
-            case TPT_NUMERO:
-                resultado=(token->valor) * (token->signo);
-            break;
+    switch (tipo) {
+        case TPT_NUMERO:
+            resultado=(token->valor) * (token->signo);
+        break;
 
-	        case TPT_VARIABLE: //mra,mrw, etc
-                switch (indice) {
+        case TPT_VARIABLE: //mra,mrw, etc
+            switch (indice) {
                     
 
-//Variables de la MMU
-	//Memoria
-    case TPI_V_MRA: return debug_mmu_mra; break;
-	case TPI_V_MRV: return debug_mmu_mrv; break;
+                //Variables de la MMU
+                //Memoria
+                case TPI_V_MRA: return debug_mmu_mra; break;
+                case TPI_V_MRV: return debug_mmu_mrv; break;
 
-	case TPI_V_MWV: return debug_mmu_mwv; break;
-	case TPI_V_MWA: return debug_mmu_mwa; break;
+                case TPI_V_MWV: return debug_mmu_mwv; break;
+                case TPI_V_MWA: return debug_mmu_mwa; break;
 
-	//Puertos
-	case TPI_V_PRV: return debug_mmu_prv; break;
-	case TPI_V_PRA: return debug_mmu_pra; break;
+                //Puertos
+                case TPI_V_PRV: return debug_mmu_prv; break;
+                case TPI_V_PRA: return debug_mmu_pra; break;
 
-	case TPI_V_PWV: return debug_mmu_pwv; break;
-	case TPI_V_PWA: return debug_mmu_pwa; break;
+                case TPI_V_PWV: return debug_mmu_pwv; break;
+                case TPI_V_PWA: return debug_mmu_pwa; break;
 
-	//T-estados
-	case TPI_V_TSTATES: return t_estados; break;
-	case TPI_V_TSTATESL: return t_estados % screen_testados_linea; break;
-	case TPI_V_TSTATESP: return debug_t_estados_parcial; break;
+                //T-estados
+                case TPI_V_TSTATES: return t_estados; break;
+                case TPI_V_TSTATESL: return t_estados % screen_testados_linea; break;
+                case TPI_V_TSTATESP: return debug_t_estados_parcial; break;
 
-	case TPI_V_SCANLINE: return t_scanline_draw; break;
-
-
-
-	//interrupciones
-	case TPI_V_IFF1: return iff1.v; break;
-	case TPI_V_IFF2: return iff2.v; break;
-
-	//se acaba de lanzar un out
-	case TPI_V_OUTFIRED: return debug_fired_out; break;
-	//se acaba de lanzar un in
-	case TPI_V_INFIRED: return debug_fired_in; break;
-	//se acaba de generar una interrupcion
-	case TPI_V_INTFIRED: return debug_fired_interrupt; break;	
+                case TPI_V_SCANLINE: return t_scanline_draw; break;
 
 
-    case TPI_V_ENTERROM:
 
-	
-		if (debug_enterrom==1) {
-			debug_enterrom++;
-			return 1;
-		}
-		return 0;
-	
+                //interrupciones
+                case TPI_V_IFF1: return iff1.v; break;
+                case TPI_V_IFF2: return iff2.v; break;
 
-    break;
-
-    case TPI_V_EXITROM:
-
-	
-		if (debug_exitrom==1) {
-			debug_exitrom++;
-			return 1;
-		}
-		return 0;
-	
-
-    break;
-    
+                //se acaba de lanzar un out
+                case TPI_V_OUTFIRED: return debug_fired_out; break;
+                //se acaba de lanzar un in
+                case TPI_V_INFIRED: return debug_fired_in; break;
+                //se acaba de generar una interrupcion
+                case TPI_V_INTFIRED: return debug_fired_interrupt; break;	
 
 
-    case TPI_V_OPCODE1:
-        return exp_par_opcode(1);
-    break;
+                case TPI_V_ENTERROM:
 
-    case TPI_V_OPCODE2:
-        return exp_par_opcode(2);
-    break;
+                
+                    if (debug_enterrom==1) {
+                        debug_enterrom++;
+                        return 1;
+                    }
+                    return 0;
+                
 
-    case TPI_V_OPCODE3:
-        return exp_par_opcode(3);
-    break;
+                break;
 
-    case TPI_V_OPCODE4:
-        return exp_par_opcode(4);
-    break;
+                case TPI_V_EXITROM:
 
+                
+                    if (debug_exitrom==1) {
+                        debug_exitrom++;
+                        return 1;
+                    }
+                    return 0;
+                
 
-    //bancos memoria Z88
-    case TPI_V_SEG0:
-        if (MACHINE_IS_Z88) return blink_mapped_memory_banks[0];
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[0];
-    break;
-
-    case TPI_V_SEG1:
-        if (MACHINE_IS_Z88) return blink_mapped_memory_banks[1];
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[1];
-    break;
-
-    case TPI_V_SEG2:
-        if (MACHINE_IS_Z88) return blink_mapped_memory_banks[2];
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[2];
-    break;
-
-    case TPI_V_SEG3:
-        if (MACHINE_IS_Z88) return blink_mapped_memory_banks[3];
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[3];
-    break;          
-
-    case TPI_V_SEG4:
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[4];
-    break;           
-
-    case TPI_V_SEG5:
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[5];
-    break;           
-
-    case TPI_V_SEG6:
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[6];
-    break;           
-
-    case TPI_V_SEG7:
-        if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[7];
-    break;           
-
-    case TPI_V_HILOWMAPPED:
-        return hilow_mapped_rom.v; //sirve tambien para ram, se mapean ram y rom al mismo tiempo
-    break;
-
-    case TPI_V_ROM:
-	    //ram mapeada en 49152-65535 de Spectrum
-	    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) return (debug_paginas_memoria_mapeadas[0] & 127);
-
-    break;
-	
-    case TPI_V_RAM:
-	//ram mapeada en 49152-65535 de Spectrum
-	    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
-		    return debug_paginas_memoria_mapeadas[3];
-		    //TODO. condiciones especiales para mapeo de paginas del +2A tipo ram en rom
-	    }
-
-	//ram mapeada en 49152-65535 de Prism
-        if (MACHINE_IS_PRISM) {
-                return prism_retorna_ram_entra()*2;
-	    }
-
-    break;    
-
-                    default:
-                        //Para que no se queje el compilador por demas valores enum no tratados
-                    break;
+                break;
+            
 
 
-                }
+                case TPI_V_OPCODE1:
+                    return exp_par_opcode(1);
+                break;
+
+                case TPI_V_OPCODE2:
+                    return exp_par_opcode(2);
+                break;
+
+                case TPI_V_OPCODE3:
+                    return exp_par_opcode(3);
+                break;
+
+                case TPI_V_OPCODE4:
+                    return exp_par_opcode(4);
+                break;
+
+
+                //bancos memoria Z88
+                case TPI_V_SEG0:
+                    if (MACHINE_IS_Z88) return blink_mapped_memory_banks[0];
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[0];
+                break;
+
+                case TPI_V_SEG1:
+                    if (MACHINE_IS_Z88) return blink_mapped_memory_banks[1];
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[1];
+                break;
+
+                case TPI_V_SEG2:
+                    if (MACHINE_IS_Z88) return blink_mapped_memory_banks[2];
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[2];
+                break;
+
+                case TPI_V_SEG3:
+                    if (MACHINE_IS_Z88) return blink_mapped_memory_banks[3];
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[3];
+                break;          
+
+                case TPI_V_SEG4:
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[4];
+                break;           
+
+                case TPI_V_SEG5:
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[5];
+                break;           
+
+                case TPI_V_SEG6:
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[6];
+                break;           
+
+                case TPI_V_SEG7:
+                    if (MACHINE_IS_TBBLUE) return debug_paginas_memoria_mapeadas[7];
+                break;           
+
+                case TPI_V_HILOWMAPPED:
+                    return hilow_mapped_rom.v; //sirve tambien para ram, se mapean ram y rom al mismo tiempo
+                break;
+
+                case TPI_V_ROM:
+                    //ram mapeada en 49152-65535 de Spectrum
+                    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) return (debug_paginas_memoria_mapeadas[0] & 127);
+
+                break;
+            
+                case TPI_V_RAM:
+                //ram mapeada en 49152-65535 de Spectrum
+                    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
+                        return debug_paginas_memoria_mapeadas[3];
+                        //TODO. condiciones especiales para mapeo de paginas del +2A tipo ram en rom
+                    }
+
+                //ram mapeada en 49152-65535 de Prism
+                    if (MACHINE_IS_PRISM) {
+                            return prism_retorna_ram_entra()*2;
+                    }
+
+                break;
+
+                case TPI_V_PD765_PCN:
+                    return pd765_pcn;
+                break;
+
+
+                default:
+                    //Para que no se queje el compilador por demas valores enum no tratados
+                break;
+
+
+            }
   
-            break;
+        break;
 
 /*
 //si (NN)
@@ -1286,151 +1300,212 @@ int exp_par_calculate_numvarreg(token_parser *token)
 
 
 
-	        case TPT_REGISTRO: //a, bc, de, etc
+        case TPT_REGISTRO: //a, bc, de, etc
 
 
-                //Registros mk14
-                if (CPU_IS_SCMP) {
-                    switch (indice) {
-                    case TPI_R_PC: return scmp_m_PC.w.l; break;
+            //Registros mk14
+            if (CPU_IS_SCMP) {
+                switch (indice) {
+                case TPI_R_PC: return scmp_m_PC.w.l; break;
 
-                    case TPI_R_AC: return scmp_m_AC; break;
+                case TPI_R_AC: return scmp_m_AC; break;
 
-                    case TPI_R_ER: return scmp_m_ER; break;
+                case TPI_R_ER: return scmp_m_ER; break;
 
-                    case TPI_R_SR: return scmp_m_SR; break;
+                case TPI_R_SR: return scmp_m_SR; break;
 
-                    case TPI_R_P1: return scmp_m_P1.w.l; break;
+                case TPI_R_P1: return scmp_m_P1.w.l; break;
 
-                    case TPI_R_P2: return scmp_m_P2.w.l; break;
+                case TPI_R_P2: return scmp_m_P2.w.l; break;
 
-                    case TPI_R_P3: return scmp_m_P3.w.l; break;
+                case TPI_R_P3: return scmp_m_P3.w.l; break;
 
 
 
-                    default:
-                        //Para que no se queje el compilador por demas valores enum no tratados
-                    break;
+                default:
+                    //Para que no se queje el compilador por demas valores enum no tratados
+                break;
 
-                    }
                 }
-                //Fin registros mk14
+            }
+            //Fin registros mk14
 
-                //Registros motorola
-                if (CPU_IS_MOTOROLA) {
-                    switch (indice) {
-                    case TPI_R_PC: return get_pc_register(); break;
-                    case TPI_R_SP: return m68k_get_reg(NULL, M68K_REG_SP); break;
-                    case TPI_R_USP: return m68k_get_reg(NULL, M68K_REG_USP); break;
+            //Registros motorola
+            if (CPU_IS_MOTOROLA) {
+                switch (indice) {
+                case TPI_R_PC: return get_pc_register(); break;
+                case TPI_R_SP: return m68k_get_reg(NULL, M68K_REG_SP); break;
+                case TPI_R_USP: return m68k_get_reg(NULL, M68K_REG_USP); break;
 
-                    case TPI_R_D0: return m68k_get_reg(NULL, M68K_REG_D0); break;
-                    case TPI_R_D1: return m68k_get_reg(NULL, M68K_REG_D1); break;
-                    case TPI_R_D2: return m68k_get_reg(NULL, M68K_REG_D2); break;
-                    case TPI_R_D3: return m68k_get_reg(NULL, M68K_REG_D3); break;
-                    case TPI_R_D4: return m68k_get_reg(NULL, M68K_REG_D4); break;
-                    case TPI_R_D5: return m68k_get_reg(NULL, M68K_REG_D5); break;
-                    case TPI_R_D6: return m68k_get_reg(NULL, M68K_REG_D6); break;
-                    case TPI_R_D7: return m68k_get_reg(NULL, M68K_REG_D7); break;
+                case TPI_R_D0: return m68k_get_reg(NULL, M68K_REG_D0); break;
+                case TPI_R_D1: return m68k_get_reg(NULL, M68K_REG_D1); break;
+                case TPI_R_D2: return m68k_get_reg(NULL, M68K_REG_D2); break;
+                case TPI_R_D3: return m68k_get_reg(NULL, M68K_REG_D3); break;
+                case TPI_R_D4: return m68k_get_reg(NULL, M68K_REG_D4); break;
+                case TPI_R_D5: return m68k_get_reg(NULL, M68K_REG_D5); break;
+                case TPI_R_D6: return m68k_get_reg(NULL, M68K_REG_D6); break;
+                case TPI_R_D7: return m68k_get_reg(NULL, M68K_REG_D7); break;
 
-                    case TPI_R_A0: return m68k_get_reg(NULL, M68K_REG_A0); break;
-                    case TPI_R_A1: return m68k_get_reg(NULL, M68K_REG_A1); break;
-                    case TPI_R_A2: return m68k_get_reg(NULL, M68K_REG_A2); break;
-                    case TPI_R_A3: return m68k_get_reg(NULL, M68K_REG_A3); break;
-                    case TPI_R_A4: return m68k_get_reg(NULL, M68K_REG_A4); break;
-                    case TPI_R_A5: return m68k_get_reg(NULL, M68K_REG_A5); break;
-                    case TPI_R_A6: return m68k_get_reg(NULL, M68K_REG_A6); break;
-                    case TPI_R_A7: return m68k_get_reg(NULL, M68K_REG_A7); break;       
+                case TPI_R_A0: return m68k_get_reg(NULL, M68K_REG_A0); break;
+                case TPI_R_A1: return m68k_get_reg(NULL, M68K_REG_A1); break;
+                case TPI_R_A2: return m68k_get_reg(NULL, M68K_REG_A2); break;
+                case TPI_R_A3: return m68k_get_reg(NULL, M68K_REG_A3); break;
+                case TPI_R_A4: return m68k_get_reg(NULL, M68K_REG_A4); break;
+                case TPI_R_A5: return m68k_get_reg(NULL, M68K_REG_A5); break;
+                case TPI_R_A6: return m68k_get_reg(NULL, M68K_REG_A6); break;
+                case TPI_R_A7: return m68k_get_reg(NULL, M68K_REG_A7); break;       
 
 
 
-                    default:
-                        //Para que no se queje el compilador por demas valores enum no tratados
-                    break;
+                default:
+                    //Para que no se queje el compilador por demas valores enum no tratados
+                break;
 
-                    }
                 }
+            }
                //Fin registros motorola                
 
 
                 /*/if (indice==TPI_R_A) return reg_a;
                 if (indice==TPI_R_BC) return reg_bc;
                 if (indice==TPI_R_DE) return reg_de;*/
-                switch (indice) {
-    case TPI_R_PC: return reg_pc; break;
-    case TPI_R_SP: return reg_sp; break;
-    case TPI_R_IX: return reg_ix; break;
-    case TPI_R_IY: return reg_iy; break;	
+            switch (indice) {
+                case TPI_R_PC: return reg_pc; break;
+                case TPI_R_SP: return reg_sp; break;
+                case TPI_R_IX: return reg_ix; break;
+                case TPI_R_IY: return reg_iy; break;	
 
-	case TPI_R_A: return reg_a; break;
-	case TPI_R_B: return reg_b; break;
-	case TPI_R_C: return reg_c; break;
-	case TPI_R_D: return reg_d; break;
-	case TPI_R_E: return reg_e; break;
-	case TPI_R_F: return Z80_FLAGS; break;
-	case TPI_R_H: return reg_h; break;
-	case TPI_R_L: return reg_l; break;
-	case TPI_R_I: return reg_i; break;
-	case TPI_R_R: return (reg_r&127)|(reg_r_bit7&128); break;
+                case TPI_R_A: return reg_a; break;
+                case TPI_R_B: return reg_b; break;
+                case TPI_R_C: return reg_c; break;
+                case TPI_R_D: return reg_d; break;
+                case TPI_R_E: return reg_e; break;
+                case TPI_R_F: return Z80_FLAGS; break;
+                case TPI_R_H: return reg_h; break;
+                case TPI_R_L: return reg_l; break;
+                case TPI_R_I: return reg_i; break;
+                case TPI_R_R: return (reg_r&127)|(reg_r_bit7&128); break;
 
-        case TPI_R_AF: return REG_AF; break;
-        case TPI_R_BC: return reg_bc; break;
-        case TPI_R_DE: return reg_de; break;
-        case TPI_R_HL: return reg_hl; break;
+                case TPI_R_AF: return REG_AF; break;
+                case TPI_R_BC: return reg_bc; break;
+                case TPI_R_DE: return reg_de; break;
+                case TPI_R_HL: return reg_hl; break;
 
 
 
-	case TPI_R_A_SHADOW: return reg_a_shadow; break;
-	case TPI_R_B_SHADOW: return reg_b_shadow; break;
-	case TPI_R_C_SHADOW: return reg_c_shadow; break;
-	case TPI_R_D_SHADOW: return reg_d_shadow; break;
-	case TPI_R_E_SHADOW: return reg_e_shadow; break;
-	case TPI_R_F_SHADOW: return Z80_FLAGS_SHADOW; break;
-	case TPI_R_H_SHADOW: return reg_h_shadow; break;
-	case TPI_R_L_SHADOW: return reg_l_shadow; break;
+                case TPI_R_A_SHADOW: return reg_a_shadow; break;
+                case TPI_R_B_SHADOW: return reg_b_shadow; break;
+                case TPI_R_C_SHADOW: return reg_c_shadow; break;
+                case TPI_R_D_SHADOW: return reg_d_shadow; break;
+                case TPI_R_E_SHADOW: return reg_e_shadow; break;
+                case TPI_R_F_SHADOW: return Z80_FLAGS_SHADOW; break;
+                case TPI_R_H_SHADOW: return reg_h_shadow; break;
+                case TPI_R_L_SHADOW: return reg_l_shadow; break;
 
-        case TPI_R_AF_SHADOW: return REG_AF_SHADOW; break;
-        case TPI_R_BC_SHADOW: return REG_BC_SHADOW; break;
-        case TPI_R_DE_SHADOW: return REG_DE_SHADOW; break;
-        case TPI_R_HL_SHADOW: return REG_HL_SHADOW; break;
+                case TPI_R_AF_SHADOW: return REG_AF_SHADOW; break;
+                case TPI_R_BC_SHADOW: return REG_BC_SHADOW; break;
+                case TPI_R_DE_SHADOW: return REG_DE_SHADOW; break;
+                case TPI_R_HL_SHADOW: return REG_HL_SHADOW; break;
 
-        case TPI_R_FS: return ( Z80_FLAGS & FLAG_S ? 1 : 0); break;
-        case TPI_R_FZ: return ( Z80_FLAGS & FLAG_Z ? 1 : 0); break;
+                case TPI_R_FS: return ( Z80_FLAGS & FLAG_S ? 1 : 0); break;
+                case TPI_R_FZ: return ( Z80_FLAGS & FLAG_Z ? 1 : 0); break;
 
-        case TPI_R_FP: 
-        case TPI_R_FV: 
-            return ( Z80_FLAGS & FLAG_PV ? 1 : 0);
+                case TPI_R_FP: 
+                case TPI_R_FV: 
+                    return ( Z80_FLAGS & FLAG_PV ? 1 : 0);
+                break;
+
+                case TPI_R_FH: return ( Z80_FLAGS & FLAG_H ? 1 : 0); break;
+                case TPI_R_FN: return ( Z80_FLAGS & FLAG_N ? 1 : 0); break;
+                case TPI_R_FC: return ( Z80_FLAGS & FLAG_C ? 1 : 0); break;
+
+
+                case TPI_R_COPPERPC: return tbblue_copper_get_pc(); break;
+
+                case TPI_R_EPC:
+                    if (MACHINE_IS_Z88) {
+                        //Obtener primero el segmento 0-3
+                        int segmento=reg_pc/16384;
+
+                        //Y el offset
+                        int offset=reg_pc & 16383;                        
+
+                        int banco=blink_mapped_memory_banks[segmento];
+
+
+                        //Segmento 0 es especial
+                        if (segmento==0) {
+
+                            //caso segmento 0-16383
+                            if (reg_pc<8192) {
+                                //ROM0 o RAM20H
+                                if ((blink_com & 4)==0) {//ROM0
+                                    banco=0;
+                                }
+                                else {
+                                    banco=0x20;
+                                }
+
+                            }
+
+                            else {
+                                //8kb superiores
+                                if ((banco&1)==0) offset &= 0x1FFF;
+                                banco=banco&254;
+                            }
+                        }
+
+                        //Formato EPC en caso de Z88: XXYYYYH, donde XX es banco, YYYY es segmento
+                        return (banco<<16) | offset;
+                    }
+
+                    if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 ||  superupgrade_enabled.v || MACHINE_IS_CHROME) {
+                        //EPC=XXZYYYY donde XX es la página de ram o rom, Z vale 0 para ram y 1 para rom, y YYYY es el offset
+                        //2 paginas de rom, 8 de ram
+                        //Obtener primero el segmento 0-3
+                        int segmento=reg_pc/16384; 
+
+                        //Y el offset
+                        int offset=reg_pc & 16383;
+
+                        int banco=debug_paginas_memoria_mapeadas[segmento];
+                        int romram;
+
+                        //Bancos: rom, 5, 2 , ram
+                        if (segmento==0) {
+                            romram=1;
+                        }
+                        else {
+                            romram=0;
+                        }
+
+                        return (banco<<20) | (romram<<16) | offset;
+                    }
+                break;
+
+
+                default:
+                    //Para que no se queje el compilador por demas valores enum no tratados
+                break;
+            }
+
+
+
+
         break;
-
-        case TPI_R_FH: return ( Z80_FLAGS & FLAG_H ? 1 : 0); break;
-        case TPI_R_FN: return ( Z80_FLAGS & FLAG_N ? 1 : 0); break;
-        case TPI_R_FC: return ( Z80_FLAGS & FLAG_C ? 1 : 0); break;
-
-
-        case TPI_R_COPPERPC: return tbblue_copper_get_pc(); break;
-
-
-                    default:
-                        //Para que no se queje el compilador por demas valores enum no tratados
-                    break;
-                }
-
-
-
-
-            break;
 
          
             
 
 
-	        case TPT_OPERADOR_LOGICO:  //and, or, xor
-            case TPT_OPERADOR_CONDICIONAL:  //=, <,>, <>,
-            case TPT_OPERADOR_CALCULO: //+,-,*,/. & (and), | (or), ^ (xor)
-            case TPT_PARENTESIS:
-            case TPT_FUNCION:
-            case TPT_FIN:
-                //esto no se llega nunca aqui. Lo pongo para que no se queje el compilador
-            break;
+        case TPT_OPERADOR_LOGICO:  //and, or, xor
+        case TPT_OPERADOR_CONDICIONAL:  //=, <,>, <>,
+        case TPT_OPERADOR_CALCULO: //+,-,*,/. & (and), | (or), ^ (xor)
+        case TPT_PARENTESIS:
+        case TPT_FUNCION:
+        case TPT_FIN:
+            //esto no se llega nunca aqui. Lo pongo para que no se queje el compilador
+        break;
 
 
 
@@ -1611,6 +1686,10 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
                         return lee_puerto_cpc_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
                     }
 
+                    else if (MACHINE_IS_PCW) {
+                        return lee_puerto_pcw_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
+                    }
+
                     else if (MACHINE_IS_SAM) {
                         return lee_puerto_sam_no_time(value_16_to_8h(valor),value_16_to_8l(valor));
                     }                                                            
@@ -1654,7 +1733,27 @@ int exp_par_calculate_funcion(int valor,enum token_parser_tipo tipo,enum token_p
 
                     case TPI_F_WORD:
         				return valor & 0xFFFF;
-                    break;                                                
+                    break;
+
+                    case TPI_F_OPMWA:
+                        if (debug_mmu_mwa==(unsigned int)valor || anterior_debug_mmu_mwa==(unsigned int)valor) return 1;
+                        else return 0;
+                    break;
+
+                    case TPI_F_OPMRA:
+                        if (debug_mmu_mra==(unsigned int)valor || anterior_debug_mmu_mra==(unsigned int)valor) return 1;
+                        else return 0;
+                    break;    
+
+                    case TPI_F_OPMWV:
+                        if (debug_mmu_mwv==(unsigned int)valor || anterior_debug_mmu_mwv==(unsigned int)valor) return 1;
+                        else return 0;
+                    break;
+
+                    case TPI_F_OPMRV:
+                        if (debug_mmu_mrv==(unsigned int)valor || anterior_debug_mmu_mrv==(unsigned int)valor) return 1;
+                        else return 0;
+                    break;                                      
 
                     default:
                         //Para que no se queje el compilador por demas valores enum no tratados

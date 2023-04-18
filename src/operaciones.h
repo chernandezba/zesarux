@@ -241,6 +241,7 @@ extern z80_byte fetch_opcode_coleco(void);
 extern z80_byte fetch_opcode_sg1000(void);
 extern z80_byte fetch_opcode_sms(void);
 extern z80_byte fetch_opcode_svi(void);
+extern z80_byte fetch_opcode_pcw(void);
 
 extern void poke_byte_spectrum_48k(z80_int dir,z80_byte valor);
 
@@ -364,6 +365,14 @@ extern z80_byte lee_puerto_legacy_mk14(z80_byte h GCC_UNUSED,z80_byte l GCC_UNUS
 extern void poke_word(z80_int dir,z80_int valor);
 extern z80_int peek_word(z80_int dir);
 extern z80_int peek_word_no_time(z80_int dir);
+
+extern void poke_byte_pcw(z80_int dir,z80_byte valor);
+extern void poke_byte_no_time_pcw(z80_int dir,z80_byte valor);
+extern z80_byte peek_byte_pcw(z80_int dir);
+extern z80_byte peek_byte_no_time_pcw(z80_int dir);
+extern void out_port_pcw(z80_int puerto,z80_byte value);
+extern z80_byte lee_puerto_pcw(z80_byte puerto_h,z80_byte puerto_l);
+extern z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l);
 
 
 extern z80_int lee_word_pc(void);

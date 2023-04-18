@@ -1,17 +1,6 @@
 Para esta version:
 
---Mejoras
 
--algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
-
--conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
-
--Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting…
-
--Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
-
-
---Fin mejoras
 
 
 --Errores
@@ -20,9 +9,6 @@ Para esta version:
 Luego pulsar botón salir emulador
 Y cierra menus pero no sale
 
--ZENG soporte para QL. ok aunque no envia teclas extendidas
--ZENG para msx se leen los cursores en destino
--ZENG colecovision no va bien
 
 -revisar en menu_debug_change_registers(void),
 //Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
@@ -49,141 +35,188 @@ Y cierra menus pero no sale
 --Fin Errores
 
 
+
+
 -Renombrar setting de background windows por multitask windows? O algo así
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
--Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
-
--Para ZENG con más de 2 pcs:
-*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
-*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
-
-
-
--Funciones de utils no deberían involucrar nada del menú
-
-
--quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
-usar la que si considera movimiento raton
-
- 
-- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
-
-
--A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
 
 -Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
 
 
-
--mejorar hotswap con mas combinaciones de maquina (por ejemplo entre 48k y 48k+, o sea, hotswap entre maquinas de mismo tipo)
-
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
--opcion vaciar papelera al salir
 
--exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
-
--parecido a Recent files, que permita cambiar a directorios recientes
-
--selector tipo joystick, que sea un desplegable en vez de que haya que ir dando cada vez al enter
-
--smartload de un pok file
-
--parpadeos en driver xwindow en zx desktop al moverse por menus
-
--cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
 
 -driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
 
--incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
 
--Ventana con triángulo sierpensky que cuando volumen sea alto, se dibujen píxeles en blanco. Se dibuja 1 pixel en cada frame 
-Usar no colores blanco, sino color de tinta normal o otro color del skin si hay volumen alto
+--Documentación/Ayuda
 
-Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+-faq zoom 1 de Next
 
+-FAQ de midi. ejemplo de Mac:
+-probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
+copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
 
--con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+--Fin Documentación/Ayuda
 
--paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
--daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
-
-
--Documentación ZEsarUX. Dispositivos que estén en funcionamiento salen en color inverso 
-
--Modificar ayuda ZX desktop y faq. ZX Desktop se puede extender en vertical tambien...
-
--Ayuda hablar nuevo comportamiento botón derecho 
-
--First aid que diga que hay extras de ZEsarUX. Descargables desde menu (si hay ssl) o con tu navegador 
-
--Opción rpi que baje framedrop por defecto no hacerlo?
-
--Icono para funcion Poke
-
--Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
-
-
--Emulación floppy:
-
-
-EL CONTROLADOR DE DISQUETES NEC 765
-http://galia.fc.uaslp.mx/~cantocar/ARQUI_COM_II/LIBRO%20IBM-PC/1206.html
-
-
-Format:DSK disk image file format - CPCWiki
-https://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
-
-More information
-https://worldofspectrum.org/faq/reference/diskreference.htm#ZX
-
-Operating Systems Development Series
-http://www.brokenthorn.com/Resources/OSDev20.html
-
-
-http://dunfield.classiccmp.org/r/765.pdf
-￼
+--------------
+-Emulación floppy:￼
 Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
 
 lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
 Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
--Emulación pcw 8256
-Requiere antes floppy
-
--6128. Requiere antes floppy
 
 -PD765: aparece A: y B: disponibles
 con la mascara quitada al buscar sector_id, plus3dos handler fallara con carlos sainz por ejemplo
 quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro (y pd765 siempre use mascara 255)
 
--mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
-hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
-Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+-Test unitario +3 que cargue un disco autoarrancable y espere output concreto
 
-
-Test unitario +3 que cargue un disco autoarrancable y espere output concreto
-
-Para debug visual floppy simplificar a 512 bytes por sector. 
-Fijar también a 9 sectores?
-
-Para saber la ubicación de cada pista hay que considerar el tamaño de cada pista, que puede cambiar. Por tanto no se puede hacer un cálculo directo sino que hay que recorrer cada una de ellas
-
-Por otra parte, en read data, podemos calcular dicha ubicación con el primer byte y los siguientes solo sumar posición 
-
-
--Rqm debe ir a 0 después de haber recibido los parámetros en fase comando:
-
-A menos que se haya enviado un comando ilegal, luego de recibido correctamente el u ́ltimo byte MSR.RQM se pone en “0” y se ingresa en la fase siguiente, definida para cada comando (Transferencia o Resultado).
-O sea en fase ejecución se pone a 0
-
-Y se pondrá a 1 en la fase de resultado
-En read y write data se pone a 1 antes de recibir/escribir el primer byte del sector
-
--visualfloppy: circulo grande modificar funcion elipse para corregir punteado
-
--ZXCPM: falla con error size 0 not supported
 
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
--rainbow islands:tiene pistas repetidas y otras que no estan
+
+-releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
+
+-ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
+
+
+
+
+-Read track
+* A determinar flags que se activan según petición inicial chrn
+* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
+
+-PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
+-implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
+
+-Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
+
+Fin Emulación floppy
+--------------
+
+
+
+-Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
+del mensaje lo obtiene de la ventana
+
+
+-cambio en menu_inicio y zxvision_switch_to_window_on_open_menu:
+
+https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d2719ffbb2#diff-521337e1d39e077ccafa540faa6e18649b8c776cc3b4865ec4f648e4dca04216
+
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
+
+
+-error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
+*step mode
+*funcion z (memory zone) o tecla (o) por ejemplo
+*quitar step mode
+*pulsar teclas y llega a maquina emulada
+
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
+
+
+
+
+
+
+
+-Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
+
+
+
+-Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
+
+-visual real tape no actualiza bien si menu cerrado y top speed
+
+-on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
+
+-revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
+->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
+->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
+
+
+-Por determinar visibilidad de processswitcher. siempre visible si o no?
+
+
+-Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
+-Botón derecho solo deberia funcionar cuando setting de "enviar ESC con boton derecho" desactivado. esto afecta a :
+*boton derecho sobre escritorio
+*boton derecho sobre iconos de escritorio
+*boton derecho sobre iconos de process switcher
+ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
+
+
+
+-en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
+
+
+
+
+
+-rom cpc6128: os+basic+amsdos
+
+--pendiente 6128,664:
+*puerto DF en snapshot zsf
+*si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
+*snap ver cosas de cpc 464 y si faltan para 6128 y 664
+
+
+--pendiente pcw 8256,8512:
+*snapshot zsf
+-caps lock no va...
+-tecla keypad_enter en fbdev no la distingue del enter normal,
+-nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
+-en i/o ports informacion flags de cada puerto pcw
+-cpm spanish (version superior a 1??) no va
+--fin pendiente pcw 8256,8512
+
+
+-Snapshots de pcw o cpc? que formatos existen?
+
+
+
+
+-Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
+
+
+
+-en plus3doshandler, cuando filesystem empieza en pista 2, todos los bloques van desplazados una pista en adelante
+(igual que utils.c y llamada a menu_dsk_getoff_block). y lo mismo para buscar inicio pista
+
+
+-En visor dsk que solo muestre primer extent de un archivo. ya esta??
+-extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
+-extractor dsk que use misma manera que visor dsk?
+-extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
+lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
+
+-En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
+-O incluso mejor un browser/viewer de formato CP/M, que indique:
+*extent number
+*date file 
+*etc
+
+
+-visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
+
+
+-indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
+
+
+-Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+
+-quiza un widget de sensors con la Z del logo?
+
+
+-registro EPC para tbblue, zxuno, ....
+
+
+-en snapshot zsf opcion para poder guardar la rom en snapshot, por ejemplo para cuando has iniciado con una rom personalizada y quieres
+que el snapshot la restaure

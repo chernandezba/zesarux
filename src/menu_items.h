@@ -56,6 +56,15 @@ extern void menu_debug_disassemble(MENU_ITEM_PARAMETERS);
 extern void menu_debug_assemble(MENU_ITEM_PARAMETERS);
 
 extern void menu_visual_floppy(MENU_ITEM_PARAMETERS);
+extern void menu_visual_floppy_buffer_add(int pista,int sector,int byte_en_sector);
+extern void menu_visual_floppy_buffer_add_persistent(int pista,int sector,int byte_en_sector);
+extern void menu_visualfloppy_increment_rotation(void);
+extern void menu_visual_floppy_buffer_reset(void);
+extern void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS);
+
+extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
+
+extern void menu_process_switcher(MENU_ITEM_PARAMETERS);
 
 extern void menu_settings_display(MENU_ITEM_PARAMETERS);
 
@@ -68,6 +77,12 @@ extern void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_view_sprites(MENU_ITEM_PARAMETERS);
 
+extern char *menu_debug_sprites_change_ptr_historial[];
+
+
+extern char *menu_debug_poke_address_historial[];
+
+extern char *menu_debug_poke_value_historial[];
 
 extern void menu_breakpoint_fired(char *s);
 
@@ -164,6 +179,8 @@ extern menu_z80_moto_int menu_debug_hexdump_direccion;
 
 extern void menu_debug_hexdump_with_ascii(char *dumpmemoria,menu_z80_moto_int dir_leida,int bytes_por_linea,z80_byte valor_xor);
 
+extern char *menu_debug_hexdump_change_ptr_historial[];
+
 extern void menu_find(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_view_basic_variables(MENU_ITEM_PARAMETERS);
@@ -194,7 +211,7 @@ extern void menu_hilow_convert_audio(MENU_ITEM_PARAMETERS);
 
 extern void menu_debug_file_utils(MENU_ITEM_PARAMETERS);
 
-extern void menu_process_f_functions_by_action_name(int id_funcion);
+extern void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono_zxdesktop,int id_tecla_f_pulsada);
 
 extern char menu_hilow_convert_audio_last_audio_sample;
 

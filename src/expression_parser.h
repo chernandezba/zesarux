@@ -90,6 +90,8 @@ enum token_parser_indice {
 	TPI_V_RAM,
 	TPI_V_ROM,
 
+    TPI_V_PD765_PCN,
+
 	TPI_V_OPCODE1,
 	TPI_V_OPCODE2,
 	TPI_V_OPCODE3,
@@ -172,6 +174,9 @@ enum token_parser_indice {
 	//De Tbblue
 	TPI_R_COPPERPC,
 
+	//Extended PC que incluye pagina de memoria
+	TPI_R_EPC,
+
 	//de tipo operador logico
 	TPI_OL_AND,
 	TPI_OL_OR,
@@ -201,7 +206,11 @@ enum token_parser_indice {
 	TPI_F_NOT,
 	TPI_F_ABS,
 	TPI_F_BYTE,
-	TPI_F_WORD
+	TPI_F_WORD,
+	TPI_F_OPMWA,
+	TPI_F_OPMRA,
+	TPI_F_OPMWV,
+	TPI_F_OPMRV
 
 };
 

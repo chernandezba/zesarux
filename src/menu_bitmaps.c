@@ -1590,7 +1590,7 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
 	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
-	"  wxxxxxxxxxwwxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
 	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
@@ -1610,6 +1610,248 @@ char *bitmap_lowericon_ext_desktop_plus3_flp_active[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
 	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
 };
+
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxggxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxggxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_frameone[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxggxWWWWxxxxxxxxw  ",		
+	"  wxxxxxggxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxggxxxxxxxxxw  ",			
+	"  wxxxxxxxxxggxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxggxxxxxw  ",		
+	"  wxxxxxxxxWWWWxggxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framezero[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxrrxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frameone[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxrrxWWWWxxxxxxxxw  ",		
+	"  wxxxxxrrxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frametwo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxWWWWxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",			
+	"  wxxxxxxxxxrrxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
+char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framethree[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  wwwwwwwwwwwwwwwwwwwwww  ",     //0
+  	"  wxxxx xxxxxxxxxxxxxxxw  ",      
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxx xxxxxxwwxxxxxx xxw  ",		
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",	
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxwwxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ", 		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",	//10	
+	"  wxxxxxxxxWWWWxrrxxxxxw  ",		
+	"  wxxxxxxxxWWWWxrrxxxxxw  ",		
+	"  wxxxxxxxxxWWxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",			
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxxRRRRRRRRRRRRRRxxxw  ",		
+	"  wxxRRWWRWRWWRRWRWRRxxw  ",		
+	"  wxxRRRRRRRRRRRRRRRRxxw  ",	//20	
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",    
+	"  wxxWWWWWWWWWWWWWWWWxxw  ",		
+	"  wxxxxxxxxxxxxxxxxxxxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  ",		
+	"  wxxwwwwwwwwwwwwwwwwxxw  " 	 //25
+};
+
 
 char *bitmap_lowericon_ext_desktop_plus3_flp_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
@@ -1981,6 +2223,37 @@ char *bitmap_lowericon_ext_desktop_hilow_inactive[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_lowericon_ext_desktop_hilow_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"                          ", //0	
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",			
+	" xxggggggggggggggggggggxx ",			
+	" xgggxxxggggggggggxxxgggx ",			
+	" xggxx xxg      gxx xxggx ",		
+	" xggx   xg      gx   xggx ",		
+	" xggxx xxg      gxx xxggx ",		
+	" xgggxxxggggggggggxxxgggx ",		
+	" xggggggggggggggggggggggx ",
+	" xgxgxgxgxgggxxxgxgggxggx ",		
+	" xgxxxgxgxgggxgxgxgxgxggx ",	//10
+	" xgxgxgxgxxxgxxxggxgxgggx ",		
+	" xggggggggggggggggggggggx ",		
+	" xgggggxxxxxxxxxxxxgggggx ",		
+	" xggggxggggggggggggxggggx ",		
+	" xxgggxggggggggggggxgggxx ",		
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",		
+	"             x            ",	
+    "             x            ",
+    "           xxxxx          ",	
+    "            xxx           ",    //20
+    "             x            ",	   			    
+	" xx xxx xxx xxx xxx xx xx ",		
+	"  x x x x x x x x x  x  x ",		
+	"  x xxx xxx xxx xxx  x  x ",
+    "                          "  //25
+
+};
+
 /*
 Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -2230,6 +2503,40 @@ char *bitmap_button_ext_desktop_audioregisters[EXT_DESKTOP_BUTTONS_ANCHO]={
 	
 };
 
+
+
+char *bitmap_button_ext_desktop_geneneralsoundregisters[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "  x                       ", 
+    " x x   xxxxxxxxxxx        ",
+    " x x                      ",
+    "  xxx  xxxxxxxxxxx        ",
+    "                          ",
+	" x                        ",
+	" xxx   xxxxxxxxxxxrrrrrrr ",
+	" x x                      ",
+	" xxx   xxxxxxxxxxxrrrrrrr ",
+	"                          ",
+    " xxx   xxxxx              ",
+	" x                        ",
+    " xxx   xxxxx              ",
+    "   x                      ",	    
+    " xxx   xxxxxxxxxxxrr      ",    
+    " x x                      ",		
+    " xxx   xxxxxxxxxxxrr      ",		
+    "                          ",		
+	"      x   x   x   x   x   ",		
+    "xxxxxxxxxxxxxxxxxxxxxxxxxx",  
+	"xxxxxxxxwwwwxxxwwwxxxxxxxx",		
+	"xwxxxxxwxxxxxxxwxxxxxxxxxx",		
+	"xwwxxxxwxxwwxxxwwwxxxxxxxx",		
+	"xwxxxxxwxxxwxxxxxwxxxxxxxx",		
+	"xxxxxxxxwwwxxxxwwwxxxxxxxx",		
+	
+	"  x   x   x   x   x   x   "
+	
+};
+
 char *bitmap_button_ext_desktop_audiosheet[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 
@@ -2325,6 +2632,38 @@ char *bitmap_button_ext_desktop_wavepiano[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_visualrealtape[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	" xxggggggggggggggggggggxx ",
+	" xggggggggggggggggggggggx ",
+	" xggggBggggggggggggBggggx ",
+	" xggggBggg      gggBggggx ",
+	" xggBBBBBg      gBBBBBggx ",
+	" xggggBggg      gggBggggx ",
+	" xggggBggggggggggggBggggx ",
+	" xggggggggggggggggggggggx ",
+	" xggggggggggggggggggggggx ",
+	" xggggggggggggggggggggggx ",	//10
+	" xgggggxxxxxxxxxxxxgggggx ",
+	" xggggxggggggggggggxggggx ",
+	" xxgggxggggggggggggxgggxx ",
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	"                          ",
+	"           bbb            ",
+	"          b   b    bb     ",
+	"   b      b   b   b  b    ",
+	"  b b     b   b   b  b    ",
+	" b   b    b    b  b  b    ", //20
+	" b    b   b    b  b  b  b ",
+	"      b   b    b  b  b b  ",
+	"       b b     b b    b   ",
+	"        b      b b        ",
+	"                b         "  //25
+};
+
+
+
 char *bitmap_button_ext_desktop_aymixer[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "   xxx      xxx      xxx  ",     //0
@@ -2416,6 +2755,38 @@ char *bitmap_button_ext_desktop_colour_palettes[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"       xwwwwwwwwx         ",
     "        xxxxxxxx          ",    //25 
 };
+
+
+char *bitmap_button_ext_desktop_zxeyes[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"     xxx          xxx     ",		
+	"    xx xx        xx xx    ",	
+	"   x     x      x     x   ",			
+	"  x       x    x       x  ",			
+	" x         x  x         x ", 		
+	" x         x  x         x ",		
+	" x         x  x         x ",		
+	"x           xx           x",	//10	
+	"x           xx           x",		
+	"x       xx  xx       xx  x",		
+	"x      xxxx xx      xxxx x",		
+	"x       xx  xx       xx  x",		
+	"x           xx           x",		
+	"x           xx           x",		
+	" x         x  x         x ",		
+	" x         x  x         x ",		
+	"  x       x    x       x  ",		
+	"   x     x      x     x   ",    //20
+	"    xx xx        xx xx    ",		
+	"     xxx          xxx     ",		
+	"                          ",		
+	"                          ",
+	"                          " 	 //25
+};
+
 	
 char *bitmap_button_ext_desktop_reloadmmc[EXT_DESKTOP_BUTTONS_ANCHO]={
    //01234567890123456789012345
@@ -2633,6 +3004,222 @@ char *bitmap_button_ext_desktop_debugcpu[EXT_DESKTOP_BUTTONS_ANCHO]={
     "       R    R             "   //25 
 };
 
+
+char *bitmap_button_ext_desktop_cpustatistics[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"  x   x   x   x   x   x   ",	//0
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xwxxxxxxxxxxxwxwxxwxwxxwxx",		
+	"xwwxxxxxxxxxwxxxwwxxwxxwxx",		
+	"xwxxxxxxxxxwxxxwxxwxwxxwxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   ",
+    "                          ",
+    " x                  xxx   ",
+    " x                 x      ",
+  	" x   xxxx  xxxx    x mm   ",
+	" x  x    xx    xx  x mm   ",
+	" x x  rr    gg   x x mm   ",
+	" x    rr    gg rr x  mm   ",
+	" x    rr mm gg rr    mm   ",	//20		
+	" x BB rr mm gg rr    mm   ",
+	" x BB rr mm gg rr    mm   ",
+	" x BB rr mm gg rr BB mm   ",
+	" x BB rr mm gg rr BB mm   ",
+    " xxxxxxxxxxxxxxxxxxxxxxxxx"   //25 
+};
+
+
+
+char *bitmap_button_ext_desktop_corestatistics[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"                          ",	//0
+	"       xxxxxxxxxxxx       ",
+	"       xxxxxxxxxxxx       ",
+	"               xx         ",
+	"               xx r       ",
+	"             xx  rr       ",
+	"             xx rry       ",
+	"           xx  rryy       ",
+	"           xx rryyg       ",
+	"         xx  rryygg       ",
+	"         xx rryyggc       ",  //10
+	"       xxxxxxxxxxxx       ",
+	"       xxxxxxxxxxxx       ",
+    "                          ",
+    " x                  xxx   ",
+    " x                 x      ",
+  	" x   xxxx  xxxx    x mm   ",
+	" x  x    xx    xx  x mm   ",
+	" x x  rr    gg   x x mm   ",
+	" x    rr    gg rr x  mm   ",
+	" x    rr mm gg rr    mm   ",	//20		
+	" x BB rr mm gg rr    mm   ",
+	" x BB rr mm gg rr    mm   ",
+	" x BB rr mm gg rr BB mm   ",
+	" x BB rr mm gg rr BB mm   ",
+    " xxxxxxxxxxxxxxxxxxxxxxxxx"   //25 
+};
+
+char *bitmap_button_ext_desktop_ioports[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"  x   x   x   x   x   x   ",	//0
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xwxxxxxxxxxxxwxwxxwxwxxwxx",		
+	"xwwxxxxxxxxxwxxxwwxxwxxwxx",		
+	"xwxxxxxxxxxwxxxwxxwxwxxwxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   ",
+    "  x   x   x               ",
+    "  x   x   x       xx      ",
+    "  x   x   xxxxxx   x xxxxx",
+  	"  x   x            x      ",
+	"  x   x                   ",
+	"  x   x           xx      ",
+	"  x   xxxxxxxxxx   x xxxxx",
+	"  x                x      ",	//20		
+	"  x                       ",
+	"  x              xxx      ",
+	"  x              x x      ",
+	"  xxxxxxxxxxxxxx x x xxxxx",
+    "                 xxx      "   //25 
+};
+
+char *bitmap_button_ext_desktop_watches[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+	"  x   x   x   x   x   x   ",	//0
+	"  x   x   x   x   x   x   ",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xwxxxxxxxxxxxwxwxxwxwxxwxx",		
+	"xwwxxxxxxxxxwxxxwwxxwxxwxx",		
+	"xwxxxxxxxxxwxxxwxxwxwxxwxx",		
+	"xxxxxxxxxxwwwwxxwwxxxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",  //10
+	"  x   x   x   x   x   x   ",		
+	"  x   x   x   x   x   x   ",
+    "                          ", 	
+    "         xxxx             ", 
+    "        x    x            ", 
+    "       x      x           ", 
+  	"       x      x           ", 
+	"       x      x           ", 
+	"       x      x           ", 
+	"        x    xxx          ", 
+	"         xxxx  xx         ",
+	"                xx        ", 
+	"                 xx       ", 
+	"                  xx      ", 
+    "                   x      "   //25 
+};
+
+char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW XX XX XX WW WW WW  ",
+	" WW WW XX XX XX WW WW WW  ",
+	"                          ",			
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",			
+	" WW WW WW WW WW WW WW WW  ",	//10		
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+    " WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW XX WW WW  ",
+	" WW WW WW WW WW XX WW WW  ",
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",    //20
+	"                          ",		
+	" WW WW WW WW WW WW WW WW  ",
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",
+	"                          " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_view_sensors[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"                          ",		
+	"                          ",		
+	"         gggggggg         ",	
+	"      gggggggggggggg      ",			
+	"    ggg            ggg    ",		
+    "   ggg              ggg   ",			
+	"  gg                  gg  ", 		
+	"  gg x                gg  ",		
+	" gg   x                gg ",	//10	
+	" gg    x               gg ",		
+	" gg     x              gg ",		
+	"gg       x              gg",		
+	"gg        x             gg",		
+	"gg         x            gg",		
+	"gg          x           gg",		
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          ",	//20
+	"                          ",    
+	"                          ",		
+	"                          ",		
+	"                          ",		
+	"                          " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_visualfloppy[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+    "          xxxxxx          ",//0
+  	"        xxxxxxxxxx        ",
+	"       xxxxxxxxxxxx       ",		
+	"      xxxxxxrxxxxxxx      ",		
+	"     xxxxxxxrxxxxxxxx     ",	
+	"    xxxxxxxxrxxxxxxxxx    ",			
+	"   xxxxxxxxxrxxxxxxxxxx   ",			
+	"  xxxxcxxxxxrxxxxxxxxxxx  ",		
+	"  xxxxxcxxxxrxxxxxxgxxxx  ",		
+	"  xxxxxxcxxxrxxxxxgxxxxx  ",		
+	" xxxxxxxxcxxrxxxxgxxxxxxx ",	//10	
+	" xxxxxxxxxcxxxxxgxxxxxxxx ",		
+	" xxxxxxxxxxxwwxxxxxxxxxxx ",		
+	" xxxggggggxwxxwxbbbbbbxxx ",		
+	" xxxxxxxxxxwxxwxxxxxxxxxx ",		
+	" xxxxxxxxxxxwwxxxxxxxxxxx ",		
+	" xxxxxxxxxwxxxxyxxxxxxxxx ",		
+	"  xxxxxxxwxxmxxxyxxxxxxx  ",		
+	"  xxxxxxwxxxmxxxxyxxxxxx  ",		
+	"   xxxxwxxxxmxxxxxyxxxx   ",		
+	"    xxxxxxxxmxxxxxxxxx    ",//20
+	"     xxxxxxxmxxxxxxxx     ",		
+	"      xxxxxxmxxxxxxx      ",		
+	"       xxxxxxxxxxxx       ",		
+	"        xxxxxxxxxx        ",
+	"          xxxxxx          " 	//25
+};
+
+
 char *bitmap_button_ext_desktop_debugcpu_view_adventure[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
 	"                          ",	//0
@@ -2754,6 +3341,36 @@ char *bitmap_button_ext_desktop_hexeditor[EXT_DESKTOP_BUTTONS_ANCHO]={
 	" xxxxxxxxxxxxxxxxxxxxxxx  "	//25
 };
 
+
+char *bitmap_button_ext_desktop_poke[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "             r            ",     //0
+    "            rrr           ",
+	"           YYrrr          ",
+	"          YYxYrrr         ",
+	"         YYxYYYr          ",
+	"        YYxYYYY           ",
+	"       YYxYYYY            ",
+	"      YYxYYYY             ",
+	"     xYxYYYY              ",
+	"     xxYYYY               ",
+	"     xxxYY                ",	//10
+	"     xxxx                 ",
+    "                          ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx ",
+	"xcRRRcRcccRcRRRcRRcccRccx ",
+	"xcRccccRcRcccRccRcRcRcRcx ",
+	"xcRRRcccRccccRccRRccRRRcx ",
+	"xcRccccRcRcccRccRRccRcRcx ",
+	"xcRRRcRcccRccRccRcRcRcRcx ",
+	"xcccccccccccccccccccccccx ",
+	"xcccRcccRcRcRcRRRcRRRcccx ",	//20
+	"xcccRcccRcRcRcRcccRcccccx ",
+	"xcccRcccRcRcRcRRRcRRRcccx ",
+	"xcccRcccRcRcRcRcccccRcccx ",
+	"xcccRRRcRccRccRRRcRRRcccx ",
+	"xxxxxxxxxxxxxxxxxxxxxxxxx "    //25
+};
 
 
 char *bitmap_button_ext_desktop_viewsprites[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -3628,6 +4245,36 @@ char *bitmap_button_ext_desktop_my_machine_generic[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+char *bitmap_button_ext_desktop_helpkeyboard[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",		
+	"  x  x  xxxx  x     xxxx  ",
+	"  x  x  x     x     x   x ",
+	"  xxxx  xx    x     xxxx  ",
+	"  x  x  x     x     x     ",
+    "  x  x  xxxx  xxxx  x     ",	
+    "                          ",	
+    "                          ",
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwwxwwxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwwxwwxwwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxwwxwwxwwxwwxwwxwwxwwxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxwxxr",    //20
+	"xxxxwwxwwxwwxwwxwwxwwxwxry",		
+	"xxxxxxxxxxxxxxxxxxxxxxxryg",		
+	"xxxxxxwwxwwwwwwwwxwwxxrygb",		
+	"xxxxxxxxxxxxxxxxxxxxxrygbx",
+	" xxxxxxxxxxxxxxxxxxxrygbx " 	 //25
+};
+
 //Icono "My machine" para un gomas
 char *bitmap_button_ext_desktop_my_machine_gomas[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
@@ -4227,8 +4874,8 @@ char *bitmap_button_ext_desktop_my_machine_spectrum_p3[EXT_DESKTOP_BUTTONS_ANCHO
 
 
 
-//Icono "My machine" para un CPC
-char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
+//Icono "My machine" para un CPC 464
+char *bitmap_button_ext_desktop_my_machine_cpc_464[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
     "                          ",     //0
   	"                          ", 		
@@ -4258,6 +4905,100 @@ char *bitmap_button_ext_desktop_my_machine_cpc[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
 };
 
+
+//Icono "My machine" para un CPC 6128
+char *bitmap_button_ext_desktop_my_machine_cpc_6128[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwxxxxxxrgbxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwxwwxwwxwxxrrrrrrx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwwxwwxwwxwxwxxxxxxxxx",		
+	"xxxxxxxxxxxxxxwxxxxggggggx",    //20
+	"xxwwxwwxwwxwwxwxwxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwxwwxwwwwxwwxwwxxbbbbbbx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+//Icono "My machine" para un CPC 664
+char *bitmap_button_ext_desktop_my_machine_cpc_664[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxwwxwxwxxxxxxrgbxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx",		
+	"xxcxwwxwwxwwxwwxgxxxwxwxwx",		
+	"xxxxxxxxxxxxxxxxxxxxwxwxwx",		
+	"xxccxwwxwwxwwxwxcxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxcxxxwxwxwx",    //20
+	"xxcccxwwxwwxwwxccxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxxwxwxx",		
+	"xxcxwwxwwwwxwwxccxxxxxxxxx",		
+	"xxxxxxxxxxxxxxxxxxxxccxxcx",
+	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+
+//Icono "My machine" PCW 8256, 8512
+char *bitmap_button_ext_desktop_my_machine_pcw_8256[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ", 		
+	"                          ",	
+	"                          ",
+	"                          ",		
+	"                          ",
+	"                          ",
+	"                          ",
+	"                          ",
+    "                          ",	
+	"                          ",	//10	
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWrrWWWWWwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWwWWwWWwWWWwWWwWWwWw",		
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWWwWWwWWwWWwWWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwWwwwwwwwww",    //20
+	"wwWwWWwWWwWWwWWwWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",		
+	"wwWWwWWWWWWWWWWwWwWWwWWwWw",			
+	"wwwwwwwwwwwwwwwwwwwwwwwwww",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww" 	 //25
+};
 
 //Icono "My machine" para SMS 
 char *bitmap_button_ext_desktop_my_machine_sms[EXT_DESKTOP_BUTTONS_ANCHO]={
@@ -4834,4 +5575,201 @@ char *bitmap_button_ext_desktop_zx81_online[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"xxxWWxWWxWWxWWxWWxWWxWWxxx",		
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx" 	 //25
+};
+
+char *bitmap_button_ext_desktop_openwindow[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	" xxxxxxxxxxxxxxxxxxx      ",   //0
+	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwwwwwwwwwwxwx    ",
+	" xwwwwwwwwwwwwwwwwwxwwx   ",
+	" xwwwwwwwwwwwwwwwwwxwwwx  ",
+	" xwwwwwwwwxxxxxxwwwxxxxxx ",
+	" xwwwwwwxxxxxxxxxxwwwwwwx ",
+	" xwwwwwxxcccxxcccxxwwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",  //10
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwwwxxxxxxxxxxxxwwwwx ",  //20
+	" xwwxxxwwwwwwwwwwwwwwwwwx ",
+	" xwwwxxwxxxxxxxxxxxxxwwwx ",
+	" xwwxwxwxxxxxxxxxxxxxwwwx ",
+	" xwxwwwwwwwwwwwwwwwwwwwwx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25
+};
+
+char *bitmap_button_ext_desktop_processmanagement[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "          xxxxxx          ",     //0
+  	"        xxxxxxxxxx        ",      
+	"       xxcccxxcccxx       ",		
+	"       xxcccxxcccxx       ",		
+	"      xxccccxxccccxx      ",	
+	"      xxccccxxccccxx      ",			
+	"      xxxxxxxxxxxxxx      ",			
+	"      xxxxxxxxxxxxxx      ", 		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",	//10	
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxxxxxxxxxxxxx      ",		
+	"      xxxxxxxxxxxxxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"  wwwwwwwwwcxxccccxx      ",		
+	"  wwwwrwwwwcxxccccxx      ",		
+	"  wrwrrrwrwcxxccccxx      ",		
+	"  wwrrwrrwwxxxxxxxxx      ",    //20
+	"  wrrwwwrrwxxxxxxxxx      ",		
+	"  wwrrwrrww               ",		
+	"  wrwrrrwrw               ",		
+	"  wwwwrwwwwxxxxxxxxxx     ",
+	"  wwwwwwwwwxxxxxxxxxx     " 	 //25
+};
+
+/*
+	" xwwwwrwwwwcxxccccxxwwwwx ",
+	" xwrwrrrwrwxxxxxxxxxwwwwx ",
+	" xwwrrwrrwwxxxxxxxxxwwwwx ",  //20
+	" xwrrwwwrrwwwwwwwwwwwwwwx ",
+	" xwwrrwrrwwxxxxxxxxxxwwwx ",
+	" xwrwrrrwrwxxxxxxxxxxwwwx ",
+	" xwwwwrwwwwwwwwwwwwwwwwwx ",
+*/
+
+/*
+
+char *bitmap_button_ext_desktop_processmanagement[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	" xxxxxxxxxxxxxxxxxxx      ",   //0
+	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwwwwwwwwwwxwx    ",
+	" xwwwwwwwwwwwwwwwwwxwwx   ",
+	" xwwwwwwwwwwwwwwwwwxwwwx  ",
+	" xwwwwwwwwxxxxxxwwwxxxxxx ",
+	" xwwwwwwxxxxxxxxxxwwwwwwx ",
+	" xwwwwwxxcccxxcccxxwwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",  //10
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwwwwwwcxxccccxxwwwwx ",
+	" xwwwwrwwwwcxxccccxxwwwwx ",
+	" xwrwrrrwrwxxxxxxxxxwwwwx ",
+	" xwwrrwrrwwxxxxxxxxxwwwwx ",  //20
+	" xwrrwwwrrwwwwwwwwwwwwwwx ",
+	" xwwrrwrrwwxxxxxxxxxxwwwx ",
+	" xwrwrrrwrwxxxxxxxxxxwwwx ",
+	" xwwwwrwwwwwwwwwwwwwwwwwx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25
+};
+*/
+
+
+/*
+char *bitmap_button_ext_desktop_processswitcher[EXT_DESKTOP_BUTTONS_ANCHO]={
+   //01234567890123456789012345
+	" xxxxxxxxxxxxxxxxxxx      ",   //0
+	" xwwwwwwwwwwwwwwwwwxx     ",
+	" xwwwwwwwwwwwwwwwwwxwx    ",
+	" xwwwwwwwwwwwwwwwwwxwwx   ",
+	" xwwwwwwwwwwwwwwwwwxwwwx  ",
+	" xwwwwwwwwxxxxxxwwwxxxxxx ",
+	" xwwwwwwxxxxxxxxxxwwwwwwx ",
+	" xwwwwwxxcccxxcccxxwwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",  //10
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxxxxxxxxxxxxxwwwwx ",
+	" xwwwwxxccccxxccccxxwwwwx ",
+	" xwwwwwwwwwwxxccccxxwwwwx ",
+	" xwwwbwwbwwwxxccccxxwwwwx ",
+	" xwwbbwwbbwwxxxxxxxxwwwwx ",
+	" xwbbbbbbbbwxxxxxxxxwwwwx ",  //20
+	" xwbbbbbbbbwwwwwwwwwwwwwx ",
+	" xwwbbwwbbwwxxxxxxxxxwwwx ",
+	" xwwwbwwbwwwxxxxxxxxxwwwx ",
+	" xwwwwwwwwwwwwwwwwwwwwwwx ",
+	" xxxxxxxxxxxxxxxxxxxxxxxx "	//25
+};
+*/
+
+char *bitmap_button_ext_desktop_processswitcher[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "          xxxxxx          ",     //0
+  	"        xxxxxxxxxx        ",      
+	"       xxcccxxcccxx       ",		
+	"       xxcccxxcccxx       ",		
+	"      xxccccxxccccxx      ",	
+	"      xxccccxxccccxx      ",			
+	"      xxxxxxxxxxxxxx      ",			
+	"      xxxxxxxxxxxxxx      ", 		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",	//10	
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxxxxxxxxxxxxx      ",		
+	"      xxxxxxxxxxxxxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"      xxccccxxccccxx      ",		
+	"  wwwwwwwwwwxxccccxx      ",		
+	"  wwwbwwbwwwxxccccxx      ",		
+	"  wwbbwwbbwwxxxxxxxx      ",    //20
+	"  wbbbbbbbbwxxxxxxxx      ",		
+	"  wbbbbbbbbw              ",		
+	"  wwbbwwbbww              ",		
+	"  wwwbwwbwwwxxxxxxxxx     ",
+	"  wwwwwwwwwwxxxxxxxxx     " 	 //25
+};
+
+
+char *bitmap_button_ext_desktop_videoinfo[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	"                          ",      
+	"RRRRRRRRRRRRRRRRRRRRRRRRRR",		
+	"RrrrrrrrrrrrrrrrrrrrrrrrrR",		
+	"Rr                      rR",	
+	"Rr         mmmm         rR",			
+	"Rr         mmmmm        rR",			
+	"Rr         mmmm         rR", 		
+	"Rr         xx           rR",		
+	"Rr         xx           rR",		
+	"Rr  xxxxxxxxxxxxxxxxx   rR",	//10	
+	"Rr  xxxxxxxxxxxxxxxxx   rR",		
+	"Rr   xxxxxxxxxxxxxxx    rR",		
+	"Rr    xxxxxxxxxxxxx     rR",		
+	"RrbbbbbbbbbbbbbbbbbbbbbbrR",		
+	"RrBBccccccbbbcccccccccccrR",		
+	"RrBBBBbbbbbbccBBBBBbbbbbrR",		
+	"wwwwwwbbbBBBBcBBBBBBBBBBrR",		
+	"wwbbwwBBBBBBBBBBBBBBBBBBrR",		
+	"wwwwwwBBBBBBBBBBBBBBBBBBrR",		
+	"wbbbwwrrrrrrrrrrrrrrrrrrrR",    //20
+	"wwbbwwRRRRRRRRRRRRRRRRRRRR",		
+	"wwbbww  RRRRRRRRRR        ",		
+	"wwbbww RRRRRRRRRRRR       ",		
+	"wbbbbw RRRRRRRRRRRRRR     ",
+	"wwwwwwrrrrrrrrrrrrrrr     " 	 //25
 };

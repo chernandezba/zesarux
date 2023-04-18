@@ -60,6 +60,7 @@
 #include "ql_zx8302.h"
 #include "stats.h"
 #include "chardetect.h"
+#include "pcw.h"
 
 //Incluimos estos dos para la funcion de fade out
 #ifdef COMPILE_XWINDOWS
@@ -249,7 +250,8 @@ total_palette_colours total_palette_colours_array[TOTAL_PALETAS_COLORES]={
     {"SMS Mode 4","64 colour standard",SMS_INDEX_FIRST_COLOR,SMS_TOTAL_PALETTE_COLOURS},
     {"QL","8 colour",QL_INDEX_FIRST_COLOR,QL_TOTAL_PALETTE_COLOURS},
     {"BMP File first palette","256 colour",BMP_INDEX_FIRST_COLOR,BMP_TOTAL_PALETTE_COLOURS},
-    {"BMP File second palette","256 colour",BMP_SECOND_INDEX_FIRST_COLOR,BMP_SECOND_TOTAL_PALETTE_COLOURS}
+    {"BMP File second palette","256 colour",BMP_SECOND_INDEX_FIRST_COLOR,BMP_SECOND_TOTAL_PALETTE_COLOURS},
+	{"PCW","PCW palette",PCW_INDEX_FIRST_COLOR,PCW_TOTAL_PALETTE_COLOURS}
 };
 
 
@@ -861,6 +863,9 @@ z80_int *rainbow_buffer_two=NULL;
 //cache de putpixel. Solo usado en modos rainbow (segun recuerdo)
 z80_int *putpixel_cache=NULL;
 
+//Tamaño de dicha cache de putpixel
+int putpixel_cache_size=0;
+
 
 //funcion con debug. usada en el macro con debug
 
@@ -919,6 +924,10 @@ void recalcular_get_total_ancho_rainbow(void)
                 get_total_ancho_rainbow_cached=2*CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+CPC_DISPLAY_WIDTH;
         }
 
+	else if (MACHINE_IS_PCW) {
+                get_total_ancho_rainbow_cached=2*PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+PCW_DISPLAY_WIDTH;
+        }        
+
 	else if (MACHINE_IS_PRISM) {
 		get_total_ancho_rainbow_cached=(screen_total_borde_izquierdo+screen_total_borde_derecho)*border_enabled.v+512;
         }
@@ -961,6 +970,10 @@ void recalcular_get_total_alto_rainbow(void)
         else if (MACHINE_IS_CPC) {
                 get_total_alto_rainbow_cached=2*CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+CPC_DISPLAY_HEIGHT;
         }
+
+        else if (MACHINE_IS_PCW) {
+                get_total_alto_rainbow_cached=2*PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+PCW_DISPLAY_HEIGHT;
+        }        
 
         else if (MACHINE_IS_PRISM) {
                 //get_total_alto_rainbow_cached=2*PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+PRISM_DISPLAY_HEIGHT;
@@ -1045,7 +1058,6 @@ void init_rainbow(void)
 
 void init_cache_putpixel(void)
 {
-
 #ifdef PUTPIXELCACHE
 	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache");
 	if (putpixel_cache!=NULL) {
@@ -1075,11 +1087,18 @@ void init_cache_putpixel(void)
 	//para poder hacer putpixel cache con modo timex 512x192
 	tamanyo *=2;
 
+	putpixel_cache_size=tamanyo*2; //*2 porque es z80_int
 
-	putpixel_cache=malloc(tamanyo*2); //*2 porque es z80_int
+	//TODO: parece que la memoria que asignamos es mayor de la que luego usamos en clear_putpixel_cache
+	//normal? o es un error?
+	//De todas maneras, asignar mas memoria de la que usamos no provoca fallos, es un desperdicio, si,
+	//pero no generará ningun segfault ni nada parecido
 
 
-	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache of size: %d bytes",tamanyo);
+	putpixel_cache=malloc(putpixel_cache_size); 
+
+
+	debug_printf (VERBOSE_INFO,"Initializing putpixel_cache of size: %d bytes",putpixel_cache_size);
 
 	if (putpixel_cache==NULL) {
 		cpu_panic("Error allocating putpixel_cache video buffer");
@@ -1837,6 +1856,18 @@ void clear_putpixel_cache(void)
 
 	//Alternativa con memset mas rapido
 	int longitud=tamanyo_y*tamanyo_x*2; //*2 porque es un z80_int
+
+	//Si la longitud de lo que vamos a inicializar es mayor que el tamaño
+	//propiamente de la memoria asignada, no borrar todo
+	//Esto puede suceder momentaneamente al cambiar a maquina con resolucion mayor, cuando se 
+	//ha cambiado la definición de la máquina, se inicializa realvideo (por ejemplo)
+	//pero aun no se ha llamado a init_cache_putpixel
+	if (longitud>putpixel_cache_size) {
+		debug_printf (VERBOSE_INFO,"Allocated memory for putpixel cache is smaller than we are trying to clear, can be normal");
+		longitud=putpixel_cache_size;
+	}
+
+
 	memset(putpixel_cache,255,longitud);
 
 	//printf ("clear putpixel cache get_total_ancho_rainbow=%d get_total_alto_rainbow=%d \n",get_total_ancho_rainbow(),get_total_alto_rainbow() );
@@ -1960,6 +1991,10 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 		indice_cache=(get_total_ancho_rainbow()*(CPC_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
         }
 
+	else if (MACHINE_IS_PCW) {
+		indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+        }        
+
 	else if (MACHINE_IS_PRISM) {
 		indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
         }
@@ -2003,6 +2038,11 @@ void scr_putpixel_zoom_mas_de_uno(int x,int y,unsigned int color)
 		offsetx=CPC_LEFT_BORDER*border_enabled.v;
                 offsety=CPC_TOP_BORDER*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+		offsetx=PCW_LEFT_BORDER*border_enabled.v;
+        offsety=PCW_TOP_BORDER*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 		offsetx=PRISM_LEFT_BORDER*border_enabled.v;
@@ -2070,6 +2110,13 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
 		//sleep(1);
         }
 
+	else if (MACHINE_IS_PCW) {
+                indice_cache=(get_total_ancho_rainbow()*(PCW_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
+		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
+		//printf ("get_total_ancho_rainbow_cached: %d\n",get_total_ancho_rainbow_cached);
+		//sleep(1);
+        }        
+
 	else if (MACHINE_IS_PRISM) {
                 indice_cache=(get_total_ancho_rainbow()*(PRISM_TOP_BORDER_NO_ZOOM*border_enabled.v+y)) + PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v+x;
 		//printf ("total ancho rainbow : %d\n",get_total_ancho_rainbow() );
@@ -2124,6 +2171,11 @@ void scr_putpixel_zoom_uno(int x,int y,unsigned int color)
                 offsetx=CPC_LEFT_BORDER*border_enabled.v;
                 offsety=CPC_TOP_BORDER*border_enabled.v;
         }
+
+	else if (MACHINE_IS_PCW) {
+                offsetx=PCW_LEFT_BORDER*border_enabled.v;
+                offsety=PCW_TOP_BORDER*border_enabled.v;
+        }        
 
 	else if (MACHINE_IS_PRISM) {
                 offsetx=PRISM_LEFT_BORDER*border_enabled.v;
@@ -2208,7 +2260,6 @@ int running_realloc=0;
 void scr_reallocate_layers_menu(int ancho,int alto)
 {
 
-	//ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width*zoom_x;
 
 	debug_printf (VERBOSE_DEBUG,"Allocating memory for menu layers %d X %d",ancho,alto);
 	//debug_exec_show_backtrace();
@@ -2315,11 +2366,11 @@ void scr_init_layers_menu(void)
 
 	ancho=screen_get_window_size_width_zoom_border_en();
 
-	ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width*zoom_x;
+	ancho +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_width()*zoom_x;
 
   alto=screen_get_window_size_height_zoom_border_en();
 
-    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height*zoom_y;
+    alto +=screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_height()*zoom_y;
 
 	scr_reallocate_layers_menu(ancho,alto);
 
@@ -2740,18 +2791,37 @@ int if_zxdesktop_enabled_and_driver_allows(void)
 int screen_ext_desktop_enabled=0;
 
 
-int screen_ext_desktop_width=256; //se multiplicara por zoom
-int screen_ext_desktop_height=0; //se multiplicara por zoom
+int zxdesktop_width=256; //se multiplicara por zoom y zoom gui
+int zxdesktop_height=0; //se multiplicara por zoom y zoom gui
 
-//valor anterior si el usuario lo ha ocultado con el boton del footer
-//int screen_ext_desktop_width_before_disabling=-1;
+//Obtener valores efectivos de zxdesktop width y height. Esto lo hago para que, al cambiar
+//de una maquina Spectrum (con zoom_x=zoom_y=2 y gui zoom=1) a CPC por ejemplo (con zoom_x=zoom_y=1 y gui zoom=2),
+//el tamaño del ZX Desktop sea el mismo, o casi el mismo, y no se pierda espacio del ZX Desktop
+//Si no multiplicase el tamaño por el gui zoom, dado que el zx desktop multiplica por zoom_x (y este ha pasado de 2 a 1),
+//tendriamos la mitad de ancho en ZX Desktop
+//Nota: quiza queda confuso las funciones screen_get_ext_desktop_width_no_zoom y screen_get_ext_desktop_width_zoom
+//pues usan solo zoom_x o zoom_y pero no gui zoom.. Esto es lo que pasa cuando se decide, tiempo mas tarde, que el zoom de gui
+//aplica al zxdesktop y antes no lo hacia...
+//Recordemos que:
+//-sea con zoom_x=1 o 2, o 3... el espacio que hay disponible en zx desktop para texto de menu es el mismo, 
+// misma cantidad de caracteres (solo que logicamente sale mas grande o mas pequeño)
+//zoom de gui amplia realmente el espacio disponible en zx desktop
+int get_effective_zxdesktop_width(void)
+{
+    return zxdesktop_width*menu_gui_zoom;
+}
+
+int get_effective_zxdesktop_height(void)
+{
+    return zxdesktop_height*menu_gui_zoom;
+}
 
 
 int screen_ext_desktop_place_menu=0; //Si abrimos siempre ventanas en la zona de desktop por defecto
 
 int screen_get_ext_desktop_width_no_zoom(void)
 {
-	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_width;
+	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_width();
 }
 
 int screen_get_ext_desktop_width_zoom(void)
@@ -2798,7 +2868,7 @@ int screen_get_total_height_window_no_footer_plus_zxdesktop_no_zoom(void)
 
 int screen_get_ext_desktop_height_no_zoom(void)
 {
-	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*screen_ext_desktop_height;
+	return screen_ext_desktop_enabled*scr_driver_can_ext_desktop()*get_effective_zxdesktop_height();
 }
 
 int screen_get_ext_desktop_height_zoom(void)
@@ -2833,6 +2903,11 @@ if (MACHINE_IS_Z88) {
 		*margenx_izq=CPC_LEFT_BORDER_NO_ZOOM*border_enabled.v;
 		*margeny_arr=CPC_TOP_BORDER_NO_ZOOM*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+		*margenx_izq=PCW_LEFT_BORDER_NO_ZOOM*border_enabled.v;
+		*margeny_arr=PCW_TOP_BORDER_NO_ZOOM*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 		*margenx_izq=PRISM_LEFT_BORDER_NO_ZOOM*border_enabled.v;
@@ -3007,6 +3082,59 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 }
 
 
+int scr_putchar_menu_comun_zoom_reduce_charheight(int linea)
+{
+
+	//Reducciones segun cada tamaño de letra
+	int saltar_pixeles_size7;
+	int saltar_pixeles_size6[2];
+
+	//Escalados por defecto
+	//Saltar ultima linea pixel en caso tamaño 7
+	saltar_pixeles_size7=7;
+
+	//Saltar ultima linea pixel y primera linea pixel en caso tamaño 6
+	saltar_pixeles_size6[0]=7;
+	saltar_pixeles_size6[1]=0;
+
+
+    if (char_set==char_set_beos) {
+        saltar_pixeles_size7=0;
+
+        saltar_pixeles_size6[0]=0;
+        saltar_pixeles_size6[1]=1;
+    }
+
+    if (char_set==char_set_spectrum) {
+        saltar_pixeles_size7=0;
+
+        saltar_pixeles_size6[0]=0;
+        saltar_pixeles_size6[1]=7;        
+    }
+
+
+	if (menu_char_height==8) {
+		return 1;
+	}
+
+	//Si 7, saltar una linea
+	else if (menu_char_height==7) {
+		if (linea==saltar_pixeles_size7) {
+			return 0;
+		}
+	}
+
+	//Si 6, saltar dos lineas
+	else if (menu_char_height==6) {
+		if (linea==saltar_pixeles_size6[0] || linea==saltar_pixeles_size6[1]) {
+			return 0;
+		}
+	}    
+
+    //por defecto
+    return 1;
+}
+
 //Muestra un caracter en pantalla, usado en menu
 //entrada: caracter
 //x,y: coordenadas en x-0..31 e y 0..23 
@@ -3016,113 +3144,79 @@ int scr_putchar_menu_comun_zoom_reduce_charwidth(int bit)
 void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel,int zoom_level)
 {
 
-	int color;
-  z80_byte bit;
-  z80_byte line;
-  z80_byte byte_leido;
+    int color;
+    z80_byte bit;
+    z80_byte line;
+    z80_byte byte_leido;
 
-  //printf ("tinta %d papel %d\n",tinta,papel);
+    //printf ("tinta %d papel %d\n",tinta,papel);
 
-  //margenes de zona interior de pantalla. Para modo rainbow
-  int margenx_izq;
-  int margeny_arr;
+    //margenes de zona interior de pantalla. Para modo rainbow
+    int margenx_izq;
+    int margeny_arr;
 
-	z80_byte *puntero;
-	puntero=&char_set[(caracter-32)*8];
+    z80_byte *puntero;
+    puntero=&char_set[(caracter-32)*8];
 
 
-	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+    scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
 
-	//temp prueba
-	//margenx_izq=margeny_arr=0;
 
-	//Caso de pentagon y en footer
-	if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
+    //Caso de pentagon y en footer
+    if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 	
-  y=y*8;
+    y=y*menu_char_height;
 
-  for (line=0;line<8;line++,y++) {
-		byte_leido=*puntero++;
-		if (inverse.v==1) byte_leido = byte_leido ^255;
+    for (line=0;line<8;line++) {
+        
+    byte_leido=*puntero++;
+    if (inverse.v==1) byte_leido = byte_leido ^255;
 
-		int px=0; //Coordenada x del pixel final
-		for (bit=0;bit<8;bit++) {
-			if (byte_leido & 128 ) color=tinta;
-			else color=papel;
+    int px=0; //Coordenada x del pixel final
 
-   
+    //Si se dibuja esa linea debido a reduccion de alto de caracter
+    if (scr_putchar_menu_comun_zoom_reduce_charheight(line)) {
 
-			byte_leido=(byte_leido&127)<<1;
-
-			//este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
-
-			int xfinal,yfinal;
-
-			//xfinal=(((x*menu_char_width)+bit)*zoom_level);
-
-			xfinal=(((x*menu_char_width)+px)*zoom_level);
-			yfinal=y*zoom_level;
-
-
-			//No hay que sumar ya los margenes
-			/*if (rainbow_enabled.v==1) {
-				xfinal +=margenx_izq;
-
-				yfinal +=margeny_arr;
-			}*/
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido & 128 ) color=tinta;
+            else color=papel;
 
 
 
+            byte_leido=(byte_leido&127)<<1;
 
-			//Hacer zoom de ese pixel si conviene
+            //este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
 
-		
-			//Ancho de caracter 8, 7 y 6 pixeles
-			if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
-				scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-				px++;
-			}
+            int xfinal,yfinal;
+
+            //xfinal=(((x*menu_char_width)+bit)*zoom_level);
+
+            xfinal=(((x*menu_char_width)+px)*zoom_level);
+            yfinal=y*zoom_level;
 
 
-			/*
-			if (menu_char_width==8) {
-				scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-				px++;
-			}
+            //Hacer zoom de ese pixel si conviene
 
-			//Si 7, saltar primer pixel a la izquierda
-			else if (menu_char_width==7) {
-				if (bit!=0) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
+            //Ancho de caracter 8, 7 y 6 pixeles
+            if (scr_putchar_menu_comun_zoom_reduce_charwidth(bit)) {
+                scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
+                px++;
+            }
 
-			//Si 6, saltar dos pixeles: primero izquierda y primero derecha
-			else if (menu_char_width==6) {
-				if (bit!=0 && bit!=7) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
+        }
 
-			//Si 5, saltar tres pixeles: primero izquierda y centro y primero derecha
-			else if (menu_char_width==5) {
-				if (bit!=0 && bit!=6 && bit!=7) {
-					scr_putpixel_gui_zoom(xfinal,yfinal,color,zoom_level);
-					px++;
-				}
-			}
-			*/
-
+        y++;
 
     }
   }
 }
 
-
-void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel)
+//y en coordenadas de fila, siendo 0 la primera linea del footer, 1 la segunda, etc
+void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel)
 {
+    
+    if (caracter<32 || caracter>MAX_CHARSET_GRAPHIC) caracter='?';
+    
     int color;
     z80_byte bit;
     z80_byte line;
@@ -3142,13 +3236,25 @@ void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse
     scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
 
     //Caso de pentagon y en footer
-    if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
+    //if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
+
+    if (pentagon_timing.v) margeny_arr=56*border_enabled.v;
+
+    //Ancho y alto de caracter en footer es siempre 8x8
 
     y=y*8;
 
+
+    int yorigen;
+
+	yorigen=screen_get_emulated_display_height_no_zoom_bottomborder_en();
+
+
+	y +=yorigen;    
+
     for (line=0;line<8;line++,y++) {
         byte_leido=*puntero++;
-        if (inverse.v==1) byte_leido = byte_leido ^255;
+        
         for (bit=0;bit<8;bit++) {
             if (byte_leido & 128 ) color=tinta;
             else color=papel;
@@ -3191,77 +3297,75 @@ void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse
 
 
 
-//Muestra un caracter en footer
-//Se utiliza solo al dibujar en zx81/81 y ace, y spectrum (simulado zx81) pero no en menu
-//entrada: puntero=direccion a tabla del caracter
-//x,y: coordenadas en x-0..31 e y 0..23 del zx81
-//inverse si o no
-//ink, paper
-//si emula fast mode o no
-//y valor de zoom
+//y en coordenadas de fila, contando border, pantalla, border, por lo que el footer suele comenzar en la 32
 void old_scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel)
 {
+    int color;
+    z80_byte bit;
+    z80_byte line;
+    z80_byte byte_leido;
 
-        int color;
-        z80_byte bit;
-        z80_byte line;
-        z80_byte byte_leido;
+    //printf ("tinta %d papel %d\n",tinta,papel);
 
-        //printf ("tinta %d papel %d\n",tinta,papel);
+    //margenes de zona interior de pantalla. Para modo rainbow
+    int margenx_izq;
+    int margeny_arr;
 
-        //margenes de zona interior de pantalla. Para modo rainbow
-        int margenx_izq;
-        int margeny_arr;
-
+	int zoom_level=1;
 
 	z80_byte *puntero;
 	puntero=&char_set[(caracter-32)*8];
 
-	scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
+    scr_return_margenxy_rainbow(&margenx_izq,&margeny_arr);
 
-	//Caso de pentagon y en footer
-	//if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
-	
-        y=y*8;
+    //Caso de pentagon y en footer
+    if (pentagon_timing.v && y>=31) margeny_arr=56*border_enabled.v;
 
-        for (line=0;line<8;line++,y++) {
-          byte_leido=*puntero++;
-          if (inverse.v==1) byte_leido = byte_leido ^255;
-          for (bit=0;bit<8;bit++) {
-                if (byte_leido & 128 ) color=tinta;
-                else color=papel;
+    y=y*menu_char_height;
 
-                //simular modo fast para zx81
-	
-
-                byte_leido=(byte_leido&127)<<1;
-
-		//este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
-
-		int xfinal,yfinal;
-
-		xfinal=(((x*8)+bit));
-		yfinal=y;
-
-		//if (rainbow_enabled.v==1) {
-			xfinal +=margenx_izq;
-
-			yfinal +=margeny_arr;
-		//}
+    for (line=0;line<menu_char_height;line++,y++) {
+        byte_leido=*puntero++;
+        if (inverse.v==1) byte_leido = byte_leido ^255;
+        for (bit=0;bit<8;bit++) {
+            if (byte_leido & 128 ) color=tinta;
+            else color=papel;
 
 
-		//Hacer zoom de ese pixel si conviene		
-		scr_putpixel_gui_zoom(xfinal,yfinal,color,1);
+            byte_leido=(byte_leido&127)<<1;
 
-		//footer va en capa de machine
+            //este scr_putpixel_zoom_rainbow tiene en cuenta los timings de la maquina (borde superior, por ejemplo)
 
-		//printf ("%d %d\n",xfinal,yfinal);
-		//scr_putpixel_zoom(xfinal,yfinal,color);
+            int xfinal,yfinal;
+
+            if (rainbow_enabled.v==1) {
+                    //xfinal=(((x*8)+bit)*zoom_level);
+                    xfinal=(((x*8)+bit)*zoom_level);
+                    xfinal +=margenx_izq;
+
+                    yfinal=y*zoom_level;
+                    yfinal +=margeny_arr;
+            }
+
+            else {
+                    //xfinal=((x*8)+bit)*zoom_level;
+                    xfinal=((x*8)+bit)*zoom_level;
+                    yfinal=y*zoom_level;
+            }
 
 
-           }
+            //Hacer zoom de ese pixel si conviene
+
+
+            if (rainbow_enabled.v==1) scr_putpixel_zoom_rainbow(xfinal,yfinal,color);
+
+            else scr_putpixel_zoom(xfinal,yfinal,color);							
+
+
+
         }
-}
+    }
+}								
+
 
 
 
@@ -4840,6 +4944,18 @@ void scr_refresca_pantalla_comun(void)
 					//	if (bit<=3) color= ( byte_leido & 128 ? ink1 : paper );
 					//	else color= ( byte_leido & 128 ? ink2 : paper );
 					//}
+
+                    /*
+
+                    Prueba cutre de visualizar la imagen en un plano 3D
+                    int xfinal,yfinal;
+                    //191-y porque el 0,0 lo tenemos arriba del todo pero la funcion de 3D lo asume abajo del todo
+                    zxvision_widgets_draw_particles_3d_convert(x_hi+bit,191-y,0,&xfinal,&yfinal);
+                    scr_putpixel_zoom(xfinal,191-yfinal,color);
+                    if (xfinal<0) printf("X %d\n",xfinal);
+
+                    */
+
 					scr_putpixel_zoom(x_hi+bit,y,color);
 
 	                                byte_leido=byte_leido<<1;
@@ -9144,7 +9260,12 @@ Bit 6 GRN1 most  significant bit of green.
     //Colores RiscOs
     for (i=0;i<RISCOS_TOTAL_PALETTE_COLOURS;i++) {
         screen_set_colour_normal(RISCOS_INDEX_FIRST_COLOR+i,riscos_colortable_original[i]);
-    }                
+    }
+
+    //Colores PCW
+    for (i=0;i<PCW_TOTAL_PALETTE_COLOURS;i++) {
+        screen_set_colour_normal(PCW_INDEX_FIRST_COLOR+i,pcw_rgb_table[i]);
+    }                      
 
 
 		//}
@@ -9436,9 +9557,61 @@ void screen_after_menu_overlay_timer(void)
 void screen_render_menu_overlay_if_active(void)
 {
 	if (menu_overlay_activo) {
+
+        //struct timeval zxvision_time_total_antes,zxvision_time_total_despues;    
+
+        //timer_stats_current_time(&zxvision_time_total_antes);  
+
+        //printf("INICIO menu overlay\n");
         screen_before_menu_overlay_timer();
+
+        //Aqui calculamos lo que se tarda en lanzar el overlay de cada ventana (desde menu_draw_background_windows_overlay_after_normal), y el total de todas las ventanas
+        //Si hay una ventana en primer plano, con overlay, no se puede calcular directamente su tiempo,
+        //pues primero se ejecuta el menu_overlay_function, que sera el overlay de esa ventana, donde no sabemos el tiempo
+        //(pues habria que meter calculo de tiempo en cada funcion de overlay) y luego en normal_overlay_texto, acaba saltando a 
+        //menu_draw_background_windows_overlay_after_normal, que es quien si que calcula el tiempo de cada ventana en background
+        //Mas info, ver DEVELOPMENT: Sobre menu y overlay y ventanas en background
+
+
         menu_overlay_function();
         screen_after_menu_overlay_timer();
+        //printf("FINAL menu overlay\n");
+
+
+        //zxvision_time_total_drawing_overlay=timer_stats_diference_time(&zxvision_time_total_antes,&zxvision_time_total_despues);  
+        //tiempo empleado es core_render_menu_overlay_difftime    
+
+        //tiempo correspondiente para la ventana activa es la resta de dibujar todos, y quitando tambien el tiempo de normal overlay
+        /*
+        Info adicional:
+        al llamar a menu_overlay_function aqui, salta el overlay de la ventana activa
+        esta ventana activa, llama a normal overlay. Y desde normal overlay hace overlay de todas las que estan debajo
+        Y despues de eso, se hace el overlay propiamente de la ventana activa, y es el tiempo que vamos a calcular aqui, 
+        pues no se tiene calculo de otra manera
+        */
+
+       //En el caso que se salte aqui con el menu cerrado (cuando esta background event with menu closed), 
+       //ya se han calculado bien todos los tiempos pues se salta aqui desde el redibujado de normal overlay y no desde la ventana activa
+       //Se podria decir que cuando está el menu cerrado, la "ventana" activa es el core de emulacion, en que, cuando va a hacer refresco de pantalla,
+       //salta a normal overlay y de ahi a refrescar TODAS las ventanas. En cambio cuando está el menu abierto, hay una ventana siempre
+       //activa, que es la que llamará a normal_overlay, que es la que redibuja todas las ventanas MENOS la actual
+       //TODO: quiza mejorar el redibujado de ventanas, tanto cuando esta menu abierto como cerrado, que lo hiciera siempre igual
+
+
+        //Corregido, ya no hace falta
+        /*
+        if (menu_abierto) {
+        long diferencia=core_render_menu_overlay_difftime-zxvision_time_total_drawing_overlay_except_current-normal_overlay_time_total_drawing_overlay;
+        if (zxvision_current_window!=NULL) {
+            //Si negativo, cosa que no deberia pasar
+            if (diferencia<0) diferencia=0;
+
+            zxvision_current_window->last_spent_time_overlay=diferencia;
+            //printf("Menu abierto. calculado tiempo para ventana activa %s: %ld\n",zxvision_current_window->window_title,diferencia);
+        }
+        }
+        */
+
     }
 }
 
@@ -9554,8 +9727,8 @@ void screen_print(int x,int y,int tinta,int papel,char *mensaje)
 void screen_set_parameters_slow_machines(void)
 {
 
-	if (no_cambio_parametros_maquinas_lentas.v==1) {
-		debug_printf (VERBOSE_INFO,"Parameter nochangeslowparameters enabled. Do not change any frameskip or realvideo parameters");
+	if (cambio_parametros_maquinas_lentas.v==0) {
+		debug_printf (VERBOSE_INFO,"Parameter changeslowparameters not enabled. Do not change any frameskip or realvideo parameters");
 		return;
 	}
 
@@ -11429,6 +11602,10 @@ int screen_get_emulated_display_width_no_zoom(void)
         return CPC_DISPLAY_WIDTH+CPC_LEFT_BORDER_NO_ZOOM*2;
 	}
 
+	else if (MACHINE_IS_PCW) {
+        return PCW_DISPLAY_WIDTH+PCW_LEFT_BORDER_NO_ZOOM*2;
+	}    
+
 	else if (MACHINE_IS_PRISM) {
         return PRISM_DISPLAY_WIDTH+PRISM_LEFT_BORDER_NO_ZOOM*2;
 	}
@@ -11465,6 +11642,10 @@ int screen_get_emulated_display_height_no_zoom(void)
 	else if (MACHINE_IS_CPC) {
         return CPC_DISPLAY_HEIGHT+CPC_TOP_BORDER_NO_ZOOM*2;
 	}
+
+	else if (MACHINE_IS_PCW) {
+        return PCW_DISPLAY_HEIGHT+PCW_TOP_BORDER_NO_ZOOM*2;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
         return PRISM_DISPLAY_HEIGHT+PRISM_TOP_BORDER_NO_ZOOM*2;
@@ -11508,6 +11689,10 @@ int screen_get_emulated_display_width_no_zoom_border_en(void)
 	return CPC_DISPLAY_WIDTH+(CPC_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
 
+	else if (MACHINE_IS_PCW) {
+	return PCW_DISPLAY_WIDTH+(PCW_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
+	}    
+
 	else if (MACHINE_IS_PRISM) {
 	return PRISM_DISPLAY_WIDTH+(PRISM_LEFT_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
@@ -11550,6 +11735,10 @@ int screen_get_emulated_display_height_no_zoom_bottomborder_en(void)
         return alto_extdesktop+CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
 
+        else if (MACHINE_IS_PCW) {
+        return alto_extdesktop+PCW_DISPLAY_HEIGHT+(PCW_TOP_BORDER_NO_ZOOM)*border_enabled.v;
+        }        
+
         else if (MACHINE_IS_PRISM) {
         return alto_extdesktop+PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM)*border_enabled.v;
         }
@@ -11590,6 +11779,10 @@ int screen_get_emulated_display_height_no_zoom_border_en(void)
 	else if (MACHINE_IS_CPC) {
 	return CPC_DISPLAY_HEIGHT+(CPC_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;
 	}
+
+	else if (MACHINE_IS_PCW) {
+	return PCW_DISPLAY_HEIGHT+(PCW_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;
+	}    
 
 	else if (MACHINE_IS_PRISM) {
 	return PRISM_DISPLAY_HEIGHT+(PRISM_TOP_BORDER_NO_ZOOM*2)*border_enabled.v;
@@ -12869,7 +13062,7 @@ void screen_text_printchar_next(z80_byte caracter, void (*puntero_printchar_cara
     }
 
 
-    if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+    if (MACHINE_IS_CPC) {
         puntero_printchar_caracter(caracter&127);
             }
 
@@ -13125,8 +13318,8 @@ void screen_text_printchar(void (*puntero_printchar_caracter) (z80_byte) )
             return;
         }
 
-        //Para Amstrad cpc 464
-        if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+        //Para Amstrad cpc 
+        if (MACHINE_IS_CPC) {
             if (reg_pc==0xBB5A) {
                 screen_text_printchar_next(reg_a,puntero_printchar_caracter);
             }

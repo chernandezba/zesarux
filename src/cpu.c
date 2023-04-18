@@ -149,6 +149,7 @@
 #include "dinamid3.h"
 #include "dsk.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -267,6 +268,9 @@ char *scrfile;
 
 int zoom_x=2,zoom_y=2;
 int zoom_x_original,zoom_y_original;
+
+//Cambiar zoom a 1 cuando cambio a máquina Next, o QL, o cualquiera con GUI zoom a 2
+z80_bit autochange_zoom_big_display={1};
 
 struct timeval z80_interrupts_timer_antes, z80_interrupts_timer_ahora;
 
@@ -631,8 +635,9 @@ z80_bit z88_slotcard_inicial;
 char *z88_slotcard_inicial_nombre;
 int z88_slotcard_inicial_slot;
 
-//Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry, cocoa mac os x, etc)
-z80_bit no_cambio_parametros_maquinas_lentas={0};
+//Si no cambiamos parametros de frameskip y otros cuando es maquina lenta (raspberry)
+//Desde ZEsarUX 10.3 no cambiar dichos parametros
+z80_bit cambio_parametros_maquinas_lentas={0};
 
 
 
@@ -682,8 +687,11 @@ int exit_emulator_after_seconds=0;
 
 int exit_emulator_after_seconds_counter=0;
 
-
+//el build number segun la config
 char last_version_string[255]="";
+
+//el id de version (por ejemplo "10.2") segun la config
+char last_version_text_string[255]="";
 
 
 z80_bit do_no_show_changelog_when_update={0};
@@ -1232,7 +1240,11 @@ void reset_cpu(void)
 
 	if (MACHINE_IS_SMS) {
 		sms_reset();
-	}	    
+	}	  
+
+    if (MACHINE_IS_PCW) {
+        pcw_reset();
+    }  
 
 	vdp_9918a_reset();	
 
@@ -1476,6 +1488,10 @@ char *string_machines_list_description=
 
 							" CPC464   Amstrad CPC 464\n"
 							" CPC4128  Amstrad CPC 4128\n"
+                            " CPC664   Amstrad CPC 664\n"
+                            " CPC6128  Amstrad CPC 6128\n"
+                            " PCW8256  Amstrad PCW 8256\n"
+                            " PCW8512  Amstrad PCW 8512\n"
 							
 							" MSX1     MSX1\n"
 							" Coleco   Colecovision\n"
@@ -1758,6 +1774,8 @@ printf (
 		"--sdlsamplesize n           SDL audio sample size (128 to 2048). Default %d. Lower values reduce latency but can increase cpu usage\n",DEFAULT_AUDIOSDL_SAMPLES);
 		printf (
 		"--fifosdlbuffersize n       SDL fifo buffer size multiplier (2 to 10). Default 2. Lower values reduce latency but can increase cpu usage\n"
+        "--sdl-use-callback-new      SDL audio use new callback (usually better results on Windows)\n"
+        "--sdl-use-callback-old      SDL audio use old callback\n"
 		"--sdlrawkeyboard            SDL read keyboard in raw mode, needed for ZX Recreated to work well\n");
 
 
@@ -1792,6 +1810,9 @@ printf (
 		"---------\n"
 		"\n"
 		"--verbose n                         Verbose level n (0=only errors, 1=warning and errors, 2=info, warning and errors, 3=debug, 4=lots of messages)\n"
+        "--debug-filter s                    Filter type for debug messages, can be exclude or include\n"
+        "--debug-filter-exclude-mask n       Filter mask for excluding debug messages\n"
+        "--debug-filter-include-mask n       Filter mask for including debug messages\n"
         "--disable-debug-console-win         Disable debug console window\n"
 		"--verbose-always-console            Always show messages in console (using simple printf) additionally to the default video driver, interesting in some cases as curses, aa or caca video drivers\n"
 		"--debugregisters                    Debug CPU Registers on text console\n"
@@ -1997,7 +2018,7 @@ printf (
 
         int i;
 		printf (
-	    "--def-f-function key action  Define F key to do an action. action can be: ");
+	    "--def-f-function key action                 Define F key to do an action. action can be: ");
 
 
         for (i=0;i<MAX_F_FUNCTIONS;i++) {
@@ -2009,7 +2030,7 @@ printf (
 		printf (
 		"\n"
 
-
+		"--def-f-function-parameters key extra-info  Define extra info associated to an action of a F key"
 
 
 		"\n"
@@ -2018,35 +2039,37 @@ printf (
 		"----------------\n"
 		"\n"
 
-		"--zoomx n                      Horizontal Zoom Factor\n"
-		"--zoomy n                      Vertical Zoom Factor\n"
+		"--zoomx n                         Horizontal Zoom Factor\n"
+		"--zoomy n                         Vertical Zoom Factor\n"
+        "--no-autochange-zoom-big-display  No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
 		
-		"--reduce-075                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
-		"--reduce-075-no-antialias      Disable antialias for reduction, enabled by default\n"
-		"--reduce-075-offset-x n        Destination offset x on reduced display\n"
-		"--reduce-075-offset-y n        Destination offset y on reduced display\n"
+		"--reduce-075                      Reduce display size 4/3 (divide by 4, multiply by 3)\n"
+		"--reduce-075-no-antialias         Disable antialias for reduction, enabled by default\n"
+		"--reduce-075-offset-x n           Destination offset x on reduced display\n"
+		"--reduce-075-offset-y n           Destination offset y on reduced display\n"
 
-		"--frameskip n                  Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
-        "--no-frameskip-zxdesktop-back  Disable apply frameskip drawing ZX Desktop Background\n"
-		"--disable-autoframeskip        Disable autoframeskip\n"
-        "--no-autoframeskip-moving-win  Disable autoframeskip even when moving windows\n"
-        "--disable-flash                Disable flash\n"
-		"--fullscreen                   Enable full screen\n"
-		"--disableborder                Disable Border\n"   
-        "--disablefooter                Disable window footer\n"             
-        "--ignoremouseclickopenmenu     Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
-        "--limitopenmenu                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
-        "--language language            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
-        "--online-download-path p       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
+		"--frameskip n                     Set frameskip (0=none, 1=25 FPS, 2=16 FPS, etc)\n"
+        "--no-frameskip-zxdesktop-back     Disable apply frameskip drawing ZX Desktop Background\n"
+		"--disable-autoframeskip           Disable autoframeskip\n"
+        "--no-autoframeskip-moving-win     Disable autoframeskip even when moving windows\n"
+        "--disable-flash                   Disable flash\n"
+		"--fullscreen                      Enable full screen\n"
+		"--disableborder                   Disable Border\n"   
+        "--disablefooter                   Disable window footer\n"             
+        "--ignoremouseclickopenmenu        Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
+        "--limitopenmenu                   Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
+		"--advancedmenus                   Show advanced menu items\n"
+        "--language language               Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
+        "--online-download-path p          Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
 
 #ifndef MINGW
-		"--no-cpu-usage                 Do not show host CPU usage on footer\n"
+		"--no-cpu-usage                    Do not show host CPU usage on footer\n"
 #endif
 
-		"--no-cpu-temp                  Do not show host CPU temperature on footer\n"
-		"--no-fps                       Do not show FPS on footer\n"
-        "--nowelcomemessage             Disable welcome message\n"
-        "--disablemenufileutils         Disable File Utilities menu\n"  
+		"--no-cpu-temp                     Do not show host CPU temperature on footer\n"
+		"--no-fps                          Do not show FPS on footer\n"
+        "--nowelcomemessage                Disable welcome message\n"
+        "--disablemenufileutils            Disable File Utilities menu\n"  
 
 
 		"\n"
@@ -2220,11 +2243,14 @@ printf (
 		"--------------------------\n"
 		"\n"
 
-        "--dsk-file f                    Set +3 DSK image file\n"
-        "--enable-dsk                    Enable +3 DSK emulation. Usually requires --dsk-file\n"
-        "--dsk-write-protection          Enable +3 DSK write protection\n"
-		"--dsk-no-persistent-writes      Disable +3 DSK persistent writes\n"
+        "--dsk-file f                             Set 3\" CF2 Floppy DSK image file\n"
+        "--enable-dsk                             Enable 3\" CF2 Floppy DSK emulation. Usually requires --dsk-file\n"
+        "--dsk-write-protection                   Enable 3\" CF2 Floppy DSK write protection\n"
+        "--pd765-silent-write-protection          When write protect is enabled, do not notify the cpu, so behave as it is not write protected (but the data is not written)\n"
+		"--dsk-no-persistent-writes               Disable 3\" CF2 Floppy DSK persistent writes\n"
 
+		"--dsk-pcw-no-boot-reinsert-previous-dsk  Do not reinsert previous dsk after booting CP/M\n"
+		"--dsk-pcw-no-failback-cpm-when-no-boot   Do not insert CP/M disk if selected disk is not bootable\n"
 
 		"\n"
 		"\n"
@@ -2426,6 +2452,8 @@ printf (
 		"--nochangeslowparameters    Do not change any performance parameters (frameskip, realvideo, etc) "
 		"on slow machines like raspberry, etc\n"
 
+		"--changeslowparameters      Change some performance parameters (frameskip, realvideo, etc) "
+		"on slow machines like raspberry, etc\n"
 
       
 
@@ -2459,7 +2487,9 @@ printf (
         "--zxdesktop-scr-mixbackground                  Mix SCR image with background\n"
         "--zxdesktop-scr-scalefactor n                  Scale manually for ZX Desktop SCR background\n"
         "--zxdesktop-scr-disable-flash                  Disable flash for ZX Desktop SCR background\n"
-        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"  
+        "--zxdesktop-disable-configurable-icons         Disable configurable icons on ZX Desktop\n"
+        "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
+        "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
         "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"         
 
@@ -2497,6 +2527,7 @@ printf (
 		//"--invespokerom n           Inves rom poke value\n"
 
 		"--menucharwidth n                        Character size width for menus valid values: 8,7,6 or 5\n"
+        "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
         
@@ -2582,8 +2613,10 @@ printf (
 		"--saveconf-on-exit                       Always save configuration when exiting emulator\n"
 		"--quickexit                              Exit emulator quickly: no yes/no confirmation and no fadeout\n"
 		"--exit-after n                           Exit emulator after n seconds\n"
-		"--last-version s                         String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
+		"--last-version s                         String which identifies last build version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
+        "--last-version-text s                    String which identifies last version run. Usually doesnt need to change it, used to show the start popup of the new version changes\n"
 		"--no-show-changelog                      Do not show changelog when updating version\n"
+		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
 		
@@ -2603,8 +2636,16 @@ printf (
 
         printf("\n"
         "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
+
  
         printf(
+        "--history-item-add-debugcpu-ptr s        Add string as history for debug cpu change pointer\n"
+        "--history-item-add-hexeditor-ptr s       Add string as history for hexeditor change pointer\n"
+        "--history-item-add-sprites-ptr s         Add string as history for sprites change pointer\n"
+		"--history-item-add-poke-ptr s            Add string as history for poke pointer\n"
+		"--history-item-add-poke-value s          Add string as history for poke value\n"
+
+
 		"\n\n"
 
 		"One-time actions\n"
@@ -3028,6 +3069,10 @@ struct s_machine_names machine_names[]={
     {"Z88",  				130},
     {"CPC 464",  			MACHINE_ID_CPC_464},
     {"CPC 4128",  			MACHINE_ID_CPC_4128},
+    {"CPC 664",  			MACHINE_ID_CPC_664},
+    {"CPC 6128",  			MACHINE_ID_CPC_6128},
+    {"PCW 8256",            MACHINE_ID_PCW_8256},
+    {"PCW 8512",            MACHINE_ID_PCW_8512},
     {"Sam Coupe", 			150},
     {"QL",				160},
     {"MK14", MACHINE_ID_MK14_STANDARD},
@@ -3364,6 +3409,62 @@ void malloc_mem_machine(void) {
 
 
         }
+
+	else if (MACHINE_IS_CPC_6128) {
+
+		//48 kb rom
+		//128 kb ram. 
+
+                malloc_machine(176*1024);
+                random_ram(memoria_spectrum,176*1024);
+
+                cpc_init_memory_tables();
+                cpc_set_memory_pages();
+
+
+        }  
+
+	else if (MACHINE_IS_CPC_664) {
+
+		//48 kb rom
+		//128 kb ram. Asignamos 128kb ram aunque maquina sea de 64 kb de ram->Facilita las funciones
+
+                malloc_machine(176*1024);
+                random_ram(memoria_spectrum,176*1024);
+
+                cpc_init_memory_tables();
+                cpc_set_memory_pages();
+
+
+        }   
+
+	else if (MACHINE_IS_PCW_8256) {
+
+		//256kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
+                pcw_total_ram=256*1024;
+
+                malloc_machine(2*1024*1024);
+                random_ram(memoria_spectrum,2*1024*1024);
+
+                pcw_init_memory_tables();
+                pcw_set_memory_pages();
+
+
+        }   
+
+	else if (MACHINE_IS_PCW_8512) {
+
+		//512kb todo ram. Aunque asignamos 2 MB para tener el máximo de memoria ya disponible
+                pcw_total_ram=512*1024;
+
+                malloc_machine(2*1024*1024);
+                random_ram(memoria_spectrum,2*1024*1024);
+
+                pcw_init_memory_tables();
+                pcw_set_memory_pages();
+
+
+        }
         
         else if (MACHINE_IS_MSX1) {
                 //total 64kb * 4
@@ -3529,6 +3630,8 @@ void set_machine_params(void)
 130=z88 (old 30)
 140=amstrad cpc464 
 141=amstrad cpc4128 
+142=amstrad cpc664
+143=amstrad cpc6128 
 150=Sam Coupe (old 50)
 151-59 reservado para otros sam (old 51-59)
 160=QL Standard
@@ -3536,6 +3639,9 @@ void set_machine_params(void)
 
 180=MK14 Standard
 181-189 reservado para otros MK14
+190=Amstrad PCW 8256
+191=Amstrad PCW 8512
+192-199 reservado para otros PCW
 */
 
 		char mensaje_error[200];
@@ -3576,7 +3682,9 @@ void set_machine_params(void)
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;
-		dskplusthree_emulation.v=0;
+
+        //para que iba a querer desactivar esto ?
+		//dskplusthree_emulation.v=0;
 
 		//nota: combiene que allow_write_rom.v sea 0 al desactivar superupgrade
 		//porque si estaba activo allow_write_rom.v antes, y desactivamos superupgrade,
@@ -3624,6 +3732,10 @@ void set_machine_params(void)
 			cpu_core_loop_active=CPU_CORE_CPC;
 		}
 
+		else if (MACHINE_IS_PCW) {
+			cpu_core_loop_active=CPU_CORE_PCW;
+		}        
+
 		else if (MACHINE_IS_SAM) {
 			cpu_core_loop_active=CPU_CORE_SAM;
 		}
@@ -3656,6 +3768,10 @@ void set_machine_params(void)
 			cpu_core_loop_active=CPU_CORE_SMS;
 		}	        	
 
+        //TODO: de momento core Spectrum
+		else if (MACHINE_IS_PCW) {
+			cpu_core_loop_active=CPU_CORE_SPECTRUM;
+		}
 
 		else {
 			cpu_core_loop_active=CPU_CORE_Z88;
@@ -4005,7 +4121,7 @@ You don't need timings for H/V sync =)
                 }
 
 
-		else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+		else if (MACHINE_IS_CPC) {
                         contend_read=contend_read_cpc;
                         contend_read_no_mreq=contend_read_no_mreq_cpc;
                         contend_write_no_mreq=contend_write_no_mreq_cpc;
@@ -4013,8 +4129,25 @@ You don't need timings for H/V sync =)
                         ula_contend_port_early=ula_contend_port_early_cpc;
                         ula_contend_port_late=ula_contend_port_late_cpc;
 
+                        if (MACHINE_IS_CPC_HAS_FLOPPY) {
+                            pd765_enable();
+                        }
+
 
                 }
+
+        
+		else if (MACHINE_IS_PCW) {
+			contend_read=contend_read_pcw;
+			contend_read_no_mreq=contend_read_no_mreq_pcw;
+			contend_write_no_mreq=contend_write_no_mreq_pcw;
+
+			ula_contend_port_early=ula_contend_port_early_pcw;
+			ula_contend_port_late=ula_contend_port_late_pcw;
+
+            pd765_enable();
+
+		}        
 
 		else if (MACHINE_IS_MSX) {
 			contend_read=contend_read_msx1;
@@ -4564,6 +4697,63 @@ You don't need timings for H/V sync =)
 		//screen_testados_linea=228;
                 break;
 
+		//CPC664
+        case MACHINE_ID_CPC_664:
+                poke_byte=poke_byte_cpc;
+                peek_byte=peek_byte_cpc;
+                peek_byte_no_time=peek_byte_no_time_cpc;
+                poke_byte_no_time=poke_byte_no_time_cpc;
+                lee_puerto=lee_puerto_cpc;
+		        out_port=out_port_cpc;
+                ay_chip_present.v=1;
+                fetch_opcode=fetch_opcode_cpc;
+                //4Mhz
+                screen_testados_linea=256;
+
+
+        break;
+
+		//CPC6128
+        case MACHINE_ID_CPC_6128:
+                poke_byte=poke_byte_cpc;
+                peek_byte=peek_byte_cpc;
+                peek_byte_no_time=peek_byte_no_time_cpc;
+                poke_byte_no_time=poke_byte_no_time_cpc;
+                lee_puerto=lee_puerto_cpc;
+		        out_port=out_port_cpc;
+                ay_chip_present.v=1;
+                fetch_opcode=fetch_opcode_cpc;
+                //4Mhz
+                screen_testados_linea=256;
+
+
+        break;        
+
+        
+        case MACHINE_ID_PCW_8256:
+		poke_byte=poke_byte_pcw;
+		peek_byte=peek_byte_pcw;
+		peek_byte_no_time=peek_byte_no_time_pcw;
+		poke_byte_no_time=poke_byte_no_time_pcw;
+		lee_puerto=lee_puerto_pcw;
+        out_port=out_port_pcw;
+        ay_chip_present.v=1;
+        fetch_opcode=fetch_opcode_pcw;
+
+		break;
+
+        case MACHINE_ID_PCW_8512:
+		poke_byte=poke_byte_pcw;
+		peek_byte=peek_byte_pcw;
+		peek_byte_no_time=peek_byte_no_time_pcw;
+		poke_byte_no_time=poke_byte_no_time_pcw;
+		lee_puerto=lee_puerto_pcw;
+        out_port=out_port_pcw;
+        ay_chip_present.v=1;
+        fetch_opcode=fetch_opcode_pcw;
+
+		break;                        
+
 		case 150:
                 poke_byte=poke_byte_sam;
                 peek_byte=peek_byte_sam;
@@ -4648,10 +4838,15 @@ void set_menu_gui_zoom(void)
 	//Ajustar zoom del gui. por defecto 1
 	menu_gui_zoom=1;
 	//printf ("calling set_menu_gui_zoom. driver: %s\n",scr_new_driver_name);
+	//printf("machine id: %d si_complete_video_driver: %d\n",current_machine_type ,si_complete_video_driver() );
 
-	if (si_complete_video_driver() ) {
-		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
-	}
+	//Realmente da igual mirar si driver video completo: como el menu gui zoom solo se usa en drivers
+	//completos, no hace falta testear. Ademas, aqui al iniciar el emulador se llama
+	//antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
+	//esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2 
+	//if (si_complete_video_driver() ) {
+		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
+	//}
 
 	debug_printf (VERBOSE_INFO,"Setting GUI menu zoom to %d",menu_gui_zoom);
 }
@@ -4685,6 +4880,19 @@ void post_set_machine_no_rom_load_reopen_window(void)
 	//printf ("last: %d current: %d\n",last_machine_type,current_machine_type);
 
 	if (last_machine_type!=255 && last_machine_type!=current_machine_type) {
+        //Si máquina con gui zoom a 2, cambiar zoom_x y zoom_y a 1, para no exceder tamaños
+        if (autochange_zoom_big_display.v) {
+            if (antes_menu_gui_zoom !=menu_gui_zoom && menu_gui_zoom==2) {
+                if (zoom_x!=1 || zoom_y!=1) {
+                    debug_printf (VERBOSE_INFO,"Setting zoom_x and zoom_y to 1 because selected machine has a big display");
+                    //printf ("Setting zoom_x and zoom_y to 1\n");
+                    zoom_x=zoom_y=1;
+                    set_putpixel_zoom();
+                }
+            }
+        }
+
+
 		debug_printf (VERBOSE_INFO,"Reopening window so current machine is different and may have different window size");
 		//printf ("Reopening window so current machine is different and may have different window size\n");
 		post_set_mach_reopen_screen();
@@ -4717,129 +4925,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
         
 }
 
-/*
-Vieja funcion
-Reabrir ventana en caso de que maquina seleccionada tenga tamanyo diferente que la anterior
-TODO: Quiza se podria simplificar esto, se empezó con Z88 a spectrum y se han ido agregando,
-se exponen todos los casos de maquinas con diferentes tamanyos de ventana,
-pero quiza simplemente habria que ver que el tamanyo anterior fuera diferente al actual y entonces reabrir ventana
-O que la maquina actual es diferente de la anterior
-*/
-void old_post_set_machine_no_rom_load_reopen_window(void)
-{
 
-	set_menu_gui_zoom();
-
-
-	//si se cambia de maquina Z88 o a maquina Z88, redimensionar ventana
-	if (last_machine_type!=255) {
-
-		if ( (MACHINE_IS_Z88 && last_machine_type!=130)  || (last_machine_type==130 && !(MACHINE_IS_Z88) ) ) {
-			debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing Z88 to/from other machine)");
-			post_set_mach_reopen_screen();
-			return;
-		}
-	}
-
-
-	//si se cambia de maquina CPC o a maquina CPC, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_CPC && !(last_machine_type>=140 && last_machine_type<=149) )  || (  (last_machine_type>=140 && last_machine_type<=149) && !(MACHINE_IS_CPC) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing CPC to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina SAM o a maquina SAM, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_SAM && !(last_machine_type>=150 && last_machine_type<=159) )  || (  (last_machine_type>=150 && last_machine_type<=159) && !(MACHINE_IS_SAM) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing SAM to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina QL o a maquina QL, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_QL && !(last_machine_type>=160 && last_machine_type<=179) )  || (  (last_machine_type>=160 && last_machine_type<=179) && !(MACHINE_IS_QL) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing QL to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-
-
-							//si se cambia de maquina Prism o a maquina Prism, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_PRISM && last_machine_type!=18)   || (last_machine_type==18 && !(MACHINE_IS_PRISM)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing PRISM to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina TBBLUE o a maquina TBBLUE, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_TBBLUE && last_machine_type!=MACHINE_ID_TBBLUE)   || (last_machine_type==MACHINE_ID_TBBLUE && !(MACHINE_IS_TBBLUE)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing TBBLUE to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//si se cambia de maquina TSconf o a maquina tsconf, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_TSCONF && last_machine_type!=MACHINE_ID_TSCONF)   || (last_machine_type==MACHINE_ID_TSCONF && !(MACHINE_IS_TSCONF)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing TSCONF to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-
-							//si se cambia de maquina MK14 o a maquina mk14, redimensionar ventana
-
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_MK14 && last_machine_type!=MACHINE_ID_MK14_STANDARD)   || (last_machine_type==MACHINE_ID_MK14_STANDARD && !(MACHINE_IS_MK14)  ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing MK14 to/from other machine)");
-
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-							//Si se cambia de maquina Spectrum o a maquina Spectrum - afecta especialmente a spectrum
-							if (last_machine_type!=255) {
-
-											if ( (MACHINE_IS_SPECTRUM && !(last_machine_type<30) )  || (  (last_machine_type<30) && !(MACHINE_IS_SPECTRUM) ) ) {
-															debug_printf (VERBOSE_INFO,"Reopening window so machine has different size (changing Spectrum to/from other machine)");
-															post_set_mach_reopen_screen();
-															return;
-											}
-							}
-
-}
 
 void post_set_machine_no_rom_load(void)
 {
@@ -5116,7 +5202,15 @@ void rom_load(char *romfilename)
 
             case MACHINE_ID_CPC_4128:
             romfilename="cpc464.rom";
-            break;		
+            break;
+
+            case MACHINE_ID_CPC_664:
+            romfilename="cpc664.rom";
+            break;            
+
+            case MACHINE_ID_CPC_6128:
+            romfilename="cpc6128.rom";
+            break;            		
 
             case 150:
             if (atomlite_enabled.v) romfilename="atomlite.rom";
@@ -5133,6 +5227,14 @@ void rom_load(char *romfilename)
             case MACHINE_ID_MK14_STANDARD:
             romfilename="mk14.rom";
             break;
+
+            case MACHINE_ID_PCW_8256:
+            romfilename="pcw_boot.rom";
+            break;
+
+            case MACHINE_ID_PCW_8512:
+            romfilename="pcw_boot.rom";
+            break;            
 
             default:
             //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
@@ -5421,6 +5523,26 @@ Total 20 pages=320 Kb
 
                 }
 
+	      else if (MACHINE_IS_CPC_6128) {
+                //48k rom
+
+                        leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
+                        if (leidos!=49152) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+
+                }
+
+	      else if (MACHINE_IS_CPC_664) {
+                //48k rom
+
+                        leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
+                        if (leidos!=49152) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+
+                }                                
+
 
               else if (MACHINE_IS_SAM) {
                         //32k rom
@@ -5451,6 +5573,24 @@ Total 20 pages=320 Kb
 			}
 
 		}
+
+        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
+		else if (MACHINE_IS_PCW_8256) {
+			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+			if (leidos!=275) {
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
+			}
+
+		}
+
+        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
+		else if (MACHINE_IS_PCW_8512) {
+			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+			if (leidos!=275) {
+					debug_printf(VERBOSE_ERR,"Error loading ROM");
+			}
+
+		}                
 
 
     fclose(ptr_romfile);
@@ -5486,15 +5626,18 @@ void segint_signal_handler(int sig)
         //para evitar warnings al compilar
         sig++;
 
+    //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
+
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
+/*
 #ifdef USE_PTHREADS
         if (si_thread_main_loop) {
         	debug_printf (VERBOSE_INFO,"Ending main loop thread");
 		pthread_cancel(thread_main_loop);
 	}
 #endif
-
+*/
     //salir sin fadeout, no queremos hacerlo en caso de salir desde aqui para que sea mas rapido
     //nota: dado que estamos saliendo sin guardar config, podemos alterar parametros de configuracion
     //desde aqui sin que se graben en el archivo de configuración
@@ -5514,15 +5657,23 @@ void segterm_signal_handler(int sig)
         //para evitar warnings al compilar
         sig++;
 
+        //No detener threads, porque si no, el end_emulator puede fallar por miles de razones...
+
 //Primero de todo detener el pthread del emulador, que no queremos que siga activo el emulador con el pthread de fondo mientras
 //se ejecuta el end_emulator
+/*
 #ifdef USE_PTHREADS
         if (si_thread_main_loop) {
         	debug_printf (VERBOSE_INFO,"Ending main loop thread");
 		pthread_cancel(thread_main_loop);
 	}
 #endif
+*/
 
+    //salir sin fadeout, no queremos hacerlo en caso de salir desde aqui para que sea mas rapido
+    //nota: dado que estamos saliendo sin guardar config, podemos alterar parametros de configuracion
+    //desde aqui sin que se graben en el archivo de configuración
+    quickexit.v=1;
 
         //salir sin guardar config
         end_emulator_saveornot_config(0);
@@ -5844,8 +5995,8 @@ z80_bit added_some_osd_text_keyboard={0};
 int joystickkey_definidas=0;
 
 
-//void parse_cmdline_options(int argc,char *argv[]) {
-int parse_cmdline_options(void) {
+//desde_commandline: si parsea desde commandline (1) o desde archivo de config (0)
+int parse_cmdline_options(int desde_commandline) {
 
 		while (!siguiente_parametro()) {
 			if (!strcmp(argv[puntero_parametro],"--help")) {
@@ -5890,13 +6041,34 @@ int parse_cmdline_options(void) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomx")) {
 				siguiente_parametro_argumento();
-				zoom_x=atoi(argv[puntero_parametro]);
+				
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+                zoom_x=valor;
+
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomy")) {
 				siguiente_parametro_argumento();
-				zoom_y=atoi(argv[puntero_parametro]);
+				
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+                zoom_y=valor;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--no-autochange-zoom-big-display")) {
+                autochange_zoom_big_display.v=0;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--reduce-075")) {
 				screen_reduce_075.v=1;
@@ -5932,7 +6104,7 @@ int parse_cmdline_options(void) {
 					printf ("Invalid value for ZX Desktop width\n");
 					exit(1);
 				}
-				screen_ext_desktop_width=valor;
+				zxdesktop_width=valor;
 			}		
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-height")) {
@@ -5943,7 +6115,7 @@ int parse_cmdline_options(void) {
 					printf ("Invalid value for ZX Desktop height\n");
 					exit(1);
 				}
-				screen_ext_desktop_height=valor;
+				zxdesktop_height=valor;
 			}	            
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-type")) {
@@ -6074,6 +6246,15 @@ int parse_cmdline_options(void) {
                 zxdesktop_configurable_icons_enabled.v=0;
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-empty-trash-on-exit")) {
+                zxdesktop_empty_trash_on_exit.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-show-indicators-open-apps")) {
+                zxdesktop_icon_show_app_open.v=0;
+            }            
+            
+
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
                 //get_defined_direct_functions
                 //"--zxdesktop-add-icon x y a n e s                  Add icon to position x,y, to function f, icon name n, extra parameters e, status s\n"
@@ -6146,9 +6327,26 @@ int parse_cmdline_options(void) {
 				menu_char_width=valor;
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--menucharheight")) {
+				siguiente_parametro_argumento();
+				int valor=atoi(argv[puntero_parametro]);
+				if (valor!=6 && valor!=7 && valor!=8) {
+					printf ("Invalid value for character height\n");
+					exit(1);
+				}
+				menu_char_height=valor;
+			}            
+
 			else if (!strcmp(argv[puntero_parametro],"--zoom")) {
 				siguiente_parametro_argumento();
-				zoom_y=zoom_x=atoi(argv[puntero_parametro]);
+                int valor=atoi(argv[puntero_parametro]);
+
+				if (valor<1 || valor>9) {
+					printf ("Invalid value for zoom\n");
+					exit(1);
+				}
+
+				zoom_y=zoom_x=valor;
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--frameskip")) {
@@ -6187,8 +6385,12 @@ int parse_cmdline_options(void) {
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--nochangeslowparameters")) {
-				no_cambio_parametros_maquinas_lentas.v=1;
+				cambio_parametros_maquinas_lentas.v=0;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--changeslowparameters")) {
+				cambio_parametros_maquinas_lentas.v=1;
+			}            
 
 
 			else if (!strcmp(argv[puntero_parametro],"--fullscreen")) {
@@ -6203,6 +6405,39 @@ int parse_cmdline_options(void) {
 					exit(1);
 				}
             }
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter")) {
+                siguiente_parametro();
+                if (!strcasecmp(argv[puntero_parametro],"exclude")) {
+                    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+                }
+
+                else if (!strcasecmp(argv[puntero_parametro],"include")) {
+                    debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
+                }
+
+                else {
+                    printf("Invalid debug filter type\n");
+                    exit(1);
+                }
+            }
+
+
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter-exclude-mask")) {
+                siguiente_parametro();
+
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                debug_mascara_clase_exclude=valor;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--debug-filter-include-mask")) {
+                siguiente_parametro();
+
+                int valor=parse_string_to_number(argv[puntero_parametro]);
+                debug_mascara_clase_include=valor;
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--disable-debug-console-win")) {
                 //Por defecto esta habilitado, por tanto lo desactivamos
@@ -6599,6 +6834,10 @@ int parse_cmdline_options(void) {
 				menu_limit_menu_open.v=1;
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--advancedmenus")) {
+				menu_show_advanced_items.v=1;
+			}            
+
 			else if (!strcmp(argv[puntero_parametro],"--setmachinebyname")) {
 				setting_machine_selection_by_name.v=1;
 			}			
@@ -6967,6 +7206,30 @@ int parse_cmdline_options(void) {
 
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--def-f-function-parameters")) {
+				siguiente_parametro_argumento();
+				if (argv[puntero_parametro][0]!='F' && argv[puntero_parametro][0]!='f') {
+					printf ("Unknown key\n");
+					exit(1);
+				}
+
+				int valor=atoi(&argv[puntero_parametro][1]);
+
+				if (valor<1 || valor>MAX_F_FUNCTIONS_KEYS) {
+					printf ("Invalid key\n");
+					exit(1);
+				}
+
+				siguiente_parametro_argumento();
+
+				if (menu_define_key_function_extra_info(valor,argv[puntero_parametro])) {
+					printf ("Invalid f-function action extra info: %s\n",argv[puntero_parametro]);
+					exit(1);
+				}
+
+
+			}			
+
 			else if (!strcmp(argv[puntero_parametro],"--def-button-function")) {
 				siguiente_parametro_argumento();
 	
@@ -7299,8 +7562,20 @@ int parse_cmdline_options(void) {
 				dskplusthree_write_protection.v=1;
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--pd765-silent-write-protection")) {
+				pd765_silent_write_protection.v=1;
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--dsk-no-persistent-writes")) {
 				dskplusthree_persistent_writes.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-boot-reinsert-previous-dsk")) {
+				pcw_boot_reinsert_previous_dsk.v=0;
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-failback-cpm-when-no-boot")) {
+				pcw_failback_cpm_when_no_boot.v=0;
 			}
 
 
@@ -8411,6 +8686,16 @@ int parse_cmdline_options(void) {
 					sdl_raw_keyboard_read.v=1;
 			}
 
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-new")) {
+                audiosdl_use_new_callback.v=1;
+            }      
+
+            //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
+            else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-old")) {
+                audiosdl_use_new_callback.v=0;
+            }      
+
             else if (!strcmp(argv[puntero_parametro],"--no-fallbacktorealtape")) {
                 standard_to_real_tape_fallback.v=0;
             }
@@ -8962,12 +9247,25 @@ int parse_cmdline_options(void) {
 			
 
                          
-			
+			else if (!strcmp(argv[puntero_parametro],"--last-version-text")) {
+				siguiente_parametro_argumento();
+				strcpy(last_version_text_string,argv[puntero_parametro]);
+			}   			
 			
 			
 			else if (!strcmp(argv[puntero_parametro],"--last-version")) {
 				siguiente_parametro_argumento();
 				strcpy(last_version_string,argv[puntero_parametro]);
+
+                last_buildnumber_int=atoi(last_version_string);
+
+                if (buildnumber_int<last_buildnumber_int) {
+                    printf("It seems you have downgraded ZEsarUX from %s to %s\n"
+                    "If there is any unknown parameter on the configuration file, from the moment that parameter is detected, the rest of the parameters are tried to be read\n",
+                        last_version_text_string,EMULATOR_VERSION);
+                    zesarux_has_been_downgraded.v=1;
+                    sleep(3);
+                }
 			}	
 
 			else if (!strcmp(argv[puntero_parametro],"--no-show-changelog")) {
@@ -9215,6 +9513,34 @@ int parse_cmdline_options(void) {
 
 			}      
 
+
+            
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-debugcpu-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_registers_change_ptr_historial,argv[puntero_parametro]);
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-hexeditor-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_hexdump_change_ptr_historial,argv[puntero_parametro]);
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-sprites-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_sprites_change_ptr_historial,argv[puntero_parametro]);
+			}          
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-ptr")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_poke_address_historial,argv[puntero_parametro]);
+			}
+
+			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-value")) {
+				siguiente_parametro_argumento();
+                util_scanf_history_insert(menu_debug_poke_value_historial,argv[puntero_parametro]);
+			}
+		
+
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx")) {
                 siguiente_parametro_argumento();
                 char *origen=argv[puntero_parametro];
@@ -9326,11 +9652,48 @@ int parse_cmdline_options(void) {
 
 			else {
 
-				//parametro desconocido
-				debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
-				return 1;
-				//cpu_help();
-				//exit(1);
+
+                if (desde_commandline) {
+				    //parametro desconocido por linea de comandos, avisar con error 
+				    debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
+                    return 1;
+                }
+
+                else {
+
+
+                    //si en cambio estamos parseando archivo de configuracion, hacerlo mas tolerante, arrancar pero con aviso
+                    debug_printf (VERBOSE_ERR,"Unknown parameter : %s",argv[puntero_parametro]);
+
+                    //Nos vamos hasta siguiente parametro que empiece con "--"
+                    int salir=0;
+
+                    do {
+
+                        //Tenemos que situarnos justo antes del siguiente parametro, pues el bucle es tal cual lo parsea
+
+                        if (argc<=1) {
+                            //printf("Fin desde argc<=1\n");
+                            salir=1;
+                        }
+
+                        else {
+                            if (argv[puntero_parametro+1][0]=='-' && argv[puntero_parametro+1][1]=='-') {
+                                //printf("Fin desde encontrado siguiente --\n");
+                                salir=1; //encontrado siguiente
+                            }
+                            else {
+                                argc--;
+                                puntero_parametro++;    
+                            }
+                        }
+
+                    } while (!salir);
+
+                }
+
+                
+
 			}
 
 
@@ -9349,10 +9712,17 @@ void emulator_main_loop(void)
 		if (menu_abierto==1) menu_inicio();
 
     		//Bucle principal de ejecución de la cpu
-    		while (menu_abierto==0) {
+    		while (menu_abierto==0 && ending_emulator_flag==0) {
     			cpu_core_loop();
     		}
 
+			//Nos quedamos aqui cerrados cuando se ha salido con ctrl-c, donde este
+			//thread aun sigue vivo, pero no hay que andar refrescando ya nada del emulador, para 
+			//no generar segfault en cuanto se cierre el driver de video
+			while (ending_emulator_flag) {
+				//printf("Finalizando\n");
+				sleep(1);
+			}
 
 	}
 
@@ -9412,7 +9782,7 @@ void print_funny_message(void)
         "Z80 panic: shut her down Scotty, she's sucking mud again", //28
         "Not enough memory to display the error m",
         "ERROR 1164 HOW IN THE HELL DID YOU GET HERE", //30
-        "Good afternoon, gentelman, I’m a HAL 9000 Computer"
+        "Good afternoon, gentelman, I'm a HAL 9000 Computer"
 	};
 
 
@@ -9450,6 +9820,14 @@ void check_christmas_mode(void)
 
 char macos_path_to_executable[PATH_MAX];
 
+//Valor asignado desde BUILDNUMBER
+unsigned int buildnumber_int=0;
+
+//Ultima version ejecutada segun la config
+unsigned int last_buildnumber_int=0;
+
+z80_bit zesarux_has_been_downgraded={0};
+
 //Proceso inicial
 int zesarux_main (int main_argc,char *main_argv[]) {
 
@@ -9457,6 +9835,12 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 		if (!strcmp(main_argv[1],"--version")) {
 		//	printf ("ZEsarUX Version: " EMULATOR_VERSION " Date: " EMULATOR_DATE " - " EMULATOR_EDITION_NAME "\n");
 			printf ("ZEsarUX v." EMULATOR_VERSION " - " EMULATOR_EDITION_NAME ". " EMULATOR_DATE  "\n");
+			exit(0);
+		}
+
+		if (!strcmp(main_argv[1],"--machinelist")) {
+			get_machine_list_whitespace();
+			printf("\n");
 			exit(0);
 		}
 	}
@@ -9555,6 +9939,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     sleep (3);
 #endif
 
+    //conversion de valor BUILDNUMBER a entero
+    buildnumber_int=atoi(BUILDNUMBER);
+    //printf("build number %u\n",buildnumber_int);
 
 
 	//Unos cuantos valores por defecto
@@ -9663,6 +10050,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
     transaction_log_filename[0]=0;
 
     debug_printf_sem_init();
+
+	omplir_adr_internet_semaforo_init();
 
     debug_unnamed_console_init();
 
@@ -9815,11 +10204,22 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         argv=configfile_argv;
         puntero_parametro=0;
 
-        if (parse_cmdline_options()) {
-            //debug_printf(VERBOSE_ERR,"Error parsing configuration file. Disabling autosave feature");
+        //Desde parseo de archivo de config no se genera error nunca, se es mas tolerante, avisando del error, pero
+        //parseando siguientes parametros
+
+        parse_cmdline_options(0);
+
+        /*
+
+        if (parse_cmdline_options(0)) {
             //Desactivamos autoguardado para evitar que se genere una configuración incompleta
-            save_configuration_file_on_exit.v=0;
+            //Pero solo si no ha habido downgrade
+            //Si hay un downgrade, se avisara al usuario
+            if (zesarux_has_been_downgraded.v==0) {
+                save_configuration_file_on_exit.v=0;
+            }
         }
+        */
 	}
 
 
@@ -9828,7 +10228,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
   	argv=main_argv;
   	puntero_parametro=0;
 
-  	if (parse_cmdline_options()) {
+  	if (parse_cmdline_options(1)) {
 		printf ("\n\n");
         cpu_help();
         exit(1);
@@ -9955,13 +10355,16 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//Algun parametro que se resetea con reset_cpu y/o set_machine y se puede haber especificado por linea de comandos
 	if (command_line_zx8081_vsync_sound.v) zx8081_vsync_sound.v=1;
 
+    //llamar a set_menu_gui_zoom para establecer zoom menu. Ya se ha llamado desde set_machine pero como no hay driver de video aun ahi,
+    //no se aplica zoom de gui dado que eso solo es para driver xwindows, sdl etc y no para curses y otros
+	//Esto tiene que ir justo aqui antes de init driver video pues al cambiar a veces gui zoom a 2 (caso tbblue o cpc por ejemplo),
+	//el tamaño de zx desktop se multiplica por el gui zoom y entonces la memoria a asignar del driver de video es mayor
+    set_menu_gui_zoom();
+
 
     //Inicializamos Video antes que el resto de cosas.
     main_init_video();
 
-    //llamar a set_menu_gui_zoom para establecer zoom menu. Ya se ha llamado desde set_machine pero como no hay driver de video aun ahi,
-    //no se aplica zoom de gui dado que eso solo es para driver xwindows, sdl etc y no para curses y otros
-    set_menu_gui_zoom();
 
   //Activar deteccion automatica de rutina de impresion de caracteres, si conviene
 	//Esto se hace tambien al inicializar cpu... Pero como al inicializar cpu aun no hemos inicializado driver video,
@@ -10242,15 +10645,20 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		if (strcmp(last_version_string,BUILDNUMBER) && last_version_string[0]!=0) {  //Si son diferentes y last_version_string no es nula
 			//Y si driver permite menu normal
 			if (si_normal_menu_video_driver()) {
-				menu_event_new_version_show_changes.v=1;
-				menu_set_menu_abierto(1);
+                //Y si version actual es mayor que la anterior
+                if (buildnumber_int>last_buildnumber_int) {
+                    menu_event_new_version_show_changes.v=1;
+                    menu_set_menu_abierto(1);
+                }
 				//menu_abierto=1;
 			}
 		}
 	}
 
-
-
+    //Si la version actual es mas vieja, aviso del downgrade
+    if (zesarux_has_been_downgraded.v) {
+       menu_set_menu_abierto(1); 
+    }
 
 	start_timer_thread();
 
@@ -10420,10 +10828,15 @@ int ending_emulator_flag=0;
 void end_emulator_saveornot_config(int saveconfig)
 {
 	debug_printf (VERBOSE_INFO,"End emulator");
-	
+
+	//Para indicar al thread de emulacion que tiene que salir, esto es valido cuando se llega aqui con ctrl-c
+	//Si no, se quedaria el loop de emulacion por debajo y en cuanto aqui cerramos el driver de video,
+	//petaria con segfault al intentar refrescar la pantalla o similar
     ending_emulator_flag=1;
-	
-	
+	//Dejamos un ligero tiempo para que el thread se entere
+	//1 milisegundo mas que suficiente
+	usleep(1000);
+
 	
 
 	dump_ram_file_on_exit();
@@ -10437,6 +10850,8 @@ void end_emulator_saveornot_config(int saveconfig)
 //        pthread_cancel(thread_main_loop);
 // }
 //#endif
+
+
 
 	menu_abierto=0;
 

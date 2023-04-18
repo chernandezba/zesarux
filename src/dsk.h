@@ -26,9 +26,18 @@
 
 //Ejemplo metal action:  214784 14 sep  2000 Metal Action 1 - Side A.dsk
 //Ejemplo Alien Storm: 255232
-#define DSK_MAX_BUFFER_DISCO 255232
+//Paperboy2-SideB(Spectrum).dsk: 335301
+//Monty Python's Flying Circus.dsk 444160
+//Narc - Side A.dsk 472832
+#define DSK_MAX_BUFFER_DISCO 472832
 
+#define DSK_SIGNATURE_LENGTH 34
+#define DSK_CREATOR_LENGTH 14
 
+#define DSK_MAX_PROTECTION_SCHEME 100
+
+//Para poder hacer debug_printf con la clase DSK adecuada
+#define DBG_PRINT_DSK debug_printf(VERBOSE_CLASS_DSK|
 
 extern void dsk_insert_disk(char *nombre);
 
@@ -54,14 +63,50 @@ extern z80_byte p3dsk_buffer_disco[];
 
 extern void dsk_show_activity(void);
 
-extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico);
+extern void dsk_create(char *filename,int tracks,int sides,int sectors_track,int bytes_sector);
 
-extern void dsk_get_chrn(int pista,int sector,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n);
+extern int dsk_get_sector(int pista,int parametro_r,z80_byte *sector_fisico,int minimo_sector,int search_deleted,int skip_not_match,int check_r_parameter);
 
-extern void dsk_get_st12(int pista,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2);
+extern int dsk_get_physical_sector(int pista,int sector);
+
+extern void dsk_get_chrn(int pista,int cara,int sector_fisico,z80_byte *parametro_c,z80_byte *parametro_h,z80_byte *parametro_r,z80_byte *parametro_n);
+extern void dsk_put_chrn(int pista,int cara,int sector_fisico,z80_byte parametro_c,z80_byte parametro_h,z80_byte parametro_r,z80_byte parametro_n);
+extern int dsk_get_start_sector_info(int pista,int cara,int sector_fisico);
+
+extern int dsk_get_sector_size_from_n_value(int n_value);
+
+extern void dsk_get_st12(int pista,int cara,int sector_fisico,z80_byte *parametro_st1,z80_byte *parametro_st2);
+extern void dsk_put_st12(int pista,int cara,int sector_fisico,z80_byte parametro_st1,z80_byte parametro_st2);
 
 extern int dsk_get_total_tracks(void);
 
 extern int dsk_get_total_sides(void);
+
+extern void dsk_get_signature(char *buffer);
+extern void dsk_get_creator(char *buffer);
+extern int dsk_get_start_track(int pista,int cara);
+
+extern int dsk_get_track_number(int pista,int cara);
+extern int dsk_get_track_side(int pista,int cara);
+extern int dsk_get_sector_size_track(int pista,int cara);
+extern int dsk_get_total_sectors_track(int pista,int cara);
+extern int dsk_get_gap_length_track(int pista,int cara);
+extern int dsk_get_filler_byte_track(int pista,int cara);
+extern int dsk_file_type_extended;
+extern int dsk_extended_get_track_size(int pista,int cara);
+
+extern int dsk_get_protection_scheme(char *buffer);
+
+extern int dsk_memory_zone_dsk_sector_start;
+extern int dsk_memory_zone_dsk_sector_size;
+extern z80_bit dsk_memory_zone_dsk_sector_enabled;
+
+extern int dsk_get_sector_fisico(int pista,int cara,int sector_fisico);
+extern int dsk_get_real_sector_size_extended(int pista,int cara,int sector_fisico);
+extern int dsk_get_datarate_track(int pista,int cara);
+extern int dsk_get_gap_length_track(int pista,int cara);
+extern int dsk_get_recordingmode_track(int pista,int cara);
+
+extern int dsk_is_track_formatted(int pista,int cara);
 
 #endif

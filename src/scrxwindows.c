@@ -47,6 +47,7 @@
 #include "sg1000.h"
 #include "sms.h"
 #include "svi.h"
+#include "pcw.h"
 
 
 #include <X11/Xlib.h> // Every Xlib program must include this
@@ -775,7 +776,8 @@ void scrxwindows_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel
 }
 
 //Rutina de putchar para footer window
-void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
+/*
+void old_scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) {
 
 
         int yorigen;
@@ -792,8 +794,13 @@ void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int pap
         //scr_putchar_menu_comun_zoom(caracter,x,y,inverse,tinta,papel,1);
 				scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 }
+*/
 
-
+//Rutina de putchar para footer window
+void scrxwindows_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel) 
+{
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+}
 
 
 void scrxwindows_refresca_pantalla_zx81(void)
@@ -803,17 +810,29 @@ scr_refresca_pantalla_y_border_zx8081();
 
 }
 
+void scrxwindows_get_display_size(int *p_ancho,int *p_alto)
+{
+	int ancho=screen_get_window_size_width_zoom_border_en();
+
+	ancho +=screen_get_ext_desktop_width_zoom();
+
+	int alto=screen_get_window_size_height_zoom_border_en();
+
+	alto +=screen_get_ext_desktop_height_zoom();   
+
+	*p_ancho=ancho;
+	*p_alto=alto;  	
+}
+
 void scrxwindows_refresca_pantalla_solo_driver(void)
 {
    //Dibujar normal toda la pantalla entera
 
-	 int ancho=screen_get_window_size_width_zoom_border_en();
+	 int ancho;
 
-	 ancho +=screen_get_ext_desktop_width_zoom();
+	 int alto;
 
-	 int alto=screen_get_window_size_height_zoom_border_en();
-
-	 alto +=screen_get_ext_desktop_height_zoom();     
+	 scrxwindows_get_display_size(&ancho,&alto);  
 
         if( shm_used ) {
 
@@ -930,6 +949,10 @@ void scrxwindows_refresca_pantalla(void)
 	else if (MACHINE_IS_CPC) {
                 scr_refresca_pantalla_y_border_cpc();
         }
+
+    else if (MACHINE_IS_PCW) {
+            scr_refresca_pantalla_y_border_pcw();
+    }           
 
 	else if (MACHINE_IS_SAM) {
 		scr_refresca_pantalla_y_border_sam();
@@ -1075,7 +1098,7 @@ void scrxwindows_z88_cpc_load_keymap(void)
 	switch (z88_cpc_keymap_type) {
 
 		case 1:
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI)  {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
 				scrxwindows_keymap_z88_cpc_minus=XK_apostrophe;
 				scrxwindows_keymap_z88_cpc_equal=XK_exclamdown;
 				scrxwindows_keymap_z88_cpc_backslash=XK_masculine;
@@ -1133,7 +1156,7 @@ void scrxwindows_z88_cpc_load_keymap(void)
 
 		default:
 			//0 o default
-			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI)  {
+			if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW)  {
 				scrxwindows_keymap_z88_cpc_minus=XK_minus;
 				scrxwindows_keymap_z88_cpc_equal=XK_equal;
 				scrxwindows_keymap_z88_cpc_backslash=XK_backslash;
@@ -1285,7 +1308,7 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 
         int tecla_gestionada_sam_ql=0;
-        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+        if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
                 tecla_gestionada_sam_ql=1;
 
                         if (keysym==scrxwindows_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -1309,6 +1332,8 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         else if (keysym==scrxwindows_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                         else if (keysym==scrxwindows_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                        else if (keysym==scrxwindows_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
                 else tecla_gestionada_sam_ql=0;
@@ -1353,9 +1378,13 @@ void deal_with_keys(XEvent *event,int pressrelease)
                         break;
 
 			case XK_Super_L:
-			case XK_Super_R:
-				util_set_reset_key(UTIL_KEY_WINKEY,pressrelease);
+				util_set_reset_key(UTIL_KEY_WINKEY_L,pressrelease);
                         break;
+
+			case XK_Super_R:
+				util_set_reset_key(UTIL_KEY_WINKEY_R,pressrelease);
+                        break;
+
 
 			case XK_Delete:
 				util_set_reset_key(UTIL_KEY_DEL,pressrelease);
@@ -1404,24 +1433,27 @@ void deal_with_keys(XEvent *event,int pressrelease)
 
 			case XK_minus:
 			case XK_KP_Subtract:
-				util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
                         break;
 
 			case XK_plus:
 			case XK_KP_Add:
-				util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
                         break;
 
                         case XK_slash:
                         case XK_KP_Divide:
-				util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
                         break;
 
                         case XK_asterisk:
                         case XK_KP_Multiply:
-				util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
+				util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
                         break;
 
+            case XK_Num_Lock:
+                util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+            break;
 
 
 			//F1 pulsado
@@ -2103,11 +2135,13 @@ static int try_shm (void)
 
   shm_eventtype = XShmGetEventBase( dpy ) + ShmCompletion;
 
-int ancho=screen_get_window_size_width_zoom_border_en();
-ancho +=screen_get_ext_desktop_width_zoom();
+int ancho;
 
-int alto=screen_get_window_size_height_zoom_border_en();
-alto +=screen_get_ext_desktop_height_zoom();
+int alto;
+
+scrxwindows_get_display_size(&ancho,&alto);
+
+
 
 image = XShmCreateImage( dpy, xdisplay_visual,
                            xdisplay_depth, ZPixmap,

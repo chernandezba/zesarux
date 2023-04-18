@@ -89,6 +89,8 @@
 #include "phoenix.h"
 #include "ramjet.h"
 #include "plus3dos_handler.h"
+#include "pcw.h"
+#include "dsk.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -1146,6 +1148,19 @@ z80_byte fetch_opcode_sam(void)
         return peek_byte_no_time (reg_pc);
 }
 
+z80_byte fetch_opcode_pcw(void)
+{
+    /*
+#ifdef EMULATE_VISUALMEM
+        set_visualmemopcodebuffer(reg_pc);
+#endif
+*/
+//printf("antes %p\n",peek_byte_no_time);
+z80_byte value= peek_byte_no_time (reg_pc);
+
+        //printf("despues %p\n",peek_byte_no_time);
+        return value;
+}
 
 z80_byte fetch_opcode_coleco(void)
 {
@@ -3393,6 +3408,8 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
 
 	debug_fired_in=1;
 
+    z80_int puerto=value_8_to_16(puerto_h,puerto_l);
+
 	//z80_int puerto=(puerto_h<<8)||puerto_l;
 	//if (puerto==0xFA7E || puerto==0xFB7E || puerto==0xFB7F) printf ("Puerto FDC\n");
 
@@ -3404,6 +3421,31 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
 	}
 
 	//printf ("Returning unused cpc port %02X%02XH\n",puerto_h,puerto_l);
+
+    //Puertos PD765
+    /*
+    Port FA7Eh - Floppy Motor On/Off Flipflop
+    Port FB7Eh - FDC 765 Main Status Register (read only)
+    Port FB7Fh - FDC 765 Data Register (read/write)
+    */
+    if (MACHINE_IS_CPC_HAS_FLOPPY) {
+        //Puertos disco 
+        if (pd765_enabled.v) {
+            if (puerto==0xFB7E) return pd765_read_status_register();
+
+            
+            if (puerto==0xFB7F) return pd765_read();
+        }
+
+
+        else {
+            if (puerto==0xFB7E) return 255;
+
+            
+            if (puerto==0xFB7F) return 255;
+        }
+    }
+
 	return 255;
 
 }
@@ -3462,6 +3504,28 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
         if ((puerto_h & 8)==0) {
                 cpc_out_ppi(puerto_h,value);
         }
+
+    //Puerto upper rom select
+    if (puerto_h==0xDF) {
+        //printf("Out port DF value %02XH\n",value);
+        cpc_out_port_df(value);
+    }
+
+    //Puertos PD765
+    /*
+    Port FA7Eh - Floppy Motor On/Off Flipflop
+    Port FB7Eh - FDC 765 Main Status Register (read only)
+    Port FB7Fh - FDC 765 Data Register (read/write)
+    */
+   if (MACHINE_IS_CPC_HAS_FLOPPY && pd765_enabled.v) {
+        if (puerto==0xFA7E) {
+            cpc_out_port_fa7e(value);
+        }
+
+        if (puerto==0xFB7F) {
+            pd765_out_port_data_register(value);
+        }        
+   }
 
 	//printf ("fin out_port_cpc_no_time\n");
 
@@ -3798,6 +3862,217 @@ void out_port_sam(z80_int puerto,z80_byte value)
 }
 
 
+
+
+void poke_byte_no_time_pcw(z80_int dir,z80_byte valor)
+{
+
+    z80_byte *puntero;
+
+    puntero=pcw_get_memory_offset_write(dir);
+
+    *puntero=valor;
+       
+
+
+/*#ifdef EMULATE_VISUALMEM
+
+set_visualmembuffer(dir);
+
+#endif*/
+	
+}
+
+void poke_byte_pcw(z80_int dir,z80_byte valor)
+{
+
+
+        //Y sumamos estados normales
+        t_estados += 3;
+
+
+	poke_byte_no_time_pcw(dir,valor);
+
+
+}
+
+void out_port_pcw_no_time(z80_int puerto,z80_byte value)
+{
+    debug_fired_out=1;
+
+
+    z80_byte puerto_l=puerto&0xFF;
+
+    if (puerto_l==0x01) {
+        //printf("OUT FDC data register %02XH\n",value);
+        pd765_out_port_data_register(value);
+    }
+
+    /*
+
+    &F0 O   Select bank for &0000
+    &F1 O   Select bank for &4000
+    &F2 O   Select bank for &8000
+    &F3 O   Select bank for &C000. Usually &87.
+    */
+
+    if (puerto_l>=0xF0 && puerto_l<=0xF3) {
+        pcw_out_port_bank(puerto_l,value);
+    }
+
+    if (puerto_l==0xF4) {
+        pcw_out_port_f4(value);
+    }
+
+    if (puerto_l==0xF5) {
+        pcw_out_port_f5(value);
+    }
+
+    if (puerto_l==0xF6) {
+        pcw_out_port_f6(value);
+    }
+
+    if (puerto_l==0xF7) {
+        pcw_out_port_f7(value);
+    }        
+
+    if (puerto_l==0xF8) {
+        pcw_out_port_f8(value);
+    }
+
+    //13.1 DKTronics sound generator
+    //TODO: Registro 0E para lectura de joystick dk tronics
+    //
+    /*
+    Bit 7 Ignored.
+    Bit 6 0 if the fire button is pressed.
+    Bit 5 0 if the joystick is pushed up.
+    Bit 4 0 if the joystick is pushed down.
+    Bit 3 0 if the joystick is pushed to the right.
+    27
+    Bit 2 0 if the joystick is pushed to the left. Bit 1 Ignored.
+    Bit 0 Ignored.
+    */
+   /*
+   Usado en:
+   Abadia del Crimen
+   Head Over Heels
+   */
+    
+    if (puerto_l==0xAA && ay_chip_present.v) out_port_ay(65533,value);
+    if (puerto_l==0xAB && ay_chip_present.v) out_port_ay(49149,value);
+    
+
+
+    if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {
+        printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
+        //sleep(3);
+    }    
+   
+}
+
+
+void out_port_pcw(z80_int puerto,z80_byte value)
+{
+  ula_contend_port_early( puerto );
+  out_port_pcw_no_time(puerto,value);
+  ula_contend_port_late( puerto ); t_estados++;
+}
+
+
+
+z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
+{
+
+	debug_fired_in=1;
+
+    //printf("LEE puerto %02XH\n",puerto_l);
+
+    if (puerto_l==0x00) {
+        //printf("IN FDC status register\n");
+        return pd765_read_status_register();
+    }
+
+    if (puerto_l==0x01) {
+        //printf("IN FDC data register\n");
+        return pd765_read();
+    }
+    if (puerto_l==0xF4) {
+        return pcw_in_port_f4();
+    }
+
+    if (puerto_l==0xF8) {
+        return pcw_in_port_f8();
+
+        
+    }
+
+    if (puerto_l==0xFD) {
+        return pcw_in_port_fd();
+    }
+
+    if (ay_chip_present.v) {
+        if (puerto_l==0xA9) {
+            return in_port_ay(0xFF);
+        }
+    }
+
+
+    printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+    return 255;
+
+
+}
+
+z80_byte lee_puerto_pcw(z80_byte puerto_h,z80_byte puerto_l)
+{
+  z80_int port=value_8_to_16(puerto_h,puerto_l);
+  ula_contend_port_early( port );
+  ula_contend_port_late( port );
+  z80_byte valor = lee_puerto_pcw_no_time( puerto_h, puerto_l );
+
+  t_estados++;
+
+  return valor;
+
+}
+
+z80_byte peek_byte_no_time_pcw(z80_int dir)
+{
+/*    
+#ifdef EMULATE_VISUALMEM
+	set_visualmemreadbuffer(dir);
+#endif
+*/
+    //Lectura de teclado
+    int offset=dir & 16383;
+    if (offset>=0x3FF0) {
+        int segmento=dir/16384;
+
+        if (pcw_banks_paged_read[segmento]==3) {
+            return pcw_read_keyboard(offset);
+        }
+        
+    }
+
+
+    z80_byte *puntero;
+
+    puntero=pcw_get_memory_offset_read(dir);
+
+    return *puntero;
+
+}
+
+
+z80_byte peek_byte_pcw(z80_int dir)
+{
+
+        t_estados +=3;
+
+        return peek_byte_no_time_pcw(dir);
+
+}
 
 z80_int peek_word(z80_int dir)
 {
@@ -6648,9 +6923,13 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 
 		//Puertos disco +3
 		if (pd765_enabled.v) {
-			if (puerto_h==0x2F) return pd765_read_status_register();
+            //Tipicamente 2ffd
+            //  2FFD 0010..........0. R   Spectrum +3 Floppy FDC NEC uPD765 status
+			if ((puerto & 0xF002) == 0x2000) return pd765_read_status_register();
 
-			if (puerto_h==0x3F) return pd765_read();
+            //Tipicamente 3ffd
+            //  3FFD 0011..........0. R/W Spectrum +3 Floppy FDC NEC uPD765 data
+            if ((puerto & 0xF002) == 0x3000) return pd765_read();
 		}
 
         //Con handler
@@ -8688,15 +8967,30 @@ Port: 10-- ---- ---- --0-
 
             //Puertos disco +3. Motor on/off
             if (pd765_enabled.v) {
-			    pd765_out_port_1ffd(value);
+
+                if (value&8) {
+                    dsk_show_activity();
+                    pd765_motor_on();
+                }
+                else {
+                    //Pues realmente si motor va a off, no hay actividad
+                    pd765_motor_off();
+                }
+
+			    //pd765_out_port_1ffd(value);
             }
 
 		}
 
 
         //Puertos disco +3
-        if (puerto==0x3FFD && pd765_enabled.v) {
-            pd765_out_port_3ffd(value);
+        //Tipicamente 3ffd
+        //  3FFD 0011..........0. R/W Spectrum +3 Floppy FDC NEC uPD765 data
+        // Twin World e Iron Lord, de Ubisoft, ambos envian valores con OUTI, con valor antes del outi de BC=3ffd
+        //el valor de puerto que se envia sera 3efd, y segun esta mascara, funcionara bien.
+        //si en cambio solo detectasemos puerto 3ffd, no cargarian
+        if ((puerto & 0xF002) == 0x3000 && pd765_enabled.v) {
+            pd765_out_port_data_register(value);
         }
 
 	}

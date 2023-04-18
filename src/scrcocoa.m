@@ -75,6 +75,7 @@
 #include "sms.h"
 #include "svi.h"
 #include "realjoystick.h"
+#include "pcw.h"
 
 
 int gArgc;
@@ -1524,7 +1525,7 @@ int scrcocoa_keymap_z88_cpc_slash;
 int scrcocoa_keymap_z88_cpc_circunflejo;
 int scrcocoa_keymap_z88_cpc_colon;
 int scrcocoa_keymap_z88_cpc_arroba;
-int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en Chloe
+int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. usada en Chloe y PCW
 
 //- (void) gestionTecla:(NSEvent *)event pressrelease:(int)pressrelease
 - (void) gestionTecla: (NSEvent *)event : (int)pressrelease
@@ -1534,14 +1535,14 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 	//La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
 	//por tanto, cuando se esta pulsada, liberar teclas y volver
 	/*
-	if (scrcocoa_antespulsadocmd==1) {
+	if (scrcocoa_antespulsadocmd_l==1) {
 		//printf ("cmd key pressed. resetting all keys\n");
 		reset_keyboard_ports();
 		return;
 	}
 	*/
 
-	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd);
+	//printf ("cmd key: %d\n",scrcocoa_antespulsadocmd_l);
 
     int buttons = 0;
     int cocoakeycode;
@@ -1599,7 +1600,7 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
 	int tecla_gestionada_sam_ql=0;
-	if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+	if (MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 		tecla_gestionada_sam_ql=1;
 
                 if (teclareal==scrcocoa_keymap_z88_cpc_minus) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_MINUS,pressrelease);
@@ -1623,6 +1624,8 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
                 else if (teclareal==scrcocoa_keymap_z88_cpc_period) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_PERIOD,pressrelease);
 
                 else if (teclareal==scrcocoa_keymap_z88_cpc_slash) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_SLASH,pressrelease);
+
+                else if (teclareal==scrcocoa_keymap_z88_cpc_leftz) util_set_reset_key_common_keymap(UTIL_KEY_COMMON_KEYMAP_LEFTZ,pressrelease);
 
 
 		else tecla_gestionada_sam_ql=0;
@@ -1747,22 +1750,6 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
 
-                case COCOA_KEY_KP_MINUS:
-                        util_set_reset_key(UTIL_KEY_MINUS,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_PLUS:
-                        util_set_reset_key(UTIL_KEY_PLUS,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_DIVIDE:
-                        util_set_reset_key(UTIL_KEY_SLASH,pressrelease);
-                break;
-
-                case COCOA_KEY_KP_MULTIPLY:
-                        util_set_reset_key(UTIL_KEY_ASTERISK,pressrelease);
-                break;
-
                 case COCOA_KEY_DELETE:
                         util_set_reset_key(UTIL_KEY_DEL,pressrelease);
                 break;
@@ -1859,6 +1846,31 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 
 
                 //Teclas del keypad
+                case COCOA_KEY_NUMLOCK:
+                        util_set_reset_key(UTIL_KEY_KP_NUMLOCK,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_MINUS:
+                        util_set_reset_key(UTIL_KEY_KP_MINUS,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_PLUS:
+                        util_set_reset_key(UTIL_KEY_KP_PLUS,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_DIVIDE:
+                        util_set_reset_key(UTIL_KEY_KP_DIVIDE,pressrelease);
+                break;
+
+                case COCOA_KEY_KP_MULTIPLY:
+                        util_set_reset_key(UTIL_KEY_KP_MULTIPLY,pressrelease);
+                break;
+
+                
+
+
+                                             
+
                 case COCOA_KEY_KP0:
                         util_set_reset_key(UTIL_KEY_KP0,pressrelease);
                 break;
@@ -1989,7 +2001,8 @@ int scrcocoa_keymap_z88_cpc_leftz; //Tecla a la izquierda de la Z. Solo usada en
 }
 
 //inicializarlos con valores 0 al principio
-int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0,scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd=0; //,scrcocoa_antespulsadocapslock=0;
+int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespulsadoalt_l=0,scrcocoa_antespulsadoalt_r=0;
+int scrcocoa_antespulsadoshift_l=0,scrcocoa_antespulsadoshift_r=0,scrcocoa_antespulsadocmd_l=0,scrcocoa_antespulsadocmd_r=0; //,scrcocoa_antespulsadocapslock=0;
 
 - (void) migestionEvento:(NSEvent *)event
 {
@@ -1997,9 +2010,9 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 
     //asumimos teclas de control no pulsadas
-    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd; //,pulsadocapslock;
+    int pulsadoctrl_l,pulsadoctrl_r,pulsadoalt_l,pulsadoalt_r,pulsadoshift_l,pulsadoshift_r,pulsadocmd_l,pulsadocmd_r; //,pulsadocapslock;
 
-    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd=0;
+    pulsadoctrl_l=pulsadoctrl_r=pulsadoalt_l=pulsadoalt_r=pulsadoshift_l=pulsadoshift_r=pulsadocmd_l=pulsadocmd_r=0;
 
     int event_keycode,event_type,event_modifier_flags;
     NSPoint p = [event locationInWindow];
@@ -2112,11 +2125,27 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 		}       
 
 	}
-	if (event_modifier_flags & NSEventModifierFlagCommand) {
-		//printf ("Cmd key is pressed\n");
-		//Al pulsar cmd no se liberan teclas. liberamos a mano
-		pulsadocmd=1;
-	}
+
+    //TODO: valores basados en mi propia experimentacion para comprobar right cmd
+    //Si se cumple condicion, sera right. Si no, sera left
+    //Asi al menos, si esto falla en otras maquinas, al menos left siempre funcionara
+    //left cmd:  event_modifier_flags=0x100108 
+    //right cmd: event_modifier_flags=0x100110    
+    if (event_modifier_flags & NSEventModifierFlagCommand) {
+        int right_cmd_value=0x10;
+        if ((event_modifier_flags & 0xFF) != right_cmd_value) {
+            //printf ("Cmd_l key is pressed. event_modifier_flags=%XH\n",event_modifier_flags);
+            //Al pulsar cmd no se liberan teclas. liberamos a mano
+            pulsadocmd_l=1;
+
+        }
+
+        if ((event_modifier_flags & 0xFF) == right_cmd_value) {
+            //printf ("Cmd_r key is pressed. event_modifier_flags=%XH\n",event_modifier_flags);
+            //Al pulsar cmd no se liberan teclas. liberamos a mano
+            pulsadocmd_r=1;
+        }    
+    }
 
 	//if (pulsadoctrl) printf ("Control key is pressed\n");
 	//else printf ("Control key is NOT pressed\n");
@@ -2148,26 +2177,32 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 
 
 	if (pulsadoalt_l!=scrcocoa_antespulsadoalt_l) {
-		//printf ("notificar cambio alt\n");
+		//printf ("notificar cambio alt l\n");
 		util_set_reset_key(UTIL_KEY_ALT_L,pulsadoalt_l);
 	}
 
 	if (pulsadoalt_r!=scrcocoa_antespulsadoalt_r) {
-		//printf ("notificar cambio alt\n");
+		//printf ("notificar cambio alt r\n");
 		joystick_possible_rightalt_key(pulsadoalt_r);
 	}
 
 
 
-	if (pulsadocmd!=scrcocoa_antespulsadocmd) {
-		//printf ("notificar cambio cmd. ahora: %d\n",pulsadocmd);
+	if (pulsadocmd_l!=scrcocoa_antespulsadocmd_l) {
+		//printf ("notificar cambio cmd_l. ahora: %d\n",pulsadocmd_l);
 		reset_keyboard_ports();
 	        //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
         	//por tanto, cuando se esta pulsada, liberar teclas
-		util_set_reset_key(UTIL_KEY_WINKEY,pulsadocmd);
+		util_set_reset_key(UTIL_KEY_WINKEY_L,pulsadocmd_l);
 	}
 
-
+	if (pulsadocmd_r!=scrcocoa_antespulsadocmd_r) {
+		//printf ("notificar cambio cmd_r. ahora: %d\n",pulsadocmd_r);
+		reset_keyboard_ports();
+	        //La tecla cmd tiene la "particular" caracteristica de que al pulsarla, no envia release del resto de teclas
+        	//por tanto, cuando se esta pulsada, liberar teclas
+		util_set_reset_key(UTIL_KEY_WINKEY_R,pulsadocmd_r);
+	}
 
 	scrcocoa_antespulsadoctrl_l=pulsadoctrl_l;
     scrcocoa_antespulsadoctrl_r=pulsadoctrl_r;
@@ -2178,7 +2213,8 @@ int scrcocoa_antespulsadoctrl_l=0,scrcocoa_antespulsadoctrl_r=0,scrcocoa_antespu
 	scrcocoa_antespulsadoshift_l=pulsadoshift_l;
 	scrcocoa_antespulsadoshift_r=pulsadoshift_r;
 
-	scrcocoa_antespulsadocmd=pulsadocmd;
+	scrcocoa_antespulsadocmd_l=pulsadocmd_l;
+    scrcocoa_antespulsadocmd_r=pulsadocmd_r;
 
 	//printf ("\nfin migestionEvento\n\n");
 
@@ -2670,6 +2706,14 @@ void scrcocoa_putchar_menu(int x,int y, z80_byte caracter,int tinta,int papel)
 void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
 {
 
+    scr_putchar_footer_comun_zoom(caracter,x,y,tinta,papel);
+
+}
+
+/*
+void old_scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
+{
+
     int yorigen;
 
 
@@ -2691,8 +2735,7 @@ void scrcocoa_putchar_footer(int x,int y, z80_byte caracter,int tinta,int papel)
     scr_putchar_footer_comun_zoom(caracter,x,y,inverse,tinta,papel);
 
 }
-
-
+*/
 
 void scrcocoa_set_fullscreen(void)
 {
@@ -2844,6 +2887,10 @@ void scrcocoa_refresca_pantalla(void)
             scr_refresca_pantalla_y_border_cpc();
     }
 
+    else if (MACHINE_IS_PCW) {
+            scr_refresca_pantalla_y_border_pcw();
+    }    
+
 	else if (MACHINE_IS_SAM) {
 		scr_refresca_pantalla_y_border_sam();
 	}
@@ -2915,7 +2962,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
         //y los codigos raw de retorno siempre son los mismos.
         //por tanto, devolvemos lo mismo que con keymap english siempre:
 
-	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI) {
+	if (MACHINE_IS_Z88 || MACHINE_IS_SAM || MACHINE_IS_QL || MACHINE_IS_MSX || MACHINE_IS_SVI || MACHINE_IS_PCW) {
 	                scrcocoa_keymap_z88_cpc_minus='-';
                         scrcocoa_keymap_z88_cpc_equal='=';
 			scrcocoa_keymap_z88_cpc_backslash=COCOA_SECOND_BACKSLASH;
@@ -2928,7 +2975,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
                         scrcocoa_keymap_z88_cpc_comma=',';
                         scrcocoa_keymap_z88_cpc_period='.';
                         scrcocoa_keymap_z88_cpc_slash='/';
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
 	}
 
 	else if (MACHINE_IS_CPC) {
@@ -2945,7 +2992,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
 			scrcocoa_keymap_z88_cpc_slash='/';
 
 			scrcocoa_keymap_z88_cpc_backslash=COCOA_SECOND_BACKSLASH;
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
 	}
 
 	//Para Chloe
@@ -2962,7 +3009,7 @@ void scrcocoa_z88_cpc_load_keymap(void)
                         scrcocoa_keymap_z88_cpc_comma=',';
                         scrcocoa_keymap_z88_cpc_period='.';
                         scrcocoa_keymap_z88_cpc_slash='/';
-                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe
+                        scrcocoa_keymap_z88_cpc_leftz='`'; //Tecla a la izquierda de la Z. Solo usada en Chloe y pcw
         }
 
 

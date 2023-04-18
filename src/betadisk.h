@@ -38,6 +38,7 @@ extern void betadisk_disable(void);
 
 extern void betadisk_reset(void);
 
+extern int betadisk_simulated_motor;
 
 extern z80_byte *betadisk_memory_pointer;
 extern int betadisk_check_if_rom_area(z80_int dir);

@@ -156,6 +156,7 @@ int menu_recent_files_opcion_seleccionada=0;
 
 
 
+void menu_filesel_set_overlay(zxvision_window *ventana);
 
 
 filesel_item *menu_get_filesel_item(int index);
@@ -1211,7 +1212,8 @@ void zxvision_menu_filesel_print_legend(zxvision_window *ventana)
 
     }
 
-	char leyenda_inferior[64];
+    //mas que suficiente para albergar la linea inferior, incluso cuando incluye el texto de SPC: Expand
+	char leyenda_inferior[200];
 
 
     //Si se puede expandir
@@ -2352,7 +2354,7 @@ void menu_filesel_copy_recursive_start(char *archivo,char *nombre_final,int simu
 //si 0, move
 //si 1, es rename
 //si 2, copy
-void file_utils_move_rename_copy_file(char *archivo,int rename_move)
+void file_utils_move_rename_copy_file_post(char *archivo,int rename_move)
 {
 	char nombre_sin_dir[PATH_MAX];
 	char directorio[PATH_MAX];
@@ -2434,7 +2436,9 @@ void file_utils_move_rename_copy_file(char *archivo,int rename_move)
         //eso evita que se envie el siguiente texto a speech
         menu_speech_tecla_pulsada=0;   
 
-		if (menu_confirm_yesno_texto("Confirm operation","Sure?")==0) return;
+		if (menu_confirm_yesno_texto("Confirm operation","Sure?")==0) {
+            return;
+        }
 
         //Ver si ruta origen y destino es la misma, en el caso de copy y move
         if (rename_move==0 || rename_move==2) {
@@ -2516,6 +2520,25 @@ void file_utils_move_rename_copy_file(char *archivo,int rename_move)
 	}
 }
 
+
+
+void file_utils_move_rename_copy_file(char *archivo,int rename_move,zxvision_window *ventana)
+{
+
+
+    //TODO: da problemas al tener la ventana anterior y esta apuntando al mismo overlay
+    //Por que ? No estoy seguro, creo que es la propia rutina de overlay la que entra en conflicto
+    //Quito el overlay temporalmente para que no de problemas
+    zxvision_reset_window_overlay(ventana);
+
+
+    file_utils_move_rename_copy_file_post(archivo,rename_move);
+
+
+    //Volver a poner overlay de previews
+    menu_filesel_set_overlay(ventana);
+
+}
 
 void file_utils_delete(char *nombre)
 {
@@ -3488,63 +3511,114 @@ void menu_filesel_recent_files_clear(MENU_ITEM_PARAMETERS)
 	menu_generic_message_splash("Clear List","OK. List cleared");
 }
 
-char *menu_filesel_recent_files(void)
+//Si tipo=0, files
+//Si tipo=1, folders
+int menu_filesel_recent_files_folders_tipo_seleccionado=0;
+
+//Indica que hemos seleccionado uno con enter
+//TODO: esto se hace porque no puedo distinguir desde la funcion de gestion de menu si se ha pulsado Enter o Espacio
+int menu_filesel_recent_files_folders_seleccionado_enter=0;
+
+void menu_filesel_recent_files_folders_switch(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_recent_files_folders_tipo_seleccionado ^=1;
+}
+
+void menu_filesel_recent_files_folders_enter(MENU_ITEM_PARAMETERS)
+{
+    menu_filesel_recent_files_folders_seleccionado_enter=1;
+}
+
+char *menu_filesel_recent_files_folders(int *tipo)
 {
 	menu_item *array_menu_recent_files;
     menu_item item_seleccionado;
     int retorno_menu;
 
+    int hay_alguno;
 
-	menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+    menu_filesel_recent_files_folders_seleccionado_enter=0;
 
-    #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
-    //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
+    do {
+
+        hay_alguno=0;
+
+        menu_add_item_menu_inicial(&array_menu_recent_files,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
+
+        #define MAX_RECENT_FILE_CHAR_LENGHT MAX_TEXTO_OPCION
+        //char string_last_file_shown[MAX_RECENT_FILE_CHAR_LENGHT];
 
 
-    int i;
-	int hay_alguno=0;
-    for (i=0;i<MAX_LAST_FILESUSED;i++) {
-		if (last_files_used_array[i][0]!=0) {
+        int i;
+        
+        for (i=0;i<MAX_LAST_FILESUSED;i++) {
+            if (last_files_used_array[i][0]!=0) {
 
-			//Mostrar solo nombre de archivo sin path
-			char archivo_sin_dir[PATH_MAX];
-			util_get_file_no_directory(last_files_used_array[i],archivo_sin_dir);
+                //Mostrar solo nombre de archivo sin path, o directorio sin archivo
+                char elemento_mostrar[PATH_MAX];
 
-            //menu_tape_settings_trunc_name(archivo_sin_dir,string_last_file_shown,MAX_RECENT_FILE_CHAR_LENGHT);
-            //menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,string_last_file_shown);
+                if (menu_filesel_recent_files_folders_tipo_seleccionado==0) {
+                    util_get_file_no_directory(last_files_used_array[i],elemento_mostrar);
+                }
+                else {
+                    util_get_dir(last_files_used_array[i],elemento_mostrar);
+                }
 
-            //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
-            util_trunc_name_right(archivo_sin_dir,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
 
-            //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
-            menu_add_item_menu(array_menu_recent_files,archivo_sin_dir,MENU_OPCION_NORMAL,NULL,NULL);
+                //En vez de cortar como habitualmente por la izquierda con menu_tape_settings_trunc_name, cortamos por la derecha
+                util_trunc_name_right(elemento_mostrar,MAX_RECENT_FILE_CHAR_LENGHT-1,PATH_MAX);
 
-			//Agregar tooltip con ruta entera
-			menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
+                //no agregar con funcion menu_add_item_menu_format o habra problemas si el nombre contiene % (que son especiales para printf)
+                menu_add_item_menu(array_menu_recent_files,elemento_mostrar,MENU_OPCION_NORMAL,menu_filesel_recent_files_folders_enter,NULL);
 
-			hay_alguno=1;
-		}
-	}
+                //Espacio conmutar entre archivos o directorios
+                menu_add_item_menu_espacio(array_menu_recent_files,menu_filesel_recent_files_folders_switch);
 
-	if (!hay_alguno) menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
+                //Agregar tooltip con ruta entera
+                menu_add_item_menu_tooltip(array_menu_recent_files,last_files_used_array[i]);
 
-	menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-	menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");
-
-    menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-    menu_add_ESC_item(array_menu_recent_files);
-
-    retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,"Recent files" );
-
-    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-		//Seleccion de borrar lista
-		if (item_seleccionado.menu_funcion!=NULL) {
-            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                hay_alguno=1;
+            }
         }
 
+        if (!hay_alguno) menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,NULL,NULL,"<Empty List>");
+
+        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_format(array_menu_recent_files,MENU_OPCION_NORMAL,menu_filesel_recent_files_clear,NULL,"Clear List");
+
+        menu_add_item_menu(array_menu_recent_files,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_ESC_item(array_menu_recent_files);
+
+        char nombre_ventana[30];
+        if (menu_filesel_recent_files_folders_tipo_seleccionado==0) {
+            strcpy(nombre_ventana,"Recent files (SPC switch)");
+        }
+        else {
+            strcpy(nombre_ventana,"Recent folders (SPC switch)");
+        }
+
+        retorno_menu=menu_dibuja_menu(&menu_recent_files_opcion_seleccionada,&item_seleccionado,array_menu_recent_files,nombre_ventana);
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && 
+        !salir_todos_menus && !menu_filesel_recent_files_folders_seleccionado_enter);    
+
+    *tipo=menu_filesel_recent_files_folders_tipo_seleccionado;
+
+    if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0 && menu_filesel_recent_files_folders_seleccionado_enter) {
+
+
 		//Seleccion de un archivo
-		else if (hay_alguno) {
+		if (hay_alguno) {
         	int indice=menu_recent_files_opcion_seleccionada;
 
 //lastfilesuser_scrolldown
@@ -3562,7 +3636,7 @@ char *menu_filesel_recent_files(void)
 		//Por tanto el indice final sera 0
 		indice=0;
 
-		//Y cursor ponerloa arriba entonces tambien
+		//Y cursor ponerlo arriba entonces tambien
 		menu_recent_files_opcion_seleccionada=0;
 
 			debug_printf (VERBOSE_INFO,"Returning recent file %s",last_files_used_array[indice]);
@@ -3723,7 +3797,7 @@ int old_menu_filesel_cambiar_unidad_o_volumen(void)
 int menu_filesel_cambiar_unidad_o_volumen(void)
 {
 
-	int releer_directorio=0;
+	//int releer_directorio=0;
 
     char directorio[PATH_MAX];
 
@@ -3791,7 +3865,7 @@ int menu_filesel_cambiar_unidad_o_volumen(void)
 #endif
 */
 
-	return releer_directorio;
+	//return releer_directorio;
 }
 
 //Ultimas coordenadas de filesel
@@ -4688,9 +4762,6 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 //Overlay para mostrar los previews
 void menu_filesel_overlay(void)
 {
-	if (!zxvision_drawing_in_background) normal_overlay_texto_menu();
-
-
 	//Y el procesado de nueva preview no tan seguido
 	//esto hara ejecutar esto 5 veces por segundo
 	if ( ((contador_segundo%200) == 0 && menu_filesel_overlay_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
@@ -4717,10 +4788,26 @@ void menu_filesel_overlay(void)
 void menu_filesel_preexit(zxvision_window *ventana)
 {
     //restauramos modo normal de texto de menu
-    set_menu_overlay_function(normal_overlay_texto_menu);
+    //set_menu_overlay_function(normal_overlay_texto_menu);
+    zxvision_reset_window_overlay(ventana);
 
     zxvision_destroy_window(ventana);
 
+}
+
+void menu_filesel_set_overlay(zxvision_window *ventana)
+{
+    //Overlay para los previews. Siempre que tengamos video driver completo
+    if (si_complete_video_driver() ) {
+            
+        if (menu_filesel_show_previews.v) {
+            menu_filesel_overlay_window=ventana;
+            
+            //cambio overlay
+            zxvision_set_window_overlay(ventana,menu_filesel_overlay);
+        }
+
+    }    
 }
 
 //Retorna 1 si seleccionado archivo. Retorna 0 si sale con ESC
@@ -4804,7 +4891,8 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 		if (ret) {
 			//Error leyendo directorio
 			//restauramos modo normal de texto de menu
-     		set_menu_overlay_function(normal_overlay_texto_menu);
+     		//set_menu_overlay_function(normal_overlay_texto_menu);
+            zxvision_reset_window_overlay(ventana);
 			
 			menu_espera_no_tecla();
 			zvfs_chdir(filesel_directorio_inicial);
@@ -4867,14 +4955,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 
 		//Overlay para los previews. Siempre que tengamos video driver completo
-        if (si_complete_video_driver() ) {
-                
-			if (menu_filesel_show_previews.v) {
-				menu_filesel_overlay_window=ventana;
-				set_menu_overlay_function(menu_filesel_overlay);
-			}
-
-		}
+        menu_filesel_set_overlay(ventana);
 
 		zxvision_menu_filesel_print_filters(ventana,filesel_filtros);
 		zxvision_menu_filesel_print_text_contents(ventana);
@@ -4930,7 +5011,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 				else {
 
 
-				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0);
+				tecla=zxvision_scanf(ventana,filesel_nombre_archivo_seleccionado,PATH_MAX,ancho_mostrado,7,1,0,0);
 				//); //6 ocupa el texto "File: "
 
 				if (tecla==15) {
@@ -5357,21 +5438,37 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
 				if (tecla=='R') {	
 
-					//Archivos recientes
-					char *archivo_reciente=menu_filesel_recent_files();
+					//Archivos y carpetas recientes
+                    int tipo;
+					char *archivo_reciente=menu_filesel_recent_files_folders(&tipo);
+
+                    
 					if (archivo_reciente!=NULL) {
-						//printf ("Loading file %s\n",archivo_reciente);
-						strcpy(archivo,archivo_reciente);
+                        if (tipo==0) {
+                            //printf ("Loading file %s\n",archivo_reciente);
+                            strcpy(archivo,archivo_reciente);
 
-                        zvfs_chdir(filesel_directorio_inicial);
-                        menu_filesel_free_mem();
+                            zvfs_chdir(filesel_directorio_inicial);
+                            menu_filesel_free_mem();
 
-                        //return menu_avisa_si_extension_no_habitual(filtros,archivo);
+                            //return menu_avisa_si_extension_no_habitual(filtros,archivo);
 
-                        menu_filesel_preexit(ventana);
-                        return 1;
+                            menu_filesel_preexit(ventana);
+                            return 1;
+                        }
 
-					}
+                        if (tipo==1) {
+				
+
+                            char directorio_reciente[PATH_MAX];
+                            util_get_dir(archivo_reciente,directorio_reciente);        
+
+                            zvfs_chdir(directorio_reciente);
+                            releer_directorio=1;
+
+                
+					    }
+                    }
 				}
 
 				//Si esta filesel, opciones en mayusculas
@@ -5414,13 +5511,13 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
                                 //Rename para cualquier tipo de archivo
                                 if (tecla=='N') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,1);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,1,ventana);
                                     releer_directorio=1;
                                 }
 
                                 //Copy para cualquier tipo de origen. Si es directorio, hara copy recursive
                                 if (tecla=='C') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,2);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,2,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
                                     filesel_filtros_iniciales=filtros;
@@ -5431,7 +5528,7 @@ int menu_filesel(char *titulo,char *filtros[],char *archivo)
 
                                 //Move para cualquier tipo de origen. Aunque no permitimos mover carpetas entre diferentes filesystems
                                 if (tecla=='M') {
-                                    file_utils_move_rename_copy_file(file_utils_file_selected,0);
+                                    file_utils_move_rename_copy_file(file_utils_file_selected,0,ventana);
                                     //Restaurar variables globales que se alteran al llamar al otro filesel
                                     //TODO: hacer que estas variables no sean globales sino locales de esta funcion menu_filesel
                                     filesel_filtros_iniciales=filtros;

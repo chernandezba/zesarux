@@ -35,6 +35,7 @@
 #include "cpu.h"
 #include "debug.h"
 #include "settings.h"
+#include "timer.h"
 
 
 //char *buffer_actual;
@@ -241,6 +242,9 @@ char temporary_audiosdl_fifo_sdl_buffer[AUDIO_BUFFER_SIZE*MAX_AUDIOSDL_FIFO_MULT
 
 //ver http://www.libsdl.org/release/SDL-1.2.15/docs/html/guideaudioexamples.html
 
+
+
+
 void audiosdl_callback(void *udata, Uint8 *stream, int len)
 {
 
@@ -264,22 +268,52 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 	else {
 
-		//printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
-		if (len>audiosdl_fifo_sdl_return_size()) {
-			//debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
-			//esto puede pasar con el detector de silencio
+        //Nuevo Callback. Ver las notas sobre el nuevo callback justo despues de esta funcion
+        if (audiosdl_use_new_callback.v) {
 
-			//retornar solo lo que tenemos
-			//audiosdl_fifo_sdl_read(out,audiosdl_fifo_sdl_return_size() );
+            int indice=0;
+  
 
-			return ;
-		}
+            int tamanyo_fifo=audiosdl_fifo_sdl_return_size();
+
+            int leer=len;
+
+            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+            if (leer>tamanyo_fifo) {
+                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",leer,tamanyo_fifo );
+
+                //Si se pide mas audio del que tenemos, dejamos nuestro buffer anterior (llegará a SDL_MixAudio) y no metemos audio nuevo, esto hace que se note menos el corte
+                //Esto podria parecer algo sin sentido pero no es asi, cuando sucede esto, es mejor retornar el mismo buffer que teniamos,
+                //en vez de hacer un llenado parcial, porque en este caso se notarian los clicks, tanto en Windows como en Linux
+            }
 
 
-		else {
-			//printf ("audiosdl_callback. enviando sonido\n");
-			audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
-		}
+            else {
+                
+                //printf ("audiosdl_callback. enviando sonido\n");
+                if (leer) {
+                    audiosdl_fifo_sdl_read(&temporary_audiosdl_fifo_sdl_buffer[indice],leer);       
+                }
+                
+            }
+        }
+
+        //Viejo Callback
+        else {
+            //printf ("audiosdl_callback. longitud pedida: %d AUDIO_BUFFER_SIZE: %d\n",len,AUDIO_BUFFER_SIZE);
+            if (len>audiosdl_fifo_sdl_return_size()) {
+                //debug_printf (VERBOSE_DEBUG,"FIFO is not big enough. Length asked: %d audiosdl_fifo_sdl_return_size: %d",len,audiosdl_fifo_sdl_return_size() );
+                //Volvemos sin hacer SDL_MixAudio
+
+                return ;
+            }
+
+
+            else {
+                //printf ("audiosdl_callback. enviando sonido\n");
+                audiosdl_fifo_sdl_read(temporary_audiosdl_fifo_sdl_buffer,len);
+            }
+        }
 
 	}
 
@@ -287,3 +321,37 @@ void audiosdl_callback(void *udata, Uint8 *stream, int len)
 
 
 }
+
+/*
+Notas sobre el nuevo callback:
+
+Este callback soluciona los problemas de "clicks" en windows (y en algunos linux, sobretodo en maquina virtual)
+
+el problema con el sonido en windows tiene su origen en el windows propiamente y también en la manera como estaba enviando yo el sonido
+lo resumo de manera rápida:
+-en el driver de audio sdl (el que uso en windows, y que también puedes usar en linux) es el propio driver el que llama a una función, que defino de mi código de ZEsarUX, cuando "necesita" enviar mas sonido
+o sea, te dice "oye necesito 10ms de sonido, dámelos"
+ese sonido yo lo tengo pre-generado en otro sitio, desde el bucle de emulación de la cpu
+y aquí pueden suceder dos cosas:
+1) que ese buffer que yo tengo pre-generado tenga ya al menos esos 10ms de sonido, por tanto le paso el trozo que me pide. hasta aqui ok
+2) que ese buffer que yo tengo pre-generado no tenga aun 10ms de sonido, que haya menos. hasta ahora lo que yo hacia era: no te doy nada de sonido. con lo que el driver estaba enviando silencio (los clicks)
+ahora el caso 2) con el nuevo callback hace otra cosa: te envío el mismo sonido que te había enviado antes
+
+por tanto, eso se puede llegar  a apreciar con musica funcionando, no hay clicks pero te puede sonar raro a veces. es verdad que esos fragmentos son muy cortos (menos de 10ms realmente) y cuesta apreciarlos
+
+ese caso 2 lo estaba gestionando mal, pero también es verdad que en linux (en maquina fisica) no me solia suceder (aunque si en maquina virtual)
+
+por qué no sucedia en linux? porque linux gestiona mucho mejor las temporalizaciones que en windows, por tanto, el linux físico cuando me pedia ese trocito de sonido yo ya lo tenia generado, porque todo va mas "a su tiempo justo"
+
+pero windows parece que no, cuando el driver de sonido me pedia sonid, mi bucle de emulacion aún no había llegado a ese punto (por error en las temporalizaciones de windows) y de ahí que se manifestase ese problema en el audio (el underrun se llama)
+
+viendo código de otros emuladores que usan sdl vi varias maneras de gestionar eso
+
+1) retornar solo la cantidad de sonido que llevo generado. eso provoca clicks
+
+2) retornar la cantidad generada +silencio para rellenar: eso provoca clicks
+
+3) retornar lo mismo que habias enviado antes: eso no genera clicks. Asunto resuelto :) 
+Esto lo vi en el emulador Xpeccy, archivo Xpeccy/src/xcore/sound.cpp
+*/
+

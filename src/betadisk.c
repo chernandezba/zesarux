@@ -52,6 +52,9 @@ z80_bit betadisk_active={0};
 z80_bit betadisk_allow_boot_48k={1};
 
 
+//Motor simulado de betadisk
+int betadisk_simulated_motor=0;
+
 int betadisk_nested_id_core;
 int betadisk_nested_id_peek_byte;
 int betadisk_nested_id_peek_byte_no_time;
@@ -579,6 +582,18 @@ A=0 read, A=255 write
 
 	for (;numero_sectores>0;numero_sectores--) {
 		for (byte_en_sector=0;byte_en_sector<betadisk_bytes_por_sector;byte_en_sector++) {
+
+            //Notificar visualfloppy. Visualfloppy basado en 9 sectores de 512 bytes. mientras que betadisk:
+            //betadisk_bytes_por_sector=256;
+            //betadisk_sectores_por_pista=16;
+            int visualfloppy_sector=sector/2;
+            int visualfloppy_byte_en_sector=byte_en_sector*2;
+            menu_visual_floppy_buffer_add(pista,visualfloppy_sector,visualfloppy_byte_en_sector);
+            menu_visual_floppy_buffer_add(pista,visualfloppy_sector,visualfloppy_byte_en_sector+1);
+
+            //Y simulamos "motor on" de betadisk
+            //3 segundos
+            betadisk_simulated_motor=3;
 
 			if (reg_a==0) {
 			z80_byte byte_leido=betadisk_get_byte_disk(pista,sector,byte_en_sector);

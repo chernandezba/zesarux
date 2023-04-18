@@ -65,27 +65,27 @@ char *joystick_defined_fire_texto[]={
 //acaban actuando sobre el fire o sobre la tecla
 void joystick_possible_home_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_HOME) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_HOME && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_HOME,pressrelease);
 }
 
 
 void joystick_possible_rightshift_key(int pressrelease)
 {
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTSHIFT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_SHIFT_R,pressrelease);
 }
 
 void joystick_possible_rightalt_key(int pressrelease)
 {
 
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTALT) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTALT && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_ALT_R,pressrelease);
 }
 
 void joystick_possible_rightctrl_key(int pressrelease)
 {            
-    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTCTRL) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
+    if (joystick_defined_key_fire==JOYSTICK_KEY_FIRE_IS_RIGHTCTRL && joystick_emulation!=JOYSTICK_NONE) util_set_reset_key(UTIL_KEY_FIRE,pressrelease);
     else util_set_reset_key(UTIL_KEY_CONTROL_R,pressrelease);
 }
 
@@ -182,10 +182,8 @@ char *gunstick_texto[]={
 };
 
 
-void joystick_cycle_next_type(void)
+void joystick_cycle_next_type_autofire(void)
 {
-        if (joystick_emulation==JOYSTICK_TOTAL) joystick_emulation=0;
-        else joystick_emulation++;
 
 	//Si no esta autofire
         if (menu_hardware_autofire_cond()==0) {
@@ -194,6 +192,15 @@ void joystick_cycle_next_type(void)
                 //y ponemos tecla fire a 0, por si se habia quedado activa
                 puerto_especial_joystick=0;
         }
+}
+
+void joystick_cycle_next_type(void)
+{
+        if (joystick_emulation==JOYSTICK_TOTAL) joystick_emulation=0;
+        else joystick_emulation++;
+
+        joystick_cycle_next_type_autofire();
+
 }
 
 //Liberar auto left right si conviene, y quitar direccion actual

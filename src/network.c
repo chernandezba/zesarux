@@ -310,14 +310,49 @@ int crear_socket_TCP(void)
     return socket(PF_INET,SOCK_STREAM,0);
 }
 
+z_atomic_semaphore omplir_adr_internet_semaforo;
+
+void omplir_adr_internet_semaforo_init(void)
+{
+	z_atomic_reset(&omplir_adr_internet_semaforo);
+}
+
+
 
 int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port)
 {
+
+	//Adquirir lock
+	//Parece ser que si aqui se entra simultaneamente desde varios sitios,
+	//como h->h_addr tiene mismo valor cuando host es el mismo (ejemplo 51.83.33.13 al 
+	//enviar estadisticas, comprobar update y obtener usuarios de ayer),
+	//si se acceden todos a la vez acaba petando la sentencia 
+	//adr->sin_addr=*(struct in_addr *)h->h_addr;
+	//con segfault
+	//Parece que con este semaforo ya no peta
+	//El por qué real de esto lo desconozco,
+	//está claro que si se lanzasen montones de acciones por red simultaneamente, el uso
+	//de este bloqueo no seria para nada eficiente
+	while(z_atomic_test_and_set(&omplir_adr_internet_semaforo)) {
+		//printf("Esperando a liberar lock en omplir_adr_internet_semaforo\n");
+	} 
+
         struct hostent *h;
 
         adr->sin_family=AF_INET;
         if (host!=NULL) {
-                if ((h=gethostbyname(host))==NULL) return -1;
+
+
+			h=gethostbyname(host);
+            
+			if (h==NULL) {
+
+				//Liberar lock
+				z_atomic_reset(&omplir_adr_internet_semaforo);
+				return -1;
+			}
+
+	
                 adr->sin_addr=*(struct in_addr *)h->h_addr;
 
                 //printf ("\nncdd_util: %s : %d = %lX\n",host,(int)n_port,(unsigned long)adr->sin_addr.s_addr);
@@ -327,6 +362,10 @@ int omplir_adr_internet(struct sockaddr_in *adr,char *host,unsigned short n_port
                 adr->sin_addr.s_addr=htonl(INADDR_ANY);
   }
         adr->sin_port=htons(n_port);
+
+	//Liberar lock
+	z_atomic_reset(&omplir_adr_internet_semaforo);
+
         return 0;
 }
 

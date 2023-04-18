@@ -813,43 +813,43 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
 
 				if (array_tabla_ensamblado[i].tipo_parametro_2!=ASM_PARM_NONE) {
 					//Parametros de tipo constante
-                                        if (array_tabla_ensamblado[i].tipo_parametro_2==ASM_PARM_CONST) {
+                    if (array_tabla_ensamblado[i].tipo_parametro_2==ASM_PARM_CONST) {
 						if (strcasecmp(buf_segundo_op,array_tabla_ensamblado[i].const_parm2)) {
                                                         //printf ("No coincide tipo const\n");
                                                         continue;
-                                                }
-                                        }
+                        }
+                    }
 
 					else {
 
 						enum asm_tipo_parametro_entrada tipo_parametro_entrada_2;
 
-        	                                tipo_parametro_entrada_2=assemble_find_param_type(buf_segundo_op,&valor_parametro_2);
+                        tipo_parametro_entrada_2=assemble_find_param_type(buf_segundo_op,&valor_parametro_2);
 
-                	                        //Que coincidan los tipos
-                        	                if (!asm_check_parameter_in_table(tipo_parametro_entrada_2,array_tabla_ensamblado[i].tipo_parametro_2)) {
-                                	                //printf ("No coinciden los tipos en parm2\n");
-                                                	continue;
-                                        	}
+                        //Que coincidan los tipos
+                        if (!asm_check_parameter_in_table(tipo_parametro_entrada_2,array_tabla_ensamblado[i].tipo_parametro_2)) {
+                                //printf ("No coinciden los tipos en parm2\n");
+                                continue;
+                        }
 					}
 				}
 
-                        	//printf ("Match opcode and parameters type\n");
+                //printf ("Match opcode and parameters type\n");
 
 				longitud_instruccion=1;
 
 
 				//Salir del bucle 
-                        	salir=1;
+                salir=1;
 				encontrado_indice=i;
 			}
-                }
+            }
         }
 
         //printf ("Indice: %d\n\n",encontrado_indice);
 
         if (encontrado_indice==-1) {
-                //printf ("No match\n");
+            //printf ("No match\n");
         }
 
 	else {
@@ -906,10 +906,14 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
                         || tipo_parametro_tabla==ASM_PARM_PARENTHESIS_NN
                         ) {
 				//Parseamos valor
-                                if (tipo_parametro_tabla==ASM_PARM_PARENTHESIS_N || tipo_parametro_tabla==ASM_PARM_PARENTHESIS_NN) {
-                                        //Saltar el parentesis en (NN)
-                                        valor_parametro=parse_string_to_number(&buffer_operador[1]);
-                                }
+                if (tipo_parametro_tabla==ASM_PARM_PARENTHESIS_N || tipo_parametro_tabla==ASM_PARM_PARENTHESIS_NN) {
+                        //Saltar el parentesis en (NN)
+                        //printf("Valor en parentesis: [%s]\n",&buffer_operador[1]);
+                        //Nota: aqui el string a parsear acaba en ), la rutina parse_string_to_number
+                        //está preparada para entender ese ) como final de cadena
+                        valor_parametro=parse_string_to_number(&buffer_operador[1]);
+                        //printf("Evaluado: %02XH\n",valor_parametro);
+                }
                         
 				else valor_parametro=parse_string_to_number(buffer_operador);
 
@@ -931,10 +935,10 @@ int assemble_opcode(int direccion_destino,char *texto,z80_byte *destino)
                                 //Si es DIS
 				if (tipo_parametro_tabla==ASM_PARM_DIS) {
 					//En destino+1
-                                        //Calcular desplazamiento
-                                        int dir_final=direccion_destino+2;
-                                        int incremento=valor_parametro-dir_final;
-                                        char incremento_8bit=incremento;
+                    //Calcular desplazamiento
+                    int dir_final=direccion_destino+2;
+                    int incremento=valor_parametro-dir_final;
+                    char incremento_8bit=incremento;
 
 
 					destino[1]=incremento_8bit;

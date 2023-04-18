@@ -72,10 +72,13 @@ extern int scr_driver_can_ext_desktop (void);
 
 extern int screen_este_driver_permite_ext_desktop;
 
-extern int screen_ext_desktop_width;
-extern int screen_ext_desktop_height;
+extern int zxdesktop_width;
+extern int zxdesktop_height;
 //extern int screen_ext_desktop_width_before_disabling;
 extern int screen_ext_desktop_enabled;
+
+extern int get_effective_zxdesktop_width(void);
+extern int get_effective_zxdesktop_height(void);
 
 extern int screen_get_total_width_window_plus_zxdesktop(void);
 extern int screen_get_total_height_window_no_footer_plus_zxdesktop(void);
@@ -148,7 +151,10 @@ extern void (*scr_putchar_footer) (int x,int y, z80_byte caracter,int tinta,int 
 extern void scr_putsprite_comun(z80_byte *puntero,int x,int y,z80_bit inverse,int tinta,int papel,z80_bit fast_mode);
 extern void scr_putsprite_comun_zoom(z80_byte *puntero,int x,int y,z80_bit inverse,int tinta,int papel,z80_bit fast_mode,int zoom_level);
 extern void scr_putchar_menu_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel,int zoom_level);
-extern void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel);
+
+//extern void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,z80_bit inverse,int tinta,int papel);
+
+extern void scr_putchar_footer_comun_zoom(z80_byte caracter,int x,int y,int tinta,int papel);
 
 extern void scr_putpixel_gui_zoom(int x,int y,int color,int zoom_level);
 extern void scr_putpixel_gui_no_zoom(int x,int y,int color,int zoom_level);
@@ -683,9 +689,15 @@ extern void screen_switch_rainbow_buffer(void);
 #define RISCOS_COLOUR_LIGHTBLUE (RISCOS_INDEX_FIRST_COLOR+2)
 #define RISCOS_COLOUR_RED       (RISCOS_INDEX_FIRST_COLOR+3)
 
+#define PCW_INDEX_FIRST_COLOR (RISCOS_INDEX_FIRST_COLOR+RISCOS_TOTAL_PALETTE_COLOURS)
+#define PCW_TOTAL_PALETTE_COLOURS 2
+
+#define PCW_COLOUR_BLACK (PCW_INDEX_FIRST_COLOR+0)
+#define PCW_COLOUR_GREEN (PCW_INDEX_FIRST_COLOR+1)
+
 //16 colores normales spectrum, 16 grises de modo scanline, 256 de gigascreen, 4 de z88, 16 de spectrum 17/48/+ real, 256 de ulaplus, 64 de spectra, 32 de CPC, 4096 de Prism, 128 de SAM, 256 de RGB8, 32768 de TSCONF, 16 de solarized
 //actualizar aqui y tambien estructura de total_palette_colours_array y #define TOTAL_PALETAS_COLORES 
-#define EMULATOR_TOTAL_PALETTE_COLOURS (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+Z88_TOTAL_PALETTE_COLOURS+ULAPLUS_TOTAL_PALETTE_COLOURS+SPECTRA_TOTAL_PALETTE_COLOURS+CPC_TOTAL_PALETTE_COLOURS+PRISM_TOTAL_PALETTE_COLOURS+SAM_TOTAL_PALETTE_COLOURS+RGB9_TOTAL_PALETTE_COLOURS+TSCONF_TOTAL_PALETTE_COLOURS+HEATMAP_TOTAL_PALETTE_COLOURS+SOLARIZED_TOTAL_PALETTE_COLOURS+BMP_TOTAL_PALETTE_COLOURS+BMP_SECOND_TOTAL_PALETTE_COLOURS+VDP_9918_TOTAL_PALETTE_COLOURS+QL_TOTAL_PALETTE_COLOURS+TURBOVISION_TOTAL_PALETTE_COLOURS+SMS_TOTAL_PALETTE_COLOURS+BEOS_TOTAL_PALETTE_COLOURS+RETROMAC_TOTAL_PALETTE_COLOURS+AMIGAOS_TOTAL_PALETTE_COLOURS+ATARITOS_TOTAL_PALETTE_COLOURS+OSDOS_TOTAL_PALETTE_COLOURS+ZESARUX_PLUS_TOTAL_PALETTE_COLOURS+RISCOS_TOTAL_PALETTE_COLOURS)
+#define EMULATOR_TOTAL_PALETTE_COLOURS (SPECCY_TOTAL_PALETTE_COLOURS+SPECCY_GREY_SCANLINE_TOTAL_PALETTE_COLOURS+GIGASCREEN_TOTAL_PALETTE_COLOURS+Z88_TOTAL_PALETTE_COLOURS+ULAPLUS_TOTAL_PALETTE_COLOURS+SPECTRA_TOTAL_PALETTE_COLOURS+CPC_TOTAL_PALETTE_COLOURS+PRISM_TOTAL_PALETTE_COLOURS+SAM_TOTAL_PALETTE_COLOURS+RGB9_TOTAL_PALETTE_COLOURS+TSCONF_TOTAL_PALETTE_COLOURS+HEATMAP_TOTAL_PALETTE_COLOURS+SOLARIZED_TOTAL_PALETTE_COLOURS+BMP_TOTAL_PALETTE_COLOURS+BMP_SECOND_TOTAL_PALETTE_COLOURS+VDP_9918_TOTAL_PALETTE_COLOURS+QL_TOTAL_PALETTE_COLOURS+TURBOVISION_TOTAL_PALETTE_COLOURS+SMS_TOTAL_PALETTE_COLOURS+BEOS_TOTAL_PALETTE_COLOURS+RETROMAC_TOTAL_PALETTE_COLOURS+AMIGAOS_TOTAL_PALETTE_COLOURS+ATARITOS_TOTAL_PALETTE_COLOURS+OSDOS_TOTAL_PALETTE_COLOURS+ZESARUX_PLUS_TOTAL_PALETTE_COLOURS+RISCOS_TOTAL_PALETTE_COLOURS+PCW_TOTAL_PALETTE_COLOURS)
 
 
 struct s_total_palette_colours {
@@ -698,7 +710,7 @@ struct s_total_palette_colours {
 typedef struct s_total_palette_colours total_palette_colours;
 
 //Esto usado en menu display->ver paleta total
-#define TOTAL_PALETAS_COLORES 15
+#define TOTAL_PALETAS_COLORES 16
 
 extern total_palette_colours total_palette_colours_array[];
 

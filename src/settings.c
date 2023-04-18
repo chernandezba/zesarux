@@ -199,6 +199,14 @@ z80_bit realtape_algorithm_new={0};
 
 
 //
+// PD765 Settings
+//
+
+//Si al activar proteccion de escritura en dsk, la controladora no retorna error a la cpu (silent mode)
+z80_bit pd765_silent_write_protection={0};
+
+
+//
 // Audio Settings
 //
 
@@ -209,6 +217,14 @@ z80_bit setting_mostrar_ay_piano_grafico={1};
 int audiochip_piano_zoom_x=3;
 int audiochip_piano_zoom_y=3;
 
+//SDL usar callback de audio antiguo o nuevo
+#ifdef MINGW
+//En Windows suele ser mejor usar el nuevo, para evitar clicks
+z80_bit audiosdl_use_new_callback={1};
+#else
+//En Linux usar el viejo, porque el nuevo produce clicks
+z80_bit audiosdl_use_new_callback={0};
+#endif
 
 //
 // Hardware Settings
@@ -293,6 +309,8 @@ z80_bit setting_machine_selection_by_name={0};
 //Si el visor de archivos siempre muestra en hexadecimal
 z80_bit menu_file_viewer_always_hex={0};
 
+//Si mostrar items avanzados de menu
+z80_bit menu_show_advanced_items={0};
 
 //
 // ZX Desktop Settings
@@ -306,7 +324,10 @@ int zxdesktop_disable_show_frame_around_display=0;
 
 z80_bit zxdesktop_configurable_icons_enabled={1};
 
+z80_bit zxdesktop_empty_trash_on_exit={0};
 
+
+z80_bit zxdesktop_icon_show_app_open={1};
 
 //
 // General Settings

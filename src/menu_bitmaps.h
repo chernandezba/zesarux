@@ -48,6 +48,11 @@ extern char *bitmap_button_ext_desktop_fullscreen[];
 extern char *bitmap_button_ext_desktop_waveform[];
 extern char *bitmap_button_ext_desktop_audioregisters[];
 extern char *bitmap_button_ext_desktop_audiosheet[];
+extern char *bitmap_button_ext_desktop_zxeyes[];
+extern char *bitmap_button_ext_desktop_watches[];
+extern char *bitmap_button_ext_desktop_visualmem[];
+extern char *bitmap_button_ext_desktop_view_sensors[];
+extern char *bitmap_button_ext_desktop_visualfloppy[];
 extern char *bitmap_button_ext_desktop_audiopiano[];
 extern char *bitmap_button_ext_desktop_wavepiano[];
 extern char *bitmap_button_ext_desktop_aymixer[];
@@ -62,6 +67,10 @@ extern char *bitmap_button_ext_desktop_snapinramrewind[];
 extern char *bitmap_button_ext_desktop_snapinramffw[];
 extern char *bitmap_button_ext_desktop_pause[];
 extern char *bitmap_button_ext_desktop_debugcpu[];
+extern char *bitmap_button_ext_desktop_ioports[];
+extern char *bitmap_button_ext_desktop_geneneralsoundregisters[];
+extern char *bitmap_button_ext_desktop_cpustatistics[];
+extern char *bitmap_button_ext_desktop_corestatistics[];
 extern char *bitmap_button_ext_desktop_debugcpu_view_adventure[];
 extern char *bitmap_button_ext_desktop_text_adventure_map[];
 extern char *bitmap_button_ext_desktop_hexeditor[];
@@ -93,6 +102,12 @@ extern char *bitmap_button_ext_desktop_file_tape[];
 extern char *bitmap_button_ext_desktop_file_generic_smartload[];
 extern char *bitmap_button_ext_desktop_speccy_online[];
 extern char *bitmap_button_ext_desktop_zx81_online[];
+extern char *bitmap_button_ext_desktop_visualrealtape[];
+extern char *bitmap_button_ext_desktop_poke[];
+extern char *bitmap_button_ext_desktop_openwindow[];
+extern char *bitmap_button_ext_desktop_processmanagement[];
+extern char *bitmap_button_ext_desktop_processswitcher[];
+extern char *bitmap_button_ext_desktop_videoinfo[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 
@@ -130,6 +145,15 @@ extern char *bitmap_lowericon_ext_desktop_sms_active[];
 extern char *bitmap_lowericon_ext_desktop_sms_inactive[];
 
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_active[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_framezero[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_frameone[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_frametwo[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_framethree[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framezero[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frameone[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_frametwo[];
+extern char *bitmap_lowericon_ext_desktop_plus3_flp_active_save_framethree[];
+
 extern char *bitmap_lowericon_ext_desktop_plus3_flp_inactive[];
 
 extern char *bitmap_lowericon_ext_desktop_betadisk_active[];
@@ -149,6 +173,9 @@ extern char *bitmap_lowericon_ext_desktop_zxunoflash[];
 
 extern char *bitmap_lowericon_ext_desktop_hilow_active[];
 extern char *bitmap_lowericon_ext_desktop_hilow_inactive[];
+extern char *bitmap_lowericon_ext_desktop_hilow_convert[];
+
+extern char *bitmap_button_ext_desktop_helpkeyboard[];
 
 extern char *bitmap_button_ext_desktop_my_machine_generic[];
 extern char *bitmap_button_ext_desktop_my_machine_gomas[];
@@ -170,7 +197,10 @@ extern char *bitmap_button_ext_desktop_my_machine_spectrum_p2a[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_p3[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_48_spa[];
 extern char *bitmap_button_ext_desktop_my_machine_inves[];
-extern char *bitmap_button_ext_desktop_my_machine_cpc[];
+extern char *bitmap_button_ext_desktop_my_machine_cpc_464[];
+extern char *bitmap_button_ext_desktop_my_machine_pcw_8256[];
+extern char *bitmap_button_ext_desktop_my_machine_cpc_6128[];
+extern char *bitmap_button_ext_desktop_my_machine_cpc_664[];
 extern char *bitmap_button_ext_desktop_my_machine_coleco[];
 extern char *bitmap_button_ext_desktop_my_machine_sms[];
 extern char *bitmap_button_ext_desktop_my_machine_sg1000[];

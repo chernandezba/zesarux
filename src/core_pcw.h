@@ -19,20 +19,13 @@
 
 */
 
-#ifndef PD765_H
-#define PD765_H
+#ifndef CORE_PCW_H
+#define CORE_PCW_H
 
 #include "cpu.h"
 
-extern z80_bit pd765_enabled;
-extern void pd765_enable(void);
-extern void pd765_disable(void);
+extern void cpu_core_loop_pcw(void);
 
-extern void pd765_motor_on(void);
-extern void pd765_motor_off(void);
-extern void pd765_write_command(z80_byte value);
-extern z80_byte pd765_read_command(void);
-extern z80_byte pd765_read_status_register(void);
 
 
 #endif

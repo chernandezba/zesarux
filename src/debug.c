@@ -46,6 +46,7 @@
 #include "core_z88.h"
 #include "core_ace.h"
 #include "core_cpc.h"
+#include "core_pcw.h"
 #include "core_sam.h"
 #include "core_ql.h"
 #include "disassemble.h"
@@ -111,6 +112,7 @@
 #include "dinamid3.h"
 #include "interface007.h"
 #include "pd765.h"
+#include "pcw.h"
 
 struct timeval debug_timer_antes, debug_timer_ahora;
 
@@ -184,10 +186,12 @@ unsigned int debug_mmu_pwa=65536; //Port Write Address (direccion usada en out_p
 unsigned int debug_mmu_mra=65536; //Memory Read Addres (direccion usada peek)
 unsigned int debug_mmu_mwa=65536; //Memory Write Address (direccion usada en poke)
 
-//Anteriores valores para mra y mwa. Solo usado en los nuevos memory-breakpoints
+//Anteriores valores para mra y mwa y mrv y mwv. 
 //Si es -1, no hay valor anterior
 unsigned int anterior_debug_mmu_mra=65536;
 unsigned int anterior_debug_mmu_mwa=65536;
+unsigned int anterior_debug_mmu_mrv=65536;
+unsigned int anterior_debug_mmu_mwv=65536;
 
 //Array usado en memory-breakpoints
 /*
@@ -789,7 +793,7 @@ void cpu_panic(char *mensaje)
 
 
 			
-			//set_menu_overlay_function(normal_overlay_texto_menu);
+			
 			//no tiene sentido tener el menu overlay abierto... o si?
 
 			menu_overlay_activo=0;
@@ -920,7 +924,8 @@ void debug_printf_sem_init(void)
 char *debug_unnamed_console_memory_pointer=NULL;
 int debug_unnamed_console_current_x=0;
 int debug_unnamed_console_current_y=0;
-int debug_unnamed_console_modified=0;
+int debug_unnamed_console_refresh=0;
+int debug_unnamed_console_new_messages=0;
 
 z80_bit debug_unnamed_console_enabled={1};
 
@@ -980,7 +985,9 @@ void debug_unnamed_console_printchar(char c)
     if (debug_unnamed_console_memory_pointer==NULL) return;
 
     //decir que se ha modificado
-    debug_unnamed_console_modified=1;
+    debug_unnamed_console_new_messages=1;
+    //y que se tiene que refrescar
+    debug_unnamed_console_refresh=1;
 
     if (c==10) {
         //siguiente linea
@@ -1047,6 +1054,88 @@ void debug_unnamed_console_init(void)
 
 }
 
+char *debug_mask_beyond_should_not_happen="BEYONDLIMIT";
+
+debug_masks_class debug_masks_class_list[]={
+    {"DSK",VERBOSE_CLASS_DSK},
+    {"PD765",VERBOSE_CLASS_PD765},
+    {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
+    {"",0}  //Siempre este al final
+};
+
+int debug_get_total_class_masks(void)
+{
+    int i;
+
+    //limite 10000 al que nunca se deberia llegar
+    for (i=0;i<10000 && debug_masks_class_list[i].name[0]!=0;i++);
+
+    return i;
+}
+
+char *debug_get_class_mask_name(int i)
+{
+    int total=debug_get_total_class_masks();
+
+    if (i>=total) {
+        debug_printf(VERBOSE_ERR,"Querying mask name beyond masks limit");
+        return debug_mask_beyond_should_not_happen;
+    }
+
+    return debug_masks_class_list[i].name;
+}
+
+int debug_get_class_mask_value(int i)
+{
+    int total=debug_get_total_class_masks();
+
+    if (i>=total) {
+        debug_printf(VERBOSE_ERR,"Querying mask value beyond masks limit");
+        return 0;
+    }
+
+    return debug_masks_class_list[i].value;
+}
+
+//Parametros de inclusion/exclusion de clases de mensajes (dsk, pd765, etc)
+//Por defecto modo excluir
+int debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_EXCLUDE;
+
+//Por defecto no excluimos nada
+int debug_mascara_clase_exclude=0;
+
+//Por defecto incluimos todo
+int debug_mascara_clase_include=0x7FFFFF00; //31 bits todos marcados, excepto ultimos 8 bits que ahi no se mete valor de mascara y bit de signo
+
+
+
+int debug_printf_check_exclude_include(unsigned int clase_mensaje)
+{
+    if (debug_mascara_modo_exclude_include==VERBOSE_MASK_CLASS_TYPE_EXCLUDE) {
+        //Excluimos tipos mensaje
+        clase_mensaje &=debug_mascara_clase_exclude;
+
+        if (clase_mensaje) {
+            //queda el bit activo, por tanto, se trata de ese mensaje que queremos excluir
+            return 0; //lo excluimos
+        }
+        else {
+            return 1; //lo incluimos
+        }
+    }
+    else {
+        //Incluimos tipos mensaje
+        clase_mensaje &=debug_mascara_clase_include;
+
+        if (clase_mensaje) {
+            //queda el bit activo, por tanto, se trata de ese mensaje que queremos incluir
+            return 1; //lo incluimos
+        }
+        else {
+            return 0; //lo excluimos
+        }
+    }
+}
 
 void debug_printf (int debuglevel, const char * format , ...)
 {
@@ -1054,13 +1143,37 @@ void debug_printf (int debuglevel, const char * format , ...)
 	while(z_atomic_test_and_set(&debug_printf_semaforo)) {
 		//printf("Esperando a liberar lock en debug_printf\n");
 	} 
+
+
+
+    int clase_mensaje;
+
+    if (debuglevel<256){
+        clase_mensaje=VERBOSE_CLASS_ANYTHINGELSE;
+    }
+    else {
+        clase_mensaje=debuglevel & 0xFFFFFF00;
+    }
+
+    //Y nuestro level realmente son los 8 bits inferiores
+    debuglevel &=0xFF;
+
+    //Validar exclude/include y si hay que mostrar ese mensaje entonces
+
+    //Clase de mensaje le llega dentro de debuglevel, si tiene mascara de bits a partir de valores 256
+    int mostrar_mensaje;    
+    mostrar_mensaje=debug_printf_check_exclude_include(clase_mensaje);
+
+    //Mensajes con VERBOSE_ERR, siempre se ven, independientemente de cual sea la class
+    if (debuglevel==VERBOSE_ERR) mostrar_mensaje=1;
+
   	int copia_verbose_level;
 
   	copia_verbose_level=verbose_level;
 
     //VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW siempre muestra el mensaje y no indica en el texto la prioridad (Error, Warning, etc del mensaje)
 
-  	if (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW) {
+  	if ((mostrar_mensaje) && (debuglevel<=copia_verbose_level || debuglevel==VERBOSE_ONLY_DEBUG_CONSOLE_WINDOW)) {
 		//tamaño del buffer bastante mas grande que el valor constante definido
 	    char buffer_final[DEBUG_MAX_MESSAGE_LENGTH*2];
 	    char buffer_inicial[DEBUG_MAX_MESSAGE_LENGTH*2+64];
@@ -1186,16 +1299,7 @@ int debug_nested_id_peek_byte;
 int debug_nested_id_peek_byte_no_time;
 
 
-void do_breakpoint_exception(char *message)
-{
-	if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
-		cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
-	}
 
-	menu_breakpoint_exception.v=1;
-	sprintf(catch_breakpoint_message,"%s",message);
-	debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
-}
 
 void set_peek_byte_function_debug(void)
 {
@@ -1268,6 +1372,7 @@ z80_byte peek_byte_no_time_debug (z80_int dir,z80_byte value GCC_UNUSED)
 	//valor=peek_byte_no_time_no_debug(dir);
 	valor=debug_nested_peek_byte_no_time_call_previous(debug_nested_id_peek_byte_no_time,dir);
 
+    anterior_debug_mmu_mrv=debug_mmu_mrv;
 	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
@@ -1286,6 +1391,7 @@ z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
         //valor=peek_byte_no_debug(dir);
 	valor=debug_nested_peek_byte_call_previous(debug_nested_id_peek_byte,dir);
 
+    anterior_debug_mmu_mrv=debug_mmu_mrv;
 	debug_mmu_mrv=valor; //Memory Read Value (valor leido en peek)
 
 
@@ -1299,6 +1405,7 @@ z80_byte peek_byte_debug (z80_int dir,z80_byte value GCC_UNUSED)
 
 z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 {
+    anterior_debug_mmu_mwv=debug_mmu_mwv;
 	debug_mmu_mwv=value;
 	anterior_debug_mmu_mwa=debug_mmu_mwa;
 	debug_mmu_mwa=dir;
@@ -1313,6 +1420,7 @@ z80_byte poke_byte_no_time_debug(z80_int dir,z80_byte value)
 
 z80_byte poke_byte_debug(z80_int dir,z80_byte value)
 {
+    anterior_debug_mmu_mwv=debug_mmu_mwv;
 	debug_mmu_mwv=value;
 	anterior_debug_mmu_mwa=debug_mmu_mwa;
 	debug_mmu_mwa=dir;
@@ -1347,6 +1455,16 @@ z80_byte lee_puerto_debug(z80_byte puerto_h,z80_byte puerto_l)
 }
 
 
+void do_breakpoint_exception(char *message)
+{
+	if (strlen(message)>MAX_MESSAGE_CATCH_BREAKPOINT-1) {
+		cpu_panic("do_breakpoint_exception: strlen>MAX_MESSAGE_CATCH_BREAKPOINT");
+	}
+
+	sprintf(catch_breakpoint_message,"%s",message);
+	debug_printf (VERBOSE_INFO,"Catch breakpoint: %s",message);
+}
+
 
 //Mostrar mensaje que ha hecho saltar el breakpoint y ejecutar accion (por defecto abrir menu)
 void cpu_core_loop_debug_breakpoint(char *message)
@@ -1355,14 +1473,19 @@ void cpu_core_loop_debug_breakpoint(char *message)
 	do_breakpoint_exception(message);
 
     if (debug_if_breakpoint_action_menu(catch_breakpoint_index)) {
-        zxvision_open_menu_with_window("debugcpu");
-        //printf("despues zxvision_open_menu_with_window debugcpu\n");
+        menu_breakpoint_exception.v=1;
+
+        //Si el breakpoint no ha saltado mientras estamos en cpu step de ZRCP
+        if (menu_event_remote_protocol_enterstep.v==0) {
+            zxvision_open_menu_with_window("debugcpu");
+        }
+        
     }
 
     
     else {
         //Gestionar acciones. Se gestionan desde aqui mismo y ya no escalan a menu
-        menu_breakpoint_exception.v=0;
+        
         //Gestion acciones
         //printf("Handling action %s\n",debug_breakpoints_actions_array[catch_breakpoint_index]);
         debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
@@ -1780,7 +1903,7 @@ void set_cpu_core_loop(void)
 	                        cpu_core_loop=cpu_core_loop_spectrum;
 			}
 			else {
-				debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
+				debug_printf(VERBOSE_WARN,"Setting REDUCED Spectrum CPU core, the following features will NOT be available or will NOT be properly emulated: Debug t-states, Char detection, PLUS3DOS traps, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file");
 				cpu_core_loop=cpu_core_loop_reduced_spectrum;
 			}
                         cpu_core_loop_name="Spectrum";
@@ -1803,6 +1926,12 @@ void set_cpu_core_loop(void)
                         cpu_core_loop=cpu_core_loop_cpc;
                         cpu_core_loop_name="CPC";
                 break;
+
+                case CPU_CORE_PCW:
+                        debug_printf(VERBOSE_INFO,"Setting PCW core");
+                        cpu_core_loop=cpu_core_loop_pcw;
+                        cpu_core_loop_name="PCW";
+                break;                
 
                 case CPU_CORE_Z88:
                         debug_printf(VERBOSE_INFO,"Setting Z88 CPU core");
@@ -5322,38 +5451,79 @@ void debug_get_ioports(char *stats_buffer)
 		}
   	}
 
+    if (MACHINE_IS_PCW) {
+        int i;
+        for (i=0;i<4;i++) {
+            sprintf (buf_linea,"PCW port %02XH: %02X\n",0x80+i,pcw_bank_registers[i]);
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
+        }   
+        sprintf (buf_linea,"PCW port F4H: %02X\n",pcw_port_f4_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F5H: %02X\n",pcw_port_f5_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F6H: %02X\n",pcw_port_f6_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"PCW port F7H: %02X\n",pcw_port_f7_value);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        
+        sprintf (buf_linea,"PCW port F8H: %02X\n",pcw_get_port_f8_value() );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
+        //sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
+        //sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+    }
+
     if (pd765_enabled.v) {
   		sprintf (buf_linea,"\nPD765 status:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Motor: %s\n",(pd765_motor_status ? "On" : "Off"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	            
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+        sprintf (buf_linea,"%s command: %s\n",
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "Running" : "Last   "),
+            pd765_last_command_name() );
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
 
         sprintf (buf_linea,"(%s %s %s %s %s %s %s %s)\n",
-            (pd765_main_status_register & PD765_STATUS_REGISTER_RQM_MASK ? "RQM" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_DIO_MASK ? "DIO" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK ? "EXM" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_CB_MASK  ? "CB " : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_D3B_MASK ? "D3B" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_D2B_MASK ? "D2B" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_D1B_MASK ? "D1B" : "   "),
-            (pd765_main_status_register & PD765_STATUS_REGISTER_D0B_MASK ? "D0B" : "   ")
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_DIO_MASK ? "DIO" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK ? "EXM" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_CB_MASK  ? "CB " : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D3B_MASK ? "D3B" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D2B_MASK ? "D2B" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D1B_MASK ? "D1B" : "   "),
+            (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D0B_MASK ? "D0B" : "   ")
         );
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
 
         sprintf (buf_linea,"Pending interrupt: %s\n",(pd765_interrupt_pending ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
 
+
+/*
         sprintf (buf_linea,"Seeking: %s\n",(signal_se.running ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         //Chapuza. Cambiar esto por algo mejor, tipo "estado=reading data"
         sprintf (buf_linea,"Reading: %s\n",(
-                 ((pd765_main_status_register & PD765_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
+                 ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
+
+        sprintf (buf_linea,"Writing: %s\n",(
+                 ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_WRITE_DATA) ? "Yes" : "No"));
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);   
+
+*/        
 
         sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5363,6 +5533,13 @@ void debug_get_ioports(char *stats_buffer)
 
         sprintf (buf_linea,"Last Sector ID Read: (CHRN) %02XH %02XH %02XH %02XH\n",
             pd765_debug_last_sector_id_c_read,pd765_debug_last_sector_id_h_read,pd765_debug_last_sector_id_r_read,pd765_debug_last_sector_id_n_read);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+        sprintf (buf_linea,"Read Bytes/sec: %d\n",pd765_read_stats_bytes_sec);
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+
+        sprintf (buf_linea,"Write Bytes/sec: %d\n",pd765_write_stats_bytes_sec);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
@@ -5480,23 +5657,7 @@ void debug_get_ioports(char *stats_buffer)
 
 
 
-  	//Esto no en Z88
-  	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
-  		int chips=ay_retorna_numero_chips();
-  		int j;
-  		for (j=0;j<chips;j++) {
-  			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-
-                  	int i;
-  	                for (i=0;i<16;i++) {
-          	                sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
-                  	        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-  	                }
-
-  		}
-  	}
 
   	if (sn_chip_present.v) {
 
@@ -5676,8 +5837,10 @@ void debug_get_ioports(char *stats_buffer)
 			for (i=0;i<4;i++) {
 					sprintf (buf_linea,"%02X:  %02X\n",i,cpc_gate_registers[i]);
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}		
-			
+			}	
+
+			sprintf (buf_linea,"\nPort DF: %02XH\n",cpc_port_df);
+  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);			
 			
 	}	 
 	
@@ -5693,7 +5856,24 @@ void debug_get_ioports(char *stats_buffer)
 
         sprintf (buf_linea,"MC_STAT: %02X\n",ql_mc_stat);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
-    } 	  
+    } 	
+
+  	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
+  		int chips=ay_retorna_numero_chips();
+  		int j;
+  		for (j=0;j<chips;j++) {
+  			sprintf (buf_linea,"\nAY-3-8912 chip %d:\n",j);
+  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+
+                  	int i;
+  	                for (i=0;i<16;i++) {
+          	                sprintf (buf_linea,"%02X:  %02X\n",i,ay_3_8912_registros[j][i]);
+                  	        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+  	                }
+
+  		}
+  	}      
 
 
     stats_buffer[index_buffer]=0;
@@ -6781,6 +6961,22 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                         }
 
             }
+
+  			if (MACHINE_IS_PCW) {
+                
+                segmentos_totales=4;
+                int pagina;
+                for (pagina=0;pagina<4;pagina++) {
+            
+                    sprintf (segmentos[pagina].shortname,"RAM%d",pcw_banks_paged_read[pagina]);
+                    sprintf (segmentos[pagina].longname,"RAM %d",pcw_banks_paged_read[pagina]);
+    
+                    segmentos[pagina].length=16384;
+                    segmentos[pagina].start=16384*pagina;
+
+                }
+
+            }            
 
   			//Paginas RAM en SAM
   			if (MACHINE_IS_SAM) {
@@ -8543,6 +8739,7 @@ struct s_machine_family_names family_names[]={
     {MACHINE_FAMILY_ACE,"Jupiter Ace"},
     {MACHINE_FAMILY_Z88,"Z88"},
     {MACHINE_FAMILY_CPC,"CPC"},
+    {MACHINE_FAMILY_PCW,"PCW"},
     {MACHINE_FAMILY_QL,"QL"},
     {MACHINE_FAMILY_MK14,"MK14"},
 
@@ -8570,6 +8767,10 @@ struct s_machine_family machine_family_list[]={
     {MACHINE_ID_Z88,MACHINE_FAMILY_Z88},
     {MACHINE_ID_CPC_464,MACHINE_FAMILY_CPC},
     {MACHINE_ID_CPC_4128,MACHINE_FAMILY_CPC},
+    {MACHINE_ID_CPC_664,MACHINE_FAMILY_CPC},
+    {MACHINE_ID_CPC_6128,MACHINE_FAMILY_CPC},
+    {MACHINE_ID_PCW_8256,MACHINE_FAMILY_PCW},
+    {MACHINE_ID_PCW_8512,MACHINE_FAMILY_PCW},
     {MACHINE_ID_QL_STANDARD,MACHINE_FAMILY_QL},
     {MACHINE_ID_MK14_STANDARD,MACHINE_FAMILY_MK14},
 

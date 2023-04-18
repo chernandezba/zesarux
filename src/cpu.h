@@ -42,14 +42,15 @@ Examples
 */
 
 
-#define EMULATOR_VERSION "10.3-SN"
+//#define EMULATOR_VERSION "10.3-SN"
+#define EMULATOR_VERSION "10.3-B1"
 //#define EMULATOR_VERSION "10.3"
 //#define EMULATOR_VERSION "10.3-RC"
 //#define EMULATOR_VERSION "10.3"
 #define SNAPSHOT_VERSION
 
-#define EMULATOR_DATE "02 November 2022"
-#define EMULATOR_SHORT_DATE "02/11/2022"
+#define EMULATOR_DATE "13 April 2023"
+#define EMULATOR_SHORT_DATE "13/04/2023"
 #define EMULATOR_GAME_EDITION "xxx"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com" 
@@ -98,6 +99,8 @@ typedef struct s_z80_bit z80_bit;
 
 extern int zoom_x,zoom_y;
 extern int zoom_x_original,zoom_y_original;
+
+extern z80_bit autochange_zoom_big_display;
 
 
 extern z80_registro registro_hl;
@@ -179,6 +182,11 @@ extern z80_bit cpu_step_mode;
 extern int core_refetch;
 extern int cpu_duracion_pulso_interrupcion;
 extern z80_bit core_end_frame_check_zrcp_zeng_snap;
+
+extern unsigned int buildnumber_int;
+extern unsigned int last_buildnumber_int;
+extern z80_bit zesarux_has_been_downgraded;
+extern char last_version_text_string[];
 
 extern z80_int get_im2_interrupt_vector(void);
 
@@ -285,6 +293,7 @@ extern z80_byte video_zx8081_ula_video_output;
 #define CPU_CORE_SG1000 11
 #define CPU_CORE_SVI 12
 #define CPU_CORE_SMS 13
+#define CPU_CORE_PCW 14
 
 extern struct timeval z80_interrupts_timer_antes, z80_interrupts_timer_ahora;
 extern long z80_timer_difftime, z80_timer_seconds, z80_timer_useconds;
@@ -423,12 +432,18 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_ID_CPC_464	        		140
 #define MACHINE_ID_CPC_4128	        		141
+#define MACHINE_ID_CPC_664	        		142
+#define MACHINE_ID_CPC_6128	        		143
 
 #define MACHINE_ID_SAM		        		150
 
 #define MACHINE_ID_QL_STANDARD	    		160
 
 #define MACHINE_ID_MK14_STANDARD	    	180
+
+#define MACHINE_ID_PCW_8256                 190
+#define MACHINE_ID_PCW_8512                 191
+
 
 //
 //Condiciones de maquinas activas
@@ -491,6 +506,12 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_CPC_464                  (current_machine_type==MACHINE_ID_CPC_464)
 #define MACHINE_IS_CPC_4128                 (current_machine_type==MACHINE_ID_CPC_4128)
+#define MACHINE_IS_CPC_6128                 (current_machine_type==MACHINE_ID_CPC_6128)
+#define MACHINE_IS_CPC_664                  (current_machine_type==MACHINE_ID_CPC_664)
+
+#define MACHINE_IS_CPC_HAS_FLOPPY           (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664)
+#define MACHINE_IS_CPC_HAS_128K             (MACHINE_IS_CPC_4128 || MACHINE_IS_CPC_6128)
+#define MACHINE_IS_CPC_HAS_64K              (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_664)
 
 #define MACHINE_IS_SAM                      (current_machine_type==MACHINE_ID_SAM)
 
@@ -498,7 +519,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_MK14_STANDARD            (current_machine_type==MACHINE_ID_MK14_STANDARD)
 
-
+#define MACHINE_IS_PCW_8256                 (current_machine_type==MACHINE_ID_PCW_8256)
+#define MACHINE_IS_PCW_8512                 (current_machine_type==MACHINE_ID_PCW_8512)
 
 //
 //Condiciones de maquinas activas
@@ -555,6 +577,8 @@ extern z80_bit stdout_simpletext_automatic_redraw;
 
 #define MACHINE_IS_MK14                         (current_machine_type>=MACHINE_ID_MK14_STANDARD && current_machine_type<=189)
 
+#define MACHINE_IS_PCW                          (current_machine_type>=MACHINE_ID_PCW_8256 && current_machine_type<=199)
+
 
 //
 //Condiciones de CPU
@@ -582,6 +606,7 @@ enum machine_families_list
     MACHINE_FAMILY_ACE,
     MACHINE_FAMILY_Z88,
     MACHINE_FAMILY_CPC,
+    MACHINE_FAMILY_PCW,
     MACHINE_FAMILY_QL,
     MACHINE_FAMILY_MK14,
 
@@ -630,7 +655,7 @@ extern char *z80_cpu_types_strings[];
 
 
 extern int zesarux_main (int main_argc,char *main_argv[]);
-extern z80_bit no_cambio_parametros_maquinas_lentas;
+extern z80_bit cambio_parametros_maquinas_lentas;
 extern z80_bit opcion_no_welcome_message;
 
 extern int argc;

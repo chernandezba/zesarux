@@ -152,7 +152,10 @@ extern z80_bit debug_parse_config_file;
 #define RAWKEY_comma 0x33
 #define RAWKEY_period 0x34
 #define RAWKEY_slash 0x35
+#define RAWKEY_KP_Divide 0x35
 #define RAWKEY_Shift_R 0x36
+
+#define RAWKEY_KP_Multiply 0x37
 
 #define RAWKEY_Alt_L 0x38
 #define RAWKEY_Space 0x39
@@ -171,32 +174,27 @@ extern z80_bit debug_parse_config_file;
 #define RAWKEY_F9 0x43
 #define RAWKEY_F10 0x44
 
+#define RAWKEY_Num_Lock 0x45
 
+#define RAWKEY_Scroll_Lock 0x46
 
 //Estas home,up,left... hasta pgdown son las generadas en el teclado numerico
 #define RAWKEY_Keypad_Home 0x47
 #define RAWKEY_Keypad_Up 0x48
-#define RAWKEY_Keypad_Left 0x4b
-#define RAWKEY_Keypad_Right 0x4d
-#define RAWKEY_Keypad_Down 0x50
-
 #define RAWKEY_Keypad_Page_Up 0x49
+#define RAWKEY_KP_Subtract 0x4a
+#define RAWKEY_Keypad_Left 0x4b
+#define RAWKEY_Keypad_5 = 0x4c,
+#define RAWKEY_Keypad_Right 0x4d
+#define RAWKEY_KP_Add 0x4e
+#define RAWKEY_KP_End 0x4f
+#define RAWKEY_Keypad_Down 0x50
 #define RAWKEY_Keypad_Page_Down 0x51
+#define RAWKEY_Keypad_0 0x52
+#define RAWKEY_Keypad_Period 0x53
 
 //Tecla a la izquierda de la Z
 #define RAWKEY_leftz 0x56
-
-
-
-#define RAWKEY_KP_Subtract 0x4a
-//#define RAWKEY_plus 0x4e
-#define RAWKEY_KP_Add 0x4e
-
-//#define RAWKEY_slash 0x35
-#define RAWKEY_KP_Divide 0x35
-
-//#define RAWKEY_asterisk 0x37
-#define RAWKEY_KP_Multiply 0x37
 
 
 /*
@@ -275,10 +273,6 @@ enum util_teclas
 	UTIL_KEY_CAPS_LOCK,
 	UTIL_KEY_COMMA,
 	UTIL_KEY_PERIOD,
-	UTIL_KEY_MINUS,
-	UTIL_KEY_PLUS,
-	UTIL_KEY_SLASH,
-	UTIL_KEY_ASTERISK,
 	UTIL_KEY_F1,
 	UTIL_KEY_F2,
 	UTIL_KEY_F3,
@@ -297,6 +291,11 @@ enum util_teclas
 	UTIL_KEY_ESC,
 	UTIL_KEY_PAGE_UP,
 	UTIL_KEY_PAGE_DOWN,
+	UTIL_KEY_KP_PLUS,    
+    UTIL_KEY_KP_NUMLOCK,
+    UTIL_KEY_KP_DIVIDE,
+    UTIL_KEY_KP_MULTIPLY,
+    UTIL_KEY_KP_MINUS,
 	UTIL_KEY_KP0,
 	UTIL_KEY_KP1,
 	UTIL_KEY_KP2,
@@ -309,7 +308,8 @@ enum util_teclas
 	UTIL_KEY_KP9,
 	UTIL_KEY_KP_COMMA,
 	UTIL_KEY_KP_ENTER,
-	UTIL_KEY_WINKEY,
+	UTIL_KEY_WINKEY_L,
+    UTIL_KEY_WINKEY_R,
 
 	//Estos 5 son para enviar eventos de joystick mediante ZENG
 	UTIL_KEY_JOY_FIRE,
@@ -351,7 +351,8 @@ enum util_teclas_common_keymap
         UTIL_KEY_COMMON_KEYMAP_POUND,
         UTIL_KEY_COMMON_KEYMAP_COMMA,
         UTIL_KEY_COMMON_KEYMAP_PERIOD,
-        UTIL_KEY_COMMON_KEYMAP_SLASH
+        UTIL_KEY_COMMON_KEYMAP_SLASH,
+        UTIL_KEY_COMMON_KEYMAP_LEFTZ
 };
 
 //valores usados en funcion util_set_reset_key_cpc_keymap
@@ -667,6 +668,7 @@ extern int util_parse_commands_argvc(char *texto, char *parm_argv[], int maximo)
 extern int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maximo);
 
 extern int get_machine_id_by_name(char *machine_name);
+extern void get_machine_list_whitespace(void);
 
 extern void util_truncate_file(char *filename);
 
@@ -797,6 +799,9 @@ extern int util_extract_trd(char *filename,char *tempdir);
 
 extern void util_file_append(char *filename,z80_byte *puntero, int tamanyo);
 
+extern int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z80_byte *bloques,int entrada_obtener);
+extern void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bloque,int *sector1,int *pista1,int *sector2,int *pista2,int incremento_pista);
+
 extern int util_extract_dsk(char *filename,char *tempdir);
 
 extern int util_extract_z88_card(char *filename,char *tempdir);
@@ -861,6 +866,7 @@ extern void snapshot_get_date_time_string(char *texto);
 #define MEMORY_ZONE_RAMJET_ROM 45
 #define MEMORY_ZONE_INTERFACE007_ROM 46
 #define MEMORY_ZONE_DINAMID3_ROM 47
+#define MEMORY_ZONE_DSK_SECTOR 48
 
 
 
@@ -941,9 +947,12 @@ extern void util_copy_files_to_mmc_doit(void);
 extern z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset);
 extern void util_memcpy_protect_origin(z80_byte *destino,z80_byte *memoria,int total_size,int offset,int total_copiar);
 extern int util_abs(int v);
+extern int util_sign(int v);
 extern int util_get_cosine(int degrees);
 extern int util_get_sine(int degrees);
 extern int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items);
+extern z80_64bit util_sqrt(z80_64bit number,int *result_type);
+extern int util_get_acosine(int cosine);
 
 extern void util_print_minutes_seconds(int segundos_totales, char *texto);
 
@@ -962,5 +971,12 @@ extern int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size);
 extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
 
 extern int util_parity(z80_byte value);
+
+
+//Contando el NULL del final
+#define UTIL_SCANF_HISTORY_MAX_LINES 11
+
+extern void util_scanf_history_insert(char **textos_historial,char *texto);
+extern int util_scanf_history_get_total_lines(char **textos_historial);
 
 #endif
