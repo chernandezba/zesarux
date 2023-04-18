@@ -579,7 +579,7 @@ extern void menu_first_aid_init(void);
 extern void menu_first_aid_random_startup(void);
 extern int menu_first_aid_title(char *key_setting,char *title);
 
-#define MAX_F_FUNCTIONS 60
+#define MAX_F_FUNCTIONS 61
 
 enum defined_f_function_ids {
 	//reset, hard-reset, nmi, open menu, ocr, smartload, osd keyboard, exitemulator.
@@ -615,7 +615,8 @@ enum defined_f_function_ids {
 	F_FUNCION_OSDKEYBOARD,
 	F_FUNCION_OSDTEXTKEYBOARD,
     F_FUNCION_SWITCHBORDER,
-	F_FUNCION_SWITCHFULLSCREEN, 
+	F_FUNCION_SWITCHFULLSCREEN,
+    F_FUNCION_SWITCHFOOTER,
 	F_FUNCION_RELOADMMC, 
 	F_FUNCION_REINSERTSTDTAPE, 
 	F_FUNCION_PAUSEUNPAUSEREALTAPE,
