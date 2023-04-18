@@ -7959,7 +7959,7 @@ void menu_escribe_linea_opcion_zxvision(zxvision_window *ventana,int indice,int 
     //Si tiene submenu, mostrar caracter >
     if (tiene_submenu && menu_hide_submenu_indicator.v==0) {
         int ancho=ventana->visible_width;
-        zxvision_print_string(ventana,ancho-1,indice,tinta,papel,0,">");
+        zxvision_print_string(ventana,ancho-2,indice,tinta,papel,0,"> ");
     }
 
 	//Si tiene dos colores
@@ -10800,7 +10800,7 @@ void zxvision_generic_message_crea_ventana(zxvision_window *ventana,int xventana
     int is_minimized,int is_maximized,int ancho_antes_minimize,int alto_antes_minimize)
 {
 	zxvision_new_window(ventana,xventana,yventana,ancho_ventana,alto_ventana,
-							ancho_ventana-1,alto_total_ventana,titulo);	
+							ancho_ventana-1,alto_total_ventana,titulo);
 
 
 	//printf ("despues de zxvision_new_window\n");							
