@@ -24428,10 +24428,10 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
 
 void set_splash_zesarux_logo_paso(int paso)
 {
-    //set_splash_zesarux_logo_paso_normal(paso);
+    set_splash_zesarux_logo_paso_normal(paso);
 
     //TODO: flag para activar modo xanniversary, y que ademas lo diga en texto? X Anniversary Edition?
-    set_splash_zesarux_logo_paso_xanniversary(paso);
+    //set_splash_zesarux_logo_paso_xanniversary(paso);
 }
 
 //Retorna color de paleta spectrum segun letra color logo ascii W: white, X: Black, etc
