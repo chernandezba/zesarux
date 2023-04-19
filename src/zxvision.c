@@ -199,6 +199,7 @@ defined_f_function defined_direct_functions_array[MAX_F_FUNCTIONS]={
     //Switch de cosas
 	{"SwitchBorder",F_FUNCION_SWITCHBORDER,bitmap_button_ext_desktop_switchborder,""}, 
 	{"SwitchFullScr",F_FUNCION_SWITCHFULLSCREEN,bitmap_button_ext_desktop_fullscreen,""}, 
+	{"SwitchFooter",F_FUNCION_SWITCHFOOTER,bitmap_button_ext_desktop_nothing,""},
 
     //Actuar sobre storage
 	{"ReloadMMC",F_FUNCION_RELOADMMC,bitmap_button_ext_desktop_reloadmmc,""}, 
@@ -6710,7 +6711,10 @@ void disable_footer(void)
 
 }
 
-
+void switch_footer(void) {
+    menu_footer = menu_footer ? 0 : 1;
+    screen_init_pantalla_and_others_and_realjoystick();
+}
 
 
 
