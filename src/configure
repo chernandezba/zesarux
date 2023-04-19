@@ -2410,7 +2410,12 @@ fi
 export LANG=C
 
 #Estadisticas
+#Lineas codigo fuente
 LINES_SOURCE=`wc -l *.c *.m *.h|tail -1|awk '{printf $1}'`
+#Cantidad comentarios (TODO: esto es aprox porque puede haber un comentario en varias lineas con //)
+COMMENTS_TYPE_LINE=`grep '//' *.c *.m *.h|wc -l|tail -1|awk '{printf $1}'`
+COMMENTS_TYPE_BLOCK=`grep '/\*' *.c *.m *.h|wc -l|tail -1|awk '{printf $1}'`
+TOTAL_COMMENTS=$(($COMMENTS_TYPE_LINE+$COMMENTS_TYPE_BLOCK))
 
 #contamos entradas en los TODO files que empiezan con guion (-)
 TODO_FILES_LINES=`cat TODO*|grep -v "^$"|grep "^-"|wc -l|awk '{printf $1}'`
@@ -2433,6 +2438,7 @@ cat >> compileoptions.h << _EOF
 #define INSTALL_PREFIX "$INSTALLPREFIX"
 
 #define LINES_SOURCE $LINES_SOURCE
+#define TOTAL_COMMENTS $TOTAL_COMMENTS
 #define TOTAL_TODO_ITEMS $TOTAL_TODO_ITEMS
 
 #define BUILDNUMBER "$BUILDNUMBER"

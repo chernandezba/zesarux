@@ -24081,7 +24081,24 @@ void menu_inicio(void)
 
 }
 
+//Escribe bloque de cuadrado de color concreto, con *2 
+void set_splash_zesarux_logo_put_space_color(int x,int y,int color)
+{
 
+
+	if (!strcmp(scr_new_driver_name,"aa")) {
+		putchar_menu_overlay(x,y,'X',7,0);
+        putchar_menu_overlay(x+1,y,'X',7,0);
+        putchar_menu_overlay(x,y+1,'X',7,0);
+        putchar_menu_overlay(x+1,y+1,'X',7,0);
+	}
+	else {
+        putchar_menu_overlay(x,y,' ',7,color);
+        putchar_menu_overlay(x+1,y,' ',7,color);
+        putchar_menu_overlay(x,y+1,' ',7,color);
+        putchar_menu_overlay(x+1,y+1,' ',7,color);
+    }
+}
 
 //Escribe bloque de cuadrado de color negro  
 void set_splash_zesarux_logo_put_space(int x,int y)
@@ -24152,7 +24169,7 @@ int get_zsplash_y_coord(void)
 //2: franja roja y amarilla
 //3: franja roja y amarilla y verde
 //4 o mayor: franja roja y amarilla y verde y cyan
-void set_splash_zesarux_logo_paso(int paso)
+void set_splash_zesarux_logo_paso_normal(int paso)
 {
 	int x,y;
 
@@ -24307,8 +24324,125 @@ RRRYYY
 
 }
 
+//Dibuja el logo especial de X aniversario pero en diferentes pasos:
+//0: solo la X
+//1: zona roja
+//2: zona roja y amarilla
+//3: zona roja y amarilla y verde
+//4 o mayor: zona roja y amarilla y verde y cyan
+void set_splash_zesarux_logo_paso_xanniversary(int paso)
+{
+	int x,y;
+
+	int ancho_z=6;
+	int alto_z=6;
+
+	int x_inicial=menu_center_x()-ancho_z;  //Centrado
+	int y_inicial=get_zsplash_y_coord();
+
+	debug_printf(VERBOSE_DEBUG,"Drawing ZEsarUX X Anniversary splash logo, step %d",paso);
+
+    int color_fondo=7;
+    int color_rojo=2;
+    int color_amarillo=6;
+    int color_verde=4;
+    int color_cyan=5;
+
+    if (christmas_mode.v) {
+        color_fondo=15;
+        color_rojo=2+8;
+        color_amarillo=4+8;
+        color_verde=2+8;
+        color_cyan=4+8;
+    }
 
 
+	//Primero todo texto en gris. Envolvemos un poco mas
+	for (y=y_inicial-1;y<y_inicial+ancho_z*2+1;y++) {
+		for (x=x_inicial-1;x<x_inicial+ancho_z*2+1;x++) {
+			putchar_menu_overlay_parpadeo(x,y,' ',0,color_fondo,0);
+
+
+		}
+	}
+
+
+	
+    int i;
+    //Linea X hacia la derecha
+    for (i=0;i<ancho_z;i++) {
+		set_splash_zesarux_logo_put_space(x_inicial+i*2,    y_inicial+i*2);
+        set_splash_zesarux_logo_put_space(x_inicial+i*2+1,  y_inicial+i*2);
+        set_splash_zesarux_logo_put_space(x_inicial+i*2,    y_inicial+i*2+1);
+        set_splash_zesarux_logo_put_space(x_inicial+i*2+1,  y_inicial+i*2+1);
+	}
+
+    //Linea X hacia la izquierda
+    x=x_inicial+(ancho_z-1)*2;
+    for (i=ancho_z-1;i>=0;i--) {
+		set_splash_zesarux_logo_put_space(x-i*2,    y_inicial+i*2);
+        set_splash_zesarux_logo_put_space(x-i*2+1,  y_inicial+i*2);
+        set_splash_zesarux_logo_put_space(x-i*2,    y_inicial+i*2+1);
+        set_splash_zesarux_logo_put_space(x-i*2+1,  y_inicial+i*2+1);
+	}
+
+
+	//Y ahora las zonas de colores
+	//Rojo amarillo verde cyan
+	//2      6       4     5
+
+	if (paso==0) return;
+
+
+    //Zona roja
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial+2,color_rojo); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial+2,color_rojo); 
+    if (paso==1) return;
+
+
+    //Zona amarilla
+    x=x_inicial+(ancho_z-1)*2;
+    set_splash_zesarux_logo_put_space_color(x,y_inicial+2,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x,y_inicial+4,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x,y_inicial+6,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x,y_inicial+8,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x-2,y_inicial+4,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x-2,y_inicial+6,color_amarillo); 
+    if (paso==2) return;
+
+    //Zona verde
+    y=y_inicial+(alto_z-1)*2;
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+4,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+4,y-2,color_verde); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y-2,color_verde); 
+    if (paso==3) return;
+
+
+    //Zona cyan
+    x=x_inicial+(ancho_z-1)*2;
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+2,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+4,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+6,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+8,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+4,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+6,color_cyan); 
+
+}
+
+void set_splash_zesarux_logo_paso(int paso)
+{
+    set_splash_zesarux_logo_paso_normal(paso);
+
+    //TODO: flag para activar modo xanniversary, y que ademas lo diga en texto? X Anniversary Edition?
+    //set_splash_zesarux_logo_paso_xanniversary(paso);
+}
 
 //Retorna color de paleta spectrum segun letra color logo ascii W: white, X: Black, etc
 //en mayusculas es con brillo, sin mayusculas es sin brillo

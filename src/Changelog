@@ -67,7 +67,7 @@ Improved View Sprites:
 Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
 Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
 Improved joystick type selection
-Improved Rpi emulation: by default performance parameters are not changed, you must use "--changeslowparameters" on slow Rpi like Rpi1 or 2
+Improved Raspberry Pi emulation: performance parameters are not changed by default anymore, you must use "--changeslowparameters" on slow Rpi like Rpi1 or 2
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
