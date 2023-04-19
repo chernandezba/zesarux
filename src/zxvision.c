@@ -24333,8 +24333,8 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
 {
 	int x,y;
 
-	int ancho_z=6;
-	int alto_z=6;
+	int ancho_z=5;
+	int alto_z=5;
 
 	int x_inicial=menu_center_x()-ancho_z;  //Centrado
 	int y_inicial=get_zsplash_y_coord();
@@ -24392,14 +24392,11 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
 
 	if (paso==0) return;
 
-
     //Zona roja
     set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial,color_rojo); 
     set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial,color_rojo); 
     set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial,color_rojo); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+8,y_inicial,color_rojo); 
     set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial+2,color_rojo); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial+2,color_rojo); 
     if (paso==1) return;
 
 
@@ -24408,9 +24405,7 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
     set_splash_zesarux_logo_put_space_color(x,y_inicial+2,color_amarillo); 
     set_splash_zesarux_logo_put_space_color(x,y_inicial+4,color_amarillo); 
     set_splash_zesarux_logo_put_space_color(x,y_inicial+6,color_amarillo); 
-    set_splash_zesarux_logo_put_space_color(x,y_inicial+8,color_amarillo); 
     set_splash_zesarux_logo_put_space_color(x-2,y_inicial+4,color_amarillo); 
-    set_splash_zesarux_logo_put_space_color(x-2,y_inicial+6,color_amarillo); 
     if (paso==2) return;
 
     //Zona verde
@@ -24418,9 +24413,7 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
     set_splash_zesarux_logo_put_space_color(x_inicial+2,y,color_verde); 
     set_splash_zesarux_logo_put_space_color(x_inicial+4,y,color_verde); 
     set_splash_zesarux_logo_put_space_color(x_inicial+6,y,color_verde); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+8,y,color_verde); 
     set_splash_zesarux_logo_put_space_color(x_inicial+4,y-2,color_verde); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y-2,color_verde); 
     if (paso==3) return;
 
 
@@ -24429,18 +24422,16 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
     set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+2,color_cyan); 
     set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+4,color_cyan); 
     set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+6,color_cyan); 
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+8,color_cyan); 
     set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+4,color_cyan); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+6,color_cyan); 
 
 }
 
 void set_splash_zesarux_logo_paso(int paso)
 {
-    set_splash_zesarux_logo_paso_normal(paso);
+    //set_splash_zesarux_logo_paso_normal(paso);
 
     //TODO: flag para activar modo xanniversary, y que ademas lo diga en texto? X Anniversary Edition?
-    //set_splash_zesarux_logo_paso_xanniversary(paso);
+    set_splash_zesarux_logo_paso_xanniversary(paso);
 }
 
 //Retorna color de paleta spectrum segun letra color logo ascii W: white, X: Black, etc
