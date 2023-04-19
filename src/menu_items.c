@@ -37478,7 +37478,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         break;
 
 		case F_FUNCION_SWITCHFOOTER:
-            switch_footer();
+            menu_interface_footer();
 		break;
 
         case F_FUNCION_VISUALREALTAPE:
