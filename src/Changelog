@@ -12,6 +12,7 @@ Added Poke F-Function
 Added Visual Real Tape F-Function
 Added Process Switcher window, which is like a "Taskbar" on the ZX Desktop
 Added Settings F-Function
+Added F-Function to switch footer
 Added DSK disk info menu: to get tracks and sectors of a disk
 Added ZRCP command: "close-all-menus"
 Added icon/F-key to open any window identified by its name

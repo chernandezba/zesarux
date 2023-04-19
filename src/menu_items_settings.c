@@ -4971,11 +4971,12 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         //pues al activar una tecla como fire (por ejemplo right shift) hace que esa tecla ya no se comporte como right shift, sino solo fire
         //esto en Z88 podria ser critico, pues no funcionaria el right shift y ademas el usuario no podria reasignar el fire a home y dejar 
         //right shift como right shift del Z88
-                    menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,"[%s] Fire key",
-                joystick_defined_fire_texto[joystick_defined_key_fire]);
-            menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
-            menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
-                    "Not all video drivers support reading all keys");
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_joystick_fire_key,NULL,
+            "Fire key","Tecla disparo","Tecla foc");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%s] ",joystick_defined_fire_texto[joystick_defined_key_fire]);
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Define which key triggers the fire function for the joystick. "
+            "Not all video drivers support reading all keys");
 
 
 
