@@ -175,6 +175,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
 -en i/o ports informacion flags de cada puerto pcw
 -cpm spanish (version superior a 1??) no va
+-printf de debug cambiar a debug_printf y tipo PCW
 --fin pendiente pcw 8256,8512
 
 

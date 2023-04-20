@@ -88,6 +88,7 @@ Improved ZX Vision:
 - Improve window list showing spent time on each window and pid of each window/process
 - Improve rendering background windows
 - Yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
+- Add more menu translations to Spanish and Catalan
 
 * Fixes:
 
