@@ -4320,8 +4320,9 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
         do {
 
 
-		menu_add_item_menu_inicial_format(&array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_allow_write_rom,menu_cond_allow_write_rom,"[%c] Allow ~~write in ROM",
-			(allow_write_rom.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_allow_write_rom,
+            menu_cond_allow_write_rom,"Allow ~~write in ROM","Permitir ~~write en ROM","Permetre ~~write a ROM");
+		menu_add_item_menu_prefijo_format(array_menu_hardware_memory_settings,"[%c] ",(allow_write_rom.v ? 'X' : ' ') );            
 		menu_add_item_menu_shortcut(array_menu_hardware_memory_settings,'w');
 		menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Allow write in ROM");
 		menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"Allow write in ROM. Only allowed on Spectrum 48k/16k models, ZX80, ZX81, Sam Coupe and Jupiter Ace (and not on Inves)");
@@ -4378,47 +4379,50 @@ void menu_hardware_memory_settings(MENU_ITEM_PARAMETERS)
 
 
       if (MACHINE_IS_SPECTRUM_48) {
-                        menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_memory_refresh,NULL,"[%c] RAM Refresh emulation", (machine_emulate_memory_refresh==1 ? 'X' : ' '));
-                        menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Enable RAM R~~efresh emulation");
-                        menu_add_item_menu_shortcut(array_menu_hardware_memory_settings,'e');
-                        menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"RAM Refresh emulation consists, in a real Spectrum 48k, "
-                                        "to refresh the upper 32kb RAM using the R register. On a real Spectrum 48k, if you modify "
-                                        "the R register very fast, you can lose RAM contents.\n"
-                                        "This option emulates this behaviour, and sure you don't need to enable it on the 99.99 percent of the "
-                                        "situations ;) ");
-                }
+        menu_add_item_menu_en_es_ca(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_memory_refresh,NULL,
+            "RAM Refresh emulation","Emulación Refresco RAM","Emulació Refresc RAM");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_memory_settings,"[%c] ", (machine_emulate_memory_refresh==1 ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Enable RAM R~~efresh emulation");
+        menu_add_item_menu_shortcut(array_menu_hardware_memory_settings,'e');
+        menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"RAM Refresh emulation consists, in a real Spectrum 48k, "
+                        "to refresh the upper 32kb RAM using the R register. On a real Spectrum 48k, if you modify "
+                        "the R register very fast, you can lose RAM contents.\n"
+                        "This option emulates this behaviour, and sure you don't need to enable it on the 99.99 percent of the "
+                        "situations ;) ");
+        }
 
 
 	  if (MACHINE_IS_INVES) {
-                        menu_add_item_menu_format(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_inves_poke,menu_inves_cond,"Poke Inves Low RAM");
-                        menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Poke Inves low RAM");
-                        menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"You can alter the way Inves work with ULA port (sound & border). "
-                                        "You change here the contents of the low (hidden) RAM of the Inves (addresses 0-16383). Choosing this option "
-                                        "is the same as poke at the whole low RAM addresses (0 until 16383). I suggest to poke with value 15 or 23 "
-                                        "on games that you can not hear well the music: Lemmings, ATV, Batman caped crusader...");
+            menu_add_item_menu_en_es_ca(array_menu_hardware_memory_settings,MENU_OPCION_NORMAL,menu_hardware_inves_poke,menu_inves_cond,
+                "Poke Inves Low RAM","Pokear Inves RAM Baja","Pokear Inves RAM Baixa");
+            menu_add_item_menu_tooltip(array_menu_hardware_memory_settings,"Poke Inves low RAM");
+            menu_add_item_menu_ayuda(array_menu_hardware_memory_settings,"You can alter the way Inves work with ULA port (sound & border). "
+                            "You change here the contents of the low (hidden) RAM of the Inves (addresses 0-16383). Choosing this option "
+                            "is the same as poke at the whole low RAM addresses (0 until 16383). I suggest to poke with value 15 or 23 "
+                            "on games that you can not hear well the music: Lemmings, ATV, Batman caped crusader...");
 
-                }
+        }
 
 
 
 
 		menu_add_item_menu(array_menu_hardware_memory_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-                menu_add_ESC_item(array_menu_hardware_memory_settings);
+        menu_add_ESC_item(array_menu_hardware_memory_settings);
 
-                retorno_menu=menu_dibuja_menu(&hardware_memory_settings_opcion_seleccionada,&item_seleccionado,array_menu_hardware_memory_settings,"Memory Settings" );
+        retorno_menu=menu_dibuja_menu(&hardware_memory_settings_opcion_seleccionada,&item_seleccionado,array_menu_hardware_memory_settings,"Memory Settings" );
 
-                
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
