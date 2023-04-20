@@ -3318,8 +3318,10 @@ if (long_cabecera_adicional>25) {
 			//esta variable no se usa mucho
 			z80_version=1;
 
-			current_machine_type=1;
-			set_machine(NULL);
+            if (load_sna_snapshot_must_change_machine() ) {
+                current_machine_type=1;
+                set_machine(NULL);
+            }
 			reset_cpu();
 
 			reg_pc=value_8_to_16(z80_header[7],z80_header[6]);

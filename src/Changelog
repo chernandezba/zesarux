@@ -100,6 +100,7 @@ Fixed bug that may crash ZEsarUX when changing to a machine with bigger resoluti
 Fixed showing creator on DSK file viewer
 Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
+Fixed setting "set machine snap load" when loading .Z80 version 1 snapshots
 
 
 * As always, there are some other minor bugfixes and improvements
