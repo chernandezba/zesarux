@@ -4788,7 +4788,9 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_keyboard_issue,menu_hardware_keyboard_issue_cond,"[%c] Keyboard ~~Issue", (keyboard_issue2.v==1 ? '2' : '3'));
+			menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_keyboard_issue,
+                menu_hardware_keyboard_issue_cond,"Keyboard ~~Issue","Teclado ~~Issue","Teclat ~~Issue");
+            menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ", (keyboard_issue2.v==1 ? '2' : '3'));
 			menu_add_item_menu_shortcut(array_menu_keyboard_settings,'i');
 			menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Type of Spectrum keyboard emulated");
 			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Changes the way the Spectrum keyboard port returns its value: Issue 3 returns bit 6 off, and Issue 2 has bit 6 on");
@@ -4798,7 +4800,9 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 		//Soporte para Azerty keyboard
 
 		if (!strcmp(scr_new_driver_name,"xwindows")) {
-			menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_azerty,NULL,"[%c] ~~Azerty keyboard",(azerty_keyboard.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_azerty,NULL,
+                "~~Azerty keyboard","Teclado ~~Azerty","Teclat ~~Azerty");
+            menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(azerty_keyboard.v ? 'X' : ' ') );
 			menu_add_item_menu_shortcut(array_menu_keyboard_settings,'a');
 			menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables azerty keyboard");
 			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Only used on xwindows driver by now. Enables to use numeric keys on Azerty keyboard, without having "
@@ -4806,8 +4810,9 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 		}
 
 
-		menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_recreated_keyboard,NULL,"[%c] ZX Recreated support",
-			(recreated_zx_keyboard_support.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_recreated_keyboard,NULL,
+            "ZX Recreated support","Soporta ZX Recreated","Suporta ZX Recreated");
+		menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(recreated_zx_keyboard_support.v ? 'X' : ' ') );
 		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables ZX Recreated support. Press F1 to see details");
 		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Enables ZX Recreated support. You have to consider the following:\n"
 						"- It supports Game Mode/Layer A on ZX Recreated. QWERTY mode/Layer B works like a normal keyboard\n"
@@ -4834,12 +4839,15 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_chloe_keyboard,NULL,"[%c] Chloe Keyboard",(chloe_keyboard.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_chloe_keyboard,NULL,
+                "Chloe Keyboard","Teclado Chloe","Teclat Chloe");
+            menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(chloe_keyboard.v ? 'X' : ' ') );
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_spectrum_keyboard_matrix_error,NULL,"[%c] Speccy keyb. ~~ghosting",
-					(keyboard_matrix_error.v ? 'X' : ' ') );
+			menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_spectrum_keyboard_matrix_error,NULL,
+                "Speccy keyb. ~~ghosting","Speccy tecl. ~~ghosting","Speccy tecl. ~~ghosting");
+			menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(keyboard_matrix_error.v ? 'X' : ' ') );                    
 			menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Enables real keyboard emulation, even with the keyboard matrix error");
 			menu_add_item_menu_shortcut(array_menu_keyboard_settings,'g');
 			menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Enables real keyboard emulation, even with the keyboard matrix error.\n"
@@ -4872,10 +4880,12 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu(array_menu_keyboard_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
         	//Redefine keys
-		menu_add_item_menu_format(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_redefine_keys,NULL,"~~Redefine keys");
+		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_redefine_keys,NULL,
+            "~~Redefine keys","~~Redefinir teclas","~~Redefinir tecles");
 		menu_add_item_menu_shortcut(array_menu_keyboard_settings,'r');
 		menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Redefine one key to another");
 		menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Redefine one key to another");
+        menu_add_item_menu_tiene_submenu(array_menu_keyboard_settings);
 
 
 
