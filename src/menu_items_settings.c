@@ -5047,7 +5047,10 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 		}
 
-		menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,"Emulator Spee~~d [%d%%]",porcentaje_velocidad_emulador);
+        
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
+            "Emulator Spee~~d","Veloci~~dad Emulador","Velocitat Emula~~dor");
+		menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d%%]",porcentaje_velocidad_emulador);
 		menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
 		menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change the emulator Speed");
 		menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
@@ -5056,7 +5059,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 		//Keyboard settings
-		menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_keyboard_settings,NULL,"~~Keyboard settings");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_keyboard_settings,NULL,
+            "~~Keyboard settings","Opciones te~~klado","Opcions te~~klat");
 		menu_add_item_menu_shortcut(array_menu_hardware_settings,'k');
 		menu_add_item_menu_tooltip(array_menu_hardware_settings,"Hardware settings");
 		menu_add_item_menu_ayuda(array_menu_hardware_settings,"Hardware settings");
@@ -5067,7 +5071,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_memory_settings,NULL,"~~Memory Settings");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_memory_settings,NULL,
+            "~~Memory Settings","Opciones ~~Memoria","Opcions ~~Memoria");
 		menu_add_item_menu_shortcut(array_menu_hardware_settings,'m');
         menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
@@ -5076,7 +5081,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 		
 
         if (MACHINE_IS_Z88) {
-            menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,"Sync Z88 clock");
+            menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_settings_set_z88_clock,NULL,
+                "Sync Z88 clock","Sincronizar reloj Z88","Sincronitzar rellotge Z88");
             menu_add_item_menu_tooltip(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_ayuda(array_menu_hardware_settings,"Sync Z88 clock to the current time");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
@@ -5085,7 +5091,8 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX81_TYPE) {
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_printers,NULL,"~~Printing emulation");
+			menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_printers,NULL,
+                "~~Printing emulation","Emulación im~~presora","Emulació im~~pressora");
 			menu_add_item_menu_shortcut(array_menu_hardware_settings,'p');
             menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 		}
@@ -5093,11 +5100,12 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         //Aqui permito que el menu aparezca en cualquier maquina, aunque en algunas no este implementado (por ejemplo QL)
 	    
 	
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_realjoystick,menu_hardware_realjoystick_cond,"~~Real joystick support");
-			menu_add_item_menu_shortcut(array_menu_hardware_settings,'r');
-			menu_add_item_menu_tooltip(array_menu_hardware_settings,"Settings for the real joystick");
-			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real joystick");
-            menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_hardware_realjoystick,menu_hardware_realjoystick_cond,
+            "~~Real joystick settings","Opciones joystick ~~real","Opcions joystick ~~real");
+        menu_add_item_menu_shortcut(array_menu_hardware_settings,'r');
+        menu_add_item_menu_tooltip(array_menu_hardware_settings,"Settings for the real joystick");
+        menu_add_item_menu_ayuda(array_menu_hardware_settings,"Settings for the real joystick");
+        menu_add_item_menu_tiene_submenu(array_menu_hardware_settings);
 
 		
 
@@ -5112,11 +5120,11 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 
 
 
-                menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_hardware_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_item_menu(array_menu_hardware_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
 		menu_add_ESC_item(array_menu_hardware_settings);
 
-                retorno_menu=menu_dibuja_menu(&hardware_settings_opcion_seleccionada,&item_seleccionado,array_menu_hardware_settings,"Hardware Settings" );
+        retorno_menu=menu_dibuja_menu(&hardware_settings_opcion_seleccionada,&item_seleccionado,array_menu_hardware_settings,"Hardware Settings" );
 
                 
 		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
