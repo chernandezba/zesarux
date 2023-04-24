@@ -221,3 +221,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -en snapshot zsf opcion para poder guardar la rom en snapshot, por ejemplo para cuando has iniciado con una rom personalizada y quieres
 que el snapshot la restaure
+
+-revisar ayuda y tooltips de smartload

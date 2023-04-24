@@ -36936,9 +36936,8 @@ void menu_inicio_bucle_main(void)
             else f_functions=0;
 
 
-            menu_add_item_menu_inicial(&array_menu_principal,"~~Smart load",MENU_OPCION_NORMAL,menu_smartload,NULL);
-            menu_add_item_menu_spanish(array_menu_principal,"Carga ingenio~~sa");
-            menu_add_item_menu_catalan(array_menu_principal,"Carrega enginyo~~sa");
+            menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
+                "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
                     menu_add_item_menu_tooltip(array_menu_principal,"Smart load tape, snapshot, Z88 memory card or Timex Cartridge");
                     menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
