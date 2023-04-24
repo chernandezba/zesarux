@@ -2007,19 +2007,25 @@ void menu_osd_settings(MENU_ITEM_PARAMETERS)
 
 
 
-    menu_add_item_menu_inicial_format(&array_menu_osd_settings,MENU_OPCION_NORMAL,menu_interface_show_splash_texts,NULL,"[%c] ~~Show splash texts",(screen_show_splash_texts.v ? 'X' : ' ' ) );
+    menu_add_item_menu_en_es_ca_inicial(&array_menu_osd_settings,MENU_OPCION_NORMAL,menu_interface_show_splash_texts,NULL,
+        "~~Show splash texts","Mo~~strar textos splash","Mo~~strar textos splash");
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%c] ",(screen_show_splash_texts.v ? 'X' : ' ' ) );
     menu_add_item_menu_tooltip(array_menu_osd_settings,"Show on display some splash texts, like display mode change or watches");
     menu_add_item_menu_ayuda(array_menu_osd_settings,"Show on display some splash texts, like display mode change or watches");
     menu_add_item_menu_shortcut(array_menu_osd_settings,'s');
 
 
-    menu_add_item_menu_format(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark,NULL,"[%c] ~~Watermark",(screen_watermark_enabled.v ? 'X' : ' ' ) );
+    menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark,NULL,
+        "W~~atermark","Marca de ~~agua","Marca d'~~aigüa");
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%c] ",(screen_watermark_enabled.v ? 'X' : ' ' ) );
     menu_add_item_menu_tooltip(array_menu_osd_settings,"Adds a watermark to the display");
     menu_add_item_menu_ayuda(array_menu_osd_settings,"Adds a watermark to the display. May produce flickering if not enabled realvideo. If using reduce window setting, it will be forced enabled");
-    menu_add_item_menu_shortcut(array_menu_osd_settings,'w');
+    menu_add_item_menu_shortcut(array_menu_osd_settings,'a');
 
     //Esta posicion afecta tanto al watermark normal como al forzado de 0.75
-    menu_add_item_menu_format(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_position,NULL,"[%d] Watermark ~~position",screen_watermark_position);
+    menu_add_item_menu_en_es_ca(array_menu_osd_settings,MENU_OPCION_NORMAL,menu_osd_settings_watermark_position,NULL,
+        "Watermark ~~position","~~Posición marca de agua","~~Posició marca d'aigüa");
+    menu_add_item_menu_prefijo_format(array_menu_osd_settings,"[%d] ",screen_watermark_position);
     menu_add_item_menu_shortcut(array_menu_osd_settings,'p');
 		
 
@@ -4542,65 +4548,70 @@ void menu_hardware_zxprinter_copy(MENU_ITEM_PARAMETERS)
 
 void menu_hardware_printers(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hardware_printers;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
+    menu_item *array_menu_hardware_printers;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
                 menu_add_item_menu_inicial_format(&array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_printers_zxprinter_enable,NULL,"[%c] ZX Printer",(zxprinter_enabled.v==1 ? 'X' : ' ' ));
 		menu_add_item_menu_tooltip(array_menu_hardware_printers,"Enables or disables ZX Printer emulation");
 		menu_add_item_menu_ayuda(array_menu_hardware_printers,"You must set it to off when finishing printing to close generated files");
 
-                char string_bitmapfile_shown[16];
-                menu_tape_settings_trunc_name(zxprinter_bitmap_filename,string_bitmapfile_shown,16);
+        char string_bitmapfile_shown[16];
+        menu_tape_settings_trunc_name(zxprinter_bitmap_filename,string_bitmapfile_shown,16);
 
-                menu_add_item_menu_format(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_bitmapfile,menu_hardware_zxprinter_cond,"Bitmap file [%s]",string_bitmapfile_shown);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_bitmapfile,
+            menu_hardware_zxprinter_cond,"Bitmap file","Archivo bitmap","Arxiu bitmap");
+        menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_bitmapfile_shown);
 
-                menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to image file");
-                menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a image file. Supports pbm file format, and "
-					"also supports text file, "
-					"where every pixel is a character on text. "
-					"It is recommended to close the image file when finishing printing, so its header is updated");
+        menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to image file");
+        menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a image file. Supports pbm file format, and "
+            "also supports text file, "
+            "where every pixel is a character on text. "
+            "It is recommended to close the image file when finishing printing, so its header is updated");
 
 
 		char string_ocrfile_shown[19];
 		menu_tape_settings_trunc_name(zxprinter_ocr_filename,string_ocrfile_shown,19);
 
-                menu_add_item_menu_format(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_ocrfile,menu_hardware_zxprinter_cond,"OCR file [%s]",string_ocrfile_shown);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_ocrfile,
+            menu_hardware_zxprinter_cond,"OCR file","Archivo OCR","Arxiu OCR");
+        menu_add_item_menu_sufijo_format(array_menu_hardware_printers," [%s]",string_ocrfile_shown);
 
-                menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to text file using OCR method");
-                menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a text file using OCR method to guess text. "
-					"If you cancel a printing with SHIFT+SPACE on Basic, you have to re-select the ocr file to reset some "
-					"internal counters. If you don't do that, OCR will not work");
+        menu_add_item_menu_tooltip(array_menu_hardware_printers,"Sends printer output to text file using OCR method");
+        menu_add_item_menu_ayuda(array_menu_hardware_printers,"Printer output is saved to a text file using OCR method to guess text. "
+            "If you cancel a printing with SHIFT+SPACE on Basic, you have to re-select the ocr file to reset some "
+            "internal counters. If you don't do that, OCR will not work");
 
 
-		menu_add_item_menu_format(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_copy,menu_hardware_zxprinter_cond,"Run COPY routine");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_printers,MENU_OPCION_NORMAL,menu_hardware_zxprinter_copy,
+            menu_hardware_zxprinter_cond,"Run COPY routine","Ejecutar rutina COPY","Executar rutina COPY");
 
-                menu_add_item_menu_tooltip(array_menu_hardware_printers,"Runs ROM COPY routine");
+        menu_add_item_menu_tooltip(array_menu_hardware_printers,"Runs ROM COPY routine");
 		menu_add_item_menu_ayuda(array_menu_hardware_printers,"It calls ROM copy routine on Spectrum and ZX-81, like the COPY command on BASIC. \n"
-					"I did not guarantee that the call will always work, because this function will probably "
-					"use some structures and variables needed in BASIC and if you are running some game, maybe it "
-					"has not these variables correct");
+            "I did not guarantee that the call will always work, because this function will probably "
+            "use some structures and variables needed in BASIC and if you are running some game, maybe it "
+            "has not these variables correct");
 
 
 
-                menu_add_item_menu(array_menu_hardware_printers,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_hardware_printers,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_hardware_printers);
+        menu_add_item_menu(array_menu_hardware_printers,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_hardware_printers,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_hardware_printers);
 
-                retorno_menu=menu_dibuja_menu(&hardware_printers_opcion_seleccionada,&item_seleccionado,array_menu_hardware_printers,"Printing emulation" );
+        retorno_menu=menu_dibuja_menu(&hardware_printers_opcion_seleccionada,&item_seleccionado,array_menu_hardware_printers,"Printing emulation" );
 
                 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
 
@@ -5064,7 +5075,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
         
         menu_add_item_menu_en_es_ca(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_cpu_speed,NULL,
             "Emulator Spee~~d","Veloci~~dad Emulador","Velocitat Emula~~dor");
-		menu_add_item_menu_sufijo_format(array_menu_hardware_settings," [%d%%]",porcentaje_velocidad_emulador);
+		menu_add_item_menu_prefijo_format(array_menu_hardware_settings,"[%3d%%] ",porcentaje_velocidad_emulador);
 		menu_add_item_menu_shortcut(array_menu_hardware_settings,'d');
 		menu_add_item_menu_tooltip(array_menu_hardware_settings,"Change the emulator Speed");
 		menu_add_item_menu_ayuda(array_menu_hardware_settings,"Changes all the emulator speed by setting a different interval between display frames. "
@@ -7953,61 +7964,73 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 					menu_tape_settings_trunc_name(snapshot_autosave_interval_quicksave_directory,string_autosave_interval_path,16);
 
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_permitir_versiones_desconocidas,NULL,"[%c] Allow ~~Unknown .ZX versions",(snap_zx_permitir_versiones_desconocidas.v ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'u');
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_permitir_versiones_desconocidas,
+            NULL,"Allow U~~nknown .ZX versions","Permitir versiones .ZX desco~~nocidas","Permetre versions .ZX desco~~negudes");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(snap_zx_permitir_versiones_desconocidas.v ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'n');
 		menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Allow loading ZX Snapshots of unknown versions");
 		menu_add_item_menu_ayuda(array_menu_settings_snapshot,"This setting permits loading of ZX Snapshots files of unknown versions. "
-					"It can be used to load snapshots saved on higher emulator versions than this one");
+            "It can be used to load snapshots saved on higher emulator versions than this one");
 
 
-		menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_version,NULL,"[%d] Save ZX Snapshot ~~version",snap_zx_version_save);
+		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_save_version,NULL,
+            "Save ZX Snapshot ~~version","Grabar ZX Snapshot ~~versión","Gravar ZX Snapshot ~~versió");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%d] ",snap_zx_version_save);
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'v');
-                menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Decide which kind of .ZX version file is saved");
-                menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Version 1,2,3 works on ZEsarUX and ZXSpectr\n"
-					"Version 4 works on ZEsarUX V1.3 and higher\n"
-					"Version 5 works on ZEsarUX V2 and higher\n"
-				);
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Decide which kind of .ZX version file is saved");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Version 1,2,3 works on ZEsarUX and ZXSpectr\n"
+            "Version 4 works on ZEsarUX V1.3 and higher\n"
+            "Version 5 works on ZEsarUX V2 and higher\n"
+        );
 
-                menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_compressed_zsf,NULL,"[%c] ~~Compressed ZSF",(zsf_force_uncompressed ? ' ' : 'X') );
-				menu_add_item_menu_shortcut(array_menu_settings_snapshot,'c');
-                menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
-                menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_compressed_zsf,NULL,
+            "~~Compressed ZSF","ZSF ~~Comprimido","ZSF ~~Comprimit");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_force_uncompressed ? ' ' : 'X') );
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'c');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
 
-                menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_sna_set_machine,NULL,"[%c] Se~~t machine snap load",(sna_setting_no_change_machine.v ? ' ' : 'X'));
-				menu_add_item_menu_shortcut(array_menu_settings_snapshot,'t');
-                menu_add_item_menu_tooltip(array_menu_settings_snapshot,"If machine is reset to 48k/128k when loading a .sna or .z80 snapshot file");
-                menu_add_item_menu_ayuda(array_menu_settings_snapshot,"If machine is reset to 48k/128k when loading a .sna or .z80 snapshot file.\n"
-					"Disabling it, the .sna snapshot is loaded but the machine is not changed, so it allows to load, for example, a 48k snapshot on a Prism machine, or TBBlue, or any Spectrum machine different than 48/128.\n"
-					"If current machine is not a Spectrum, loading a .sna snapshot will always switch to 48k/128k.\n"
-					"This setting only applies to .sna snapshots, but not to .z80, .zx, or any other snapshot type."
-				);
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_sna_set_machine,NULL,
+            "Set ~~machine snap load","Cambio ~~máquina al cargar snap","Canvi ~~màquina al carregar snap");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(sna_setting_no_change_machine.v ? ' ' : 'X'));
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'m');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"If machine is reset to 48k/128k when loading a .sna or .z80 snapshot file");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"If machine is reset to 48k/128k when loading a .sna or .z80 snapshot file.\n"
+            "Disabling it, the .sna snapshot is loaded but the machine is not changed, so it allows to load, for example, a 48k snapshot on a Prism machine, or TBBlue, or any Spectrum machine different than 48/128.\n"
+            "If current machine is not a Spectrum, loading a .sna snapshot will always switch to 48k/128k.\n"
+            "This setting only applies to .sna snapshots, but not to .z80, .zx, or any other snapshot type."
+        );
 
-                menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,"[%c] Close menu on smartload",(no_close_menu_after_smartload.v ? ' ' : 'X'));
-                menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Closes the menu after Smartload");
-				menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Closes the menu after Smartload");
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_close_menu_after_smartload,NULL,
+            "Close menu after smartload","Cerrar menú después smartload","Tancar menú després smartload");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(no_close_menu_after_smartload.v ? ' ' : 'X'));
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Closes the menu after Smartload");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Closes the menu after Smartload");
 
-                if (MACHINE_IS_Z88) {
-                    menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_settings_snapshot_sync_to_z88_clock,NULL,
-                    "Sync PC->Z88 clock","Sinc PC->reloj Z88","Sinc PC->rellotge Z88");
-                    menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ", (sync_clock_to_z88.v ? 'X' : ' ') );
-                    menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
-                    menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
-                }
-               
+        if (MACHINE_IS_Z88) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_settings_snapshot_sync_to_z88_clock,NULL,
+            "Sync PC->Z88 clock","Sinc PC->reloj Z88","Sinc PC->rellotge Z88");
+            menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ", (sync_clock_to_z88.v ? 'X' : ' ') );
+            menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
+            menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Sync PC clock to Z88 clock after loading a snapshot");
+        }
+        
 
-                menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-		menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_exit,NULL,"[%c] Auto~~save on exit",
-			(autosave_snapshot_on_exit.v ? 'X' : ' ' ) );
+		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_exit,NULL,
+            "Auto~~save on exit","Auto~~salvar al salir","Auto~~salvar al sortir");
+		menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(autosave_snapshot_on_exit.v ? 'X' : ' ' ) );            
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'s');
 		 menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Saves a snapshot with the machine state when exiting ZEsarUX. Saved file is " AUTOSAVE_NAME);
 		 menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Saves a snapshot with the machine state when exiting ZEsarUX. Saved file is " AUTOSAVE_NAME);
 
 
 
-		menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autoload_start,NULL,"[%c] Auto~~load on start",
-			(autoload_snapshot_on_start.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autoload_start,NULL,
+            "Auto~~load on start","Auto~~load al inicio","Auto~~load a l'inici");
+		menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(autoload_snapshot_on_start.v ? 'X' : ' ') );            
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'l');
 		menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Loads the snapshot saved when starting ZEsarUX (previous menu item)");
 		menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Loads the snapshot saved when starting ZEsarUX (previous menu item)");
@@ -8015,9 +8038,11 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 
 
 		if (autosave_snapshot_on_exit.v || autoload_snapshot_on_start.v) {
-                	char string_autosnap_path[14];
-	                menu_tape_settings_trunc_name(autosave_snapshot_path_buffer,string_autosnap_path,14);
-			menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosnap_path,NULL,"Autosnap ~~path [%s]",string_autosnap_path);
+            char string_autosnap_path[14];
+            menu_tape_settings_trunc_name(autosave_snapshot_path_buffer,string_autosnap_path,14);
+			menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosnap_path,NULL,
+                "Autosnap ~~path","Autosnap car~~peta","Autosnap car~~peta");
+            menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosnap_path);
 			menu_add_item_menu_shortcut(array_menu_settings_snapshot,'p');
 			menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Where to save/load automatic snapshot. If not set, uses current directory");
 			menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Where to save/load automatic snapshot. If not set, uses current directory");
@@ -8025,57 +8050,64 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 
 		
 
-                menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 
-					menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval,NULL,"[%c] Contsave at ~~interval",
-									(snapshot_contautosave_interval_enabled.v ? 'X' : ' ' ) );
-					menu_add_item_menu_shortcut(array_menu_settings_snapshot,'i');
-					menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Enable continuous autosave snapshot every fixed interval");
-					menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Enable continuous autosave snapshot every fixed interval");
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval,NULL,
+            "Contsave at ~~interval","Contsave a ~~intervalo","Contsave a ~~interval");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(snapshot_contautosave_interval_enabled.v ? 'X' : ' ' ) );            
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'i');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Enable continuous autosave snapshot every fixed interval");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Enable continuous autosave snapshot every fixed interval");
 
 
-					if (snapshot_contautosave_interval_enabled.v) {
-						menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_seconds,NULL,"[%d] Contsave Seco~~nds",snapshot_autosave_interval_seconds);
-						menu_add_item_menu_shortcut(array_menu_settings_snapshot,'n');
-						menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Save snapshot every desired interval");
-						menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Save snapshot every desired interval");
-					}
+        if (snapshot_contautosave_interval_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_seconds,NULL,
+                "Contsave S~~econds","Contsave S~~egundos","Contsave S~~egons");
+            menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%d] ",snapshot_autosave_interval_seconds);
+            menu_add_item_menu_shortcut(array_menu_settings_snapshot,'e');
+            menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Save snapshot every desired interval");
+            menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Save snapshot every desired interval");
+        }
 
 
-		menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_prefix,NULL,"QS&CA P~~refix [%s]",string_autosave_interval_prefix);
+		menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_prefix,NULL,
+            "QS&CA P~~refix","QS&CA P~~refijo","QS&CA P~~refix");
+        menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_prefix);
 		menu_add_item_menu_shortcut(array_menu_settings_snapshot,'r');
-					menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots");
-					menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots. The final name will be: prefix-date-hour.zsf");
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Name prefix for quicksave and continous autosave snapshots. The final name will be: prefix-date-hour.zsf");
 
-						menu_add_item_menu_format(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_directory,NULL,"QS&CA Pat~~h [%s]",string_autosave_interval_path);
-						menu_add_item_menu_shortcut(array_menu_settings_snapshot,'h');
-						menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Path to save quicksave & continous autosave");
-						menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave & continous autosave. If not set, will use current directory");
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_autosave_at_interval_directory,NULL,
+            "QS&CA P~~ath","QS&CA C~~arpeta","QS&CA C~~arpeta");
+        menu_add_item_menu_sufijo_format(array_menu_settings_snapshot," [%s]",string_autosave_interval_path);
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'a');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Path to save quicksave & continous autosave");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Path to save quicksave & continous autosave. If not set, will use current directory");
 
 
 
-					menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_settings_snapshot,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
 
 		menu_add_ESC_item(array_menu_settings_snapshot);
 
-                retorno_menu=menu_dibuja_menu(&settings_snapshot_opcion_seleccionada,&item_seleccionado,array_menu_settings_snapshot,"Snapshot Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_snapshot_opcion_seleccionada,&item_seleccionado,array_menu_settings_snapshot,"Snapshot Settings" );
 
                 
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-				
-                        }
-                }
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+            
+                    }
+            }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
@@ -8915,7 +8947,8 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 	int retorno_menu;
 	do {
 
-		menu_add_item_menu_inicial_format(&array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_event,NULL,"Joystick to ~~events");
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_event,NULL,
+            "Joystick to ~~events","Joystick a ~~eventos","Joystick a ~~events");
 		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'e');
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which events generate every button/movement of the joystick");
@@ -8923,21 +8956,25 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys,NULL,"Joystick to ~~keys");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_keys,NULL,
+            "Joystick to ~~keys","Joystick a te~~klas","Joystick a te~~kles");
 		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'k');
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Define which press key generate every button/movement of the joystick");
         menu_add_item_menu_tiene_submenu(array_menu_hardware_realjoystick);
 
 
-		menu_add_item_menu_format(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_test,NULL,"Joystick ~~information");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_test,NULL,
+            "Joystick ~~information","~~Información del joystick","~~Informació del joystick");
 		menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'i');
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Joystick information");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Joystick information and test tool");
 
 		if (!realjoystick_is_linux_native() ) {
 			menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-			menu_add_item_menu_format(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_autocalibrate,NULL,"[%5d] Auto~~calibrate value",realjoystick_autocalibrate_value);
+			menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_autocalibrate,NULL,
+                "Auto~~calibrate value","Valor Auto~~calibrado","Valor Auto~~calibrat");
+            menu_add_item_menu_prefijo_format(array_menu_hardware_realjoystick,"[%5d] ",realjoystick_autocalibrate_value);
 			menu_add_item_menu_shortcut(array_menu_hardware_realjoystick,'c');
 			menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Autocalibrate value");
 			menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Parameter to autocalibrate joystick axis. "
@@ -8950,7 +8987,9 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 #ifdef USE_LINUXREALJOYSTICK
 
-	menu_add_item_menu_format(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_native,NULL,"[%c] Linux native driver",(no_native_linux_realjoystick.v ? ' ' : 'X'));
+	menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_native,NULL,
+        "Linux native driver","Linux driver nativo","Linux driver nadiu");
+    menu_add_item_menu_prefijo_format(array_menu_hardware_realjoystick,"[%c] ",(no_native_linux_realjoystick.v ? ' ' : 'X'));
 	menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Use or not the native linux real joystick support. Instead use the video driver joystick support (currently only SDL)");
 	menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Use or not the native linux real joystick support. Instead use the video driver joystick support (currently only SDL)");
 
@@ -8959,13 +8998,14 @@ void menu_hardware_realjoystick(MENU_ITEM_PARAMETERS)
 
 		menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-		menu_add_item_menu_format(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_set_defaults,NULL,"Set events&keys to default");
+		menu_add_item_menu_en_es_ca(array_menu_hardware_realjoystick,MENU_OPCION_NORMAL,menu_hardware_realjoystick_set_defaults,NULL,
+            "Set events&keys to default","Cambio eventos&teclas a defecto","Canvi events&tecles a defecte");
 		menu_add_item_menu_tooltip(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 		menu_add_item_menu_ayuda(array_menu_hardware_realjoystick,"Reset events & keys table to default values");
 
 
 		menu_add_item_menu(array_menu_hardware_realjoystick,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-		//menu_add_item_menu(array_menu_hardware_realjoystick,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+		
 		menu_add_ESC_item(array_menu_hardware_realjoystick);
 
 		retorno_menu=menu_dibuja_menu(&hardware_realjoystick_opcion_seleccionada,&item_seleccionado,array_menu_hardware_realjoystick,"Real joystick support" );
@@ -9480,7 +9520,7 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial(&array_menu_hardware_set_f_functions,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-        char buffer_texto[40];
+        //char buffer_texto[40];
 
         int i;
         for (i=0;i<MAX_F_FUNCTIONS_KEYS;i++) {
@@ -9488,11 +9528,16 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
             int indice_tabla=defined_f_functions_keys_array[i];
 
             //tabulado todo a misma columna, agregamos un espacio con F entre 1 y 9
-            sprintf (buffer_texto,"Key F%d %s[%s]",i+1,(i+1<=9 ? " " : ""),defined_direct_functions_array[indice_tabla].texto_funcion);
+            //sprintf (buffer_texto,"Key F%d %s[%s]",i+1,(i+1<=9 ? " " : ""),defined_direct_functions_array[indice_tabla].texto_funcion);
 
+            //menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
-            //if (i==0) menu_add_item_menu_inicial_format(&array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,menu_hardware_set_f_func_action,NULL,buffer_texto);
-            menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
+            menu_add_item_menu_en_es_ca(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL,
+                "Key F","Tecla F","Tecla F");
+
+            //tabulado todo a misma columna, agregamos un espacio con F entre 1 y 9
+            menu_add_item_menu_sufijo_format(array_menu_hardware_set_f_functions,
+                "%d %s[%s]",i+1,(i+1<=9 ? " " : ""),defined_direct_functions_array[indice_tabla].texto_funcion);
 
             menu_add_item_menu_valor_opcion(array_menu_hardware_set_f_functions,i);
 
@@ -9506,7 +9551,9 @@ void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS)
                 char string_extra_info[16];
                 menu_tape_settings_trunc_name(defined_f_functions_keys_array_parameters[i],string_extra_info,16);
 
-                menu_add_item_menu_format(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL," Parameters: %s",string_extra_info);
+                menu_add_item_menu_en_es_ca(array_menu_hardware_set_f_functions,MENU_OPCION_NORMAL,NULL,NULL,
+                    " Parameters"," Parámetros"," Paràmetres");
+                menu_add_item_menu_sufijo_format(array_menu_hardware_set_f_functions,": %s",string_extra_info);
                 menu_add_item_menu_tooltip(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
                 menu_add_item_menu_ayuda(array_menu_hardware_set_f_functions,"Parameters for some actions, like window name for OpenWindow action");
 
