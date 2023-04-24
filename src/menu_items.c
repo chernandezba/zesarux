@@ -16138,7 +16138,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
         menu_tape_settings_trunc_name(mmc_file_name,string_mmc_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,"~~MMC File [%s]",string_mmc_file_shown);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_file,NULL,
+            "~~MMC File","Archivo ~~MMC","Arxiu ~~MMC");
+        menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]",string_mmc_file_shown);
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'m');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation file");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation file");
@@ -16146,13 +16148,16 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_TBBLUE) {
         
-            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,"Autoconfigure Next SD");
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_autoconfigure_tbblue,NULL,
+                "Autoconfigure Next SD","Autoconfigurar Next SD","Autoconfigurar Next SD");
         
         }
 
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,"[%c] MMC ~~Emulation", (mmc_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_emulation,menu_storage_mmc_emulation_cond,
+            "MMC ~~Emulation","~~Emulación MMC","~~Emulació MMC");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'e');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Emulation");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Emulation");
@@ -16160,13 +16165,17 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,"[%c] ~~Write protect", (mmc_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'w');
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_write_protect,NULL,
+            "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ", (mmc_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'i');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"If MMC disk is write protected");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"If MMC disk is write protected");
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,"[%c] Persistent Writes",(mmc_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(mmc_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Tells if MMC writes are saved to disk. "
         "Note: all writing operations to MMC are always saved to internal memory (unless you disable write permission), but this setting "
@@ -16174,23 +16183,28 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         );
 
         if (mmc_enabled.v) {
-            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,"Reload MMC file");
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_reload,NULL,
+                "Reload MMC file","Recargar archivo MMC","Recarregar arxiu MMC");
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Reload MMC contents from MMC file to emulator memory. You can modify the MMC file "
-                                                                                            "outside the emulator, and reload its contents without having to disable and enable MM.");
+                "outside the emulator, and reload its contents without having to disable and enable MM.");
         }            
 
                      
 
         menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface,NULL,"[%c] ~~DIVMMC paging",(divmmc_diviface_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface,NULL,
+            "~~DIVMMC paging","Paginación ~~DIVMMC","Paginació ~~DIVMMC");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(divmmc_diviface_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'d');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC paging and firmware, and DIVMMC access ports if MMC emulation is enabled");
 
         if (divmmc_diviface_enabled.v) {
-            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVMMC RAM [%d KB]",get_diviface_total_ram() );
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,
+                "DIVMMC RAM","DIVMMC RAM","DIVMMC RAM");
+            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%d KB]",get_diviface_total_ram() );
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
             menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Changes DIVMMC RAM");
             menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
@@ -16205,7 +16219,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
             if (divmmc_rom_name[0]==0) sprintf (string_divmmc_rom_file_shown,"Default");
             else menu_tape_settings_trunc_name(divmmc_rom_name, string_divmmc_rom_file_shown,10);
-            menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,"DIVMMC EPROM File [%s]", string_divmmc_rom_file_shown);
+            menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_divmmc_rom_file,NULL,
+                "DIVMMC EPROM File","DIVMMC Archivo EPROM","DIVMMC Arxiu EPROM");
+            menu_add_item_menu_sufijo_format(array_menu_mmc_divmmc," [%s]", string_divmmc_rom_file_shown);
             menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
 
             menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Changes DIVMMC firmware eprom file");
@@ -16213,8 +16229,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
             if (divmmc_diviface_enabled.v) {
-                menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
-                (diviface_eprom_write_jumper.v ? 'X' : ' ') );
+                menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,
+                    "Firmware writeable","Firmware escribible","Firmware escribible");
+                menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(diviface_eprom_write_jumper.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom");
                 menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
                 menu_add_item_menu_es_avanzado(array_menu_mmc_divmmc);
@@ -16224,7 +16241,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
 
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,menu_storage_mmc_if_enabled_cond,"[%c] DIVMMC ~~ports",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_divmmc_mmc_ports_emulation,menu_storage_mmc_if_enabled_cond,
+            "DIVMMC ~~ports","~~Puertos DIVMMC","~~Ports DIVMMC");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(divmmc_mmc_ports_enabled.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'p');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Enables DIVMMC access ports");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables DIVMMC access ports. Requires enabling MMC Emulation");
@@ -16233,7 +16252,9 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_mmc_divmmc,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,"[%c] ~~ZXMMC Enabled",(zxmmc_emulation.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_zxmmc_emulation,menu_storage_mmc_if_enabled_cond,
+            "~~ZXMMC Enabled","~~ZXMMC Activado","~~ZXMMC Activat");
+        menu_add_item_menu_prefijo_format(array_menu_mmc_divmmc,"[%c] ",(zxmmc_emulation.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'z');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"Access MMC using ZXMMC");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"Enables ZXMMC ports to access MMC");
@@ -16249,7 +16270,8 @@ void menu_mmc_divmmc(MENU_ITEM_PARAMETERS)
         */
 
 
-        menu_add_item_menu_format(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,"MMC ~~Browser");
+        menu_add_item_menu_en_es_ca(array_menu_mmc_divmmc,MENU_OPCION_NORMAL,menu_storage_mmc_browser,menu_storage_mmc_emulation_cond,
+            "MMC ~~Browser","MMC ~~Browser","MMC ~~Browser");
         menu_add_item_menu_shortcut(array_menu_mmc_divmmc,'b');
         menu_add_item_menu_tooltip(array_menu_mmc_divmmc,"MMC Browser");
         menu_add_item_menu_ayuda(array_menu_mmc_divmmc,"MMC Browser");                   
@@ -16506,25 +16528,33 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 
         menu_tape_settings_trunc_name(ide_file_name,string_ide_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_file,NULL,"~~IDE File [%s]",string_ide_file_shown);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_file,NULL,
+            "~~IDE File","Archivo ~~IDE","Arxiu ~~IDE");
+        menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%s]",string_ide_file_shown);
         menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation file");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation file");
 
 
-        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_emulation,menu_storage_ide_emulation_cond,"[%c] IDE ~~Emulation", (ide_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_emulation,menu_storage_ide_emulation_cond,
+            "IDE ~~Emulation","~~Emulación IDE","~~Emulació IDE");
+        menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ", (ide_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_ide_divide,'e');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Emulation");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Emulation");
 
 
-        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_write_protect,NULL,"[%c] ~~Write protect", (ide_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_ide_divide,'w');
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_write_protect,NULL,
+            "Wr~~ite protect","Protección Escr~~itura","Protecció Escr~~iptura");
+        menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ", (ide_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_ide_divide,'i');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"If IDE disk is write protected");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"If IDE disk is write protected");
 
 
-        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_persistent_writes,NULL,"[%c] Persistent Writes",(ide_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(ide_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_ide_divide,"Tells if IDE writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"Tells if IDE writes are saved to disk. "
         "Note: all writing operations to IDE are always saved to internal memory (unless you disable write permission), but this setting "
@@ -16535,7 +16565,8 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 
         if (ide_enabled.v) {
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_reload,NULL,"Reload IDE file");
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_reload,NULL,
+                "Reload IDE file","Recargar archivo IDE","Recarregar arxiu IDE");
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Reload IDE contents from IDE file to emulator memory. You can modify the IDE file "
                                     "outside the emulator, and reload its contents without having to disable and enable IDE");
@@ -16548,13 +16579,17 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_diviface,NULL,"[%c] ~~DIVIDE paging",(divide_diviface_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_diviface,NULL,
+                "~~DIVIDE paging","Paginación ~~DIVIDE","Paginació ~~DIVIDE");
+            menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(divide_diviface_enabled.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_ide_divide,'d');
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE paging and firmware, and DIVIDE access ports if IDE emulation is enabled");
 
             if (divide_diviface_enabled.v) {
-                menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,"DIVIDE RAM [%d KB]",get_diviface_total_ram() );
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divmmc_diviface_total_ram,NULL,
+                    "DIVIDE RAM","DIVIDE RAM","DIVIDE RAM");
+                menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%d KB]",get_diviface_total_ram() );
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE RAM");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE RAM");
                 menu_add_item_menu_es_avanzado(array_menu_ide_divide);
@@ -16562,15 +16597,18 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
             if (divide_rom_name[0]==0) sprintf (string_divide_rom_file_shown,"Default");
             else menu_tape_settings_trunc_name(divide_rom_name, string_divide_rom_file_shown,10);
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,"DIVIDE EPROM File [%s]", string_divide_rom_file_shown);
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_divide_rom_file,NULL,
+                "DIVIDE EPROM File","Archivo EPROM DIVIDE","Arxiu EPROM DIVIDE");
+            menu_add_item_menu_sufijo_format(array_menu_ide_divide," [%s]", string_divide_rom_file_shown);
             menu_add_item_menu_es_avanzado(array_menu_ide_divide);
 
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Changes DIVIDE firmware eprom file");
 
             if (divide_diviface_enabled.v) {
-                menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,"[%c] Firmware writeable",
-                (diviface_eprom_write_jumper.v ? 'X' : ' ') );
+                menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_diviface_eprom_write_jumper,NULL,
+                    "Firmware writeable","Firmware escribible","Firmware escribible");
+                menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(diviface_eprom_write_jumper.v ? 'X' : ' ') );
                 menu_add_item_menu_tooltip(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom");
                 menu_add_item_menu_ayuda(array_menu_ide_divide,"Allows writing to DivIDE/DivMMC eprom. Changes are lost when you exit the emulator");
                 menu_add_item_menu_es_avanzado(array_menu_ide_divide);
@@ -16578,7 +16616,9 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
 
 
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,menu_storage_ide_if_enabled_cond,"[%c] DIVIDE ~~ports",(divide_ide_ports_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_divide_ide_ports_emulation,menu_storage_ide_if_enabled_cond,
+                "DIVIDE ~~ports","~~Puertos DIVIDE","~~Ports DIVIDE");
+            menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(divide_ide_ports_enabled.v ? 'X' : ' ') );
             menu_add_item_menu_shortcut(array_menu_ide_divide,'p');
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enables DIVIDE access ports");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enables DIVIDE access ports. Requires enabling IDE Emulation");
@@ -16586,14 +16626,18 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
 
             menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
             
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,"[%c] 8-bit simple IDE",(eight_bit_simple_ide_enabled.v ? 'X' : ' ') );
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_eightbitsimple_enable,menu_storage_ide_if_enabled_cond,
+                "8-bit simple IDE","8-bit simple IDE","8-bit simple IDE");
+            menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(eight_bit_simple_ide_enabled.v ? 'X' : ' ') );
         }
 
 
         if (MACHINE_IS_SAM) {
             menu_add_item_menu(array_menu_ide_divide,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-            menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_atomlite_enable,NULL,"[%c] ~~Atom Lite",(atomlite_enabled.v ? 'X' : ' ' ) );
+            menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_atomlite_enable,NULL,
+                "~~Atom Lite","~~Atom Lite","~~Atom Lite");
+            menu_add_item_menu_prefijo_format(array_menu_ide_divide,"[%c] ",(atomlite_enabled.v ? 'X' : ' ' ) );
             menu_add_item_menu_shortcut(array_menu_ide_divide,'a');
             menu_add_item_menu_tooltip(array_menu_ide_divide,"Enable Atom Lite");
             menu_add_item_menu_ayuda(array_menu_ide_divide,"Enable Atom Lite");
@@ -16612,7 +16656,8 @@ void menu_ide_divide(MENU_ITEM_PARAMETERS)
         */
 
 
-        menu_add_item_menu_format(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,"IDE ~~Browser");
+        menu_add_item_menu_en_es_ca(array_menu_ide_divide,MENU_OPCION_NORMAL,menu_storage_ide_browser,menu_storage_ide_emulation_cond,
+            "IDE ~~Browser","IDE ~~Browser","IDE ~~Browser");
         menu_add_item_menu_shortcut(array_menu_ide_divide,'b');
         menu_add_item_menu_tooltip(array_menu_ide_divide,"IDE Browser");
         menu_add_item_menu_ayuda(array_menu_ide_divide,"IDE Browser");   
@@ -32429,39 +32474,50 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
 
         menu_tape_settings_trunc_name(hilow_file_name,string_hilow_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,"HiLow ~~File [%s]",string_hilow_file_shown);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_file,NULL,
+            "HiLow ~~File","~~Fichero HiLow","~~Fitxer HiLow");
+        menu_add_item_menu_sufijo_format(array_menu_hilow," [%s]",string_hilow_file_shown);
         menu_add_item_menu_shortcut(array_menu_hilow,'f');
         menu_add_item_menu_tooltip(array_menu_hilow,"HiLow Data Drive Emulation file");
         menu_add_item_menu_ayuda(array_menu_hilow,"HiLow Data Drive Emulation file");
 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,"[%c] ~~HiLow Enabled", (hilow_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_emulation,menu_storage_hilow_emulation_cond,
+            "~~HiLow Enabled","~~HiLow Activado","~~HiLow Activat");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_hilow,'h');
         menu_add_item_menu_tooltip(array_menu_hilow,"Enable hilow");
         menu_add_item_menu_ayuda(array_menu_hilow,"Enable hilow");
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,"[%c] ~~Write protect", (hilow_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_hilow,'w');
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_write_protect,NULL,
+            "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_hilow,'i');
         menu_add_item_menu_tooltip(array_menu_hilow,"If hilow disk is write protected");
         menu_add_item_menu_ayuda(array_menu_hilow,"If hilow disk is write protected");
 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,"[%c] ~~Persistent Writes",(hilow_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_persistent_writes,NULL,
+            "~~Persistent Writes","Escrituras ~~Persistentes","Escriptures ~~Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ",(hilow_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_hilow,'p');
         menu_add_item_menu_tooltip(array_menu_hilow,"Tells if hilow writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_hilow,"Tells if hilow writes are saved to disk. "
-        "Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
-        "tells if these changes are written to disk or not."
+            "Note: all writing operations to hilow are always saved to internal memory (unless you disable write permission), but this setting "
+            "tells if these changes are written to disk or not."
         );           
 
         menu_add_item_menu_separator(array_menu_hilow); 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,"[%c] Tape ~~inserted", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_hilow,'i');
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_insert,NULL,
+            "Tape inserted","Cinta insertada","Cinta insertada");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_cinta_insertada_flag.v ? 'X' : ' '));
         menu_add_item_menu_tooltip(array_menu_hilow,"This flag is only read by the ROM, tells the tape is inserted or not");
         menu_add_item_menu_ayuda(array_menu_hilow,"This flag is only read by the ROM, tells the tape is inserted or not");
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,"[%c] Cover has been ~~opened flag", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_cover,NULL,
+            "Cover has been ~~opened flag","Flag de tapa se ha abiert~~o","Flag de tapa s'ha ~~obert");
+        menu_add_item_menu_prefijo_format(array_menu_hilow,"[%c] ", (hilow_tapa_has_been_opened.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_hilow,'o');
         menu_add_item_menu_tooltip(array_menu_hilow,"This flag is only read by the ROM, tells the cover tape has been opened (but is not necessarily open now)");
         menu_add_item_menu_ayuda(array_menu_hilow,"This flag is only read by the ROM, tells the cover tape has been opened (but is not necessarily open now). "
@@ -32471,11 +32527,16 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_separator(array_menu_hilow); 
 
 
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,"Fo~~rmat");
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_format,menu_storage_hilow_enabled_cond,
+            "Fo~~rmat","Fo~~rmatear","Fo~~rmatejar");
         menu_add_item_menu_shortcut(array_menu_hilow,'r');
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,"~~Browse");
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_browser,menu_storage_hilow_enabled_cond,
+            "~~Browse","~~Browse","~~Browse");
         menu_add_item_menu_shortcut(array_menu_hilow,'b');
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,"~~Chkdsk");
+
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_storage_hilow_chkdsk,menu_storage_hilow_enabled_cond,
+            "~~Chkdsk","~~Chkdsk","~~Chkdsk");
         menu_add_item_menu_shortcut(array_menu_hilow,'c');
 
 
@@ -32483,7 +32544,8 @@ void menu_hilow(MENU_ITEM_PARAMETERS)
 
 
 #ifdef USE_PTHREADS
-        menu_add_item_menu_format(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,"Convert Audio");
+        menu_add_item_menu_en_es_ca(array_menu_hilow,MENU_OPCION_NORMAL,menu_hilow_convert_audio,NULL,
+            "Convert Audio","Convertir Audio","Convertir Audio");
         menu_add_item_menu_separator(array_menu_hilow); 
 #endif           
 
@@ -32640,25 +32702,33 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
 						
 
         menu_tape_settings_trunc_name(trd_file_name,string_trd_file_shown,17);
-        menu_add_item_menu_inicial_format(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,"~~TRD File [%s]",string_trd_file_shown);
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_file,NULL,
+            "~~TRD File","Archivo ~~TRD","Arxiu ~~TRD");
+        menu_add_item_menu_sufijo_format(array_menu_betadisk," [%s]",string_trd_file_shown);
         menu_add_item_menu_shortcut(array_menu_betadisk,'t');
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation file");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation file");
 
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_emulation,menu_storage_trd_emulation_cond,"[%c] TRD ~~Emulation", (trd_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_emulation,menu_storage_trd_emulation_cond,
+            "TRD ~~Emulation","~~Emulación TRD","~~Emulació TRD");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (trd_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_betadisk,'e');
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Emulation");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Emulation");
 
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_write_protect,NULL,"[%c] ~~Write protect", (trd_write_protection.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'w');
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_write_protect,NULL,
+            "Wr~~ite protect","Protección escr~~itura","Protecció escr~~iptura");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (trd_write_protection.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'i');
         menu_add_item_menu_tooltip(array_menu_betadisk,"If TRD disk is write protected");
         menu_add_item_menu_ayuda(array_menu_betadisk,"If TRD disk is write protected");
 
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_persistent_writes,NULL,"[%c] Persistent Writes",(trd_persistent_writes.v ? 'X' : ' ') );
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_persistent_writes,NULL,
+            "Persistent Writes","Escrituras Persistentes","Escriptures Persistents");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ",(trd_persistent_writes.v ? 'X' : ' ') );
         menu_add_item_menu_tooltip(array_menu_betadisk,"Tells if TRD writes are saved to disk");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Tells if TRD writes are saved to disk. "
         "Note: all writing operations to TRD are always saved to internal memory (unless you disable write permission), but this setting "
@@ -32670,20 +32740,25 @@ void menu_betadisk(MENU_ITEM_PARAMETERS)
         menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,"[%c] Betadis~~k Enabled", (betadisk_enabled.v ? 'X' : ' '));
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_emulation,NULL,
+            "Betadis~~k Enabled","Betadis~~k Activado","Betadis~~k Activat");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_enabled.v ? 'X' : ' '));
         menu_add_item_menu_shortcut(array_menu_betadisk,'k');
         menu_add_item_menu_tooltip(array_menu_betadisk,"Enable betadisk");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Enable betadisk");
 
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,"[%c] ~~Allow Boot", (betadisk_allow_boot_48k.v ? 'X' : ' '));
-        menu_add_item_menu_shortcut(array_menu_betadisk,'a');
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_betadisk_allow_boot,NULL,
+            "Allow ~~Boot","Permitir ~~Boot","Permetre ~~Boot");
+        menu_add_item_menu_prefijo_format(array_menu_betadisk,"[%c] ", (betadisk_allow_boot_48k.v ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_betadisk,'b');
         menu_add_item_menu_tooltip(array_menu_betadisk,"Allow autoboot on 48k machines");
         menu_add_item_menu_ayuda(array_menu_betadisk,"Allow autoboot on 48k machines");
 
         menu_add_item_menu(array_menu_betadisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);                        
 
-        menu_add_item_menu_format(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,"TRD ~~Viewer");
+        menu_add_item_menu_en_es_ca(array_menu_betadisk,MENU_OPCION_NORMAL,menu_storage_trd_browser,menu_storage_trd_emulation_cond,
+            "TRD ~~Viewer","~~Visor TRD","~~Visor TRD");
         menu_add_item_menu_shortcut(array_menu_betadisk,'v');
         menu_add_item_menu_tooltip(array_menu_betadisk,"TRD Viewer");
         menu_add_item_menu_ayuda(array_menu_betadisk,"TRD Viewer");
