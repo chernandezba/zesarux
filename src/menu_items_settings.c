@@ -3779,47 +3779,61 @@ void menu_hardware_advanced_hidden_borde_derecho(MENU_ITEM_PARAMETERS)
 
 void menu_ula_advanced(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_hardware_advanced;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-                menu_add_item_menu_inicial_format(&array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_top_border,NULL,"[%2d] Hidden Top Border",screen_invisible_borde_superior);
+    menu_item *array_menu_hardware_advanced;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_top_border,NULL,
+            "Hidden Top Border","Borde Superior Oculto","Vora Superior Oculta");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%2d] ",screen_invisible_borde_superior);
 
-                menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_top_border,NULL,"[%d] Visible Top Border",screen_borde_superior);
-                menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_bottom_border,NULL,"[%d] Visible Bottom Border",screen_total_borde_inferior);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_top_border,NULL,
+            "Visible Top Border","Borde Superior Visible","Vora Superior Visible");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_borde_superior);
 
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_izquierdo,NULL,"[%d] Left Border TLength",screen_total_borde_izquierdo/2);
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_derecho,NULL,"[%d] Right Border TLength",screen_total_borde_derecho/2);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_visible_bottom_border,NULL,
+            "Visible Bottom Border","Borde Inferior Visible","Vora Inferior Visible");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_inferior);
 
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_borde_derecho,NULL,"[%d] Right Hidden B. TLength",screen_invisible_borde_derecho/2);
+        menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_izquierdo,NULL,
+            "Left Border TLength","Borde Izquierdo TLongitud","Vora Esquerra TLongitut");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_izquierdo/2);
+
+        menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_borde_derecho,NULL,
+            "Right Border TLength","Borde Derecho TLongitud","Vora Dreta TLongitut");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_total_borde_derecho/2);
+
+        menu_add_item_menu_en_es_ca(array_menu_hardware_advanced,MENU_OPCION_NORMAL,menu_hardware_advanced_hidden_borde_derecho,NULL,
+            "Right Hidden B. TLength","B. Derecho Oculto TLongitud","V. Dreta Oculta TLongitut");
+        menu_add_item_menu_prefijo_format(array_menu_hardware_advanced,"[%d] ",screen_invisible_borde_derecho/2);
 
 
-                menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Info:");
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total line TLength: %d",screen_testados_linea);
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total scanlines: %d",screen_scanlines);
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total T-states: %d",screen_testados_total);
-		menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total Hz: %d",screen_testados_total*50);
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Info:");
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total line TLength: %d",screen_testados_linea);
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total scanlines: %d",screen_scanlines);
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total T-states: %d",screen_testados_total);
+        menu_add_item_menu_format(array_menu_hardware_advanced,MENU_OPCION_NORMAL,NULL,NULL,"Total Hz: %d",screen_testados_total*50);
 
-                menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_hardware_advanced,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_hardware_advanced);
+        menu_add_item_menu(array_menu_hardware_advanced,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_hardware_advanced,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_hardware_advanced);
 
-                retorno_menu=menu_dibuja_menu(&hardware_advanced_opcion_seleccionada,&item_seleccionado,array_menu_hardware_advanced,"Advanced Timing Settings" );
+        retorno_menu=menu_dibuja_menu(&hardware_advanced_opcion_seleccionada,&item_seleccionado,array_menu_hardware_advanced,"Advanced Timing Settings" );
 
-                
+            
 
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 }
 
 
@@ -3838,82 +3852,94 @@ void menu_ula_settings(MENU_ITEM_PARAMETERS)
 
 #ifdef EMULATE_CONTEND
 
-                if (MACHINE_IS_SPECTRUM) {
-                        menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_late_timings,NULL,"ULA ~~timing [%s]",(ula_late_timings.v ? "Late" : "Early"));
-                        menu_add_item_menu_shortcut(array_menu_ula_settings,'t');
-                        menu_add_item_menu_tooltip(array_menu_ula_settings,"Use ULA early or late timings");
-                        menu_add_item_menu_ayuda(array_menu_ula_settings,"Late timings have the contended memory table start one t-state later");
+        if (MACHINE_IS_SPECTRUM) {
+            menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_late_timings,NULL,
+                "ULA ~~timing","~~Temporización ULA","~~Temporització ULA");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%s] ",(ula_late_timings.v ? "Late" : "Early"));
+            menu_add_item_menu_shortcut(array_menu_ula_settings,'t');
+            menu_add_item_menu_tooltip(array_menu_ula_settings,"Use ULA early or late timings");
+            menu_add_item_menu_ayuda(array_menu_ula_settings,"Late timings have the contended memory table start one t-state later");
 
-                        menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_contend,NULL,"[%c] ~~Contended memory", (contend_enabled.v==1 ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_ula_settings,'c');
-                        menu_add_item_menu_tooltip(array_menu_ula_settings,"Enable contended memory & ports emulation");
-                        menu_add_item_menu_ayuda(array_menu_ula_settings,"Contended memory & ports is the native way of some of the emulated machines");
+            menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_contend,NULL,
+                "~~Contended memory","Memoria ~~Contended","Memoria ~~Contended");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ", (contend_enabled.v==1 ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_ula_settings,'c');
+            menu_add_item_menu_tooltip(array_menu_ula_settings,"Enable contended memory & ports emulation");
+            menu_add_item_menu_ayuda(array_menu_ula_settings,"Contended memory & ports is the native way of some of the emulated machines");
 
-
-
-		
-		
 		}
 
 #endif
 
-			if (MACHINE_IS_SPECTRUM) {
+        if (MACHINE_IS_SPECTRUM) {
 
-			menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_im2_slow,NULL,"[%c] ULA IM2 ~~slow",(ula_im2_slow.v ? 'X' : ' '));
-			menu_add_item_menu_shortcut(array_menu_ula_settings,'s');
+			menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_im2_slow,NULL,
+                "ULA IM2 s~~low","ULA IM2 ~~lenta","ULA IM2 ~~lenta");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ",(ula_im2_slow.v ? 'X' : ' '));
+			menu_add_item_menu_shortcut(array_menu_ula_settings,'l');
 			menu_add_item_menu_tooltip(array_menu_ula_settings,"Add one t-state when an IM2 is fired");
 			menu_add_item_menu_ayuda(array_menu_ula_settings,"It improves visualization on some demos, like overscan, ula128 and scroll2017");
-                }
+        }
 
 
 
 
 		if (MACHINE_IS_SPECTRUM) {
 
-                        menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_pentagon_timing,NULL,"[%c] ~~Pentagon timing",(pentagon_timing.v ? 'X' : ' '));
-                        menu_add_item_menu_shortcut(array_menu_ula_settings,'p');
-                        menu_add_item_menu_tooltip(array_menu_ula_settings,"Enable Pentagon timings");
-                        menu_add_item_menu_ayuda(array_menu_ula_settings,"Pentagon does not have contended memory/ports and have different display timings");
+            menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_pentagon_timing,NULL,
+                "~~Pentagon timing","Temporización ~~Pentagon","Temporització ~~Pentagon");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ",(pentagon_timing.v ? 'X' : ' '));
+            menu_add_item_menu_shortcut(array_menu_ula_settings,'p');
+            menu_add_item_menu_tooltip(array_menu_ula_settings,"Enable Pentagon timings");
+            menu_add_item_menu_ayuda(array_menu_ula_settings,"Pentagon does not have contended memory/ports and have different display timings");
 
 		}
 
 
 		if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
-			menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_disable_rom_paging,NULL,"[%c] ROM Paging",(ula_disabled_rom_paging.v==0 ? 'X' : ' '));
-			menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_disable_ram_paging,NULL,"[%c] RAM Paging",(ula_disabled_ram_paging.v==0 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_disable_rom_paging,NULL,
+                "Allow ROM Paging","Permitir paginar ROM","Permetre Paginar ROM");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ",(ula_disabled_rom_paging.v==0 ? 'X' : ' '));
+
+			menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_disable_ram_paging,NULL,
+                "Allow RAM Paging","Permitir paginar RAM","Permetre Paginar RAM");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%c] ",(ula_disabled_ram_paging.v==0 ? 'X' : ' '));
 		}
 
         if (CPU_IS_Z80) {
-            menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_databus_value,NULL,"[%d] ~~ULA Databus value",ula_databus_value);
-            menu_add_item_menu_shortcut(array_menu_ula_settings,'a');
+            menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_databus_value,NULL,
+                "~~ULA Databus value","Valor ~~ULA Databus","Valor ~~ULA Databus");
+            menu_add_item_menu_prefijo_format(array_menu_ula_settings,"[%d] ",ula_databus_value);
+            menu_add_item_menu_shortcut(array_menu_ula_settings,'u');
         }
 
-                menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
-		menu_add_item_menu_format(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_advanced,menu_cond_realvideo,"~~Advanced timing settings");
-                menu_add_item_menu_shortcut(array_menu_ula_settings,'a');
-                menu_add_item_menu_tooltip(array_menu_ula_settings,"Advanced timing settings. Requires realvideo");
-                menu_add_item_menu_ayuda(array_menu_ula_settings,"Change and view some timings for the machine. Requires realvideo");
-                menu_add_item_menu_tiene_submenu(array_menu_ula_settings);
+		menu_add_item_menu_en_es_ca(array_menu_ula_settings,MENU_OPCION_NORMAL,menu_ula_advanced,menu_cond_realvideo,
+            "~~Advanced timing settings","Ajustes ~~avanzados temporización","Ajustaments ~~avançats temporització");
+        menu_add_item_menu_shortcut(array_menu_ula_settings,'a');
+        menu_add_item_menu_tooltip(array_menu_ula_settings,"Advanced timing settings. Requires realvideo");
+        menu_add_item_menu_ayuda(array_menu_ula_settings,"Change and view some timings for the machine. Requires realvideo");
+        menu_add_item_menu_tiene_submenu(array_menu_ula_settings);
 
 
-                menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_ula_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_ula_settings);
+        menu_add_item_menu(array_menu_ula_settings,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        //menu_add_item_menu(array_menu_ula_settings,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_ula_settings);
 
-                retorno_menu=menu_dibuja_menu(&ula_settings_opcion_seleccionada,&item_seleccionado,array_menu_ula_settings,"ULA Settings" );
+        retorno_menu=menu_dibuja_menu(&ula_settings_opcion_seleccionada,&item_seleccionado,array_menu_ula_settings,"ULA Settings" );
 
-                
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
@@ -5189,69 +5215,71 @@ void menu_tape_autoselectfileopt(MENU_ITEM_PARAMETERS)
 //menu storage settings
 void menu_settings_storage(MENU_ITEM_PARAMETERS)
 {
-        menu_item *array_menu_settings_storage;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-                
+    menu_item *array_menu_settings_storage;
+    menu_item item_seleccionado;
+    int retorno_menu;
+    do {
 
 
-
-                menu_add_item_menu_inicial_format(&array_menu_settings_storage,MENU_OPCION_NORMAL,menu_tape_autoloadtape,NULL,"[%c] ~~Autoload medium", (noautoload.v==0 ? 'X' : ' '));
-                            menu_add_item_menu_shortcut(array_menu_settings_storage,'a');
-
-                            menu_add_item_menu_tooltip(array_menu_settings_storage,"Autoload medium and set machine");
-                            menu_add_item_menu_ayuda(array_menu_settings_storage,"This option first change to the machine that handles the medium file type selected (tape, cartridge, etc), resets it, set some default machine values, and then, it sends "
-                                                            "a LOAD sentence to load the medium\n"
-                                                            "Note: The machine is changed only using smartload. Inserting a medium only resets the machine but does not change it");
-
-
-			if (noautoload.v==0) {
-				menu_add_item_menu_format(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_storage_settings_fast_autoload,NULL,"[%c] ~~Fast autoload",
-					(fast_autoload.v ? 'X' : ' ' ) );
-				menu_add_item_menu_shortcut(array_menu_settings_storage,'f');
-				menu_add_item_menu_tooltip(array_menu_settings_storage,"Do the autoload process at top speed");
-				menu_add_item_menu_ayuda(array_menu_settings_storage,"Do the autoload process at top speed");
-			}
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_storage,MENU_OPCION_NORMAL,menu_tape_autoloadtape,NULL,
+            "~~Autoload medium","~~Autocargar medio","~~Autocarregar medi");
+        menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ", (noautoload.v==0 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_settings_storage,'a');
+        menu_add_item_menu_tooltip(array_menu_settings_storage,"Autoload medium and set machine");
+        menu_add_item_menu_ayuda(array_menu_settings_storage,"This option first change to the machine that handles the medium file type selected (tape, cartridge, etc), resets it, set some default machine values, and then, it sends "
+            "a LOAD sentence to load the medium\n"
+            "Note: The machine is changed only using smartload. Inserting a medium only resets the machine but does not change it");
 
 
-                            menu_add_item_menu_format(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_tape_autoselectfileopt,NULL,"[%c] A~~utoselect medium opts", (autoselect_snaptape_options.v==1 ? 'X' : ' ' ));
-                            menu_add_item_menu_shortcut(array_menu_settings_storage,'u');
-                            menu_add_item_menu_tooltip(array_menu_settings_storage,"Detect options for the selected medium file and the needed machine");
-                            menu_add_item_menu_ayuda(array_menu_settings_storage,"The emulator uses a database for different included programs "
-                                            "(and some other not included) and reads .config files to select emulator settings and the needed machine "
-                                            "to run them. If you disable this, the database nor the .config files are read");
+        if (noautoload.v==0) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_storage_settings_fast_autoload,NULL,
+                "Fast autoloa~~d","Autocargar rápi~~do","Autocarregar ràpi~~d");
+            menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ",(fast_autoload.v ? 'X' : ' ' ) );                
+            menu_add_item_menu_shortcut(array_menu_settings_storage,'d');
+            menu_add_item_menu_tooltip(array_menu_settings_storage,"Do the autoload process at top speed");
+            menu_add_item_menu_ayuda(array_menu_settings_storage,"Do the autoload process at top speed");
+        }
 
 
-							if (!MACHINE_IS_Z88 && !MACHINE_IS_CHLOE && !MACHINE_IS_QL) {
-                						menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-								menu_add_item_menu_format(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_settings_tape,NULL,"~~Tape");
-								menu_add_item_menu_shortcut(array_menu_settings_storage,'t');
-                                menu_add_item_menu_tiene_submenu(array_menu_settings_storage);
-						}
+        menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_tape_autoselectfileopt,NULL,
+            "A~~utoselect medium opts","A~~utoseleccionar opcs. medio","A~~utoseleccionar opcs. medi");
+        menu_add_item_menu_prefijo_format(array_menu_settings_storage,"[%c] ", (autoselect_snaptape_options.v==1 ? 'X' : ' ' ));
+        menu_add_item_menu_shortcut(array_menu_settings_storage,'u');
+        menu_add_item_menu_tooltip(array_menu_settings_storage,"Detect options for the selected medium file and the needed machine");
+        menu_add_item_menu_ayuda(array_menu_settings_storage,"The emulator uses a database for different included programs "
+            "(and some other not included) and reads .config files to select emulator settings and the needed machine "
+            "to run them. If you disable this, the database nor the .config files are read");
+
+
+        if (!MACHINE_IS_Z88 && !MACHINE_IS_CHLOE && !MACHINE_IS_QL) {
+            menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+            menu_add_item_menu_en_es_ca(array_menu_settings_storage,MENU_OPCION_NORMAL,menu_settings_tape,NULL,
+                "~~Tape","Cin~~ta","Cin~~ta");
+            menu_add_item_menu_shortcut(array_menu_settings_storage,'t');
+            menu_add_item_menu_tiene_submenu(array_menu_settings_storage);
+        }
 
 
 																			
-						
+					
+        menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        
+        menu_add_ESC_item(array_menu_settings_storage);
 
-                menu_add_item_menu(array_menu_settings_storage,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_settings_storage,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_settings_storage);
+        retorno_menu=menu_dibuja_menu(&settings_storage_opcion_seleccionada,&item_seleccionado,array_menu_settings_storage,"Storage Settings" );
 
-                retorno_menu=menu_dibuja_menu(&settings_storage_opcion_seleccionada,&item_seleccionado,array_menu_settings_storage,"Storage Settings" );
-
-                
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
+        
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                //llamamos por valor de funcion
+                if (item_seleccionado.menu_funcion!=NULL) {
+                        //printf ("actuamos por funcion\n");
+                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                        
                 }
+        }
 
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 
