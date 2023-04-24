@@ -9170,10 +9170,13 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
                 //char string_tape_load_shown[20],string_tape_load_inserted[50],string_tape_save_shown[20],string_tape_save_inserted[50];
 		//char string_realtape_shown[23];
 
-		menu_add_item_menu_inicial_format(&array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,"--Standard Tape--");
+		menu_add_item_menu_en_es_ca_inicial(&array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
+            "--Standard Tape--","--Cinta Estándar--","--Cinta Estàndard");
 
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_standard_to_real_tape_fallback,NULL,"[%c] Fa~~llback to real tape",(standard_to_real_tape_fallback.v ? 'X' : ' ') );
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_standard_to_real_tape_fallback,NULL,
+            "Fa~~llback to real tape","Fa~~llback a cinta real","Fa~~llback a cinta real");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(standard_to_real_tape_fallback.v ? 'X' : ' ') );
 		menu_add_item_menu_shortcut(array_menu_settings_tape,'l');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"If this standard tape is detected as real tape, reinsert tape as real tape");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"While loading the standard tape, if a custom loading routine is detected, "
@@ -9181,64 +9184,78 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 					"the machine will be resetted and loaded the tape from the beginning");
 
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_any_flag,NULL,"[%c] A~~ny flag loading", (tape_any_flag_loading.v==1 ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_settings_tape,'n');
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_any_flag,NULL,
+            "~~Any flag loading","Carga cu~~alquier flag","Carregar qu~~alsevol flag");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_any_flag_loading.v==1 ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_settings_tape,'a');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enables tape load routine to load without knowing block flag. You must enable it on Tape Copy programs and also on Rocman game");
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,"[%c] ~~Autorewind", (tape_auto_rewind.v ? 'X' : ' '));
-		menu_add_item_menu_shortcut(array_menu_settings_tape,'a');
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_autorewind,NULL,
+            "Autorew~~ind","Autorebob~~inar","Autorebob~~inar");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_auto_rewind.v ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_settings_tape,'i');
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
         menu_add_item_menu_ayuda(array_menu_settings_tape,"Autorewind standard tape when reaching end of tape");
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
 
-                //menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load,NULL,
+            "~~Simulate real load","~~Simular carga real","~~Simular càrrega real");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_loading_simulate.v==1 ? 'X' : ' '));
+        menu_add_item_menu_shortcut(array_menu_settings_tape,'s');
+        menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes");
+        menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes. You can skip simulation pressing any key (and the data is loaded)");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
+        menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load_fast,menu_tape_simulate_real_load_cond,
+            "Fast Simulate real load","Carga real simulada rápida","Càrrega real simulada ràpida");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tape_loading_simulate_fast.v==1 ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+        menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
-			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load,NULL,"[%c] ~~Simulate real load", (tape_loading_simulate.v==1 ? 'X' : ' '));
-			menu_add_item_menu_shortcut(array_menu_settings_tape,'s');
-			menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes");
-			menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes. You can skip simulation pressing any key (and the data is loaded)");
-            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
+        menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_tzx_suppress_pause,NULL,
+            "TZX delete pause","TZX eliminar pausa","TZX eliminar pausa");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (tzx_suppress_pause.v==1 ? 'X' : ' '));
+        menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+        menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
+        menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
-			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_simulate_real_load_fast,menu_tape_simulate_real_load_cond,"[%c] Fast Simulate real load", (tape_loading_simulate_fast.v==1 ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
-            menu_add_item_menu_ayuda(array_menu_settings_tape,"Simulate sound and loading stripes at faster speed");
-            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
-
-			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_tzx_suppress_pause,NULL,"[%c] TZX delete pause", (tzx_suppress_pause.v==1 ? 'X' : ' '));
-            menu_add_item_menu_tooltip(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
-            menu_add_item_menu_ayuda(array_menu_settings_tape,"Do not follow pauses on TZX tapes");
-            menu_add_item_menu_es_avanzado(array_menu_settings_tape);
-
-            if (MACHINE_IS_ZX8081) {
-			    menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_zx8081_disable_tape_traps,NULL,"[%c] Tape traps", (zx8081_disable_tape_traps.v==1 ? ' ' : 'X'));
-                menu_add_item_menu_tooltip(array_menu_settings_tape,"Enable tape traps on ZX80/81");
-                menu_add_item_menu_ayuda(array_menu_settings_tape,"Enable tape traps on ZX80/81");
-            }
-
-
-
-            menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,"--Input Real Tape--");
+        if (MACHINE_IS_ZX8081) {
+            menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_tape_zx8081_disable_tape_traps,NULL,
+                "Tape traps","Traps de cinta","Traps de cinta");
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (zx8081_disable_tape_traps.v==1 ? ' ' : 'X'));
+            menu_add_item_menu_tooltip(array_menu_settings_tape,"Enable tape traps on ZX80/81");
+            menu_add_item_menu_ayuda(array_menu_settings_tape,"Enable tape traps on ZX80/81");
+        }
 
 
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_loading_sound,NULL,"[%c] Loading sound", (realtape_loading_sound.v==1 ? 'X' : ' '));
+        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,NULL,NULL,
+            "--Input Real Tape--","--Cinta Real de Entrada--","--Cinta Real d'Entrada--");
+
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_loading_sound,NULL,
+            "Loading sound","Sonido de carga","So de càrrega");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (realtape_loading_sound.v==1 ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Enable loading sound");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Enable loading sound. With sound disabled, the tape is also loaded");
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new,NULL,"[%c] Improved algorithm", (realtape_algorithm_new.v==1 ? 'X' : ' '));
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new,NULL,
+            "Improved algorithm","Algoritmo mejorado","Algoritme millorat");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ", (realtape_algorithm_new.v==1 ? 'X' : ' '));
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Use improved loading algorithm");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Use improved loading algorithm. Gives better results with non-zero centered audio tapes but without noise");
         menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 
         if (realtape_algorithm_new.v) {
-            menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new_noise_reduction,NULL,"[%d] Noise reduction",realtape_algorithm_new_noise_reduction);
+            menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_algorithm_new_noise_reduction,NULL,
+                "Noise reduction","Reducción de ruido","Reducció de soroll");
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%d] ",realtape_algorithm_new_noise_reduction);
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Noise reduction value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"Noise reduction value. Set a value >0 when you need to reduce noise");
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
@@ -9247,7 +9264,9 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
         else {
 
-            menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_volumen,NULL,"[%s%d] Volume bit 1 range",(realtape_volumen>0 ? "+" : ""),realtape_volumen);
+            menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_volumen,NULL,
+                "Volume bit 1 range","Rango Volumen bit 1","Rang Volum bit 1");
+            menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%s%d] ",(realtape_volumen>0 ? "+" : ""),realtape_volumen);
             menu_add_item_menu_tooltip(array_menu_settings_tape,"Volume bit 1 starting range value");
             menu_add_item_menu_ayuda(array_menu_settings_tape,"The input audio value read (considering range from -128 to +127) is treated "
                         "normally as 1 if the value is in range 0...+127, and 0 if it is in range -127...-1. This setting "
@@ -9258,7 +9277,9 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
 
-		menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_wave_offset,NULL,"[%d] Level Offset",realtape_wave_offset);
+		menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_wave_offset,NULL,
+            "Level Offset","Desplazamiento nivel","Desplaçament nivell");
+        menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%d] ",realtape_wave_offset);
 		menu_add_item_menu_tooltip(array_menu_settings_tape,"Apply offset to sound value read");
 		menu_add_item_menu_ayuda(array_menu_settings_tape,"Indicates some value (positive or negative) to sum to the raw value read "
 					"(considering range from -128 to +127) to the input audio value read");
@@ -9266,14 +9287,16 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 
 
 		if (MACHINE_IS_MSX) {
-			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_msx_loading_noise_reduction,NULL,"[%c] MSX Loading noise reduction",
-			(msx_loading_noise_reduction.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_msx_loading_noise_reduction,NULL,
+                "MSX Loading noise reduction","Reducción ruido carga MSX","Reducció soroll càrrega MSX");
+			menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(msx_loading_noise_reduction.v==1 ? 'X' : ' '));
             menu_add_item_menu_es_avanzado(array_menu_settings_tape);
 		}
 
 		if (MACHINE_IS_SPECTRUM) {
-			menu_add_item_menu_format(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_accelerate_loaders,NULL,"[%c] A~~ccelerate loaders",
-				(accelerate_loaders.v==1 ? 'X' : ' '));
+			menu_add_item_menu_en_es_ca(array_menu_settings_tape,MENU_OPCION_NORMAL,menu_realtape_accelerate_loaders,NULL,
+                "A~~ccelerate loaders","A~~celerar cargadores","A~~ccelerar carregadors");
+			menu_add_item_menu_prefijo_format(array_menu_settings_tape,"[%c] ",(accelerate_loaders.v==1 ? 'X' : ' '));
 			menu_add_item_menu_shortcut(array_menu_settings_tape,'c');
 			menu_add_item_menu_tooltip(array_menu_settings_tape,"Set top speed setting when loading a real tape");
 			menu_add_item_menu_ayuda(array_menu_settings_tape,"Set top speed setting when loading a real tape");
@@ -9281,18 +9304,12 @@ void menu_settings_tape(MENU_ITEM_PARAMETERS)
 		}
 
 
+        menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-
-                menu_add_item_menu(array_menu_settings_tape,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-
-
-
-                //menu_add_item_menu(array_menu_settings_tape,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_settings_tape);
 
-                retorno_menu=menu_dibuja_menu(&settings_tape_opcion_seleccionada,&item_seleccionado,array_menu_settings_tape,"Tape Settings" );
+        retorno_menu=menu_dibuja_menu(&settings_tape_opcion_seleccionada,&item_seleccionado,array_menu_settings_tape,"Tape Settings" );
 
                 
 
