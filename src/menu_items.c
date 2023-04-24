@@ -214,7 +214,6 @@ int network_opcion_seleccionada=0;
 int zeng_opcion_seleccionada=0;
 int zx81_online_browser_opcion_seleccionada=0;
 int online_browse_zx81_letter_opcion_seleccionada=0;
-int settings_statistics_opcion_seleccionada=0;
 int mmc_divmmc_opcion_seleccionada=0;
 int ide_divide_opcion_seleccionada=0;
 int display_settings_opcion_seleccionada=0;
@@ -15674,98 +15673,6 @@ void menu_network(MENU_ITEM_PARAMETERS)
 
 
 }
-
-void menu_settings_enable_statistics(MENU_ITEM_PARAMETERS)
-{
-	if (stats_enabled.v) stats_disable();
-	else stats_enable();
-}
-
-void menu_settings_enable_check_updates(MENU_ITEM_PARAMETERS)
-{
-	stats_check_updates_enabled.v ^=1;	
-}
-
-void menu_settings_enable_check_yesterday_users(MENU_ITEM_PARAMETERS)
-{
-	stats_check_yesterday_users_enabled.v ^=1;
-}
-
-void menu_settings_statistics(MENU_ITEM_PARAMETERS)
-{
-        //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
-        menu_item *array_menu_common;
-        menu_item item_seleccionado;
-        int retorno_menu;
-        do {
-
-			menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_check_updates,NULL,"[%c] Check updates",
-					(stats_check_updates_enabled.v ? 'X' : ' ') );
-
-
-			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_check_yesterday_users,NULL,"[%c] Check yesterday users",
-					(stats_check_yesterday_users_enabled.v ? 'X' : ' ') );  
-
-			menu_add_item_menu_tooltip(array_menu_common,"Retrieve ZEsarUX yesterday users");
-			menu_add_item_menu_ayuda(array_menu_common,"Retrieve ZEsarUX yesterday users");
-
-
-                
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_statistics,NULL,"[%c] Send Statistics",
-					(stats_enabled.v ? 'X' : ' ') );
-			
-                        
-			menu_add_item_menu_tooltip(array_menu_common,"Send anonymous statistics to a remote server, every time ZEsarUX starts");
-			menu_add_item_menu_ayuda(array_menu_common,"Send anonymous statistics to a remote server, every time ZEsarUX starts");
-
-			if (stats_enabled.v) {
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"The following data is sent:");
-				//menu_add_item_menu_tooltip(array_menu_common,"This data is sent every time ZEsarUX starts");
-				//menu_add_item_menu_ayuda(array_menu_common,"This data is sent every time ZEsarUX starts");
-	
-	menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Public IP address");
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    UUID: %s",stats_uuid);
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    System: %s",COMPILATION_SYSTEM);
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Minutes: %d",stats_get_current_total_minutes_use() );
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Speccy queries: %d",stats_total_speccy_browser_queries);
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    ZX81 queries: %d",stats_total_zx81_browser_queries);
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Emulator version: %s",EMULATOR_VERSION);
-				
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Build Number: %s",BUILDNUMBER);
-				
-
-			}
-
-              
-						
-			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-            menu_add_ESC_item(array_menu_common);
-
-            retorno_menu=menu_dibuja_menu(&settings_statistics_opcion_seleccionada,&item_seleccionado,array_menu_common,"Statistics Settings" );
-
-                
-                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-                        //llamamos por valor de funcion
-                        if (item_seleccionado.menu_funcion!=NULL) {
-                                //printf ("actuamos por funcion\n");
-                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                
-                        }
-                }
-
-        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
-
-
-
-
-}
-
-
 
 
 
@@ -37478,7 +37385,7 @@ void menu_process_f_functions_by_action_name(int id_funcion,int si_pulsado_icono
         break;
 
 		case F_FUNCION_SWITCHFOOTER:
-            menu_interface_footer();
+            menu_interface_footer(0);
 		break;
 
         case F_FUNCION_VISUALREALTAPE:

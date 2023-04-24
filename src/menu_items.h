@@ -95,7 +95,7 @@ extern void menu_ay_mixer(MENU_ITEM_PARAMETERS);
 extern void menu_i8049_mixer(MENU_ITEM_PARAMETERS);
 extern void menu_uartbridge(MENU_ITEM_PARAMETERS);
 extern void menu_network(MENU_ITEM_PARAMETERS);
-extern void menu_settings_statistics(MENU_ITEM_PARAMETERS);
+
 
 extern void menu_debug_change_memory_zone_splash(void);
 

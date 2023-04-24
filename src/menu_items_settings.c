@@ -218,6 +218,7 @@ int cpu_settings_opcion_seleccionada=0;
 int zxdesktop_set_configurable_icons_opcion_seleccionada=0;
 int fileselector_settings_opcion_seleccionada=0;
 int debug_verbose_filter_opcion_seleccionada=0;
+int settings_statistics_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -10853,4 +10854,99 @@ void menu_fileselector_settings(MENU_ITEM_PARAMETERS)
     } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 }
+
+
+
+
+void menu_settings_enable_statistics(MENU_ITEM_PARAMETERS)
+{
+	if (stats_enabled.v) stats_disable();
+	else stats_enable();
+}
+
+void menu_settings_enable_check_updates(MENU_ITEM_PARAMETERS)
+{
+	stats_check_updates_enabled.v ^=1;	
+}
+
+void menu_settings_enable_check_yesterday_users(MENU_ITEM_PARAMETERS)
+{
+	stats_check_yesterday_users_enabled.v ^=1;
+}
+
+void menu_settings_statistics(MENU_ITEM_PARAMETERS)
+{
+        //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
+        menu_item *array_menu_common;
+        menu_item item_seleccionado;
+        int retorno_menu;
+        do {
+
+			menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_check_updates,NULL,
+                "Check updates","Comprobar actualizaciones","Comprovar actualitzacions");
+			menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(stats_check_updates_enabled.v ? 'X' : ' ') );    
+			menu_add_item_menu_tooltip(array_menu_common,"Check ZEsarUX updates");
+			menu_add_item_menu_ayuda(array_menu_common,"Check ZEsarUX updates");                       
+
+
+			menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_check_yesterday_users,NULL,
+                "Check yesterday users","Comprobar usuarios de ayer","Comprovar usuaris d'ahir");
+			menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(stats_check_yesterday_users_enabled.v ? 'X' : ' ') );
+			menu_add_item_menu_tooltip(array_menu_common,"Retrieve ZEsarUX yesterday users");
+			menu_add_item_menu_ayuda(array_menu_common,"Retrieve ZEsarUX yesterday users");
+
+
+                
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_settings_enable_statistics,NULL,
+                "Send Statistics","Enviar estadísticas","Enviar estadístiques");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(stats_enabled.v ? 'X' : ' ') );                    
+			menu_add_item_menu_tooltip(array_menu_common,"Send anonymous statistics to a remote server, every time ZEsarUX starts");
+			menu_add_item_menu_ayuda(array_menu_common,"Send anonymous statistics to a remote server, every time ZEsarUX starts");
+
+			if (stats_enabled.v) {
+				menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+                    "The following data is sent:","Se envían los siguientes datos:","S'envien les següents dades:");
+	
+	            menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Public IP address");
+				
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    UUID: %s",stats_uuid);
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    System: %s",COMPILATION_SYSTEM);
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Minutes: %d",stats_get_current_total_minutes_use() );
+				
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Speccy queries: %d",stats_total_speccy_browser_queries);
+				
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    ZX81 queries: %d",stats_total_zx81_browser_queries);
+				
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Emulator version: %s",EMULATOR_VERSION);
+				
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Build Number: %s",BUILDNUMBER);
+				
+
+			}
+
+              
+						
+			menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+            menu_add_ESC_item(array_menu_common);
+
+            retorno_menu=menu_dibuja_menu(&settings_statistics_opcion_seleccionada,&item_seleccionado,array_menu_common,"Statistics Settings" );
+
+                
+                if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+                                
+                        }
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+
+
+
+}
+
 

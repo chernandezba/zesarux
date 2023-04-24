@@ -54,6 +54,8 @@ extern void menu_interface_allow_background_windows_delete_windows(void);
 extern void menu_zxdesktop_set_userdef_buttons_functions(MENU_ITEM_PARAMETERS);
 extern void menu_hardware_set_f_functions(MENU_ITEM_PARAMETERS);
 
+extern void menu_settings_statistics(MENU_ITEM_PARAMETERS);
+extern void menu_interface_footer(MENU_ITEM_PARAMETERS);
 
 #endif
 
