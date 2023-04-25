@@ -319,7 +319,7 @@ void pcw_reset(void)
 
 void pcw_init_memory_tables(void)
 {
-	debug_printf (VERBOSE_DEBUG,"Initializing pcw memory tables");
+	DBG_PRINT_PCW VERBOSE_DEBUG,"Initializing pcw memory tables");
 
     z80_byte *puntero;
     puntero=memoria_spectrum;

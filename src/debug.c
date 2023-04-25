@@ -1059,6 +1059,7 @@ char *debug_mask_beyond_should_not_happen="BEYONDLIMIT";
 debug_masks_class debug_masks_class_list[]={
     {"DSK",VERBOSE_CLASS_DSK},
     {"PD765",VERBOSE_CLASS_PD765},
+    {"PCW",VERBOSE_CLASS_PCW},
     {"ANYTHINGELSE",VERBOSE_CLASS_ANYTHINGELSE},
     {"",0}  //Siempre este al final
 };

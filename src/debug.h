@@ -151,6 +151,7 @@ extern int core_spectrum_executed_halt_in_this_scanline;
 //Clasificacion de mensajes por tipo. Uso de mascaras con valores altos. Valores a partir de 256 indica que hay mascara
 #define VERBOSE_CLASS_DSK   (1<<8)
 #define VERBOSE_CLASS_PD765 (1<<9)
+#define VERBOSE_CLASS_PCW   (1<<10)
 
 //Mensajes sin clase indicada. Bit 31 que seria de signo no lo toco. Uso bit 30 para el de anythingelse
 #define VERBOSE_CLASS_ANYTHINGELSE (1<<30)

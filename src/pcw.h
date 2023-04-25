@@ -47,6 +47,8 @@
 #define PCW_LEFT_BORDER PCW_LEFT_BORDER_NO_ZOOM*zoom_x
 #define PCW_TOP_BORDER  PCW_TOP_BORDER_NO_ZOOM*zoom_y
 
+//Para poder hacer debug_printf con la clase PCW adecuada
+#define DBG_PRINT_PCW debug_printf(VERBOSE_CLASS_PCW|
 
 extern z80_byte *pcw_get_memory_offset_read(z80_int dir);
 extern z80_byte *pcw_get_memory_offset_write(z80_int dir);
