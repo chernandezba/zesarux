@@ -4813,7 +4813,10 @@ if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 }
 
 
-
+void menu_hardware_keyboard_enter_return(MENU_ITEM_PARAMETERS)
+{
+    keyboard_swap_enter_return.v ^=1;
+}
 
 
 //menu keyboard settings
@@ -4869,6 +4872,12 @@ void menu_keyboard_settings(MENU_ITEM_PARAMETERS)
 						"It won't work well using other video drivers (last row of keys will fail)\n"
 						"- If you use Windows, you are probably using the SDL1 or SDL2 video driver, so same behaviour as Linux: you must also enable the SDL Raw keyboard setting"
 		);
+
+		menu_add_item_menu_en_es_ca(array_menu_keyboard_settings,MENU_OPCION_NORMAL,menu_hardware_keyboard_enter_return,NULL,
+            "Swap Enter - Return","Intercambiar Enter-Return","Intercanviar Enter-Return");
+		menu_add_item_menu_prefijo_format(array_menu_keyboard_settings,"[%c] ",(keyboard_swap_enter_return.v ? 'X' : ' ') );
+        menu_add_item_menu_tooltip(array_menu_keyboard_settings,"Swap keys Enter and Return, used on CPC and PCW");
+        menu_add_item_menu_ayuda(array_menu_keyboard_settings,"Swap keys Enter and Return, used on CPC and PCW");
 
 #ifdef COMPILE_SDL
 		if (!strcmp(scr_new_driver_name,"sdl")) {
