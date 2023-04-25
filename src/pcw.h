@@ -92,6 +92,7 @@ extern z80_byte pcw_port_f4_value;
 extern z80_byte pcw_port_f5_value;
 extern z80_byte pcw_port_f6_value;
 extern z80_byte pcw_port_f7_value;
+extern z80_byte pcw_port_f8_value;
 extern z80_byte pcw_interrupt_counter;
 
 extern int pcw_rgb_table[];

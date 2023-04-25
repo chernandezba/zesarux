@@ -87,6 +87,7 @@
 #include "mk14.h"
 #include "chrome.h"
 #include "sam.h"
+#include "pcw.h"
 
 
 #include "autoselectoptions.h"
@@ -712,6 +713,17 @@ Byte Fields:
 6 and next bytes: data bytes
 
 
+-Block ID 57: ZSF_PCW_CONF
+Ports and internal registers of PCW machine
+Byte fields:
+0-3: Bank registers F0,F1,F2,F3
+4: pcw_port_f4_value
+5: pcw_port_f5_value
+6: pcw_port_f6_value
+7: pcw_port_f7_value
+8: pcw_port_f8_value
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -724,7 +736,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 56
+#define MAX_ZSF_BLOCK_ID_NAMES 57
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -784,6 +796,7 @@ char *zsf_block_id_names[]={
   "ZSF_CHLOE_DOCK_RAMBLOCK",
   "ZSF_SAM_COUPE_CONF",
   "ZSF_SAM_COUPE_RAMBLOCK",
+  "ZSF_PCW_CONF",
 
   "Unknown"  //Este siempre al final
 };
@@ -2656,6 +2669,38 @@ Byte fields:
 }
 
 
+void load_zsf_pcw_conf(z80_byte *header)
+{
+/*
+-Block ID 57: ZSF_PCW_CONF
+Ports and internal registers of PCW machine
+Byte fields:
+0-3: Bank registers F0,F1,F2,F3
+4: pcw_port_f4_value
+5: pcw_port_f5_value
+6: pcw_port_f6_value
+7: pcw_port_f7_value
+8: pcw_port_f8_value
+
+
+  */
+
+    pcw_bank_registers[0]=header[0];
+    pcw_bank_registers[1]=header[1];
+    pcw_bank_registers[2]=header[2];
+    pcw_bank_registers[3]=header[3];
+
+    pcw_port_f4_value=header[4];
+    pcw_port_f5_value=header[5];
+    pcw_port_f6_value=header[6];
+    pcw_port_f7_value=header[7];
+    pcw_port_f8_value=header[8];
+
+    pcw_set_memory_pages();
+
+
+}
+
 void load_zsf_tsconf_conf(z80_byte *header)
 {
 /*
@@ -3102,7 +3147,11 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_SAM_COUPE_RAMBLOCK:
         load_zsf_sam_coupe_snapshot_block_data(block_data,block_lenght);
-      break;           
+      break;
+
+      case ZSF_PCW_CONF:
+        load_zsf_pcw_conf(block_data);
+      break;
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -5353,6 +5402,48 @@ Byte Fields:
 
   
 }
+
+
+if (MACHINE_IS_PCW) {
+  //Configuracion
+
+  z80_byte pcwconfblock[9];
+
+/*
+-Block ID 57: ZSF_PCW_CONF
+Ports and internal registers of PCW machine
+Byte fields:
+0-3: Bank registers F0,F1,F2,F3
+4: pcw_port_f4_value
+5: pcw_port_f5_value
+6: pcw_port_f6_value
+7: pcw_port_f7_value
+8: pcw_port_f8_value
+
+*/    
+
+
+
+  pcwconfblock[0]=pcw_bank_registers[0];
+  pcwconfblock[1]=pcw_bank_registers[1];
+  pcwconfblock[2]=pcw_bank_registers[2];
+  pcwconfblock[3]=pcw_bank_registers[3];
+  pcwconfblock[4]=pcw_port_f4_value;
+  pcwconfblock[5]=pcw_port_f5_value;
+  pcwconfblock[6]=pcw_port_f6_value;
+  pcwconfblock[7]=pcw_port_f7_value;
+  pcwconfblock[8]=pcw_port_f8_value;
+
+
+
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, pcwconfblock,ZSF_PCW_CONF, 9);
+
+
+
+  
+}
+
+
 
 if (MACHINE_IS_TSCONF) {
 
