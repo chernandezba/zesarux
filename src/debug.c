@@ -5454,7 +5454,7 @@ void debug_get_ioports(char *stats_buffer)
     if (MACHINE_IS_PCW) {
         int i;
         for (i=0;i<4;i++) {
-            sprintf (buf_linea,"PCW port %02XH: %02X\n",0x80+i,pcw_bank_registers[i]);
+            sprintf (buf_linea,"PCW port %02XH: %02X <- Bank for %04XH\n",0x80+i,pcw_bank_registers[i],i*16384);
             sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
         }   
         sprintf (buf_linea,"PCW port F4H: %02X Lock: %s %s %s %s\n",pcw_port_f4_value,
@@ -5471,7 +5471,7 @@ void debug_get_ioports(char *stats_buffer)
         z80_byte roller_ram_bank=(pcw_port_f5_value >> 5) & 0x07;
 
         z80_int roller_ram_offset=(pcw_port_f5_value & 0x1F) * 512;
-        sprintf (buf_linea,"PCW port F5H: %02X Bank: %02XH Offset: %04XH\n",
+        sprintf (buf_linea,"PCW port F5H: %02X Roller RAM: Bank: %02XH Offset: %04XH\n",
             pcw_port_f5_value,roller_ram_bank,roller_ram_offset);
 
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5479,8 +5479,8 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (buf_linea,"PCW port F6H: %02X <- Scroll line\n",pcw_port_f6_value);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-        sprintf (buf_linea,"PCW port F7H: %02X %s %s\n",pcw_port_f7_value,
-            (pcw_port_f7_value & 0x80 ? "(INV)" : "    "),
+        sprintf (buf_linea,"PCW port F7H: %02X Display: %s %s\n",pcw_port_f7_value,
+            (pcw_port_f7_value & 0x80 ? "(INV)" : "     "),
             (pcw_port_f7_value & 0x40 ? "(ON) " : "(OFF)")
         );
 
