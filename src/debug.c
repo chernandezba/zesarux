@@ -5389,9 +5389,8 @@ void debug_get_ioports(char *stats_buffer)
 
 
 
-          //margen suficiente para que quepa una linea y un contador int de 32 bits...
-          //aunque si pasa el ancho de linea, la rutina de generic_message lo troceara
-          char buf_linea[64];
+          //margen suficiente para que quepan lineas largas
+          char buf_linea[100];
 
           index_buffer=0;
 
@@ -5488,8 +5487,14 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         //b6: 1 line flyback, read twice in succession indicates frame flyback. b5: FDC interrupt. b4: indicates 32-line screen. 
-        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above). &FC-&FD		        
-        sprintf (buf_linea,"PCW port F8H: %02X\n",pcw_get_port_f8_value() );
+        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above). &FC-&FD	
+        z80_byte valor_f8=pcw_get_port_f8_value();     
+        sprintf (buf_linea,"PCW port F8H: %02X %s %s %s INTCNT: %2d\n",valor_f8,
+            (valor_f8 & 0x40 ? "(FFB)" : "     "),
+            (valor_f8 & 0x20 ? "(FIN)" : "     "),
+            (valor_f8 & 0x10 ? "(32L)" : "     "),
+            valor_f8 & 0xF
+        );
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
 
         //sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
