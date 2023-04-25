@@ -361,7 +361,7 @@ void pcw_out_port_bank(z80_byte puerto_l,z80_byte value)
 void pcw_out_port_f4(z80_byte value)
 {
     pcw_port_f4_value=value;
-    printf("PCW set port F4 value %02XH\n",value);
+    //printf("PCW set port F4 value %02XH\n",value);
 
     pcw_set_memory_pages();
 }
@@ -369,13 +369,13 @@ void pcw_out_port_f4(z80_byte value)
 void pcw_out_port_f5(z80_byte value)
 {
     pcw_port_f5_value=value;
-    printf("PCW set port F5 value %02XH\n",value);
+    //printf("PCW set port F5 value %02XH\n",value);
 }
 
 void pcw_out_port_f6(z80_byte value)
 {
     pcw_port_f6_value=value;
-    printf("PCW set port F6 value %02XH\n",value);
+    //printf("PCW set port F6 value %02XH\n",value);
 }
 
 
@@ -398,7 +398,7 @@ void pcw_out_port_f7(z80_byte value)
 void pcw_interrupt_from_pd765(void)
 {
     if (pcw_interrupt_from_pd765_type==1) {
-        printf("Generate NMI triggered from pd765\n");
+        //printf("Generate NMI triggered from pd765\n");
         //
         generate_nmi();
         //sleep(2);
@@ -421,7 +421,7 @@ void pcw_interrupt_from_pd765(void)
         
     //TODO Revisar esto. solo se genera cuando esta EI???
     if (pcw_interrupt_from_pd765_type==2) {
-        printf("Generate Maskable interrupt triggered from pd765\n");
+        //printf("Generate Maskable interrupt triggered from pd765\n");
         //If the Z80 has disabled interrupts, the interrupt line stays high until the Z80 enables them again.
         pcw_pending_interrupt.v=1;
 
@@ -449,12 +449,12 @@ void pcw_out_port_f8(z80_byte value)
 
     switch (value) {
         case 0:
-            printf("End bootstrap\n");
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. End bootstrap");
             //sleep(2);
         break;
 
         case 1:
-            printf("Reboot\n");
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Reboot");
             //sleep(2);
 
             reg_pc=0;
@@ -472,19 +472,19 @@ void pcw_out_port_f8(z80_byte value)
         Floppy Disc Controller Interrupts are disabled.
         */
         case 2:
-            printf("Connect FDC to NMI\n");
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Connect FDC to NMI");
             pcw_interrupt_from_pd765_type=1;
             //sleep(2);
         break;
 
         case 3:
-            printf("Connect FDC to standard interrupts\n");
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Connect FDC to standard interrupts");
             pcw_interrupt_from_pd765_type=2;
             //sleep(2);
         break;
 
         case 4:
-            printf("Connect FDC to nothing\n");
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Connect FDC to nothing");
             pcw_interrupt_from_pd765_type=0;
             //sleep(2);
         break;
@@ -509,7 +509,7 @@ void pcw_out_port_f8(z80_byte value)
 
         case 10:
             pd765_motor_off();
-            printf("Motor off on %04XH\n",reg_pc);
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Motor off on %04XH",reg_pc);
             //sleep(2);
         break;
 
@@ -921,13 +921,13 @@ void pcw_handle_end_boot_disk(void)
     if (!pcw_was_booting_disk_enabled) return;
 
     if (reg_pc==pcw_was_booting_disk_address) {
-        printf("Reached end of boot\n");
+        DBG_PRINT_PCW VERBOSE_DEBUG,"Reached end of boot");
         pcw_was_booting_disk_enabled=0; 
 
 
         //Si habia disco insertado antes, reinsertar
         if (dskplusthree_emulation_before_boot.v) {
-            printf("Reinserting disk before boot: %s\n",dskplusthree_before_boot_file_name);
+            DBG_PRINT_PCW VERBOSE_DEBUG,"Reinserting disk before boot: %s",dskplusthree_before_boot_file_name);
 
             //Desactivamos autoload para que no haga reset
             int antes_noautoload=noautoload.v;
@@ -974,7 +974,7 @@ void pcw_boot_dsk_generic(char *filename,z80_int address_end_boot)
 	}
 
 	else {
-        debug_printf(VERBOSE_ERR,"%s image not found",filename);
+        DBG_PRINT_PCW VERBOSE_ERR,"%s image not found",filename);
 	}    
 }
 
@@ -1001,7 +1001,7 @@ void pcw_boot_timer_handle(void)
 
     pcw_boot_timer--;
 
-    printf("pcw_boot_timer %d\n",pcw_boot_timer);
+    DBG_PRINT_PCW VERBOSE_DEBUG,"pcw_boot_timer %d",pcw_boot_timer);
 
 }
 
@@ -1035,14 +1035,14 @@ void pcw_boot_check_dsk_not_bootable(void)
 
    if (peek_byte_no_time(reg_pc)==0xCB && peek_byte_no_time(reg_pc+1)==0x7E) {
         pcw_boot_timer=0;
-        printf("Seems you have selected a non bootable disk\n");
+        DBG_PRINT_PCW VERBOSE_INFO,"Seems you have selected a non bootable disk");
 
         autoboot=1;
    }
 
     //Si hay que autoinsertar cpm
     if (autoboot & pcw_failback_cpm_when_no_boot.v) {
-        printf("Autobooting CP/M\n");
+        DBG_PRINT_PCW VERBOSE_INFO,"Autobooting CP/M");
         //sleep(2);
         pcw_boot_cpm();
 
