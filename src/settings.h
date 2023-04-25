@@ -133,5 +133,7 @@ extern z80_bit sync_clock_to_z88;
 
 extern z80_bit menu_show_advanced_items;
 
+extern z80_bit keyboard_swap_enter_return;
+
 #endif
 

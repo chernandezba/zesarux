@@ -7461,11 +7461,19 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         puerto_49150 &=255-1;
                                         blink_kbd_a8 &= (255-64);
-					                    cpc_keyboard_table[2] &= (255-4);
+					                    
                                         ql_keyboard_table[1] &= (255-1);
                                         msx_keyboard_table[7] &= (255-128);
                                         svi_keyboard_table[6] &= (255-64);
-                                        pcw_keyboard_table[2] |=4;
+
+                                        if (keyboard_swap_enter_return.v==0) {
+                                            cpc_keyboard_table[2] &= (255-4);
+                                            pcw_keyboard_table[2] |=4;
+                                        }
+                                        else {
+                                            cpc_keyboard_table[0] &=(255-64);
+                                            pcw_keyboard_table[0xA] |=32;
+                                        }
 
 					//Avisar de envio enter especial para rutinas de speech, para que envien sonido
 					textspeech_send_new_line();
@@ -7475,11 +7483,19 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 else {
                                         puerto_49150 |=1;
                                         blink_kbd_a8 |=64;
-					                    cpc_keyboard_table[2] |= 4;
+					                    
                                         ql_keyboard_table[1] |= 1;
                                         msx_keyboard_table[7] |= 128;
                                         svi_keyboard_table[6] |= 64;
-                                        pcw_keyboard_table[2] &=(255-4);
+
+                                        if (keyboard_swap_enter_return.v==0) {
+                                            cpc_keyboard_table[2] |= 4;
+                                            pcw_keyboard_table[2] &=(255-4);
+                                        }
+                                        else {
+                                            cpc_keyboard_table[0] |=64;
+                                            pcw_keyboard_table[0xA] &=(255-32);
+                                        }
                                 }
 
 
@@ -8769,17 +8785,30 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 			break;
 
 			case UTIL_KEY_KP_ENTER:
-				if (pressrelease) {
-					cpc_keyboard_table[0] &=(255-64);
-                    pcw_keyboard_table[0xA] |=32;
-				}
-				else {
-					cpc_keyboard_table[0] |=64;
-                    pcw_keyboard_table[0xA] &=(255-32);
-				}
+                if (pressrelease) {
+                    if (keyboard_swap_enter_return.v==0) {
+                        cpc_keyboard_table[0] &=(255-64);
+                        pcw_keyboard_table[0xA] |=32;
+                    }
+                    else {
+                        cpc_keyboard_table[2] &= (255-4);
+                        pcw_keyboard_table[2] |=4;
+                    }
+                }
+                                       
+
+                else {
+                    if (keyboard_swap_enter_return.v==0) {
+                        cpc_keyboard_table[0] |=64;
+                        pcw_keyboard_table[0xA] &=(255-32);
+                    }
+
+                    else {
+                        cpc_keyboard_table[2] |= 4;
+                        pcw_keyboard_table[2] &=(255-4);
+                    }
+                }
 			break;
-
-
 
 
 			case UTIL_KEY_NONE:

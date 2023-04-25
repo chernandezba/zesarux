@@ -337,3 +337,12 @@ int gui_language=GUI_LANGUAGE_DEFAULT;
 
 //Ruta de guardado de descargas juegos
 char online_download_path[PATH_MAX]="";
+
+//
+// Keyboard Settings
+//
+
+// Por defecto
+// Return de PCW/CPC es el return de pc
+// Enter de PCW/CPC es el enter del teclado numerico
+z80_bit keyboard_swap_enter_return={0};
