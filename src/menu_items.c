@@ -36939,16 +36939,15 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_en_es_ca_inicial(&array_menu_principal,MENU_OPCION_NORMAL,menu_smartload,NULL,
                 "~~Smart load","Carga ingenio~~sa","Càrrega enginyo~~sa");
             menu_add_item_menu_shortcut(array_menu_principal,'s');
-                    menu_add_item_menu_tooltip(array_menu_principal,"Smart load tape, snapshot, Z88 memory card or Timex Cartridge");
-                    menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
-                        "-Binary tapes are inserted as standard tapes and loaded quickly\n"
-                        "-Audio tapes are loaded as real tapes\n"
-                        "-Snapshots are loaded at once\n"
-                        "-Timex Cartridges are inserted on the machine and you should do a reset to run the cartridge\n"
-                        "-Memory cards on Z88 are inserted on the machine\n\n"
-                        "Note: Tapes will be autoloaded if the autoload setting is on (by default)"
+            menu_add_item_menu_tooltip(array_menu_principal,"Smart load tape, snapshot, memory cards, cartridges...");
+            menu_add_item_menu_ayuda(array_menu_principal,"This option loads the file depending on its type: \n"
+                "-Binary tapes are inserted as standard tapes and loaded quickly\n"
+                "-Audio tapes are loaded as real tapes\n"
+                "-Snapshots are loaded at once\n"
+                "-Cartridges or memory cards are inserted on the machine\n"
+                "Note: Tapes will be autoloaded if the autoload setting is on (by default)"
 
-                        );
+                );
 
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_snapshot,NULL,

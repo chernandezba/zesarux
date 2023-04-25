@@ -18242,7 +18242,7 @@ void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bl
 //parecido memcmp pero usando funciones protegidas de acceso
 int util_dsk_memcmp(z80_byte *dsk_file_memory,int longitud_dsk,int puntero1,int puntero2)
 {
-    printf("util_dsk_memcmp %XH to %XH\n",puntero1,puntero2);
+    //printf("util_dsk_memcmp %XH to %XH\n",puntero1,puntero2);
 
     int i;
 
@@ -18258,7 +18258,7 @@ int util_dsk_memcmp(z80_byte *dsk_file_memory,int longitud_dsk,int puntero1,int 
 
         resta +=parcial;
 
-        printf("i: %d %02XH %02XH resta: %d\n",i,byte1,byte2,resta);
+        //printf("i: %d %02XH %02XH resta: %d\n",i,byte1,byte2,resta);
 
         puntero1++;
         puntero2++;
@@ -18295,7 +18295,7 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
     do {
         records_entry=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
-        printf("Entry %d Total bloques %d\n",total_bloques,records_entry);
+        //printf("Entry %d Total bloques %d\n",total_bloques,records_entry);
 
         //Nos ubicamos en la posicion del primer bloque
         puntero +=16;
@@ -18306,7 +18306,7 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
         while (restantes_records_entry>0)  {
             z80_byte block_id=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero_bloques);
 
-            printf("Entry %d block %02XH\n",total_bloques,block_id);
+            //printf("Entry %d block %02XH\n",total_bloques,block_id);
 
             bloques[total_bloques++]=block_id;
 

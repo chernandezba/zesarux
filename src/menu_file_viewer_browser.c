@@ -1638,14 +1638,14 @@ void menu_file_dsk_browser_visualmem_all_blocks(int archivo_seleccionado)
     int i;
     for (i=0;i<total_bloques;i++) {
         z80_byte bloque=bloques[i];
-        printf("---Bloque %d : %02XH\n",i,bloque);
+        //printf("---Bloque %d : %02XH\n",i,bloque);
 
         //de cada bloque obtener pista y sector
         int pista1,sector1,pista2,sector2;
         util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
             menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
             &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
-        printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+        //printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
 
         menu_file_dsk_browser_add_sector_visual_floppy(pista1,sector1);
         menu_file_dsk_browser_add_sector_visual_floppy(pista2,sector2);
@@ -1670,7 +1670,7 @@ void menu_file_dsk_browser_separate_sectors(struct s_menu_item *item_seleccionad
     int sector=(item_seleccionado->valor_opcion) & 0xFF;
     int pista=(item_seleccionado->valor_opcion)>>8;
 
-    printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
+    //printf("Llamado funcion para item: %s pista %d sector %d\n",item_seleccionado->texto_opcion,pista,sector);
 
     menu_visual_floppy_buffer_reset();
     menu_file_dsk_browser_add_sector_visual_floppy(pista,sector);
@@ -1714,7 +1714,7 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
 
 
-        printf("Total bloques: %d\n",total_bloques);
+        //printf("Total bloques: %d\n",total_bloques);
 
         int j;
 
@@ -1723,14 +1723,14 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
 
         for (j=0;j<total_bloques;j++) {
             z80_byte bloque=bloques[j];
-            printf("---Bloque %d : %02XH\n",j,bloque);
+            //printf("---Bloque %d : %02XH\n",j,bloque);
 
             //de cada bloque obtener pista y sector
             int pista1,sector1,pista2,sector2;
             util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
                 menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
                 &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
-            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+            //printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
 
             sprintf(&buffer_texto[indice_buffer],"%02X ",bloque);
             indice_buffer +=3;
@@ -1758,20 +1758,22 @@ void menu_file_dsk_browser_show_click_file(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_seleccionado(array_menu_common,menu_file_dsk_browser_all_sectors);            
         }  
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors for every block");
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to see real location on disk)");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"Tracks and physical sectors");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"for every block");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"(Note: Open visual floppy to");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"see real location on disk)");
 
 
         for (j=0;j<total_bloques;j++) {
             z80_byte bloque=bloques[j];
-            printf("---Bloque %d : %02XH\n",j,bloque);
+            //printf("---Bloque %d : %02XH\n",j,bloque);
 
             //de cada bloque obtener pista y sector
             int pista1,sector1,pista2,sector2;
             util_dsk_getsectors_block(menu_file_dsk_browser_show_click_file_dsk_file_memory,
                 menu_file_dsk_browser_show_click_file_longitud_dsk,bloque,
                 &sector1,&pista1,&sector2,&pista2,menu_file_dsk_browser_show_click_file_incremento_pista_filesystem);
-            printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
+            //printf("---pista1 %d sector1 %d pista2 %d sector2 %d\n",pista1,sector1,pista2,sector2);
 
             //Cada bloque son dos sectores:
 

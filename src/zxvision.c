@@ -18995,7 +18995,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
         menu_item *funcion_seleccionado_item=menu_retorna_item(m,(*opcion_inicial));
         if (funcion_seleccionado_item!=NULL) {
             if (funcion_seleccionado_item->menu_funcion_seleccionada!=NULL) {
-                printf("Llamando a funcion de item seleccionado\n");
+                //printf("Llamando a funcion de item seleccionado\n");
                 funcion_seleccionado_item->menu_funcion_seleccionada(funcion_seleccionado_item);
             }
         }
