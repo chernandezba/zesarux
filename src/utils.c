@@ -18077,7 +18077,7 @@ sectores van alternados:
 
 	//int iniciopista_orig=256;
 
-    printf("util_dsk_getphysical_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
+    //printf("util_dsk_getphysical_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
 
 	//Buscamos en todo el archivo dsk
 	for (pista=0;pista<total_pistas;pista++) {
@@ -18085,14 +18085,14 @@ sectores van alternados:
         //TODO: de momento cara 0
         int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
 
-        printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
+        //printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
 		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
 
         int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
 		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
-        printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+        //printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
 		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
 		int iniciopista=iniciopista_orig;
@@ -18134,14 +18134,14 @@ sectores van alternados:
 			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
-            printf("C: %02XH R: %02X \n",pista_id,sector_id);
+            //printf("C: %02XH R: %02X \n",pista_id,sector_id);
 
 			sector_id &=0xF;
 
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
+				//printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
 		                return sector;
 			}
 
@@ -18585,7 +18585,7 @@ en que empieza en 1300H. Porque??
 
                             //printf("puntero: %d\n",puntero);
 
-                printf ("File %s\n",buffer_texto);                            
+                //printf ("File %s\n",buffer_texto);                            
 
                 z80_byte continuation_marker=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12-1); //-1 porque empezamos el puntero en primera posicion
 
@@ -18596,7 +18596,7 @@ en que empieza en 1300H. Porque??
 
                 bloque=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
-                printf ("Bloque %02XH\n",bloque);  
+                //printf ("Bloque %02XH\n",bloque);  
 
                 //printf("after dsk_file_memory[puntero+15];\n");
 
@@ -18624,7 +18624,7 @@ en que empieza en 1300H. Porque??
 
                     menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2,pista_filesystem);
 
-                    printf("offset1 %XH offset2 %XH\n",offset1,offset2);
+                    //printf("offset1 %XH offset2 %XH\n",offset1,offset2);
 
 
                     if (offset1<0 || offset2<0) {
@@ -18637,11 +18637,11 @@ en que empieza en 1300H. Porque??
                     //contienen 512 bytes de datos. El sector final puede contener 512 bytes o menos
                     if (total_bloques==1 && continuation_marker==0) {
                         int offset_a_longitud=offset1+16;
-                        printf("Offset a longitud: %XH\n",offset_a_longitud);
+                        //printf("Offset a longitud: %XH\n",offset_a_longitud);
                         longitud_real_archivo=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_a_longitud)+256*util_get_byte_protect(dsk_file_memory,longitud_dsk,offset_a_longitud+1);
                         debug_printf (VERBOSE_DEBUG,"Real length file %s read from PLUS3DOS header: %d",buffer_texto,longitud_real_archivo);
 
-                        printf ("Real length file %s read from PLUS3DOS header: %d\n",buffer_texto,longitud_real_archivo);
+                        //printf ("Real length file %s read from PLUS3DOS header: %d\n",buffer_texto,longitud_real_archivo);
 
                         util_memcpy_protect_origin(buffer_temp,dsk_file_memory,longitud_dsk,offset1+128,512-128);
                         //memcpy(buffer_temp,&dsk_file_memory[offset1+128],512-128);

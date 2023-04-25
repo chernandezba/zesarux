@@ -1182,7 +1182,7 @@ int menu_dsk_detect_extended_dsk(z80_byte *dsk_memoria)
 
 
     if (!memcmp("EXTENDED",dsk_memoria,8)) {
-        printf("Detected Extended DSK\n");
+        //printf("Detected Extended DSK\n");
         return 1;
     }    
 
@@ -1235,14 +1235,14 @@ int menu_dsk_extended_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk
 
     for (pista=0;pista<total_pistas;pista++) {
         for (cara=0;cara<menu_dsk_get_total_sides(dsk_file_memory,longitud_dsk);cara++) {
-            printf("Pista: %d cara: %d\n",pista,cara);
+            //printf("Pista: %d cara: %d\n",pista,cara);
             
 
             z80_byte track_number=menu_dsk_get_track_number_from_offset(dsk_file_memory,longitud_dsk,offset);
             z80_byte side_number=menu_dsk_get_track_side_from_offset(dsk_file_memory,longitud_dsk,offset);
 
-            printf("menu_dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
-                pista,track_number,offset,pista_encontrar);        
+            //printf("menu_dsk_extended_get_start_track: pista: %d current_track: %d offset: %XH buscar pista: %d\n",
+            //    pista,track_number,offset,pista_encontrar);        
 
             if (track_number==pista_encontrar && side_number==cara_encontrar) {
                 //printf("dsk_extended_get_start_track: return %X\n",offset);
@@ -1279,7 +1279,7 @@ int menu_dsk_basic_get_start_track(z80_byte *dsk_file_memory,int longitud_dsk,in
     int total_pistas=menu_dsk_get_total_pistas(dsk_file_memory,longitud_dsk);
 
     for (pista=0;pista<total_pistas;pista++) {
-        printf("Pista: %d\n",pista);
+        //printf("Pista: %d\n",pista);
    
  
         z80_byte track_number=util_get_byte_protect(dsk_file_memory,longitud_dsk,offset+0x10);
@@ -1344,7 +1344,7 @@ sectores van alternados:
 
 	//int iniciopista_orig=256;
 
-    printf("menu_dsk_getoff_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
+    //printf("menu_dsk_getoff_track_sector. pista_buscar=%d sector_buscar=%d\n",pista_buscar,sector_buscar);
 
 	//Buscamos en todo el archivo dsk
 	for (pista=0;pista<total_pistas;pista++) {
@@ -1352,14 +1352,14 @@ sectores van alternados:
         //TODO: de momento cara 0
         int iniciopista_orig=menu_dsk_get_start_track(dsk_memoria,longitud_dsk,pista_buscar,0);
 
-        printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
+        //printf("before getting sectores_en_pista iniciopista_orig=%XH\n",iniciopista_orig);
 
 		//int sectores_en_pista=dsk_memoria[iniciopista_orig+0x15];
 
         int sectores_en_pista=util_get_byte_protect(dsk_memoria,longitud_dsk,iniciopista_orig+0x15);
 		//debug_printf(VERBOSE_DEBUG,"Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  ",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
-        printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
+        //printf("Iniciopista: %XH (%d). Sectores en pista %d: %d. IDS pista:  \n",iniciopista_orig,iniciopista_orig,pista,sectores_en_pista);
 
 		//int iniciopista_orig=traps_plus3dos_getoff_start_trackinfo(pista);
 		int iniciopista=iniciopista_orig;
@@ -1401,14 +1401,14 @@ sectores van alternados:
 			//debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
 
 
-            printf("C: %02XH R: %02X \n",pista_id,sector_id);
+            //printf("C: %02XH R: %02X \n",pista_id,sector_id);
 
 			sector_id &=0xF;
 
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
-				printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
+				//printf("Found sector %d/%d at %d/%d\n",pista_buscar,sector_buscar,pista,sector);
 		                //int offset=traps_plus3dos_getoff_start_track(pista);
 		                int offset=iniciopista_orig+256;
 
@@ -1493,7 +1493,7 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int
 
     for (pista=0;pista<=2;pista++) {
 	
-        printf("Pista: %d\n",pista);
+        //printf("Pista: %d\n",pista);
 
         puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista,0,longitud_dsk);
 		//Si contiene e5 en el nombre, nos vamos a pista 1
@@ -1515,12 +1515,12 @@ int menu_dsk_get_start_filesystem(z80_byte *dsk_file_memory,int longitud_dsk,int
 
     //Por defecto
     if (puntero<0) {
-        printf ("Filesystem track/sector not found. Guessing it\n");
+        //printf ("Filesystem track/sector not found. Guessing it\n");
         puntero=0x200;
     }
     *p_pista=pista;
 
-    printf("Found filesystem at track %d. Puntero=%X\n",pista,puntero);
+    //printf("Found filesystem at track %d. Puntero=%X\n",pista,puntero);
 
     return puntero;
 }

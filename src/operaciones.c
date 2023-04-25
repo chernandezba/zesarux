@@ -3965,7 +3965,7 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
 
 
     if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {
-        printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
+        //printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
         //sleep(3);
     }    
    
@@ -4018,7 +4018,7 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
     }
 
 
-    printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+    //printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
     return 255;
 
 

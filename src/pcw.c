@@ -472,13 +472,13 @@ void pcw_out_port_f8(z80_byte value)
         Floppy Disc Controller Interrupts are disabled.
         */
         case 2:
-            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Connect FDC to NMI");
+            DBG_PRINT_PCW VERBOSE_PARANOID,"Out port F8. Connect FDC to NMI");
             pcw_interrupt_from_pd765_type=1;
             //sleep(2);
         break;
 
         case 3:
-            DBG_PRINT_PCW VERBOSE_DEBUG,"Out port F8. Connect FDC to standard interrupts");
+            DBG_PRINT_PCW VERBOSE_PARANOID,"Out port F8. Connect FDC to standard interrupts");
             pcw_interrupt_from_pd765_type=2;
             //sleep(2);
         break;
