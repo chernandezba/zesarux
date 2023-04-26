@@ -691,9 +691,9 @@ Track1
                 p[i]=0;
 		i++;
 
-                p[i]=2; //???
+                p[i]=0;
 		i++;
-
+    
 	//Incrementar sector??? ni idea
 	traps_plus3dos_return_ok();
 }

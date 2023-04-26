@@ -27633,7 +27633,9 @@ void menu_storage_dskplusthree_file(MENU_ITEM_PARAMETERS)
 		dsk_insert_disk(dskfile);
 
 		dskplusthree_enable();
-		pd765_enable();
+
+        //Habilitar pd765 a no ser que los traps esten activados
+        if (plus3dos_traps.v==0) pd765_enable();
 		//plus3dos_traps.v=1;
 
 
@@ -27668,7 +27670,10 @@ void menu_storage_dskplusthree_emulation(MENU_ITEM_PARAMETERS)
 {
 	if (dskplusthree_emulation.v==0) {
 		dskplusthree_enable();
-		pd765_enable();
+
+        //Habilitar pd765 a no ser que los traps esten activados
+        if (plus3dos_traps.v==0) pd765_enable();
+
 		//plus3dos_traps.v=1;
 	}
 
