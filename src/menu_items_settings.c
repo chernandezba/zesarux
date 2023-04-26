@@ -7984,6 +7984,11 @@ void menu_settings_snapshot_sync_to_z88_clock(MENU_ITEM_PARAMETERS)
     sync_clock_to_z88.v ^=1;
 }
 
+void menu_snapshot_settings_rom_zsf(MENU_ITEM_PARAMETERS)
+{
+    zsf_snap_save_rom.v ^=1;
+}
+
 void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
 {
 
@@ -8026,7 +8031,15 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_force_uncompressed ? ' ' : 'X') );
         menu_add_item_menu_shortcut(array_menu_settings_snapshot,'c');
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not"); 
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Setting to save compressed ZSF files or not");
+
+        menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_settings_rom_zsf,NULL,
+            "ZSF save R~~OM","ZSF grabar R~~OM","ZSF gravar R~~OM");
+        menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_snap_save_rom.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_settings_snapshot,'o');
+        menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Include ROM contents in saved ZSF snapshot"); 
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Include ROM contents in saved ZSF snapshot. "
+            "Only available for Spectrum 16k/48k/128k/+2/+2A/+3");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_sna_set_machine,NULL,
             "Set ~~machine snap load","Cambio ~~máquina al cargar snap","Canvi ~~màquina al carregar snap");

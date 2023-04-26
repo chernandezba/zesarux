@@ -3870,6 +3870,8 @@ int util_write_configfile(void)
 
   if (sna_setting_no_change_machine.v)          ADD_STRING_CONFIG,"--snap-no-change-machine");
 
+  if (zsf_snap_save_rom.v)                      ADD_STRING_CONFIG,"--zsf-save-rom");
+
   if (no_close_menu_after_smartload.v)          ADD_STRING_CONFIG,"--no-close-after-smartload");
 
   if (sync_clock_to_z88.v==0)                   ADD_STRING_CONFIG,"--z88-not-sync-clock-snap");
