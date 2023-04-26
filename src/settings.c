@@ -183,6 +183,10 @@ char autosave_snapshot_path_buffer[PATH_MAX];
 //Sincronizar reloj del sistema al Z88 despues cargar snapshot
 z80_bit sync_clock_to_z88={1};
 
+//Guardar contenido de la ROM en snapshot, util por ejemplo para cuando has iniciado con una rom personalizada y quieres
+//que el snapshot la restaure 
+z80_bit zsf_snap_save_rom={0};
+
 
 //
 // Tape Settings

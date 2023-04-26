@@ -173,7 +173,6 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -tecla keypad_enter en fbdev no la distingue del enter normal,
 -nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
 -cpm spanish (version superior a 1??) no va
--printf de debug cambiar a debug_printf y tipo PCW
 --fin pendiente pcw 8256,8512
 
 
@@ -210,8 +209,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
-
--quiza un widget de sensors con la Z del logo?
 
 
 -registro EPC para tbblue, zxuno, ....
