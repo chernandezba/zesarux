@@ -2213,7 +2213,7 @@ printf (
 		"--autosnappath path         Folder to save/load automatic snapshots\n"
 		"--tempdir path              Folder to save temporary files. Folder must exist and have read and write permissions\n"
 		"--snap-no-change-machine    Do not change machine when loading sna or z80 snapshots. Just load it on memory\n"
-        "--zsf-save-rom              Include ROM contents in saved ZSF snapshot. Only available for Spectrum 16k/48k/128k/+2/+2A/+3\n"
+        "--zsf-save-rom              Include ROM contents in saved ZSF snapshot. Useful when running custom roms. Only available for Spectrum/Clones models 16k/48k/128k/+2/+2A/+3\n"
 		"--no-close-after-smartload  Do not close menu after SmartLoad\n"
         "--z88-not-sync-clock-snap   Do not sync PC clock to Z88 clock after loading a snapshot\n"
         "--snapram-interval n        Generate a snapshot in ram every n seconds\n"

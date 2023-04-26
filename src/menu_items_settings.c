@@ -8038,8 +8038,8 @@ void menu_settings_snapshot(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_prefijo_format(array_menu_settings_snapshot,"[%c] ",(zsf_snap_save_rom.v ? 'X' : ' ') );
         menu_add_item_menu_shortcut(array_menu_settings_snapshot,'o');
         menu_add_item_menu_tooltip(array_menu_settings_snapshot,"Include ROM contents in saved ZSF snapshot"); 
-        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Include ROM contents in saved ZSF snapshot. "
-            "Only available for Spectrum 16k/48k/128k/+2/+2A/+3");
+        menu_add_item_menu_ayuda(array_menu_settings_snapshot,"Include ROM contents in saved ZSF snapshot. Useful when running custom roms. "
+            "Only available for Spectrum/Clones models 16k/48k/128k/+2/+2A/+3");
 
         menu_add_item_menu_en_es_ca(array_menu_settings_snapshot,MENU_OPCION_NORMAL,menu_snapshot_sna_set_machine,NULL,
             "Set ~~machine snap load","Cambio ~~máquina al cargar snap","Canvi ~~màquina al carregar snap");
