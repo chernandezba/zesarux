@@ -300,11 +300,12 @@ sectores van alternados:
             
 
             //TODO: no estoy seguro de esto
-			//sector_id &=0xF;
+			sector_id &=0xF;
 
             //printf("Sector id leido: %02XH\n",sector_id);
 
-			//sector_id--;  //empiezan en 1...
+            //TODO: esto tambien probablemente mal
+			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
 				debug_printf(VERBOSE_DEBUG,"Found sector  ID track %d/sector %d at  pos track %d/sector %d",pista_buscar,sector_buscar,pista,sector);
@@ -314,10 +315,12 @@ sectores van alternados:
 		                int offset=iniciopista_orig+256;
 
                 		//int iniciopista=traps_plus3dos_getoff_start_track(pista);
-                        int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
+                        return offset+traps_plus3dos_bytes_sector*sector;
+                        
+                        //int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
                         //printf("Offset sector: %XH\n",offset_retorno);
 
-		                return offset_retorno;
+		                //return offset_retorno;
 			}
 
 		}
@@ -432,7 +435,7 @@ EXIT CONDITIONS
                 All other registers preserved
 */
 
-        int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
+        int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
 
 
         int i;
@@ -535,7 +538,7 @@ ENTRY CONDITIONS
 */
 
 
-	int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
+	int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
 
 
         int i;
