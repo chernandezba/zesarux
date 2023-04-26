@@ -25,6 +25,9 @@ PLUS3DOS handler
 
 */
 
+//Nota: en comentarios con tag POSIBLEMAL
+//como cambié temporalmente el codigo a lo que se supondria que deberia funcionar, pero que no funciona
+//O sea, como estuvo temporalmente cuando corregía la emulación del pd765, pero que deshice porque entonces no funcionaba este handler
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -299,12 +302,12 @@ sectores van alternados:
 			debug_printf(VERBOSE_DEBUG,"%02X ",sector_id);
             
 
-            //TODO: no estoy seguro de esto
+            //POSIBLEMAL: no se deberia hacer este and de sector_id. pero si lo quito, no va el handler
 			sector_id &=0xF;
 
             //printf("Sector id leido: %02XH\n",sector_id);
 
-            //TODO: esto tambien probablemente mal
+            //POSIBLEMAL: no se deberia decrementar el sector. pero si lo quito, no va el handler
 			sector_id--;  //empiezan en 1...
 
 			if (pista_id==pista_buscar && sector_id==sector_buscar) {
@@ -317,9 +320,8 @@ sectores van alternados:
                 		//int iniciopista=traps_plus3dos_getoff_start_track(pista);
                         return offset+traps_plus3dos_bytes_sector*sector;
                         
+                        //POSIBLEMAL: estas dos lineas de abajo se retornaban antes
                         //int offset_retorno=offset+traps_plus3dos_bytes_sector*sector;
-                        //printf("Offset sector: %XH\n",offset_retorno);
-
 		                //return offset_retorno;
 			}
 
@@ -435,6 +437,9 @@ EXIT CONDITIONS
                 All other registers preserved
 */
 
+        //POSIBLEMAL
+        //int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
+
         int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
 
 
@@ -537,6 +542,8 @@ ENTRY CONDITIONS
 
 */
 
+    //POSIBLEMAL
+    //int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e+1);
 
 	int iniciosector=traps_plus3dos_getoff_track_sector(reg_d,reg_e);
 
