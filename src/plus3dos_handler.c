@@ -257,6 +257,17 @@ int traps_plus3dos_getoff_start_track(int pista_lineal)
 //Sectores empiezan en el 1....
 int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar)
 {
+    z80_byte sector_fisico; 
+    printf("Buscando pista %d sector %d\n",pista_buscar,sector_buscar);
+
+    int offset=dsk_get_physical_sector(pista_buscar,sector_buscar);
+
+
+    //int offset=dsk_get_sector(pista_buscar,sector_buscar,&sector_fisico,-1,0,0,1);
+
+
+    printf("Offset: %XH\n",offset);
+    return offset;
 
 /*
 sectores van alternados:
@@ -559,8 +570,136 @@ ENTRY CONDITIONS
 
 }
 
+int traps_plus3dos_ultimo_sector_fisico_read=-1;
+
+void traps_plus3dos_siguiente_sector(void)
+{
+    traps_plus3dos_ultimo_sector_fisico_read++;
+
+    //TODO. de momento 9 sectores
+
+    //TODO de momento solo cara 0
+    int total_sectores=9;
+
+    //int total_sectores=dsk_get_total_sectors_track(pd765_pcn,0);
+
+
+    if (total_sectores!=0) {
+        traps_plus3dos_ultimo_sector_fisico_read=traps_plus3dos_ultimo_sector_fisico_read % total_sectores;
+    }
+    else {
+        traps_plus3dos_ultimo_sector_fisico_read=0;
+    }  
+
+    //Por si acaso, aunque esto no deberia pasar
+    if (traps_plus3dos_ultimo_sector_fisico_read<0) traps_plus3dos_ultimo_sector_fisico_read=0;  
+}
 
 void traps_plus3dos_read_id(void)
+{
+
+
+    //Devolvemos el siguiente lector al anterior leido por read id
+    traps_plus3dos_siguiente_sector();
+
+
+    int sector=traps_plus3dos_ultimo_sector_fisico_read;
+
+/*
+DD READ ID
+016Fh (367)
+
+Read a sector identifier.
+
+ENTRY CONDITIONS
+        C = Unit (0/1)
+        D = Logical track, 0 base
+        IX = Address of XDPB
+
+EXIT CONDITIONS
+        If OK:
+                Carry true
+                A = Sector number from identifier
+        Otherwise:
+                Carry false
+                A = Error code
+        Always:
+                HL = Address of result buffer in page 7
+                BC DE IX corrupt
+                All other registers preserved
+
+Parece que es el sector info de los dsk:
+
+Track0
+00 00 c1 02 00 00 00 02  sector 0
+00 00 c2 02 00 00 00 02  sector 1
+...
+
+Track1
+01 00 c1 02 00 00 00 02  sector 0
+01 00 c2 02 00 00 00 02  sector 1
+...
+
+*/
+	//???? Que retornar en A?
+	//int sector=0;
+	debug_printf(VERBOSE_DEBUG,"READ ID: Unit: %d Track: %d",reg_c,reg_d);
+    printf("READ ID: Unit: %d Track: %d\n",reg_c,reg_d);
+
+
+
+   //Devolver CHRN siguiente
+   z80_byte leido_id_c,leido_id_h,leido_id_r,leido_id_n;
+
+  
+
+    
+    //TODO de momento solo cara 0
+    //TODO: retornar error si no hay sectores en esta pista
+   dsk_get_chrn(reg_d,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
+    printf("Got CHRN %X %X %X %X\n",leido_id_c,leido_id_h,leido_id_r,leido_id_n);
+
+	//z80_byte sector_id=0xc0 | (sector+1);
+
+	reg_a=leido_id_r;
+	reg_hl=49152; 
+
+
+        int i=0;
+                        z80_byte *p;
+                p=ram_mem_table[7];
+
+
+                p[i]=leido_id_c;
+		i++;
+
+                p[i]=leido_id_h;
+		i++;
+
+                p[i]=leido_id_r;
+		i++;
+
+                p[i]=leido_id_n;
+		i++;
+
+                p[i]=0;
+		i++;
+
+                p[i]=0;
+		i++;
+
+                p[i]=0;
+		i++;
+
+                p[i]=2;
+		i++;
+
+	//Incrementar sector??? ni idea
+	traps_plus3dos_return_ok();
+}
+
+
+void old_traps_plus3dos_read_id(void)
 {
 
 /*
@@ -602,6 +741,7 @@ Track1
 	//???? Que retornar en A?
 	int sector=0;
 	debug_printf(VERBOSE_DEBUG,"READ ID: Unit: %d Track: %d",reg_c,reg_d);
+    printf("READ ID: Unit: %d Track: %d\n",reg_c,reg_d);
 
 	z80_byte sector_id=0xc0 | (sector+1);
 

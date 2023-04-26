@@ -211,3 +211,23 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 -mejorar logo splash x anniversary
+
+-mejorar niveles de mensajes debug pd765
+
+
+bugsy.dsk:
+pd765:
+Info:     PD765: Motor on PC=2181H
+Info:     PD765: End receiving command parameters for READ_DATA. C=00H H=00H R=01H N=02H EOT=01H GPL=2AH DTL=FFH. Current track: 00H
+Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=01H N=02H EOT=01H GPL=2AH DTL=FFH. Current track: 01H
+Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=02H N=02H EOT=02H GPL=2AH DTL=FFH. Current track: 01H
+Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=03H N=02H EOT=03H GPL=2AH DTL=FFH. Current track: 01H
+Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=04H N=02H EOT=04H GPL=2AH DTL=FFH. Current track: 01H
+Info:     PD765: Motor off PC=5B41H
+
+
+handler
+Buscando pista 0 sector 0
+Buscando pista 0 sector 1
+Buscando pista 0 sector 2
+Buscando pista 0 sector 3
