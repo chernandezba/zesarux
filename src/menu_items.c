@@ -35003,9 +35003,15 @@ int menu_visual_floppy_contador_segundo_anterior;
 //Si se ha llenado el fondo con espacios del color de fondo esperado
 //int menu_visual_floppy_fondo_asignado=0;
 
+//Ultimo valor de RPM de rotacion
+int menu_visualfloppy_last_rpm=0;
+
 //Esto se llama desde el timer
 void menu_visualfloppy_increment_rotation(void)
 {
+
+    //Asumimos por defecto rpm a 0
+    menu_visualfloppy_last_rpm=0;
 
     if (!menu_visualfloppy_rotacion_activada) {
         menu_visualfloppy_rotacion_disco=0;
@@ -35046,14 +35052,20 @@ void menu_visualfloppy_increment_rotation(void)
 
         menu_visualfloppy_rotacion_disco +=incremento_grados;
 
+        //300 rpm velocidad maxima
+        menu_visualfloppy_last_rpm=(300*pd765_motor_speed)/100;
+
     }
 
-    //rotacion simulada betadisk
+    //rotacion simulada betadisk, sin aceleración
     else {
         if (betadisk_simulated_motor && betadisk_enabled.v) {
             int incremento_grados;
             incremento_grados=MENU_VISUAL_FLOPPY_ROTATION_SPEED_NORMAL;
             menu_visualfloppy_rotacion_disco +=incremento_grados;
+
+            //Valor fijo completamente falso
+            menu_visualfloppy_last_rpm=300;
         }
     }
 
@@ -35330,6 +35342,14 @@ void menu_visual_floppy_overlay(void)
     if (total_bytes_mostrados) {
         zxvision_print_string_defaults_format(menu_visual_floppy_window,1,linea_contador_bytes,"Bytes shown: %d",total_bytes_mostrados);
     }
+
+    //borrar linea donde hay el contador de rpm
+    //printf("%d\n",menu_visualfloppy_last_rpm);
+    zxvision_fill_width_spaces_paper(menu_visual_floppy_window,linea_contador_bytes+1,HEATMAP_INDEX_FIRST_COLOR);
+    if (menu_visualfloppy_last_rpm!=0) {
+        zxvision_print_string_defaults_format(menu_visual_floppy_window,1,linea_contador_bytes+1,"RPM: %d",menu_visualfloppy_last_rpm);
+    }
+
     zxvision_draw_window_contents(menu_visual_floppy_window);    
     
 }
