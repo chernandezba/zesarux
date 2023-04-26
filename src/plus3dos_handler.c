@@ -691,7 +691,7 @@ Track1
                 p[i]=0;
 		i++;
 
-                p[i]=2;
+                p[i]=2; //???
 		i++;
 
 	//Incrementar sector??? ni idea
