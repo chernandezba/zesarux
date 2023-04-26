@@ -123,10 +123,6 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 
 
 
-
-
-
-
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
 
 
@@ -176,7 +172,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 --fin pendiente pcw 8256,8512
 
 
--Snapshots de pcw o cpc? que formatos existen?
+- que formatos existen de Snapshots de pcw o cpc??
 
 
 
@@ -213,8 +209,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -registro EPC para tbblue, zxuno, ....
 
-
--en snapshot zsf opcion para poder guardar la rom en snapshot, por ejemplo para cuando has iniciado con una rom personalizada y quieres
-que el snapshot la restaure
 
 -mejorar logo splash x anniversary

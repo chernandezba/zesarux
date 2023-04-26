@@ -49,6 +49,16 @@ Quiza habria que parsear algunos parametros del .config tambien despues de carga
 
 
 
+-En snapshot poder guardar notas. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
+Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot? 
+Quizá desde menú y con un first aid que lo explique
+
+--ZSF tbblue: * estado dma (esto no solo afecta a tbblue sino a todos. tener en cuenta grabar tambien valor datagear_dma_tbblue_prescaler)
+
+-Problema con el almacenamiento de los t-estados en snapshot .zsf: no se guarda. Aunque siempre se guardan los snapshots justo despues de una interrupcion
+
+-incluir en snapshot nombre de ultimo juego cargado, para saber de que snapshot se trata?
+->rutinas ssl deben establecer nombre para juegos conocidos. quiza tambien una informacion del juego, teclas, descripcion del juego, etc?
 ---------------
 
 
@@ -75,8 +85,7 @@ ok-formato .sna
 -48k ok
 -128k . parece que snapshots grabados con fuse luego no van bien, ni desde el mismo fuse - probar abadia del crimen por ejemplo
 
--incluir en snapshot nombre de ultimo juego cargado, para saber de que snapshot se trata?
-->rutinas ssl deben establecer nombre para juegos conocidos. quiza tambien una informacion del juego, teclas, descripcion del juego, etc?
+
 
 -autoload snapshot: al cargar un autosnapshot, hay parametros que se desactivan, por ejemplo dsk enabled.
 En ese caso, si por ejemplo estabamos con una maquina +3, con dsk activo, se guarda bien la config y el snapshot
@@ -84,10 +93,3 @@ Pero el "--enable-dsk", al iniciar el emulador, se parsea antes de cargar el sna
 dskplusthree_emulation.v=0 , con lo que arranca con dsk desactivado. Hay varios parametros como ese
 
 
--En snapshot poder guardar notas. Visibles desde menú snapshot. Se pierden al cargar otro snapshot
-Esto es un nuevo tipo de campo en ZSF. Como se pide? Al guardar un snapshot o desde menú snapshot? 
-Quizá desde menú y con un first aid que lo explique
-
---ZSF tbblue: * estado dma (esto no solo afecta a tbblue sino a todos. tener en cuenta grabar tambien valor datagear_dma_tbblue_prescaler)
-
--Problema con el almacenamiento de los t-estados en snapshot .zsf: no se guarda. Aunque siempre se guardan los snapshots justo despues de una interrupcion
