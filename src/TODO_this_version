@@ -69,10 +69,6 @@ lectura sectores de floppy debe usar los ids y no offset directo (llamando a tra
 Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
 
-
--Test unitario +3 que cargue un disco autoarrancable y espere output concreto
-
-
 -mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
 
 -releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??

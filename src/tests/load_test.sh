@@ -30,3 +30,16 @@ for i in $MAQUINAS; do
 
 done
 
+
+# Also test loading +3 Disk
+echo "Test Load +3 Disk"
+./zesarux --noconfigfile --vo stdout --machine p340 extras/snap_tests/testdsk.dsk --exit-after 10 --fastautoload > $TEMPFILE
+
+grep "RUN PROGRAM OK" $TEMPFILE
+
+if [ $? != 0 ]; then
+	echo "ERROR Load +3 Disk"
+	exit 1
+else
+	echo "OK Load +3 Disk"
+fi
