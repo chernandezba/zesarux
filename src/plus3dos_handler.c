@@ -260,10 +260,10 @@ int traps_plus3dos_getoff_track_sector(int pista_buscar,int sector_buscar)
     z80_byte sector_fisico; 
     printf("Buscando pista %d sector %d\n",pista_buscar,sector_buscar);
 
-    int offset=dsk_get_physical_sector(pista_buscar,sector_buscar);
+    //int offset=dsk_get_physical_sector(pista_buscar,sector_buscar);
 
 
-    //int offset=dsk_get_sector(pista_buscar,sector_buscar,&sector_fisico,-1,0,0,1);
+    int offset=dsk_get_sector(pista_buscar,sector_buscar,&sector_fisico,-1,0,0,1);
 
 
     printf("Offset: %XH\n",offset);
@@ -562,7 +562,7 @@ ENTRY CONDITIONS
         int i;
 	for (i=0;i<512;i++) {
 		z80_byte byte_leido=plus3dsk_get_byte_disk(iniciosector+i);
-        if (i<10) printf("Byte %d Valor %02XH\n",i,byte_leido);
+        //if (i<10) printf("Byte %d Valor %02XH\n",i,byte_leido);
 		traps_poke_addr_page(reg_b,reg_hl+i,byte_leido);
 	}
 
@@ -682,7 +682,7 @@ Track1
                 p[i]=leido_id_n;
 		i++;
 
-                p[i]=0;
+ /*               p[i]=0;
 		i++;
 
                 p[i]=0;
@@ -693,51 +693,17 @@ Track1
 
                 p[i]=0;
 		i++;
+    */
     
 	//Incrementar sector??? ni idea
 	traps_plus3dos_return_ok();
 }
 
-
+/*
 void old_traps_plus3dos_read_id(void)
 {
 
-/*
-DD READ ID
-016Fh (367)
 
-Read a sector identifier.
-
-ENTRY CONDITIONS
-        C = Unit (0/1)
-        D = Logical track, 0 base
-        IX = Address of XDPB
-
-EXIT CONDITIONS
-        If OK:
-                Carry true
-                A = Sector number from identifier
-        Otherwise:
-                Carry false
-                A = Error code
-        Always:
-                HL = Address of result buffer in page 7
-                BC DE IX corrupt
-                All other registers preserved
-
-Parece que es el sector info de los dsk:
-
-Track0
-00 00 c1 02 00 00 00 02  sector 0
-00 00 c2 02 00 00 00 02  sector 1
-...
-
-Track1
-01 00 c1 02 00 00 00 02  sector 0
-01 00 c2 02 00 00 00 02  sector 1
-...
-
-*/
 	//???? Que retornar en A?
 	int sector=0;
 	debug_printf(VERBOSE_DEBUG,"READ ID: Unit: %d Track: %d",reg_c,reg_d);
@@ -781,7 +747,7 @@ Track1
 	//Incrementar sector??? ni idea
 	traps_plus3dos_return_ok();
 }
-
+*/
 
 void traps_plus3dos(void)
 {
@@ -980,10 +946,10 @@ ENTRY CONDITIONS
 
 		                case 0x2114:
                 		        debug_printf(VERBOSE_DEBUG,"-----Undocumented Wait FD & Output");
-					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
+					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH D=%02XH",reg_pc,reg_pc,reg_d);
 
 					//realizando traps_plus3dos_return las lecturas funcionan pero write_sector no se llama nunca
-					//traps_plus3dos_return();
+					traps_plus3dos_return();
 		                break;
 
 		                case 0x206f:
@@ -991,7 +957,7 @@ ENTRY CONDITIONS
 					debug_printf(VERBOSE_DEBUG,"reg_pc=%d %04xH",reg_pc,reg_pc);
 
 					//realizando traps_plus3dos_return las lecturas funcionan pero write_sector no se llama nunca
-					//traps_plus3dos_return();
+					traps_plus3dos_return();
 				break;
 
 

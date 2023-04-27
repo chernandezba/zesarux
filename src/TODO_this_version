@@ -69,9 +69,6 @@ lectura sectores de floppy debe usar los ids y no offset directo (llamando a tra
 Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
 
 
--PD765: aparece A: y B: disponibles
-con la mascara quitada al buscar sector_id, plus3dos handler fallara con carlos sainz por ejemplo
-quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro (y pd765 siempre use mascara 255)
 
 -Test unitario +3 que cargue un disco autoarrancable y espere output concreto
 
@@ -92,7 +89,7 @@ quiza usar funcion aparte para plus3dos handler, o que mascara sea un parametro 
 -PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
 -implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 
--Plus3dos handler: acabar de revisar que funcione con pd765 emulacion off
+
 
 Fin Emulación floppy
 --------------
@@ -181,8 +178,7 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 
 
--en plus3doshandler, cuando filesystem empieza en pista 2, todos los bloques van desplazados una pista en adelante
-(igual que utils.c y llamada a menu_dsk_getoff_block). y lo mismo para buscar inicio pista
+
 
 
 -En visor dsk que solo muestre primer extent de un archivo. ya esta??
@@ -212,22 +208,5 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -mejorar logo splash x anniversary
 
--mejorar niveles de mensajes debug pd765
-
-
-bugsy.dsk:
-pd765:
-Info:     PD765: Motor on PC=2181H
-Info:     PD765: End receiving command parameters for READ_DATA. C=00H H=00H R=01H N=02H EOT=01H GPL=2AH DTL=FFH. Current track: 00H
-Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=01H N=02H EOT=01H GPL=2AH DTL=FFH. Current track: 01H
-Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=02H N=02H EOT=02H GPL=2AH DTL=FFH. Current track: 01H
-Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=03H N=02H EOT=03H GPL=2AH DTL=FFH. Current track: 01H
-Info:     PD765: End receiving command parameters for READ_DATA. C=01H H=00H R=04H N=02H EOT=04H GPL=2AH DTL=FFH. Current track: 01H
-Info:     PD765: Motor off PC=5B41H
-
-
-handler
-Buscando pista 0 sector 0
-Buscando pista 0 sector 1
-Buscando pista 0 sector 2
-Buscando pista 0 sector 3
+ok-mejorar niveles de mensajes debug pd765
+-revisar que mensajes de aviso de discos protegidos (speedlock, etc) deberian aparecer realmente en pantalla

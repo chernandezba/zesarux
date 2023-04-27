@@ -1013,7 +1013,7 @@ void pd765_handle_command_read_id(void)
     
     //TODO de momento solo cara 0
     //TODO: retornar error si no hay sectores en esta pista
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"Obtener ID de Read id para sector %d de pista %02XH",sector,pd765_pcn);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"Get ID from Read id for sector %d of track %02XH",sector,pd765_pcn);
    dsk_get_chrn(pd765_pcn,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     //Guardarlo para debug
@@ -1105,7 +1105,7 @@ void pd765_read_parameters_sense_drive_status(z80_byte value)
         pd765_input_parameter_us1=(value>>1) & 0x01;
         pd765_input_parameter_us0=value  & 0x01;
         
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
+        DBG_PRINT_PD765 VERBOSE_INFO,"PD765: SENSE DRIVE STATUS parameters: HD=%XH US1=%XH US0=%XH",pd765_input_parameter_hd,pd765_input_parameter_us1,pd765_input_parameter_us0);
 
         //Fin de comando
         pd765_input_parameters_index=0;
@@ -1879,7 +1879,7 @@ void pd765_read_parameters_seek(z80_byte value)
 
     else if (pd765_input_parameters_index==2) {
         pd765_input_parameter_ncn=value;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: NCN=%XH",pd765_input_parameter_ncn);
+        DBG_PRINT_PD765 VERBOSE_INFO,"PD765: SEEK parameters NCN=%XH",pd765_input_parameter_ncn);
 
         //Fin de comando
         pd765_input_parameters_index=0;
@@ -2910,33 +2910,33 @@ void pd765_write_handle_phase_command(z80_byte value)
         
 
         if (value==8 && !pd765_interrupt_pending) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: SENSE INTERRUPT command without interrupt pending. Will generate invalid command");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Received command SENSE INTERRUPT without interrupt pending. Will generate invalid command");
         }
 
         if (value==3) {
             //Specify
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SPECIFY command");
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SPECIFY");
             pd765_command_received=PD765_COMMAND_SPECIFY;
             pd765_input_parameters_index++;
         }
 
         else if (value==4) {
             //Sense drive status
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE DRIVE STATUS command");
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SENSE DRIVE STATUS");
             pd765_command_received=PD765_COMMAND_SENSE_DRIVE_STATUS;
             pd765_input_parameters_index++;            
         }
 
         else if (value==7) {
             //Recalibrate
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: RECALIBRATE command");
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command RECALIBRATE");
             pd765_command_received=PD765_COMMAND_RECALIBRATE;
             pd765_input_parameters_index++;            
         }
 
         else if (value==8 && pd765_interrupt_pending) {
             //Sense interrupt status
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SENSE INTERRUPT STATUS command");
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SENSE INTERRUPT STATUS");
             pd765_command_received=PD765_COMMAND_SENSE_INTERRUPT_STATUS;
 
             pd765_interrupt_pending=0;
@@ -2949,7 +2949,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         else if ((value & 0xBF)==0x0A) {
             //Read id
             //TODO: bit MF
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ ID command. Current track: %02XH",pd765_pcn);
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ ID. Current track: %02XH",pd765_pcn);
             pd765_command_received=PD765_COMMAND_READ_ID;
             pd765_input_parameters_index++; ;            
         }
@@ -2960,7 +2960,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DATA command. MT=%d MF=%d SK=%d. Current track: %02XH",
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ DATA. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             if (pd765_input_parameter_mt) {
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
@@ -2979,7 +2979,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ DELETED DATA command. MT=%d MF=%d SK=%d. Current track: %02XH",
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ DELETED DATA. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             //sleep(10);
             
@@ -3001,7 +3001,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             pd765_input_parameter_mt=0;
             pd765_input_parameter_mf=(value>>6)&1;
             pd765_input_parameter_sk=(value>>5)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: READ TRACK command. MF=%d SK=%d. Current track: %02XH",
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ TRACK. MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
            
 
@@ -3015,7 +3015,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             //TODO: bits MT, MF
             pd765_input_parameter_mt=(value>>7)&1;
             pd765_input_parameter_mf=(value>>6)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: WRITE DATA command. MT=%d MF=%d Current track: %02XH",
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command WRITE DATA. MT=%d MF=%d Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_pcn);
             if (pd765_input_parameter_mt) {
                 DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
@@ -3035,7 +3035,7 @@ void pd765_write_handle_phase_command(z80_byte value)
             //format track
             //TODO: bit MF
             pd765_input_parameter_mf=(value>>6)&1;
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: FORMAT TRACK command. MF=%d Current track: %02XH",
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command FORMAT TRACK. MF=%d Current track: %02XH",
                 pd765_input_parameter_mf,pd765_pcn);
 
 
@@ -3049,13 +3049,13 @@ void pd765_write_handle_phase_command(z80_byte value)
 
         else if (value==0x0F) {
             //Seek
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: SEEK command");
+            DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command SEEK");
             pd765_command_received=PD765_COMMAND_SEEK;
             pd765_input_parameters_index++;            
         }                
 
         else {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: INVALID command");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Received command INVALID");
 
             pd765_command_received=PD765_COMMAND_INVALID;
 

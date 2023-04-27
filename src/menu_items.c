@@ -28105,8 +28105,8 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,
                 "[%c] +3DOS ~~Traps", (plus3dos_traps.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_plusthreedisk,'t');
-            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps");
-            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps");
+            menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
+            menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
         }
 
 

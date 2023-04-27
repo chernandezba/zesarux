@@ -72,3 +72,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -ZENG soporte para QL. ok aunque no envia teclas extendidas
 -ZENG para msx se leen los cursores en destino
 -ZENG colecovision no va bien
+
+-plus3doshandler: muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
+ejemplo badlands.dsk y rutina en la 2114h que esta en los traps

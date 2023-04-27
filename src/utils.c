@@ -5590,7 +5590,14 @@ int quickload_continue(char *nombre) {
         //strcpy(dskplusthree_file_name,nombre);
                 
         dskplusthree_enable();
-		pd765_enable();
+
+        //Habilitar pd765 a no ser que los traps esten activados
+        if (MACHINE_IS_SPECTRUM_P3) {
+            if (plus3dos_traps.v==0) pd765_enable();
+        }
+        else {
+            pd765_enable();
+        }
 		//plus3dos_traps.v=1;
 		
                                
