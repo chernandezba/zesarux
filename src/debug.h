@@ -184,8 +184,12 @@ extern int debug_get_class_mask_value(int i);
 
 #define DEBUG_MAX_MESSAGE_LENGTH 1024
 
+//Maximo ancho permitido
 #define DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH 80
+//Alto total fijo
 #define DEBUG_UNNAMED_CONSOLE_HEIGHT 200
+
+#define DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH 32
 
 extern int ancho_ventana_unnamed_console;
 

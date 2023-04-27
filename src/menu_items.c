@@ -20012,7 +20012,7 @@ void menu_debug_unnamed_console_overlay(void)
 
     puntero=debug_unnamed_console_memory_pointer;
 
-    //DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT
+    
     for (y=0;y<DEBUG_UNNAMED_CONSOLE_HEIGHT;y++) {
         char buffer_linea[DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1];
         for (x=0;x<ancho_ventana_unnamed_console;x++) {
@@ -20093,7 +20093,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         if (!util_find_window_geometry("debugconsole",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             x=menu_origin_x();
             y=0;
-            ancho=32;
+            ancho=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH; //32;
             alto=18;
         }    
 
@@ -20101,7 +20101,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         //DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1 porque damos 1 espacio con margen por la izquierda
         //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
 
-        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
+        zxvision_new_window_gn_cim(ventana,x,y,DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
     
         //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas

@@ -941,7 +941,8 @@ void debug_unnamed_console_end(void)
     }
 }
 
-int ancho_ventana_unnamed_console=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;
+//Ancho de la ventana, que se va actualizando cuando el usuario la redimensiona
+int ancho_ventana_unnamed_console=DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH-2;
 
 void debug_unnamed_console_scroll(void)
 {

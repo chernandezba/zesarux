@@ -170,4 +170,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -mejorar logo splash x anniversary
 
--debug console ancho variable: al redimensionar total height no refresca bien en scroll
+-debug console ancho variable: al redimensionar total height no refresca bien en scroll: se corrige haciendo scroll con raton
