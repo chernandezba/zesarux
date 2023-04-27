@@ -20065,6 +20065,22 @@ void menu_debug_unnamed_console_overlay(void)
 }
 
 
+void menu_debug_unnamed_console_update_size(zxvision_window *ventana)
+{
+            //actualizar variable del ancho para que las funciones de debug se enteren
+        int ancho_leido=ventana->visible_width-2;
+
+        //Controlar maximo
+        if (ancho_leido>DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH) {
+            ancho_leido=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;
+        }
+
+        //Y un minimo
+        if (ancho_leido<5) ancho_leido=5;
+
+        ancho_ventana_unnamed_console=ancho_leido;
+}
+
 zxvision_window zxvision_window_unnamed_console;
 
 void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
@@ -20101,7 +20117,7 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         //DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1 porque damos 1 espacio con margen por la izquierda
         //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
 
-        zxvision_new_window_gn_cim(ventana,x,y,DEBUG_UNNAMED_CONSOLE_VISIBLE_INITIAL_WIDTH,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
     
         //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas
@@ -20147,6 +20163,9 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     //cambio overlay
     zxvision_set_window_overlay(ventana,menu_debug_unnamed_console_overlay);
 
+    //actualizar tamaño ancho para que la funcion de debug sepa el tamaño real, incluso cuando solo entramos aqui al restaurar ventana
+    menu_debug_unnamed_console_update_size(ventana);
+
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
     if (zxvision_currently_restoring_windows_on_start) {
@@ -20162,17 +20181,8 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     z80_byte tecla;
     do {
         //actualizar variable del ancho para que las funciones de debug se enteren
-        int ancho_leido=ventana->visible_width-2;
+        menu_debug_unnamed_console_update_size(ventana);
 
-        //Controlar maximo
-        if (ancho_leido>DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH) {
-            ancho_leido=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;
-        }
-
-        //Y un minimo
-        if (ancho_leido<5) ancho_leido=5;
-
-        ancho_ventana_unnamed_console=ancho_leido;
 
         //printf("Ancho: %d\n",ancho_ventana_unnamed_console);
         
