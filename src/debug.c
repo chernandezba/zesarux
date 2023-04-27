@@ -941,24 +941,26 @@ void debug_unnamed_console_end(void)
     }
 }
 
+int ancho_ventana_unnamed_console=DEBUG_UNNAMED_CONSOLE_WIDTH+1;
+
 void debug_unnamed_console_scroll(void)
 {
 
     int x,y;
 
     for (y=0;y<DEBUG_UNNAMED_CONSOLE_HEIGHT-1;y++) {
-        for (x=0;x<DEBUG_UNNAMED_CONSOLE_WIDTH;x++) {
-            int offset_linea_debajo=(y+1)*DEBUG_UNNAMED_CONSOLE_WIDTH+x;
+        for (x=0;x<ancho_ventana_unnamed_console;x++) {
+            int offset_linea_debajo=(y+1)*ancho_ventana_unnamed_console+x;
             char c=debug_unnamed_console_memory_pointer[offset_linea_debajo];
 
-            int offset_linea_actual=y*DEBUG_UNNAMED_CONSOLE_WIDTH+x;
+            int offset_linea_actual=y*ancho_ventana_unnamed_console+x;
             debug_unnamed_console_memory_pointer[offset_linea_actual]=c;
         }
     }
 
     //Y meter ultima linea con espacios
-    for (x=0;x<DEBUG_UNNAMED_CONSOLE_WIDTH;x++) {
-        int offset_linea_actual=y*DEBUG_UNNAMED_CONSOLE_WIDTH+x;
+    for (x=0;x<ancho_ventana_unnamed_console;x++) {
+        int offset_linea_actual=y*ancho_ventana_unnamed_console+x;
         debug_unnamed_console_memory_pointer[offset_linea_actual]=' ';
     }        
 }
@@ -975,6 +977,7 @@ void debug_unnamed_console_new_line(void)
         debug_unnamed_console_scroll();
     }
 }
+
 
 
 //Escribir caracter en posicion cursor
@@ -998,13 +1001,15 @@ void debug_unnamed_console_printchar(char c)
     //no hacemos este filtro, asi podemos meter caracteres utf, etc
     //if (c<32 || c>126) c='?';
 
-    int offset=(debug_unnamed_console_current_y*DEBUG_UNNAMED_CONSOLE_WIDTH)+debug_unnamed_console_current_x;
+    int ancho_consola=ancho_ventana_unnamed_console;
+
+    int offset=(debug_unnamed_console_current_y*ancho_consola)+debug_unnamed_console_current_x;
 
     debug_unnamed_console_memory_pointer[offset]=c;
 
     debug_unnamed_console_current_x++;
 
-    if (debug_unnamed_console_current_x>=DEBUG_UNNAMED_CONSOLE_WIDTH) {
+    if (debug_unnamed_console_current_x>=ancho_consola) {
         debug_unnamed_console_new_line();
     }
 

@@ -187,6 +187,8 @@ extern int debug_get_class_mask_value(int i);
 #define DEBUG_UNNAMED_CONSOLE_WIDTH 80
 #define DEBUG_UNNAMED_CONSOLE_HEIGHT 200
 
+extern int ancho_ventana_unnamed_console;
+
 extern char *debug_unnamed_console_memory_pointer;
 extern int debug_unnamed_console_current_x;
 extern int debug_unnamed_console_current_y;

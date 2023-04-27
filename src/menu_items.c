@@ -20015,7 +20015,7 @@ void menu_debug_unnamed_console_overlay(void)
     //DEBUG_UNNAMED_CONSOLE_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT
     for (y=0;y<DEBUG_UNNAMED_CONSOLE_HEIGHT;y++) {
         char buffer_linea[DEBUG_UNNAMED_CONSOLE_WIDTH+1];
-        for (x=0;x<DEBUG_UNNAMED_CONSOLE_WIDTH;x++) {
+        for (x=0;x<ancho_ventana_unnamed_console;x++) {
             //printf("%c",*puntero);
 
             //Empieza en x+1 para dejar 1 caracter margen izquierda
@@ -20161,7 +20161,10 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
 
     z80_byte tecla;
     do {
+        //actualizar variable del ancho para que las funciones de debug se enteren
+        ancho_ventana_unnamed_console=ventana->visible_width-2;
 
+        printf("Ancho: %d\n",ancho_ventana_unnamed_console);
         
         menu_debug_unnamed_console_show_legend(ventana);
 
