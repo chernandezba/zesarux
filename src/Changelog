@@ -44,7 +44,7 @@ Improved DSK extractor:
 - better filesystem detection
 
 Improved ZSF Snapshots: allow to save ROM contents, useful when running custom roms
-Improved Debug Console: better refresh, dynamic width?? (TODO)
+Improved Debug Console: better refresh, dynamic width
 Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
 Improved Debug I/O ports window: autoresize content height when do not fit in window
 

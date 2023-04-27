@@ -20012,9 +20012,9 @@ void menu_debug_unnamed_console_overlay(void)
 
     puntero=debug_unnamed_console_memory_pointer;
 
-    //DEBUG_UNNAMED_CONSOLE_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT
+    //DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT
     for (y=0;y<DEBUG_UNNAMED_CONSOLE_HEIGHT;y++) {
-        char buffer_linea[DEBUG_UNNAMED_CONSOLE_WIDTH+1];
+        char buffer_linea[DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1];
         for (x=0;x<ancho_ventana_unnamed_console;x++) {
             //printf("%c",*puntero);
 
@@ -20098,10 +20098,10 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
         }    
 
         //DEBUG_UNNAMED_CONSOLE_HEIGHT+2 porque hay dos lineas de leyenda superior
-        //DEBUG_UNNAMED_CONSOLE_WIDTH+1 porque damos 1 espacio con margen por la izquierda
-        //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
+        //DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1 porque damos 1 espacio con margen por la izquierda
+        //zxvision_new_window(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console");
 
-        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
+        zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1,DEBUG_UNNAMED_CONSOLE_HEIGHT+2,"Debug console","debugconsole",
             is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);    
     
         //Ajustar el scroll al maximo, para entrar y mostrar las ultimas lineas
@@ -20162,9 +20162,19 @@ void menu_debug_unnamed_console(MENU_ITEM_PARAMETERS)
     z80_byte tecla;
     do {
         //actualizar variable del ancho para que las funciones de debug se enteren
-        ancho_ventana_unnamed_console=ventana->visible_width-2;
+        int ancho_leido=ventana->visible_width-2;
 
-        printf("Ancho: %d\n",ancho_ventana_unnamed_console);
+        //Controlar maximo
+        if (ancho_leido>DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH) {
+            ancho_leido=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;
+        }
+
+        //Y un minimo
+        if (ancho_leido<5) ancho_leido=5;
+
+        ancho_ventana_unnamed_console=ancho_leido;
+
+        //printf("Ancho: %d\n",ancho_ventana_unnamed_console);
         
         menu_debug_unnamed_console_show_legend(ventana);
 

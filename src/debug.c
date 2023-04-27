@@ -941,7 +941,7 @@ void debug_unnamed_console_end(void)
     }
 }
 
-int ancho_ventana_unnamed_console=DEBUG_UNNAMED_CONSOLE_WIDTH+1;
+int ancho_ventana_unnamed_console=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;
 
 void debug_unnamed_console_scroll(void)
 {
@@ -1034,7 +1034,7 @@ void debug_unnamed_console_init(void)
 
     //printf("on debug_unnamed_console_init\n");
 
-    int total_mem=DEBUG_UNNAMED_CONSOLE_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT;
+    int total_mem=DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH*DEBUG_UNNAMED_CONSOLE_HEIGHT;
 
     debug_unnamed_console_memory_pointer=malloc(total_mem);
 
