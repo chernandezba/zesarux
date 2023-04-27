@@ -12,6 +12,33 @@ Y montones de flags y parámetros de dma que de momento no gestiono
 -Desactivar chip sprites si reset y máquina no spectrum. Pero en set_machine si se hace ahi, fuerza a desactivar aunque en el .config se haya habilitado
 -Sprites de 16x16?
 
+------------------
+
+
+--- PD765 ---
+
+-Emulación floppy:￼
+Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
+
+lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
+Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
+
+
+-mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
+
+-releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
+
+-ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
+
+
+
+
+-Read track
+* A determinar flags que se activan según petición inicial chrn
+* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
+
+-PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
+-implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
 -----------------------
 
 

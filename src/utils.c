@@ -4007,6 +4007,7 @@ int util_write_configfile(void)
   if (pd765_silent_write_protection.v)        ADD_STRING_CONFIG,"--pd765-silent-write-protection");
 
   if (dskplusthree_persistent_writes.v==0)    ADD_STRING_CONFIG,"--dsk-no-persistent-writes");
+  else                                        ADD_STRING_CONFIG,"--dsk-persistent-writes");
 
   if (pcw_boot_reinsert_previous_dsk.v==0)    ADD_STRING_CONFIG,"--dsk-pcw-no-boot-reinsert-previous-dsk");
   if (pcw_failback_cpm_when_no_boot.v==0)     ADD_STRING_CONFIG,"--dsk-pcw-no-failback-cpm-when-no-boot");

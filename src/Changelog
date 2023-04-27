@@ -111,6 +111,9 @@ Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
 Fixed setting "set machine snap load" when loading .Z80 version 1 snapshots
 
+* Misc Changes:
+
+Persistent writes on DSK files (+3/CPC/PCW disks) are disabled by default 
 
 * As always, there are some other minor bugfixes and improvements
 

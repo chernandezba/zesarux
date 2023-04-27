@@ -1,8 +1,6 @@
 Para esta version:
 
 
-
-
 --Errores
 
 -Error: Abrir menú debug cpu con tecla F
@@ -61,33 +59,6 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 --Fin Documentación/Ayuda
 
---------------
--Emulación floppy:￼
-Quiza un modo mas facil (y menos real) en que cuando pida la cpu leer un byte, se le pase el siguiente del disco. Y otro mas real en que el disco esté "girando" como en real, y el byte que se le pase sea el que corresponda en ese momento (requerira funcion nested core). Algún setting para escoger entre los dos modos?
-
-lectura sectores de floppy debe usar los ids y no offset directo (llamando a traps_plus3dos_getoff_track_sector igual que traps)
-Y los ST0, ST1, etc de resultado, deben retornar los que hay en DSK? respuesta del comando es el siguiente sector, etc? o el actual?
-
-
--mejorar dsk_extended_get_start_track. se tiene que parecer mas al basico
-
--releer tabla read data y valores chrn cuando el procesador termina un comando. cuando sucede? como puede terminar un comando??
-
--ver otros casos al llamar a dsk_get_sector_size_track_from_offset se debe hacer usando lectura extendida dsk_get_real_sector_size_extended
-
-
-
-
--Read track
-* A determinar flags que se activan según petición inicial chrn
-* A determinar que pasa si hay menos sectores que eot: creo que esto ya se gestiona cuando le pide el sector
-
--PD765: write sector. control de EOT? se puede escribir mas de un sector seguido?
--implementar write deleted data? quiza tan facil como escribir igual pero con bits de (st1?st2?) diciendo que está borrado
-
-
-
-Fin Emulación floppy
 --------------
 
 
@@ -164,15 +135,10 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 -cpm spanish (version superior a 1??) no va
 --fin pendiente pcw 8256,8512
 
-
 - que formatos existen de Snapshots de pcw o cpc??
 
 
-
-
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
-
-
 
 
 
@@ -204,5 +170,3 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -mejorar logo splash x anniversary
 
-ok-mejorar niveles de mensajes debug pd765
-ok-revisar que mensajes de aviso de discos protegidos (speedlock, etc) deberian aparecer realmente en pantalla

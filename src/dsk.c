@@ -51,8 +51,8 @@ z80_bit dskplusthree_write_protection={0};
 int dskplusthree_must_flush_to_disk=0;
 
 
-//Si cambios en escritura se hace flush a disco
-z80_bit dskplusthree_persistent_writes={1};
+//Si cambios en escritura se hace flush a disco. Por defecto no
+z80_bit dskplusthree_persistent_writes={0};
 
 
 z80_byte p3dsk_buffer_disco[DSK_MAX_BUFFER_DISCO];

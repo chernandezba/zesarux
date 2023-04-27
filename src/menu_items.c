@@ -28100,24 +28100,28 @@ void menu_plusthreedisk(MENU_ITEM_PARAMETERS)
 
         }        
 
-        //Esto que no aparezca en cpc
+
+
+
+        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
+            "[%c] ~~PD765 enabled",(pd765_enabled.v ? 'X' : ' ') );
+        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'p');
+        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
+        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable PD765 Disk controller used on +3, CPC and PCW machines");
+
+
+        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+
+        //Esto que no aparezca en cpc ni en pcw
         if (MACHINE_IS_SPECTRUM) {
             menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_plusthreedisk_traps,NULL,
                 "[%c] +3DOS ~~Traps", (plus3dos_traps.v ? 'X' : ' '));
             menu_add_item_menu_shortcut(array_menu_plusthreedisk,'t');
             menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
             menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable +3DOS Traps. This is EXPERIMENTAL");
-        }
-
-
-        menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_plusthreedisk_pd765,NULL,
-            "[%c] ~~PD765 enabled",(pd765_enabled.v ? 'X' : ' ') );
-        menu_add_item_menu_shortcut(array_menu_plusthreedisk,'p');
-        menu_add_item_menu_tooltip(array_menu_plusthreedisk,"Enable PD765 Disk controller");
-        menu_add_item_menu_ayuda(array_menu_plusthreedisk,"Enable PD765 Disk controller");
-
-
-        menu_add_item_menu(array_menu_plusthreedisk,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+            menu_add_item_menu_separator(array_menu_plusthreedisk);
+        }        
 
 
         menu_add_item_menu_format(array_menu_plusthreedisk,MENU_OPCION_NORMAL,menu_storage_dskplusthree_browser,
