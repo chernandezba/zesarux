@@ -246,7 +246,7 @@ int pd765_motor_speed=0;
 //Gestion de velocidad del motor.
 void pd765_handle_speed_motor(void)
 {
-    //DBG_PRINT_PD765 VERBOSE_DEBUG,"estados: %d speed: %d",tempp_estados++,pd765_motor_speed);
+    //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: estados: %d speed: %d",tempp_estados++,pd765_motor_speed);
 
     if (pd765_motor_status) {
         //Iniciado. Llevar hasta 100% velocidad
@@ -322,7 +322,7 @@ void pd765_sc_handle_running(pd765_signal_counter *s,int incremento)
         DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: handle signal running. Current counter: %d max: %d",s->current_counter,s->max);
         (s->current_counter)+=incremento;
         if ((s->current_counter)>=(s->max)) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG," PD765: Activar senyal");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trigger signal SE");
             pd765_sc_set(s);
 
             s->function_triggered();
@@ -566,10 +566,10 @@ void pd765_next_event_from_core(void)
             //Si sale negativo (que no deberia) dejarlo tal cual
             if (diferencia<0) diferencia=0;
 
-            if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"STATES: end of frame");
+            if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: STATES: end of frame");
         }
 
-        if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"STATES: diference: %d last: %d now: %d",diferencia,pd765_ultimo_t_estados,t_estados);
+        if (signal_se.running) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: STATES: diference: %d last: %d now: %d",diferencia,pd765_ultimo_t_estados,t_estados);
 
         pd765_sc_handle_running(&signal_se,diferencia);
 
@@ -909,7 +909,7 @@ int pd765_common_if_track_unformatted(int pista,int cara)
 
         */
 
-        sleep(1);
+        //sleep(1);
 
         return 1;
     }
@@ -1013,7 +1013,7 @@ void pd765_handle_command_read_id(void)
     
     //TODO de momento solo cara 0
     //TODO: retornar error si no hay sectores en esta pista
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"Get ID from Read id for sector %d of track %02XH",sector,pd765_pcn);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Get ID from Read id for sector %d of track %02XH",sector,pd765_pcn);
    dsk_get_chrn(pd765_pcn,0,sector,&leido_id_c,&leido_id_h,&leido_id_r,&leido_id_n);
 
     //Guardarlo para debug
@@ -1022,7 +1022,7 @@ void pd765_handle_command_read_id(void)
     pd765_debug_last_sector_id_r_read=leido_id_r;
     pd765_debug_last_sector_id_n_read=leido_id_n;  
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"##read_id: last_r: %d",pd765_debug_last_sector_id_r_read);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: read_id: last_r: %d",pd765_debug_last_sector_id_r_read);
 
 
 
@@ -1042,11 +1042,11 @@ void pd765_handle_command_read_id(void)
 
 
     /*if (leido_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector with deleted mark");
         //sleep(1);
     }
     else {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector with address mark");
     } */   
     
     DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Returning C: %02XH",leido_id_c);
@@ -1343,7 +1343,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     /*if (anormal_termination) {
         leido_st0 |= PD765_STATUS_REGISTER_ZERO_AT;
         pd765_read_command_must_stop_anormal_termination=1;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por anormal_termination");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination por anormal_termination");
         sleep(2);
 
     }*/
@@ -1354,7 +1354,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
     
     if (leido_id_c!=pd765_input_parameter_c) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"#####Cylinder read from disk (%02XH) is not what asked (%02XH)",leido_id_c,pd765_input_parameter_c);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Cylinder read from disk (%02XH) is not what asked (%02XH)",leido_id_c,pd765_input_parameter_c);
         //Wrong cylinder
         leido_id_st2 |= PD765_STATUS_REGISTER_TWO_WC_MASK;
 
@@ -1371,10 +1371,10 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     //Detectamos que el sector tiene marca de borrado con: leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK
 
     if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with deleted mark");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector with deleted mark");
     }
     else {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector with address mark");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector with address mark");
     }
 
 
@@ -1408,8 +1408,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         if ((leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK)==0) {
             if (pd765_input_parameter_sk) {
                 //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector not deleted and SK=1");
-                    sleep(5);
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector not deleted and SK=1");
+                    //sleep(5);
             }
             else {
                 //SK=0
@@ -1422,7 +1422,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                 pd765_read_command_must_stop_anormal_termination=1;
 
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector normal y sk=0");
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination porque read deleted, sector normal y sk=0");
                 //sleep(2);
 
 
@@ -1436,7 +1436,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         else {
             //Leido un sector con marca de borrado
             if (pd765_input_parameter_sk) {
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Sector deleted and SK=1");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector deleted and SK=1");
             }
             else {
                 leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
@@ -1444,7 +1444,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
                 //TODO: cargas con speedlock no requieren que no se detenga la carga de multiples sectores, ejemplo Pang.dsk
                 //Creo que esto deberia estar activado para todos discos pero para speed lock no...
                 //pd765_read_command_must_stop_anormal_termination=1;
-                //DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque read deleted, sector borrado y sk=0");
+                //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination porque read deleted, sector borrado y sk=0");
                 //sleep(2);
 
 
@@ -1483,8 +1483,8 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
         if (leido_id_st2 & PD765_STATUS_REGISTER_TWO_CM_MASK) {
             if (pd765_input_parameter_sk) {
                     //el skip ya se ha gestionado desde al llamar a dsk_get_sector 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector deleted and sk=1");
-                    sleep(5);
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: next sector when sector deleted and sk=1");
+                    //sleep(5);
             }
             else {
                     
@@ -1499,23 +1499,23 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
 
                     pd765_read_command_must_stop_anormal_termination=1;
 
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination por read data, sector borrado y sk=0");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination by read data, sector deleted and sk=0");
                     //sleep(2);
 
 
 
-                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector deleted and SK=0");
+                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO. Sector deleted and SK=0");
                     //sleep(5);                          
             }
         }
         else {
             //leido un sector normal
             if (pd765_input_parameter_sk) {
-                    DBG_PRINT_PD765 VERBOSE_DEBUG,"next sector when sector not deleted and sk=1");
+                    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: next sector when sector not deleted and sk=1");
             }
             else {
                     //leer tal cual
-                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO. Sector not deleted and SK=0");
+                    //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO. Sector not deleted and SK=0");
                     //sleep(5);                          
             }            
         }
@@ -1534,7 +1534,7 @@ void pd765_handle_command_read_data_read_chrn_etc(int sector_fisico,int put_valu
     if ((leido_id_st1 & PD765_STATUS_REGISTER_ONE_DE_MASK) || (leido_id_st2 & PD765_STATUS_REGISTER_TWO_DD_MASK)) {
         leido_st0 |=PD765_STATUS_REGISTER_ZERO_AT; //Abnormal termination of command (NT)
         pd765_read_command_must_stop_anormal_termination=1;
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Abnormal termination por CRC error");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Abnormal termination by CRC error");
         //sleep(1);
     }
 
@@ -1598,7 +1598,7 @@ field are not checked when SK = 1.
 
         pd765_read_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination dsk not insertaed");
 
 
         return;
@@ -1612,7 +1612,7 @@ field are not checked when SK = 1.
 
         pd765_read_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination because unformatted track");
 
 
         return;
@@ -1678,7 +1678,7 @@ field are not checked when SK = 1.
     if (pd765_command_received==PD765_COMMAND_READ_DELETED_DATA) search_deleted=1;
 
     if (search_deleted) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: search deleted");
         //sleep(5);
     }
 
@@ -1691,13 +1691,13 @@ field are not checked when SK = 1.
     else {
 
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_read,pd765_pcn,pd765_read_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_read,search_deleted,pd765_input_parameter_sk,1);
 
         
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Next sector with asked ID not found. Starting from the beginning of track");
             iniciosector=dsk_get_sector(pd765_pcn,pd765_read_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
@@ -1796,7 +1796,7 @@ field are not checked when SK = 1.
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
@@ -1807,12 +1807,12 @@ field are not checked when SK = 1.
         //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
         //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading less data than the track size says. Setting abnormal termination flag");
             //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
         }
 
         sector_size=real_sector_size;
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size after: %d",sector_size);
 
         //se van a leer menos datos
     }
@@ -1821,7 +1821,7 @@ field are not checked when SK = 1.
 
     pd765_last_sector_size_read_data=sector_size;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size: %d",pd765_last_sector_size_read_data);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size: %d",pd765_last_sector_size_read_data);
 
 
     pd765_handle_command_read_data_put_sector_data_in_bus(sector_size, iniciosector);
@@ -2003,8 +2003,8 @@ void pd765_read_parameters_read_data(z80_byte value)
 
         if (pd765_input_parameter_n==0) {
             //TODO
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!");
-            sleep(5);
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=0 not handled yet!!");
+            //sleep(5);
         }
 
         pd765_input_parameters_index++;
@@ -2079,7 +2079,7 @@ void pd765_handle_command_start_write_data(void)
 
         pd765_write_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination dsk no insertado");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination dsk not inserted");
 
 
         return;
@@ -2093,7 +2093,7 @@ void pd765_handle_command_start_write_data(void)
 
         pd765_write_command_must_stop_anormal_termination=1;
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Anormal termination porque pista no formateada");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Anormal termination because unformatted track");
 
 
         return;
@@ -2159,7 +2159,7 @@ void pd765_handle_command_start_write_data(void)
     //if (pd765_command_received==PD765_COMMAND_WRITE_DELETED_DATA) search_deleted=1;
 
     if (search_deleted) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"search deleted");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: search deleted");
         //sleep(5);
     }
 
@@ -2173,13 +2173,13 @@ void pd765_handle_command_start_write_data(void)
     else {
 
 
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Trying to seek next sector after physical %d on track %d with id %02XH",pd765_ultimo_sector_fisico_write,pd765_pcn,pd765_write_command_searching_parameter_r);
         iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,pd765_ultimo_sector_fisico_write,search_deleted,pd765_input_parameter_sk,1);
 
         
         if (iniciosector<0) {
             //no hay siguiente, volver a girar la pista
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Next sector with asked ID not found. Starting from the beginning of track");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Next sector with asked ID not found. Starting from the beginning of track");
             iniciosector=dsk_get_sector(pd765_pcn,pd765_write_command_searching_parameter_r,&sector_fisico,-1,search_deleted,pd765_input_parameter_sk,1);
         }
 
@@ -2255,7 +2255,7 @@ void pd765_handle_command_start_write_data(void)
 
     //Tamanyo real para caso discos extendidos
     if (dsk_file_type_extended) {
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size before: %d",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size before: %d",sector_size);
         //Tamanyo que dice el sector realmente
         int real_sector_size=dsk_get_real_sector_size_extended(pd765_pcn,0,sector_fisico); //TODO de momento solo cara 0
 
@@ -2266,12 +2266,12 @@ void pd765_handle_command_start_write_data(void)
         //en el disco real esta escrito una vez pero con datos "debiles" lo cual aporta datos cambiantes cada vez que se lea,
         //de ahi que haya que simularlo escogiendo una de las copias ¿al azar?
         if (real_sector_size<sector_size) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Reading less data than the track size says. Setting abnormal termination flag");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Reading less data than the track size says. Setting abnormal termination flag");
             //anormal_termination=1; //quiza mantener para el siguiente sense interrupt?
         }
 
         sector_size=real_sector_size;
-        //DBG_PRINT_PD765 VERBOSE_DEBUG,"sector size after: %d",sector_size);
+        //DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: sector size after: %d",sector_size);
 
         //se van a leer menos datos
     }
@@ -2280,7 +2280,7 @@ void pd765_handle_command_start_write_data(void)
 
     pd765_last_sector_size_write_data=sector_size;
 
-    DBG_PRINT_PD765 VERBOSE_DEBUG,"REAL sector size to write: %d",pd765_last_sector_size_write_data);
+    DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: REAL sector size to write: %d",pd765_last_sector_size_write_data);
     //sleep(2);
 
 
@@ -2431,8 +2431,8 @@ void pd765_read_parameters_write_data(z80_byte value)
 
         if (pd765_input_parameter_n==0) {
             //TODO
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"N=0 not handled yet!!");
-            sleep(5);
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: N=0 not handled yet!!");
+            //sleep(5);
         }
 
         pd765_input_parameters_index++;
@@ -2492,7 +2492,7 @@ void pd765_read_parameters_write_data(z80_byte value)
     //Si llega al final del disco
     //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
     if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of sector on write data");
 
                 //- escribir sector en dsk
                 int longitud=pd765_last_sector_size_write_data;
@@ -2605,7 +2605,7 @@ void pd765_format_sector_track(int track,int sector,int sector_size,z80_byte fil
     //gestionar error si sector no encontrado
 
     if (iniciosector<0) {
-        DBG_PRINT_PD765 VERBOSE_DEBUG,"TODO gestion error");
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: TODO handle error");
         return;
     }   
 
@@ -2738,7 +2738,7 @@ void pd765_read_parameters_format_track(z80_byte value)
         //Hemos leido el valor de N
         if (chrn_id==3) {
             //hacer efectivo el formateo de ese sector
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"Formatting sector %d. Current track: %02XH",sector,pd765_pcn);
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Formatting sector %d. Current track: %02XH",sector,pd765_pcn);
 
             int sector_size=dsk_get_sector_size_from_n_value(pd765_input_parameter_n_format);
 
@@ -2748,7 +2748,7 @@ void pd765_read_parameters_format_track(z80_byte value)
 
         //si final
         if (sector==pd765_formatting_total_sectores-1 && chrn_id==3) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"---Fin de formateo pista");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End formatting track");
 
                 //Cambiamos a fase de resultado
                 pd765_phase=PD765_PHASE_RESULT;
@@ -2821,7 +2821,7 @@ void pd765_read_parameters_format_track(z80_byte value)
     //TODO: si el usuario sigue escribiendo.... no podra escribir mas alla de lo que dice el sector size del disco
     /*
     else if (pd765_input_parameters_index>=9+pd765_last_sector_size_write_data) {
-            DBG_PRINT_PD765 VERBOSE_DEBUG,"End of sector on write data");
+            DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: End of sector on write data");
 
                 //- escribir sector en dsk
                 int longitud=pd765_last_sector_size_write_data;
@@ -2903,7 +2903,7 @@ void pd765_write_handle_phase_command(z80_byte value)
         //si esta haciendo seek y se lanza otro comando no seek, no aceptar
         if (signal_se.running) {
             if (value!=7 && value!=0xf) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"---PD765: Ignore command on seek phase. Counter to finish seek: %d",signal_se.current_counter);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Ignore command on seek phase. Counter to finish seek: %d",signal_se.current_counter);
                 return;
             }
         }
@@ -2963,8 +2963,8 @@ void pd765_write_handle_phase_command(z80_byte value)
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command READ DATA. MT=%d MF=%d SK=%d. Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_input_parameter_sk,pd765_pcn);
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
-                sleep(3);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: MT parameter not handled yet");
+                //sleep(3);
             }
 
 
@@ -2984,8 +2984,8 @@ void pd765_write_handle_phase_command(z80_byte value)
             //sleep(10);
             
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
-                sleep(3);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: MT parameter not handled yet");
+                //sleep(3);
             }
 
              
@@ -3018,8 +3018,8 @@ void pd765_write_handle_phase_command(z80_byte value)
             DBG_PRINT_PD765 VERBOSE_INFO,"PD765: Received command WRITE DATA. MT=%d MF=%d Current track: %02XH",
                 pd765_input_parameter_mt,pd765_input_parameter_mf,pd765_pcn);
             if (pd765_input_parameter_mt) {
-                DBG_PRINT_PD765 VERBOSE_DEBUG,"MT parameter not handled yet");
-                sleep(3);
+                DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: MT parameter not handled yet");
+                //sleep(3);
             }
 
 
@@ -3064,8 +3064,7 @@ void pd765_write_handle_phase_command(z80_byte value)
 
             if (value!=8) {
                 //sleep(3);
-                debug_printf(VERBOSE_ERR,"PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
-                //DBG_PRINT_PD765 VERBOSE_DEBUG,"!!!!!!PD765: Invalid command %02XH on PC=%04XH",value,reg_pc);
+                debug_printf(VERBOSE_DEBUG,"PD765: Error: Invalid command %02XH on PC=%04XH",value,reg_pc);
             }
         }
     }
@@ -3440,7 +3439,7 @@ z80_byte pd765_read_result_command_read_data(void)
 
     int sector_size=pd765_last_sector_size_read_data;
 
-    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d",sector_size);
+    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector size: %d",sector_size);
     //sleep(5);
 
     if (pd765_buffer_read_is_final()) {
@@ -3549,7 +3548,7 @@ z80_byte pd765_read_result_command_write_data(void)
 
     int sector_size=pd765_last_sector_size_write_data;
 
-    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"SIZE: %d",sector_size);
+    if (sector_size==0) DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: Sector size: %d",sector_size);
     //sleep(5);
 
     if (pd765_buffer_read_is_final()) {
@@ -3672,7 +3671,7 @@ z80_byte pd765_read_status_register(void)
 
     if (signal_se.running) {
         //Mientras estamos en fase ejecucion, mantener pending_interrupt
-        DBG_PRINT_PD765 VERBOSE_DEBUG," PD765: mantener pd765_interrupt_pending pues esta seek activo. Counter to finish seek: %d",signal_se.current_counter);
+        DBG_PRINT_PD765 VERBOSE_DEBUG,"PD765: keep pd765_interrupt_pending because active seek. Counter to finish seek: %d",signal_se.current_counter);
         //TODO no estoy seguro de esto pd765_set_interrupt_pending();
     }
 

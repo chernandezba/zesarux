@@ -209,4 +209,4 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -mejorar logo splash x anniversary
 
 ok-mejorar niveles de mensajes debug pd765
--revisar que mensajes de aviso de discos protegidos (speedlock, etc) deberian aparecer realmente en pantalla
+ok-revisar que mensajes de aviso de discos protegidos (speedlock, etc) deberian aparecer realmente en pantalla

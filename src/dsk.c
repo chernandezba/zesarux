@@ -421,7 +421,7 @@ void dskplusthree_enable(void)
     char buffer_esquema_proteccion[DSK_MAX_PROTECTION_SCHEME+1];
     int protegido_no_soportado=dsk_get_protection_scheme(buffer_esquema_proteccion);
     if (protegido_no_soportado) {
-        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with an unsupported method: %s. It probably won't be readable",buffer_esquema_proteccion);
+        DBG_PRINT_DSK VERBOSE_ERR,"This disk is protected with method: %s. It's not fully supported and might be not readable",buffer_esquema_proteccion);
     }
 
     DBG_PRINT_DSK VERBOSE_INFO,"Protection system: %s",buffer_esquema_proteccion);
@@ -496,7 +496,6 @@ char *dsk_protection_scheme_unknown1="\x01\x00\x00\x00\x06\x01\x4e\xe5\x01\x00\x
 char *dsk_protection_scheme_unknown2="\x03\x00\x08\x02\x00\x00\x00\x02\x03\x00\x09\x02\x00\x40\x00\x02";
 
 //Retorna diciendo si esta protegido y ademas sin soporte en emulacion, o no
-//TODO: cuando soporte alguno de estos esquemas, retornar 0 en algunos casos diciendo que ya se soporta
 int dsk_get_protection_scheme(char *buffer)
 {
     if (dsk_get_protection_scheme_aux(dsk_protection_scheme_speedlock_p3)) {
