@@ -20015,7 +20015,7 @@ void menu_debug_unnamed_console_overlay(void)
     
     for (y=0;y<DEBUG_UNNAMED_CONSOLE_HEIGHT;y++) {
         char buffer_linea[DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+1];
-        for (x=0;x<ancho_ventana_unnamed_console;x++) {
+        for (x=0;x<DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;x++) {
             //printf("%c",*puntero);
 
             //Empieza en x+1 para dejar 1 caracter margen izquierda
