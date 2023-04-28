@@ -34961,7 +34961,7 @@ void menu_visual_floppy_buffer_reset(void)
 void menu_visual_floppy_buffer_add_common(int pista,int sector,int byte_en_sector,int persistent)
 {
     if (menu_visual_floppy_buffer_length>=MENU_VISUAL_FLOPPY_MAX_LENGTH_BUFFER) {
-        printf("Visual floppy buffer is full\n");
+        //printf("Visual floppy buffer is full\n");
         return;
     }
     //printf("add to buffer %d %d %d\n",pista,sector,byte_en_sector);
