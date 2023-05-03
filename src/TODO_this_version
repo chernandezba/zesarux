@@ -4,18 +4,15 @@ Para esta version:
 --Errores
 
 
-
-
-
 -Probar generic message en stdout. Funciona bien?
 
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
 
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
 
 --Fin Errores
-
-
 
 
 
@@ -30,17 +27,6 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 --Fin Documentación/Ayuda
 
 --------------
-
-
-
-
--al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
-
-
-
-
-
-
 
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
@@ -58,25 +44,10 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 *boton derecho sobre iconos de process switcher
 ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
-
-
-
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
-
-
-
-
-
--visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
-
 
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
 
-
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
-
-
-
 -mejorar logo splash x anniversary
-
