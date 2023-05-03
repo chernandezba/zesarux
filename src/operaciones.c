@@ -3981,7 +3981,7 @@ void out_port_pcw(z80_int puerto,z80_byte value)
 
 
 
-z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h,z80_byte puerto_l)
+z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 {
 
 	debug_fired_in=1;

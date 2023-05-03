@@ -866,6 +866,25 @@ Bit	Value	Function
 Deberia mirar ese bit esta a 1 para poner el contador a 0?
 
 
+
+
+*puerto DF en snapshot zsf
+*si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
+*snap ver cosas de cpc 464 y si faltan para 6128 y 664
+
+-------------
+
+--- PCW ---
+
+--pendiente pcw 8256,8512:
+-caps lock no va...
+-tecla keypad_enter en fbdev no la distingue del enter normal,
+-nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
+-cpm spanish (version superior a 1??) no va
+--fin pendiente pcw 8256,8512
+
+- que formatos existen de Snapshots de pcw o cpc??
+
 -------------
 
 

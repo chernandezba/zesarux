@@ -3,50 +3,20 @@ Para esta version:
 
 --Errores
 
--Error: Abrir menú debug cpu con tecla F
-Luego pulsar botón salir emulador
-Y cierra menus pero no sale
 
 
--revisar en menu_debug_change_registers(void),
-//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
-
-
--archivos de cintas que no se cierran en windows al expulsarlas
-
--kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
-
--speech con caracteres con acentos no los envia, los filtra 
 
 
 -Probar generic message en stdout. Funciona bien?
 
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
--snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 
--quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
-
-
--al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
 
 --Fin Errores
 
 
 
-
--Renombrar setting de background windows por multitask windows? O algo así
-Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
-
-
--Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
-
-
--al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
-
-
-
--driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
 
 
 --Documentación/Ayuda
@@ -63,13 +33,6 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 
 
--Quiza debug console que el ancho del mensaje lo obtenga de la propia ventana. definir un maximo pero el salto de linea
-del mensaje lo obtiene de la ventana
-
-
--cambio en menu_inicio y zxvision_switch_to_window_on_open_menu:
-
-https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d2719ffbb2#diff-521337e1d39e077ccafa540faa6e18649b8c776cc3b4865ec4f648e4dca04216
 
 -al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
 
@@ -81,21 +44,12 @@ https://github.com/chernandezba/zesarux/commit/b9a4eaad8bed8b9fe37c44176f7f19d27
 *quitar step mode
 *pulsar teclas y llega a maquina emulada
 
--en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
-
--text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
 
 
 
--Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
 
 
 
--Pulsar en ventana emulación desde menú quizá cierra menú. Depende de settings background 
-
--visual real tape no actualiza bien si menu cerrado y top speed
-
--on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
 ->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
@@ -114,46 +68,11 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 
 
--en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
-
-
-
-
-
--rom cpc6128: os+basic+amsdos
-
---pendiente 6128,664:
-*puerto DF en snapshot zsf
-*si no hay pd765 enabled, se cuelga al hacer cat (en 664 tambien??)
-*snap ver cosas de cpc 464 y si faltan para 6128 y 664
-
-
---pendiente pcw 8256,8512:
--caps lock no va...
--tecla keypad_enter en fbdev no la distingue del enter normal,
--nota: queda tecla libre a la izquierda del 1 para mapear (la UTIL_KEY_COMMON_KEYMAP_BACKSLASH)
--cpm spanish (version superior a 1??) no va
---fin pendiente pcw 8256,8512
-
-- que formatos existen de Snapshots de pcw o cpc??
-
 
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 
 
 
-
--En visor dsk que solo muestre primer extent de un archivo. ya esta??
--extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
--extractor dsk que use misma manera que visor dsk?
--extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
-lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
-
--En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
--O incluso mejor un browser/viewer de formato CP/M, que indique:
-*extent number
-*date file 
-*etc
 
 
 -visualfloppy se llena buffer si ventana no está abierta. Quizá no habria que meter datos en buffer si no está ventana abierta
@@ -165,9 +84,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
 
--registro EPC para tbblue, zxuno, ....
 
 
 -mejorar logo splash x anniversary
 
--debug console ancho variable: al redimensionar total height no refresca bien en scroll: se corrige haciendo scroll con raton

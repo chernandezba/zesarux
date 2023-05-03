@@ -380,6 +380,8 @@ The Video RAM is always located in the first 64K, VRAM is in no way affected by 
 		debug_cpc_paginas_memoria_mapeadas_read[3]=1;
     }
 
+    //Info: la rom de 6128 consiste en: os+basic+amsdos
+
 }
 
 
