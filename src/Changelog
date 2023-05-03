@@ -1,4 +1,4 @@
-Version 10.3 - Beta1 - xxxx edition. 13 April 2023
+Version 10.3 - Beta1 - La Abadia del Crimen edition. 03 May 2023
 
 * New things added:
 
@@ -6,47 +6,21 @@ Added Machine Amstrad CPC 6128
 Added Machine Amstrad CPC 664
 Added Machine Amstrad PCW 8256
 Added Machine Amstrad PCW 8512
-Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
 Added Visual Floppy to see floppy disk (+3, CPC, PCW, Betadisk) activity
-Added Poke F-Function
-Added Visual Real Tape F-Function
-Added Process Switcher window, which is like a "Taskbar" on the ZX Desktop
-Added Settings F-Function
-Added F-Function to switch footer
 Added DSK disk info menu: to get tracks and sectors of a disk
+Added F-Functions: Poke, Visual Real Tape, Settings, Switch footer
+Added Process Switcher window, which is like a "Taskbar" on the ZX Desktop
 Added ZRCP command: "close-all-menus"
 Added icon/F-key to open any window identified by its name
 Allow F-keys to assign extra info for actions (like window name on openwindow action, or snapshot name on linktosnapshot action)
-Added XEyes "Toy" to follow mouse
 Added more Hotswap combinations
+Added Advanced menu items: now by default, advanced menu items are hidden, you should enable them on Settings->Advanced menu items
 Added command line setting --machinelist to get machines list names whitespace separated
-Added Sierpinsky Meter Type to View Sensors
 Added .POK file Smartloading
-Added SDL Audio Callback type setting in order to fix Windows Audio clicking
+Added XEyes "Toy" to follow mouse
+Added Sierpinsky Meter Type to View Sensors
 
 * Improvements:
-
-Improved Configuration:
-- better parsing: warning when ZEsarUX has been downgraded
-- if unknown parameter on configuration file, warn the user but start anyway
-- moved showing Configuration file from Running info menu to Settings-> Configuration file
-
-Improved File selector: 
-- Can show recent folders (press space on recent files)
-
-Improved DSK viewer:
-- better filesystem detection
-- show hidden and read only files
-- show disk specification format
-- show where files are located on Visual Floppy
-
-Improved DSK extractor:
-- better filesystem detection
-
-Improved ZSF Snapshots: allow to save ROM contents, useful when running custom roms
-Improved Debug Console: better refresh, dynamic width
-Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
-Improved Debug I/O ports window: autoresize content height when do not fit in window
 
 Improved Debug CPU:
 - switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
@@ -61,15 +35,25 @@ Improved Debug CPU:
 - allow holding keys for quick cursor move, etc 
 - watches now show numbers in hexadecimal format
 
+Improved Debug Console: better refresh, dynamic width
+Improved Debug Messages: allow to filter by message class (DSK, PD765, etc...)
+Improved Debug I/O ports window: autoresize content height when do not fit in window
+
+Improved Configuration:
+- better parsing: warning when ZEsarUX has been downgraded
+- if unknown parameter on configuration file, warn the user but start anyway
+- moved showing Configuration file from Running info menu to Settings-> Configuration file
+
+Improved DSK viewer:
+- better filesystem detection
+- show hidden and read only files
+- show disk specification format
+- show where files are located on Visual Floppy
+
 Improved View Sprites: 
 - sprite is no longer disabled when changing memory pointer
 - you can view sprites up to 1024x1024
 - show PCW common format screen
-
-Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
-Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
-Improved joystick type selection
-Improved Raspberry Pi emulation: performance parameters are not changed by default anymore, you must use "--changeslowparameters" on slow Rpi like Rpi1 or 2
 
 Improved ZX Desktop:
 - Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
@@ -91,6 +75,14 @@ Improved ZX Vision:
 - Yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
 - Add more menu translations to Spanish and Catalan
 
+Improved DSK extractor: better filesystem detection
+Improved ZSF Snapshots: allow to save ROM contents, useful when running custom roms
+Improved File selector: can show recent folders (press space on recent files)
+Improved changing pointer on some windows: can use an expression when changing memory pointer on Debug CPU, View Sprites, Hexdump, Disassemble, Poke
+Improved changing to machines with big displays (Next, QL, CPC...): zoom is autochanged to 1
+Improved joystick type selection
+Improved Raspberry Pi emulation: performance parameters are not changed by default anymore, you must use "--changeslowparameters" on slow Rpi like Rpi1 or 2
+
 * Fixes:
 
 Fixed Spectrum +3 disk emulation: the disk emulation layer has been rewritten from scratch and now is near perfect.
@@ -101,11 +93,11 @@ Just some statistics from testing 943 total Spectrum +3 disks:
 -Alkatraz protected games:          0 % working
 -Unknown method protected games:    0 % working (a total of 15 disks that seem to be protected but don't know the method)
 
+Fixed almost all annoying audio clicks on Windows version (and on SDL audio driver on Linux)
 Fixed random crash on startup on Linux when executing some network operations (check updates, check last users, send updates)
 Fixed segfaults when exiting using CTRL-C
 Fixed autoload on Spectrum +3
 Fixed bug that may crash ZEsarUX when changing to a machine with bigger resolution. It seems to affect Linux and Windows but not Mac. This is a bug that has always existed (a "long life bug" XD)
-
 Fixed showing creator on DSK file viewer
 Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number

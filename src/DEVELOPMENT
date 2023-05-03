@@ -7,7 +7,7 @@
 * ZESARUX_EXTRAS_URL en cpu.h en principio no hay que tocarlo
 * Cambiar EMULATOR_VERSION en archivo configure 
 * Cambiar version en macos/apptemplate/Contents/Info.plist, tag CFBundleVersion
-* Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
+* Ajustar juego editionnamegame.tap, si juego no permitido distribucion, eliminar. Ajustar EDITION_NAME_GAME en cpu.h sobretodo si cambia a tap o tzx o dsk. Crear editionnamegame.tap.config o editionnamegame.tzx.config si es necesario
 * Ajustar EMULATOR_GAME_EDITION
 * En changelog, decir qué comandos nuevos de ZRCP, haciendo diff con version anterior
 * sacar el listado de funciones admitidas por el esxdos handler y meterlo en el menu de ayuda del mismo, con la sentencia:
@@ -26,14 +26,14 @@ Si es beta, actualizar solo el archivo de snapshot
 
 
 nombres ediciones:
-Exploding fist, Bubble bobble, Star raiders 2, Sabre wulf, Target renegade, Night Shift, Saint Dragon, Dynamite Dan 2,
+Exploding fist, Bubble bobble, Star raiders 2, Sabre wulf, Night Shift, Saint Dragon, Dynamite Dan 2,
 Silent service, Frank n stein, Match day, Bruce lee, Zorro, Three weeks in Paradise, 
-Exolon, Koronis Rift, Fox Fights back, Gauntlet, Pheenix, Death Wish 3, Rygar, Abadia del Crimen (y quizá la abadia de cpc?)
+Exolon, Koronis Rift, Fox Fights back, Gauntlet, Pheenix, Death Wish 3, Rygar, Target renegade
 
 
 *hysteria, *rainbow islands, *jetpac, *hard drivin', *lemmings, *sir fred, *rick, *agent dan, *id, *rainbow, *rainbow+, *saint george, 
 *chase hq, *Rescue on Fractalus, *gunfright, *xeno, *Neula, *world destruction, *the great escape, *turbo esprit, *toi acid,
-*cliff hanger, *clive sinclair, *carrier command
+*cliff hanger, *clive sinclair, *carrier command, *Abadia del Crimen
 
 *: usado
 
