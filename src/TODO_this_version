@@ -38,14 +38,6 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 
 
 
--error en debug cpu, se puede enviar el foco de teclado a la maquina emulada. hacer:
-*step mode
-*funcion z (memory zone) o tecla (o) por ejemplo
-*quitar step mode
-*pulsar teclas y llega a maquina emulada
-
-
-
 
 
 

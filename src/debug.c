@@ -7250,6 +7250,7 @@ void debug_cpu_step_over(void)
 
 
   //Parar hasta volver de la instruccion actual o cuando se produzca algun evento de apertura de menu, como un breakpoint
+  int antes_menu_abierto=menu_abierto;
   menu_abierto=0;
   int salir=0;
   while (get_pc_register()!=direccion_final && !salir) {
@@ -7263,6 +7264,12 @@ void debug_cpu_step_over(void)
 
     if (menu_abierto) salir=1;
   }
+
+  //Si antes no estaba menu abierto, dejar el estado final (sea que se haya abierto el menu o no)
+  //Si antes estaba el menu abierto, dejarlo abierto
+  if (antes_menu_abierto) menu_abierto=antes_menu_abierto;
+
+
   debug_printf(VERBOSE_DEBUG,"End Step over");
 }
 
