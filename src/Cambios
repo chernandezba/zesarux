@@ -1,5 +1,115 @@
-Version 10.3 - xxxx edition. 02 November 2022
+Version 10.3 - Beta1 - La Abadia del Crimen edition. 03 Mayo 2023
 
+* Cosas nuevas añadidas:
+
+Agregada Máquina Amstrad CPC 6128
+Agregada Máquina Amstrad CPC 664
+Agregada Máquina Amstrad PCW 8256
+Agregada Máquina Amstrad PCW 8512
+Agregado Visual Floppy para ver la actividad del disquete (+3, CPC, PCW, Betadisk)
+Agregado el menú de información del disco DSK: para obtener pistas y sectores de un disco
+Agregadas F-funciones: Poke, Visual Real Tape, Configuración, Cambiar pie de página
+Agregada la ventana Process Switcher, que es como una "barra de tareas" en el escritorio ZX
+Agregado el comando ZRCP: "close-all-menus"
+Agregado un icono/tecla F para abrir cualquier ventana identificada por su nombre
+Permitir que las teclas F asignen información adicional para las acciones (como el nombre de la ventana en la acción de abrir ventana o el nombre de la instantánea en la acción de enlace a instantánea)
+Agregadas más combinaciones de Hotswap
+Agregado elementos de menú avanzados: ahora, de forma predeterminada, los elementos de menú avanzados están ocultos, debe habilitarlos en Configuración-> Items de menú avanzados
+Agregado de línea de comando --machinelist para obtener nombres de listas de máquinas separados por espacios en blanco
+Agregado smartload de archivo .POK
+Agregado "Juguete" XEyes para seguir al mouse
+Agregado el tipo de medidor Sierpinsky para ver los sensores
+
+* Mejoras:
+
+Mejorada depuración de CPU:
+- teclas de función cambiadas "m" y "o": ahora "x" cambia de modo y "m" cambia memptr (para ser coherente con otras ventanas similares)
+- añadido (hl), (de), (bc)
+- agregado (nn) al seleccionar un código de operación como: ld reg, (nn) y ld (nn), reg
+- agregado (ix+d), (iy+d) al seleccionar un código de operación como: ld reg,(IX+d), etc.
+- agregada velocidad continua 4 (ejecutar 10 códigos de operación cada vez, sin pausa)
+- muestra el último puntero de memoria al cambiarlo
+- mostrar registro B en condición satisfactoria para DJNZ
+- se agregaron nuevas funciones OPMRV (e), OPMWV (e), OPMRA (e), OPMWA (e): estas devuelven 1 si el último código de operación ha establecido alguna de estas variables en e.
+- se agregó pseudoregistro EPC al analizador para que coincida con el banco de memoria y el desplazamiento para el registro de PC
+- permitir mantener presionadas las teclas para mover rápidamente el cursor, etc.
+- los watches ahora muestran números en formato hexadecimal
+
+Mejorada consola de depuración: mejor actualización, ancho dinámico
+Mejorados mensajes de depuración: permite filtrar por clase de mensaje (DSK, PD765, etc...)
+Mejorada ventana de puertos de E/S de depuración: tamaño automático de la altura del contenido cuando no cabe en la ventana
+
+Mejorada configuración:
+- mejor análisis: advertencia cuando ZEsarUX ha sido bajado de versión
+- si se desconoce el parámetro en el archivo de configuración, advierta al usuario pero comience de todos modos
+- se movió opción de mostrar el archivo de configuración del menú de información en ejecución a Configuración-> Archivo de configuración
+
+Mejorado visor DSK:
+- mejor detección del sistema de archivos
+- mostrar archivos ocultos y de solo lectura
+- mostrar formato de especificación de disco
+- muestra dónde se encuentran los archivos en Visual Floppy
+
+Mejorado Ver Sprites:
+- el sprite ya no está deshabilitado al cambiar el puntero de memoria
+- puedes ver sprites hasta 1024x1024
+- mostrar la pantalla de formato común de PCW
+
+Mejorado ZX Desktop:
+- los iconos dinámicos (Papelera, Mi máquina, ...) asignados en los botones superiores ahora muestran el estado dinámico (papelera vacía/llena, imagen actual de la máquina, etc.)
+- mostrar indicadores de iconos para aplicaciones abiertas en ZX Desktop
+- Agreada opción para vaciar la Papelera al salir
+- se corrigió el nivel de zoom de los iconos al seleccionar algunas máquinas que usan el menú gui zoom = 2 (Next, CPC, QL, etc.)
+- el tamaño de ZX Desktop ahora se multiplica por GUI Zoom (Zoom 2 en máquinas como Next, CPC, QL, etc.)
+- el icono del disquete CF2 (+3, CPC, PCW) ahora está animado cuando el motor está encendido
+
+Mejorado ZX Vision:
+- agregada barra de tareas de ventanas
+- agregado ID de proceso (PID) para todas las ventanas
+- los campos de entrada de texto ahora manejan teclas repetidas
+- algunos campos de entrada de texto ahora tienen un historial de los últimos elementos, y el historial se guarda en el archivo de configuración
+- función añadida para maximizar todas las ventanas
+- permitir reducir la altura del caracter
+- mejorada la lista de ventanas que muestra el tiempo dedicado a cada ventana y el pid de cada ventana/proceso
+- mejorado renderización de las ventanas de fondo
+- los diálogos de confirmación yes/no se traducen a sí/no en español y catalán
+- añadir más traducciones de menú al español y al catalán
+
+Mejorado extractor DSK: mejor detección del sistema de archivos
+Mejorada instantáneas ZSF: permite guardar contenido de ROM, útil cuando se ejecutan roms personalizados
+Mejorado selector de archivos: puede mostrar carpetas recientes (presione espacio en archivos recientes)
+Mejorado cambio de puntero en algunas ventanas: puede usar una expresión al cambiar el puntero de memoria en Depurar CPU, Ver Sprites, Hexdump, desensamblar, Poke
+Mejorado cambio a máquinas con pantallas grandes (Next, QL, CPC...): el zoom se cambia automáticamente a 1
+Mejorado selección del tipo de joystick
+Mejorada emulación de Raspberry Pi: los parámetros de rendimiento ya no se cambian de forma predeterminada, debe usar "--changeslowparameters" en Rpi lento como Rpi1 o 2
+
+* Correcciones:
+
+Se corrigió la emulación de disco Spectrum +3: la capa de emulación de disco se ha reescrito desde cero y ahora es casi perfecta.
+Solo algunas estadísticas de la prueba de 943 discos Spectrum +3 en total:
+-Juegos sin protección:                 98,3 % funcionando
+-Juegos protegidos de Paul Owens:       85,7 % funcionando
+-Juegos protegidos con Speedlock:       54,2 % funcionando
+-Juegos protegidos por Alkatraz:           0 % funcionando
+-Juegos protegidos con método desconocido: 0 % funcionando (un total de 15 discos que parecen estar protegidos pero no conocen el método)
+
+Se corrigieron casi todos los clics de audio molestos en la versión de Windows (y en el controlador de audio SDL en Linux)
+Se corrió cuelgue aleatorio al iniciarse en Linux al ejecutar algunas operaciones de red (comprobar actualizaciones, comprobar los últimos usuarios, enviar actualizaciones)
+Se corrigieron las fallas de segmento al salir usando CTRL-C
+Corregida carga automática en Spectrum +3
+Se corrigió un error que podía bloquear ZEsarUX al cambiar a una máquina con mayor resolución. Parece afectar a Linux y Windows, pero no a Mac. Este es un error que ha existido siempre (un "error de larga vida" XD)
+Se corrigió la visualización del creador en el visor de archivos DSK
+Se corrigió Pausa: ahora también puede regresar al presionar el botón del mouse
+Se corrigieron las expresiones de análisis del ensamblador (NN) y NN es un número hexadecimal
+Se corrigió la configuración "set machine snap load" al cargar instantáneas .Z80 versión 1
+
+* Cambios varios:
+
+Las escrituras persistentes en archivos DSK (+3 discos/CPC/PCW) están deshabilitadas de forma predeterminada
+
+* Como siempre, hay otras mejoras y correcciones de errores menores.
+
+----------------------------------------
 
 
 Version 10.2 - Hysteria edition. 26 Octubre 2022

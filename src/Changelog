@@ -56,24 +56,24 @@ Improved View Sprites:
 - show PCW common format screen
 
 Improved ZX Desktop:
-- Dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
-- Show icon indicators for open apps on ZX Desktop
-- Added setting to empty Trash on exit
-- Fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (Next, CPC, QL, etc)
+- dynamic icons (Trash, My Machine, ...) assigned on top buttons now show dynamic state (trash empty/full, current machine image, etc)
+- show icon indicators for open apps on ZX Desktop
+- added setting to empty Trash on exit
+- fixed icons zoom level when selecting some machines that use menu gui zoom = 2 (Next, CPC, QL, etc)
 - ZX Desktop size now is multiplied by GUI Zoom (Zoom 2 on machines like Next, CPC, QL, etc)
 - CF2 Floppy icon (+3, CPC, PCW) now is animated when motor is on
 
 Improved ZX Vision:
-- Added windows TaskBar
-- Added Process ID (PID) for all windows
-- Text input fields now handle repeated keys
-- Some text input fields now have history of last items, and history is saved on configuration file
-- Added function to maximize all windows
-- Allow reducing character height
-- Improve window list showing spent time on each window and pid of each window/process
-- Improve rendering background windows
-- Yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
-- Add more menu translations to Spanish and Catalan
+- added windows TaskBar
+- added Process ID (PID) for all windows
+- text input fields now handle repeated keys
+- some text input fields now have history of last items, and history is saved on configuration file
+- added function to maximize all windows
+- allow reducing character height
+- improved window list showing spent time on each window and pid of each window/process
+- improved rendering background windows
+- yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
+- add more menu translations to Spanish and Catalan
 
 Improved DSK extractor: better filesystem detection
 Improved ZSF Snapshots: allow to save ROM contents, useful when running custom roms
