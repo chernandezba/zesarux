@@ -22,9 +22,9 @@ Agregado el tipo de medidor Sierpinsky para ver los sensores
 
 * Mejoras:
 
-Mejorada depuración de CPU:
+Mejorada depuración de CPU:
 - teclas de función cambiadas "m" y "o": ahora "x" cambia de modo y "m" cambia memptr (para ser coherente con otras ventanas similares)
-- añadido (hl), (de), (bc)
+- agregado (hl), (de), (bc)
 - agregado (nn) al seleccionar un código de operación como: ld reg, (nn) y ld (nn), reg
 - agregado (ix+d), (iy+d) al seleccionar un código de operación como: ld reg,(IX+d), etc.
 - agregada velocidad continua 4 (ejecutar 10 códigos de operación cada vez, sin pausa)
@@ -58,7 +58,7 @@ Mejorado Ver Sprites:
 Mejorado ZX Desktop:
 - los iconos dinámicos (Papelera, Mi máquina, ...) asignados en los botones superiores ahora muestran el estado dinámico (papelera vacía/llena, imagen actual de la máquina, etc.)
 - mostrar indicadores de iconos para aplicaciones abiertas en ZX Desktop
-- Agreada opción para vaciar la Papelera al salir
+- agregada opción para vaciar la Papelera al salir
 - se corrigió el nivel de zoom de los iconos al seleccionar algunas máquinas que usan el menú gui zoom = 2 (Next, CPC, QL, etc.)
 - el tamaño de ZX Desktop ahora se multiplica por GUI Zoom (Zoom 2 en máquinas como Next, CPC, QL, etc.)
 - el icono del disquete CF2 (+3, CPC, PCW) ahora está animado cuando el motor está encendido
@@ -68,7 +68,7 @@ Mejorado ZX Vision:
 - agregado ID de proceso (PID) para todas las ventanas
 - los campos de entrada de texto ahora manejan teclas repetidas
 - algunos campos de entrada de texto ahora tienen un historial de los últimos elementos, y el historial se guarda en el archivo de configuración
-- función añadida para maximizar todas las ventanas
+- agregada función para maximizar todas las ventanas
 - permitir reducir la altura del caracter
 - mejorada la lista de ventanas que muestra el tiempo dedicado a cada ventana y el pid de cada ventana/proceso
 - mejorado renderización de las ventanas de fondo
@@ -105,7 +105,7 @@ Se corrigió la configuración "set machine snap load" al cargar instantáneas .
 
 * Cambios varios:
 
-Las escrituras persistentes en archivos DSK (+3 discos/CPC/PCW) están deshabilitadas de forma predeterminada
+Las escrituras persistentes en archivos DSK (discos +3/CPC/PCW) están deshabilitadas de forma predeterminada
 
 * Como siempre, hay otras mejoras y correcciones de errores menores.
 
