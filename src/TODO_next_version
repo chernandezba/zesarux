@@ -54,6 +54,9 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
 ----
 
 --Mejoras
@@ -138,6 +141,9 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -mejorar logo splash x anniversary
 
+-Por determinar visibilidad de processswitcher. siempre visible si o no?
+
+-tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire por defecto...
 
 --Fin mejoras
 

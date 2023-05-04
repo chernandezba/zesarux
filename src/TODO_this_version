@@ -4,8 +4,6 @@ Para esta version:
 --Errores
 
 
--al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
-
 
 --Fin Errores
 
@@ -29,19 +27,10 @@ copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/genera
 ->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
 
 
--Por determinar visibilidad de processswitcher. siempre visible si o no?
-
-
--Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
--Botón derecho solo deberia funcionar cuando setting de "enviar ESC con boton derecho" desactivado. esto afecta a :
-*boton derecho sobre escritorio
-*boton derecho sobre iconos de escritorio
-*boton derecho sobre iconos de process switcher
-ok En general una funcion de "zxvision_pressed_right_mouse_button()" que considere este setting de ESC
 
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
 
--indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
+
 
 
 

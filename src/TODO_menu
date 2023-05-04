@@ -70,6 +70,8 @@ Total solo se verá al abrir una app que no estaba abierta. Si ya estaba, la mar
 
 --- ZX Vision
 
+-Botón derecho sobre titulo ventana, activa acciones como: minimizar, maximizar, forzar siempre visible etc
+
 -con la nueva manera de conmutar ventanas, ya no se recrean al entrar y por tanto se puede quedar con barras de scroll permanentemente
 quiza boton o accion nueva sobre ventana para reajustar tamaño... o no, quizá interesa tener una ventana con contenido grande pero pequeña en pantalla
 (y de ahi que al reducirla tenga scroll)
