@@ -52,6 +52,8 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 -extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
 lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
 
+
+-Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 ----
 
 --Mejoras
@@ -133,6 +135,8 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
 
 -footer que tambien amplie tamaño segun menu_gui_zoom
+
+-mejorar logo splash x anniversary
 
 
 --Fin mejoras

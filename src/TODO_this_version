@@ -4,8 +4,6 @@ Para esta version:
 --Errores
 
 
--Probar generic message en stdout. Funciona bien?
-
 -Desactivar border hace desaparecer el joystick. Solo en cocoa?
 
 
@@ -48,6 +46,5 @@ ok En general una funcion de "zxvision_pressed_right_mouse_button()" que conside
 
 -indicar en ayuda keyboard cpc que Home es Copy. o cambiar tecla? copy es tambien fire por defecto...
 
--Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
--mejorar logo splash x anniversary
+
