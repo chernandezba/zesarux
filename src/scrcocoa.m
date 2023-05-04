@@ -647,12 +647,20 @@ void joystickAction(void* inContext, IOReturn inResult, void* inSender, IOHIDVal
 
 }
 
+//Iniciamos con valor predefinido, aunque se sobreescribe al salir del driver para casos como desactivar border,
+//en que se sale del driver y se vuelve a entrar, conservando valor anterior de realjoystick_present.v
+//TODO: realmente lo que habria que hacer en scrcocoa_end es desactivar completamente la llamada al joystick,
+//con IOHIDManagerClose y las rutinas inversas a IOHIDManagerRegisterDeviceMatchingCallback etc, 
+//para que al salir del driver se desactive todo y al volver a entrar, se vuelva a enlazar al callback joystickWasAdded,
+//de tal manera que llame ahi al detectar el joystick
 
+int scrcocoa_ultimo_estado_realjoystick_present=0;
 
 -(void) setupJoystick {
 
-    //Asumimos que no hay joystick pulsado. Luego en joystickWasAdded se activa
-    realjoystick_present.v=0;
+    //Asumimos que no hay joystick conectado. Luego en joystickWasAdded se activa
+
+    realjoystick_present.v=scrcocoa_ultimo_estado_realjoystick_present;
 
 
     hidManager = IOHIDManagerCreate( kCFAllocatorDefault, kIOHIDOptionsTypeNone);
@@ -2946,6 +2954,9 @@ void scrcocoa_refresca_pantalla(void)
 void scrcocoa_end(void)
 {
 	debug_printf (VERBOSE_INFO,"Closing cocoa video driver");
+
+    //Conservar estado joystick por si se cierra y abre driver, como ejemplo de quitar border, conservar valor anterior
+    scrcocoa_ultimo_estado_realjoystick_present=realjoystick_present.v;
 }
 
 

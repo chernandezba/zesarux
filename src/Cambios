@@ -103,6 +103,7 @@ Se corrigió Pausa: ahora también puede regresar al presionar el botón del mou
 Se corrigieron las expresiones de análisis del ensamblador (NN) y NN es un número hexadecimal
 Se corrigió debug step over y el envío de teclas a la máquina emulada
 Se corrigió la configuración "set machine snap load" al cargar instantáneas .Z80 versión 1
+Se corrigió error que hacía desaparecer el menu de real joystick al conmutar borde
 
 * Cambios varios:
 
