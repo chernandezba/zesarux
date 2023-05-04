@@ -38,6 +38,7 @@ extern int last_debug_poke_dir;
 extern void menu_debug_poke(MENU_ITEM_PARAMETERS);
 extern void menu_debug_cpu_resumen_stats(MENU_ITEM_PARAMETERS);
 extern void menu_about_core_statistics(MENU_ITEM_PARAMETERS);
+extern void menu_about_changelog_common(int show_err_if_big);
 extern void menu_ay_registers(MENU_ITEM_PARAMETERS);
 extern void menu_debug_tsconf_tbblue_msx_videoregisters(MENU_ITEM_PARAMETERS);
 extern void menu_debug_tsconf_tbblue_msx_spritenav(MENU_ITEM_PARAMETERS);

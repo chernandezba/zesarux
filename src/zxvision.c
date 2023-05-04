@@ -23967,7 +23967,7 @@ void menu_inicio(void)
             menu_event_new_version_show_changes.v=0;
             menu_generic_message_format("Updated version","You have updated ZEsarUX :)\nPlease take a look at the changes:");
             //No mostramos error si el Changelog es mayor de lo que puede leer el visor de text (y es mayor de 64000 desde versión 9.2)
-            menu_about_read_file("Changelog","Changelog",0);
+            menu_about_changelog_common(0);
 
             cls_menu_overlay();
         }

@@ -24879,12 +24879,18 @@ void menu_about_read_file(char *title,char *aboutfile,int show_err_if_big)
 
 }
 
-void menu_about_changelog(MENU_ITEM_PARAMETERS)
+//Comun para el menu help-changelog y para cuando se muestra el changelog al actualizar
+void menu_about_changelog_common(int show_err_if_big)
 {
     if (gui_language==GUI_LANGUAGE_SPANISH) {
-        menu_about_read_file("Cambios","Cambios",1);
+        menu_about_read_file("Cambios","Cambios",show_err_if_big);
     }
-    else menu_about_read_file("Changelog","Changelog",1);
+    else menu_about_read_file("Changelog","Changelog",show_err_if_big);
+}
+
+void menu_about_changelog(MENU_ITEM_PARAMETERS)
+{
+    menu_about_changelog_common(1);
 }
 
 
