@@ -1,11 +1,20 @@
 Version 10.3 - La Abadia del Crimen edition. 03 May 2023
 
+There are lots of changes in this version, but some of them are remarkable:
+- Added machines Amstrad PCW 8256, PCW 8512, CPC 6128, CPC 664
+- Fixed 3" CF2 floppy disk emulation (used on +3, CPC, PCW): the floppy disk emulation has been rewritten from scratch and now is near perfect
+- Lots of improvements on Debug CPU window
+- Fixed almost all annoying audio clicks on Windows version (and on SDL audio driver on Linux)
+
+
+The full changelog for this version 10.3 is:
+
 * New things added:
 
-Added Machine Amstrad CPC 6128
-Added Machine Amstrad CPC 664
 Added Machine Amstrad PCW 8256
 Added Machine Amstrad PCW 8512
+Added Machine Amstrad CPC 6128
+Added Machine Amstrad CPC 664
 Added Visual Floppy to see floppy disk (+3, CPC, PCW, Betadisk) activity
 Added DSK disk info menu: to get tracks and sectors of a disk
 Added F-Functions: Poke, Visual Real Tape, Settings, Switch footer
@@ -64,7 +73,7 @@ Improved ZX Desktop:
 - CF2 Floppy icon (+3, CPC, PCW) now is animated when motor is on
 
 Improved ZX Vision:
-- added windows TaskBar
+- added windows-style TaskBar called "Process Switcher"
 - added Process ID (PID) for all windows
 - text input fields now handle repeated keys
 - some text input fields now have history of last items, and history is saved on configuration file
@@ -73,7 +82,7 @@ Improved ZX Vision:
 - improved window list showing spent time on each window and pid of each window/process
 - improved rendering background windows
 - yes/no confirmation dialogs are translated to si/no in Spanish and Catalan
-- add more menu translations to Spanish and Catalan
+- added more menu translations to Spanish and Catalan
 
 Improved DSK extractor: better filesystem detection
 Improved ZSF Snapshots: allow to save ROM contents, useful when running custom roms
@@ -103,11 +112,11 @@ Fixed pause: can now return when pressing mouse button too
 Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
 Fixed debug step over and sending keys to emulated machine
 Fixed setting "set machine snap load" when loading .Z80 version 1 snapshots
-Fixed real joystick menu disabled when switching border
+Fixed real joystick menu disabled on Mac OS when switching border
 
 * Misc Changes:
 
-Persistent writes on DSK files (+3/CPC/PCW disks) are disabled by default 
+Persistent writes on DSK files (+3/CPC/PCW disks) are now disabled by default 
 
 * As always, there are some other minor bugfixes and improvements
 

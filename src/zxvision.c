@@ -24080,23 +24080,28 @@ void menu_inicio(void)
 
 }
 
-//Escribe bloque de cuadrado de color concreto, con *2 
+//Escribe bloque de cuadrado de color concreto
 void set_splash_zesarux_logo_put_space_color(int x,int y,int color)
 {
 
 
 	if (!strcmp(scr_new_driver_name,"aa")) {
 		putchar_menu_overlay(x,y,'X',7,0);
-        putchar_menu_overlay(x+1,y,'X',7,0);
-        putchar_menu_overlay(x,y+1,'X',7,0);
-        putchar_menu_overlay(x+1,y+1,'X',7,0);
 	}
 	else {
         putchar_menu_overlay(x,y,' ',7,color);
-        putchar_menu_overlay(x+1,y,' ',7,color);
-        putchar_menu_overlay(x,y+1,' ',7,color);
-        putchar_menu_overlay(x+1,y+1,' ',7,color);
     }
+}
+
+//Escribe bloque de cuadrado de color concreto, con *2 
+void set_splash_zesarux_logo_put_space_color_double(int x,int y,int color)
+{
+
+    set_splash_zesarux_logo_put_space_color(x,y,color);
+    set_splash_zesarux_logo_put_space_color(x+1,y,color);
+    set_splash_zesarux_logo_put_space_color(x,y+1,color);
+    set_splash_zesarux_logo_put_space_color(x+1,y+1,color);
+    
 }
 
 //Escribe bloque de cuadrado de color negro  
@@ -24371,18 +24376,18 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
     //Linea X hacia la derecha
     for (i=0;i<ancho_z;i++) {
 		set_splash_zesarux_logo_put_space(x_inicial+i*2,    y_inicial+i*2);
-        set_splash_zesarux_logo_put_space(x_inicial+i*2+1,  y_inicial+i*2);
-        set_splash_zesarux_logo_put_space(x_inicial+i*2,    y_inicial+i*2+1);
+        //set_splash_zesarux_logo_put_space(x_inicial+i*2+1,  y_inicial+i*2);
+        //set_splash_zesarux_logo_put_space(x_inicial+i*2,    y_inicial+i*2+1);
         set_splash_zesarux_logo_put_space(x_inicial+i*2+1,  y_inicial+i*2+1);
 	}
 
     //Linea X hacia la izquierda
     x=x_inicial+(ancho_z-1)*2;
     for (i=ancho_z-1;i>=0;i--) {
-		set_splash_zesarux_logo_put_space(x-i*2,    y_inicial+i*2);
+		//set_splash_zesarux_logo_put_space(x-i*2,    y_inicial+i*2);
         set_splash_zesarux_logo_put_space(x-i*2+1,  y_inicial+i*2);
         set_splash_zesarux_logo_put_space(x-i*2,    y_inicial+i*2+1);
-        set_splash_zesarux_logo_put_space(x-i*2+1,  y_inicial+i*2+1);
+        //set_splash_zesarux_logo_put_space(x-i*2+1,  y_inicial+i*2+1);
 	}
 
 
@@ -24393,36 +24398,56 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
 	if (paso==0) return;
 
     //Zona roja
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial,color_rojo); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial,color_rojo); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial,color_rojo); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+4,y_inicial+2,color_rojo); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y_inicial,color_rojo); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y_inicial+2,color_rojo); 
+
+    set_splash_zesarux_logo_put_space_color(x_inicial+1,  y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+3,y_inicial+2,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y_inicial,color_rojo);
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y_inicial+2,color_rojo); 
     if (paso==1) return;
 
 
     //Zona amarilla
     x=x_inicial+(ancho_z-1)*2;
-    set_splash_zesarux_logo_put_space_color(x,y_inicial+2,color_amarillo); 
-    set_splash_zesarux_logo_put_space_color(x,y_inicial+4,color_amarillo); 
-    set_splash_zesarux_logo_put_space_color(x,y_inicial+6,color_amarillo); 
-    set_splash_zesarux_logo_put_space_color(x-2,y_inicial+4,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+2,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+4,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color_double(x,y_inicial+6,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color_double(x-2,y_inicial+4,color_amarillo); 
+
+    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+1,color_amarillo);
+    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+3,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x-1,y_inicial+6,color_amarillo); 
+    set_splash_zesarux_logo_put_space_color(x+1,y_inicial+8,color_amarillo); 
     if (paso==2) return;
 
     //Zona verde
     y=y_inicial+(alto_z-1)*2;
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y,color_verde); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+4,y,color_verde); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+6,y,color_verde); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+4,y-2,color_verde); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+6,y,color_verde); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+4,y-2,color_verde); 
+
+    set_splash_zesarux_logo_put_space_color(x_inicial+1,y+1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+3,y-1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+6,y-1,color_verde);
+    set_splash_zesarux_logo_put_space_color(x_inicial+8,y+1,color_verde);
     if (paso==3) return;
 
 
     //Zona cyan
     x=x_inicial+(ancho_z-1)*2;
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+2,color_cyan); 
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+4,color_cyan); 
-    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+6,color_cyan); 
-    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+4,color_cyan); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+2,color_cyan); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+4,color_cyan); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial,y_inicial+6,color_cyan); 
+    set_splash_zesarux_logo_put_space_color_double(x_inicial+2,y_inicial+4,color_cyan);
+
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+1,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+3,color_cyan); 
+    set_splash_zesarux_logo_put_space_color(x_inicial+2,y_inicial+6,color_cyan);
+    set_splash_zesarux_logo_put_space_color(x_inicial,y_inicial+8,color_cyan);
 
 }
 

@@ -89,6 +89,12 @@
 
 * Soporta formatos de snapshot: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, O, Z81, ACE
 
+* Soporta formatos de floppy disk: DSK
+
+* Soporta formatos de tarjetas MMC/SD: HDF, IMG, RAW (.MMC)
+
+* Soporta formatos de disco duro IDE: RAW (.IDE)
+
 * Soporta formatos de cartucho: DCK, ROM, COL, SG
 
 * Soporta reproducción RZX
@@ -103,7 +109,7 @@
 
 * Emula Betadisk/TR-DOS. Soporte directo para archivos .trd. scl files pueden convertirse desde el selector de archivos pulsando espacio
 
-* Emula ZX Spectrum MMC Interfaces: ZXMMC, DivMMC. Soporte para raw (.mmc) archivos y hdf
+* Emula ZX Spectrum MMC Interfaces: ZXMMC, DivMMC
 
 * Emula ZX Spectrum IDE Interface: DivIDE, 8-bit simple
 
@@ -149,7 +155,7 @@
 
 * Soporta RAM packs en Jupiter Ace hasta 51 KB
 
-* Emulación Joystick con joystick real (en GNU/Linux y Windows) y cursores de teclado: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors. Función autodisparo también
+* Emulación Joystick con joystick real (en GNU/Linux y Windows) y cursores de teclado: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo. Función autodisparo también
 
 * Teclado en pantalla útil para jugar con joystick, dos tipos: uno con letras de teclado, y otras con palabras, útil para jugar a Aventuras Conversacionales. También una utilidad para extraer palabras de aventuras conversacionales (Daad, Paws, Quill y Gac)
 
@@ -187,6 +193,8 @@
 
 * Visual Real Tape: tienes una vista del audio de tu cinta, ver bloques de cinta y rebobinar o avanzar el reproductor de cintas
 
+* Visual Floppy: permite ver actividad en el floppy disk: movimiento del disco, lecturas, escrituras, posicionamiento del cabezal, etc
+
 * Soporta ZEsarUX remote command protocol (ZRCP). Este es un potente protocolo de comunicaciones entre un cliente y ZEsarUX, utilizando un simple cliente telnet. Una de las cosas que puedes hacer es debugging mejorado en ZEsarUX desde Visual Studio Code (ver https://github.com/maziac/DeZog)
 
 * Puede usar un core de Spectrum reducido, con algunas características desactivadas, útil en dispositivos lentos como Raspberry Pi 1/Zero
@@ -207,7 +215,7 @@
 
 * Soporta opciones en línea de comandos, opciones en archivo de configuración, y opciones personalizadas para cada juego
 
-* Otras características: Visualmem menu, CPU Statistics
+* Otras características: Visualmem menu, CPU Statistics, Toy ZXeyes, Sensors
 
 * Incluye cinco huevos de pascua. Puedes encontrarlos? :)
 

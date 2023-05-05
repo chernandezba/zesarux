@@ -1,34 +1,5 @@
 Para esta version:
 
 
---Errores
-
-
-
---Fin Errores
-
-
-
---Documentación/Ayuda
-
--faq zoom 1 de Next
-
--FAQ de midi. ejemplo de Mac:
--probar midi output to real device. En Mac se puede usar fluidsynth (brew install fluidsynth, o sudo port install fluidsynth) y 
-copiar un soundfont (de aqui por ejemplo http://www.schristiancollins.com/generaluser.php). Se inicia en consola, ahi en la consola dira donde copiar el soundfount
-
---Fin Documentación/Ayuda
-
---------------
-
-
-
-
-
-
 -Revisar queries wos. Parece que army moves y otros que funcionaban, ya no
-
-
-
-
 

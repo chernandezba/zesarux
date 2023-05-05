@@ -143,8 +143,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -footer que tambien amplie tamaño segun menu_gui_zoom
 
--mejorar logo splash x anniversary
-
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
 
 -tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire por defecto...

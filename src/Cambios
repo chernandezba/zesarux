@@ -1,11 +1,20 @@
 Version 10.3 - La Abadia del Crimen edition. 03 Mayo 2023
 
+Hay un montón de cambios en esta versión, pero algunos son destacables:
+- Agregadas máquinas Amstrad PCW 8256, PCW 8512, CPC 6128, CPC 664
+- Corregida emulación del floppy disk 3" CF2 (usado en +3, CPC, PCW): la capa de emulación de disco se ha reescrito desde cero y ahora es casi perfecta.
+- Montón de mejoras en la ventana de Debug CPU
+- Se corrigieron casi todos los clics de audio molestos en la versión de Windows (y en el controlador de audio SDL en Linux)
+
+
+La lista completa de cambios para esta versión 10.3 es:
+
 * Cosas nuevas añadidas:
 
-Agregada Máquina Amstrad CPC 6128
-Agregada Máquina Amstrad CPC 664
 Agregada Máquina Amstrad PCW 8256
 Agregada Máquina Amstrad PCW 8512
+Agregada Máquina Amstrad CPC 6128
+Agregada Máquina Amstrad CPC 664
 Agregado Visual Floppy para ver la actividad del disquete (+3, CPC, PCW, Betadisk)
 Agregado el menú de información del disco DSK: para obtener pistas y sectores de un disco
 Agregadas F-funciones: Poke, Visual Real Tape, Configuración, Cambiar pie de página
@@ -64,7 +73,7 @@ Mejorado ZX Desktop:
 - el icono del disquete CF2 (+3, CPC, PCW) ahora está animado cuando el motor está encendido
 
 Mejorado ZX Vision:
-- agregada barra de tareas de ventanas
+- agregada barra de tareas al estilo windows llamada "Process Switcher"
 - agregado ID de proceso (PID) para todas las ventanas
 - los campos de entrada de texto ahora manejan teclas repetidas
 - algunos campos de entrada de texto ahora tienen un historial de los últimos elementos, y el historial se guarda en el archivo de configuración
@@ -73,7 +82,7 @@ Mejorado ZX Vision:
 - mejorada la lista de ventanas que muestra el tiempo dedicado a cada ventana y el pid de cada ventana/proceso
 - mejorado renderización de las ventanas de fondo
 - los diálogos de confirmación yes/no se traducen a sí/no en español y catalán
-- añadir más traducciones de menú al español y al catalán
+- agregadas más traducciones de menú al español y al catalán
 
 Mejorado extractor DSK: mejor detección del sistema de archivos
 Mejorada instantáneas ZSF: permite guardar contenido de ROM, útil cuando se ejecutan roms personalizados
@@ -103,11 +112,11 @@ Se corrigió Pausa: ahora también puede regresar al presionar el botón del mou
 Se corrigieron las expresiones de análisis del ensamblador (NN) y NN es un número hexadecimal
 Se corrigió debug step over y el envío de teclas a la máquina emulada
 Se corrigió la configuración "set machine snap load" al cargar instantáneas .Z80 versión 1
-Se corrigió error que hacía desaparecer el menu de real joystick al conmutar borde
+Se corrigió error que hacía desaparecer el menu de real joystick en Mac OS al conmutar borde
 
 * Cambios varios:
 
-Las escrituras persistentes en archivos DSK (discos +3/CPC/PCW) están deshabilitadas de forma predeterminada
+Las escrituras persistentes en archivos DSK (discos +3/CPC/PCW) ahora están deshabilitadas de forma predeterminada
 
 * Como siempre, hay otras mejoras y correcciones de errores menores.
 

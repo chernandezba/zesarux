@@ -25434,7 +25434,10 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_shortcut(array_menu_common,'z');
 
 			menu_add_item_menu(array_menu_common,"~~Atomlite (from simcoupe)",MENU_OPCION_NORMAL,menu_about_license_atomlite,NULL);
-			menu_add_item_menu_shortcut(array_menu_common,'a');	
+			menu_add_item_menu_shortcut(array_menu_common,'a');
+
+			menu_add_item_menu(array_menu_common,"Disassembler (from ~~fuse)",MENU_OPCION_NORMAL,menu_about_license_fuse,NULL);
+			menu_add_item_menu_shortcut(array_menu_common,'f');	
 
 			menu_add_item_menu(array_menu_common,"D~~OS font",MENU_OPCION_NORMAL,menu_about_license_dosfont,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'o');
@@ -25442,23 +25445,20 @@ void menu_licenses(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu(array_menu_common,"Fa~~tFs",MENU_OPCION_NORMAL,menu_about_license_fatfs,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'t');	
             
-			menu_add_item_menu(array_menu_common,"~~Fuse disassembler",MENU_OPCION_NORMAL,menu_about_license_fuse,NULL);
-			menu_add_item_menu_shortcut(array_menu_common,'f');	
-
 			menu_add_item_menu(array_menu_common,"~~grackle",MENU_OPCION_NORMAL,menu_about_license_grackle,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'g');
 
 			menu_add_item_menu(array_menu_common,"~~HiLow",MENU_OPCION_NORMAL,menu_about_license_hilow,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'h');
 
+			menu_add_item_menu(array_menu_common,"Mac OS video driver (from ~~Qemu)",MENU_OPCION_NORMAL,menu_about_license_qemu,NULL);
+			menu_add_item_menu_shortcut(array_menu_common,'q');	            
+
 			menu_add_item_menu(array_menu_common,"m~~dvtool",MENU_OPCION_NORMAL,menu_about_license_mdvtool,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'d');	
 
 			menu_add_item_menu(array_menu_common,"~~Motorola Core",MENU_OPCION_NORMAL,menu_about_license_motorola_core,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'m');
-
-			menu_add_item_menu(array_menu_common,"~~Qemu Mac OS video driver",MENU_OPCION_NORMAL,menu_about_license_qemu,NULL);
-			menu_add_item_menu_shortcut(array_menu_common,'q');				
 
 			menu_add_item_menu(array_menu_common,"s~~cl2trd",MENU_OPCION_NORMAL,menu_about_license_scl2trd,NULL);
 			menu_add_item_menu_shortcut(array_menu_common,'c');			

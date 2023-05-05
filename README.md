@@ -185,6 +185,12 @@ __FEATURES__
 
 * Handles snapshot formats: ZSF, ZX, Z80, SP, SPG, NEX, SNA, P, O, Z81, ACE
 
+* Handles floppy disk formats: DSK
+
+* Handles MMC/SD card formats: HDF, IMG, RAW (.MMC)
+
+* Handles IDE hard disk formats: RAW (.IDE)
+
 * Handles cartridge formats: DCK, ROM, COL, SG
 
 * Handles RZX playback 
@@ -199,7 +205,7 @@ __FEATURES__
 
 * Emulates Betadisk/TR-DOS. Direct support for .trd files. scl files can be converted from file selector pressing space
 
-* Emulates ZX Spectrum MMC Interfaces: ZXMMC, DivMMC. Support for raw (.mmc) files and hdf files
+* Emulates ZX Spectrum MMC Interfaces: ZXMMC, DivMMC
 
 * Emulates ZX Spectrum IDE Interface: DivIDE, 8-bit simple
 
@@ -245,7 +251,7 @@ __FEATURES__
 
 * Supports RAM packs on Jupiter Ace up to 51 KB
 
-* Joystick emulation with real joystick and keyboard cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors. Autofire function too
+* Joystick emulation with real joystick and keyboard cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, OPQA, Fuller, Zebra, Mikro-Gen, ZXPand, SAM Coupe Cursors, CPC, MSX, Spectravideo. Autofire function too
 
 * On Screen keyboard useful when playing with joystick, two types: one with keyboard letters, and another with words, useful for playing Text Adventures. Also a tool to extract words from text adventures (Daad, Paws, Quill and Gac)
 
@@ -283,6 +289,8 @@ __FEATURES__
 
 * Visual Real Tape: you have an audio render of your tape, see tape blocks and rewind or move forward the cassette player 
 
+* Visual Floppy: allow to see floppy activity: disk movement, reads, writes, head seek, etc
+
 * Supports ZEsarUX remote command protocol (ZRCP). This is a powerful communications protocol between a client and ZEsarUX, using a simple telnet client. One of the things you can do it is enhanced debugging on ZEsarUX from Visual Studio Code (see https://github.com/maziac/DeZog)
 
 * Can use a reduced Spectrum core, with some features disabled, useful on slow devices, like Raspberry Pi 1/Zero
@@ -303,7 +311,7 @@ __FEATURES__
 
 * Supports command line settings, configuration file settings and per-game configuration settings
 
-* Other features: Visualmem menu, CPU Statistics
+* Other features: Visualmem menu, CPU Statistics, Toy ZXeyes, Sensors
 
 * Includes six easter eggs. Can you find them? :)
 

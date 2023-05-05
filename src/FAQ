@@ -189,6 +189,17 @@ Then use the onebitspeaker driver, set type to Raspberry Pi GPIO.
 The default pin number is set to 22, but you can change it to any other you want. 
 
 
+Q: How can I enable the MIDI output feature?
+A: You must select a machine with Audio Chip (Spectrum 128k, MSX, etc) and go to menu Settings-> Audio-> Audio Chip to MIDI Output
+
+
+Q: I want to use the MIDI output feature but I don't have any MIDI device. Is there any way to use it?
+A: Yes, you can use a software which 'emulates' a MIDI device. There are many, depending on your operating system:
+-GNU/Linux: Timidity. Included on most Linux distributions.
+-Mac: fluidsynth. You can install it with 'brew install fluidsynth' or 'sudo port install fluidsynth', depending on what package manager you have.
+You'll also need a soundfount, which you can download for example from: http://www.schristiancollins.com/generaluser.php.
+-Windows: CoolSoft VirtualMIDISynth (but I think some Windows have a software MIDI by default, so maybe you won't need another one).
+
 ----------------------------------------------------------------------------
 
 
@@ -217,6 +228,12 @@ A: There are three kind of video drivers:
 
 Q: I have put ZEsarUX on fullscreen but it does not fill the whole screen and/or does not have normal proportions
 A: The fullscreen feature is experimental and it depends on the video driver, operating system and window manager. So there are some cases which works perfect and some which does not. So if this is your case, where the fullscreen is not working, please be patient and wait for future fixes (and use window mode instead of full screen).
+
+
+Q: Zoom is autochanged to 1 when selecting machine QL, TSConf, CPC, PCW, Prism, Sam Coupe or Spectrum Next. Why?
+A: These machines have "big" resolutions (compared to a Speccy 256x192). So maybe the default zoom 2 would be very big for these machines to fit on your display.
+If you don't want to have this automatically changed, just change Settings-> General-> Autochange Zoom big display,
+or use command line setting: --no-autochange-zoom-big-display
 
 ----------------------------------------------------------------------------
 
@@ -294,20 +311,8 @@ A: Try disabling Windows firewall
 
 
 Q: I hear some audio "clicking" when no sound is being generated from the emulated machine
-A: If you hear those annoying sounds, for example, in the copyright message of the Spectrum 48kb, without pressing any key, I'm sorry that problem doesn't have fix yet. The same audio libraries I use (SDL) works perfect on GNU/Linux or Mac, but not on Windows. Seems there's some kind of problem with Mingw+SDL+Windows and it doesn't happen always, it also depends on your sound card and the driver. You may reduce a bit this effect by enabling the Silence detector on Audio settings. More details:
-After spending two days testing the Windows audio clicking issue I can confirm:
--It has nothing to do with my sdl audio module. The same is used in Mac and GNU/Linux and they don't have the same problem
--Tested by filling the audio buffer with fixed value and the clicking also appears. Seems the clicking happens when a sample value of 0 "appears" in the final hardware buffer. If I fill the audio buffer with 0, no change is produced in the hardware buffer and you don't hear any clicking. If you fill the buffer with something else different than 0, you may hear a clicking
--There's no difference on enabling real audio, ay audio chip, etc. So as I said, I can confirm there's not a bug in my module
--My Windows development machine is Virtual box. The default virtual audio card is a Intel HD. That has a lot of clicking. I changed it to a AC97 virtual card and the clicking has gone in the 90% of cases
--Seems there's some kind of issue with MinGW+SDL+Audio driver. With the same test, sometimes the clicking appear and some others don't. (With ac97 card)
--As some of you had made tests with real windows machines and you don't have clicking, I can be sure, again, it's not a bug in my software
--It seems also the audio module is sensible to O.S. multitask. I mean, if you change to another Windows task and leave ZEsarUX in the background, some clicking may appear. That doesn't happen in other operating systems. That confirms me, again, Windows is not my preferred operating system ;)
--I tried changing the audio sdl module to another one, programming a Direct Sound native windows module. But I haven't found any examples to do that on my MinGW environment. 
--So, until I couldn't change the audio module to something different (DirectSound or SDL2-which already have tested) some of you will have clicking on Windows. It will depend on your audio card and audio driver
--That clicking issue is not related with clicks at startup or looping click in Next browser. These two others are probably bugs in my code
-
-
+A: If you hear those annoying sounds, for example, in the copyright message of the Spectrum 48kb, without pressing any key, I'm sorry that problem doesn't have fix yet. The same audio libraries I use (SDL) works perfect on GNU/Linux or Mac, but not on Windows. Seems there's some kind of problem with Mingw+SDL+Windows and it doesn't happen always, it also depends on your sound card and the driver. You may reduce a bit this effect by enabling the Silence detector on Audio settings.
+That clicking issue is not related with clicks at startup or looping click in Next browser. These two others are probably bugs in my code
 
 
 ----------------------------------------------------------------------------
@@ -759,7 +764,7 @@ S like s on sing
 A like a on cat
 R like r on round 
 U like u on put
-X like x on GNU/Linux
+X like x on Linux
 And saying the accent on the final syllable 
 You can also play zesarux.mp3 to hear how it sounds
 
