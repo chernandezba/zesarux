@@ -29421,8 +29421,8 @@ void menu_z88_slots(MENU_ITEM_PARAMETERS)
 
 				//Si es flash/eprom en slot de escritura(3), indicar a que archivo hace referencia
 				if (slot==3 && (type==2 || type==3 || type==4) ) {
-					char string_writable_card_shown[30];
-					menu_tape_settings_trunc_name(z88_memory_slots[slot].eprom_flash_nombre_archivo,string_writable_card_shown,30);
+					char string_writable_card_shown[28];
+					menu_tape_settings_trunc_name(z88_memory_slots[slot].eprom_flash_nombre_archivo,string_writable_card_shown,28);
 					menu_add_item_menu_format(array_menu_z88_slots,MENU_OPCION_SEPARADOR,NULL,NULL," %s: %s",z88_memory_types[type],string_writable_card_shown);
 				}
 				else {
