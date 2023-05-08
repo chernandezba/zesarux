@@ -14936,137 +14936,140 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
 				//	mem=next_mem;
 				//}
 				//else {
-                if (1) {
-					//printf ("cabecera %d: %s\n",i,buffer_linea);
-					//ver si contine texto de juego
+                //Anteriormente se detenia al encontrar una linea en blanco pero esto es un error,
+                //creo que venia de codigo heredado del browser de zx81 online en que ahi si que
+                //tiene sentido detenerse en ese caso (o no?)
+            
+                //printf ("cabecera %d: %s\n",i,buffer_linea);
+                //ver si contine texto de juego
 
-					/*
-					Campos a buscar:
+                /*
+                Campos a buscar:
 
-	hits.0._id=0002258
-	hits.0.title=Headcoach
+hits.0._id=0002258
+hits.0.title=Headcoach
 
-	Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los dos y tengan mismo .n., agregar a menu
-					*/
-					
-					//filtrar antes los que tienen prefijo
-					char *existe_prefijo;
-					
-					existe_prefijo=strstr(buffer_linea,preffix);
-					if (existe_prefijo!=NULL) {
-					
-						char *existe;
-						existe=strstr(buffer_linea,string_index); //"_id=");
-						if (existe!=NULL) {
-								int pos=strlen(string_index);
-                                //printf("id: existe_id %d existe_fulltitle %d buffer_linea: %s\n",existe_id,existe_fulltitle,buffer_linea);
-								strcpy(ultimo_id,&existe[pos]);
-								existe_id=1;
-								char *existe_indice;
-								existe_indice=strstr(buffer_linea,preffix);
-								if (existe_indice!=NULL) {
-									//saltar el prefijo para obtener el numero
-									int l=strlen(preffix);
-									ultimo_indice_id=parse_string_to_number(&existe_indice[l]);
-								}
-						}
+Pueden salir antes id o antes title. En bucle leer los dos y cuando estén los dos y tengan mismo .n., agregar a menu
+                */
+                
+                //filtrar antes los que tienen prefijo
+                char *existe_prefijo;
+                
+                existe_prefijo=strstr(buffer_linea,preffix);
+                if (existe_prefijo!=NULL) {
+                
+                    char *existe;
+                    existe=strstr(buffer_linea,string_index); //"_id=");
+                    if (existe!=NULL) {
+                            int pos=strlen(string_index);
+                            //printf("id: existe_id %d existe_fulltitle %d buffer_linea: %s\n",existe_id,existe_fulltitle,buffer_linea);
+                            strcpy(ultimo_id,&existe[pos]);
+                            existe_id=1;
+                            char *existe_indice;
+                            existe_indice=strstr(buffer_linea,preffix);
+                            if (existe_indice!=NULL) {
+                                //saltar el prefijo para obtener el numero
+                                int l=strlen(preffix);
+                                ultimo_indice_id=parse_string_to_number(&existe_indice[l]);
+                            }
+                    }
 
-						existe=strstr(buffer_linea,string_display); //"fulltitle=");
-						if (existe!=NULL) {
-                                //hay que descartar entradas tipo hits.0.screens.1.title=null
-                                //que hacen confundir y pensar que son entradas de title
-                                //TODO: esta exclusion realmente solo haria falta en la primera llamada aqui, 
-                                //en la busqueda de juegos. En cambio en la de game details no hace falta,
-                                //pero bueno tampoco molesta y por no complicar mas el código, lo dejamos
-                                char *existe_screen=strstr(buffer_linea,".screens.");
-                                if (existe_screen==NULL) {
+                    existe=strstr(buffer_linea,string_display); //"fulltitle=");
+                    if (existe!=NULL) {
+                        //hay que descartar entradas tipo hits.0.screens.1.title=null
+                        //que hacen confundir y pensar que son entradas de title
+                        //TODO: esta exclusion realmente solo haria falta en la primera llamada aqui, 
+                        //en la busqueda de juegos. En cambio en la de game details no hace falta,
+                        //pero bueno tampoco molesta y por no complicar mas el código, lo dejamos
+                        char *existe_screen=strstr(buffer_linea,".screens.");
+                        if (existe_screen==NULL) {
 
-								int pos=strlen(string_display);
-                                //printf("ti: existe_id %d existe_fulltitle %d buffer_linea: %s\n",existe_id,existe_fulltitle,buffer_linea);
-								strcpy(ultimo_fulltitle,&existe[pos]);
-								existe_fulltitle=1;
-								char *existe_indice;
-								existe_indice=strstr(buffer_linea,preffix);
-								if (existe_indice!=NULL) {
-									//saltar el prefijo para obtener el numero
-									int l=strlen(preffix);
-									ultimo_indice_fulltitle=parse_string_to_number(&existe_indice[l]);
-								}						
+                            int pos=strlen(string_display);
+                            //printf("ti: existe_id %d existe_fulltitle %d buffer_linea: %s\n",existe_id,existe_fulltitle,buffer_linea);
+                            strcpy(ultimo_fulltitle,&existe[pos]);
+                            existe_fulltitle=1;
+                            char *existe_indice;
+                            existe_indice=strstr(buffer_linea,preffix);
+                            if (existe_indice!=NULL) {
+                                //saltar el prefijo para obtener el numero
+                                int l=strlen(preffix);
+                                ultimo_indice_fulltitle=parse_string_to_number(&existe_indice[l]);
+                            }						
 
-                                }
-						}				
-							
-						if (existe_id && existe_fulltitle) {
-                            //printf("ultimo_indice_id %d ultimo_indice_fulltitle %d\n",ultimo_indice_id,ultimo_indice_fulltitle);
-							if (ultimo_indice_id==ultimo_indice_fulltitle) {
-								
-								//printf ("Adding menu item [%s] id [%s]\n",ultimo_fulltitle,ultimo_id);
-								debug_printf (VERBOSE_DEBUG,"Adding menu item [%s] id [%s]",ultimo_fulltitle,ultimo_id);
-								
-								//meter en entrada linea indice. Realmente para que la queremos?
-								//solo la muestro en la busqueda inicial, en la seleccion del formato de archivo ya no
-								if (!showindex) {
-									//Remodificamos ultimo_fulltitle para meterle el indice delante
-									char buf[1024];
-									sprintf (buf,"%d %s",ultimo_indice_id,ultimo_fulltitle);
-									strcpy(ultimo_fulltitle,buf);
-								}
-								
-								
-								//controlar maximo 30 caracteres
-								//TODO: si hacemos que se guarde geometria de ventana, teniendo ancho mayor que 32, esta maximo podria ser el ancho 
-								//maximo que permite un item de menu (MAX_TEXTO_OPCION)
-								ultimo_fulltitle[30]=0;
-								
-								
-								//TODO controlar maximo items en menu. De momento esta limitado por la query a la api (100)
-								//Porque? realmente no hay un limite como tal en items de menu, no?
+                        }
+                    }				
+                        
+                    if (existe_id && existe_fulltitle) {
+                        //printf("ultimo_indice_id %d ultimo_indice_fulltitle %d\n",ultimo_indice_id,ultimo_indice_fulltitle);
+                        if (ultimo_indice_id==ultimo_indice_fulltitle) {
+                            
+                            //printf ("Adding menu item [%s] id [%s]\n",ultimo_fulltitle,ultimo_id);
+                            debug_printf (VERBOSE_DEBUG,"Adding menu item [%s] id [%s]",ultimo_fulltitle,ultimo_id);
+                            
+                            //meter en entrada linea indice. Realmente para que la queremos?
+                            //solo la muestro en la busqueda inicial, en la seleccion del formato de archivo ya no
+                            if (!showindex) {
+                                //Remodificamos ultimo_fulltitle para meterle el indice delante
+                                char buf[1024];
+                                sprintf (buf,"%d %s",ultimo_indice_id,ultimo_fulltitle);
+                                strcpy(ultimo_fulltitle,buf);
+                            }
+                            
+                            
+                            //controlar maximo 30 caracteres
+                            //TODO: si hacemos que se guarde geometria de ventana, teniendo ancho mayor que 32, esta maximo podria ser el ancho 
+                            //maximo que permite un item de menu (MAX_TEXTO_OPCION)
+                            ultimo_fulltitle[30]=0;
+                            
+                            
+                            //TODO controlar maximo items en menu. De momento esta limitado por la query a la api (100)
+                            //Porque? realmente no hay un limite como tal en items de menu, no?
 
-								if (!showindex) {
-									menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,ultimo_fulltitle);
-									menu_add_item_menu_misc(array_menu_common,ultimo_id);
-								}
-								else {
-									//printf ("%s\n",ultimo_id);
-									//obtener archivo sin extension de la descarga
-									char nombre_sin_dir[PATH_MAX];
-									char nombre_sin_ext[PATH_MAX];
+                            if (!showindex) {
+                                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,ultimo_fulltitle);
+                                menu_add_item_menu_misc(array_menu_common,ultimo_id);
+                            }
+                            else {
+                                //printf ("%s\n",ultimo_id);
+                                //obtener archivo sin extension de la descarga
+                                char nombre_sin_dir[PATH_MAX];
+                                char nombre_sin_ext[PATH_MAX];
 
-									util_get_file_no_directory(ultimo_id,nombre_sin_dir);
+                                util_get_file_no_directory(ultimo_id,nombre_sin_dir);
 
-									//Pillamos el nombre sin extension 
-                                    menu_online_browse_intelli_get_name(nombre_sin_dir,nombre_sin_ext);
+                                //Pillamos el nombre sin extension 
+                                menu_online_browse_intelli_get_name(nombre_sin_dir,nombre_sin_ext);
 
-									//Acortar el nombre por si acaso
-									char nombre_shown[28];
+                                //Acortar el nombre por si acaso
+                                char nombre_shown[28];
 
-									//strcpy(nombre_sin_ext,"01234567890123456789012345678901234567890123456789");
+                                //strcpy(nombre_sin_ext,"01234567890123456789012345678901234567890123456789");
 
-									menu_tape_settings_trunc_name(nombre_sin_ext,nombre_shown,28);
-									//printf ("%s\n",nombre_sin_ext);
+                                menu_tape_settings_trunc_name(nombre_sin_ext,nombre_shown,28);
+                                //printf ("%s\n",nombre_sin_ext);
 
-									menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,nombre_shown);
-									menu_add_item_menu_misc(array_menu_common,ultimo_id);
+                                menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,nombre_shown);
+                                menu_add_item_menu_misc(array_menu_common,ultimo_id);
 
-									menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",ultimo_fulltitle);							
-								}
+                                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL," %s",ultimo_fulltitle);							
+                            }
 
-								total_items++;
-							}
+                            total_items++;
+                        }
 
-							existe_id=0;
-							existe_fulltitle=0;
-							ultimo_id[0]=0;
-							ultimo_fulltitle[0]=0;
-							ultimo_indice_id=0;
-							ultimo_indice_fulltitle=0;	
+                        existe_id=0;
+                        existe_fulltitle=0;
+                        ultimo_id[0]=0;
+                        ultimo_fulltitle[0]=0;
+                        ultimo_indice_id=0;
+                        ultimo_indice_fulltitle=0;	
 
-						}
-					}
-												
-					i++;
-					mem=next_mem;
-				}
+                    }
+                }
+                                            
+                i++;
+                mem=next_mem;
+            
 			
 				//if (total_leidos<=0) salir=1;
 			
