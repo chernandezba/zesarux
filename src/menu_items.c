@@ -14356,6 +14356,7 @@ void menu_online_browse_zx81_create_menu(char *mem, char *mem_after_headers,int 
 				next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
 				total_leidos -=leidos;
 		
+                //TODO: quiza solo se deberia salir cuando total_leidos <= 0
 				if (buffer_linea[0]==0) {
 					salir=1;
 					//printf ("salir con linea vacia final\n");
@@ -14901,7 +14902,7 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
 			//leer linea a linea 
 			char buffer_linea[1024];
 			int i=0;
-			int salir=0;
+			//int salir=0;
 
 			int existe_id;
 			int existe_fulltitle;
@@ -14926,14 +14927,16 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
 				char *next_mem;
 			
 				next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
+                debug_printf(VERBOSE_DEBUG,"menu_online_browse_zxinfowos_query: read line: [%s]",buffer_linea);
 				total_leidos -=leidos;
 			
-				if (buffer_linea[0]==0) {
-					salir=1;
-					//printf ("salir con linea vacia final\n");
-					mem=next_mem;
-				}
-				else {
+				//if (buffer_linea[0]==0) {
+				//	salir=1;
+				//	//printf ("salir con linea vacia final\n");
+				//	mem=next_mem;
+				//}
+				//else {
+                if (1) {
 					//printf ("cabecera %d: %s\n",i,buffer_linea);
 					//ver si contine texto de juego
 
@@ -15065,9 +15068,10 @@ void menu_online_browse_zxinfowos_query(char *query_result,char *hostname,char *
 					mem=next_mem;
 				}
 			
-				if (total_leidos<=0) salir=1;
+				//if (total_leidos<=0) salir=1;
 			
-			} while (!salir);
+			//} while (!salir);
+            } while (total_leidos>0);
 		
 			//texto_final[indice_destino]=0;
 			if (orig_mem!=NULL) free(orig_mem);

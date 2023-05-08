@@ -1130,7 +1130,7 @@ void codetests_https_sni()
 
 	char redirect_url[NETWORK_MAX_URL];
 
-	int retorno=zsock_http("spectrumcomputing.co.uk","/index.hml",
+	int retorno=zsock_http("spectrumcomputing.co.uk","/index.php",
 				&http_code,&mem,&total_leidos,&mem_after_headers,0,"",1,redirect_url,0,"spectrumcomputing.co.uk");
 
 	if (retorno<0) {

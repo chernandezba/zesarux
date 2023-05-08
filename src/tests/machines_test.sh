@@ -6,7 +6,7 @@ for i in $MAQUINAS; do
 
 	echo "Test maquina $i"
 
-	if [ "$i" == "QL" ] || [ "$i" == "Sam" ] || [ "$i" == "Prism" ] || [ "$i" == "TSConf" ] || [ "$i" == "TBBlue" ] || [ "$i" == "CPC464" ] || [ "$i" == "CPC4128" ]; then
+	if [ "$i" == "QL" ] || [ "$i" == "Sam" ] || [ "$i" == "Prism" ] || [ "$i" == "TSConf" ] || [ "$i" == "TBBlue" ] || [ "$i" == "CPC464" ] || [ "$i" == "CPC4128" ] || [ "$i" == "CPC664" ] || [ "$i" == "CPC6128" ] || [ "$i" == "PCW8256" ] || [ "$i" == "PCW8512" ] || [ "$i" == "SAM" ]; then
 		ZOOM=1
 	else
 		ZOOM=2

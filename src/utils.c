@@ -19531,11 +19531,12 @@ char *util_read_line(char *origen,char *destino,int size_orig,int max_size_dest,
 {
 	max_size_dest --;
 	*leidos=0;
-	for (;*origen && size_orig>0 && max_size_dest>0;origen++,size_orig--,(*leidos)--) {
+	for (;*origen && size_orig>0 && max_size_dest>0;origen++,size_orig--,(*leidos)++) {
 		//ignorar cr
 		if ( *origen=='\r' ) continue;
 		if ( *origen=='\n' ) {
 			origen++;
+            (*leidos)++;
 			break; 
 		}
 		*destino=*origen;

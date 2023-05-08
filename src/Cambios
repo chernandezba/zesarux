@@ -103,6 +103,7 @@ Solo algunas estadísticas de la prueba de 943 discos Spectrum +3 en total:
 -Juegos protegidos con método desconocido: 0 % funcionando (un total de 15 discos que parecen estar protegidos pero no conocen el método)
 
 Se corrigieron casi todos los clics de audio molestos en la versión de Windows (y en el controlador de audio SDL en Linux)
+Se corrigió error con resultados vacíos buscando algunos juegos en Navegador online Speccy
 Se corrió cuelgue aleatorio al iniciarse en Linux al ejecutar algunas operaciones de red (comprobar actualizaciones, comprobar los últimos usuarios, enviar actualizaciones)
 Se corrigieron las fallas de segmento al salir usando CTRL-C
 Corregida carga automática en Spectrum +3

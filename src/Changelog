@@ -103,6 +103,7 @@ Just some statistics from testing 943 total Spectrum +3 disks:
 -Unknown method protected games:    0 % working (a total of 15 disks that seem to be protected but don't know the method)
 
 Fixed almost all annoying audio clicks on Windows version (and on SDL audio driver on Linux)
+Fixed empty results when querying some games on Speccy online browser
 Fixed random crash on startup on Linux when executing some network operations (check updates, check last users, send updates)
 Fixed segfaults when exiting using CTRL-C
 Fixed autoload on Spectrum +3
