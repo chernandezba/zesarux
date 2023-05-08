@@ -11,14 +11,11 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 )
 
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
+ok mac
 
 -ejecutar tests/manual_tests.sh
 
 -ejecutar tests/machines_test.sh
-
--ejecutar tests/games_tests.sh
-
--ejecutar tests/automatic_test_cycle_machines.sh
 
 -probar cambio idioma menu y ver diferentes menus
 
