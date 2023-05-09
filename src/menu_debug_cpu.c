@@ -7576,9 +7576,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
 				    	//La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
-					    zxvision_destroy_window(ventana);
+					    //zxvision_destroy_window(ventana);
                         menu_debug_textadventure_map_connections(0);
-                        menu_debug_registers_zxvision_ventana(ventana);		
+                        //menu_debug_registers_zxvision_ventana(ventana);		
 
                         menu_emulation_paused_on_menu=antes_menu_emulation_paused_on_menu;
                     }
@@ -8021,9 +8021,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 
                     //La cerramos pues el envio de watches a background no funciona bien si hay otra ventana detras
-                    zxvision_destroy_window(ventana);
+                    //zxvision_destroy_window(ventana);
                     menu_debug_textadventure_map_connections(0);
-                    menu_debug_registers_zxvision_ventana(ventana);		
+                    //menu_debug_registers_zxvision_ventana(ventana);		
 
                  
 

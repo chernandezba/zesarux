@@ -151,6 +151,10 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -icono zx desktop para zx evo (tsconf, baseconf)
 
+-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al cerrarse una ventana deberia incrementarse en 1? o no?
+
+-dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
+
 --Fin mejoras
 
 

@@ -114,6 +114,7 @@ Se corrigieron las expresiones de análisis del ensamblador (NN) y NN es un núm
 Se corrigió debug step over y el envío de teclas a la máquina emulada
 Se corrigió la configuración "set machine snap load" al cargar instantáneas .Z80 versión 1
 Se corrigió error que hacía desaparecer el menu de real joystick en Mac OS al conmutar borde
+Se corrigió error al poner ventana de Mapa de Aventura de Texto en segundo plano
 
 * Cambios varios:
 

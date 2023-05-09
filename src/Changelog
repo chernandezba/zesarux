@@ -114,6 +114,7 @@ Fixed assembler parsing expressions (NN) and NN is an hexadecimal number
 Fixed debug step over and sending keys to emulated machine
 Fixed setting "set machine snap load" when loading .Z80 version 1 snapshots
 Fixed real joystick menu disabled on Mac OS when switching border
+Fixed putting Text Adventure Map window on background
 
 * Misc Changes:
 
