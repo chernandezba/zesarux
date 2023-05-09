@@ -24532,11 +24532,16 @@ void set_splash_zesarux_logo(void)
 	set_splash_zesarux_logo_paso(splash_zesarux_logo_paso);
 }
 
+void get_welcome_message(char *texto_welcome)
+{
+    sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
+}
+
 void set_welcome_message(void)
 {
 	cls_menu_overlay();
 	char texto_welcome[40];
-	sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
+	get_welcome_message(texto_welcome);
 
 	int yinicial=get_zsplash_y_coord()-6;
 

@@ -1046,6 +1046,7 @@ extern void menu_inicio_bucle(void);
 
 extern void set_welcome_message(void);
 extern void reset_welcome_message(void);
+extern void get_welcome_message(char *texto_welcome);
 extern z80_bit menu_splash_text_active;
 extern int menu_splash_segundos;
 extern void show_all_windows_startup(void);

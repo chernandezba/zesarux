@@ -70,8 +70,6 @@ Drivers audio:
 -probar vofile. Con spectrum (border on, border off, ulaplus, spectra, timex), zx80/81 (border on, border off), z88. Con xwindows, curses, stdout y simpletext: en estos drivers probar tanto spectrum, zx81, y z88
 -probar juegos varios de zx80,zx81, spectrum, aquellos que hacen efectos especiales hi-res, etc
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
--probar particularidades Inves: no contended memory. Puerto ficticio para hacer visible RAM baja, requiere hardware debug ports , se puede probar con inves-switch-lowram.tap. Ver RAM baja con view hexdump. Probar con musica Lemmings. Probar investest.tap, que testea entre otras cosas: 64 kb ram, OUT ula AND RAM (border color, snow in border, no sound),  colour ula delay, interrupt starts at video display (not at the top of the border), interrupt escribe en direccion I*256+R valor 255
--probar snoweffect de 48k, 128k, con juegos y con extras/media/spectrum/tests/snow_effect.tap. Las que son de pentagon, hacer hotswap a 128
 -probar simular pantalla zx81 en spectrum
 -probar desactivar colores pantalla spectrum
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
@@ -122,9 +120,6 @@ nota: cacalib, curses  en consola texto (no X) el mouse solo notifica al pulsar 
 -probar Setting putpixel functions to zoom 1, variable, interlace
 -probar easter eggs
 -probar ghosting
--probar speech: texto a speech linux, mac os, windows. ruta a --textspeechprogram relativa y absoluta
--probar speech en stdout
--probar F4 (pantalla a speech) en Spectrum (con texto normal y graficos), Z88, ZX81 (con y sin rainbow, y con texto normal y con graficos->4 combinaciones). ZX80
 -probar funcion Find. probar buscar pokes
 -probar cpu transaction log
 -probar menu file utilities
