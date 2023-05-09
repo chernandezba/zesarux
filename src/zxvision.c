@@ -24539,6 +24539,11 @@ void get_welcome_message(char *texto_welcome)
     else sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
 }
 
+void get_press_key_menu_message(char *destino)
+{
+    sprintf(destino," Press %s for menu ",openmenu_key_message);
+}
+
 void set_welcome_message(void)
 {
 	cls_menu_overlay();
@@ -24574,7 +24579,7 @@ void set_welcome_message(void)
 
 
 	char texto_esc_menu[32];
-	sprintf(texto_esc_menu," Press %s for menu ",openmenu_key_message);
+	get_press_key_menu_message(texto_esc_menu);
 	longitud_texto=strlen(texto_esc_menu);
         x=menu_center_x()-longitud_texto/2;
         if (x<0) x=0;	
