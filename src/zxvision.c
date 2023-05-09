@@ -24534,7 +24534,9 @@ void set_splash_zesarux_logo(void)
 
 void get_welcome_message(char *texto_welcome)
 {
-    sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
+    if (gui_language==GUI_LANGUAGE_SPANISH) sprintf(texto_welcome," Bienvenido a ZEsarUX v." EMULATOR_VERSION " ");
+    else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf(texto_welcome," Benvingut a ZEsarUX v." EMULATOR_VERSION " ");
+    else sprintf(texto_welcome," Welcome to ZEsarUX v." EMULATOR_VERSION " ");
 }
 
 void set_welcome_message(void)
