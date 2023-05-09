@@ -24541,7 +24541,9 @@ void get_welcome_message(char *texto_welcome)
 
 void get_press_key_menu_message(char *destino)
 {
-    sprintf(destino," Press %s for menu ",openmenu_key_message);
+    if (gui_language==GUI_LANGUAGE_SPANISH) sprintf(destino," Pulse %s para menu ",openmenu_key_message);
+    else if (gui_language==GUI_LANGUAGE_CATALAN) sprintf(destino," Premi %s per menu ",openmenu_key_message);
+    else sprintf(destino," Press %s for menu ",openmenu_key_message);
 }
 
 void set_welcome_message(void)
