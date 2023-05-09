@@ -73,11 +73,6 @@ Drivers audio:
 -probar simular pantalla zx81 en spectrum
 -probar desactivar colores pantalla spectrum
 -probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar turbosound, 3 chips ay
--probar specdrum, covox
--probar general sound
--probar opcion ay speech on/off con chase hq por ejemplo
--probar abc/acb/bac stereo con demos y tests/stereotest.sh
 -probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
