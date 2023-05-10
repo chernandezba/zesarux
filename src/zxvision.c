@@ -18064,7 +18064,6 @@ void menu_dibuja_menu_stdout_texto_sin_atajo(char *origen, char *destino)
 
 
 
-//TODO: no hace caso de si estamos en modo no avanzado de menu
 int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,menu_item *m,char *titulo)
 {
 	int linea_seleccionada=*opcion_inicial;
@@ -18088,7 +18087,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 	menu_speech_tecla_pulsada=0;
 
         do {
-
+            if (menu_item_retornar_avanzados(aux)) {
 		//scrstdout_menu_kbhit_macro();
                 max_opciones++;
 
@@ -18139,6 +18138,7 @@ int menu_dibuja_menu_stdout(int *opcion_inicial,menu_item *item_seleccionado,men
 
 
 		printf ("\n");
+        }
 
                 aux=aux->siguiente_item;
         } while (aux!=NULL);
