@@ -13,31 +13,6 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 -probar rendimiento cpu (benchmark*txt). con ao null vo null y ao null vo x11, sin memptr,sin visualmem, sin cpustats
 ok mac
 
-Drivers video:
--probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
-*por cada driver (incluido null) y con y sin pthreads:
-**probar redimensionar ventana
-**probar cambio zoom desde menu
-**probar fullscreen en aquellos que lo soportan: xwindows, fbdev, sdl, cocoa
-**probar todas maquinas. probar teclas mayus, ctrl, alt. en z88 mayus izq, der, ctrl, alt, f1, f2, f3
-**probar ocultar raton
-**probar zx desktop
-**probar F6, F7 en curses, caca, aa en Z88 y en Spectrum
-**probar drag&drop en cocoa, sdl2 (a partir 2.0.5)
-**probar desactivando border
-**probar desactivando footer
-**en curses, aa, caca, stdout, simpletext probar juegos para ver que tal "emula" los graficos
-**en curses, aa, caca, stdout, simpletext probar realvideo
-**en aa, caca probar mensajes debug
-**en stdout, probar con modo traprst16 y modo autoredraw
-**en fbdev, probar tambien con --no-use-ttyfbdev y --no-use-ttyrawfbdev y --decimal-full-scale-fbdev
-**probar recreated
--ejecutar tests/videotest.sh
-ok Mac
-
-
--probar desactivando xextensions en configure con --disable-xext
--probar desactivando algun driver de video en compilacion, como x11, y ver que funcionan los otros
 
 Drivers audio:
 -probar drivers sonido pulse, alsa, dsp, sdl, coreaudio, null. con y sin pthreads
@@ -60,12 +35,6 @@ Ok Mac
 * windows mingw, con y sin pthreads
 * windows cygwin
 
-
-
--Funciones de Red:
---Windows: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Mac: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD
---Linux: Probar ZENG, Speccy browser, ZX81 browser, Download TBBLUE SD 
 
 -probar aofile raw y wav
 -probar con --disable-sndfile
