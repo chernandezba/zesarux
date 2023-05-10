@@ -55,7 +55,7 @@ ZEsarUX distributed under GNU GENERAL PUBLIC LICENSE v3. You may read it on the 
 Please read the other licenses used in ZEsarUX, from the menu Help->Licenses or just open files from folder licenses/
 
 
-Available versions for download here:
+Available releases for [download](https://github.com/chernandezba/zesarux/releases) here:
 * Source code
 * Binary compiled versions:
 * GNU/Linux 32/64 Bits

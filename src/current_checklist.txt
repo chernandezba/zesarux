@@ -72,8 +72,6 @@ Drivers audio:
 -probar juegos zx81 multipart: wrx/voyage , wrx/blockbuster
 -probar simular pantalla zx81 en spectrum
 -probar desactivar colores pantalla spectrum
--probar chip sonido AY, en spectrum (ay y fuller) y zx81 (quicksilva(asteroids, defenda zx80)  y bi-pak (aydemo, pink panther...))
--probar menu ay piano, beeper piano. nota: beeper piano con notas largas, como la musica del Zorro
 
 -probar fallback de cinta standard a real tape, juegos: dracula tzx, Death Wish 3 (Erbe - Serie Leyenda).tzx  (DeathWish3(IBSA).tzx.zip), mortadelo y filemon II, Rambo. Parece que silent service si se mete como standard tape no detecta como cargador
 
@@ -97,7 +95,6 @@ Modo 6 512x192 real/simulado a 256x192 con timmy.tap y testtimexmode6.tap y test
 -probar waveform, tambien en drivers no graficos como curses, aa, etc
 -probar ay player. Con versiones 00,01,02,3. Probar Spectrum y CPC
 -probar opcion desactivar contended memory en menu
--probar fuller audio box emulation
 -probar advanced timing settings 
 -probar menu de stdout
 -probar cargar/grabar pantalla en spectrum 48, 128, +2a, zxuno. formatos scr, pbm, bmp

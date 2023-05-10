@@ -7,7 +7,7 @@ echo
 
 cat << _EOF
 
-Available versions for download here:
+Available releases for [download](https://github.com/chernandezba/zesarux/releases) here:
 * Source code
 * Binary compiled versions:
 * GNU/Linux 32/64 Bits
