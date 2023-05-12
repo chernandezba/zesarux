@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
 
