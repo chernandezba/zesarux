@@ -159,7 +159,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
 
--opcion volcar por consola compile info
+ok -opcion volcar por consola compile info. ya existe con --showcompileinfo
 
 -con el ay player mostrar por consola cada cancion que va entrando. util para reproducir musica random por consola y sin driver video
 
