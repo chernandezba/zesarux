@@ -4752,7 +4752,7 @@ void menu_filesel_overlay_render_preview_in_memory(void)
         return;
     }
 
-    //TODO: excepto directorios .. y .
+    
     if (file_is_directory(filesel_nombre_archivo_seleccionado)) {
         debug_printf(VERBOSE_DEBUG,"File is a directory, trying to get preview");
 
