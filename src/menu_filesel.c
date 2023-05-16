@@ -4662,7 +4662,8 @@ void menu_filesel_render_preview_directory(char *dir_name)
         //no hacer esto para directorios especiales "." o ".."
         //quitar la posible preview anterior
         menu_filesel_overlay_last_preview_width=0;
-        menu_filesel_overlay_last_preview_height=0;	   
+        menu_filesel_overlay_last_preview_height=0;	  
+        return; 
     }
 
     //Obtener directorio preview
