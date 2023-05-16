@@ -2,7 +2,7 @@ FROM debian:bullseye
 
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
 
-RUN git clone https://github.com/chernandezba/zesarux.git && cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make
+RUN git clone https://github.com/chernandezba/zesarux.git && cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make -j2
 
 WORKDIR /zesarux/src
 

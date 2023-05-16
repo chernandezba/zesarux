@@ -34,6 +34,12 @@ echo "Porcentaje=$PERCCOMPLETADO %"
 
 -probar cambio idioma menu y ver diferentes menus
 
+-probar 4 combinaciones de logo:
+./zesarux --disable-xanniversary-logo
+./zesarux --enable-xanniversary-logo
+./zesarux --disable-xanniversary-logo --enable-christmas-mode
+./zesarux --enable-xanniversary-logo --enable-christmas-mode
+
 Drivers video:
 -probar drivers video xwindows, sdl, fbdev, curses, aa, caca, stdout, simpletext, null. desde dentro de xwindows y desde consola de texto real
 *por cada driver (incluido null) y con y sin pthreads:

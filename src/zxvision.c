@@ -3935,9 +3935,9 @@ void menu_footer_logo_copy_final(char color_marco)
         int i;
         //poner cada puntero de lineas de logo a la memoria asignada
         zesarux_ascii_logo_footer[y]=&zesarux_ascii_logo_footer_mem[(ZESARUX_ASCII_LOGO_ANCHO+1)*y];
-        for (i=0;zesarux_ascii_logo_whitebright[y][i];i++) {
+        for (i=0;get_zesarux_ascii_logo_whitebright()[y][i];i++) {
             
-            char c=zesarux_ascii_logo_whitebright[y][i];
+            char c=get_zesarux_ascii_logo_whitebright()[y][i];
             //printf("y %d i %d c %c\n",y,i,c);
 
             //cambiamos el color del marco (blanco brillante en el original) por el color indicado en el parametro
@@ -3946,7 +3946,6 @@ void menu_footer_logo_copy_final(char color_marco)
             else {
                 if (christmas_mode.v) {
                     switch (c) {
-                        case 'x':
                         case 'r':
                         case 'g':
                             c='R';
@@ -3957,6 +3956,11 @@ void menu_footer_logo_copy_final(char color_marco)
                         case 'c':
                             c='G';
                         break;
+                    }
+
+                    if (c=='x') {
+                        //En logo X anniversary y en navidad, no alteramos color negro
+                        if (xanniversary_logo.v==0) c='R';                        
                     }
                 }
             }
@@ -4092,11 +4096,15 @@ void menu_clear_footer(void)
 
             //valores de menos o igual de 33%, hay que poner marco
             //nota: tema solarized dark, tiene 33%
+            //TODO: con el logo de xanniversary fuerzo siempre marco aunque esto no es del todo correcto,
+            //pues los colores expuestos a izquierda y derecha son cyan y amarillo, a diferencia del negro del logo normal
             int umbral_marco=33;
             if (gris<=umbral_marco) {
                 debug_printf(VERBOSE_DEBUG,"Drawing frame around footer logo becase background colour intensity is less than %d%%",umbral_marco);
                 color_marco='w';
             }
+
+            if (xanniversary_logo.v) color_marco='w';
 
             //copiamos el logo a bitmap de destino cambiando el color del marco
             menu_footer_logo_copy_final(color_marco);
@@ -4697,6 +4705,7 @@ char **menu_get_extdesktop_button_bitmap(int numero_boton)
 
     //por defecto
     puntero_bitmap=zxdesktop_buttons_bitmaps[numero_boton];
+    puntero_bitmap=alter_zesarux_ascii_logo(puntero_bitmap);
 
     int boton_id=numero_boton-1;
 
@@ -4710,7 +4719,6 @@ char **menu_get_extdesktop_button_bitmap(int numero_boton)
 
 
         if (accion!=F_FUNCION_DEFAULT) {
-            //puntero_bitmap=defined_direct_functions_array[indice_tabla].bitmap_button;
             puntero_bitmap=get_direct_function_icon_bitmap_final(indice_tabla);
         }
 
@@ -4823,7 +4831,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 		char **puntero_bitmap;
 
-		//puntero_bitmap=zxdesktop_buttons_bitmaps[numero_boton];
+
         puntero_bitmap=menu_get_extdesktop_button_bitmap(numero_boton);
 
 
@@ -5282,7 +5290,7 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 
 		char **puntero_bitmap;
 
-		//puntero_bitmap=zxdesktop_buttons_bitmaps[numero_boton];
+
         //puntero_bitmap=menu_get_extdesktop_button_bitmap(numero_boton);
 
         //forzamos siempre custom buttons
@@ -5608,6 +5616,7 @@ char **get_direct_function_icon_bitmap(int id_accion)
 char **get_direct_function_icon_bitmap_final(int id_accion)
 {
     char **bitmap=defined_direct_functions_array[id_accion].bitmap_button;
+    bitmap=alter_zesarux_ascii_logo(bitmap);
 
     //Si icono es papelera, decir que cambiamos si la papelera no esta vacia
     
@@ -5639,6 +5648,11 @@ char **get_direct_function_icon_bitmap_final(int id_accion)
     if (id_funcion==F_FUNCION_DESKTOP_MY_MACHINE) {
         bitmap=menu_ext_desktop_draw_configurable_icon_return_machine_icon();               
     }
+
+    //logo x anniversary
+    //if (id_funcion==F_FUNCION_OPENMENU) {
+    //    bitmap=get_zesarux_ascii_logo();               
+    //}    
 
     return bitmap;
 }
@@ -9269,7 +9283,12 @@ char **zxvision_find_icon_for_known_window(char *nombre)
 
 	for (i=0;zxvision_known_window_names_array[i].start!=NULL;i++) {
 
-		 if (!strcasecmp(zxvision_known_window_names_array[i].nombre,nombre)) return zxvision_known_window_names_array[i].bitmap_button;
+		 if (!strcasecmp(zxvision_known_window_names_array[i].nombre,nombre)) {
+            char **p=zxvision_known_window_names_array[i].bitmap_button;
+            p=alter_zesarux_ascii_logo(p);
+
+            return p;
+         }
 
 	}
 	return NULL;
@@ -24110,7 +24129,10 @@ void set_splash_zesarux_logo_put_space(int x,int y)
 
     int color_negro=0;
 
-    if (christmas_mode.v) color_negro=2+8;
+    if (christmas_mode.v) {
+        //En logo X anniversary y en navidad, no alteramos color negro
+        if (xanniversary_logo.v==0) color_negro=2+8;
+    }
 
 	if (!strcmp(scr_new_driver_name,"aa")) {
 		putchar_menu_overlay(x,y,'X',7,0);
@@ -24453,10 +24475,12 @@ void set_splash_zesarux_logo_paso_xanniversary(int paso)
 
 void set_splash_zesarux_logo_paso(int paso)
 {
-    set_splash_zesarux_logo_paso_normal(paso);
 
-    //TODO: flag para activar modo xanniversary, y que ademas lo diga en texto? X Anniversary Edition?
-    //set_splash_zesarux_logo_paso_xanniversary(paso);
+    if (xanniversary_logo.v) {
+        set_splash_zesarux_logo_paso_xanniversary(paso);
+    }
+
+    else set_splash_zesarux_logo_paso_normal(paso);
 }
 
 //Retorna color de paleta spectrum segun letra color logo ascii W: white, X: Black, etc

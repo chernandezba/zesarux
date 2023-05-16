@@ -1263,7 +1263,7 @@ echo Final LDFLAGS=$LDFLAGS >>$LOGFILE
 
 echo "Creating Makefile"
 cat > Makefile << _EOF
-EMULATOR_VERSION=10.3
+EMULATOR_VERSION=10.10
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 CC=$CCOMPILER
@@ -1589,7 +1589,7 @@ menu_items_settings.o: menu_items_settings.c menu_items_settings.h zxvision.h me
 menu_debug_cpu.o: menu_debug_cpu.c menu_debug_cpu.h zxvision.h cpu.h debug.h scmp.h m68k.h zx8081.h z88.h settings.h operaciones.h screen.h joystick.h tbblue.h ula.h timer.h audio.h prism.h menu_items.h disassemble.h ay38912.h realjoystick.h utils_text_adventure.h
 	\$(CC) \$(CFLAGS) -c menu_debug_cpu.c
 
-menu_bitmaps.o: menu_bitmaps.c menu_bitmaps.h
+menu_bitmaps.o: menu_bitmaps.c menu_bitmaps.h settings.h
 	\$(CC) \$(CFLAGS) -c menu_bitmaps.c 
 
 salamanquesa.o: salamanquesa.c salamanquesa.h

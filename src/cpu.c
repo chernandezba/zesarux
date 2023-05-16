@@ -2069,6 +2069,8 @@ printf (
 		"--no-cpu-temp                     Do not show host CPU temperature on footer\n"
 		"--no-fps                          Do not show FPS on footer\n"
         "--nowelcomemessage                Disable welcome message\n"
+        "--enable-xanniversary-logo        Enable X Anniversary logo (enabled by default on 10.10 version)\n"
+        "--disable-xanniversary-logo       Disable X Anniversary logo (enabled by default on 10.10 version)\n"
         "--disablemenufileutils            Disable File Utilities menu\n"  
 
 
@@ -8164,6 +8166,13 @@ int parse_cmdline_options(int desde_commandline) {
                                 opcion_no_welcome_message.v=1;
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--enable-xanniversary-logo")) {
+                xanniversary_logo.v=1;
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--disable-xanniversary-logo")) {
+                xanniversary_logo.v=0;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-percentage-bar")) {
                                 menu_hide_vertical_percentaje_bar.v=1;

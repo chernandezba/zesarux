@@ -20,6 +20,8 @@
 */
 
 #include "menu_bitmaps.h"
+#include "settings.h"
+
 
 /*
 0 ZEsarUX
@@ -88,6 +90,52 @@ char *zesarux_ascii_logo[ZESARUX_ASCII_LOGO_ALTO]={
 	"wwwwwwwwwwwwwwwwwwwwwwwwww" 		//25
 };
 
+//Usado en watermark y en botones
+//logo X anniversary
+char *zesarux_ascii_logo_xanniversary[ZESARUX_ASCII_LOGO_ALTO]={
+    //01234567890123456789012345
+    "wwwwwwwwwwwwwwwwwwwwwwwwww",     //0
+  	"wxxrrrrrrrrrrrrrrrrrrrrxxw",      
+	"wxxrrrrrrrrrrrrrrrrrrrrxxw",		
+	"wccxxrrrrrrrrrrrrrrrrxxyyw",		
+	"wccxxrrrrrrrrrrrrrrrrxxyyw",	
+	"wccccxxrrrrrrrrrrrrxxyyyyw",			
+	"wccccxxrrrrrrrrrrrrxxyyyyw",			
+	"wccccccxxrrrrrrrrxxyyyyyyw", 		
+	"wccccccxxrrrrrrrrxxyyyyyyw",		
+	"wccccccccxxrrrrxxyyyyyyyyw",		
+	"wccccccccxxrrrrxxyyyyyyyyw",	//10	
+	"wccccccccccxxxxyyyyyyyyyyw",		
+	"wccccccccccxxxxyyyyyyyyyyw",		
+	"wccccccccccxxxxyyyyyyyyyyw",		
+	"wccccccccccxxxxyyyyyyyyyyw",		
+	"wccccccccxxggggxxyyyyyyyyw",		
+	"wccccccccxxggggxxyyyyyyyyw",		
+	"wccccccxxggggggggxxyyyyyyw",		
+	"wccccccxxggggggggxxyyyyyyw",		
+	"wccccxxggggggggggggxxyyyyw",		
+	"wccccxxggggggggggggxxyyyyw",    //20
+	"wccxxggggggggggggggggxxyyw",		
+	"wccxxggggggggggggggggxxyyw",		
+	"wxxggggggggggggggggggggxxw",		
+	"wxxggggggggggggggggggggxxw",
+	"wwwwwwwwwwwwwwwwwwwwwwwwww" 		//25
+};
+
+char **get_zesarux_ascii_logo(void)
+{
+    //Retorna uno de los dos logos dependiendo si modo xanniversary o no
+    if (xanniversary_logo.v) return zesarux_ascii_logo_xanniversary;
+    else return zesarux_ascii_logo;
+}
+
+//Altera el bitmap cuando se va a referenciar el zesarux_ascii_logo, o dejarlo tal cual o poner el xanniversary
+char **alter_zesarux_ascii_logo(char **p)
+{
+    if (p!=zesarux_ascii_logo) return p;
+
+    else return get_zesarux_ascii_logo();
+}
 
 //Usado en el footer. marco de color blanco con brillo para
 //luego modificarlo segun el color del footer
@@ -121,6 +169,57 @@ char *zesarux_ascii_logo_whitebright[ZESARUX_ASCII_LOGO_ALTO]={
 	"WxxxxxxxxxxxxxxxxxxxxxxxxW",
 	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 		//25
 };
+
+
+
+
+//Usado en el footer, de decimo aniversario. 
+//marco de color blanco con brillo para
+//luego modificarlo segun el color del footer
+//Y sin el marco por la derecha en la zona del arco iris
+char *zesarux_ascii_logo_whitebright_xanniversary[ZESARUX_ASCII_LOGO_ALTO]={
+    //01234567890123456789012345
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",     //0
+  	"WxxrrrrrrrrrrrrrrrrrrrrxxW",      
+	"WxxrrrrrrrrrrrrrrrrrrrrxxW",		
+	"WccxxrrrrrrrrrrrrrrrrxxyyW",		
+	"WccxxrrrrrrrrrrrrrrrrxxyyW",	
+	"WccccxxrrrrrrrrrrrrxxyyyyW",			
+	"WccccxxrrrrrrrrrrrrxxyyyyW",			
+	"WccccccxxrrrrrrrrxxyyyyyyW", 		
+	"WccccccxxrrrrrrrrxxyyyyyyW",		
+	"WccccccccxxrrrrxxyyyyyyyyW",		
+	"WccccccccxxrrrrxxyyyyyyyyW",	//10	
+	"WccccccccccxxxxyyyyyyyyyyW",		
+	"WccccccccccxxxxyyyyyyyyyyW",		
+	"WccccccccccxxxxyyyyyyyyyyW",		
+	"WccccccccccxxxxyyyyyyyyyyW",		
+	"WccccccccxxggggxxyyyyyyyyW",		
+	"WccccccccxxggggxxyyyyyyyyW",		
+	"WccccccxxggggggggxxyyyyyyW",		
+	"WccccccxxggggggggxxyyyyyyW",		
+	"WccccxxggggggggggggxxyyyyW",		
+	"WccccxxggggggggggggxxyyyyW",    //20
+	"WccxxggggggggggggggggxxyyW",		
+	"WccxxggggggggggggggggxxyyW",		
+	"WxxggggggggggggggggggggxxW",		
+	"WxxggggggggggggggggggggxxW",
+	"WWWWWWWWWWWWWWWWWWWWWWWWWW" 		//25
+};
+
+/*char *get_zesarux_ascii_logo_whitebright(int linea)
+{
+    //Retorna uno de los dos logos dependiendo si modo xanniversary o no
+    if (xanniversary_logo.v) return zesarux_ascii_logo_whitebright_xanniversary[linea];
+    else return zesarux_ascii_logo_whitebright[linea];
+}*/
+
+char **get_zesarux_ascii_logo_whitebright(void)
+{
+    //Retorna uno de los dos logos dependiendo si modo xanniversary o no
+    if (xanniversary_logo.v) return zesarux_ascii_logo_whitebright_xanniversary;
+    else return zesarux_ascii_logo_whitebright;
+}
 
 //Iconos con contenido 26x26. 
 	//Hay que dejar margen de 6 por cada lado (3 izquierdo, 3 derecho, 3 alto, 3 alto)

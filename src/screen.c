@@ -4302,7 +4302,9 @@ void screen_put_asciibitmap_generic(char **origen,z80_int *destino,int x,int y,i
 
 void screen_put_watermark_generic(z80_int *destino,int x,int y,int ancho_destino, void (*putpixel) (z80_int *destino,int x,int y,int ancho,int color) )
 {
-		screen_put_asciibitmap_generic(zesarux_ascii_logo,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
+    char **logo=get_zesarux_ascii_logo();    
+    //if (xanniversary_logo.v) screen_put_asciibitmap_generic(zesarux_ascii_logo_xanniversary,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
+	screen_put_asciibitmap_generic(logo,destino,x,y,ZESARUX_ASCII_LOGO_ANCHO,ZESARUX_ASCII_LOGO_ALTO, ancho_destino,putpixel,1,0);
 }
 
 void screen_get_offsets_watermark_position(int position,int ancho, int alto, int *x, int *y)

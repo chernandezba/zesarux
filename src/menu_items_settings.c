@@ -9401,6 +9401,7 @@ void menu_zxdesktop_set_userdef_button_func_action_overlay(void)
     //Que el número del botón esté dentro del rango total y ademas evitamos el 0 (default)
     if (numero_boton>0 && numero_boton<MAX_F_FUNCTIONS) {
         puntero_bitmap=defined_direct_functions_array[numero_boton].bitmap_button;
+        puntero_bitmap=alter_zesarux_ascii_logo(puntero_bitmap);
     
         int offset_x=ZXDESKTOP_DEFINE_CUSTOM_BUTTONS_OFFSET_BUTTON*menu_char_width;
         int offset_y=ventana->offset_y;

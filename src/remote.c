@@ -4431,7 +4431,9 @@ void interpreta_comando(char *comando,int misocket)
 
 
 	else if (!strcmp(comando_sin_parametros,"get-version")) {
-		escribir_socket (misocket,EMULATOR_VERSION);
+        //Caso especial para version 10.10. Retornar 10.10 en vez de "X"
+        if (!strcasecmp(EMULATOR_VERSION,"X")) escribir_socket (misocket,"10.10");
+		else escribir_socket (misocket,EMULATOR_VERSION);
 	}
 
 

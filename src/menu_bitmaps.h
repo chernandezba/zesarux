@@ -26,7 +26,10 @@
 #define ZESARUX_ASCII_LOGO_ANCHO 26
 #define ZESARUX_ASCII_LOGO_ALTO 26
 extern char *zesarux_ascii_logo[];
+extern char **get_zesarux_ascii_logo(void);
+extern char **alter_zesarux_ascii_logo(char **p);
 extern char *zesarux_ascii_logo_whitebright[];
+extern char **get_zesarux_ascii_logo_whitebright(void);
 
 extern char *bitmap_button_ext_desktop_smartload[];
 extern char *bitmap_button_ext_desktop_snapshot[];

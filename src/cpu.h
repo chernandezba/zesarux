@@ -42,15 +42,15 @@ Examples
 */
 
 
-//#define EMULATOR_VERSION "10.3-SN"
-//#define EMULATOR_VERSION "10.3-B1"
-//#define EMULATOR_VERSION "10.3-RC"
-#define EMULATOR_VERSION "10.3"
-//#define SNAPSHOT_VERSION
+//#define EMULATOR_VERSION "10.10-SN"
+//#define EMULATOR_VERSION "10.10-B1"
+//#define EMULATOR_VERSION "10.10-RC"
+#define EMULATOR_VERSION "X"
+#define SNAPSHOT_VERSION
 
-#define EMULATOR_DATE "10 May 2023"
-#define EMULATOR_SHORT_DATE "10/05/2023"
-#define EMULATOR_GAME_EDITION "La Abadia del Crimen"
+#define EMULATOR_DATE "16 May 2023"
+#define EMULATOR_SHORT_DATE "16/05/2023"
+#define EMULATOR_GAME_EDITION "10th Anniversary"
 #define EMULATOR_EDITION_NAME EMULATOR_GAME_EDITION " edition"
 #define ZESARUX_EXTRAS_HOST "github.com" 
 
@@ -58,8 +58,11 @@ Examples
 //testeo o para forzar una versión en develop
 //#define ZESARUX_EXTRAS_URL "https://github.com/chernandezba/zesarux/releases/download/ZEsarUX-10.0/ZEsarUX_extras-10.0.zip"
 
+//especial solo para esta version 10.10
+#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-10.10.zip"
+
 //final
-#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
+//#define ZESARUX_EXTRAS_URL "/chernandezba/zesarux/releases/download/ZEsarUX-" EMULATOR_VERSION "/ZEsarUX_extras-" EMULATOR_VERSION ".zip"
 
 #define EDITION_NAME_GAME "editionnamegame.dsk"
 

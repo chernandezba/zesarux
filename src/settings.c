@@ -316,6 +316,14 @@ z80_bit menu_file_viewer_always_hex={0};
 //Si mostrar items avanzados de menu
 z80_bit menu_show_advanced_items={0};
 
+
+//Logo de decimo aniversario. 
+//En version 10.10 es esta habilitado por defecto
+//TODO: este setting no lo autoguardamos en la config en la versión 10.10, por que si no, 
+//la gente que use la 10.10, se le autoguardaria el setting y luego en la version 11 le seguiria saliendo el logo del X anniversary
+//A partir de la versión 11 sí que haré que se autoguarde
+z80_bit xanniversary_logo={1};
+
 //
 // ZX Desktop Settings
 //
