@@ -21356,3 +21356,174 @@ void util_scanf_history_insert(char **textos_historial,char *texto)
             i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
     }    
 }
+
+//Extraer preview de diferentes tipos de archivos que requieren expandir
+int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
+{
+			int retorno=1;
+
+			if (!util_compare_file_extension(nombre,"tap") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a tap file");
+					retorno=util_extract_tap(nombre,tmpdir,NULL,0);
+			}
+
+			else if (!util_compare_file_extension(nombre,"tzx") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a tzx file");
+					retorno=util_extract_tzx(nombre,tmpdir,NULL);
+			}
+
+			else if (!util_compare_file_extension(nombre,"pzx") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a pzx file");
+					retorno=util_extract_pzx(nombre,tmpdir,NULL);
+			}		
+
+			else if (!util_compare_file_extension(nombre,"trd") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a trd file");
+					retorno=util_extract_trd(nombre,tmpdir);
+			}		
+
+			else if (!util_compare_file_extension(nombre,"ddh") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a ddh file");
+					retorno=util_extract_ddh(nombre,tmpdir);
+			}	            
+
+			else if (!util_compare_file_extension(nombre,"dsk") ) {
+					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
+                    //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
+                    //printf("Before extract dsk\n");
+					retorno=util_extract_dsk(nombre,tmpdir);
+                    //printf("After extract dsk\n");
+			}				
+
+            //printf("if_pending_error_message: %d\n",if_pending_error_message);
+            //Quitar posibles errores al preparar esta preview
+            //no queremos alertar al usuario por archivos incorrectos
+            //De todas maneras siempre se vería el error en la consola
+            if_pending_error_message=0;    
+
+            return retorno;
+}
+
+
+//Extraer preview de diferentes tipos de archivos que no requieren expandir
+void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_scr,int file_size)
+{
+
+	if (!util_compare_file_extension(nombre,"scr")
+        || file_size==6912
+        ) {
+		debug_printf(VERBOSE_DEBUG,"File is a scr screen");
+
+        //Decir que el scrfile es el mismo
+        strcpy(tmpfile_scr,nombre);
+
+
+	}
+
+	//Si es sna
+	else if (!util_compare_file_extension(nombre,"sna")) {
+		debug_printf(VERBOSE_DEBUG,"File is a sna snapshot");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+			util_convert_sna_to_scr(nombre,tmpfile_scr);
+		}
+
+
+
+	}	
+
+	//Si es sp
+	else if (!util_compare_file_extension(nombre,"sp")) {
+		debug_printf(VERBOSE_DEBUG,"File is a sp snapshot");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+			util_convert_sp_to_scr(nombre,tmpfile_scr);
+		}
+
+
+	}	
+
+	//Si es z80
+	else if (!util_compare_file_extension(nombre,"z80")) {
+		debug_printf(VERBOSE_DEBUG,"File is a z80 snapshot");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+			util_convert_z80_to_scr(nombre,tmpfile_scr);
+		}
+
+
+
+	}		
+
+	//Si es P
+	else if (!util_compare_file_extension(nombre,"p")) {
+		debug_printf(VERBOSE_DEBUG,"File is a p snapshot");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+			util_convert_p_to_scr(nombre,tmpfile_scr);
+		}
+
+
+
+	}		
+
+	//Si es ZSF
+	else if (!util_compare_file_extension(nombre,"zsf")) {
+		debug_printf(VERBOSE_DEBUG,"File is a zsf snapshot");
+
+		menu_filesel_mkdir(tmpdir);
+
+		//Si no existe preview
+		if (!si_existe_archivo(tmpfile_scr)) {
+			util_convert_zsf_to_scr(nombre,tmpfile_scr);
+		}
+
+
+
+	}	
+
+}	
+
+//Retorna el tipo de archivo a extraer preview
+//0: no tiene preview
+//1: preview con extraccion (tap, tzx, etc)
+//2: preview directa: scr, sna, etc
+int util_get_extract_preview_type_file(char *nombre)
+{
+    if (!util_compare_file_extension(nombre,"tap") ||
+		!util_compare_file_extension(nombre,"tzx") ||
+		!util_compare_file_extension(nombre,"pzx") ||
+		!util_compare_file_extension(nombre,"trd") ||
+		!util_compare_file_extension(nombre,"dsk") ||
+        !util_compare_file_extension(nombre,"ddh") 
+	
+	) {  
+        return 1;
+    }      
+
+
+    if (
+        !util_compare_file_extension(nombre,"scr")  ||
+        !util_compare_file_extension(nombre,"sna") ||
+        !util_compare_file_extension(nombre,"sp") ||
+        !util_compare_file_extension(nombre,"z80") ||
+        !util_compare_file_extension(nombre,"p") ||
+        !util_compare_file_extension(nombre,"zsf")
+    ) {    
+        return 2;
+    }   
+
+    return 0;
+}

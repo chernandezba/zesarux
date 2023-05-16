@@ -4498,6 +4498,233 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 }
 
+int menu_filesel_render_preview_directory_find_file_filter_func(const struct dirent *d)
+{
+
+    //de momento retornar 1 siempre
+    return 1;
+
+	/*int tipo_archivo=get_file_type((char *)d->d_name);
+
+
+	//si es directorio, ver si empieza con . y segun el filtro activo
+	//Y si setting no mostrar directorios, no mostrar
+	if (tipo_archivo == 2) {
+		if (menu_filesel_hide_dirs.v) return 0;
+		if (menu_file_filter_dir(d->d_name,filesel_filtros)==1) return 1;
+		return 0;
+	}
+
+	//Si no es archivo ni link, no ok
+
+	if (tipo_archivo  == 0) {
+
+
+		debug_printf (VERBOSE_DEBUG,"Item is not a directory, file or link");
+
+		return 0;
+	}
+
+	//es un archivo. ver el nombre
+
+	if (menu_file_filter(d->d_name,filesel_filtros)==1) return 1;
+
+
+	return 0;*/
+}
+
+
+//Encontrar primer archivo en directorio que permita extraccion de pantalla
+//return:
+//0 no encontrado
+//1 requiere expandir (tap, tzx, etc)
+//2 no requiere expandir (sna, z80, etc)
+int menu_filesel_render_preview_directory_find_file(char *directorio,char *archivo_encontrado)
+{
+
+/*
+       lowing macro constants for the value returned in d_type:
+
+       DT_BLK      This is a block device.
+
+       DT_CHR      This is a character device.
+
+       DT_DIR      This is a directory.
+
+       DT_FIFO     This is a named pipe (FIFO).
+
+       DT_LNK      This is a symbolic link.
+
+       DT_REG      This is a regular file.
+
+       DT_SOCK     This is a UNIX domain socket.
+
+       DT_UNKNOWN  The file type is unknown.
+
+*/
+
+
+
+    struct dirent **namelist;
+
+	struct dirent *nombreactual;
+
+    int n;
+
+    // Si unidad actual es la mmc montada
+    //if (fatfs_disk_zero_memory!=NULL) 
+    if (menu_current_drive_mmc_image.v)
+    {
+        n = menu_filesel_readdir_mmc_image(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
+    }
+
+    else {
+
+#ifndef MINGW
+	n = scandir(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
+#else
+	//alternativa scandir, creada por mi
+	n = scandir_mingw(directorio, &namelist, menu_filesel_render_preview_directory_find_file_filter_func, menu_filesel_alphasort);
+#endif
+
+    }
+
+    if (n < 0) {
+		debug_printf (VERBOSE_ERR,"Error reading directory contents: %s",strerror(errno));
+		return 0;
+	}
+
+    else {
+        int i;
+
+	//printf("total elementos directorio: %d\n",n);
+
+        for (i=0;i<n;i++) {
+		nombreactual=namelist[i];
+            //printf("%s\n", nombreactual->d_name);
+            //printf("%d\n", nombreactual->d_type);
+
+
+		//item=malloc(sizeof(filesel_item));
+		//if (item==NULL) cpu_panic("Error allocating file item");
+
+        //printf("Archivo %s\n",nombreactual->d_name);
+    int retorno=util_get_extract_preview_type_file(nombreactual->d_name);
+
+    if (retorno) {
+
+
+        sprintf(archivo_encontrado,"%s/%s",directorio,nombreactual->d_name);
+        //printf("Encontrado primer archivo a extraer %s en directorio %s\n",archivo_encontrado,directorio);
+        return retorno;
+    }      
+
+
+          
+		//strcpy(item->d_name,nombreactual->d_name);
+
+
+		/*item->next=NULL;
+
+		//primer item
+		if (primer_filesel_item==NULL) {
+			primer_filesel_item=item;
+		}
+
+		//siguientes items
+		else {
+			itemanterior->next=item;
+		}
+
+		itemanterior=item;
+		free(namelist[i]);
+
+
+		filesel_total_items++;
+        */
+        }
+
+		free(namelist);
+
+    }
+
+	return 0;
+	//free(namelist);
+
+}
+
+
+void menu_filesel_render_preview_directory(char *dir_name)
+{
+
+    if (!strcasecmp(dir_name,".") || !strcasecmp(dir_name,".."))
+    {
+        //no hacer esto para directorios especiales "." o ".."
+        //quitar la posible preview anterior
+        menu_filesel_overlay_last_preview_width=0;
+        menu_filesel_overlay_last_preview_height=0;	   
+    }
+
+    //Obtener directorio preview
+    char tmpdir[PATH_MAX];
+    sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name);
+
+    menu_filesel_mkdir(tmpdir);   
+
+
+    //Si existe archivo preview
+    char archivo_info_pantalla[PATH_MAX];
+    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);     
+
+	//Definimos tmpfile_scr para los que convierten snapshot directo a scr
+	char tmpfile_scr[PATH_MAX];	
+	sprintf (tmpfile_scr,"%s/%s.scr",tmpdir,filesel_nombre_archivo_seleccionado);	    
+
+
+    if (!si_existe_archivo(archivo_info_pantalla)) {
+        //TODO: entrar en carpeta y hacer preview del primer archivo que reconocemos: tap, dsk, etc
+            char archivo_encontrado_extraer[PATH_MAX];
+            int retorno=menu_filesel_render_preview_directory_find_file(dir_name,archivo_encontrado_extraer);
+            if (retorno) {
+
+                if (retorno==1) retorno=util_extract_preview_file_expandable(archivo_encontrado_extraer,tmpdir);
+                if (retorno==2) util_extract_preview_file_simple(archivo_encontrado_extraer,tmpdir,tmpfile_scr,-1);
+
+                /*if (retorno!=0) {
+                    //ERROR
+                    return;
+                }*/
+            }
+
+    }
+
+
+    if (si_existe_archivo(archivo_info_pantalla)) {
+        //printf("HAY PANTALLA--------------- \n");
+
+        char buf_archivo_scr[PATH_MAX];
+
+        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);
+
+        //printf ("PANTALLA:     %s\n",buf_archivo_scr);
+
+        menu_filesel_preview_render_scr(buf_archivo_scr);
+    }
+
+    //De conversion directa sin extraccion (scr, sna, z80, etc)
+    else if (si_existe_archivo(tmpfile_scr)) {
+
+
+        menu_filesel_preview_render_scr(tmpfile_scr);
+    }    
+
+    else {        
+
+        //quitar la posible preview anterior
+        menu_filesel_overlay_last_preview_width=0;
+        menu_filesel_overlay_last_preview_height=0;	        
+    }
+}
 
 char menu_filesel_last_preview_file[PATH_MAX]="";
 
@@ -4524,12 +4751,12 @@ void menu_filesel_overlay_render_preview_in_memory(void)
         return;
     }
 
-
+    //TODO: excepto directorios .. y .
     if (file_is_directory(filesel_nombre_archivo_seleccionado)) {
-        debug_printf(VERBOSE_DEBUG,"File is a directory, do not do anything");
-        //Pero quitar la posible preview anterior
-        menu_filesel_overlay_last_preview_width=0;
-        menu_filesel_overlay_last_preview_height=0;	        
+        debug_printf(VERBOSE_DEBUG,"File is a directory, trying to get preview");
+
+        menu_filesel_render_preview_directory(filesel_nombre_archivo_seleccionado);
+
         return;
     }
 
@@ -4554,17 +4781,11 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 	char tmpfile_scr[PATH_MAX];	
 	sprintf (tmpfile_scr,"%s/%s.scr",tmpdir,filesel_nombre_archivo_seleccionado);	
 
+    int tipo_extraccion=util_get_extract_preview_type_file(filesel_nombre_archivo_seleccionado);
 
 	//Si es tap o tzx o pzx o trd
 	// 
-	if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tap") ||
-		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tzx") ||
-		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"pzx") ||
-		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"trd") ||
-		!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"dsk") ||
-        !util_compare_file_extension(filesel_nombre_archivo_seleccionado,"ddh") 
-	
-	) {
+	if (tipo_extraccion==1) {
 	
 		menu_filesel_mkdir(tmpdir);
 
@@ -4576,47 +4797,7 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 			//Archivo scr no existe. Extraer
 			debug_printf(VERBOSE_DEBUG,"File SCR does not exist. Extracting");
 
-
-			int retorno=1;
-
-			if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tap") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a tap file");
-					retorno=util_extract_tap(filesel_nombre_archivo_seleccionado,tmpdir,NULL,0);
-			}
-
-			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"tzx") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a tzx file");
-					retorno=util_extract_tzx(filesel_nombre_archivo_seleccionado,tmpdir,NULL);
-			}
-
-			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"pzx") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a pzx file");
-					retorno=util_extract_pzx(filesel_nombre_archivo_seleccionado,tmpdir,NULL);
-			}		
-
-			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"trd") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a trd file");
-					retorno=util_extract_trd(filesel_nombre_archivo_seleccionado,tmpdir);
-			}		
-
-			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"ddh") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a ddh file");
-					retorno=util_extract_ddh(filesel_nombre_archivo_seleccionado,tmpdir);
-			}	            
-
-			else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"dsk") ) {
-					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
-                    //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
-                    //printf("Before extract dsk\n");
-					retorno=util_extract_dsk(filesel_nombre_archivo_seleccionado,tmpdir);
-                    //printf("After extract dsk\n");
-			}				
-
-            //printf("if_pending_error_message: %d\n",if_pending_error_message);
-            //Quitar posibles errores al preparar esta preview
-            //no queremos alertar al usuario por archivos incorrectos
-            //De todas maneras siempre se vería el error en la consola
-            if_pending_error_message=0;
+            int retorno=util_extract_preview_file_expandable(filesel_nombre_archivo_seleccionado,tmpdir);
 
 			if (retorno!=0) {
 				//ERROR
@@ -4659,89 +4840,13 @@ void menu_filesel_overlay_render_preview_in_memory(void)
     //TODO: en el caso improbable que otro archivo que no sea una pantalla y ocupe 6912 bytes, se mostrara como pantalla
     //esto lo hago porque por ejemplo si expandimos un dsk u otro archivo expandible que tiene dentro una pantalla,
     //seguramente no tendra extension scr y queremos mostrar una pantalla que este dentro al expandir el archivo
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"scr")
-        || file_size==6912
-        ) {
-		debug_printf(VERBOSE_DEBUG,"File is a scr screen");
+	else if (tipo_extraccion==2 || file_size==6912) {
 
-		menu_filesel_preview_render_scr(filesel_nombre_archivo_seleccionado);
+        util_extract_preview_file_simple(filesel_nombre_archivo_seleccionado,tmpdir,tmpfile_scr,file_size);
+
+		menu_filesel_preview_render_scr(tmpfile_scr);
 
 	}
-
-	//Si es sna
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"sna")) {
-		debug_printf(VERBOSE_DEBUG,"File is a sna snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_sna_to_scr(filesel_nombre_archivo_seleccionado,tmpfile_scr);
-		}
-
-		menu_filesel_preview_render_scr(tmpfile_scr);
-
-	}	
-
-	//Si es sp
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"sp")) {
-		debug_printf(VERBOSE_DEBUG,"File is a sp snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_sp_to_scr(filesel_nombre_archivo_seleccionado,tmpfile_scr);
-		}
-
-		menu_filesel_preview_render_scr(tmpfile_scr);
-
-	}	
-
-	//Si es z80
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"z80")) {
-		debug_printf(VERBOSE_DEBUG,"File is a z80 snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_z80_to_scr(filesel_nombre_archivo_seleccionado,tmpfile_scr);
-		}
-
-		menu_filesel_preview_render_scr(tmpfile_scr);
-
-	}		
-
-	//Si es P
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"p")) {
-		debug_printf(VERBOSE_DEBUG,"File is a p snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_p_to_scr(filesel_nombre_archivo_seleccionado,tmpfile_scr);
-		}
-
-		menu_filesel_preview_render_scr(tmpfile_scr);
-
-	}		
-
-	//Si es ZSF
-	else if (!util_compare_file_extension(filesel_nombre_archivo_seleccionado,"zsf")) {
-		debug_printf(VERBOSE_DEBUG,"File is a zsf snapshot");
-
-		menu_filesel_mkdir(tmpdir);
-
-		//Si no existe preview
-		if (!si_existe_archivo(tmpfile_scr)) {
-			util_convert_zsf_to_scr(filesel_nombre_archivo_seleccionado,tmpfile_scr);
-		}
-
-		menu_filesel_preview_render_scr(tmpfile_scr);
-
-	}			
 
 
 	else {

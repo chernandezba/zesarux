@@ -78,9 +78,6 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
 
 
--Compatibilidad de print char trap de numeros (chardetect_rom_compat_numbers.v) para zxuno y otras spectrum. Agregar a tests/printtrap_test.sh
-
-
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
 
 
@@ -168,7 +165,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -Teclado en pantalla en gpi borra el input de debajo 
 
 -Miniatura de zip
--Miniatura de directorio. Parecido a zip
+ok-Miniatura de directorio. Parecido a zip
 
 -Smartload path tiene setting en command line? Y en menú?
 
