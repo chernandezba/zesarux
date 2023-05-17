@@ -825,7 +825,7 @@ Q: Can I use ZEsarUX as a standalone AY player?
 A: Yes, you can run ZEsarUX from command line and enable a setting to exit emulator when finishing playing the ay file. 
 You can also specify a limit for "infinite" tracks (tracks defined with no limit length), for example:
 
-./zesarux --noconfigfile extras/media/ay_files/Spectrum/Games/CHASEHQ.AY --ayplayer-inf-length 60 --ayplayer-end-exit --vo null
+./zesarux --noconfigfile extras/media/ay_files/Spectrum/Games/CHASEHQ.AY --ayplayer-inf-length 60 --ayplayer-end-exit --ayplayer-show-info-console --vo null
 
 Using GNU/Linux or Mac you can also use ZEsarUX as a random ay file player, with the following piece of code:
 

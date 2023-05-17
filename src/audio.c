@@ -1556,7 +1556,7 @@ z80_byte ay_player_version(void)
 
 void ay_player_set_footer(char *texto1,char *texto2)
 {
-			sprintf (mostrar_footer_first_message,"%s",texto1);
+    sprintf (mostrar_footer_first_message,"%s",texto1);
 
 	//Texto mostrado
 	sprintf (mostrar_footer_first_message_mostrado,"%s",mostrar_footer_first_message);
@@ -1596,10 +1596,10 @@ int audio_ay_player_load(char *filename)
 	int total_mem=get_file_size(filename);
 
 
-	      FILE *ptr_ayfile;
-	      ptr_ayfile=fopen(filename,"rb");
+    FILE *ptr_ayfile;
+    ptr_ayfile=fopen(filename,"rb");
 
-	      if (!ptr_ayfile) {
+    if (!ptr_ayfile) {
 	  debug_printf(VERBOSE_ERR,"Unable to open ay file");
 	  return 1;
 	}
@@ -1614,19 +1614,19 @@ int audio_ay_player_load(char *filename)
 	//puntero_lectura=audio_ay_player_mem;
 
 
-	      int leidos=fread(audio_ay_player_mem,1,total_mem,ptr_ayfile);
+    int leidos=fread(audio_ay_player_mem,1,total_mem,ptr_ayfile);
 
 	if (leidos==0) {
-	              debug_printf(VERBOSE_ERR,"Error reading ay file");
-	  free(audio_ay_player_mem);
-					audio_ay_player_mem=NULL;
-	              return 1;
-	      }
+        debug_printf(VERBOSE_ERR,"Error reading ay file");
+        free(audio_ay_player_mem);
+        audio_ay_player_mem=NULL;
+        return 1;
+    }
 
 
-	      fclose(ptr_ayfile);
+    fclose(ptr_ayfile);
 
-  //Mostrar información de la canción
+    //Mostrar información de la canción
 	int indice_autor=audio_ay_player_get_abs_index(12);
 	int indice_misc=audio_ay_player_get_abs_index(14);
 	z80_byte file_version=ay_player_version();
@@ -1637,9 +1637,9 @@ int audio_ay_player_load(char *filename)
 	debug_printf (VERBOSE_INFO,"Total songs: %d",ay_player_total_songs() );
 	debug_printf (VERBOSE_INFO,"First song: %d",ay_player_first_song() );
 
-//sprintf (ay_player_file_author_misc,"%s - %s",&audio_ay_player_mem[indice_autor],&audio_ay_player_mem[indice_misc]);
-sprintf (ay_player_file_author,"%s",&audio_ay_player_mem[indice_autor]);
-sprintf (ay_player_file_misc,"%s",&audio_ay_player_mem[indice_misc]);
+    //sprintf (ay_player_file_author_misc,"%s - %s",&audio_ay_player_mem[indice_autor],&audio_ay_player_mem[indice_misc]);
+    sprintf (ay_player_file_author,"%s",&audio_ay_player_mem[indice_autor]);
+    sprintf (ay_player_file_misc,"%s",&audio_ay_player_mem[indice_misc]);
 
 
     if (ay_player_show_info_console.v) {
@@ -1651,15 +1651,8 @@ sprintf (ay_player_file_misc,"%s",&audio_ay_player_mem[indice_misc]);
 	    printf ("First song: %d\n",ay_player_first_song() );        
     }
 
-//temp
-//sprintf (ay_player_file_author,"%s","This is my second spectrum emulator after ZXSpectr");
-//sprintf (ay_player_file_misc,"%s","I recommend you to read FEATURES, INSTALL and HISTORY files");
 
 
-//ay_player_set_footer(ay_player_file_author_misc);
-
-	/*mostrar_footer_game_name=argv[puntero_parametro];
-  mostrar_footer_second_message=argv[puntero_parametro];*/
 
 
 	if (file_version>3) {
@@ -1668,7 +1661,7 @@ sprintf (ay_player_file_misc,"%s",&audio_ay_player_mem[indice_misc]);
 	}
 
 
-				return 0;
+    return 0;
 }
 
 //Retorna indice a estructura canciones
@@ -1708,7 +1701,7 @@ void ay_player_copy_mem(int origen_archivo,z80_int destino,z80_int longitud)
 		ay_player_poke(destino++,audio_ay_player_mem[origen_archivo++]);
 	}
 }
-//memcpy(&memoria_spectrum[bloque_direccion],&audio_ay_player_mem[origen_archivo],bloque_longitud);
+
 
 void ay_player_copy_to_rom(z80_byte *origen,z80_int destino,z80_int longitud)
 {
@@ -1737,8 +1730,8 @@ int audio_ay_player_play_song(z80_byte song)
 	}
 
 	if (song<1) {
-			debug_printf (VERBOSE_ERR,"Song number must be >0");
-			return 1;
+        debug_printf (VERBOSE_ERR,"Song number must be >0");
+        return 1;
 	}
 
 	z80_byte version=ay_player_version();
@@ -1762,41 +1755,37 @@ int audio_ay_player_play_song(z80_byte song)
 	int song_data=audio_ay_player_get_abs_index(song_struct+2);
 
 
-if (ay_player_cpc_mode.v==0) {
-	//Si maquina actual ya es spectrum, no cargar de nuevo rom
-	if (current_machine_type!=MACHINE_ID_SPECTRUM_48) {
-		//Resetear a maquina spectrum 48
-		current_machine_type=MACHINE_ID_SPECTRUM_48;
-		set_machine(NULL);
-	}
+    if (ay_player_cpc_mode.v==0) {
+        //Si maquina actual ya es spectrum, no cargar de nuevo rom
+        if (current_machine_type!=MACHINE_ID_SPECTRUM_48) {
+            //Resetear a maquina spectrum 48
+            current_machine_type=MACHINE_ID_SPECTRUM_48;
+            set_machine(NULL);
+        }
 
-}
+    }
 
 
-else {
-	if (current_machine_type!=MACHINE_ID_CPC_464) {
-		current_machine_type=MACHINE_ID_CPC_464;
-		set_machine(NULL);
-	}
+    else {
+        if (current_machine_type!=MACHINE_ID_CPC_464) {
+            current_machine_type=MACHINE_ID_CPC_464;
+            set_machine(NULL);
+        }
 
-}
+    }
 
 
 	cold_start_cpu_registers();
 	reset_cpu();
 
-if (ay_player_cpc_mode.v==1) {
-	cpc_gate_registers[2] |=(4|8); //Mapear todo RAM
-	cpc_set_memory_pages();
-}
+    if (ay_player_cpc_mode.v==1) {
+        cpc_gate_registers[2] |=(4|8); //Mapear todo RAM
+        cpc_set_memory_pages();
+    }
 
 	sprintf (ay_player_file_song_name,"%s",&audio_ay_player_mem[indice_nombre]);
 
 	sprintf (ay_player_second_footer,"%s - %s",ay_player_file_author,ay_player_file_misc);
-
-	//temp
-	//sprintf (ay_player_file_song_name,"%s","You can open them from the help menu or from an ");
-
 
 
 	ay_player_set_footer(ay_player_file_song_name,ay_player_second_footer);
@@ -1845,12 +1834,12 @@ if (ay_player_cpc_mode.v==1) {
 	reg_i=0;
 	reg_r=reg_r_bit7=0;
 	*/
-//AF,AF',HL,HL',DE,DE',BC,BC',IX and IY
+    //AF,AF',HL,HL',DE,DE',BC,BC',IX and IY
 
-//No se en que version de ay se usan los registros... Al  menos en 0 no se usan!
-//En 1,2,3 parece que si...
+    //No se en que version de ay se usan los registros... Al  menos en 0 no se usan!
+    //En 1,2,3 parece que si...
 
-//Quiza solo lee registro A??
+    //Quiza solo lee registro A??
 	reg_a=audio_ay_player_mem[offset_to_registers+0];
 	Z80_FLAGS=audio_ay_player_mem[offset_to_registers+1];
 	/*reg_a_shadow=audio_ay_player_mem[offset_to_registers+2];
@@ -1931,132 +1920,132 @@ if (ay_player_cpc_mode.v==1) {
 	//memset(memoria_spectrum+0x0100,0xff,0x3f00);
 	//memset(memoria_spectrum+0x4000,0x00,0xc000);
 
-ay_player_mem_set(0x0000,0xc9,0x0100);
-ay_player_mem_set(0x0100,0xff,0x3f00);
-ay_player_mem_set(0x4000,0x00,0xc000);
+    ay_player_mem_set(0x0000,0xc9,0x0100);
+    ay_player_mem_set(0x0100,0xff,0x3f00);
+    ay_player_mem_set(0x4000,0x00,0xc000);
 
 
 
 	//memoria_spectrum[0x38]=0xfb;         /* ei */
 	ay_player_poke(0x38,0xfb);/* ei */
-/*
-	f) if INTERRUPT equal to ZERO then place at ZERO address next player:
+    /*
+        f) if INTERRUPT equal to ZERO then place at ZERO address next player:
 
-	DI
-	CALL    INIT
-LOOP:	IM      2
-	EI
-	HALT
-	JR      LOOP
-	*/
+        DI
+        CALL    INIT
+    LOOP:	IM      2
+        EI
+        HALT
+        JR      LOOP
+        */
 
-/*	g) if INTERRUPT not equal to ZERO then place at ZERO address next player:
+    /*	g) if INTERRUPT not equal to ZERO then place at ZERO address next player:
 
-	DI
-	CALL    INIT
-	LOOP:	IM      1
-	EI
-	HALT
-	CALL INTERRUPT
-	JR      LOOP
-*/
+        DI
+        CALL    INIT
+        LOOP:	IM      1
+        EI
+        HALT
+        CALL INTERRUPT
+        JR      LOOP
+    */
 
-z80_byte player[256];
+    z80_byte player[256];
 
-if (reg_inter==0) {
-	//ay_player_copy_to_rom(z80_byte *origen,z80_int destino,z80_int longitud)
+    if (reg_inter==0) {
+        //ay_player_copy_to_rom(z80_byte *origen,z80_int destino,z80_int longitud)
 
-	player[0]=243;
+        player[0]=243;
 
-	player[1]=205;
-	player[2]=value_16_to_8l(reg_init);
-	player[3]=value_16_to_8h(reg_init);
+        player[1]=205;
+        player[2]=value_16_to_8l(reg_init);
+        player[3]=value_16_to_8h(reg_init);
 
-	player[4]=237;
-	player[5]=94;
+        player[4]=237;
+        player[5]=94;
 
-	player[6]=251;
+        player[6]=251;
 
-	player[7]=118;  //HALT
+        player[7]=118;  //HALT
 
 
-	player[8]=24;
-	player[9]=256-6;
+        player[8]=24;
+        player[9]=256-6;
 
-	ay_player_copy_to_rom(player,0,10);
-}
- else {
+        ay_player_copy_to_rom(player,0,10);
+    }
+    else {
 
-	player[0]=243;
+        player[0]=243;
 
-	player[1]=205;
-	player[2]=value_16_to_8l(reg_init);
-	player[3]=value_16_to_8h(reg_init);
+        player[1]=205;
+        player[2]=value_16_to_8l(reg_init);
+        player[3]=value_16_to_8h(reg_init);
 
-	player[4]=237;
-	player[5]=86;
+        player[4]=237;
+        player[5]=86;
 
-	player[6]=251;
+        player[6]=251;
 
-	player[7]=118;  //HALT
+        player[7]=118;  //HALT
 
-	player[8]=205; //CALL INTER
-	player[9]=value_16_to_8l(reg_inter);
-	player[10]=value_16_to_8h(reg_inter);
+        player[8]=205; //CALL INTER
+        player[9]=value_16_to_8l(reg_inter);
+        player[10]=value_16_to_8h(reg_inter);
 
-	player[11]=24;
-	player[12]=256-9;
+        player[11]=24;
+        player[12]=256-9;
 
-	ay_player_copy_to_rom(player,0,13);
+        ay_player_copy_to_rom(player,0,13);
 
-}
+    }
 	//	h) Load all blocks for this song
 	//		m) Load to PC ZERO value
 	reg_pc=0;
 
-//Ir leyendo bloques
+    //Ir leyendo bloques
 
-int bloque=0;
-z80_int bloque_direccion,bloque_longitud,bloque_offset;
-do {
-	bloque_direccion=audio_ay_player_get_be_word(pdata);
-	bloque_longitud=audio_ay_player_get_be_word(pdata+2);
-	bloque_offset=audio_ay_player_get_be_word(pdata+4);
-
-
-
-		if (bloque_direccion!=0) {
-			debug_printf (VERBOSE_DEBUG,"Block: %d address: %04XH length: %d offset in ay file: %d",
-				bloque,bloque_direccion,bloque_longitud,bloque_offset);
-
-			z80_int origen_archivo=pdata+4+bloque_offset;
-			ay_player_copy_mem(origen_archivo,bloque_direccion,bloque_longitud);
-			//memcpy(&memoria_spectrum[bloque_direccion],&audio_ay_player_mem[origen_archivo],bloque_longitud);
-
-/*
-e) if INIT equal to ZERO then place to first CALL instruction address of
-	 first AY file block instead of INIT (see next f) and g) steps)
-	 */
-			if (reg_init==0 && bloque==0) reg_pc=bloque_direccion;
-		}
-
-bloque++;
-pdata +=6;
-
-} while (bloque_direccion!=0);
+    int bloque=0;
+    z80_int bloque_direccion,bloque_longitud,bloque_offset;
+    do {
+        bloque_direccion=audio_ay_player_get_be_word(pdata);
+        bloque_longitud=audio_ay_player_get_be_word(pdata+2);
+        bloque_offset=audio_ay_player_get_be_word(pdata+4);
 
 
-	//	i) Load all common lower registers with LoReg value (including AF register)
-//		j) Load all common higher registers with HiReg value
-//		k) Load into I register 3 (this player version)
-reg_i=3;
-//		l) load to SP stack value from points data of this song
 
-//		n) Disable Z80 interrupts and set IM0 mode
-iff1.v=iff2.v=0;
-im_mode=0;
-//		o) Emulate resetting of AY chip
-//		p) Start Z80 emulation*/
+        if (bloque_direccion!=0) {
+            debug_printf (VERBOSE_DEBUG,"Block: %d address: %04XH length: %d offset in ay file: %d",
+                bloque,bloque_direccion,bloque_longitud,bloque_offset);
+
+            z80_int origen_archivo=pdata+4+bloque_offset;
+            ay_player_copy_mem(origen_archivo,bloque_direccion,bloque_longitud);
+            //memcpy(&memoria_spectrum[bloque_direccion],&audio_ay_player_mem[origen_archivo],bloque_longitud);
+
+            /*
+            e) if INIT equal to ZERO then place to first CALL instruction address of
+                first AY file block instead of INIT (see next f) and g) steps)
+                */
+            if (reg_init==0 && bloque==0) reg_pc=bloque_direccion;
+        }
+
+        bloque++;
+        pdata +=6;
+
+    } while (bloque_direccion!=0);
+
+
+        //	i) Load all common lower registers with LoReg value (including AF register)
+    //		j) Load all common higher registers with HiReg value
+    //		k) Load into I register 3 (this player version)
+    reg_i=3;
+    //		l) load to SP stack value from points data of this song
+
+    //		n) Disable Z80 interrupts and set IM0 mode
+    iff1.v=iff2.v=0;
+    im_mode=0;
+    //		o) Emulate resetting of AY chip
+    //		p) Start Z80 emulation*/
 
     if (ay_player_show_info_console.v) {
         z80_byte minutos_total,segundos_total;
@@ -2069,7 +2058,7 @@ im_mode=0;
     }
 
 
-return 0;
+    return 0;
 
 }
 
@@ -2084,8 +2073,8 @@ void ay_player_load_and_play(char *filename)
 
 
 
- ay_player_pista_actual=1;
-	 audio_ay_player_play_song(ay_player_pista_actual);
+    ay_player_pista_actual=1;
+    audio_ay_player_play_song(ay_player_pista_actual);
 }
 
 
@@ -2095,10 +2084,10 @@ void ay_player_next_track(void)
 
 	if (audio_ay_player_mem==NULL) return;
 
-  if (ay_player_pista_actual<ay_player_total_songs() ) {
-    ay_player_pista_actual++;
+    if (ay_player_pista_actual<ay_player_total_songs() ) {
+        ay_player_pista_actual++;
 
-  }
+    }
 
 	else {
 		if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
@@ -2116,7 +2105,7 @@ void ay_player_next_track(void)
 }
 
 
-void 	ay_player_previous_track (void)
+void ay_player_previous_track (void)
 {
 
 	if (audio_ay_player_mem==NULL) return;
