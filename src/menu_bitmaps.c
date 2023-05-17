@@ -5495,24 +5495,55 @@ char *bitmap_button_ext_desktop_my_machine_tsconf[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"RRRRRRRRRRRRRRRRRRRRRRRww ",
 	"RRRRRRRRRRRRRRRRRRRRRRRww ",
 	"RRRRRRRRRRxxxxxxxxxRRRRRR ",
-	"RRRRRRRRRRxxxxxxxxxRRRRxxw",
-    "RRRRRRRRRRxxxxxxxxxRRxxxxw",	
-	"RRRRRRRRRRRRRRRRRRRRRxxxxw",	//10	
-	"xxRxxxRRRRRRRRRRRRRRRRRxxw",		
-	"xxRxxxRRRRRRRRRRRRRRRRRRR ",		
-	"xxRxxxRRxxxxxRxxxRxxRRRxxw",		
-	"xxRxxxRRxxxxxRRxRRxRRxxxxw",		
-	"xxRxxxRRxxxxxRRxRRRxRxxxxw",		
-	"xxRxxxRRxxxxxRRxRRxxRRRxxw",		
+	"RRRRRRRRRRxxxxxxxxxRRRxxxw",
+    "RRRRRRRRRRxxxxxxxxxRRRxxxw",	
+	"RRRRRRRRRRRRRRRRRRRRRRxxxw",	//10	
+	"xxRxxxRRRRRRRRRRRRRRRRxxxw",		
+	"xxRxxxRRRRRRRRWWWRWWWRRRR ",		
+	"xxRxxxRRxxxxxRRWRRWRRRxxxw",		
+	"xxRxxxRRxxxxxRRWRRWWWRxxxw",		
+	"xxRxxxRRxxxxxRRWRRRRWRxxxw",		
+	"xxRxxxRRxxxxxRRWRRWWWRxxxw",		
 	"xxRxxxRRxxxxxRRRRRRRRRRRR ",		
 	"xxRxxxRRRRRRRRRRRRRRRRRRR ",		
 	"RRRRRRRRRRRRRRRRRRRRwwwww ",		
 	"RRRRRRRRRRRRRRRxxxRRwwwwR ",    //20
-	"RwwRRRxxxxxxRRRxxxRRwwwwR ",		
-	"RwwRRRxxxxxxRRRxxxRRwwwww ",		
+	"RwwRRRxxxxxxxRRxxxRRwwwwR ",		
+	"RwwRRRxxxxxxxRRxxxRRwwwww ",		
 	"RRRRRRRRRRRRRRRRRRRRRRRRR ",		
-	"R RRRWWWWWWRRRRRRRR RRRwww",
-	"RRRRRWWWWWWRRRRRRRRRRRRwww" 	 //25
+	"R RRRWWWWWWWRRRRRRR RRRwww",
+	"RRRRRWWWWWWWRRRRRRRRRRRwww" 	 //25
+};
+
+//Icono "My machine" para un BaseConf
+char *bitmap_button_ext_desktop_my_machine_baseconf[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "RRRRRRxxxxxxxxxxxxxxxRRRR ",     //0
+  	"R RRRRxxxxxxxxxxxxxxxRR R ", 		
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",	
+	"RRxxRRxxxxxxxxxxxxxxxRRwww",
+	"RRxxRRxxxxxxxxxxxxxxxRRRR ",		
+	"RRRRRRRRRRRRRRRRRRRRRRRww ",
+	"RRRRRRRRRRRRRRRRRRRRRRRww ",
+	"RRRRRRRRRRxxxxxxxxxRRRRRR ",
+	"RRRRRRRRRRxxxxxxxxxRRRxxxw",
+    "RRRRRRRRRRxxxxxxxxxRRRxxxw",	
+	"RRRRRRRRRRRRRRRRRRRRRRxxxw",	//10	
+	"xxRxxxRRRRRRRRRRRRRRRRxxxw",		
+	"xxRxxxRRRRRRRRWWRRRWWRRRR ",		
+	"xxRxxxRRxxxxxRWRWRWRRRxxxw",		
+	"xxRxxxRRxxxxxRWWRRWRRRxxxw",		
+	"xxRxxxRRxxxxxRWRWRWRRRxxxw",		
+	"xxRxxxRRxxxxxRWWRRRWWRxxxw",		
+	"xxRxxxRRxxxxxRRRRRRRRRRRR ",		
+	"xxRxxxRRRRRRRRRRRRRRRRRRR ",		
+	"RRRRRRRRRRRRRRRRRRRRwwwww ",		
+	"RRRRRRRRRRRRRRRxxxRRwwwwR ",    //20
+	"RwwRRRxxxxxxxRRxxxRRwwwwR ",		
+	"RwwRRRxxxxxxxRRxxxRRwwwww ",		
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",		
+	"R RRRWWWWWWWRRRRRRR RRRwww",
+	"RRRRRWWWWWWWRRRRRRRRRRRwww" 	 //25
 };
 
 //Icono "My machine" para un MK14

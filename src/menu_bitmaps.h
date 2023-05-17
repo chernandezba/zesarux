@@ -217,6 +217,7 @@ extern char *bitmap_button_ext_desktop_my_machine_timex_tc2048[];
 extern char *bitmap_button_ext_desktop_my_machine_z88[];
 extern char *bitmap_button_ext_desktop_my_machine_zxuno[];
 extern char *bitmap_button_ext_desktop_my_machine_tsconf[];
+extern char *bitmap_button_ext_desktop_my_machine_baseconf[];
 extern char *bitmap_button_ext_desktop_my_machine_mk14[];
 extern char *bitmap_button_ext_desktop_my_machine_pentagon[];
 extern char *bitmap_button_ext_desktop_my_machine_spectrum_next[];
