@@ -54,6 +54,7 @@
 #include "joystick.h"
 #include "textspeech.h"
 #include "network.h"
+#include "ula.h"
 
 #if defined(__APPLE__)
 	#include <sys/syslimits.h>
@@ -2806,14 +2807,20 @@ int menu_filesel_is_compressed(char *archivo)
 	return compressed_type;	
 }
 
+void menu_filesel_uncompress_get_tmpdir(char *archivo,char *tmpdir)
+{
+    //descomprimir creando carpeta TMPDIR_BASE/zipname
+ sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo);
+}
+
 //Devuelve 0 si ok
 
 int menu_filesel_uncompress (char *archivo,char *tmpdir)
 {
-
-
+    menu_filesel_uncompress_get_tmpdir(archivo,tmpdir);
 //descomprimir creando carpeta TMPDIR_BASE/zipname
- sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo);
+ //sprintf (tmpdir,"%s/%s",get_tmpdir_base(),archivo);
+ 
  menu_filesel_mkdir(tmpdir);
 
 
@@ -3897,6 +3904,7 @@ int menu_filesel_overlay_valor_contador_segundo_anterior;
 
 struct s_filesel_preview_mem {
 	int color;
+    int color_flash; //color si en ese momento hay parpadeo
 };
 
 //Datos del ultimo preview mostrado
@@ -3928,7 +3936,9 @@ void menu_filesel_overlay_assign_memory_preview(int width,int height)
 }
 
 void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int alto,int reducir)
-{   int x,y;
+{   
+    //printf("draw preview %d\n",contador_segundo);
+    int x,y;
     int contador=0;
 
     int incremento=1;
@@ -3947,16 +3957,20 @@ void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int
                 //Sacar los 4 colores de la cuadricula de 2x2
                 int offset_orig;
                 offset_orig=y*ancho+x;
-                colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
+                else colores_cuadricula[0]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
 
                 offset_orig=y*ancho+x+1;
-                colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
+                else colores_cuadricula[1]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
 
                 offset_orig=(y*ancho+1)+x;
-                colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
+                else colores_cuadricula[2]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
 
                 offset_orig=(y*ancho+1)+x+1;
-                colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
+                if (estado_parpadeo.v) colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color_flash;
+                else colores_cuadricula[3]=menu_filesel_overlay_last_preview_memory[offset_orig].color;
 
 
 
@@ -3996,7 +4010,8 @@ void menu_filesel_overlay_draw_preview_scr(int xorigen,int yorigen,int ancho,int
             }
 
             else {
-                color_final=menu_filesel_overlay_last_preview_memory[contador].color;
+                if (estado_parpadeo.v) color_final=menu_filesel_overlay_last_preview_memory[contador].color_flash;
+                else color_final=menu_filesel_overlay_last_preview_memory[contador].color;
                 contador++;
                 xdestino=x;
                 ydestino=y;
@@ -4246,8 +4261,10 @@ void menu_filesel_preview_reduce_monochome(int *buffer_intermedio,int ancho, int
 
 			//buffer_intermedio[offset_final++]=color_final;
 
-			menu_filesel_overlay_last_preview_memory[offset_final++].color=color_final;
+			menu_filesel_overlay_last_preview_memory[offset_final].color=color_final;
+            menu_filesel_overlay_last_preview_memory[offset_final].color_flash=color_final;
 
+            offset_final++;
 		}
 	}
 
@@ -4318,7 +4335,11 @@ void menu_filesel_preview_reduce_scr_color(int *buffer_intermedio,int ancho, int
 			if (veces_color_final1>veces_color_final2) color_final=color_final1;
 			else color_final=color_final2;
 
-			menu_filesel_overlay_last_preview_memory[offset_final++].color=color_final;
+			menu_filesel_overlay_last_preview_memory[offset_final].color=color_final;
+            menu_filesel_overlay_last_preview_memory[offset_final].color_flash=color_final;
+
+            offset_final++;
+
 
 		}
 	}
@@ -4340,11 +4361,14 @@ void menu_filesel_preview_no_reduce_scr(int *buffer_intermedio,int ancho, int al
 
 	for (y=0;y<alto;y++) {
 		for (x=0;x<ancho;x++) {
+            int color=buffer_intermedio[offset_orig++];
+			int color_sin_flash=color & 0xF;
+            int color_con_flash=(color >> 4) & 0xF;
 
-			int color_final=buffer_intermedio[offset_orig++];
+			menu_filesel_overlay_last_preview_memory[offset_final].color=color_sin_flash;       
+            menu_filesel_overlay_last_preview_memory[offset_final].color_flash=color_con_flash; 
 
-
-			menu_filesel_overlay_last_preview_memory[offset_final++].color=color_final;            
+            offset_final++;    
         }
 
 	}
@@ -4450,12 +4474,20 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 				for (bit_counter=0;bit_counter<8;bit_counter++) {
 					
 					//de momento solo 0 o 1
-					int color=(leido & 128 ? tinta : papel);
+					int color_sin_flash=(leido & 128 ? tinta : papel);
 
-					
-					//menu_filesel_overlay_last_preview_memory[offset].color=color;
+                    int color_con_flash;
+                    if (atributo&128) {
+                        color_con_flash=(leido & 128 ? papel : tinta);
+                    }
+                    else {
+                        color_con_flash=(leido & 128 ? tinta : papel);
+                    }
 
-					buffer_intermedio[offset_destino+bit_counter]=color;
+
+
+                    //Codificamos en el nibble bajo el color sin flash, y en el nibble alto el color con flash
+					buffer_intermedio[offset_destino+bit_counter]=color_sin_flash | (color_con_flash << 4);
 					leido=leido << 1;
 				}
 			}
@@ -4465,25 +4497,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 		free(buf_pantalla);
 
-        //TODO: detectar esto en base al tamaño ventana (ancho y alto)
-        /*int reducir_mitad=1;
 
-
-        if (reducir_mitad) {
-		    //Reducir a 128x96
-		    menu_filesel_overlay_assign_memory_preview(128,96);
-
-		    //menu_filesel_preview_reduce_monochome(buffer_intermedio,256,192);
-
-		    menu_filesel_preview_reduce_scr_color(buffer_intermedio,256,192);
-        }
-
-        else {
-		    //No reducir, tal cual a 256x192
-		    menu_filesel_overlay_assign_memory_preview(256,192);
-
-		    menu_filesel_preview_no_reduce_scr(buffer_intermedio,256,192);            
-        }*/
 
 
         //Ahora siempre se lee el preview a tamaño completo,
@@ -4600,48 +4614,23 @@ int menu_filesel_render_preview_directory_find_file(char *directorio,char *archi
 	//printf("total elementos directorio: %d\n",n);
 
         for (i=0;i<n;i++) {
-		nombreactual=namelist[i];
-            //printf("%s\n", nombreactual->d_name);
-            //printf("%d\n", nombreactual->d_type);
+            nombreactual=namelist[i];
+
+            sprintf(archivo_encontrado,"%s/%s",directorio,nombreactual->d_name);
+
+            long long int file_size=get_file_size(archivo_encontrado);
+      
+            int retorno=util_get_extract_preview_type_file(nombreactual->d_name,file_size);
+
+            if (retorno) {
 
 
-		//item=malloc(sizeof(filesel_item));
-		//if (item==NULL) cpu_panic("Error allocating file item");
-
-        //printf("Archivo %s\n",nombreactual->d_name);
-    int retorno=util_get_extract_preview_type_file(nombreactual->d_name);
-
-    if (retorno) {
+                
+                //printf("Encontrado primer archivo a extraer %s en directorio %s\n",archivo_encontrado,directorio);
+                return retorno;
+            }      
 
 
-        sprintf(archivo_encontrado,"%s/%s",directorio,nombreactual->d_name);
-        //printf("Encontrado primer archivo a extraer %s en directorio %s\n",archivo_encontrado,directorio);
-        return retorno;
-    }      
-
-
-          
-		//strcpy(item->d_name,nombreactual->d_name);
-
-
-		/*item->next=NULL;
-
-		//primer item
-		if (primer_filesel_item==NULL) {
-			primer_filesel_item=item;
-		}
-
-		//siguientes items
-		else {
-			itemanterior->next=item;
-		}
-
-		itemanterior=item;
-		free(namelist[i]);
-
-
-		filesel_total_items++;
-        */
         }
 
 		free(namelist);
@@ -4653,7 +4642,7 @@ int menu_filesel_render_preview_directory_find_file(char *directorio,char *archi
 
 }
 
-
+/*
 void menu_filesel_render_preview_directory(char *dir_name)
 {
 
@@ -4666,36 +4655,37 @@ void menu_filesel_render_preview_directory(char *dir_name)
         return; 
     }
 
+    char archivo_preview[PATH_MAX];
+
     //Obtener directorio preview
     char tmpdir[PATH_MAX];
     sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name);
-
-    menu_filesel_mkdir(tmpdir);   
-
 
     //Si existe archivo preview
     char archivo_info_pantalla[PATH_MAX];
     sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);     
 
-	//Definimos tmpfile_scr para los que convierten snapshot directo a scr
-	char tmpfile_scr[PATH_MAX];	
-	sprintf (tmpfile_scr,"%s/%s.scr",tmpdir,filesel_nombre_archivo_seleccionado);	    
+	//Definimos preview_scr para los que convierten snapshot directo a scr
+	char preview_scr[PATH_MAX];	
+	sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name);	    
 
 
     if (!si_existe_archivo(archivo_info_pantalla)) {
-        //TODO: entrar en carpeta y hacer preview del primer archivo que reconocemos: tap, dsk, etc
-            char archivo_encontrado_extraer[PATH_MAX];
-            int retorno=menu_filesel_render_preview_directory_find_file(dir_name,archivo_encontrado_extraer);
-            if (retorno) {
+        //entrar en carpeta y hacer preview del primer archivo que reconocemos: tap, dsk, etc
+        menu_filesel_mkdir(tmpdir);
+        
+        int tipo_extraccion=menu_filesel_render_preview_directory_find_file(dir_name,archivo_preview);
+        if (tipo_extraccion) {
 
-                if (retorno==1) retorno=util_extract_preview_file_expandable(archivo_encontrado_extraer,tmpdir);
-                if (retorno==2) util_extract_preview_file_simple(archivo_encontrado_extraer,tmpdir,tmpfile_scr,-1);
+            long long int file_size=get_file_size(archivo_preview);
 
-                /*if (retorno!=0) {
-                    //ERROR
-                    return;
-                }*/
+            if (tipo_extraccion==1) util_extract_preview_file_expandable(archivo_preview,tmpdir);
+            if (tipo_extraccion==2 || file_size==6912) {
+                
+                util_extract_preview_file_simple(archivo_preview,tmpdir,preview_scr,file_size);
             }
+
+        }
 
     }
 
@@ -4713,10 +4703,8 @@ void menu_filesel_render_preview_directory(char *dir_name)
     }
 
     //De conversion directa sin extraccion (scr, sna, z80, etc)
-    else if (si_existe_archivo(tmpfile_scr)) {
-
-
-        menu_filesel_preview_render_scr(tmpfile_scr);
+    else if (si_existe_archivo(preview_scr)) {
+        menu_filesel_preview_render_scr(preview_scr);
     }    
 
     else {        
@@ -4725,12 +4713,221 @@ void menu_filesel_render_preview_directory(char *dir_name)
         menu_filesel_overlay_last_preview_width=0;
         menu_filesel_overlay_last_preview_height=0;	        
     }
+
+    //printf("if_pending_error_message: %d\n",if_pending_error_message);
+    //Quitar posibles errores al preparar esta preview
+    //no queremos alertar al usuario por archivos incorrectos
+    //De todas maneras siempre se vería el error en la consola
+    if_pending_error_message=0;    
 }
+*/
+
+//Entrada:
+//es_directorio: si es preview de directorio
+//archivo_preview: si es directorio, apunta a buffer temporal (sin contenido inicial). si es archivo, apunta a archivo a preview
+//dir_name: si es directorio, directorio del cual hacer preview. si es archivo, no se usa, puede entrar NULL
+void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_preview,char *dir_name)
+{
+
+    if (es_directorio) {
+        if (!strcasecmp(dir_name,".") || !strcasecmp(dir_name,".."))
+        {
+            //no hacer esto para directorios especiales "." o ".."
+            //quitar la posible preview anterior
+            menu_filesel_overlay_last_preview_width=0;
+            menu_filesel_overlay_last_preview_height=0;	  
+            return; 
+        }
+    }
+
+
+    //Obtener directorio preview
+    char tmpdir[PATH_MAX];
+
+    //quitar del nombre las / o \\ que puedan haber. esto sucede cuando
+    //se hace un preview de un archivo zip por ejemplo
+    char nombre_sin_barras[PATH_MAX];
+    if (es_directorio) {
+        strcpy (nombre_sin_barras,dir_name);
+    }
+    else {
+        strcpy (nombre_sin_barras,archivo_preview);
+    }
+
+    util_normalize_file_name_for_temp_dir(nombre_sin_barras);
+    //printf("Normalized file name: [%s]\n",nombre_sin_barras);
+
+    sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),nombre_sin_barras);
+
+    //Si existe archivo preview
+    char archivo_info_pantalla[PATH_MAX];
+    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
+
+	//Definimos preview_scr para los que convierten snapshot directo a scr
+	char preview_scr[PATH_MAX];
+    if (es_directorio) {
+	    sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name);
+    }
+    else {
+        sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
+    }
+
+
+    if (!si_existe_archivo(archivo_info_pantalla)) {
+        menu_filesel_mkdir(tmpdir);
+
+        //entrar en carpeta y hacer preview del primer archivo que reconocemos: tap, dsk, etc
+        int tipo_extraccion;
+
+        long long int file_size;
+
+        if (es_directorio) {
+            //TODO: si el primer archivo que encuentra es un tap por ejemplo,
+            //pero ese tap no tiene pantalla, no habra preview de ese directorio
+            //se deberia hacer que siga intentando hasta el primer archivo que genera preview
+            //Esto es un poco tiquismiquis... no es algo estrictamente necesario pero quedaria mejor
+            tipo_extraccion=menu_filesel_render_preview_directory_find_file(dir_name,archivo_preview);
+        }
+        else {
+            file_size=get_file_size(archivo_preview);
+            tipo_extraccion=util_get_extract_preview_type_file(archivo_preview,file_size);
+        }
+
+        if (tipo_extraccion) {
+
+            file_size=get_file_size(archivo_preview);
+
+            if (tipo_extraccion==1) util_extract_preview_file_expandable(archivo_preview,tmpdir);
+            if (tipo_extraccion==2 || file_size==6912) {
+
+                util_extract_preview_file_simple(archivo_preview,tmpdir,preview_scr,file_size);
+            }
+
+        }
+
+    }
+
+
+    if (si_existe_archivo(archivo_info_pantalla)) {
+        debug_printf(VERBOSE_DEBUG,"Got preview file [%s]",archivo_info_pantalla);
+
+        char buf_archivo_scr[PATH_MAX];
+
+        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);
+
+        //printf ("PANTALLA:     %s\n",buf_archivo_scr);
+
+        menu_filesel_preview_render_scr(buf_archivo_scr);
+    }
+
+    //De conversion directa sin extraccion (scr, sna, z80, etc)
+    else if (si_existe_archivo(preview_scr)) {
+        debug_printf(VERBOSE_DEBUG,"Got direct SCR [%s]",preview_scr);
+        menu_filesel_preview_render_scr(preview_scr);
+    }
+
+    else {
+
+        //quitar la posible preview anterior
+        menu_filesel_overlay_last_preview_width=0;
+        menu_filesel_overlay_last_preview_height=0;
+    }
+
+    //printf("if_pending_error_message: %d\n",if_pending_error_message);
+    //Quitar posibles errores al preparar esta preview
+    //no queremos alertar al usuario por archivos incorrectos
+    //De todas maneras siempre se vería el error en la consola
+    if_pending_error_message=0;
+}
+
+
 
 char menu_filesel_last_preview_file[PATH_MAX]="";
 
+
 //Renderizar preview en memoria del archivo seleccionado
 void menu_filesel_overlay_render_preview_in_memory(void)
+{
+
+
+
+	//de momento nada mas
+	debug_printf(VERBOSE_DEBUG,"Preview File: %s",filesel_nombre_archivo_seleccionado);
+
+	if (!strcmp(menu_filesel_last_preview_file,filesel_nombre_archivo_seleccionado)) {
+		debug_printf(VERBOSE_DEBUG,"File is the same as before. Do not do anything");
+		return;
+	}    
+
+    strcpy(menu_filesel_last_preview_file,filesel_nombre_archivo_seleccionado);
+
+    //Si no existe
+    //Esto sucede cuando se escribe el nombre del archivo a mano desde el campo File del fileselector
+    if (!si_existe_archivo(filesel_nombre_archivo_seleccionado)) {
+        debug_printf(VERBOSE_DEBUG,"%s does not exist when rendering preview",filesel_nombre_archivo_seleccionado);
+        return;
+    }
+
+    
+    if (file_is_directory(filesel_nombre_archivo_seleccionado)) {
+        debug_printf(VERBOSE_DEBUG,"File is a directory, trying to get preview");
+
+        //esto es solo buffer temporal
+        char archivo_preview[PATH_MAX];
+        menu_filesel_overlay_render_preview_aux(1,archivo_preview,filesel_nombre_archivo_seleccionado);
+
+    }
+
+    else {
+	    debug_printf(VERBOSE_DEBUG,"Rendering file preview");
+
+        long long int file_size;
+
+        file_size=get_file_size(filesel_nombre_archivo_seleccionado);
+
+        if (file_size>10*1024*1024) {
+            debug_printf(VERBOSE_DEBUG,"Do not preview files larger than 10 MiB");
+            //quitar la posible preview anterior
+            menu_filesel_overlay_last_preview_width=0;
+            menu_filesel_overlay_last_preview_height=0;
+            return;
+        }
+
+
+        if (menu_filesel_is_compressed(filesel_nombre_archivo_seleccionado)) {
+			debug_printf (VERBOSE_DEBUG,"Rendering Compressed file");
+            char tmpdir[PATH_MAX];
+
+            menu_filesel_uncompress_get_tmpdir(filesel_nombre_archivo_seleccionado,tmpdir);
+
+            //Descomprimir si no existe ya
+            if (!si_existe_archivo(tmpdir)) {
+
+
+                menu_filesel_uncompress(filesel_nombre_archivo_seleccionado,tmpdir);
+                debug_printf (VERBOSE_DEBUG,"Uncompressed [%s] on [%s]",filesel_nombre_archivo_seleccionado,tmpdir);
+
+            }
+
+
+            //esto es solo buffer temporal
+            char archivo_preview[PATH_MAX];
+            menu_filesel_overlay_render_preview_aux(1,archivo_preview,tmpdir);            
+		}
+
+        else {
+            menu_filesel_overlay_render_preview_aux(0,filesel_nombre_archivo_seleccionado,NULL);
+        }
+    }
+
+    
+
+}
+
+/*
+
+//Renderizar preview en memoria del archivo seleccionado
+void old_menu_filesel_overlay_render_preview_in_memory(void)
 {
 
 
@@ -4764,97 +4961,64 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 
 	debug_printf(VERBOSE_DEBUG,"Rendering file preview");
 
-	long long int file_size=get_file_size(filesel_nombre_archivo_seleccionado);
+    char archivo_preview[PATH_MAX];
+    strcpy(archivo_preview,filesel_nombre_archivo_seleccionado);
 
-	//Creamos carpeta temporal por si no existe
-	char tmpdir[PATH_MAX];
+    //Obtener directorio preview
+    char tmpdir[PATH_MAX];
+    sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),archivo_preview);
 
-	//Carpeta temporal debe ser distinta del nombre del archivo
-	//por si a alguien le da por hacer preview de un archivo de esa misma carpeta temporal
-	//que eso sucede por ejemplo al descargar juegos del online browser en zx81
-	sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),filesel_nombre_archivo_seleccionado);
-	//sprintf (tmpdir,"%s/%s",get_tmpdir_base(),filesel_nombre_archivo_seleccionado);
+    //Si existe archivo preview
+    char archivo_info_pantalla[PATH_MAX];
+    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);     
 
-	//Crear carpeta solo cuando va a haber un preview
-	//menu_filesel_mkdir(tmpdir);	
-
-	//Definimos tmpfile_scr para los que convierten snapshot directo a scr
-	char tmpfile_scr[PATH_MAX];	
-	sprintf (tmpfile_scr,"%s/%s.scr",tmpdir,filesel_nombre_archivo_seleccionado);	
-
-    int tipo_extraccion=util_get_extract_preview_type_file(filesel_nombre_archivo_seleccionado);
-
-	//Si es tap o tzx o pzx o trd
-	// 
-	if (tipo_extraccion==1) {
-	
-		menu_filesel_mkdir(tmpdir);
-
-		//Ver si hay archivo que indica pantalla
-		char archivo_info_pantalla[PATH_MAX];
-		sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
-
-		if (!si_existe_archivo(archivo_info_pantalla)) {
-			//Archivo scr no existe. Extraer
-			debug_printf(VERBOSE_DEBUG,"File SCR does not exist. Extracting");
-
-            int retorno=util_extract_preview_file_expandable(filesel_nombre_archivo_seleccionado,tmpdir);
-
-			if (retorno!=0) {
-				//ERROR
-				return;
-			}
-
-		}
-
-		else {
-			debug_printf(VERBOSE_DEBUG,"SCR file already exists");
-		}
-
-		//Ver si hay archivo que indica pantalla
-        //printf("archivo_info_pantalla %s\n",archivo_info_pantalla);
-
-		if (si_existe_archivo(archivo_info_pantalla)) {
-			//printf("HAY PANTALLA--------------- \n");
-
-			char buf_archivo_scr[PATH_MAX];
-
-			lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);
-
-			//printf ("PANTALLA:     %s\n",buf_archivo_scr);
-
-			menu_filesel_preview_render_scr(buf_archivo_scr);
-		}
-
-		else {
-			//printf("NO HAY PANTALLA****************\n");
-            debug_printf(VERBOSE_DEBUG,"There is no SCR file");
-
-			//liberar preview
-			menu_filesel_overlay_last_preview_width=0;
-			menu_filesel_overlay_last_preview_height=0;			
-		}
-	}
+	//Definimos preview_scr para los que convierten snapshot directo a scr
+	char preview_scr[PATH_MAX];	
+	sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);	  
 
 
-	//Si es scr o tamaño 6912
-    //TODO: en el caso improbable que otro archivo que no sea una pantalla y ocupe 6912 bytes, se mostrara como pantalla
-    //esto lo hago porque por ejemplo si expandimos un dsk u otro archivo expandible que tiene dentro una pantalla,
-    //seguramente no tendra extension scr y queremos mostrar una pantalla que este dentro al expandir el archivo
-	else if (tipo_extraccion==2 || file_size==6912) {
+    if (!si_existe_archivo(archivo_info_pantalla)) {
+        menu_filesel_mkdir(tmpdir);
+        int tipo_extraccion=util_get_extract_preview_type_file(archivo_preview);
+        if (tipo_extraccion) {
 
-        util_extract_preview_file_simple(filesel_nombre_archivo_seleccionado,tmpdir,tmpfile_scr,file_size);
+            long long int file_size=get_file_size(archivo_preview);
 
-		menu_filesel_preview_render_scr(tmpfile_scr);
+            if (tipo_extraccion==1) util_extract_preview_file_expandable(archivo_preview,tmpdir);
+            if (tipo_extraccion==2 || file_size==6912) {
+                
+                util_extract_preview_file_simple(archivo_preview,tmpdir,preview_scr,file_size);
+            }
 
-	}
+        }
+
+    }    
 
 
-	else {
-		//Cualquier otra cosa, liberar preview
-		menu_filesel_overlay_last_preview_width=0;
-		menu_filesel_overlay_last_preview_height=0;
-	}
+
+    if (si_existe_archivo(archivo_info_pantalla)) {
+        //printf("HAY PANTALLA--------------- \n");
+
+        char buf_archivo_scr[PATH_MAX];
+
+        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);
+
+        //printf ("PANTALLA:     %s\n",buf_archivo_scr);
+
+        menu_filesel_preview_render_scr(buf_archivo_scr);
+    }
+
+    //De conversion directa sin extraccion (scr, sna, z80, etc)
+    else if (si_existe_archivo(preview_scr)) {
+        menu_filesel_preview_render_scr(preview_scr);
+    }    
+
+    else {        
+
+        //quitar la posible preview anterior
+        menu_filesel_overlay_last_preview_width=0;
+        menu_filesel_overlay_last_preview_height=0;	        
+    }
 
     //printf("if_pending_error_message: %d\n",if_pending_error_message);
     //Quitar posibles errores al preparar esta preview
@@ -4864,6 +5028,8 @@ void menu_filesel_overlay_render_preview_in_memory(void)
 
 
 }
+
+*/
 
 //Overlay para mostrar los previews
 void menu_filesel_overlay(void)

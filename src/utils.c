@@ -21500,7 +21500,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 //0: no tiene preview
 //1: preview con extraccion (tap, tzx, etc)
 //2: preview directa: scr, sna, etc
-int util_get_extract_preview_type_file(char *nombre)
+int util_get_extract_preview_type_file(char *nombre,long long int file_size)
 {
     if (!util_compare_file_extension(nombre,"tap") ||
 		!util_compare_file_extension(nombre,"tzx") ||
@@ -21520,10 +21520,27 @@ int util_get_extract_preview_type_file(char *nombre)
         !util_compare_file_extension(nombre,"sp") ||
         !util_compare_file_extension(nombre,"z80") ||
         !util_compare_file_extension(nombre,"p") ||
-        !util_compare_file_extension(nombre,"zsf")
+        !util_compare_file_extension(nombre,"zsf") || 
+        file_size==6912
     ) {    
         return 2;
     }   
 
     return 0;
+}
+
+
+//quitar del nombre las / o \\ que puedan haber. esto sucede cuando
+//se hace un preview de un archivo zip por ejemplo
+//Y luego este nombre lo queremos para construir una ruta temporal
+
+void util_normalize_file_name_for_temp_dir(char *nombre)
+{
+    while (*nombre) {
+        if ((*nombre)=='/' || (*nombre)=='\\') {
+            *nombre='_';
+        }
+
+        nombre++;
+    }
 }

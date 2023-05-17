@@ -970,7 +970,8 @@ extern void util_drag_drop_file(char *filepath);
 extern int util_extract_preview_file_expandable(char *nombre,char *tmpdir);
 extern void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_scr,int file_size);
 
-extern int util_get_extract_preview_type_file(char *nombre);
+extern int util_get_extract_preview_type_file(char *nombre,long long int file_size);
+extern void util_normalize_file_name_for_temp_dir(char *nombre);
 
 extern int util_if_filesystem_plusidedos(z80_byte *memoria,int total_size);
 extern int util_if_filesystem_fat16(z80_byte *memoria,int total_size);
