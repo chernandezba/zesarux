@@ -4766,11 +4766,21 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
 	//Definimos preview_scr para los que convierten snapshot directo a scr
 	char preview_scr[PATH_MAX];
     if (es_directorio) {
-	    sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name);
+        //Necesario esto cuando viene de descomprimir un archivo comprimido, porque dir_name tiene path a /tmp/zesarux...
+        char dir_name_sin_barras[PATH_MAX];
+        strcpy(dir_name_sin_barras,dir_name);
+        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);
+	    sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name_sin_barras);
+
+        //temp mal
+        //sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name);
     }
     else {
         sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
     }
+
+    //printf("archivo_info_pantalla: %s\n",archivo_info_pantalla);
+    //printf("preview_scr: %s\n",preview_scr);
 
 
     if (!si_existe_archivo(archivo_info_pantalla)) {
