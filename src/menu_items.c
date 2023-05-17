@@ -5939,10 +5939,9 @@ void menu_audio_new_ayplayer_overlay(void)
 			//printf ("Dibujando player\n");
 
 			z80_byte minutos,segundos,minutos_total,segundos_total;
-			minutos=ay_song_length_counter/60/50;
-			segundos=(ay_song_length_counter/50)%60;
-			minutos_total=ay_song_length/60/50;
-			segundos_total=(ay_song_length/50)%60;
+			ay_player_get_elapsed_current_song(&minutos,&segundos);
+
+            ay_player_get_duration_current_song(&minutos_total,&segundos_total);
 
             //printf ("segundo. contador segundo: %d\n",contador_segundo);
 

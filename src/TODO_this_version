@@ -1,1 +1,176 @@
 Para esta version: 
+
+--Errores
+
+-exolon rzx, si se abre menu, se queda continuamente disparando y agachado (joystick seleccionado: cursor&shift, aunque parece que no importa esto)
+
+
+-parpadeos en driver xwindow en zx desktop al moverse por menus
+
+-cacalib, en consola texto pura, parpadeo en menu (y en general en cualquier pixel emulado con brillo)
+
+-con daad debug, si hago un cambio de gui style, se activa la opcion de watch en daad debug... quiza no está gestionando bien el overlay??
+
+
+-ZENG soporte para QL. ok aunque no envia teclas extendidas
+-ZENG para msx se leen los cursores en destino
+-ZENG colecovision no va bien
+
+-plus3doshandler: muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
+ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
+
+
+-revisar en menu_debug_change_registers(void),
+//Si lanzo con debug_print ERR, y estamos en modo step, se habilita multitarea, por que?
+
+
+-archivos de cintas que no se cierran en windows al expulsarlas
+
+-kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
+
+-speech con caracteres con acentos no los envia, los filtra 
+
+-snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
+
+-quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
+
+
+-al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
+
+-en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
+
+-text adventure map: opcion mostrar descripciones. localidad 14 por ejemplo se mezcla??
+
+-visual real tape no actualiza bien si menu cerrado y top speed
+
+
+
+-en menus al moverse con pgup down creo que no siempre va bien, por ejemplo en tracks list de +3 al pgdn siempre queda abajo, mientras que pgup no
+
+
+-En visor dsk que solo muestre primer extent de un archivo. ya esta??
+-extractor dsk no obtiene bien longitudes de disco cpc (porque intenta obtener cabecera plus3dos). ok ya?
+-extractor dsk que use misma manera que visor dsk?
+-extractor dsk creo que a veces lee archivos con cabecera plus3dos. ejemplo : chase hq2. tampoco parece obtener bien siempre los datos (de otro sitio...)
+lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read from PLUS3DOS header: 55560
+
+
+-Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
+
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
+-revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
+->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
+->con noconfigfile, si que muestra splash. aunque se ve el texto por debajo de otras ventanas abiertas
+
+----
+
+--Mejoras
+
+-algun tipo de build que no sea ni linux ni mac ni windows, sino simplemente UNIX_GENERIC o algo similar
+
+-conviene ocultar Wall y Wextra en version estable? puede salir algun warning util solo en version estable? no deberia, son warnings muy especificos
+
+-Botón derecho botones acciones: editar botón superior. Y en dispositivos? Quizá setting...
+
+-Quiza registro DE al volver de rutina de trap load, deberia ser DE -=bytes_leidos
+
+
+-Renombrar setting de background windows por multitask windows? O algo así
+Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
+
+
+-al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
+
+
+
+-driver fbdev en pc , con "zesarux --noconfigfile --vo fbdev > /dev/null". al desactivar border, genera panic. tambien desactivando border
+
+
+-Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
+
+
+-Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background 
+
+-En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
+-O incluso mejor un browser/viewer de formato CP/M, que indique:
+*extent number
+*date file 
+*etc
+
+
+-registro EPC para tbblue, zxuno, ....
+
+
+-Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
+
+-Para ZENG con más de 2 pcs:
+*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
+
+
+-Funciones de utils no deberían involucrar nada del menú
+
+
+-quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
+usar la que si considera movimiento raton
+
+ 
+- ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
+
+
+-A mejorar en Next para próxima versión: Ver TODO_machines, sección Next, en : "A mejorar en Next para próxima versión"
+
+
+-incorporar ZEsarUX en taskbar (dbus??) de kde, gnome o lo que se pueda
+
+
+
+-Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+
+
+
+
+-paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
+
+-mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
+hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
+Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0002 segmentation fault, etc
+
+-combinacion de tecla especial que haga un "reinicio" del menu, por si se ha colgado en algun sitio
+
+-footer que tambien amplie tamaño segun menu_gui_zoom
+
+-Por determinar visibilidad de processswitcher. siempre visible si o no?
+
+-tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire por defecto...
+
+-quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
+
+
+-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al cerrarse una ventana deberia incrementarse en 1? o no?
+
+-dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
+
+-texto speech en menu se oye antes que se empiece a mostrar filesel
+
+-en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
+
+-con el ay player mostrar por consola cada cancion que va entrando. util para reproducir musica random por consola y sin driver video
+
+
+-Función joystick conmuta full screen 
+-F función cualquiera Tecla F por joystick 
+
+-Teclado en pantalla en gpi borra el input de debajo 
+-on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
+
+
+-Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
+
+--Fin mejoras
+
+
+
+

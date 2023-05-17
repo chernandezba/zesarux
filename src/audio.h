@@ -242,6 +242,10 @@ extern z80_int ay_player_limit_any_track;
 extern z80_bit ay_player_repeat_file;
 
 extern z80_bit ay_player_cpc_mode;
+extern z80_bit ay_player_show_info_console;
+
+extern void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total);
+extern void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos);
 
 extern z80_byte audiodac_last_value_data;
 

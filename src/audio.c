@@ -1519,6 +1519,9 @@ z80_bit ay_player_repeat_file={1};
 //Reproducir en modo cpc
 z80_bit ay_player_cpc_mode={0};
 
+//Mostrar info de cancion tambien en consola
+z80_bit ay_player_show_info_console={0};
+
 //Retorna valor de 16 bit apuntado como big endian
 z80_int audio_ay_player_get_be_word(int index)
 {
@@ -1637,6 +1640,16 @@ int audio_ay_player_load(char *filename)
 //sprintf (ay_player_file_author_misc,"%s - %s",&audio_ay_player_mem[indice_autor],&audio_ay_player_mem[indice_misc]);
 sprintf (ay_player_file_author,"%s",&audio_ay_player_mem[indice_autor]);
 sprintf (ay_player_file_misc,"%s",&audio_ay_player_mem[indice_misc]);
+
+
+    if (ay_player_show_info_console.v) {
+        printf("Playing AY file: %s\n",filename);      
+	    printf ("Version: %d\n",file_version);
+	    printf ("Author: %s\n",&audio_ay_player_mem[indice_autor]);
+	    printf ("Misc: %s\n",&audio_ay_player_mem[indice_misc]);
+	    printf ("Total songs: %d\n",ay_player_total_songs() );
+	    printf ("First song: %d\n",ay_player_first_song() );        
+    }
 
 //temp
 //sprintf (ay_player_file_author,"%s","This is my second spectrum emulator after ZXSpectr");
@@ -2045,6 +2058,17 @@ im_mode=0;
 //		o) Emulate resetting of AY chip
 //		p) Start Z80 emulation*/
 
+    if (ay_player_show_info_console.v) {
+        z80_byte minutos_total,segundos_total;
+			
+        ay_player_get_duration_current_song(&minutos_total,&segundos_total);
+
+        printf ("Playing song %d name: %s. Duration: %02d:%02d\n",song,&audio_ay_player_mem[indice_nombre],
+            minutos_total,segundos_total);
+
+    }
+
+
 return 0;
 
 }
@@ -2138,6 +2162,17 @@ void ay_player_stop_player(void)
 	reset_cpu();
 }
 
+void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total)
+{
+    *minutos_total=ay_song_length/60/50;
+    *segundos_total=(ay_song_length/50)%60;
+}
+
+void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos)
+{
+    *minutos=ay_song_length_counter/60/50;
+    *segundos=(ay_song_length_counter/50)%60;
+}
 
 //Mezclar la salida actual de sonido con el audiodac.
 //El audiodac es muy simple, lo que hace es generar un valor de onda de 8 bits signed
