@@ -4512,7 +4512,7 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 }
 
-int menu_filesel_render_preview_directory_find_file_filter_func(const struct dirent *d)
+int menu_filesel_render_preview_directory_find_file_filter_func(const struct dirent *d GCC_UNUSED)
 {
 
     //de momento retornar 1 siempre
