@@ -4169,7 +4169,8 @@ int util_write_configfile(void)
   if (ay_player_limit_infinite_tracks!=0)     ADD_STRING_CONFIG,"--ayplayer-inf-length %d",ay_player_limit_infinite_tracks/50);
   if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
   if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");
-
+  if (ay_player_show_info_console.v)          ADD_STRING_CONFIG,"--ayplayer-show-info-console");
+                
                                               ADD_STRING_CONFIG,"--audiopiano-zoom %d",audiochip_piano_zoom_x);
 
 

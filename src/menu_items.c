@@ -6070,6 +6070,11 @@ void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_audio_new_ayplayer_show_on_console(MENU_ITEM_PARAMETERS)
+{
+    ay_player_show_info_console.v ^=1;
+}
+
 zxvision_window zxvision_window_ayplayer;
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
@@ -6243,6 +6248,11 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Switch to AY CPC mode");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+4);		
 
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_show_on_console,NULL,"[%c] C~~onsole print",
+					(ay_player_show_info_console.v ? 'X' : ' '));
+				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'o');
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Show information about AY file and song played in console too");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,lin+4);	
 
 			}			
 /*

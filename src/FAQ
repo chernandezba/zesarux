@@ -832,7 +832,7 @@ Using GNU/Linux or Mac you can also use ZEsarUX as a random ay file player, with
 while [ 1 == 1 ]; do
     ARCH=`ls -1 extras/media/ay_files/Spectrum/Games/| python -c "import sys; import random; print(random.choice(sys.stdin.readlines()).rstrip())"`
     echo $ARCH
-    ./zesarux --noconfigfile extras/media/ay_files/Spectrum/Games/$ARCH --ayplayer-inf-length 60 --ayplayer-end-exit --vo null
+    ./zesarux --noconfigfile extras/media/ay_files/Spectrum/Games/$ARCH --ayplayer-inf-length 60 --ayplayer-end-exit --ayplayer-show-info-console --vo null
 done
 
 
