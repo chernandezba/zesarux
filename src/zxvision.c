@@ -5596,6 +5596,10 @@ char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
         bitmap=bitmap_button_ext_desktop_my_machine_spectrum_next;
     }  
 
+    else if (MACHINE_IS_TSCONF) {
+        bitmap=bitmap_button_ext_desktop_my_machine_tsconf;
+    }
+
     else if (MACHINE_IS_SAM) {
         bitmap=bitmap_button_ext_desktop_my_machine_sam;
     }                                          

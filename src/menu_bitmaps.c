@@ -5483,6 +5483,38 @@ char *bitmap_button_ext_desktop_my_machine_zxuno[EXT_DESKTOP_BUTTONS_ANCHO]={
 };
 
 
+
+//Icono "My machine" para un TSConf
+char *bitmap_button_ext_desktop_my_machine_tsconf[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "RRRRRRxxxxxxxxxxxxxxxRRRR ",     //0
+  	"R RRRRxxxxxxxxxxxxxxxRR R ", 		
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",	
+	"RRxxRRxxxxxxxxxxxxxxxRRwww",
+	"RRxxRRxxxxxxxxxxxxxxxRRRR ",		
+	"RRRRRRRRRRRRRRRRRRRRRRRww ",
+	"RRRRRRRRRRRRRRRRRRRRRRRww ",
+	"RRRRRRRRRRxxxxxxxxxRRRRRR ",
+	"RRRRRRRRRRxxxxxxxxxRRRRxxw",
+    "RRRRRRRRRRxxxxxxxxxRRxxxxw",	
+	"RRRRRRRRRRRRRRRRRRRRRxxxxw",	//10	
+	"xxRxxxRRRRRRRRRRRRRRRRRxxw",		
+	"xxRxxxRRRRRRRRRRRRRRRRRRR ",		
+	"xxRxxxRRxxxxxRxxxRxxRRRxxw",		
+	"xxRxxxRRxxxxxRRxRRxRRxxxxw",		
+	"xxRxxxRRxxxxxRRxRRRxRxxxxw",		
+	"xxRxxxRRxxxxxRRxRRxxRRRxxw",		
+	"xxRxxxRRxxxxxRRRRRRRRRRRR ",		
+	"xxRxxxRRRRRRRRRRRRRRRRRRR ",		
+	"RRRRRRRRRRRRRRRRRRRRwwwww ",		
+	"RRRRRRRRRRRRRRRxxxRRwwwwR ",    //20
+	"RwwRRRxxxxxxRRRxxxRRwwwwR ",		
+	"RwwRRRxxxxxxRRRxxxRRwwwww ",		
+	"RRRRRRRRRRRRRRRRRRRRRRRRR ",		
+	"R RRRWWWWWWRRRRRRRR RRRwww",
+	"RRRRRWWWWWWRRRRRRRRRRRRwww" 	 //25
+};
+
 //Icono "My machine" para un MK14
 char *bitmap_button_ext_desktop_my_machine_mk14[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
