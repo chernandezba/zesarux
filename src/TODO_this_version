@@ -167,6 +167,9 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
 
+-revisar menu_filesel_render_preview_directory_find_file_filter_func, corregir para que solo salgan archivos o directorios,
+no sockets u otras cosas
+
 --Fin mejoras
 
 
