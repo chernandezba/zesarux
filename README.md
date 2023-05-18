@@ -145,6 +145,8 @@ __FEATURES__
 
 * Emulates Spectra Video Modes
 
+* Emulates Amstrad PCW Colour Video Modes
+
 * Emulates Timex Video modes (Mode 0 standard, 1 dual screen, 2 hires colour 8x1, 6 512x192 monochrome)
 
 * Emulates Pentagon 16C mode
