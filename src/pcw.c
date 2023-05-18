@@ -780,6 +780,38 @@ void scr_refresca_pant_pcw_return_line_pointer(z80_byte roller_ram_bank,z80_int 
     *address=(valor & 7) +2 *(valor & 0x1FF8);
 }
 
+int pcw_get_rgb_color_mode2(int i)
+{
+
+    return PCW_COLOUR_START_MODE2+i;
+}
+
+void pcw_refresca_putpixel_mode2(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=pcw_get_rgb_color_mode2(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
+int pcw_get_rgb_color_mode1(int i)
+{
+
+    return PCW_COLOUR_START_MODE1+i;
+}
+
+void pcw_refresca_putpixel_mode1(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=pcw_get_rgb_color_mode1(color);
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
 int pcw_get_rgb_color(int i)
 {
     //0 o 1
@@ -788,26 +820,6 @@ int pcw_get_rgb_color(int i)
     }
 
     else return (i ? PCW_COLOUR_GREEN : PCW_COLOUR_BLACK);
-}
-
-void pcw_refresca_putpixel_mode2(int x,int y,int color)
-{
-    y*=2;
-
-    int color_final=PCW_COLOUR_START_MODE2+color;
-
-    scr_putpixel_zoom(x,y,color_final);
-    scr_putpixel_zoom(x,y+1,color_final);
-}
-
-void pcw_refresca_putpixel_mode1(int x,int y,int color)
-{
-    y*=2;
-
-    int color_final=PCW_COLOUR_START_MODE1+color;
-
-    scr_putpixel_zoom(x,y,color_final);
-    scr_putpixel_zoom(x,y+1,color_final);
 }
 
 void pcw_refresca_putpixel(int x,int y,int color)
@@ -957,8 +969,11 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
             //Ejemplo de juego que usa reverse video: skywar.dsk
             if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) border_col=1;
 
+            int color;
 
-            int color=pcw_get_rgb_color(border_col);
+            if (pcw_video_mode==0) color=pcw_get_rgb_color(border_col);
+            else if (pcw_video_mode==1) color=pcw_get_rgb_color_mode1(border_col*3);
+            else color=pcw_get_rgb_color_mode2(border_col*15);
 
 
             scr_refresca_border_pcw(color);
