@@ -4744,32 +4744,54 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
     //Obtener directorio preview
     char tmpdir[PATH_MAX];
 
+	//Definimos preview_scr para los que convierten snapshot directo a scr
+	char preview_scr[PATH_MAX];    
+
     //quitar del nombre las / o \\ que puedan haber. esto sucede cuando
-    //se hace un preview de un archivo zip por ejemplo
-    char nombre_sin_barras[PATH_MAX];
+    //se hace un preview de un archivo zip por ejemplo (y aqui entrara un directorio con ruta a /tmp/zesarux....)
+    //Este normalizado al final podria ser cualquier cosa, incluso una hash del nombre+ruta,
+    //se trata de generar un nombre unico,
+    //en este caso, el nombre_sin_barras tiene que ser eso, un nombre que no incluya barras de carpeta,
+    //porque mas abajo se usará en el sprintf para generar una subcarpeta
+    //Al final se hace un mkdir y si la ruta incluye dos o mas subcarpetas por debajo sin crear,
+    //el mkdir falla. Esto se podria solventar teniendo un mkdir que crease todas las carpetas padre,
+    //pero creo que es complicarse mucho: con que genere un nombre unico sin barras es suficiente
+    //Por cierto que el normalizado cuando se trata de un archivo no se hace. Esto es debido a que cuando se entra aqui
+    //con un archivo, siempre estamos en el directorio donde está el archivo y por tanto el nombre no incluye ruta a directorio
+    //(no hay barras). Esto es la manera de funcionar del fileselector, siempre se va cambiando el directorio activo,
+    //y la excepcion es al seleccionar un archivo comprimido, porque se descomprime en ruta temporal y se entra aqui
+    //con la ruta a esa carpeta temporal (sin cambiar el directorio)
+    //Habria la alternativa de cambiar a ese directorio temporal el descomprimir archivos, pero habria que entrar con la ruta
+    //inmediatamente superior a esa ruta, y mejor no liarse... El concepto de normalizar ruta me puede servir
+    //en un futuro para otras características
+    //char nombre_sin_barras[PATH_MAX];
+    char dir_name_sin_barras[PATH_MAX];
     if (es_directorio) {
-        strcpy (nombre_sin_barras,dir_name);
+        strcpy(dir_name_sin_barras,dir_name);
+        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);   
+        sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),dir_name_sin_barras);     
+
+        sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name_sin_barras);
     }
     else {
-        strcpy (nombre_sin_barras,archivo_preview);
+        //strcpy (nombre_sin_barras,archivo_preview);
+        sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),archivo_preview);
+
+        sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
     }
 
-    util_normalize_file_name_for_temp_dir(nombre_sin_barras);
+    char archivo_info_pantalla[PATH_MAX];
+    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);    
+
+    //util_normalize_file_name_for_temp_dir(nombre_sin_barras);
     //printf("Normalized file name: [%s]\n",nombre_sin_barras);
 
-    sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),nombre_sin_barras);
+    //sprintf (tmpdir,"%s/%s_previewdir",get_tmpdir_base(),nombre_sin_barras);
 
-    //Si existe archivo preview
-    char archivo_info_pantalla[PATH_MAX];
-    sprintf(archivo_info_pantalla,"%s/%s",tmpdir,MENU_SCR_INFO_FILE_NAME);
 
-	//Definimos preview_scr para los que convierten snapshot directo a scr
-	char preview_scr[PATH_MAX];
+
+    /*
     if (es_directorio) {
-        //Necesario esto cuando viene de descomprimir un archivo comprimido, porque dir_name tiene path a /tmp/zesarux...
-        char dir_name_sin_barras[PATH_MAX];
-        strcpy(dir_name_sin_barras,dir_name);
-        util_normalize_file_name_for_temp_dir(dir_name_sin_barras);
 	    sprintf (preview_scr,"%s/%s.scr",tmpdir,dir_name_sin_barras);
 
         //temp mal
@@ -4778,11 +4800,13 @@ void menu_filesel_overlay_render_preview_aux(int es_directorio,char *archivo_pre
     else {
         sprintf (preview_scr,"%s/%s.scr",tmpdir,archivo_preview);
     }
+    */
+
 
     //printf("archivo_info_pantalla: %s\n",archivo_info_pantalla);
     //printf("preview_scr: %s\n",preview_scr);
 
-
+    //Si existe archivo preview
     if (!si_existe_archivo(archivo_info_pantalla)) {
         menu_filesel_mkdir(tmpdir);
 

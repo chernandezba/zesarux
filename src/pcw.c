@@ -103,10 +103,34 @@ z80_byte pcw_interrupt_from_pd765_type=0;
 int pcw_total_ram=256*1024;
 
 //Tabla de colores
-int pcw_rgb_table[2]={
+int pcw_rgb_table[22]={
 
     0x000000, //negro
-    0x41FF00  //verde. Tipico color de green "P1" phosphor
+    0x41FF00,  //verde. Tipico color de green "P1" phosphor
+
+    //4 colores tipicos de CGA
+    0x000000, //negro
+    0x55FFFF, //light cyan
+    0xFF55FF, //light magenta
+    0xFFFFFF, //white
+
+    //paleta 16 colores
+    0x000000,
+    0x0000AA,
+    0x00AA00,
+    0x00AAAA,
+    0xAA0000,
+    0xAA00AA,
+    0xAA5500,
+    0xAAAAAA,
+    0x555555,
+    0x5555FF,
+    0x55FF55,
+    0x55FFFF,
+    0xFF5555,
+    0xFF55FF,
+    0xFFFF55,
+    0xFFFFFF
 };
 
 //Mostrar colores en blanco y negro
@@ -766,6 +790,26 @@ int pcw_get_rgb_color(int i)
     else return (i ? PCW_COLOUR_GREEN : PCW_COLOUR_BLACK);
 }
 
+void pcw_refresca_putpixel_mode2(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=PCW_COLOUR_START_MODE2+color;
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
+void pcw_refresca_putpixel_mode1(int x,int y,int color)
+{
+    y*=2;
+
+    int color_final=PCW_COLOUR_START_MODE1+color;
+
+    scr_putpixel_zoom(x,y,color_final);
+    scr_putpixel_zoom(x,y+1,color_final);
+}
+
 void pcw_refresca_putpixel(int x,int y,int color)
 {
     y*=2;
@@ -775,6 +819,18 @@ void pcw_refresca_putpixel(int x,int y,int color)
     scr_putpixel_zoom(x,y,color_final);
     scr_putpixel_zoom(x,y+1,color_final);
 }
+
+/*
+Modo 0 (720x256x2), el nativo del PCW: negro y verde, o Negro y blanco, a elegir vía puente.
+Modo 1 (360x256x4): los colores de la paleta 1 con intensidad del modo de 4 colores de la CGA.
+Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que trae por defecto la EGA).
+Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 
+    pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores 
+    distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores
+    tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
+*/
+int pcw_video_mode=0;
+
 
 //Refresco sin rainbow
 void scr_refresca_pantalla_pcw(void)
@@ -826,30 +882,92 @@ void scr_refresca_pantalla_pcw(void)
 
                 int bit;
 
-                for (bit=0;bit<8;bit++) {
-                    int pixel;
+                if (pcw_video_mode==0) {
+                    for (bit=0;bit<8;bit++) {
+                        int pixel;
 
-                    if (byte_leido & 128) pixel=1;
-                    else pixel=0;
+                        if (byte_leido & 128) pixel=1;
+                        else pixel=0;
 
-                    //Reverse video
-                    //Ejemplo de juego que usa reverse video: skywar.dsk
-                    if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
-                        //printf("antes pixel :%d\n",pixel);
-                        
-                        pixel ^=1;
-                        //printf("despues pixel :%d\n",pixel);
+                        //Reverse video
+                        //Ejemplo de juego que usa reverse video: skywar.dsk
+                        if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
+                            //printf("antes pixel :%d\n",pixel);
+                            
+                            pixel ^=1;
+                            //printf("despues pixel :%d\n",pixel);
 
-                        //sleep(1);
+                            //sleep(1);
+                        }
+
+                        //Si pantalla no activa
+                        if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) pixel=0;
+
+                        pcw_refresca_putpixel(x+bit,y+scanline,pixel);
+
+                        byte_leido=byte_leido<<1;
                     }
-
-                    //Si pantalla no activa
-                    if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) pixel=0;
-
-                    pcw_refresca_putpixel(x+bit,y+scanline,pixel);
-
-                    byte_leido=byte_leido<<1;
                 }
+
+                if (pcw_video_mode==1) {
+                    for (bit=0;bit<8;bit+=2) {
+                        int pixel_color;
+
+                        pixel_color=(byte_leido>>6) & 3;
+
+
+                        //Reverse video
+                        //Ejemplo de juego que usa reverse video: skywar.dsk
+                        if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
+                            //printf("antes pixel :%d\n",pixel);
+                            
+                            pixel_color ^=3;
+                            //printf("despues pixel :%d\n",pixel);
+
+                            //sleep(1);
+                        }
+
+                        //Si pantalla no activa
+                        if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) pixel_color=0;
+
+                        //Resolucion efectiva a mitad. en pantalla seguira siendo 720, solo que dos pixeles repetidos
+                        pcw_refresca_putpixel_mode1(x+bit,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode1(x+bit+1,y+scanline,pixel_color);
+
+                        byte_leido=byte_leido<<2;
+                    }                    
+                }
+
+                if (pcw_video_mode==2) {
+                    for (bit=0;bit<8;bit+=4) {
+                        int pixel_color;
+
+                        pixel_color=(byte_leido>>4) & 0xF;
+
+
+                        //Reverse video
+                        //Ejemplo de juego que usa reverse video: skywar.dsk
+                        if ((pcw_port_f7_value & 0x80) && pcw_do_not_inverse_display.v==0) {
+                            //printf("antes pixel :%d\n",pixel);
+                            
+                            pixel_color ^=0xF;
+                            //printf("despues pixel :%d\n",pixel);
+
+                            //sleep(1);
+                        }
+
+                        //Si pantalla no activa
+                        if (!(pcw_port_f7_value & 0x40) && pcw_always_on_display.v==0) pixel_color=0;
+
+                        //Resolucion efectiva a 1/4. en pantalla seguira siendo 720, solo que cuatro pixeles repetidos
+                        pcw_refresca_putpixel_mode2(x+bit,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode2(x+bit+1,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode2(x+bit+2,y+scanline,pixel_color);
+                        pcw_refresca_putpixel_mode2(x+bit+3,y+scanline,pixel_color);
+
+                        byte_leido=byte_leido<<4;
+                    }                    
+                }                
             }
         }
     }

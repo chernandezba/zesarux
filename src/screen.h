@@ -690,10 +690,12 @@ extern void screen_switch_rainbow_buffer(void);
 #define RISCOS_COLOUR_RED       (RISCOS_INDEX_FIRST_COLOR+3)
 
 #define PCW_INDEX_FIRST_COLOR (RISCOS_INDEX_FIRST_COLOR+RISCOS_TOTAL_PALETTE_COLOURS)
-#define PCW_TOTAL_PALETTE_COLOURS 2
+#define PCW_TOTAL_PALETTE_COLOURS 22
 
 #define PCW_COLOUR_BLACK (PCW_INDEX_FIRST_COLOR+0)
 #define PCW_COLOUR_GREEN (PCW_INDEX_FIRST_COLOR+1)
+#define PCW_COLOUR_START_MODE1 (PCW_INDEX_FIRST_COLOR+2)
+#define PCW_COLOUR_START_MODE2 (PCW_COLOUR_START_MODE1+4)
 
 //16 colores normales spectrum, 16 grises de modo scanline, 256 de gigascreen, 4 de z88, 16 de spectrum 17/48/+ real, 256 de ulaplus, 64 de spectra, 32 de CPC, 4096 de Prism, 128 de SAM, 256 de RGB8, 32768 de TSCONF, 16 de solarized
 //actualizar aqui y tambien estructura de total_palette_colours_array y #define TOTAL_PALETAS_COLORES 
