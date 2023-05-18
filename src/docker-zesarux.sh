@@ -11,8 +11,12 @@ docker-build() {
 	docker build --tag=zesarux .
 }
 
+docker-build-ubuntu() {
+	docker build --tag=zesarux-ubuntu -f Dockerfile.ubuntu .
+}
+
 help() {
-	echo "$0 [build|codetests|run|run-curses|run-mac-xorg|run-xorg]"
+	echo "$0 [build|build-ubuntu|build-ubuntu-and-get-binary|codetests|run|run-curses|run-mac-xorg|run-xorg]"
 }
 
 if [ $# == 0 ]; then
@@ -26,6 +30,30 @@ case $1 in
 
 	build)
 		docker-build
+	;;
+
+	build-ubuntu)
+		docker-build-ubuntu
+	;;
+
+	build-ubuntu-and-get-binary)
+		echo "-----Building image"
+		docker-build-ubuntu
+		echo
+		echo "-----Running tests"
+		echo
+		sleep 1
+		docker run -it zesarux-ubuntu --codetests
+		# TODO: get return code
+		echo "-----Running image"
+		docker run --name run-zesarux-ubuntu -it zesarux-ubuntu --vo stdout --ao null --exit-after 1
+		echo
+		echo "-----Getting binary file"
+		docker cp run-zesarux-ubuntu:/zesarux/src/zesarux zesarux.ubuntu
+		echo
+		echo "-----Ubuntu Binary file is: "
+		ls -lha zesarux.ubuntu
+		docker rm run-zesarux-ubuntu
 	;;
 
 	run)
