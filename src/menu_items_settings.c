@@ -6274,6 +6274,12 @@ void menu_display_pcw_do_not_scroll(MENU_ITEM_PARAMETERS)
     pcw_do_not_scroll.v ^=1;
 }
 
+void menu_display_pcw_video_mode(MENU_ITEM_PARAMETERS)
+{
+    pcw_video_mode++;
+    if (pcw_video_mode==3) pcw_video_mode=0;
+}
+
 //menu display settings
 void menu_settings_display(MENU_ITEM_PARAMETERS)
 {
@@ -6497,8 +6503,14 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			}
 
             if (MACHINE_IS_PCW) {
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
-                    "[%c] Black & White monitor",(pcw_black_white_display.v ? 'X' : ' '));
+                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_video_mode,NULL,
+                    "[%s] Video mode",(pcw_video_mode_names[pcw_video_mode]));
+
+                if (pcw_video_mode==0) {
+
+                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
+                        "[%c] Black & White monitor",(pcw_black_white_display.v ? 'X' : ' '));
+                }
 
                 menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
                     "[%c] Always on monitor",(pcw_always_on_display.v ? 'X' : ' '));

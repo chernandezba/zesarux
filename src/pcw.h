@@ -110,4 +110,7 @@ extern void pcw_handle_end_boot_disk(void);
 extern void pcw_boot_check_dsk_not_bootable(void);
 extern void pcw_boot_timer_handle(void);
 
+extern int pcw_video_mode;
+extern char *pcw_video_mode_names[];
+
 #endif

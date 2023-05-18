@@ -831,6 +831,11 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 */
 int pcw_video_mode=0;
 
+char *pcw_video_mode_names[]={
+    "0 720x256x2",
+    "1 360x256x4",
+    "2 180x256x16"
+};
 
 //Refresco sin rainbow
 void scr_refresca_pantalla_pcw(void)
