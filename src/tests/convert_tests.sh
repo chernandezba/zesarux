@@ -4,7 +4,7 @@
 
 OPTIONS="--noconfigfile"
 
-ORIGFILE=../../../soft_retro/spectrum/LEMMIN48.TAP
+ORIGFILE=./my_soft/spectrum/vintage/sped52.tap
 PZXFILE=`mktemp`.pzx
 TZXFILE=`mktemp`.tzx
 TAPFILE=`mktemp`.tap
@@ -27,7 +27,13 @@ SUMAORIG=`$MD5TOOL $ORIGFILE|awk '{printf $1}'`
 
 #TAP-TZX-TAP
 ./zesarux $OPTIONS --convert-tap-tzx $ORIGFILE $TZXFILE
+if [ $? != 0 ]; then
+	exit 1
+fi
 ./zesarux $OPTIONS --convert-tzx-tap $TZXFILE  $TAPFILE
+if [ $? != 0 ]; then
+	exit 1
+fi
 SUMATAP=`$MD5TOOL $TAPFILE|awk '{printf $1}'`
 
 if [ "$SUMAORIG" != "$SUMATAP" ]; then
@@ -39,7 +45,13 @@ fi
 
 #TAP-PZX-TAP
 ./zesarux $OPTIONS --convert-tap-pzx $ORIGFILE $PZXFILE
+if [ $? != 0 ]; then
+	exit 1
+fi
 ./zesarux $OPTIONS --convert-pzx-tap $PZXFILE  $TAPFILE
+if [ $? != 0 ]; then
+	exit 1
+fi
 SUMATAP=`$MD5TOOL $TAPFILE|awk '{printf $1}'`
 
 if [ "$SUMAORIG" != "$SUMATAP" ]; then

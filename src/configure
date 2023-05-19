@@ -1804,6 +1804,29 @@ bintargz: all
 	echo
 	echo "Generated file is : ZEsarUX_`uname -s`-\$(EMULATOR_VERSION)_`uname -m`.tar.gz"
 
+ubuntu: 
+	./docker-zesarux.sh build-version-and-get-binary ubuntu
+	mv zesarux.ubuntu zesarux
+	mv install.sh.ubuntu install.sh
+	rm -fR bintargztemp
+	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
+	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	echo
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz"
+
+#just for testing right now
+debian: 
+	./docker-zesarux.sh build-version-and-get-binary debian
+	mv zesarux.debian zesarux
+	mv install.sh.debian install.sh
+	rm -fR bintargztemp
+	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
+	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-debian11_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	echo
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-debian11_x86_64.tar.gz"
+
 extra_files:
 	echo "Run the following: cd ../../zesarux-extras/ && zip -r /tmp/ZEsarUX_extras-\$(EMULATOR_VERSION).zip *"
 	echo "Generated file will be: /tmp/ZEsarUX_extras-\$(EMULATOR_VERSION).zip"

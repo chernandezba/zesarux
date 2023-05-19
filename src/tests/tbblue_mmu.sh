@@ -35,13 +35,13 @@ echo "TBBlue MMU test."
 #esto es debido a que en el modo --tbblue-fast-boot-mode  no hace autoload de la cinta
 
 #run_test ./zesarux --noconfigfile --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout --mmc-file tbblue.mmc --enable-mmc --enable-divmmc-ports extras/media/spectrum/tbblue/testmmu.tap 
-run_test ./zesarux --noconfigfile --tbblue-fast-boot-mode --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout extras/media/spectrum/tbblue/testmmu.tap 
+run_test ./zesarux --noconfigfile --ao null --tbblue-fast-boot-mode --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout tests/testmmu.tap 
 
 
 echo "TBBlue MMU test 2 (rom space)"
 #echo ' Write j"" +ENTER   after a few seconds'
 #run_test ./zesarux --noconfigfile --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout --mmc-file tbblue.mmc --enable-mmc --enable-divmmc-ports extras/media/spectrum/tbblue/test_mmu_low/testing-mmu-low.tap
-run_test ./zesarux --noconfigfile --tbblue-fast-boot-mode --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout extras/media/spectrum/tbblue/test_mmu_low/testing-mmu-low.tap
+run_test ./zesarux --noconfigfile --ao null --tbblue-fast-boot-mode --hardware-debug-ports --exit-after 60 --machine tbblue --vo stdout tests/testing-mmu-low.tap
 
 #RESULT: OK
 

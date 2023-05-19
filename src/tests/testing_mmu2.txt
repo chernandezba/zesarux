@@ -1,0 +1,4 @@
+10 clear 49151
+20 out 32765,16
+30 for n=23296 to 23551: read a: poke n,a: print n,a: next n
+40 data 33,0,0,17,0,192,1,0,64,237,176,201

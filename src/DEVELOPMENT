@@ -175,7 +175,7 @@ con contenido numero de version, ejemplo:
 
 
 ** Linux 
-Generar estos dos binarios de Linux:
+Generar estos dos binarios de Linux (32 y 64 bits):
 ZEsarUX-version-linux-debian10-x32.tar.gz 
 ZEsarUX-version-linux-debian10-x64.tar.gz 
 con comandos:
@@ -186,6 +186,10 @@ export LDFLAGS=-O3
 make clean
 make
 make bintargz
+
+
+** Ubuntu
+make ubuntu
 
 
 ** FreeBSD 

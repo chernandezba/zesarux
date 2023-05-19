@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM debian:11.3
 
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev libsdl1.2-dev libpulse-dev libsndfile1-dev
 
@@ -6,6 +6,10 @@ ENV CFLAGS "-O3"
 ENV LDFLAGS "-O3"
 
 RUN git clone https://github.com/chernandezba/zesarux.git && cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl --disable-caca --disable-aa --disable-cursesw --prefix /usr && make -j2
+
+#temp
+#COPY automatic_tests.sh /zesarux/src/automatic_tests.sh
+#COPY tests/* /zesarux/src/tests/
 
 RUN cd zesarux/src && ./generate_install_sh.sh
 

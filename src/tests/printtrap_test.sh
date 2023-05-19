@@ -11,11 +11,11 @@ for i in $MAQUINAS; do
 
 	echo "Machine $i"
 	if [ "$i" == "ZX81" ] || [ "$i" == "TS1000" ] || [ "$i" == "TS1500" ] || [ "$i" == "TK82C" ] || [ "$i" == "TK83" ] || [ "$i" == "TK85" ]; then
-		./zesarux --noconfigfile --chardetectcompatnum --vo stdout tests/printtrap_test.p --exit-after 5 --machine $i --cpuspeed 400 > $TEMPFILE
+		./zesarux --noconfigfile --ao null --chardetectcompatnum --vo stdout tests/printtrap_test.p --exit-after 5 --machine $i --cpuspeed 400 > $TEMPFILE
 	elif [ "$i" == "ZX80" ] || [ "$i" == "TK80" ] || [ "$i" == "TK82" ]; then
-		./zesarux --noconfigfile --vo stdout tests/printtrap_test.zsf --exit-after 3 --machine $i --cpuspeed 400 > $TEMPFILE
+		./zesarux --noconfigfile --ao null --vo stdout tests/printtrap_test.zsf --exit-after 3 --machine $i --cpuspeed 400 > $TEMPFILE
 	else
-		./zesarux --noconfigfile --chardetectcompatnum --vo stdout tests/printtrap_test.tap --hardware-debug-ports --exit-after 5 --machine $i --fastautoload > $TEMPFILE
+		./zesarux --noconfigfile --ao null --chardetectcompatnum --vo stdout tests/printtrap_test.tap --hardware-debug-ports --exit-after 5 --machine $i --fastautoload > $TEMPFILE
 	fi
 
 	grep 1234 $TEMPFILE

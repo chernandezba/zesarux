@@ -8,15 +8,49 @@
 # Just a simple utility to test ZEsarUX in docker
 
 docker-build() {
-	docker build --tag=zesarux .
+	docker build --tag=zesarux --progress plain .
 }
 
-docker-build-ubuntu() {
-	docker build --tag=zesarux-ubuntu -f Dockerfile.ubuntu .
+
+docker-build-version() {
+	VERSIONNAME=$1
+	docker build --tag=zesarux.$VERSIONNAME --progress plain -f Dockerfile.$VERSIONNAME .
+}
+
+
+docker-build-and-get-binary() {
+	VERSIONNAME=$1
+
+                echo "-----Building image"
+                docker rm run-zesarux-$VERSIONNAME
+
+                docker-build-version $VERSIONNAME
+
+                echo
+                echo "-----Running tests"
+                sleep 1
+                docker run -it --entrypoint /zesarux/src/automatic_tests.sh zesarux.$VERSIONNAME 
+                #docker run -it  zesarux.$VERSIONNAME --codetests
+		if [ $? != 0 ]; then
+			echo "codetests failed"
+			exit 1
+		fi
+
+                echo
+                echo "-----Running image"
+                docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout --ao null --exit-after 1
+                echo
+                echo "-----Getting executables and install file"
+                docker cp run-zesarux-$VERSIONNAME:/zesarux/src/zesarux zesarux.$VERSIONNAME
+                docker cp run-zesarux-$VERSIONNAME:/zesarux/src/install.sh install.sh.$VERSIONNAME
+                echo
+                echo "-----$VERSIONNAME Binary file is: "
+                ls -lha zesarux.$VERSIONNAME
 }
 
 help() {
-	echo "$0 [build|build-ubuntu|build-ubuntu-and-get-binary|codetests|run|run-curses|run-mac-xorg|run-xorg]"
+	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|run|run-curses|run-mac-xorg|run-xorg]"
+	echo "build-version and build-version-and-get-binary require a parameter, one of: [debian|ubuntu]"
 }
 
 if [ $# == 0 ]; then
@@ -26,34 +60,30 @@ fi
 
 case $1 in
 	
-
+	clean-cache)
+		docker builder prune
+	;;
 
 	build)
 		docker-build
 	;;
 
-	build-ubuntu)
-		docker-build-ubuntu
+	build-version)
+		if [ $# == 1 ]; then
+			echo "A parameter version is required"
+			exit 1
+		fi
+
+		docker-build-version $2
 	;;
 
-	build-ubuntu-and-get-binary)
-		echo "-----Building image"
-		docker-build-ubuntu
-		echo
-		echo "-----Running tests"
-		echo
-		sleep 1
-		docker run -it zesarux-ubuntu --codetests
-		# TODO: get return code
-		echo "-----Running image"
-		docker run --name run-zesarux-ubuntu -it zesarux-ubuntu --vo stdout --ao null --exit-after 1
-		echo
-		echo "-----Getting binary file"
-		docker cp run-zesarux-ubuntu:/zesarux/src/zesarux zesarux.ubuntu
-		echo
-		echo "-----Ubuntu Binary file is: "
-		ls -lha zesarux.ubuntu
-		docker rm run-zesarux-ubuntu
+	build-version-and-get-binary)
+		if [ $# == 1 ]; then
+			echo "A parameter version is required"
+			exit 1
+		fi
+
+		docker-build-and-get-binary $2
 	;;
 
 	run)
