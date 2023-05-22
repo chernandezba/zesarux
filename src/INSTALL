@@ -33,7 +33,7 @@ Quick Compilation for Debian Based Systems
 
 In case you don't want to read all this file and you use a Debian based system (Debian, Ubuntu, etc), just run the following:
 
-apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev libpulse-dev libsndfile1-dev
+apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev libpulse-dev libsndfile1-dev libasound2-dev
 
 export CFLAGS="-O3"
 export LDFLAGS="-O3"
@@ -118,7 +118,7 @@ The following is a list of complete features, all of which are optional.
 # Audio Drivers
 
 - OSS (dsp) (on GNU/Linux, other Unix and Raspberry): needs soundcard includes. Usually included on GNU/Linux systems.
-- alsa (on GNU/Linux, other Unix and Raspberry): needs alsalibs. Also needed if you want midi output
+- alsa (on GNU/Linux, other Unix and Raspberry): needs alsalibs. Also needed if you want midi output. Run "apt-get install libasound2-dev" on debian-based systems
 - pulse (on GNU/Linux, other Unix and Raspberry): needs pulselibs. Run "apt-get install libpulse-dev" on debian-based systems
 - SDL 1.2 (on GNU/Linux, other Unix and Raspberry): needs sdllib. SDL2 is experimental.
 - coreaudio (on Mac OS X): Compiling supported using XCode.
@@ -126,7 +126,7 @@ The following is a list of complete features, all of which are optional.
 
 # Audio Output to a File
 
-- libsndfile to output audio to wav files. Run "apt-get install libsndfile1-devv" on debian-based systems
+- libsndfile to output audio to wav files. Run "apt-get install libsndfile1-dev" on debian-based systems
 - Raw audio is always supported.
 
 

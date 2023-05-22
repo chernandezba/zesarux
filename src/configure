@@ -1772,7 +1772,7 @@ clean:
 
 COMMONFILES=ACKNOWLEDGEMENTS LICENSE LICENSES_info licenses Changelog Cambios TODO* README HISTORY FEATURES FEATURES_es EXCLUSIVEFEATURES INSTALL INSTALLWINDOWS ALTERNATEROMS INCLUDEDTAPES DONATE DONORS FAQ *.odt mantransfev3.bin *.rom zxuno.flash tbblue.mmc pcw_8x_boot*dsk speech_filters my_soft docs zesarux.mp3 zesarux.xcf editionnamegame.* bin_sprite_to_c.sh keyboard_*.bmp z88_shortcuts.bmp zesarux.pdf
 
-ONLYSOURCEFILES=macos *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt patches prism_change_boot.txt tests
+ONLYSOURCEFILES=macos *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.asm benchmark_*.txt current_checklist.txt patches prism_change_boot.txt tests Dockerfile*
 
 
 
@@ -1814,6 +1814,19 @@ ubuntu:
 	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
 	echo
 	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-ubuntu22_x86_64.tar.gz"
+
+fedora: 
+	./docker-zesarux.sh build-version-and-get-binary fedora
+	mv zesarux.fedora zesarux
+	mv install.sh.fedora install.sh
+	rm -fR bintargztemp
+	mkdir -p bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)
+	cp -a \$(COMMONFILES) \$(ONLYUNIXBINARIES) bintargztemp/ZEsarUX-\$(EMULATOR_VERSION)/
+	tar -C bintargztemp -cvzf ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz ZEsarUX-\$(EMULATOR_VERSION)
+	echo
+	echo "Generated file is : ZEsarUX_linux-\$(EMULATOR_VERSION)-fedora38_x86_64.tar.gz"
+
+
 
 #just for testing right now
 debian: 

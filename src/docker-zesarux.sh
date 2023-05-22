@@ -22,15 +22,14 @@ docker-build-and-get-binary() {
 	VERSIONNAME=$1
 
                 echo "-----Building image"
-                docker rm run-zesarux-$VERSIONNAME
-
+                sleep 1
                 docker-build-version $VERSIONNAME
 
                 echo
                 echo "-----Running tests"
                 sleep 1
-                docker run -it --entrypoint /zesarux/src/automatic_tests.sh zesarux.$VERSIONNAME 
-                #docker run -it  zesarux.$VERSIONNAME --codetests
+                docker rm run-zesarux-$VERSIONNAME
+                docker run --name run-zesarux-$VERSIONNAME -it --entrypoint /zesarux/src/automatic_tests.sh zesarux.$VERSIONNAME 
 		if [ $? != 0 ]; then
 			echo "codetests failed"
 			exit 1
@@ -38,11 +37,16 @@ docker-build-and-get-binary() {
 
                 echo
                 echo "-----Running image"
+                sleep 1
+		docker rm run-zesarux-$VERSIONNAME
                 docker run --name run-zesarux-$VERSIONNAME -it zesarux.$VERSIONNAME --vo stdout --ao null --exit-after 1
+
                 echo
                 echo "-----Getting executables and install file"
+                sleep 1
                 docker cp run-zesarux-$VERSIONNAME:/zesarux/src/zesarux zesarux.$VERSIONNAME
                 docker cp run-zesarux-$VERSIONNAME:/zesarux/src/install.sh install.sh.$VERSIONNAME
+
                 echo
                 echo "-----$VERSIONNAME Binary file is: "
                 ls -lha zesarux.$VERSIONNAME
@@ -50,7 +54,7 @@ docker-build-and-get-binary() {
 
 help() {
 	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|run|run-curses|run-mac-xorg|run-xorg]"
-	echo "build-version and build-version-and-get-binary require a parameter, one of: [debian|ubuntu]"
+	echo "build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
 }
 
 if [ $# == 0 ]; then

@@ -10075,7 +10075,11 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     debug_printf_sem_init();
 
+
+#ifndef NETWORKING_DISABLED
 	omplir_adr_internet_semaforo_init();
+#endif
+
 
     debug_unnamed_console_init();
 
