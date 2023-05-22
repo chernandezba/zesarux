@@ -7530,69 +7530,87 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
 
     //temp parche para tbblue
-    
+    /*
     if (reg_pc==0x3d00) {
-        //printf("PARCHE tbblue 3d00. diviface_allow_automatic_paging.v=%d\n",diviface_allow_automatic_paging.v);
+        printf("PARCHE tbblue 3d00. diviface_allow_automatic_paging.v=%d\n",diviface_allow_automatic_paging.v);
         tbblue_diviface_salta_trap_antes=1;
     }
 
     //temp parche para tbblue
        //Traps que despaginan memoria antes de leer instruccion
        if (reg_pc>=0x1ff8 && reg_pc<=0x1fff) {
-            //printf ("PARCHE tbblue Saltado trap de despaginacion pc actual: %d. diviface_allow_automatic_paging.v=%d\n",reg_pc,diviface_allow_automatic_paging.v);
+            printf ("PARCHE tbblue Saltado trap de despaginacion pc actual: %d. diviface_allow_automatic_paging.v=%d\n",reg_pc,diviface_allow_automatic_paging.v);
 
                tbblue_diviface_salta_trap_despaginacion_despues=1;
     }
+    */
     
 
     //TODO: instant o delayed??
 
 	if (diviface_allow_automatic_paging.v) {
-	//Traps que paginan memoria y saltan despues de leer instruccion
-	switch (reg_pc) {
-		case 0x0000:
-		case 0x0008:
-        case 0x0010:
-        case 0x0018:
-        case 0x0020:
-        case 0x0028:
-        case 0x0030:
-		case 0x0038:
-            if (tbblue_if_automap_address(reg_pc)) {
-                printf("Saltara paginacion en %04XH\n",reg_pc);
-                if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
-            }
-        break;
+        //Traps que paginan memoria y saltan despues de leer instruccion
+        switch (reg_pc) {
+            case 0x0000:
+            case 0x0008:
+            case 0x0010:
+            case 0x0018:
+            case 0x0020:
+            case 0x0028:
+            case 0x0030:
+            case 0x0038:
+                if (tbblue_if_automap_address(reg_pc)) {
+                    printf("Saltara paginacion en %04XH\n",reg_pc);
+                    if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                }
+            break;
 
-//TODO: todas estas:
-/*
-0xBB (187) => Divmmc Entry Points 1
-(R/W) (soft reset = 0xCD)
-  bit 7 = 1 to enable automap on addresses 0x3DXX (instruction fetch, instant, ROM3) > TRDOS
-  bit 6 = 1 to disable automap on addresses 0x1FF8-0x1FFF (instruction fetch, delayed)
-  bit 5 = 1 to enable automap on address 0x056A (instruction fetch, delayed, ROM3)   \ tape traps
-  bit 4 = 1 to enable automap on address 0x04D7 (instruction fetch, delayed, ROM3)   / nextzxos (better compatibility)
-  bit 3 = 1 to enable automap on address 0x0562 (instruction fetch, delayed, ROM3)   \ tape traps
-  bit 2 = 1 to enable automap on address 0x04C6 (instruction fetch, delayed, ROM3)   / esxdos + original divmmc
-  bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
-  bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
-*/
-		case 0x0066:
-		case 0x04c6:
-		case 0x0562:
-			if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
-		break;
-	}
+    //TODO: todas estas:
+    /*
+    0xBB (187) => Divmmc Entry Points 1
+    (R/W) (soft reset = 0xCD)
+    bit 7 = 1 to enable automap on addresses 0x3DXX (instruction fetch, instant, ROM3) > TRDOS
+    bit 6 = 1 to disable automap on addresses 0x1FF8-0x1FFF (instruction fetch, delayed)
+    bit 5 = 1 to enable automap on address 0x056A (instruction fetch, delayed, ROM3)   \ tape traps
+    bit 4 = 1 to enable automap on address 0x04D7 (instruction fetch, delayed, ROM3)   / nextzxos (better compatibility)
+    bit 3 = 1 to enable automap on address 0x0562 (instruction fetch, delayed, ROM3)   \ tape traps
+    bit 2 = 1 to enable automap on address 0x04C6 (instruction fetch, delayed, ROM3)   / esxdos + original divmmc
+    bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+    bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
+    */
+            //TODO case 0x0066:
+            
+
+            case 0x056A:
+                if ((tbblue_registers[0xBB] & 0x20) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+            break;            
+
+            case 0x04D7:
+                if ((tbblue_registers[0xBB] & 0x10) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+            break;
 
 
-	//Traps que paginan memoria y saltan antes de leer instruccion
-	if (reg_pc>=0x3d00 && reg_pc<=0x3dff) tbblue_diviface_salta_trap_antes=1;
+            case 0x0562:
+                if ((tbblue_registers[0xBB] & 0x08) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+            break;
 
-	//Traps que despaginan memoria antes de leer instruccion
-	if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
-		//printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
-		tbblue_diviface_salta_trap_despaginacion_despues=1;
-    }
+            case 0x04C6:
+                if ((tbblue_registers[0xBB] & 0x04) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+            break;            
+        }
+
+
+        //Traps que paginan memoria y saltan antes de leer instruccion
+        if ((tbblue_registers[0xBB] & 0x80) && reg_pc>=0x3d00 && reg_pc<=0x3dff) {
+            printf ("Saltado tbblue_diviface_salta_trap_antes pc actual: %02XH\n",reg_pc);
+            tbblue_diviface_salta_trap_antes=1;
+        }
+
+        //Traps que despaginan memoria antes de leer instruccion
+        if ((tbblue_registers[0xBB] & 0x40)==0 &&  reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
+            printf ("Saltado trap de despaginacion pc actual: %02XH\n",reg_pc);
+            tbblue_diviface_salta_trap_despaginacion_despues=1;
+        }
 
 
 	}
