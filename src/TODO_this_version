@@ -189,3 +189,6 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 
 
 -incorporar todos tipos de tests automaticos en docker
+
+
+-rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending

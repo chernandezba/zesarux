@@ -8116,7 +8116,7 @@ void menu_textspeech_send_text(char *texto_orig)
 
 	debug_printf (VERBOSE_DEBUG,"Final sent text to speech after processing filters: %s",buf_speech);
 	textspeech_print_speech(buf_speech);
-	//printf ("textspeech_print_speech: %s\n",buf_speech);
+    //printf ("textspeech_print_speech: %s\n",buf_speech);
 
 	//hacemos que el timeout de tooltip se reinicie porque sino cuando se haya leido el menu, acabara saltando el timeout
 	//menu_tooltip_counter=0;

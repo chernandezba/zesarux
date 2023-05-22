@@ -2963,10 +2963,16 @@ int tbblue_get_altrom_offset_dir(int altrom,z80_int dir)
 	return offset;
 }
 
+//Usado para paginacion divmmc
+int tbblue_si_rom3_segmento_bajo=0;
+
 void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 {
 	z80_byte tbblue_register=80+segment;
 	z80_byte reg_value=tbblue_registers[tbblue_register];
+
+    //Por defecto
+    tbblue_si_rom3_segmento_bajo=0;
 
 	if (reg_value==255) {
 
@@ -2995,7 +3001,11 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 
 		}
 
-		else tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];
+		else {
+            if (segment==0 && page==3*2) tbblue_si_rom3_segmento_bajo=1;
+
+            tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];
+        }
 
 
 		
@@ -4396,7 +4406,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
     z80_byte last_register_112=tbblue_registers[112];
 
     if (index_position>=184 && index_position<=187) {
-        printf ("Change divmmc entry points: register %d value %02XH\n",index_position,value);
+        printf ("Change divmmc entry points: register %d(%02XH) value %02XH\n",index_position,index_position,value);
     }    
 	
 	//z80_byte aux_divmmc;
@@ -7442,6 +7452,54 @@ z80_byte tbblue_uartbridge_readstatus(void)
 	return status_retorno;
 }
 
+int tbblue_get_mask_divmmc_entry_point(z80_int direccion)
+{
+    /*
+    Retorna para la direccion, la mascara de bit
+    Por ejemplo, si direccion 0x18, retornara mascara de bit 3 (0x08)
+
+   0xB8 (184) => Divmmc Entry Points 0
+(R/W) (soft reset = 0x83)
+  bit 7 = 1 to enable automap on address 0x0038 (instruction fetch)
+  bit 6 = 1 to enable automap on address 0x0030 (instruction fetch)
+  bit 5 = 1 to enable automap on address 0x0028 (instruction fetch)
+  bit 4 = 1 to enable automap on address 0x0020 (instruction fetch)
+  bit 3 = 1 to enable automap on address 0x0018 (instruction fetch)
+  bit 2 = 1 to enable automap on address 0x0010 (instruction fetch)
+  bit 1 = 1 to enable automap on address 0x0008 (instruction fetch)
+  bit 0 = 1 to enable automap on address 0x0000 (instruction fetch)
+  */
+
+    int numero_bit=direccion/8;
+
+    int mascara=1;
+
+    if (numero_bit) mascara=1<<numero_bit;
+
+    return mascara;
+}
+
+int tbblue_if_automap_address(z80_int direccion)
+{
+    //Primero ver mascara segun registro 184
+    int mascara_reg_184_5=tbblue_get_mask_divmmc_entry_point(direccion);
+
+    //Ver si registro 184 dice que hay automap
+    int hay_automap=tbblue_registers[0xB8] & mascara_reg_184_5;
+
+    //Ver si dice que sea valido (registro 185)
+    int es_valid=tbblue_registers[0xB9] & mascara_reg_184_5;
+
+    //Si es_valid es 0, depende de si rom 3 esta presente
+    if (es_valid==0) {
+        //ver si rom 3 presente en esa zona
+        es_valid=tbblue_si_rom3_segmento_bajo;
+    }
+
+    if (hay_automap && es_valid) return 1;
+    else return 0;
+}
+
 int tbblue_diviface_salta_trap_antes=0;
 int tbblue_diviface_salta_trap_despues=0;
 int tbblue_diviface_salta_trap_despaginacion_despues=0;
@@ -7471,16 +7529,54 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
 
 
+    //temp parche para tbblue
+    
+    if (reg_pc==0x3d00) {
+        //printf("PARCHE tbblue 3d00. diviface_allow_automatic_paging.v=%d\n",diviface_allow_automatic_paging.v);
+        tbblue_diviface_salta_trap_antes=1;
+    }
 
+    //temp parche para tbblue
+       //Traps que despaginan memoria antes de leer instruccion
+       if (reg_pc>=0x1ff8 && reg_pc<=0x1fff) {
+            //printf ("PARCHE tbblue Saltado trap de despaginacion pc actual: %d. diviface_allow_automatic_paging.v=%d\n",reg_pc,diviface_allow_automatic_paging.v);
 
+               tbblue_diviface_salta_trap_despaginacion_despues=1;
+    }
+    
 
+    //TODO: instant o delayed??
 
 	if (diviface_allow_automatic_paging.v) {
 	//Traps que paginan memoria y saltan despues de leer instruccion
 	switch (reg_pc) {
 		case 0x0000:
 		case 0x0008:
+        case 0x0010:
+        case 0x0018:
+        case 0x0020:
+        case 0x0028:
+        case 0x0030:
 		case 0x0038:
+            if (tbblue_if_automap_address(reg_pc)) {
+                printf("Saltara paginacion en %04XH\n",reg_pc);
+                if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+            }
+        break;
+
+//TODO: todas estas:
+/*
+0xBB (187) => Divmmc Entry Points 1
+(R/W) (soft reset = 0xCD)
+  bit 7 = 1 to enable automap on addresses 0x3DXX (instruction fetch, instant, ROM3) > TRDOS
+  bit 6 = 1 to disable automap on addresses 0x1FF8-0x1FFF (instruction fetch, delayed)
+  bit 5 = 1 to enable automap on address 0x056A (instruction fetch, delayed, ROM3)   \ tape traps
+  bit 4 = 1 to enable automap on address 0x04D7 (instruction fetch, delayed, ROM3)   / nextzxos (better compatibility)
+  bit 3 = 1 to enable automap on address 0x0562 (instruction fetch, delayed, ROM3)   \ tape traps
+  bit 2 = 1 to enable automap on address 0x04C6 (instruction fetch, delayed, ROM3)   / esxdos + original divmmc
+  bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
+  bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
+*/
 		case 0x0066:
 		case 0x04c6:
 		case 0x0562:

@@ -1771,6 +1771,57 @@ void codetests_debug_printf_exclude_include(void)
 
 }
 
+void codetests_tbblue_divmmc_masks(void)
+{
+
+    int i;
+
+    for (i=0;i<8;i++) {
+        
+        int direccion=8*i;
+        int mascara=tbblue_get_mask_divmmc_entry_point(direccion);
+        printf("dir %04XH mask: %02XH\n",direccion,mascara);
+
+
+        switch (i) {
+            case 0:
+                if (mascara!=1) { printf("Error\n"); exit(1); }
+            break;
+
+            case 1:
+                if (mascara!=2) { printf("Error\n"); exit(1); }
+            break;
+
+            case 2:
+                if (mascara!=4) { printf("Error\n"); exit(1); }
+            break;
+
+            case 3:
+                if (mascara!=8) { printf("Error\n"); exit(1); }
+            break;
+
+            case 4:
+                if (mascara!=16) { printf("Error\n"); exit(1); }
+            break;
+
+            case 5:
+                if (mascara!=32) { printf("Error\n"); exit(1); }
+            break;
+
+            case 6:
+                if (mascara!=64) { printf("Error\n"); exit(1); }
+            break;
+
+            case 7:
+                if (mascara!=128) { printf("Error\n"); exit(1); }
+            break;
+
+        }
+    }
+}
+        
+
+
 void codetests_main(int main_argc,char *main_argv[])
 {
 
@@ -1871,6 +1922,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning debug printf exclude/include class tests\n");
     codetests_debug_printf_exclude_include();
+
+    printf("\nRunning tbblue divmmc masks\n");
+    codetests_tbblue_divmmc_masks();
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
