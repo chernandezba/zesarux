@@ -3503,14 +3503,14 @@ void tbblue_set_emulator_setting_divmmc(void)
     //printf ("Apply config2.divmmc change: %s\n",(diven ? "enabled" : "disabled") );
 
     if (diven) {
-        //printf ("Activando diviface automatic paging\n");
+        printf ("Activando diviface automatic paging desde tbblue_set_emulator_setting_divmmc\n");
         divmmc_diviface_enable();
         diviface_allow_automatic_paging.v=1;
     }
 
 
     else {
-        //printf ("Desactivando diviface automatic paging\n");
+        printf ("Desactivando diviface automatic paging desde tbblue_set_emulator_setting_divmmc\n");
         diviface_allow_automatic_paging.v=0;
         //Y hacer un page-out si hay alguna pagina activa
         diviface_paginacion_automatica_activa.v=0;
@@ -3747,6 +3747,10 @@ Bit	Function
 	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]=255;
 
 
+    tbblue_registers[0xB8]=0x83;
+    tbblue_registers[0xB9]=0x01;
+    tbblue_registers[0xBA]=0x00;
+    tbblue_registers[0xBB]=0xCD;
 
 	tbblue_copper_pc=0;
 	
