@@ -351,6 +351,11 @@ extern int tbblue_tiles_are_monocrome(void);
 
 extern z80_byte tbblue_get_diviface_enabled(void);
 
+extern z80_byte diviface_tbblue_poke_byte_no_time(z80_int dir,z80_byte valor);
+extern z80_byte diviface_tbblue_poke_byte(z80_int dir,z80_byte valor);
+extern z80_byte diviface_tbblue_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED);
+extern z80_byte diviface_tbblue_peek_byte(z80_int dir,z80_byte value GCC_UNUSED);
+
 extern int debug_tbblue_sprite_visibility[];
 
 #endif

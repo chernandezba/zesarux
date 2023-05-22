@@ -60,4 +60,14 @@ extern z80_byte diviface_read_control_register(void);
 
 extern void diviface_reset(void);
 
+extern int diviface_nested_id_peek_byte;
+extern int diviface_nested_id_peek_byte_no_time;
+extern int diviface_nested_id_poke_byte;
+extern int diviface_nested_id_poke_byte_no_time;
+
+extern int diviface_conmem_enabled(void);
+extern int diviface_mapram_enabled(void);
+extern int get_diviface_ram_mask(void);
+
+
 #endif

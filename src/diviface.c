@@ -477,6 +477,7 @@ z80_byte diviface_chloe_poke_byte(z80_int dir,z80_byte valor)
 	return 0;
 }
 
+/*
 z80_byte *diviface_return_tbblue_memory_pointer(z80_int dir)
 {
 	z80_byte *puntero;
@@ -487,6 +488,7 @@ z80_byte *diviface_return_tbblue_memory_pointer(z80_int dir)
 
 	return puntero;
 }
+*/
 
 z80_byte diviface_peek_byte_to_internal_memory(z80_int dir)
 {
@@ -613,14 +615,28 @@ void diviface_set_peek_poke_functions(void)
         	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_chloe_poke_byte_no_time,"Diviface poke_byte_no_time");
 				}
 
+				else if (MACHINE_IS_TBBLUE) {
+        	diviface_nested_id_poke_byte=debug_nested_poke_byte_add(diviface_tbblue_poke_byte,"Diviface poke_byte");
+        	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_tbblue_poke_byte_no_time,"Diviface poke_byte_no_time");
+				}                
+
 				else {
         	diviface_nested_id_poke_byte=debug_nested_poke_byte_add(diviface_poke_byte,"Diviface poke_byte");
         	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_poke_byte_no_time,"Diviface poke_byte_no_time");
 				}
 
 
+        if (MACHINE_IS_TBBLUE) {
+            diviface_nested_id_peek_byte=debug_nested_peek_byte_add(diviface_tbblue_peek_byte,"Diviface peek_byte");
+            diviface_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(diviface_tbblue_peek_byte_no_time,"Diviface peek_byte_no_time");            
+        }
+
+        else {
+
         diviface_nested_id_peek_byte=debug_nested_peek_byte_add(diviface_peek_byte,"Diviface peek_byte");
         diviface_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(diviface_peek_byte_no_time,"Diviface peek_byte_no_time");
+
+        }
 
 	}
 }
