@@ -7546,7 +7546,6 @@ refresh cycle of the instruction fetch from so called off-area, which is
     */
     
 
-    //TODO: instant o delayed??
 
 	if (diviface_allow_automatic_paging.v) {
         //Traps que paginan memoria y saltan despues de leer instruccion
@@ -7641,6 +7640,7 @@ refresh cycle of the instruction fetch from so called off-area, which is
 	if (tbblue_diviface_salta_trap_antes && diviface_paginacion_automatica_activa.v==0) {
 	    printf ("Saltado trap de paginacion antes pc actual: %04XH\n",reg_pc);
 		diviface_paginacion_automatica_activa.v=1;
+        //menu_set_menu_abierto(1);
     }
 }
 
