@@ -7561,11 +7561,33 @@ refresh cycle of the instruction fetch from so called off-area, which is
             case 0x0038:
                 if (tbblue_if_automap_address(reg_pc)) {
                     printf("Saltara paginacion en %04XH\n",reg_pc);
-                    if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                    if (diviface_paginacion_automatica_activa.v==0) {
+                        //Antes o despues del fetch?
+                        int es_antes;
+
+                        int mascara=tbblue_get_mask_divmmc_entry_point(reg_pc);
+
+                        es_antes=tbblue_registers[0xBA] & mascara;
+/*
+0xBA (186) => Divmmc Entry Points Timing 0
+(R/W) (soft reset = 0x00)
+  bit 7 = 1 for instant mapping else delayed (0x0038)
+  bit 6 = 1 for instant mapping else delayed (0x0030)
+  bit 5 = 1 for instant mapping else delayed (0x0028)
+  bit 4 = 1 for instant mapping else delayed (0x0020)
+  bit 3 = 1 for instant mapping else delayed (0x0018)
+  bit 2 = 1 for instant mapping else delayed (0x0010)
+  bit 1 = 1 for instant mapping else delayed (0x0008)
+  bit 0 = 1 for instant mapping else delayed (0x0000)
+*/                        
+
+                        if (es_antes) tbblue_diviface_salta_trap_antes=1;
+                        else tbblue_diviface_salta_trap_despues=1;
+                    }
                 }
             break;
 
-    //TODO: todas estas:
+    
     /*
     0xBB (187) => Divmmc Entry Points 1
     (R/W) (soft reset = 0xCD)
@@ -7602,13 +7624,13 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
         //Traps que paginan memoria y saltan antes de leer instruccion
         if ((tbblue_registers[0xBB] & 0x80) && reg_pc>=0x3d00 && reg_pc<=0x3dff) {
-            printf ("Saltado tbblue_diviface_salta_trap_antes pc actual: %02XH\n",reg_pc);
+            printf ("Saltado tbblue_diviface_salta_trap_antes pc actual: %04XH\n",reg_pc);
             tbblue_diviface_salta_trap_antes=1;
         }
 
         //Traps que despaginan memoria antes de leer instruccion
-        if ((tbblue_registers[0xBB] & 0x40)==0 &&  reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
-            printf ("Saltado trap de despaginacion pc actual: %02XH\n",reg_pc);
+        if ((tbblue_registers[0xBB] & 0x40) && reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
+            printf ("Saltado trap de despaginacion pc actual: %04XH\n",reg_pc);
             tbblue_diviface_salta_trap_despaginacion_despues=1;
         }
 
@@ -7619,7 +7641,7 @@ refresh cycle of the instruction fetch from so called off-area, which is
 	if (tbblue_diviface_salta_trap_antes && diviface_paginacion_automatica_activa.v==0) {
 	    //printf ("Saltado trap de paginacion antes pc actual: %d\n",reg_pc);
 		diviface_paginacion_automatica_activa.v=1;
-        }
+    }
 }
 
 
