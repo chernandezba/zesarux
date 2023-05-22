@@ -3455,33 +3455,13 @@ which allows you access to all SRAM.
 z80_byte tbblue_get_diviface_enabled(void)
 {
     /*
-    Antes
 (W)		06 => Peripheral 2 setting, only in bootrom or config mode:
 			bit 7 = Enable turbo mode (0 = disabled, 1 = enabled)
 			bit 6 = DAC chip mode (0 = I2S, 1 = JAP)
 			bit 5 = Enable Lightpen  (1 = enabled)
 			bit 4 = Enable DivMMC (1 = enabled) -> divmmc automatic paging. divmmc memory is supported using manual
-
-
-    Ahora
-0x0A (10) => Peripheral 5 Setting
-(R/W)
-  bit 7:6 = Multiface type (hard reset = 00) (config mode only)
-    00 = Multiface +3 (enable port 0x3F, disable port 0xBF)
-    01 = Multiface 128 v87.2 (enable port 0xBF, disable port 0x3F)
-    10 = Multiface 128 v87.12 (enable port 0x9F, disable port 0x1F)
-    11 = Multiface 1 (enable port 0x9F, disable port 0x1F)
-  bit 5 = Reserved, must be zero
-  bit 4 = Enable divmmc automap (hard reset = 0)
-  bit 3 = 1 to reverse left and right mouse buttons (hard reset = 0)
-  bit 2 = Reserved, must be zero
-  bits 1:0 = mouse dpi (hard reset = 01)
-    00 = low dpi
-    01 = default
-    10 = medium dpi
-    11 = high dpi    
 		*/
-    return tbblue_registers[10]&16;
+    return tbblue_registers[6]&16;    
 }
 
 void tbblue_set_emulator_setting_divmmc(void)
@@ -3827,7 +3807,6 @@ void tbblue_hard_reset(void)
 	tbblue_registers[7]=0;
 	tbblue_registers[8]=16;
 	tbblue_registers[9]=0;
-    tbblue_registers[10]=1;
 
 
 	tbblue_registers[0x8c]=0;
@@ -4387,17 +4366,12 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 	z80_byte last_register_6=tbblue_registers[6];
 	z80_byte last_register_7=tbblue_registers[7];
 	z80_byte last_register_8=tbblue_registers[8];
-    z80_byte last_register_10=tbblue_registers[10];
 	z80_byte last_register_17=tbblue_registers[17];
 	z80_byte last_register_21=tbblue_registers[21];
 	z80_byte last_register_66=tbblue_registers[66];
 	z80_byte last_register_67=tbblue_registers[67];
 	z80_byte last_register_99=tbblue_registers[99];
     z80_byte last_register_112=tbblue_registers[112];
-
-    if (index_position>=184 && index_position<=187) {
-        printf ("Change divmmc entry points: register %d value %02XH\n",index_position,value);
-    }    
 	
 	//z80_byte aux_divmmc;
 
@@ -4503,14 +4477,13 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		100 = Pentagon 128K
       		*/
 
-        printf("Trying to change machine to %XH\n",value&7);
-
+        
             if (previous_machine_type==0 || tbblue_bootrom.v) {
-                printf("Changing machine to %XH\n",value&7);
+                //printf("Changing machine to %XH\n",value&7);
 
                 //Pentagon not supported yet. TODO
                 //last_value=tbblue_config1;
-                //tbblue_bootrom.v=0;
+                tbblue_bootrom.v=0;
                 //printf ("----setting bootrom to 0\n");
 
                 //printf ("Writing register 3 value %02XH\n",value);
@@ -4519,23 +4492,9 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 
                 //Solo cuando hay cambio
-
+                //if ( last_register_3 != value )
                 tbblue_set_emulator_setting_timing();
             }
-
-/*
-                  if nr_wr_dat(2 downto 0) = "111" then
-                     nr_03_config_mode <= '1';
-                  elsif nr_wr_dat(2 downto 0) /= "000" then
-                     nr_03_config_mode <= '0';
-                  end if;
-*/
-
-            if ((value&7)==7 )tbblue_bootrom.v=1;
-            if ((value&7)==0 )tbblue_bootrom.v=0;
-
-            printf ("bootrom: %d\n",tbblue_bootrom.v);
-
 		break;
 
 
@@ -4588,22 +4547,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 						bit 4 = Enable DivMMC (1 = enabled)
 						bit 3 = Enable Multiface (1 = enabled)(0 after a PoR or Hard-reset)
 					*/
-			if ( (last_register_6&16) != (value&16)) {
-                //tbblue_set_emulator_setting_divmmc();
-
-                //Este registro ya no funciona asi. Ahora es:
-                /*
-0x06 (06) => Peripheral 2 Setting
-(R/W)
-  bit 7 = Enable F8 cpu speed hotkey (soft reset = 1)
-  bit 6 = Divert BEEP only to internal speaker (hard reset = 0)
-  bit 5 = Enable F3 50/60 Hz hotkey (soft reset = 1)
-  bit 4 = Enable divmmc nmi by DRIVE button (hard reset = 0)
-  bit 3 = Enable multiface nmi by M1 button (hard reset = 0)
-  bit 2 = PS/2 mode (0 = keyboard primary, 1 = mouse primary; config mode only)
-  bits 1-0 = Audio chip mode (00 = YM, 01 = AY, 11 = Hold all AY in reset)                
-                */
-            }
+			if ( (last_register_6&16) != (value&16)) tbblue_set_emulator_setting_divmmc();
 			//if ( (last_register_6&8) != (value&8)) tbblue_set_emulator_setting_multiface();
 		break;
 
@@ -4656,7 +4600,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 */		
 			
 			if (value & 8) {   
-				printf("Reset divmmc mapram bit\n");
+				
                 diviface_control_register &=(255-64);
 				
 				
@@ -4665,30 +4609,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
    		
 			//printf ("out reg 9: %02XH\n",value);
 		break;
-
-        case 10:
-        //bit 4 = Enable divmmc automap (hard reset = 0)
-
-        if ( (last_register_10&16) != (value&16)) {
-            //tbblue_set_emulator_setting_divmmc();
-
-            if (value & 16) {
-                printf ("Activando diviface automatic paging mediante cambio registro 10\n");
-                divmmc_diviface_enable();
-                diviface_allow_automatic_paging.v=1;
-            }
-
-
-            else {
-                printf ("Desactivando diviface automatic paging mediante cambio registro 10\n");
-                diviface_allow_automatic_paging.v=0;
-                //Y hacer un page-out si hay alguna pagina activa
-                diviface_paginacion_automatica_activa.v=0;
-            }
-
-
-            printf("Cambio diviface_allow_automatic_paging.v = %d en set reg 10\n",diviface_allow_automatic_paging.v);
-        }        
 
 
 		case 17:
@@ -7440,89 +7360,4 @@ z80_byte tbblue_uartbridge_readstatus(void)
 	if (status & CHDEV_ST_RD_AVAIL_DATA) status_retorno |= TBBLUE_UART_STATUS_DATA_READY;
 
 	return status_retorno;
-}
-
-int tbblue_diviface_salta_trap_antes=0;
-int tbblue_diviface_salta_trap_despues=0;
-int tbblue_diviface_salta_trap_despaginacion_despues=0;
-
-
-//Core de cpu loop para hacer traps de cpu
-void diviface_pre_opcode_fetch_tbblue(void)
-{
-
-/*
-Memory mapping could be invoked manually (by setting CONMEM), or automatically
-(CPU has fetched opcode form an entry-point). Automatic mapping is active
-only if EPROM/EEPROM is present (jumper EPROM is closed) or bit MAPRAM is set.
-Automatic mapping occurs at the begining of refresh cycle after fetching
-opcodes (M1 cycle) from 0000h, 0008h, 0038h, 0066h, 04c6h and 0562h. It's
-also mapped instantly (100ns after /MREQ of that fetch is falling down) after
-executing opcode from area 3d00..3dffh. Memory is automatically disconnected in
-refresh cycle of the instruction fetch from so called off-area, which is
-1ff8-1fffh.
-*/
-
-
-
-	tbblue_diviface_salta_trap_antes=0;
-	tbblue_diviface_salta_trap_despues=0;
-	tbblue_diviface_salta_trap_despaginacion_despues=0;
-
-
-
-
-
-
-
-	if (diviface_allow_automatic_paging.v) {
-	//Traps que paginan memoria y saltan despues de leer instruccion
-	switch (reg_pc) {
-		case 0x0000:
-		case 0x0008:
-		case 0x0038:
-		case 0x0066:
-		case 0x04c6:
-		case 0x0562:
-			if (diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
-		break;
-	}
-
-
-	//Traps que paginan memoria y saltan antes de leer instruccion
-	if (reg_pc>=0x3d00 && reg_pc<=0x3dff) tbblue_diviface_salta_trap_antes=1;
-
-	//Traps que despaginan memoria antes de leer instruccion
-	if (reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
-		//printf ("Saltado trap de despaginacion pc actual: %d\n",reg_pc);
-		tbblue_diviface_salta_trap_despaginacion_despues=1;
-    }
-
-
-	}
-
-
-	if (tbblue_diviface_salta_trap_antes && diviface_paginacion_automatica_activa.v==0) {
-	    //printf ("Saltado trap de paginacion antes pc actual: %d\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=1;
-        }
-}
-
-
-
-void diviface_post_opcode_fetch_tbblue(void)
-{
-
-
-	if (tbblue_diviface_salta_trap_despues) {
-		//printf ("Saltado trap de paginacion despues. pc actual: %d\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=1;
-	}
-
-	if (tbblue_diviface_salta_trap_despaginacion_despues) {
-		//printf ("Saltado trap de despaginacion despues. pc actual: %d\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=0;
-	}
-
-
 }

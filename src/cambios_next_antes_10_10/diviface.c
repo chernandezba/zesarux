@@ -104,18 +104,14 @@ int get_diviface_total_ram(void)
 
 
 
-int diviface_salta_trap_antes=0;
-int diviface_salta_trap_despues=0;
-int diviface_salta_trap_despaginacion_despues=0;
+        int diviface_salta_trap_antes=0;
+        int diviface_salta_trap_despues=0;
+	int diviface_salta_trap_despaginacion_despues=0;
 
 
 //Core de cpu loop para hacer traps de cpu
 void diviface_pre_opcode_fetch(void)
 {
-    if (MACHINE_IS_TBBLUE) {
-        diviface_pre_opcode_fetch_tbblue();
-        return;
-    }
 /*
 Memory mapping could be invoked manually (by setting CONMEM), or automatically
 (CPU has fetched opcode form an entry-point). Automatic mapping is active
@@ -196,10 +192,6 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
 void diviface_post_opcode_fetch(void)
 {
-    if (MACHINE_IS_TBBLUE) {
-        diviface_post_opcode_fetch_tbblue();
-        return;
-    }
 
 
 	if (diviface_salta_trap_despues) {
