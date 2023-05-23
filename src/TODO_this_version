@@ -92,7 +92,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 -Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background 
 
--En visor de disco con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
+-En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
 *extent number
 *date file 
@@ -149,7 +149,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
 
 
--pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al cerrarse una ventana deberia incrementarse en 1? o no?
+-pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
 
 -dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
 
@@ -174,7 +174,7 @@ no sockets u otras cosas
 
 --Fin mejoras
 
--quiza seek beyond limit no deberia saltar error (solo verbose), caso de tauceti
+-quiza seek beyond limit no deberia saltar error (solo verbose), caso de tauceti pcw
 
 -trivial pursuit pcw sonido?
 
@@ -188,7 +188,6 @@ Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que tr
 Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
 
 
--incorporar todos tipos de tests automaticos en docker
 
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending

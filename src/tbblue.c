@@ -4395,7 +4395,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 
 
-	//printf ("register port %02XH value %02XH\n",index_position,value);
+	printf ("register port %02XH value %02XH\n",index_position,value);
 
 	z80_byte last_register_5=tbblue_registers[5];
 	z80_byte last_register_6=tbblue_registers[6];
@@ -4499,27 +4499,38 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 3:
 		/*
-		(W) 0x03 (03) => Set machine type, only in IPL or config mode:
-   		A write in this register disables the IPL
-   		(0x0000-0x3FFF are mapped to the RAM instead of the internal ROM)
-   		bit 7 = lock timing
-   		bits 6-4 = Timing:
-      		000 or 001 = ZX 48K
-      		010 = ZX 128K
-      		011 = ZX +2/+3e
-      		100 = Pentagon 128K
-   		bit 3 = Reserved, must be 0
-   		bits 2-0 = Machine type:
-      		000 = Config mode
-      		001 = ZX 48K
-      		010 = ZX 128K
-      		011 = ZX +2/+3e
-      		100 = Pentagon 128K
+            0x03 (03) => Machine Type
+            (R)
+            bit 7 = nextreg 0x44 second byte indicator
+            bits 6:4 = Display timing
+            bit 3 = User lock on display timing applied
+            bits 2-0 = Machine type
+            (W)
+            A write to this register disables the bootrom
+            bit 7 = 1 to allow changes to bits 6:4
+            bits 6:4 = Selects display timing (VGA/RGB only)
+                affects port decoding
+                000 = Internal Use
+                001 = ZX 48K display timing
+                010 = ZX 128K/+2 display timing
+                011 = ZX +2A/+2B/+3 display timing
+                100 = Pentagon display timing 50 Hz only
+            bit 3 = 1 to toggle user lock on display timing (hard reset = 0)
+            bits 2:0 = Selects machine type (config mode only)
+                determines roms loaded
+                000 = Configuration mode
+                001 = ZX 48K
+                010 = ZX 128K/+2
+                011 = ZX +2A/+2B/+3
+                100 = Pentagon
       		*/
 
         printf("Trying to change machine to %XH\n",value&7);
+        sleep(2);
 
-            if (previous_machine_type==0 || tbblue_bootrom.v) {
+        tbblue_bootrom.v=0;
+
+            if (previous_machine_type==0 /*|| tbblue_bootrom.v*/) {
                 printf("Changing machine to %XH\n",value&7);
 
                 //Pentagon not supported yet. TODO
@@ -4545,8 +4556,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                   end if;
 */
 
-            if ((value&7)==7 )tbblue_bootrom.v=1;
-            if ((value&7)==0 )tbblue_bootrom.v=0;
+            //if ((value&7)==7 )tbblue_bootrom.v=1;
+            //if ((value&7)==0 )tbblue_bootrom.v=0;
 
             printf ("bootrom: %d\n",tbblue_bootrom.v);
 
