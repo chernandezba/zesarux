@@ -4633,17 +4633,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 6:
 
-			//Bit 7 no me afecta, solo afecta a cambios por teclado en maquina real
-			//bit 7 = Enable turbo mode (0 = disabled, 1 = enabled)(0 after a PoR or Hard-reset)
 
-			//Si hay cambio en DivMMC
-			/*
-			(W)		06 => Peripheral 2 setting, only in bootrom or config mode:
-
-						bit 4 = Enable DivMMC (1 = enabled)
-						bit 3 = Enable Multiface (1 = enabled)(0 after a PoR or Hard-reset)
-					*/
-			if ( (last_register_6&16) != (value&16)) {
+			
                 //tbblue_set_emulator_setting_divmmc();
 
                 //Este registro ya no funciona asi. Ahora es:
@@ -4656,10 +4647,10 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
   bit 4 = Enable divmmc nmi by DRIVE button (hard reset = 0)
   bit 3 = Enable multiface nmi by M1 button (hard reset = 0)
   bit 2 = PS/2 mode (0 = keyboard primary, 1 = mouse primary; config mode only)
-  bits 1-0 = Audio chip mode (00 = YM, 01 = AY, 11 = Hold all AY in reset)                
+  bits 1-0 = Audio chip mode (00 = YM, 01 = AY, 11 = Hold all AY in reset)             
                 */
-            }
-			//if ( (last_register_6&8) != (value&8)) tbblue_set_emulator_setting_multiface();
+            
+
 		break;
 
 
