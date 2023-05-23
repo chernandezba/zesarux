@@ -4489,6 +4489,12 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 printf("Soft reset\n");
                 reg_pc=0;
 
+                //temp
+                	//puerto_8189=0;
+		        	//puerto_32765=0;
+
+                    //tbblue_set_memory_pages();
+
                 //TODO: este reset??
                 //tbblue_reset();
             }
