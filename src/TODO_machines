@@ -681,6 +681,7 @@ Date:   Thu Jan 7 09:46:35 2021 -0700
 QUIZÁ implica que al llamar a tbblue_set_value_port_position, cambiar registro 3, siempre tiene que meter tbblue_bootrom.v=0,
 sin condiciones
 Y parece que al poner maquina 7, se habilita tbblue_bootrom.v?
+->Hecho
 
 
 commit 738f0147f6c9fa9a9c1e5b4beaa7cb044a2bf10c

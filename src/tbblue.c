@@ -115,6 +115,9 @@ int tbblue_deny_turbo_rom_max_allowed=2;
 //'bootrom' takes '1' on hard-reset and takes '0' if there is any writing on the i/o port 'config1'. It can not be read.
 z80_bit tbblue_bootrom={1};
 
+//Modo config. mismo comportamiento que variable nr_03_config_mode de vhdl
+z80_bit tbblue_nr_03_config_mode={1};
+
 //Copper
 z80_byte tbblue_copper_memory[TBBLUE_COPPER_MEMORY];
 
@@ -3888,6 +3891,7 @@ void tbblue_hard_reset(void)
 
 	else {
 		tbblue_bootrom.v=1;
+        tbblue_nr_03_config_mode.v=1;
 	//printf ("----setting bootrom to 1\n");
 		tbblue_set_memory_pages();
 		tbblue_set_emulator_setting_divmmc();
@@ -4417,25 +4421,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
     z80_byte previous_machine_type=tbblue_registers[3]&7;
 
-	if (index_position==3) {
 
-        //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
-
-        //Controlar caso especial
-        //(W) 0x03 (03) => Set machine type, only in IPL or config mode
-        //   		bits 2-0 = Machine type:
-        //      		000 = Config mode
-        
-
-        if (!(previous_machine_type==0 || tbblue_bootrom.v)) {
-            debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
-            //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
-
-            //Preservar bits de maquina
-            value &=(255-7);
-            value |=previous_machine_type;
-        }
-    }
 
 	if (index_position==28) {
         /*
@@ -4453,7 +4439,10 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             return;
     }
 
-	tbblue_registers[index_position]=value;
+    //Registro 3 lo gestiono desde el switch
+    if (index_position!=3) {
+	    tbblue_registers[index_position]=value;
+    }
 
 
 	switch(index_position)
@@ -4479,6 +4468,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             if (value&2) {
                 
                 tbblue_bootrom.v=1;
+                tbblue_nr_03_config_mode.v=1;
                 
                 tbblue_registers[3]=0;
                 
@@ -4526,40 +4516,80 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
       		*/
 
         printf("Trying to change machine to %XH\n",value&7);
-        sleep(2);
 
+        //bootrom_en <= '0';
         tbblue_bootrom.v=0;
 
-            if (previous_machine_type==0 /*|| tbblue_bootrom.v*/) {
+        z80_byte original_value=value;
+
+        /*
+                  if nr_03_config_mode = '1' then
+                     case nr_wr_dat(2 downto 0) is
+                        when "001"  => nr_03_machine_type <= "001";
+                        when "010"  => nr_03_machine_type <= "010";
+                        when "011"  => nr_03_machine_type <= "011";
+                        when "100"  => nr_03_machine_type <= "100";
+                        when others => nr_03_machine_type <= "000";
+                     end case;
+                  end if;        
+        */
+
+            if (tbblue_nr_03_config_mode.v) {
                 printf("Changing machine to %XH\n",value&7);
 
-                //Pentagon not supported yet. TODO
-                //last_value=tbblue_config1;
-                //tbblue_bootrom.v=0;
-                //printf ("----setting bootrom to 0\n");
 
-                //printf ("Writing register 3 value %02XH\n",value);
+                switch (value&7) {
+                   case 1:
+                   case 2:
+                   case 3:
+                   case 4:
+                   break;
 
-                tbblue_set_memory_pages();
+                   default:
+                        value &=(255-7);
+                    break;
+                }
 
 
-                //Solo cuando hay cambio
 
-                tbblue_set_emulator_setting_timing();
             }
 
-/*
+            else {
+                //Preservar bits de maquina
+                debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode",value);
+                printf("Can not change machine type (to %02XH) while in non config mode\n",value);
+                value &=(255-7);
+                value |=previous_machine_type;
+            }
+
+            //Guardar el registro
+            tbblue_registers[index_position]=value;
+
+            /*
                   if nr_wr_dat(2 downto 0) = "111" then
                      nr_03_config_mode <= '1';
                   elsif nr_wr_dat(2 downto 0) /= "000" then
                      nr_03_config_mode <= '0';
-                  end if;
-*/
+                  end if;            
+            */
 
-            //if ((value&7)==7 )tbblue_bootrom.v=1;
-            //if ((value&7)==0 )tbblue_bootrom.v=0;
+           if ((original_value&7) == 7) tbblue_nr_03_config_mode.v=1;
+           if ((original_value&7) != 0) tbblue_nr_03_config_mode.v=0;
 
-            printf ("bootrom: %d\n",tbblue_bootrom.v);
+
+            //Reconfigurar maquina solo cuando hay cambio
+            if (previous_machine_type!=(value & 7)) {
+                printf("Reconfigurando maquina a %d\n",value&7);
+                tbblue_set_memory_pages();
+                tbblue_set_emulator_setting_timing();
+            }
+            else {
+                printf("No reconfigurando maquina porque es la misma que habia\n");
+            }
+
+
+            printf ("bootrom: %d tbblue_nr_03_config_mode: %d\n",tbblue_bootrom.v,tbblue_nr_03_config_mode.v);
+            sleep(5);
 
 		break;
 
