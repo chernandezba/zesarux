@@ -201,8 +201,6 @@ int osd_adventure_keyboard_opcion_seleccionada=0;
 int debug_tsconf_dma_opcion_seleccionada=0;
 int tsconf_layer_settings_opcion_seleccionada=0;
 int cpu_stats_opcion_seleccionada=0;
-int menu_tbblue_hardware_id_opcion_seleccionada=0;
-
 int cpu_transaction_log_opcion_seleccionada=0;
 int watches_opcion_seleccionada=0;
 int record_mid_opcion_seleccionada=0;
@@ -9685,80 +9683,6 @@ void menu_debug_assemble(MENU_ITEM_PARAMETERS)
 
 
 
-
-
-
-void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
-{
-
-	menu_warn_message("Changing the machine id may show the Spectrum Next boot logo, which is NOT allowed. "
-		"Please read the License file: https://gitlab.com/thesmog358/tbblue/blob/master/LICENSE.md");
-
-        menu_item *array_menu_tbblue_hardware_id;
-        menu_item item_seleccionado;
-        int retorno_menu;
-
-		menu_add_item_menu_inicial(&array_menu_tbblue_hardware_id,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
-
-                char buffer_texto[40];
-
-                int i;
-				int salir=0;
-                for (i=0;i<=255 && !salir;i++) {
-
-					z80_byte machine_id=tbblue_machine_id_list[i].id;
-					if (machine_id==255) salir=1;
-					else {
-
-                  		sprintf (buffer_texto,"%02X %s",machine_id,tbblue_machine_id_list[i].nombre);
-
-                        menu_add_item_menu_format(array_menu_tbblue_hardware_id,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
-
-						//Decir que no es custom 
-						menu_add_item_menu_valor_opcion(array_menu_tbblue_hardware_id,0);
-					}
-
-				}
-
-				menu_add_item_menu(array_menu_tbblue_hardware_id,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-				menu_add_item_menu_format(array_menu_tbblue_hardware_id,MENU_OPCION_NORMAL,NULL,NULL,"Custom");
-				//Decir que es custom 
-				menu_add_item_menu_valor_opcion(array_menu_tbblue_hardware_id,1);				
-
-                menu_add_item_menu(array_menu_tbblue_hardware_id,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                //menu_add_item_menu(array_menu_tbblue_hardware_id,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                menu_add_ESC_item(array_menu_tbblue_hardware_id);
-
-                retorno_menu=menu_dibuja_menu(&menu_tbblue_hardware_id_opcion_seleccionada,&item_seleccionado,array_menu_tbblue_hardware_id,"Next machine id" );
-
-                
-
-
-				if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
-
-					//Si se pulsa Enter
-					//Detectar si es la opcion de custom
-					if (item_seleccionado.valor_opcion) {
-                        //permitir valores binarios
-        				char string_valor[10];
-						sprintf (string_valor,"%d",tbblue_machine_id);
-
-		                menu_ventana_scanf("ID?",string_valor,10);
-
-        				tbblue_machine_id=parse_string_to_number(string_valor);
-
-					}
-
-					else {
-						tbblue_machine_id=tbblue_machine_id_list[menu_tbblue_hardware_id_opcion_seleccionada].id;
-					}
-											
-
-												
-                }
-
-}
 
 
 

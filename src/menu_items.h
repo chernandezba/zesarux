@@ -71,7 +71,7 @@ extern void menu_settings_display(MENU_ITEM_PARAMETERS);
 
 extern void menu_draw_background_windows(MENU_ITEM_PARAMETERS);
 extern void menu_debug_cpu_stats(MENU_ITEM_PARAMETERS);
-extern void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS);
+
 
 extern void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS);
 extern void menu_cpu_transaction_log(MENU_ITEM_PARAMETERS);
