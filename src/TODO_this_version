@@ -191,7 +191,14 @@ asi en smartload y similares no aparecerian
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
 -tbblue:
-registro C0. lo pone a 8 en el boot
+* carga nex falla.
+* carga z80 falla
+* carga tap falla
+* carga Bas FUNCIONA
+* juegos zx81 FUNCIONA
+* juegos zx80 FUNCIONA
+
+*registro C0. lo pone a 8 en el boot
 
 0xC0 (192) => Interrupt Control
 (R/W) (soft reset = 0)

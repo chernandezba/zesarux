@@ -9710,7 +9710,7 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 					if (machine_id==255) salir=1;
 					else {
 
-                  		sprintf (buffer_texto,"%3d %s",machine_id,tbblue_machine_id_list[i].nombre);
+                  		sprintf (buffer_texto,"%02X %s",machine_id,tbblue_machine_id_list[i].nombre);
 
                         menu_add_item_menu_format(array_menu_tbblue_hardware_id,MENU_OPCION_NORMAL,NULL,NULL,buffer_texto);
 
@@ -9730,7 +9730,7 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_tbblue_hardware_id,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
                 menu_add_ESC_item(array_menu_tbblue_hardware_id);
 
-                retorno_menu=menu_dibuja_menu(&menu_tbblue_hardware_id_opcion_seleccionada,&item_seleccionado,array_menu_tbblue_hardware_id,"TBBlue machine id" );
+                retorno_menu=menu_dibuja_menu(&menu_tbblue_hardware_id_opcion_seleccionada,&item_seleccionado,array_menu_tbblue_hardware_id,"Next machine id" );
 
                 
 
@@ -9740,10 +9740,11 @@ void menu_tbblue_machine_id(MENU_ITEM_PARAMETERS)
 					//Si se pulsa Enter
 					//Detectar si es la opcion de custom
 					if (item_seleccionado.valor_opcion) {
-        				char string_valor[4];
+                        //permitir valores binarios
+        				char string_valor[10];
 						sprintf (string_valor,"%d",tbblue_machine_id);
 
-		                menu_ventana_scanf("ID?",string_valor,4);
+		                menu_ventana_scanf("ID?",string_valor,10);
 
         				tbblue_machine_id=parse_string_to_number(string_valor);
 

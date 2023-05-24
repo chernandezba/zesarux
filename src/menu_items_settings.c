@@ -5092,7 +5092,7 @@ void menu_hardware_settings(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_ayuda(array_menu_hardware_settings,"Boots tbblue directly to a 48 rom but with all the Next features enabled (except divmmc)");
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
-			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%d] Next machine id",tbblue_machine_id); 
+			menu_add_item_menu_format(array_menu_hardware_settings,MENU_OPCION_NORMAL,menu_tbblue_machine_id,NULL,"[%02X] Next machine id",tbblue_machine_id); 
             menu_add_item_menu_es_avanzado(array_menu_hardware_settings);
 
 			//menu_hardware_tbblue_core_version

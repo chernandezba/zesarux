@@ -324,11 +324,19 @@ struct s_tbblue_machine_id_definition tbblue_machine_id_list[]=
 	{5,               "FBLabs"},
 	{6,               "VTrucco"},
 	{7,               "WXEDA"},
+    {11,              "Multicore"},
+
 	{8,               "Emulators"},
+
 	{10,              "ZX Spectrum Next"},
-	{11,              "Multicore"},
-	{0xea,            "ZX DOS"},
-	{250,             "ZX Spectrum Next Antibrick"},
+    {0xfa,            "ZX Spectrum Next Antibrick"},
+	
+    {0x9a,            "UnAmiga Reloaded"},
+    {0xaa,            "UnAmiga"},
+    {0xba,            "SiDi"},
+    {0xca,            "MIST"},
+    {0xda,            "MiSTer"},
+	{0xea,            "ZX-DOS"},
 
  	{255,""}
 };
@@ -5070,7 +5078,7 @@ z80_byte tbblue_get_value_port_register(z80_byte registro)
 	(R) 0x01 (01) => Version (Nibble most significant = Major, Nibble less significant = Minor)
 	*/
 
-	printf ("leer registro %02XH\n",registro);
+	//printf ("leer registro %02XH\n",registro);
 
 	z80_int *paleta;
 	z80_byte indice_paleta;
