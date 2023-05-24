@@ -5059,7 +5059,7 @@ z80_byte tbblue_get_value_port_register(z80_byte registro)
 	(R) 0x01 (01) => Version (Nibble most significant = Major, Nibble less significant = Minor)
 	*/
 
-	//printf ("leer registro %02XH\n",registro);
+	printf ("leer registro %02XH\n",registro);
 
 	z80_int *paleta;
 	z80_byte indice_paleta;
