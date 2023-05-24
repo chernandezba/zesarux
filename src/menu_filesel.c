@@ -4512,39 +4512,37 @@ void menu_filesel_preview_render_scr(char *archivo_scr)
 
 }
 
+char menu_filesel_render_preview_directory_find_file_filter_func_target_dir[PATH_MAX];
+
 int menu_filesel_render_preview_directory_find_file_filter_func(const struct dirent *d GCC_UNUSED)
 {
+    //d->d_name tiene el nombre sin el directorio
+    //Dado que no estamos en el directorio donde estan los archivos, no podemos usar directamente get_file_type
+    //cambiamos el directorio temporalmente
+    //TODO: eso es una chapuza, aunque funciona
 
-    //de momento retornar 1 siempre
-    return 1;
+    char directorio_actual[PATH_MAX];
+    zvfs_getcwd(directorio_actual,PATH_MAX);
 
-	/*int tipo_archivo=get_file_type((char *)d->d_name);
+    zvfs_chdir(menu_filesel_render_preview_directory_find_file_filter_func_target_dir);
 
+	int tipo_archivo=get_file_type((char *)d->d_name);
 
-	//si es directorio, ver si empieza con . y segun el filtro activo
-	//Y si setting no mostrar directorios, no mostrar
-	if (tipo_archivo == 2) {
-		if (menu_filesel_hide_dirs.v) return 0;
-		if (menu_file_filter_dir(d->d_name,filesel_filtros)==1) return 1;
-		return 0;
-	}
+    //Restaurar directorio
+    zvfs_chdir(directorio_actual);
+
+    //printf("tipo_archivo: %d name: %s\n",tipo_archivo,d->d_name);
 
 	//Si no es archivo ni link, no ok
 
 	if (tipo_archivo  == 0) {
-
-
+        //printf("NOOK filesel is not a directory, file or link: %s\n",d->d_name);
 		debug_printf (VERBOSE_DEBUG,"Item is not a directory, file or link");
-
 		return 0;
 	}
 
-	//es un archivo. ver el nombre
-
-	if (menu_file_filter(d->d_name,filesel_filtros)==1) return 1;
-
-
-	return 0;*/
+    //printf("OK filesel %s\n",d->d_name);
+    return 1;
 }
 
 
@@ -4577,7 +4575,7 @@ int menu_filesel_render_preview_directory_find_file(char *directorio,char *archi
 
 */
 
-
+    strcpy(menu_filesel_render_preview_directory_find_file_filter_func_target_dir,directorio);
 
     struct dirent **namelist;
 

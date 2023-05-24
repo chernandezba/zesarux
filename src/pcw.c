@@ -539,6 +539,7 @@ void pcw_out_port_f8(z80_byte value)
 
         case 11:
             
+            //Trivial pursuit por ejemplo reproduce musica con este beeper
             //printf("set beeper\n");
             value_beeper=100;
         break;

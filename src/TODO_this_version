@@ -167,8 +167,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
 
--revisar menu_filesel_render_preview_directory_find_file_filter_func, corregir para que solo salgan archivos o directorios,
-no sockets u otras cosas
 
 -soporte joystick pcw
 
@@ -176,7 +174,6 @@ no sockets u otras cosas
 
 -quiza seek beyond limit no deberia saltar error (solo verbose), caso de tauceti pcw
 
--trivial pursuit pcw sonido?
 
 -pcw modo color. knight lore por ejemplo
 
@@ -188,6 +185,7 @@ Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que tr
 Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
 
 
-
+-quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
+asi en smartload y similares no aparecerian
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
