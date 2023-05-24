@@ -4510,6 +4510,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //temp
                 //if (reg_pc!=0x1c01)
                 
+//0xB9 (185) => Divmmc Entry Points Valid 0
+//(R/W) (soft reset = 0x01)
+//TODO: otros registros que cambian en soft reset
+                tbblue_registers[185]=1;
+
                 reg_pc=0;
 
                 //temp
