@@ -234,3 +234,7 @@ asi en smartload y similares no aparecerian
   take its return address from nextreg instead of memory (the stack
   pointer will be incremented).  If bit 3 = 0 and in other
   circumstances, RETN functions normally.
+
+
+-registros que se resetean con soft reset. tanto al escribir registro 2 como cpu reset de menu
+-quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
