@@ -191,12 +191,21 @@ asi en smartload y similares no aparecerian
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
 -tbblue:
-* carga nex falla.
+* carga nex falla. aunque tileeditor.nex funciona
 * carga z80 falla
 * carga tap falla
+* carga sna falla
+* guide desde el menu principal falla
+* tape loaded desde menu principal falla
+* saltar a 48kb basic desde el menu principal funciona
+* saltar a 128kb basic desde el menu principal falla
+
 * carga Bas FUNCIONA
 * juegos zx81 FUNCIONA
 * juegos zx80 FUNCIONA
+* juegos zmachine FUNCIONA
+* dot commands desde cli FUNCIONA. ejemplo .cowsay. PERO .mem peta
+
 
 *registro C0. lo pone a 8 en el boot
 

@@ -4505,7 +4505,11 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
-                printf("Soft reset\n");
+                printf("Soft reset despues de %04XH\n",reg_pc);
+
+                //temp
+                //if (reg_pc!=0x1c01)
+                
                 reg_pc=0;
 
                 //temp
