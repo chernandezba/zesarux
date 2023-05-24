@@ -3005,7 +3005,12 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 		}
 
 		else {
+            //TODO: esto es un poco chapuza pero funciona.
+            //realmente tbblue_si_rom3_segmento_bajo quiza se deberia distinguir para el segmento de 2kb bajo y el alto,
+            //pues esto afecta a las paginaciones divmmc
+            //pero dado que con paginacion normal no se puede hacer este troceado de 2kb, esto funciona 
             if (segment==0 && page==3*2) tbblue_si_rom3_segmento_bajo=1;
+            if (segment==1 && page==3*2+1) tbblue_si_rom3_segmento_bajo=1;
 
             tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];
         }
@@ -3016,6 +3021,9 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 	else {
 		tbblue_set_rom_page_no_255(segment);
 	}
+
+    printf("After set_rom_page. tbblue_si_rom3_segmento_bajo=%d\n",tbblue_si_rom3_segmento_bajo);
+    //debug_exec_show_backtrace();
 }
 
 
@@ -3213,6 +3221,9 @@ z80_bit tbblue_was_in_p2a_ram_in_rom={0};
 
 void tbblue_set_memory_pages(void)
 {
+
+    printf("tbblue_set_memory_pages. puerto_8189: %04XH\n",puerto_8189);
+
 	//Mapeamos paginas de RAM segun config maquina
 	z80_byte maquina=(tbblue_registers[3])&7;
 
@@ -7431,7 +7442,7 @@ void tbblue_out_port_8189(z80_byte value)
     //Puerto tipicamente 8189
     // the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
 
-    //printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
+    printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
     puerto_8189=value;
 
     //En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
@@ -7657,26 +7668,26 @@ refresh cycle of the instruction fetch from so called off-area, which is
             
 
             case 0x056A:
-                if ((tbblue_registers[0xBB] & 0x20) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                if ((tbblue_registers[0xBB] & 0x20) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
             break;            
 
             case 0x04D7:
-                if ((tbblue_registers[0xBB] & 0x10) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                if ((tbblue_registers[0xBB] & 0x10) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
             break;
 
 
             case 0x0562:
-                if ((tbblue_registers[0xBB] & 0x08) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                if ((tbblue_registers[0xBB] & 0x08) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
             break;
 
             case 0x04C6:
-                if ((tbblue_registers[0xBB] & 0x04) && diviface_paginacion_automatica_activa.v==0) tbblue_diviface_salta_trap_despues=1;
+                if ((tbblue_registers[0xBB] & 0x04) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
             break;            
         }
 
 
         //Traps que paginan memoria y saltan antes de leer instruccion
-        if ((tbblue_registers[0xBB] & 0x80) && reg_pc>=0x3d00 && reg_pc<=0x3dff) {
+        if ((tbblue_registers[0xBB] & 0x80) && reg_pc>=0x3d00 && reg_pc<=0x3dff && tbblue_si_rom3_segmento_bajo) {
             //printf ("Saltado tbblue_diviface_salta_trap_antes pc actual: %04XH\n",reg_pc);
             tbblue_diviface_salta_trap_antes=1;
         }
