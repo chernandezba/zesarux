@@ -2725,6 +2725,8 @@ IMMEDIATE
 		//Y escribimos
 		if (escribir) {
 			z80_byte *altrompointer;
+            printf ("Escribiendo en rom: %04XH\n",dir);
+            //sleep(1);
 	
 			altrompointer=tbblue_get_altrom_dir(dir);
 			*altrompointer=valor;

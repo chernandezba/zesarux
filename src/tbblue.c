@@ -2825,6 +2825,9 @@ void tbblue_set_rom_page_no_255(z80_byte segment)
 
 }
 
+//Usado para paginacion divmmc
+int tbblue_si_rom3_segmento_bajo=0;
+
 int tbblue_get_altrom(void)
 {
 /*
@@ -2933,14 +2936,21 @@ bit 4 = 1 to lock ROM0 (128K rom)
 altrom=0 -> ROM0
 altrom=1 -> ROM01
 */
-    printf("tbblue_get_altrom: machine type: %d\n",tbblue_registers[3]&7);
+    z80_byte tbblue_maquina_config=tbblue_registers[3]&7;
 
+    printf("tbblue_get_altrom: machine type: %d\n",tbblue_maquina_config);
 
+    if (tbblue_maquina_config!=3) {
+        printf("No soportada en tbblue_get_altrom!!!\n");
+        sleep(20);
+    }
 
+    //tbblue_si_rom3_segmento_bajo=0;
 
     if ( (tbblue_registers[0x8c] & 32) == 32) {
         printf ("tbblue_get_altrom: ROM1\n");
         altrom=1;
+        //tbblue_si_rom3_segmento_bajo=1;
     }
     //128k rom
     else if ( (tbblue_registers[0x8c] & 16) == 16) {
@@ -2962,10 +2972,95 @@ altrom=1 -> ROM01
 
 				z80_byte rom_page=rom1f | rom7f;
 
-        printf ("tbblue_get_altrom: rom segun paginacion +2A/+3: %d\n",rom_page);        
+        printf ("tbblue_get_altrom: rom segun paginacion +2A/+3: %d\n",rom_page);       
+
+        if (rom_page!=altrom) {
+            //printf("No COINCIDEN!!!\n");
+            //sleep (10);
+        } 
+
+        //if (altrom==1) tbblue_si_rom3_segmento_bajo=1;
     }
+    /*
+       process (machine_type_48, machine_type_p3, nr_8c_altrom_lock_rom1, nr_8c_altrom_lock_rom0, port_1ffd_rom)
+   begin
+      if machine_type_48 = '1' then
+         sram_rom <= "00";
+         sram_rom3 <= '1';
+         sram_alt_128_n <= not ((not nr_8c_altrom_lock_rom1) and nr_8c_altrom_lock_rom0);
+      elsif machine_type_p3 = '1' then
+         if nr_8c_altrom_lock_rom1 = '1' or nr_8c_altrom_lock_rom0 = '1' then
+            sram_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0;
+            sram_rom3 <= nr_8c_altrom_lock_rom1 and nr_8c_altrom_lock_rom0;
+            sram_alt_128_n <= nr_8c_altrom_lock_rom1;
+         else
+            sram_rom <= port_1ffd_rom;
+            sram_rom3 <= port_1ffd_rom(1) and port_1ffd_rom(0);
+            sram_alt_128_n <= port_1ffd_rom(0);   -- behave like a 128k machine
+         end if;
+      else
+         if nr_8c_altrom_lock_rom1 = '1' or nr_8c_altrom_lock_rom0 = '1' then
+            sram_rom <= '0' & nr_8c_altrom_lock_rom1;
+            sram_rom3 <= nr_8c_altrom_lock_rom1;
+            sram_alt_128_n <= nr_8c_altrom_lock_rom1;
+         else
+            sram_rom <= '0' & port_1ffd_rom(0);
+            sram_rom3 <= port_1ffd_rom(0);
+            sram_alt_128_n <= port_1ffd_rom(0);
+         end if;
+      end if;
+   end process;
+
+
+   process (i_CLK_28)
+   begin
+      if rising_edge(i_CLK_28) then
+         if reset = '1' then
+            nr_8c_altrom(7 downto 4) <= nr_8c_altrom(3 downto 0);
+         elsif nr_8c_we = '1' then
+            nr_8c_altrom <= nr_wr_dat;
+         end if;
+      end if;
+   end process;
+
+   nr_8c_altrom_en <= nr_8c_altrom(7);
+   nr_8c_altrom_rw <= nr_8c_altrom(6);
+   nr_8c_altrom_lock_rom1 <= nr_8c_altrom(5);
+   nr_8c_altrom_lock_rom0 <= nr_8c_altrom(4);   
+    */
 
 	return altrom;
+}
+
+int new_tbblue_get_altrom(void)
+{
+    z80_byte tbblue_maquina_config=tbblue_registers[3]&7;
+
+    printf("tbblue_get_altrom: machine type: %d\n",tbblue_maquina_config);
+
+    if (tbblue_maquina_config!=3) {
+        printf("No soportada en tbblue_get_altrom!!!\n");
+        sleep(20);
+    }
+    /*
+            sram_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0;
+            sram_rom3 <= nr_8c_altrom_lock_rom1 and nr_8c_altrom_lock_rom0;
+            sram_alt_128_n <= nr_8c_altrom_lock_rom1;    
+    */
+
+    int altrom=(tbblue_registers[0x8c]>>4) &3;
+    if (altrom==1) {
+        tbblue_si_rom3_segmento_bajo=1;
+    }
+    else {
+        tbblue_si_rom3_segmento_bajo=0;
+    }
+
+    printf ("tbblue_get_altrom: alt rom: %d es_rom_3: %d Reg 8C=%02XH %d %d\n",altrom,tbblue_si_rom3_segmento_bajo,
+        tbblue_registers[0x8c],tbblue_registers[0x8c] & 16,tbblue_registers[0x8c] & 32);
+    //sleep(2);
+
+    return altrom;
 }
 
 
@@ -2987,8 +3082,7 @@ int tbblue_get_altrom_offset_dir(int altrom,z80_int dir)
 	return offset;
 }
 
-//Usado para paginacion divmmc
-int tbblue_si_rom3_segmento_bajo=0;
+
 
 void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 {
@@ -3008,13 +3102,19 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 		//Si esta altrom en read
 		//Altrom.
 		//bit 6 =0 , only for read. bit 6=1, only for write
-		if (  (tbblue_registers[0x8c] & 192) ==128)    {
-			
+		if (  
+            (tbblue_registers[0x8c] & 192) ==128   
+            //( (tbblue_registers[0x8c] & 16)  || (tbblue_registers[0x8c] & 32) ) 
+           )
+        
+          {
+			//printf("Se cumple %d\n",(tbblue_registers[0x8c] & 16)  || (tbblue_registers[0x8c] & 32) );
 			int altrom;
 
 			//TODO: tener en cuenta altrom si maquina es distinta de machine_type_p3,
 			//que es como en teoria lo estoy haciendo. Ver codigo vhdl para salir de dudas
 			altrom=tbblue_get_altrom();
+            //sleep(5);
 
 			//printf ("Enabling alt rom on read. altrom=%d\n",altrom);
 
@@ -4464,6 +4564,32 @@ void tbblue_soft_reset_registers(void)
     tbblue_registers[0x86]=0;
     tbblue_registers[0x87]=1;
 
+/*
+0x8C (140) => Alternate ROM
+(R/W) (hard reset = 0)
+IMMEDIATE
+  bit 7 = 1 to enable alt rom
+  bit 6 = 1 to make alt rom visible only during writes, otherwise replaces rom during reads
+  bit 5 = 1 to lock ROM1 (48K rom)
+  bit 4 = 1 to lock ROM0 (128K rom)
+AFTER SOFT RESET (copied into bits 7-4)
+  bit 3 = 1 to enable alt rom
+  bit 2 = 1 to make alt rom visible only during writes, otherwise replaces rom during reads
+  bit 1 = 1 to lock ROM1 (48K rom)
+  bit 0 = 1 to lock ROM0 (128K rom)
+*/
+    //Se copia parte baja en alta
+    z80_byte low_nibble=tbblue_registers[0x8C] & 0x0F;
+
+    //Quito parte alta
+    tbblue_registers[0x8C] &=0x0F;
+
+    //Roto parte baja en alta y OR
+    low_nibble=low_nibble << 4;
+
+    tbblue_registers[0x8C] |=low_nibble;
+
+
     //TODO desde 0x88 hasta 0xB8
 
 
@@ -4586,7 +4712,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
                 printf("Soft reset despues de %04XH\n",reg_pc);
-                timer_sleep(500);
+                //timer_sleep(500);
 
                 //temp
                 //if (reg_pc!=0x1c01)
@@ -4597,7 +4723,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //tbblue_registers[185]=1;
                 tbblue_soft_reset_registers();
 
-
+                printf("Register 8C=%02XH\n",tbblue_registers[0x8C]);
 //prueba
 //if (diviface_allow_automatic_paging.v) diviface_paginacion_automatica_activa.v=1;
                 reg_pc=0;
@@ -5105,7 +5231,7 @@ Bit	Function
 		case 140:
 			printf ("Write to Alternate ROM 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
 			tbblue_set_memory_pages();
-            sleep(5);
+            //sleep(5);
 		break;
 
 

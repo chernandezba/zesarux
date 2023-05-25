@@ -241,6 +241,7 @@ asi en smartload y similares no aparecerian
 -registros que se resetean con soft reset. tanto al escribir registro 2 como cpu reset de menu
 -quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
 
+-revisar altrompointer en poke_byte
 
 -determinar version en compilacion, mediante /etc/*release
 -determinar version en ejecucion, mediante /etc/*release
