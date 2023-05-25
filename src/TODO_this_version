@@ -204,6 +204,7 @@ asi en smartload y similares no aparecerian
 * juegos zx81 FUNCIONA
 * juegos zx80 FUNCIONA
 * juegos zmachine FUNCIONA
+* dizzy.dsk FUNCIONA
 * dot commands desde cli FUNCIONA. ejemplo .cowsay. PERO .mem peta
 
 
@@ -238,3 +239,7 @@ asi en smartload y similares no aparecerian
 
 -registros que se resetean con soft reset. tanto al escribir registro 2 como cpu reset de menu
 -quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
+
+
+-determinar version en compilacion, mediante /etc/*release
+-determinar version en ejecucion, mediante /etc/*release

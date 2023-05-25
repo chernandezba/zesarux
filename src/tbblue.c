@@ -3005,6 +3005,9 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 
 			//printf ("Enabling alt rom on read. altrom=%d\n",altrom);
 
+            //Si entra rom 1 (de maquina 128k) es como si entrase rom 3 a efectos de traps
+            if (altrom==1) tbblue_si_rom3_segmento_bajo=1;
+
 
 			int offset=tbblue_get_altrom_offset_dir(altrom,8192*segment);
 
@@ -4406,6 +4409,70 @@ leaving I/O Mode is at most 64 scan lines.
 
 }
 
+                
+void tbblue_soft_reset_registers(void)
+{
+    tbblue_registers[0x06] |=0xA0;
+
+    tbblue_registers[0x07] &=0xF0;
+    tbblue_set_emulator_setting_turbo();
+
+    tbblue_registers[0x08] &=0xBF;
+    tbblue_registers[0x09] &=0xEF;
+
+    tbblue_registers[0x0B]=0x01;
+
+    tbblue_registers[0x12]=8;
+    tbblue_registers[0x13]=11;
+    tbblue_registers[0x14]=0xE3;
+    tbblue_registers[0x15]=0;
+    tbblue_registers[0x16]=0;
+    tbblue_registers[0x17]=0;
+
+    //TODO 0x18 hasta 0x1b
+
+    tbblue_registers[0x22]=0;
+    tbblue_registers[0x23]=0;
+    tbblue_registers[0x26]=0;
+    tbblue_registers[0x27]=0;
+
+    tbblue_registers[0x2C]=0x80;
+    tbblue_registers[0x2D]=0x80;
+    tbblue_registers[0x2E]=0x80;
+
+    //TODO 0x2F hasta 0x7f
+
+    tbblue_registers[0x80]=0xFF;
+    tbblue_registers[0x81]=0xFF;
+    tbblue_registers[0x82]=10;
+    tbblue_registers[0x83]=11;
+    tbblue_registers[0x84]=4;
+    tbblue_registers[0x85]=5;
+    tbblue_registers[0x86]=0;
+    tbblue_registers[0x87]=1;
+
+    //TODO desde 0x88 hasta 0xB8
+
+
+    tbblue_registers[0xB9]=0x01;
+    tbblue_registers[0xBA]=0x00;
+    tbblue_registers[0xBB]=0xCD;
+
+    tbblue_registers[0xC0]=0x00;
+    tbblue_registers[0xC2]=0x00;
+    tbblue_registers[0xC3]=0x00;
+    tbblue_registers[0xC4]=0x81;
+    tbblue_registers[0xC5]=0x00;
+    tbblue_registers[0xC6]=0x00;
+
+    tbblue_registers[0xCC]=0x00;
+    tbblue_registers[0xCD]=0x00;
+    tbblue_registers[0xCE]=0x00;
+
+    tbblue_registers[0xD8]=0x00;
+
+    tbblue_set_memory_pages();
+}
 	
 //tbblue_last_register
 //void tbblue_set_value_port(z80_byte value)
@@ -4506,6 +4573,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
                 printf("Soft reset despues de %04XH\n",reg_pc);
+                timer_sleep(500);
 
                 //temp
                 //if (reg_pc!=0x1c01)
@@ -4513,7 +4581,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 //0xB9 (185) => Divmmc Entry Points Valid 0
 //(R/W) (soft reset = 0x01)
 //TODO: otros registros que cambian en soft reset
-                tbblue_registers[185]=1;
+                //tbblue_registers[185]=1;
+                tbblue_soft_reset_registers();
 
 
 //prueba
