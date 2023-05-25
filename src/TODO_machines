@@ -721,7 +721,7 @@ mirar registro 10
   bit 5 = Reserved, must be zero
   bit 4 = Enable divmmc automap (hard reset = 0)
 
--lentitud tbblue: parece que no gestiona bien modos turbo. si cambio a mano velocidad cpu, se acelera
+
 
 
 -resumen : partiendo de codigo 10.2 tal cual, si en traps diviface digo que salten 0x3d00 y 0x1ff8 && reg_pc<=0x1fff, sin tener en cuenta

@@ -2950,12 +2950,14 @@ altrom=1 -> ROM01
     if ( (tbblue_registers[0x8c] & 32) == 32) {
         printf ("tbblue_get_altrom: ROM1\n");
         altrom=1;
+        //sleep(3);
         //tbblue_si_rom3_segmento_bajo=1;
     }
     //128k rom
     else if ( (tbblue_registers[0x8c] & 16) == 16) {
         altrom=0;
         printf ("tbblue_get_altrom: ROM0\n");
+        //sleep(3);
     }
 
     //a 0 los dos . paginado +3.
@@ -2980,6 +2982,8 @@ altrom=1 -> ROM01
         } 
 
         //if (altrom==1) tbblue_si_rom3_segmento_bajo=1;
+
+        //sleep(3);
     }
     /*
        process (machine_type_48, machine_type_p3, nr_8c_altrom_lock_rom1, nr_8c_altrom_lock_rom0, port_1ffd_rom)
@@ -3082,6 +3086,91 @@ int tbblue_get_altrom_offset_dir(int altrom,z80_int dir)
 	return offset;
 }
 
+int tbblue_if_altrom_disabled_on_read(void)
+{
+    /*
+    altrom is disabled if:
+- bit 7 of nr 0x8c is 0
+OR
+- it's a memory read and bit 6 of nr 0x8c is 1
+OR
+- it's a memory write and bit 6 of nr 0x8c is 0    
+    */
+    if ( (tbblue_registers[0x8c] & 128) ==  0) return 1;
+
+    if ( (tbblue_registers[0x8c] & 64) ==  1) return 1;
+
+    return 1;
+
+}
+
+int tbblue_if_altrom_disabled_on_write(void)
+{
+    /*
+    altrom is disabled if:
+- bit 7 of nr 0x8c is 0
+OR
+- it's a memory read and bit 6 of nr 0x8c is 1
+OR
+- it's a memory write and bit 6 of nr 0x8c is 0    
+    */
+    if ( (tbblue_registers[0x8c] & 128) ==  0) return 1;
+
+    if ( (tbblue_registers[0x8c] & 64) ==  0) return 1;
+
+    return 0;
+
+}
+
+//es_read a 1, en caso contrario es write
+int new_tbblue_get_start_altrom_offset(int es_read)
+{
+    //For a +3 type machine, ie the Next, if both lock rom bits are zero (bits 5:4 of nr 0x8c), 
+    //then the rom selection is determined by ports 0x7ffd and 0x1ffd like normal
+    //Retornar -1 en este caso
+
+    if ( (tbblue_registers[0x8c] & 16)==0  && (tbblue_registers[0x8c] & 32)==0 ) {
+        printf("offset de 1ffd y 7ffd\n");
+        return -1;
+    }
+
+    printf("bits 5 y 4 no cero los dos\n");
+    sleep(1);
+
+    //sram_active_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0; This is the two-bit rom number 1-3 selected 
+    //if the altrom is disabled. Note you can't lock rom 0.
+
+    int altrom_desactivado;
+
+    if (es_read) altrom_desactivado=tbblue_if_altrom_disabled_on_read();
+    else altrom_desactivado=tbblue_if_altrom_disabled_on_write();
+
+    if ( altrom_desactivado) {
+        int srom=(tbblue_registers[0x8c]>>4) &3;
+        printf("altrom desactivado srom=%d\n",srom);
+        sleep(1);
+
+        return srom*16384;
+    }
+
+    else {
+        //sram_alt_128 <= not nr_8c_altrom_lock_rom1; If 1 this selects the 128k altorm else the 48k altrom when altrom is enabled.
+        int altrom=(tbblue_registers[0x8c]>>5) &1;
+
+        printf("altrom activado altrom=%d\n",altrom);
+        sleep(1);        
+
+        if (altrom==1) {
+            return 0x018000;
+        }
+        else {
+            return 0x01c000;
+        }
+
+    }
+
+
+}
 
 
 void tbblue_set_rom_page(z80_byte segment,z80_byte page)
@@ -3103,7 +3192,7 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 		//Altrom.
 		//bit 6 =0 , only for read. bit 6=1, only for write
 		if (  
-            (tbblue_registers[0x8c] & 192) ==128   
+            1 //(tbblue_registers[0x8c] & 192) ==128   
             //( (tbblue_registers[0x8c] & 16)  || (tbblue_registers[0x8c] & 32) ) 
            )
         
@@ -3113,18 +3202,25 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 
 			//TODO: tener en cuenta altrom si maquina es distinta de machine_type_p3,
 			//que es como en teoria lo estoy haciendo. Ver codigo vhdl para salir de dudas
-			altrom=tbblue_get_altrom();
+			//altrom=tbblue_get_altrom();
             //sleep(5);
 
-			//printf ("Enabling alt rom on read. altrom=%d\n",altrom);
+            int offset=new_tbblue_get_start_altrom_offset(1);
 
-            //Si entra rom 1 (de maquina 128k) es como si entrase rom 3 a efectos de traps
-            if (altrom==1) tbblue_si_rom3_segmento_bajo=1;
+            if (offset<0) {
+                tbblue_si_rom3_segmento_bajo=0;
+
+                if (segment==0 && page==3*2) tbblue_si_rom3_segmento_bajo=1;
+                if (segment==1 && page==3*2+1) tbblue_si_rom3_segmento_bajo=1;
+
+                tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];                      
+            }
 
 
-			int offset=tbblue_get_altrom_offset_dir(altrom,8192*segment);
-
-			tbblue_memory_paged[segment]=&memoria_spectrum[offset];
+            else {
+                //TODO tbblue_si_rom3_segmento_bajo
+                tbblue_memory_paged[segment]=&memoria_spectrum[offset+8192*segment];
+            }
 
 		}
 
@@ -5231,7 +5327,7 @@ Bit	Function
 		case 140:
 			printf ("Write to Alternate ROM 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
 			tbblue_set_memory_pages();
-            //sleep(5);
+            sleep(1);
 		break;
 
 
