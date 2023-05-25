@@ -205,6 +205,7 @@ asi en smartload y similares no aparecerian
 * juegos zx80 FUNCIONA
 * juegos zmachine FUNCIONA
 * dizzy.dsk FUNCIONA
+* .aky songs FUNCIONA
 * dot commands desde cli FUNCIONA. ejemplo .cowsay. PERO .mem peta
 
 

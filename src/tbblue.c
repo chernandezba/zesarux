@@ -2933,15 +2933,19 @@ bit 4 = 1 to lock ROM0 (128K rom)
 altrom=0 -> ROM0
 altrom=1 -> ROM01
 */
+    printf("tbblue_get_altrom: machine type: %d\n",tbblue_registers[3]&7);
+
+
+
 
     if ( (tbblue_registers[0x8c] & 32) == 32) {
-        //printf ("ROM1\n");
+        printf ("tbblue_get_altrom: ROM1\n");
         altrom=1;
     }
     //128k rom
     else if ( (tbblue_registers[0x8c] & 16) == 16) {
         altrom=0;
-        //printf ("ROM0\n");
+        printf ("tbblue_get_altrom: ROM0\n");
     }
 
     //a 0 los dos . paginado +3.
@@ -2949,7 +2953,16 @@ altrom=1 -> ROM01
         
         z80_byte rom_entra=((puerto_32765>>4)&1);
         altrom=rom_entra;	
-        //printf ("alt rom segun 7ffd (%d)\n",altrom);
+
+
+        printf ("tbblue_get_altrom: alt rom segun 7ffd:          %d\n",altrom);
+
+		        	z80_byte rom1f=(puerto_8189>>1)&2;
+		        	z80_byte rom7f=(puerto_32765>>4)&1;
+
+				z80_byte rom_page=rom1f | rom7f;
+
+        printf ("tbblue_get_altrom: rom segun paginacion +2A/+3: %d\n",rom_page);        
     }
 
 	return altrom;
@@ -5090,8 +5103,9 @@ Bit	Function
 
 
 		case 140:
-			//printf ("Write to 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
+			printf ("Write to Alternate ROM 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
 			tbblue_set_memory_pages();
+            sleep(5);
 		break;
 
 
