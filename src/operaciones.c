@@ -2697,6 +2697,12 @@ set_visualmembuffer(dir);
 
 	//Altrom. Si escribe en espacio de memoria de rom 0-3fffh
 	if (dir<16384 && (  !tbblue_if_altrom_disabled_on_write())   ) {
+
+
+        
+    //if (dir<16384 && (  (tbblue_registers[0x8c] & 192) ==192)   ) {
+
+
 		/*
 		0x8C (140) => Alternate ROM
 (R/W) (hard reset = 0)
@@ -2725,7 +2731,7 @@ IMMEDIATE
 		//Y escribimos
 		if (escribir) {
 			z80_byte *altrompointer;
-            printf ("Escribiendo en rom: %04XH\n",dir);
+            printf ("Escribiendo en rom: %04XH valor: %02XH\n",dir,valor);
             //sleep(1);
 
 
@@ -2733,6 +2739,7 @@ IMMEDIATE
 
             if (offset<0) {
                 printf("Escribiendo en rom normal\n");
+                if (dir<4) sleep(1);
                
                 z80_byte *puntero;
                 puntero=tbblue_return_segment_memory(dir);
@@ -2745,6 +2752,7 @@ IMMEDIATE
                 //printf ("Returning tbblue memory value %X\n",*puntero);
 
                 *puntero=valor;
+                //sleep(1);
 
 
 
@@ -2752,6 +2760,8 @@ IMMEDIATE
 	
             else {
                 printf("Escribiendo en no rom normal\n");
+                if (dir<4) sleep(1);
+
                 altrompointer=&memoria_spectrum[offset+dir];
 			    *altrompointer=valor;
             }

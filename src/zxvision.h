@@ -1520,6 +1520,7 @@ extern int zxdesktop_draw_scrfile_scale_factor;
 extern int zxdesktop_draw_scrfile_disable_flash;
 extern int zxdesktop_draw_scrfile_mix_background;
 
+extern int gamelife_timer_counter;
 
 struct s_zxdesktop_lowericons_info {
 	int (*is_visible)(void);

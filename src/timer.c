@@ -735,7 +735,8 @@ void timer_check_interrupt(void)
             }*/
 
                             
-
+            //contador para juego de la vida 
+            gamelife_timer_counter++;
                 
 
             //temporizador de impresion para escribir generico footer en pantalla
@@ -819,6 +820,8 @@ void timer_check_interrupt(void)
             realtape_print_footer();
 
             cf2_floppy_icon_activity();
+
+            gamelife_timer_background_activity();
 
             if (betadisk_simulated_motor>0) betadisk_simulated_motor--;
 

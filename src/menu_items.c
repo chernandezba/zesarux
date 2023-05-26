@@ -36931,6 +36931,9 @@ void menu_inicio_bucle_main(void)
             //printf("else if\n");
             zxvision_helper_menu_shortcut_init();
 
+            //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
+            gamelife_fire_next_event();
+
             if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
             else f_functions=0;
 

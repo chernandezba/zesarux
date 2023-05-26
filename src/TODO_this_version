@@ -190,7 +190,7 @@ asi en smartload y similares no aparecerian
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
--tbblue:
+-----tbblue:
 * carga nex falla. aunque tileeditor.nex funciona, tambien show512.nex
 * carga z80 falla
 * carga tap falla
@@ -243,6 +243,13 @@ asi en smartload y similares no aparecerian
 -quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
 
 -revisar altrompointer en poke_byte
+---- fin tbblue
+
 
 -determinar version en compilacion, mediante /etc/*release
 -determinar version en ejecucion, mediante /etc/*release
+
+
+-gameof life. setting para habilitarlo. que este por encima de fondo y de scrfile
+*donde lanzar evento? quiza un modo especial que se redibuje aun con el menu cerrado, y a cada segundo?
+*quiza en menu cerrado como salvapantallas?

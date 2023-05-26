@@ -3125,12 +3125,15 @@ OR
 //es_read a 1, en caso contrario es write
 int new_tbblue_get_start_altrom_offset(int es_read)
 {
+    printf("Reg 8C=%02XH\n",tbblue_registers[0x8c]);
+
     //For a +3 type machine, ie the Next, if both lock rom bits are zero (bits 5:4 of nr 0x8c), 
     //then the rom selection is determined by ports 0x7ffd and 0x1ffd like normal
     //Retornar -1 en este caso
 
     if ( (tbblue_registers[0x8c] & 16)==0  && (tbblue_registers[0x8c] & 32)==0 ) {
         printf("offset de 1ffd y 7ffd\n");
+        //timer_sleep(20);
         return -1;
     }
 
@@ -3160,12 +3163,7 @@ int new_tbblue_get_start_altrom_offset(int es_read)
         printf("altrom activado altrom=%d\n",altrom);
         sleep(1);        
 
-        if (altrom==1) {
-            return 0x018000;
-        }
-        else {
-            return 0x01c000;
-        }
+        return 0x18000+altrom*16384;
 
     }
 
@@ -4808,6 +4806,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
                 printf("Soft reset despues de %04XH\n",reg_pc);
+
+                printf("Register 8C before soft reset=%02XH\n",tbblue_registers[0x8C]);
                 //timer_sleep(500);
 
                 //temp
@@ -4819,7 +4819,8 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
                 //tbblue_registers[185]=1;
                 tbblue_soft_reset_registers();
 
-                printf("Register 8C=%02XH\n",tbblue_registers[0x8C]);
+                printf("Register 8C after soft reset=%02XH\n",tbblue_registers[0x8C]);
+                //sleep(10);
 //prueba
 //if (diviface_allow_automatic_paging.v) diviface_paginacion_automatica_activa.v=1;
                 reg_pc=0;

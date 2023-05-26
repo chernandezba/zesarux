@@ -15,7 +15,6 @@
 -redraws de zxdesktop en determinados cambios (redimensionado/cierre ventana?) donde se queda a veces en negro
 
 
--Para un futuro: que ventanas tengan iconos en una tabla y el gestor de ventanas muestre dichos iconos
 
 -iconos de dispositivos mmc/ide en escritorio 
 
@@ -433,7 +432,7 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 -mejorar deteccion frecuencia sonido en audio wave form
 
 
--Mostrar juego cargado en titulo ventana. Desaparece al hacer reset 
+-Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
 
 -poder hacer hotswap de una maquina a zx-uno
 
@@ -448,7 +447,6 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 
 -lectura de nombre de archivo en fileselector para stdout no admite espacios
 
--al llamar a filesel, se resetea funcion overlay y se deja normal, perdiendose overlay que hubiera en la ventana (como en Visual Real Tape)
 
 -sin multitask, no va repeticion de teclas. esto es porque no se ejecuta timer_check_interrupt
 quiza estas funciones de contadores deberian venir con el thread del timer? aunque luego en version

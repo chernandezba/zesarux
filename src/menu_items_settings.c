@@ -6580,8 +6580,10 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 			}
 
             if (MACHINE_IS_PCW) {
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_video_mode,NULL,
-                    "[%s] Video mode",(pcw_video_mode_names[pcw_video_mode]));
+
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_video_mode,NULL,
+                    "Video mode","Modo video","Mode video");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%s] ",(pcw_video_mode_names[pcw_video_mode]));
                 menu_add_item_menu_tooltip(array_menu_settings_display,"Changes PCW Video Mode");
                 menu_add_item_menu_ayuda(array_menu_settings_display,"Changes PCW Video Mode. Possible modes are: \n"
                     "Mode 0: 720x256: Default PCW native mode, two colours\n"
@@ -6594,18 +6596,22 @@ void menu_settings_display(MENU_ITEM_PARAMETERS)
 
                 if (pcw_video_mode==0) {
 
-                    menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
-                        "[%c] Black & White monitor",(pcw_black_white_display.v ? 'X' : ' '));
+                    menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_black_white,NULL,
+                        "Black & White monitor","Monitor Blanco y Negro","Monitor Blanc i Negre");
+                    menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_black_white_display.v ? 'X' : ' '));                        
                 }
 
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
-                    "[%c] Always on monitor",(pcw_always_on_display.v ? 'X' : ' '));
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_always_on,NULL,
+                    "Always on monitor","Monitor simpre activo","Monitor sempre actiu");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_always_on_display.v ? 'X' : ' '));
 
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
-                    "[%c] Do not allow inverse",(pcw_do_not_inverse_display.v ? 'X' : ' '));
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_inverse,NULL,
+                    "Do not allow inverse","No permitir inverso","No permetre invers");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_do_not_inverse_display.v ? 'X' : ' '));
 
-                menu_add_item_menu_format(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_scroll,NULL,
-                    "[%c] Do not allow scroll",(pcw_do_not_scroll.v ? 'X' : ' '));
+                menu_add_item_menu_en_es_ca(array_menu_settings_display,MENU_OPCION_NORMAL,menu_display_pcw_do_not_scroll,NULL,
+                    "Do not allow scroll","No permitir scroll","No permetre scroll");
+                menu_add_item_menu_prefijo_format(array_menu_settings_display,"[%c] ",(pcw_do_not_scroll.v ? 'X' : ' '));
             }
 		}
 
