@@ -34949,7 +34949,7 @@ void gamelife_random_board(void)
 
 }
 
-void gamelife_next_frame(void)
+void gamelife_next_frame(zxvision_window *w)
 {
 
     //Si tablero no inicializado o si tablero vacio
@@ -34966,8 +34966,12 @@ void gamelife_next_frame(void)
     }*/
 
     if (gamelife_empty_board()) {
-        gamelife_paused=1;
-        return;
+        if (!gamelife_paused) {
+            gamelife_paused=1;
+            //Indicarlo para que el usuario lo vea
+            zxvision_print_string_defaults_fillspc(w,1,0,"Ended");
+        }
+       return;
     }
 
     gamelife_next_generation();
@@ -35101,7 +35105,7 @@ void menu_toy_zxlife_overlay(void)
 
         //gamelife_timer_background_activity();
 
-        gamelife_next_frame();
+        gamelife_next_frame(menu_toy_zxlife_window);
 
 
         int x,y;
