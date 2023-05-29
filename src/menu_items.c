@@ -34733,7 +34733,7 @@ int gamelife_board_next_cycle[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 //cuantos pixeles representa cada casilla
 #define GAMELIFE_SIZE_LIVE 4
 
-#define GAMELIFE_INITIAL_WIDTH 60
+#define GAMELIFE_INITIAL_WIDTH 80
 #define GAMELIVE_INITIAL_HEIGHT 40
 #define GAMELIVE_LINES_MENU 1
 
@@ -35028,8 +35028,9 @@ void menu_toy_zxlife_draw_life(zxvision_window *w,int x,int y,int alive)
 
 }
 
-int zxlife_last_window_width;
-int zxlife_last_window_height;
+//Forzar a recalcular la primera vez
+int zxlife_last_window_width=-1;
+int zxlife_last_window_height=-1;
 
 void menu_toy_zxlife_overlay(void)
 {
@@ -35290,7 +35291,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
-        if (!util_find_window_geometry("toyzxlife",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+        if (!util_find_window_geometry("zxlife",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=(GAMELIFE_INITIAL_WIDTH*GAMELIFE_SIZE_LIVE)/menu_char_width +2 ;
             alto_ventana=(GAMELIVE_INITIAL_HEIGHT*GAMELIFE_SIZE_LIVE)/menu_char_height + GAMELIVE_LINES_MENU + 3;
 
@@ -35301,7 +35302,7 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
             
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZXLife",
-            "toyzxlife",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+            "zxlife",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
 
         ventana->can_be_backgrounded=1;
             
@@ -35322,8 +35323,8 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }    
 
-    zxlife_last_window_width=ventana->visible_width;
-    zxlife_last_window_height=ventana->visible_height;
+    //zxlife_last_window_width=ventana->visible_width;
+    //zxlife_last_window_height=ventana->visible_height;
 
     zxvision_draw_window(ventana);
 

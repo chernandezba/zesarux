@@ -3256,6 +3256,35 @@ char *bitmap_button_ext_desktop_visualmem[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"                          " 	 //25
 };
 
+char *bitmap_button_ext_desktop_zxlife[EXT_DESKTOP_BUTTONS_ANCHO]={
+    //01234567890123456789012345
+    "                          ",     //0
+  	" WW WW RR RR WW WW WW WW  ",
+	" WW WW RR RR WW WW WW WW  ",
+	"                          ",		
+	" WW RR WW WW RR WW WW WW  ",
+	" WW RR WW WW RR WW WW WW  ",
+	"                          ",			
+	" WW WW RR RR WW WW WW WW  ",
+	" WW WW RR RR WW WW WW WW  ",
+	"                          ",			
+	" WW WW WW WW WW WW WW WW  ",	//10		
+	" WW WW WW WW WW WW WW WW  ",
+	"                          ",		
+	" WW WW WW RR RR RR RR WW  ",
+    " WW WW WW RR RR RR RR WW  ",
+	"                          ",		
+	" WW WW RR WW WW WW RR WW  ",
+	" WW WW RR WW WW WW RR WW  ",
+	"                          ",		
+	" WW WW WW WW WW WW RR WW  ",
+	" WW WW WW WW WW WW RR WW  ",    //20
+	"                          ",		
+	" WW WW RR WW WW RR WW WW  ",
+	" WW WW RR WW WW RR WW WW  ",
+	"                          ",
+	"                          " 	 //25
+};
 
 char *bitmap_button_ext_desktop_view_sensors[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
