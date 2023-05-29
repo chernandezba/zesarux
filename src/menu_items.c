@@ -35463,13 +35463,23 @@ void menu_toys(MENU_ITEM_PARAMETERS)
 
     //letras usadas: rhndmictxbsvfpoaug
     do {
-        menu_add_item_menu_inicial(&array_menu_toys,"ZXLife",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
-		//menu_add_item_menu_shortcut(array_menu_toys,'r');
+        menu_add_item_menu_inicial(&array_menu_toys,"ZX~~Life",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
+        menu_add_item_menu_tooltip(array_menu_toys,"This my ZEsarUX own version of the Game of Life :)");
+        menu_add_item_menu_ayuda(array_menu_toys,"The Game of Life, also known simply as Life, is a cellular automaton "
+            "devised by the British mathematician John Horton Conway in 1970. It is a zero-player game, meaning "
+            "that its evolution is determined by its initial state, requiring no further input. "
+            "One interacts with the Game of Life by creating an initial configuration and observing how it evolves. "
+            "It is Turing complete and can simulate a universal constructor or any other Turing machine. "
+            "This my ZEsarUX own version of the Game of Life :)");        
+		menu_add_item_menu_shortcut(array_menu_toys,'l');
 
         
 		menu_add_item_menu_en_es_ca(array_menu_toys,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-            "ZXeyes","ZXeyes","ZXeyes");
-        
+            "ZX~~Eyes","ZX~~Eyes","ZX~~Eyes");
+        menu_add_item_menu_tooltip(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
+        menu_add_item_menu_ayuda(array_menu_toys,"This is my ZEsarUX own version of the Unix classic toy ;)");
+        menu_add_item_menu_shortcut(array_menu_toys,'e');
+
 
 
         menu_add_item_menu(array_menu_toys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
