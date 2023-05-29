@@ -34925,7 +34925,7 @@ void gamelife_random_board(void)
     int x,y;
 
     for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_width;y++) {
+        for (y=0;y<gamelife_current_height;y++) {
             //randomize board
             int alive;
             ay_randomize(0);
@@ -35070,9 +35070,9 @@ void menu_toy_zxlife_overlay(void)
             zxlife_last_window_width=menu_toy_zxlife_window->visible_width;
             zxlife_last_window_height=menu_toy_zxlife_window->visible_height;
 
-            int ancho=((zxlife_last_window_width-1)*menu_char_width)/GAMELIFE_SIZE_LIVE;
+            int ancho=((zxlife_last_window_width-2)*menu_char_width)/GAMELIFE_SIZE_LIVE;
 
-            int alto=((zxlife_last_window_height-GAMELIVE_LINES_MENU)*menu_char_height)/GAMELIFE_SIZE_LIVE;
+            int alto=((zxlife_last_window_height-GAMELIVE_LINES_MENU-3)*menu_char_height)/GAMELIFE_SIZE_LIVE;
 
             //vigilar limites
             if (ancho>GAMELIFE_MAX_WIDTH) ancho=GAMELIFE_MAX_WIDTH;
@@ -35291,8 +35291,8 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
 
         if (!util_find_window_geometry("toyzxlife",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
-            ancho_ventana=(GAMELIFE_INITIAL_WIDTH*GAMELIFE_SIZE_LIVE)/menu_char_width +1 ;
-            alto_ventana=(GAMELIVE_INITIAL_HEIGHT*GAMELIFE_SIZE_LIVE)/menu_char_height + GAMELIVE_LINES_MENU;
+            ancho_ventana=(GAMELIFE_INITIAL_WIDTH*GAMELIFE_SIZE_LIVE)/menu_char_width +2 ;
+            alto_ventana=(GAMELIVE_INITIAL_HEIGHT*GAMELIFE_SIZE_LIVE)/menu_char_height + GAMELIVE_LINES_MENU + 3;
 
 
             xventana=menu_center_x()-ancho_ventana/2;
