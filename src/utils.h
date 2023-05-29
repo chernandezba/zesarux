@@ -963,6 +963,9 @@ extern void *util_malloc_fill(int total,char *mensaje_panic,z80_byte value);
 extern void *util_malloc_max_texto_generic_message(char *mensaje_panic);
 extern void *util_malloc_max_texto_browser(void);
 
+extern int util_random_noise;
+extern void util_generate_random_noise(int pressrelease);
+
 extern void util_trunc_name_right(char *texto,int max_length,int char_buffer_size);
 
 extern void util_drag_drop_file(char *filepath);

@@ -6801,6 +6801,8 @@ int util_if_open_just_menu(void)
 void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 {
 
+    util_generate_random_noise(pressrelease);
+
   switch(boton)
   {
     case UTIL_MOUSE_LEFT_BUTTON:
@@ -7098,10 +7100,25 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 }
 
 
+//componente de "ruido" para random consistente en
+//-tiempo entre pulsacion y liberacion de una tecla
+int util_random_noise=0;
+int util_random_noise_last_time=0;
 
+void util_generate_random_noise(int pressrelease)
+{
+    //componente random noise
+    if (!pressrelease) util_random_noise_last_time=contador_segundo_infinito;
+    else {
+        util_random_noise=contador_segundo_infinito-util_random_noise_last_time;
+    }
+}
 
 void util_set_reset_key(enum util_teclas tecla,int pressrelease)
 {
+
+    util_generate_random_noise(pressrelease);
+
         if (chloe_keyboard.v && tecla>=32 && tecla<=127) {
                 util_set_reset_key_handle_chloe_ascii(tecla,pressrelease);
                 return;

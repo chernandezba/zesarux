@@ -34919,7 +34919,7 @@ void gamelife_random_board(void)
 {
 
 
-    printf("Generating new gamelife\n");
+    printf("Generating new gamelife. random noise: %d\n",util_random_noise);
 
 
     int x,y;
@@ -34929,7 +34929,14 @@ void gamelife_random_board(void)
             //randomize board
             int alive;
             ay_randomize(0);
-            if (randomize_noise[0] % 1000 < 500) alive=1;
+
+            int valor_random=randomize_noise[0];
+
+            //un poco mas aleatorio
+            valor_random +=util_random_noise;
+
+            //50% de probabilidad vivo / muerto
+            if (valor_random % 1000 < 500) alive=1;
             else alive=0;
 
             //printf("Randomize board %d,%d=%d\n",x,y,alive);
