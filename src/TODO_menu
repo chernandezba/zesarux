@@ -45,9 +45,6 @@ se podria llegar a integrar dentro del gestor de tareas si da muchos problemas, 
 -Quizá botón derecho y izquierdo sobre iconos y escritorio no entra en función multitarea. Y se debería crear una tarea ficticia para ello
 
 
--Fondo zx desktop con game of life 
-
-
 -Icono al grabar scr con quickscr. Que se guarde en misma ruta que autosnap
 
 -indicador de app abierta: al abrir una app que no estaba abierta, no aparece el indicador a no ser que se mueva la ventana u otro evento

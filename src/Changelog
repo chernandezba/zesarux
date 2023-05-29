@@ -10,7 +10,7 @@ Added show current AY Player song playing on console <-- TODO fix this descripti
 Added PCW colour modes
 Added compiled version for Ubuntu
 Added compiled version for Fedora
-Added another toy: ZXLife
+Added another toy ZXLife to a new menu Procrastinate
 
 Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l
