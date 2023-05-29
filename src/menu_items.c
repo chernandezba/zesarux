@@ -35205,7 +35205,7 @@ void menu_toys_zxlife_edit(MENU_ITEM_PARAMETERS)
     ventana=&zxvision_window_toy_zxlife;	
 
     //Limpiar primera linea
-    zxvision_print_string_defaults_fillspc(ventana,1,0,"Edit mode. ESC return");
+    zxvision_print_string_defaults_fillspc(ventana,1,0,"Edit mode. Use mouse buttons. ESC return");
 
 	z80_byte tecla;
 
@@ -35367,33 +35367,13 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
 
         int x=1;
-		menu_add_item_menu_inicial_format(&array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_random,NULL,"~~Random");
-		menu_add_item_menu_shortcut(array_menu_zxlife,'r');
-		menu_add_item_menu_ayuda(array_menu_zxlife,"Randomize board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
-        x+=7;
 
-		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_pause,NULL,
+		menu_add_item_menu_inicial_format(&array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_pause,NULL,
             "[%c] ~~Paused",(gamelife_paused ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_zxlife,'p');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Pause board");
 		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);     
         x+=11;
-        
-
-		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_edit,NULL,
-            "~~Edit");
-		menu_add_item_menu_shortcut(array_menu_zxlife,'e');
-		menu_add_item_menu_ayuda(array_menu_zxlife,"Edit board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);   
-        x+=5;
-
-		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_clear,NULL,
-            "~~Clear");
-		menu_add_item_menu_shortcut(array_menu_zxlife,'c');
-		menu_add_item_menu_ayuda(array_menu_zxlife,"Clear board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);    
-        x+=6;
 
 
         menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_grid,NULL,
@@ -35402,6 +35382,29 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Toggle grid");
 		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);   
         x+=9;   
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_edit,NULL,
+            "~~Edit");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'e');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Edit board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);   
+        x+=5;        
+
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_random,NULL,"~~Random");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'r');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Randomize board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
+        x+=7;
+
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_clear,NULL,
+            "~~Clear");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'c');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Clear board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);    
+        x+=6;
+
 
 
 		//Nombre de ventana solo aparece en el caso de stdout

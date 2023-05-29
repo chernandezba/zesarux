@@ -7101,7 +7101,7 @@ void util_set_reset_key_convert_recreated_yesno(enum util_teclas tecla,int press
 
 
 //componente de "ruido" para random consistente en
-//-tiempo entre pulsacion y liberacion de una tecla
+//-tiempo entre pulsacion y liberacion de una tecla y de boton de raton
 int util_random_noise=0;
 int util_random_noise_last_time=0;
 
