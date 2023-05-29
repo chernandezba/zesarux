@@ -34750,7 +34750,7 @@ int last_gamelife_timer_counter=0;
 int gamelife_paused=1;
 
 //Si usa rejilla
-int gamelife_grid=1;
+int gamelife_grid=0;
 
 #define GAMELIFE_COLOR_BACKGROUND 0
 #define GAMELIFE_COLOR_ALIVE 2+8
@@ -35359,37 +35359,42 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 	do {
 
 
-
+        int x=1;
 		menu_add_item_menu_inicial_format(&array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_random,NULL,"~~Random");
 		menu_add_item_menu_shortcut(array_menu_zxlife,'r');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Randomize board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,1,0);
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);
+        x+=7;
 
 		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_pause,NULL,
             "[%c] ~~Paused",(gamelife_paused ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_zxlife,'p');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Pause board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,9,0);     
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);     
+        x+=11;
         
 
 		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_edit,NULL,
             "~~Edit");
 		menu_add_item_menu_shortcut(array_menu_zxlife,'e');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Edit board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,20,0);   
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);   
+        x+=5;
 
 		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_clear,NULL,
             "~~Clear");
 		menu_add_item_menu_shortcut(array_menu_zxlife,'c');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Clear board");
-		menu_add_item_menu_tabulado(array_menu_zxlife,25,0);    
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);    
+        x+=6;
 
 
         menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_grid,NULL,
             "[%c] ~~Grid",(gamelife_grid ? 'X' : ' '));
 		menu_add_item_menu_shortcut(array_menu_zxlife,'g');
 		menu_add_item_menu_ayuda(array_menu_zxlife,"Toggle grid");
-		menu_add_item_menu_tabulado(array_menu_zxlife,31,0);      
+		menu_add_item_menu_tabulado(array_menu_zxlife,x,0);   
+        x+=9;   
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
@@ -35461,7 +35466,7 @@ void menu_toys(MENU_ITEM_PARAMETERS)
                 //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
 		menu_add_ESC_item(array_menu_toys);
 
-        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Toys" );
+        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Procrastinate" );
 
                 
 
@@ -37783,10 +37788,10 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tiene_submenu(array_menu_principal);
 
             menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
-                "Toys","Juguetes","Joguines");
-            //menu_add_item_menu_shortcut(array_menu_principal,'i');
-            menu_add_item_menu_tooltip(array_menu_principal,"Toys");
-            menu_add_item_menu_ayuda(array_menu_principal,"Toys");
+                "~~Procrastinate","~~Procrastinar","~~Procrastinar");
+            menu_add_item_menu_shortcut(array_menu_principal,'p');
+            menu_add_item_menu_tooltip(array_menu_principal,"Some toys to procrastinate real work");
+            menu_add_item_menu_ayuda(array_menu_principal,"Some toys to procrastinate real work");
             menu_add_item_menu_tiene_submenu(array_menu_principal);            
 
 
