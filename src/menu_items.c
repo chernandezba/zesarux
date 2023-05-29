@@ -34873,7 +34873,7 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
     int x,y;
 
     for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_width;y++) {
+        for (y=0;y<gamelife_current_height;y++) {
             //randomize board
             int alive=gamelife_board[x][y];
 
@@ -35006,9 +35006,6 @@ void menu_toy_zxlife_draw_life(zxvision_window *w,int x,int y,int alive)
 
    
 
-//if (alive) {
-//    zxvision_putpixel(menu_toy_zxlife_window,x,y,ESTILO_GUI_COLOR_AVISO);
-//}
     x *=GAMELIFE_SIZE_LIVE;
     y *=GAMELIFE_SIZE_LIVE;
 
