@@ -36,6 +36,7 @@ extern int original_timer_sleep_machine;
 extern void timer_sleep(int milisec);
 
 extern int contador_segundo;
+extern int contador_segundo_infinito;
 
 extern int timer_condicion_top_speed(void);
 extern int top_speed_real_frames;

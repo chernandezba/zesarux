@@ -6361,203 +6361,6 @@ int menu_draw_ext_desktop_si_scrfile(int x,int y,int ancho,int alto)
 
 }
 
-#define GAMELIFE_WIDTH 120
-#define GAMELIFE_HEIGHT 80
-int gamelife_board[GAMELIFE_WIDTH][GAMELIFE_HEIGHT];
-
-int gamelife_started=0;
-
-//si conviene dibujar el gameof life
-//retorna -1 si no
-//o el color si hay que mostrarlo
-int menu_draw_ext_desktop_si_gamelife(int x,int y,int ancho,int alto)
-{
-
-    //cada posicion seran 8 pixeles
-    x /=8;
-    y /=8;
-
-    //if (!zxdesktop_draw_scrfile_enabled) return -1;
-    if (x<0 || y<0 || x>=GAMELIFE_WIDTH || y>=GAMELIFE_HEIGHT) return -1;
-
-    int alive=gamelife_board[x][y];
-
-    if (alive) return 2;
-    else return 7;
-    
-}
-
-int gamelife_empty_board(void)
-{
-
-
-        int x,y;
-
-        for (x=0;x<GAMELIFE_WIDTH;x++) {
-            for (y=0;y<GAMELIFE_WIDTH;y++) {
-
-                if (gamelife_board[x][y]) return 0;
-            }
-        }
-    
-    return 1;
-
-}
-
-void gamelive_start_board_if_needed(void)
-{
-
-    //Si tablero no inicializado o si tablero vacio
-    if (gamelife_empty_board()) gamelife_started=0;
-
-    if (!gamelife_started) {
-        gamelife_started=1;
-
-        int x,y;
-
-        for (x=0;x<GAMELIFE_WIDTH;x++) {
-            for (y=0;y<GAMELIFE_WIDTH;y++) {
-                //randomize board
-                int alive;
-                ay_randomize(0);
-                if (randomize_noise[0] % 1000 < 500) alive=1;
-                else alive=0;
-
-                printf("Randomize board %d,%d=%d\n",x,y,alive);
-
-                gamelife_board[x][y]=alive;
-            }
-        }
-    }
-
-
-}
-
-int gamelife_get_neighbors_fila_arriba_abajo(int x,int y)
-{
-    int vecinos=0;
-
-    /*
-      xxx
-    */
-
-   //izqu
-   if (x>1) vecinos+=gamelife_board[x-1][y];
-   //centro
-   vecinos+=gamelife_board[x][y];
-   //derecha
-   if (x<GAMELIFE_WIDTH-1) vecinos+=gamelife_board[x+1][y];
-
-   return vecinos;
-
-}
-
-int gamelife_get_neighbors(int x,int y)
-{
-
-    int vecinos=0;
-
-    /*
-
-        xxx
-        xOx
-        xxx
-    */
-
-    //fila de arriba
-    if (y>=1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y-1);
-
-
-    //fila de abajo
-    if (y<GAMELIFE_HEIGHT-1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y+1);
-
-   //mi fila
-   //izqu
-   if (x>1) vecinos+=gamelife_board[x-1][y];
-   //derecha
-   if (x<GAMELIFE_WIDTH-1) vecinos+=gamelife_board[x+1][y];
-
-   return vecinos;
-
-}
-
-int gamelife_timer_counter=0;
-int last_gamelife_timer_counter=0;
-
-int gamelife_next_event=0;
-
-//si dibujar en el fondo con menu cerrado
-int gamelife_draw_with_menu_closed=0;
-
-void gamelife_fire_next_event(void)
-{
-    gamelife_next_event=1;
-}
-
-
-void gamelife_next_cycle(void)
-{
-/*
-Nace: Si una célula muerta tiene exactamente 3 células vecinas vivas "nace" (es decir, al turno siguiente estará viva).
-Muere: una célula viva puede morir por uno de 2 casos:
-Sobrepoblación: si tiene más de tres vecinos alrededor.
-Aislamiento: si tiene solo un vecino alrededor o ninguno.
-Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
-*/
-
-    if (last_gamelife_timer_counter==gamelife_timer_counter) return;
-
-    last_gamelife_timer_counter=gamelife_timer_counter;
-
-    //Y si se ha pulsado cursor arriba o abajo    
-    if (!gamelife_next_event) return;
-
-    gamelife_next_event=0;
-
-    int x,y;
-
-        for (x=0;x<GAMELIFE_WIDTH;x++) {
-            for (y=0;y<GAMELIFE_WIDTH;y++) {
-                //randomize board
-                int alive=gamelife_board[x][y];
-
-                int neighbors=gamelife_get_neighbors(x,y);
-
-                if (!alive) {
-                    if (neighbors==3) alive=1;
-                }
-                else {
-                    if (neighbors>3 || neighbors<=1) alive=0;
-                    //en caso contrario se mantiene viva
-                }
-
-                //printf("Cycle %d,%d=%d\n",x,y,alive);
-
-                gamelife_board[x][y]=alive;
-            }
-        }
-
-}
-
-void gamelife_timer_background_activity(void)
-{
-    if (!gamelife_draw_with_menu_closed) return;
-
-    //con menu cerrado y si setting, se dibuja en background cada segundo
-    if (menu_abierto) return;
-
-    //TODO: y solo si esta activado gamelife, falta setting aun por definir...
-
-    gamelife_fire_next_event();
-
-
-
-
-
-    menu_draw_ext_desktop();      
-
-
-}
 
 
 void menu_draw_ext_desktop_border_emulated_machine(int ancho_no_zxdesktop,int alto_zxdesktop,int alto_no_zxdesktop)
@@ -6610,7 +6413,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
         Y considerando el espacio de coordenadas x e y con zoom
     */
 
-    gamelive_start_board_if_needed();
+
     //int xinicio=0;
     int yinicio=0;
 
@@ -6744,7 +6547,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
 
                 //temporal game of life
-                color_scrfile=menu_draw_ext_desktop_si_gamelife(xrelative,yrelative,ancho_zxdesktop,alto);                
+                //color_scrfile=menu_draw_ext_desktop_si_gamelife(xrelative,yrelative,ancho_zxdesktop,alto);                
 
                 if (color_scrfile>=0) {
                     mostrar_scrfile=1;
@@ -6838,7 +6641,7 @@ void menu_draw_ext_desktop_background(int xstart_zxdesktop)
 
     menu_draw_ext_desktop_border_emulated_machine(ancho_no_zxdesktop,alto_zxdesktop,alto_no_zxdesktop);
 
-    gamelife_next_cycle();
+    
 }
 
 
@@ -9458,6 +9261,7 @@ zxvision_known_window_names zxvision_known_window_names_array[]={
     {"visualfloppy",menu_visual_floppy,bitmap_button_ext_desktop_visualfloppy},
     {"toyzxeyes",menu_toy_follow_mouse,bitmap_button_ext_desktop_zxeyes},
     {"processswitcher",menu_process_switcher,bitmap_button_ext_desktop_processswitcher},
+    {"toyzxlife",menu_toys_zxlife,bitmap_button_ext_desktop_userdefined},
 
 	{"",NULL,bitmap_button_ext_desktop_userdefined} //NO BORRAR ESTA!!
 };
@@ -17514,6 +17318,60 @@ void menu_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_
 
 
 	
+}
+
+void menu_calculate_mouse_xy_absolute_interface_zoom(int *resultado_x,int *resultado_y)
+{
+	int x,y;
+
+	menu_calculate_mouse_xy_absolute_interface_pixel(&x,&y);
+
+
+    //multiplicamos por zoom
+    x *=zoom_x;
+    y *=zoom_y;    
+
+	//printf ("antes de restar: %d,%d\n",x,y);
+	*resultado_x=x;
+	*resultado_y=y;
+
+}
+
+void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy)
+{
+
+    int cursor_mouse_x; 
+    int cursor_mouse_y; 
+    menu_calculate_mouse_xy_absolute_interface_zoom(&cursor_mouse_x,&cursor_mouse_y);
+
+    int this_win_x=zxvision_window_get_pixel_x_position(ventana);
+    int this_win_y=zxvision_window_get_pixel_y_position(ventana);
+
+    //saltar la linea de titulo
+    this_win_y +=menu_char_height*zoom_y*menu_gui_zoom;
+
+    //printf("mouse on %d,%d\n",cursor_mouse_x,cursor_mouse_y);
+    //printf("Window starts at %d,%d\n",this_win_x,this_win_y);
+
+    int offset_in_window_x=cursor_mouse_x-this_win_x;
+    int offset_in_window_y=cursor_mouse_y-this_win_y;
+
+    offset_in_window_x /=zoom_x;
+    offset_in_window_y /=zoom_y;
+
+    offset_in_window_x /=menu_gui_zoom;
+    offset_in_window_y /=menu_gui_zoom;    
+
+    //Obtener coordenada del icono pulsado dentro de la ventana
+    //if (offset_in_window_x>=0 && offset_in_window_y>=0) {
+        *posx=offset_in_window_x;
+        *posy=offset_in_window_y;
+
+    //}
+
+    //else {
+    //    return -1;
+    //}
 }
 
 //Parecido al anterior pero considerando coordenadas relativas a la ventana actual

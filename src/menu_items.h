@@ -64,6 +64,7 @@ extern void menu_visual_floppy_buffer_reset(void);
 extern void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS);
 
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
+extern void menu_toys_zxlife(MENU_ITEM_PARAMETERS);
 
 extern void menu_process_switcher(MENU_ITEM_PARAMETERS);
 

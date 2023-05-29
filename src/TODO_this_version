@@ -250,6 +250,9 @@ asi en smartload y similares no aparecerian
 -determinar version en ejecucion, mediante /etc/*release
 
 
--gameof life. setting para habilitarlo. que este por encima de fondo y de scrfile
-*donde lanzar evento? quiza un modo especial que se redibuje aun con el menu cerrado, y a cada segundo?
-*quiza en menu cerrado como salvapantallas?
+-gameof life. 
+*icono de aplicacion
+*tablero que redimensione segun tamaño de ventana
+*componente random segun lo que se tiene una tecla pulsada o un boton pulsado
+
+-menu "toys" o "procrastination"

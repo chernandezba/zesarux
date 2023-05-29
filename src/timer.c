@@ -105,6 +105,11 @@ int original_timer_sleep_machine=20000;
 //Va desde 0 a 1000. Si llega a 1000 se pone a 0. Se incrementa en 20 cada 20 ms
 int contador_segundo=0;
 
+//Mismo que contador_segundo pero no se resetea a 0. Se usa en draw overlays, es mejor que comparar contra contador_segundo cuando
+//se redibuja por ejemplo dos veces por segundo, en que muchas veces coincide el contador anterior con el actual y refresca
+//menos de lo que deberia
+int contador_segundo_infinito;
+
 //Va desde 0 a 20000. Cuando llega a 20000 se pone a 0. Indica cuando se ha pasado 20 ms
 int contador_20ms=0;
 
@@ -473,6 +478,7 @@ void timer_check_interrupt(void)
         //han pasado 20 ms
         contador_segundo +=20;
 
+        contador_segundo_infinito++;
 
         //emulacion refresco memoria. Decrementar contador, de alguna manera "diciendo" que registro R funciona bien
         if (machine_emulate_memory_refresh) {
@@ -821,7 +827,7 @@ void timer_check_interrupt(void)
 
             cf2_floppy_icon_activity();
 
-            gamelife_timer_background_activity();
+
 
             if (betadisk_simulated_motor>0) betadisk_simulated_motor--;
 

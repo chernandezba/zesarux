@@ -500,6 +500,7 @@ extern void zxvision_restore_windows_on_startup(void);
 extern void zxvision_restart_all_background_windows(void);
 extern void menu_calculate_mouse_xy_absolute_interface(int *resultado_x,int *resultado_y);
 extern void menu_calculate_mouse_xy_absolute_interface_pixel(int *resultado_x,int *resultado_y);
+extern void zxvision_get_mouse_in_window(zxvision_window *ventana,int *posx,int *posy);
 
 extern void zxvision_putpixel(zxvision_window *w,int x,int y,int color);
 extern void zxvision_putpixel_no_zoom(zxvision_window *w,int x,int y,int color);

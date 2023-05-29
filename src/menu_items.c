@@ -272,6 +272,8 @@ int menu_plusthreedisk_info_sectors_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_tracks_list_opcion_seleccionada=0;
 int menu_plusthreedisk_info_opcion_seleccionada=0;
 int menu_display_window_list_opcion_seleccionada=0;
+int toys_opcion_seleccionada=0;
+int zxlife_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -26780,8 +26782,8 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
-		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-            "Toy ZXeyes","Juguete ZXeyes","Joguina ZXeyes");
+		//menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
+        //    "Toy ZXeyes","Juguete ZXeyes","Joguina ZXeyes");
         
 
 #ifdef TIMESENSORS_ENABLED
@@ -34721,6 +34723,727 @@ zxvision_draw_window(ventana);
 }
 
 
+#define GAMELIFE_MAX_WIDTH 120
+#define GAMELIFE_MAX_HEIGHT 80
+int gamelife_board[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
+
+//temporal para el siguiente ciclo
+int gamelife_board_next_cycle[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
+
+//cuantos pixeles representa cada casilla
+#define GAMELIFE_SIZE_LIVE 4
+
+#define GAMELIFE_INITIAL_WIDTH 60
+#define GAMELIVE_INITIAL_HEIGHT 40
+#define GAMELIVE_LINES_MENU 1
+
+int gamelife_current_width=GAMELIFE_INITIAL_WIDTH;
+int gamelife_current_height=GAMELIVE_INITIAL_HEIGHT;
+
+int gamelife_started=0;
+
+
+int gamelife_timer_counter=0;
+int last_gamelife_timer_counter=0;
+
+//Inicia pausado
+int gamelife_paused=1;
+
+//Si usa rejilla
+int gamelife_grid=1;
+
+#define GAMELIFE_COLOR_BACKGROUND 0
+#define GAMELIFE_COLOR_ALIVE 2+8
+#define GAMELIFE_COLOR_DEAD 7
+
+//si conviene dibujar el gameof life
+//retorna -1 si no
+//o el color si hay que mostrarlo
+/*
+int menu_draw_ext_desktop_si_gamelife(int x,int y,int ancho,int alto)
+{
+
+    //cada posicion seran 8 pixeles
+    x /=8;
+    y /=8;
+
+    //if (!zxdesktop_draw_scrfile_enabled) return -1;
+    if (x<0 || y<0 || x>=gamelife_current_width || y>=gamelife_current_height) return -1;
+
+    int alive=gamelife_board[x][y];
+
+    if (alive) return 2;
+    else return 7;
+    
+}
+*/
+
+int gamelife_empty_board(void)
+{
+
+
+        int x,y;
+
+        for (x=0;x<gamelife_current_width;x++) {
+            for (y=0;y<gamelife_current_width;y++) {
+
+                if (gamelife_board[x][y]) return 0;
+            }
+        }
+    
+    return 1;
+
+}
+
+int gamelife_get_neighbors_fila_arriba_abajo(int x,int y)
+{
+    int vecinos=0;
+
+    /*
+      xxx
+    */
+
+   //izqu
+   if (x>1) vecinos+=gamelife_board[x-1][y];
+   //centro
+   vecinos+=gamelife_board[x][y];
+   //derecha
+   if (x<gamelife_current_width-1) vecinos+=gamelife_board[x+1][y];
+
+   return vecinos;
+
+}
+
+int gamelife_get_neighbors(int x,int y)
+{
+
+    int vecinos=0;
+
+    /*
+
+        xxx
+        xOx
+        xxx
+    */
+
+    //fila de arriba
+    if (y>=1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y-1);
+
+
+    //fila de abajo
+    if (y<gamelife_current_height-1) vecinos +=gamelife_get_neighbors_fila_arriba_abajo(x,y+1);
+
+   //mi fila
+   //izqu
+   if (x>1) vecinos+=gamelife_board[x-1][y];
+   //derecha
+   if (x<gamelife_current_width-1) vecinos+=gamelife_board[x+1][y];
+
+   return vecinos;
+
+}
+
+
+
+
+void gamelife_next_generation(void)
+{
+/*
+Nace: Si una célula muerta tiene exactamente 3 células vecinas vivas "nace" (es decir, al turno siguiente estará viva).
+Muere: una célula viva puede morir por uno de 2 casos:
+Sobrepoblación: si tiene más de tres vecinos alrededor.
+Aislamiento: si tiene solo un vecino alrededor o ninguno.
+Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
+*/
+
+    //Nuevas generaciones 1 cada segundo
+    if (last_gamelife_timer_counter==gamelife_timer_counter) return;
+
+    if (gamelife_paused) return;
+
+    printf("Next gamelife generation\n");
+
+    last_gamelife_timer_counter=gamelife_timer_counter;
+
+    //Y si se ha pulsado cursor arriba o abajo    
+    //if (!gamelife_next_event) return;
+
+    //gamelife_next_event=0;
+
+    int x,y;
+
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_width;y++) {
+            //randomize board
+            int alive=gamelife_board[x][y];
+
+            int neighbors=gamelife_get_neighbors(x,y);
+
+            if (!alive) {
+                if (neighbors==3) alive=1;
+            }
+            else {
+                if (neighbors>3 || neighbors<=1) alive=0;
+                //en caso contrario se mantiene viva
+            }
+
+            //printf("Cycle %d,%d=%d\n",x,y,alive);
+
+            //gamelife_board[x][y]=alive;
+            gamelife_board_next_cycle[x][y]=alive;
+        }
+    }
+
+    //Y copiar del tablero temporal del siguiente ciclo a este
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_width;y++) {
+            gamelife_board[x][y]=gamelife_board_next_cycle[x][y];
+        }
+    }
+}
+
+void gamelife_clear_board(void)
+{
+    int x,y;
+
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_height;y++) {
+            gamelife_board[x][y]=0;
+
+        }
+    }        
+}
+
+void gamelife_random_board(void)
+{
+
+
+    printf("Generating new gamelife\n");
+
+
+    int x,y;
+
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_width;y++) {
+            //randomize board
+            int alive;
+            ay_randomize(0);
+            if (randomize_noise[0] % 1000 < 500) alive=1;
+            else alive=0;
+
+            //printf("Randomize board %d,%d=%d\n",x,y,alive);
+
+            gamelife_board[x][y]=alive;
+        }
+    }
+
+
+
+}
+
+void gamelife_next_frame(void)
+{
+
+    //Si tablero no inicializado o si tablero vacio
+    /*if (gamelife_empty_board()) gamelife_started=0;
+
+    if (!gamelife_started) {
+        gamelife_started=1;
+
+        gamelife_new_board();
+    }
+
+    else {
+        gamelife_next_generation();
+    }*/
+
+    if (gamelife_empty_board()) {
+        gamelife_paused=1;
+        return;
+    }
+
+    gamelife_next_generation();
+
+}
+
+
+
+//int gamelife_next_event=0;
+
+//si dibujar en el fondo con menu cerrado
+//int gamelife_draw_with_menu_closed=0;
+
+
+
+
+
+int menu_toy_zxlife_contador_segundo_anterior;
+
+zxvision_window *menu_toy_zxlife_window;
+
+//forzar dibujado del siguiente overlay, para cuando se edita
+int menu_toy_zxlife_draw_force_overlay=0;
+
+void menu_toy_zxlife_draw_life(zxvision_window *w,int x,int y,int alive)
+{
+
+    int color;
+
+    if (alive) color=GAMELIFE_COLOR_ALIVE;
+    else color=GAMELIFE_COLOR_DEAD;
+
+   
+
+//if (alive) {
+//    zxvision_putpixel(menu_toy_zxlife_window,x,y,ESTILO_GUI_COLOR_AVISO);
+//}
+    x *=GAMELIFE_SIZE_LIVE;
+    y *=GAMELIFE_SIZE_LIVE;
+
+
+    y +=GAMELIVE_LINES_MENU*menu_char_height;
+
+    //1 columna mas a la izquierda para que no toque en el margen izquierdo
+    x +=menu_char_width;
+
+    //Aumentar en tantos pixeles como GAMELIFE_SIZE_LIVE
+    int incx,incy;
+
+    for (incx=0;incx<GAMELIFE_SIZE_LIVE;incx++) {
+        for (incy=0;incy<GAMELIFE_SIZE_LIVE;incy++) {
+            int color_final=color;
+
+            //Dibujar cuadricula
+            if (gamelife_grid) {
+                if (incx==0 || incy==0) color_final=GAMELIFE_COLOR_BACKGROUND; 
+            }
+
+            zxvision_putpixel(w,x+incx,y+incy,color_final);
+        }
+    }
+
+
+
+
+}
+
+void menu_toy_zxlife_overlay(void)
+{
+
+
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_toy_zxlife_window->is_minimized) return;  
+
+    //printf("%d %d %d\n",contador_segundo_infinito,contador_segundo%500,menu_toy_zxlife_contador_segundo_anterior);
+
+    //esto hara ejecutar esto 2 veces por segundo
+    //no hacemos 1 vez por segundo (tal y como hace los nuevos ciclos de vida) porque solo con que estemos
+    //dibujando a 49 FPS en vez de 50, no se dibujaria nunca
+    //aqui mejor se compara contra contador_segundo_infinito porque contador_segundo coincide muchas veces con el 
+    //contador anterior y entonces refresca menos de 2 veces por segundo
+    if ( 
+        ((contador_segundo%500) == 0 && menu_toy_zxlife_contador_segundo_anterior!=contador_segundo_infinito) ||
+        menu_toy_zxlife_draw_force_overlay 
+        
+    )  
+    
+    {
+        menu_toy_zxlife_draw_force_overlay=0;
+        menu_toy_zxlife_contador_segundo_anterior=contador_segundo_infinito;
+        printf("Draw\n");
+        //Siguiente ciclo life
+
+        //gamelife_timer_background_activity();
+
+        gamelife_next_frame();
+
+
+        int x,y;
+
+        for (x=0;x<gamelife_current_width;x++) {
+            for (y=0;y<gamelife_current_height;y++) {
+                //randomize board
+                int alive=gamelife_board[x][y];
+
+                menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
+
+            }
+        }                    
+
+    }
+
+
+    zxvision_draw_window_contents(menu_toy_zxlife_window);
+    
+}
+
+
+
+void menu_toys_zxlife_random(MENU_ITEM_PARAMETERS)
+{
+    gamelife_random_board();
+}
+
+
+void menu_toys_zxlife_pause(MENU_ITEM_PARAMETERS)
+{
+    gamelife_paused ^=1;
+}
+
+void menu_toys_zxlife_grid(MENU_ITEM_PARAMETERS)
+{
+    gamelife_grid ^=1;
+}
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_toy_zxlife;
+
+
+
+int menu_toys_zxlife_mouse_en_ventana(zxvision_window *w)
+{
+    if (zxvision_current_window==w && si_menu_mouse_en_ventana()) return 1;
+    else return 0;
+}
+
+int menu_toys_zxlife_ultimo_pulsado_posicion_x=-1;
+int menu_toys_zxlife_ultimo_pulsado_posicion_y=-1;
+int menu_toys_zxlife_ultimo_pulsado_posicion_alive=-1;
+
+void menu_toys_zxlife_handle_click_position(int pulsado_x,int pulsado_y,int alive)
+{
+    //Restar primera columna y lineas menu
+    pulsado_y -=GAMELIVE_LINES_MENU*menu_char_height;
+
+    pulsado_x -=menu_char_width;
+
+    //Obtener coordenadas segun tamaño de cada celda
+    pulsado_x /=GAMELIFE_SIZE_LIVE;
+    pulsado_y /=GAMELIFE_SIZE_LIVE;
+
+    if (pulsado_x>=0 && pulsado_y>=0 && pulsado_x<gamelife_current_width && pulsado_y<gamelife_current_height) {
+        //printf("Conmutar posicion %d,%d\n",pulsado_x,pulsado_y);
+
+        //Pero si era la misma posicion y estado que antes, no repetir
+        if (
+            menu_toys_zxlife_ultimo_pulsado_posicion_x!=pulsado_x ||
+            menu_toys_zxlife_ultimo_pulsado_posicion_y!=pulsado_y ||
+            menu_toys_zxlife_ultimo_pulsado_posicion_alive!=alive 
+
+        )
+        {
+            printf("Poner posicion %d,%d a %d\n",pulsado_x,pulsado_y,alive);
+            menu_toys_zxlife_ultimo_pulsado_posicion_x=pulsado_x;
+            menu_toys_zxlife_ultimo_pulsado_posicion_y=pulsado_y;
+            menu_toys_zxlife_ultimo_pulsado_posicion_alive=alive;
+            gamelife_board[pulsado_x][pulsado_y]=alive;
+            menu_toy_zxlife_draw_force_overlay=1;
+        }
+    }
+
+}
+
+
+
+void menu_toys_zxlife_clear(MENU_ITEM_PARAMETERS)
+{
+    gamelife_clear_board();
+}
+
+int menu_toys_zxlife_edit_salido_background=0;
+
+void menu_toys_zxlife_edit(MENU_ITEM_PARAMETERS)
+{
+
+    zxvision_window *ventana;
+    ventana=&zxvision_window_toy_zxlife;	
+
+    //Limpiar primera linea
+    zxvision_print_string_defaults_fillspc(ventana,1,0,"Edit mode. ESC return");
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+    menu_toys_zxlife_edit_salido_background=0;
+
+    do {
+
+
+		tecla=zxvision_common_getkey_refresh();		
+
+
+        switch (tecla) {
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+                menu_toys_zxlife_edit_salido_background=1;
+            break;		
+
+            case 0:
+            
+                if (mouse_left && menu_toys_zxlife_mouse_en_ventana(ventana) /*&& !mouse_is_dragging*/) {
+                    int pulsado_x,pulsado_y;
+                    zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+                    //printf("Pulsado left: %d,%d\n",pulsado_x,pulsado_y);
+
+                    menu_toys_zxlife_handle_click_position(pulsado_x,pulsado_y,1);
+
+                    //menu_espera_no_tecla();
+                }
+
+                if (mouse_right && menu_toys_zxlife_mouse_en_ventana(ventana) /*&& !mouse_is_dragging*/) {
+                    int pulsado_x,pulsado_y;
+                    zxvision_get_mouse_in_window(ventana,&pulsado_x,&pulsado_y);
+                    //printf("Pulsado right: %d,%d\n",pulsado_x,pulsado_y);
+
+                    menu_toys_zxlife_handle_click_position(pulsado_x,pulsado_y,0);
+
+                    //menu_espera_no_tecla();
+                }                
+
+
+            break;			
+        }
+
+
+    } while (salir==0);
+
+
+    //Limpiar primera linea
+    zxvision_print_string_defaults_fillspc(ventana,1,0,"");    
+
+
+}
+
+void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+
+    if (!gamelife_started)  {
+        gamelife_started=1;
+
+        gamelife_clear_board();
+    }
+
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_toy_zxlife;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);	
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("toyzxlife",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=(GAMELIFE_INITIAL_WIDTH*GAMELIFE_SIZE_LIVE)/menu_char_width +1 ;
+            alto_ventana=(GAMELIVE_INITIAL_HEIGHT*GAMELIFE_SIZE_LIVE)/menu_char_height + GAMELIVE_LINES_MENU;
+
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;        
+        }
+
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"ZXLife",
+            "toyzxlife",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+            
+        ventana->can_use_all_width=1;
+
+        //definir color de papel de fondo
+        ventana->default_paper=GAMELIFE_COLOR_BACKGROUND;
+        zxvision_cls(ventana);        
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        //Quitando el overlay de dicha ventana para que no se redibuje dos veces (con su overlay y luego con draw below windows)
+        //TODO: esto en un futuro probablemente se hara el redibujado desde draw below cuando esta activa, por tanto este NULL no se pondra
+        ventana->overlay_function=NULL;
+
+        zxvision_activate_this_window(ventana);
+    }    
+
+
+
+
+    zxvision_draw_window(ventana);
+
+    //cambio overlay
+    
+    menu_toy_zxlife_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+    zxvision_set_window_overlay(ventana,menu_toy_zxlife_overlay);
+	
+
+    //menu_toy_zxlife_contador_segundo_anterior=contador_segundo;
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_toys_zxlife_edit_salido_background=0;
+
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+    menu_item *array_menu_zxlife;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
+
+
+
+		menu_add_item_menu_inicial_format(&array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_random,NULL,"~~Random");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'r');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Randomize board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,1,0);
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_pause,NULL,
+            "[%c] ~~Paused",(gamelife_paused ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_zxlife,'p');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Pause board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,9,0);     
+        
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_edit,NULL,
+            "~~Edit");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'e');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Edit board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,20,0);   
+
+		menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_clear,NULL,
+            "~~Clear");
+		menu_add_item_menu_shortcut(array_menu_zxlife,'c');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Clear board");
+		menu_add_item_menu_tabulado(array_menu_zxlife,25,0);    
+
+
+        menu_add_item_menu_format(array_menu_zxlife,MENU_OPCION_NORMAL,menu_toys_zxlife_grid,NULL,
+            "[%c] ~~Grid",(gamelife_grid ? 'X' : ' '));
+		menu_add_item_menu_shortcut(array_menu_zxlife,'g');
+		menu_add_item_menu_ayuda(array_menu_zxlife,"Toggle grid");
+		menu_add_item_menu_tabulado(array_menu_zxlife,31,0);      
+
+
+		//Nombre de ventana solo aparece en el caso de stdout
+		retorno_menu=menu_dibuja_menu(&zxlife_opcion_seleccionada,&item_seleccionado,array_menu_zxlife,"ZXLife" );
+
+		if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
+            //En caso de menus tabulados, es responsabilidad de este de borrar la ventana
+            //Con este cls provoca que se borren todas las otras ventanas en background
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    if (item_seleccionado.menu_funcion!=NULL) {
+                            //printf ("actuamos por funcion\n");
+                            item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                            
+                    }
+            }
+
+            if (menu_toys_zxlife_edit_salido_background) retorno_menu=MENU_RETORNO_BACKGROUND;
+
+		}
+
+
+
+
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
+
+
+
+
+	
+	util_add_window_geometry_compact(ventana);
+
+	if (retorno_menu==MENU_RETORNO_BACKGROUND) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+
+
+}
+
+void menu_toys(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_toys; 
+    menu_item item_seleccionado;
+	int retorno_menu;
+
+    //letras usadas: rhndmictxbsvfpoaug
+    do {
+        menu_add_item_menu_inicial(&array_menu_toys,"ZXLife",MENU_OPCION_NORMAL,menu_toys_zxlife,NULL);
+		//menu_add_item_menu_shortcut(array_menu_toys,'r');
+
+        
+		menu_add_item_menu_en_es_ca(array_menu_toys,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
+            "ZXeyes","ZXeyes","ZXeyes");
+        
+
+
+        menu_add_item_menu(array_menu_toys,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+                //menu_add_item_menu(array_menu_toys,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+		menu_add_ESC_item(array_menu_toys);
+
+        retorno_menu=menu_dibuja_menu(&toys_opcion_seleccionada,&item_seleccionado,array_menu_toys,"Toys" );
+
+                
+
+		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+				
+                        }
+                }
+
+	} while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}
+
+
+
 
 zxvision_window *menu_visual_floppy_window;
 
@@ -36932,7 +37655,7 @@ void menu_inicio_bucle_main(void)
             zxvision_helper_menu_shortcut_init();
 
             //Cada vez que se abre el menu, se genera un ciclo del juego de la vida
-            gamelife_fire_next_event();
+            //gamelife_fire_next_event();
 
             if (strcmp(scr_new_driver_name,"xwindows")==0 || strcmp(scr_new_driver_name,"sdl")==0 || strcmp(scr_new_driver_name,"caca")==0 || strcmp(scr_new_driver_name,"fbdev")==0 || strcmp(scr_new_driver_name,"cocoa")==0 || strcmp(scr_new_driver_name,"curses")==0) f_functions=1;
             else f_functions=0;
@@ -37022,6 +37745,13 @@ void menu_inicio_bucle_main(void)
             menu_add_item_menu_tooltip(array_menu_principal,"General Settings");
             menu_add_item_menu_ayuda(array_menu_principal,"General Settings");
             menu_add_item_menu_tiene_submenu(array_menu_principal);
+
+            menu_add_item_menu_en_es_ca(array_menu_principal,MENU_OPCION_NORMAL,menu_toys,NULL,
+                "Toys","Juguetes","Joguines");
+            //menu_add_item_menu_shortcut(array_menu_principal,'i');
+            menu_add_item_menu_tooltip(array_menu_principal,"Toys");
+            menu_add_item_menu_ayuda(array_menu_principal,"Toys");
+            menu_add_item_menu_tiene_submenu(array_menu_principal);            
 
 
             menu_add_item_menu(array_menu_principal,"He~~lp",MENU_OPCION_NORMAL,menu_help,NULL);
