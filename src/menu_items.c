@@ -34906,8 +34906,9 @@ void gamelife_clear_board(void)
 {
     int x,y;
 
-    for (x=0;x<gamelife_current_width;x++) {
-        for (y=0;y<gamelife_current_height;y++) {
+    //Inicializarlo siempre todo el maximo
+    for (x=0;x<GAMELIFE_MAX_WIDTH;x++) {
+        for (y=0;y<GAMELIFE_MAX_HEIGHT;y++) {
             gamelife_board[x][y]=0;
 
         }
@@ -35027,6 +35028,9 @@ void menu_toy_zxlife_draw_life(zxvision_window *w,int x,int y,int alive)
 
 }
 
+int zxlife_last_window_width;
+int zxlife_last_window_height;
+
 void menu_toy_zxlife_overlay(void)
 {
 
@@ -35054,6 +35058,37 @@ void menu_toy_zxlife_overlay(void)
         menu_toy_zxlife_draw_force_overlay=0;
         menu_toy_zxlife_contador_segundo_anterior=contador_segundo_infinito;
         printf("Draw\n");
+
+
+        //Recalcular ancho y alto segun tamaño ventana
+        if (menu_toy_zxlife_window->visible_width!=zxlife_last_window_width
+        ||  menu_toy_zxlife_window->visible_height!=zxlife_last_window_height
+        )
+        {
+            printf("Recalculate size\n");
+
+            zxlife_last_window_width=menu_toy_zxlife_window->visible_width;
+            zxlife_last_window_height=menu_toy_zxlife_window->visible_height;
+
+            int ancho=((zxlife_last_window_width-1)*menu_char_width)/GAMELIFE_SIZE_LIVE;
+
+            int alto=((zxlife_last_window_height-GAMELIVE_LINES_MENU)*menu_char_height)/GAMELIFE_SIZE_LIVE;
+
+            //vigilar limites
+            if (ancho>GAMELIFE_MAX_WIDTH) ancho=GAMELIFE_MAX_WIDTH;
+
+            if (alto>GAMELIFE_MAX_HEIGHT) alto=GAMELIFE_MAX_HEIGHT;
+
+            if (ancho<4) ancho=4;
+            if (alto<4) alto=4;
+
+            gamelife_current_width=ancho;
+            gamelife_current_height=alto;
+
+            printf("Tamanyo tablero: %d x %d\n",gamelife_current_width,gamelife_current_height);
+
+        }
+
         //Siguiente ciclo life
 
         //gamelife_timer_background_activity();
@@ -35287,8 +35322,8 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
         zxvision_activate_this_window(ventana);
     }    
 
-
-
+    zxlife_last_window_width=ventana->visible_width;
+    zxlife_last_window_height=ventana->visible_height;
 
     zxvision_draw_window(ventana);
 
