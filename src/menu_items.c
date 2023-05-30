@@ -35093,9 +35093,8 @@ void menu_toy_zxlife_overlay(void)
                 int alive=gamelife_board[x][y];
 
                 menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
-
             }
-        }                    
+        }
 
     }
 
@@ -35109,17 +35108,20 @@ void menu_toy_zxlife_overlay(void)
 void menu_toys_zxlife_random(MENU_ITEM_PARAMETERS)
 {
     gamelife_random_board();
+    menu_toy_zxlife_draw_force_overlay=1;
 }
 
 
 void menu_toys_zxlife_pause(MENU_ITEM_PARAMETERS)
 {
     gamelife_paused ^=1;
+    menu_toy_zxlife_draw_force_overlay=1;
 }
 
 void menu_toys_zxlife_grid(MENU_ITEM_PARAMETERS)
 {
     gamelife_grid ^=1;
+    menu_toy_zxlife_draw_force_overlay=1;
 }
 
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
@@ -35175,6 +35177,7 @@ void menu_toys_zxlife_handle_click_position(int pulsado_x,int pulsado_y,int aliv
 void menu_toys_zxlife_clear(MENU_ITEM_PARAMETERS)
 {
     gamelife_clear_board();
+    menu_toy_zxlife_draw_force_overlay=1;
 }
 
 int menu_toys_zxlife_edit_salido_background=0;
@@ -35324,14 +35327,8 @@ void menu_toys_zxlife(MENU_ITEM_PARAMETERS)
 
     //menu_toy_zxlife_contador_segundo_anterior=contador_segundo;
 
-	z80_byte tecla;
-
-
-	int salir=0;
-
 
     menu_toys_zxlife_edit_salido_background=0;
-
 	
 
     //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
