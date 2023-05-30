@@ -34756,27 +34756,7 @@ int gamelife_grid=0;
 #define GAMELIFE_COLOR_ALIVE 2+8
 #define GAMELIFE_COLOR_DEAD 7
 
-//si conviene dibujar el gameof life
-//retorna -1 si no
-//o el color si hay que mostrarlo
-/*
-int menu_draw_ext_desktop_si_gamelife(int x,int y,int ancho,int alto)
-{
 
-    //cada posicion seran 8 pixeles
-    x /=8;
-    y /=8;
-
-    //if (!zxdesktop_draw_scrfile_enabled) return -1;
-    if (x<0 || y<0 || x>=gamelife_current_width || y>=gamelife_current_height) return -1;
-
-    int alive=gamelife_board[x][y];
-
-    if (alive) return 2;
-    else return 7;
-    
-}
-*/
 
 int gamelife_empty_board(void)
 {
@@ -34861,7 +34841,7 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
 
     if (gamelife_paused) return;
 
-    printf("Next gamelife generation\n");
+    debug_printf(VERBOSE_DEBUG,"Next gamelife generation");
 
     last_gamelife_timer_counter=gamelife_timer_counter;
 
@@ -34919,7 +34899,7 @@ void gamelife_random_board(void)
 {
 
 
-    printf("Generating new gamelife. random noise: %d\n",util_random_noise);
+    debug_printf(VERBOSE_DEBUG,"Generating new gamelife. random noise: %d",util_random_noise);
 
 
     int x,y;
@@ -35066,7 +35046,7 @@ void menu_toy_zxlife_overlay(void)
     {
         menu_toy_zxlife_draw_force_overlay=0;
         menu_toy_zxlife_contador_segundo_anterior=contador_segundo_infinito;
-        printf("Draw\n");
+        //printf("Draw\n");
 
 
         //Recalcular ancho y alto segun tamaño ventana
@@ -35074,7 +35054,7 @@ void menu_toy_zxlife_overlay(void)
         ||  menu_toy_zxlife_window->visible_height!=zxlife_last_window_height
         )
         {
-            printf("Recalculate size\n");
+            debug_printf(VERBOSE_DEBUG,"Recalculate game of life size");
 
             zxlife_last_window_width=menu_toy_zxlife_window->visible_width;
             zxlife_last_window_height=menu_toy_zxlife_window->visible_height;
@@ -35094,7 +35074,7 @@ void menu_toy_zxlife_overlay(void)
             gamelife_current_width=ancho;
             gamelife_current_height=alto;
 
-            printf("Tamanyo tablero: %d x %d\n",gamelife_current_width,gamelife_current_height);
+            debug_printf(VERBOSE_DEBUG,"New board size: %d x %d",gamelife_current_width,gamelife_current_height);
 
         }
 
@@ -35179,7 +35159,7 @@ void menu_toys_zxlife_handle_click_position(int pulsado_x,int pulsado_y,int aliv
 
         )
         {
-            printf("Poner posicion %d,%d a %d\n",pulsado_x,pulsado_y,alive);
+            //printf("Poner posicion %d,%d a %d\n",pulsado_x,pulsado_y,alive);
             menu_toys_zxlife_ultimo_pulsado_posicion_x=pulsado_x;
             menu_toys_zxlife_ultimo_pulsado_posicion_y=pulsado_y;
             menu_toys_zxlife_ultimo_pulsado_posicion_alive=alive;
