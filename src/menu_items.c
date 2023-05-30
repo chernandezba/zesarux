@@ -34728,7 +34728,7 @@ zxvision_draw_window(ventana);
 int gamelife_board[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 
 //temporal para el siguiente ciclo
-int gamelife_board_next_cycle[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
+int gamelife_board_temporal_copy[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 
 //cuantos pixeles representa cada casilla
 #define GAMELIFE_SIZE_LIVE 4
@@ -34870,14 +34870,14 @@ Vive: una célula se mantiene viva si tiene 2 o 3 vecinos a su alrededor.
             //printf("Cycle %d,%d=%d\n",x,y,alive);
 
             //gamelife_board[x][y]=alive;
-            gamelife_board_next_cycle[x][y]=alive;
+            gamelife_board_temporal_copy[x][y]=alive;
         }
     }
 
     //Y copiar del tablero temporal del siguiente ciclo a este
     for (x=0;x<gamelife_current_width;x++) {
         for (y=0;y<gamelife_current_height;y++) {
-            gamelife_board[x][y]=gamelife_board_next_cycle[x][y];
+            gamelife_board[x][y]=gamelife_board_temporal_copy[x][y];
         }
     }
 }
