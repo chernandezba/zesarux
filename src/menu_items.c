@@ -34808,7 +34808,7 @@ int gamelife_get_neighbors_fila_arriba_abajo(int x,int y)
     */
 
    //izqu
-   if (x>1) vecinos+=gamelife_board[x-1][y];
+   if (x>=1) vecinos+=gamelife_board[x-1][y];
    //centro
    vecinos+=gamelife_board[x][y];
    //derecha
@@ -34839,7 +34839,7 @@ int gamelife_get_neighbors(int x,int y)
 
    //mi fila
    //izqu
-   if (x>1) vecinos+=gamelife_board[x-1][y];
+   if (x>=1) vecinos+=gamelife_board[x-1][y];
    //derecha
    if (x<gamelife_current_width-1) vecinos+=gamelife_board[x+1][y];
 
