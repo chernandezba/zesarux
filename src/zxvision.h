@@ -174,6 +174,13 @@ struct s_zxvision_window {
     //indica a zxvision_draw_window_contents que tiene que redibujar esa ventana por haberse redimensionado, movido, o alterado otras ventanas
     int dirty_must_draw_contents;
 
+    //se activa en mismas situaciones que dirty_must_draw_contents, pero no se resetea a 0 nunca
+    //esto es para uso de usuario, para que sepa que una ventana se ha redimensionado, etc, esto es util
+    //para ventanas con overlay de pixel, en que habitualmente no dibujan todos los pixeles, solo los cambios,
+    //pero en caso que dirty_user_must_draw_contents, ese frame lo tienen que dibujar con todos los pixeles, y
+    //luego corresponde al usuario ponerlo a 0
+    //Ver uso en juego zxlife
+    int dirty_user_must_draw_contents;
 
     //indica a algunas ventanas (como Keyboard Help) que se ha lanzado zxvision_draw_window_contents y redibujado el fondo de texto
     int has_been_drawn_contents;

@@ -34727,8 +34727,11 @@ zxvision_draw_window(ventana);
 #define GAMELIFE_MAX_HEIGHT 80
 int gamelife_board[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 
-//temporal para el siguiente ciclo
+//Usado temporalmente para el siguiente ciclo
 int gamelife_board_temporal_copy[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
+
+//Usado para solo redibujar casillas que hayan cambiado
+int gamelife_board_last_state[GAMELIFE_MAX_WIDTH][GAMELIFE_MAX_HEIGHT];
 
 //cuantos pixeles representa cada casilla
 #define GAMELIFE_SIZE_LIVE 4
@@ -34756,7 +34759,28 @@ int gamelife_grid=0;
 #define GAMELIFE_COLOR_ALIVE 2+8
 #define GAMELIFE_COLOR_DEAD 7
 
+void gamelife_copy_board_state(void)
+{
+    int x,y;
 
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_height;y++) {
+            gamelife_board_last_state[x][y]=gamelife_board[x][y];
+        }
+    }
+}
+
+void gamelife_reset_last_board_state(void)
+{
+    int x,y;
+
+    for (x=0;x<gamelife_current_width;x++) {
+        for (y=0;y<gamelife_current_height;y++) {
+            //cualquier cosa que no vaya a ser lo anterior
+            gamelife_board_last_state[x][y]=-1;
+        }
+    }
+}
 
 int gamelife_empty_board(void)
 {
@@ -35087,14 +35111,33 @@ void menu_toy_zxlife_overlay(void)
 
         int x,y;
 
+        //debug. cuando hay que redibujar todos los pixeles
+        if (menu_toy_zxlife_window->dirty_user_must_draw_contents) {
+            printf("Ventana dirty %d\n",contador_segundo_infinito);
+        }
+
         for (x=0;x<gamelife_current_width;x++) {
             for (y=0;y<gamelife_current_height;y++) {
-                //randomize board
+                
                 int alive=gamelife_board[x][y];
 
-                menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
+                //dibujar solo si cambia (o si esta toda la ventana dirty por haberse movido, redimensionado, etc)
+                //Con esto pasamos de usar 20ms a usar 4ms , en un tablero random inicial, de 120x78 casillas
+
+                int last_alive=gamelife_board_last_state[x][y];
+
+                if (alive!=last_alive || menu_toy_zxlife_window->dirty_user_must_draw_contents) {
+                    menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
+                }
+                else {
+                    //printf("No hay cambios en %d,%d\n",x,y);
+                }
             }
         }
+
+        gamelife_copy_board_state();
+
+        menu_toy_zxlife_window->dirty_user_must_draw_contents=0;
 
     }
 
@@ -35108,6 +35151,7 @@ void menu_toy_zxlife_overlay(void)
 void menu_toys_zxlife_random(MENU_ITEM_PARAMETERS)
 {
     gamelife_random_board();
+    gamelife_reset_last_board_state();
     menu_toy_zxlife_draw_force_overlay=1;
 }
 
@@ -35121,6 +35165,7 @@ void menu_toys_zxlife_pause(MENU_ITEM_PARAMETERS)
 void menu_toys_zxlife_grid(MENU_ITEM_PARAMETERS)
 {
     gamelife_grid ^=1;
+    gamelife_reset_last_board_state();
     menu_toy_zxlife_draw_force_overlay=1;
 }
 

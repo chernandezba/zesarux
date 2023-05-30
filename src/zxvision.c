@@ -9931,7 +9931,9 @@ void zxvision_reset_flag_dirty_must_draw_contents(zxvision_window *w)
 
 void zxvision_set_flag_dirty_must_draw_contents(zxvision_window *w)
 {
-    w->dirty_must_draw_contents=1;    
+    w->dirty_must_draw_contents=1;  
+    //para el usuario
+    w->dirty_user_must_draw_contents=1;  
 }
 
 void zxvision_set_all_flag_dirty_must_draw_contents(void)

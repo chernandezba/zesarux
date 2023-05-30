@@ -12,6 +12,9 @@ Added compiled version for Ubuntu
 Added compiled version for Fedora
 Added another toy ZXLife to a new menu Procrastinate
 
+Improve ZX Desktop
+- Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
+
 Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l
 - Updated machine id list

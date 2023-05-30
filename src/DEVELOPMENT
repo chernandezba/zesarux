@@ -646,6 +646,9 @@ que suele ser caracter " " y se le dice que no haga cache de ese caracter, con l
 
 Aparte de todo eso, cuando no se permite background windows, habitualmente solo se tiene una ventana visible, pero se puede dar en caso de 2 a la vez, por ejemplo al pulsar F1 en algun item de menu. Es por eso que hay varias funciones que consideran cuando hay mas de 1 ventana a la vez (aunque no se permitan en background), como el redraw all windows o la función de ver si una ventana está encima de otra que se llama desde draw window contents (zxvision_coords_in_superior_windows)
 
+otro: se puede usar dirty_user_must_draw_contents para saber el usuario cuando tiene que redibujar todos los pixeles de una ventana. 
+en caso que no este activo eso, se pueden dibujar solo los pixeles que cambian, y no todos
+
 ---
 
 
