@@ -1,7 +1,5 @@
 FROM fedora:38
 
-ENTRYPOINT [ "/bin/sh" ]
-
 RUN yum -y install which git gcc make ncurses-devel openssl-devel pulseaudio-libs-devel libsndfile-devel alsa-lib-devel SDL2-devel
 RUN yum -y groupinstall "X Software Development"
 
