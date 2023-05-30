@@ -478,7 +478,7 @@ void timer_check_interrupt(void)
         //han pasado 20 ms
         contador_segundo +=20;
 
-        contador_segundo_infinito++;
+        contador_segundo_infinito +=20;
 
         //emulacion refresco memoria. Decrementar contador, de alguna manera "diciendo" que registro R funciona bien
         if (machine_emulate_memory_refresh) {

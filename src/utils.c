@@ -7108,7 +7108,7 @@ int util_random_noise_last_time=0;
 void util_generate_random_noise(int pressrelease)
 {
     //componente random noise
-    if (!pressrelease) util_random_noise_last_time=contador_segundo_infinito;
+    if (pressrelease) util_random_noise_last_time=contador_segundo_infinito;
     else {
         util_random_noise=contador_segundo_infinito-util_random_noise_last_time;
     }

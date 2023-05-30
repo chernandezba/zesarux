@@ -34937,10 +34937,12 @@ void gamelife_random_board(void)
             int valor_random=randomize_noise[0];
 
             //un poco mas aleatorio
+            //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
+            //esto ira de 0 a 1000
             valor_random +=util_random_noise;
 
             //50% de probabilidad vivo / muerto
-            if (valor_random % 1000 < 500) alive=1;
+            if (valor_random % 2000 < 1000) alive=1;
             else alive=0;
 
             //printf("Randomize board %d,%d=%d\n",x,y,alive);
@@ -35113,7 +35115,7 @@ void menu_toy_zxlife_overlay(void)
 
         //debug. cuando hay que redibujar todos los pixeles
         if (menu_toy_zxlife_window->dirty_user_must_draw_contents) {
-            printf("Ventana dirty %d\n",contador_segundo_infinito);
+            debug_printf(VERBOSE_DEBUG,"Drawing all fields on ZX Life because the window is dirty");
         }
 
         for (x=0;x<gamelife_current_width;x++) {
@@ -35128,9 +35130,6 @@ void menu_toy_zxlife_overlay(void)
 
                 if (alive!=last_alive || menu_toy_zxlife_window->dirty_user_must_draw_contents) {
                     menu_toy_zxlife_draw_life(menu_toy_zxlife_window,x,y,alive);
-                }
-                else {
-                    //printf("No hay cambios en %d,%d\n",x,y);
                 }
             }
         }

@@ -88,6 +88,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 
 -Ayuda en process management. Cada ítem de ayuda muestra mismo mensaje. Además debe ser un string definido una sola vez que en cada ítem apunta a mismo puntero . Que significa esto????????
+-process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
 
 
 -Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background 
