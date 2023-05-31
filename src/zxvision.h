@@ -970,7 +970,7 @@ extern void menu_generic_message_warn(char *titulo, const char * texto);
 extern void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char *texto_opcion, int *valor_opcion);
 
 
-extern void zxvision_rearrange_background_windows(void);
+extern void zxvision_rearrange_background_windows(int si_cascada);
 
 extern void menu_generic_message_tooltip(char *titulo, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, const char * texto_format , ...);
 

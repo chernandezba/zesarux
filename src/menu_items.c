@@ -17334,7 +17334,7 @@ void menu_display_window_reduce_all_common(void)
 
 void menu_display_window_rearrange_all_common(void)
 {
-	zxvision_rearrange_background_windows();
+	zxvision_rearrange_background_windows(0);
 }
 
 void menu_display_window_rearrange_all(MENU_ITEM_PARAMETERS)
@@ -17342,6 +17342,13 @@ void menu_display_window_rearrange_all(MENU_ITEM_PARAMETERS)
     menu_display_window_rearrange_all_common();
 
     menu_generic_message_splash("Rearrange all","OK. All windows rearranged");
+}
+
+void menu_display_window_cascade_all(MENU_ITEM_PARAMETERS)
+{
+    zxvision_rearrange_background_windows(1);
+
+    menu_generic_message_splash("Cascade all","OK. All windows cascaded");
 }
 
 void menu_display_window_reduce_all(MENU_ITEM_PARAMETERS)
@@ -17509,6 +17516,11 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             "Rearrange all windows","Reubicar todas ventanas","Reubicar totes les finestres");
         menu_add_item_menu_tooltip(array_menu_common,"Rearrange all windows on the ZX Desktop");
         menu_add_item_menu_ayuda(array_menu_common,"Rearrange all windows on the ZX Desktop");
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_cascade_all,NULL,
+            "Cascade all windows","Cascade todas ventanas","Cascade totes les finestres");
+        menu_add_item_menu_tooltip(array_menu_common,"Cascade all windows on the ZX Desktop");
+        menu_add_item_menu_ayuda(array_menu_common,"Cascade all windows on the ZX Desktop");        
 
         menu_add_item_menu_separator(array_menu_common);
 

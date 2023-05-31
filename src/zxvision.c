@@ -16877,7 +16877,7 @@ void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_
 
 
 
-void zxvision_rearrange_background_windows(void)
+void zxvision_rearrange_background_windows(int si_cascada)
 {
 
 	//printf("rearrange windows\n");
@@ -16967,15 +16967,33 @@ void zxvision_rearrange_background_windows(void)
 
 		ventana=ventana->next_window;
 		if (ventana!=NULL) {
-			x +=ancho_antes;
+            if (si_cascada) {
+                x++;
+                y++;
+            }
+
+            else {
+			    x +=ancho_antes;
+            }
 			//printf ("%d %d %d\n",x,ventana->visible_width,ancho);
-			if (x+ventana->visible_width>xfinal) {
+			if (x+ventana->visible_width>=xfinal) {
 
 				//printf ("Next column\n");
 				//Siguiente fila
+
+                if (si_cascada) {
+                    //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+                    x=xfinal-ventana->visible_width-1;//origen_x;
+                    if (x<0) x=0;
+                    //y=origen_y;
+
+                }
+
+                else {
 				x=origen_x;
 
 				y+=alto_maximo_en_fila;
+                }
 
 				alto_maximo_en_fila=0;
 
@@ -16984,16 +17002,25 @@ void zxvision_rearrange_background_windows(void)
 
 			//Si volver al principio
             //printf("y %d height %d final %d\n",y,ventana->visible_height,yfinal);
-			if (y+ventana->visible_height>yfinal) {
+			if (y+ventana->visible_height>=yfinal) {
 
 				debug_printf (VERBOSE_DEBUG,"Restart x,y coordinates");
                 //printf ("Restart x,y coordinates. ventana %s\n",ventana->window_title);
+
+                if (si_cascada) {
+                    x=origen_x;
+                    y=origen_y;
+                }
+
+                else {
 
 				//alternamos coordenadas origen, para darles cierto "movimiento", 4 caracteres derecha y abajo
 				cambio_coords_origen ^=4;
 
 				x=origen_x + cambio_coords_origen;
 				y=origen_y + cambio_coords_origen;
+
+                }
 						
 			}
 		}
@@ -25335,7 +25362,7 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows) {
-        zxvision_rearrange_background_windows();	
+        zxvision_rearrange_background_windows(0);	
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();
@@ -25429,7 +25456,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows) {
-        zxvision_rearrange_background_windows();	
+        zxvision_rearrange_background_windows(0);	
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();

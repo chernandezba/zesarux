@@ -4920,7 +4920,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
             debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine has smaller window size or gui zoom different");
 
             //printf ("Rearrange zxvision windows so current machine has smaller window size or gui zoom different\n");
-            zxvision_rearrange_background_windows();
+            zxvision_rearrange_background_windows(0);
         }
 
         zxvision_check_all_configurable_icons_positions();

@@ -552,7 +552,7 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 	//printf ("--despues de restore overlay\n");
 
 	debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing border settings");
-	zxvision_rearrange_background_windows();
+	zxvision_rearrange_background_windows(0);
 
     zxvision_check_all_configurable_icons_positions();
 	
@@ -1515,7 +1515,7 @@ void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 void menu_interface_charwidth_after_width_change(void)
 {
 	//Reorganizar ventanas en background segun nuevo tamaño caracter
-	if (menu_allow_background_windows) zxvision_rearrange_background_windows();	
+	if (menu_allow_background_windows) zxvision_rearrange_background_windows(0);	
 }
 
 void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
@@ -9855,7 +9855,7 @@ void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows)	{
-        zxvision_rearrange_background_windows();
+        zxvision_rearrange_background_windows(0);
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();        
