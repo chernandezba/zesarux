@@ -251,3 +251,8 @@ asi en smartload y similares no aparecerian
 -determinar version en ejecucion, mediante /etc/*release
 
 
+-zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
+Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
+ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
+todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cual zxvision_putpixel
+

@@ -7684,6 +7684,16 @@ unsigned char menu_escribe_texto_convert_utf(unsigned char prefijo_utf,unsigned 
             }
         }    
 
+		if (caracter==0xAF) {
+			//ï i con dieresis
+			if (si_complete_video_driver()) {
+                return 167; 
+            }
+            else {
+                return 'i';
+            }
+        }
+
 		if (caracter==0xB2) {
 			//ò o acentuada abierta
 			if (si_complete_video_driver()) {
@@ -24938,7 +24948,7 @@ int first_aid_no_back_run_rainbow=0;
 char *first_aid_string_back_run_rainbow="As you have real video enabled, you may see the machine display now drawn as the initial state, but it's not the actual state, it's a temporary frame that will disappear after you close the menu";
 
 int first_aid_no_language=0;
-char *first_aid_string_language="Warning: not all messages are translated.\nAviso: No todos los mensajes están traducidos.\nAvís: No tots els missages estan traduits.";
+char *first_aid_string_language="Warning: not all messages are translated.\nAviso: No todos los mensajes están traducidos.\nAvís: No tots els missages estan traduïts.";
 
 
 int first_aid_no_hilow_format=0;

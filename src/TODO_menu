@@ -75,10 +75,7 @@ De hecho la manera de "recrearlas" es cerrarla y volverla a abrir
 Esto también comporta cosas buenas, como que la posición de scroll se mantiene al salir y entrar de una ventana.
 Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
--caracter dieresis i (ï) para mensaje como :
-No tots els missages estan traduits
-Debe ser:
-No tots els missages estan traduïts
+
 
 -ideas para zx vision: https://telcontar.net/Misc/GUI/RISCOS/
 
