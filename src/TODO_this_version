@@ -57,7 +57,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 -Linux: al hacer alt-tab para ir a otra ventana, al volver con raton por ejemplo, el alt "sigue pulsado" en ZEsarUX
 
--al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
 
 -revisar mensajes splash (por ejemplo de cambio modo video) que aparezcan correctamente cuando hay ventanas en background
 ->parece que con config actual, no se ve el mensaje splash aunque borra decoraciones ventanas
@@ -186,8 +186,6 @@ Modo 2 (180x256x16): los colores de la paleta de la CGA (los 16 clásicos que tr
 Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cuadrados, como el modo 1 pero con los colores del modo 2. ¿La trampa? Es un modo de atributos: no podemos tener más de dos colores distintos en una celda 1x8. Facilita mucho portar cosas de Spectrum, MSX, Thomson, … Y si mantenemos los colores tenemos la mitad de memoria de vídeo, con lo que es más rápido el volcado, movimiento de sprites, etc.
 
 
--quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
-asi en smartload y similares no aparecerian
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
@@ -255,4 +253,40 @@ asi en smartload y similares no aparecerian
 Hacer uso de parametro dirty, usado igual en draw_window_contents, para saber _si hay que redibujar capa de pixel o no
 ventanas escriben aqui con otra funcion, por ejemplo llamada zxvision_putpixel_buffer, o quiza, renombrar
 todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cual zxvision_putpixel
+*definición anterior:
+-Nuevo concepto para ventanas:
+Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
+Ideal para help keyboard por ejemplo
+En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
 
+
+-lectura de audio de casette?
+
+-ay player en modo "jukebox" que permita agregar canciones ay a la lista, o bien una carpeta entera
+
+-setting autorebobinado de cintas real tape?
+
+
+-file browser no muestra dispositivos. importante para uart
+Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
+o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
+arriba)
+-no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
+-no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
+
+
+
+-quiza get_file_type deberia excluir sockets y devices, no considerarlos archivos normales,
+asi en smartload y similares no aparecerian -> pero en caso de UART si que deben salir dispositivos!!
+
+-al conmutar de ventana de ZEsarUX, en Mac, a veces se congela la aplicación. por que? tanto pasa con menu abierto como cerrado.
+
+-Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
+
+-Browser cintas standard que permita alterar la posición de la cinta
+
+-organizar ventanas en cascada
+
+-mejoras accesibilidad: 
+* https://www.w3.org/TR/low-vision-needs/
+* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?

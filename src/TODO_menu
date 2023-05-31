@@ -91,20 +91,14 @@ Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
 -Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
--Nuevo concepto para ventanas:
-Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
-Ideal para help keyboard por ejemplo
-En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
 
--organizar ventanas en cascada
+
 
 -Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
 
 -Botón del medio de ratón para enviar al fondo una ventana
 
--mejoras accesibilidad: 
-* https://www.w3.org/TR/low-vision-needs/
-* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
+
 
 -desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
 
@@ -137,7 +131,7 @@ if (must_return) return;
 -menu arriba del todo al estilo de Mac. En pruebas, ver función menu_topbarmenu
 
 -Considerar mejorar dibujar el fondo de zxdesktop: al mover ventanas se ralentiza mucho por tener que dibujar el zxdesktop
-Considerar algun modo de dibujado mas rapido
+Considerar algun modo de dibujado mas rapido -> solventado con frameskip en zx desktop
 
 -en ventanas con can_use_all_width=1, no se habilita la barra de scroll vertical cuando hace falta
 
@@ -238,8 +232,6 @@ Y cierra menus pero no sale
 
 -Mientras hay splash de inicio, si se pulsa F5, aparece por un momento overlays de ventanas, cuando F5 esta asignada a "Nothing"
 
--Smartload de un tap en +3 deja activado top speed (abadía del crimen)
-
 
 -al cargar smartload, por ejemplo ultimo cargado es thelosttapesofalbion. situa el cursor ahi bien, 
 pero al subir para arriba desplaza desde scroll sin mover
@@ -259,7 +251,6 @@ Pues porque al ser un hotkey, se abre el menu y al cerrar el menu, se pierde el 
 
 --- menu - mejoras ---
 
--poder extender texto de ventanas de simple message, están fijados siempre a 32
 
 -sprite disabling window tambien para tsconf y maquinas con chip vdp (msx, etc)
 
@@ -277,7 +268,7 @@ Si la ponemos a 0 en bucle de leer tecla, luego no se lee realmente del menu deb
 -agregar sensor temperatura cpu linux
 
 
--ay player en modo "jukebox" que permita agregar canciones ay a la lista, o bien una carpeta entera
+
 
 -frecuencias chips audio como sensores? no sé si vale la pena pues los valores de frecuencias son exponenciales y por ejemplo
 las ultimas dos notas, una es el doble de la otra. Por tanto si usamos un widget de speedometer, estaria casi al 0 siempre excepto para 
@@ -296,7 +287,7 @@ momentaneamente pero al irse el splash, se recargan
 
 -ula settings visible en otras maquinas no-spectrum?
 
--setting autorebobinado de cintas standard y real tape?
+
 
 
 -Opción no marcar registros en rojo que se van  a modificar en debug cpu
@@ -330,7 +321,6 @@ https://github.com/lavoiesl/osx-cpu-temp
 
 -Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
 
--Gestor de menús que permita agregar función para cambio overlay texto 
 
 -Quitar menu custom machine y meterlo dentro de machine selection, de tal manera que pida la ROM al seleccionar máquina
 
@@ -343,11 +333,7 @@ y no vuelve a abrir el menu, y parece que tampoco envia teclado a maquina emulad
 
 -filtro AY se sigue escuchando cosas aun desactivando los 3 canales->tienen que ver envolventes y speech
 
--file browser no muestra dispositivos. importante para uart
-Por alguna razón, en /dev no llega a leerlos ni entrando antes del filtro. Quiza algun parametro especial del directorio
-o algo que no hago bien al leer directorio. La solución pasa por escribir el nombre directamente en el file selector (pulsando TAB o click de raton
-arriba)
--no se ven enlaces simbólicos en navegador de archivos. Como mínimo de Mac no se ven. Y en Linux?
+
 
 
 -para comprobar coordenada y footer, calcular desde abajo de alto ventana. Y usar funcion comun en screen.c
@@ -391,7 +377,6 @@ Hacer captura. Luego hacer captura de la derecha, etc
 
 -Modo solo recreated en menú / Movimiento menus con 56780
 
--no lee enlaces simbolicos en filesystem: ejemplo /home/pi/PREPARADOS de raspiboy
 
 
 -Quizá algunas operaciones de archivos que se cancelen con esc que avise con ventana temporal de dicha cancelación 
@@ -426,7 +411,7 @@ Info de tamaño ventana. Y tamaño ventana sin zoom
 -mejorar deteccion frecuencia sonido en audio wave form
 
 
--Mostrar juego cargado en titulo ventana. Desaparece al hacer reset. Que limite tiene el texto en los diferentes sistemas operativos?
+
 
 -poder hacer hotswap de una maquina a zx-uno
 
@@ -449,7 +434,7 @@ no-thread no funcionara tampoco
 
 -Mostrar consumo de cpu solo del proceso del emulador?
 
--Browser cintas standard que permita alterar la posición de la cinta
+
 
 
 -descomprimir rar,gz, etc con espacio en nombres a veces falla. el comando system le envia las "" pero el propio comando
