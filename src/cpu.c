@@ -709,6 +709,18 @@ char parameter_disablebetawarning[100]="";
 int total_minutes_use=0;
 
 
+
+char os_release_name[MAX_OS_RELEASE_NAME+1];
+void get_os_release(void)
+{
+    util_get_operating_system_release(os_release_name,MAX_OS_RELEASE_NAME);
+    if (os_release_name[0]==0) {
+        //En caso de no detectar, le ponemos nombre de OS de compilación
+        strcpy(os_release_name,COMPILATION_SYSTEM);
+    }
+    printf("OS Release: %s\n",os_release_name);
+}
+
 //Aqui solo se llama posteriormente a haber inicializado la maquina, nunca antes
 void cpu_set_turbo_speed(void)
 {
@@ -10736,6 +10748,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	//Iniciar ZRCP
 	init_remote_protocol();
+
+    get_os_release();
 
 	//Funciones de red en background
 	stats_check_updates();

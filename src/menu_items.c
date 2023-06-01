@@ -25111,6 +25111,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 		"Executable path: %s\n\n"
 #endif
 
+        "OS: %s\n"
 		"Start time: %s\n"
 		"Uptime %d secs (%d mins)\n"
 		"%s"
@@ -25123,6 +25124,7 @@ void menu_about_running_info(MENU_ITEM_PARAMETERS)
 		macos_path_to_executable,
 #endif
 
+        os_release_name,
 		hora_inicio,
 		uptime_seconds,uptime_seconds/60,mensaje_total_uptime,mensaje_cpu_usage);
 

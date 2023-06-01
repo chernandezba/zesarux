@@ -655,6 +655,8 @@ extern char *z80_cpu_types_strings[];
 #define MAX_EMULATE_MEMORY_REFRESH_COUNTER 1500000
 #define MAX_EMULATE_MEMORY_REFRESH_LIMIT (MAX_EMULATE_MEMORY_REFRESH_COUNTER/2)
 
+#define MAX_OS_RELEASE_NAME 50
+extern char os_release_name[];
 
 extern int zesarux_main (int main_argc,char *main_argv[]);
 extern z80_bit cambio_parametros_maquinas_lentas;

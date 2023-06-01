@@ -153,8 +153,8 @@ void *send_stats_server_pthread(void *nada GCC_UNUSED)
 	char query_url_parameters[NETWORK_MAX_URL];
 	char query_url_parameters_normalized[NETWORK_MAX_URL];
 
-	sprintf (query_url_parameters,"UUID=%s&COMPILE_OS=%s&COMPILE_OS_RELEASE=%s&total_minutes_use=%d&speccy_queries=%d&zx81_queries=%d&version=%s&buildnumber=%s",
-    stats_uuid,COMPILATION_SYSTEM,COMPILATION_SYSTEM_RELEASE,minutes,
+	sprintf (query_url_parameters,"UUID=%s&RUN_OS=%s&COMPILE_OS=%s&COMPILE_OS_RELEASE=%s&total_minutes_use=%d&speccy_queries=%d&zx81_queries=%d&version=%s&buildnumber=%s",
+    stats_uuid,os_release_name,COMPILATION_SYSTEM,COMPILATION_SYSTEM_RELEASE,minutes,
 	 stats_total_speccy_browser_queries,
   stats_total_zx81_browser_queries,
 	

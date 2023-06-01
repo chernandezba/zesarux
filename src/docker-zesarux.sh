@@ -53,8 +53,29 @@ docker-build-and-get-binary() {
 }
 
 help() {
-	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|run|run-curses|run-mac-xorg|run-xorg]"
-	echo "build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
+	echo "$0 [build|build-version|build-version-and-get-binary|clean-cache|codetests|localrun|localsh|run|run-curses|run-mac-xorg|run-xorg]"
+	echo
+	echo "Development actions:"
+	echo "--------------------"
+	echo "build:        Builds a simple Debian version"
+	echo "codetests:    Execute ZEsarUX codetests from a simple Debian version"
+	echo "run:          Executes a simple Debian version using stdout driver"
+	echo "run-curses:   Executes a simple Debian version using curses driver"
+	echo "run-xorg:     Executes a simple Debian version using xwindows driver"
+	echo "run-mac-xorg: Executes a simple Debian version using xwindows driver, for Mac"
+	echo "localrun:     Builds and execute ZEsarUX using curses driver from a simple Debian version from this local directory, so do not get source from git"
+	echo "localsh:      Similar to localrun but executes a Shell inside container"
+	echo
+	echo "Building actions:"
+	echo "-----------------"
+	echo "build-version:                Builds a release version"
+	echo "build-version-and-get-binary: Same as build-version + get the tar.gz binary package"
+	echo "Note: build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
+	echo
+	echo "Misc:"
+	echo "-----"
+	echo "clean-cache: Clean docker cache"
+	echo "All docker actions get source code from git except localrun and localsh"
 }
 
 if [ $# == 0 ]; then
@@ -118,6 +139,17 @@ case $1 in
 		docker-build
 		docker run -it zesarux --codetests
 	;;
+
+	localrun)
+		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
+		docker run -it zesarux.local
+	;;
+
+	localsh)
+		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
+		docker run -it --entrypoint /bin/bash zesarux.local
+	;;
+
 
 	*)
 		help

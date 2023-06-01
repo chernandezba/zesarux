@@ -720,7 +720,7 @@ extern int util_extract_mdv(char *mdvname, char *dest_dir);
 extern int util_extract_hdf(char *hdfname, char *dest_dir);
 
 extern void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destination_file);
-extern void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
+extern int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer);
 
 extern void util_string_replace_char(char *s,char orig,char dest);
 

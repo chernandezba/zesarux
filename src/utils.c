@@ -14540,7 +14540,7 @@ void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destin
 }
 
 //Leer hasta numero de bytes concreto
-void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
+int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 {
     FILE *ptr_tapebrowser;
 
@@ -14553,7 +14553,7 @@ void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 
     if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
         debug_printf(VERBOSE_ERR,"Can not open %s",filename);
-        return;
+        return 0;
     }
 
        
@@ -14562,10 +14562,12 @@ void util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
 
 	if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
-        return;
+        return 0;
     }
 
     zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);    
+
+    return leidos;
 }
 
 
@@ -21563,4 +21565,57 @@ void util_normalize_file_name_for_temp_dir(char *nombre)
 
         nombre++;
     }
+}
+
+//Obtener nombre sistema operativo en ejecucion
+void util_get_operating_system_release(char *destino,int maximo)
+{
+    if (!si_existe_archivo("/etc/os-release")) {
+        //Si no existe, cadena nula
+        *destino=0;
+        return;
+    }
+
+    char buffer_temporal[1024];
+    int total_leidos=util_load_file_bytes((z80_byte *)buffer_temporal,"/etc/os-release",1023);
+
+    buffer_temporal[1023]=0;
+
+
+    //leer linea a linea 
+    char buffer_linea[200]; 
+
+    char *mem=buffer_temporal;
+
+
+    do {
+        int leidos;
+        char *next_mem;
+    
+        next_mem=util_read_line(mem,buffer_linea,total_leidos,200,&leidos);
+        printf("Linea: [%s]\n",buffer_linea);
+        total_leidos -=leidos;
+
+
+        char *existe;
+        //PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+        existe=strstr(buffer_linea,"PRETTY_NAME");
+        if (existe!=NULL) {
+            existe=strstr(buffer_linea,"\"");
+            if (existe!=NULL) {
+                existe++;
+                int i;
+                for (i=0;i<maximo && (*existe) && (*existe!='\r') && (*existe!='\"');existe++,destino++,i++) {
+                    *destino=*existe;
+                }
+                *destino=0;
+                return;
+            }
+        }
+
+        mem=next_mem;
+
+    } while (total_leidos>0);
+
+            
 }
