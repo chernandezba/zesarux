@@ -16967,14 +16967,19 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
 		ventana=ventana->next_window;
 		if (ventana!=NULL) {
+
+            //En cascada la ventana se va alternando en diagonal abajo
             if (si_cascada) {
                 x++;
                 y++;
             }
 
+            //En no cascada, la ventana se pone al lado
             else {
 			    x +=ancho_antes;
             }
+
+            //Si se sale por la derecha
 			//printf ("%d %d %d\n",x,ventana->visible_width,ancho);
 			if (x+ventana->visible_width>=xfinal) {
 
@@ -16982,17 +16987,18 @@ void zxvision_rearrange_background_windows(int si_cascada)
 				//Siguiente fila
 
                 if (si_cascada) {
+                    /*
                     //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
                     x=xfinal-ventana->visible_width-1;//origen_x;
                     if (x<0) x=0;
-                    //y=origen_y;
+                    */
 
                 }
 
                 else {
-				x=origen_x;
+                    x=origen_x;
 
-				y+=alto_maximo_en_fila;
+                    y+=alto_maximo_en_fila;
                 }
 
 				alto_maximo_en_fila=0;
@@ -17000,29 +17006,46 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
 			}
 
-			//Si volver al principio
+			//Si ha llegado abajo del todo, volver al principio
             //printf("y %d height %d final %d\n",y,ventana->visible_height,yfinal);
 			if (y+ventana->visible_height>=yfinal) {
 
 				debug_printf (VERBOSE_DEBUG,"Restart x,y coordinates");
                 //printf ("Restart x,y coordinates. ventana %s\n",ventana->window_title);
 
+               
+                x=origen_x;
+                y=origen_y;                
+
                 if (si_cascada) {
-                    x=origen_x;
-                    y=origen_y;
+         
                 }
 
                 else {
 
-				//alternamos coordenadas origen, para darles cierto "movimiento", 4 caracteres derecha y abajo
-				cambio_coords_origen ^=4;
+                    //alternamos coordenadas origen, para darles cierto "movimiento", 4 caracteres derecha y abajo
+                    cambio_coords_origen ^=4;
 
-				x=origen_x + cambio_coords_origen;
-				y=origen_y + cambio_coords_origen;
+                    x += cambio_coords_origen;
+                    y += cambio_coords_origen;
 
                 }
 						
 			}
+
+            //Controlar limites despues de los movimientos anteriores
+            if (x+ventana->visible_width>=xfinal) {
+                //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+                x=xfinal-ventana->visible_width-1;
+            }
+
+            if (y+ventana->visible_height>=yfinal) {
+                //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+                y=yfinal-ventana->visible_height-1;
+            }
+
+            if (x<0) x=0;
+            if (y<0) y=0;
 		}
 	}
 
