@@ -16955,12 +16955,13 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
 		debug_printf (VERBOSE_DEBUG,"Setting window %s to %d,%d",ventana->window_title,x,y);
         //printf ("Setting window %s to %d,%d\n",ventana->window_title,x,y);
-
+        //printf ("x %d width %d final %d\n",x,ventana->visible_width,xfinal);
         //Controlar limites despues de los movimientos anteriores
         if (x+ventana->visible_width>xfinal) {
             //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
             //printf("Ajuste x\n");
             x=xfinal-ventana->visible_width;
+            //printf("x despues ajuste: %d\n",x);
         }
 
         if (y+ventana->visible_height>yfinal) {
@@ -16970,6 +16971,8 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
         if (x<0) x=0;
         if (y<0) y=0;
+
+        //printf ("Setting window %s to %d,%d\n",ventana->window_title,x,y);
 
 		ventana->x=x;
 		ventana->y=y;
@@ -16996,7 +16999,7 @@ void zxvision_rearrange_background_windows(int si_cascada)
             }
 
             //Si se sale por la derecha
-			//printf ("%d %d %d\n",x,ventana->visible_width,ancho);
+			//printf ("x %d width %d final %d\n",x,ventana->visible_width,xfinal);
 			if (x+ventana->visible_width>xfinal) {
 
 				//printf ("Next column\n");
@@ -17046,6 +17049,8 @@ void zxvision_rearrange_background_windows(int si_cascada)
                     y += cambio_coords_origen;
 
                 }
+
+                //printf("x,y after restart: %d,%d\n",x,y);
 						
 			}
 
