@@ -192,6 +192,10 @@ make bintargz
 make ubuntu
 
 
+** Fedora
+make fedora
+
+
 ** FreeBSD 
 Generar este binarios de FreeBSD:
 ZEsarUX-version-freebsd-12.1-x64.tar.gz 

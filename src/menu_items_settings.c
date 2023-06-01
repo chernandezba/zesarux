@@ -11083,6 +11083,9 @@ void menu_settings_statistics(MENU_ITEM_PARAMETERS)
 				
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    UUID: %s",stats_uuid);
 
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Running System Release:");
+                menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"     %s",os_release_name);
+
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation System: %s",COMPILATION_SYSTEM);
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"    Compilation System Release:");
                 menu_add_item_menu_format(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,"     %s",COMPILATION_SYSTEM_RELEASE);

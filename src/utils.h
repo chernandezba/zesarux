@@ -988,4 +988,8 @@ extern int util_parity(z80_byte value);
 extern void util_scanf_history_insert(char **textos_historial,char *texto);
 extern int util_scanf_history_get_total_lines(char **textos_historial);
 
+extern void util_get_operating_system_release(char *destino,int maximo);
+
+
+
 #endif
