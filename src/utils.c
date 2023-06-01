@@ -1393,6 +1393,8 @@ void get_compile_info(char *s)
 	"\n"
 	"Compilation system: " COMPILATION_SYSTEM "\n"
 	"\n"
+	"Compilation system release: " COMPILATION_SYSTEM_RELEASE "\n"
+	"\n"
         "Configure command: " CONFIGURE_OPTIONS "\n"
 	"\n"
         "Compile variables: " COMPILE_VARIABLES "\n"

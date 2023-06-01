@@ -410,6 +410,14 @@ if [ "$SISTEMA" == "GNU/Linux" ]; then
 	fi
 fi
 
+# obtener relase para sistemas Linux
+# TODO: en windows, Mac y otros , obtener tambien release
+SISTEMA_RELEASE="$SISTEMA"
+
+if [ -e /etc/os-release ]; then
+	SISTEMA_RELEASE=`cat /etc/os-release |grep PRETTY_NAME|cut -d '"' -f2`
+fi
+
 echo -n "Checking for $CCOMPILER compiler ... "
 
 RESULT=`which $CCOMPILER`
@@ -2465,6 +2473,7 @@ cat >> compileoptions.h << _EOF
 
 #define COMPILATION_DATE "`date`"
 #define COMPILATION_SYSTEM "$SISTEMA"
+#define COMPILATION_SYSTEM_RELEASE "$SISTEMA_RELEASE"
 #define CONFIGURE_OPTIONS "$0 $CONFIGURE_OPTIONS"
 #define COMPILE_VARIABLES "$COMPILE_VARIABLES"
 #define COMPILE_INITIALCFLAGS "$INITIALCFLAGS"
