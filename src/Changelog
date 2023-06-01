@@ -23,6 +23,8 @@ Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l
 - Updated machine id list
 
+Fixed ZX Vision relocation windows
+
 * As always, there are some other minor bugfixes and improvements
 
 ----------------------------------------

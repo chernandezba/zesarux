@@ -16900,7 +16900,8 @@ void zxvision_rearrange_background_windows(int si_cascada)
 		ancho=menu_get_width_characters_ext_desktop();
 
         //+1 para que no queden pegadas a la pantalla emulada
-        origen_x++;        
+        origen_x++;   
+        ancho--;     
 	}
 
 	else ancho=scr_get_menu_width();
@@ -16955,6 +16956,21 @@ void zxvision_rearrange_background_windows(int si_cascada)
 		debug_printf (VERBOSE_DEBUG,"Setting window %s to %d,%d",ventana->window_title,x,y);
         //printf ("Setting window %s to %d,%d\n",ventana->window_title,x,y);
 
+        //Controlar limites despues de los movimientos anteriores
+        if (x+ventana->visible_width>xfinal) {
+            //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+            printf("Ajuste x\n");
+            x=xfinal-ventana->visible_width;
+        }
+
+        if (y+ventana->visible_height>yfinal) {
+            //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
+            y=yfinal-ventana->visible_height;
+        }
+
+        if (x<0) x=0;
+        if (y<0) y=0;
+
 		ventana->x=x;
 		ventana->y=y;
 
@@ -16981,7 +16997,7 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
             //Si se sale por la derecha
 			//printf ("%d %d %d\n",x,ventana->visible_width,ancho);
-			if (x+ventana->visible_width>=xfinal) {
+			if (x+ventana->visible_width>xfinal) {
 
 				//printf ("Next column\n");
 				//Siguiente fila
@@ -17008,7 +17024,7 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
 			//Si ha llegado abajo del todo, volver al principio
             //printf("y %d height %d final %d\n",y,ventana->visible_height,yfinal);
-			if (y+ventana->visible_height>=yfinal) {
+			if (y+ventana->visible_height>yfinal) {
 
 				debug_printf (VERBOSE_DEBUG,"Restart x,y coordinates");
                 //printf ("Restart x,y coordinates. ventana %s\n",ventana->window_title);
@@ -17033,19 +17049,7 @@ void zxvision_rearrange_background_windows(int si_cascada)
 						
 			}
 
-            //Controlar limites despues de los movimientos anteriores
-            if (x+ventana->visible_width>=xfinal) {
-                //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
-                x=xfinal-ventana->visible_width-1;
-            }
 
-            if (y+ventana->visible_height>=yfinal) {
-                //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
-                y=yfinal-ventana->visible_height-1;
-            }
-
-            if (x<0) x=0;
-            if (y<0) y=0;
 		}
 	}
 
