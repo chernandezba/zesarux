@@ -17500,7 +17500,11 @@ void menu_windows(MENU_ITEM_PARAMETERS)
             "Process switcher","Process switcher","Process switcher");
         menu_add_item_menu_tooltip(array_menu_common,"Process switcher");
         menu_add_item_menu_ayuda(array_menu_common,"Process switcher");
-        
+
+        if (zxdesktop_configurable_icons_enabled_and_visible()) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash,NULL,
+                "Trash Can","Papelera","Paperera");
+        }        
 
         menu_add_item_menu_separator(array_menu_common);
 
@@ -17540,11 +17544,6 @@ void menu_windows(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_close_all,NULL,
             "Close all windows","Cerrar todas las ventanas","Tancar totes les finestres");
 
-        if (zxdesktop_configurable_icons_enabled_and_visible()) {
-            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_zxdesktop_trash,NULL,
-                "Open Trash Can","Abrir Papelera","Obrir Paperera");
-        }
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 

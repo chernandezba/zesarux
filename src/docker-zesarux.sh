@@ -113,17 +113,17 @@ case $1 in
 
 	run)
 		docker-build
-		docker run -it zesarux
+		docker run --name run-zesarux -it zesarux
 	;;
 
 	run-curses)
 		docker-build
-		docker run -it zesarux --ao null --vo curses
+		docker run --name run-zesarux-curses -it zesarux --ao null --vo curses
 	;;
 
 	run-xorg)
 		docker-build
-		docker run -it -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" zesarux --disableshm --ao null
+		docker run --name run-zesarux-xorg -it -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --user="$(id --user):$(id --group)" zesarux --disableshm --ao null
 	;;
 
 	run-mac-xorg)
@@ -131,23 +131,23 @@ case $1 in
 		export HOSTNAME=`hostname`
 		xhost +
 		echo "Be sure that xquarz preference Allow connections from network clients is enabled"
-		docker run -it -e DISPLAY=${HOSTNAME}:0 -v /tmp/.X11-unix:/tmp/.X11-unix  zesarux --disableshm --ao null
+		docker run --name run-zesarux-mac-xorg -it -e DISPLAY=${HOSTNAME}:0 -v /tmp/.X11-unix:/tmp/.X11-unix  zesarux --disableshm --ao null
 	;;
 
 
 	codetests)
 		docker-build
-		docker run -it zesarux --codetests
+		docker run --name run-zesarux-codetests -it zesarux --codetests
 	;;
 
 	localrun)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
-		docker run -it zesarux.local
+		docker run --name run-zesarux-localrun -it zesarux.local
 	;;
 
 	localsh)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
-		docker run -it --entrypoint /bin/bash zesarux.local
+		docker run --name run-zesarux-localsh -it --entrypoint /bin/bash zesarux.local
 	;;
 
 
