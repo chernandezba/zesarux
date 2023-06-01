@@ -21593,7 +21593,7 @@ void util_get_operating_system_release(char *destino,int maximo)
         char *next_mem;
     
         next_mem=util_read_line(mem,buffer_linea,total_leidos,200,&leidos);
-        printf("Linea: [%s]\n",buffer_linea);
+        debug_printf(VERBOSE_DEBUG,"Reading os-release file, line: [%s]\n",buffer_linea);
         total_leidos -=leidos;
 
 

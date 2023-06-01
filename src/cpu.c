@@ -710,7 +710,7 @@ int total_minutes_use=0;
 
 
 
-char os_release_name[MAX_OS_RELEASE_NAME+1];
+char os_release_name[MAX_OS_RELEASE_NAME+1]=""; //Por si acaso definida inicialmente en blanco
 void get_os_release(void)
 {
     util_get_operating_system_release(os_release_name,MAX_OS_RELEASE_NAME);
@@ -718,7 +718,7 @@ void get_os_release(void)
         //En caso de no detectar, le ponemos nombre de OS de compilación
         strcpy(os_release_name,COMPILATION_SYSTEM);
     }
-    printf("OS Release: %s\n",os_release_name);
+    debug_printf(VERBOSE_INFO,"Running OS Release: %s",os_release_name);
 }
 
 //Aqui solo se llama posteriormente a haber inicializado la maquina, nunca antes
@@ -10344,6 +10344,8 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	inicializa_tabla_contend_speed_higher();
 
+    get_os_release();
+
 
 
 #ifdef USE_LINUXREALJOYSTICK
@@ -10749,7 +10751,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//Iniciar ZRCP
 	init_remote_protocol();
 
-    get_os_release();
+
 
 	//Funciones de red en background
 	stats_check_updates();

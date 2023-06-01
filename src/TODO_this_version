@@ -246,7 +246,7 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 
 
 ok-determinar version en compilacion, mediante /etc/os-release
--determinar version en ejecucion, mediante /etc/os-release
+ok-determinar version en ejecucion, mediante /etc/os-release
 
 
 -zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo

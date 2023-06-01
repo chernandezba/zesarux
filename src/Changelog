@@ -11,6 +11,7 @@ Added PCW colour modes
 Added compiled version for Ubuntu
 Added compiled version for Fedora
 Added another toy ZXLife to a new menu Procrastinate
+Added compilation os release info, running os info
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
