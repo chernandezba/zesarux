@@ -16959,7 +16959,7 @@ void zxvision_rearrange_background_windows(int si_cascada)
         //Controlar limites despues de los movimientos anteriores
         if (x+ventana->visible_width>xfinal) {
             //Si se sale por la derecha, mover ventana a la izquierda para que no se salga
-            printf("Ajuste x\n");
+            //printf("Ajuste x\n");
             x=xfinal-ventana->visible_width;
         }
 

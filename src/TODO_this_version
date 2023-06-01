@@ -286,3 +286,6 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 -mejoras accesibilidad: 
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
+
+
+-revisar cascada en estado actual
