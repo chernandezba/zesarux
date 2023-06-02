@@ -288,4 +288,10 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
 
 
--revisar cascada en estado actual
+-Nuevo parámetro de ventana ignore_massive_changes, para que no le afecten un resize todos, cascada todos, maximize todos etc. Se aplicaría al gestor de tareas, aunque con parámetro para dicha app para que lo haga o no
+Otro parámetro para misma app el de siempre encima
+
+-setting de "siempre visible" en ventanas, que tambien el foco funcione al pulsar encima y/o pasar el raton, aunque haya otra ventana por encima
+ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
+
+-en pcw, si autocargar rapido, se queda top speed despues de hacer reset

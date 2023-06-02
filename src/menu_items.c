@@ -16742,6 +16742,7 @@ void menu_display_window_list_info(zxvision_window *w)
         "Minimized: %s\n"
         "Maximized: %s\n"
         "Always visible: %s\n"
+        "Immutable: %s\n"
         "Can be resized: %s\n"
         ,
         w->pid,w->window_title,w->geometry_name,w->x,w->y,w->visible_width,w->visible_height,w->total_width,w->total_height,
@@ -16749,6 +16750,7 @@ void menu_display_window_list_info(zxvision_window *w)
         (w->is_minimized ? "Yes" : "No"),
         (w->is_maximized ? "Yes" : "No"),
         (w->always_visible ? "Yes" : "No"),
+        (w->not_altered_by_massive_changes ? "Yes" : "No"),
         (w->can_be_resized ? "Yes" : "No")
     );
 
@@ -17244,6 +17246,8 @@ void menu_display_window_minimize_all_common(void)
 
 	while (ventana!=NULL) {
 
+        if (ventana->not_altered_by_massive_changes==0) {
+
 		//Primero decimos que no esta minimizada
         ventana->is_minimized=0;
 
@@ -17253,6 +17257,8 @@ void menu_display_window_minimize_all_common(void)
 
 		//Y guardar la geometria
 		util_add_window_geometry_compact(ventana);
+
+        }
 
 		ventana=ventana->previous_window;
 	}	
@@ -17273,6 +17279,7 @@ void menu_display_window_maximize_all_common(void)
 
 	while (ventana!=NULL) {
 
+        if (ventana->not_altered_by_massive_changes==0) {
 		//Primero decimos que no esta maximizada
         ventana->is_maximized=0;
 
@@ -17282,6 +17289,8 @@ void menu_display_window_maximize_all_common(void)
 
 		//Y guardar la geometria
 		util_add_window_geometry_compact(ventana);
+
+        }
 
 		ventana=ventana->previous_window;
 	}	
@@ -17305,6 +17314,8 @@ void menu_display_window_reduce_all_common(void)
 
 	while (ventana!=NULL) {
 
+
+        if (ventana->not_altered_by_massive_changes==0) {
 		//La hacemos mas pequeña si es que es mas grande
 		//if (ventana->visible_width>ancho_maximo) ventana->visible_width=ancho_maximo;
 		//if (ventana->visible_height>alto_maximo) ventana->visible_height=alto_maximo;
@@ -17319,11 +17330,10 @@ void menu_display_window_reduce_all_common(void)
         zxvision_set_visible_width(ventana,ancho_maximo);
         zxvision_set_visible_height(ventana,alto_maximo);
 
-
-
-
 		//Y guardar la geometria
 		util_add_window_geometry_compact(ventana);
+
+        }
 
 		ventana=ventana->previous_window;
 	}	
@@ -17334,7 +17344,7 @@ void menu_display_window_reduce_all_common(void)
 
 void menu_display_window_rearrange_all_common(void)
 {
-	zxvision_rearrange_background_windows(0);
+	zxvision_rearrange_background_windows(0,0);
 }
 
 void menu_display_window_rearrange_all(MENU_ITEM_PARAMETERS)
@@ -17346,7 +17356,7 @@ void menu_display_window_rearrange_all(MENU_ITEM_PARAMETERS)
 
 void menu_display_window_cascade_all(MENU_ITEM_PARAMETERS)
 {
-    zxvision_rearrange_background_windows(1);
+    zxvision_rearrange_background_windows(1,0);
 
     menu_generic_message_splash("Cascade all","OK. All windows cascaded");
 }
@@ -17493,8 +17503,8 @@ void menu_windows(MENU_ITEM_PARAMETERS)
                 
         menu_add_item_menu_inicial_format(&array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list,NULL,"Process management");
         menu_add_item_menu_spanish_catalan(array_menu_common,"Gestión procesos","Gestió processos");
-        menu_add_item_menu_tooltip(array_menu_common,"Move to top or close individual windows");
-        menu_add_item_menu_ayuda(array_menu_common,"Move to top or close individual windows");
+        menu_add_item_menu_tooltip(array_menu_common,"Get information about processes and manage them");
+        menu_add_item_menu_ayuda(array_menu_common,"Get information about processes and manage them");
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_process_switcher,NULL,
             "Process switcher","Process switcher","Process switcher");
@@ -36835,6 +36845,18 @@ void menu_process_switcher_overlay(void)
 }
 
 
+void process_switcher_sync_immutable_setting(void)
+{
+    //Si la ventana esta ya abierta, ponemos o quitamos setting de immutable
+    zxvision_window *ventana=zxvision_find_window_in_background("processswitcher");
+
+    if (ventana!=NULL) {
+        debug_printf(VERBOSE_DEBUG,"Found process switcher window, so syncing immutable setting");
+        if (setting_process_switcher_immutable.v) ventana->not_altered_by_massive_changes=1;
+        else ventana->not_altered_by_massive_changes=0;
+    }
+    //else printf("NO Encontrada ventana process switcher\n");
+}
 
 
 //Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
@@ -36886,6 +36908,8 @@ void menu_process_switcher(MENU_ITEM_PARAMETERS)
     else {
         zxvision_activate_this_window(ventana);
     }    
+
+    process_switcher_sync_immutable_setting();
 
 	zxvision_draw_window(ventana);
 

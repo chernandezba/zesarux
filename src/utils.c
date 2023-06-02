@@ -4111,6 +4111,8 @@ int util_write_configfile(void)
 
   if (menu_mouse_right_send_esc.v)          ADD_STRING_CONFIG,"--right-mouse-esc");
 
+  if (setting_process_switcher_immutable.v)     ADD_STRING_CONFIG,"--process-switcher-immutable");
+
   if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
   if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");

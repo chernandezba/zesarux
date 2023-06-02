@@ -10117,6 +10117,8 @@ void zxvision_new_window_no_check_range(zxvision_window *w,int x,int y,int visib
 
     w->always_visible=0;
 
+    w->not_altered_by_massive_changes=0;
+
     w->last_spent_time_overlay=0;
 
 	w->can_mouse_send_hotkeys=0;
@@ -10216,7 +10218,9 @@ void zxvision_window_delete_all_windows(void)
 	ventana=zxvision_current_window;
 
 	do {
-
+        //Se cierran todas, incluso las que tienen el flag immutable (como process switcher)
+        //porque esta función de cerrado se usa, entre otros sitios, al cerrar todas las ventanas
+        //al pasar a pantalla completa, y no queremos dejarnos ninguna abierta en ese caso
 		zxvision_window *previa;
 
 		previa=ventana->previous_window;
@@ -16877,7 +16881,7 @@ void zxvision_simple_progress_window(char *titulo, int (*funcioncond) (zxvision_
 
 
 
-void zxvision_rearrange_background_windows(int si_cascada)
+void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmutables)
 {
 
 	//printf("rearrange windows\n");
@@ -16974,11 +16978,17 @@ void zxvision_rearrange_background_windows(int si_cascada)
 
         //printf ("Setting window %s to %d,%d\n",ventana->window_title,x,y);
 
+        //TODO: en caso de ventanas de este tipo (como process switcher) se la considera igual aunque no se graban las modificaciones,
+        //o sea por ejemplo que si se hace cascade, esta ventana no se reubicará aunque habrá un "hueco" en la cascada donde deberia ir ubicada
+        if (ventana->not_altered_by_massive_changes==0 || si_aplicar_a_inmutables) {
+
 		ventana->x=x;
 		ventana->y=y;
 
 		//Y guardar la geometria
 		util_add_window_geometry_compact(ventana);
+
+        }
 
 		if (ventana->visible_height>alto_maximo_en_fila) alto_maximo_en_fila=ventana->visible_height;
 
@@ -25394,7 +25404,7 @@ void menu_ext_desk_settings_width_enlarge_reduce(int enlarge_reduce)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows) {
-        zxvision_rearrange_background_windows(0);	
+        zxvision_rearrange_background_windows(0,1);	
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();
@@ -25488,7 +25498,7 @@ void menu_ext_desk_settings_height_enlarge_reduce(int enlarge_reduce)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows) {
-        zxvision_rearrange_background_windows(0);	
+        zxvision_rearrange_background_windows(0,1);	
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();

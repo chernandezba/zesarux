@@ -142,11 +142,13 @@ case $1 in
 
 	localrun)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
+                docker rm run-zesarux-localrun
 		docker run --name run-zesarux-localrun -it zesarux.local
 	;;
 
 	localsh)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
+                docker rm run-zesarux-localsh
 		docker run --name run-zesarux-localsh -it --entrypoint /bin/bash zesarux.local
 	;;
 

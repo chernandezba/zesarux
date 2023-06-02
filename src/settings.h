@@ -139,5 +139,7 @@ extern z80_bit zsf_snap_save_rom;
 
 extern z80_bit xanniversary_logo;
 
+extern z80_bit setting_process_switcher_immutable;
+
 #endif
 

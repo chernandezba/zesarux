@@ -3,20 +3,20 @@ Version X - 10th Anniversary edition. 16 May 2023
 This is a special edition. Version is called "X" (actually is 10.10)
 
 Added Docker support
+Added new compiled versions: Ubuntu and Fedora
 Added screen previews of directories and compressed files
 Added flash support on screen previews
 Added ZX Desktop icons for TSConf, Baseconf
 Added show current AY Player song playing on console <-- TODO fix this description
 Added PCW colour modes
-Added compiled version for Ubuntu
-Added compiled version for Fedora
 Added another toy ZXLife to a new menu Procrastinate
 Added compilation os release info, running os info
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
 - Added more utf-8 characters (ï)
-- Added action to put windows in Cascade
+- Added action to put windows in cascade
+- Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 
 
 Improved ZX Spectrum Next emulation:

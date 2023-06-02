@@ -2561,6 +2561,7 @@ printf (
         "--show-menu-background-button            Shows background button on inactive windows\n"
 		"--invert-menu-mouse-scroll               Inverts mouse scroll movement\n"
         "--right-mouse-esc                        Right button mouse simulates ESC key and not secondary actions\n"
+        "--process-switcher-immutable             Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window\n"
 		"--allow-background-windows               Allow putting windows in background\n"
         "--allow-background-windows-closed-menu   Allow these background windows even when menu closed\n"
 		);
@@ -4932,7 +4933,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
             debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine has smaller window size or gui zoom different");
 
             //printf ("Rearrange zxvision windows so current machine has smaller window size or gui zoom different\n");
-            zxvision_rearrange_background_windows(0);
+            zxvision_rearrange_background_windows(0,1);
         }
 
         zxvision_check_all_configurable_icons_positions();
@@ -8286,7 +8287,11 @@ int parse_cmdline_options(int desde_commandline) {
             
 			else if (!strcmp(argv[puntero_parametro],"--right-mouse-esc")) {
                 menu_mouse_right_send_esc.v=1;
-			}            
+			}     
+
+            else if (!strcmp(argv[puntero_parametro],"--process-switcher-immutable")) {
+                setting_process_switcher_immutable.v=1;
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--allow-background-windows")) {
                                 menu_allow_background_windows=1;

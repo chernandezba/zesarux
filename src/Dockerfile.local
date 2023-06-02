@@ -1,9 +1,12 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get -y install git gcc make libncurses-dev libssl-dev xorg-dev
+RUN apt-get -y install procps vim less tcpdump htop telnet
 
 COPY *.c *.m *.h *.tpl DEVELOPMENT CHECKLIST configure *.sh *.rom /zesarux/src/
-RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make -j2
+COPY my_soft /zesarux/src/my_soft
+
+RUN cd zesarux/src && ./configure --enable-memptr --enable-visualmem --enable-cpustats --enable-ssl && make -j3
 
 WORKDIR /zesarux/src
 

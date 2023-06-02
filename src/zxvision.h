@@ -188,6 +188,10 @@ struct s_zxvision_window {
     //indica que la ventana siempre debe mostrarse por encima de las demas
     int always_visible;
 
+    //indica que no se le altera tamaño o posición por acciones del menu Windows (minimize all, cascade, etc)
+    //usado en process switcher por ejemplo
+    int not_altered_by_massive_changes;
+
 	//Posicion del cursor y si esta visible
 	int visible_cursor;
 	int cursor_line;
@@ -970,7 +974,7 @@ extern void menu_generic_message_warn(char *titulo, const char * texto);
 extern void zxvision_menu_generic_message_setting(char *titulo, const char *texto, char *texto_opcion, int *valor_opcion);
 
 
-extern void zxvision_rearrange_background_windows(int si_cascada);
+extern void zxvision_rearrange_background_windows(int si_cascada,int si_aplicar_a_inmutables);
 
 extern void menu_generic_message_tooltip(char *titulo, int volver_timeout, int tooltip_enabled, int mostrar_cursor, generic_message_tooltip_return *retorno, const char * texto_format , ...);
 

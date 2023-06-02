@@ -316,6 +316,9 @@ z80_bit menu_file_viewer_always_hex={0};
 //Si mostrar items avanzados de menu
 z80_bit menu_show_advanced_items={0};
 
+//Si process switcher no se le altera tamaño o posición por acciones del menu Windows (minimize all, cascade, etc)
+z80_bit setting_process_switcher_immutable={0};
+
 
 //Logo de decimo aniversario. 
 //En version 10.10 es esta habilitado por defecto

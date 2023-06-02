@@ -552,7 +552,7 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 	//printf ("--despues de restore overlay\n");
 
 	debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows after changing border settings");
-	zxvision_rearrange_background_windows(0);
+	zxvision_rearrange_background_windows(0,1);
 
     zxvision_check_all_configurable_icons_positions();
 	
@@ -1515,7 +1515,7 @@ void menu_interface_restore_first_aid(MENU_ITEM_PARAMETERS)
 void menu_interface_charwidth_after_width_change(void)
 {
 	//Reorganizar ventanas en background segun nuevo tamaño caracter
-	if (menu_allow_background_windows) zxvision_rearrange_background_windows(0);	
+	if (menu_allow_background_windows) zxvision_rearrange_background_windows(0,1);	
 }
 
 void menu_interface_charwidth(MENU_ITEM_PARAMETERS)
@@ -1675,6 +1675,14 @@ void menu_interface_mouse_right_esc(MENU_ITEM_PARAMETERS)
     menu_mouse_right_send_esc.v ^=1;
 }
 
+
+
+void menu_interface_process_switcher_immutable(MENU_ITEM_PARAMETERS)
+{
+    setting_process_switcher_immutable.v ^=1;
+
+    process_switcher_sync_immutable_setting();
+}
 
 
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
@@ -1850,23 +1858,23 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
 
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_minimize_button,NULL,
-            "Minimize button","Boton de minimizar","Boto de minimitzar");
+            "Minimize button","Botón de minimizar","Botó de minimitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_minimize_button.v ? ' ' : 'X') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_maximize_button,NULL,
-            "Maximize button","Boton de maximizar","Boto de maximitzar");
+            "Maximize button","Botón de maximizar","Botó de maximitzar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_maximize_button.v ? ' ' : 'X') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 		
 		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_close_button,NULL,
-            "Close button","Boton de cerrar","Boto de tancar");
+            "Close button","Botón de cerrar","Botó de tancar");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_close_button.v ? ' ' : 'X') );
         menu_add_item_menu_es_avanzado(array_menu_common);
 
 
         menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_hide_background_button_on_inactive,NULL,
-            "Background button on inactive","Boton de background en inactivo","Boto de background a inactiu");
+            "Background button on inactive","Botón de background en inactivo","Botó de background a inactiu");
         menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(menu_hide_background_button_on_inactive.v ? ' ' : 'X') );
         menu_add_item_menu_tooltip(array_menu_common,"Shows background button flashing on inactive windows");
         menu_add_item_menu_ayuda(array_menu_common,"Shows background button flashing on inactive windows");
@@ -1884,6 +1892,15 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_tooltip(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_ayuda(array_menu_common,"Right button mouse simulate ESC key or secondary actions");
         menu_add_item_menu_es_avanzado(array_menu_common);
+
+
+        //TODO: este setting tendria que estar quiza en otro sitio
+		menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_process_switcher_immutable,NULL,
+            "Process switcher immutable","Process switcher inmutable","Process switcher inmutable");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(setting_process_switcher_immutable.v ? 'X' : ' ') ); 
+        menu_add_item_menu_tooltip(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
+        menu_add_item_menu_ayuda(array_menu_common,"Massive actions on menu Windows, like minimize all, cascade, etc, don't affect the Process switcher window");
+        menu_add_item_menu_es_avanzado(array_menu_common);        
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
@@ -9855,7 +9872,7 @@ void menu_ext_desk_settings_custom_width_height(int reorganize_windows)
 
 	//Reorganizar ventanas solo si conviene (cuando tamaño pasa a ser menor)
 	if (reorganize_windows)	{
-        zxvision_rearrange_background_windows(0);
+        zxvision_rearrange_background_windows(0,1);
 
         //Comprobar posiciones iconos y reajustar
         zxvision_check_all_configurable_icons_positions();        
