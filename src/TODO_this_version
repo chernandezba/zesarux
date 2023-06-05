@@ -297,3 +297,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 -en pcw, si autocargar rapido, se queda top speed despues de hacer reset
 
 -dall-e api https://realpython.com/generate-images-with-dalle-openai-api/
+
+
+-temporal_forzar_dibujado_keyboard_tesde_text_adventure quitarlo

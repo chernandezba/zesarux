@@ -30,6 +30,9 @@
 #include "debug.h"
 #include "screen.h"
 
+//temporal cutrez para usar temporal_forzar_dibujado_keyboard_tesde_text_adventure
+#include "menu_items.h"
+
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -335,7 +338,10 @@ void textadv_location_desc_run_convert(void)
                     waitpid (proceso_hijo_text_convert, NULL, 0);
          
 
-            //printf("despues de waitpid\n");
+            printf("despues de waitpid\n");
+
+            //Esto es una cutrez para poder mostrar imagen en pantalla de keyboard
+            temporal_forzar_dibujado_keyboard_tesde_text_adventure=1;
 
                 
         break;
