@@ -763,6 +763,10 @@ void chardetect_printchar_caracter_imprimible(z80_byte c)
     //Y pasarlo al buffer de speech
 	textspeech_add_character(c);
 
+
+    //Pasarlo al buffer de localizationes
+    textadv_location_add_char(c);
+
     //printf("chardetect_line_width %d\n",chardetect_line_width);
 	
 	if (chardetect_line_width) {

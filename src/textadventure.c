@@ -37,13 +37,6 @@
 //para controlar el tiempo desde el borrado de pantalla hasta fin de descripcion localidad
 int textadv_location_desc_counter=0;
 
-//Para la detección de descripción de localidades
-int textadv_location_desc_nested_id_poke_byte;
-int textadv_location_desc_nested_id_poke_byte_no_time;
-int textadv_location_desc_nested_id_peek_byte;
-int textadv_location_desc_nested_id_peek_byte_no_time;
-z80_bit textadv_location_desc_enabled={0};
-
 //Estado de la deteccion de localidad:
 //0: esperando borrado
 //1: se ha producido borrado, esperando a que se pida leer una tecla
@@ -51,16 +44,57 @@ z80_bit textadv_location_desc_enabled={0};
 #define TEXTADV_LOC_STATE_CLS  1
 int textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
 
+//Para la detección de descripción de localidades
+int textadv_location_desc_nested_id_poke_byte;
+int textadv_location_desc_nested_id_poke_byte_no_time;
+int textadv_location_desc_nested_id_peek_byte;
+int textadv_location_desc_nested_id_peek_byte_no_time;
+z80_bit textadv_location_desc_enabled={0};
+
+
+//agregar caracter que le llega desde chardetect
+#define TEXTADV_LOCATION_MAX_DESCRIPTION 300
+char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
+int textadv_location_text_index=0;
+void textadv_location_add_char(z80_byte c)
+{
+    if (textadv_location_desc_enabled.v==0) return;
+
+    //Solo si estamos en estado de recepcion texto de localidad
+    if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) return;
+
+    //si llega al limite
+    if (textadv_location_text_index==TEXTADV_LOCATION_MAX_DESCRIPTION) {
+        printf("Reached maximum description length\n");
+        return;
+    }   
+
+    textadv_location_text[textadv_location_text_index++]=c;
+
+}
+
+
+
 void textadv_location_desc_ended_description(void)
 {
 
     //solo aceptarlo si ha pasado 1 segundo al menos
     if (textadv_location_desc_counter<1000) {
         printf("\nDo not accept finish location description until some time passes\n");
+        return;
+    }
+
+    //Aceptar un minimo de caracteres
+    if (textadv_location_text_index<10) {
+        printf("\nDo not accept finish location description until minimum text\n");
+        return;
     }
 
     //Si habia empezado una localidad, decir que se ha finalizado la localidad pues se pide tecla
     printf("\nFinish reading location description\n");
+
+    textadv_location_text[textadv_location_text_index]=0;
+    printf("\nLocation description: [%s]\n",textadv_location_text);
 
     //TODO: enviar esto a api externa para dibujar imagen segun descripcion
 
@@ -95,6 +129,7 @@ void handle_textadv_location_states(void)
             printf("\nDisplay has been cleared\n");
             textadv_location_desc_state=1;
             textadv_location_desc_counter=0;
+            textadv_location_text_index=0;
         }
     }
 
@@ -103,8 +138,11 @@ void handle_textadv_location_states(void)
 
 void textadv_location_increment_counter(void)
 {
-    textadv_location_desc_counter++;
+    //Se llama aqui cada 20ms
+    textadv_location_desc_counter+=20;
 }
+
+
 
 //Si se lee direccion de sistema donde se guarda la tecla
 void handle_textadv_read_keyboard_memory(z80_int dir)
