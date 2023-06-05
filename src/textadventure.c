@@ -34,6 +34,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
+
+void textadv_location_desc_run_convert(void);
+
 //para controlar el tiempo desde el borrado de pantalla hasta fin de descripcion localidad
 int textadv_location_desc_counter=0;
 
@@ -101,7 +104,7 @@ void textadv_location_desc_ended_description(void)
     textadv_location_text[textadv_location_text_index]=0;
     printf("\nLocation description: [%s]\n",textadv_location_text);
 
-    //TODO: enviar esto a api externa para dibujar imagen segun descripcion
+    textadv_location_desc_run_convert();
 
     textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
 }
@@ -271,3 +274,77 @@ void textadv_location_desc_disable(void)
 }
 
 
+int proceso_hijo_text_convert;
+
+void textadv_location_desc_run_convert(void)
+{
+
+  
+
+
+#ifndef MINGW
+
+    int fds[2];
+
+    if (pipe(fds)<0) {
+            debug_printf (VERBOSE_ERR,"Can not make pipe to speech for sending text");
+            return;
+    }
+
+   
+    //printf("Launching child process\n");
+    proceso_hijo_text_convert = fork();
+
+
+    switch (proceso_hijo_text_convert) {
+
+        case -1:
+            debug_printf (VERBOSE_ERR,"Can not run fork to speech");
+        break;
+
+        case 0:
+            close (0);
+            dup (fds[0]);
+            close(fds[1]);
+
+      
+
+            execlp("./text_to_image.sh","./text_to_image.sh",textadv_location_text,NULL);
+
+            //Si se llega aqui es que ha habido un error al executar programa filtro
+            exit(0);
+        break;
+
+        default:
+            close(fds[0]);
+            //longit=strlen(buffer_speech_lineas[fifo_buffer_speech_read]);
+            //write(fds[1],buffer_speech_lineas[fifo_buffer_speech_read],longit);
+            close(fds[1]);
+
+
+
+            //mantengo las pipes abiertas siempre
+            //if (textspeech_get_stdout.v) close(fds_output[1]);
+
+
+
+            //printf("antes de waitpid\n");
+
+           
+                    printf("Wait for text filter child\n");
+                    waitpid (proceso_hijo_text_convert, NULL, 0);
+         
+
+            //printf("despues de waitpid\n");
+
+                
+        break;
+
+    }
+
+#else
+
+	
+#endif
+
+}
