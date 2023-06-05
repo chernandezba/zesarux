@@ -59,7 +59,7 @@ z80_bit textadv_location_desc_enabled={0};
 
 
 //agregar caracter que le llega desde chardetect
-#define TEXTADV_LOCATION_MAX_DESCRIPTION 300
+#define TEXTADV_LOCATION_MAX_DESCRIPTION 500
 char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
 int textadv_location_text_index=0;
 void textadv_location_add_char(z80_byte c)
