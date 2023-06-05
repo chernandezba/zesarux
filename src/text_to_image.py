@@ -1,5 +1,10 @@
 #!/usr/bin/python3.9
 # create.py
+# requires python 3.7.1 or higher
+# install openai module with : python -m pip install openai
+# on debian:  apt-get install python3-pip ; python3.9 -m pip install openai
+# based on example here: https://realpython.com/generate-images-with-dalle-openai-api/
+# You need to export OPENAI_API_KEY with your api key
 
 import json
 import os
