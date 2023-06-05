@@ -706,6 +706,9 @@ void timer_check_interrupt(void)
         //que si hay framedrop, rotaria mas lento
         menu_visualfloppy_increment_rotation();
 
+
+        textadv_location_increment_counter();
+
         //Cosas que suceden cada 1 segundo
         if (contador_segundo>=1000) {
 

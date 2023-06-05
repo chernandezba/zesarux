@@ -295,3 +295,5 @@ Otro parámetro para misma app el de siempre encima
 ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
 
 -en pcw, si autocargar rapido, se queda top speed despues de hacer reset
+
+-dall-e api https://realpython.com/generate-images-with-dalle-openai-api/

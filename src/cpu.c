@@ -150,6 +150,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "textadventure.h"
 
 #ifdef COMPILE_STDOUT
 #include "scrstdout.h"
@@ -3697,6 +3698,7 @@ void set_machine_params(void)
         ramjet_enabled.v=0;
         interface007_enabled.v=0;
         dinamid3_enabled.v=0;
+        textadv_location_desc_enabled.v=0;
 
 		plus3dos_traps.v=0;
 		pd765_enabled.v=0;

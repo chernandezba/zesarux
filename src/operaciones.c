@@ -6848,6 +6848,10 @@ z80_byte get_kempston_value(void)
 z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
 {
 
+    //Si deteccion de localidades activa
+    textadv_location_desc_read_keyboard_port();
+
+
                 z80_byte valor;
                 valor=lee_puerto_teclado(puerto_h);
                 //teclado issue 2 o 3
