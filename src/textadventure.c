@@ -69,7 +69,12 @@ void textadv_location_add_char(z80_byte c)
         return;
     }   
 
-    textadv_location_text[textadv_location_text_index++]=c;
+    //filtros de caracteres, se supone que aqui solo llegan caracteres imprimibles, pero por si acaso
+    if (c>31 && c<127) {
+
+        textadv_location_text[textadv_location_text_index++]=c;
+
+    }
 
 }
 
