@@ -290,12 +290,7 @@ void textadv_location_desc_run_convert(void)
 
 #ifndef MINGW
 
-    int fds[2];
 
-    if (pipe(fds)<0) {
-            debug_printf (VERBOSE_ERR,"Can not make pipe to speech for sending text");
-            return;
-    }
 
    
     //printf("Launching child process\n");
@@ -309,12 +304,7 @@ void textadv_location_desc_run_convert(void)
         break;
 
         case 0:
-            close (0);
-            dup (fds[0]);
-            close(fds[1]);
-
       
-
             execlp(textimage_filter_program,textimage_filter_program,textadv_location_text,NULL);
 
             //Si se llega aqui es que ha habido un error al executar programa filtro
@@ -322,19 +312,6 @@ void textadv_location_desc_run_convert(void)
         break;
 
         default:
-            close(fds[0]);
-            //longit=strlen(buffer_speech_lineas[fifo_buffer_speech_read]);
-            //write(fds[1],buffer_speech_lineas[fifo_buffer_speech_read],longit);
-            close(fds[1]);
-
-
-
-            //mantengo las pipes abiertas siempre
-            //if (textspeech_get_stdout.v) close(fds_output[1]);
-
-
-
-            //printf("antes de waitpid\n");
 
            //TODO: de momento no esperar hijo, para no detener juego
 
