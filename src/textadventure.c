@@ -91,6 +91,11 @@ void textadv_location_add_char(z80_byte c)
         return;
     }   
 
+    //Si es " o ' cambiarlo
+    if (c=='\'' || c=='"') {
+        c=32;
+    }
+
     //filtros de caracteres, se supone que aqui solo llegan caracteres imprimibles, pero por si acaso
     if (c>31 && c<127) {
 
