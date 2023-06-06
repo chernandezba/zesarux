@@ -35,6 +35,20 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#ifndef MINGW
+	//Para waitpid
+	#include <sys/wait.h>
+#endif
+
+
+
+
+//Para spawn en windows
+#ifdef MINGW
+	#include <process.h>
+
+
+#endif
 
 char textimage_filter_program[PATH_MAX]="";
 
@@ -282,6 +296,11 @@ void textadv_location_desc_disable(void)
 }
 
 
+void textadv_location_desc_mete_comillas(char *origen,char *destino)
+{
+	sprintf (destino,"\"%s\"",origen);
+}
+
 int proceso_hijo_text_convert;
 
 void textadv_location_desc_run_convert(void)
@@ -305,7 +324,7 @@ void textadv_location_desc_run_convert(void)
     switch (proceso_hijo_text_convert) {
 
         case -1:
-            debug_printf (VERBOSE_ERR,"Can not run fork to speech");
+            debug_printf (VERBOSE_ERR,"Can not run fork to text to image");
         break;
 
         case 0:
@@ -335,6 +354,60 @@ void textadv_location_desc_run_convert(void)
     }
 
 #else
+
+
+	all_interlace_scr_refresca_pantalla();
+
+	
+
+    //En caso de Windows esto simplemente dice que hay hijo pero no el pid concreto
+    proceso_hijo_text_convert=1;
+
+
+
+
+    //Por defecto no esperar
+    int modo=P_NOWAIT;
+
+    //if (esperarhijo) modo=P_WAIT;
+
+
+
+    //Parametro 1 es la descripcion de la localidad
+
+
+    //importante las comillas cuando hay rutas con espacios
+    //Al script de windows le llegan las comillas tal cual,
+    //por tanto los parametros en un .bat de windows se deben usar tal cual %1 y no "%1", sino le meteria doble comillas ""%1""
+    //+2 para meter las comillas
+    char parametro_programa[PATH_MAX];
+    char parametro_uno[PATH_MAX+2];
+
+
+    //parametro programa sin comillas, porque sino, no inicia ni tan siquiera programa sin espacios
+    sprintf (parametro_programa,"%s",textimage_filter_program);
+
+
+
+    //Esto si que es necesario para poder enviar la descripcion de la localidad
+    textadv_location_desc_mete_comillas(textadv_location_text,parametro_uno);
+
+
+
+    //con spawnl
+    int resultado=spawnl(modo, parametro_programa, parametro_programa, parametro_uno, NULL);
+    debug_printf (VERBOSE_DEBUG,"Running program %s with parameters %s and %s",parametro_programa,parametro_uno);
+    printf ("Running program %s with parameters %s and %s\n",parametro_programa,parametro_uno);
+
+    //printf ("Resultado spawn: %d\n",resultado);
+    if (resultado<0) {
+        debug_printf (VERBOSE_DEBUG,"Error running text to image program");
+
+    }
+
+
+
+
 
 	
 #endif

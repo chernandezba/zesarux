@@ -18023,7 +18023,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
             "Total conversions run","Total conversiones ejecutadas","Total conversions executades");
             menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",textadv_location_total_conversions);            
 
-
+            menu_add_item_menu_separator(array_menu_common);
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");
             menu_add_item_menu_spanish_catalan(array_menu_common,"Traps de im~~presión de caracteres","Traps d'im~~pressió de caràcters");
