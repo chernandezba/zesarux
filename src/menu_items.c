@@ -18014,8 +18014,15 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
                 sprintf (string_filterprogram_shown,"None");
             }
 
-            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_filter_program,NULL,
-                "~~Image program [%s]",string_filterprogram_shown);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_filter_program,NULL,
+            "Converter","Conversor","Conversor");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_filterprogram_shown);
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
+            "Total conversions run","Total conversiones ejecutadas","Total conversions executades");
+            menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",textadv_location_total_conversions);            
+
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");

@@ -57,6 +57,8 @@ int textadv_location_desc_nested_id_peek_byte;
 int textadv_location_desc_nested_id_peek_byte_no_time;
 z80_bit textadv_location_desc_enabled={0};
 
+//Total de conversiones realizadas, para llevar un conteo de los creditos consumidos de la api externa
+int textadv_location_total_conversions=0;
 
 //agregar caracter que le llega desde chardetect
 #define TEXTADV_LOCATION_MAX_DESCRIPTION 500
@@ -287,6 +289,9 @@ void textadv_location_desc_run_convert(void)
 
   
     if (textimage_filter_program[0]==0) return;
+
+    //Incrementar contador de conversiones realizadas
+    textadv_location_total_conversions++;
 
 #ifndef MINGW
 

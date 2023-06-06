@@ -9045,7 +9045,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             
             //char buffer_lineas[256][MAX_GAMEMAP_LENGTH_LINE_LOCATION+1];
 
-            char *buffer_lineas=util_malloc(MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH*MAX_GAMEMAP_LENGTH_LINE_LOCATION,"Can not allocate memory locaton messages");
+            char *buffer_lineas=util_malloc(MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH*MAX_GAMEMAP_LENGTH_LINE_LOCATION,"Can not allocate memory location messages");
 
 
             //Inicializar punteros a lineas

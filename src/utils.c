@@ -3923,7 +3923,8 @@ int util_write_configfile(void)
   if (textspeech_timeout_no_enter)            ADD_STRING_CONFIG,"--textspeechtimeout %d",textspeech_timeout_no_enter);
 
 
-  if (textimage_filter_program[0])        ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
+  if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
+                                            ADD_STRING_CONFIG,"--textimage-total-count %d",textadv_location_total_conversions);
 
                                               ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);
                                               //ADD_STRING_CONFIG,"--tool-unzip-path \"%s\"",external_tool_unzip);

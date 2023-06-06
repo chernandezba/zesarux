@@ -26,5 +26,6 @@
 
 extern z80_bit textadv_location_desc_enabled;
 extern char textimage_filter_program[];
+extern int textadv_location_total_conversions;
 
 #endif

@@ -25,6 +25,7 @@ Improved ZX Spectrum Next emulation:
 - Updated machine id list
 
 Fixed ZX Vision relocation windows
+Fixed memory leak error when drawing aventure map
 
 * As always, there are some other minor bugfixes and improvements
 
