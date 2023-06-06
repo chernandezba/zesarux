@@ -303,5 +303,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *esperar a waitpit?
 *fork en windows
 *quitar " o ' del texto a enviar a la api
+*en hobbit las descripciones salen antes de borrar la pantalla
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
