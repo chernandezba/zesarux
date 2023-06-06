@@ -306,3 +306,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *en hobbit las descripciones salen antes de borrar la pantalla
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
+
+-revisar error en:
+char *buffer_lineas=util_malloc(MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH*MAX_GAMEMAP_LENGTH_LINE_LOCATION,"Can not allocate memory locaton messages");
+probar con feline sleepy y en pantalla inicial, en debian 32 bit

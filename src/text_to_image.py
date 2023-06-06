@@ -26,15 +26,15 @@ response = openai.Image.create(
     response_format="b64_json",
 )
 
-file_name = "created_image.json"
-print(f"{file_name=}")
+#file_name = "created_image.json"
+#print(f"{file_name=}")
 
-with open(file_name, mode="w", encoding="utf-8") as file:
-    json.dump(response, file)
+#with open(file_name, mode="w", encoding="utf-8") as file:
+#    json.dump(response, file)
 
 
-with open(file_name, mode="r", encoding="utf-8") as file:
-    response = json.load(file)
+#with open(file_name, mode="r", encoding="utf-8") as file:
+#    response = json.load(file)
 
 for index, image_dict in enumerate(response["data"]):
     image_data = b64decode(image_dict["b64_json"])
