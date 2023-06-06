@@ -17933,7 +17933,7 @@ void menu_textimage_filter_program(MENU_ITEM_PARAMETERS)
 
     //Obtenemos directorio de textimage program
     //si no hay directorio, vamos a rutas predefinidas
-    if (textimage_filter_program==NULL) menu_chdir_sharedfiles();
+    if (textimage_filter_program[0]==0) menu_chdir_sharedfiles();
     else {
         char directorio[PATH_MAX];
         util_get_dir(textimage_filter_program,directorio);
@@ -18004,10 +18004,10 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
 
-            char string_filterprogram_shown[14];
+            char string_filterprogram_shown[20];
 
             if (textimage_filter_program[0]) {
-                menu_tape_settings_trunc_name(textimage_filter_program,string_filterprogram_shown,14);
+                menu_tape_settings_trunc_name(textimage_filter_program,string_filterprogram_shown,20);
             }
 
             else {
@@ -18015,7 +18015,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
             }
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_filter_program,NULL,
-                "~~Speech program [%s]",string_filterprogram_shown);
+                "~~Image program [%s]",string_filterprogram_shown);
 
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");
