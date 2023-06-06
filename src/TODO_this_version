@@ -303,5 +303,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *scripts quiza moverlos de ruta, agregar a configure, y ajustar rutas relativas del .sh al .py
+*en paws: parece que hace continuamente lecturas de 5c3b, y al pulsar tecla luego lee 5c08
+->quiza en aventuras de paws detectar hasta que se llama a la rutina del parser
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad

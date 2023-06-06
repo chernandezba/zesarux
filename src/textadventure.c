@@ -189,11 +189,22 @@ void handle_textadv_read_keyboard_memory(z80_int dir)
     //quiza hacer que se haya leido un minimo de texto (al menos 10 caracteres?)
 
     if (reg_pc<16384) return;
-    //5c3b. bit 6 Set when a new key has been pressed
-    if (dir==0x5c00 || dir==0x5c3b) {
-        printf("\nEnded description reading from 23560 PC=%XH\n",reg_pc);
+    
+    if (dir==0x5c00) {
+        printf("\nEnded description reading from 0x5c00 PC=%XH\n",reg_pc);
         textadv_location_desc_ended_description();
     }
+
+    //5c3b. bit 6 Set when a new key has been pressed
+    if (dir==0x5c3b) {
+        printf("\nEnded description reading from 0x5c3b PC=%XH\n",reg_pc);
+        textadv_location_desc_ended_description();
+    }    
+
+    /*if (dir==0x5c08) {
+        printf("\nEnded description reading from 0x5c08 PC=%XH\n",reg_pc);
+        textadv_location_desc_ended_description();
+    } */
 }
 
 
