@@ -17914,6 +17914,11 @@ void menu_text_adventure_tools_location_desc_enable(MENU_ITEM_PARAMETERS)
     }
     else {
         textadv_location_desc_enable();
+
+        //Y esto necesita trap print, lo habilitamos
+        if (chardetect_printchar_enabled.v==0) {
+            chardetect_printchar_enabled.v=1;
+        }
     }
 }
 
@@ -17992,38 +17997,44 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_separator(array_menu_common);
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_text_adventure_tools_location_desc_enable,NULL,
-            "[%c] Location Description Processing",(textadv_location_desc_enabled.v ? 'X' : ' '));
+
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_text_adventure_tools_location_desc_enable,NULL,
+            "Location Description Processing","Procesar Descripción Localidad","Processar Descripció Localitat");
+        menu_add_item_menu_prefijo_format(array_menu_common,"[%c] ",(textadv_location_desc_enabled.v ? 'X' : ' '));
          
         if (textadv_location_desc_enabled.v) {
-            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textadv_loc_image,NULL,
-                "Aventure location ~~image","~~Imagen de localidad de aventura","~~Imatge de localitat d'aventura");
-            menu_add_item_menu_shortcut(array_menu_common,'i');
-            menu_add_item_menu_tooltip(array_menu_common,"Shows AI generated image for the description of the current location");
-            menu_add_item_menu_ayuda(array_menu_common,"Shows AI generated image for the description of the current location");  
 
-
-
-            char string_filterprogram_shown[20];
+            char string_filterprogram_shown[18];
 
             if (textimage_filter_program[0]) {
-                menu_tape_settings_trunc_name(textimage_filter_program,string_filterprogram_shown,20);
+                menu_tape_settings_trunc_name(textimage_filter_program,string_filterprogram_shown,18);
             }
 
             else {
                 sprintf (string_filterprogram_shown,"None");
             }
 
-
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_filter_program,NULL,
-            "Converter","Conversor","Conversor");
+            "    Converter","    Conversor","    Conversor");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_filterprogram_shown);
 
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textadv_loc_image,NULL,
+                "    Window ~~image","    Ventana de ~~Imagen","    Finestra d'~~Imatge");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu_tooltip(array_menu_common,"Shows AI generated image for the description of the current location");
+            menu_add_item_menu_ayuda(array_menu_common,"Shows AI generated image for the description of the current location");              
+
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "Total conversions run","Total conversiones ejecutadas","Total conversions executades");
-            menu_add_item_menu_prefijo_format(array_menu_common,"[%d] ",textadv_location_total_conversions);            
+            "    Total conversions","    Total conversiones","    Total conversions");
+            menu_add_item_menu_sufijo_format(array_menu_common,": %d",textadv_location_total_conversions);            
+
 
             menu_add_item_menu_separator(array_menu_common);
+
 
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");
             menu_add_item_menu_spanish_catalan(array_menu_common,"Traps de im~~presión de caracteres","Traps d'im~~pressió de caràcters");
@@ -18113,8 +18124,8 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
 
             menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_text_adventure_tools,NULL,
-                "Text Adventure Tools","Utilidades aventuras de texto","Utilitats aventures de text");
-            //menu_add_item_menu_shortcut(array_menu_display_settings,'a');
+                "~~Text Adventure Tools","Utilidades aventuras de ~~texto","Utilitats aventures de ~~text");
+            menu_add_item_menu_shortcut(array_menu_display_settings,'t');
             menu_add_item_menu_tooltip(array_menu_display_settings,"Text Adventure Tools");
             menu_add_item_menu_ayuda(array_menu_display_settings,"Text Adventure Tools");
             menu_add_item_menu_tiene_submenu(array_menu_display_settings);
