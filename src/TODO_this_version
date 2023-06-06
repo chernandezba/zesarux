@@ -298,5 +298,10 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -dall-e api https://realpython.com/generate-images-with-dalle-openai-api/
 
+-text aventure location image
+*icono de app menu_textadv_loc_image
+*esperar a waitpit?
+*fork en windows
+*quitar " o ' del texto a enviar a la api
 
--temporal_forzar_dibujado_keyboard_tesde_text_adventure quitarlo
+-exportación lenguaje imagenes "drawstring" de quill/paws/daad

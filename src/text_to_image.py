@@ -38,6 +38,6 @@ with open(file_name, mode="r", encoding="utf-8") as file:
 
 for index, image_dict in enumerate(response["data"]):
     image_data = b64decode(image_dict["b64_json"])
-    image_file = "created_image.png"
+    image_file = "output_aventure_location_image.png"
     with open(image_file, mode="wb") as png:
         png.write(image_data)

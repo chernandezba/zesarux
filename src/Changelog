@@ -11,6 +11,7 @@ Added show current AY Player song playing on console <-- TODO fix this descripti
 Added PCW colour modes
 Added another toy ZXLife to a new menu Procrastinate
 Added compilation os release info, running os info
+Added location description texto to image, using AI <-- TODO fix this description
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents

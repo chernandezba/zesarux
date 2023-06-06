@@ -29,14 +29,14 @@
 #include "operaciones.h"
 #include "debug.h"
 #include "screen.h"
-
-//temporal cutrez para usar temporal_forzar_dibujado_keyboard_tesde_text_adventure
-#include "menu_items.h"
+#include "compileoptions.h"
 
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 
+
+char textimage_filter_program[PATH_MAX]="";
 
 void textadv_location_desc_run_convert(void);
 
@@ -106,6 +106,9 @@ void textadv_location_desc_ended_description(void)
 
     textadv_location_text[textadv_location_text_index]=0;
     printf("\nLocation description: [%s]\n",textadv_location_text);
+
+    //Avisar a la ventana de text adventure image que estamos recreando imagen
+    menu_textadv_loc_image_tell_show_creating_image(); 
 
     textadv_location_desc_run_convert();
 
@@ -283,7 +286,7 @@ void textadv_location_desc_run_convert(void)
 {
 
   
-
+    if (textimage_filter_program[0]==0) return;
 
 #ifndef MINGW
 
@@ -312,7 +315,7 @@ void textadv_location_desc_run_convert(void)
 
       
 
-            execlp("./text_to_image.sh","./text_to_image.sh",textadv_location_text,NULL);
+            execlp(textimage_filter_program,textimage_filter_program,textadv_location_text,NULL);
 
             //Si se llega aqui es que ha habido un error al executar programa filtro
             exit(0);
@@ -333,15 +336,16 @@ void textadv_location_desc_run_convert(void)
 
             //printf("antes de waitpid\n");
 
-           
+           //TODO: de momento no esperar hijo, para no detener juego
+
+           /*
                     printf("Wait for text filter child\n");
                     waitpid (proceso_hijo_text_convert, NULL, 0);
          
 
             printf("despues de waitpid\n");
+            */
 
-            //Esto es una cutrez para poder mostrar imagen en pantalla de keyboard
-            temporal_forzar_dibujado_keyboard_tesde_text_adventure=1;
 
                 
         break;
@@ -353,4 +357,29 @@ void textadv_location_desc_run_convert(void)
 	
 #endif
 
+}
+
+
+//Mira si la ruta al script tiene espacios y en ese caso da error y desactiva la ruta
+//En sistemas no Windows no hace nada
+int textimage_filter_program_check_spaces(void)
+{
+#ifdef MINGW
+	int i;
+	int tiene_espacios=0;
+	for (i=0;textimage_filter_program[i];i++) {
+		if (textimage_filter_program[i]==' ') {
+			tiene_espacios=1;
+			break;
+		}
+	}
+
+	if (tiene_espacios) {
+		debug_printf (VERBOSE_ERR,"Full path to Text to Image program %s has spaces. It won't work on Windows.",
+			textimage_filter_program);
+		return 1;
+	}
+#endif
+
+return 0;
 }

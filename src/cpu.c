@@ -1947,7 +1947,8 @@ printf (
 		DEFAULT_ADV_KEYBOARD_KEY_LENGTH);
 
 printf (
-		"--text-keyboard-finalspc         Sends a space after every word on the Adventure Text OSD Keyboard\n"            
+		"--text-keyboard-finalspc         Sends a space after every word on the Adventure Text OSD Keyboard\n"      
+        "--textimageprogram p             Specify a path to a program or script to be sent the emulator text shown to generate images\n"      
 		"--red                            Force display mode with red colour\n"
 		"--green                          Force display mode with green colour\n"
 		"--blue                           Force display mode with blue colour\n"
@@ -7480,6 +7481,38 @@ int parse_cmdline_options(int desde_commandline) {
 				if (textspeech_filter_program==NULL) exit(1);
 
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--textimageprogram")) {
+				siguiente_parametro_argumento();
+                strcpy(textimage_filter_program,argv[puntero_parametro]);
+
+				//Si es ruta relativa, poner ruta absoluta
+				if (!si_ruta_absoluta(textimage_filter_program)) {
+					//printf ("es ruta relativa\n");
+					//lo metemos en el buffer de texto del menu usado para esto
+					//TODO: quiza hacer esto con convert_relative_to_absolute pero esa funcion es para directorios,
+					//no para directorios con archivo, por tanto quiza habria que hacer un paso intermedio separando
+					//directorio de archivo
+                    char directorio_actual[PATH_MAX];
+                    getcwd(directorio_actual,PATH_MAX);
+
+                    char ruta_temp[PATH_MAX];
+
+					sprintf (ruta_temp,"%s/%s",directorio_actual,textimage_filter_program);
+                    strcpy(textimage_filter_program,ruta_temp);
+
+					//printf ("ruta final: %s\n",textimage_filter_program);
+
+				}
+
+				//Validar para windows que no haya espacios en la ruta
+				if (textimage_filter_program_check_spaces()) {
+
+				    //han habido espacios, y salir del emulador
+				    exit(1);
+                }
+
+			}            
 
                         else if (!strcmp(argv[puntero_parametro],"--textspeechstopprogram")) {
                                 siguiente_parametro_argumento();

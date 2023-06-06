@@ -25,5 +25,6 @@
 #include "cpu.h"
 
 extern z80_bit textadv_location_desc_enabled;
+extern char textimage_filter_program[];
 
 #endif

@@ -149,6 +149,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "textadventure.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"
@@ -274,6 +275,7 @@ int menu_plusthreedisk_info_opcion_seleccionada=0;
 int menu_display_window_list_opcion_seleccionada=0;
 int toys_opcion_seleccionada=0;
 int zxlife_opcion_seleccionada=0;
+int text_adventure_tools_opcion_seleccionada=0;
 
 //Fin opciones seleccionadas para cada menu
 
@@ -17582,6 +17584,471 @@ void menu_windows(MENU_ITEM_PARAMETERS)
 
 }
 
+#define TEXTADVENTURE_IMAGE_BPM "output_aventure_location_image.bmp"
+#define TEXTADVENTURE_IMAGE_BPM_CREATED "output_aventure_location_image.new"
+
+z80_byte *textadv_loc_image_bmp_file_mem=NULL;
+
+//Ultima maquina activa cuando se cargo el teclado. Si cambia maquina, cargar teclado correspondiente
+int textadv_loc_last_current_machine=-1;
+
+void menu_textadv_loc_image_load_bmp(void)
+{
+	
+    //Cargar el archivo bmp
+    /*
+    Debe ser bmp. 256 colour (indexed).  grabar con no-codificación run lenght,  y no sobreescribir la información de espacio de colores
+    */
+
+    char nombrebmp[PATH_MAX];
+
+
+    strcpy(nombrebmp,TEXTADVENTURE_IMAGE_BPM);
+
+    printf("loading bmp %s\n",nombrebmp);
+
+    //localizarlo
+    char buffer_nombre[PATH_MAX];
+
+    int existe=find_sharedfile(nombrebmp,buffer_nombre);
+    if (!existe)  {
+            //debug_printf(VERBOSE_ERR,"Unable to find bmp file %s",nombrebmp);
+            return;
+    }
+
+    //Cargamos el bmp en la paleta primaria
+    //Z88 shortcuts: paleta 0
+    //Ventana about: paleta 0
+    //Keyboard help: paleta 1
+    textadv_loc_image_bmp_file_mem=util_load_bmp_file(buffer_nombre,0);
+
+
+    //if (textadv_loc_bmp_file_mem==NULL) return;
+
+
+		
+
+}
+
+
+int textadv_loc_image_valor_contador_segundo_anterior;
+
+zxvision_window *menu_textadv_loc_image_overlay_window;
+
+//a 0 indica que no se muestra texto
+//a 1 indica que se debe mostrar
+//a 2 indica que ya se ha mostrado, no hay que escribirlo de nuevo
+int menu_textadv_loc_image_show_creating_image=0;
+
+void menu_textadv_loc_image_tell_show_creating_image(void)
+{
+    menu_textadv_loc_image_show_creating_image=1;
+}
+
+void menu_textadv_loc_image_overlay(void)
+{
+
+    int recargada_imagen=0;
+
+    if (!si_complete_video_driver() ) return;
+
+
+    //Cargar bmp si se ha generado archivo
+    
+    if (si_existe_archivo(TEXTADVENTURE_IMAGE_BPM_CREATED)) {
+        printf("A new image has been created\n");
+        util_delete(TEXTADVENTURE_IMAGE_BPM_CREATED);
+
+        debug_printf(VERBOSE_DEBUG,"Loading text adventure location bmp");
+        menu_textadv_loc_image_load_bmp();
+        recargada_imagen=1;
+    }
+    
+
+	//Si no hay archivo bmp cargado
+	if (textadv_loc_image_bmp_file_mem==NULL) return;
+
+	menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_textadv_loc_image_overlay_window->is_minimized) return;
+
+    //printf("Overlay text adventure location image %d\n",contador_segundo);
+
+
+	zxvision_window *ventana;
+
+	ventana=menu_textadv_loc_image_overlay_window;
+
+    //Solo redibujar cuando se ha refrescado el fondo de texto o si se ha recargado imagen
+    if (ventana->has_been_drawn_contents || recargada_imagen ) {
+
+        //esto hara ejecutar esto 5 veces por segundo (lo habitual en muchos de estos que no actualizan siempre es 2 veces por segundo)
+        if ( ((contador_segundo%200) == 0 && textadv_loc_image_valor_contador_segundo_anterior!=contador_segundo) || 
+            menu_multitarea==0 ||
+            recargada_imagen
+            
+            ) {
+            
+            printf("Overlay draw location\n");
+
+            textadv_loc_image_valor_contador_segundo_anterior=contador_segundo;
+
+            //Si esta generando imagen, no borrar el texto
+            //aqui se puede entrar por ejemplo cuando se esta generando imagen, se ha hecho el zxvision_print_string_defaults_fillspc de abajo
+            //y por tanto esta activo el ventana->has_been_drawn_contents
+            int mostrar=1;
+
+            //Pero si se ha recargado bmp, entonces si
+            if (!recargada_imagen) {
+                if (menu_textadv_loc_image_show_creating_image) {
+                    mostrar=0;
+                }
+            }
+
+            if (mostrar) {
+
+                printf("Redibujando imagen\n");
+                //printf ("Refrescando text adventure location image. contador_segundo=%d\n",contador_segundo);
+
+                //Borrar texto anterior de "Recreating image..."
+                zxvision_cls(ventana);
+
+                //zoom_x de offset para evitar parpadeo con la linea del recuadro por la izquierda
+                screen_render_bmpfile(textadv_loc_image_bmp_file_mem,BMP_INDEX_FIRST_COLOR,ventana,zoom_x,0,0,-1,0);
+
+                menu_textadv_loc_image_show_creating_image=0;
+
+            }
+
+            ventana->has_been_drawn_contents=0;
+
+            
+                    
+
+        }
+
+    }
+
+    if (menu_textadv_loc_image_show_creating_image==1) {
+        printf("Show recreating image text\n");
+        menu_textadv_loc_image_show_creating_image=2;
+
+        //borrar cache para quitar restos de overlay y que muestre bien el texto
+        ventana->must_clear_cache_on_draw_once=1;
+        zxvision_cls(ventana);
+
+
+        zxvision_print_string_defaults_fillspc(ventana,1,0,"Recreating image...");
+
+        //char temp_buf[100];
+        //sprintf(temp_buf,"%d",contador_segundo_infinito);
+        //zxvision_print_string_defaults_fillspc(ventana,1,0,temp_buf);
+
+    }
+
+    //Siempre hará el dibujado de contenido para evitar que cuando esta en background, otra ventana por debajo escriba algo,
+    //y entonces como esta no redibuja siempre, al no escribir encima, se sobreescribe este contenido con el de otra ventana
+    //En ventanas que no escriben siempre su contenido, siempre deberia estar zxvision_draw_window_contents que lo haga siempre
+    zxvision_draw_window_contents(ventana);
+
+
+
+}
+
+
+void menu_textadv_loc_image_create_window(zxvision_window *ventana,int x,int y,int ancho,int alto,int is_minimized,int is_maximized,
+    int ancho_antes_minimize,int alto_antes_minimize)
+{
+    zxvision_new_window_gn_cim(ventana,x,y,ancho,alto,ancho-1,alto-2,"Aventure location image","textadvlocimage",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+	ventana->can_be_backgrounded=1;
+
+    //Metemos todo el contenido de la ventana con caracter transparente, para que no haya parpadeo
+    //en caso de drivers xwindows por ejemplo, pues continuamente redibuja el texto (espacios) y encima el overlay
+    //Al meter caracter transparente, el normal_overlay lo ignora y no dibuja ese caracter
+
+    //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
+    //zxvision_fill_window_transparent(ventana);
+
+
+}
+
+
+
+zxvision_window menu_textadv_loc_image_ventana;
+
+void menu_textadv_loc_image(MENU_ITEM_PARAMETERS)
+{
+
+    
+
+	menu_espera_no_tecla();
+	menu_reset_counters_tecla_repeticion();		
+
+	if (!menu_multitarea) {
+			menu_warn_message("This window needs multitask enabled");
+			return;
+	}	
+
+	zxvision_window *ventana;
+		
+	ventana=&menu_textadv_loc_image_ventana;
+
+    //IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+    //si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+    //la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+    //zxvision_delete_window_if_exists(ventana);
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {    
+
+		
+        int x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("textadvlocimage",&x,&y,&ancho,&alto,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            //x=menu_origin_x();
+
+
+            //540x201 es lo que ocupa el bmp de spectrum 48k
+
+            ancho=1+1+540/menu_char_width/zoom_x;
+
+            alto=1+2+201/8/zoom_y;
+
+            //printf ("ancho %d alto %d\n",ancho,alto);
+
+            x=menu_center_x_from_width(ancho);
+            y=menu_center_y()-alto/2;
+
+        }		
+
+
+
+        menu_textadv_loc_image_create_window(ventana,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+
+        zxvision_activate_this_window(ventana);
+    }    
+
+    zxvision_draw_window(ventana);
+
+    int ancho_anterior,alto_anterior;
+    zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+
+	
+
+    menu_textadv_loc_image_overlay_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    textadv_loc_image_valor_contador_segundo_anterior=contador_segundo;
+
+    //Cambiamos funcion overlay de texto de menu
+    //Se establece a la de funcion de onda + texto
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_textadv_loc_image_overlay);
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+        //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+        return;
+    }	
+
+	//Al entrar siempre cargar bmp, esto especialmente es importante por si conmutamos a ventana about o cualquier otra que cargue bmp,
+    //que luego al entrar aqui recargue la paleta asociada
+    menu_textadv_loc_image_load_bmp();
+
+	z80_byte tecla;
+
+	do {
+        tecla=zxvision_common_getkey_refresh();		
+        zxvision_handle_cursors_pgupdn(ventana,tecla);
+        //printf ("tecla: %d\n",tecla);
+
+		if (ventana->visible_height!=alto_anterior || ventana->visible_width!=ancho_anterior) {
+
+            zxvision_window_save_size(ventana,&ancho_anterior,&alto_anterior);
+            
+            //Esto evita el parpadeo al redimensionar para hacer mas grande. Llenamos toda la ventana con el transparente,
+            //que se hace asi siempre al crearla por primera vez
+
+            //ya no hace falta transparente debido al nuevo tratamiento de cache de putchar
+            //zxvision_fill_window_transparent(ventana);
+
+		}        
+	} while (tecla!=2 && tecla!=3);				
+
+	//Gestionar salir con tecla background
+ 
+	menu_espera_no_tecla(); //Si no, se va al menu anterior.
+	//En AY Piano por ejemplo esto no pasa aunque el estilo del menu es el mismo...
+
+    	
+
+	//Grabar geometria ventana
+	util_add_window_geometry_compact(ventana);		
+
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+		zxvision_destroy_window(ventana);	
+		free(textadv_loc_image_bmp_file_mem);	
+ 	}
+
+
+}
+
+void menu_text_adventure_tools_location_desc_enable(MENU_ITEM_PARAMETERS)
+{
+    if (textadv_location_desc_enabled.v) {
+        textadv_location_desc_disable();
+    }
+    else {
+        textadv_location_desc_enable();
+    }
+}
+
+void menu_textimage_filter_program(MENU_ITEM_PARAMETERS)
+{
+
+    char *filtros[2];
+
+    filtros[0]="";
+    filtros[1]=0;
+
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de textimage program
+    //si no hay directorio, vamos a rutas predefinidas
+    if (textimage_filter_program==NULL) menu_chdir_sharedfiles();
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(textimage_filter_program,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+    int ret;
+
+    ret=menu_filesel("Select Image Program",filtros,textimage_filter_program);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+    if (ret==1) {
+        textimage_filter_program_check_spaces();
+    }
+
+    else {
+        textimage_filter_program[0]=0;
+    }
+
+
+
+}
+
+
+
+void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
+{
+    menu_item *array_menu_common;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+
+    do {
+
+        menu_add_item_menu_en_es_ca_inicial(&array_menu_common,MENU_OPCION_NORMAL,menu_osd_adventure_keyboard,NULL,
+            "On Screen ~~Adventure Keyboard","Teclado de ~~Aventura en Pantalla","Teclat d'~~Aventura a Pantalla");
+        menu_add_item_menu_shortcut(array_menu_common,'a');
+        menu_add_item_menu_tooltip(array_menu_common,"Open On Screen Adventure Keyboard");
+        menu_add_item_menu_ayuda(array_menu_common,"Here you have an on screen keyboard but uses words instead of just letters. "
+            "It's useful to play Text Adventures, you can redefine your own words");        
+
+        menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL,
+            "~~Extract words to Adv. Keyb.","~~Extraer palabras a Tecl. Av.","~~Extreure paraules a Tecl. Av.");
+        menu_add_item_menu_shortcut(array_menu_common,'e');
+        menu_add_item_menu_tooltip(array_menu_common,"Runs the word extractor tool for adventure text games");
+        menu_add_item_menu_ayuda(array_menu_common,"It runs the word extractor tool and insert these words on the On Screen Adventure Keyboard. "
+            "It can detect words on games written with Quill, Paws, DAAD, and GAC");
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_text_adventure_tools_location_desc_enable,NULL,
+            "[%c] Location Description Processing",(textadv_location_desc_enabled.v ? 'X' : ' '));
+         
+        if (textadv_location_desc_enabled.v) {
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textadv_loc_image,NULL,
+                "Aventure location ~~image","~~Imagen de localidad de aventura","~~Imatge de localitat d'aventura");
+            menu_add_item_menu_shortcut(array_menu_common,'i');
+            menu_add_item_menu_tooltip(array_menu_common,"Shows AI generated image for the description of the current location");
+            menu_add_item_menu_ayuda(array_menu_common,"Shows AI generated image for the description of the current location");  
+
+
+
+            char string_filterprogram_shown[14];
+
+            if (textimage_filter_program[0]) {
+                menu_tape_settings_trunc_name(textimage_filter_program,string_filterprogram_shown,14);
+            }
+
+            else {
+                sprintf (string_filterprogram_shown,"None");
+            }
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_filter_program,NULL,
+                "~~Speech program [%s]",string_filterprogram_shown);
+
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_chardetection_settings,NULL,"~~Print char traps");
+            menu_add_item_menu_spanish_catalan(array_menu_common,"Traps de im~~presión de caracteres","Traps d'im~~pressió de caràcters");
+            menu_add_item_menu_shortcut(array_menu_common,'p');
+            menu_add_item_menu_tooltip(array_menu_common,"Settings on capture print character routines");
+            menu_add_item_menu_ayuda(array_menu_common,"Settings on capture print character routines");
+            menu_add_item_menu_tiene_submenu(array_menu_common);            
+        } 
+
+
+
+        menu_add_item_menu_separator(array_menu_common);
+
+        menu_add_ESC_item(array_menu_common);
+
+        retorno_menu=menu_dibuja_menu(&text_adventure_tools_opcion_seleccionada,&item_seleccionado,array_menu_common,"Text aventure Tools");
+
+
+
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+            }
+        }
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+}        
+
 //menu display settings
 void menu_display_settings(MENU_ITEM_PARAMETERS)
 {
@@ -17638,28 +18105,14 @@ void menu_display_settings(MENU_ITEM_PARAMETERS)
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_CPC) {
 
-            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_osd_adventure_keyboard,NULL,
-                "On Screen ~~Adventure Keyboard","Teclado de ~~Aventura en Pantalla","Teclat d'~~Aventura a Pantalla");
-            menu_add_item_menu_shortcut(array_menu_display_settings,'a');
-            menu_add_item_menu_tooltip(array_menu_display_settings,"Open On Screen Adventure Keyboard");
-            menu_add_item_menu_ayuda(array_menu_display_settings,"Here you have an on screen keyboard but uses words instead of just letters. "
-                "It's useful to play Text Adventures, you can redefine your own words");
+            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_text_adventure_tools,NULL,
+                "Text Adventure Tools","Utilidades aventuras de texto","Utilitats aventures de text");
+            //menu_add_item_menu_shortcut(array_menu_display_settings,'a');
+            menu_add_item_menu_tooltip(array_menu_display_settings,"Text Adventure Tools");
+            menu_add_item_menu_ayuda(array_menu_display_settings,"Text Adventure Tools");
+            menu_add_item_menu_tiene_submenu(array_menu_display_settings);
 
         }
-
-
-        if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) {
-            menu_add_item_menu_en_es_ca(array_menu_display_settings,MENU_OPCION_NORMAL,menu_unpaws_ungac,NULL,
-                " ~~Extract words to Adv. Keyb."," ~~Extraer palabras a Tecl. Av."," ~~Extreure paraules a Tecl. Av.");
-            menu_add_item_menu_spanish(array_menu_display_settings," ~~Extraer palabras a tecl. aven.");
-            menu_add_item_menu_shortcut(array_menu_display_settings,'e');
-            menu_add_item_menu_tooltip(array_menu_display_settings,"Runs the word extractor tool for adventure text games");
-            menu_add_item_menu_ayuda(array_menu_display_settings,"It runs the word extractor tool and insert these words on the On Screen Adventure Keyboard. "
-                "It can detect words on games written with Quill, Paws, DAAD, and GAC");
-        }
-
-
-			
 
 
  
@@ -19401,8 +19854,6 @@ int help_keyboard_valor_contador_segundo_anterior;
 zxvision_window *menu_help_keyboard_overlay_window;
 
 
-int temporal_forzar_dibujado_keyboard_tesde_text_adventure=0;
-
 void menu_help_keyboard_overlay(void)
 {
 
@@ -19411,7 +19862,7 @@ void menu_help_keyboard_overlay(void)
 
 
     //Cargar bmp si ha cambiado de maquina
-    if (help_keyboard_last_current_machine!=current_machine_type || temporal_forzar_dibujado_keyboard_tesde_text_adventure) {
+    if (help_keyboard_last_current_machine!=current_machine_type) {
         help_keyboard_last_current_machine=current_machine_type;
 
         debug_printf(VERBOSE_DEBUG,"Loading help keyboard bmp");
@@ -19434,7 +19885,7 @@ void menu_help_keyboard_overlay(void)
 	ventana=menu_help_keyboard_overlay_window;
 
     //Solo redibujar cuando se ha refrescado el fondo de texto
-    if (ventana->has_been_drawn_contents || temporal_forzar_dibujado_keyboard_tesde_text_adventure) {
+    if (ventana->has_been_drawn_contents) {
 
         //esto hara ejecutar esto 5 veces por segundo (lo habitual en muchos de estos que no actualizan siempre es 2 veces por segundo)
         if ( ((contador_segundo%200) == 0 && help_keyboard_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
@@ -19447,7 +19898,6 @@ void menu_help_keyboard_overlay(void)
             ventana->has_been_drawn_contents=0;
                     
 
-                temporal_forzar_dibujado_keyboard_tesde_text_adventure=0;
         }
 
     }
@@ -37655,8 +38105,6 @@ void menu_onscreen_keyboard(MENU_ITEM_PARAMETERS)
 	osd_kb_no_mostrar_desde_menu=antes_osd_kb_no_mostrar_desde_menu;
 
 }
-
-
 
 
 

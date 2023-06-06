@@ -153,6 +153,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "textadventure.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -3920,6 +3921,10 @@ int util_write_configfile(void)
   if (textspeech_filter_program_wait.v)       ADD_STRING_CONFIG,"--textspeechwait");
   if (textspeech_also_send_menu.v)            ADD_STRING_CONFIG,"--textspeechmenu");
   if (textspeech_timeout_no_enter)            ADD_STRING_CONFIG,"--textspeechtimeout %d",textspeech_timeout_no_enter);
+
+
+  if (textimage_filter_program[0])        ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
+
                                               ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);
                                               //ADD_STRING_CONFIG,"--tool-unzip-path \"%s\"",external_tool_unzip);
                                               ADD_STRING_CONFIG,"--tool-gunzip-path \"%s\"",external_tool_gunzip);

@@ -7481,15 +7481,7 @@ void menu_chardetection_chardetect_rom_number_compat(MENU_ITEM_PARAMETERS)
     chardetect_rom_compat_numbers.v ^=1;
 }
 
-void menu_chardetection_textadv_location_desc_enable(MENU_ITEM_PARAMETERS)
-{
-    if (textadv_location_desc_enabled.v) {
-        textadv_location_desc_disable();
-    }
-    else {
-        textadv_location_desc_enable();
-    }
-}
+
 
 //menu chardetection settings
 void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
@@ -7597,11 +7589,6 @@ void menu_chardetection_settings(MENU_ITEM_PARAMETERS)
 
 
 
-			menu_add_item_menu_format(array_menu_chardetection_settings,MENU_OPCION_NORMAL,menu_chardetection_textadv_location_desc_enable,NULL,
-                "[%c] Location Description",(textadv_location_desc_enabled.v ? 'X' : ' '));
-			//menu_add_item_menu_shortcut(array_menu_chardetection_settings,'d');
-			//menu_add_item_menu_tooltip(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
-			//menu_add_item_menu_ayuda(array_menu_chardetection_settings,"Enable char detection method to guess Second Trap address");
 
 
 

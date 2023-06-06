@@ -67,8 +67,7 @@ extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
 extern void menu_toys_zxlife(MENU_ITEM_PARAMETERS);
 
 extern void menu_process_switcher(MENU_ITEM_PARAMETERS);
-
-extern int temporal_forzar_dibujado_keyboard_tesde_text_adventure;
+extern void menu_textadv_loc_image(MENU_ITEM_PARAMETERS);
 
 extern void menu_settings_display(MENU_ITEM_PARAMETERS);
 
