@@ -302,5 +302,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *icono de app menu_textadv_loc_image
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
+*scripts quiza moverlos de ruta, agregar a configure, y ajustar rutas relativas del .sh al .py
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
