@@ -9076,6 +9076,8 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
 
             //zxvision_print_string_defaults(w,x_location,y_location,texto_localidad);
+
+            free(buffer_lineas);
         }
             
 
