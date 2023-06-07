@@ -17970,6 +17970,16 @@ void menu_textimage_filter_program(MENU_ITEM_PARAMETERS)
 
 }
 
+void menu_textimage_max_nochar_value(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Max (in ms)",&max_textadv_location_desc_no_char_counter,6,+200,0,10000,0);
+}
+
+//tiempo desde borrado de pantalla hasta fin de localidad
+void menu_textimage_max_after_clear_value(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Max (in ms)",&max_textadv_location_desc_counter,6,+200,0,10000,0);
+}
 
 
 void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
@@ -18019,6 +18029,23 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
             "    Converter","    Conversor","    Conversor");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_filterprogram_shown);
 
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_nochar_value,NULL,
+            "    Minium no-char time","    Mínimo no-char tiempo","    Miním no-char temps");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_no_char_counter);
+            menu_add_item_menu_tooltip(array_menu_common,"After that time (in miliseconds) without receiving any character, "
+                "we can guess it's the end of the location description. Increase it if the descriptions are not full read");
+            menu_add_item_menu_ayuda(array_menu_common,"After that time (in miliseconds) without receiving any character, "
+                "we can guess it's the end of the location description. Increase it if the descriptions are not full read");
+
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_after_clear_value,NULL,
+            "    Minium after-cls time","    Mínimo después-cls tiempo","    Miním després-cls temps");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_counter);
+            menu_add_item_menu_tooltip(array_menu_common,"After clear screen (cls) and after that time (in miliseconds), "
+                "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
+            menu_add_item_menu_ayuda(array_menu_common,"After clear screen (cls) and after that time (in miliseconds), "
+                "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textadv_loc_image,NULL,

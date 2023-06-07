@@ -707,7 +707,7 @@ void timer_check_interrupt(void)
         menu_visualfloppy_increment_rotation();
 
 
-        textadv_location_increment_counter();
+        textadv_location_timer_event();
 
         //Cosas que suceden cada 1 segundo
         if (contador_segundo>=1000) {

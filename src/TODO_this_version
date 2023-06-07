@@ -304,6 +304,10 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *en hobbit las descripciones salen antes de borrar la pantalla
 *scripts quiza moverlos de ruta, agregar a configure, y ajustar rutas relativas del .sh al .py
 *en paws: parece que hace continuamente lecturas de 5c3b, y al pulsar tecla luego lee 5c08
-->quiza en aventuras de paws detectar hasta que se llama a la rutina del parser
+*parametros personalizables: maximo de textadv_location_desc_counter,  maximo de textadv_location_desc_no_char_counter-> pendiente parametro en config
+*faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
+
+-text adventure map: opcion config para recordar nivel zoom, setting connected/unconnected, setting unvisited, otros settings
+-char filter: parametro de config

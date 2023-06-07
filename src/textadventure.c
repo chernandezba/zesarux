@@ -56,6 +56,8 @@ void textadv_location_desc_run_convert(void);
 
 //para controlar el tiempo desde el borrado de pantalla hasta fin de descripcion localidad
 int textadv_location_desc_counter=0;
+//Maximo valor para ese contador a partir del cual se considera fin de localidad
+int max_textadv_location_desc_counter=1000;
 
 //Estado de la deteccion de localidad:
 //0: esperando borrado
@@ -74,6 +76,14 @@ z80_bit textadv_location_desc_enabled={0};
 //Total de conversiones realizadas, para llevar un conteo de los creditos consumidos de la api externa
 int textadv_location_total_conversions=0;
 
+//Contador de tiempo desde ultimo caracter recibido
+int textadv_location_desc_no_char_counter=0;
+//Maximo valor para ese contador a partir del cual se considera fin de localidad
+//En juegos de paws por ejemplo (Juanito y su baloncito, o super lopez), es importante este parametro,
+//porque meten texto en el dibujo y lo considera erroneamente como parte de localidad y podria acabar
+//antes de leer todo el texto de localidad
+int max_textadv_location_desc_no_char_counter=1000;
+
 //agregar caracter que le llega desde chardetect
 #define TEXTADV_LOCATION_MAX_DESCRIPTION 500
 char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
@@ -84,6 +94,8 @@ void textadv_location_add_char(z80_byte c)
 
     //Solo si estamos en estado de recepcion texto de localidad
     if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) return;
+
+    textadv_location_desc_no_char_counter=0;
 
     //si llega al limite
     if (textadv_location_text_index==TEXTADV_LOCATION_MAX_DESCRIPTION) {
@@ -111,7 +123,7 @@ void textadv_location_desc_ended_description(void)
 {
 
     //solo aceptarlo si ha pasado 1 segundo al menos
-    if (textadv_location_desc_counter<1000) {
+    if (textadv_location_desc_counter<max_textadv_location_desc_counter) {
         printf("\nDo not accept finish location description until some time passes\n");
         return;
     }
@@ -119,6 +131,15 @@ void textadv_location_desc_ended_description(void)
     //Aceptar un minimo de caracteres
     if (textadv_location_text_index<10) {
         printf("\nDo not accept finish location description until minimum text\n");
+        return;
+    }
+
+    printf("no char counter: %d\n",textadv_location_desc_no_char_counter);
+
+    //Aceptarlo solo cuando haya pasado un tiempo desde el ultimo caracter recibido
+    //En milisegundos
+    if (textadv_location_desc_no_char_counter<max_textadv_location_desc_no_char_counter) {
+        printf("\nDo not accept finish location before certain time with no chars received\n");
         return;
     }
 
@@ -171,10 +192,13 @@ void handle_textadv_location_states(void)
 
 }
 
-void textadv_location_increment_counter(void)
+void textadv_location_timer_event(void)
 {
     //Se llama aqui cada 20ms
     textadv_location_desc_counter+=20;
+
+    //Contador de tiempo desde ultimo caracter recibido
+    textadv_location_desc_no_char_counter +=20;
 }
 
 

@@ -1,4 +1,4 @@
-#!/usr/bin/python3.9
+#!/usr/bin/python
 # This script is intended to be called from text_to_image.sh
 # requires python 3.7.1 or higher
 # install openai module with : python -m pip install openai
