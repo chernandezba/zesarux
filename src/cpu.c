@@ -1948,7 +1948,9 @@ printf (
 
 printf (
 		"--text-keyboard-finalspc         Sends a space after every word on the Adventure Text OSD Keyboard\n"      
-        "--textimageprogram p             Specify a path to a program or script to be sent the emulator text shown to generate images\n"  
+        "--textimageprogram p             Specify a path to a program or script to be sent the emulator text shown to generate images\n"
+        "--textimage-min-no-char-time n   After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
+        "--textimage-min-after-cls-time n After clear screen (cls) and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
         "--textimage-total-count n        Define the total executions of the textimageprogram\n"    
 		"--red                            Force display mode with red colour\n"
 		"--green                          Force display mode with green colour\n"
@@ -7560,7 +7562,18 @@ int parse_cmdline_options(int desde_commandline) {
 				    exit(1);
                 }
 
-			}       
+			}      
+
+			else if (!strcmp(argv[puntero_parametro],"--textimage-min-no-char-time")) {
+                siguiente_parametro_argumento();
+				max_textadv_location_desc_no_char_counter=parse_string_to_number(argv[puntero_parametro]);
+			}  
+
+			else if (!strcmp(argv[puntero_parametro],"--textimage-min-after-cls-time")) {
+                siguiente_parametro_argumento();
+				max_textadv_location_desc_counter=parse_string_to_number(argv[puntero_parametro]);
+			}
+
 
 			else if (!strcmp(argv[puntero_parametro],"--textimage-total-count")) {
                 siguiente_parametro_argumento();
