@@ -103,11 +103,18 @@ void textadv_location_add_char(z80_byte c)
         return;
     }   
 
-    //Si es " o ' cambiarlo
-    if (c=='\'' || c=='"') {
-        c=32;
+    //Fitros de otros caracteres especiales
+    switch (c) {
+        case '\'':
+        case '"':
+        case '#':
+        case '!':
+        case '%':
+        case '/':
+            c=32;
+        break;
     }
-
+    
     //filtros de caracteres, se supone que aqui solo llegan caracteres imprimibles, pero por si acaso
     if (c>31 && c<127) {
 
@@ -421,7 +428,7 @@ void textadv_location_desc_run_convert(void)
     //por tanto los parametros en un .bat de windows se deben usar tal cual %1 y no "%1", sino le meteria doble comillas ""%1""
     //+2 para meter las comillas
     char parametro_programa[PATH_MAX];
-    char parametro_uno[PATH_MAX+2];
+    char parametro_uno[TEXTADV_LOCATION_MAX_DESCRIPTION+2];
 
 
     //parametro programa sin comillas, porque sino, no inicia ni tan siquiera programa sin espacios

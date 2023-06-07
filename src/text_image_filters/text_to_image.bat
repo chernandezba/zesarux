@@ -1,6 +1,7 @@
 echo off
 rem requires previous:
 rem set OPENAI_API_KEY=sk-......
+rem Requires imagemagick, python. See file aux_text_to_image.py for python dependencies
 
 echo "Invocando api con texto: " 
 echo %1

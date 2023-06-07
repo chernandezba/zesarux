@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Requires imagemagick, python. See file aux_text_to_image.py for python dependencies
+
 echo "Calling Dall-E api using text: $1"
 
 if [ "$OPENAI_API_KEY" == "" ]; then
