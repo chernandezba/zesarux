@@ -379,6 +379,7 @@ void textadv_location_desc_run_convert(void)
             execlp(textimage_filter_program,textimage_filter_program,textadv_location_text,NULL);
 
             //Si se llega aqui es que ha habido un error al executar programa filtro
+            debug_printf (VERBOSE_DEBUG,"Error running %s",textimage_filter_program);
             exit(0);
         break;
 
