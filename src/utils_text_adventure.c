@@ -4499,6 +4499,11 @@ void textadv_location_add_char(z80_byte c)
         case '!':
         case '%':
         case '/':
+        case '[':
+        case ']':
+        case '$':
+        case '+':
+        case '-':
             c=32;
         break;
     }
