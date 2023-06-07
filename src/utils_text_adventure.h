@@ -211,4 +211,17 @@ extern int textadventure_room_has_exits(int i);
 extern int util_textadventure_is_daad_quill_paws(void);
 extern void init_textadventure_entrada_jugando(void);
 
+extern z80_bit textadv_location_desc_enabled;
+extern char textimage_filter_program[];
+extern int textadv_location_total_conversions;
+extern int max_textadv_location_desc_no_char_counter;
+extern int max_textadv_location_desc_counter;
+extern void textadv_location_add_char(z80_byte c);
+extern int textimage_filter_program_check_spaces(void);
+extern void textadv_location_desc_read_keyboard_port(void);
+extern void textadv_location_desc_disable(void);
+extern void textadv_location_desc_enable(void);
+extern void textadv_location_timer_event(void);
+
+
 #endif

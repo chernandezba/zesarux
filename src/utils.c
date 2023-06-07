@@ -153,7 +153,6 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
-#include "textadventure.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;

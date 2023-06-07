@@ -149,7 +149,6 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
-#include "textadventure.h"
 
 #ifdef COMPILE_ALSA
 #include "audioalsa.h"

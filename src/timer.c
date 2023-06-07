@@ -66,6 +66,7 @@
 #include "dsk.h"
 #include "menu_items.h"
 #include "pcw.h"
+#include "utils_text_adventure.h"
 
 #include "autoselectoptions.h"
 
