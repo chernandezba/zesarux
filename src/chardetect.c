@@ -30,6 +30,7 @@
 #include "disassemble.h"
 #include "settings.h"
 #include "utils_text_adventure.h"
+#include "textadventure.h"
 
 #include <string.h>
 #include <stdio.h>

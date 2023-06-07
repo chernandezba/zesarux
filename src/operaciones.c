@@ -91,6 +91,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "dsk.h"
+#include "textadventure.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);

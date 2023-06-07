@@ -27,9 +27,10 @@
 
 #include "cpu.h"
 #include "operaciones.h"
+#include "compileoptions.h"
 #include "debug.h"
 #include "screen.h"
-#include "compileoptions.h"
+#include "menu_items.h"
 
 #include <string.h>
 #include <stdio.h>

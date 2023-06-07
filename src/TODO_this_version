@@ -296,13 +296,14 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -en pcw, si autocargar rapido, se queda top speed despues de hacer reset
 
--dall-e api https://realpython.com/generate-images-with-dalle-openai-api/
 
+-dall-e
 -text aventure location image
 *icono de app menu_textadv_loc_image
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
+
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
