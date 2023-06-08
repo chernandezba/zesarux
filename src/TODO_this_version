@@ -309,3 +309,10 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -text adventure map: opcion config para recordar nivel zoom, setting connected/unconnected, setting unvisited, otros settings
 -char filter: parametro de config
+
+
+-ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
+
+-pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal. 
+https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
+
