@@ -128,13 +128,38 @@ z80_bit chardetect_printchar_enabled={0};
 z80_bit chardetect_rom_compat_numbers={0};
 
 
+//Mantener cada nombre sin espacios, asi en --experthelp se visualiza bien cada uno separado por espacios
 char *chardetect_char_filter_names[]={
         "None",
         "Generic",
-        "AD Adv 42 ch",
+        "AD-42-char",
         "PAWS",
         "Hobbit"
 };
+
+void charfilter_print_list(void)
+{
+    int i;
+
+    for (i=0;i<CHAR_FILTER_TOTAL;i++) {
+        printf("%s ",chardetect_char_filter_names[i]);
+    }
+}
+
+//Retorna no 0 si no existe char filter
+int charfilter_set(char *s)
+{
+    int i;
+
+    for (i=0;i<CHAR_FILTER_TOTAL;i++) {
+        if (!strcasecmp(s,chardetect_char_filter_names[i])) {
+            chardetect_char_filter=i;
+            return 0;
+        }
+    }    
+
+    return 1;
+}
 
 int chardetect_detect_trap_aux(z80_byte *pat,int length)
 {

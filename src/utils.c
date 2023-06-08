@@ -3901,7 +3901,7 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--automaticdetectchar");
   if (chardetect_second_trap_char_dir)        ADD_STRING_CONFIG,"--secondtrapchar %d",chardetect_second_trap_char_dir);
   if (chardetect_third_trap_char_dir)         ADD_STRING_CONFIG,"--thirdtrapchar %d",chardetect_third_trap_char_dir);
-
+                                              ADD_STRING_CONFIG,"--chartrapfilter \"%s\"",chardetect_char_filter_names[chardetect_char_filter]);
   if (chardetect_ignore_newline.v)            ADD_STRING_CONFIG,"--chardetectignorenl");
 
   if (chardetect_rom_compat_numbers.v)        ADD_STRING_CONFIG,"--chardetectcompatnum");

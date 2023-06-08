@@ -58,6 +58,10 @@ extern z80_byte chardetect_char_filter;
 #define CHAR_FILTER_HOBBIT 4
 extern char *chardetect_char_filter_names[];
 
+extern void charfilter_print_list(void);
+extern int charfilter_set(char *s);
+
+
 //calculo de cuantas escrituras minimas: 8 (de un caracter) * 32 (de  una linea) * 10 (10 lineas)
 #define MAX_DEBUG_POKE_DISPLAY 8*32*10
 

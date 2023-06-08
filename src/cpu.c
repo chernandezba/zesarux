@@ -1671,6 +1671,12 @@ void cpu_help_expert(void)
 		"--secondtrapchar n         Print Char second trap address\n"
 		"--secondtrapsum32          Print Char second trap sum 32 to character\n"
 		"--thirdtrapchar n          Print Char third trap address\n"
+        "--chartrapfilter s         Set Print Char trap filter, to a one of: ");
+
+        charfilter_print_list();
+
+    printf(
+        "\n"
         "--chardetectignorenl       Ignore new line characters (13, 10) on char detection\n"
         "--linewidth n              Print char line width\n"        
 
@@ -7436,6 +7442,14 @@ int parse_cmdline_options(int desde_commandline) {
                                 int valor=atoi(argv[puntero_parametro]);
                                 chardetect_third_trap_char_dir=valor;
                         }
+
+            else if (!strcmp(argv[puntero_parametro],"--chartrapfilter")) {
+                siguiente_parametro_argumento();
+                if (charfilter_set(argv[puntero_parametro])) {
+                    printf ("Unknown char filter\n");
+                    exit(1);
+                }
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--linewidthwaitspace")) {
 				chardetect_line_width_wait_space.v=1;
