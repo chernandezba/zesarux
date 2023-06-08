@@ -4487,7 +4487,7 @@ void textadv_location_add_char(z80_byte c)
 
     //si llega al limite
     if (textadv_location_text_index==TEXTADV_LOCATION_MAX_DESCRIPTION) {
-        printf("Reached maximum description length\n");
+        debug_printf(VERBOSE_PARANOID,"Reached maximum description length");
         return;
     }   
 
@@ -4528,30 +4528,30 @@ void textadv_location_desc_ended_description(void)
 
     //solo aceptarlo si ha pasado 1 segundo al menos
     if (textadv_location_desc_counter<max_textadv_location_desc_counter) {
-        printf("\nDo not accept finish location description until some time passes\n");
+        debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until some time passes");
         return;
     }
 
     //Aceptar un minimo de caracteres
     if (textadv_location_text_index<10) {
-        printf("\nDo not accept finish location description until minimum text\n");
+        debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until minimum text");
         return;
     }
 
-    printf("no char counter: %d\n",textadv_location_desc_no_char_counter);
+    debug_printf(VERBOSE_PARANOID,"no char counter: %d",textadv_location_desc_no_char_counter);
 
     //Aceptarlo solo cuando haya pasado un tiempo desde el ultimo caracter recibido
     //En milisegundos
     if (textadv_location_desc_no_char_counter<max_textadv_location_desc_no_char_counter) {
-        printf("\nDo not accept finish location before certain time with no chars received\n");
+        debug_printf(VERBOSE_PARANOID,"Do not accept finish location before certain time with no chars received");
         return;
     }
 
     //Si habia empezado una localidad, decir que se ha finalizado la localidad pues se pide tecla
-    printf("\nFinish reading location description\n");
+    debug_printf(VERBOSE_DEBUG,"Finish reading location description");
 
     textadv_location_text[textadv_location_text_index]=0;
-    printf("\nLocation description: [%s]\n",textadv_location_text);
+    debug_printf(VERBOSE_DEBUG,"Location description: [%s]",textadv_location_text);
 
     //Avisar a la ventana de text adventure image que estamos recreando imagen
     menu_textadv_loc_image_tell_show_creating_image(); 
@@ -4586,7 +4586,7 @@ void handle_textadv_location_states(void)
     if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) {
         int borrado=check_cls_display();
         if (borrado) {
-            printf("\nDisplay has been cleared\n");
+            debug_printf(VERBOSE_DEBUG,"Display has been cleared");
             textadv_location_desc_state=1;
             textadv_location_desc_counter=0;
             textadv_location_text_index=0;
@@ -4619,13 +4619,13 @@ void handle_textadv_read_keyboard_memory(z80_int dir)
     if (reg_pc<16384) return;
     
     if (dir==0x5c00) {
-        printf("\nEnded description reading from 0x5c00 PC=%XH\n",reg_pc);
+        debug_printf(VERBOSE_PARANOID,"Ended description reading from 0x5c00 PC=%XH",reg_pc);
         textadv_location_desc_ended_description();
     }
 
     //5c3b. bit 6 Set when a new key has been pressed
     if (dir==0x5c3b) {
-        printf("\nEnded description reading from 0x5c3b PC=%XH\n",reg_pc);
+        debug_printf(VERBOSE_PARANOID,"Ended description reading from 0x5c3b PC=%XH",reg_pc);
         textadv_location_desc_ended_description();
     }    
 
@@ -4647,7 +4647,7 @@ void textadv_location_desc_read_keyboard_port(void)
 
     if (reg_pc<16384) return;
 
-    printf("\nEnded description reading keyboard port PC=%XH\n",reg_pc);
+    debug_printf(VERBOSE_PARANOID,"Ended description reading keyboard port PC=%XH",reg_pc);
 
     textadv_location_desc_ended_description();
 }
@@ -4842,7 +4842,7 @@ void textadv_location_desc_run_convert(void)
     //con spawnl
     int resultado=spawnl(modo, parametro_programa, parametro_programa, parametro_uno, NULL);
     debug_printf (VERBOSE_DEBUG,"Running program %s with parameters %s and %s",parametro_programa,parametro_uno);
-    printf ("Running program %s with parameters %s and %s\n",parametro_programa,parametro_uno);
+    //printf ("Running program %s with parameters %s and %s\n",parametro_programa,parametro_uno);
 
     //printf ("Resultado spawn: %d\n",resultado);
     if (resultado<0) {

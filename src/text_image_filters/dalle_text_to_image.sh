@@ -2,6 +2,7 @@
 
 #Requires imagemagick, python. See file dalle_aux_text_to_image.py for python dependencies
 
+echo
 echo "Calling Dall-E api using text: $1"
 
 if [ "$OPENAI_API_KEY" == "" ]; then
@@ -14,7 +15,7 @@ MYDIR=`dirname $0`
 
 $MYDIR/dalle_aux_text_to_image.py "$1"
 
-echo "Convert to bmp, 256 indexed colors, uncompressed"
+#echo "Convert to bmp, 256 indexed colors, uncompressed"
 convert output_aventure_location_image.png -colors 256 -compress none output_aventure_location_image.bmp
 
 # Tell ZEsarUX there is a new image
