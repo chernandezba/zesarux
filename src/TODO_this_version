@@ -304,7 +304,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 *gac localidades sin dibujo se describen sin borrar la pantalla, haciendo scroll
-
+*en linux: cierro ventana imagen, borro output imagen, abro y segfault
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
