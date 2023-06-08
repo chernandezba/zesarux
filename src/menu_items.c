@@ -17655,7 +17655,7 @@ void menu_textadv_loc_image_overlay(void)
     //Cargar bmp si se ha generado archivo
     
     if (si_existe_archivo(TEXTADVENTURE_IMAGE_BPM_CREATED)) {
-        printf("A new image has been created\n");
+        debug_printf(VERBOSE_DEBUG,"A new image has been created");
         util_delete(TEXTADVENTURE_IMAGE_BPM_CREATED);
 
         debug_printf(VERBOSE_DEBUG,"Loading text adventure location bmp");
@@ -17689,7 +17689,7 @@ void menu_textadv_loc_image_overlay(void)
             
             ) {
             
-            printf("Overlay draw location\n");
+            //printf("Overlay draw location\n");
 
             textadv_loc_image_valor_contador_segundo_anterior=contador_segundo;
 
@@ -17707,7 +17707,7 @@ void menu_textadv_loc_image_overlay(void)
 
             if (mostrar) {
 
-                printf("Redibujando imagen\n");
+                debug_printf(VERBOSE_DEBUG,"Drawing location image");
                 //printf ("Refrescando text adventure location image. contador_segundo=%d\n",contador_segundo);
 
                 //Borrar texto anterior de "Recreating image..."
@@ -17730,7 +17730,7 @@ void menu_textadv_loc_image_overlay(void)
     }
 
     if (menu_textadv_loc_image_show_creating_image==1) {
-        printf("Show recreating image text\n");
+        //printf("Show recreating image text\n");
         menu_textadv_loc_image_show_creating_image=2;
 
         //borrar cache para quitar restos de overlay y que muestre bien el texto
