@@ -17604,7 +17604,7 @@ void menu_textadv_loc_image_load_bmp(void)
 
     strcpy(nombrebmp,TEXTADVENTURE_IMAGE_BPM);
 
-    printf("loading bmp %s\n",nombrebmp);
+    debug_printf(VERBOSE_DEBUG,"Loading bmp %s",nombrebmp);
 
     //localizarlo
     char buffer_nombre[PATH_MAX];
