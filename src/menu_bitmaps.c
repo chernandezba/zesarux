@@ -5980,9 +5980,9 @@ char *bitmap_button_ext_desktop_textadvlocimage[EXT_DESKTOP_BUTTONS_ANCHO]={
 	"           wxxxw          ",	//10	
 	"            wxw           ",		
 	"             w            ",		
-	"            rrr           ",		
-	"          rrrrrrr  rr     ",		
-	"        rrrrrWrrrr rr     ",		
+	"            rrr   rr      ",		
+	"          rrrrrrr rr      ",		
+	"        rrrrrWrrrrrr      ",		
 	"      rrrrrWWWWWrrrrr     ",		
 	"    rrrrrWWWWWWWWWrrrrr   ",		
 	"     wWWWWWWWWWWWWWWWw    ",		
