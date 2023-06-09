@@ -305,6 +305,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 *gac localidades sin dibujo se describen sin borrar la pantalla, haciendo scroll
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
+*limite de generacion de imagenes. quiza 1 por cada 1 segundo por defecto. parametro configurable
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
