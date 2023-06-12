@@ -4637,10 +4637,20 @@ void textadv_location_desc_ended_description(void)
     textadv_location_text[textadv_location_text_index]=0;
     debug_printf(VERBOSE_DEBUG,"Location description: [%s]",textadv_location_text);
 
-    //Avisar a la ventana de text adventure image que estamos recreando imagen
-    menu_textadv_loc_image_tell_show_creating_image(); 
 
-    textadv_location_desc_run_convert();
+
+    //Ver si se generan mas imagenes de las permitidas, ver ultima vez
+    if (textadv_location_desc_last_image_generated_counter<textadv_location_desc_last_image_generated_min) {
+        printf("\n--!!!Last image was generated %d ms ago, do not allow generate another one until %d ms passes\n",
+            textadv_location_desc_last_image_generated_counter,textadv_location_desc_last_image_generated_min);
+    }
+
+    else {    
+        //Avisar a la ventana de text adventure image que estamos recreando imagen
+        menu_textadv_loc_image_tell_show_creating_image(); 
+        textadv_location_desc_run_convert();
+
+    }
 
     textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
 
@@ -4925,12 +4935,6 @@ void textadv_location_desc_run_convert(void)
   
     if (textimage_filter_program[0]==0) return;
 
-    //Ver si se generan mas imagenes de las permitidas, ver ultima vez
-    if (textadv_location_desc_last_image_generated_counter<textadv_location_desc_last_image_generated_min) {
-        printf("\n--!!!Last image was generated %d ms ago, do not allow generate another one until %d ms passes\n",
-            textadv_location_desc_last_image_generated_counter,textadv_location_desc_last_image_generated_min);
-        return;
-    }
 
     textadv_location_desc_last_image_generated_counter=0;
 
