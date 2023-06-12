@@ -4685,7 +4685,7 @@ void handle_textadv_location_changed(void)
 }
 
 
-//Usado desde menu settings
+//Usado desde menu para cambiar al siguiente metodo
 void textadv_location_change_method(void)
 {
     textadv_location_additional_room_change_method++;

@@ -233,6 +233,8 @@ extern char *textadv_location_additional_room_change_method_strings[];
 extern int textadv_location_set_method_by_string(char *s);
 
 extern int textadv_location_desc_last_image_generated_min;
+extern void textadv_location_print_method_strings(void);
+extern void textadv_location_change_method(void);
 
 
 #endif

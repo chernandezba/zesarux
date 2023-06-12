@@ -1960,10 +1960,10 @@ printf (
         textadv_location_print_method_strings();
 
 printf("\n"
-        "--textimage-min-time-between-images n  Minimum time (in miliseconcs) between every image to avoid too much cost usage by external API\n"
+        "--textimage-min-time-between-images n  Minimum time (in miliseconds) between every image to avoid too much cost usage by external API\n"
         "--textimage-min-no-char-time n         After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
         "--textimage-min-after-room-time n      After change room and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
-        "--textimage-total-count n              Define the total executions of the textimageprogram\n"    
+        "--textimage-total-count n              Define the total executions of the textimageprogram, used only for your own information\n"
 		"--red                                  Force display mode with red colour\n"
 		"--green                                Force display mode with green colour\n"
 		"--blue                                 Force display mode with blue colour\n"
