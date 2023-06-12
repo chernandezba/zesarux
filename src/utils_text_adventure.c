@@ -4494,6 +4494,12 @@ int max_textadv_location_desc_no_char_counter=1000;
 char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
 int textadv_location_text_index=0;
 
+//Cuando se ha generado la ultima imagen. Para poner limites y no generar imagenes muy seguidas 
+//(que pueden generar coste economico en la API externa de OpenAI por ejemplo)
+int textadv_location_desc_last_image_generated_counter=0;
+
+//minimo de tiempo entre cada generacion, en ms
+int textadv_location_desc_last_image_generated_min=5000;
 
 
 int textadv_location_additional_room_change_method=TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER;
@@ -4765,6 +4771,9 @@ void textadv_location_timer_event(void)
 
     //Contador de tiempo desde ultimo caracter recibido
     textadv_location_desc_no_char_counter +=20;
+
+    //Contador de tiempo desde la ultima imagen generada
+    textadv_location_desc_last_image_generated_counter +=20;
 }
 
 
@@ -4915,6 +4924,15 @@ void textadv_location_desc_run_convert(void)
 
   
     if (textimage_filter_program[0]==0) return;
+
+    //Ver si se generan mas imagenes de las permitidas, ver ultima vez
+    if (textadv_location_desc_last_image_generated_counter<textadv_location_desc_last_image_generated_min) {
+        printf("\n--!!!Last image was generated %d ms ago, do not allow generate another one until %d ms passes\n",
+            textadv_location_desc_last_image_generated_counter,textadv_location_desc_last_image_generated_min);
+        return;
+    }
+
+    textadv_location_desc_last_image_generated_counter=0;
 
     //Incrementar contador de conversiones realizadas
     textadv_location_total_conversions++;

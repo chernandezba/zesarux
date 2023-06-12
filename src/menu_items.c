@@ -17980,6 +17980,12 @@ void menu_textimage_max_after_clear_value(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Max (in ms)",&max_textadv_location_desc_counter,6,+200,0,10000,0);
 }
 
+void menu_textimage_min_between_images(MENU_ITEM_PARAMETERS)
+{
+    menu_ventana_scanf_numero_enhanced("Min (in ms)",&textadv_location_desc_last_image_generated_min,6,+1000,0,20000,0);
+}
+
+
 void menu_textimage_detect_location_method(MENU_ITEM_PARAMETERS)
 {
 
@@ -18062,15 +18068,25 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
                 "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
 
 
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_min_between_images,NULL,
+            "    Minium time between images","    Mínimo tiempo entre imagenes","    Miním temps entre imatges");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",textadv_location_desc_last_image_generated_min);
+            menu_add_item_menu_tooltip(array_menu_common,"Minimum time between every image to avoid too much cost usage by external API");
+            menu_add_item_menu_ayuda(array_menu_common,"Minimum time between every image to avoid too much cost usage by external API");
+
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textadv_loc_image,NULL,
                 "    Window ~~image","    Ventana de ~~Imagen","    Finestra d'~~Imatge");
             menu_add_item_menu_shortcut(array_menu_common,'i');
             menu_add_item_menu_tooltip(array_menu_common,"Shows AI generated image for the description of the current location");
-            menu_add_item_menu_ayuda(array_menu_common,"Shows AI generated image for the description of the current location");              
+            menu_add_item_menu_ayuda(array_menu_common,"Shows AI generated image for the description of the current location");
+
+            menu_add_item_menu_separator(array_menu_common);
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_SEPARADOR,NULL,NULL,
-            "    Total conversions","    Total conversiones","    Total conversions");
+            "    Info: Total conversions","    Info: Total conversiones","    Info: Total conversions");
             menu_add_item_menu_sufijo_format(array_menu_common,": %d",textadv_location_total_conversions);            
 
 

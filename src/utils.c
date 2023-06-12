@@ -3925,8 +3925,8 @@ int util_write_configfile(void)
   if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
 
                                             ADD_STRING_CONFIG,"--textimage-method-location %s",
-                                                textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
-                                     
+                                                textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);                                     		
+                                            ADD_STRING_CONFIG,"--textimage-min-time-between-images %d",textadv_location_desc_last_image_generated_min);
                                             ADD_STRING_CONFIG,"--textimage-min-no-char-time %d",max_textadv_location_desc_no_char_counter);
                                             ADD_STRING_CONFIG,"--textimage-min-after-room-time %d",max_textadv_location_desc_counter);
                                             ADD_STRING_CONFIG,"--textimage-total-count %d",textadv_location_total_conversions);
