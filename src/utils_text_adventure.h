@@ -223,5 +223,13 @@ extern void textadv_location_desc_disable(void);
 extern void textadv_location_desc_enable(void);
 extern void textadv_location_timer_event(void);
 
+//Tipo de deteccion de cambio de habitacion, aparte del cls
+#define TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS 0
+#define TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_ROOM_NUMBER 1
+#define TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER 2
+
+extern int textadv_location_additional_room_change_method;
+extern char *textadv_location_additional_room_change_method_strings[];
+
 
 #endif

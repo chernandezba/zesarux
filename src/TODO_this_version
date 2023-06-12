@@ -303,7 +303,9 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
-*gac localidades sin dibujo se describen sin borrar la pantalla, haciendo scroll
+*gac localidades sin dibujo se describen sin borrar la pantalla, haciendo scroll. posible direccion de habitacion: 42221 (probado en necris.tap)
+
+
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
 *limite de generacion de imagenes. quiza 1 por cada 1 segundo por defecto. parametro configurable
 
@@ -317,3 +319,4 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 -pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal. 
 https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
+-permisos escritura en tbblue.mmc y otros mmc para no root, cuando se instala en /usr/share... ?

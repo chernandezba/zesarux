@@ -3924,7 +3924,7 @@ int util_write_configfile(void)
 
   if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
                                             ADD_STRING_CONFIG,"--textimage-min-no-char-time %d",max_textadv_location_desc_no_char_counter);
-                                            ADD_STRING_CONFIG,"--textimage-min-after-cls-time %d",max_textadv_location_desc_counter);
+                                            ADD_STRING_CONFIG,"--textimage-min-after-room-time %d",max_textadv_location_desc_counter);
                                             ADD_STRING_CONFIG,"--textimage-total-count %d",textadv_location_total_conversions);
 
                                               ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);

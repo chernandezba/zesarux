@@ -955,7 +955,7 @@ int util_gac_detect_version(void)
         //en 67cf se encuentra esta cadena
         char *signature="You have run out of memory";
 
-        char read_signature[100];
+        //char read_signature[100];
 
         //Leemos la firma de la memoria
         int longitud_firma=strlen(signature);
@@ -964,11 +964,15 @@ int util_gac_detect_version(void)
 
         int i;
         for (i=0;i<longitud_firma;i++) {
-                read_signature[i]=peek_byte_no_time(puntero+i);
+            //read_signature[i]=peek_byte_no_time(puntero+i);
+            //En el momento que cambie un solo byte, ya no es
+            z80_byte byte_leido=peek_byte_no_time(puntero+i);
+            if (byte_leido!=signature[i]) return -1;
+
         }
 
-        read_signature[i]=0;
-        if (strcmp(read_signature,signature)) version=-1;
+        //read_signature[i]=0;
+        //if (strcmp(read_signature,signature)) version=-1;
 
         return version;
 
@@ -3487,8 +3491,21 @@ int util_textadventure_get_current_location_flag(void)
 
 }
 
+int util_textadventure_get_current_location_gac(void)
+{
+    return peek_byte_no_time(42221);
+}
+
+
+//Retorna -1 si no es aventura de texto
 int util_textadventure_get_current_location(void)
 {
+
+    //Si es gac
+    if (util_gac_detect()) {
+        return util_textadventure_get_current_location_gac();
+    }
+
 
     int flag=util_textadventure_get_current_location_flag();
     if (flag>=0) {
@@ -4476,6 +4493,21 @@ int max_textadv_location_desc_no_char_counter=1000;
 #define TEXTADV_LOCATION_MAX_DESCRIPTION 500
 char textadv_location_text[TEXTADV_LOCATION_MAX_DESCRIPTION+1];
 int textadv_location_text_index=0;
+
+
+
+int textadv_location_additional_room_change_method=TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER;
+
+char *textadv_location_additional_room_change_method_strings[]={
+    "CLS",
+    "Room number",
+    "CLS and Room number"
+};
+
+//Ultima habitacion leida, para usar con los metodos de deteccion de numero de habitacion
+z80_byte textadv_location_last_location=0;
+
+
 void textadv_location_add_char(z80_byte c)
 {
     if (textadv_location_desc_enabled.v==0) return;
@@ -4521,20 +4553,41 @@ void textadv_location_add_char(z80_byte c)
 
 }
 
+void textadv_location_reset_last_room_number(void)
+{
+    if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_ROOM_NUMBER ||
+    textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER
+    ) {
+        
+        int current_location=util_textadventure_get_current_location();
+
+        //Y solo si realmente son aventuras de texto
+
+        if (current_location>=0) {
+                textadv_location_last_location=current_location;
+        }
+
+        
+    }  
+
+    textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;    
+}
 
 
 void textadv_location_desc_ended_description(void)
 {
 
+    //timer_sleep(100);
     //solo aceptarlo si ha pasado 1 segundo al menos
     if (textadv_location_desc_counter<max_textadv_location_desc_counter) {
         debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until some time passes");
         return;
     }
+    
 
     //Aceptar un minimo de caracteres
     if (textadv_location_text_index<10) {
-        debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until minimum text");
+        debug_printf(VERBOSE_PARANOID,"Do not accept finish location description until minimum text (received: %d)",textadv_location_text_index);
         return;
     }
 
@@ -4559,6 +4612,18 @@ void textadv_location_desc_ended_description(void)
     textadv_location_desc_run_convert();
 
     textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
+
+    printf("\nChanged to state idle\n");
+
+
+    //Y actualizar posicion actual, por si el usuario ha cambiado de posicion antes del timeout, esto no se detectara bien
+    //Y la posicion actual no corresponderia con la variable
+    //Esto tambien implica que si el usuario se mueve muy rapido cambiando de posicion, y si solo se usa el metodo de deteccion
+    //de cambio de numero de habitacion (y no el de cls) no detectara cambio de habitacion. El usuario debe espearse al tiempo
+    //de timeout de no-char
+
+    textadv_location_reset_last_room_number();     
+
 }
 
 int check_cls_display(void)
@@ -4581,17 +4646,89 @@ int check_cls_display(void)
     return 1;
 }
 
+void handle_textadv_location_changed(void)
+{
+    textadv_location_desc_state=TEXTADV_LOC_STATE_CLS;
+    textadv_location_desc_counter=0;
+    textadv_location_text_index=0;    
+}
+
+
+
+void textadv_location_change_method(void)
+{
+    textadv_location_additional_room_change_method++;
+    if (textadv_location_additional_room_change_method>TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER) {
+        textadv_location_additional_room_change_method=TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS;
+    }
+
+    //Para que no detecte cambio de localidad al cambiar el metodo
+    textadv_location_reset_last_room_number();
+
+}
+
+//OJO! Funciones de deteccion de paws, gac, etc utilizan llamadas a peek_byte_no_time
+//Por  tanto no llamar aqui desde funciones textadv_location_desc_peek_byte_no_time y textadv_location_desc_peek_byte
+//Porque si no se quedaria en un bucle llamandose a si mismo
 void handle_textadv_location_states(void)
 {
+
+//if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) printf("\nen idle\n");
+//if (textadv_location_desc_state==TEXTADV_LOC_STATE_CLS) printf("\nen cls\n");
+
+
     if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) {
-        int borrado=check_cls_display();
-        if (borrado) {
-            debug_printf(VERBOSE_DEBUG,"Display has been cleared");
-            textadv_location_desc_state=1;
-            textadv_location_desc_counter=0;
-            textadv_location_text_index=0;
+        if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS ||
+            textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER
+        ) {
+            int borrado=check_cls_display();
+            if (borrado) {
+                debug_printf(VERBOSE_DEBUG,"Display has been cleared");
+
+                printf("\n\n---Display has been cleared\n");
+                fflush(stdout);
+
+                handle_textadv_location_changed();
+            }
+
         }
     }
+        
+    if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) {
+
+        
+
+        if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_ROOM_NUMBER ||
+        textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER
+        ) {
+           
+            int current_location=util_textadventure_get_current_location();
+
+            //Y solo si realmente son aventuras de texto
+
+            if (current_location>=0) {
+
+                //printf("\nlocation: %d\n",current_location);
+            
+                if (current_location!=textadv_location_last_location) {
+                    
+                    
+                    textadv_location_last_location=current_location;
+                    
+                    printf("\n\n--Room number detection: room has changed to %d\n",textadv_location_last_location);
+                    fflush(stdout);
+
+                    handle_textadv_location_changed();
+                    
+                }
+
+            }
+            
+
+        }        
+    }
+
+ 
 
 
 }
@@ -4728,6 +4865,7 @@ void textadv_location_desc_enable(void)
     if (textadv_location_desc_enabled.v) return;
 
     textadv_location_desc_set_peek_poke_functions();
+    textadv_location_reset_last_room_number();
     textadv_location_desc_enabled.v=1;
 }
 

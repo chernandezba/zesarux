@@ -17980,6 +17980,12 @@ void menu_textimage_max_after_clear_value(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Max (in ms)",&max_textadv_location_desc_counter,6,+200,0,10000,0);
 }
 
+void menu_textimage_detect_location_method(MENU_ITEM_PARAMETERS)
+{
+
+    textadv_location_change_method();
+
+}
 
 void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 {
@@ -18029,6 +18035,14 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_filterprogram_shown);
 
 
+
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_detect_location_method,NULL,
+            "    Detect location method","    Método detección localidad","    Métode detecció localitat");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
+            menu_add_item_menu_tooltip(array_menu_common,"How to detect location description text");
+            menu_add_item_menu_ayuda(array_menu_common,"How to detect location description text");                
+
+
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_nochar_value,NULL,
             "    Minium no-char time","    Mínimo no-char tiempo","    Miním no-char temps");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_no_char_counter);
@@ -18039,11 +18053,11 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_after_clear_value,NULL,
-            "    Minium after-cls time","    Mínimo después-cls tiempo","    Miním després-cls temps");
+            "    Minium after-room time","    Mínimo después-hab tiempo","    Miním després-hab temps");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_counter);
-            menu_add_item_menu_tooltip(array_menu_common,"After clear screen (cls) and after that time (in miliseconds), "
+            menu_add_item_menu_tooltip(array_menu_common,"After room change and after that time (in miliseconds), "
                 "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
-            menu_add_item_menu_ayuda(array_menu_common,"After clear screen (cls) and after that time (in miliseconds), "
+            menu_add_item_menu_ayuda(array_menu_common,"After room change and after that time (in miliseconds), "
                 "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
 
 

@@ -1908,42 +1908,42 @@ printf (
 		"----------------\n"
 		"\n"
 
-		"--realvideo                      Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
-		"--no-detect-realvideo            Disable real video autodetection\n"
-		"--tbblue-legacy-hicolor          Allow legacy hi-color effects on pixel/attribute display zone\n"
-		"--tbblue-legacy-border           Allow legacy border effects on tbblue machine\n"
-        "--tbblue-no-sprite-optimization  Disable tbblue sprite render optimization\n"
+		"--realvideo                        Enable real video display - for Spectrum (rainbow and other advanced effects) and ZX80/81 (non standard & hi-res modes)\n"
+		"--no-detect-realvideo              Disable real video autodetection\n"
+		"--tbblue-legacy-hicolor            Allow legacy hi-color effects on pixel/attribute display zone\n"
+		"--tbblue-legacy-border             Allow legacy border effects on tbblue machine\n"
+        "--tbblue-no-sprite-optimization    Disable tbblue sprite render optimization\n"
 
 		//"--tsconf-fast-render       Enables fast render of Tiles and Sprites for TSConf. Uses less host cpu but it's less realistic: doesn't do scanline render but full frame render\n"
 
-		"--snoweffect                     Enable snow effect support for Spectrum\n"
-		"--enablegigascreen               Enable Gigascreen video support\n"
-		"--enableinterlaced               Enable Interlaced video support\n"
-		"--enableulaplus                  Enable ULAplus video modes\n"
-		"--enablespectra                  Enable Spectra video modes\n"
-		"--enabletimexvideo               Enable Timex video modes\n"
-		"--disablerealtimex512            Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n"
-		"--enable16c                      Enable 16C video mode support\n"
-		"--enablezgx                      Enable ZGX Sprite chip\n"
-		"--autodetectwrx                  Enable WRX autodetect setting on ZX80/ZX81\n"
-		"--wrx                            Enable WRX mode on ZX80/ZX81\n"
-		"--vsync-minimum-length n         Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
-		"--chroma81                       Enable Chroma81 support on ZX80/ZX81\n"
-		"--videozx8081 n                  Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
-		"--videofastblack                 Emulate black screen on fast mode on ZX80/ZX81\n"
-		"--no-ocr-alternatechars          Disable looking for an alternate character set other than the ROM default on OCR functions\n"
-        "--z88-hide-shortcuts             Hide Z88 shortcuts from the display\n"
-		"--scr file                       Load Screen File at startup\n"
-	    "--arttextthresold n              Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
-	    "--disablearttext                 Disable artistic emulation for curses & stdout & simpletext\n"
-		"--allpixeltotext                 Enable all pixel to text mode\n"
-		"--allpixeltotext-scale n         All pixel to text mode scale\n"
-		"--allpixeltotext-invert          All pixel to text mode invert mode\n"		
-        "--allpixeltotext-width n         All pixel to text max width (in chars) (minimum 1, maximum 9999)\n"
-        "--allpixeltotext-x-offset n      All pixel to text X-Offset (in chars) (minimum 0, maximum 9999)\n"
-        "--allpixeltotext-height n        All pixel to text max height (in chars) (minimum 1, maximum 9999)\n"
-        "--allpixeltotext-y-offset n      All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"    
-		"--text-keyboard-add text         Add a string to the Adventure Text OSD Keyboard. The first addition erases the default text keyboard.\n"
+		"--snoweffect                       Enable snow effect support for Spectrum\n"
+		"--enablegigascreen                 Enable Gigascreen video support\n"
+		"--enableinterlaced                 Enable Interlaced video support\n"
+		"--enableulaplus                    Enable ULAplus video modes\n"
+		"--enablespectra                    Enable Spectra video modes\n"
+		"--enabletimexvideo                 Enable Timex video modes\n"
+		"--disablerealtimex512              Disable real Timex mode 512x192. In this case, it's scalled to 256x192 but allows scanline effects\n"
+		"--enable16c                        Enable 16C video mode support\n"
+		"--enablezgx                        Enable ZGX Sprite chip\n"
+		"--autodetectwrx                    Enable WRX autodetect setting on ZX80/ZX81\n"
+		"--wrx                              Enable WRX mode on ZX80/ZX81\n"
+		"--vsync-minimum-length n           Set ZX80/81 Vsync minimum length in t-states (minimum 100, maximum 999)\n"
+		"--chroma81                         Enable Chroma81 support on ZX80/ZX81\n"
+		"--videozx8081 n                    Emulate ZX80/81 Display on Spectrum. n=pixel threshold (1..16. 4=normal)\n"
+		"--videofastblack                   Emulate black screen on fast mode on ZX80/ZX81\n"
+		"--no-ocr-alternatechars            Disable looking for an alternate character set other than the ROM default on OCR functions\n"
+        "--z88-hide-shortcuts               Hide Z88 shortcuts from the display\n"
+		"--scr file                         Load Screen File at startup\n"
+	    "--arttextthresold n                Pixel threshold for artistic emulation for curses & stdout & simpletext (1..16. 4=normal)\n"
+	    "--disablearttext                   Disable artistic emulation for curses & stdout & simpletext\n"
+		"--allpixeltotext                   Enable all pixel to text mode\n"
+		"--allpixeltotext-scale n           All pixel to text mode scale\n"
+		"--allpixeltotext-invert            All pixel to text mode invert mode\n"		
+        "--allpixeltotext-width n           All pixel to text max width (in chars) (minimum 1, maximum 9999)\n"
+        "--allpixeltotext-x-offset n        All pixel to text X-Offset (in chars) (minimum 0, maximum 9999)\n"
+        "--allpixeltotext-height n          All pixel to text max height (in chars) (minimum 1, maximum 9999)\n"
+        "--allpixeltotext-y-offset n        All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"    
+		"--text-keyboard-add text           Add a string to the Adventure Text OSD Keyboard. The first addition erases the default text keyboard.\n"
 		" You can use hotkeys by using double character ~~ just before the letter, for example:\n"
 		" --text-keyboard-add ~~north   --text-keyboard-add e~~xamine\n");
 
@@ -1953,47 +1953,47 @@ printf (
 		DEFAULT_ADV_KEYBOARD_KEY_LENGTH);
 
 printf (
-		"--text-keyboard-finalspc         Sends a space after every word on the Adventure Text OSD Keyboard\n"      
-        "--textimageprogram p             Specify a path to a program or script to be sent the emulator text shown to generate images\n"
-        "--textimage-min-no-char-time n   After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
-        "--textimage-min-after-cls-time n After clear screen (cls) and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
-        "--textimage-total-count n        Define the total executions of the textimageprogram\n"    
-		"--red                            Force display mode with red colour\n"
-		"--green                          Force display mode with green colour\n"
-		"--blue                           Force display mode with blue colour\n"
+		"--text-keyboard-finalspc           Sends a space after every word on the Adventure Text OSD Keyboard\n"      
+        "--textimageprogram p               Specify a path to a program or script to be sent the emulator text shown to generate images\n"
+        "--textimage-min-no-char-time n     After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
+        "--textimage-min-after-room-time n  After change room and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
+        "--textimage-total-count n          Define the total executions of the textimageprogram\n"    
+		"--red                              Force display mode with red colour\n"
+		"--green                            Force display mode with green colour\n"
+		"--blue                             Force display mode with blue colour\n"
 		"  Note: You can combine colours, for example, --red --green for Yellow display, or --red --green --blue for Gray display\n"
-		"--inversevideo                   Inverse display colours\n"
-		"--realpalette                    Use real Spectrum colour palette according to info by Richard Atkinson\n"
+		"--inversevideo                     Inverse display colours\n"
+		"--realpalette                      Use real Spectrum colour palette according to info by Richard Atkinson\n"
 
 #ifdef COMPILE_AA
-        "--aaslow                         Use slow rendering on aalib\n"
+        "--aaslow                           Use slow rendering on aalib\n"
 #endif
 
 
 
 #ifdef COMPILE_CURSESW
-		"--curses-ext-utf                 Use extended utf characters to have 64x48 display, only on Spectrum and curses drivers\n"
+		"--curses-ext-utf                   Use extended utf characters to have 64x48 display, only on Spectrum and curses drivers\n"
 #endif
 
 
-		"--autoredrawstdout               Enable automatic display redraw for stdout & simpletext drivers\n"
-		"--sendansi                       Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
-		"--textfps n                      Sets FPS for stdout and simpletext text drivers\n"        
+		"--autoredrawstdout                 Enable automatic display redraw for stdout & simpletext drivers\n"
+		"--sendansi                         Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
+		"--textfps n                        Sets FPS for stdout and simpletext text drivers\n"        
 
 
 
 
 
 #ifdef COMPILE_FBDEV
-        "--no-use-ttyfbdev           Do not use a tty on fbdev driver. It disables keyboard\n"
-        "--no-use-ttyrawfbdev        Do not use keyboard on raw mode for fbdev driver\n"
-        "--use-all-res-fbdev         Use all virtual resolution on fbdev driver. Experimental feature\n"
-        "--decimal-full-scale-fbdev  Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
-        "--fbdev-double-buffer       Use double buffer to avoid flickering on menu but uses more cpu\n"
+        "--no-use-ttyfbdev             Do not use a tty on fbdev driver. It disables keyboard\n"
+        "--no-use-ttyrawfbdev          Do not use keyboard on raw mode for fbdev driver\n"
+        "--use-all-res-fbdev           Use all virtual resolution on fbdev driver. Experimental feature\n"
+        "--decimal-full-scale-fbdev    Use non integer zoom to fill the display with full screen mode on fbdev driver\n"
+        "--fbdev-double-buffer         Use double buffer to avoid flickering on menu but uses more cpu\n"
 #ifdef EMULATE_RASPBERRY
-        "--fbdev-no-res-change       Avoid resolution change on Raspberry Pi full screen mode\n"
-        "--fbdev-margin-width n      Increment fbdev width size on n pixels on Raspberry Pi full screen mode\n"
-        "--fbdev-margin-height n     Increment fbdev width height on n pixels on Raspberry Pi full screen mode\n"
+        "--fbdev-no-res-change         Avoid resolution change on Raspberry Pi full screen mode\n"
+        "--fbdev-margin-width n        Increment fbdev width size on n pixels on Raspberry Pi full screen mode\n"
+        "--fbdev-margin-height n       Increment fbdev width height on n pixels on Raspberry Pi full screen mode\n"
 #endif
 
 #endif
@@ -7583,7 +7583,7 @@ int parse_cmdline_options(int desde_commandline) {
 				max_textadv_location_desc_no_char_counter=parse_string_to_number(argv[puntero_parametro]);
 			}  
 
-			else if (!strcmp(argv[puntero_parametro],"--textimage-min-after-cls-time")) {
+			else if (!strcmp(argv[puntero_parametro],"--textimage-min-after-room-time")) {
                 siguiente_parametro_argumento();
 				max_textadv_location_desc_counter=parse_string_to_number(argv[puntero_parametro]);
 			}
