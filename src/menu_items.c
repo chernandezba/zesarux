@@ -18040,7 +18040,8 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
             "    Detect location method","    Método detección localidad","    Métode detecció localitat");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
             menu_add_item_menu_tooltip(array_menu_common,"How to detect location description text");
-            menu_add_item_menu_ayuda(array_menu_common,"How to detect location description text");                
+            menu_add_item_menu_ayuda(array_menu_common,"How to detect location description text. "
+                "Room number method only works for adventures created with Daad, Paws, Quill or GAC");                
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_nochar_value,NULL,

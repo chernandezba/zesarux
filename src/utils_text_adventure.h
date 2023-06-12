@@ -230,6 +230,7 @@ extern void textadv_location_timer_event(void);
 
 extern int textadv_location_additional_room_change_method;
 extern char *textadv_location_additional_room_change_method_strings[];
+extern int textadv_location_set_method_by_string(char *s);
 
 
 #endif

@@ -1955,6 +1955,11 @@ printf (
 printf (
 		"--text-keyboard-finalspc           Sends a space after every word on the Adventure Text OSD Keyboard\n"      
         "--textimageprogram p               Specify a path to a program or script to be sent the emulator text shown to generate images\n"
+        "--textimage-method-location s      Set the method to detect location text, one of: ");
+
+        textadv_location_print_method_strings();
+
+printf("\n"
         "--textimage-min-no-char-time n     After that time (in miliseconds) without receiving any character, we can guess it's the end of the location description. Increase it if the descriptions are not full read\n"
         "--textimage-min-after-room-time n  After change room and after that time (in miliseconds), we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read\n"
         "--textimage-total-count n          Define the total executions of the textimageprogram\n"    
@@ -7577,6 +7582,16 @@ int parse_cmdline_options(int desde_commandline) {
                 }
 
 			}      
+
+
+
+			else if (!strcmp(argv[puntero_parametro],"--textimage-method-location")) {
+                siguiente_parametro_argumento();
+                if (textadv_location_set_method_by_string(argv[puntero_parametro])) {
+                    printf ("Invalid method for detecting location text\n");
+					exit(1);
+				}
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--textimage-min-no-char-time")) {
                 siguiente_parametro_argumento();

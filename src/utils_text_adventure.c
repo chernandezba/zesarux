@@ -4500,9 +4500,34 @@ int textadv_location_additional_room_change_method=TEXTADV_LOCATION_ADD_ROOM_CHA
 
 char *textadv_location_additional_room_change_method_strings[]={
     "CLS",
-    "Room number",
-    "CLS and Room number"
+    "Room_number",
+    "CLS_and_Room_number"
 };
+
+void textadv_location_print_method_strings(void)
+{
+    int i;
+
+    for (i=0;i<=TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER;i++) {
+        printf("%s ",textadv_location_additional_room_change_method_strings[i]);
+    }
+}
+
+//Establecer el metodo de deteccion por string
+//Retorna no 0 si error
+int textadv_location_set_method_by_string(char *s)
+{
+    int i;
+
+    for (i=0;i<=TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS_AND_ROOM_NUMBER;i++) {
+        if (!strcasecmp(s,textadv_location_additional_room_change_method_strings[i])) {
+            textadv_location_additional_room_change_method=i;
+            return 0;
+        }
+    }    
+
+    return 1;
+}
 
 //Ultima habitacion leida, para usar con los metodos de deteccion de numero de habitacion
 z80_byte textadv_location_last_location=0;
@@ -4654,7 +4679,7 @@ void handle_textadv_location_changed(void)
 }
 
 
-
+//Usado desde menu settings
 void textadv_location_change_method(void)
 {
     textadv_location_additional_room_change_method++;
