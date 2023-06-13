@@ -4714,9 +4714,6 @@ void textadv_location_change_method(void)
 void handle_textadv_location_states(void)
 {
 
-//if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) printf("\nen idle\n");
-//if (textadv_location_desc_state==TEXTADV_LOC_STATE_CLS) printf("\nen cls\n");
-
 
     if (textadv_location_desc_state==TEXTADV_LOC_STATE_IDLE) {
         if (textadv_location_additional_room_change_method==TEXTADV_LOCATION_ADD_ROOM_CHANGE_METHOD_CLS ||
