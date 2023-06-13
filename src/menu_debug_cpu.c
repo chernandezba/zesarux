@@ -9443,6 +9443,8 @@ int textadventure_map_last_z=0;
 
 int textadventure_last_total_rooms=0;
 
+int menu_debug_textadventure_map_connections_forzar_recreate_window=0;
+
 //recorrer conexiones solo si ha cambiado el juego
 void menu_debug_textadventure_follow_connections(zxvision_window *w)
 {
@@ -9480,6 +9482,8 @@ void menu_debug_textadventure_follow_connections(zxvision_window *w)
         //Para que se ajuste el centrado
         zxvision_set_offset_x(menu_debug_textadventure_map_connections_overlay_window,0);
         zxvision_set_offset_y(menu_debug_textadventure_map_connections_overlay_window,0);
+
+        menu_debug_textadventure_map_connections_forzar_recreate_window=1;
 
         zxvision_cls(w);
 
@@ -10235,7 +10239,6 @@ void menu_debug_text_adventure_help(void)
     }
 }
 
-int menu_debug_textadventure_map_connections_primera_vez=1;
 
 void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 {
@@ -10268,6 +10271,10 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
     if (zxvision_currently_restoring_windows_on_start) {
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+
+        //Este es un caso especial
+        menu_debug_textadventure_map_connections_forzar_recreate_window=1;
+
         return;
     }    
 
@@ -10279,9 +10286,9 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //La primera vez al entrar, hay que recalcular ancho y alto ventana, dado que cuando entra 
     //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
     //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
-    if (menu_debug_textadventure_map_connections_primera_vez) {
+    if (menu_debug_textadventure_map_connections_forzar_recreate_window) {
         menu_debug_textadventure_map_connections_recreate_window(ventana);  
-        menu_debug_textadventure_map_connections_primera_vez=0;
+        menu_debug_textadventure_map_connections_forzar_recreate_window=0;
     }
 
     //ajustar offset x
