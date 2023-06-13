@@ -9737,6 +9737,10 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
     if (util_textadventure_is_daad_quill_paws() ) {
 
+
+        //Estamos redibujando siempre el mapa porque hay que reflejar cosas como que el usuario ha cogido un objeto y 
+        //ya no se muestra el objeto en el mapa
+
         menu_debug_textadventure_follow_connections(w);
 
         //Si tenemos que borrar ventana porque se ha desplazado scroll

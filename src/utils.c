@@ -3931,6 +3931,10 @@ int util_write_configfile(void)
                                             ADD_STRING_CONFIG,"--textimage-min-after-room-time %d",max_textadv_location_desc_counter);
                                             ADD_STRING_CONFIG,"--textimage-total-count %d",textadv_location_total_conversions);
 
+    if (menu_debug_textadventure_map_connections_center_current)    ADD_STRING_CONFIG,"--textadvmap-follow");
+    if (menu_debug_textadventure_map_connections_show_rooms_no_connections) ADD_STRING_CONFIG,"--textadvmap-show-unconnected");
+    if (menu_debug_textadventure_map_connections_show_unvisited)    ADD_STRING_CONFIG,"--textadvmap-no-show-unvisited");
+
                                               ADD_STRING_CONFIG,"--tool-sox-path \"%s\"",external_tool_sox);
                                               //ADD_STRING_CONFIG,"--tool-unzip-path \"%s\"",external_tool_unzip);
                                               ADD_STRING_CONFIG,"--tool-gunzip-path \"%s\"",external_tool_gunzip);

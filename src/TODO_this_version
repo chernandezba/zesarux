@@ -299,7 +299,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -dall-e
 -text aventure location image
-*icono de app menu_textadv_loc_image
+
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
@@ -320,3 +320,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 -permisos escritura en tbblue.mmc y otros mmc para no root, cuando se instala en /usr/share... ?
+
+
+-GAC: mapa aventura, diccionario, mensajes, etc. Ver grackle y grackle-play

@@ -15,6 +15,7 @@ Added compilation os release info, running os info
 Improved Text Adventure features:
 - Added location description texto to image, using AI <-- TODO fix this description
 - Added configuration setting for char filter
+- Added configuration settings for text adventure map: follow, show unvisited, show unconnected
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents

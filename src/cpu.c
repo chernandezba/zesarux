@@ -1900,6 +1900,9 @@ printf (
 	    "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
 	    "--dump-ram-to-file f                Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
 	    "--dump-snapshot-panic               Dump .zsf snapshot when a cpu panic is fired\n"
+        "--textadvmap-follow                 Text adventure map: follow the current position on the map\n"
+        "--textadvmap-show-unconnected       Text adventure map: show unconnected rooms\n"
+        "--textadvmap-no-show-unvisited      Text adventure map: no not show unvisited rooms\n"
 
 
 		"\n"
@@ -9153,6 +9156,19 @@ int parse_cmdline_options(int desde_commandline) {
 		else if (!strcmp(argv[puntero_parametro],"--dump-snapshot-panic")) {
 				 debug_dump_zsf_on_cpu_panic.v=1;
 		}
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-follow")) {
+            menu_debug_textadventure_map_connections_center_current=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-show-unconnected")) {
+            menu_debug_textadventure_map_connections_show_rooms_no_connections=1;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-unvisited")) {
+            menu_debug_textadventure_map_connections_show_unvisited=0;
+        }
+
 
 			else if (!strcmp(argv[puntero_parametro],"--joystickemulated")) {
                                 siguiente_parametro_argumento();
