@@ -27,6 +27,8 @@
 
 #define MAX_LENGTH_ADDRESS_MEMORY_ZONE 6
 
+#define MAX_TEXTADVENTURE_MAP_ZOOM 14
+
 extern void menu_debug_registers(MENU_ITEM_PARAMETERS);
 extern void menu_debug_registers_view_adventure(MENU_ITEM_PARAMETERS);
 extern void menu_watches(MENU_ITEM_PARAMETERS);
@@ -36,6 +38,7 @@ extern void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS);
 extern int menu_debug_textadventure_map_connections_show_rooms_no_connections;
 extern int menu_debug_textadventure_map_connections_center_current;
 extern int menu_debug_textadventure_map_connections_show_unvisited;
+extern int menu_debug_textadventure_map_connections_zoom;
 
 extern void menu_debug_dissassemble_una_instruccion(char *dumpassembler,menu_z80_moto_int dir,int *longitud_final_opcode);
 extern void menu_debug_dissassemble_una_inst_sino_hexa(char *dumpassembler,menu_z80_moto_int dir,int *longitud_final_opcode,int sino_hexa,int full_hexa_dump_motorola);

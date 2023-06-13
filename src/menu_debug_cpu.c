@@ -9476,6 +9476,11 @@ void menu_debug_textadventure_follow_connections(zxvision_window *w)
         
         //No: ya no hace falta cambiar el zoom
         //menu_debug_textadventure_map_connections_zoom=0;
+
+        //Para que se ajuste el centrado
+        zxvision_set_offset_x(menu_debug_textadventure_map_connections_overlay_window,0);
+        zxvision_set_offset_y(menu_debug_textadventure_map_connections_overlay_window,0);
+
         zxvision_cls(w);
 
         init_textadventure_entrada_jugando();
@@ -9939,7 +9944,7 @@ void menu_debug_textadventure_map_connections_set_center_current(void)
     menu_debug_textadventure_map_connections_center_current ^=1;
 }
 
-#define MAX_TEXTADVENTURE_MAP_ZOOM 14
+
 
 void menu_debug_textadventure_map_connections_inc_zoom(void)
 {

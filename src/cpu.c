@@ -1900,6 +1900,7 @@ printf (
 	    "--hardware-debug-ports-byte-file f  Sets the file used on register HARDWARE_DEBUG_BYTE_FILE\n"
 	    "--dump-ram-to-file f                Dump memory from 4000h to ffffh to a file, when exiting emulator\n"
 	    "--dump-snapshot-panic               Dump .zsf snapshot when a cpu panic is fired\n"
+        "--textadvmap-zoom n                 Text adventure map: zoom level\n"
         "--textadvmap-follow                 Text adventure map: follow the current position on the map\n"
         "--textadvmap-show-unconnected       Text adventure map: show unconnected rooms\n"
         "--textadvmap-no-show-unvisited      Text adventure map: no not show unvisited rooms\n"
@@ -9167,6 +9168,21 @@ int parse_cmdline_options(int desde_commandline) {
 
         else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-unvisited")) {
             menu_debug_textadventure_map_connections_show_unvisited=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-zoom")) {
+            siguiente_parametro_argumento();
+
+            int valor=parse_string_to_number(argv[puntero_parametro]);
+
+
+            if (valor<0 || valor>MAX_TEXTADVENTURE_MAP_ZOOM) {
+                printf("Text adventure zoom out of range\n");
+                exit(1);
+            }
+
+            menu_debug_textadventure_map_connections_zoom=valor;
+
         }
 
 
