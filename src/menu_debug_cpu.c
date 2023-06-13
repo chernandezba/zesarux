@@ -9473,7 +9473,9 @@ void menu_debug_textadventure_follow_connections(zxvision_window *w)
         //porque si no, provoca que cambie la ventana activa a esta, independientemente de la ventana en que estemos
         //TODO: si tenemos zoom grande, al cargar otra aventura, zoom pasa a pequeño, pero al no recrearse la ventana (porque NO se debe hacer)
         //se veran las franjas de scroll, porque la ventana sigue siendo grande, hasta que entremos en la ventana y entonces ya si, se recrea pequeña
-        menu_debug_textadventure_map_connections_zoom=0;
+        
+        //No: ya no hace falta cambiar el zoom
+        //menu_debug_textadventure_map_connections_zoom=0;
         zxvision_cls(w);
 
         init_textadventure_entrada_jugando();
