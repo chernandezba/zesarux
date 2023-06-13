@@ -4622,7 +4622,7 @@ void textadv_location_desc_ended_description(void)
         return;
     }
 
-    debug_printf(VERBOSE_PARANOID,"no char counter: %d",textadv_location_desc_no_char_counter);
+    debug_printf(VERBOSE_PARANOID,"No char counter: %d",textadv_location_desc_no_char_counter);
 
     //Aceptarlo solo cuando haya pasado un tiempo desde el ultimo caracter recibido
     //En milisegundos
@@ -4641,7 +4641,7 @@ void textadv_location_desc_ended_description(void)
 
     //Ver si se generan mas imagenes de las permitidas, ver ultima vez
     if (textadv_location_desc_last_image_generated_counter<textadv_location_desc_last_image_generated_min) {
-        printf("\n--!!!Last image was generated %d ms ago, do not allow generate another one until %d ms passes\n",
+        debug_printf(VERBOSE_DEBUG,"Last image was generated %d ms ago, do not allow generate another one until %d ms passes",
             textadv_location_desc_last_image_generated_counter,textadv_location_desc_last_image_generated_min);
     }
 
@@ -4654,7 +4654,7 @@ void textadv_location_desc_ended_description(void)
 
     textadv_location_desc_state=TEXTADV_LOC_STATE_IDLE;
 
-    printf("\nChanged to state idle\n");
+    debug_printf(VERBOSE_PARANOID,"Location detection: changed to state idle");
 
 
     //Y actualizar posicion actual, por si el usuario ha cambiado de posicion antes del timeout, esto no se detectara bien
@@ -4726,9 +4726,6 @@ void handle_textadv_location_states(void)
             if (borrado) {
                 debug_printf(VERBOSE_DEBUG,"Display has been cleared");
 
-                printf("\n\n---Display has been cleared\n");
-                fflush(stdout);
-
                 handle_textadv_location_changed();
             }
 
@@ -4756,8 +4753,7 @@ void handle_textadv_location_states(void)
                     
                     textadv_location_last_location=current_location;
                     
-                    printf("\n\n--Room number detection: room has changed to %d\n",textadv_location_last_location);
-                    fflush(stdout);
+                    debug_printf(VERBOSE_DEBUG,"Room number detection: room has changed to %d",textadv_location_last_location);
 
                     handle_textadv_location_changed();
                     
