@@ -9833,6 +9833,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
                 //Centrar el mapa en la zona de habitacion actual
                 if (menu_debug_textadventure_map_connections_center_current && i==current_room) {
+                    //printf("Center map\n");
                     int tamanyo_habitacion=menu_debug_textadv_map_conn_get_room_size();
 
                     //justo el centro de la habitacion
@@ -9999,7 +10000,7 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         }    
 
 
-        //obener ancho y alto total
+        //obtener ancho y alto total
         int ancho_mapa,alto_mapa,min_x_mapa,max_x_mapa,min_y_mapa,max_y_mapa;
         
         textadventure_get_size_map(0,0,&ancho_mapa,&alto_mapa,&min_x_mapa,&max_x_mapa,&min_y_mapa,&max_y_mapa,1); 
@@ -10018,6 +10019,9 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
             int tamanyo_celda=MAP_ADVENTURE_CELL_SIZE;
 
             tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
+
+            printf("tamanyo celda: %d\n",tamanyo_celda);
+            printf("ancho y alto mapa: %d %d\n",ancho_mapa,alto_mapa);
 
             ancho_total=ancho_mapa;
             alto_total=alto_mapa;        
@@ -10038,9 +10042,13 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         ancho_total++;
         alto_total++;
 
+        printf("pre-tamanyo ventana: %d X %d\n",ancho_total,alto_total);
+
         //Y un minimo asegurado
         if (ancho_total<50) ancho_total=50;
         if (alto_total<20) alto_total=20;
+
+        printf("tamanyo ventana: %d X %d\n",ancho_total,alto_total);
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
                 "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -10227,6 +10235,8 @@ void menu_debug_text_adventure_help(void)
     }
 }
 
+int menu_debug_textadventure_map_connections_primera_vez=1;
+
 void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 {
 
@@ -10265,6 +10275,14 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //Entrar en la ventana siempre regenera las conexiones, por si la deteccion automatica de cambio de aventura en el overlay no funciona
     textadventure_follow_connections(menu_debug_textadventure_map_connections_show_rooms_no_connections);
 
+
+    //La primera vez al entrar, hay que recalcular ancho y alto ventana, dado que cuando entra 
+    //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
+    //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
+    if (menu_debug_textadventure_map_connections_primera_vez) {
+        menu_debug_textadventure_map_connections_recreate_window(ventana);  
+        menu_debug_textadventure_map_connections_primera_vez=0;
+    }
 
     //ajustar offset x
     //map_adventure_offset_x=menu_char_width;

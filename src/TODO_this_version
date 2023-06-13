@@ -303,7 +303,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
-*gac localidades sin dibujo se describen sin borrar la pantalla, haciendo scroll. posible direccion de habitacion: 42221 (probado en necris.tap)
 
 
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
@@ -311,7 +310,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
--text adventure map: opcion config para recordar nivel zoom, setting connected/unconnected, setting unvisited, otros settings
 
 
 -ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
@@ -323,3 +321,5 @@ https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 
 -GAC: mapa aventura, diccionario, mensajes, etc. Ver grackle y grackle-play
+
+-text adventure map: guardando zoom alto, no restaura bien la posicion visible
