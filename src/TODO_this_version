@@ -35,7 +35,6 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 -quiza en threads que no se cancelan en windows (zeng?) agregar llamada a pthread_testcancel();
 
 
--al volver de pantalla completa que intente restaurar ventanas si habian abiertas antes de ir a pantalla completa?
 
 -en daad debug, pulsar m de condmessage, sale dos veces (con cozumel 1 y inventario)
 
@@ -316,3 +315,6 @@ https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter
 esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro
+
+-revisar pantalla completa en SDL, X11
+--en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
