@@ -199,7 +199,8 @@ void ide_flush_flash_to_disk(void)
         //printf ("escritos: %d\n",escritos);
 
         if (escritos!=size || ptr_idefile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to IDE file");
+                debug_printf (VERBOSE_ERR,"Error writing to IDE file. Disabling write file operations");
+                ide_persistent_writes.v=0;
         }
 
 }

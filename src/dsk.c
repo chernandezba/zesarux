@@ -177,7 +177,8 @@ void dskplusthree_flush_contents_to_disk(void)
         //debug_printf(VERBOSE_DEBUG,"escritos: %d",escritos);
 
         if (escritos!=size || ptr_dskplusthreefile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to DSK file");
+                debug_printf (VERBOSE_ERR,"Error writing to DSK file. Disabling write file operations");
+                dskplusthree_persistent_writes.v=0;                  
         }
 
 }

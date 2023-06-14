@@ -773,7 +773,8 @@ void trd_flush_contents_to_disk(void)
         //printf ("escritos: %d\n",escritos);
 
         if (escritos!=size || ptr_trdfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to TRD file");
+                debug_printf (VERBOSE_ERR,"Error writing to TRD file. Disabling write file operations");
+                trd_persistent_writes.v=0;                
         }
 
 }
