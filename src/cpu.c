@@ -2520,6 +2520,7 @@ printf("\n"
         "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"  
         "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
 		"--zxdesktop-disable-on-fullscreen              Disable ZX Desktop when going to full screen\n"
+        "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
         "--zxdesktop-disable-frame-emulated-display     Disable showing a frame around the emulated machine display\n"
         "--zxdesktop-scr-file f                         Set ZX Desktop SCR background file\n"
         "--zxdesktop-scr-enable                         Enable ZX Desktop SCR background file\n"
@@ -6243,6 +6244,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-on-fullscreen")) {
 				zxdesktop_disable_on_full_screen=1;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-restore-win-after-fullscreen")) {
+				zxdesktop_restore_windows_after_full_screen=0;
+			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-frame-emulated-display")) {
 				zxdesktop_disable_show_frame_around_display=1;

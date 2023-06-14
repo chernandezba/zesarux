@@ -334,6 +334,9 @@ z80_bit xanniversary_logo={1};
 //Desactivar zx desktop al pasar a full screen
 int zxdesktop_disable_on_full_screen=0;
 
+//Restaurar ventanas al volver de full screen y si zxdesktop_disable_on_full_screen esta activado
+int zxdesktop_restore_windows_after_full_screen=1;
+
 //Desactivar mostrar recuadro alrededor pantalla emulada
 int zxdesktop_disable_show_frame_around_display=0;
 
