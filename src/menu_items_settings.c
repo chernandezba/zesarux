@@ -563,14 +563,120 @@ void menu_interface_border(MENU_ITEM_PARAMETERS)
 
 int zxdesktop_estado_antes_fullscreen=0;
 
+//Para guardar las ventanas que estaban abiertas antes de pasar a full screen
+int total_config_window_geometry_antes_fullscreen=0;
+saved_config_window_geometry saved_config_window_geometry_array_antes_fullscreen[MAX_CONFIG_WINDOW_GEOMETRY];
+
+int menu_interface_fullscreen_total_ventanas_abiertas=0;
+char menu_interface_fullscreen_ventanas_abiertas_nombres[MAX_CONFIG_WINDOW_GEOMETRY][MAX_NAME_WINDOW_GEOMETRY];
+
+void menu_interface_fullscreen_save_open_windows(void)
+{
+    //Guardar primero la geometria
+    //memcpy es lo mas facil
+    int tamanyo=sizeof(saved_config_window_geometry_array_antes_fullscreen);
+
+    memcpy(saved_config_window_geometry_array_antes_fullscreen,saved_config_window_geometry_array,tamanyo);
+
+    total_config_window_geometry_antes_fullscreen=total_config_window_geometry;
+
+    //Guardar ahora la lista de ventanas abiertas
+    menu_interface_fullscreen_total_ventanas_abiertas=0;
+
+	//if (!menu_allow_background_windows) return;
+
+	//if (!menu_multitarea) return;
+
+    if (zxvision_current_window==NULL) return;
+
+
+    //Primero ir a buscar la de abajo del todo
+    zxvision_window *pointer_window;
+
+    pointer_window=zxvision_find_first_window_below_this(zxvision_current_window);
+
+    zxvision_window *initial_current_window=zxvision_current_window;
+
+    //Y ahora de ahi hacia arriba
+    int salir=0;
+    do {
+
+        //printf("Puntero ventana: %p\n",pointer_window);
+        if (pointer_window==NULL) {
+            debug_printf(VERBOSE_DEBUG,"Window is null. Exiting");
+            salir=1;
+        }
+        else {
+            if (pointer_window->can_be_backgrounded) {
+                //Mirar su nombre de geometria
+                char *nombre;
+
+                nombre=pointer_window->geometry_name;
+                if (nombre[0]!=0) {
+
+                    strcpy(menu_interface_fullscreen_ventanas_abiertas_nombres[menu_interface_fullscreen_total_ventanas_abiertas],nombre);
+
+                    menu_interface_fullscreen_total_ventanas_abiertas++;
+
+                }
+            }
+
+            zxvision_window *next_window=pointer_window->next_window;
+
+            //Si hemos llegado a la inicial, salimos
+            if (pointer_window==initial_current_window) {
+                //debug_printf(VERBOSE_DEBUG,"window was the last. Exiting");
+                salir=1;
+            }
+
+            else {
+                pointer_window=next_window;
+            }
+
+        }
+
+
+    } while(!salir);
+
+
+
+}
+
+void menu_interface_fullscreen_restore_open_windows(void)
+{
+
+    //Restauramos primero la geometria
+
+    //memcpy es lo mas facil
+    int tamanyo=sizeof(saved_config_window_geometry_array_antes_fullscreen);
+
+    memcpy(saved_config_window_geometry_array,saved_config_window_geometry_array_antes_fullscreen,tamanyo);
+
+    total_config_window_geometry=total_config_window_geometry_antes_fullscreen;  
+
+    //Luego abrimos cada ventana
+
+
+    int i;
+
+    for (i=0;i<menu_interface_fullscreen_total_ventanas_abiertas;i++) {
+        printf("Restoring window that was open before full screen: %s\n",menu_interface_fullscreen_ventanas_abiertas_nombres[i]);
+        zxvision_restore_one_window(menu_interface_fullscreen_ventanas_abiertas_nombres[i]);
+    }  
+}
+
 void menu_interface_fullscreen(MENU_ITEM_PARAMETERS)
 {
 
 	if (ventana_fullscreen==0) {
+        
+
         //Desactivar ZX Desktop al pasar a full screen
         zxdesktop_estado_antes_fullscreen=screen_ext_desktop_enabled;
         if (zxdesktop_disable_on_full_screen) {
             if (screen_ext_desktop_enabled) {
+
+                menu_interface_fullscreen_save_open_windows();
                 menu_ext_desk_settings_enable(0);
             }
         }
@@ -583,9 +689,14 @@ void menu_interface_fullscreen(MENU_ITEM_PARAMETERS)
 
         //Retornar ZX Desktop estado al volver de full screen
         if (zxdesktop_disable_on_full_screen && zxdesktop_estado_antes_fullscreen) {
-            if (!screen_ext_desktop_enabled) menu_ext_desk_settings_enable(0);
+            if (!screen_ext_desktop_enabled) {
+                menu_ext_desk_settings_enable(0);
+                menu_interface_fullscreen_restore_open_windows();
+
+            }
         }
 
+        
 	}
 
 	clear_putpixel_cache();

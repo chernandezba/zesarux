@@ -91,7 +91,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -process management: no muestra uso tiempo de ventana zxlife si la ventana actual es zxlife
 
 
--Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background 
+-Pulsar en ventana emulación desde menú que quizá cierre menú. Depende de settings background. O de setting expresamente para esto
 
 -En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
@@ -133,7 +133,7 @@ usar la que si considera movimiento raton
 
 
 -paws debug que funcione con aventuras en 128k. Ver manual de paws para esto
--daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb
+-daad no usa 128kb. Aunque hay un nuevo parser de daad (hecho en zxbasic) que si usa 128kb. comentar con Carlos-uto
 
 -mensajes panic con codigo error. Por ejemplo, 0001 out of memory. mas bien seria un tipo de error, porque out of memory
 hay muchos tipos: out of memory cargando, out of memory asignando buffer rainbow, etc.
@@ -245,8 +245,6 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 ---- fin tbblue
 
 
-ok-determinar version en compilacion, mediante /etc/os-release
-ok-determinar version en ejecucion, mediante /etc/os-release
 
 
 -zxvision_window: buffer para pixeles, con doble buffer para saber si no ha cambiado un pixel, no refrescarlo
@@ -312,8 +310,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal. 
 https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
-
--permisos escritura en tbblue.mmc y otros mmc para no root, cuando se instala en /usr/share... ?
 
 
 -GAC: mapa aventura, diccionario, mensajes, etc. Ver grackle y grackle-play

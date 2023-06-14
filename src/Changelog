@@ -24,6 +24,9 @@ Improved ZX Vision
 - Added action to put windows in cascade
 - Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 
+Improved ZX Desktop
+- When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen
+
 
 Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l
@@ -32,6 +35,7 @@ Improved ZX Spectrum Next emulation:
 Fixed ZX Vision relocation windows
 Fixed memory leak error when drawing aventure map
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
+Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 
 * As always, there are some other minor bugfixes and improvements
 
