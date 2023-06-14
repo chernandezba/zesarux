@@ -233,7 +233,8 @@ void mmc_flush_flash_to_disk(void)
         //printf ("escritos: %lld\n",escritos);
 
         if (escritos!=size || ptr_mmcfile==NULL) {
-                debug_printf (VERBOSE_ERR,"Error writing to MMC file");
+                debug_printf (VERBOSE_ERR,"Error writing to MMC file. Disabling write file operations");
+		        mmc_persistent_writes.v=0;
         }
 
 }

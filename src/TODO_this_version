@@ -288,8 +288,9 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
 
 
--Nuevo parámetro de ventana ignore_massive_changes, para que no le afecten un resize todos, cascada todos, maximize todos etc. Se aplicaría al gestor de tareas, aunque con parámetro para dicha app para que lo haga o no
-Otro parámetro para misma app el de siempre encima
+
+-parametro de setting para process switcher para estar siempre encima de todas las ventanas
+
 
 -setting de "siempre visible" en ventanas, que tambien el foco funcione al pulsar encima y/o pasar el raton, aunque haya otra ventana por encima
 ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
@@ -297,16 +298,11 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 -en pcw, si autocargar rapido, se queda top speed despues de hacer reset
 
 
--dall-e
--text aventure location image
-
+-dall-e. text aventure location image
 *esperar a waitpit?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
-
-
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
-*limite de generacion de imagenes. quiza 1 por cada 1 segundo por defecto. parametro configurable
 
 -exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
