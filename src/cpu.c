@@ -1904,6 +1904,9 @@ printf (
         "--textadvmap-follow                 Text adventure map: follow the current position on the map\n"
         "--textadvmap-show-unconnected       Text adventure map: show unconnected rooms\n"
         "--textadvmap-no-show-unvisited      Text adventure map: no not show unvisited rooms\n"
+        "--textadvmap-no-show-objects        Text adventure map: no not show objects\n"
+        "--textadvmap-no-show-pictures       Text adventure map: no not show pictures\n"
+  
 
 
 		"\n"
@@ -9169,6 +9172,15 @@ int parse_cmdline_options(int desde_commandline) {
         else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-unvisited")) {
             menu_debug_textadventure_map_connections_show_unvisited=0;
         }
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-objects")) {
+            menu_debug_textadventure_map_connections_show_objects=0;
+        }
+
+        else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-pictures")) {
+            menu_debug_textadventure_map_connections_show_pictures=0;
+        }        
+
 
         else if (!strcmp(argv[puntero_parametro],"--textadvmap-zoom")) {
             siguiente_parametro_argumento();

@@ -4304,10 +4304,10 @@ void textadventure_follow_connections(int follow_rooms_no_connections)
     //generar tabla de conexiones
     textadventure_generate_connections_table();
 
-    printf("generando conexiones\n");
+    //printf("generando conexiones\n");
 
     if (!util_textadventure_is_daad_quill_paws()) {
-        printf("No hay aventura\n");
+        //printf("No hay aventura\n");
         return;
     }
 

@@ -322,4 +322,5 @@ https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 -GAC: mapa aventura, diccionario, mensajes, etc. Ver grackle y grackle-play
 
--text adventure map: guardando zoom alto, no restaura bien la posicion visible
+-text adventure map: texto en mapa deberia seguir char filter. Pero char filter
+esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro

@@ -10024,8 +10024,8 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
 
             tamanyo_celda *=menu_debug_textadventure_map_connections_zoom;  
 
-            printf("tamanyo celda: %d\n",tamanyo_celda);
-            printf("ancho y alto mapa: %d %d\n",ancho_mapa,alto_mapa);
+            //printf("tamanyo celda: %d\n",tamanyo_celda);
+            //printf("ancho y alto mapa: %d %d\n",ancho_mapa,alto_mapa);
 
             ancho_total=ancho_mapa;
             alto_total=alto_mapa;        
@@ -10046,13 +10046,13 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
         ancho_total++;
         alto_total++;
 
-        printf("pre-tamanyo ventana: %d X %d\n",ancho_total,alto_total);
+        //printf("pre-tamanyo ventana: %d X %d\n",ancho_total,alto_total);
 
         //Y un minimo asegurado
         if (ancho_total<50) ancho_total=50;
         if (alto_total<20) alto_total=20;
 
-        printf("tamanyo ventana: %d X %d\n",ancho_total,alto_total);
+        //printf("tamanyo ventana: %d X %d\n",ancho_total,alto_total);
 
         zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_total,alto_total,
                 "Text Adventure Map","textadvmap",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
@@ -10092,6 +10092,7 @@ void menu_debug_textadventure_map_connections_create_window(zxvision_window *ven
 void menu_debug_textadventure_map_connections_recreate_window(zxvision_window *ventana)
 {
     //recrear para calcular tamaño segun zoom
+    debug_printf(VERBOSE_INFO,"Recreating Text Adventure map window");
     
     //guardar geometria por si se redimensiona y luego pulsa boton zoom, que sepa tamaño anterior
     util_add_window_geometry_compact(ventana);    
@@ -10273,6 +10274,9 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
         //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
 
         //Este es un caso especial
+        //cuando entra 
+        //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
+        //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
         menu_debug_textadventure_map_connections_forzar_recreate_window=1;
 
         return;
@@ -10283,9 +10287,8 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     textadventure_follow_connections(menu_debug_textadventure_map_connections_show_rooms_no_connections);
 
 
-    //La primera vez al entrar, hay que recalcular ancho y alto ventana, dado que cuando entra 
-    //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
-    //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
+    //Recrear la ventana hay que hacerlo cuando el usuario ha pulsado en esa ventana, y en determinadas circunstancias
+    //no se deberia, en principio, recrear la ventana cuando esta está en segundo plano, pues pueden suceder diferentes glitches
     if (menu_debug_textadventure_map_connections_forzar_recreate_window) {
         menu_debug_textadventure_map_connections_recreate_window(ventana);  
         menu_debug_textadventure_map_connections_forzar_recreate_window=0;

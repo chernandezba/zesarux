@@ -129,6 +129,8 @@ z80_bit chardetect_rom_compat_numbers={0};
 
 
 //Mantener cada nombre sin espacios, asi en --experthelp se visualiza bien cada uno separado por espacios
+//Importante: Cambiar o alterar el orden de los char filters puede tener efectos inesperados al cargar o grabar un snapshot .zx
+//Si fuera necesario cambiar estos filtros, quiza lo mejor seria desactivar el guardado/cargado de char filters desde snapshot .zx
 char *chardetect_char_filter_names[]={
         "None",
         "Generic",
