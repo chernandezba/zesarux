@@ -24907,12 +24907,18 @@ int menu_hotswap_machine_cond(void) {
 	return 0;
 }
 
+int menu_machine_set_machine_enable_custom_rom=0;
 
 void menu_machine_set_machine_by_id(int id_maquina)
 {
     current_machine_type=id_maquina;
 
-    set_machine(NULL);
+    if (!menu_machine_set_machine_enable_custom_rom) {
+        set_machine(NULL);
+    }
+    else {
+        set_machine(custom_romfile);
+    }
     cold_start_cpu_registers();
     reset_cpu();
 
@@ -25056,6 +25062,11 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
 
 }
 
+void menu_custom_machine_toggle(MENU_ITEM_PARAMETERS)
+{
+    menu_machine_set_machine_enable_custom_rom ^=1;
+}
+
 //Seleccion de maquina por fabricante
 void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 {
@@ -25086,6 +25097,25 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
                         //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
                        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
                         menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+
+                    menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
+                        "Custom rom","Rom personalizada","Rom personalitzada");
+                    menu_add_item_menu_prefijo_format(array_menu_machine_selection,"[%c] ",(menu_machine_set_machine_enable_custom_rom ? 'X' : ' ' ));
+                    menu_add_item_menu_tooltip(array_menu_machine_selection,"Select a custom rom");
+                    menu_add_item_menu_ayuda(array_menu_machine_selection,"Select a custom rom");
+                    menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+
+                    if (menu_machine_set_machine_enable_custom_rom) {
+                        char string_romfile_shown[20];
+                        menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
+
+                        menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
+                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+
+                        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
+                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);                      
+                    }
+
 
                         //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
                         menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);

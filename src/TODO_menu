@@ -313,7 +313,7 @@ https://github.com/lavoiesl/osx-cpu-temp
 -Mouse: para que no haga framedrop al moverse sobre un menu, quiza se deberia considerar cada x frames de tiempo.
 
 
--Quitar menu custom machine y meterlo dentro de machine selection, de tal manera que pida la ROM al seleccionar máquina
+
 
 -Permitir teclas numericas como atajos. Para ello hay que reasignar gestion de teclas cursores que las convierte a '6' y '7'
 
