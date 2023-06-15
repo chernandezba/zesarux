@@ -327,3 +327,5 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 que intenta cargar siempre mas?
 
 -cambio de maquina con full screen (16k a 48k) peta
+
+-process switcher: boton derecho sobre icono para desminimizar, desmaximizar 
