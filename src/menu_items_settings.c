@@ -666,8 +666,7 @@ void menu_interface_fullscreen_restore_open_windows(void)
 }
 
 
-int disable_border_on_full_screen=1;
-int disable_footer_on_full_screen=1;
+
 
 
 int border_state_before_full_screen=0;
@@ -1059,6 +1058,29 @@ void menu_interface_rpi_performance_params(MENU_ITEM_PARAMETERS)
     cambio_parametros_maquinas_lentas.v ^=1;
 }
 
+void menu_ext_desk_settings_disable_on_fullscreen(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_disable_on_full_screen ^=1;
+}
+
+void menu_ext_desk_settings_restore_windows_after_full_screen(MENU_ITEM_PARAMETERS)
+{
+    zxdesktop_restore_windows_after_full_screen ^=1;
+}
+
+void menu_general_settings_disable_border_on_full_screen(MENU_ITEM_PARAMETERS)
+{
+    disable_border_on_full_screen ^=1;
+}
+
+void menu_general_settings_disable_footer_on_full_screen(MENU_ITEM_PARAMETERS)
+{
+    disable_footer_on_full_screen ^=1;
+}
+
+
+
+
 void menu_general_settings(MENU_ITEM_PARAMETERS)
 {
         menu_item *array_menu_window_settings;
@@ -1071,6 +1093,37 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 
         menu_add_item_menu_inicial_format(&array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_fullscreen,NULL,"[%c] ~~Full Screen",(ventana_fullscreen ? 'X' : ' ' ) );
 		menu_add_item_menu_shortcut(array_menu_window_settings,'f');
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
+                "Disable ZX Desktop on Full Screen","Desactivar ZX Desktop en pantalla completa","Desactivar ZX Desktop a pantalla completa");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
+                "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+            if (zxdesktop_disable_on_full_screen) {
+                menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,NULL,
+                    " Restore windows after Full Screen"," Restaurar ventanas al volver"," Restaurar finestres al tornar");
+                menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
+                menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
+                menu_add_item_menu_ayuda(array_menu_window_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
+            }
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,NULL,
+                "Disable Border on Full Screen","Desactivar Border en pantalla completa","Desactivar Border a pantalla completa");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);
+
+            menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,NULL,
+                "Disable Footer on Full Screen","Desactivar Footer en pantalla completa","Desactivar Footer a pantalla completa");
+            menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
+            menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
+            menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
+            menu_add_item_menu_es_avanzado(array_menu_window_settings);               
+
 
 		if (!MACHINE_IS_Z88 && !MACHINE_IS_TSCONF && !MACHINE_IS_TBBLUE && !MACHINE_IS_CPC && !MACHINE_IS_PCW) {
 	        menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_interface_border,menu_interface_border_cond,
@@ -10275,10 +10328,7 @@ void menu_zxdesktop_scrfile_scalefactor(MENU_ITEM_PARAMETERS)
     menu_ventana_scanf_numero_enhanced("Scale factor",&zxdesktop_draw_scrfile_scale_factor,2,+1,1,5,0);
 }
 
-void menu_ext_desk_settings_disable_on_fullscreen(MENU_ITEM_PARAMETERS)
-{
-    zxdesktop_disable_on_full_screen ^=1;
-}
+
 
 void menu_zxdesktop_scrfile_disable_flash(MENU_ITEM_PARAMETERS)
 {
@@ -10590,10 +10640,7 @@ void menu_ext_desk_settings_show_app_open(MENU_ITEM_PARAMETERS)
     zxdesktop_icon_show_app_open.v ^=1;
 }
 
-void menu_ext_desk_settings_restore_windows_after_full_screen(MENU_ITEM_PARAMETERS)
-{
-    zxdesktop_restore_windows_after_full_screen ^=1;
-}
+
 
 
 
@@ -10635,21 +10682,7 @@ void menu_ext_desktop_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_separator(array_menu_ext_desktop_settings);      
             menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 		
-            menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
-                "Disable on Full Screen","Desactivar en pantalla completa","Desactivar a pantalla completa");
-            menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
-            menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen");
-            menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Disable ZX Desktop when going to full screen. "
-                "It will be enabled again going back from full screen. Windows will be closed on full screen if this setting is enabled");
-            menu_add_item_menu_es_avanzado(array_menu_ext_desktop_settings);
 
-            if (zxdesktop_disable_on_full_screen) {
-                menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_restore_windows_after_full_screen,NULL,
-                    "Restore windows after Full Screen","Restaurar ventanas al volver","Restaurar finestres al tornar");
-                menu_add_item_menu_prefijo_format(array_menu_ext_desktop_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
-                menu_add_item_menu_tooltip(array_menu_ext_desktop_settings,"Restore windows after going from full screen");
-                menu_add_item_menu_ayuda(array_menu_ext_desktop_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
-            }
 	
 			menu_add_item_menu_en_es_ca(array_menu_ext_desktop_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_placemenu,NULL,
                 "Open Menu on ZX Desktop","Abrir menu en ZX Desktop","Obrir menu al ZX Desktop");

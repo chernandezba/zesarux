@@ -112,6 +112,9 @@ extern z80_bit debug_view_basic_show_address;
 extern int gui_language;
 
 extern int zxdesktop_disable_on_full_screen;
+extern int disable_border_on_full_screen;
+extern int disable_footer_on_full_screen;
+
 extern int zxdesktop_restore_windows_after_full_screen;
 extern int zxdesktop_disable_show_frame_around_display;
 

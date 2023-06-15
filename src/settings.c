@@ -334,6 +334,12 @@ z80_bit xanniversary_logo={1};
 //Desactivar zx desktop al pasar a full screen
 int zxdesktop_disable_on_full_screen=0;
 
+//Desactivar border al pasar a full screen
+int disable_border_on_full_screen=0;
+
+//Desactivar footer al pasar a full screen
+int disable_footer_on_full_screen=0;
+
 //Restaurar ventanas al volver de full screen y si zxdesktop_disable_on_full_screen esta activado
 int zxdesktop_restore_windows_after_full_screen=1;
 
