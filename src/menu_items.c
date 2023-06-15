@@ -25082,13 +25082,15 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
     do {
 
-        //Primer fabricante
-        menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
-        menu_add_item_menu_shortcut(array_menu_machine_selection,array_fabricantes_hotkey_letra[0]);
+        menu_add_item_menu_inicial(&array_menu_machine_selection,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-		//Siguientes fabricantes
+        //Primer fabricante
+        //menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
+        //menu_add_item_menu_shortcut(array_menu_machine_selection,array_fabricantes_hotkey_letra[0]);
+
+		//Fabricantes
         int i;
-        for (i=1;i<TOTAL_FABRICANTES;i++) {
+        for (i=0;i<TOTAL_FABRICANTES;i++) {
             menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[i]);
             z80_byte letra=array_fabricantes_hotkey_letra[i];
             if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
@@ -25112,10 +25114,11 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
             menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-            menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
-            menu_add_item_menu_es_avanzado(array_menu_machine_selection);                      
+           
         }
 
+        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
+        menu_add_item_menu_es_avanzado(array_menu_machine_selection);           
 
         //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
         menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);

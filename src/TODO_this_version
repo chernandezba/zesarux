@@ -320,5 +320,10 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 --en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
 
 -Quitar menu custom machine y meterlo dentro de machine selection, de tal manera que pida la ROM al seleccionar máquina
--casos maquina +2e, quiza meterlo en lista de maquinas normal? y forzar su rom?
--al cambiar a otra maquina, quiza dejar custom rom desactivada?
+*casos maquina +2e, quiza meterlo en lista de maquinas normal? y forzar su rom?
+*al cambiar a otra maquina, quiza dejar custom rom desactivada?
+*quiza mantener custom machine por si alguien quiere eso?? no tiene mucho sentido excepto para +2e
+*deteccion de tamaño rom, que al cargar una rom, si tamaño archivo es menor, se queje. Revisar que quiza hay alguna maquina
+que intenta cargar siempre mas?
+
+-cambio de maquina con full screen (16k a 48k) peta
