@@ -685,29 +685,28 @@ void menu_interface_fullscreen(MENU_ITEM_PARAMETERS)
 
                 if (zxdesktop_restore_windows_after_full_screen) menu_interface_fullscreen_save_open_windows();
 
-                border_state_before_full_screen=border_enabled.v;
-                //desactivar border
-                if (border_enabled.v && disable_border_on_full_screen) {
-                    menu_interface_border(0);
-                    //Estos scr_refresca_pantalla_solo_driver son necesarios en Mac por ejemplo, si no, no cambia bien cuando
-                    //desactiva footer y border... por que? a saber... esto es un poco buggy...
-                    scr_refresca_pantalla_solo_driver();
-                }
-
-
-
-                footer_state_before_full_screen=menu_footer;
-                //desactivar footer
-                if (menu_footer && disable_footer_on_full_screen) {
-                    menu_interface_footer(0);
-                    scr_refresca_pantalla_solo_driver();
-                }
-
-                scr_refresca_pantalla_solo_driver();
-
                 menu_ext_desk_settings_enable(0);
             }
+
+
         }
+
+        //desactivar border
+        if (border_enabled.v && disable_border_on_full_screen) {
+            border_state_before_full_screen=border_enabled.v;
+            menu_interface_border(0);
+            //Estos scr_refresca_pantalla_solo_driver son necesarios en Mac por ejemplo, si no, no cambia bien cuando
+            //desactiva footer y border... por que? a saber... esto es un poco buggy...
+            scr_refresca_pantalla_solo_driver();
+        }
+
+
+        //desactivar footer
+        if (menu_footer && disable_footer_on_full_screen) {
+            footer_state_before_full_screen=menu_footer;
+            menu_interface_footer(0);
+            scr_refresca_pantalla_solo_driver();
+        }        
 
 		scr_set_fullscreen();
 	}
@@ -715,22 +714,23 @@ void menu_interface_fullscreen(MENU_ITEM_PARAMETERS)
 	else {
 		scr_reset_fullscreen();
 
+
+        //activar footer
+        if (menu_footer==0 && footer_state_before_full_screen && disable_footer_on_full_screen) {
+            menu_interface_footer(0);
+            scr_refresca_pantalla_solo_driver();
+        }
+
+        //activar border
+        if (border_enabled.v==0 && border_state_before_full_screen && disable_border_on_full_screen) {
+            menu_interface_border(0);
+            scr_refresca_pantalla_solo_driver();
+        }
+
         //Retornar ZX Desktop estado al volver de full screen
         if (zxdesktop_disable_on_full_screen && zxdesktop_estado_antes_fullscreen) {
             if (!screen_ext_desktop_enabled) {
                 menu_ext_desk_settings_enable(0);
-
-                //activar border
-                if (border_enabled.v==0 && border_state_before_full_screen && disable_border_on_full_screen) {
-                    menu_interface_border(0);
-                    scr_refresca_pantalla_solo_driver();
-                }
-
-                //activar footer
-                if (menu_footer==0 && footer_state_before_full_screen && disable_footer_on_full_screen) {
-                    menu_interface_footer(0);
-                    scr_refresca_pantalla_solo_driver();
-                }
 
                 if (zxdesktop_restore_windows_after_full_screen) menu_interface_fullscreen_restore_open_windows();
 
