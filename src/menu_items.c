@@ -25071,111 +25071,104 @@ void menu_custom_machine_toggle(MENU_ITEM_PARAMETERS)
 void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 {
 
-	//Seleccion por fabricante
-                menu_item *array_menu_machine_selection;
-                menu_item item_seleccionado;
-                int retorno_menu;
+    //Seleccion por fabricante
+    menu_item *array_menu_machine_selection;
+    menu_item item_seleccionado;
+    int retorno_menu;
 
-//return_fabricante_maquina
-		//Establecemos linea menu segun fabricante activo
-		machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type);
+    //return_fabricante_maquina
+    //Establecemos linea menu segun fabricante activo
+    machine_selection_opcion_seleccionada=return_fabricante_maquina(current_machine_type);
 
-                do {
+    do {
 
-			//Primer fabricante
-                        menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
-			menu_add_item_menu_shortcut(array_menu_machine_selection,array_fabricantes_hotkey_letra[0]);
+        //Primer fabricante
+        menu_add_item_menu_inicial_format(&array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[0]);
+        menu_add_item_menu_shortcut(array_menu_machine_selection,array_fabricantes_hotkey_letra[0]);
 
 		//Siguientes fabricantes
-			int i;
-			for (i=1;i<TOTAL_FABRICANTES;i++) {
-				menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[i]);
-				z80_byte letra=array_fabricantes_hotkey_letra[i];
-				if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
-			}
+        int i;
+        for (i=1;i<TOTAL_FABRICANTES;i++) {
+            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,NULL,NULL,"%s",array_fabricantes_hotkey[i]);
+            z80_byte letra=array_fabricantes_hotkey_letra[i];
+            if (letra!=' ') menu_add_item_menu_shortcut(array_menu_machine_selection,letra);
+        }
 
-                        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
-                       menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
+        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-                    menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
-                        "Custom rom","Rom personalizada","Rom personalitzada");
-                    menu_add_item_menu_prefijo_format(array_menu_machine_selection,"[%c] ",(menu_machine_set_machine_enable_custom_rom ? 'X' : ' ' ));
-                    menu_add_item_menu_tooltip(array_menu_machine_selection,"Select a custom rom");
-                    menu_add_item_menu_ayuda(array_menu_machine_selection,"Select a custom rom");
-                    menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
+            "Custom rom","Rom personalizada","Rom personalitzada");
+        menu_add_item_menu_prefijo_format(array_menu_machine_selection,"[%c] ",(menu_machine_set_machine_enable_custom_rom ? 'X' : ' ' ));
+        menu_add_item_menu_tooltip(array_menu_machine_selection,"Select a custom rom for any machine you select");
+        menu_add_item_menu_ayuda(array_menu_machine_selection,"Select a custom rom for any machine you select");
+        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-                    if (menu_machine_set_machine_enable_custom_rom) {
-                        char string_romfile_shown[20];
-                        menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
+        if (menu_machine_set_machine_enable_custom_rom) {
+            char string_romfile_shown[20];
+            menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
 
-                        menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
-                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
+            menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-                        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
-                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);                      
-                    }
-
-
-                        //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
-                        menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
-                        menu_add_item_menu_shortcut(array_menu_machine_selection,'h');
-                        menu_add_item_menu_tooltip(array_menu_machine_selection,"Change machine type without resetting");
-                        menu_add_item_menu_ayuda(array_menu_machine_selection,"Change machine type without resetting.");
-                        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
-                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+            menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
+            menu_add_item_menu_es_avanzado(array_menu_machine_selection);                      
+        }
 
 
-                        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine,NULL,
-                            "Custom machine","Maquina personalizada","Maquina personalitzada");
-                        menu_add_item_menu_tooltip(array_menu_machine_selection,"Specify custom machine type & ROM");
-                        menu_add_item_menu_ayuda(array_menu_machine_selection,"Specify custom machine type & ROM");
-                        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
-                        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
+        //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
+        menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
+        menu_add_item_menu_shortcut(array_menu_machine_selection,'h');
+        menu_add_item_menu_tooltip(array_menu_machine_selection,"Change machine type without resetting");
+        menu_add_item_menu_ayuda(array_menu_machine_selection,"Change machine type without resetting.");
+        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
 
+        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine,NULL,
+            "Custom machine","Maquina personalizada","Maquina personalitzada");
+        menu_add_item_menu_tooltip(array_menu_machine_selection,"Specify custom machine type & ROM");
+        menu_add_item_menu_ayuda(array_menu_machine_selection,"Specify custom machine type & ROM");
+        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
+        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-                        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+
+        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
 
-                        //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
-                        menu_add_ESC_item(array_menu_machine_selection);
+        //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
+        menu_add_ESC_item(array_menu_machine_selection);
 
 
+        retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,menu_get_string_language("Select manufacturer") );
 
-                        retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,menu_get_string_language("Select manufacturer") );
-
-                        //printf ("Opcion seleccionada: %d\n",machine_selection_opcion_seleccionada);
+        //printf ("Opcion seleccionada: %d\n",machine_selection_opcion_seleccionada);
 
                         
+        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
-                        if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+            if (machine_selection_opcion_seleccionada>=0 && machine_selection_opcion_seleccionada<=TOTAL_FABRICANTES) {
 
-                                if (machine_selection_opcion_seleccionada>=0 && machine_selection_opcion_seleccionada<=TOTAL_FABRICANTES) {
+                //printf ("Seleccionado fabricante %s\n",array_fabricantes[machine_selection_opcion_seleccionada]);
 
-					//printf ("Seleccionado fabricante %s\n",array_fabricantes[machine_selection_opcion_seleccionada]);
-
-                                        //int last_machine_type=machine_type;
-
-
-					menu_machine_selection_manufacturer_machines(machine_selection_opcion_seleccionada);
+                //int last_machine_type=machine_type;
 
 
-
-			      }
-                                //llamamos por valor de funcion
-                                if (item_seleccionado.menu_funcion!=NULL) {
-                                        //printf ("actuamos por funcion\n");
-                                        item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
-                                        
-                                }
+                menu_machine_selection_manufacturer_machines(machine_selection_opcion_seleccionada);
 
 
-                             
-                        }
+            }
+            //llamamos por valor de funcion
+            if (item_seleccionado.menu_funcion!=NULL) {
+                //printf ("actuamos por funcion\n");
+                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
 
-              
-                } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+            }
+                
+        }
+         
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
 
 
 }
