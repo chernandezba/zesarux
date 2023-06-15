@@ -25145,66 +25145,15 @@ void menu_machine_selection_manufacturer(MENU_ITEM_PARAMETERS)
 
         menu_machine_selection_common_items(array_menu_machine_selection);
 
-        /*
-        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
 
-        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
-            "Custom rom","Rom personalizada","Rom personalitzada");
-        menu_add_item_menu_prefijo_format(array_menu_machine_selection,"[%c] ",(menu_machine_set_machine_enable_custom_rom ? 'X' : ' ' ));
-        menu_add_item_menu_tooltip(array_menu_machine_selection,"Select a custom rom for any machine you select");
-        menu_add_item_menu_ayuda(array_menu_machine_selection,"Select a custom rom for any machine you select");
-        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
-
-        if (menu_machine_set_machine_enable_custom_rom) {
-            char string_romfile_shown[20];
-            menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
-
-            menu_add_item_menu_format(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine_romfile,NULL," Rom file: %s",string_romfile_shown);
-            menu_add_item_menu_es_avanzado(array_menu_machine_selection);
-        }
-
-        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine
-        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);  
-        menu_add_item_menu_es_avanzado(array_menu_machine_selection);           
-
-        //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
-        menu_add_item_menu(array_menu_machine_selection,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
-        menu_add_item_menu_shortcut(array_menu_machine_selection,'h');
-        menu_add_item_menu_tooltip(array_menu_machine_selection,"Change machine type without resetting");
-        menu_add_item_menu_ayuda(array_menu_machine_selection,"Change machine type without resetting.");
-        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
-        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
-
-
-        menu_add_item_menu_en_es_ca(array_menu_machine_selection,MENU_OPCION_NORMAL,menu_custom_machine,NULL,
-            "Custom machine","Maquina personalizada","Maquina personalitzada");
-        menu_add_item_menu_tooltip(array_menu_machine_selection,"Specify custom machine type & ROM");
-        menu_add_item_menu_ayuda(array_menu_machine_selection,"Specify custom machine type & ROM");
-        menu_add_item_menu_tiene_submenu(array_menu_machine_selection);
-        menu_add_item_menu_es_avanzado(array_menu_machine_selection);
-
-
-        menu_add_item_menu(array_menu_machine_selection,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        */
-
-
-        //menu_add_item_menu(array_menu_machine_selection,"ESC Back",MENU_OPCION_NORMAL|MENU_OPCION_ESC,NULL,NULL);
         menu_add_ESC_item(array_menu_machine_selection);
 
-
         retorno_menu=menu_dibuja_menu(&machine_selection_opcion_seleccionada,&item_seleccionado,array_menu_machine_selection,menu_get_string_language("Select manufacturer") );
-
-        //printf ("Opcion seleccionada: %d\n",machine_selection_opcion_seleccionada);
 
                         
         if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
 
             if (machine_selection_opcion_seleccionada>=0 && machine_selection_opcion_seleccionada<=TOTAL_FABRICANTES) {
-
-                //printf ("Seleccionado fabricante %s\n",array_fabricantes[machine_selection_opcion_seleccionada]);
-
-                //int last_machine_type=machine_type;
 
 
                 menu_machine_selection_manufacturer_machines(machine_selection_opcion_seleccionada);
@@ -25347,32 +25296,6 @@ void menu_machine_selection_by_name(MENU_ITEM_PARAMETERS)
 
         menu_machine_selection_common_items(array_menu_common);
 
-        /*
-
-        //Solo separar en modo avanzado, para las opciones de hotswap y custom machine	
-        menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        //Hotswap de Z88 o Jupiter Ace o CHLOE no existe
-        menu_add_item_menu(array_menu_common,"~~Hotswap machine",MENU_OPCION_NORMAL,menu_hotswap_machine,menu_hotswap_machine_cond);
-        menu_add_item_menu_shortcut(array_menu_common,'h');
-        menu_add_item_menu_tooltip(array_menu_common,"Change machine type without resetting");
-        menu_add_item_menu_ayuda(array_menu_common,"Change machine type without resetting.");
-        menu_add_item_menu_tiene_submenu(array_menu_common);
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-        menu_add_item_menu(array_menu_common,"Custom machine",MENU_OPCION_NORMAL,menu_custom_machine,NULL);
-        menu_add_item_menu_spanish(array_menu_common,"Maquina personalizada");
-        menu_add_item_menu_tooltip(array_menu_common,"Specify custom machine type & ROM");
-        menu_add_item_menu_ayuda(array_menu_common,"Specify custom machine type & ROM");
-        menu_add_item_menu_tiene_submenu(array_menu_common);		
-        menu_add_item_menu_es_avanzado(array_menu_common);
-
-
-					
-		menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
-
-        */
 
 		menu_add_ESC_item(array_menu_common);
 
