@@ -3614,6 +3614,9 @@ int util_write_configfile(void)
 
 	if (zxdesktop_disable_on_full_screen)             ADD_STRING_CONFIG,"--zxdesktop-disable-on-fullscreen");
 
+    if (disable_border_on_full_screen)                  ADD_STRING_CONFIG,"--disable-border-on-fullscreen");
+    if (disable_footer_on_full_screen)                  ADD_STRING_CONFIG,"--disable-footer-on-fullscreen");
+
     if (zxdesktop_restore_windows_after_full_screen==0) ADD_STRING_CONFIG,"--zxdesktop-no-restore-win-after-fullscreen");
 
     if (zxdesktop_disable_show_frame_around_display)  ADD_STRING_CONFIG,"--zxdesktop-disable-frame-emulated-display");
