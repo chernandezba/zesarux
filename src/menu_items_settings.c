@@ -1108,6 +1108,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_restore_windows_after_full_screen ? 'X' : ' ' ));
                 menu_add_item_menu_tooltip(array_menu_window_settings,"Restore windows after going from full screen");
                 menu_add_item_menu_ayuda(array_menu_window_settings,"Restore windows after disabling full screen, when 'Disable on Full Screen' setting is set");
+                menu_add_item_menu_es_avanzado(array_menu_window_settings);
             }
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,NULL,
