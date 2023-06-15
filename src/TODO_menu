@@ -1,7 +1,7 @@
 --- ZX Desktop
 
 --Posibles efectos para fondo ZX Desktop:
----Imagen. BMP?
+---Imagen formato BMP o PNG
 ---Miniatura de pantalla spectrum
 ---Anaglifo usando segunda pantalla o extensión Desktop. Requeriria update continuo de zxdesktop... o no? que solo redibuje al abrir menu?
 
@@ -91,14 +91,9 @@ Esto no es un TO-DO como tal , solo un comentario del nuevo funcionamiento
 
 -Maximizar cuando menú se abre en zx desktop y este es menor que 32, no ubica bien su posición x
 
-
-
-
 -Concepto ventanas en segundo plano en documentación: multitarea cooperativa (Cooperative multitasking), y tambien en FAQ y ayuda background windows help
 
 -Botón del medio de ratón para enviar al fondo una ventana
-
-
 
 -desminimizar, minimizar de nuevo, se pierde tamaño antes minimizado/maximizado
 
@@ -268,8 +263,6 @@ Si la ponemos a 0 en bucle de leer tecla, luego no se lee realmente del menu deb
 -agregar sensor temperatura cpu linux
 
 
-
-
 -frecuencias chips audio como sensores? no sé si vale la pena pues los valores de frecuencias son exponenciales y por ejemplo
 las ultimas dos notas, una es el doble de la otra. Por tanto si usamos un widget de speedometer, estaria casi al 0 siempre excepto para 
 frecuencias muy altas.
@@ -286,8 +279,6 @@ momentaneamente pero al irse el splash, se recargan
 
 
 -ula settings visible en otras maquinas no-spectrum?
-
-
 
 
 -Opción no marcar registros en rojo que se van  a modificar en debug cpu

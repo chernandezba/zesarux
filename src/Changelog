@@ -26,6 +26,7 @@ Improved ZX Vision
 
 Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen
+- Allow to disable border and footer when switching to full screen
 
 
 Improved ZX Spectrum Next emulation:

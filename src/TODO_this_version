@@ -28,7 +28,7 @@ ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
 
 -kempston mouse en cursor draw en menu abierto lee en apariencia aleatoriamente
 
--speech con caracteres con acentos no los envia, los filtra 
+-speech con caracteres con acentos no los envia, los filtra. acentos de menu? quiza habria que pasar primero otro filtro para solo acentos, convertirlos a sin acentos o caracteres con acentos utf
 
 -snapshot ZSF de nextdows, no guarda la parte inferior de pantalla aparentemente
 

@@ -24910,41 +24910,41 @@ int menu_hotswap_machine_cond(void) {
 
 void menu_machine_set_machine_by_id(int id_maquina)
 {
-current_machine_type=id_maquina;
+    current_machine_type=id_maquina;
 
-				     set_machine(NULL);
-                                        cold_start_cpu_registers();
-                                        reset_cpu();
+    set_machine(NULL);
+    cold_start_cpu_registers();
+    reset_cpu();
 
-                                        //desactivar autoload
-                                        //noautoload.v=1;
-                                        //initial_tap_load.v=0;
-
-
-                                        //expulsamos cintas
-                                        eject_tape_load();
-                                        eject_tape_save();
-
-                                        //Y salimos de todos los menus
-                                        salir_todos_menus=1;
+    //desactivar autoload
+    //noautoload.v=1;
+    //initial_tap_load.v=0;
 
 
-										
-										if (MACHINE_IS_TBBLUE) {
-												//Si se pregunta si se quiere autoconfigurar SD, solo si esta el grabado de configuracion, e interfaz permite menu (no stdout ni simpletext ni null)
-												if (save_configuration_file_on_exit.v && tbblue_autoconfigure_sd_asked.v==0 && si_normal_menu_video_driver()) {
-													if (menu_confirm_yesno_texto("Autoconfigure Initial SD","Sure?")) {
-														menu_storage_mmc_autoconfigure_tbblue(0);
-													}
+    //expulsamos cintas
+    eject_tape_load();
+    eject_tape_save();
 
-													tbblue_autoconfigure_sd_asked.v=1;
-												}
+    //Y salimos de todos los menus
+    salir_todos_menus=1;
 
-										}
 
-										if (MACHINE_IS_SG1000) {
-											menu_first_aid("sg1000_boot");
-										}
+
+    if (MACHINE_IS_TBBLUE) {
+        //Si se pregunta si se quiere autoconfigurar SD, solo si esta el grabado de configuracion, e interfaz permite menu (no stdout ni simpletext ni null)
+        if (save_configuration_file_on_exit.v && tbblue_autoconfigure_sd_asked.v==0 && si_normal_menu_video_driver()) {
+            if (menu_confirm_yesno_texto("Autoconfigure Initial SD","Sure?")) {
+                menu_storage_mmc_autoconfigure_tbblue(0);
+            }
+
+            tbblue_autoconfigure_sd_asked.v=1;
+        }
+
+    }
+
+    if (MACHINE_IS_SG1000) {
+        menu_first_aid("sg1000_boot");
+    }
 											
 }
 
