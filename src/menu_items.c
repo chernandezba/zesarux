@@ -18043,7 +18043,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_detect_location_method,NULL,
-            "    Detect location method","    Método detección localidad","    Métode detecció localitat");
+            "    Algorithm","    Algoritmo","    Algoritme");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
             menu_add_item_menu_tooltip(array_menu_common,"How to detect location description text");
             menu_add_item_menu_ayuda(array_menu_common,"How to detect location description text. "
@@ -18051,7 +18051,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_nochar_value,NULL,
-            "    Minium no-char time","    Mínimo no-char tiempo","    Miním no-char temps");
+            "    Minium no-char","    Mínimo no-char","    Miním no-char");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_no_char_counter);
             menu_add_item_menu_tooltip(array_menu_common,"After that time (in miliseconds) without receiving any character, "
                 "we can guess it's the end of the location description. Increase it if the descriptions are not full read");
@@ -18060,7 +18060,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_max_after_clear_value,NULL,
-            "    Minium after-room time","    Mínimo después-hab tiempo","    Miním després-hab temps");
+            "    Minium after-room","    Mínimo después-hab","    Miním després-hab");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",max_textadv_location_desc_counter);
             menu_add_item_menu_tooltip(array_menu_common,"After room change and after that time (in miliseconds), "
                 "we can guess it's the end of the location description. Increase it if the descriptions are blank or not full read");
@@ -18070,7 +18070,7 @@ void menu_text_adventure_tools(MENU_ITEM_PARAMETERS)
 
 
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_textimage_min_between_images,NULL,
-            "    Minium time between images","    Mínimo tiempo entre imagenes","    Miním temps entre imatges");
+            "    Minimum between images","    Mínimo entre imágenes","    Miním entre imatges");
             menu_add_item_menu_sufijo_format(array_menu_common," [%d ms]",textadv_location_desc_last_image_generated_min);
             menu_add_item_menu_tooltip(array_menu_common,"Minimum time between every image to avoid too much cost usage by external API");
             menu_add_item_menu_ayuda(array_menu_common,"Minimum time between every image to avoid too much cost usage by external API");
