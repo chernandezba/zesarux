@@ -1095,7 +1095,7 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_shortcut(array_menu_window_settings,'f');
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_ext_desk_settings_disable_on_fullscreen,NULL,
-                "Disable ZX Desktop on Full Screen","Desactivar ZX Desktop en pantalla completa","Desactivar ZX Desktop a pantalla completa");
+                "No ZX Desktop on Full Screen","No ZX Desktop en pantalla completa","No ZX Desktop a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(zxdesktop_disable_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Disable ZX Desktop when going to full screen");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disable ZX Desktop when going to full screen. "
@@ -1112,14 +1112,14 @@ void menu_general_settings(MENU_ITEM_PARAMETERS)
             }
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_border_on_full_screen,NULL,
-                "Disable Border on Full Screen","Desactivar Border en pantalla completa","Desactivar Border a pantalla completa");
+                "No Border on Full Screen","No Border en pantalla completa","No Border a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_border_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Border when going to full screen");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Border when going to full screen");
             menu_add_item_menu_es_avanzado(array_menu_window_settings);
 
             menu_add_item_menu_en_es_ca(array_menu_window_settings,MENU_OPCION_NORMAL,menu_general_settings_disable_footer_on_full_screen,NULL,
-                "Disable Footer on Full Screen","Desactivar Footer en pantalla completa","Desactivar Footer a pantalla completa");
+                "No Footer on Full Screen","No Footer en pantalla completa","No Footer a pantalla completa");
             menu_add_item_menu_prefijo_format(array_menu_window_settings,"[%c] ",(disable_footer_on_full_screen ? 'X' : ' ' ));
             menu_add_item_menu_tooltip(array_menu_window_settings,"Disable Footer when going to full screen");
             menu_add_item_menu_ayuda(array_menu_window_settings,"Disable Footer when going to full screen");
