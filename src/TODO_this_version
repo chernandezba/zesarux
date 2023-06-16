@@ -329,3 +329,19 @@ que intenta cargar siempre mas?
 -cambio de maquina con full screen (16k a 48k) peta
 
 -process switcher: boton derecho sobre icono para desminimizar, desmaximizar 
+
+-icono para ventana ascii table
+
+-Custom rom de linea de comandos es mismo string que custom rom de menu?
+
+-Rom custom, el setting de activada o no, que se guarde en config. Asi al entrar se arranca con esa rom custom
+(y hacer que en boot al seleccionar maquina tenga en cuenta rom custom). Pedido por Rodolfo
+Esto quiza no aplique a autoconfig maquina, si hay que cambiar a 128k por ejemplo porque lo dice archivo autoconfig, no va a leer custom rom
+Quiza dentro de rom_load debe tener en cuenta si setting custom activado (aunque ojo cuando se llame desde custom machine)
+O sea creo que se deberia tener en cuenta setting custom cuando la llamada a rom_load se le pase un NULL??? no, en la mayoria de rom_load no usa NULL
+ok ya. revisar si azmic rom y quien la usa (que creo que cambiaba la ram del zx81) es compatible con esto
+
+
+-Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
+*Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
+*Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.

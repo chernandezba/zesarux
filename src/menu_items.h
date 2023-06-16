@@ -66,6 +66,7 @@ extern void menu_zxdesktop_trash_empty(MENU_ITEM_PARAMETERS);
 extern void menu_toy_follow_mouse(MENU_ITEM_PARAMETERS);
 extern void menu_toys_zxlife(MENU_ITEM_PARAMETERS);
 extern void process_switcher_sync_immutable_setting(void);
+extern void menu_ascii_table(MENU_ITEM_PARAMETERS);
 
 extern void menu_process_switcher(MENU_ITEM_PARAMETERS);
 extern void menu_textadv_loc_image(MENU_ITEM_PARAMETERS);

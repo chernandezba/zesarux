@@ -24621,7 +24621,7 @@ void menu_hotswap_machine(MENU_ITEM_PARAMETERS)
 }
 
 int custom_machine_type=0;
-char custom_romfile[PATH_MAX]="";
+
 
 static char *custom_machine_names[]={
     "Spectrum 16k",
@@ -24822,7 +24822,12 @@ void menu_custom_machine_run(MENU_ITEM_PARAMETERS)
     //acaba buscando el archivo desde la ruta actual pero tambien desde otras rutas de instalacion por defecto
     //porque esta pensado para buscar nombre de rom sin path entero, aunque se lo pasamos con path entero
     //Esto no es un problema en si mismo, pero lo dejo como comentario aqui para mi yo del futuro que lo vea...
-	set_machine(custom_romfile);
+	//set_machine(custom_romfile);
+
+    //dado que rom_load acaba usando custom_romfile, le pasamos NULL aqui tal cual
+    setting_set_machine_enable_custom_rom=1;
+
+    set_machine(NULL);
 
     //printf("despues set machine\n\n");
 	cold_start_cpu_registers();
@@ -24907,18 +24912,22 @@ int menu_hotswap_machine_cond(void) {
 	return 0;
 }
 
-int menu_machine_set_machine_enable_custom_rom=0;
+
 
 void menu_machine_set_machine_by_id(int id_maquina)
 {
     current_machine_type=id_maquina;
 
-    if (!menu_machine_set_machine_enable_custom_rom) {
+    /*if (!setting_set_machine_enable_custom_rom) {
         set_machine(NULL);
     }
     else {
         set_machine(custom_romfile);
-    }
+    }*/
+
+    //en rom_load ya tiene en cuenta si se usa setting_set_machine_enable_custom_rom
+    set_machine(NULL);
+
     cold_start_cpu_registers();
     reset_cpu();
 
@@ -25064,7 +25073,7 @@ void menu_machine_selection_manufacturer_machines(int fabricante)
 
 void menu_custom_machine_toggle(MENU_ITEM_PARAMETERS)
 {
-    menu_machine_set_machine_enable_custom_rom ^=1;
+    setting_set_machine_enable_custom_rom ^=1;
 }
 
 //Agregar items comunes a los dos menus de maquina: por fabricante o por nombre de maquina
@@ -25076,12 +25085,12 @@ void menu_machine_selection_common_items(menu_item *m)
 
         menu_add_item_menu_en_es_ca(m,MENU_OPCION_NORMAL,menu_custom_machine_toggle,NULL,
             "Custom rom","Rom personalizada","Rom personalitzada");
-        menu_add_item_menu_prefijo_format(m,"[%c] ",(menu_machine_set_machine_enable_custom_rom ? 'X' : ' ' ));
+        menu_add_item_menu_prefijo_format(m,"[%c] ",(setting_set_machine_enable_custom_rom ? 'X' : ' ' ));
         menu_add_item_menu_tooltip(m,"Select a custom rom for any machine you select");
         menu_add_item_menu_ayuda(m,"Select a custom rom for any machine you select");
         menu_add_item_menu_es_avanzado(m);
 
-        if (menu_machine_set_machine_enable_custom_rom) {
+        if (setting_set_machine_enable_custom_rom) {
             char string_romfile_shown[20];
             menu_tape_settings_trunc_name(custom_romfile,string_romfile_shown,20);
 
@@ -27010,6 +27019,220 @@ void menu_debug_machine_info(MENU_ITEM_PARAMETERS)
 }
 
 
+
+zxvision_window *menu_ascii_table_window;
+
+#define ASCII_TABLE_CHARS_PER_LINE 4
+#define ASCII_TABLE_TOTAL_CHARS_TO_SHOW (127-32)
+#define ASCII_TABLE_TOTAL_LINES ((ASCII_TABLE_TOTAL_CHARS_TO_SHOW/ASCII_TABLE_CHARS_PER_LINE)+1)
+//De cada caracter, 6 caracteres + espacio
+//XXX: B
+#define ASCII_TABLE_LENGTH_PER_CHAR 7
+#define ASCII_TABLE_LINE_LENGTH (ASCII_TABLE_LENGTH_PER_CHAR*ASCII_TABLE_CHARS_PER_LINE)
+
+int menu_ascii_table_modo_vertical=1;
+int menu_ascii_table_modo_decimal=1;
+
+void menu_ascii_table_overlay(void)
+{
+
+    menu_speech_tecla_pulsada=1; //Si no, envia continuamente todo ese texto a speech
+
+    //si ventana minimizada, no ejecutar todo el codigo de overlay
+    if (menu_ascii_table_window->is_minimized) return;  
+
+
+    //Print....      
+    //Tambien contar si se escribe siempre o se tiene en cuenta contador_segundo...          
+
+    int i;
+    int linea=0;
+    int col=0;
+
+
+    for (i=32;i<=126;i++) {
+
+        int x,y;
+
+        //En horizontal:
+        if (!menu_ascii_table_modo_vertical) {
+            x=(col*ASCII_TABLE_LENGTH_PER_CHAR)+1;
+            y=linea+1;
+
+            col ++;
+            if (col==ASCII_TABLE_CHARS_PER_LINE) {
+                col=0;
+                linea++;
+            }
+
+        }
+
+        //En vertical:
+        else {
+            x=col+1;
+            y=linea+1;
+
+            linea++;
+            if (linea==ASCII_TABLE_TOTAL_LINES) {
+                linea=0;
+                col +=ASCII_TABLE_LENGTH_PER_CHAR;
+            }
+
+        }
+
+        if (menu_ascii_table_modo_decimal) {
+            zxvision_print_string_defaults_format(menu_ascii_table_window,x,y,"%3d: %c ",i,i);
+        }
+        else {
+            zxvision_print_string_defaults_format(menu_ascii_table_window,x,y," %02X: %c ",i,i);
+        }
+        
+
+    }            
+
+
+    //Mostrar colores
+    zxvision_draw_window_contents(menu_ascii_table_window);
+    
+}
+
+
+
+
+//Almacenar la estructura de ventana aqui para que se pueda referenciar desde otros sitios
+zxvision_window zxvision_window_ascii_table;
+
+
+void menu_ascii_table(MENU_ITEM_PARAMETERS)
+{
+	menu_espera_no_tecla();
+
+    if (!menu_multitarea) {
+        menu_warn_message("This window needs multitask enabled");
+        return;
+    }	    
+	
+    zxvision_window *ventana;
+    ventana=&zxvision_window_ascii_table;	
+
+	//IMPORTANTE! no crear ventana si ya existe. Esto hay que hacerlo en todas las ventanas que permiten background.
+	//si no se hiciera, se crearia la misma ventana, y en la lista de ventanas activas , al redibujarse,
+	//la primera ventana repetida apuntaria a la segunda, que es el mismo puntero, y redibujaria la misma, y se quedaria en bucle colgado
+	//zxvision_delete_window_if_exists(ventana);	
+
+    //Crear ventana si no existe
+    if (!zxvision_if_window_already_exists(ventana)) {
+        int xventana,yventana,ancho_ventana,alto_ventana,is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize;
+
+        if (!util_find_window_geometry("asciitable",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
+            ancho_ventana=ASCII_TABLE_LINE_LENGTH+1;
+            alto_ventana=ASCII_TABLE_TOTAL_LINES+2+1;
+
+            xventana=menu_center_x()-ancho_ventana/2;
+            yventana=menu_center_y()-alto_ventana/2;        
+        }
+
+            
+        zxvision_new_window_gn_cim(ventana,xventana,yventana,ancho_ventana,alto_ventana,ancho_ventana-1,alto_ventana-2,"Ascii Table",
+            "asciitable",is_minimized,is_maximized,ancho_antes_minimize,alto_antes_minimize);
+
+        ventana->can_be_backgrounded=1;
+         
+    }
+
+    //Si ya existe, activar esta ventana
+    else {
+        zxvision_activate_this_window(ventana);
+    }    
+
+	zxvision_draw_window(ventana);
+
+	z80_byte tecla;
+
+
+	int salir=0;
+
+
+    menu_ascii_table_window=ventana; //Decimos que el overlay lo hace sobre la ventana que tenemos aqui
+
+
+    //cambio overlay
+    zxvision_set_window_overlay(ventana,menu_ascii_table_overlay);
+	
+
+    //Toda ventana que este listada en zxvision_known_window_names_array debe permitir poder salir desde aqui
+    //Se sale despues de haber inicializado overlay y de cualquier otra variable que necesite el overlay
+    if (zxvision_currently_restoring_windows_on_start) {
+            //printf ("Saliendo de ventana ya que la estamos restaurando en startup\n");
+            return;
+    }	
+
+    do {
+
+
+        z80_bit antes_menu_writing_inverse_color;
+        antes_menu_writing_inverse_color.v=menu_writing_inverse_color.v;
+
+        //Forzar a mostrar atajos
+        menu_writing_inverse_color.v=1;
+
+
+        zxvision_print_string_defaults_fillspc_format(menu_ascii_table_window,1,0,"~~Orien.: %s ~~Mode: [%s]",
+            (menu_ascii_table_modo_vertical ? "[Vert] " : "[Horiz]"),
+            (menu_ascii_table_modo_decimal ? "Dec" : "Hex")
+            
+        );
+
+        //Restaurar mostrar atajos
+        menu_writing_inverse_color.v=antes_menu_writing_inverse_color.v;
+
+
+
+		tecla=zxvision_common_getkey_refresh();		
+
+
+        switch (tecla) {
+
+            case 'o':
+                menu_ascii_table_modo_vertical ^=1;
+            break;
+
+            case 'm':
+                menu_ascii_table_modo_decimal ^=1;
+            break;
+
+            //Salir con ESC
+            case 2:
+                salir=1;
+            break;
+
+            //O tecla background
+            case 3:
+                salir=1;
+            break;					
+        }
+
+
+    } while (salir==0);
+
+
+	util_add_window_geometry_compact(ventana);
+
+	if (tecla==3) {
+		zxvision_message_put_window_background();
+	}
+
+	else {
+
+		zxvision_destroy_window(ventana);
+	}
+
+
+}
+
+
+
+
 //menu debug
 void menu_debug_main(MENU_ITEM_PARAMETERS)
 {
@@ -27338,9 +27561,11 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_ayuda(array_menu_debug,"Window to see all shortcuts (hotkeys) pressed");
         menu_add_item_menu_es_avanzado(array_menu_debug);
 
-		//menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_toy_follow_mouse,NULL,
-        //    "Toy ZXeyes","Juguete ZXeyes","Joguina ZXeyes");
-        
+		menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_ascii_table,NULL,
+            "Ascii Table","Tabla Ascii","Taula Ascii");
+
+
+
 
 #ifdef TIMESENSORS_ENABLED
 

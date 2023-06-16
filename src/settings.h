@@ -115,6 +115,9 @@ extern int zxdesktop_disable_on_full_screen;
 extern int disable_border_on_full_screen;
 extern int disable_footer_on_full_screen;
 
+extern int setting_set_machine_enable_custom_rom;
+extern char custom_romfile[];
+
 extern int zxdesktop_restore_windows_after_full_screen;
 extern int zxdesktop_disable_show_frame_around_display;
 

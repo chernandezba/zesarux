@@ -302,6 +302,13 @@ z80_bit menu_reopen_background_windows_on_start={1};
 
 
 //
+// Machine Settings
+//
+
+int setting_set_machine_enable_custom_rom=0;
+char custom_romfile[PATH_MAX]="";
+
+//
 // GUI Settings
 //
 

@@ -5294,6 +5294,12 @@ void rom_load(char *romfilename)
 		}
 	}
 
+    //Aunque si hay custom rom, sobreescribir esto
+    if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
+        debug_printf(VERBOSE_INFO,"Loading custom rom %s",custom_romfile);
+        romfilename=custom_romfile;
+    }
+
     open_sharedfile(romfilename,&ptr_romfile);
     if (!ptr_romfile)
     {
@@ -5976,7 +5982,7 @@ void main_init_audio(void)
 
 }
 
-char *param_custom_romfile=NULL;
+//char *param_custom_romfile=NULL;
 z80_bit opcion_no_welcome_message;
 
 
@@ -7115,7 +7121,8 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--romfile")) {
                                 siguiente_parametro_argumento();
-                                param_custom_romfile=argv[puntero_parametro];
+                                setting_set_machine_enable_custom_rom=1;
+                                strcpy(custom_romfile,argv[puntero_parametro]);
 			}
 
                         else if (!strcmp(argv[puntero_parametro],"--smartloadpath")) {
@@ -10540,14 +10547,14 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//Si hemos especificado una rom diferente por linea de comandos
 
 
-	if (param_custom_romfile!=NULL) {
+	/*if (param_custom_romfile!=NULL) {
 		set_machine(param_custom_romfile);
-	}
+	}*/
 
 
-	else {
+	//else {
 		set_machine(NULL);
-	}
+	//}
 
 	cold_start_cpu_registers();
 

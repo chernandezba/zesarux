@@ -3807,6 +3807,11 @@ int util_write_configfile(void)
   if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
 
 
+  if (setting_set_machine_enable_custom_rom && custom_romfile[0]!=0) {
+        ADD_STRING_CONFIG,"--romfile \"%s\"",custom_romfile);
+  }
+
+
   if (quickload_file[0]!=0) {
 	util_get_dir(quickload_file,buffer_temp);
  	ADD_STRING_CONFIG,"--smartloadpath \"%s\"",buffer_temp);
