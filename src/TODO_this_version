@@ -323,8 +323,29 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 *casos maquina +2e, quiza meterlo en lista de maquinas normal? y forzar su rom?
 *al cambiar a otra maquina, quiza dejar custom rom desactivada?
 *quiza mantener custom machine por si alguien quiere eso?? no tiene mucho sentido excepto para +2e
+*manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
+find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
+#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
+
 *deteccion de tamaño rom, que al cargar una rom, si tamaño archivo es menor, se queje. Revisar que quiza hay alguna maquina
 que intenta cargar siempre mas?
+	//Ver tamanyo archivo rom
+	minimum_size=get_rom_size(next_machine_type);
+
+    if (!si_existe_archivo(custom_romfile)) {
+        debug_printf(VERBOSE_ERR,"Unable to find rom file %s",custom_romfile);
+        return;
+    }
+
+    else {
+        //Tamaño del archivo es >=minimum_size
+        long long int tamanyo_archivo=get_file_size(custom_romfile);
+        if (tamanyo_archivo<minimum_size) {
+            debug_printf(VERBOSE_ERR,"ROM file must be at least %d bytes length",minimum_size);
+            return;
+        }
+    }
+
 
 -cambio de maquina con full screen (16k a 48k) peta
 
