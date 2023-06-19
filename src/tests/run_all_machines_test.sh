@@ -2,17 +2,30 @@
 
 MAQUINAS=`./zesarux --machinelist`
 
+TEMPFILE=`mktemp`
+
 # comprobar solamente que ZEsarUX no salga con codigo error
 for i in $MAQUINAS; do
 
 	echo "Test maquina $i"
 
-	./zesarux --noconfigfile --quickexit --exit-after 1 --machine $i --vo null --ao null
+	TEXTORETORNO=`./zesarux --noconfigfile --quickexit --exit-after 1 --machine $i --vo null --ao null > $TEMPFILE 2>&1`
 
 	RETURNCODE=$?
 
 	if [ "$RETURNCODE" != 0 ]; then
 		echo "Error running machine"
+		exit 1
+	fi
+
+	grep "Error loading ROM" $TEMPFILE
+	A=$?
+
+	grep "Unable to open rom" $TEMPFILE
+	B=$?
+
+	if [ $A == 0 ] || [ $B == 0 ]; then
+		echo "Error loading rom from machine $i"
 		exit 1
 	fi
 done

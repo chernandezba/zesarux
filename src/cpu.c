@@ -5601,30 +5601,21 @@ Total 20 pages=320 Kb
 
 
     else if (MACHINE_IS_MK14) {
-        leidos=fread(memoria_spectrum,1,512,ptr_romfile);
-        if (leidos!=512) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Minium expected: 16384 Loaded: %d",leidos);
         }
 
     }
 
     //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
-    else if (MACHINE_IS_PCW_8256) {
-        leidos=fread(memoria_spectrum,1,275,ptr_romfile);
-        if (leidos!=275) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
+    else if (MACHINE_IS_PCW_8256 || MACHINE_IS_PCW_8512) {
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Minium expected: 16384 Loaded: %d",leidos);
         }
 
     }
-
-    //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
-    else if (MACHINE_IS_PCW_8512) {
-        leidos=fread(memoria_spectrum,1,275,ptr_romfile);
-        if (leidos!=275) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-        }
-
-    }                
 
 
     fclose(ptr_romfile);

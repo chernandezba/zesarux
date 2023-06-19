@@ -3236,6 +3236,8 @@ int get_rom_size(int machine)
     //SVI
     else if (machine==MACHINE_ID_SVI_318 || machine==MACHINE_ID_SVI_328) return 32768;
 
+    else if (machine==MACHINE_ID_MK14_STANDARD) return 512;
+
 
     //QL
     else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
