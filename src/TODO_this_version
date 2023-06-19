@@ -320,9 +320,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 --en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
 
 -Quitar menu custom machine y meterlo dentro de machine selection, de tal manera que pida la ROM al seleccionar máquina
-*casos maquina +2e, quiza meterlo en lista de maquinas normal? y forzar su rom?
-*al cambiar a otra maquina, quiza dejar custom rom desactivada?
-*quiza mantener custom machine por si alguien quiere eso?? no tiene mucho sentido excepto para +2e
 *manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
 find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 #define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"

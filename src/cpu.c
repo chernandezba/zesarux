@@ -5312,76 +5312,76 @@ void rom_load(char *romfilename)
     }
 
 		//Caso Inves. ROM esta en el final de la memoria asignada
-		if (MACHINE_IS_INVES) {
-			//Inves
-			leidos=fread(&memoria_spectrum[65536],1,16384,ptr_romfile);
-                                if (leidos!=16384) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
+    if (MACHINE_IS_INVES) {
+        //Inves
+        leidos=fread(&memoria_spectrum[65536],1,16384,ptr_romfile);
+                            if (leidos!=16384) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+    }
+
+
+    else if (MACHINE_IS_SPECTRUM_16_48) {
+        //Spectrum 16k rom
+                        leidos=fread(memoria_spectrum,1,16384,ptr_romfile);
+            if (leidos!=16384) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+    }
+
+    else if (MACHINE_IS_SPECTRUM_128_P2) {
+        //Spectrum 32k rom
+
+                            leidos=fread(rom_mem_table[0],1,32768,ptr_romfile);
+                            if (leidos!=32768) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+
+    }
+
+    else if (MACHINE_IS_SPECTRUM_P2A_P3) {
+
+        //Spectrum 64k rom
+
+                            leidos=fread(rom_mem_table[0],1,65536,ptr_romfile);
+                            if (leidos!=65536) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
                                 }
-                }
+    }
+
+    else if (MACHINE_IS_ZXUNO) {
+        //107 bytes rom
+                    //leidos=fread(memoria_spectrum,1,56,ptr_romfile);
+                    //if (leidos!=56) {
+                    //                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    //}
+
+        //Max 8kb rom
+                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+        //Un minimo de rom...
+                    if (leidos<1) {
+                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
+
+        debug_printf (VERBOSE_DEBUG,"Read %d bytes of rom file %s",leidos,romfilename);
+
+        zxuno_load_spi_flash();
 
 
-		else if (MACHINE_IS_SPECTRUM_16_48) {
-			//Spectrum 16k rom
-                        	leidos=fread(memoria_spectrum,1,16384,ptr_romfile);
-				if (leidos!=16384) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-				}
-		}
+        zxuno_load_additional_64k_block();
+    }
 
-		else if (MACHINE_IS_SPECTRUM_128_P2) {
-			//Spectrum 32k rom
+    else if (MACHINE_IS_CHLOE) {
+                //SE Basic IV 32k rom
 
-                                leidos=fread(rom_mem_table[0],1,32768,ptr_romfile);
-                                if (leidos!=32768) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-	                         }
+                        leidos=fread(chloe_rom_mem_table[0],1,32768,ptr_romfile);
+                        if (leidos!=32768) {
+                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
 
-		}
+    }
 
-		else if (MACHINE_IS_SPECTRUM_P2A_P3) {
-
-			//Spectrum 64k rom
-
-                                leidos=fread(rom_mem_table[0],1,65536,ptr_romfile);
-                                if (leidos!=65536) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
-		}
-
-		else if (MACHINE_IS_ZXUNO) {
-			//107 bytes rom
-                        //leidos=fread(memoria_spectrum,1,56,ptr_romfile);
-                        //if (leidos!=56) {
-                        //                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                        //}
-
-			//Max 8kb rom
-                        leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-			//Un minimo de rom...
-                        if (leidos<1) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                        }
-
-			debug_printf (VERBOSE_DEBUG,"Read %d bytes of rom file %s",leidos,romfilename);
-
-			zxuno_load_spi_flash();
-
-
-            zxuno_load_additional_64k_block();
-		}
-
-	       else if (MACHINE_IS_CHLOE) {
-                        //SE Basic IV 32k rom
-
-                                leidos=fread(chloe_rom_mem_table[0],1,32768,ptr_romfile);
-                                if (leidos!=32768) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
-
-                }
-
-               else if (MACHINE_IS_PRISM) {
+    else if (MACHINE_IS_PRISM) {
                         //320k rom
 /*
 ROM page	file	size
@@ -5409,241 +5409,241 @@ Total 20 pages=320 Kb
 
 				prism_load_failsafe_rom();
 
+    }
+
+    else if (MACHINE_IS_TBBLUE) {
+        
+        //Cargamos solo la rom de 48 4 veces 
+        if (tbblue_fast_boot_mode.v) {
+            leidos=fread(&memoria_spectrum[0],1,16384,ptr_romfile);
+            memcpy(&memoria_spectrum[16384],&memoria_spectrum[0],16384);
+            memcpy(&memoria_spectrum[32768],&memoria_spectrum[0],16384);
+            memcpy(&memoria_spectrum[49152],&memoria_spectrum[0],16384);
+        
+            if (leidos!=16384) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                }				
+        }
+        else {
+            leidos=fread(tbblue_fpga_rom,1,8192,ptr_romfile);
+            memcpy(&tbblue_fpga_rom[8192],tbblue_fpga_rom,8192);
+            if (leidos!=8192) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
                 }
+        }
 
-		else if (MACHINE_IS_TBBLUE) {
-			
-			//Cargamos solo la rom de 48 4 veces 
-			if (tbblue_fast_boot_mode.v) {
-			leidos=fread(&memoria_spectrum[0],1,16384,ptr_romfile);
-			memcpy(&memoria_spectrum[16384],&memoria_spectrum[0],16384);
-			memcpy(&memoria_spectrum[32768],&memoria_spectrum[0],16384);
-			memcpy(&memoria_spectrum[49152],&memoria_spectrum[0],16384);
-			
-                                if (leidos!=16384) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }				
-			}
-			else {
-				leidos=fread(tbblue_fpga_rom,1,8192,ptr_romfile);
-				memcpy(&tbblue_fpga_rom[8192],tbblue_fpga_rom,8192);
-                                if (leidos!=8192) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
-			}
+    }
 
-                }
+    else if (MACHINE_IS_CHROME) {
+        //160 K RAM, 64 K ROM
+        leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
+        if (leidos!=65536) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
 
-                else if (MACHINE_IS_CHROME) {
-                    //160 K RAM, 64 K ROM
-                    leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
-                    if (leidos!=65536) {
-                            debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+    }
 
-                }
+    else if (MACHINE_IS_TSCONF) {
+        leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
+        if (leidos!=512*1024) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
 
-                else if (MACHINE_IS_TSCONF) {
-                    leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
-                    if (leidos!=512*1024) {
-                            debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+    }
 
-                }
+    else if (MACHINE_IS_BASECONF) {
+                            leidos=fread(baseconf_rom_mem_table[0],1,512*1024,ptr_romfile);
+                            if (leidos!=512*1024) {
+                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
 
-			else if (MACHINE_IS_BASECONF) {
-									leidos=fread(baseconf_rom_mem_table[0],1,512*1024,ptr_romfile);
-									if (leidos!=512*1024) {
-											debug_printf(VERBOSE_ERR,"Error loading ROM");
-									}
-
-								}
+    }
 
 
-              else if (MACHINE_IS_TIMEX_TS_TC_2068) {
+    else if (MACHINE_IS_TIMEX_TS_TC_2068) {
 
-                    leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
-                    if (leidos!=16384) {
-                            debug_printf(VERBOSE_ERR,"Error loading ROM");
-                        }
+        leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
+        if (leidos!=16384) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
 
-                    leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
+        leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
+        if (leidos!=8192) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+
+
+
+    }
+
+    else if (MACHINE_IS_COLECO) {
+        //coleco 8 kb rom
+                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+        if (leidos!=8192) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
+    }				
+                
+    else if (MACHINE_IS_SG1000) {
+                //no tiene rom. No cargamos nada, aunque mas arriba intenta siempre abrir un archivo de rom,
+                //es por eso que es necesario que exista el archivo de rom, aunque no se cargue ni se use para nada
+        
+    }	
+
+    else if (MACHINE_IS_SMS) {
+                        leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+            if (leidos!=8192) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+    }	        
+
+    else if (MACHINE_IS_MSX1) {
+        //msx 32 kb rom
+                        leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
+            if (leidos!=32768) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+    }
+
+
+    else if (MACHINE_IS_SVI) {
+        //svi 32 kb rom
+                        leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
+            if (leidos!=32768) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+    }
+
+
+    else if (MACHINE_IS_ZX80_TYPE) {
+        //ZX80
+                            leidos=fread(memoria_spectrum,1,4096,ptr_romfile);
+                            if (leidos!=4096) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+                            }
+    }
+
+
+    else if (MACHINE_IS_ZX81_TYPE) {
+
+        //TK85 tiene rom de 10kb
+        if (MACHINE_IS_MICRODIGITAL_TK85) {
+            leidos=fread(memoria_spectrum,1,10*1024,ptr_romfile);
+            if (leidos!=10*1024) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+    }
+
+    else {
+            //ZX81 y variantes
+            leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+            if (leidos!=8192) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }
+        }
+    }
+
+    else if (MACHINE_IS_ACE) {
+
+            //Jupiter Ace
+                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
                     if (leidos!=8192) {
                             debug_printf(VERBOSE_ERR,"Error loading ROM");
-                        }
+                    }
+    }
 
 
-
-                }
-
-                else if (MACHINE_IS_COLECO) {
-			//coleco 8 kb rom
-                        	leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-				if (leidos!=8192) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-				}
-		}				
-                
-                else if (MACHINE_IS_SG1000) {
-					//no tiene rom. No cargamos nada, aunque mas arriba intenta siempre abrir un archivo de rom,
-					//es por eso que es necesario que exista el archivo de rom, aunque no se cargue ni se use para nada
-			
-		}	
-
-                else if (MACHINE_IS_SMS) {
-                        	leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-				if (leidos!=8192) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-				}
-		}	        
-
-                else if (MACHINE_IS_MSX1) {
-			//msx 32 kb rom
-                        	leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
-				if (leidos!=32768) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-				}
-		}
-
-
-                else if (MACHINE_IS_SVI) {
-			//svi 32 kb rom
-                        	leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
-				if (leidos!=32768) {
-				 	debug_printf(VERBOSE_ERR,"Error loading ROM");
-				}
-		}
-
-
-		else if (MACHINE_IS_ZX80_TYPE) {
-			//ZX80
-                                leidos=fread(memoria_spectrum,1,4096,ptr_romfile);
-                                if (leidos!=4096) {
-					debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                }
-		}
-
-
-		else if (MACHINE_IS_ZX81_TYPE) {
-
-            //TK85 tiene rom de 10kb
-            if (MACHINE_IS_MICRODIGITAL_TK85) {
-                leidos=fread(memoria_spectrum,1,10*1024,ptr_romfile);
-                if (leidos!=10*1024) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }
-            }
-
-            else {
-                //ZX81 y variantes
-                leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-                if (leidos!=8192) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }
-            }
-		}
-
-                else if (MACHINE_IS_ACE) {
-
-                        //Jupiter Ace
-                                leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-                                if (leidos!=8192) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                }
-                }
-
-
-		else if (MACHINE_IS_Z88) {
-			//Z88
-			//leer maximo 512 kb de ROM
-			leidos=fread(z88_puntero_memoria,1,512*1024,ptr_romfile);
-                                if (leidos<=0) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                }
-
-			z88_internal_rom_size=leidos-1;
-
-		}
-
-
-	      else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
-                //32k rom
-
-                        leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
-                        if (leidos!=32768) {
-                                debug_printf(VERBOSE_ERR,"Error loading ROM");
+    else if (MACHINE_IS_Z88) {
+        //Z88
+        //leer maximo 512 kb de ROM
+        leidos=fread(z88_puntero_memoria,1,512*1024,ptr_romfile);
+                            if (leidos<=0) {
+                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
                             }
 
-                }
+        z88_internal_rom_size=leidos-1;
 
-	      else if (MACHINE_IS_CPC_6128) {
-                //48k rom
-
-                        leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
-                        if (leidos!=49152) {
-                                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
-
-                }
-
-	      else if (MACHINE_IS_CPC_664) {
-                //48k rom
-
-                        leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
-                        if (leidos!=49152) {
-                                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
-
-                }                                
+    }
 
 
-              else if (MACHINE_IS_SAM) {
-                        //32k rom
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
+        //32k rom
 
-                        leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
-                        if (leidos!=32768) {
-                                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
-
-                }
-
-		else if (MACHINE_IS_QL) {
-			//minimo 16kb,maximo 128k
-			        leidos=fread(memoria_ql,1,131072,ptr_romfile);
-
-                //Minimo 16kb
-                if (leidos<16384) {
+                leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
+                if (leidos!=32768) {
                         debug_printf(VERBOSE_ERR,"Error loading ROM");
                     }
 
-		}
+    }
+
+    else if (MACHINE_IS_CPC_6128) {
+        //48k rom
+
+                leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
+                if (leidos!=49152) {
+                        debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
+
+    }
+
+    else if (MACHINE_IS_CPC_664) {
+        //48k rom
+
+                leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
+                if (leidos!=49152) {
+                        debug_printf(VERBOSE_ERR,"Error loading ROM");
+                    }
+
+    }                                
 
 
-		else if (MACHINE_IS_MK14) {
-			leidos=fread(memoria_spectrum,1,512,ptr_romfile);
-			if (leidos!=512) {
-					debug_printf(VERBOSE_ERR,"Error loading ROM");
-			}
+    else if (MACHINE_IS_SAM) {
+            //32k rom
 
-		}
+            leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
+            if (leidos!=32768) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                }
 
-        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
-		else if (MACHINE_IS_PCW_8256) {
-			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
-			if (leidos!=275) {
-					debug_printf(VERBOSE_ERR,"Error loading ROM");
-			}
+    }
 
-		}
+    else if (MACHINE_IS_QL) {
+        //minimo 16kb,maximo 128k
+                leidos=fread(memoria_ql,1,131072,ptr_romfile);
 
-        //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
-		else if (MACHINE_IS_PCW_8512) {
-			leidos=fread(memoria_spectrum,1,275,ptr_romfile);
-			if (leidos!=275) {
-					debug_printf(VERBOSE_ERR,"Error loading ROM");
-			}
+            //Minimo 16kb
+            if (leidos<16384) {
+                    debug_printf(VERBOSE_ERR,"Error loading ROM");
+                }
 
-		}                
+    }
+
+
+    else if (MACHINE_IS_MK14) {
+        leidos=fread(memoria_spectrum,1,512,ptr_romfile);
+        if (leidos!=512) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
+
+    }
+
+    //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
+    else if (MACHINE_IS_PCW_8256) {
+        leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+        if (leidos!=275) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
+
+    }
+
+    //Realmente no es una rom, sino el contenido que carga a la RAM el pcw desde el ¿puerto de impresora?
+    else if (MACHINE_IS_PCW_8512) {
+        leidos=fread(memoria_spectrum,1,275,ptr_romfile);
+        if (leidos!=275) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
+
+    }                
 
 
     fclose(ptr_romfile);
