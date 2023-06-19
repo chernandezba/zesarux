@@ -5579,23 +5579,23 @@ Total 20 pages=320 Kb
 
 
     else if (MACHINE_IS_SAM) {
-            //32k rom
+        //32k rom
 
-            leidos=fread(sam_rom_memory[0],1,32768,ptr_romfile);
-            if (leidos!=32768) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }
+        leidos=fread(sam_rom_memory[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
 
     else if (MACHINE_IS_QL) {
         //minimo 16kb,maximo 128k
-                leidos=fread(memoria_ql,1,131072,ptr_romfile);
+        leidos=fread(memoria_ql,1,131072,ptr_romfile);
 
-            //Minimo 16kb
-            if (leidos<16384) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }
+        //Minimo 16kb
+        if (leidos<16384) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Minium expected: 16384 Loaded: %d",leidos);
+        }
 
     }
 
