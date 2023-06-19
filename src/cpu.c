@@ -5311,31 +5311,33 @@ void rom_load(char *romfilename)
         return;
     }
 
+    int expected_rom_size=get_rom_size(current_machine_type);
+
 		//Caso Inves. ROM esta en el final de la memoria asignada
     if (MACHINE_IS_INVES) {
         //Inves
-        leidos=fread(&memoria_spectrum[65536],1,16384,ptr_romfile);
-                            if (leidos!=16384) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        leidos=fread(&memoria_spectrum[65536],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
 
     else if (MACHINE_IS_SPECTRUM_16_48) {
         //Spectrum 16k rom
-                        leidos=fread(memoria_spectrum,1,16384,ptr_romfile);
-            if (leidos!=16384) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
     else if (MACHINE_IS_SPECTRUM_128_P2) {
         //Spectrum 32k rom
 
-                            leidos=fread(rom_mem_table[0],1,32768,ptr_romfile);
-                            if (leidos!=32768) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        leidos=fread(rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
 
@@ -5343,25 +5345,25 @@ void rom_load(char *romfilename)
 
         //Spectrum 64k rom
 
-                            leidos=fread(rom_mem_table[0],1,65536,ptr_romfile);
-                            if (leidos!=65536) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                }
+        leidos=fread(rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
     else if (MACHINE_IS_ZXUNO) {
         //107 bytes rom
-                    //leidos=fread(memoria_spectrum,1,56,ptr_romfile);
-                    //if (leidos!=56) {
-                    //                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    //}
+        //leidos=fread(memoria_spectrum,1,56,ptr_romfile);
+        //if (leidos!=56) {
+        //                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        //}
 
         //Max 8kb rom
-                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
+        leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
         //Un minimo de rom...
-                    if (leidos<1) {
-                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+        if (leidos<1) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
 
         debug_printf (VERBOSE_DEBUG,"Read %d bytes of rom file %s",leidos,romfilename);
 
@@ -5372,12 +5374,12 @@ void rom_load(char *romfilename)
     }
 
     else if (MACHINE_IS_CHLOE) {
-                //SE Basic IV 32k rom
+        //SE Basic IV 32k rom
 
-                        leidos=fread(chloe_rom_mem_table[0],1,32768,ptr_romfile);
-                        if (leidos!=32768) {
-                                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        leidos=fread(chloe_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
 
@@ -5401,13 +5403,13 @@ ROM page	file	size
 Total 20 pages=320 Kb
 */
 
-                                leidos=fread(prism_rom_mem_table[0],1,320*1024,ptr_romfile);
-                                if (leidos!=320*1024) {
-                                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                                 }
+        leidos=fread(prism_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
 
-				prism_load_failsafe_rom();
+        prism_load_failsafe_rom();
 
     }
 
@@ -5421,41 +5423,41 @@ Total 20 pages=320 Kb
             memcpy(&memoria_spectrum[49152],&memoria_spectrum[0],16384);
         
             if (leidos!=16384) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }				
+                debug_printf(VERBOSE_ERR,"Error loading ROM");
+            }				
         }
         else {
-            leidos=fread(tbblue_fpga_rom,1,8192,ptr_romfile);
+            leidos=fread(tbblue_fpga_rom,1,expected_rom_size,ptr_romfile);
             memcpy(&tbblue_fpga_rom[8192],tbblue_fpga_rom,8192);
-            if (leidos!=8192) {
-                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                }
+            if (leidos!=expected_rom_size) {
+                debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+            }
         }
 
     }
 
     else if (MACHINE_IS_CHROME) {
         //160 K RAM, 64 K ROM
-        leidos=fread(chrome_rom_mem_table[0],1,65536,ptr_romfile);
-        if (leidos!=65536) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        leidos=fread(chrome_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
 
     }
 
     else if (MACHINE_IS_TSCONF) {
-        leidos=fread(tsconf_rom_mem_table[0],1,512*1024,ptr_romfile);
-        if (leidos!=512*1024) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
+        leidos=fread(tsconf_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
 
     }
 
     else if (MACHINE_IS_BASECONF) {
-                            leidos=fread(baseconf_rom_mem_table[0],1,512*1024,ptr_romfile);
-                            if (leidos!=512*1024) {
-                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        leidos=fread(baseconf_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
 
@@ -5464,13 +5466,13 @@ Total 20 pages=320 Kb
 
         leidos=fread(timex_rom_mem_table[0],1,16384,ptr_romfile);
         if (leidos!=16384) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: 16384 Loaded: %d",leidos);
+        }
 
         leidos=fread(timex_ex_rom_mem_table[0],1,8192,ptr_romfile);
         if (leidos!=8192) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: 8192 Loaded: %d",leidos);
+        }
 
 
 
@@ -5478,40 +5480,40 @@ Total 20 pages=320 Kb
 
     else if (MACHINE_IS_COLECO) {
         //coleco 8 kb rom
-                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-        if (leidos!=8192) {
-            debug_printf(VERBOSE_ERR,"Error loading ROM");
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
     }				
                 
     else if (MACHINE_IS_SG1000) {
-                //no tiene rom. No cargamos nada, aunque mas arriba intenta siempre abrir un archivo de rom,
-                //es por eso que es necesario que exista el archivo de rom, aunque no se cargue ni se use para nada
+            //no tiene rom. No cargamos nada, aunque mas arriba intenta siempre abrir un archivo de rom,
+            //es por eso que es necesario que exista el archivo de rom, aunque no se cargue ni se use para nada
         
     }	
 
     else if (MACHINE_IS_SMS) {
-                        leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-            if (leidos!=8192) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }	        
 
     else if (MACHINE_IS_MSX1) {
         //msx 32 kb rom
-                        leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
-            if (leidos!=32768) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
 
     else if (MACHINE_IS_SVI) {
         //svi 32 kb rom
-                        leidos=fread(memoria_spectrum,1,32768,ptr_romfile);
-            if (leidos!=32768) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
 

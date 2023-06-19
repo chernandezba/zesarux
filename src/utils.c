@@ -3142,13 +3142,13 @@ void input_file_keyboard_get_key(void)
 int get_rom_size(int machine)
 {
 	//Maquinas 48k
-	if (machine<=5) return 16384;
+	if (machine<=MACHINE_ID_MICRODIGITAL_TK95) return 16384;
 
 	//Maquinas 128k,+2
-	else if (machine<=10) return 32768;
+	else if (machine<=MACHINE_ID_SPECTRUM_P2_SPA) return 32768;
 
 	//Maquinas +2A
-	else if (machine<=13) return 65536;
+	else if (machine<=MACHINE_ID_SPECTRUM_P2A_SPA) return 65536;
 
 	//Maquina ZX-Uno
   //Aunque rom actual es 8126, la antigua era de 214
@@ -3159,6 +3159,9 @@ int get_rom_size(int machine)
 
 	//Chloe 280SE
 	else if (machine==MACHINE_ID_CHLOE_280SE) return 32768;
+
+    //Chrome
+    else if (machine==MACHINE_ID_CHROME) return 65536;
 
 	//Timex TS2068
 	else if (machine==MACHINE_ID_TIMEX_TS2068) return 24576;
@@ -3180,6 +3183,12 @@ int get_rom_size(int machine)
 
     //Spectrum +3
     else if (machine==MACHINE_ID_SPECTRUM_P3_40 || machine==MACHINE_ID_SPECTRUM_P3_41 || machine==MACHINE_ID_SPECTRUM_P3_SPA) return 65536;
+
+    //TSConf
+    else if (machine==MACHINE_ID_TSCONF) return 512*1024;
+
+    //Baseconf
+    else if (machine==MACHINE_ID_BASECONF) return 512*1024;
 
     //ZX80
     else if (machine==MACHINE_ID_ZX80) return 4096;
@@ -3215,16 +3224,25 @@ int get_rom_size(int machine)
 	//SAM
 	else if (machine==MACHINE_ID_SAM) return 32768;
 
+    //Coleco
+    else if (machine==MACHINE_ID_COLECO) return 8192;
+
+    //SMS
+    else if (machine==MACHINE_ID_SMS) return 8192;    
+
+    //MSX1
+    else if (machine==MACHINE_ID_MSX1) return 32768;
+
+    //SVI
+    else if (machine==MACHINE_ID_SVI_318 || machine==MACHINE_ID_SVI_328) return 32768;
+
+
     //QL
     else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
 
     else return 16384; //cualquier otra cosa, 16kb
 
-	//else cpu_panic("Unknown machine on get_rom_size");
 
-
-	//Aqui no se llegara nunca. Solo para que no salte warning al compilar
-	//return 0;
 }
 
 
