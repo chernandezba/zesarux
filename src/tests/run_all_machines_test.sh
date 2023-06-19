@@ -9,7 +9,7 @@ for i in $MAQUINAS; do
 
 	echo "Test maquina $i"
 
-	./zesarux --noconfigfile --quickexit --exit-after 1 --machine $i --vo null
+	./zesarux --noconfigfile --quickexit --exit-after 1 --machine $i --vo null --ao null
 
 	RETURNCODE=$?
 
