@@ -12,13 +12,6 @@ if [ $? != 0 ]; then
 	exit 1
 fi
 
-tests/tbblue_mmu.sh
-if [ $? != 0 ]; then
-	echo "Error tbblue mmu tests"
-	exit 1
-fi
-
-
 tests/convert_tests.sh
 if [ $? != 0 ]; then
         echo "Error convert tests"
@@ -28,6 +21,12 @@ fi
 tests/run_all_machines_test.sh
 if [ $? != 0 ]; then
         echo "Error running run all machines tests"
+        exit 1
+fi
+
+tests/tbblue_mmu.sh
+if [ $? != 0 ]; then
+        echo "Error tbblue mmu tests"
         exit 1
 fi
 
