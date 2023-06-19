@@ -3141,109 +3141,77 @@ void input_file_keyboard_get_key(void)
 //Devuelve tamanyo minimo de ROM para el tipo de maquina indicado
 int get_rom_size(int machine)
 {
-	//Maquinas 48k
-	if (machine<=MACHINE_ID_MICRODIGITAL_TK95) return 16384;
+    //Por defecto
+    int rom_size=16384;
 
-	//Maquinas 128k,+2
-	else if (machine<=MACHINE_ID_SPECTRUM_P2_SPA || MACHINE_IS_PENTAGON) return 32768;
+    //Truco. Utilizo macro de MACHINE_IS_ porque me facilita mucho la vida
 
-	//Maquinas +2A
-	else if (machine<=MACHINE_ID_SPECTRUM_P2A_SPA) return 65536;
+    //Guardo antes valor de current_machine_type
 
-	//Maquina ZX-Uno
-  //Aunque rom actual es 8126, la antigua era de 214
-	else if (machine==MACHINE_ID_ZXUNO) return 214;
+    z80_byte original_current_machine_type=current_machine_type;
 
-	//Chloe 140SE
-	else if (machine==MACHINE_ID_CHLOE_140SE) return 32768;
-
-	//Chloe 280SE
-	else if (machine==MACHINE_ID_CHLOE_280SE) return 32768;
-
-    //Chrome
-    else if (machine==MACHINE_ID_CHROME) return 65536;
-
-	//Timex TS2068
-	else if (machine==MACHINE_ID_TIMEX_TS2068) return 24576;
-
-    //Timex TC2068
-    else if (machine==MACHINE_ID_TIMEX_TC2068) return 24576;
-
-	//Prism
-	else if (machine==MACHINE_ID_PRISM) return 320*1024;
-
-	//TBBLUE
-	else if (machine==MACHINE_ID_TBBLUE) return 8192;
-
-	//PCW8256
-	else if (machine==MACHINE_ID_PCW_8256) return 275;    
-	//PCW8512
-	else if (machine==MACHINE_ID_PCW_8512) return 275;    
+    current_machine_type=machine;
 
 
-    //Spectrum +3
-    else if (machine==MACHINE_ID_SPECTRUM_P3_40 || machine==MACHINE_ID_SPECTRUM_P3_41 || machine==MACHINE_ID_SPECTRUM_P3_SPA) return 65536;
+    if (MACHINE_IS_SPECTRUM_16_48) rom_size=16384;
 
-    //TSConf
-    else if (machine==MACHINE_ID_TSCONF) return 512*1024;
+    else if (MACHINE_IS_SPECTRUM_128_P2) rom_size=32768;
 
-    //Baseconf
-    else if (machine==MACHINE_ID_BASECONF) return 512*1024;
+    else if (MACHINE_IS_SPECTRUM_P2A_P3) rom_size=65536;
 
-    //ZX80
-    else if (machine==MACHINE_ID_ZX80) return 4096;
-    else if (machine==MACHINE_ID_MICRODIGITAL_TK80) return 4096;
-    else if (machine==MACHINE_ID_MICRODIGITAL_TK82) return 4096;
+    else if (MACHINE_IS_ZXUNO) rom_size=214;
 
-	//ZX81 y variantes
-	else if (machine==MACHINE_ID_ZX81) return 8192;
-    else if (machine==MACHINE_ID_TIMEX_TS1000) return 8192;
-    else if (machine==MACHINE_ID_TIMEX_TS1500) return 8192;
-    else if (machine==MACHINE_ID_MICRODIGITAL_TK82C) return 8192;
-    else if (machine==MACHINE_ID_MICRODIGITAL_TK83) return 8192;
-    else if (machine==MACHINE_ID_MICRODIGITAL_TK85) return 10*1024;
+    else if (MACHINE_IS_CHLOE) rom_size=32768;
 
-	//Jupiter Ace
-	else if (machine==MACHINE_ID_ACE) return 8192;
+    else if (MACHINE_IS_PRISM)  rom_size=320*1024;
 
-	//Z88
-	else if (machine==MACHINE_ID_Z88) return 131072;
+    else if (MACHINE_IS_TBBLUE) rom_size=8192;
 
-	//CPC 464
-	else if (machine==MACHINE_ID_CPC_464) return 32768;
+    else if (MACHINE_IS_CHROME)  rom_size=65536;
 
-	//CPC 4128
-	else if (machine==MACHINE_ID_CPC_4128) return 32768;
+    else if (MACHINE_IS_TSCONF)  rom_size=512*1024;
 
-	//CPC 664
-	else if (machine==MACHINE_ID_CPC_664) return 49152;            
+    else if (MACHINE_IS_BASECONF)  rom_size=512*1024;
 
-	//CPC 6128
-	else if (machine==MACHINE_ID_CPC_6128) return 49152;
+    else if (MACHINE_IS_TIMEX_TS_TC_2068)  rom_size=24576;
 
-	//SAM
-	else if (machine==MACHINE_ID_SAM) return 32768;
+    else if (MACHINE_IS_COLECO)  rom_size=8192;
+                
+    //else if (MACHINE_IS_SG1000) rom_size=
 
-    //Coleco
-    else if (machine==MACHINE_ID_COLECO) return 8192;
+    else if (MACHINE_IS_SMS)  rom_size=8192;
 
-    //SMS
-    else if (machine==MACHINE_ID_SMS) return 8192;    
+    else if (MACHINE_IS_MSX1) rom_size=32768;
 
-    //MSX1
-    else if (machine==MACHINE_ID_MSX1) return 32768;
+    else if (MACHINE_IS_SVI)  rom_size=32768;
 
-    //SVI
-    else if (machine==MACHINE_ID_SVI_318 || machine==MACHINE_ID_SVI_328) return 32768;
+    else if (MACHINE_IS_ZX80_TYPE) rom_size=4096;
 
-    else if (machine==MACHINE_ID_MK14_STANDARD) return 512;
+    else if (MACHINE_IS_MICRODIGITAL_TK85) rom_size=10*1024;
+
+    else if (MACHINE_IS_ZX81_TYPE)  rom_size=8192;
+
+    else if (MACHINE_IS_ACE) rom_size=8192;
+
+    else if (MACHINE_IS_Z88) rom_size=131072;
+
+    else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) rom_size=32768;
+
+    else if (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) rom_size=49152;
+
+    else if (MACHINE_IS_SAM) rom_size=32768;
+
+    else if (MACHINE_IS_QL) rom_size=49152;
+
+    else if (MACHINE_IS_MK14)  rom_size=512;
+
+    else if (MACHINE_IS_PCW_8256 || MACHINE_IS_PCW_8512) rom_size=275;
 
 
-    //QL
-    else if (machine==MACHINE_ID_QL_STANDARD) return 16384;
+    //Restaurar current_machine_type
+    current_machine_type=original_current_machine_type;
 
-    else return 16384; //cualquier otra cosa, 16kb
-
+    return rom_size;
 
 }
 
