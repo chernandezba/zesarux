@@ -25,6 +25,12 @@ if [ $? != 0 ]; then
         exit 1
 fi
 
+tests/run_all_machines_test.sh
+if [ $? != 0 ]; then
+        echo "Error running run all machines tests"
+        exit 1
+fi
+
 tests/printtrap_test.sh
 if [ $? != 0 ]; then
         echo "Error printtrap tests"

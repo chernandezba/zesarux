@@ -5519,39 +5519,28 @@ Total 20 pages=320 Kb
 
     else if (MACHINE_IS_ZX80_TYPE) {
         //ZX80
-                            leidos=fread(memoria_spectrum,1,4096,ptr_romfile);
-                            if (leidos!=4096) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
 
     else if (MACHINE_IS_ZX81_TYPE) {
-
-        //TK85 tiene rom de 10kb
-        if (MACHINE_IS_MICRODIGITAL_TK85) {
-            leidos=fread(memoria_spectrum,1,10*1024,ptr_romfile);
-            if (leidos!=10*1024) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
-    }
-
-    else {
-            //ZX81 y variantes
-            leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-            if (leidos!=8192) {
-                debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }
+        //ZX81 y variantes
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
     }
 
     else if (MACHINE_IS_ACE) {
 
-            //Jupiter Ace
-                    leidos=fread(memoria_spectrum,1,8192,ptr_romfile);
-                    if (leidos!=8192) {
-                            debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+        //Jupiter Ace
+        leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
     }
 
 
@@ -5559,9 +5548,9 @@ Total 20 pages=320 Kb
         //Z88
         //leer maximo 512 kb de ROM
         leidos=fread(z88_puntero_memoria,1,512*1024,ptr_romfile);
-                            if (leidos<=0) {
-                                    debug_printf(VERBOSE_ERR,"Error loading ROM");
-                            }
+        if (leidos<=0) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM");
+        }
 
         z88_internal_rom_size=leidos-1;
 
@@ -5571,32 +5560,22 @@ Total 20 pages=320 Kb
     else if (MACHINE_IS_CPC_464 || MACHINE_IS_CPC_4128) {
         //32k rom
 
-                leidos=fread(cpc_rom_mem_table[0],1,32768,ptr_romfile);
-                if (leidos!=32768) {
-                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+        leidos=fread(cpc_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
 
-    else if (MACHINE_IS_CPC_6128) {
+    else if (MACHINE_IS_CPC_6128 || MACHINE_IS_CPC_664) {
         //48k rom
 
-                leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
-                if (leidos!=49152) {
-                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
+        leidos=fread(cpc_rom_mem_table[0],1,expected_rom_size,ptr_romfile);
+        if (leidos!=expected_rom_size) {
+            debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
+        }
 
     }
-
-    else if (MACHINE_IS_CPC_664) {
-        //48k rom
-
-                leidos=fread(cpc_rom_mem_table[0],1,49152,ptr_romfile);
-                if (leidos!=49152) {
-                        debug_printf(VERBOSE_ERR,"Error loading ROM");
-                    }
-
-    }                                
 
 
     else if (MACHINE_IS_SAM) {
