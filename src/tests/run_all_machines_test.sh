@@ -4,7 +4,7 @@ MAQUINAS=`./zesarux --machinelist`
 
 TEMPFILE=`mktemp`
 
-# comprobar solamente que ZEsarUX no salga con codigo error
+# comprobar que ZEsarUX no finalice con codigo error, o que de error al cargar rom
 for i in $MAQUINAS; do
 
 	echo "Test maquina $i"
