@@ -2,8 +2,6 @@
 
 MAQUINAS=`./zesarux --machinelist`
 
-MAQUINAS="tbblue prueba zx80"
-
 # comprobar solamente que ZEsarUX no salga con codigo error
 for i in $MAQUINAS; do
 
