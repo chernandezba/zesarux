@@ -3145,7 +3145,7 @@ int get_rom_size(int machine)
 	if (machine<=MACHINE_ID_MICRODIGITAL_TK95) return 16384;
 
 	//Maquinas 128k,+2
-	else if (machine<=MACHINE_ID_SPECTRUM_P2_SPA) return 32768;
+	else if (machine<=MACHINE_ID_SPECTRUM_P2_SPA || MACHINE_IS_PENTAGON) return 32768;
 
 	//Maquinas +2A
 	else if (machine<=MACHINE_ID_SPECTRUM_P2A_SPA) return 65536;
