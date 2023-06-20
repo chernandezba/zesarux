@@ -113,6 +113,7 @@ extern char *bitmap_button_ext_desktop_processmanagement[];
 extern char *bitmap_button_ext_desktop_processswitcher[];
 extern char *bitmap_button_ext_desktop_videoinfo[];
 extern char *bitmap_button_ext_desktop_textadvlocimage[];
+extern char *bitmap_button_ext_desktop_asciitable[];
 
 extern char **zxdesktop_buttons_bitmaps[];
 

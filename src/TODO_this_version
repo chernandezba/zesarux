@@ -329,9 +329,6 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 
 -process switcher: boton derecho sobre icono, agregar opciones para desminimizar, desmaximizar 
 
--icono para ventana ascii table
-
-
 
 
 -Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo

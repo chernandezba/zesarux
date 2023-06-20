@@ -2353,6 +2353,37 @@ char *bitmap_lowericon_ext_desktop_hilow_convert[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 };
 
+
+char *bitmap_button_ext_desktop_asciitable[EXT_DESKTOP_BUTTONS_ANCHO]={
+	//01234567890123456789012345
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",	//0
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",
+	"  xbbWWWbWWWbbbbbbWWbbbx  ",
+	"  xbbWbbbWbbbbWbbWbbWbbx  ",		
+	"  xbbWWWbWWWbbbbbWWWWbbx  ",		
+	"  xbbWbWbbbWbbWbbWbbWbbx  ",	
+	"  xbbWWWbWWWbbbbbWbbWbbx  ",			
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",			
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",	
+	"  xbbWWWbWWWbbbbbWWWbbbx  ",	//10
+	"  xbbWbbbWbbbbWbbWbbWbbx  ",		
+	"  xbbWWWbWWWbbbbbWWWbbbx  ",		
+	"  xbbWbWbWbWbbWbbWbbWbbx  ",	
+	"  xbbWWWbWWWbbbbbWWWbbbx  ",
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",		
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",		
+	"  xbbWWWbWWWbbbbbbWWWbbx  ",
+	"  xbbWbbbbbWbbWbbWbbbbbx  ",		
+	"  xbbWWWbbbWbbbbbWbbbbbx  ",	
+	"  xbbWbWbbWbbbWbbWbbbbbx  ",	//20
+	"  xbbWWWbbWbbbbbbbWWWbbx  ",	
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",
+	"  xbbbbbbbbbbbbbbbbbbbbx  ",			
+	"  xxxxxxxxxxxxxxxxxxxxxx  ",
+	"                          "	//25
+};
+
 /*
 Template
 char *bitmap_button_ext_desktop_xxxxx[EXT_DESKTOP_BUTTONS_ANCHO]={
