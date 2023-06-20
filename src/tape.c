@@ -483,7 +483,7 @@ int tap_open(void)
 
             //Activamos top speed si conviene
             if (fast_autoload.v && !MACHINE_IS_MSX) {
-                debug_printf (VERBOSE_INFO,"Set top speed");
+                debug_printf (VERBOSE_INFO,"Set top speed from TAP open");
                 top_speed_timer.v=1;
             }
 
@@ -2497,7 +2497,7 @@ void realtape_insert(void)
 
 		//Activamos top speed si conviene
 		if (fast_autoload.v) {
-            debug_printf (VERBOSE_INFO,"Set top speed");
+            debug_printf (VERBOSE_INFO,"Set top speed from Realtape insert");
             top_speed_timer.v=1;                
         }
 

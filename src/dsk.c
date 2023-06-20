@@ -72,8 +72,8 @@ void dsk_insert_disk(char *nombre)
         reset_cpu();
 
         //Activamos top speed si conviene
-        if (fast_autoload.v) {
-            debug_printf (VERBOSE_INFO,"Set top speed");
+        if (fast_autoload.v && !MACHINE_IS_PCW) {
+            debug_printf (VERBOSE_INFO,"Set top speed from DSK insert disk");
             top_speed_timer.v=1;
         }        
 	}
