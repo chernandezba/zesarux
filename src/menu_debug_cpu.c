@@ -5789,10 +5789,13 @@ int new_plot_moves[8][2]={
                     parm1=parm1_byte;                       
                     parm2=parm2_byte;  
 
+                    //Filtrar caracteres no validos
+                    int caracter_mostrar=(parm0>=32 && parm0<=126 ? parm0 : '?');
+
                     puntero_grafico +=3;
 
                     sprintf (buffer_temporal,"TEXT %c%c    %4d %4d(%c) %d %d\n",ovr,inv,value/4,parm0,
-                            (parm0>=32 && parm0<=126 ? parm0 : '?'),
+                            caracter_mostrar,
                             parm1,parm2);
 
                     //ajustar x a char width
@@ -5809,7 +5812,7 @@ int new_plot_moves[8][2]={
                         }
 
                         zxvision_print_char_simple(w,posx,parm2+RENDER_PAWS_START_Y_DRAW,color_tinta,
-                            color_papel,0,parm0);
+                            color_papel,0,caracter_mostrar);
                     }
 
                 }
