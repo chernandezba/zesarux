@@ -334,3 +334,9 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 -Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
 *Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
 *Conmuto a otra ventana (pulsando con raton en otra ventana). Vuelvo a ascii table. Maximizo, y desmaximizo. En vez de volver a Posicion 2, se va a Posicion 1.
+
+
+-Quizá un modo para copiar el charset del juego cargado de spectrum y usarlo en el menu? y/o custom charsets en archivo de 768 bytes de longitud
+-mejorar render paws/gac/daad/quill:
+*uso atributos igual que spectrum: 8x8 paper+tinta
+*implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
