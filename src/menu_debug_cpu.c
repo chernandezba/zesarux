@@ -5312,13 +5312,21 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
             }
 
             //Caracter comentario
-            if (tipo_texto==1) {
-                //Assembler
-                util_concat_string(buffer_texto_comandos," ; ",MAX_TEXTO_GENERIC_MESSAGE);
-            }
-            else {
-                //C, Pascal
-                util_concat_string(buffer_texto_comandos," /* ",MAX_TEXTO_GENERIC_MESSAGE);
+            switch(tipo_texto) {
+                case 1:
+                    //Assembler
+                    util_concat_string(buffer_texto_comandos," ; ",MAX_TEXTO_GENERIC_MESSAGE);
+                break;
+            
+                case 2:
+                    //C
+                    util_concat_string(buffer_texto_comandos," /* ",MAX_TEXTO_GENERIC_MESSAGE);
+                break;
+
+                case 3:
+                    //Pascal
+                    util_concat_string(buffer_texto_comandos," (* ",MAX_TEXTO_GENERIC_MESSAGE);
+                break;
             }
         }
 
@@ -5326,11 +5334,20 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
         //El comando, Siempre se mete, sea drawstring tal cual o entre como comentario
         util_concat_string(buffer_texto_comandos,drawstring,MAX_TEXTO_GENERIC_MESSAGE);
 
-        //Fin de Linea
-        if (tipo_texto>1) {
-            //C, Pascal
-            util_concat_string(buffer_texto_comandos," */",MAX_TEXTO_GENERIC_MESSAGE);
-        }
+        //Caracter de final comentario
+        switch(tipo_texto) {       
+            case 2:
+                //C
+                util_concat_string(buffer_texto_comandos," */",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+            case 3:
+                //Pascal
+                util_concat_string(buffer_texto_comandos," *)",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+        }        
+
+
 
         //Salto de linea
         util_concat_string(buffer_texto_comandos,"\n",MAX_TEXTO_GENERIC_MESSAGE);
