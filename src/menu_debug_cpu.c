@@ -5277,8 +5277,8 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
 
 }
 
-void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_texto_comandos,int tipo_texto,
-    z80_int puntero_grafico,int longitud_comando)
+void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_texto_comandos,char *drawstring,
+    int tipo_texto,z80_int puntero_grafico,int longitud_comando)
 {
     if (buffer_texto_comandos!=NULL) {
 
@@ -5289,12 +5289,24 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
                 util_concat_string(buffer_texto_comandos,"  DB ",MAX_TEXTO_GENERIC_MESSAGE);
             break;
         }
-
+//temp prueba
+longitud_comando=4;
         if (tipo_texto>0) {
             //volcar bytes
             int i;
             for (i=0;i<longitud_comando;i++) {
-                sprintf(buffer_temporal,"%3d, ",peek_byte_no_time(puntero_grafico++) );
+                sprintf(buffer_temporal,"%3d",peek_byte_no_time(puntero_grafico++) );
+                util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+
+                //, si no es el ultimo
+                if (i!=longitud_comando-1) {
+                    util_concat_string(buffer_texto_comandos,", ",MAX_TEXTO_GENERIC_MESSAGE);
+                }
+            }
+
+            //Rellenar espacios hasta maximo 5 bytes
+            for (;i<5;i++) {
+                sprintf(buffer_temporal,"     ");
                 util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
             }
 
@@ -5311,7 +5323,7 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
 
 
         //El comando, Siempre se mete, sea drawstring tal cual o entre como comentario
-        util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+        util_concat_string(buffer_texto_comandos,drawstring,MAX_TEXTO_GENERIC_MESSAGE);
 
         //Fin de Linea
         if (tipo_texto>1) {
@@ -5323,7 +5335,7 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
         util_concat_string(buffer_texto_comandos,"\n",MAX_TEXTO_GENERIC_MESSAGE);
 
     }
-        //printf("%d %s\n",puntero_grafico,buffer_temporal);
+        
 }
 
 void menu_daad_render_aux_header_location(char *buffer_temporal,char *buffer_texto_comandos,int tipo_texto,
@@ -5447,7 +5459,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
 //temp
-tipo_texto=0;
+tipo_texto=1;
     
     //int i;
 
@@ -5477,6 +5489,8 @@ tipo_texto=0;
     z80_byte gflag;
 
     char buffer_temporal[200];
+
+    char drawstring[200];
 
     int esdaad=util_daad_detect();
 
@@ -5655,11 +5669,11 @@ int new_plot_moves[8][2]={
                 paws_render_last_y=parm1_byte;
 
                 if ((ovr=='o') && (inv=='i')) {
-                    sprintf (buffer_temporal,"ABS MOVE   %4d %4d",paws_render_last_x,paws_render_last_y);
+                    sprintf (drawstring,"ABS MOVE   %4d %4d",paws_render_last_x,paws_render_last_y);
                     dibujar=0;
                 }
                 else {
-                    sprintf (buffer_temporal,"PLOT  %c%c   %4d %4d",ovr,inv,paws_render_last_x,paws_render_last_y);
+                    sprintf (drawstring,"PLOT  %c%c   %4d %4d",ovr,inv,paws_render_last_x,paws_render_last_y);
                 }
 
                 if (dibujar && paws_render_disable_plot.v==0 && w!=NULL) {
@@ -5713,11 +5727,11 @@ int new_plot_moves[8][2]={
 
 
                 if (ovr=='o' && inv=='i') {
-                        sprintf (buffer_temporal,"REL MOVE   %4d %4d",parm0,parm1);
+                        sprintf (drawstring,"REL MOVE   %4d %4d",parm0,parm1);
                         dibujar=0; //solo mover
                 }
                 else {
-                        sprintf (buffer_temporal,"LINE  %c%c   %4d %4d",ovr,inv,parm0,parm1);
+                        sprintf (drawstring,"LINE  %c%c   %4d %4d",ovr,inv,parm0,parm1);
                 }
 
 
@@ -5769,10 +5783,10 @@ int new_plot_moves[8][2]={
                     longitud_comando +=3;
         
                     if (quillversion==0) {
-                        sprintf (buffer_temporal,"SHADE %c%c   %4d %4d %4d",ovr,inv,parm0,parm1,parm2);
+                        sprintf (drawstring,"SHADE %c%c   %4d %4d %4d",ovr,inv,parm0,parm1,parm2);
                     }
                     else {
-                        sprintf (buffer_temporal,"BSHADE     %4d %4d %4d",parm0,parm1,parm2);
+                        sprintf (drawstring,"BSHADE     %4d %4d %4d",parm0,parm1,parm2);
                     }
                 }
 
@@ -5789,7 +5803,7 @@ int new_plot_moves[8][2]={
 
                     longitud_comando +=4;
 
-                    sprintf (buffer_temporal,"BLOCK      %4d %4d %4d %4d",x1,y1,ancho,alto);
+                    sprintf (drawstring,"BLOCK      %4d %4d %4d %4d",x1,y1,ancho,alto);
 
                     //Tener en cuenta char width
                     int temp_x=((x1+RENDER_PAWS_START_X_DRAW)*8)/menu_char_width;
@@ -5861,7 +5875,7 @@ int new_plot_moves[8][2]={
 
                 longitud_comando +=3;
 
-                sprintf (buffer_temporal,"SHADE %c%c   %4d %4d %4d",ovr,inv,parm0,parm1,parm2);
+                sprintf (drawstring,"SHADE %c%c   %4d %4d %4d",ovr,inv,parm0,parm1,parm2);
             }
 
             else {
@@ -5873,7 +5887,7 @@ int new_plot_moves[8][2]={
 
                 longitud_comando +=2;
 
-                sprintf (buffer_temporal,"FILL       %4d %4d",parm0,parm1);
+                sprintf (drawstring,"FILL       %4d %4d",parm0,parm1);
             }
 		    
             
@@ -5892,7 +5906,7 @@ int new_plot_moves[8][2]={
                 if (!esdaad) mirror_x=mirror_y=+1;
 
                 //Chichen itza, localizacion 4 utiliza esto
-                sprintf (buffer_temporal,"GOSUB sc=%d %s %s %4d",value & 7,
+                sprintf (drawstring,"GOSUB sc=%d %s %s %4d",value & 7,
                         (mirror_x==-1 ? "MX" : "  "),
                         (mirror_y==-1 ? "MY" : "  "),
                         nueva_ubicacion
@@ -5955,7 +5969,7 @@ int new_plot_moves[8][2]={
 
                     longitud_comando +=3;
 
-                    sprintf (buffer_temporal,"TEXT %c%c    %4d %4d(%c) %d %d",ovr,inv,value/4,parm0,
+                    sprintf (drawstring,"TEXT %c%c    %4d %4d(%c) %d %d",ovr,inv,value/4,parm0,
                             caracter_mostrar,
                             parm1,parm2);
 
@@ -5982,7 +5996,7 @@ int new_plot_moves[8][2]={
                     parm0=new_plot_moves[value/4][0];
                     parm1=new_plot_moves[value/4][1];
 
-                    sprintf (buffer_temporal,"FREEHAND %c%c  %2d   %2d",ovr,inv,parm0,parm1);
+                    sprintf (drawstring,"FREEHAND %c%c  %2d   %2d",ovr,inv,parm0,parm1);
                     //printf("RPLOT location %d %d %d\n",location,parm0,parm1);
 
                     paws_render_last_x +=parm0;
@@ -6009,13 +6023,13 @@ int new_plot_moves[8][2]={
 	        case 5: 
             
                 if ((gflag & 0x80) !=0) {
-                    sprintf (buffer_temporal,"BRIGHT     %4d",value & 15);
+                    sprintf (drawstring,"BRIGHT     %4d",value & 15);
 
                     if (paws_render_disable_bright.v==0) paws_render_bright=value&1;
                 }
 
                 else {
-                    sprintf (buffer_temporal,"PAPER      %4d",value & 15);
+                    sprintf (drawstring,"PAPER      %4d",value & 15);
 
                     if (paws_render_disable_paper.v==0) paws_render_paper=value & 15;                         
                 }
@@ -6027,11 +6041,11 @@ int new_plot_moves[8][2]={
             case 6: 
                 
                 if ((gflag & 0x80) !=0)  {
-                    sprintf (buffer_temporal,"FLASH      %4d",value & 15);
+                    sprintf (drawstring,"FLASH      %4d",value & 15);
                 }
 
                 else {
-                    sprintf (buffer_temporal,"INK        %4d",value & 15);  
+                    sprintf (drawstring,"INK        %4d",value & 15);  
                     if (paws_render_disable_ink.v==0) paws_render_ink=value & 15;
                 }
                       
@@ -6040,16 +6054,20 @@ int new_plot_moves[8][2]={
 
             //END
             case 7:
-                sprintf (buffer_temporal,"END");
+                sprintf (drawstring,"END");
                 salir=1;
             break;
         }
 
         
-        if (buffer_texto_comandos!=NULL) {
+        /*if (buffer_texto_comandos!=NULL) {
             util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-        }
+        }*/
         //printf("%d %s\n",puntero_grafico,buffer_temporal);
+
+
+        menu_daad_render_aux_command_location(buffer_temporal,buffer_texto_comandos,drawstring,tipo_texto,
+            puntero_grafico,longitud_comando);
 
         puntero_grafico +=longitud_comando;
 
