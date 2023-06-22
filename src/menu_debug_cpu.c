@@ -5288,9 +5288,10 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
             case 1:
                 util_concat_string(buffer_texto_comandos,"  DB ",MAX_TEXTO_GENERIC_MESSAGE);
             break;
+
+            //Ni C ni pascal requieren nada
         }
-//temp prueba
-longitud_comando=4;
+
         if (tipo_texto>0) {
             //volcar bytes
             int i;
@@ -5298,8 +5299,8 @@ longitud_comando=4;
                 sprintf(buffer_temporal,"%3d",peek_byte_no_time(puntero_grafico++) );
                 util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
 
-                //, si no es el ultimo
-                if (i!=longitud_comando-1) {
+                //, si no es el ultimo o en C o Pascal
+                if (i!=longitud_comando-1 || tipo_texto==2 || tipo_texto==3) {
                     util_concat_string(buffer_texto_comandos,", ",MAX_TEXTO_GENERIC_MESSAGE);
                 }
             }
@@ -5459,7 +5460,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
 //temp
-tipo_texto=1;
+tipo_texto=2;
     
     //int i;
 
@@ -6072,6 +6073,28 @@ int new_plot_moves[8][2]={
         puntero_grafico +=longitud_comando;
 
     }
+
+    //Fin de dibujo. 
+    if (buffer_texto_comandos!=NULL) {
+        switch(tipo_texto) {
+            //Asm
+            case 1:
+                util_concat_string(buffer_texto_comandos,"\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+            //C
+            case 2:
+                util_concat_string(buffer_texto_comandos,"};\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+            //Pascal
+            case 3:
+                util_concat_string(buffer_texto_comandos,");\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+        }
+    }
+
 
     if (p_total_comandos!=NULL) {
         *p_total_comandos=total_comandos_parseados;
