@@ -5398,7 +5398,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
 //temp
-tipo_texto=3;
+tipo_texto=1;
     
     //int i;
 
@@ -5584,14 +5584,16 @@ int new_plot_moves[8][2]={
 
         int dibujar;    
 
-        puntero_grafico++;
+
+        int longitud_comando=1;
+        //puntero_grafico++;
 
 
         //Leer los siguientes 4 parámetros, algunos usados en diferentes comandos
-        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico);                       
-        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+1);                       
-        z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+2);
-        z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+3);
+        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);                       
+        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);                       
+        z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+3);
+        z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+4);
 
         switch (gflag & 7) {
 
@@ -5619,7 +5621,7 @@ int new_plot_moves[8][2]={
                     render_paws_putpixel(w,paws_render_last_x,paws_render_last_y,color_tinta);
                 }
 
-                puntero_grafico +=2;
+                longitud_comando +=2;
                 
             break;
 
@@ -5647,7 +5649,7 @@ int new_plot_moves[8][2]={
                     parm1=(parm0_byte)&0xF;
                     parm1 *=signo[1];
 
-                    puntero_grafico +=1;
+                    longitud_comando +=1;
                 }
 
                 else {
@@ -5657,7 +5659,7 @@ int new_plot_moves[8][2]={
                     parm1=parm1_byte;
                     parm1 *=signo[1];
 
-                    puntero_grafico +=2;
+                    longitud_comando +=2;
                 }
 
 
@@ -5715,7 +5717,7 @@ int new_plot_moves[8][2]={
                     parm1=parm1_byte*signo[1];
                     parm2=parm2_byte;
 
-                    puntero_grafico +=3;
+                    longitud_comando +=3;
         
                     if (quillversion==0) {
                         sprintf (buffer_temporal,"SHADE %c%c   %4d %4d %4d\n",ovr,inv,parm0,parm1,parm2);
@@ -5736,7 +5738,7 @@ int new_plot_moves[8][2]={
                     ancho=parm1_byte;
                     alto=parm0_byte;
 
-                    puntero_grafico +=4;
+                    longitud_comando +=4;
 
                     sprintf (buffer_temporal,"BLOCK      %4d %4d %4d %4d\n",x1,y1,ancho,alto);
 
@@ -5808,7 +5810,7 @@ int new_plot_moves[8][2]={
                 parm1=parm1_byte*signo[1];
                 parm2=parm2_byte;
 
-                puntero_grafico +=3;
+                longitud_comando +=3;
 
                 sprintf (buffer_temporal,"SHADE %c%c   %4d %4d %4d\n",ovr,inv,parm0,parm1,parm2);
             }
@@ -5820,7 +5822,7 @@ int new_plot_moves[8][2]={
                 parm0=parm0_byte*signo[0];
                 parm1=parm1_byte*signo[1];
 
-                puntero_grafico +=2;
+                longitud_comando +=2;
 
                 sprintf (buffer_temporal,"FILL       %4d %4d\n",parm0,parm1);
             }
@@ -5836,7 +5838,7 @@ int new_plot_moves[8][2]={
 
                 z80_byte nueva_ubicacion=parm0_byte;
 
-                puntero_grafico +=1;
+                longitud_comando +=1;
 
                 if (!esdaad) mirror_x=mirror_y=+1;
 
@@ -5902,7 +5904,7 @@ int new_plot_moves[8][2]={
                     //Filtrar caracteres no validos
                     int caracter_mostrar=(parm0>=32 && parm0<=126 ? parm0 : '?');
 
-                    puntero_grafico +=3;
+                    longitud_comando +=3;
 
                     sprintf (buffer_temporal,"TEXT %c%c    %4d %4d(%c) %d %d\n",ovr,inv,value/4,parm0,
                             caracter_mostrar,
@@ -5999,6 +6001,8 @@ int new_plot_moves[8][2]={
             util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
         }
         //printf("%d %s\n",puntero_grafico,buffer_temporal);
+
+        puntero_grafico +=longitud_comando;
 
     }
 
