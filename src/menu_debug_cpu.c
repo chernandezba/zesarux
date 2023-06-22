@@ -9773,7 +9773,7 @@ int textadventure_map_last_z=0;
 
 int textadventure_last_total_rooms=0;
 
-int menu_debug_textadventure_map_connections_forzar_recreate_window=0;
+int menu_debug_textadventure_map_connections_forzar_recreate_window=1;
 
 //recorrer conexiones solo si ha cambiado el juego
 void menu_debug_textadventure_follow_connections(zxvision_window *w)
@@ -10607,7 +10607,8 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
         //cuando entra 
         //arrancando ZEsarUX, la ventana se crea desde menu_debug_textadventure_map_connections_create_window y 
         //aun no tiene el juego en memoria del snapshot y por tanto no ha calculado bien el ancho y alto total del mapa
-        menu_debug_textadventure_map_connections_forzar_recreate_window=1;
+        //Ya no hace falta hacer esto porque esta a 1 por defecto
+        //menu_debug_textadventure_map_connections_forzar_recreate_window=1;
 
         return;
     }    
@@ -10620,6 +10621,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
     //Recrear la ventana hay que hacerlo cuando el usuario ha pulsado en esa ventana, y en determinadas circunstancias
     //no se deberia, en principio, recrear la ventana cuando esta está en segundo plano, pues pueden suceder diferentes glitches
     if (menu_debug_textadventure_map_connections_forzar_recreate_window) {
+        //printf("Recreate window\n");
         menu_debug_textadventure_map_connections_recreate_window(ventana);  
         menu_debug_textadventure_map_connections_forzar_recreate_window=0;
     }
