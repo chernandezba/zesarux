@@ -4999,7 +4999,9 @@ z80_bit paws_render_disable_ellipse={0};
 //Renderiza y/o retorna lista de comandos de una pantalla grafica en GAC
 //si buffer_texto_comandos=NULL, no rellena texto
 //si w==NULL, no dibuja nada
-void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos)
+//tipo_texto indica tipo exportado texto: 0: drawstring, 1: assembler, 2: C, 3: Pascal
+void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
+    char *buffer_texto_comandos,int tipo_texto)
 {
 
 
@@ -5179,7 +5181,7 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
                             //lista de comandos de la subrutina
                             //Esto solo cambiaria algo en el supuesto caso en que dibujamos con putpixel (w no es NULL) y
                             //aqui buffer_texto_comandos viene con no NULL (o sea, que dibujamos y listamos texto)
-                            menu_debug_daad_view_graphics_render_recursive_gac(w,nueva_ubicacion,nivel_recursivo+1,NULL);
+                            menu_debug_daad_view_graphics_render_recursive_gac(w,nueva_ubicacion,nivel_recursivo+1,NULL,0);
                             //printf("llamar recursivo text=%p w=%p\n",buffer_texto_comandos,w);
                         }
                         
@@ -5275,6 +5277,52 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
 
 }
 
+void menu_daad_render_aux_header_location(char *buffer_temporal,char *buffer_texto_comandos,int tipo_texto,
+    int location,int is_picture,int tinta_attr,int paper_attr)
+{
+
+
+
+    if (buffer_texto_comandos!=NULL) {
+        switch (tipo_texto) {
+
+
+            case 1:
+                //Assembler
+/*                
+Location_0:
+Location_0_isSoubrotine:               DB 1
+Location_0_INK:                        DB 7
+Location_0_PAPER:                      DB 0                
+*/              sprintf(buffer_temporal,"Location_%d:\n"
+                    "Location_%d_is_subroutine:      DB %d\n"
+                    "Location_%d_INK:                DB %d\n"
+                    "Location_%d_PAPER:              DB %d\n",
+                    location,
+                    location,!is_picture,
+                    location,tinta_attr,
+                    location,paper_attr);
+
+            break;
+                
+            //0 o default: drawstring
+            default:
+                sprintf(buffer_temporal,"Location %-3d graphics flags: %s Ink=%d Paper=%d\n",location,
+                    (is_picture ? "Picture " : "Subroutine "),
+                    tinta_attr, paper_attr 
+                );
+                
+            break;                
+        }
+
+        util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+        
+    }
+
+
+
+}
+
 int paws_render_default_ink=0;
 int paws_render_default_paper=7;
 
@@ -5291,7 +5339,10 @@ int paws_render_default_paper=7;
 //como al usar el Text Adventure Map, con zoom 5, y recargar chichen itza 1
 //es un puntero dado que actualizamos en origen, para que siempre se incremente y no varie al llamarse recursivamente
 //controla el maximo de veces totales que se llama a dicha funcion
-void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,int *p_total_comandos,int *p_total_tamanyo,int *contador_limite)
+
+//tipo_texto indica tipo exportado texto: 0: drawstring, 1: assembler, 2: C, 3: Pascal
+void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
+    int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
 
     
@@ -5343,6 +5394,7 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
 
    //Nota: El bit 6 del byte de attr no sé para que sirve y por tanto no lo muestro
 
+    /*
     sprintf(buffer_temporal,"Location %-3d graphics flags: %s Ink=%d Paper=%d\n",location,
         (is_picture ? "Picture " : "Subroutine "),
         tinta_attr, paper_attr 
@@ -5351,7 +5403,10 @@ void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte 
     if (buffer_texto_comandos!=NULL) {
         util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
     }
+    */
 
+    menu_daad_render_aux_header_location(buffer_temporal,buffer_texto_comandos,tipo_texto,
+        location,is_picture,tinta_attr,paper_attr);
 
 
     //Solo hacer cambio de ink y paper si no es subrutina
@@ -5769,7 +5824,7 @@ int new_plot_moves[8][2]={
                         //Esto solo cambiaria algo en el supuesto caso en que dibujamos con putpixel (w no es NULL) y
                         //aqui buffer_texto_comandos viene con no NULL (o sea, que dibujamos y listamos texto)
 
-                        menu_debug_daad_view_graphics_render_recursive(w,nueva_ubicacion,nivel_recursivo+1,NULL,NULL,NULL,contador_limite);
+                        menu_debug_daad_view_graphics_render_recursive(w,nueva_ubicacion,nivel_recursivo+1,NULL,NULL,NULL,contador_limite,0);
                         //printf("llamar recursivo text=%p w=%p\n",buffer_texto_comandos,w);
 
                         paws_render_mirror_x=antes_paws_render_mirror_x;
@@ -5949,10 +6004,10 @@ void menu_debug_daad_view_graphics_render_overlay(void)
     int contador_limite=0;
 
     if (util_gac_detect() ) {
-        menu_debug_daad_view_graphics_render_recursive_gac(w,location,0,NULL);
+        menu_debug_daad_view_graphics_render_recursive_gac(w,location,0,NULL,0);
     }
 
-    else menu_debug_daad_view_graphics_render_recursive(w,location,0,NULL,NULL,NULL,&contador_limite);
+    else menu_debug_daad_view_graphics_render_recursive(w,location,0,NULL,NULL,NULL,&contador_limite,0);
 
     zxvision_draw_window_contents(w);
 }
@@ -5976,9 +6031,9 @@ void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *text
     int contador_limite=0;
 
     if (util_gac_detect() ) {
-        menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto);
+        menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto,0);
     }
-    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite);    
+    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite,0);    
 }
 
 void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
@@ -6291,7 +6346,8 @@ void menu_debug_daad_view_graphics(void)
 
             int contador_limite=0;
 
-            menu_debug_daad_view_graphics_render_recursive(NULL,menu_debug_daad_view_graphics_render_localizacion,0,NULL,&location_commands,&location_size,&contador_limite);
+            menu_debug_daad_view_graphics_render_recursive(NULL,menu_debug_daad_view_graphics_render_localizacion,0,NULL,&location_commands,
+                &location_size,&contador_limite,0);
             paws_render_disable_gosub.v=antes_paws_render_disable_gosub;
 
             //printf("comandos: %d size %d\n",location_commands,location_size);
@@ -9099,7 +9155,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             paws_render_total_offset_x=x;
             paws_render_total_offset_y=y;
             int contador_limite=0;
-            menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite);
+            menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
             paws_render_total_escalado=antes_paws_render_total_escalado;
 
 
