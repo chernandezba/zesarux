@@ -6252,9 +6252,9 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
 
     int tipo_texto=0;
 
-    if (!util_compare_file_extension(nombre,"asm")) tipo_texto=1;
-    else if (!util_compare_file_extension(nombre,"c")) tipo_texto=2;
-    else if (!util_compare_file_extension(nombre,"pas")) tipo_texto=3;
+    if (!util_compare_file_extension(archivo,"asm")) tipo_texto=1;
+    else if (!util_compare_file_extension(archivo,"c")) tipo_texto=2;
+    else if (!util_compare_file_extension(archivo,"pas")) tipo_texto=3;
 
     //El uso de util_malloc_max_texto_generic_message
     //viene por semejanza a la funcion menu_debug_daad_view_graphics_render_list_commands
