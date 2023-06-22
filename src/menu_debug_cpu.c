@@ -37,6 +37,7 @@
 #include "zxvision.h"
 #include "menu_debug_cpu.h"
 #include "menu_items.h"
+#include "menu_filesel.h"
 #include "cpu.h"
 #include "debug.h"
 #include "operaciones.h"
@@ -5970,22 +5971,114 @@ void menu_debug_daad_view_graphics_render_prev(MENU_ITEM_PARAMETERS)
     if (menu_debug_daad_view_graphics_render_localizacion>0) menu_debug_daad_view_graphics_render_localizacion--;
 }
 
+void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *texto)
+{
+    int contador_limite=0;
+
+    if (util_gac_detect() ) {
+        menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto);
+    }
+    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite);    
+}
+
 void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
 {
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for graphics commands");
 	texto[0]=0;
 
-    int contador_limite=0;
+    menu_debug_daad_view_graphics_list_commands_aux(menu_debug_daad_view_graphics_render_localizacion,texto);
 
-    if (util_gac_detect() ) {
-        menu_debug_daad_view_graphics_render_recursive_gac(NULL,menu_debug_daad_view_graphics_render_localizacion,0,texto);
-    }
-    else menu_debug_daad_view_graphics_render_recursive(NULL,menu_debug_daad_view_graphics_render_localizacion,0,texto,NULL,NULL,&contador_limite);
-
-    //util_daad_get_graphics_list_commands(menu_debug_daad_view_graphics_render_localizacion,texto); 
     menu_generic_message("Graphics commands",texto);
 
     free(texto);
+}
+
+void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
+{
+
+    int tipo=menu_simple_two_choices("Export commands","Which picture?","Current One","All");
+    if (tipo==0) return; //ESC
+
+    
+    int posicion_dibujo=menu_debug_daad_view_graphics_render_localizacion;
+    int max_localizaciones=util_gac_daad_get_total_graphics();
+
+    switch(tipo) {
+        case 1:
+            //solo exportar una
+            max_localizaciones=posicion_dibujo+1;
+        break;
+
+        case 2:
+            //empezar desde el principio
+            posicion_dibujo=0;
+        break;
+
+    }
+
+	char archivo[PATH_MAX];
+
+	char *filtros[2];
+
+    filtros[0]="txt";
+    filtros[1]=0;
+
+    int ret;
+
+    ret=menu_filesel("Select TXT File",filtros,archivo);
+
+    if (!ret) return;
+
+
+    //Ver si archivo existe y preguntar
+    if (si_existe_archivo(archivo)) {
+
+        if (menu_confirm_yesno_texto("File exists","Overwrite?")==0) return;
+
+    }    
+
+    FILE *ptr_destino;
+    ptr_destino=fopen(archivo,"wb");
+
+    if (ptr_destino==NULL) {
+        debug_printf (VERBOSE_ERR,"Error writing output file");
+        return;
+    }
+
+    //El uso de util_malloc_max_texto_generic_message
+    //viene por semejanza a la funcion menu_debug_daad_view_graphics_render_list_commands
+    //en donde al final el mensaje se mostrara en una ventana
+    char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for graphics commands");
+
+    while (posicion_dibujo<max_localizaciones) {
+
+        texto[0]=0;
+
+        menu_debug_daad_view_graphics_list_commands_aux(posicion_dibujo,texto);
+
+        //printf("%s",texto);
+
+        //printf("\n");
+
+        
+        int longitud=strlen(texto);
+
+        fwrite(texto,1,longitud,ptr_destino);
+
+        //Meter salto de linea
+        char *salto_linea="\n";
+
+        fwrite(salto_linea,1,1,ptr_destino);
+
+        posicion_dibujo++;
+
+    }
+
+    free(texto);
+
+    fclose(ptr_destino);
+
+    menu_generic_message_splash("Export commands","OK. Finished process");
 }
 
 
@@ -6259,9 +6352,12 @@ void menu_debug_daad_view_graphics(void)
 
 
 
-        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_list_commands,NULL,"List ~~commands");
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_list_commands,NULL,"~~commands");
         menu_add_item_menu_tabulado(array_menu_common,27,linea);   
-        menu_add_item_menu_shortcut(array_menu_common,'c');        
+        menu_add_item_menu_shortcut(array_menu_common,'c');    
+
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_debug_daad_view_graphics_render_export_commands,NULL,"Exp.");
+        menu_add_item_menu_tabulado(array_menu_common,36,linea);                    
 
 
         //0123456789012345678901234567890123456789

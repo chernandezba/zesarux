@@ -38,7 +38,7 @@
 #include <errno.h>
 
 
-
+#include "menu_filesel.h"
 #include "zxvision.h"
 #include "menu_file_viewer_browser.h"
 #include "screen.h"

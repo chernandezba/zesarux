@@ -18,6 +18,7 @@ Improved Text Adventure features:
 - Added location description texto to image, using AI <-- TODO fix this description
 - Added configuration setting for char filter
 - Added configuration settings for Text Adventure Map: follow, show unvisited, show unconnected, show objects, show pictures, zoom level
+- Added export draw strings to external file
 - Preserve zoom level on Text Adventure Map when loading games
 
 Improved ZX Vision
