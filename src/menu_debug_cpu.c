@@ -5459,8 +5459,7 @@ int paws_render_default_paper=7;
 void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
-//temp
-tipo_texto=2;
+
     
     //int i;
 
@@ -6174,7 +6173,7 @@ void menu_debug_daad_view_graphics_render_prev(MENU_ITEM_PARAMETERS)
     if (menu_debug_daad_view_graphics_render_localizacion>0) menu_debug_daad_view_graphics_render_localizacion--;
 }
 
-void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *texto)
+void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *texto,int tipo_texto)
 {
     int contador_limite=0;
 
@@ -6189,7 +6188,7 @@ void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for graphics commands");
 	texto[0]=0;
 
-    menu_debug_daad_view_graphics_list_commands_aux(menu_debug_daad_view_graphics_render_localizacion,texto);
+    menu_debug_daad_view_graphics_list_commands_aux(menu_debug_daad_view_graphics_render_localizacion,texto,0);
 
     menu_generic_message("Graphics commands",texto);
 
@@ -6221,14 +6220,17 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
 
 	char archivo[PATH_MAX];
 
-	char *filtros[2];
+	char *filtros[5];
 
     filtros[0]="txt";
-    filtros[1]=0;
+    filtros[1]="asm";
+    filtros[2]="c";
+    filtros[3]="pas";
+    filtros[4]=0;
 
     int ret;
 
-    ret=menu_filesel("Select TXT File",filtros,archivo);
+    ret=menu_filesel("Select File",filtros,archivo);
 
     if (!ret) return;
 
@@ -6248,6 +6250,12 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
         return;
     }
 
+    int tipo_texto=0;
+
+    if (!util_compare_file_extension(nombre,"asm")) tipo_texto=1;
+    else if (!util_compare_file_extension(nombre,"c")) tipo_texto=2;
+    else if (!util_compare_file_extension(nombre,"pas")) tipo_texto=3;
+
     //El uso de util_malloc_max_texto_generic_message
     //viene por semejanza a la funcion menu_debug_daad_view_graphics_render_list_commands
     //en donde al final el mensaje se mostrara en una ventana
@@ -6257,7 +6265,9 @@ void menu_debug_daad_view_graphics_render_export_commands(MENU_ITEM_PARAMETERS)
 
         texto[0]=0;
 
-        menu_debug_daad_view_graphics_list_commands_aux(posicion_dibujo,texto);
+
+
+        menu_debug_daad_view_graphics_list_commands_aux(posicion_dibujo,texto,tipo_texto);
 
         //printf("%s",texto);
 
