@@ -5286,24 +5286,77 @@ void menu_daad_render_aux_header_location(char *buffer_temporal,char *buffer_tex
     if (buffer_texto_comandos!=NULL) {
         switch (tipo_texto) {
 
-
+            //Assembler
             case 1:
-                //Assembler
+                
 /*                
 Location_0:
 Location_0_isSoubrotine:               DB 1
 Location_0_INK:                        DB 7
-Location_0_PAPER:                      DB 0                
-*/              sprintf(buffer_temporal,"Location_%d:\n"
+Location_0_PAPER:                      DB 0     
+Location_0_DRAWSTRING:           
+*/              
+                sprintf(buffer_temporal,
+                    "Location_%d:\n"
                     "Location_%d_is_subroutine:      DB %d\n"
                     "Location_%d_INK:                DB %d\n"
-                    "Location_%d_PAPER:              DB %d\n",
+                    "Location_%d_PAPER:              DB %d\n"
+                    "Location_%d_DRAWSTRING:         "
+                    ,
                     location,
                     location,!is_picture,
                     location,tinta_attr,
-                    location,paper_attr);
+                    location,paper_attr,
+                    location
+                    );
 
             break;
+
+            //C
+            case 2:
+                
+/*                
+unsigned char Location_0_isSoubrotine = 1;
+unsigned char Location_0_INK =7;
+unsigned char Location_0_PAPER = 0;  
+unsigned char Location_0_DRAWSTRING[] = {           
+*/              
+                sprintf(buffer_temporal,
+                    "unsigned char Location_%d_is_subroutine=%d;\n"
+                    "unsigned char Location_%d_INK=%d;\n"
+                    "unsigned char Location_%d_PAPER=%d;\n"
+                    "unsigned char Location_%d_DRAWSTRING[] = {\n"
+                    ,
+                    location,!is_picture,
+                    location,tinta_attr,
+                    location,paper_attr,
+                    location
+                    );
+
+            break;     
+
+            //Pascal
+            case 3:
+                
+/*                
+var Location_0_isSoubrotine: byte = 1;
+var Location_0_INK: byte =7;
+var Location_0_PAPER: byte = 0;   
+var Location_0_DRAWSTRING : array of byte = (2,3,...);         
+*/              
+                sprintf(buffer_temporal,
+                    "var Location_%d_is_subroutine: byte = %d;\n"
+                    "var Location_%d_INK: byte = %d;\n"
+                    "var Location_%d_PAPER: byte = %d;\n"
+                    "var Location_%d_DRAWSTRING: array of byte = (\n"
+                    ,
+                    location,!is_picture,
+                    location,tinta_attr,
+                    location,paper_attr,
+                    location
+                    );
+
+            break;                     
                 
             //0 o default: drawstring
             default:
@@ -5344,7 +5397,8 @@ int paws_render_default_paper=7;
 void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
     int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 {
-
+//temp
+tipo_texto=3;
     
     //int i;
 
