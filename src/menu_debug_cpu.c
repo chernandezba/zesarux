@@ -6178,9 +6178,9 @@ void menu_debug_daad_view_graphics_list_commands_aux(int localizacion,char *text
     int contador_limite=0;
 
     if (util_gac_detect() ) {
-        menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto,0);
+        menu_debug_daad_view_graphics_render_recursive_gac(NULL,localizacion,0,texto,tipo_texto);
     }
-    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite,0);    
+    else menu_debug_daad_view_graphics_render_recursive(NULL,localizacion,0,texto,NULL,NULL,&contador_limite,tipo_texto);    
 }
 
 void menu_debug_daad_view_graphics_render_list_commands(MENU_ITEM_PARAMETERS)
