@@ -301,7 +301,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
 
--exportación lenguaje imagenes "drawstring" de quill/paws/daad
 
 
 
@@ -341,4 +340,4 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 *uso atributos igual que spectrum: 8x8 paper+tinta
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
--exportar drawstring: pendiente GAC
+-poder leer un charset de un juego cargado (variable CHARS de sistema) y cargarlo en el GUI style

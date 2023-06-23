@@ -4954,329 +4954,6 @@ void render_paws_putpixel(zxvision_window *w,int x,int y,int color)
 
 
 
-
-zxvision_window zxvision_window_paws_render;
-
-zxvision_window *menu_debug_daad_view_graphics_render_overlay_window;
-
-
-int menu_debug_daad_view_graphics_render_localizacion=0;
-
-//Para poder llamar de manera recursiva, estos parámetros se definen fuera
-
-//x,y ultima no se usa en gac
-int paws_render_last_x=0;
-int paws_render_last_y=0;
-int paws_render_ink=0;
-int paws_render_paper=7;
-int paws_render_bright=0;
-int paws_render_mirror_x=+1;
-int paws_render_mirror_y=+1;
-int paws_render_escala=0;
-
-int gac_render_default_ink=0;
-int gac_render_default_paper=7;
-
-//Coordenadas iniciales, importantes para cuando no hay un plot inicial (sobretodo subrutinas pero tambien algun picture)
-int paws_render_initial_x=0;
-int paws_render_initial_y=0;
-
-//Habilitar/deshabilitar comandos en render
-z80_bit paws_render_disable_block={0};
-z80_bit paws_render_disable_gosub={0};
-z80_bit paws_render_disable_plot={0};
-z80_bit paws_render_disable_line={0};
-z80_bit paws_render_disable_text={0};
-z80_bit paws_render_disable_ink={0};
-z80_bit paws_render_disable_bright={0};
-z80_bit paws_render_disable_paper={0};
-
-z80_bit paws_render_disable_rectangle={0};
-z80_bit paws_render_disable_ellipse={0};
-
-
-
-//Renderiza y/o retorna lista de comandos de una pantalla grafica en GAC
-//si buffer_texto_comandos=NULL, no rellena texto
-//si w==NULL, no dibuja nada
-//tipo_texto indica tipo exportado texto: 0: drawstring, 1: assembler, 2: C, 3: Pascal
-void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
-    char *buffer_texto_comandos,int tipo_texto)
-{
-
-
-
-    z80_int puntero_grafico;
-
-    z80_byte gflag;
-    char buffer_temporal[200];    
-
-
-    //int contador_habitacion_gac=0;
-
-    int longitud_habitacion_gac;
-
-
-        
-
-    //ungac de https://www.seasip.info/Unix/UnQuill/
-
-    puntero_grafico=peek_word_no_time(0xA52F);
-
-    //Info:
-    //word: location
-    //word: longitud contando estos 4 bytes
-    //byte: numero comandos
-    //comandos...
-
-
-
-    int location_id;
-
-    puntero_grafico=util_gac_get_graphics_location(location,&location_id);
-
-    longitud_habitacion_gac=peek_byte_no_time(puntero_grafico++);
-    //printf("longitud habitacion: %d\n",longitud_habitacion_gac);
-    
-
-
-    sprintf(buffer_temporal,"Location %-3d ID %d\n",location,
-        location_id);
-
-    if (buffer_texto_comandos!=NULL) {
-        util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-    }
-
-
-
-    //Solo hacer cambio de ink y paper si no es subrutina
-    if (nivel_recursivo==0) {
-        paws_render_ink=gac_render_default_ink;
-        paws_render_paper=gac_render_default_paper;
-        paws_render_bright=0;
-
-        /*
-        if (paws_render_disable_ink.v) {
-            paws_render_ink=0;
-            paws_render_paper=7;
-            paws_render_bright=0;
-        }
-        */
-  
-        //Rellenamos ventana con color indicado
-        //tener en cuenta char width
-       
-       
-        int ancho_rellenar=256/menu_char_width;
-        
-        int rellena_x,rellena_y;
-        for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
-            for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
-                if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,gac_render_default_ink,
-                            gac_render_default_paper,0,' ');
-            }
-        }
-         
-    }
-
-
-
-
-
-    while (longitud_habitacion_gac>0) {
-
-        gflag=peek_byte_no_time(puntero_grafico++);
-
-        longitud_habitacion_gac--;
-
-        //z80_byte nargs;
-
-
-
-        int x1,x2,y1,y2;
-                
-
-
-        z80_int id_localizacion;  
-
-
-        //Leer los siguientes 4 parámetros, algunos usados en diferentes comandos
-        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico);                       
-        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+1);                       
-        z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+2);
-        z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+3);
-
-
-
-        switch (gflag) {
-            case 0x01:
-                sprintf(buffer_temporal,"BORDER  %3d\n", parm0_byte);
-                puntero_grafico++;
-            break;
-
-            case 0x02:
-                sprintf(buffer_temporal,"PLOT    %3d %3d\n", parm0_byte, parm1_byte);
-                puntero_grafico += 2;
-
-                    
-                if (paws_render_disable_plot.v==0 && w!=NULL) {
-                    render_paws_putpixel(w,parm0_byte,parm1_byte,paws_render_ink+paws_render_bright*8);
-                }      
-
-            break;
-
-            case 0x03:
-                sprintf(buffer_temporal,"ELLIPSE %3d %3d %3d %3d\n",
-                        parm0_byte, parm1_byte,
-                        parm2_byte, parm3_byte);
-                puntero_grafico += 4;
-
-                x1=parm0_byte;
-                y1=parm1_byte;
-
-                int radio_x=parm2_byte-x1;
-                int radio_y=parm3_byte-y1;
-
-                if (paws_render_disable_ellipse.v==0 && w!=NULL) {
-                    zxvision_draw_ellipse(w,x1,y1,radio_x,radio_y,paws_render_ink+paws_render_bright*8,render_paws_putpixel,360);
-                }
-
-            break;
-
-            case 0x04:
-                sprintf(buffer_temporal,"FILL    %3d %3d\n", parm0_byte, parm1_byte); 
-                puntero_grafico += 2;
-            break;
-
-            case 0x05:
-                sprintf(buffer_temporal,"BGFILL  %3d %3d\n", parm0_byte, parm1_byte); 
-                puntero_grafico += 2;
-            break;
-            
-            case 0x06:
-                sprintf(buffer_temporal,"SHADE   %3d %3d\n", parm0_byte, parm1_byte); 
-                puntero_grafico += 2;
-            break;
-
-            case 0x07:
-                id_localizacion=parm1_byte * 256 + parm0_byte;
-                sprintf(buffer_temporal,"CALL    %d\n", id_localizacion);
-                puntero_grafico += 2;
-
-
-                if (paws_render_disable_gosub.v==0 && w!=NULL) {
-
-                    //Saltar a subrutina
-                    if (nivel_recursivo>=10) {
-                        //printf("Maximum nested gosub reached\n");
-                    }
-                    else {                         
-
-                        //Buscar el numero de habitacion
-                        int nueva_ubicacion=util_gac_get_index_location_by_id(id_localizacion);
-                        //printf("Call. Nueva ubicacion para indice %d es %d\n",id_localizacion,nueva_ubicacion);
-                        if (nueva_ubicacion>=0) {
-
-                            //Al llamar a subrutina pone buffer a texto a null, para que no meta
-                            //lista de comandos de la subrutina
-                            //Esto solo cambiaria algo en el supuesto caso en que dibujamos con putpixel (w no es NULL) y
-                            //aqui buffer_texto_comandos viene con no NULL (o sea, que dibujamos y listamos texto)
-                            menu_debug_daad_view_graphics_render_recursive_gac(w,nueva_ubicacion,nivel_recursivo+1,NULL,0);
-                            //printf("llamar recursivo text=%p w=%p\n",buffer_texto_comandos,w);
-                        }
-                        
-                    }
-                }
-
-
-            break;
-
-            case 0x08:
-                sprintf(buffer_temporal,"RECT    %3d %3d %3d %3d\n",
-                        parm0_byte, parm1_byte,
-                        parm2_byte, parm3_byte);
-                puntero_grafico += 4;
-
-                x1=parm0_byte;
-                y1=parm1_byte;
-
-                x2=parm2_byte;
-                y2=parm3_byte;                        
-
-                if (paws_render_disable_rectangle.v==0 && w!=NULL) {
-                    //Abajo                        
-                    zxvision_draw_line(w,x1,y1,x2,y1,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                    //Arriba
-                    zxvision_draw_line(w,x1,y2,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                    //Izquierda
-                    zxvision_draw_line(w,x1,y1,x1,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                    //Derecha
-                    zxvision_draw_line(w,x2,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                }                    
-            break;
-
-            case 0x09:
-                sprintf(buffer_temporal,"LINE    %3d %3d %3d %3d\n",
-                        parm0_byte, parm1_byte,
-                        parm2_byte, parm3_byte);
-                puntero_grafico += 4;
-
-                
-                x1=parm0_byte;
-                y1=parm1_byte;
-
-                x2=parm2_byte;
-                y2=parm3_byte;                        
-
-                if (paws_render_disable_line.v==0) {
-                    if (w!=NULL) zxvision_draw_line(w,x1,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
-                }
-
-            break;
-
-            case 0x10:
-                sprintf (buffer_temporal,"INK     %3d\n",parm0_byte);  
-                if (paws_render_disable_ink.v==0) paws_render_ink=parm0_byte & 7;
-                puntero_grafico++;
-            break;
-
-            case 0x11:
-                sprintf(buffer_temporal,"PAPER   %3d\n", parm0_byte);
-                if (paws_render_disable_paper.v==0) paws_render_paper=parm0_byte;                
-                puntero_grafico++;
-            break;
-
-            case 0x12:
-                sprintf(buffer_temporal,"BRIGHT  %3d\n", parm0_byte);
-                puntero_grafico++;
-                if (paws_render_disable_bright.v==0) paws_render_bright=parm0_byte&1;
-            break;
-
-            case 0x13:
-                sprintf(buffer_temporal,"FLASH   %3d\n", parm0_byte);
-                puntero_grafico++;
-            break;
-
-            default: 
-                sprintf(buffer_temporal,"OP%02x\n", gflag);
-            
-            break;                    
-
-
-        }
-            
-     
-        if (buffer_texto_comandos!=NULL) {
-            //printf("Agregando texto %s\n",buffer_temporal);
-            util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
-        }
-
-
-    }
-
-
-}
-
 void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_texto_comandos,char *drawstring,
     int tipo_texto,z80_int puntero_grafico,int longitud_comando)
 {
@@ -5355,6 +5032,445 @@ void menu_daad_render_aux_command_location(char *buffer_temporal,char *buffer_te
     }
         
 }
+
+void menu_daad_render_aux_command_end_location(char *buffer_texto_comandos,int tipo_texto)
+{
+
+    //Fin de dibujo. 
+    if (buffer_texto_comandos!=NULL) {
+        switch(tipo_texto) {
+            //Asm
+            case 1:
+                util_concat_string(buffer_texto_comandos,"\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+            //C
+            case 2:
+                util_concat_string(buffer_texto_comandos,"};\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+            //Pascal
+            case 3:
+                util_concat_string(buffer_texto_comandos,");\n\n",MAX_TEXTO_GENERIC_MESSAGE);
+            break;
+
+        }
+    }
+}
+
+
+void menu_gac_render_aux_header_location(char *buffer_temporal,char *buffer_texto_comandos,int tipo_texto,
+    int location,int location_id)
+{
+
+
+
+    if (buffer_texto_comandos!=NULL) {
+        switch (tipo_texto) {
+
+            //Assembler
+            case 1:
+                
+            
+                sprintf(buffer_temporal,
+                    "Location_%d:\n"
+                    "Location_%d_id:      DB %d\n"
+                    "Location_%d_DRAWSTRING:\n"
+                    ,
+                    location,
+                    location,location_id,
+                    location
+                    );
+
+            break;
+
+            //C
+            case 2:
+                             
+                sprintf(buffer_temporal,
+                    "unsigned char Location_%d_id=%d;\n"
+                    "unsigned char Location_%d_DRAWSTRING[] = {\n"
+                    ,
+                    location,location_id,
+                    location
+                    );
+
+            break;     
+
+            //Pascal
+            case 3:
+                
+            
+                sprintf(buffer_temporal,
+                    "var Location_%d_id: byte = %d;\n"
+                    "var Location_%d_DRAWSTRING: array of byte = (\n"
+                    ,
+                    location,location_id,
+                    location
+                    );
+
+            break;                     
+                
+            //0 o default: drawstring
+            default:
+            
+                sprintf(buffer_temporal,"Location %-3d ID %d\n",location,
+                    location_id);
+
+                
+            break;                
+        }
+
+        util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+        
+    }
+
+
+
+}
+
+
+
+zxvision_window zxvision_window_paws_render;
+
+zxvision_window *menu_debug_daad_view_graphics_render_overlay_window;
+
+
+int menu_debug_daad_view_graphics_render_localizacion=0;
+
+//Para poder llamar de manera recursiva, estos parámetros se definen fuera
+
+//x,y ultima no se usa en gac
+int paws_render_last_x=0;
+int paws_render_last_y=0;
+int paws_render_ink=0;
+int paws_render_paper=7;
+int paws_render_bright=0;
+int paws_render_mirror_x=+1;
+int paws_render_mirror_y=+1;
+int paws_render_escala=0;
+
+int gac_render_default_ink=0;
+int gac_render_default_paper=7;
+
+//Coordenadas iniciales, importantes para cuando no hay un plot inicial (sobretodo subrutinas pero tambien algun picture)
+int paws_render_initial_x=0;
+int paws_render_initial_y=0;
+
+//Habilitar/deshabilitar comandos en render
+z80_bit paws_render_disable_block={0};
+z80_bit paws_render_disable_gosub={0};
+z80_bit paws_render_disable_plot={0};
+z80_bit paws_render_disable_line={0};
+z80_bit paws_render_disable_text={0};
+z80_bit paws_render_disable_ink={0};
+z80_bit paws_render_disable_bright={0};
+z80_bit paws_render_disable_paper={0};
+
+z80_bit paws_render_disable_rectangle={0};
+z80_bit paws_render_disable_ellipse={0};
+
+
+
+//Renderiza y/o retorna lista de comandos de una pantalla grafica en GAC
+//si buffer_texto_comandos=NULL, no rellena texto
+//si w==NULL, no dibuja nada
+//tipo_texto indica tipo exportado texto: 0: drawstring, 1: assembler, 2: C, 3: Pascal
+void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
+    char *buffer_texto_comandos,int tipo_texto)
+{
+
+
+
+    z80_int puntero_grafico;
+
+    z80_byte gflag;
+    char buffer_temporal[200];    
+
+    char drawstring[200];
+
+
+    //int contador_habitacion_gac=0;
+
+    int longitud_habitacion_gac;
+
+
+        
+
+    //ungac de https://www.seasip.info/Unix/UnQuill/
+
+    puntero_grafico=peek_word_no_time(0xA52F);
+
+    //Info:
+    //word: location
+    //word: longitud contando estos 4 bytes
+    //byte: numero comandos
+    //comandos...
+
+
+
+    int location_id;
+
+    puntero_grafico=util_gac_get_graphics_location(location,&location_id);
+
+    longitud_habitacion_gac=peek_byte_no_time(puntero_grafico++);
+    //printf("longitud habitacion: %d\n",longitud_habitacion_gac);
+    
+
+    /*
+    sprintf(buffer_temporal,"Location %-3d ID %d\n",location,
+        location_id);
+
+    if (buffer_texto_comandos!=NULL) {
+        util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+    }
+    */
+
+
+    menu_gac_render_aux_header_location(buffer_temporal,buffer_texto_comandos,tipo_texto,
+        location,location_id);
+
+
+    //Solo hacer cambio de ink y paper si no es subrutina
+    if (nivel_recursivo==0) {
+        paws_render_ink=gac_render_default_ink;
+        paws_render_paper=gac_render_default_paper;
+        paws_render_bright=0;
+
+        /*
+        if (paws_render_disable_ink.v) {
+            paws_render_ink=0;
+            paws_render_paper=7;
+            paws_render_bright=0;
+        }
+        */
+  
+        //Rellenamos ventana con color indicado
+        //tener en cuenta char width
+       
+       
+        int ancho_rellenar=256/menu_char_width;
+        
+        int rellena_x,rellena_y;
+        for (rellena_y=RENDER_PAWS_START_Y_DRAW;rellena_y<RENDER_PAWS_START_Y_DRAW+24;rellena_y++) {
+            for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
+                if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,gac_render_default_ink,
+                            gac_render_default_paper,0,' ');
+            }
+        }
+         
+    }
+
+
+
+
+
+    while (longitud_habitacion_gac>0) {
+
+        int longitud_comando=1;
+
+        gflag=peek_byte_no_time(puntero_grafico);
+
+        longitud_habitacion_gac--;
+
+        //z80_byte nargs;
+
+
+
+        int x1,x2,y1,y2;
+                
+
+
+        z80_int id_localizacion;  
+
+
+        //Leer los siguientes 4 parámetros, algunos usados en diferentes comandos
+        z80_byte parm0_byte=peek_byte_no_time(puntero_grafico+1);                       
+        z80_byte parm1_byte=peek_byte_no_time(puntero_grafico+2);                       
+        z80_byte parm2_byte=peek_byte_no_time(puntero_grafico+3);
+        z80_byte parm3_byte=peek_byte_no_time(puntero_grafico+4);
+
+
+
+        switch (gflag) {
+            case 0x01:
+                sprintf(drawstring,"BORDER  %3d", parm0_byte);
+                longitud_comando++;
+            break;
+
+            case 0x02:
+                sprintf(drawstring,"PLOT    %3d %3d", parm0_byte, parm1_byte);
+                longitud_comando += 2;
+
+                    
+                if (paws_render_disable_plot.v==0 && w!=NULL) {
+                    render_paws_putpixel(w,parm0_byte,parm1_byte,paws_render_ink+paws_render_bright*8);
+                }      
+
+            break;
+
+            case 0x03:
+                sprintf(drawstring,"ELLIPSE %3d %3d %3d %3d",
+                        parm0_byte, parm1_byte,
+                        parm2_byte, parm3_byte);
+                longitud_comando += 4;
+
+                x1=parm0_byte;
+                y1=parm1_byte;
+
+                int radio_x=parm2_byte-x1;
+                int radio_y=parm3_byte-y1;
+
+                if (paws_render_disable_ellipse.v==0 && w!=NULL) {
+                    zxvision_draw_ellipse(w,x1,y1,radio_x,radio_y,paws_render_ink+paws_render_bright*8,render_paws_putpixel,360);
+                }
+
+            break;
+
+            case 0x04:
+                sprintf(drawstring,"FILL    %3d %3d", parm0_byte, parm1_byte); 
+                longitud_comando += 2;
+            break;
+
+            case 0x05:
+                sprintf(drawstring,"BGFILL  %3d %3d", parm0_byte, parm1_byte); 
+                longitud_comando += 2;
+            break;
+            
+            case 0x06:
+                sprintf(drawstring,"SHADE   %3d %3d", parm0_byte, parm1_byte); 
+                longitud_comando += 2;
+            break;
+
+            case 0x07:
+                id_localizacion=parm1_byte * 256 + parm0_byte;
+                sprintf(drawstring,"CALL    %d", id_localizacion);
+                longitud_comando += 2;
+
+
+                if (paws_render_disable_gosub.v==0 && w!=NULL) {
+
+                    //Saltar a subrutina
+                    if (nivel_recursivo>=10) {
+                        //printf("Maximum nested gosub reached\n");
+                    }
+                    else {                         
+
+                        //Buscar el numero de habitacion
+                        int nueva_ubicacion=util_gac_get_index_location_by_id(id_localizacion);
+                        //printf("Call. Nueva ubicacion para indice %d es %d\n",id_localizacion,nueva_ubicacion);
+                        if (nueva_ubicacion>=0) {
+
+                            //Al llamar a subrutina pone buffer a texto a null, para que no meta
+                            //lista de comandos de la subrutina
+                            //Esto solo cambiaria algo en el supuesto caso en que dibujamos con putpixel (w no es NULL) y
+                            //aqui buffer_texto_comandos viene con no NULL (o sea, que dibujamos y listamos texto)
+                            menu_debug_daad_view_graphics_render_recursive_gac(w,nueva_ubicacion,nivel_recursivo+1,NULL,0);
+                            //printf("llamar recursivo text=%p w=%p\n",buffer_texto_comandos,w);
+                        }
+                        
+                    }
+                }
+
+
+            break;
+
+            case 0x08:
+                sprintf(drawstring,"RECT    %3d %3d %3d %3d",
+                        parm0_byte, parm1_byte,
+                        parm2_byte, parm3_byte);
+                longitud_comando += 4;
+
+                x1=parm0_byte;
+                y1=parm1_byte;
+
+                x2=parm2_byte;
+                y2=parm3_byte;                        
+
+                if (paws_render_disable_rectangle.v==0 && w!=NULL) {
+                    //Abajo                        
+                    zxvision_draw_line(w,x1,y1,x2,y1,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
+                    //Arriba
+                    zxvision_draw_line(w,x1,y2,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
+                    //Izquierda
+                    zxvision_draw_line(w,x1,y1,x1,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
+                    //Derecha
+                    zxvision_draw_line(w,x2,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
+                }                    
+            break;
+
+            case 0x09:
+                sprintf(drawstring,"LINE    %3d %3d %3d %3d",
+                        parm0_byte, parm1_byte,
+                        parm2_byte, parm3_byte);
+                longitud_comando += 4;
+
+                
+                x1=parm0_byte;
+                y1=parm1_byte;
+
+                x2=parm2_byte;
+                y2=parm3_byte;                        
+
+                if (paws_render_disable_line.v==0) {
+                    if (w!=NULL) zxvision_draw_line(w,x1,y1,x2,y2,paws_render_ink+paws_render_bright*8,render_paws_putpixel);
+                }
+
+            break;
+
+            case 0x10:
+                sprintf (drawstring,"INK     %3d",parm0_byte);  
+                if (paws_render_disable_ink.v==0) paws_render_ink=parm0_byte & 7;
+                longitud_comando++;
+            break;
+
+            case 0x11:
+                sprintf(drawstring,"PAPER   %3d", parm0_byte);
+                if (paws_render_disable_paper.v==0) paws_render_paper=parm0_byte;                
+                longitud_comando++;
+            break;
+
+            case 0x12:
+                sprintf(drawstring,"BRIGHT  %3d", parm0_byte);
+                longitud_comando++;
+                if (paws_render_disable_bright.v==0) paws_render_bright=parm0_byte&1;
+            break;
+
+            case 0x13:
+                sprintf(drawstring,"FLASH   %3d", parm0_byte);
+                longitud_comando++;
+            break;
+
+            default: 
+                sprintf(drawstring,"OP%02x", gflag);
+            
+            break;                    
+
+
+        }
+            
+     
+        /*if (buffer_texto_comandos!=NULL) {
+            //printf("Agregando texto %s\n",buffer_temporal);
+            util_concat_string(buffer_texto_comandos,buffer_temporal,MAX_TEXTO_GENERIC_MESSAGE);
+        }*/
+
+        menu_daad_render_aux_command_location(buffer_temporal,buffer_texto_comandos,drawstring,tipo_texto,
+            puntero_grafico,longitud_comando);        
+
+        puntero_grafico +=longitud_comando;
+
+
+    }
+
+    //Fin de dibujo. 
+    menu_daad_render_aux_command_end_location(buffer_texto_comandos,tipo_texto);
+
+
+
+}
+
+
 
 void menu_daad_render_aux_header_location(char *buffer_temporal,char *buffer_texto_comandos,int tipo_texto,
     int location,int is_picture,int tinta_attr,int paper_attr)
@@ -6090,26 +6206,11 @@ int new_plot_moves[8][2]={
 
     }
 
+    
+
     //Fin de dibujo. 
-    if (buffer_texto_comandos!=NULL) {
-        switch(tipo_texto) {
-            //Asm
-            case 1:
-                util_concat_string(buffer_texto_comandos,"\n\n",MAX_TEXTO_GENERIC_MESSAGE);
-            break;
+    menu_daad_render_aux_command_end_location(buffer_texto_comandos,tipo_texto);
 
-            //C
-            case 2:
-                util_concat_string(buffer_texto_comandos,"};\n\n",MAX_TEXTO_GENERIC_MESSAGE);
-            break;
-
-            //Pascal
-            case 3:
-                util_concat_string(buffer_texto_comandos,");\n\n",MAX_TEXTO_GENERIC_MESSAGE);
-            break;
-
-        }
-    }
 
 
     if (p_total_comandos!=NULL) {
