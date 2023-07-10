@@ -326,9 +326,6 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 
 -cambio de maquina con full screen (16k a 48k) peta
 
--process switcher: boton derecho sobre icono, agregar opciones para desminimizar, desmaximizar 
-
-
 
 -Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
 *Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2
@@ -340,4 +337,3 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 *uso atributos igual que spectrum: 8x8 paper+tinta
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
--poder leer un charset de un juego cargado (variable CHARS de sistema) y cargarlo en el GUI style

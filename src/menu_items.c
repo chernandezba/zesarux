@@ -16821,7 +16821,9 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
 
 
     int tipo=menu_simple_nine_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
-        "Minimize","Maximize","Switch always visible","Information","Close","Create link on ZX Desktop");
+        (ventana->is_minimized ? "Unminimize" : "Minimize"),
+        (ventana->is_maximized ? "Unmaximize" : "Maximize"),
+        "Switch always visible","Information","Close","Create link on ZX Desktop");
 
     if (tipo==0) return; //ESC	
 
@@ -16863,11 +16865,11 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         break;
 
         case 4:
-            zxvision_minimize_window(ventana);
+            zxvision_toggle_minimize_window(ventana);
         break;
 
         case 5:
-            zxvision_maximize_window(ventana);
+            zxvision_toggle_maximize_window(ventana);
         break;
 
         case 6:
@@ -37079,7 +37081,9 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
 
             //Esto muy parecido a process management pero no igual
             int respuesta=menu_simple_six_choices("Action","Do you want to",
-                "Minimize","Maximize","Switch always visible","Information","Close","Create link on ZX Desktop");
+                (ventana_pulsada->is_minimized ? "Unminimize" : "Minimize"),
+                (ventana_pulsada->is_maximized ? "Unmaximize" : "Maximize"),
+                "Switch always visible","Information","Close","Create link on ZX Desktop");
 
             ventana->always_visible=antes_always_visible;
             zxvision_reset_set_next_menu_position();
@@ -37090,7 +37094,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
                 case 1:
                     //decimos que la ventana a minimizar no se dibujara como si fuera activa
                     zxvision_reset_ventana_tipo_activa();
-                    zxvision_minimize_window(ventana_pulsada);
+                    zxvision_toggle_minimize_window(ventana_pulsada);
                     //despues del maximize, se ha redibujado esa ventana maximizada
                     //de alguna manera afectando a la ventana que es activa ahora
                     //hacer draw_window de nuestra ventana para corregir esto
@@ -37104,7 +37108,7 @@ void menu_process_switcher_handle_click_right(zxvision_window *ventana)
                 case 2:
                     //decimos que la ventana a maximizar no se dibujara como si fuera activa
                     zxvision_reset_ventana_tipo_activa();
-                    zxvision_maximize_window(ventana_pulsada);
+                    zxvision_toggle_maximize_window(ventana_pulsada);
                     //despues del maximize, se ha redibujado esa ventana maximizada
                     //de alguna manera afectando a la ventana que es activa ahora
                     //hacer draw_window de nuestra ventana para corregir esto
