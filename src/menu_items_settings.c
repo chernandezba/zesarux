@@ -1893,6 +1893,45 @@ void menu_interface_process_switcher_immutable(MENU_ITEM_PARAMETERS)
 }
 
 
+void menu_interface_charset_customfile(MENU_ITEM_PARAMETERS)
+{
+    char *filtros[3];
+
+    filtros[0]="bin";
+    filtros[1]="chr";
+    filtros[2]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    //Obtenemos directorio de cinta
+    //si no hay directorio, vamos a rutas predefinidas
+    if (char_set_customfile_path[0]==0) menu_chdir_sharedfiles();
+
+    else {
+        char directorio[PATH_MAX];
+        util_get_dir(char_set_customfile_path,directorio);
+        //printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+        //cambiamos a ese directorio, siempre que no sea nulo
+        if (directorio[0]!=0) {
+            debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+            zvfs_chdir(directorio);
+        }
+    }
+
+
+    menu_filesel("Select file",filtros,char_set_customfile_path);
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+    set_user_charset();
+
+ 
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2005,7 +2044,16 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
         menu_add_item_menu_sufijo(array_menu_common,temp_charset);
         menu_add_item_menu_es_avanzado(array_menu_common);
     
+        unsigned char *puntero=charset_list[user_charset].puntero;
+        if (puntero==char_set_customfile) {
+            char string_customcharset_file[20];
+            menu_tape_settings_trunc_name(char_set_customfile_path,string_customcharset_file,20);  
 
+            menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset_customfile,NULL,
+                "    Custom file","    Archivo personalizado","    Arxiu personalitzat");
+            menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_customcharset_file);
+            menu_add_item_menu_es_avanzado(array_menu_common);                      
+        }
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
