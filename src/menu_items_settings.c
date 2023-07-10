@@ -2101,7 +2101,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 
             if (MACHINE_IS_SPECTRUM) {
                 menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset_get_from_game,NULL,
-                    "    Get from game","    Get from game","    Get from game");                
+                    "    Get from game","    Obtener del juego","    Obtenir del joc");
+                menu_add_item_menu_es_avanzado(array_menu_common);
             }                   
         }
 
