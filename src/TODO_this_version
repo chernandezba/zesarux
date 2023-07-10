@@ -326,6 +326,10 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 
 -cambio de maquina con full screen (16k a 48k) peta
 
+-boton derecho sobre una ventana, que conmute a esa ventana (pero solo cuando el uso de boton derecho no sea ESC)
+aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto no se lanza la accion del boton izquierdo
+(y no se lanzaria tampoco la del botón derecho)
+
 
 -Al conmutar de ventana, no guarda del todo la posicion, pues no restaura bien al desmaximizar: ejemplo
 *Esto en ascii table. Posicion 1. La muevo a otra posicion, Posicion 2

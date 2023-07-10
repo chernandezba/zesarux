@@ -23,10 +23,23 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <dirent.h>
+
+#if defined(__APPLE__)
+        #include <sys/syslimits.h>
+#endif
+
 #include "charset.h"
 #include "zxvision.h"
 
+//Charset usado en la carga de custom file
+unsigned char char_set_customfile[TOTAL_ASCII_CHARSET_ELEMENTS];
 
+//Ruta al custom file que contiene un charset
+char char_set_customfile_path[PATH_MAX]="";
+
+
+//Puntero NULL: indica final
 struct s_charset_list charset_list[]={
     {"AmigaOS",char_set_amigaos},
     {"AtariTOS",char_set_ataritos},
@@ -40,6 +53,7 @@ struct s_charset_list charset_list[]={
     {"Sam Coupe",char_set_sam},
     {"Z88",char_set_z88},
     {"ZX Spectrum",char_set_spectrum},
+    {"CustomFile",char_set_customfile}, 
     
     {"",NULL}
 };
@@ -83,6 +97,20 @@ void set_user_charset(void)
 {
 
     if (user_charset>=0) {
+        unsigned char *puntero=charset_list[user_charset].puntero;
+        if (puntero==char_set_customfile) {
+            //Cargar el charset de un archivo
+            //Primero copiamos el charset de otro, para incluir los iconos, acentos, etc
+            //Lo escogemos del DOS que es mas "estandar"
+            int longitud=sizeof(char_set_customfile);
+            memcpy(char_set_customfile,char_set_dos,longitud);
+
+            //Y cargar el contenido del archivo
+            if (char_set_customfile_path[0]!=0) {
+                util_load_file_bytes(char_set_customfile,char_set_customfile_path,768);
+            }
+
+        }
         char_set=charset_list[user_charset].puntero;
     }
     else {
