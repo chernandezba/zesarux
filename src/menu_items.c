@@ -16950,8 +16950,10 @@ void menu_display_window_list_get_item_window(char *texto_destino,zxvision_windo
     else porcentaje=((item_ventana_puntero->last_spent_time_overlay)*100)/menu_display_get_total_time();
 
     //TODO: de momento 4 digitos para el pid
+    //Al final vendria % ) pero no lo metemos aqui, pues las llamadas a menu_display_window_list_get_item_window
+    //desde los items de menus lo hacen pasar a funcion de formateo (tipo printf) y se cargaria el %
     sprintf(texto_destino,
-        "%4u %-*s%*s %7ld us (%3d %%)",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
+        "%4u %-*s%*s %7ld us (%3d",item_ventana_puntero->pid,menu_display_window_list_espacios_nombre_ventana,item_ventana_puntero->window_title,
         menu_display_window_list_espacios_flags,window_flags,
         item_ventana_puntero->last_spent_time_overlay,porcentaje);    
 }
@@ -17042,8 +17044,15 @@ void menu_display_window_list_overlay(void)
 
 
                 char window_text[MAX_ITEM_WINDOW_NAME];
+                char pre_window_text[MAX_ITEM_WINDOW_NAME];
+                
 
-                menu_display_window_list_get_item_window(window_text,item_ventana_puntero);
+                menu_display_window_list_get_item_window(pre_window_text,item_ventana_puntero);
+
+			    sprintf(window_text,"%s %%)",pre_window_text);                
+
+
+
 
                 menu_display_window_list_print_item(menu_display_window_list_window,linea,window_text);
 
@@ -17176,7 +17185,7 @@ void menu_display_window_list(MENU_ITEM_PARAMETERS)
 
 
 			    menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_display_window_list_item,NULL,
-                    window_text);
+                    "%s %%)",window_text);
 
                 //Agregarle el nombre de geometria para saber que ventana es
                 menu_add_item_menu_misc(array_menu_common,item_ventana_puntero->geometry_name);
