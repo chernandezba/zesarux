@@ -27,6 +27,7 @@ Improved ZX Vision
 - Added action to put windows in cascade
 - Process switcher can be set to immutable, so massive actions on menu Windows, like minimize all, cascade, etc, don't affect it
 - Allow to use your own charset file on ZX Vision
+- Allow to get charset from a game and use as your own charset file on ZX Vision
 
 Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen

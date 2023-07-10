@@ -1932,6 +1932,49 @@ void menu_interface_charset_customfile(MENU_ITEM_PARAMETERS)
  
 }
 
+void menu_interface_charset_get_from_game(MENU_ITEM_PARAMETERS)
+{
+    //Obtenerlo de la variable del sistema chars
+
+    z80_int puntero=peek_word_no_time(23606);
+
+    puntero +=256;
+
+    int i;
+
+    for (i=0;i<768;i++) {
+        char_set_customfile[i]=peek_byte_no_time(puntero++);
+    }
+
+    menu_interface_change_gui_style_test(0);
+
+    if (menu_confirm_yesno("Ok charset to save to disk?")) {
+        strcpy(char_set_customfile_path,"customcharset.bin");
+
+        FILE *ptr_binaryfile_save;
+        ptr_binaryfile_save=fopen(char_set_customfile_path,"wb");
+        if (!ptr_binaryfile_save) {
+
+            debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",char_set_customfile_path);
+            return;
+        }
+
+        else {
+            fwrite(char_set_customfile,1,768,ptr_binaryfile_save);
+
+            fclose(ptr_binaryfile_save);
+
+            menu_generic_message_format("Ok file saved","File name is: %s",char_set_customfile_path);
+        }        
+
+    }
+
+    else {
+        //Dejarlo como estaba
+        set_user_charset();
+    }
+}
+
 void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
 {
     menu_item *array_menu_common;
@@ -2054,7 +2097,12 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_customcharset_file);
             menu_add_item_menu_tooltip(array_menu_common,"Allow to use your own charset file");
             menu_add_item_menu_ayuda(array_menu_common,"Allow to use your own charset file. Must be raw, 8x8 b&w, charset 32-127 (768 bytes)");
-            menu_add_item_menu_es_avanzado(array_menu_common);                      
+            menu_add_item_menu_es_avanzado(array_menu_common);   
+
+            if (MACHINE_IS_SPECTRUM) {
+                menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset_get_from_game,NULL,
+                    "    Get from game","    Get from game","    Get from game");                
+            }                   
         }
 
         menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
