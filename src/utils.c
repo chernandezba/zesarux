@@ -4280,7 +4280,10 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--gui-style \"%s\"",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
 
 
-  if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);                                              
+  if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);       
+
+  if (char_set_customfile_path[0]!=0)         ADD_STRING_CONFIG,"--charset-customfile \"%s\"",char_set_customfile_path);
+
 
   if (zeng_remote_hostname[0]!=0)             ADD_STRING_CONFIG,"--zeng-remote-hostname %s",zeng_remote_hostname);
                                               ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);

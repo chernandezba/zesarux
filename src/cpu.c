@@ -2628,6 +2628,7 @@ printf (
 
 printf (
 		"\n"
+        "--charset-customfile f                   Set file name for customfile charset\n"
 
 
 		"--setmachinebyname                       Select machine by name instead of manufacturer\n"
@@ -8957,6 +8958,13 @@ int parse_cmdline_options(int desde_commandline) {
                
             }
 
+            else if (!strcmp(argv[puntero_parametro],"--charset-customfile")) {
+				siguiente_parametro_argumento();
+
+                strcpy(char_set_customfile_path,argv[puntero_parametro]);
+
+                set_user_charset();
+            }
 
 
 			else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile")) {

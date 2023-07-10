@@ -2052,6 +2052,8 @@ void menu_zxvision_settings(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_en_es_ca(array_menu_common,MENU_OPCION_NORMAL,menu_interface_charset_customfile,NULL,
                 "    Custom file","    Archivo personalizado","    Arxiu personalitzat");
             menu_add_item_menu_sufijo_format(array_menu_common," [%s]",string_customcharset_file);
+            menu_add_item_menu_tooltip(array_menu_common,"Allow to use your own charset file");
+            menu_add_item_menu_ayuda(array_menu_common,"Allow to use your own charset file. Must be raw, 8x8 b&w, charset 32-127 (768 bytes)");
             menu_add_item_menu_es_avanzado(array_menu_common);                      
         }
 
