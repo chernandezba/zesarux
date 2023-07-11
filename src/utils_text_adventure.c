@@ -919,7 +919,7 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             temp=peek_byte_no_time(puntero);
         }
         if (count!=0 && temp!=0) {
-            //printf("count: %d\n",count);
+            printf("count: %d\n",count);
             //Este count es el identificador de palabra/sinonimo, palabras que son sinonimos tienen mismo count
             dictentry=readtokenised(puntero);
             char buffer_palabra[256];
@@ -1104,6 +1104,14 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
                 z80_int destination=peek_word_no_time(puntero);
                 puntero +=2;
                 printf("Direction: %d Destination: %d\n",scrap,destination);
+
+                /*
+                Para guerra de las vajillas, estos id son los valores de "count":
+                N: 15
+                S: 16
+                E: 17
+                O: 18
+                */
                //rooms[current]->exits[curexit]=calloc(1,sizeof(exit_struct));
                //rooms[current]->exits[curexit]->direction=scrap;
                //rooms[current]->exits[curexit]->destination=get16bit(infile);
@@ -1134,7 +1142,7 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
             printf("%s\n",result);
          printf("\nEnd location description\n");
 
-        //puntero +=len;
+        puntero +=len;
 
          //j+=len;
          //j+=3;
