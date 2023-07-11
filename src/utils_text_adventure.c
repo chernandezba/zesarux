@@ -1273,11 +1273,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
        debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
        util_gac_readobjects(objectptr,roomptr,diccionario_array);
-
-
-       //prueba obtener habitaciones
-        printf("Reading rooms: %x\n",roomptr);
-        util_gac_readrooms(roomptr,hpcptr,diccionario_array,-1,NULL);       
+  
 
    /*
 
@@ -1328,8 +1324,7 @@ void util_gac_get_locations_table(void)
      return;
   }        
 
-        util_clear_text_adventure_kdb();
-        util_gac_palabras_agregadas=0;
+
 
         //Asignar memoria para el diccionario. 
         z80_byte *diccionario_array;
@@ -1430,8 +1425,7 @@ void util_gac_get_location_name(int room,char *destino)
      return;
   }        
 
-        util_clear_text_adventure_kdb();
-        util_gac_palabras_agregadas=0;
+
 
         //Asignar memoria para el diccionario. 
         z80_byte *diccionario_array;
