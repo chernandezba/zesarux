@@ -341,3 +341,5 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
 -tabla localidades gac: no soportamos de momento room > 255
+-direcciones hardcoded segun GAC
+-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
