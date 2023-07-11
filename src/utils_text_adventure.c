@@ -982,6 +982,169 @@ int util_gac_detect(void)
     else return 0;
 }
 
+#define GAC_TOKEN_LOWERCASE       0x40
+#define GAC_TOKEN_PUNCTUATION     0xc0
+
+char gac_punctuation[]="\0 .,-!?:";
+
+void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_diccionario)
+{
+   int low, high, end=0;
+   int len, first, i, punc;
+   char working[255],scrap[1];
+
+   //result=calloc(1,255);
+
+   memset(result,'\0',254);
+   memset(working,'\0',254);
+   first=1;
+   len=0;
+   do
+   {
+      low=peek_byte_no_time(puntero++);
+      high=peek_byte_no_time(puntero++);
+      size-=2;
+      memset(working,'\0',254);
+      // First check whether we have reached the end of the string
+      if ((high & GAC_TOKEN_PUNCTUATION) == 0xc0)
+      { // is punctuation
+         if (low == 0) end=1;
+         for (i=0;i<low;i++)
+         {
+            punc=(high & 0x38) >> 3;
+            if (punc)
+            {
+               scrap[0]=gac_punctuation[punc];
+               strncat(working,scrap,1);
+            }
+            if (punc==0) end=1;
+         }
+      }
+    else
+      {
+        char buffer_palabra[256];
+        int dictentry=(high & 0x7)*256 + low;
+        util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
+
+         //if (!first) strncpy(working," ",1);
+         //strncat(working,dictionary[(high & 0x7)*256 + low],255);
+         strncat(working,buffer_palabra,255);
+         first=0;
+
+         if (high & GAC_TOKEN_LOWERCASE)
+         {  // token is lowercase
+            for (i=0;i<strlen(working);i++)
+            {
+               working[i]=tolower(working[i]);
+            }
+         }
+         else if ((high & 0xc0) == 0)
+         { // first character is uppercase
+            for (i=(working[0]==' '?2:1);i<strlen(working);i++)
+            {
+               working[i]=tolower(working[i]);
+            }
+         }
+         // Add punctuation to the end
+         punc=(high & 0x38) >> 3;
+         if (punc)
+         {
+            scrap[0]=gac_punctuation[punc];
+            strncat(working,scrap,1);
+         }
+         if (punc==0) end=1;
+      }
+      strncat(result,working,255);
+   } while (size>0 && end==0);
+
+}         
+
+int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
+{
+//FILE *infile;
+//header_struct *header;
+//room_struct **rooms;
+//int startptr, endptr;
+
+   int room, curexit, scrap; // keeps a count of the number of entries in the dictionary
+   //int j; //temporary char variables
+   int len; //temporary char variables
+   int current=0; // the current token
+
+   //fseek(infile, startptr, SEEK_SET);
+   //j=startptr;
+   do
+   {
+      z80_int room=peek_word_no_time(puntero);
+      puntero +=2;
+      if (room!=0)
+      {
+         //rooms[current]->room=room;
+         printf("Room: %d\n",room);
+         len=peek_word_no_time(puntero);
+         puntero +=2;
+         printf("Len: %d\n",len);
+
+         z80_int picture=peek_word_no_time(puntero);
+         puntero +=2;
+         printf("Picture: %d\n",picture);
+         //rooms[current]->picture=get16bit(infile);
+         //j+=6;
+         len-=2;
+
+         // exits
+         curexit=0;
+         do
+         {
+            scrap=peek_byte_no_time(puntero++);
+            len--;
+            //j++;
+            if (scrap != 0)
+            {
+                z80_int destination=peek_word_no_time(puntero);
+                puntero +=2;
+                printf("Direction: %d Destination: %d\n",scrap,destination);
+               //rooms[current]->exits[curexit]=calloc(1,sizeof(exit_struct));
+               //rooms[current]->exits[curexit]->direction=scrap;
+               //rooms[current]->exits[curexit]->destination=get16bit(infile);
+               //j+=2;
+               len-=2;
+               curexit++;
+            }
+         } while (scrap != 0);
+         printf("Total exits: %d\n",curexit);
+         //rooms[current]->noexits=curexit;
+
+
+         // get description
+         //j+=5;
+         //strcat(rooms[current]->description,readstring(infile, len));
+         int i;
+         printf("Location description: \n");
+
+         char result[256];
+
+         util_gac_readstring( puntero, len,result,mem_diccionario);
+
+
+         /*for (i=0;i<len;i++) {
+            z80_byte caracter=peek_byte_no_time(puntero++);
+            printf("%c",caracter);
+         */
+            printf("%s\n",result);
+         printf("\nEnd location description\n");
+
+        //puntero +=len;
+
+         //j+=len;
+         //j+=3;
+         current++;
+      }
+
+   } while (puntero<endptr);
+
+   return current-1;
+}               
 
 /* based on grackle tool
 http://ifarchive.jmac.org/indexes/if-archiveXsolutionsXtools.html
@@ -1029,6 +1192,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
         z80_int adverbptr=peek_word_no_time(spec_start+1*2);
         z80_int objectptr=peek_word_no_time(spec_start+2*2);
         z80_int roomptr=peek_word_no_time(spec_start+3*2);
+        z80_int hpcptr=peek_word_no_time(spec_start+4*2);
 
         z80_int endptr=peek_word_no_time(spec_start+10*2); 
 
@@ -1074,6 +1238,11 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
        debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
        util_gac_readobjects(objectptr,roomptr,diccionario_array);
+
+
+       //prueba obtener habitaciones
+        printf("Reading rooms: %x\n",roomptr);
+        util_gac_readrooms(roomptr,hpcptr,diccionario_array);       
 
    /*
 
