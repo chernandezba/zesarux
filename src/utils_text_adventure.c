@@ -855,56 +855,55 @@ void util_gac_get_string_dictionary(int index,z80_byte *memoria,char *string)
 
 void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
 {
-        //z80_byte count,temp; 
-        z80_int copia_puntero;
+    //z80_byte count,temp; 
+    z80_int copia_puntero;
 
-        z80_byte object,tamanyo,scrap;
-        //z80_byte weight;
+    z80_byte object,tamanyo,scrap;
+    //z80_byte weight;
 
-        int start;
+    int start;
 
-      do {
-      copia_puntero=puntero;
-      object=peek_byte_no_time(puntero++);
-      tamanyo=peek_byte_no_time(puntero++);
-      //weight=peek_byte_no_time(puntero++);
-      start=peek_byte_no_time(puntero++);
-      scrap=peek_byte_no_time(puntero++);
-      start+=scrap<<8;
-      tamanyo-=3;
-      //puntero+=5;
-      if (object!=0 && tamanyo!=0)
-      {
+    do {
+        copia_puntero=puntero;
+        object=peek_byte_no_time(puntero++);
+        tamanyo=peek_byte_no_time(puntero++);
+        //weight=peek_byte_no_time(puntero++);
+        start=peek_byte_no_time(puntero++);
+        scrap=peek_byte_no_time(puntero++);
+        start+=scrap<<8;
+        tamanyo-=3;
+        //puntero+=5;
+        if (object!=0 && tamanyo!=0) {
 
-         //len=0;
-         z80_int dictentry=readtokenised(puntero);
-         if ((dictentry&0xC000)==0xC000) {
-                 debug_printf (VERBOSE_DEBUG,"Ignore. Is a puntuation word");
-         }
-         else {
+            //len=0;
+            z80_int dictentry=readtokenised(puntero);
+            if ((dictentry&0xC000)==0xC000) {
+                debug_printf (VERBOSE_DEBUG,"Ignore. Is a puntuation word");
+            }
+            else {
                 char buffer_palabra[MAX_DICT_GAC_STRING_LENGTH+1];
                 //printf("token %d\n",dictentry);
                 util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
-         
+
                 debug_printf (VERBOSE_DEBUG,"Dictionary entry %d word: %s",dictentry,buffer_palabra); 
 
                 if (strlen(buffer_palabra)) {
-                        debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                        util_unpawsgac_add_word_kb(buffer_palabra);
-                        util_gac_palabras_agregadas++;
+                    debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                    util_unpawsgac_add_word_kb(buffer_palabra);
+                    util_gac_palabras_agregadas++;
                 }
-         
-                //strcat(objects[current]->description,readstring(infile, size));
-         }
-         puntero+=tamanyo;
-         puntero+=3;
-         //current++;
-      }
-      // move up to next object
-      puntero=copia_puntero+tamanyo+5;
-      //fseek(infile,fileptr+size+5,SEEK_SET);          
 
-  } while (puntero<endptr);
+                //strcat(objects[current]->description,readstring(infile, size));
+            }
+            puntero+=tamanyo;
+            puntero+=3;
+            //current++;
+        }
+        // move up to next object
+        puntero=copia_puntero+tamanyo+5;
+        //fseek(infile,fileptr+size+5,SEEK_SET);          
+
+    } while (puntero<endptr);
 }
 
 void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
@@ -920,6 +919,8 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             temp=peek_byte_no_time(puntero);
         }
         if (count!=0 && temp!=0) {
+            //printf("count: %d\n",count);
+            //Este count es el identificador de palabra/sinonimo, palabras que son sinonimos tienen mismo count
             dictentry=readtokenised(puntero);
             char buffer_palabra[256];
             util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
@@ -932,9 +933,6 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                 util_gac_palabras_agregadas++;
             }
 
-            //strncpy(words[current]->word,dictionary[dictentry],60);
-            //words[current]->number=count;
-            //current++;
         }
 
 
