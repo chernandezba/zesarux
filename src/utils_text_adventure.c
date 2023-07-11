@@ -4330,9 +4330,6 @@ void textadventure_generate_connections_table(void)
     }
 
     else if (util_gac_detect() ) {
-        int version;
-
-        //temp solo se deberia llamar a generar localidades
         util_gac_get_locations_table();
     }
     
