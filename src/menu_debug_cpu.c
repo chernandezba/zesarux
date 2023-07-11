@@ -9458,7 +9458,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int maxima_longitud=(tamanyo_interior_celda/menu_char_width)-2;
 
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
-            util_daad_get_locat_message(room,texto_localidad); 
+            util_textadventure_get_locat_message(room,texto_localidad); 
 
 
             //trocear
@@ -10177,7 +10177,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
 
 
-    if (util_textadventure_is_daad_quill_paws() ) {
+    if (util_textadventure_is_daad_quill_paws() || util_gac_detect() ) {
 
 
         //Estamos redibujando siempre el mapa porque hay que reflejar cosas como que el usuario ha cogido un objeto y 
@@ -10368,7 +10368,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
         zxvision_set_offset_x(w,0);
         zxvision_set_offset_y(w,0);
         zxvision_cls(w);
-        zxvision_print_string_defaults_fillspc(w,1,0,"No DAAD/PAWS/Quill game loaded");
+        zxvision_print_string_defaults_fillspc(w,1,0,"No DAAD/PAWS/Quill/GAC game loaded");
     }
 
     zxvision_draw_window_contents(w);

@@ -109,6 +109,7 @@ extern z80_int util_daad_get_total_graphics(void);
 extern void util_daad_get_user_message(z80_byte index,char *texto);
 extern void util_daad_get_sys_message(z80_byte index,char *texto);
 extern void util_daad_get_locat_message(z80_byte index,char *texto);
+extern void util_textadventure_get_locat_message(z80_byte index,char *texto);
 
 extern int util_daad_condact_uses_message(void);
 

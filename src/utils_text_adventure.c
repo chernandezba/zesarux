@@ -1116,6 +1116,18 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
                //rooms[current]->exits[curexit]->direction=scrap;
                //rooms[current]->exits[curexit]->destination=get16bit(infile);
                //j+=2;
+
+                //TODO de momento no soportamos room > 255
+                if (room>255 || destination>255) {
+                    debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
+                }
+                else {
+                    if (scrap==15) text_adventure_connections_table[room].north=destination;
+                    else if (scrap==16) text_adventure_connections_table[room].south=destination;
+                    else if (scrap==17) text_adventure_connections_table[room].east=destination;
+                    else if (scrap==18) text_adventure_connections_table[room].west=destination;
+                }
+
                len-=2;
                curexit++;
             }
@@ -2678,6 +2690,14 @@ void util_daad_get_locat_message(z80_byte index,char *texto)
    
 }
 
+void util_textadventure_get_locat_message(z80_byte index,char *texto)
+{
+    if (util_gac_detect()) {
+        //TODO
+        strcpy(texto,"GAC unknown");
+    }
+    else util_daad_get_locat_message(index,texto);
+}
 
 //Funcionalidad reemplazada con menu_debug_daad_view_graphics_render_recursive
 void old_delete_util_daad_get_graphics_list_commands(z80_byte location,char *texto)
@@ -4102,6 +4122,13 @@ void textadventure_generate_connections_table(void)
 
         return;
     }
+
+    else if (util_gac_detect() ) {
+        int version;
+
+        //temp solo se deberia llamar a generar localidades
+        util_gac_dump_dictonary(&version);
+    }
     
     else {
         //unsuported parser
@@ -4479,7 +4506,7 @@ void textadventure_follow_connections(int follow_rooms_no_connections)
 
     //printf("generando conexiones\n");
 
-    if (!util_textadventure_is_daad_quill_paws()) {
+    if (!util_textadventure_is_daad_quill_paws() && !util_gac_detect() ) {
         //printf("No hay aventura\n");
         return;
     }
