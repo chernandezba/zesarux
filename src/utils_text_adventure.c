@@ -909,38 +909,36 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
 
 void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
 {
-        z80_byte count,temp;
-       temp=1;
-       z80_int dictentry;
+    z80_byte count,temp;
+    temp=1;
+    z80_int dictentry;
 
-       do {
+    do {
 
-      count=peek_byte_no_time(puntero++);
-      if (count==0)
-      {
-         temp=peek_byte_no_time(puntero);
-      }
-      if (count!=0 && temp!=0)
-      {
-         dictentry=readtokenised(puntero);
-         char buffer_palabra[256];
-         util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
-         debug_printf (VERBOSE_DEBUG,"Dictionary entry %d word: %s",dictentry,buffer_palabra);
-         puntero+=2;
+        count=peek_byte_no_time(puntero++);
+        if (count==0) {
+            temp=peek_byte_no_time(puntero);
+        }
+        if (count!=0 && temp!=0) {
+            dictentry=readtokenised(puntero);
+            char buffer_palabra[256];
+            util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
+            debug_printf (VERBOSE_DEBUG,"Dictionary entry %d word: %s",dictentry,buffer_palabra);
+            puntero+=2;
 
-                if (strlen(buffer_palabra)) {
-                        debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                        util_unpawsgac_add_word_kb(buffer_palabra);
-                        util_gac_palabras_agregadas++;
-                }
+            if (strlen(buffer_palabra)) {
+                debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                util_unpawsgac_add_word_kb(buffer_palabra);
+                util_gac_palabras_agregadas++;
+            }
 
-         //strncpy(words[current]->word,dictionary[dictentry],60);
-         //words[current]->number=count;
-         //current++;
-      }
+            //strncpy(words[current]->word,dictionary[dictentry],60);
+            //words[current]->number=count;
+            //current++;
+        }
 
 
-       } while (puntero<endptr && count!=0 && temp!=0);
+    } while (puntero<endptr && count!=0 && temp!=0);
 }
 
 char *gacversions_strings[]={
