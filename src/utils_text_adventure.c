@@ -289,6 +289,14 @@ int util_textadventure_is_daad_quill_paws(void)
     return 0;
 }
 
+int util_textadventure_is_daad_quill_paws_gac(void)
+{
+    if (util_textadventure_is_daad_quill_paws()) return 1;
+    if (util_gac_detect()) return 1;
+
+    return 0;
+}
+
 //Variables que se inicializan desde util_unpaws_init_parameters
 
 z80_byte util_unpaws_NumMsg;
@@ -1415,18 +1423,8 @@ void util_gac_get_locations_table(void)
 
 
 
-    z80_int spec_start=0xA51F;
-
-    z80_int objectptr=peek_word_no_time(spec_start+2*2);
-    z80_int roomptr=peek_word_no_time(spec_start+3*2);
-    z80_int hpcptr=peek_word_no_time(spec_start+4*2);
-
-
-    //util_gac_get_diccionario();
-
-
     // obtener habitaciones
-    printf("Reading rooms: %x\n",roomptr);
+    printf("Reading rooms\n");
     util_gac_readrooms(-1,NULL,1);       
 
 
@@ -1441,14 +1439,11 @@ void util_gac_get_location_name(int room,char *destino)
 
 
     if (!util_gac_detect()) {
+        strcpy(destino,"Not GAC game");
         return;
     }        
 
 
-    z80_int spec_start=0xA51F;
-
-    z80_int roomptr=peek_word_no_time(spec_start+3*2);
-    z80_int hpcptr=peek_word_no_time(spec_start+4*2);
 
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
@@ -1470,6 +1465,8 @@ int util_gac_get_total_locations(void)
     printf("Reading rooms\n");
     int total_rooms=util_gac_readrooms(-1,NULL,0);       
     printf("Total rooms: %d\n",total_rooms);
+
+    return total_rooms;
 
 
 }

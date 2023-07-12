@@ -10756,7 +10756,7 @@ void menu_debug_textadventure_map_connections(MENU_ITEM_PARAMETERS)
 
 
        //Teclas no haran nada si no se ha cargado una aventura
-       if (util_textadventure_is_daad_quill_paws()) {
+       if (util_textadventure_is_daad_quill_paws_gac()) {
 
             if (tecla=='z' && menu_debug_textadventure_map_connections_zoom>0) {
                 menu_debug_textadventure_map_incdec_zoom(ventana,0);
