@@ -9375,9 +9375,17 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             //mostrar miniatura pantalla siempre que no sea subrutina
             int tinta_attr,paper_attr;
             int is_picture;
-            util_daad_get_graphics_attr(room,&tinta_attr,&paper_attr,&is_picture);  
 
-            if (is_picture) mostrar_dibujos=1; 
+            //GAC no tiene el concepto de subrutina
+            if (util_gac_detect()) mostrar_dibujos=1;
+
+            else {            
+                util_daad_get_graphics_attr(room,&tinta_attr,&paper_attr,&is_picture);  
+
+                if (is_picture) mostrar_dibujos=1; 
+            }
+
+
         }
 
         if (mostrar_dibujos) {
@@ -9431,7 +9439,22 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             paws_render_total_offset_x=x;
             paws_render_total_offset_y=y;
             int contador_limite=0;
-            menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
+
+
+    if (util_gac_detect() ) {
+        menu_debug_daad_view_graphics_render_recursive_gac(w,room,0,NULL,0);
+
+//void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
+  //  char *buffer_texto_comandos,int tipo_texto)        
+    }
+
+    else menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
+
+//void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
+    //int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
+
+            
+
             paws_render_total_escalado=antes_paws_render_total_escalado;
 
 
