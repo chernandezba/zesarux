@@ -342,5 +342,6 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 
 -tabla localidades gac: no soportamos de momento room > 255
 -direcciones hardcoded segun GAC
--diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
+-diccionario se debe recrear si cambia juego
+ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
 ok-no resetear OSD teclado aventura al hacer uso de mapa aventura
