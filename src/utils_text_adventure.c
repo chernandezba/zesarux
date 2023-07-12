@@ -914,11 +914,15 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
     } while (puntero<endptr);
 }
 
-//Palabras por defecto en juego la guerra de las vajillas
+//Palabras por defecto en juego la guerra de las vajillas (15,16,17,18 n,s,e,o)
+//otros por ejemplo mantis y quijote usan otros valores (pero iguales entre ellos en teoria)
 int gac_id_palabra_direccion_north=15;
 int gac_id_palabra_direccion_south=16;
 int gac_id_palabra_direccion_east=17;
 int gac_id_palabra_direccion_west=18;
+
+int gac_id_palabra_direccion_down=-1;
+int gac_id_palabra_direccion_up=-1;
 
 
 //Si buscar_palabras_direcciones no es 0, busca los id de palabras que corresponden a direcciones, y no agrega la palabra al teclado osd
@@ -955,6 +959,9 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                     if (!strcasecmp(buffer_palabra,"S")) gac_id_palabra_direccion_south=count;
                     if (!strcasecmp(buffer_palabra,"E")) gac_id_palabra_direccion_east=count;
                     if (!strcasecmp(buffer_palabra,"W") || !strcasecmp(buffer_palabra,"O")) gac_id_palabra_direccion_west=count;
+
+                    if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
+                    if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
                 }
             }
 
@@ -962,6 +969,12 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
 
 
     } while (puntero<endptr && count!=0 && temp!=0);
+
+    if (buscar_palabras_direcciones) {
+        printf("Palabras direcciones: n %d s %d e %d w %d down %d up %d\n",
+            gac_id_palabra_direccion_north,gac_id_palabra_direccion_south,gac_id_palabra_direccion_east,gac_id_palabra_direccion_west,
+            gac_id_palabra_direccion_down,gac_id_palabra_direccion_up);
+    }
 }
 
 char *gacversions_strings[]={
@@ -1185,6 +1198,8 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==gac_id_palabra_direccion_south) text_adventure_connections_table[room].south=destination;
                         else if (scrap==gac_id_palabra_direccion_east) text_adventure_connections_table[room].east=destination;
                         else if (scrap==gac_id_palabra_direccion_west) text_adventure_connections_table[room].west=destination;
+                        else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;
+                        else if (scrap==gac_id_palabra_direccion_up) text_adventure_connections_table[room].up=destination;
                     }
 
                     text_adventure_connections_table[room].gac_location_picture=picture;
@@ -1530,9 +1545,9 @@ int util_gac_get_total_locations(void)
 
 
     // obtener habitaciones
-    printf("Reading rooms\n");
+    //printf("Reading rooms\n");
     int total_rooms=util_gac_readrooms(-1,NULL,0);       
-    printf("Total rooms: %d\n",total_rooms);
+    //printf("Total rooms: %d\n",total_rooms);
 
     return total_rooms;
 

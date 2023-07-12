@@ -346,3 +346,5 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 -menu text adventure map de alguna manera visible en gac
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
 ok-no resetear OSD teclado aventura al hacer uso de mapa aventura
+-quijote no encuentra vocabulario, solo un verbo
+-objetos gac
