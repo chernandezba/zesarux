@@ -3965,6 +3965,10 @@ int util_textadventure_get_current_location_gac(void)
     return peek_byte_no_time(42221);
 }
 
+void util_gac_set_current_location(int location)
+{
+    poke_byte_no_time(42221,location);
+}
 
 //Retorna -1 si no es aventura de texto
 int util_textadventure_get_current_location(void)

@@ -10442,11 +10442,19 @@ void menu_debug_textadventure_map_connections_teleport(void)
 {
     int actual=util_textadventure_get_current_location();
 
-    int total_locations=util_daad_get_num_locat_messages();
+    int total_locations=util_textadventure_get_total_locations();
 
     menu_ventana_scanf_numero_enhanced("Location",&actual,4,+1,0,total_locations,0);
 
-    util_daad_put_flag_value(util_textadventure_get_current_location_flag(),actual);
+    if (util_gac_detect) {
+        util_gac_set_current_location(actual);
+    }
+
+    else {
+
+        util_daad_put_flag_value(util_textadventure_get_current_location_flag(),actual);
+
+    }
 }
 
 void menu_debug_textadventure_map_connections_create_window(zxvision_window *ventana)
