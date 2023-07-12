@@ -1059,10 +1059,30 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
 
 }         
 
+//Diccionario de palabras GAC
+z80_byte *gac_diccionario_array=NULL;
+
 //si roomdescription no es NULL, se guarda ahi la descripcion de la localidad
-//si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion
-int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int solo_esta_habitacion,char *roomdescription)
+//si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion, e indica que estamos buscando una habitacion
+//  para obtener su descripcion
+int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellenar_tabla_conexiones)
 {
+
+
+    z80_int spec_start=0xA51F;
+
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+    z80_int hpcptr=peek_word_no_time(spec_start+4*2);
+
+
+    //util_gac_readrooms(roomptr,hpcptr,gac_diccionario_array,room,destino,0);   
+
+    z80_int puntero=roomptr;
+    
+    z80_int endptr=hpcptr;
+    
+    z80_byte *mem_diccionario=gac_diccionario_array;
+
 //FILE *infile;
 //header_struct *header;
 //room_struct **rooms;
@@ -1108,7 +1128,7 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,
             {
                 z80_int destination=peek_word_no_time(puntero);
                 puntero +=2;
-                if (solo_esta_habitacion<0) printf("Direction: %d Destination: %d\n",scrap,destination);
+                
 
                 /*
                 Para guerra de las vajillas, estos id son los valores de "count":
@@ -1122,15 +1142,21 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,
                //rooms[current]->exits[curexit]->destination=get16bit(infile);
                //j+=2;
 
-                //TODO de momento no soportamos room > 255
-                if (room>255 || destination>255) {
-                    debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
-                }
-                else {
-                    if (scrap==15) text_adventure_connections_table[room].north=destination;
-                    else if (scrap==16) text_adventure_connections_table[room].south=destination;
-                    else if (scrap==17) text_adventure_connections_table[room].east=destination;
-                    else if (scrap==18) text_adventure_connections_table[room].west=destination;
+
+                if (rellenar_tabla_conexiones) {
+
+                    printf("Direction: %d Destination: %d\n",scrap,destination);
+
+                    //TODO de momento no soportamos room > 255
+                    if (room>255 || destination>255) {
+                        debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
+                    }
+                    else {
+                        if (scrap==15) text_adventure_connections_table[room].north=destination;
+                        else if (scrap==16) text_adventure_connections_table[room].south=destination;
+                        else if (scrap==17) text_adventure_connections_table[room].east=destination;
+                        else if (scrap==18) text_adventure_connections_table[room].west=destination;
+                    }
                 }
 
                len-=2;
@@ -1147,9 +1173,7 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,
          int i;
          
 
-         char result[256];
 
-         util_gac_readstring( puntero, len,result,mem_diccionario);
 
 
          /*for (i=0;i<len;i++) {
@@ -1158,9 +1182,16 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,
          */
             
 
-        if (roomdescription!=NULL) strcpy(roomdescription,result);
+        if (roomdescription!=NULL) {
+            char result[256];
 
-        else printf("Location description: %s\n",result);
+            util_gac_readstring( puntero, len,result,mem_diccionario);            
+            strcpy(roomdescription,result);
+        }
+
+        
+        //debug
+        //printf("Location description: %s\n",result);
         
 
         puntero +=len;
@@ -1181,8 +1212,7 @@ int util_gac_readrooms(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,
    return current-1;
 }   
 
-//Diccionario de palabras GAC
-z80_byte *gac_diccionario_array=NULL;
+
 
 void util_gac_free_diccionario(void)
 {
@@ -1392,15 +1422,18 @@ void util_gac_get_locations_table(void)
     z80_int hpcptr=peek_word_no_time(spec_start+4*2);
 
 
-    util_gac_get_diccionario();
+    //util_gac_get_diccionario();
 
 
     // obtener habitaciones
     printf("Reading rooms: %x\n",roomptr);
-    util_gac_readrooms(roomptr,hpcptr,gac_diccionario_array,-1,NULL);       
+    util_gac_readrooms(-1,NULL,1);       
+
 
 
 }
+
+
 
 
 void util_gac_get_location_name(int room,char *destino)
@@ -1417,12 +1450,29 @@ void util_gac_get_location_name(int room,char *destino)
     z80_int roomptr=peek_word_no_time(spec_start+3*2);
     z80_int hpcptr=peek_word_no_time(spec_start+4*2);
 
+    //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(roomptr,hpcptr,gac_diccionario_array,room,destino);       
+    util_gac_readrooms(room,destino,0);       
 
 }
 
+int util_gac_get_total_locations(void)
+{
+
+
+    if (!util_gac_detect()) {
+        return 0;
+    }        
+
+
+    // obtener habitaciones
+    printf("Reading rooms\n");
+    int total_rooms=util_gac_readrooms(-1,NULL,0);       
+    printf("Total rooms: %d\n",total_rooms);
+
+
+}
 
 //Retorna 0 si ok. -1 si error
 int util_unpawsetc_dump_words(char *mensaje)
@@ -2538,6 +2588,16 @@ z80_int util_daad_get_num_locat_messages(void)
         }
 
         return dir;
+}
+
+z80_int util_textadventure_get_total_locations(void)
+{
+    if (util_gac_detect()) {
+        return util_gac_get_total_locations();
+    }
+    else {
+        return util_daad_get_num_locat_messages();
+    }
 }
 
 //Comun para daad y paws
