@@ -9451,7 +9451,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
 
                 int id_picture=util_gac_locate_room_location(gac_location_picture);
-                printf("Drawing GAC picture: room %d gac_location_picture %d id_picture %d\n",room,gac_location_picture,id_picture);
+                //printf("Drawing GAC picture: room %d gac_location_picture %d id_picture %d\n",room,gac_location_picture,id_picture);
                 
                 menu_debug_daad_view_graphics_render_recursive_gac(w,id_picture,0,NULL,0);
 

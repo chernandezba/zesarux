@@ -27078,7 +27078,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
         }
 
         menu_add_item_menu_en_es_ca(array_menu_debug,MENU_OPCION_NORMAL,menu_debug_machine_info,NULL,
-            "Machine Info","Información Máquina","Informació máquina");                            
+            "Machine Info","Información Máquina","Informació màquina");                            
 
         menu_add_item_menu(array_menu_debug,"",MENU_OPCION_SEPARADOR,NULL,NULL);
         menu_add_item_menu_es_avanzado(array_menu_debug);                     

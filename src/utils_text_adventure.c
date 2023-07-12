@@ -914,7 +914,15 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
     } while (puntero<endptr);
 }
 
-void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario)
+//Palabras por defecto en juego la guerra de las vajillas
+int gac_id_palabra_direccion_north=15;
+int gac_id_palabra_direccion_south=16;
+int gac_id_palabra_direccion_east=17;
+int gac_id_palabra_direccion_west=18;
+
+
+//Si buscar_palabras_direcciones no es 0, busca los id de palabras que corresponden a direcciones, y no agrega la palabra al teclado osd
+void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_palabras_direcciones)
 {
     z80_byte count,temp;
     temp=1;
@@ -927,7 +935,7 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             temp=peek_byte_no_time(puntero);
         }
         if (count!=0 && temp!=0) {
-            //printf("count: %d\n",count);
+            printf("count: %d\n",count);
             //Este count es el identificador de palabra/sinonimo, palabras que son sinonimos tienen mismo count
             dictentry=readtokenised(puntero);
             char buffer_palabra[256];
@@ -936,9 +944,18 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             puntero+=2;
 
             if (strlen(buffer_palabra)) {
-                debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                util_unpawsgac_add_word_kb(buffer_palabra);
-                util_gac_palabras_agregadas++;
+                if (!buscar_palabras_direcciones) {
+                    debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                    util_unpawsgac_add_word_kb(buffer_palabra);
+                    util_gac_palabras_agregadas++;
+                }
+
+                if (buscar_palabras_direcciones) {
+                    if (!strcasecmp(buffer_palabra,"N")) gac_id_palabra_direccion_north=count;
+                    if (!strcasecmp(buffer_palabra,"S")) gac_id_palabra_direccion_south=count;
+                    if (!strcasecmp(buffer_palabra,"E")) gac_id_palabra_direccion_east=count;
+                    if (!strcasecmp(buffer_palabra,"W") || !strcasecmp(buffer_palabra,"O")) gac_id_palabra_direccion_west=count;
+                }
             }
 
         }
@@ -1070,6 +1087,9 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
 //Diccionario de palabras GAC
 z80_byte *gac_diccionario_array=NULL;
 
+
+
+
 //si roomdescription no es NULL, se guarda ahi la descripcion de la localidad
 //si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion, e indica que estamos buscando una habitacion
 //  para obtener su descripcion
@@ -1154,17 +1174,17 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 
                 if (rellenar_tabla_conexiones) {
 
-                    printf("Direction: %d Destination: %d\n",scrap,destination);
+                    printf("Room %d Direction: %d Destination: %d\n",room,scrap,destination);
 
                     //TODO de momento no soportamos room > 255
                     if (room>255 || destination>255) {
                         debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
                     }
                     else {
-                        if (scrap==15) text_adventure_connections_table[room].north=destination;
-                        else if (scrap==16) text_adventure_connections_table[room].south=destination;
-                        else if (scrap==17) text_adventure_connections_table[room].east=destination;
-                        else if (scrap==18) text_adventure_connections_table[room].west=destination;
+                        if (scrap==gac_id_palabra_direccion_north) text_adventure_connections_table[room].north=destination;
+                        else if (scrap==gac_id_palabra_direccion_south) text_adventure_connections_table[room].south=destination;
+                        else if (scrap==gac_id_palabra_direccion_east) text_adventure_connections_table[room].east=destination;
+                        else if (scrap==gac_id_palabra_direccion_west) text_adventure_connections_table[room].west=destination;
                     }
 
                     text_adventure_connections_table[room].gac_location_picture=picture;
@@ -1397,13 +1417,13 @@ int util_gac_dump_dictonary(int *p_gacversion)
         */
 
        debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-       util_gac_readwords(verbptr,nounptr,gac_diccionario_array);       
+       util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0);        
 
        debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
-       util_gac_readwords(nounptr,adverbptr,gac_diccionario_array);
+       util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0);
 
        debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
-       util_gac_readwords(adverbptr,objectptr,gac_diccionario_array);
+       util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0);
 
        debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
        util_gac_readobjects(objectptr,roomptr,gac_diccionario_array);
@@ -1416,14 +1436,59 @@ int util_gac_dump_dictonary(int *p_gacversion)
 }
 
 
+
+
+void util_gac_get_direction_words(void)
+{
+
+    if (!util_gac_detect()) {
+        return;
+    }      
+
+
+    z80_int spec_start=0xA51F;
+    z80_int room_data=0xA54D;
+
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+
+
+    z80_int nounptr=peek_word_no_time(spec_start);
+
+
+
+    z80_int verbptr=room_data+2;
+
+    debug_printf (VERBOSE_DEBUG,"Dictionary start: %04XH",dictptr);
+
+
+
+
+    util_gac_get_diccionario();
+
+
+
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1);        
+
+
+
+}
+
+
 void util_gac_get_locations_table(void)
 {
 
 
     if (!util_gac_detect()) {
         return;
-    }        
+    }    
 
+    //Recrear diccionario
+    util_gac_free_diccionario();
+
+    util_gac_get_diccionario();        
+
+    util_gac_get_direction_words();
 
 
     // obtener habitaciones
