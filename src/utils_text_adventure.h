@@ -200,6 +200,8 @@ struct text_adventure_conn {
 
     //si esta es una habitacion que se entra desde un destino dudoso
     int habitacion_dudosa;
+
+    int gac_location_picture;
 };
 
 extern struct text_adventure_conn text_adventure_connections_table[];

@@ -9275,7 +9275,7 @@ int menu_debug_textadv_map_conn_get_room_size(void)
 void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,int y,int room,int current_room,int dudosa)
 {
 
-
+    int gac_location_picture=0;
 
     int color_posicion=ESTILO_GUI_PAPEL_OPCION_MARCADA;
 
@@ -9376,8 +9376,12 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int tinta_attr,paper_attr;
             int is_picture;
 
+            gac_location_picture=text_adventure_connections_table[room].gac_location_picture; 
+
             //GAC no tiene el concepto de subrutina
-            if (util_gac_detect()) mostrar_dibujos=1;
+            if (util_gac_detect()) {
+                if (gac_location_picture>0) mostrar_dibujos=1;
+            } 
 
             else {            
                 util_daad_get_graphics_attr(room,&tinta_attr,&paper_attr,&is_picture);  
@@ -9441,17 +9445,24 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             int contador_limite=0;
 
 
-    if (util_gac_detect() ) {
-        menu_debug_daad_view_graphics_render_recursive_gac(w,room,0,NULL,0);
+            if (util_gac_detect() ) {
+                
 
-//void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
-  //  char *buffer_texto_comandos,int tipo_texto)        
-    }
 
-    else menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
 
-//void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
-    //int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
+                int id_picture=util_gac_locate_room_location(gac_location_picture);
+                printf("Drawing GAC picture: room %d gac_location_picture %d id_picture %d\n",room,gac_location_picture,id_picture);
+                
+                menu_debug_daad_view_graphics_render_recursive_gac(w,id_picture,0,NULL,0);
+
+        //void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
+        //  char *buffer_texto_comandos,int tipo_texto)        
+            }
+
+            else menu_debug_daad_view_graphics_render_recursive(w,room,0,NULL,NULL,NULL,&contador_limite,0);
+
+        //void menu_debug_daad_view_graphics_render_recursive(zxvision_window *w,z80_byte location,int nivel_recursivo,char *buffer_texto_comandos,
+            //int *p_total_comandos,int *p_total_tamanyo,int *contador_limite,int tipo_texto)
 
             
 

@@ -1120,7 +1120,8 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 
          z80_int picture=peek_word_no_time(puntero);
          puntero +=2;
-         //printf("Picture: %d\n",picture);
+         //printf("room %d Picture: %d\n",room, picture);
+         
          //rooms[current]->picture=get16bit(infile);
          //j+=6;
          len-=2;
@@ -1165,6 +1166,8 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==17) text_adventure_connections_table[room].east=destination;
                         else if (scrap==18) text_adventure_connections_table[room].west=destination;
                     }
+
+                    text_adventure_connections_table[room].gac_location_picture=picture;
                 }
 
                len-=2;
@@ -2373,6 +2376,39 @@ z80_int util_gac_get_graphics_location(int location,int *location_id)
         *location_id=peek_word_no_time(table_dir);
         return table_dir+4;
     }
+
+}
+
+//Buscar el indice a grafico que corresponde para una localidad
+int util_gac_locate_room_location(int location_id)
+{
+    z80_int table_dir=util_gac_get_start_graphics();
+    if (table_dir==0) return -1;
+
+    //Info:
+    //word: location
+    //word: longitud contando estos 4 bytes
+    //byte: numero comandos
+    //comandos...
+
+    int i;
+
+    int location=0;
+
+    //printf("inicio tabla: %d\n",table_dir);
+
+    //hasta que se llegue a direccion o table_dir "de la vuelta" (salte a rom)
+    //TODO: maximo 256 pictures
+    for (i=0;i<256 && table_dir>16383;i++) {
+        z80_int read_location_id=peek_word_no_time(table_dir);
+        if (read_location_id==location_id) return i;
+        z80_int longitud=peek_word_no_time(table_dir+2);
+        //printf("tabla: %d longitud: %d\n",table_dir,longitud);
+        table_dir +=longitud;
+    }
+
+    return -1;
+
 
 }
 
@@ -4065,7 +4101,9 @@ void init_textadventure_connections_table(void)
         text_adventure_connections_table[i].dudoso_down=0;        
 
 
-        text_adventure_connections_table[i].habitacion_dudosa=0;        
+        text_adventure_connections_table[i].habitacion_dudosa=0;  
+
+        text_adventure_connections_table[i].gac_location_picture=0;      
     }
 }
 
