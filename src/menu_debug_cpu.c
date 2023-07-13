@@ -9590,7 +9590,57 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             }
             
                   
+            if (util_gac_detect()) {
+                char buffer_objetos[256];
+                util_gac_get_objects_room(room,buffer_objetos);
 
+                int i;
+
+                char *inicio_objeto;
+
+                inicio_objeto=buffer_objetos;
+
+                for (i=0;buffer_objetos[i]!=0;i++) {
+                    if (buffer_objetos[i]=='\n') {
+                        buffer_objetos[i]=0;
+
+                        char buffer_temp[256];
+                        strcpy(buffer_temp,inicio_objeto);
+
+                        //recalcular de nuevo por caracteres que se hayan suprimido
+                        int longitud_texto_objeto=strlen(buffer_temp);
+
+                        //si excede
+                        if (longitud_texto_objeto>maxima_longitud) {
+
+                            //cortar texto
+                            buffer_temp[maxima_longitud]=0;
+
+                            //poner puntos suspensivos
+                            //por si acaso. comprobacion adicional
+                            if (maxima_longitud>=3) {
+                                
+                                buffer_temp[maxima_longitud-1]='.';
+                                buffer_temp[maxima_longitud-2]='.';
+                                buffer_temp[maxima_longitud-3]='.';
+
+                            }
+                        }
+
+                        
+
+                        zxvision_print_string_defaults_format(w,texto_objeto_x,texto_objeto_y,buffer_temp);
+
+                        texto_objeto_y++;
+                        total_objetos_mostrados++;                        
+
+                        inicio_objeto=&buffer_objetos[i+1];
+                    }
+                }
+
+                
+            }
+            else {
 
             for (objeto=0;objeto<util_daad_get_num_objects_description();objeto++) {
                 int pos_objeto=util_daad_get_object_value(objeto);
@@ -9638,6 +9688,8 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                     texto_objeto_y++;
                     total_objetos_mostrados++;
                 }
+
+            }
 
             }
 
@@ -10446,7 +10498,7 @@ void menu_debug_textadventure_map_connections_teleport(void)
 
     menu_ventana_scanf_numero_enhanced("Location",&actual,4,+1,0,total_locations,0);
 
-    if (util_gac_detect) {
+    if (util_gac_detect() ) {
         util_gac_set_current_location(actual);
     }
 
