@@ -348,4 +348,4 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
 ok-no resetear OSD teclado aventura al hacer uso de mapa aventura
 -quijote no encuentra vocabulario, solo un verbo
--objetos gac. a205 = tabla localidades de objetos . 56736 apunta a a205
+-no siempre saca bien lista de objetos

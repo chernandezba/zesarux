@@ -9607,6 +9607,12 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                         util_gac_get_object_name(i,buffer_temp);
 
                          printf("Objeto %s\n",buffer_temp);
+
+                         //En caso que no se obtenga el nombre del objeto, cosa que sucede porque parece que no siempre
+                         //sacamos los nombres
+                         if (buffer_temp[0]==0) {
+                            sprintf(buffer_temp,"Object %d",i);
+                         }
                     
 
                         //recalcular de nuevo por caracteres que se hayan suprimido
