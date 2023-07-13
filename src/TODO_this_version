@@ -343,9 +343,9 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 -autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
 -tabla localidades gac: no soportamos de momento room > 255
--diccionario se debe recrear si cambia juego
+creo que ok -diccionario se debe recrear si cambia juego
 -menu text adventure map de alguna manera visible en gac
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
-ok-no resetear OSD teclado aventura al hacer uso de mapa aventura
+ok?-no resetear OSD teclado aventura al hacer uso de mapa aventura
 -quijote no encuentra vocabulario, solo un verbo
 -no siempre saca bien lista de objetos. parece que solo con la guerra de las vajillas?? y no todos los objetos tampoco
