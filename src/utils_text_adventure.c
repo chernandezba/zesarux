@@ -867,7 +867,7 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
     z80_int copia_puntero;
 
     z80_byte object,tamanyo,scrap;
-    //z80_byte weight;
+    z80_byte weight;
 
     int start;
 
@@ -875,7 +875,7 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
         copia_puntero=puntero;
         object=peek_byte_no_time(puntero++);
         tamanyo=peek_byte_no_time(puntero++);
-        //weight=peek_byte_no_time(puntero++);
+        weight=peek_byte_no_time(puntero++);
         start=peek_byte_no_time(puntero++);
         scrap=peek_byte_no_time(puntero++);
         start+=scrap<<8;
@@ -897,6 +897,7 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
 
                 if (strlen(buffer_palabra)) {
                     debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                    printf("Object %s location %d\n",start);
                     util_unpawsgac_add_word_kb(buffer_palabra);
                     util_gac_palabras_agregadas++;
                 }
@@ -1440,6 +1441,8 @@ int util_gac_dump_dictonary(int *p_gacversion)
        debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
        util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0);
 
+
+        printf("###########Dumping objects################\n\n\n");
        debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
        util_gac_readobjects(objectptr,roomptr,gac_diccionario_array);
   

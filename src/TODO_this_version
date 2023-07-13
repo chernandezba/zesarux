@@ -343,7 +343,6 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 -autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
 -tabla localidades gac: no soportamos de momento room > 255
--direcciones hardcoded segun GAC
 -diccionario se debe recrear si cambia juego
 -menu text adventure map de alguna manera visible en gac
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
