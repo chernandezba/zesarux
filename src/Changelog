@@ -20,6 +20,7 @@ Improved Text Adventure features:
 - Added configuration settings for Text Adventure Map: follow, show unvisited, show unconnected, show objects, show pictures, zoom level
 - Added export draw strings to external file (txt, asm, c or pas)
 - Preserve zoom level on Text Adventure Map when loading games
+- Added GAC support for Text Adventure Map
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents
@@ -39,7 +40,7 @@ Improved ZX Spectrum Next emulation:
 - Updated machine id list
 
 Fixed ZX Vision relocation windows
-Fixed memory leak error when drawing aventure map
+Fixed memory leak error when drawing Text Aventure Map
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
