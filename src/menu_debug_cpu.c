@@ -9600,7 +9600,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                     int room_object=util_gac_get_object_location(i);
 
                     //TODO: Esto no es nada eficiente, esta continuamente buscando los objetos y a donde pertenecen
-                    if (room_object==room) {
+                    if (room_object==room && total_objetos_mostrados<max_mostrar_objetos) {
 
                         printf("Objeto %d en habitacion %d\n",i,room);
                         
