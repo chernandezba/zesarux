@@ -9591,21 +9591,23 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             
                   
             if (util_gac_detect()) {
-                char buffer_objetos[256];
-                util_gac_get_objects_room(room,buffer_objetos);
+                char buffer_temp[256];
+
 
                 int i;
 
-                char *inicio_objeto;
+                for (i=1;i<256;i++) {
+                    int room_object=util_gac_get_object_location(i);
 
-                inicio_objeto=buffer_objetos;
+                    //TODO: Esto no es nada eficiente, esta continuamente buscando los objetos y a donde pertenecen
+                    if (room_object==room) {
 
-                for (i=0;buffer_objetos[i]!=0;i++) {
-                    if (buffer_objetos[i]=='\n') {
-                        buffer_objetos[i]=0;
+                        printf("Objeto %d en habitacion %d\n",i,room);
+                        
+                        util_gac_get_object_name(i,buffer_temp);
 
-                        char buffer_temp[256];
-                        strcpy(buffer_temp,inicio_objeto);
+                         printf("Objeto %s\n",buffer_temp);
+                    
 
                         //recalcular de nuevo por caracteres que se hayan suprimido
                         int longitud_texto_objeto=strlen(buffer_temp);
@@ -9634,7 +9636,6 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                         texto_objeto_y++;
                         total_objetos_mostrados++;                        
 
-                        inicio_objeto=&buffer_objetos[i+1];
                     }
                 }
 

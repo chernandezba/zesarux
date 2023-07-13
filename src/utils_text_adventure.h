@@ -122,7 +122,7 @@ extern void util_gac_get_graphics_size(int location,int *location_commands,int *
 extern z80_int util_gac_daad_get_total_graphics(void);
 extern int util_gac_detect(void);
 extern int util_gac_get_index_location_by_id(int location_id);
-extern void util_gac_get_objects_room(int room,char *texto);
+extern void util_gac_get_object_name(int objeto,char *texto);
 
 extern z80_int util_daad_get_start_graphics(void);
 extern z80_int util_daad_get_start_graphics_attr(void);

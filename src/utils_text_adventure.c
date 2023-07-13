@@ -861,9 +861,8 @@ void util_gac_get_string_dictionary(int index,z80_byte *memoria,char *string)
         else strcpy(string,(char *)&memoria[offset]);
 }
 
-//Si buscar_objeto_localidad>=0, en vez de hacer dump de todos los objetos, lo que hace es retornar una string
-//separada por \n con todos los objetos de esa localidad. objetos_en_localidad hasta 255 de longitud
-void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto_localidad,char *objetos_en_localidad)
+//Si buscar_objeto>=0, en vez de hacer dump de todos los objetos, lo que hace es retornar el buscar_objeto
+void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto)
 {
     //z80_byte count,temp; 
     z80_int copia_puntero;
@@ -873,7 +872,7 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
 
     int start;
 
-    if (buscar_objeto_localidad>=0) objetos_en_localidad[0]=0;
+    if (buscar_objeto>=0) nombre_objeto[0]=0;
 
     do {
         copia_puntero=puntero;
@@ -903,16 +902,15 @@ void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionar
 
 
 
-                    if (buscar_objeto_localidad>=0) {
-                        if (buscar_objeto_localidad==start) {
-                            util_concat_string(objetos_en_localidad,buffer_palabra,255);
-                            util_concat_string(objetos_en_localidad,"\n",255);
+                    if (buscar_objeto>=0) {
+                        if (buscar_objeto==object) {
+                            strcpy(nombre_objeto,buffer_palabra);
                         }
                     }       
 
                     else {
                         debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                        printf("Object %s location %d\n",buffer_palabra,start);
+                        printf("Object addr %X %d %s location %d\n",copia_puntero,object,buffer_palabra,start);
                         util_unpawsgac_add_word_kb(buffer_palabra);
                         util_gac_palabras_agregadas++;
                     }             
@@ -1510,8 +1508,27 @@ void util_gac_get_direction_words(void)
 
 }
 
+int util_gac_get_object_location(int id_objeto)
+{
 
-void util_gac_get_objects_room(int room,char *texto)
+
+
+    if (!util_gac_detect()) {
+        return -1;
+    }   
+
+    //TODO: esto se ha obtenido haciendo pruebas
+    z80_int table_objects_location=0xA1FD;
+
+    table_objects_location +=id_objeto*2;
+
+    return peek_word_no_time(table_objects_location);
+
+
+}   
+
+
+void util_gac_get_object_name(int objeto,char *texto)
 {
 
 
@@ -1531,8 +1548,6 @@ void util_gac_get_objects_room(int room,char *texto)
         z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
-        z80_int nounptr=peek_word_no_time(spec_start);
-        z80_int adverbptr=peek_word_no_time(spec_start+1*2);
         z80_int objectptr=peek_word_no_time(spec_start+2*2);
         z80_int roomptr=peek_word_no_time(spec_start+3*2);
 
@@ -1548,7 +1563,7 @@ void util_gac_get_objects_room(int room,char *texto)
 
 
 
-       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,room,texto);
+       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto);
   
 
 
