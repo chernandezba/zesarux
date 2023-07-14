@@ -861,8 +861,163 @@ void util_gac_get_string_dictionary(int index,z80_byte *memoria,char *string)
         else strcpy(string,(char *)&memoria[offset]);
 }
 
+#define GAC_TOKEN_LOWERCASE       0x40
+#define GAC_TOKEN_PUNCTUATION     0xc0
+
+char gac_punctuation[]="\0 .,-!?:";
+
+void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_diccionario)
+{
+   int low, high, end=0;
+   int len, first, i, punc;
+   char working[255],scrap[1];
+
+   //result=calloc(1,255);
+
+   memset(result,'\0',254);
+   memset(working,'\0',254);
+   first=1;
+   len=0;
+   do
+   {
+      low=peek_byte_no_time(puntero++);
+      high=peek_byte_no_time(puntero++);
+      size-=2;
+      memset(working,'\0',254);
+      // First check whether we have reached the end of the string
+      if ((high & GAC_TOKEN_PUNCTUATION) == 0xc0)
+      { // is punctuation
+         if (low == 0) end=1;
+         for (i=0;i<low;i++)
+         {
+            punc=(high & 0x38) >> 3;
+            if (punc)
+            {
+               scrap[0]=gac_punctuation[punc];
+               strncat(working,scrap,1);
+            }
+            if (punc==0) end=1;
+         }
+      }
+    else
+      {
+        char buffer_palabra[256];
+        int dictentry=(high & 0x7)*256 + low;
+        util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
+
+         //if (!first) strncpy(working," ",1);
+         //strncat(working,dictionary[(high & 0x7)*256 + low],255);
+         strncat(working,buffer_palabra,255);
+         first=0;
+
+         if (high & GAC_TOKEN_LOWERCASE)
+         {  // token is lowercase
+            for (i=0;i<strlen(working);i++)
+            {
+               working[i]=tolower(working[i]);
+            }
+         }
+         else if ((high & 0xc0) == 0)
+         { // first character is uppercase
+            for (i=(working[0]==' '?2:1);i<strlen(working);i++)
+            {
+               working[i]=tolower(working[i]);
+            }
+         }
+         // Add punctuation to the end
+         punc=(high & 0x38) >> 3;
+         if (punc)
+         {
+            scrap[0]=gac_punctuation[punc];
+            strncat(working,scrap,1);
+         }
+         if (punc==0) end=1;
+      }
+      strncat(result,working,255);
+   } while (size>0 && end==0);
+
+}         
+
+
+
 //Si buscar_objeto>=0, en vez de hacer dump de todos los objetos, lo que hace es retornar el buscar_objeto
-void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto)
+void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto,int *peso)
+{
+/*int readobjects(infile, header, objects, startptr, endptr)
+FILE *infile;
+header_struct *header;
+object_struct **objects;
+int startptr, endptr;
+*/
+
+   int object,size, weight, start, scrap; // keeps a count of the number of entries in the dictionary
+   int j, len; //temporary char variables
+   int current=0; // the current token
+   int fileptr; // temporary save the start of the previous object
+
+   //fseek(infile, startptr, SEEK_SET);
+   j=puntero;
+   do
+   {
+      fileptr=puntero;
+      object=peek_byte_no_time(puntero++);
+      size=peek_byte_no_time(puntero++);
+      weight=peek_byte_no_time(puntero++);
+      start=peek_byte_no_time(puntero++);
+      scrap=peek_byte_no_time(puntero++);
+      start+=scrap<<8;
+      size-=3;
+      j+=5;
+      if (object!=0 && size!=0)
+      {
+         //objects[current]->object=object;
+         //objects[current]->weight=weight;
+         //objects[current]->start=start;
+         //objects[current]->location=start;
+         len=0;
+         //strcat(objects[current]->description,readstring(infile, size));
+
+            char buffer_palabra[256];
+
+            util_gac_readstring( puntero, size,buffer_palabra,mem_diccionario);            
+            //strcpy(roomdescription,result);
+
+            printf ("Object %3d weight: %3d word: %s\n",object,weight,buffer_palabra);
+
+                if (strlen(buffer_palabra)) {
+
+
+
+                    if (buscar_objeto>=0) {
+                        if (buscar_objeto==object) {
+                            strcpy(nombre_objeto,buffer_palabra);
+                            if (peso!=NULL) *peso=weight;
+                        }
+                    }       
+
+                    else {
+                        debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                        printf("Object addr %X %d %s location %d\n",fileptr,object,buffer_palabra,start);
+                        util_unpawsgac_add_word_kb(buffer_palabra);
+                        util_gac_palabras_agregadas++;
+                    }             
+                }            
+
+         j+=size;
+         j+=3;
+         current++;
+      }
+      // move up to next object
+      //fseek(infile,fileptr+size+5,SEEK_SET);
+      puntero=fileptr+size+5;
+   } while (puntero<endptr);
+
+   //return current-1;
+//}         
+}
+
+//Si buscar_objeto>=0, en vez de hacer dump de todos los objetos, lo que hace es retornar el buscar_objeto
+void old_util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto)
 {
     //z80_byte count,temp; 
     z80_int copia_puntero;
@@ -1037,82 +1192,6 @@ int util_gac_detect(void)
     else return 0;
 }
 
-#define GAC_TOKEN_LOWERCASE       0x40
-#define GAC_TOKEN_PUNCTUATION     0xc0
-
-char gac_punctuation[]="\0 .,-!?:";
-
-void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_diccionario)
-{
-   int low, high, end=0;
-   int len, first, i, punc;
-   char working[255],scrap[1];
-
-   //result=calloc(1,255);
-
-   memset(result,'\0',254);
-   memset(working,'\0',254);
-   first=1;
-   len=0;
-   do
-   {
-      low=peek_byte_no_time(puntero++);
-      high=peek_byte_no_time(puntero++);
-      size-=2;
-      memset(working,'\0',254);
-      // First check whether we have reached the end of the string
-      if ((high & GAC_TOKEN_PUNCTUATION) == 0xc0)
-      { // is punctuation
-         if (low == 0) end=1;
-         for (i=0;i<low;i++)
-         {
-            punc=(high & 0x38) >> 3;
-            if (punc)
-            {
-               scrap[0]=gac_punctuation[punc];
-               strncat(working,scrap,1);
-            }
-            if (punc==0) end=1;
-         }
-      }
-    else
-      {
-        char buffer_palabra[256];
-        int dictentry=(high & 0x7)*256 + low;
-        util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
-
-         //if (!first) strncpy(working," ",1);
-         //strncat(working,dictionary[(high & 0x7)*256 + low],255);
-         strncat(working,buffer_palabra,255);
-         first=0;
-
-         if (high & GAC_TOKEN_LOWERCASE)
-         {  // token is lowercase
-            for (i=0;i<strlen(working);i++)
-            {
-               working[i]=tolower(working[i]);
-            }
-         }
-         else if ((high & 0xc0) == 0)
-         { // first character is uppercase
-            for (i=(working[0]==' '?2:1);i<strlen(working);i++)
-            {
-               working[i]=tolower(working[i]);
-            }
-         }
-         // Add punctuation to the end
-         punc=(high & 0x38) >> 3;
-         if (punc)
-         {
-            scrap[0]=gac_punctuation[punc];
-            strncat(working,scrap,1);
-         }
-         if (punc==0) end=1;
-      }
-      strncat(result,working,255);
-   } while (size>0 && end==0);
-
-}         
 
 //Diccionario de palabras GAC
 z80_byte *gac_diccionario_array=NULL;
@@ -1460,7 +1539,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
         printf("###########Dumping objects################\n\n\n");
        debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
-       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL);
+       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL);
   
 
 
@@ -1528,7 +1607,7 @@ int util_gac_get_object_location(int id_objeto)
 }   
 
 
-void util_gac_get_object_name(int objeto,char *texto)
+void util_gac_get_object_name(int objeto,char *texto,int *peso)
 {
 
 
@@ -1563,7 +1642,7 @@ void util_gac_get_object_name(int objeto,char *texto)
 
 
 
-       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto);
+       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto,peso);
   
 
 

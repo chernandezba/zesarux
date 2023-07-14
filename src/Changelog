@@ -44,6 +44,7 @@ Fixed memory leak error when drawing Text Aventure Map
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
+Fixed getting GAC objects
 
 * As always, there are some other minor bugfixes and improvements
 

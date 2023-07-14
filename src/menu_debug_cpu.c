@@ -9592,6 +9592,7 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                   
             if (util_gac_detect()) {
                 char buffer_temp[256];
+                char pre_buffer_temp[256];
 
 
                 int i;
@@ -9602,11 +9603,29 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                     //TODO: Esto no es nada eficiente, esta continuamente buscando los objetos y a donde pertenecen
                     if (room_object==room && total_objetos_mostrados<max_mostrar_objetos) {
 
+                        int peso; 
                         printf("Objeto %d en habitacion %d\n",i,room);
                         
-                        util_gac_get_object_name(i,buffer_temp);
+                        util_gac_get_object_name(i,pre_buffer_temp,&peso);
 
-                         printf("Objeto %s\n",buffer_temp);
+                        
+
+                         printf("Objeto %s\n",pre_buffer_temp);
+
+                         //Parece que los personajes en GAC son objetos pesados, quiza para que no se puedan coger?
+                         //En guerra vajillas, peso 150. En otros juegos (por ejemplo Legend of the lost kingdom), peso 255
+                         //En football frenzy, peso 100, aunque hay objetos de peso 100 también en ese juego, ejemplo:
+                            //Object  19 weight: 100 word: the Police Sergeant
+                            //Object  20 weight: 100 word: Joe Mason
+                            //Object  22 weight: 100 word: a postbox
+                            //Object  23 weight: 100 word: a phonebox
+
+                         if (peso>=100) {
+                            sprintf(buffer_temp,"P? %s",pre_buffer_temp);
+                         }
+                         else {
+                            strcpy(buffer_temp,pre_buffer_temp);
+                         }
 
                          //En caso que no se obtenga el nombre del objeto, cosa que sucede porque parece que no siempre
                          //sacamos los nombres
@@ -10696,7 +10715,7 @@ void menu_debug_text_adventure_help(void)
         "t: Teletransporte, permite modificar la habitacion actual del juego\n"
         "f1: Esta ayuda\n"
         "f: Seguir la posicion actual en el mapa\n"
-        "o: Mostrar objetos\n"
+        "o: Mostrar objetos. Nota: en GAC, los personajes son objetos de mucho peso, en ese caso en el mapa aparecen con prefijo P?\n"
         "p: Mostrar dibujos\n"
         "v: Mostrar todas las localidades, o solo las localidades que hemos visitado\n"
         "c: Mostrar tambien las habitaciones sin conectar (que no tienen salidas)\n"
@@ -10730,7 +10749,7 @@ void menu_debug_text_adventure_help(void)
         "t: Teletransport, permet modificar l'habitació actual del joc\n"
         "f1: Aquesta ajuda\n"
         "f: Seguir la posició actual al mapa\n"
-        "o: Mostra objectes\n"
+        "o: Mostra objectes. Nota: en GAC, els personatges son objectes de molt pes, en aquest cas en el mapa apareixen amb prefixe P?\n"
         "p: Mostra dibuixos\n"
         "v: Mostra totes les localitats, o només les localitats que hem visitat\n"
         "c: Mostra també les habitacions sense connectar (que no tenen sortides)\n"
@@ -10764,7 +10783,7 @@ void menu_debug_text_adventure_help(void)
         "t: Teleport, allows you to modify the current room in the game\n"
         "f1: This help window\n"
         "f: Follow the current position on the map\n"
-        "o: Show objects\n"
+        "o: Show objects. Note: on GAC, people are objects very heavy, in this case in the map are shown with prefix P?\n"
         "p: Show pictures\n"
         "v: Show all locations, or just the locations we have visited\n"
         "c: Show also unconnected rooms (that have no exits)\n"

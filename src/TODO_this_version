@@ -340,7 +340,7 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 *uso atributos igual que spectrum: 8x8 paper+tinta
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
--autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
+ok-autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
 -tabla localidades gac: no soportamos de momento room > 255
 creo que ok -diccionario se debe recrear si cambia juego
@@ -348,4 +348,9 @@ creo que ok -diccionario se debe recrear si cambia juego
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
 ok?-no resetear OSD teclado aventura al hacer uso de mapa aventura
 -quijote no encuentra vocabulario, solo un verbo
--no siempre saca bien lista de objetos. parece que solo con la guerra de las vajillas?? y no todos los objetos tampoco
+ok-no siempre saca bien lista de objetos. parece que solo con la guerra de las vajillas?? y no todos los objetos tampoco
+
+-poder listar diccionario, mensajes, objetos etc etc desde menu debug cpu-> habilitar vista 8 para gac
+
+-poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
+esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
