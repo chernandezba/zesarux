@@ -1385,63 +1385,63 @@ void util_gac_get_diccionario(void)
     if (gac_diccionario_array!=NULL) return;
 
     printf("Recreating GAC dictionary\n");
-        //Asignar memoria para el diccionario. 
-        //z80_byte *diccionario_array;
+    //Asignar memoria para el diccionario. 
+    //z80_byte *diccionario_array;
 
-        //Asignar memoria para el diccionario. 
-        gac_diccionario_array=malloc(MAX_DICT_GAC_ENTRIES*(MAX_DICT_GAC_STRING_LENGTH+1));
+    //Asignar memoria para el diccionario. 
+    gac_diccionario_array=malloc(MAX_DICT_GAC_ENTRIES*(MAX_DICT_GAC_STRING_LENGTH+1));
 
-        if (gac_diccionario_array==NULL) cpu_panic("Can not allocate memory");
+    if (gac_diccionario_array==NULL) cpu_panic("Can not allocate memory");
 
-        //Array para el diccionario. Palabras de mas de 30 caracteres los ignoramos
+    //Array para el diccionario. Palabras de mas de 30 caracteres los ignoramos
 
-        //char diccionario_array[MAX_DICT_GAC_ENTRIES][MAX_DICT_GAC_STRING_LENGTH+1];
+    //char diccionario_array[MAX_DICT_GAC_ENTRIES][MAX_DICT_GAC_STRING_LENGTH+1];
 
-        //Inicializar a ""
-        int i;
-        for (i=0;i<MAX_DICT_GAC_ENTRIES;i++) util_gac_put_string_dictionary(i,gac_diccionario_array,"");
+    //Inicializar a ""
+    int i;
+    for (i=0;i<MAX_DICT_GAC_ENTRIES;i++) util_gac_put_string_dictionary(i,gac_diccionario_array,"");
 
-        z80_int spec_start=0xA51F;
-
-
-        //Vamos primero a hacer dump del dicccionario
-        z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    z80_int spec_start=0xA51F;
 
 
-
-        z80_int endptr=peek_word_no_time(spec_start+10*2); 
-
-        z80_byte longitud_palabra;
-
-        z80_int puntero=dictptr;
-
-        int indice=0;
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
 
+    z80_int endptr=peek_word_no_time(spec_start+10*2); 
+
+    z80_byte longitud_palabra;
+
+    z80_int puntero=dictptr;
+
+    int indice=0;
 
 
-        do {
-                longitud_palabra=peek_byte_no_time(puntero++);
-                if (longitud_palabra>0) {
-                        char palabra[256];
-                        int i;
-                        for (i=0;i<longitud_palabra;i++) {
-                                z80_byte caracter_leido=peek_byte_no_time(puntero++) & 127;
-                                if (caracter_leido<32) caracter_leido=32;
-                                palabra[i]=caracter_leido & 127;
-                        }
 
-                        palabra[i]=0;
 
-                        debug_printf (VERBOSE_DEBUG,"Dictonary word index %d: %s (length: %d)",indice,palabra,longitud_palabra);
-                        if (longitud_palabra<=MAX_DICT_GAC_STRING_LENGTH) {
-                                //strcpy(diccionario_array[indice],palabra);
-                                util_gac_put_string_dictionary(indice,gac_diccionario_array,palabra);
-                        }
-                        indice++;
-                }
-        } while (longitud_palabra!=0 && puntero<endptr);
+
+    do {
+        longitud_palabra=peek_byte_no_time(puntero++);
+        if (longitud_palabra>0) {
+            char palabra[256];
+            int i;
+            for (i=0;i<longitud_palabra;i++) {
+                z80_byte caracter_leido=peek_byte_no_time(puntero++) & 127;
+                if (caracter_leido<32) caracter_leido=32;
+                palabra[i]=caracter_leido & 127;
+            }
+
+            palabra[i]=0;
+
+            debug_printf (VERBOSE_DEBUG,"Dictonary word index %d: %s (length: %d)",indice,palabra,longitud_palabra);
+            if (longitud_palabra<=MAX_DICT_GAC_STRING_LENGTH) {
+                //strcpy(diccionario_array[indice],palabra);
+                util_gac_put_string_dictionary(indice,gac_diccionario_array,palabra);
+            }
+            indice++;
+        }
+    } while (longitud_palabra!=0 && puntero<endptr);
 }
 
 
