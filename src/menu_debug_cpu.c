@@ -2466,9 +2466,13 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 				//char buffer_linea[MAX_LINE_CPU_REGISTERS_LENGTH];	
 
+                //no se soporta debug parser de GAC de momento
+                if (util_gac_detect() ) {
+                    strcpy(buffer_linea,"Not allowed GAC parser debug yet");
+                }
 
 				//Si no esta en zona de parser
-				if (!util_daad_is_in_parser() && !util_paws_is_in_parser() ) {
+				else if (!util_daad_is_in_parser() && !util_paws_is_in_parser() ) {
 					strcpy(buffer_linea,"Not in condacts");
 					//zxvision_print_string_defaults_fillspc(w,1,linea++,"Not in condacts");
 				}
@@ -2599,16 +2603,29 @@ Solo tienes que buscar en esa tabla el número de palabra de flag 33, que sea de
 
                 //Obtener versión parser
                 char buffer_version[100];
-                util_unpaws_daad_get_version_string(buffer_version);
-                
                 char buffer_idioma[100];
-                buffer_idioma[0]=0;
-                if (util_daad_detect() ) {
-                    util_daad_get_language_parser(buffer_idioma);
+
+                if (util_gac_detect()) {
+                    strcpy(buffer_version,"GAC");
+                    buffer_idioma[0]=0;
+                }
+
+                else {
+
+                    util_unpaws_daad_get_version_string(buffer_version);
+                    
+                    
+                    buffer_idioma[0]=0;
+                    if (util_daad_detect() ) {
+                        util_daad_get_language_parser(buffer_idioma);
+                    }
+
                 }
 
 
                 sprintf(buffer_linea,"Info Parser: %s %s",buffer_version,buffer_idioma);
+
+
                 linea++;
                 zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
 
@@ -4167,6 +4184,10 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
 
 			if (menu_debug_registers_current_view==8) {
+                if (util_gac_detect()) {
+                    *s=0;
+                    return;
+                }
 							//01234567890123456789012345678901
 							// chReg Brkp. Toggle Runto Watch		
 
@@ -4254,7 +4275,8 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 			if (menu_debug_registers_current_view==8) {
 				//de momento solo el run to parse en daad. en quill o paws no tiene sentido, dado que no usan el condacto "PARSE"
 				//solo se usa en psi en paws
-				if (util_daad_detect()) sprintf(s,"runtoafter~~Parse ~~Watch Wr~~ite M~~essages");
+                if (util_gac_detect()) sprintf(s,"M~~essages");
+				else if (util_daad_detect()) sprintf(s,"runtoafter~~Parse ~~Watch Wr~~ite M~~essages");
 				else sprintf(s,"~~Watch Wr~~ite M~~essages");
 				return;
 			}
@@ -4296,6 +4318,11 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
 
                 char buffer_temp_graphics[100];
                 buffer_temp_graphics[0]=0;
+
+                if (util_gac_detect()) {
+				    sprintf(s,"~~Graphics Co~~nnections ~~advmap",buffer_temp_graphics);                    
+                    return;
+                }
 
                 if (util_daad_has_graphics() || util_gac_detect()) strcpy(buffer_temp_graphics,"~~Graphics ");
 
@@ -8589,7 +8616,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
 					menu_emulation_paused_on_menu=1;
 
-                    menu_debug_daad_get_condact_message();
+                    if (!util_gac_detect()) {
+                        menu_debug_daad_get_condact_message();
+                    }
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
