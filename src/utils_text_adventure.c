@@ -1454,67 +1454,66 @@ Grackle 0.2 Alpha, by David Lodge. A dumper and player for adventures written us
 int util_gac_dump_dictonary(int *p_gacversion)
 {
 
-        int gacversion; //Realmente no se si hay mas de una version
+    int gacversion; //Realmente no se si hay mas de una version
 
-        gacversion=util_gac_detect_version();
+    gacversion=util_gac_detect_version();
 
-  if (gacversion<0) {
-          debug_printf (VERBOSE_DEBUG,"It does not seem to be a GAC game");
-          *p_gacversion=-1;
-          return 0;
-  }        
+    if (gacversion<0) {
+        debug_printf (VERBOSE_DEBUG,"It does not seem to be a GAC game");
+        *p_gacversion=-1;
+        return 0;
+    }        
 
-        util_clear_text_adventure_kdb();
-        util_gac_palabras_agregadas=0;
-
-
-
-        z80_int spec_start=0xA51F;
-        z80_int room_data=0xA54D;
-
-        //Vamos primero a hacer dump del dicccionario
-        z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
-
-
-        z80_int nounptr=peek_word_no_time(spec_start);
-        z80_int adverbptr=peek_word_no_time(spec_start+1*2);
-        z80_int objectptr=peek_word_no_time(spec_start+2*2);
-        z80_int roomptr=peek_word_no_time(spec_start+3*2);
-
-
-        z80_int verbptr=room_data+2;
-
-        debug_printf (VERBOSE_DEBUG,"Dictionary start: %04XH",dictptr);
+    util_clear_text_adventure_kdb();
+    util_gac_palabras_agregadas=0;
 
 
 
-        
-        //Recrear diccionario
-        util_gac_free_diccionario();
+    z80_int spec_start=0xA51F;
+    z80_int room_data=0xA54D;
 
-        util_gac_get_diccionario();
-
-    
-
-       debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-       util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0);        
-
-       debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
-       util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0);
-
-       debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
-       util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0);
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
-        printf("###########Dumping objects################\n\n\n");
-       debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
-       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL);
-  
+    z80_int nounptr=peek_word_no_time(spec_start);
+    z80_int adverbptr=peek_word_no_time(spec_start+1*2);
+    z80_int objectptr=peek_word_no_time(spec_start+2*2);
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+
+
+    z80_int verbptr=room_data+2;
+
+    debug_printf (VERBOSE_DEBUG,"Dictionary start: %04XH",dictptr);
 
 
 
-        *p_gacversion=gacversion;
-        return util_gac_palabras_agregadas;
+
+    //Recrear diccionario
+    util_gac_free_diccionario();
+
+    util_gac_get_diccionario();
+
+
+
+    debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0);        
+
+    debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
+    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0);
+
+    debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
+    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0);
+
+
+    debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL);
+
+
+
+
+    *p_gacversion=gacversion;
+    return util_gac_palabras_agregadas;
 }
 
 
