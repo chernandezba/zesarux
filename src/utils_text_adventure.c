@@ -1101,7 +1101,8 @@ int gac_id_palabra_direccion_up=-1;
 
 
 //Si buscar_palabras_direcciones no es 0, busca los id de palabras que corresponden a direcciones, y no agrega la palabra al teclado osd
-void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_palabras_direcciones)
+//Si id_buscar_palabra_count>=0, busca una palabra con el id indicado y lo guarda en palabra_encontrada
+void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_palabras_direcciones,int id_buscar_palabra_count,char *palabra_encontrada)
 {
     z80_byte count,temp;
     temp=1;
@@ -1123,20 +1124,35 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             puntero+=2;
 
             if (strlen(buffer_palabra)) {
-                if (!buscar_palabras_direcciones) {
-                    debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                    util_unpawsgac_add_word_kb(buffer_palabra);
-                    util_gac_palabras_agregadas++;
+
+                //Buscamos una palabra concreta
+                if (id_buscar_palabra_count>=0) {
+                    if (id_buscar_palabra_count==count) {
+                        strcpy(palabra_encontrada,buffer_palabra);
+                        return;
+                    } 
                 }
 
-                if (buscar_palabras_direcciones) {
-                    if (!strcasecmp(buffer_palabra,"N")) gac_id_palabra_direccion_north=count;
-                    if (!strcasecmp(buffer_palabra,"S")) gac_id_palabra_direccion_south=count;
-                    if (!strcasecmp(buffer_palabra,"E")) gac_id_palabra_direccion_east=count;
-                    if (!strcasecmp(buffer_palabra,"W") || !strcasecmp(buffer_palabra,"O")) gac_id_palabra_direccion_west=count;
+                else {
 
-                    if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
-                    if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
+                    //Agregamos palabra a OSD teclado
+                    if (!buscar_palabras_direcciones) {
+                        debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
+                        util_unpawsgac_add_word_kb(buffer_palabra);
+                        util_gac_palabras_agregadas++;
+                    }
+
+                    //Estamos buscando las palabras de direcciones
+                    if (buscar_palabras_direcciones) {
+                        if (!strcasecmp(buffer_palabra,"N")) gac_id_palabra_direccion_north=count;
+                        if (!strcasecmp(buffer_palabra,"S")) gac_id_palabra_direccion_south=count;
+                        if (!strcasecmp(buffer_palabra,"E")) gac_id_palabra_direccion_east=count;
+                        if (!strcasecmp(buffer_palabra,"W") || !strcasecmp(buffer_palabra,"O")) gac_id_palabra_direccion_west=count;
+
+                        if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
+                        if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
+                }
+
                 }
             }
 
@@ -1209,7 +1225,7 @@ void util_gac_get_start_pointers(z80_int *spec_start,z80_int *room_data)
 //si roomdescription no es NULL, se guarda ahi la descripcion de la localidad
 //si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion, e indica que estamos buscando una habitacion
 //  para obtener su descripcion
-int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellenar_tabla_conexiones)
+int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellenar_tabla_conexiones,char *string_dump_connections,int max_string)
 {
 
 
@@ -1242,7 +1258,11 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
    //fseek(infile, startptr, SEEK_SET);
    //j=startptr;
 
+   char buffer_linea_conexiones[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+
     int salir=0;
+
+    int anterior_room=-1;
 
    do
    {
@@ -1320,6 +1340,23 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                     
                 }
 
+                //Volcar salida para menu connections
+                if (string_dump_connections!=NULL) {
+                    if (anterior_room!=room) {
+                        buffer_linea_conexiones[0]=0;
+                        anterior_room=room;
+                    }
+
+                    char buffer_palabra_direccion[256];
+                    util_gac_get_verb(scrap,buffer_palabra_direccion);
+
+                    char buffer_linea[32];
+                    sprintf(buffer_linea,"%s: %d, ", buffer_palabra_direccion,destination);
+
+                    util_concat_string(buffer_linea_conexiones,buffer_linea,max_string);
+                   
+                }
+
                len-=2;
                curexit++;
             }
@@ -1350,6 +1387,38 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             strcpy(roomdescription,result);
         }
 
+
+        //Volcar salida para menu connections
+        if (string_dump_connections!=NULL) {
+            char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+
+            sprintf(buffer_linea,"-Location %3d: ",room);
+
+            //salir=util_concat_string(texto,buffer_linea,max_string);
+            util_concat_string(string_dump_connections,buffer_linea,max_string);
+
+            //solo ver un trozo de la localidad
+            
+            char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
+
+            char result[256];
+
+            util_gac_readstring( puntero, len,result,mem_diccionario);            
+            strcpy(texto_localidad,result);
+
+
+            texto_localidad[25]=0;
+            //printf("%s\n",texto_localidad);
+            sprintf(buffer_linea,"%s\n",texto_localidad);
+            //salir=util_concat_string(texto,buffer_linea,max_string);
+            util_concat_string(string_dump_connections,buffer_linea,max_string);
+
+
+            util_concat_string(string_dump_connections,buffer_linea_conexiones,max_string);
+
+            util_concat_string(string_dump_connections,"\n\n",max_string);
+            
+        }
         
         //debug
         //printf("Location description: %s\n",result);
@@ -1507,13 +1576,13 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL);        
 
     debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
-    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0);
+    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL);
 
     debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
-    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0);
+    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL);
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
@@ -1561,7 +1630,45 @@ void util_gac_get_direction_words(void)
 
 
 
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1,-1,NULL);        
+
+
+
+}
+
+
+void util_gac_get_verb(int id_count,char *texto)
+{
+    //por si acaso vacio
+    *texto=0;
+
+
+    if (!util_gac_detect()) {
+        return;
+    }      
+
+
+    z80_int spec_start;
+    z80_int room_data;
+
+    util_gac_get_start_pointers(&spec_start,&room_data);
+
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+
+
+    z80_int nounptr=peek_word_no_time(spec_start);
+
+
+
+    z80_int verbptr=room_data+2;
+
+ 
+    util_gac_get_diccionario();
+
+
+
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,id_count,texto);        
 
 
 
@@ -1649,7 +1756,7 @@ void util_gac_get_locations_table(void)
 
     // obtener habitaciones
     printf("Reading rooms\n");
-    util_gac_readrooms(-1,NULL,1);       
+    util_gac_readrooms(-1,NULL,1,NULL,0);       
 
 
 
@@ -1672,7 +1779,24 @@ void util_gac_get_location_name(int room,char *destino)
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(room,destino,0);       
+    util_gac_readrooms(room,destino,0,NULL,0);    
+
+}
+
+void util_gac_dump_connections(char *texto,int max_string)
+{
+
+
+    if (!util_gac_detect()) {
+        return;
+    }        
+
+
+
+    //Necesario para traer los textos de la descripcion de la localidad
+    util_gac_get_diccionario();
+
+    util_gac_readrooms(-1,NULL,0,texto,max_string);   
 
 }
 
@@ -1687,7 +1811,7 @@ int util_gac_get_total_locations(void)
 
     // obtener habitaciones
     //printf("Reading rooms\n");
-    int total_rooms=util_gac_readrooms(-1,NULL,0);       
+    int total_rooms=util_gac_readrooms(-1,NULL,0,NULL,0);       
     //printf("Total rooms: %d\n",total_rooms);
 
     return total_rooms;
@@ -4158,6 +4282,11 @@ int util_textadventure_get_current_location(void)
 int util_textdaventure_dump_connections(char *texto,int max_string)
 {
     char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+
+    if (util_gac_detect()) {
+        util_gac_dump_connections(texto,max_string);
+        return 0;
+    }
 
     //Ver si es de daad
     if (util_daad_detect() || util_textadv_detect_paws_quill()) {
