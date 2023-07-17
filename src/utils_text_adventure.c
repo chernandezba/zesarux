@@ -1200,7 +1200,11 @@ int util_gac_detect(void)
 z80_byte *gac_diccionario_array=NULL;
 
 
-
+void util_gac_get_start_pointers(z80_int *spec_start,z80_int *room_data)
+{
+    if (spec_start!=NULL) *spec_start=0xA51F;
+    if (room_data!=NULL)  *room_data=0xA54D;
+}
 
 //si roomdescription no es NULL, se guarda ahi la descripcion de la localidad
 //si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion, e indica que estamos buscando una habitacion
@@ -1209,7 +1213,9 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 {
 
 
-    z80_int spec_start=0xA51F;
+    z80_int spec_start;
+
+    util_gac_get_start_pointers(&spec_start,NULL);
 
     z80_int roomptr=peek_word_no_time(spec_start+3*2);
     z80_int hpcptr=peek_word_no_time(spec_start+4*2);
@@ -1401,7 +1407,9 @@ void util_gac_get_diccionario(void)
     int i;
     for (i=0;i<MAX_DICT_GAC_ENTRIES;i++) util_gac_put_string_dictionary(i,gac_diccionario_array,"");
 
-    z80_int spec_start=0xA51F;
+    z80_int spec_start;
+
+    util_gac_get_start_pointers(&spec_start,NULL);
 
 
     //Vamos primero a hacer dump del dicccionario
@@ -1469,8 +1477,10 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
 
 
-    z80_int spec_start=0xA51F;
-    z80_int room_data=0xA54D;
+    z80_int spec_start;
+    z80_int room_data;
+
+    util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
     z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
@@ -1527,8 +1537,10 @@ void util_gac_get_direction_words(void)
     }      
 
 
-    z80_int spec_start=0xA51F;
-    z80_int room_data=0xA54D;
+    z80_int spec_start;
+    z80_int room_data;
+
+    util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
     z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
@@ -1564,7 +1576,7 @@ int util_gac_get_object_location(int id_objeto)
         return -1;
     }   
 
-    //TODO: esto se ha obtenido haciendo pruebas
+    //este puntero se ha obtenido haciendo pruebas
     z80_int table_objects_location=0xA1FD;
 
     table_objects_location +=id_objeto*2;
@@ -1588,30 +1600,32 @@ void util_gac_get_object_name(int objeto,char *texto,int *peso)
 
 
 
-        z80_int spec_start=0xA51F;
-        z80_int room_data=0xA54D;
+    z80_int spec_start;
+    z80_int room_data;
 
-        //Vamos primero a hacer dump del dicccionario
-        z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    util_gac_get_start_pointers(&spec_start,&room_data);
 
-
-        z80_int objectptr=peek_word_no_time(spec_start+2*2);
-        z80_int roomptr=peek_word_no_time(spec_start+3*2);
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
-        z80_int verbptr=room_data+2;
+    z80_int objectptr=peek_word_no_time(spec_start+2*2);
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
 
 
-
-
-
-        util_gac_get_diccionario();
+    z80_int verbptr=room_data+2;
 
 
 
 
-       util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto,peso);
-  
+
+    util_gac_get_diccionario();
+
+
+
+
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto,peso);
+
 
 
 }
