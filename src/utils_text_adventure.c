@@ -1096,6 +1096,11 @@ int gac_id_palabra_direccion_south=16;
 int gac_id_palabra_direccion_east=17;
 int gac_id_palabra_direccion_west=18;
 
+int gac_id_palabra_direccion_northwest=-1;
+int gac_id_palabra_direccion_northeast=-1;
+int gac_id_palabra_direccion_southwest=-1;
+int gac_id_palabra_direccion_southeast=-1;
+
 int gac_id_palabra_direccion_down=-1;
 int gac_id_palabra_direccion_up=-1;
 
@@ -1148,6 +1153,12 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                         if (!strcasecmp(buffer_palabra,"S")) gac_id_palabra_direccion_south=count;
                         if (!strcasecmp(buffer_palabra,"E")) gac_id_palabra_direccion_east=count;
                         if (!strcasecmp(buffer_palabra,"W") || !strcasecmp(buffer_palabra,"O")) gac_id_palabra_direccion_west=count;
+
+                        if (!strcasecmp(buffer_palabra,"NE")) gac_id_palabra_direccion_northeast=count;
+                        if (!strcasecmp(buffer_palabra,"NO") || !strcasecmp(buffer_palabra,"NW")) gac_id_palabra_direccion_northwest=count;
+
+                        if (!strcasecmp(buffer_palabra,"SE")) gac_id_palabra_direccion_southeast=count;
+                        if (!strcasecmp(buffer_palabra,"SO") || !strcasecmp(buffer_palabra,"SW")) gac_id_palabra_direccion_southwest=count;                        
 
                         if (!strcasecmp(buffer_palabra,"BAJAR") || !strcasecmp(buffer_palabra,"ABAJO") || !strcasecmp(buffer_palabra,"DOWN")) gac_id_palabra_direccion_down=count;
                         if (!strcasecmp(buffer_palabra,"SUBIR") || !strcasecmp(buffer_palabra,"ARRIBA") || !strcasecmp(buffer_palabra,"UP")) gac_id_palabra_direccion_up=count;
@@ -1332,6 +1343,11 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==gac_id_palabra_direccion_east) text_adventure_connections_table[room].east=destination;
                         else if (scrap==gac_id_palabra_direccion_west) text_adventure_connections_table[room].west=destination;
                         else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;
+                        else if (scrap==gac_id_palabra_direccion_northwest) text_adventure_connections_table[room].northwest=destination;
+                        else if (scrap==gac_id_palabra_direccion_northeast) text_adventure_connections_table[room].northeast=destination;
+                        else if (scrap==gac_id_palabra_direccion_southwest) text_adventure_connections_table[room].southwest=destination;
+                        else if (scrap==gac_id_palabra_direccion_southeast) text_adventure_connections_table[room].southeast=destination;
+                        else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;                        
                         else if (scrap==gac_id_palabra_direccion_up) text_adventure_connections_table[room].up=destination;
 
                         text_adventure_connections_table[room].gac_location_picture=picture;
