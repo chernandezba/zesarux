@@ -1242,6 +1242,13 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
    {
       z80_int room=peek_word_no_time(puntero);
       puntero +=2;
+
+        if (room>=TEXT_ADVENTURE_MAX_LOCATIONS) {
+            //debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
+            //printf("Rooms >= %d are not supported yet\n",TEXT_ADVENTURE_MAX_LOCATIONS);
+            return current;
+        }      
+
       if (room!=0)
       {
          //rooms[current]->room=room;
@@ -1289,8 +1296,9 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                     printf("Room %d Direction: %d Destination: %d\n",room,scrap,destination);
 
                     //TODO de momento no soportamos room > 255
-                    if (room>255 || destination>255) {
-                        debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
+                    if (destination>=TEXT_ADVENTURE_MAX_LOCATIONS) {
+                        //debug_printf(VERBOSE_ERR,"Rooms > 255 are not supported yet\n");
+                        //printf("Rooms >= %d are not supported yet\n",TEXT_ADVENTURE_MAX_LOCATIONS);
                     }
                     else {
                         if (scrap==gac_id_palabra_direccion_north) text_adventure_connections_table[room].north=destination;
@@ -1299,9 +1307,11 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
                         else if (scrap==gac_id_palabra_direccion_west) text_adventure_connections_table[room].west=destination;
                         else if (scrap==gac_id_palabra_direccion_down) text_adventure_connections_table[room].down=destination;
                         else if (scrap==gac_id_palabra_direccion_up) text_adventure_connections_table[room].up=destination;
+
+                        text_adventure_connections_table[room].gac_location_picture=picture;
                     }
 
-                    text_adventure_connections_table[room].gac_location_picture=picture;
+                    
                 }
 
                len-=2;
