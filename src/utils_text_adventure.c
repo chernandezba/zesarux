@@ -955,6 +955,9 @@ int startptr, endptr;
    int current=0; // the current token
    int fileptr; // temporary save the start of the previous object
 
+    //Por si no lo acaba encontrando, por defecto cadena vacia
+   if (nombre_objeto!=NULL) nombre_objeto[0]=0;
+
    //fseek(infile, startptr, SEEK_SET);
    j=puntero;
    do
@@ -990,7 +993,7 @@ int startptr, endptr;
 
                     if (buscar_objeto>=0) {
                         if (buscar_objeto==object) {
-                            strcpy(nombre_objeto,buffer_palabra);
+                            if (nombre_objeto!=NULL) strcpy(nombre_objeto,buffer_palabra);
                             if (peso!=NULL) *peso=weight;
                         }
                     }       
