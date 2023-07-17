@@ -1151,7 +1151,8 @@ int gac_id_palabra_direccion_up=-1;
 
 //Si buscar_palabras_direcciones no es 0, busca los id de palabras que corresponden a direcciones, y no agrega la palabra al teclado osd
 //Si id_buscar_palabra_count>=0, busca una palabra con el id indicado y lo guarda en palabra_encontrada
-void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_palabras_direcciones,int id_buscar_palabra_count,char *palabra_encontrada)
+//Si dump_texto != NULL, mete palabra en destino
+void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_palabras_direcciones,int id_buscar_palabra_count,char *palabra_encontrada,char *dump_texto)
 {
     z80_byte count,temp;
     temp=1;
@@ -1171,6 +1172,16 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             util_gac_get_string_dictionary(dictentry,mem_diccionario,buffer_palabra);
             debug_printf (VERBOSE_DEBUG,"Dictionary entry %d word: %s",dictentry,buffer_palabra);
             puntero+=2;
+
+            if (dump_texto!=NULL) {
+                char buf_linea[300];
+                sprintf(buf_linea,"%3d: %s\n",count,buffer_palabra);
+
+                //Y concatenar a final
+                util_concat_string(dump_texto,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);
+            }
+
+            else {
 
             if (strlen(buffer_palabra)) {
 
@@ -1209,6 +1220,8 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
                 }
 
                 }
+            }
+
             }
 
         }
@@ -1638,13 +1651,13 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,NULL);        
 
     debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
-    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL);
+    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL,NULL);
 
     debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
-    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL);
+    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL,NULL);
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
@@ -1657,6 +1670,58 @@ int util_gac_dump_dictonary(int *p_gacversion)
     return util_gac_palabras_agregadas;
 }
 
+void util_gac_dump_verbs(char *texto)
+{
+    texto[0]=0;
+
+
+
+    if (!util_gac_detect()) {
+       return;
+    }        
+
+
+
+
+
+    z80_int spec_start;
+    z80_int room_data;
+
+    util_gac_get_start_pointers(&spec_start,&room_data);
+
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+
+
+    z80_int nounptr=peek_word_no_time(spec_start);
+    z80_int adverbptr=peek_word_no_time(spec_start+1*2);
+    z80_int objectptr=peek_word_no_time(spec_start+2*2);
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+
+
+    z80_int verbptr=room_data+2;
+
+
+
+    util_gac_get_diccionario();
+
+
+
+    debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,texto);        
+
+    /*debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
+    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL);
+
+    debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
+    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL);
+
+
+    debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL,NULL);*/
+
+
+}
 
 void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu)
 {
@@ -1729,7 +1794,7 @@ void util_gac_get_direction_words(void)
 
 
 
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1,-1,NULL);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,1,-1,NULL,NULL);        
 
 
 
@@ -1767,7 +1832,7 @@ void util_gac_get_verb(int id_count,char *texto)
 
 
 
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,id_count,texto);        
+    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,id_count,texto,NULL);        
 
 
 
