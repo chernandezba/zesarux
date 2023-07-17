@@ -3613,7 +3613,7 @@ void menu_debug_registers_set_view(zxvision_window *ventana,int vista)
 	if (vista<1 || vista>8) vista=1;
 
 	//Si no es daad, no permite seleccionar vista 8
-	if (vista==8 && !util_daad_detect() && !util_textadv_detect_paws_quill()) return;
+	if (vista==8 && !util_textadventure_is_daad_quill_paws_gac() ) return;
 
 	menu_debug_registers_current_view=vista;
 
@@ -4117,7 +4117,7 @@ int menu_debug_registers_show_ptr_text(zxvision_window *w,int linea)
 				char maxima_vista='7';
 
 
-				if (util_daad_detect() || util_textadv_detect_paws_quill() ) maxima_vista='8';
+				if (util_textadventure_is_daad_quill_paws_gac() ) maxima_vista='8';
 
 								sprintf(buffer_mensaje_short,"~~Mptr:%sH [%c] ~~FlwPC ~~1-~~%c:View",
                                         string_direccion,(menu_debug_follow_pc.v ? 'X' : ' '),maxima_vista );
@@ -4297,7 +4297,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 char buffer_temp_graphics[100];
                 buffer_temp_graphics[0]=0;
 
-                if (util_daad_has_graphics()) strcpy(buffer_temp_graphics,"~~Graphics ");
+                if (util_daad_has_graphics() || util_gac_detect()) strcpy(buffer_temp_graphics,"~~Graphics ");
 
 				if (util_daad_condact_uses_message() ) sprintf(s,"%sCo~~nnections ~~advmap cond~~Message",buffer_temp_graphics);
 				else sprintf(s,"%sCo~~nnections ~~advmap",buffer_temp_graphics);
@@ -7648,7 +7648,7 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 	//menu_debug_registers_current_view
 	//Si estabamos antes en vista 8, pero ya no hay un programa daad en memoria, resetear a vista 1
-	if (menu_debug_registers_current_view==8 && !util_daad_detect() && !util_textadv_detect_paws_quill() ) {
+	if (menu_debug_registers_current_view==8 && !util_textadventure_is_daad_quill_paws_gac() ) {
 		menu_debug_registers_current_view=1;
 	}
 
@@ -10290,7 +10290,7 @@ void menu_debug_textadventure_map_connections_overlay(void)
 
 
 
-    if (util_textadventure_is_daad_quill_paws() || util_gac_detect() ) {
+    if (util_textadventure_is_daad_quill_paws_gac() ) {
 
 
         //Estamos redibujando siempre el mapa porque hay que reflejar cosas como que el usuario ha cogido un objeto y 
