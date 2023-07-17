@@ -1670,7 +1670,8 @@ int util_gac_dump_dictonary(int *p_gacversion)
     return util_gac_palabras_agregadas;
 }
 
-void util_gac_dump_verbs(char *texto)
+//tipo_dump: 0: verbos, 1 nombres, ....
+void util_gac_dump_verbs_etc(int tipo,char *texto)
 {
     texto[0]=0;
 
@@ -1706,12 +1707,21 @@ void util_gac_dump_verbs(char *texto)
     util_gac_get_diccionario();
 
 
+    switch (tipo) {
+        case 0:
+            //dump verbos
+            util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,texto);
+        break;
 
-    debug_printf (VERBOSE_DEBUG,"Dumping verbs. Start at %04XH",verbptr);
-    util_gac_readwords(verbptr,nounptr,gac_diccionario_array,0,-1,NULL,texto);        
+
+        case 1:
+            //nombres
+            util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL,texto);
+        break;
+    }
 
     /*debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
-    util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL);
+    
 
     debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
     util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL);

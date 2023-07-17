@@ -4890,9 +4890,26 @@ void menu_debug_gac_view_verbs(MENU_ITEM_PARAMETERS)
 	int resultado=0;
 
 
-    util_gac_dump_verbs(texto);
+    util_gac_dump_verbs_etc(0,texto);
 
 	menu_generic_message("GAC verbs",texto);
+
+    free(texto);    
+}
+
+void menu_debug_gac_view_nouns(MENU_ITEM_PARAMETERS)
+{
+    
+
+    char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
+	texto[0]=0;
+
+	int resultado=0;
+
+
+    util_gac_dump_verbs_etc(1,texto);
+
+	menu_generic_message("GAC nouns",texto);
 
     free(texto);    
 }
@@ -4914,8 +4931,8 @@ void menu_debug_gac_view_messages_ask(void)
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs,NULL,"~~Verbs");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
 
-		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~System Messages");
-		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'s');
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_nouns,NULL,"~~Nouns");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'n');
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Locations");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'l');
