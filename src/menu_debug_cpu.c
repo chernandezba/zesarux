@@ -9639,13 +9639,13 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                     if (room_object==room && total_objetos_mostrados<max_mostrar_objetos) {
 
                         int peso; 
-                        printf("Objeto %d en habitacion %d\n",i,room);
+                        //printf("Objeto %d en habitacion %d\n",i,room);
                         
                         util_gac_get_object_name(i,pre_buffer_temp,&peso);
 
                         
 
-                         printf("Objeto %s\n",pre_buffer_temp);
+                         //printf("Objeto %s\n",pre_buffer_temp);
 
                          //Parece que los personajes en GAC son objetos pesados, quiza para que no se puedan coger?
                          //En guerra vajillas, peso 150. En otros juegos (por ejemplo Legend of the lost kingdom), peso 255

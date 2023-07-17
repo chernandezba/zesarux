@@ -985,7 +985,7 @@ int startptr, endptr;
             util_gac_readstring( puntero, size,buffer_palabra,mem_diccionario);            
             //strcpy(roomdescription,result);
 
-            printf ("Object %3d weight: %3d word: %s\n",object,weight,buffer_palabra);
+            //printf ("Object %3d weight: %3d word: %s\n",object,weight,buffer_palabra);
 
                 if (strlen(buffer_palabra)) {
 

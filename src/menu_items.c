@@ -27069,7 +27069,7 @@ void menu_debug_main(MENU_ITEM_PARAMETERS)
 
 
         if (MACHINE_IS_SPECTRUM || MACHINE_IS_CPC) {
-            if (util_textadventure_is_daad_quill_paws() ) {
+            if (util_textadventure_is_daad_quill_paws_gac() ) {
                 menu_add_item_menu(array_menu_debug,"Debug Adventure",MENU_OPCION_NORMAL,menu_debug_registers_view_adventure,NULL);
 
 		        menu_add_item_menu_tooltip(array_menu_debug,"Open debug window on the adventure view (view number 8)");
