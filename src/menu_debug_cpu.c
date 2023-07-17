@@ -1606,6 +1606,8 @@ void menu_debug_show_register_line(int linea,char *textoregistros,int *columnas_
 		int linea_origen=linea;
 		if (linea_origen<0 || linea_origen>MENU_DEBUG_NUMBER_FLAGS_OBJECTS) return;
 
+        if (util_gac_detect()) return;
+
 		//comprobar que no haya watches fuera de rango, como en quill
 		menu_debug_daad_check_init_flagobject();
 
@@ -2508,7 +2510,11 @@ int menu_debug_registers_print_registers(zxvision_window *w,int linea)
 
 				zxvision_print_string_defaults_fillspc(w,1,linea++,buffer_linea);
 
-				zxvision_print_string_defaults_fillspc(w,1,linea++,"                    Watches");
+                if (util_gac_detect()) {
+                    linea++;
+                }
+
+				else zxvision_print_string_defaults_fillspc(w,1,linea++,"                    Watches");
 
 
 /*
