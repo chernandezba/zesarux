@@ -853,13 +853,42 @@ void util_gac_put_string_dictionary(int index,z80_byte *memoria,char *string)
         strcpy((char *)&memoria[offset],string_shown);
 }
 
+int gac_total_entradas_diccionario=0;
+
+//Diccionario de palabras GAC
+z80_byte *gac_diccionario_array=NULL;
+
 void util_gac_get_string_dictionary(int index,z80_byte *memoria,char *string)
 {
         int offset=util_gac_get_offset_dictionary(index);
-        if (index>MAX_DICT_GAC_ENTRIES) strcpy(string,"");
+        if (index>MAX_DICT_GAC_ENTRIES || index>=gac_total_entradas_diccionario) strcpy(string,"");
 
         else strcpy(string,(char *)&memoria[offset]);
 }
+
+//Usado desde menu
+void util_gac_dump_diccionario(char *destino)
+{
+
+    util_gac_get_diccionario();
+
+    int i;
+
+    char buf_palabra[MAX_DICT_GAC_STRING_LENGTH+1];
+
+    for (i=0;i<gac_total_entradas_diccionario;i++) {
+        util_gac_get_string_dictionary(i,gac_diccionario_array,buf_palabra);
+
+        char buf_linea[300];
+        sprintf(buf_linea,"%5d: %s\n",i,buf_palabra);
+
+        //Y concatenar a final
+        util_concat_string(destino,buf_linea,MAX_TEXTO_GENERIC_MESSAGE);        
+    }
+
+
+}
+
 
 #define GAC_TOKEN_LOWERCASE       0x40
 #define GAC_TOKEN_PUNCTUATION     0xc0
@@ -1238,8 +1267,7 @@ int util_gac_detect(void)
 }
 
 
-//Diccionario de palabras GAC
-z80_byte *gac_diccionario_array=NULL;
+
 
 
 void util_gac_get_start_pointers(z80_int *spec_start,z80_int *room_data)
@@ -1490,6 +1518,8 @@ void util_gac_get_diccionario(void)
     //Solo recrearlo si no existe
     if (gac_diccionario_array!=NULL) return;
 
+    gac_total_entradas_diccionario=0;
+
     printf("Recreating GAC dictionary\n");
     //Asignar memoria para el diccionario. 
     //z80_byte *diccionario_array;
@@ -1548,6 +1578,7 @@ void util_gac_get_diccionario(void)
                 util_gac_put_string_dictionary(indice,gac_diccionario_array,palabra);
             }
             indice++;
+            gac_total_entradas_diccionario++;
         }
     } while (longitud_palabra!=0 && puntero<endptr);
 }

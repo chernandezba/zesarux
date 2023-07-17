@@ -124,6 +124,7 @@ extern int util_gac_detect(void);
 extern int util_gac_get_index_location_by_id(int location_id);
 extern void util_gac_get_object_name(int objeto,char *texto,int *peso);
 extern void util_gac_get_verb(int id_count,char *texto);
+extern void util_gac_get_diccionario(void);
 
 extern z80_int util_daad_get_start_graphics(void);
 extern z80_int util_daad_get_start_graphics_attr(void);

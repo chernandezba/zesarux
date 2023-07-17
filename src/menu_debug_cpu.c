@@ -4862,6 +4862,22 @@ void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
     free(texto);    
 }
 
+void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
+{
+    
+
+    char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
+	texto[0]=0;
+
+	int resultado=0;
+
+
+    util_gac_dump_diccionario(texto);
+
+	menu_generic_message("GAC dictionary",texto);
+
+    free(texto);    
+}
 
 void menu_debug_gac_view_messages_ask(void)
 {
@@ -4871,28 +4887,24 @@ void menu_debug_gac_view_messages_ask(void)
 	int retorno_menu;
 	do {
 
-		
+	    menu_add_item_menu_inicial_format(&array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_dictionary,NULL,"~~Dictionary");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'d');	
 
-	    menu_add_item_menu_inicial_format(&array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_objects,NULL,"~~Objects");
+	    menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_objects,NULL,"~~Objects");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'o');
-		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,0);
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~User Messages");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'u');
-		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,1);
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~System Messages");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'s');
-		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,2);
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Locations");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'l');
-		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,3);
 
 
 		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Vocabulary");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
-		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,5);
     
 
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
