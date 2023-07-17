@@ -941,7 +941,8 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
 
 
 //Si buscar_objeto>=0, en vez de hacer dump de todos los objetos, lo que hace es retornar el buscar_objeto
-void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto,int *peso)
+//Si texto_dump_desde_menu!=NULL, es dump desde menu
+void util_gac_readobjects(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario,int buscar_objeto,char *nombre_objeto,int *peso,char *texto_dump_desde_menu)
 {
 /*int readobjects(infile, header, objects, startptr, endptr)
 FILE *infile;
@@ -987,6 +988,18 @@ int startptr, endptr;
 
             //printf ("Object %3d weight: %3d word: %s\n",object,weight,buffer_palabra);
 
+            if (texto_dump_desde_menu!=NULL) {
+
+                char buffer_linea[300];
+                sprintf(buffer_linea,"Object %03d weight: %3d: %s\n",object,weight,buffer_palabra);
+
+                //Y concatenar a final
+                util_concat_string(texto_dump_desde_menu,buffer_linea,MAX_TEXTO_GENERIC_MESSAGE);
+
+            }
+
+
+            else {
                 if (strlen(buffer_palabra)) {
 
 
@@ -1004,7 +1017,9 @@ int startptr, endptr;
                         util_unpawsgac_add_word_kb(buffer_palabra);
                         util_gac_palabras_agregadas++;
                     }             
-                }            
+                } 
+
+            }           
 
          j+=size;
          j+=3;
@@ -1602,7 +1617,7 @@ int util_gac_dump_dictonary(int *p_gacversion)
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
-    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL);
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL,NULL);
 
 
 
@@ -1612,7 +1627,44 @@ int util_gac_dump_dictonary(int *p_gacversion)
 }
 
 
+void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu)
+{
 
+    texto_dump_desde_menu[0]=0;
+
+    if (!util_gac_detect()) return;
+   
+
+
+
+    z80_int spec_start;
+    z80_int room_data;
+
+    util_gac_get_start_pointers(&spec_start,&room_data);
+
+    //Vamos primero a hacer dump del dicccionario
+    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+
+
+    z80_int nounptr=peek_word_no_time(spec_start);
+    z80_int adverbptr=peek_word_no_time(spec_start+1*2);
+    z80_int objectptr=peek_word_no_time(spec_start+2*2);
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+
+
+    z80_int verbptr=room_data+2;
+
+
+
+
+    util_gac_get_diccionario();
+
+
+
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,-1,NULL,NULL,texto_dump_desde_menu);
+
+
+}
 
 void util_gac_get_direction_words(void)
 {
@@ -1747,7 +1799,7 @@ void util_gac_get_object_name(int objeto,char *texto,int *peso)
 
 
 
-    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto,peso);
+    util_gac_readobjects(objectptr,roomptr,gac_diccionario_array,objeto,texto,peso,NULL);
 
 
 

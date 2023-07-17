@@ -4845,8 +4845,85 @@ void menu_debug_daad_connections(void)
     free(texto);
 }
 
+void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
+{
+    
+
+    char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
+	texto[0]=0;
+
+	int resultado=0;
 
 
+    util_gac_dump_objects_from_menu(texto);
+
+	menu_generic_message("GAC objects",texto);
+
+    free(texto);    
+}
+
+
+void menu_debug_gac_view_messages_ask(void)
+{
+
+	menu_item *array_menu_daad_tipo_mensaje;
+	menu_item item_seleccionado;
+	int retorno_menu;
+	do {
+
+		
+
+	    menu_add_item_menu_inicial_format(&array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_objects,NULL,"~~Objects");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'o');
+		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,0);
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~User Messages");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'u');
+		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,1);
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~System Messages");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'s');
+		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,2);
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Locations");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'l');
+		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,3);
+
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Vocabulary");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
+		menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,5);
+    
+
+        menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
+		menu_add_ESC_item(array_menu_daad_tipo_mensaje);
+
+        retorno_menu=menu_dibuja_menu(&daad_tipo_mensaje_opcion_seleccionada,&item_seleccionado,array_menu_daad_tipo_mensaje,"Message type" );
+                
+
+		/*if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+			menu_debug_daad_view_messages(daad_tipo_mensaje_opcion_seleccionada);
+
+		}
+
+    } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);*/
+
+
+
+
+		if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                        //llamamos por valor de funcion
+                        if (item_seleccionado.menu_funcion!=NULL) {
+                                //printf ("actuamos por funcion\n");
+                                item_seleccionado.menu_funcion(item_seleccionado.valor_opcion);
+
+                        }
+                }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);	
+
+
+}
 
 void menu_debug_daad_view_messages_ask(void)
 {
@@ -8644,7 +8721,11 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 					int antes_menu_emulation_paused_on_menu=menu_emulation_paused_on_menu;
 					menu_emulation_paused_on_menu=1;
 
-                    menu_debug_daad_view_messages_ask();
+                    if (util_gac_detect()) {
+                        menu_debug_gac_view_messages_ask();
+                    }
+
+                    else menu_debug_daad_view_messages_ask();
 
                     //Decimos que no hay tecla pulsada
                     acumulado=MENU_PUERTO_TECLADO_NINGUNA;
