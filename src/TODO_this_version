@@ -348,8 +348,7 @@ creo que ok -diccionario se debe recrear si cambia juego
 ok-diccionario (util_gac_put_string_dictionary) se deberia mantener siempre en memoria y cargarlo una sola vez
 ok?-no resetear OSD teclado aventura al hacer uso de mapa aventura
 -quijote no encuentra vocabulario, solo un verbo
-ok-no siempre saca bien lista de objetos. parece que solo con la guerra de las vajillas?? y no todos los objetos tampoco
--crash desde football frenzy en util_gac_get_locations_table al hacer reset
+
 
 -poder listar diccionario, mensajes, objetos etc etc desde menu debug cpu-> habilitar vista 8 para gac
 
