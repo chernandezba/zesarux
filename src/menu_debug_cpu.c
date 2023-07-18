@@ -10250,7 +10250,7 @@ void menu_debug_textadventure_follow_connections(zxvision_window *w)
     textadventure_last_total_rooms=total_rooms;
 
     if (cambiado) {
-        printf("Text Adventure Game has changed. Regenerate connections map\n");
+        //printf("Text Adventure Game has changed. Regenerate connections map\n");
         debug_printf(VERBOSE_DEBUG,"Text Adventure Game has changed. Regenerate connections map");
 
         //metemos zoom a 0. Esto permite evitar cuelgues a medio cargar de una aventura, como sucede con

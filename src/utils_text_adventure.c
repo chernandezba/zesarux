@@ -1165,7 +1165,7 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
             temp=peek_byte_no_time(puntero);
         }
         if (count!=0 && temp!=0) {
-            printf("count: %d\n",count);
+            //printf("count: %d\n",count);
             //Este count es el identificador de palabra/sinonimo, palabras que son sinonimos tienen mismo count
             dictentry=readtokenised(puntero);
             char buffer_palabra[256];
@@ -1229,11 +1229,11 @@ void util_gac_readwords(z80_int puntero,z80_int endptr,z80_byte *mem_diccionario
 
     } while (puntero<endptr && count!=0 && temp!=0);
 
-    if (buscar_palabras_direcciones) {
+    /*if (buscar_palabras_direcciones) {
         printf("Palabras direcciones: n %d s %d e %d w %d down %d up %d\n",
             gac_id_palabra_direccion_north,gac_id_palabra_direccion_south,gac_id_palabra_direccion_east,gac_id_palabra_direccion_west,
             gac_id_palabra_direccion_down,gac_id_palabra_direccion_up);
-    }
+    }*/
 }
 
 char *gacversions_strings[]={
@@ -1388,7 +1388,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 
                 if (rellenar_tabla_conexiones) {
 
-                    printf("Room %d Direction: %d Destination: %d\n",room,scrap,destination);
+                    //printf("Room %d Direction: %d Destination: %d\n",room,scrap,destination);
 
                     //TODO de momento no soportamos room > 255
                     if (destination>=TEXT_ADVENTURE_MAX_LOCATIONS) {
@@ -1598,7 +1598,7 @@ int startptr, endptr;
 
     util_gac_readstring( puntero, len,buffer_mensaje,gac_diccionario_array);
 
-    printf("Mensaje: %s\n",buffer_mensaje);
+    //printf("Mensaje: %s\n",buffer_mensaje);
 
     char buffer_linea[300];
 
@@ -1630,7 +1630,7 @@ void util_gac_get_diccionario(void)
 
     gac_total_entradas_diccionario=0;
 
-    printf("Recreating GAC dictionary\n");
+    debug_printf(VERBOSE_DEBUG,"Recreating GAC dictionary");
     //Asignar memoria para el diccionario. 
     //z80_byte *diccionario_array;
 
@@ -2035,7 +2035,7 @@ void util_gac_get_locations_table(void)
 
 
     // obtener habitaciones
-    printf("Reading rooms\n");
+    //printf("Reading rooms\n");
     util_gac_readrooms(-1,NULL,1,NULL,0,0);       
 
 
