@@ -1042,7 +1042,7 @@ int startptr, endptr;
 
                     else {
                         debug_printf (VERBOSE_DEBUG,"Adding word %s to OSD Adventure text keyboard",buffer_palabra);
-                        printf("Object addr %X %d %s location %d\n",fileptr,object,buffer_palabra,start);
+                        //printf("Object addr %X %d %s location %d\n",fileptr,object,buffer_palabra,start);
                         util_unpawsgac_add_word_kb(buffer_palabra);
                         util_gac_palabras_agregadas++;
                     }             

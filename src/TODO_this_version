@@ -342,9 +342,6 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 
 ok-autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
-ok-algunas miniaturas de dibujo exceden la cuadricula de habitacion, ejemplo: necris.tap
-
-
 
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
