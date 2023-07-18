@@ -58,7 +58,7 @@ help() {
 	echo "Development actions:"
 	echo "--------------------"
 	echo "build:        Builds a simple Debian version"
-	echo "codetests:    Execute ZEsarUX codetests from a simple Debian version"
+	echo "codetests:    Execute simple ZEsarUX codetests from a simple Debian version"
 	echo "run:          Executes a simple Debian version using stdout driver"
 	echo "run-curses:   Executes a simple Debian version using curses driver"
 	echo "run-xorg:     Executes a simple Debian version using xwindows driver"
@@ -68,7 +68,7 @@ help() {
 	echo
 	echo "Building actions:"
 	echo "-----------------"
-	echo "build-version:                Builds a release version"
+	echo "build-version:                Builds a release version, running several tests (codetests, program tests, etc)"
 	echo "build-version-and-get-binary: Same as build-version + get the tar.gz binary package"
 	echo "Note: build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
 	echo
@@ -137,19 +137,17 @@ case $1 in
 
 	codetests)
 		docker-build
-		docker run --name run-zesarux-codetests -it zesarux --codetests
+		docker run --name run-zesarux-codetests --rm -it zesarux --codetests
 	;;
 
 	localrun)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
-                docker rm run-zesarux-localrun
-		docker run --name run-zesarux-localrun -it zesarux.local
+		docker run --name run-zesarux-localrun --rm -it zesarux.local
 	;;
 
 	localsh)
 		docker build -f Dockerfile.local .  --progress plain --tag=zesarux.local
-                docker rm run-zesarux-localsh
-		docker run --name run-zesarux-localsh -it --entrypoint /bin/bash zesarux.local
+		docker run --name run-zesarux-localsh --rm -it --entrypoint /bin/bash zesarux.local
 	;;
 
 
