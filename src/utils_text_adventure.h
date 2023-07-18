@@ -40,6 +40,11 @@
 
 #define MENU_DEBUG_NUMBER_FLAGS_OBJECTS 7
 
+//Este limite aplica a cualquier daad/paws/quill/gac
+//Aunque los 3 primeros el limite es 256 en el parser, gac
+//en cambio tiene habitaciones hasta 9999
+//Podria aumentar este limite a 9999 pero luego hay funciones de busqueda de habitaciones
+//que tienen como limite este valor y por tanto irian mucho mas lentas teniendo 9999 que teniendo 256
 #define TEXT_ADVENTURE_MAX_LOCATIONS 256
 
 #define MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH 255

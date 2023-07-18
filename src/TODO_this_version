@@ -342,10 +342,7 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 
 ok-autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
--tabla localidades gac: no soportamos de momento room > 255
-ok-quijote no encuentra vocabulario, solo un verbo
-
-
+-algunas miniaturas de dibujo exceden la cuadricula de habitacion, ejemplo: necris.tap
 
 -poder listar diccionario, mensajes, objetos etc etc desde menu debug cpu-> habilitar vista 8 para gac
 -agregarlo en changelog
