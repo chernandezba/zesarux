@@ -122,6 +122,9 @@ extern void util_daad_get_condact_message(char *buffer);
 
 extern z80_int util_daad_get_graphics_attr(z80_byte location,int *ink,int *paper,int *is_picture);
 extern int util_daad_has_graphics(void);
+extern int util_textadventure_is_daad_quill_paws_gac(void);
+
+
 extern z80_int util_gac_get_graphics_location(int location,int *location_id);
 extern void util_gac_get_graphics_size(int location,int *location_commands,int *location_size);
 extern z80_int util_gac_daad_get_total_graphics(void);
@@ -130,6 +133,16 @@ extern int util_gac_get_index_location_by_id(int location_id);
 extern void util_gac_get_object_name(int objeto,char *texto,int *peso);
 extern void util_gac_get_verb(int id_count,char *texto);
 extern void util_gac_get_diccionario(void);
+extern void util_gac_set_current_location(int location);
+extern int util_gac_locate_room_location(int location_id);
+extern int util_gac_get_object_location(int id_objeto);
+extern void util_gac_dump_locations(char *texto,int max_string);
+extern void util_gac_dump_messages(char *texto_destino,int max_texto);
+extern void util_gac_dump_diccionario(char *destino);
+extern void util_gac_dump_verbs_etc(int tipo,char *texto);
+extern void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu);
+
+extern z80_int util_textadventure_get_total_locations(void);
 
 extern z80_int util_daad_get_start_graphics(void);
 extern z80_int util_daad_get_start_graphics_attr(void);

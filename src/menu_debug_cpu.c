@@ -4326,7 +4326,7 @@ void menu_debug_get_legend(int linea,char *s,zxvision_window *w)
                 buffer_temp_graphics[0]=0;
 
                 if (util_gac_detect()) {
-				    sprintf(s,"~~Graphics Co~~nnections ~~advmap",buffer_temp_graphics);                    
+				    strcpy(s,"~~Graphics Co~~nnections ~~advmap");                    
                     return;
                 }
 
@@ -4852,7 +4852,6 @@ void menu_debug_gac_view_objects(MENU_ITEM_PARAMETERS)
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
 
-	int resultado=0;
 
 
     util_gac_dump_objects_from_menu(texto);
@@ -4869,7 +4868,6 @@ void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
 
-	int resultado=0;
 
 
     util_gac_dump_diccionario(texto);
@@ -4887,7 +4885,6 @@ void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
 
-	int resultado=0;
 
     //Le pasamos mismo parámetro recibido del menu si es verbs, nouns, etc
     util_gac_dump_verbs_etc(valor_opcion,texto);
@@ -4915,7 +4912,7 @@ void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_debug_gac_view_locations(void)
+void menu_debug_gac_view_locations(MENU_ITEM_PARAMETERS)
 {
 
     
@@ -4935,7 +4932,7 @@ void menu_debug_gac_view_locations(void)
 }
 
 
-void menu_debug_gac_view_messages(void)
+void menu_debug_gac_view_messages(MENU_ITEM_PARAMETERS)
 {
 
     
