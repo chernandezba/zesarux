@@ -1937,42 +1937,42 @@ int util_gac_get_total_locations(void)
 int util_unpawsetc_dump_words(char *mensaje)
 {
 
-        util_init_unpawsgac_hotkeys();
+    util_init_unpawsgac_hotkeys();
 
-        //Ver si es de daad
-        if (util_daad_detect()) {
-                int palabras=util_daad_dump_vocabulary(0,NULL,0);
-                sprintf(mensaje,"OK. DAAD signature found. %d words added",palabras);
-                return 0;
+    //Ver si es de daad
+    if (util_daad_detect()) {
+        int palabras=util_daad_dump_vocabulary(0,NULL,0);
+        sprintf(mensaje,"OK. DAAD signature found. %d words added",palabras);
+        return 0;
+    }
+
+    int version;
+
+    int palabras=util_paws_dump_vocabulary(&version);      
+
+    //printf ("Despues extraer palabras\n");  
+
+    //Es Paws?
+    if (version>=0) {
+        sprintf(mensaje,"OK. %s signature found. %d words added",
+        quillversions_strings[version],palabras);
+    }
+
+    else {
+        //No es paws. Probar con GAC
+        palabras=util_gac_dump_dictonary(&version);
+        if (version>=0) {
+            sprintf(mensaje,"OK. %s signature found. %d words added",
+            gacversions_strings[version],palabras);
+        }	
+
+        else {
+            //Ni paws ni gac
+            sprintf(mensaje,"It does not seem to be a Quill/PAW/Daad/GAC game");
         }
+    }
 
-        int version;
-
-	int palabras=util_paws_dump_vocabulary(&version);      
-
-        //printf ("Despues extraer palabras\n");  
-
-	//Es Paws?
-	if (version>=0) {
-                sprintf(mensaje,"OK. %s signature found. %d words added",
-			quillversions_strings[version],palabras);
-	}
-
-	else {
-		//No es paws. Probar con GAC
-		palabras=util_gac_dump_dictonary(&version);
-		if (version>=0) {
-			sprintf(mensaje,"OK. %s signature found. %d words added",
-				gacversions_strings[version],palabras);
-		}	
-
-		else {
-			//Ni paws ni gac
-			sprintf(mensaje,"It does not seem to be a Quill/PAW/Daad/GAC game");
-		}
-	}
-
-        return version;
+    return version;
 }
 
 
@@ -2005,19 +2005,19 @@ z80_int util_daad_get_start_pointers(void)
     3) En la siguiente direccion lo normal es encontrar un 95 decimal. 
 
     */    
-        if (MACHINE_IS_CPC) return 0x2880;
+    if (MACHINE_IS_CPC) return 0x2880;
 
-        else {
-            //normalmente 0x8400, pero en algunos (la diosa de cozumel) es 0x8380
-            if (util_has_daad_signature(0x8380)) return 0x8380;
+    else {
+        //normalmente 0x8400, pero en algunos (la diosa de cozumel) es 0x8380
+        if (util_has_daad_signature(0x8380)) return 0x8380;
 
-            //aventura original, o Jabato 1 por ejemplo
-            if (util_has_daad_signature(0x8480)) return 0x8480;
+        //aventura original, o Jabato 1 por ejemplo
+        if (util_has_daad_signature(0x8480)) return 0x8480;
 
-            //la mayoria
-            return 0x8400;
+        //la mayoria
+        return 0x8400;
 
-        }
+    }
 }
 
 
