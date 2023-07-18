@@ -941,16 +941,18 @@ void util_gac_readstring(z80_int puntero, int size,char *result,z80_byte *mem_di
 
          if (high & GAC_TOKEN_LOWERCASE)
          {  // token is lowercase
-            for (i=0;i<strlen(working);i++)
+            int longitud=strlen(working);
+            for (i=0;i<longitud;i++)
             {
-               working[i]=tolower(working[i]);
+               working[i]=letra_minuscula(working[i]);
             }
          }
          else if ((high & 0xc0) == 0)
          { // first character is uppercase
-            for (i=(working[0]==' '?2:1);i<strlen(working);i++)
+            int longitud=strlen(working);
+            for (i=(working[0]==' '?2:1);i<longitud;i++)
             {
-               working[i]=tolower(working[i]);
+               working[i]=letra_minuscula(working[i]);
             }
          }
          // Add punctuation to the end
@@ -1319,7 +1321,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 //room_struct **rooms;
 //int startptr, endptr;
 
-   int room, curexit, scrap; // keeps a count of the number of entries in the dictionary
+   int curexit, scrap; // keeps a count of the number of entries in the dictionary
    //int j; //temporary char variables
    int len; //temporary char variables
    int current=0; // the current token
@@ -1442,7 +1444,7 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
          // get description
          //j+=5;
          //strcat(rooms[current]->description,readstring(infile, len));
-         int i;
+         //int i;
          
 
 
@@ -1538,8 +1540,8 @@ void util_gac_dump_messages(char *texto_destino,int max_texto)
 
     util_gac_get_start_pointers(&spec_start,NULL);
 
-    z80_int roomptr=peek_word_no_time(spec_start+3*2);
-    z80_int hpcptr=peek_word_no_time(spec_start+4*2);
+    //z80_int roomptr=peek_word_no_time(spec_start+3*2);
+    //z80_int hpcptr=peek_word_no_time(spec_start+4*2);
 
    //header->loccptr = get16bit(infile) - header->offset;  5 
    //header->lpcptr = get16bit(infile) - header->offset;  6
@@ -1566,7 +1568,7 @@ int startptr, endptr;
 
    int message; // keeps a count of the number of entries in the dictionary
    int i, j, len; //temporary char variables
-   int fileptr;
+   //int fileptr;
    char *scrap;
 
    scrap=calloc(1,255);
@@ -1792,13 +1794,13 @@ void util_gac_dump_verbs_etc(int tipo,char *texto)
     util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
-    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    //z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
     z80_int nounptr=peek_word_no_time(spec_start);
     z80_int adverbptr=peek_word_no_time(spec_start+1*2);
     z80_int objectptr=peek_word_no_time(spec_start+2*2);
-    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+    //z80_int roomptr=peek_word_no_time(spec_start+3*2);
 
 
     z80_int verbptr=room_data+2;
@@ -1855,16 +1857,16 @@ void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu)
     util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
-    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    //z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
-    z80_int nounptr=peek_word_no_time(spec_start);
-    z80_int adverbptr=peek_word_no_time(spec_start+1*2);
+    //z80_int nounptr=peek_word_no_time(spec_start);
+    //z80_int adverbptr=peek_word_no_time(spec_start+1*2);
     z80_int objectptr=peek_word_no_time(spec_start+2*2);
     z80_int roomptr=peek_word_no_time(spec_start+3*2);
 
 
-    z80_int verbptr=room_data+2;
+    //z80_int verbptr=room_data+2;
 
 
 
@@ -1934,7 +1936,7 @@ void util_gac_get_verb(int id_count,char *texto)
     util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
-    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    //z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
     z80_int nounptr=peek_word_no_time(spec_start);
@@ -1993,14 +1995,14 @@ void util_gac_get_object_name(int objeto,char *texto,int *peso)
     util_gac_get_start_pointers(&spec_start,&room_data);
 
     //Vamos primero a hacer dump del dicccionario
-    z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+    //z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
 
 
     z80_int objectptr=peek_word_no_time(spec_start+2*2);
     z80_int roomptr=peek_word_no_time(spec_start+3*2);
 
 
-    z80_int verbptr=room_data+2;
+    //z80_int verbptr=room_data+2;
 
 
 
@@ -3038,7 +3040,7 @@ int util_gac_locate_room_location(int location_id)
 
     int i;
 
-    int location=0;
+    //int location=0;
 
     //printf("inicio tabla: %d\n",table_dir);
 
