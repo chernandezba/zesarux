@@ -1889,6 +1889,8 @@ void util_gac_dump_connections(char *texto,int max_string)
         return;
     }        
 
+    //Recrear diccionario GAC por si hemos cambiado el juego
+    util_gac_free_diccionario();
 
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();

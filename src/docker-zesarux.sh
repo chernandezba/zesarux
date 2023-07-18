@@ -118,7 +118,7 @@ case $1 in
 
 	run-curses)
 		docker-build
-		docker run --name run-zesarux-curses -it zesarux --ao null --vo curses
+		docker run --name run-zesarux-curses --rm -it zesarux --ao null --vo curses
 	;;
 
 	run-xorg)

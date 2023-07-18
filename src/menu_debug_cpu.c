@@ -4955,6 +4955,10 @@ void menu_debug_gac_view_messages(MENU_ITEM_PARAMETERS)
 void menu_debug_gac_view_messages_ask(void)
 {
 
+
+    //Recrear diccionario GAC por si hemos cambiado el juego
+    util_gac_free_diccionario();
+
 	menu_item *array_menu_daad_tipo_mensaje;
 	menu_item item_seleccionado;
 	int retorno_menu;
