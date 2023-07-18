@@ -68,8 +68,8 @@ help() {
 	echo
 	echo "Building actions:"
 	echo "-----------------"
-	echo "build-version:                Builds a release version, running several tests (codetests, program tests, etc)"
-	echo "build-version-and-get-binary: Same as build-version + get the tar.gz binary package"
+	echo "build-version:                Builds a release version"
+	echo "build-version-and-get-binary: Same as build-version + running several tests (codetests, program tests, etc) + get the tar.gz binary package"
 	echo "Note: build-version and build-version-and-get-binary require a parameter, one of: [debian|fedora|ubuntu]"
 	echo
 	echo "Misc:"
