@@ -9636,14 +9636,26 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
 
             int antes_paws_render_default_ink=paws_render_default_ink;
             int antes_paws_render_default_paper=paws_render_default_paper;
+
+            int antes_paws_render_ink=paws_render_ink;
+            int antes_paws_render_paper=paws_render_paper;            
     
+            int antes_gac_render_default_ink=gac_render_default_ink;
+            int antes_gac_render_default_paper=gac_render_default_paper;
 
             //Por defecto
             paws_render_last_x=0;
             paws_render_last_y=0;    
 
+            //Miniaturas salen siempre con color por defecto del tema
             paws_render_default_ink=ESTILO_GUI_TINTA_NORMAL;
             paws_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;                  
+
+            gac_render_default_ink=ESTILO_GUI_TINTA_NORMAL;
+            gac_render_default_paper=ESTILO_GUI_PAPEL_NORMAL;         
+
+            paws_render_ink=ESTILO_GUI_TINTA_NORMAL;
+            paws_render_paper=ESTILO_GUI_PAPEL_NORMAL;           
 
             paws_render_bright=0;    
             paws_render_mirror_x=+1;
@@ -9700,6 +9712,11 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
             paws_render_default_ink=antes_paws_render_default_ink;
             paws_render_default_paper=antes_paws_render_default_paper;            
 
+            gac_render_default_ink=antes_gac_render_default_ink;
+            gac_render_default_paper=antes_gac_render_default_paper;    
+
+            paws_render_ink=antes_paws_render_ink;
+            paws_render_paper=antes_paws_render_paper;                
 
             paws_render_disable_block.v=antes_paws_render_disable_block;
             paws_render_disable_text.v=antes_paws_render_disable_text;
