@@ -4880,7 +4880,7 @@ void menu_debug_gac_view_dictionary(MENU_ITEM_PARAMETERS)
 }
 
 
-void menu_debug_gac_view_verbs(MENU_ITEM_PARAMETERS)
+void menu_debug_gac_view_verbs_etc(MENU_ITEM_PARAMETERS)
 {
     
 
@@ -4889,30 +4889,71 @@ void menu_debug_gac_view_verbs(MENU_ITEM_PARAMETERS)
 
 	int resultado=0;
 
+    //Le pasamos mismo parámetro recibido del menu si es verbs, nouns, etc
+    util_gac_dump_verbs_etc(valor_opcion,texto);
 
-    util_gac_dump_verbs_etc(0,texto);
+    char buffer_titulo[30];
 
-	menu_generic_message("GAC verbs",texto);
+    switch (valor_opcion) {
+        case 0:
+            sprintf(buffer_titulo,"GAC verbs");
+        break;
+
+        case 1:
+            sprintf(buffer_titulo,"GAC nouns");
+        break;
+
+        case 2:
+            sprintf(buffer_titulo,"GAC adverbs");
+        break;        
+    }
+
+
+	menu_generic_message(buffer_titulo,texto);
 
     free(texto);    
 }
 
-void menu_debug_gac_view_nouns(MENU_ITEM_PARAMETERS)
+
+void menu_debug_gac_view_locations(void)
 {
+
     
+	//int i;
 
     char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
 	texto[0]=0;
 
-	int resultado=0;
+	//int resultado=0;
+
+    util_gac_dump_locations(texto,MAX_TEXTO_GENERIC_MESSAGE);
 
 
-    util_gac_dump_verbs_etc(1,texto);
+	menu_generic_message("GAC locations",texto);
 
-	menu_generic_message("GAC nouns",texto);
-
-    free(texto);    
+    free(texto);
 }
+
+
+void menu_debug_gac_view_messages(void)
+{
+
+    
+	//int i;
+
+    char *texto=util_malloc_max_texto_generic_message("Can not allocate memory for showing messages");
+	texto[0]=0;
+
+	//int resultado=0;
+
+    util_gac_dump_messages(texto,MAX_TEXTO_GENERIC_MESSAGE);
+
+
+	menu_generic_message("GAC messages",texto);
+
+    free(texto);
+}
+
 
 void menu_debug_gac_view_messages_ask(void)
 {
@@ -4928,18 +4969,29 @@ void menu_debug_gac_view_messages_ask(void)
 	    menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_objects,NULL,"~~Objects");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'o');
 
-		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs,NULL,"~~Verbs");
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs_etc,NULL,"~~Verbs");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
+        menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,0);
 
-		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_nouns,NULL,"~~Nouns");
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs_etc,NULL,"~~Nouns");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'n');
+        menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,1);
 
-		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Locations");
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_verbs_etc,NULL,"~~Adverbs");
+		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'a');
+        menu_add_item_menu_valor_opcion(array_menu_daad_tipo_mensaje,2);     
+
+
+		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_locations,NULL,"~~Locations");
 		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'l');
 
 
-		menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_daad_view_messages,NULL,"~~Vocabulary");
-		menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'v');
+        menu_add_item_menu_format(array_menu_daad_tipo_mensaje,MENU_OPCION_NORMAL,menu_debug_gac_view_messages,NULL,"~~Messages");
+        menu_add_item_menu_shortcut(array_menu_daad_tipo_mensaje,'m');
+
+
+
     
 
         menu_add_item_menu(array_menu_daad_tipo_mensaje,"",MENU_OPCION_SEPARADOR,NULL,NULL);
@@ -8225,8 +8277,9 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
 				if (tecla=='n' && menu_debug_registers_current_view==8) {
 					menu_debug_daad_connections();
-                    tecla=2; //Simular ESC
-					salir_todos_menus=1;
+
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;   
                 }	                									
 
 				if (tecla=='w') {
@@ -8865,12 +8918,10 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 
                 if (tecla=='n' && menu_debug_registers_current_view==8) {
                     	menu_debug_daad_connections();
-                    	//decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
-                    	si_ejecuta_una_instruccion=0;
-						salir_todos_menus=1;
-						cpu_step_mode.v=0;
-						acumulado=0; //teclas pulsadas
-						//Con esto saldremos						
+                    //Decimos que no hay tecla pulsada
+                    acumulado=MENU_PUERTO_TECLADO_NINGUNA;
+                    //decirle que despues de pulsar esta tecla no tiene que ejecutar siguiente instruccion
+                    si_ejecuta_una_instruccion=0;					
                 }                	
 
 
@@ -9218,21 +9269,26 @@ void menu_debug_registers(MENU_ITEM_PARAMETERS)
 				if (menu_debug_registers_current_view==8) {
 					//Poner breakpoint hasta parser
 
-					menu_debug_daad_step_breakpoint();
-                    tecla=2; //Simular ESC
-					cpu_step_mode.v=0;
-					salir_todos_menus=1;
-					acumulado=0;
+                    //En GAC no soportado esto
+                    if (!util_gac_detect()) {
 
-                    
-                    //Ademas quitamos el flag de abrir menu que se habia quedado activado
-                    //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
-                    //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
-                    //tanto en caso que haya multitarea como no
-                    //Esta sentencia y comentarios estan repetidos en varios sitios
-                    //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
-                    //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
-                    menu_event_open_menu.v=0;
+                        menu_debug_daad_step_breakpoint();
+                        tecla=2; //Simular ESC
+                        cpu_step_mode.v=0;
+                        salir_todos_menus=1;
+                        acumulado=0;
+
+                        
+                        //Ademas quitamos el flag de abrir menu que se habia quedado activado
+                        //Esto realmente solo hace falta cuando se ejecuta step si el menu debug cpu se ha abierto como consecuencia de un breakpoint
+                        //esto fijarse en funcion menu_inicio cuando se usa zxvision_switch_to_window_on_open_menu, que se abre ventana
+                        //tanto en caso que haya multitarea como no
+                        //Esta sentencia y comentarios estan repetidos en varios sitios
+                        //TODO: Creo que en vez de cambiar este menu_event_open_menu.v=0, habria que llamar a menu_inicio_pre_retorno_reset_flags
+                        //cuando se sale de la apertura de ventana en el caso de zxvision_switch_to_window_on_open_menu
+                        menu_event_open_menu.v=0;
+
+                    }
 					
                 }					
 

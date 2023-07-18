@@ -21,6 +21,14 @@ Improved Text Adventure features:
 - Added export draw strings to external file (txt, asm, c or pas)
 - Preserve zoom level on Text Adventure Map when loading games
 - Added GAC support for Text Adventure Map
+- Added GAC support for Debug Adventure (cpu view 8) supporting:
+  - Connections table
+  - Dictionary
+  - Objects
+  - Verbs
+  - Adverbs
+  - Locations
+  - Messages
 
 Improved ZX Vision
 - Allow to render only changed pixels (so it speeds up render). Internal flag: dirty_user_must_draw_contents

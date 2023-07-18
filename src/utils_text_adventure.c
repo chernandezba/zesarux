@@ -1020,7 +1020,7 @@ int startptr, endptr;
             if (texto_dump_desde_menu!=NULL) {
 
                 char buffer_linea[300];
-                sprintf(buffer_linea,"Object %03d weight: %3d: %s\n",object,weight,buffer_palabra);
+                sprintf(buffer_linea,"%3d weight: %3d: %s\n",object,weight,buffer_palabra);
 
                 //Y concatenar a final
                 util_concat_string(texto_dump_desde_menu,buffer_linea,MAX_TEXTO_GENERIC_MESSAGE);
@@ -1292,7 +1292,9 @@ void util_gac_get_start_pointers(z80_int *spec_start,z80_int *room_data)
 //si roomdescription no es NULL, se guarda ahi la descripcion de la localidad
 //si solo_esta_habitacion>=0, se finaliza al llegar a dicha habitacion, e indica que estamos buscando una habitacion
 //  para obtener su descripcion
-int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellenar_tabla_conexiones,char *string_dump_connections,int max_string)
+//string_dump_connections dice si se vuelca descripcion de localidades y opcionalmente conexiones
+//si full_location no es 0, se vuelca la descripcion de localidad entera y sin conexion. de lo contrario, descripcion corta y conexiones
+int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellenar_tabla_conexiones,char *string_dump_connections,int max_string,int full_location)
 {
 
 
@@ -1462,14 +1464,14 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 
         //Volcar salida para menu connections
         if (string_dump_connections!=NULL) {
-            char buffer_linea[MAX_ANCHO_LINEAS_GENERIC_MESSAGE];
+            char buffer_linea[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+100];
 
             sprintf(buffer_linea,"-Location %3d: ",room);
 
             //salir=util_concat_string(texto,buffer_linea,max_string);
             util_concat_string(string_dump_connections,buffer_linea,max_string);
 
-            //solo ver un trozo de la localidad
+            
             
             char texto_localidad[MAX_ALLOWED_TEXT_ADVENTURE_LOCATION_LENGTH+1];
 
@@ -1478,15 +1480,19 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
             util_gac_readstring( puntero, len,result,mem_diccionario);            
             strcpy(texto_localidad,result);
 
+            //printf("Localidad %d : %s\n",room,texto_localidad);
 
-            texto_localidad[25]=0;
+            //solo ver un trozo de la localidad
+            if (!full_location) texto_localidad[25]=0;
+
             //printf("%s\n",texto_localidad);
             sprintf(buffer_linea,"%s\n",texto_localidad);
             //salir=util_concat_string(texto,buffer_linea,max_string);
             util_concat_string(string_dump_connections,buffer_linea,max_string);
 
-
-            util_concat_string(string_dump_connections,buffer_linea_conexiones,max_string);
+            if (!full_location) {
+                util_concat_string(string_dump_connections,buffer_linea_conexiones,max_string);
+            }
 
             util_concat_string(string_dump_connections,"\n\n",max_string);
             
@@ -1515,6 +1521,97 @@ int util_gac_readrooms(int solo_esta_habitacion,char *roomdescription,int rellen
 }   
 
 
+void util_gac_dump_messages(char *texto_destino,int max_texto)
+{
+
+    texto_destino[0]=0;
+
+    if (!util_gac_detect()) {
+        return;
+    }    
+
+
+    util_gac_get_diccionario();        
+
+
+    z80_int spec_start;
+
+    util_gac_get_start_pointers(&spec_start,NULL);
+
+    z80_int roomptr=peek_word_no_time(spec_start+3*2);
+    z80_int hpcptr=peek_word_no_time(spec_start+4*2);
+
+   //header->loccptr = get16bit(infile) - header->offset;  5 
+   //header->lpcptr = get16bit(infile) - header->offset;  6
+   //header->messageptr = get16bit(infile) - header->offset  ;  7
+
+      z80_int messageptr=peek_word_no_time(spec_start+7*2);
+
+      z80_int dictptr=peek_word_no_time(spec_start+9*2); //Saltar los 9 word de delante
+
+      //header->messages=readmessages(infile,header,messages,header->messageptr,header->dictptr);
+
+    z80_int endptr=dictptr;
+
+    z80_int startptr=messageptr;
+
+
+/*int readmessages(infile, header, messages, startptr, endptr)
+FILE *infile;
+header_struct *header;
+char **messages;
+int startptr, endptr;
+{*/
+
+
+   int message; // keeps a count of the number of entries in the dictionary
+   int i, j, len; //temporary char variables
+   int fileptr;
+   char *scrap;
+
+   scrap=calloc(1,255);
+
+   //fseek(infile, startptr, SEEK_SET);
+   z80_int puntero=startptr;
+   j=startptr;
+   i=0;
+   do
+   {
+      message=peek_byte_no_time(puntero++);
+      len=peek_byte_no_time(puntero++);
+      //fileptr=ftell(infile);
+      if (message==0 && len==0) break;
+
+
+    char buffer_mensaje[256];
+
+    /*
+      if (messages[message][0]==0)
+      {
+         strncpy(messages[message],readstring(infile,len),255);
+      }
+      else
+      {
+         scrap=readstring(infile,len);
+      }
+      */
+
+    util_gac_readstring( puntero, len,buffer_mensaje,gac_diccionario_array);
+
+    printf("Mensaje: %s\n",buffer_mensaje);
+
+    char buffer_linea[300];
+
+    sprintf(buffer_linea,"%03d: %s\n",i,buffer_mensaje);
+
+    util_concat_string(texto_destino,buffer_linea,max_texto);
+
+      i++;
+      //fseek(infile,fileptr+len,SEEK_SET);
+      puntero +=len;
+   } while (puntero<endptr);
+
+}
 
 void util_gac_free_diccionario(void)
 {
@@ -1718,13 +1815,18 @@ void util_gac_dump_verbs_etc(int tipo,char *texto)
             //nombres
             util_gac_readwords(nounptr,adverbptr,gac_diccionario_array,0,-1,NULL,texto);
         break;
+
+        case 2:
+            //adverbios
+            util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL,texto);
+        break;        
     }
 
     /*debug_printf (VERBOSE_DEBUG,"Dumping nouns. Start at %04XH",nounptr);
     
 
     debug_printf (VERBOSE_DEBUG,"Dumping adverbs. Start at %04XH",adverbptr);
-    util_gac_readwords(adverbptr,objectptr,gac_diccionario_array,0,-1,NULL);
+    
 
 
     debug_printf (VERBOSE_DEBUG,"Dumping objects. Start at %04XH",objectptr);
@@ -1930,7 +2032,7 @@ void util_gac_get_locations_table(void)
 
     // obtener habitaciones
     printf("Reading rooms\n");
-    util_gac_readrooms(-1,NULL,1,NULL,0);       
+    util_gac_readrooms(-1,NULL,1,NULL,0,0);       
 
 
 
@@ -1953,10 +2055,11 @@ void util_gac_get_location_name(int room,char *destino)
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(room,destino,0,NULL,0);    
+    util_gac_readrooms(room,destino,0,NULL,0,0);    
 
 }
 
+//Volcado de localidades (descripcion corta) y conexiones
 void util_gac_dump_connections(char *texto,int max_string)
 {
 
@@ -1970,7 +2073,26 @@ void util_gac_dump_connections(char *texto,int max_string)
     //Necesario para traer los textos de la descripcion de la localidad
     util_gac_get_diccionario();
 
-    util_gac_readrooms(-1,NULL,0,texto,max_string);   
+    util_gac_readrooms(-1,NULL,0,texto,max_string,0);   
+
+}
+
+
+//Volcado de localidades (descripcion entera)
+void util_gac_dump_locations(char *texto,int max_string)
+{
+
+
+    if (!util_gac_detect()) {
+        return;
+    }        
+
+
+
+    //Necesario para traer los textos de la descripcion de la localidad
+    util_gac_get_diccionario();
+
+    util_gac_readrooms(-1,NULL,0,texto,max_string,1);   
 
 }
 
@@ -1985,7 +2107,7 @@ int util_gac_get_total_locations(void)
 
     // obtener habitaciones
     //printf("Reading rooms\n");
-    int total_rooms=util_gac_readrooms(-1,NULL,0,NULL,0);       
+    int total_rooms=util_gac_readrooms(-1,NULL,0,NULL,0,0);       
     //printf("Total rooms: %d\n",total_rooms);
 
     return total_rooms;
