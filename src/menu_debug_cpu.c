@@ -5380,6 +5380,7 @@ z80_bit paws_render_disable_rectangle={0};
 z80_bit paws_render_disable_ellipse={0};
 
 
+int render_gac_in_text_adventure_map=0;
 
 //Renderiza y/o retorna lista de comandos de una pantalla grafica en GAC
 //si buffer_texto_comandos=NULL, no rellena texto
@@ -5440,8 +5441,8 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
         location,location_id);
 
 
-    //Solo hacer cambio de ink y paper si no es subrutina
-    if (nivel_recursivo==0) {
+    //Solo hacer cambio de ink y paper si no es subrutina y si no estamos dentro de text adventure map
+    if (nivel_recursivo==0 && !render_gac_in_text_adventure_map) {
         paws_render_ink=gac_render_default_ink;
         paws_render_paper=gac_render_default_paper;
         paws_render_bright=0;
@@ -5465,8 +5466,10 @@ void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_b
             for (rellena_x=RENDER_PAWS_START_X_DRAW;rellena_x<RENDER_PAWS_START_X_DRAW+ancho_rellenar;rellena_x++) {
                 if (w!=NULL) zxvision_print_char_simple(w,rellena_x,rellena_y,gac_render_default_ink,
                             gac_render_default_paper,0,' ');
+                    
             }
         }
+        
          
     }
 
@@ -9672,7 +9675,10 @@ void menu_debug_textadventure_map_connections_put_room(zxvision_window *w,int x,
                 int id_picture=util_gac_locate_room_location(gac_location_picture);
                 //printf("Drawing GAC picture: room %d gac_location_picture %d id_picture %d\n",room,gac_location_picture,id_picture);
                 
+                render_gac_in_text_adventure_map=1;
                 menu_debug_daad_view_graphics_render_recursive_gac(w,id_picture,0,NULL,0);
+                render_gac_in_text_adventure_map=0;
+
 
         //void menu_debug_daad_view_graphics_render_recursive_gac(zxvision_window *w,z80_byte location,int nivel_recursivo,
         //  char *buffer_texto_comandos,int tipo_texto)        
