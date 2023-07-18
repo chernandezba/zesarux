@@ -1666,12 +1666,16 @@ void util_gac_get_diccionario(void)
     int indice=0;
 
 
-
+    //El quijote tiene endptr 162F, lo cual no tiene logica,
+    //y la ultima palabra le sigue un byte a 255, por lo que debe considerarse valor 255 como final
+    //le decimos que el final es el final de ram, o cuando llegue valor 255
+    if (endptr<dictptr) endptr=65535;
 
 
     do {
         longitud_palabra=peek_byte_no_time(puntero++);
-        if (longitud_palabra>0) {
+        //printf("Longitud palabra: %d puntero: %X endptr: %X\n",longitud_palabra,puntero,endptr);
+        if (longitud_palabra>0 && longitud_palabra<255) {
             char palabra[256];
             int i;
             for (i=0;i<longitud_palabra;i++) {
@@ -1682,7 +1686,7 @@ void util_gac_get_diccionario(void)
 
             palabra[i]=0;
 
-            debug_printf (VERBOSE_DEBUG,"Dictonary word index %d: %s (length: %d)",indice,palabra,longitud_palabra);
+            debug_printf (VERBOSE_DEBUG,"Dictionary word index %d: %s (length: %d)",indice,palabra,longitud_palabra);
             if (longitud_palabra<=MAX_DICT_GAC_STRING_LENGTH) {
                 //strcpy(diccionario_array[indice],palabra);
                 util_gac_put_string_dictionary(indice,gac_diccionario_array,palabra);
@@ -1690,7 +1694,7 @@ void util_gac_get_diccionario(void)
             indice++;
             gac_total_entradas_diccionario++;
         }
-    } while (longitud_palabra!=0 && puntero<endptr);
+    } while (longitud_palabra!=0 && longitud_palabra!=255 && puntero<endptr);
 }
 
 
