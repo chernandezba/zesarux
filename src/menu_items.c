@@ -5717,6 +5717,56 @@ void menu_ay_player_load(MENU_ITEM_PARAMETERS)
 
 		ay_player_load_and_play(last_ay_file);
 
+        //Inicializar la playlist y dejar solo este
+        //TODO: eliminar todos los elementos que pudiera haber en la playlist, liberando memoria
+        ay_player_playlist_init();
+        ay_player_playlist_add(last_ay_file);
+
+	}
+}
+
+
+void menu_ay_player_add_item_playlist(MENU_ITEM_PARAMETERS)
+{
+	char *filtros[2];
+
+	filtros[0]="ay";
+
+	filtros[1]=0;
+
+	//guardamos directorio actual
+	char directorio_actual[PATH_MAX];
+	getcwd(directorio_actual,PATH_MAX);
+
+	//Obtenemos directorio de ultimo archivo
+	//si no hay directorio, vamos a rutas predefinidas
+	if (last_ay_file[0]==0) menu_chdir_sharedfiles();
+
+	else {
+					char directorio[PATH_MAX];
+					util_get_dir(last_ay_file,directorio);
+					//printf ("strlen directorio: %d directorio: %s\n",strlen(directorio),directorio);
+
+					//cambiamos a ese directorio, siempre que no sea nulo
+					if (directorio[0]!=0) {
+									debug_printf (VERBOSE_INFO,"Changing to last directory: %s",directorio);
+									zvfs_chdir(directorio);
+					}
+	}
+
+
+	int ret;
+
+	ret=menu_filesel("Select AY File",filtros,last_ay_file);
+	//volvemos a directorio inicial
+	zvfs_chdir(directorio_actual);
+
+
+	if (ret==1) {
+
+
+		ay_player_playlist_add(last_ay_file);
+
 	}
 }
 
@@ -6174,19 +6224,19 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
             //Hay que redibujar la ventana desde este bucle
             //menu_audio_new_ayplayer_dibuja_ventana();
 
+			int lin=13;
             menu_add_item_menu_inicial(&array_menu_audio_new_ayplayer,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
             menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_load,NULL,"~~Load");
             menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'l');
             menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Load AY file");
-
-						
-			
-
-			int lin=13;
-
-  
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin-1);
+
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ay_player_add_item_playlist,NULL,
+                "Addplaylist (%d/%d)",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );
+            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'l');
+            //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Load AY file");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,6,lin-1);            
 
 				//Vamos a borrar con espacios para que no quede rastro de opciones anteriores, como Yes/No 
 				//Si no, pasaria que mostraria "Nos" como parte de la s final de Yes

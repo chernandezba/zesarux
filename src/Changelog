@@ -9,6 +9,7 @@ Added flash support on screen previews
 Added ZX Desktop icons for TSConf, Baseconf
 Added show current AY Player song playing on console <-- TODO fix this description
 Added PCW colour modes
+Added Playlist to AY Player
 Added another toy ZXLife to a new menu Procrastinate
 Added compilation os release info, running os info
 Added rom file selection for any machine you select, rom file is saved on configuration

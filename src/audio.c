@@ -2193,14 +2193,25 @@ void ay_player_playlist_get_item(int position,char *nombre)
 
 }
 
+int ay_player_playlist_item_actual=0;
+
 void ay_player_next_song(void)
 {
     //play el siguiente en la playlist
+    int total_elements=ay_player_playlist_get_total_elements();
 
-    //temp
-    ay_player_load_and_play("/Users/cesarhernandez/Documents/ZEsarUX/zesarux-extras/extras/media/ay_files/Spectrum/Games/Robocop.AY");
+    if (ay_player_playlist_item_actual<total_elements-1) {
+        ay_player_playlist_item_actual++;
 
-    //ay_player_stop_player();  
+        char nombre_archivo[PATH_MAX];
+        ay_player_playlist_get_item(ay_player_playlist_item_actual,nombre_archivo);
+
+        ay_player_load_and_play(nombre_archivo);
+    }
+
+    else {
+        ay_player_stop_player(); 
+    }
 }
 
 void ay_player_next_track(void)
