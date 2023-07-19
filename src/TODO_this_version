@@ -296,7 +296,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 
 -dall-e. text aventure location image
-*esperar a waitpit?
+*esperar a waitpid?
 *en hobbit las descripciones salen antes de borrar la pantalla
 *faq de dall-e: comprar creditos en openai (no en dall-e), export variable KEY en windows y  Linux/mac
 *en linux: cierro ventana imagen, borro output imagen, abro y segfault
@@ -309,8 +309,6 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 -pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal. 
 https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
-
--GAC: mapa aventura, diccionario, mensajes, etc. Ver grackle y grackle-play
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter
 esta pensado solo para print char y mostrarlo en consola. deberia haber una funcion que teniendo un caracter, retornase otro pasado por el filtro

@@ -141,6 +141,7 @@ extern void util_gac_dump_messages(char *texto_destino,int max_texto);
 extern void util_gac_dump_diccionario(char *destino);
 extern void util_gac_dump_verbs_etc(int tipo,char *texto);
 extern void util_gac_dump_objects_from_menu(char *texto_dump_desde_menu);
+extern void util_gac_free_diccionario(void);
 
 extern z80_int util_textadventure_get_total_locations(void);
 

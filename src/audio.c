@@ -2077,7 +2077,10 @@ void ay_player_load_and_play(char *filename)
     audio_ay_player_play_song(ay_player_pista_actual);
 }
 
-
+void ay_player_next_song(void)
+{
+    ay_player_stop_player();  
+}
 
 void ay_player_next_track(void)
 {
@@ -2095,7 +2098,7 @@ void ay_player_next_track(void)
 		else {
 			if (ay_player_repeat_file.v) ay_player_pista_actual=1;
 			else {
-				ay_player_stop_player();
+				ay_player_next_song();
 				return;
 			}
 		}
