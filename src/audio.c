@@ -2077,9 +2077,113 @@ void ay_player_load_and_play(char *filename)
     audio_ay_player_play_song(ay_player_pista_actual);
 }
 
+//Gestion de playlist para ay player
+struct s_ay_player_playlist_item {
+    char nombre[PATH_MAX];
+
+    struct s_ay_player_playlist_item *next_item;
+};
+
+typedef struct s_ay_player_playlist_item ay_player_playlist_item;
+
+ay_player_playlist_item *ay_player_first_item_playlist;
+int ay_player_playlist_total_elements=0;
+
+void ay_player_playlist_init(void)
+{
+    ay_player_first_item_playlist=NULL;
+    ay_player_playlist_total_elements=0;
+}
+
+void ay_player_playlist_add(char *archivo)
+{
+    //Asignar memoria
+    ay_player_playlist_item *new_item;
+
+    new_item=util_malloc(sizeof(ay_player_playlist_item),"Can not allocate new playlist item");
+
+    strcpy(new_item->nombre,archivo);
+
+    //Es el ultimo y por tanto no tiene siguiente
+    new_item->next_item=NULL;
+
+    //Agregarlo si hay al anterior
+    if (ay_player_first_item_playlist==NULL) {
+        ay_player_first_item_playlist=new_item;
+    }
+
+    else {
+        ay_player_first_item_playlist->next_item=new_item;
+    }
+
+    ay_player_playlist_total_elements++;
+}
+
+void ay_player_playlist_remove(int position)
+{
+
+    if (position<0 || position>ay_player_playlist_total_elements-1) {
+        debug_printf(VERBOSE_ERR,"Can not delete beyond total items: Position asked: %d",position);
+        return;
+    }
+
+    ay_player_playlist_item *item_to_delete=ay_player_first_item_playlist;
+    ay_player_playlist_item *previous_item=NULL;
+    ay_player_playlist_item *next_item=NULL;
+
+    int i;
+
+    for (i=0;i<position;i++) {
+        previous_item=item_to_delete;
+        item_to_delete=item_to_delete->next_item;
+        next_item=item_to_delete->next_item;
+    }
+
+    //Liberar memoria del current
+    free(item_to_delete);
+
+    //Apuntar al anterior el siguiente, siempre que no sea el primero
+
+    if (position==0) {
+        ay_player_first_item_playlist=next_item;
+    }
+
+
+    else {
+        previous_item->next_item=next_item;
+    }
+}
+
+void ay_player_playlist_get_item(int position,char *nombre)
+{
+
+    if (position<0 || position>ay_player_playlist_total_elements-1) {
+        debug_printf(VERBOSE_ERR,"Can not get beyond total items: Position asked: %d",position);
+        strcpy(nombre,"Unknown");
+        return;
+    }
+
+    ay_player_playlist_item *current_item=ay_player_first_item_playlist;
+
+    int i;
+
+    for (i=0;i<position;i++) {
+        current_item=current_item->next_item;
+    }
+
+    strcpy(nombre,current_item->nombre);
+
+
+}
+
 void ay_player_next_song(void)
 {
-    ay_player_stop_player();  
+    //play el siguiente en la playlist
+
+    //temp
+    ay_player_load_and_play("/Users/cesarhernandez/Documents/ZEsarUX/zesarux-extras/extras/media/ay_files/Spectrum/Games/Robocop.AY");
+
+    //ay_player_stop_player();  
 }
 
 void ay_player_next_track(void)

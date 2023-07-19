@@ -1819,7 +1819,12 @@ void codetests_tbblue_divmmc_masks(void)
         }
     }
 }
-        
+    
+
+void codetests_ay_playlist(void)
+{
+    ay_player_playlist_init();
+}
 
 
 void codetests_main(int main_argc,char *main_argv[])
@@ -1925,6 +1930,9 @@ void codetests_main(int main_argc,char *main_argv[])
 
     printf("\nRunning tbblue divmmc masks\n");
     codetests_tbblue_divmmc_masks();
+
+    printf("\nRunning ay playlist codetests\n");
+    codetests_ay_playlist();
 
     //temporal crear dsk
     //dsk_create("/tmp/maspruebas.dsk",40,1,9,512);
