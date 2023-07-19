@@ -247,6 +247,12 @@ extern z80_bit ay_player_show_info_console;
 extern void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total);
 extern void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos);
 
+extern void ay_player_playlist_init(void);
+extern int ay_player_playlist_get_total_elements(void);
+extern void ay_player_playlist_add(char *archivo);
+extern void ay_player_playlist_remove(int position);
+extern void ay_player_playlist_get_item(int position,char *nombre);
+
 extern z80_byte audiodac_last_value_data;
 
 extern z80_bit audiodac_enabled;

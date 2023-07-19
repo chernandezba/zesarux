@@ -2095,6 +2095,11 @@ void ay_player_playlist_init(void)
     ay_player_playlist_total_elements=0;
 }
 
+int ay_player_playlist_get_total_elements(void)
+{
+    return ay_player_playlist_total_elements;
+}
+
 void ay_player_playlist_add(char *archivo)
 {
     //Asignar memoria
@@ -2107,13 +2112,21 @@ void ay_player_playlist_add(char *archivo)
     //Es el ultimo y por tanto no tiene siguiente
     new_item->next_item=NULL;
 
-    //Agregarlo si hay al anterior
+
+
+    //Si es el primero
     if (ay_player_first_item_playlist==NULL) {
         ay_player_first_item_playlist=new_item;
     }
 
-    else {
-        ay_player_first_item_playlist->next_item=new_item;
+        else {
+        //Agregarlo al ultimo
+        ay_player_playlist_item *last_item=ay_player_first_item_playlist;   
+
+        while (last_item->next_item!=NULL) {
+            last_item=last_item->next_item;
+        }    
+        last_item->next_item=new_item;
     }
 
     ay_player_playlist_total_elements++;
@@ -2131,27 +2144,31 @@ void ay_player_playlist_remove(int position)
     ay_player_playlist_item *previous_item=NULL;
     ay_player_playlist_item *next_item=NULL;
 
-    int i;
 
-    for (i=0;i<position;i++) {
-        previous_item=item_to_delete;
-        item_to_delete=item_to_delete->next_item;
-        next_item=item_to_delete->next_item;
+    if (position==0) {
+        ay_player_first_item_playlist=ay_player_first_item_playlist->next_item;
+    }
+
+    else {
+
+        int i;
+
+        for (i=0;i<position;i++) {
+            previous_item=item_to_delete;
+            item_to_delete=item_to_delete->next_item;
+            next_item=item_to_delete->next_item;
+        }
+
+        //Apuntar al anterior el siguiente, siempre que no sea el primero
+        previous_item->next_item=next_item;
+
     }
 
     //Liberar memoria del current
-    free(item_to_delete);
+    free(item_to_delete);    
 
-    //Apuntar al anterior el siguiente, siempre que no sea el primero
-
-    if (position==0) {
-        ay_player_first_item_playlist=next_item;
-    }
-
-
-    else {
-        previous_item->next_item=next_item;
-    }
+    ay_player_playlist_total_elements--;
+    
 }
 
 void ay_player_playlist_get_item(int position,char *nombre)

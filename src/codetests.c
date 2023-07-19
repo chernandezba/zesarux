@@ -1824,6 +1824,220 @@ void codetests_tbblue_divmmc_masks(void)
 void codetests_ay_playlist(void)
 {
     ay_player_playlist_init();
+
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO1 "pepe"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO2 "paco"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO3 "luna"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO4 "coche"
+
+    char buffer_temp[PATH_MAX];
+
+    //Add and check
+    ay_player_playlist_add(CODETESTS_AY_PLAYLIST_ARCHIVO1);
+
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
+        printf("Error\n");
+        exit(1);
+    }
+
+    //Add and check two
+    ay_player_playlist_add(CODETESTS_AY_PLAYLIST_ARCHIVO2);
+
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    ay_player_playlist_get_item(1,buffer_temp);
+
+    printf("Item at position 1: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }  
+
+    //Add and check three
+    ay_player_playlist_add(CODETESTS_AY_PLAYLIST_ARCHIVO3);
+
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    ay_player_playlist_get_item(1,buffer_temp);
+
+    printf("Item at position 1: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    ay_player_playlist_get_item(2,buffer_temp);
+
+    printf("Item at position 2: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO3)) {
+        printf("Error\n");
+        exit(1);
+    }   
+
+
+    //Add and check four
+    ay_player_playlist_add(CODETESTS_AY_PLAYLIST_ARCHIVO4);
+
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    ay_player_playlist_get_item(1,buffer_temp);
+
+    printf("Item at position 1: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    ay_player_playlist_get_item(2,buffer_temp);
+
+    printf("Item at position 2: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO3)) {
+        printf("Error\n");
+        exit(1);
+    }      
+
+    ay_player_playlist_get_item(3,buffer_temp);
+
+    printf("Item at position 3: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO4)) {
+        printf("Error\n");
+        exit(1);
+    }     
+
+
+    //Delete first
+    printf("Delete pos 0\n");
+    ay_player_playlist_remove(0);
+
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    //Tiene que ser el segundo que habia
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }    
+
+    //Delete second
+    printf("Delete pos 1\n");
+    ay_player_playlist_remove(1);
+
+    //El primero era el mismo de antes
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }       
+
+    //El segundo pasara a ser el cuarto
+    ay_player_playlist_get_item(1,buffer_temp);
+
+    printf("Item at position 1: %s\n",buffer_temp);
+
+    //Tiene que ser el segundo que habia
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO4)) {
+        printf("Error\n");
+        exit(1);
+    }     
+
+    //Delete second (and the last)
+    printf("Delete pos 1\n");
+    ay_player_playlist_remove(1);  
+
+    //El primero era el mismo de antes
+    ay_player_playlist_get_item(0,buffer_temp);
+
+    printf("Item at position 0: %s\n",buffer_temp);
+
+    if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
+        printf("Error\n");
+        exit(1);
+    }         
+
+
+    printf("Delete pos 0\n");
+    ay_player_playlist_remove(0);  
+
+    int total=ay_player_playlist_get_total_elements();
+
+    printf("Total: %d\n",total);
+
+    if (total!=0) {
+        printf("Error getting total\n");
+        exit(1);        
+    }
+
+    //Agregar 10000 en bucle y comprobarlos
+    int i;
+
+    printf("Inserting 10000...\n");
+    for (i=0;i<10000;i++) {
+        sprintf(buffer_temp,"file%d",i);
+        ay_player_playlist_add(buffer_temp);
+    }
+
+    printf("Checking 10000...\n");
+    //Comprobarlos
+    for (i=0;i<10000;i++) {
+        char buffer_item_actual[PATH_MAX];
+        sprintf(buffer_temp,"file%d",i);
+
+        ay_player_playlist_get_item(i,buffer_item_actual);
+        if (strcmp(buffer_temp,buffer_item_actual)) {
+            printf("Items do not match\n");
+            exit(1);
+        }
+    }    
+
+    //Deleting 10000
+    printf("Deleting 10000...\n");
+    for (i=0;i<10000;i++) {
+        ay_player_playlist_remove(0);
+    }
+
+    total=ay_player_playlist_get_total_elements();
+
+    printf("Total: %d\n",total);
+
+    if (total!=0) {
+        printf("Error getting total\n");
+        exit(1);        
+    }    
 }
 
 
