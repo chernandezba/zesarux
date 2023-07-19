@@ -2947,7 +2947,7 @@ Addr:	last state             Registers
 
 
 //Cargar snapshot .z80
-void load_z80_snapshot(char *archivo)
+void load_z80_snapshot_aux(char *archivo,z80_byte *buffer_lectura)
 {
 	//Cabecera comun para todas versiones
 
@@ -2961,7 +2961,7 @@ void load_z80_snapshot(char *archivo)
 	z80_byte z80_header_bloque[3];
 
 	FILE *ptr_z80file;
-	z80_byte *buffer_lectura;
+	
 
 	int leidos;
 
@@ -2971,10 +2971,6 @@ void load_z80_snapshot(char *archivo)
 
 
 	z80_byte z80_version;
-
-	//leer datos
-        buffer_lectura=malloc(65536);
-        if (buffer_lectura==NULL) cpu_panic("Cannot allocate memory when loading .z80 file");
 
 
 	//Load File
@@ -3351,8 +3347,23 @@ if (long_cabecera_adicional>25) {
 }
 
 
+//Cargar snapshot .z80
+//Funcion inicial para asignar memoria y liberarla, asi solo hay un free,
+//independientemente de donde retorne load_z80_snapshot_aux
+void load_z80_snapshot(char *archivo)
+{
 
+    z80_byte *buffer_lectura;
 
+    //asignar memoria datos
+    buffer_lectura=malloc(65536);
+    if (buffer_lectura==NULL) cpu_panic("Cannot allocate memory when loading .z80 file");
+
+    load_z80_snapshot_aux(archivo,buffer_lectura);
+
+    free(buffer_lectura);
+
+}
 
 
 //Comun para grabar registros en formato ZX y SP
