@@ -5720,6 +5720,7 @@ void menu_ay_player_load(MENU_ITEM_PARAMETERS)
         //Inicializar la playlist y dejar solo este
         //TODO: eliminar todos los elementos que pudiera haber en la playlist, liberando memoria
         ay_player_playlist_init();
+        ay_player_playlist_item_actual=0;
         ay_player_playlist_add(last_ay_file);
 
 	}
