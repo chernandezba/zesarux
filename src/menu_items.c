@@ -6369,13 +6369,13 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,11,linea);
 
-            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_previous_file,NULL,"Prev");
-            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_previous_file,NULL,"P~~rev");
+            menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'r');
             //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,15,linea);   
 
-            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_next_file,NULL,"Next");
-            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_next_file,NULL,"N~~ext");
+            menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'e');
             //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,20,linea);          
 
@@ -6386,8 +6386,8 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);
             */
 
-            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_edit_playlist,NULL,"Edit");
-            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_edit_playlist,NULL,"E~~dit");
+            menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'d');
             //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
             menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);                                     
 
@@ -6422,35 +6422,30 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_repeat,NULL,"[%c] Repeat",
 					(ay_player_repeat_file.v ? 'X' : ' '));
-
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'r');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat from the beginning when finished all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);	
 
 				
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exit end",
 					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'e');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);	
 
                 linea++;
 
 
-				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"Length ~~infinite tracks: inf");
-				else sprintf(textoplayer,"Length ~~infinite tracks: %d s",ay_player_limit_infinite_tracks/50);
+				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"Length infinite tracks: inf");
+				else sprintf(textoplayer,"Length infinite tracks: %d s",ay_player_limit_infinite_tracks/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'i');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);			
 
                 linea++;
 
 
-				if (ay_player_limit_any_track==0) sprintf(textoplayer,"Length an~~y track: No limit");
-				else sprintf(textoplayer,"Length an~~y track: %d s",ay_player_limit_any_track/50);
+				if (ay_player_limit_any_track==0) sprintf(textoplayer,"Length any track: No limit");
+				else sprintf(textoplayer,"Length any track: %d s",ay_player_limit_any_track/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'y');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
 
@@ -6458,28 +6453,21 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_cpcmode,NULL,"[%c] CPC mode",
 					(ay_player_cpc_mode.v ? 'X' : ' '));
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'c');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Switch to AY CPC mode");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);		
 
-				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_show_on_console,NULL,"[%c] C~~onsole print",
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_show_on_console,NULL,"[%c] Console print",
 					(ay_player_show_info_console.v ? 'X' : ' '));
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'o');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Show information about AY file and song played in console too");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);	
 
 			}			
-/*
 
-
-			sprintf(textoplayer,"~~CPC mode: %s",(ay_player_cpc_mode.v ? 'X' : ' '));
-			menu_escribe_linea_opcion(linea++,-1,1,textoplayer);
-*/
 
 
 
 		//Nombre de ventana solo aparece en el caso de stdout
-                retorno_menu=menu_dibuja_menu(&audio_new_ayplayer_opcion_seleccionada,&item_seleccionado,array_menu_audio_new_ayplayer,"AY Player" );
+        retorno_menu=menu_dibuja_menu(&audio_new_ayplayer_opcion_seleccionada,&item_seleccionado,array_menu_audio_new_ayplayer,"AY Player" );
 
 	if (retorno_menu!=MENU_RETORNO_BACKGROUND) {
 
@@ -6499,10 +6487,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
         } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus && retorno_menu!=MENU_RETORNO_BACKGROUND);
 
 
-
     //En caso de menus tabulados, suele ser necesario esto. Si no, la ventana se quedaria visible
-    
-
 	util_add_window_geometry_compact(ventana);
 
 
