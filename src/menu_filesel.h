@@ -56,4 +56,8 @@ extern z80_bit menu_filesel_posicionar_archivo;
 extern char menu_filesel_posicionar_archivo_nombre[];
 extern void file_utils_info_file(char *archivo);
 
+extern int menu_filesel_readdir_mmc_image(const char *directorio, struct dirent ***namelist,
+              int (*filter)(const struct dirent *),
+              int (*compar)(const struct dirent **, const struct dirent **));
+
 #endif

@@ -281,6 +281,12 @@ extern void ay_player_playlist_remove(int position);
 extern void ay_player_playlist_get_item(int position,char *nombre);
 extern int ay_player_playlist_item_actual;
 extern char ay_player_filename_playing[];
+extern void ay_player_play_current_item(void);
+extern void ay_player_add_directory_playlist(char *directorio);
+extern void ay_player_add_file(char *archivo);
+extern void ay_player_next_file(void);
+extern void ay_player_previous_file(void);
+extern void ay_player_play_this_item(int item);
 
 extern z80_byte audiodac_last_value_data;
 

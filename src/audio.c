@@ -42,6 +42,8 @@
 #include "sn76489an.h"
 #include "ql_i8049.h"
 #include "compileoptions.h"
+#include "zvfs.h"
+#include "menu_filesel.h"
 
 #include "audionull.h"
 
@@ -2231,8 +2233,7 @@ void ay_player_next_file(void)
 
 void ay_player_previous_file(void)
 {
-    //play el siguiente en la playlist
-    int total_elements=ay_player_playlist_get_total_elements();
+
 
     if (ay_player_playlist_item_actual>0) {
         ay_player_playlist_item_actual--;        
@@ -2415,6 +2416,7 @@ void ay_player_add_directory_playlist(char *directorio)
     //if (fatfs_disk_zero_memory!=NULL) 
     if (menu_current_drive_mmc_image.v)
     {
+        //TODO: no he probado agregar una playlist que esté en imagen mmc
         n = menu_filesel_readdir_mmc_image(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
     }
 
