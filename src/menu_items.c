@@ -5715,18 +5715,20 @@ void menu_ay_player_load(MENU_ITEM_PARAMETERS)
 	if (ret==1) {
 
 
-		ay_player_load_and_play(last_ay_file);
+		/*ay_player_load_and_play(last_ay_file);
 
         //Inicializar la playlist y dejar solo este
         //TODO: eliminar todos los elementos que pudiera haber en la playlist, liberando memoria
         ay_player_playlist_init();
         ay_player_playlist_item_actual=0;
-        ay_player_playlist_add(last_ay_file);
+        ay_player_playlist_add(last_ay_file);*/
+
+        ay_player_add_file(last_ay_file);
 
 	}
 }
 
-
+/*
 void menu_ay_player_add_item_playlist(MENU_ITEM_PARAMETERS)
 {
 	char *filtros[2];
@@ -5770,6 +5772,8 @@ void menu_ay_player_add_item_playlist(MENU_ITEM_PARAMETERS)
 
 	}
 }
+
+*/
 
 /*
 void menu_ay_player_exit_tracker(MENU_ITEM_PARAMETERS)
@@ -5836,6 +5840,9 @@ int ayplayer_previo_valor_volume_C=0;
 
 zxvision_window *menu_audio_new_ayplayer_overlay_window;	
 
+#define AYPLAYER_ALTO_VENTANA 23
+#define AYPLAYER_INICIO_LINEA_MENU 14
+
 void menu_audio_new_ayplayer_overlay(void)
 {
 
@@ -5851,7 +5858,7 @@ void menu_audio_new_ayplayer_overlay(void)
     int linea;
 
 
-    linea=7;
+    linea=9;
 	int valor_escalado; 
 
 	int vol_A,vol_B,vol_C;
@@ -5947,7 +5954,7 @@ void menu_audio_new_ayplayer_overlay(void)
 		//Borrar lineas
 		int i;
 		linea=0;
-		for (i=0;i<11;i++) zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"");
+		for (i=0;i<AYPLAYER_INICIO_LINEA_MENU;i++) zxvision_print_string_defaults_fillspc(menu_audio_new_ayplayer_overlay_window,1,linea++,"");
 	}
 
     //esto hara ejecutar esto 2 veces por segundo
@@ -5956,26 +5963,28 @@ void menu_audio_new_ayplayer_overlay(void)
         menu_ayplayer_valor_contador_segundo_anterior=contador_segundo;
         //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
        
-    
-
 
         char textoplayer[40];
 
-       
-
-
+    
         int mostrar_player;
-
-
 
 	    mostrar_player=menu_audio_new_ayplayer_si_mostrar();
 
        
-
-
 		if (mostrar_player) {
 
 			linea=0;
+
+            char nombre_archivo[PATH_MAX];
+
+            util_get_file_no_directory(ay_player_filename_playing,nombre_archivo);
+
+            zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,linea++,"File: %s",nombre_archivo);
+
+
+            zxvision_print_string_defaults_fillspc_format(menu_audio_new_ayplayer_overlay_window,1,linea++,
+                "Playlist: %d/%d",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );    
 
             //Indicadores de volumen que decaen
             ayplayer_previo_valor_escalado=menu_decae_dec_valor_volumen(ayplayer_previo_valor_escalado,valor_escalado);
@@ -6127,6 +6136,29 @@ void menu_audio_new_ayplayer_show_on_console(MENU_ITEM_PARAMETERS)
     ay_player_show_info_console.v ^=1;
 }
 
+void menu_ayplayer_next_file(MENU_ITEM_PARAMETERS)
+{
+    ay_player_next_file();
+}
+
+void menu_ayplayer_previous_file(MENU_ITEM_PARAMETERS)
+{
+    ay_player_previous_file();
+}
+
+void menu_ayplayer_start_playlist(MENU_ITEM_PARAMETERS)
+{
+    int total_elements=ay_player_playlist_get_total_elements();
+
+    if (!total_elements) {
+        debug_printf(VERBOSE_ERR,"Playlist is empty");
+        return;
+    }
+
+    ay_player_playlist_item_actual=0;
+    ay_player_play_current_item();
+}
+
 zxvision_window zxvision_window_ayplayer;
 
 void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
@@ -6158,7 +6190,7 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
         if (!util_find_window_geometry("ayplayer",&xventana,&yventana,&ancho_ventana,&alto_ventana,&is_minimized,&is_maximized,&ancho_antes_minimize,&alto_antes_minimize)) {
             ancho_ventana=32;
-            alto_ventana=20;	 
+            alto_ventana=AYPLAYER_ALTO_VENTANA;	 
 
             xventana=menu_center_x()-ancho_ventana/2;
             yventana=menu_center_y()-alto_ventana/2; 
@@ -6225,58 +6257,84 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
             //Hay que redibujar la ventana desde este bucle
             //menu_audio_new_ayplayer_dibuja_ventana();
 
-			int lin=13;
+			int inicio_linea_menu=AYPLAYER_INICIO_LINEA_MENU;
+            //Vamos a borrar con espacios para que no quede rastro de opciones anteriores, como Yes/No 
+            //Si no, pasaria que mostraria "Nos" como parte de la s final de Yes
+            int i;
+            for (i=inicio_linea_menu;i<=AYPLAYER_ALTO_VENTANA;i++) {
+                zxvision_fill_width_spaces(ventana,i);
+            }	
+
+            int linea=inicio_linea_menu;
+
+            zxvision_print_string_defaults(ventana,1,linea,"Playlist: ");
+
             menu_add_item_menu_inicial(&array_menu_audio_new_ayplayer,"",MENU_OPCION_UNASSIGNED,NULL,NULL);
 
-            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_load,NULL,"~~Load");
-            menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'l');
-            menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Load AY file");
-            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin-1);
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_load,NULL,"~~Add");
+            menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,11,linea);
 
-            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ay_player_add_item_playlist,NULL,
-                "Addplaylist (%d/%d)",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_previous_file,NULL,"Prev");
+            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,15,linea);   
+
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_next_file,NULL,"Next");
+            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,20,linea);          
+
+            menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_start_playlist,NULL,"Begin");
+            //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+            //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Add AY file");
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,25,linea);                         
+
+            /*menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,NULL,NULL,
+                "playlist (%d/%d)",ay_player_playlist_item_actual+1,ay_player_playlist_get_total_elements() );
             //menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'l');
             //menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Load AY file");
-            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,6,lin-1);            
+            menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,15,inicio_linea_menu);    */        
 
-				//Vamos a borrar con espacios para que no quede rastro de opciones anteriores, como Yes/No 
-				//Si no, pasaria que mostraria "Nos" como parte de la s final de Yes
-				int i;
-				for (i=12;i<=17;i++) {
-					zxvision_fill_width_spaces(ventana,i);
-				}			
+            linea++;
 
 			if (menu_audio_new_ayplayer_si_mostrar() ) {
 
+                zxvision_print_string_defaults(ventana,1,linea,"Track: ");
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_prev,NULL,"~~Prev");
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'p');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Previous song");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin);
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,8,linea);
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_stop,NULL,"~~Stop");
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'s');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Stop song");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,6,lin);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);	
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_next,NULL,"~~Next");
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'n');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Next song");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,11,lin);
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,18,linea);
+
+                linea+=2;
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_repeat,NULL,"[%c] Repeat",
 					(ay_player_repeat_file.v ? 'X' : ' '));
 
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'r');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat from the beginning when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+1);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);	
 
 				
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exit end",
 					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'e');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,lin+1);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);	
+
+                linea++;
 
 
 				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"Length ~~infinite tracks: inf");
@@ -6284,27 +6342,31 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'i');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+2);			
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);			
+
+                linea++;
 
 
-				if (ay_player_limit_any_track==0) sprintf(textoplayer,"Length ~~any track: No limit");
-				else sprintf(textoplayer,"Length ~~any track: %d s",ay_player_limit_any_track/50);
+				if (ay_player_limit_any_track==0) sprintf(textoplayer,"Length an~~y track: No limit");
+				else sprintf(textoplayer,"Length an~~y track: %d s",ay_player_limit_any_track/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
-				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'a');
+				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'y');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+3);
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+                linea++;
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_cpcmode,NULL,"[%c] CPC mode",
 					(ay_player_cpc_mode.v ? 'X' : ' '));
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'c');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Switch to AY CPC mode");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,lin+4);		
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);		
 
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_show_on_console,NULL,"[%c] C~~onsole print",
 					(ay_player_show_info_console.v ? 'X' : ' '));
 				menu_add_item_menu_shortcut(array_menu_audio_new_ayplayer,'o');
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Show information about AY file and song played in console too");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,lin+4);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);	
 
 			}			
 /*

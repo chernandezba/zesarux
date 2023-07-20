@@ -346,6 +346,3 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 
 -ay playlist:
 *poder ver la playlist y quitar elementos
-*gestion load y/o smartload: que debe hacer? inicializar la playlist vacia y meter un elemento?
-*mostrar nombre archivo .ay reproduciendose
-*contadores current, nombre archivo y demas en linea de overlay (por item de menu no  refresca)

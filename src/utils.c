@@ -5638,7 +5638,8 @@ int quickload_continue(char *nombre) {
     else if (
         !util_compare_file_extension(nombre,"ay")
     ) {
-        ay_player_load_and_play(nombre);
+        ay_player_add_file(nombre);
+        //ay_player_load_and_play(nombre);
         return 0;
 
     }

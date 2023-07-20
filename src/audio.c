@@ -2062,10 +2062,12 @@ int audio_ay_player_play_song(z80_byte song)
 
 }
 
-
+char ay_player_filename_playing[PATH_MAX]="";
 
 void ay_player_load_and_play(char *filename)
 {
+    strcpy(ay_player_filename_playing,filename);
+
 	if (audio_ay_player_load(filename)) {
 		audio_ay_player_mem=NULL;
 		return;
@@ -2195,7 +2197,17 @@ void ay_player_playlist_get_item(int position,char *nombre)
 
 int ay_player_playlist_item_actual=0;
 
-void ay_player_next_song(void)
+
+
+void ay_player_play_current_item(void)
+{
+    char nombre_archivo[PATH_MAX];
+    ay_player_playlist_get_item(ay_player_playlist_item_actual,nombre_archivo);
+
+    ay_player_load_and_play(nombre_archivo);    
+}
+
+void ay_player_next_file(void)
 {
     //play el siguiente en la playlist
     int total_elements=ay_player_playlist_get_total_elements();
@@ -2203,15 +2215,46 @@ void ay_player_next_song(void)
     if (ay_player_playlist_item_actual<total_elements-1) {
         ay_player_playlist_item_actual++;
 
-        char nombre_archivo[PATH_MAX];
-        ay_player_playlist_get_item(ay_player_playlist_item_actual,nombre_archivo);
-
-        ay_player_load_and_play(nombre_archivo);
+        ay_player_play_current_item();
     }
 
     else {
         ay_player_stop_player(); 
     }
+}
+
+void ay_player_previous_file(void)
+{
+    //play el siguiente en la playlist
+    int total_elements=ay_player_playlist_get_total_elements();
+
+    if (ay_player_playlist_item_actual>0) {
+        ay_player_playlist_item_actual--;        
+    }
+
+    ay_player_play_current_item();
+
+
+}
+
+void ay_player_add_file(char *archivo)
+{
+
+    ay_player_playlist_add(archivo);
+
+    if (ay_player_playing.v==0) {
+        //play el ultimo
+        int total_elements=ay_player_playlist_get_total_elements();    
+        ay_player_playlist_item_actual=total_elements-1;    
+        ay_player_play_current_item();
+    }
+
+/*
+*al agregar a playlist:
+  si reproduciendose, no hacer nada
+  si no reproduciendose, reproducir el siguiente    
+  */
+ 
 }
 
 void ay_player_next_track(void)
@@ -2230,7 +2273,7 @@ void ay_player_next_track(void)
 		else {
 			if (ay_player_repeat_file.v) ay_player_pista_actual=1;
 			else {
-				ay_player_next_song();
+				ay_player_next_file();
 				return;
 			}
 		}
