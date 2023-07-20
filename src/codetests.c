@@ -1825,10 +1825,10 @@ void codetests_ay_playlist(void)
 {
     ay_player_playlist_init();
 
-    #define CODETESTS_AY_PLAYLIST_ARCHIVO1 "pepe"
-    #define CODETESTS_AY_PLAYLIST_ARCHIVO2 "paco"
-    #define CODETESTS_AY_PLAYLIST_ARCHIVO3 "luna"
-    #define CODETESTS_AY_PLAYLIST_ARCHIVO4 "coche"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO1 "david"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO2 "oscar"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO3 "diego"
+    #define CODETESTS_AY_PLAYLIST_ARCHIVO4 "marisa"
 
     char buffer_temp[PATH_MAX];
 

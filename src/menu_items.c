@@ -6186,10 +6186,53 @@ void menu_ayplayer_edit_playlist_action(MENU_ITEM_PARAMETERS)
             else if (item_sonando==item_seleccionado) {
                 ay_player_play_this_item(item_seleccionado);
             }
+            else {
+                //Si el que borramos es anterior al actual, hay que decir que el actual es uno menos
+                if (item_seleccionado<item_sonando) {
+                    ay_player_playlist_item_actual--;
+                }
+            }
         break;
     }
 
     
+}
+
+void menu_ayplayer_add_directory_playlist(MENU_ITEM_PARAMETERS)
+{
+    char *filtros[2];
+
+    filtros[0]="ay";
+    filtros[1]=0;
+
+
+    //guardamos directorio actual
+    char directorio_actual[PATH_MAX];
+    getcwd(directorio_actual,PATH_MAX);
+
+    int ret;
+
+
+    char nada[PATH_MAX];
+
+    //Obtenemos ultimo directorio visitado
+    //zvfs_chdir(string_root_dir);
+
+
+    ret=menu_filesel("Enter dir & press ESC",filtros,nada);
+
+
+    //Si sale con ESC
+    if (ret==0) {
+        printf("Add dir %s\n",menu_filesel_last_directory_seen);
+        ay_player_add_directory_playlist(menu_filesel_last_directory_seen);
+    }
+
+    //volvemos a directorio inicial
+    zvfs_chdir(directorio_actual);
+
+
+
 }
 
 void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
@@ -6198,7 +6241,11 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
     menu_item item_seleccionado;
     int retorno_menu;
 
-    int linea_seleccionada=ay_player_playlist_item_actual;
+    //Linea seleccionada sera el archivo reproduciendose
+    //Saltando Las dos lineas de Add Directory
+    int linea_seleccionada=0;
+    
+    if (ay_player_playlist_get_total_elements()!=0) linea_seleccionada=ay_player_playlist_item_actual+2;
 
     
 
@@ -6210,7 +6257,12 @@ void menu_ayplayer_edit_playlist(MENU_ITEM_PARAMETERS)
             menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,NULL,NULL,"<Empty>"); 
         }
 
-        else {
+        menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_ayplayer_add_directory_playlist,NULL,"Add directory"); 
+
+        
+        if (ay_player_playlist_get_total_elements()!=0) {
+
+            menu_add_item_menu(array_menu_common,"",MENU_OPCION_SEPARADOR,NULL,NULL);
 
             //Recorrer toda la playlist
             ay_player_playlist_item *playitem=ay_player_first_item_playlist;

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 
 #include "cpu.h"
 #include "audio.h"
@@ -2337,6 +2338,125 @@ void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segun
 {
     *minutos_total=ay_song_length/60/50;
     *segundos_total=(ay_song_length/50)%60;
+}
+
+
+
+int ay_player_add_directory_playlist_alphasort(const struct dirent **d1, const struct dirent **d2)
+{
+
+	//printf ("menu_filesel_alphasort %s %s\n",(*d1)->d_name,(*d2)->d_name );
+
+	//compara nombre
+	return (strcasecmp((*d1)->d_name,(*d2)->d_name));
+}
+
+int ay_player_add_directory_playlist_filter_func(const struct dirent *d GCC_UNUSED)
+{
+    //d->d_name tiene el nombre sin el directorio
+	int tipo_archivo=get_file_type((char *)d->d_name);
+
+    //printf("tipo_archivo: %d name: %s\n",tipo_archivo,d->d_name);
+
+	//Si no es archivo ni link, no ok
+
+	if (tipo_archivo  == 0) {
+        //printf("NOOK filesel is not a directory, file or link: %s\n",d->d_name);
+		debug_printf (VERBOSE_DEBUG,"Item is not a directory, file or link");
+		return 0;
+	}
+
+    if (!util_compare_file_extension((char *)d->d_name,"ay")) return 1;
+
+    return 0;
+}
+
+void ay_player_add_directory_playlist(char *directorio)
+{
+
+    char directorio_actual[PATH_MAX];
+    zvfs_getcwd(directorio_actual,PATH_MAX);
+
+    zvfs_chdir(directorio);
+
+
+/*
+       lowing macro constants for the value returned in d_type:
+
+       DT_BLK      This is a block device.
+
+       DT_CHR      This is a character device.
+
+       DT_DIR      This is a directory.
+
+       DT_FIFO     This is a named pipe (FIFO).
+
+       DT_LNK      This is a symbolic link.
+
+       DT_REG      This is a regular file.
+
+       DT_SOCK     This is a UNIX domain socket.
+
+       DT_UNKNOWN  The file type is unknown.
+
+*/
+
+
+    struct dirent **namelist;
+
+	struct dirent *nombreactual;
+
+    int n;
+
+    // Si unidad actual es la mmc montada
+    //if (fatfs_disk_zero_memory!=NULL) 
+    if (menu_current_drive_mmc_image.v)
+    {
+        n = menu_filesel_readdir_mmc_image(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
+    }
+
+    else {
+
+#ifndef MINGW
+	n = scandir(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
+#else
+	//alternativa scandir, creada por mi
+	n = scandir_mingw(".", &namelist, ay_player_add_directory_playlist_filter_func, ay_player_add_directory_playlist_alphasort);
+#endif
+
+    }
+
+    if (n < 0) {
+		debug_printf (VERBOSE_ERR,"Error reading directory contents: %s",strerror(errno));
+	}
+
+    else {
+        int i;
+
+	//printf("total elementos directorio: %d\n",n);
+
+        for (i=0;i<n;i++) {
+            nombreactual=namelist[i];
+
+            char directorio_actual[PATH_MAX];
+            zvfs_getcwd(directorio_actual,PATH_MAX);
+            char archivo_actual[PATH_MAX];
+
+            sprintf(archivo_actual,"%s/%s",directorio_actual,nombreactual->d_name);
+
+            debug_printf(VERBOSE_INFO,"Add AY file to playlist: %s",archivo_actual);
+
+            ay_player_add_file(archivo_actual);
+
+        }
+
+		free(namelist);
+
+    }
+
+    //Restaurar directorio
+    zvfs_chdir(directorio_actual);    
+
 }
 
 void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos)
