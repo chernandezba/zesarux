@@ -5843,6 +5843,8 @@ zxvision_window *menu_audio_new_ayplayer_overlay_window;
 #define AYPLAYER_ALTO_VENTANA 23
 #define AYPLAYER_INICIO_LINEA_MENU 14
 
+int ayplayer_force_refresh=0;
+
 void menu_audio_new_ayplayer_overlay(void)
 {
 
@@ -5958,11 +5960,14 @@ void menu_audio_new_ayplayer_overlay(void)
 	}
 
     //esto hara ejecutar esto 2 veces por segundo
-    if ( ((contador_segundo%500) == 0 && menu_ayplayer_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0) {
+    if ( ((contador_segundo%500) == 0 && menu_ayplayer_valor_contador_segundo_anterior!=contador_segundo) || menu_multitarea==0 || ayplayer_force_refresh) {
 
         menu_ayplayer_valor_contador_segundo_anterior=contador_segundo;
         //printf ("Refrescando. contador_segundo=%d\n",contador_segundo);
+
+        //if (ayplayer_force_refresh) printf("forzado refresco\n");
        
+        ayplayer_force_refresh=0;
 
         char textoplayer[40];
 
@@ -6056,12 +6061,14 @@ void menu_audio_new_ayplayer_load(MENU_ITEM_PARAMETERS)
 void menu_audio_new_ayplayer_prev(MENU_ITEM_PARAMETERS)
 {
 	ay_player_previous_track();
+    ayplayer_force_refresh=1;
 
 }
 
 void menu_audio_new_ayplayer_next(MENU_ITEM_PARAMETERS)
 {
 	ay_player_next_track();
+    ayplayer_force_refresh=1;
 
 }
 
@@ -6139,11 +6146,13 @@ void menu_audio_new_ayplayer_show_on_console(MENU_ITEM_PARAMETERS)
 void menu_ayplayer_next_file(MENU_ITEM_PARAMETERS)
 {
     ay_player_next_file();
+    ayplayer_force_refresh=1;
 }
 
 void menu_ayplayer_previous_file(MENU_ITEM_PARAMETERS)
 {
     ay_player_previous_file();
+    ayplayer_force_refresh=1;
 }
 
 /*
@@ -6224,7 +6233,7 @@ void menu_ayplayer_add_directory_playlist(MENU_ITEM_PARAMETERS)
 
     //Si sale con ESC
     if (ret==0) {
-        printf("Add dir %s\n",menu_filesel_last_directory_seen);
+        //printf("Add dir %s\n",menu_filesel_last_directory_seen);
         ay_player_add_directory_playlist(menu_filesel_last_directory_seen);
     }
 
