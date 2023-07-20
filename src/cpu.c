@@ -1727,7 +1727,7 @@ printf (
 		"--zx8081vsyncsound            Enable vsync/tape sound on ZX80/81\n"
         "--ayplayer-add-dir d          Add directory containing AY files to playlist\n"
         "--ayplayer-start-playlist     Start playing playlist when start ZEsarUX\n"
-		"--ayplayer-end-exit           Exit emulator when end playing current ay file\n"
+		"--ayplayer-end-exit           Exit emulator when end playing all ay files in playlist\n"
 		"--ayplayer-end-no-repeat      Do not repeat playing from the beginning when end playing current ay file\n"
 		"--ayplayer-inf-length n       Limit to n seconds to ay tracks with infinite length\n"
 		"--ayplayer-any-length n       Limit to n seconds to all ay tracks\n"

@@ -2223,6 +2223,8 @@ void ay_player_next_file(void)
 
     else {
         ay_player_stop_player(); 
+
+        if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
     }
 }
 
@@ -2271,15 +2273,15 @@ void ay_player_next_track(void)
     }
 
 	else {
-		if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
+		
 
-		else {
+		
 			if (ay_player_repeat_file.v) ay_player_pista_actual=1;
 			else {
 				ay_player_next_file();
 				return;
 			}
-		}
+		
 	}
 
 	audio_ay_player_play_song(ay_player_pista_actual);
