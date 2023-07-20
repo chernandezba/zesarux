@@ -346,6 +346,3 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
-
--ay playlist:
-*desde edit playlist si cierro todos menus se cierra tambien ay playlist
