@@ -22,7 +22,23 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
+#include <dirent.h>
+#if defined(__APPLE__)
+        #include <sys/syslimits.h>
+#endif
+
+
 #include "cpu.h"
+
+
+//Por el tema de usar PATH_MAX en windows
+#ifdef MINGW
+#include <stdlib.h>
+#define PATH_MAX MAX_PATH
+#define NAME_MAX MAX_PATH
+#endif
+
+
 
 //lineas de cada pantalla. al final de cada linea se guarda el bit a enviar al altavoz
 //#define AUDIO_BUFFER_SIZE 312
@@ -243,6 +259,17 @@ extern z80_bit ay_player_repeat_file;
 
 extern z80_bit ay_player_cpc_mode;
 extern z80_bit ay_player_show_info_console;
+
+//Gestion de playlist para ay player
+struct s_ay_player_playlist_item {
+    char nombre[PATH_MAX];
+
+    struct s_ay_player_playlist_item *next_item;
+};
+
+typedef struct s_ay_player_playlist_item ay_player_playlist_item;
+
+extern ay_player_playlist_item *ay_player_first_item_playlist;
 
 extern void ay_player_get_duration_current_song(z80_byte *minutos_total,z80_byte *segundos_total);
 extern void ay_player_get_elapsed_current_song(z80_byte *minutos,z80_byte *segundos);

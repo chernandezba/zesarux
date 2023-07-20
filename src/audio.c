@@ -2079,14 +2079,7 @@ void ay_player_load_and_play(char *filename)
     audio_ay_player_play_song(ay_player_pista_actual);
 }
 
-//Gestion de playlist para ay player
-struct s_ay_player_playlist_item {
-    char nombre[PATH_MAX];
 
-    struct s_ay_player_playlist_item *next_item;
-};
-
-typedef struct s_ay_player_playlist_item ay_player_playlist_item;
 
 ay_player_playlist_item *ay_player_first_item_playlist;
 int ay_player_playlist_total_elements=0;
@@ -2205,6 +2198,12 @@ void ay_player_play_current_item(void)
     ay_player_playlist_get_item(ay_player_playlist_item_actual,nombre_archivo);
 
     ay_player_load_and_play(nombre_archivo);    
+}
+
+void ay_player_play_this_item(int item)
+{
+    ay_player_playlist_item_actual=item;
+    ay_player_play_current_item();   
 }
 
 void ay_player_next_file(void)
