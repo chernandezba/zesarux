@@ -2446,7 +2446,7 @@ void ay_player_add_directory_playlist(char *directorio)
 
             debug_printf(VERBOSE_INFO,"Add AY file to playlist: %s",archivo_actual);
 
-            ay_player_add_file(archivo_actual);
+            ay_player_playlist_add(archivo_actual);
 
         }
 

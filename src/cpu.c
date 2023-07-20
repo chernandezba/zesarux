@@ -1725,6 +1725,8 @@ printf (
 		"\n"
 		"--audiovolume n               Sets the audio output volume to percentage n\n"
 		"--zx8081vsyncsound            Enable vsync/tape sound on ZX80/81\n"
+        "--ayplayer-add-dir d          Add directory containing AY files to playlist\n"
+        "--ayplayer-start-playlist     Start playing playlist when start ZEsarUX\n"
 		"--ayplayer-end-exit           Exit emulator when end playing current ay file\n"
 		"--ayplayer-end-no-repeat      Do not repeat playing from the beginning when end playing current ay file\n"
 		"--ayplayer-inf-length n       Limit to n seconds to ay tracks with infinite length\n"
@@ -6012,6 +6014,7 @@ z80_bit command_line_esxdos_local_dir={0};
 
 int command_line_chardetect_printchar_enabled=-1;
 
+z80_bit command_line_ayplayer_start_playlist={0};
 
 z80_bit added_some_osd_text_keyboard={0};
 
@@ -8569,6 +8572,15 @@ int parse_cmdline_options(int desde_commandline) {
         			audiovolume=valor;
 			}
 
+            else if (!strcmp(argv[puntero_parametro],"--ayplayer-add-dir")) {
+                siguiente_parametro_argumento();
+                ay_player_add_directory_playlist(argv[puntero_parametro]);
+            }
+
+            else if (!strcmp(argv[puntero_parametro],"--ayplayer-start-playlist")) {
+                command_line_ayplayer_start_playlist.v=1;
+            }
+
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-exit")) {
 				ay_player_exit_emulator_when_finish.v=1;
 			}
@@ -10828,6 +10840,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		if (audio_midi_output_init() ) debug_printf (VERBOSE_ERR,"Error initializing midi device");
 	}
 
+    if (command_line_ayplayer_start_playlist.v) {
+        //Como el current es 0, empieza por el primero
+        ay_player_play_current_item();
+    }
 
 	//Si la version actual es mas nueva que la anterior, eso solo si el autoguardado de config esta activado
 	if (save_configuration_file_on_exit.v && do_no_show_changelog_when_update.v==0) {
