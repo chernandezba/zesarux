@@ -4187,7 +4187,7 @@ int util_write_configfile(void)
   if (snow_effect_enabled.v)                  ADD_STRING_CONFIG,"--snoweffect");
   if (audiovolume!=100)                       ADD_STRING_CONFIG,"--audiovolume %d",audiovolume);
   if (ay_player_exit_emulator_when_finish.v)  ADD_STRING_CONFIG,"--ayplayer-end-exit");
-  if (ay_player_repeat_file.v==0)             ADD_STRING_CONFIG,"--ayplayer-end-no-repeat");
+  if (ay_player_repeat_file.v)                ADD_STRING_CONFIG,"--ayplayer-end-repeat");
   if (ay_player_limit_infinite_tracks!=0)     ADD_STRING_CONFIG,"--ayplayer-inf-length %d",ay_player_limit_infinite_tracks/50);
   if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
   if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");

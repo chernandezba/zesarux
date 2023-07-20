@@ -1728,7 +1728,7 @@ printf (
         "--ayplayer-add-dir d          Add directory containing AY files to playlist\n"
         "--ayplayer-start-playlist     Start playing playlist when start ZEsarUX\n"
 		"--ayplayer-end-exit           Exit emulator when end playing all ay files in playlist\n"
-		"--ayplayer-end-no-repeat      Do not repeat playing from the beginning when end playing current ay file\n"
+		"--ayplayer-end-repeat         Repeat playing from the beginning when end playing current ay file\n"
 		"--ayplayer-inf-length n       Limit to n seconds to ay tracks with infinite length\n"
 		"--ayplayer-any-length n       Limit to n seconds to all ay tracks\n"
 		"--ayplayer-cpc                Set AY Player to CPC mode (default: Spectrum)\n"
@@ -8585,9 +8585,14 @@ int parse_cmdline_options(int desde_commandline) {
 				ay_player_exit_emulator_when_finish.v=1;
 			}
 
+            //Por compatibilidad con versiones < 10.10
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-no-repeat")) {
 				ay_player_repeat_file.v=0;
 			}
+
+			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-repeat")) {
+				ay_player_repeat_file.v=1;
+			}            
 
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-inf-length")) {
 				siguiente_parametro_argumento();

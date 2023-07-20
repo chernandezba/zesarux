@@ -1515,7 +1515,8 @@ z80_int ay_player_limit_infinite_tracks=0;
 z80_int ay_player_limit_any_track=0;
 
 //Ir a primera pista cuando se llega al final
-z80_bit ay_player_repeat_file={1};
+//En versiones previas a la 10.10 esto venia activado por defecto
+z80_bit ay_player_repeat_file={0};
 
 //Reproducir en modo cpc
 z80_bit ay_player_cpc_mode={0};
