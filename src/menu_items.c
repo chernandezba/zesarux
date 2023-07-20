@@ -6172,21 +6172,21 @@ void menu_ayplayer_edit_playlist_action(MENU_ITEM_PARAMETERS)
     int opcion=menu_simple_two_choices("Playlist item","Do you want to:","Play","Delete");
 
     switch(opcion) {
-            case 1:
-                ay_player_play_this_item(item_seleccionado);
-            break;
+        case 1:
+            ay_player_play_this_item(item_seleccionado);
+        break;
 
-            case 2:
-                ay_player_playlist_remove(item_seleccionado);
-                //Si es el ultimo, detener
-                if (ay_player_playlist_get_total_elements()==0) {
-                    ay_player_stop_player();
-                }
-                //Si el que estaba sonando es el que borramos, reproducir siguiente
-                else if (item_sonando==item_seleccionado) {
-                    ay_player_next_file();
-                }
-            break;
+        case 2:
+            ay_player_playlist_remove(item_seleccionado);
+            //Si es el ultimo, detener
+            if (ay_player_playlist_get_total_elements()==0) {
+                ay_player_stop_player();
+            }
+            //Si el que estaba sonando es el que borramos, reproducir siguiente
+            else if (item_sonando==item_seleccionado) {
+                ay_player_play_this_item(item_seleccionado);
+            }
+        break;
     }
 
     

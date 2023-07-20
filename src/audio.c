@@ -2202,8 +2202,11 @@ void ay_player_play_current_item(void)
 
 void ay_player_play_this_item(int item)
 {
-    ay_player_playlist_item_actual=item;
-    ay_player_play_current_item();   
+    if (item>=ay_player_playlist_get_total_elements()-1) ay_player_stop_player();
+    else {
+        ay_player_playlist_item_actual=item;
+        ay_player_play_current_item();   
+    }
 }
 
 void ay_player_next_file(void)
@@ -2316,6 +2319,8 @@ void ay_player_stop_player(void)
 {
 	ay_player_playing.v=0;
 	audio_ay_player_mem=NULL;
+
+    ay_player_playlist_item_actual=0;
 
 	//set_machine(NULL);
 
