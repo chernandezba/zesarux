@@ -291,6 +291,7 @@ extern void ay_player_add_file(char *archivo);
 extern void ay_player_next_file(void);
 extern void ay_player_previous_file(void);
 extern void ay_player_play_this_item(int item);
+extern void ay_player_start_playing_all_items(void);
 
 extern z80_byte audiodac_last_value_data;
 

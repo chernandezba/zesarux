@@ -10856,8 +10856,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	}
 
     if (command_line_ayplayer_start_playlist.v) {
-        //Como el current es 0, empieza por el primero
-        ay_player_play_current_item();
+        ay_player_start_playing_all_items();
     }
 
 	//Si la version actual es mas nueva que la anterior, eso solo si el autoguardado de config esta activado

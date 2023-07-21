@@ -2218,6 +2218,37 @@ void ay_player_play_current_item(void)
     ay_player_load_and_play(nombre_archivo);    
 }
 
+void ay_player_set_random_item(void)
+{
+    int total_elements=ay_player_playlist_get_total_elements();
+
+    ay_randomize(0);
+
+    int valor_random=randomize_noise[0];
+
+    //un poco mas aleatorio
+    //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
+    //esto ira de 0 a 1000
+    valor_random +=util_random_noise;
+
+    //Por si acaso evitar división por cero
+    if (total_elements==0) ay_player_playlist_item_actual=0;
+    else ay_player_playlist_item_actual=valor_random % total_elements;    
+}
+
+//El primero o es el 0 o random
+void ay_player_start_playing_all_items(void)
+{
+    ay_player_playlist_item_actual=0;
+
+    //Modo random
+    if (ay_player_shuffle_mode.v) {
+        ay_player_set_random_item();
+    }
+
+    ay_player_play_current_item();
+}
+
 void ay_player_play_this_item(int item)
 {
     if (item>=ay_player_playlist_get_total_elements()) ay_player_stop_player();
@@ -2234,18 +2265,7 @@ void ay_player_next_file(void)
 
     //Modo random
     if (ay_player_shuffle_mode.v) {
-        ay_randomize(0);
-
-        int valor_random=randomize_noise[0];
-
-        //un poco mas aleatorio
-        //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
-        //esto ira de 0 a 1000
-        valor_random +=util_random_noise;
-
-        //Por si acaso evitar división por cero
-        if (total_elements==0) ay_player_playlist_item_actual=0;
-        else ay_player_playlist_item_actual=valor_random % total_elements;
+        ay_player_set_random_item();
 
         ay_player_play_current_item();
 
