@@ -2251,7 +2251,7 @@ void ay_player_start_playing_all_items(void)
 
 void ay_player_play_this_item(int item)
 {
-    if (item>=ay_player_playlist_get_total_elements()) ay_player_stop_player();
+    if (item>=ay_player_playlist_get_total_elements() || item<0) ay_player_stop_player();
     else {
         ay_player_playlist_item_actual=item;
         ay_player_play_current_item();   

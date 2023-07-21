@@ -610,15 +610,23 @@ struct s_items_ayuda items_ayuda[]={
   {"ayplayer","|ayp","command parameter","Runs a command on the AY Player. command can be:\n"
 	"get-author          Prints the author\n"
 	"get-elapsed-track   Prints elapsed track time in 1/50 of seconds\n"
+    "get-file            Prints the file being played\n"
+    "get-id-file         Prints the number of order in playlist of the file being played\n"
 	"get-misc            Prints misc information\n"
+    "get-playlist        Prints the playlist\n"
+    "get-total-files     Prints total files in playlist\n"
 	"get-total-tracks    Prints total tracks\n"
 	"get-track-length    Prints track length in 1/50 of seconds\n"
 	"get-track-name      Prints track name\n"
 	"get-track-number    Prints current track number\n"
 
 	"load                Loads the .ay file indicated by parameter\n"
-	"next                Go to next track\n"
-	"prev                Go to previous track\n"
+    "load-dir            Loads the directory to the playlist\n"
+	"next-file           Go to next file\n"
+    "play-id             Plays the file identificated by parameter id\n"
+	"prev-file           Go to previous file\n"    
+	"next-track          Go to next track\n"
+	"prev-track          Go to previous track\n"
 	"stop                Stops playing\n"
 
 },
@@ -3221,15 +3229,19 @@ void remote_ayplayer(int misocket,char *command,char *command_parm)
 
 	//Comandos que requieren que este en ejecucion el player
 	if (
-		!strcasecmp(command,"prev") ||
+		!strcasecmp(command,"prev-track") ||
 		!strcasecmp(command,"stop") ||
-		!strcasecmp(command,"next") ||
+		!strcasecmp(command,"next-track") ||
+        !strcasecmp(command,"prev-file") ||
+        !strcasecmp(command,"next-file") ||
 		!strcasecmp(command,"get-track-name") ||
 		!strcasecmp(command,"get-author") ||
 		!strcasecmp(command,"get-misc") ||
 		!strcasecmp(command,"get-track-number") ||
 		!strcasecmp(command,"get-total-tracks") ||
+        !strcasecmp(command,"get-id-file") ||
 		!strcasecmp(command,"get-elapsed-track") ||
+        !strcasecmp(command,"get-file") ||
 		!strcasecmp(command,"get-track-length")
 		) {
 		if (!menu_audio_new_ayplayer_si_mostrar()) {
@@ -3237,12 +3249,18 @@ void remote_ayplayer(int misocket,char *command,char *command_parm)
 			return;
 		}
 
-		if (!strcasecmp(command,"prev")) ay_player_previous_track();
+		if (!strcasecmp(command,"prev-track")) ay_player_previous_track();
 		if (!strcasecmp(command,"stop")) ay_player_stop_player();
-		if (!strcasecmp(command,"next")) ay_player_next_track();
+		if (!strcasecmp(command,"next-track")) ay_player_next_track();
+        if (!strcasecmp(command,"prev-file")) ay_player_previous_file();
+        if (!strcasecmp(command,"next-file")) ay_player_next_file();
 		if (!strcasecmp(command,"get-track-name")) {
 			escribir_socket(misocket,ay_player_file_song_name);
 		}
+
+        if (!strcasecmp(command,"get-file")) {
+            escribir_socket(misocket,ay_player_filename_playing);
+        }
 
 		if (!strcasecmp(command,"get-author")) {
 			escribir_socket(misocket,ay_player_file_author);
@@ -3261,6 +3279,13 @@ void remote_ayplayer(int misocket,char *command,char *command_parm)
 		}
 
 
+
+
+		if (!strcasecmp(command,"get-id-file")) {
+			escribir_socket_format(misocket,"%d",ay_player_playlist_item_actual);
+		}        
+
+
 		if (!strcasecmp(command,"get-elapsed-track")) {
 			escribir_socket_format(misocket,"%d",ay_song_length_counter);
 		}
@@ -3269,13 +3294,48 @@ void remote_ayplayer(int misocket,char *command,char *command_parm)
 			escribir_socket_format(misocket,"%d",ay_song_length);
 		}
 
+	}
 
+    if (!strcasecmp(command,"get-total-files")) {
+        escribir_socket_format(misocket,"%d",ay_player_playlist_get_total_elements());
+    }
 
+	if (!strcasecmp(command,"load-dir")) {
+		ay_player_add_directory_playlist(command_parm);
 	}
 
 	if (!strcasecmp(command,"load")) {
-		ay_player_load_and_play(command_parm);
+		ay_player_add_file(command_parm);
 	}
+
+    if (!strcasecmp(command,"get-playlist")) {
+        
+        if (ay_player_playlist_get_total_elements()!=0) {
+
+            //Recorrer toda la playlist
+            ay_player_playlist_item *playitem=ay_player_first_item_playlist;
+
+            int i=0;
+            while (playitem!=NULL) {
+                char nombre_archivo[PATH_MAX];
+
+                util_get_file_no_directory(playitem->nombre,nombre_archivo);
+
+                escribir_socket_format(misocket,"%d %s\n",i,nombre_archivo);
+
+                playitem=playitem->next_item;
+                i++;
+            }
+
+        }        
+    }
+
+
+	if (!strcasecmp(command,"play-id")) {
+        int identificador=parse_string_to_number(command_parm);
+		ay_player_play_this_item(identificador);
+	}
+    
 
 }
 
