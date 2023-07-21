@@ -2379,7 +2379,7 @@ void ay_player_playing_timer(void)
         //ay_player_silence_detection_counter++;
 
        if (ay_player_silence_detection_counter>AYPLAYER_SILENCE_MAX_COUNTER*FRECUENCIA_SONIDO) {
-        printf("Jump to next track because there is silence\n");
+        debug_printf(VERBOSE_INFO,"Jump to next track because there is silence");
         ay_player_next_track();
        }
     }  
