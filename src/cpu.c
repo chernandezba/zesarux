@@ -1709,37 +1709,39 @@ void cpu_help_expert(void)
 		"--------------\n"
 		"\n"
 
-		"--disableayspeech             Disable AY Speech sounds\n"
-		"--disableenvelopes            Disable AY Envelopes\n"
-		"--disablebeeper               Disable Beeper\n"
-        "--disablerealbeeper           Disable real Beeper sound\n"
-		"--totalaychips  n             Number of ay chips. Default 1\n"
-		"--ay-stereo-mode n            Mode of AY stereo emulated: 0=Mono, 1=ACB, 2=ABC, 3=BAC, 4=Custom. Default Mono\n"
-		"--ay-stereo-channel X n       Position of AY channel X (A, B or C) in case of Custom Stereo Mode. 0=Left, 1=Center, 2=Right\n"
-		"--enableaudiodac              Enable DAC emulation. By default Specdrum\n"
-		"--audiodactype type           Select one of audiodac types: "
+		"--disableayspeech                Disable AY Speech sounds\n"
+		"--disableenvelopes               Disable AY Envelopes\n"
+		"--disablebeeper                  Disable Beeper\n"
+        "--disablerealbeeper              Disable real Beeper sound\n"
+		"--totalaychips  n                Number of ay chips. Default 1\n"
+		"--ay-stereo-mode n               Mode of AY stereo emulated: 0=Mono, 1=ACB, 2=ABC, 3=BAC, 4=Custom. Default Mono\n"
+		"--ay-stereo-channel X n          Position of AY channel X (A, B or C) in case of Custom Stereo Mode. 0=Left, 1=Center, 2=Right\n"
+		"--enableaudiodac                 Enable DAC emulation. By default Specdrum\n"
+		"--audiodactype type              Select one of audiodac types: "
 );
 		audiodac_print_types();
 
 printf (
 		"\n"
-		"--audiovolume n               Sets the audio output volume to percentage n\n"
-		"--zx8081vsyncsound            Enable vsync/tape sound on ZX80/81\n"
-        "--ayplayer-add-dir d          Add directory containing AY files to playlist\n"
-        "--ayplayer-start-playlist     Start playing playlist when start ZEsarUX\n"
-		"--ayplayer-end-exit           Exit emulator when end playing all ay files in playlist\n"
-		"--ayplayer-end-repeat         Repeat playing from the beginning when end playing current ay file\n"
-		"--ayplayer-inf-length n       Limit to n seconds to ay tracks with infinite length\n"
-		"--ayplayer-any-length n       Limit to n seconds to all ay tracks\n"
-		"--ayplayer-cpc                Set AY Player to CPC mode (default: Spectrum)\n"
-        "--ayplayer-show-info-console  Show AY Player information about current file and song on console\n"
-        "--audiopiano-zoom n           Set zoom for Audio Chip Piano and Wave Piano (1-3)\n"
-		"--enable-midi                 Enable midi output\n"
-		"--midi-client n               Set midi client value to n. Needed only on Linux with Alsa audio driver\n"
-		"--midi-port n                 Set midi port value to n. Needed on Windows and Linux with Alsa audio driver\n"
-		"--midi-raw-device s           Set midi raw device to s. Needed on Linux with Alsa audio driver\n"
-		"--midi-allow-tone-noise       Allow tone+noise channels on midi\n"
-		"--midi-no-raw-mode            Do not use midi in raw mode. Raw mode is required on Linux to emulate AY midi registers\n"
+		"--audiovolume n                  Sets the audio output volume to percentage n\n"
+		"--zx8081vsyncsound               Enable vsync/tape sound on ZX80/81\n"
+        "--ayplayer-add-dir d             Add directory containing AY files to playlist\n"
+        "--ayplayer-start-playlist        Start playing playlist when start ZEsarUX\n"
+        "--ayplayer-shuffle               Random playback\n"
+        "--ayplayer-no-silence-detection  Do not jump to next track if silence detected during 10 seconds\n"
+		"--ayplayer-end-exit              Exit emulator when end playing all ay files in playlist\n"
+		"--ayplayer-end-repeat            Repeat playing from the beginning when end playing current ay file\n"
+		"--ayplayer-inf-length n          Limit to n seconds to ay tracks with infinite length\n"
+		"--ayplayer-any-length n          Limit to n seconds to all ay tracks\n"
+		"--ayplayer-cpc                   Set AY Player to CPC mode (default: Spectrum)\n"
+        "--ayplayer-show-info-console     Show AY Player information about current file and song on console\n"
+        "--audiopiano-zoom n              Set zoom for Audio Chip Piano and Wave Piano (1-3)\n"
+		"--enable-midi                    Enable midi output\n"
+		"--midi-client n                  Set midi client value to n. Needed only on Linux with Alsa audio driver\n"
+		"--midi-port n                    Set midi port value to n. Needed on Windows and Linux with Alsa audio driver\n"
+		"--midi-raw-device s              Set midi raw device to s. Needed on Linux with Alsa audio driver\n"
+		"--midi-allow-tone-noise          Allow tone+noise channels on midi\n"
+		"--midi-no-raw-mode               Do not use midi in raw mode. Raw mode is required on Linux to emulate AY midi registers\n"
 
 
 		"\n"
@@ -8585,6 +8587,14 @@ int parse_cmdline_options(int desde_commandline) {
 				ay_player_exit_emulator_when_finish.v=1;
 			}
 
+			else if (!strcmp(argv[puntero_parametro],"--ayplayer-shuffle")) {
+				ay_player_shuffle_mode.v=1;
+			}
+
+            else if (!strcmp(argv[puntero_parametro],"--ayplayer-no-silence-detection")) {
+                ay_player_silence_detection.v=0;
+            }
+            
             //Por compatibilidad con versiones < 10.10
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-no-repeat")) {
 				ay_player_repeat_file.v=0;

@@ -1526,6 +1526,19 @@ z80_bit ay_player_cpc_mode={0};
 //Mostrar info de cancion tambien en consola
 z80_bit ay_player_show_info_console={0};
 
+//Modo aleatorio
+z80_bit ay_player_shuffle_mode={0};
+
+//Para detectar silencio y pasar a la siguiente pista
+//Este funciona diferente que el resto de detectores de silencio,
+//basicamente lo que hace es que si el sample de audio enviado a la tarjeta de sonido es igual al anterior, asume silencio e incrementa un contador
+z80_bit ay_player_silence_detection={1};
+
+int ay_player_silence_detection_counter=0;
+
+
+
+
 //Retorna valor de 16 bit apuntado como big endian
 z80_int audio_ay_player_get_be_word(int index)
 {
@@ -1727,6 +1740,7 @@ void ay_player_mem_set(z80_int destino,z80_byte valor,z80_int longitud)
 //Retorna 0 si ok
 int audio_ay_player_play_song(z80_byte song)
 {
+    ay_player_silence_detection_counter=0;
 
 	if (audio_ay_player_mem==NULL) {
 		debug_printf(VERBOSE_ERR,"No song loaded");
@@ -2218,16 +2232,39 @@ void ay_player_next_file(void)
     //play el siguiente en la playlist
     int total_elements=ay_player_playlist_get_total_elements();
 
-    if (ay_player_playlist_item_actual<total_elements-1) {
-        ay_player_playlist_item_actual++;
+    //Modo random
+    if (ay_player_shuffle_mode.v) {
+        ay_randomize(0);
+
+        int valor_random=randomize_noise[0];
+
+        //un poco mas aleatorio
+        //como util_random_noise es valor en ms de tiempo pulsado tecla o raton, habitualmente
+        //esto ira de 0 a 1000
+        valor_random +=util_random_noise;
+
+        //Por si acaso evitar división por cero
+        if (total_elements==0) ay_player_playlist_item_actual=0;
+        else ay_player_playlist_item_actual=valor_random % total_elements;
 
         ay_player_play_current_item();
-    }
+
+    }    
 
     else {
-        ay_player_stop_player(); 
+        //Siguiente pista
+        if (ay_player_playlist_item_actual<total_elements-1) {
+            ay_player_playlist_item_actual++;
+            ay_player_play_current_item();
+        }
 
-        if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
+        //Llegado al final
+        else {
+            ay_player_stop_player(); 
+
+            if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
+        }
+
     }
 }
 
@@ -2301,15 +2338,34 @@ void ay_player_previous_track (void)
 	audio_ay_player_play_song(ay_player_pista_actual);
 }
 
+//A los 10 segundos de silencio, saltar siguiente pista
+#define AYPLAYER_SILENCE_MAX_COUNTER 10
+
 //A donde se llama desde timer
 void ay_player_playing_timer(void)
 {
 	if (audio_ay_player_mem==NULL) return;
 	if (ay_player_playing.v==0) return;
 
-	//Si es infinito, no saltar nunca a siguiente cancion
-	if (ay_song_length==0) return;
+
 	ay_song_length_counter++;
+
+
+
+    //Si hay detector de silencio de ayplayer
+    if (ay_player_silence_detection.v) {
+        //printf("Contador silencio: %d\n",ay_player_silence_detection_counter);
+
+        //ay_player_silence_detection_counter++;
+
+       if (ay_player_silence_detection_counter>AYPLAYER_SILENCE_MAX_COUNTER*FRECUENCIA_SONIDO) {
+        printf("Jump to next track because there is silence\n");
+        ay_player_next_track();
+       }
+    }  
+
+	//Si es infinito, no saltar nunca a siguiente cancion
+	if (ay_song_length==0) return;          
 
 	//printf ("Contador cancion: %d limite: %d  (%d s)\n",ay_song_length_counter,ay_song_length,ay_song_length/50);
 
@@ -2791,6 +2847,11 @@ void audio_function_resample_1bit(char *p_valor_sonido_izquierdo,char *p_valor_s
 	
 }
 
+//Para el detector de silencio en modo experimental, para el ay player
+//Si valores enviados son iguales al anterior, asumimos posible silencio
+
+char previous_valor_sonido_izquierdo,previous_valor_sonido_derecho;
+
 void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_derecho)
 {
 
@@ -2819,6 +2880,17 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
 	//	printf("ultimos: %d %d\n",audio_buffer[audio_buffer_indice],audio_buffer[audio_buffer_indice+1]);
 	//	printf("anteriores: %d %d\n",audio_buffer[audio_buffer_indice-2],audio_buffer[audio_buffer_indice-1]);
 	//}
+
+    //Si valor actual es mismo que el anterior, asumimos silencio
+    if (previous_valor_sonido_izquierdo==valor_sonido_izquierdo && previous_valor_sonido_derecho==valor_sonido_derecho) {
+        ay_player_silence_detection_counter++;
+    }
+    else {
+        ay_player_silence_detection_counter=0;
+    }
+
+    previous_valor_sonido_izquierdo=valor_sonido_izquierdo;
+    previous_valor_sonido_derecho=valor_sonido_derecho;
 
 }
 

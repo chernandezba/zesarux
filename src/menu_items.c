@@ -5840,7 +5840,7 @@ int ayplayer_previo_valor_volume_C=0;
 
 zxvision_window *menu_audio_new_ayplayer_overlay_window;	
 
-#define AYPLAYER_ALTO_VENTANA 23
+#define AYPLAYER_ALTO_VENTANA 24
 #define AYPLAYER_INICIO_LINEA_MENU 14
 
 int ayplayer_force_refresh=0;
@@ -6141,6 +6141,16 @@ void menu_audio_new_ayplayer_len_anytracks(MENU_ITEM_PARAMETERS)
 void menu_audio_new_ayplayer_show_on_console(MENU_ITEM_PARAMETERS)
 {
     ay_player_show_info_console.v ^=1;
+}
+
+void menu_ayplayer_shuffle(MENU_ITEM_PARAMETERS)
+{
+    ay_player_shuffle_mode.v ^=1;
+}
+
+void menu_ayplayer_detect_silence(MENU_ITEM_PARAMETERS)
+{
+    ay_player_silence_detection.v ^=1;
 }
 
 void menu_ayplayer_next_file(MENU_ITEM_PARAMETERS)
@@ -6481,34 +6491,49 @@ void menu_audio_new_ayplayer(MENU_ITEM_PARAMETERS)
 
                 linea+=2;
 
+
+                menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_shuffle,NULL,"[%c] Shuffle",
+                    (ay_player_shuffle_mode.v ? 'X' : ' '));
+                menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Random playlist playing");
+                menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_repeat,NULL,"[%c] Repeat",
 					(ay_player_repeat_file.v ? 'X' : ' '));
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Repeat from the beginning when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);	
 
+                linea++;
 				
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_exitend,NULL,"[%c] Exit end",
 					(ay_player_exit_emulator_when_finish.v ? 'X' : ' ') );
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Exit emulator when finished all songs");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,13,linea);	
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);	
 
-                linea++;
+                
 
 
-				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"Length infinite tracks: inf");
-				else sprintf(textoplayer,"Length infinite tracks: %d s",ay_player_limit_infinite_tracks/50);
+				if (ay_player_limit_infinite_tracks==0) sprintf(textoplayer,"[inf] Inf. tracks");
+				else sprintf(textoplayer,"[%ds] Inf. tracks",ay_player_limit_infinite_tracks/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_inftracks,NULL,textoplayer);
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for songs which doesn't have time limit");
-				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);			
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,14,linea);			
 
                 linea++;
 
 
-				if (ay_player_limit_any_track==0) sprintf(textoplayer,"Length any track: No limit");
-				else sprintf(textoplayer,"Length any track: %d s",ay_player_limit_any_track/50);
+				if (ay_player_limit_any_track==0) sprintf(textoplayer,"[no limit] Max any track");
+				else sprintf(textoplayer,"[%ds] Max any track",ay_player_limit_any_track/50);
 				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_audio_new_ayplayer_len_anytracks,NULL,textoplayer);
 				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Time limit for all songs");
 				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);
+
+                linea++;
+
+				menu_add_item_menu_format(array_menu_audio_new_ayplayer,MENU_OPCION_NORMAL,menu_ayplayer_detect_silence,NULL,"[%c] Detect silence",
+					(ay_player_silence_detection.v ? 'X' : ' '));
+				menu_add_item_menu_ayuda(array_menu_audio_new_ayplayer,"Jump to next track if silence detected during 10 seconds");
+				menu_add_item_menu_tabulado(array_menu_audio_new_ayplayer,1,linea);	                
 
                 linea++;
 

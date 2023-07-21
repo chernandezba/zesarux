@@ -8721,6 +8721,8 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
                 silence_detection_counter=0;
 		beeper_silence_detection_counter=0;
 
+        //ay_player_silence_detection_counter=0;
+
 		out_254_original_value=value;
 
 		//printf ("valor mic y ear: %d\n",value&(8+16));

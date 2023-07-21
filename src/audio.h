@@ -259,6 +259,10 @@ extern z80_bit ay_player_repeat_file;
 
 extern z80_bit ay_player_cpc_mode;
 extern z80_bit ay_player_show_info_console;
+extern z80_bit ay_player_shuffle_mode;
+extern z80_bit ay_player_silence_detection;
+
+extern int ay_player_silence_detection_counter;
 
 //Gestion de playlist para ay player
 struct s_ay_player_playlist_item {

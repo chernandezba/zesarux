@@ -432,11 +432,13 @@ COMMENT !
 	if (tone.v==1 && noise.v==0)  {
 		valor=ultimo_valor_tono;
 		silence_detection_counter=0;
+        //ay_player_silence_detection_counter=0;
 	}
 
 	else if (tone.v==0 && noise.v==1)  {
                 valor=ultimo_valor_ruido[chip];
                 silence_detection_counter=0;
+                //ay_player_silence_detection_counter=0;
         }
 
 	else if (tone.v==1 && noise.v==1)  {
@@ -452,6 +454,7 @@ COMMENT !
 		valor=(ultimo_valor_ruido[chip]+ultimo_valor_tono)/2;
 
                 silence_detection_counter=0;
+                //ay_player_silence_detection_counter=0;
 		//printf ("tone y noise. valor:%d\n",valor);
 
         }
@@ -1325,6 +1328,8 @@ void out_port_ay(z80_int puerto,z80_byte value)
 
 	//Resetear detector de silencio
 	silence_detection_counter=0;
+
+    //ay_player_silence_detection_counter=0;
 
 
 	//printf ("Out port ay chip. Puerto: %d Valor: %d\n",puerto,value);
