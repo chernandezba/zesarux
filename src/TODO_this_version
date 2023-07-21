@@ -348,6 +348,5 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
 
 -ay player: archivos con version >3 no soportados. Ejemplo AdvancedPinballSimulator.ay (version 5)
--revisar AndyCapp.ay con silencio
 
 -ejemplo en el FAQ de random play usar opcion shuffle
