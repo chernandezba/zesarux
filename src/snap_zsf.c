@@ -114,7 +114,7 @@ After these 6 bytes, the data for the block comes.
 
 
 -Block ID 0: ZSF_NOOP
-No operation. Block lenght 0
+No operation. Block lenght 0. Do not do anything. Uses? Maybe debug...
 
 -Block ID 1: ZSF_MACHINEID
 Defines which machine is this snapshot. Normally it should come after any other block, but can appear later
@@ -5960,7 +5960,8 @@ Byte Fields:
 
 
   //test meter un NOOP
-  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, NULL,0, 0);
+  //zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, NULL,0, 0);
+
 
   if (filename!=NULL) {
     fclose(ptr_zsf_file);
