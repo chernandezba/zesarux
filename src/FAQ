@@ -468,6 +468,9 @@ A: Run a sentence like this:
 The /zesarux-extras/extras/media/spectrum/chloe/chloehd.mmc is the location to where you have downloaded the chloehd.mmc from the zesarux-extras package.
 The --nowelcomemessage is only needed to disable the ZEsarUX splash logo which hides the Chloe "boot logo" (the wolf)
 
+You can also use ESXDOS handler (without mmc image), having all the required files on a folder, with a sentence like this:
+./zesarux --noconfigfile --machine chloe280 --esxdos-root-dir /path_to_chloe_files/ --enable-esxdos-handler --enable-divmmc --nowelcomemessage 
+
 
 Q: How can I run programs from the MMC card?
 A: There are some commands to do that:
