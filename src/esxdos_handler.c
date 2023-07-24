@@ -615,7 +615,11 @@ Esto se usa en NextDaw, es open+truncate
 			case ESXDOS_RST8_FA_WRITE|ESXDOS_RST8_FA_OPEN_CREAT|ESXDOS_RST8_FA_CREAT_NOEXIST:
 				strcpy(fopen_mode,"wb");
 			break;
-		
+
+            //Usado en SE Basic
+            case ESXDOS_RST8_FA_READ|ESXDOS_RST8_FA_WRITE|ESXDOS_RST8_FA_OPEN_CREAT:
+				strcpy(fopen_mode,"wb");
+			break;
 
 			//case FA_WRITE|FA_CREAT_NOEXIST|FA_USE_HEADER
 

@@ -61,6 +61,7 @@ Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable pe
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
 Fixed getting GAC objects
+Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
 
 * As always, there are some other minor bugfixes and improvements
 
