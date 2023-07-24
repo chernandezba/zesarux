@@ -17104,10 +17104,10 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
     //printf("Ventana pulsada: %s\n",ventana->window_title);
 
 
-    int tipo=menu_simple_nine_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
+    int tipo=menu_simple_ten_choices("Action","Do you want to","Switch to","Move to top","Move to bottom",
         (ventana->is_minimized ? "Unminimize" : "Minimize"),
         (ventana->is_maximized ? "Unmaximize" : "Maximize"),
-        "Switch always visible","Information","Close","Create link on ZX Desktop");
+        "Switch always visible","Information","Close","Create link on ZX Desktop","Copy contents");
 
     if (tipo==0) return; //ESC	
 
@@ -17177,6 +17177,12 @@ void menu_display_window_list_item(MENU_ITEM_PARAMETERS)
         case 9:
             zxvision_create_link_desktop_from_window(ventana);
         break;        
+
+    
+        case 10:
+            zxvision_copy_contents_to_clipboard(ventana);
+            menu_generic_message_splash("Clipboard","Text copied to ZEsarUX clipboard. Go to file utils and press P to paste to a file");
+        break;
 
     }
 }

@@ -831,7 +831,7 @@ You can also use the shuffle setting to use ZEsarUX as a random ay file player, 
 
 ./zesarux --noconfigfile --ayplayer-add-dir extras/media/ay_files/Spectrum/Games/ --ayplayer-start-playlist  --ayplayer-shuffle --ayplayer-inf-length 60 --ayplayer-show-info-console --vo null
 
-Before shuffle and playlist settings, you could also simulate this random ay file player with the following piece of code:
+Before shuffle and playlist settings existed (version 10.10), you could also simulate this random ay file player with the following piece of code:
 
 while [ 1 == 1 ]; do
     ARCH=`ls -1 extras/media/ay_files/Spectrum/Games/| python -c "import sys; import random; print(random.choice(sys.stdin.readlines()).rstrip())"`

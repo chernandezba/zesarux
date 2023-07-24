@@ -47,6 +47,7 @@ Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen
 - Allow to disable border and footer when switching to full screen
 
+Improved Process Management: allow to copy any windows contents to internal clipboard
 
 Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l

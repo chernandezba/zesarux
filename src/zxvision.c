@@ -20840,6 +20840,52 @@ void menu_paste_clipboard_to_file(char *destination_file)
 	util_save_file(menu_clipboard_pointer,menu_clipboard_size,destination_file);
 }
 
+void zxvision_copy_contents_to_clipboard(zxvision_window *ventana)
+{
+    int total_width=ventana->total_width;
+    int total_height=ventana->total_height;
+
+    //Calcular memoria necesaria
+    int buffer_size=total_width*total_height;
+    //Sumarle los saltos de linea de cada linea
+    buffer_size +=total_height;
+
+    //Y el 0 del final
+    buffer_size++;
+
+    char *texto_destino=util_malloc(buffer_size,"Can not allocate to copy windows content");
+
+    char *puntero_destino=texto_destino;
+    overlay_screen *puntero_origen=ventana->memory;
+
+    int x,y;
+
+
+    for (y=0;y<total_height;y++) {
+        for (x=0;x<total_width;x++,puntero_origen++,puntero_destino++) {
+            char caracter=puntero_origen->caracter;
+
+            //Filtrar caracteres extraños
+            if (caracter<32 || caracter>126) caracter='?';
+
+            *puntero_destino=caracter;
+        }
+        *puntero_destino='\n';
+
+        puntero_destino++;
+    }
+
+    *puntero_destino=0;
+
+
+
+    menu_copy_clipboard(texto_destino);
+
+    free(texto_destino);
+
+
+}
+
 
 //Funcion generica para guardar un archivo de texto a disco
 //Supondra que es de texto y por tanto pone filtro de "*.txt"
@@ -21705,6 +21751,75 @@ int menu_simple_nine_choices(char *texto_ventana,char *texto_interior,char *opci
 }
 
 
+//retorna 1 si opcion 1
+//retorna 2 si opcion 2
+//retorna 3 si opcion 3
+//retorna 4 si opcion 4
+//retorna 5 si opcion 5
+//retorna 6 si opcion 6
+//retorna 7 si opcion 7
+//retorna 8 si opcion 8
+//retorna 9 si opcion 9
+//retorna 10 si opcion 10
+//retorna 0 si ESC
+int menu_simple_ten_choices(char *texto_ventana,char *texto_interior,char *opcion1,char *opcion2,char *opcion3,
+    char *opcion4,char *opcion5,char *opcion6,char *opcion7,char *opcion8,char *opcion9,char *opcion10)
+{
+
+
+    menu_espera_no_tecla();
+
+
+	menu_item *array_menu_simple_nine_choices;
+    menu_item item_seleccionado;
+    int retorno_menu;
+
+	//Siempre indicamos la primera opcion
+	int simple_nine_choices_opcion_seleccionada=1;
+        do {
+
+		    menu_add_item_menu_inicial_format(&array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL,texto_interior);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion1);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion2);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion3);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion4);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion5);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion6);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion7);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion8);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion9);
+
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_NORMAL,NULL,NULL,opcion10);
+
+            //separador adicional para que quede mas grande la ventana y mas mono
+            menu_add_item_menu_format(array_menu_simple_nine_choices,MENU_OPCION_SEPARADOR,NULL,NULL," ");
+
+
+
+            retorno_menu=menu_dibuja_menu(&simple_nine_choices_opcion_seleccionada,&item_seleccionado,array_menu_simple_nine_choices,texto_ventana);
+
+            
+
+            if ((item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu>=0) {
+                    //llamamos por valor de funcion
+                    return simple_nine_choices_opcion_seleccionada;
+            }
+
+        } while ( (item_seleccionado.tipo_opcion&MENU_OPCION_ESC)==0 && retorno_menu!=MENU_RETORNO_ESC && !salir_todos_menus);
+
+	return 0;
+
+
+}
 
 
 //Funcion para preguntar opcion de una lista, usando interfaz de menus
