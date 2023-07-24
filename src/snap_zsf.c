@@ -745,6 +745,12 @@ Byte Fields:
 5: rom block id 
 6 and next bytes: data bytes
 
+-Block ID 60: ZSF_CREATOR
+Text string with the creator (program) of this file, for example: "ZEsarUX v.10". String ends with character 0
+0..: Creathor
+
+
+
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
 Quizá numero de bloque y parametro que diga tamaño, para tener un block id comun para todos ellos
@@ -757,7 +763,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 59
+#define MAX_ZSF_BLOCK_ID_NAMES 60
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -820,6 +826,7 @@ char *zsf_block_id_names[]={
   "ZSF_PCW_CONF",
   "ZSF_PCW_RAMBLOCK",
   "ZSF_COMMON_ROMBLOCK",
+  "ZSF_CREATOR",
 
   "Unknown"  //Este siempre al final
 };
@@ -2537,6 +2544,14 @@ void load_zsf_datetime(z80_byte *header)
  
 }
 
+void load_zsf_creator(z80_byte *header)
+{
+
+    debug_printf(VERBOSE_INFO,"Creator: %s",header);
+
+ 
+}
+
 
 void load_zsf_vdp_9918a_conf(z80_byte *header)
 {
@@ -3242,7 +3257,11 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_COMMON_ROMBLOCK:
         load_zsf_common_rom_snapshot_block_data(block_data,block_lenght);
-      break;      
+      break;
+
+      case ZSF_CREATOR:
+        load_zsf_creator(block_data);
+      break;
 
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
@@ -3520,6 +3539,12 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
   //First save machine ID
   z80_byte save_machine_id=current_machine_type;
   zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, &save_machine_id,ZSF_MACHINEID, 1); 
+
+  //Save creator
+  //Including 0 end byte
+  char creator_buffer[255];
+  sprintf(creator_buffer,"ZEsarUX v." EMULATOR_VERSION );
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, (z80_byte *)creator_buffer,ZSF_CREATOR, strlen(creator_buffer)+1);
 
   //Save date time
   z80_byte datetime_buffer[6];

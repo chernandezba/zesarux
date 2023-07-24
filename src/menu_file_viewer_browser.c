@@ -700,6 +700,13 @@ After these 6 bytes, the data for the block comes.
     				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);					
 				}
 
+				//Mas info si el campo es de creator
+				if (block_id==ZSF_CREATOR) {
+    				sprintf(buffer_texto,"        %s",&zsf_file_memory[indice_zsf]);
+
+    				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
+				}
+
 				//Saltar la longitud del bloque
     			indice_zsf +=block_lenght;
 

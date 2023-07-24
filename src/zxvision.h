@@ -1411,6 +1411,8 @@ extern z80_byte *menu_clipboard_pointer;
 
 extern void menu_paste_clipboard_to_file(char *destination_file);
 
+extern void zxvision_copy_contents_to_clipboard(zxvision_window *ventana);
+
 extern char *menu_get_string_language(char *texto);
 
 extern int timer_osd_keyboard_menu;
