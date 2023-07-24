@@ -13,7 +13,7 @@ da segmentation fault-> quiza el problema viene del lector tzx
 -quiza quitar el "simulate real load", no tiene sentido, pues se puede hacer mediante carga real tape
 
 -TZX. Segun tags detectar:
-*si es juego 48 o 128
+*si es juego 48 o 128. mediante ID 33, aunque no he encontrado ningun tzx aun que lo use
 
 -Con auto load off. Si estamos dentro de rutina de la ROM, esperando a un load, si metemos standard tape, hará fallback a real tape pues detecta que estamos dentro de una rutina de carga. Esto es normal
 

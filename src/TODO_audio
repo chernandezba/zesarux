@@ -67,6 +67,8 @@ o bien el mezclado de chip ay. Con que juegos se observa esto? O quiza con el te
 
 -Generador archivos .ay según lo enviado a chip de sonido. Soporte turbosound
 
+-ay player: archivos con version >3 no soportados. Ejemplo AdvancedPinballSimulator.ay (version 5)
+
 -leer audio casette
 
 -detector de silencio en sdl2, en 48k, genera zumbido en Linux

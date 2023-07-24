@@ -3614,7 +3614,8 @@ void menu_file_tzx_browser_show(char *filename)
 				longitud_bloque=tzx_file_mem[puntero];
 				//printf ("puntero: %d longitud: %d\n",puntero,longitud_bloque);
 				util_binary_to_ascii(&tzx_file_mem[puntero+1],buffer_bloque,longitud_bloque,longitud_bloque);
-				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_bloque);
+                sprintf (buffer_texto," %s",buffer_bloque);
+				indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 				puntero+=1;
 				puntero+=longitud_bloque;
@@ -3650,7 +3651,7 @@ void menu_file_tzx_browser_show(char *filename)
                                 	z80_byte longitud_texto=tzx_file_mem[puntero++];
                                 	tape_tzx_get_archive_info(text_type,buffer_text_id);
                                 	util_binary_to_ascii(&tzx_file_mem[puntero],buffer_text_text,longitud_texto,longitud_texto);
-                                	sprintf (buffer_texto,"%s: %s",buffer_text_id,buffer_text_text);
+                                	sprintf (buffer_texto," %s: %s",buffer_text_id,buffer_text_text);
 
                                 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 

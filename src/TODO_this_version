@@ -338,7 +338,6 @@ aunque cuando conmuta con boton izquierdo, espera a liberar el boton y por tanto
 *uso atributos igual que spectrum: 8x8 paper+tinta
 *implementar relleno: mapa de puntos rellenos, y mostrar con tramado adecuado. solo fill cuando ventana esté dirty (misma logica que Location Image o ZXLife por ejemplo). algoritmo relleno recursivo? habria que tener un mapa de pixeles de spectrum de 256x192 tal cual
 
-ok-autorun en cpc deja el turbo habilitado. creo que ya pasaba en pcw...
 
 -si se pulsa boton de cerrar todos los menus, desde una ventana que se ha abierto desde otra con menu tabulado, se cierra esa ventana de menu tabulado,
 en vez de dejarse en background
@@ -347,6 +346,3 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
 
--ay player: archivos con version >3 no soportados. Ejemplo AdvancedPinballSimulator.ay (version 5)
-
--Ver sprites con zoom y cuadricula
