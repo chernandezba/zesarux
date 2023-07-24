@@ -1,4 +1,6 @@
-    
+- Otras cosas por hacer sin categorizar
+
+
 --- expression parser
 
 
@@ -186,8 +188,6 @@ entonces en el servidor, en el archivo de update de la estable, ya habré actual
 
 - meter en extras de docs Benchmark legacy tbblue: de momento está en el código, en el menú como comentarios
 
--punteros en diskio, de read y write, soportaran imagenes de mas de 2 gB en sistemas 32 bits?
-
 
 -quiza un "code estatistics": total lines, total comments, total todos (en codigo y en archivos TODO_*, etc)
 
@@ -290,6 +290,7 @@ como descubrir rutinas de pintado de sprites
 -Extractor dibujos paws?
 
 -unpaws , unquill para cpc
+-gac: debug messages, aventure text, etc para CPC
 
 -De extractor paws o similar:
 TODO: si puntero tokens es 0, no hay tokens
@@ -341,8 +342,6 @@ Si es botón está también mapeado a un evento, entonces esa letra no se ve
 
 -sped52 que use 256 y 512 kb ram
 
--hotswap de 48k a 48k spanish
-
 -Spectra: dos ventanas, una muestra pantalla principal (salida normal de spectrum) y la otra muestra la pantalla que genera la salida del spectra
 quizá modo dual de spectra se puede hacer en misma ventana pero haciéndola el doble de ancho para que se vean las dos pantallas
 ->quiza no tiene mucho sentido porque se puede abrir ventana de sprites con visor de pantalla
@@ -377,8 +376,6 @@ pero evitar cualquier otro boton diferente de los ejes
 Esto seguramente es porque leo de rainbow buffer
 
 -Grabar pantalla requiere de real video y por tanto maquinas sin esto no funcionaran: QL, ...?
-
--Inves. Ver que juegos se corrompe la memoria debido a interrupción. Quizá ver aquellos que no usan tabla entera de 257
 
 -Mejorar emulación teclado issue 2,3. Etc. Inves
 

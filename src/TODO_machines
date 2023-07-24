@@ -280,7 +280,13 @@ probar capas de sprites tsconf: 200, , sirababol, mustang, alterego, fast, fishb
 
 -synchronization demo .trd es para tsconfig
 
+-----------------------
 
+
+
+--- Inves ---
+
+-Ver que juegos se corrompe la memoria debido a interrupción. Quizá ver aquellos que no usan tabla entera de 257
 
 -----------------------
 

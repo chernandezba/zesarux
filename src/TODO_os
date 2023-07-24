@@ -96,34 +96,5 @@ Poner dichas opciones en menú para poderlas editar. Y que permita grabarlas en 
 Y si no las reconoce como command line, que las ignore (en casos de cambio de driver etc)
 Fifosdlbuffersize 4 y sdlsamplesize 2048
 
--audio clicking en windows.pruebas
-*esto con version sin pthreads. Con pthreads parece que lo hace mas
-
-*con 3.1 antigua. mismos clicks
-*con pthreads o sin pthreads: mismos clicks
-*cambiando sdl_mixaudio por copia a mano: mismos clicks
-*si dejo que arranque sin mas: acaba generando clicks al cabo de unos segundos
-*si meto en buffer de audio todo 0: no hay clicks
-*si meto en buffer de audio todo 1: hay clicks
-*si meto en buffer de audio todo con valor 48: hay clicks
-*si meto en buffer de audio todo con valor 30: hay clicks
-*si meto en buffer de audio todo con valor 24: hay clicks
-*si meto en buffer de audio todo con valor 12: hay clicks
-
-*pongo solo sdl_pauseaudio(0) al inicio: hay clicks
-*sin multitask en menu: hay clicks 
-*suele aparecer despues de 5-10 segundos de iniciar el emulador, pero no antes de esos 5
-*si desde el menu se cambia driver a null, y luego de nuevo a sdl, el click aparece despues de esos 5-10 segundos de habilitar driver
-
-*clicking con tarjeta audio intel hd de virtualbox
-*con virtualbox drivers: mismo efecto: clicking con tarjeta audio intel hd de virtualbox
-
-*cambio a driver ich ac97: con 44hz, 16 bits: no hay click. con 8 bits: no hay click.  con frecuencia 15600: no hay click
-*con este driver ich ac97: no hay clicking normalmente (solo quiza al cambiar de ventana o perder fps). BIEN
-
-*con driver audio intel hd (el que tenia antes): hay clicking normalmente . MAL
-
-
-
 
 ------------------

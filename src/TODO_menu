@@ -163,7 +163,7 @@ O esta considerando mal el mostrar barras desplazamiento: quizá deberían salir
 -Visualmem mmc read/write en Windows no muestra bien posicion (siempre a 0). Probablemente porque es 32 bits y no gestiona bien
 valores long int
 
--Tema gui configurable todos sus elementos: fuentes, colores etc 
+-Tema gui configurable todos sus elementos: fuentes (charset ya se puede), colores etc 
 
 -Idea de animación para logo: ZEsarUX con letras de colores rojo amarillo verde azul. Se comprime el texto y la Z va pillando los colores de las letras 
 
