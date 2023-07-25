@@ -168,8 +168,6 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -Smartload path tiene setting en command line? si Y en menú? es el del ultimo archivo cargado con smartload
 
 
--soporte joystick pcw
-
 --Fin mejoras
 
 -quiza seek beyond limit no deberia saltar error (solo verbose), caso de tauceti pcw

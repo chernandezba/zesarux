@@ -699,6 +699,8 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     if (fila==0xD) return_value |=128;
 
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
+    //Estos joysticks se pueden probar con juego Head Over Heels
+    //DKtronics tambien en knight lore
     if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE || joystick_emulation==JOYSTICK_PCW_DKTRONICS) {
         if (fila==1) {
             //left y up
@@ -1049,6 +1051,7 @@ void scr_refresca_pantalla_y_border_pcw_no_rainbow(void)
 
             int color;
 
+            //Ejemplo de juego que usa color modo 1: knight lore
             if (pcw_video_mode==0) color=pcw_get_rgb_color(border_col);
             else if (pcw_video_mode==1) color=pcw_get_rgb_color_mode1(border_col*3);
             else color=pcw_get_rgb_color_mode2(border_col*15);
