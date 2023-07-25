@@ -37,6 +37,7 @@
 #include "pd765.h"
 #include "ula.h"
 #include "tape.h"
+#include "ay38912.h"
 
 /*
 
@@ -698,7 +699,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     if (fila==0xD) return_value |=128;
 
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
-    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE) {
+    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE || joystick_emulation==JOYSTICK_PCW_DKTRONICS) {
         if (fila==1) {
             //left y up
             return_value &= (255-128-64);
@@ -765,6 +766,25 @@ z80_byte pcw_in_port_e0(void)
     return valor_joystick;   
 }
  
+z80_byte pcw_in_port_dktronics_joystick(void)
+{
+    //Retornar tal cual registro del chip
+    if (joystick_emulation!=JOYSTICK_PCW_DKTRONICS) return in_port_ay(0xFF);
+
+    z80_byte valor_joystick=255;
+
+    if (!zxvision_key_not_sent_emulated_mach() ) {
+
+        if ((puerto_especial_joystick&1)) valor_joystick &=(255-8);   //right
+        if ((puerto_especial_joystick&2)) valor_joystick &=(255-4);   //left
+        if ((puerto_especial_joystick&4)) valor_joystick &=(255-16);  //down
+        if ((puerto_especial_joystick&8)) valor_joystick &=(255-32);  //up
+        if ((puerto_especial_joystick&16)) valor_joystick &=(255-64);  //fire1
+
+    }
+
+    return valor_joystick;       
+}
 
 void pcw_putpixel_border(int x,int y,unsigned int color)
 {

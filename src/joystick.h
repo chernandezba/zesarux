@@ -24,7 +24,7 @@
 
 #include "cpu.h"
 
-#define JOYSTICK_TOTAL 15
+#define JOYSTICK_TOTAL 16
 #define JOYSTICK_NONE 0
 #define JOYSTICK_KEMPSTON 1
 #define JOYSTICK_SINCLAIR_1 2
@@ -41,6 +41,7 @@
 #define JOYSTICK_MSX 13
 #define JOYSTICK_SVI 14
 #define JOYSTICK_PCW_CASCADE 15
+#define JOYSTICK_PCW_DKTRONICS 16
 
 
 extern z80_byte puerto_especial_joystick;

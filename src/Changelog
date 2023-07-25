@@ -14,7 +14,7 @@ Added compilation os release info, running os info
 Added rom file selection for any machine you select, rom file is saved on configuration
 Added Ascii Table window
 Added Creator Info to ZSF snapshots
-Added Joysticks support for PCW: Kempston, Cascade
+Added Joysticks support for PCW: Kempston, Cascade, DKTronics
 
 Improved AY Player:
 - Added playlist

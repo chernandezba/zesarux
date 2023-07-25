@@ -4051,6 +4051,12 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
     if (ay_chip_present.v) {
         if (puerto_l==0xA9) {
+
+            //Registro 14, dktronics joystick
+            if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) == 14) { 		
+                return pcw_in_port_dktronics_joystick();
+    		}
+
             return in_port_ay(0xFF);
         }
     }
