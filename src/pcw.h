@@ -66,6 +66,7 @@ extern z80_byte pcw_get_port_f8_value(void);
 extern z80_byte pcw_in_port_f4(void);
 extern z80_byte pcw_in_port_f8(void);
 extern z80_byte pcw_in_port_fd(void);
+extern z80_byte pcw_in_port_9f(void);
 
 extern void pcw_increment_interrupt_counter(void);
 extern void pcw_keyboard_ticker_update(void);

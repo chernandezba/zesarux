@@ -257,7 +257,7 @@ Ideal para help keyboard por ejemplo
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
 
 
--lectura de audio de casette?
+-lectura de audio de casette? SDL1 parece que no permite hacerlo
 
 -ay player en modo "jukebox" que permita agregar canciones ay a la lista, o bien una carpeta entera
 

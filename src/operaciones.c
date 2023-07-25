@@ -4054,9 +4054,12 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
             return in_port_ay(0xFF);
         }
     }
+    if (puerto_l==0x9f) {
+        return pcw_in_port_9f();
+    }
 
 
-    //printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
+    printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
     return 255;
 
 
