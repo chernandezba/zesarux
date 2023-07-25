@@ -169,7 +169,8 @@ char *joystick_texto[]={
 	"Cursor Sam",
     "CPC Joy1",
     "MSX",
-    "Spectravideo"
+    "Spectravideo",
+    "PCW Cascade"
 };
 
 char *gunstick_texto[]={

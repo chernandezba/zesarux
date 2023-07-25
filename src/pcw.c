@@ -698,7 +698,7 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     if (fila==0xD) return_value |=128;
 
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
-    if (joystick_emulation==JOYSTICK_KEMPSTON) {
+    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE) {
         if (fila==1) {
             //left y up
             return_value &= (255-128-64);
@@ -725,12 +725,10 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     return return_value;
 }
 
-//Puerto kempston
+//Puerto joystick kempston
 z80_byte pcw_in_port_9f(void)
 {
     if (joystick_emulation!=JOYSTICK_KEMPSTON) return 255;
-
-    
 
     z80_byte valor_joystick=0;
 
@@ -747,6 +745,25 @@ z80_byte pcw_in_port_9f(void)
     return valor_joystick;   
 }
 
+//Puerto joystick cascade
+z80_byte pcw_in_port_e0(void)
+{
+    if (joystick_emulation!=JOYSTICK_PCW_CASCADE) return 255;
+
+    z80_byte valor_joystick=255;
+
+    if (!zxvision_key_not_sent_emulated_mach() ) {
+
+        if ((puerto_especial_joystick&1)) valor_joystick &=(255-2);   //right
+        if ((puerto_especial_joystick&2)) valor_joystick &=(255-1);   //left
+        if ((puerto_especial_joystick&4)) valor_joystick &=(255-4);  //down
+        if ((puerto_especial_joystick&8)) valor_joystick &=(255-16);  //up
+        if ((puerto_especial_joystick&16)) valor_joystick &=(255-128);  //fire1
+
+    }
+
+    return valor_joystick;   
+}
  
 
 void pcw_putpixel_border(int x,int y,unsigned int color)
