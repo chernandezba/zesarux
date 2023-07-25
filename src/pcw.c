@@ -701,7 +701,8 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
     //Si hay algun tipo de joystick de pcw habilitado, las teclas de cursor no retornarlas
     //Estos joysticks se pueden probar con juego Head Over Heels
     //DKtronics tambien en knight lore
-    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE || joystick_emulation==JOYSTICK_PCW_DKTRONICS) {
+    if (joystick_emulation==JOYSTICK_KEMPSTON || joystick_emulation==JOYSTICK_PCW_CASCADE 
+        || joystick_emulation==JOYSTICK_PCW_DKTRONICS || joystick_emulation==JOYSTICK_OPQA_SPACE) {
         if (fila==1) {
             //left y up
             return_value &= (255-128-64);
@@ -717,6 +718,29 @@ If no keyboard is present, all 16 bytes of the memory map are zero.
 
 
     }   
+
+    //Soporte joystick opqa space. Muchos (la mayoria?) de opera soft
+    if (joystick_emulation==JOYSTICK_OPQA_SPACE && !zxvision_key_not_sent_emulated_mach()) {
+        if (fila==3) {
+            if ((puerto_especial_joystick&1)) return_value |=8;   //right. P
+        }
+
+
+        if (fila==4) {
+            if ((puerto_especial_joystick&2)) return_value |=4;   //left. O
+        }
+
+        if (fila==5) {
+            if ((puerto_especial_joystick&16)) return_value |=128;  //fire1. space
+        }        
+
+        if (fila==8) {
+            if ((puerto_especial_joystick&8)) return_value |=8;   //up. Q
+            if ((puerto_especial_joystick&4)) return_value |=32;  //down. A
+        }        
+  
+
+    }
 
 
 
