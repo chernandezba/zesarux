@@ -104,9 +104,6 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 
 -Si se cambia el prompt de ZRCP, esperar también ese prompt en ZENG
 
--Para ZENG con más de 2 pcs:
-*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil
-*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
 
 
 -Funciones de utils no deberían involucrar nada del menú
@@ -144,7 +141,7 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
 
--tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire por defecto...
+-tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
 
 -quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
 
@@ -257,7 +254,6 @@ En draw window contents solo renderiza si se ha modificado o bien la capa de tex
 
 -lectura de audio de casette? SDL1 parece que no permite hacerlo
 
--ay player en modo "jukebox" que permita agregar canciones ay a la lista, o bien una carpeta entera
 
 -setting autorebobinado de cintas real tape?
 
@@ -278,18 +274,12 @@ asi en smartload y similares no aparecerian -> pero en caso de UART si que deben
 -Browser cintas standard que permita alterar la posición de la cinta
 
 
--mejoras accesibilidad: 
-* https://www.w3.org/TR/low-vision-needs/
-* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido?
-
-
 
 -parametro de setting para process switcher para estar siempre encima de todas las ventanas
 
 
 -setting de "siempre visible" en ventanas, que tambien el foco funcione al pulsar encima y/o pasar el raton, aunque haya otra ventana por encima
 ejemplo: poner el process switcher siempre visible, y pasar otra ventana por encima, los clicks de raton no van al process switcher
-
 
 
 
@@ -344,3 +334,18 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 -poder detectar si una instancia se ejecuta desde docker (y NO si se ha compilado desde docker):
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
 
+
+-Para ZENG con más de 2 pcs:
+*1 solo master que pueda enviar snapshots a más de 1 slave. Fácil. Quizá las ips separadas por comas.
+Problema es que ahora hay un thread y un socket abierto con el slave. Habria que tener varios sockets abiertos y en ese thread,
+que vaya enviando snapshot uno a uno a cada slave
+
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
+Quizá el semáforo es para ejecución de comando ZRCP, así es mas simple:
+-Al recibir un comando ZRCP: activamos/esperamos un semáforo y ejecutamos el comando correspondiente si está libre el semáforo. Liberar semáforo
+Así no hay que hacer diferentes semáforos
+
+-mejoras accesibilidad: 
+* https://www.w3.org/TR/low-vision-needs/
+* eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
+aprovechando cosas como el frequency generator
