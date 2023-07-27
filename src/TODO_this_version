@@ -351,3 +351,7 @@ Así no hay que hacer diferentes semáforos
 aprovechando cosas como el frequency generator
 -eventos: error, mover cursor
 
+
+-ZRCP:
+*array para guardar los threads que se van lanzando?
+*parametro sock_conectat no se deberia usar de manera global

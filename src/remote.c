@@ -3621,14 +3621,14 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 //char parametros[MAX_LENGTH_PROTOCOL_COMMAND];
 
 
-char *buffer_lectura_socket;
+//char *buffer_lectura_socket;
 
 //para poder repetir comando anterior solo pulsando enter
-char *buffer_lectura_socket_anterior;
+//char *buffer_lectura_socket_anterior;
 
 char *parametros;
 
-void interpreta_comando(char *comando,int misocket)
+void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior)
 {
 
 	char buffer_retorno[2048];
@@ -6063,7 +6063,7 @@ int remote_initialize_port(void)
   return 0;
 }
 
-void remote_show_client_ip(int sock_conectat)
+void remote_show_client_ip(int elsocket)
 {
 
 //Estructura del socket client, obtinguda per saber el nom del client
@@ -6075,7 +6075,7 @@ struct sockaddr_in sockaddr_client;
 
 	//Obtenir socket client
 	long_sockaddr=sizeof(sockaddr_client);
-	if (getpeername(sock_conectat,(struct sockaddr *)&sockaddr_client,&long_sockaddr)<0) {
+	if (getpeername(elsocket,(struct sockaddr *)&sockaddr_client,&long_sockaddr)<0) {
 		debug_printf (VERBOSE_DEBUG,"ZRCP: Error getting client IP");
 		return;
 	}
@@ -6111,17 +6111,37 @@ void zrcp_sem_init(void)
 }
 
 
-void *zrcp_handle_new_connection(void *nada)
+struct s_zrcp_new_connection_parms 
+{
+    int socket_conectado;
+};
+
+void *zrcp_handle_new_connection(void *entrada)
 {
             
+    int socket_conectado=((struct s_zrcp_new_connection_parms *)entrada)->socket_conectado;
+    //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
+
+    //Asignar memoria para los buffers de recepcion
+    char *buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
+
+    char *buffer_lectura_socket_anterior=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
+
+    if (buffer_lectura_socket==NULL || buffer_lectura_socket_anterior==NULL) cpu_panic("Can not allocate buffer for ZRCP");
+
+
+    //Inicializarlo a cadena vacia
+    buffer_lectura_socket_anterior[0]=0;
+
+
 
     debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
     
     //debugar direccion ip origen
-    remote_show_client_ip(sock_conectat);
+    remote_show_client_ip(socket_conectado);
 
     //Enviamos mensaje bienvenida
-    escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
+    escribir_socket(socket_conectado,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
     remote_salir_conexion=0;
@@ -6132,7 +6152,7 @@ void *zrcp_handle_new_connection(void *nada)
         if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
         else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
-        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
+        if (escribir_socket(socket_conectado,prompt)<0) remote_salir_conexion=1;
 
         int indice_destino=0;
 
@@ -6142,7 +6162,7 @@ void *zrcp_handle_new_connection(void *nada)
             int leidos;
             int salir_bucle=0;
             do {
-                leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+                leidos=leer_socket(socket_conectado, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
@@ -6190,7 +6210,7 @@ void *zrcp_handle_new_connection(void *nada)
 		printf("Esperando a liberar lock en debug_printf\n");
 	}                
 
-                interpreta_comando(buffer_lectura_socket,sock_conectat);
+                interpreta_comando(buffer_lectura_socket,socket_conectado,buffer_lectura_socket_anterior);
 
 	//Liberar lock
 	z_atomic_reset(&zrcp_command_semaforo);                
@@ -6199,6 +6219,10 @@ void *zrcp_handle_new_connection(void *nada)
         } //Fin if (!remote_salir_conexion)
 
     } //Fin while (!remote_salir_conexion) 
+
+    //Liberar buffers de recepcion
+  free(buffer_lectura_socket);
+  free(buffer_lectura_socket_anterior);    
 }
 
 void *thread_remote_protocol_function(void *nada)
@@ -6249,10 +6273,14 @@ void *thread_remote_protocol_function(void *nada)
             }
             */
 
+struct s_zrcp_new_connection_parms parametros_thread;
+    parametros_thread.socket_conectado=sock_conectat;
+    //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
+
 
 pthread_t temp_thread;
 
-	if (pthread_create( &temp_thread, NULL, &zrcp_handle_new_connection, NULL) ) {
+	if (pthread_create( &temp_thread, NULL, &zrcp_handle_new_connection, (void *)&parametros_thread) ) {
 		debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
 	}
 
@@ -6284,6 +6312,8 @@ void init_remote_protocol(void)
 
 	debug_printf (VERBOSE_INFO,"Starting ZEsarUX remote protocol (ZRCP) listener on port %d",remote_protocol_port);
 
+
+    /*
     //Asignar memoria para los buffers de recepcion
     buffer_lectura_socket=malloc(MAX_LENGTH_PROTOCOL_COMMAND);
 
@@ -6293,7 +6323,9 @@ void init_remote_protocol(void)
 
 
     //Inicializarlo a cadena vacia
-    buffer_lectura_socket_anterior[0]=0;
+    buffer_lectura_socket_anterior[0]=0;*/
+
+
 
 
 	thread_remote_inicializado.v=0;
@@ -6342,9 +6374,7 @@ void end_remote_protocol(void)
 
   pthread_cancel(thread_remote_protocol);
 
-    //Liberar buffers de recepcion
-  free(buffer_lectura_socket);
-  free(buffer_lectura_socket_anterior);
+
 
 }
 
