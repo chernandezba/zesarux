@@ -22292,7 +22292,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
                 }
             }
 
-            if (tecla!=10 && tecla!=11 && tecla!=13) {
+            if (tecla!=10 && tecla!=11 && tecla!=13 && tecla!=2) {
                 //Cualquier otra tecla no gestionada, quitarla, si no, se quedaria con tecla diferente de 0 en bucle
                 //printf("Establecer tecla=0\n");
                 tecla=0;
