@@ -6232,8 +6232,18 @@ void *zrcp_handle_new_connection(void *entrada)
   free(buffer_lectura_socket_anterior);  
 
   printf("Fin thread de cliente\n");
+
+
+#ifdef MINGW
+	closesocket(sock_conectat);
+	//desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
+	//ademas no estamos llamando a WSAStartup al inicio
+	//Se deberia hacer el WSACleanup al finalizar el emulador
+	//WSACleanup();
+#else
   int retorno=close(sock_conectat);
   printf("Retorno close: %d\n",retorno);
+#endif  
 
   return NULL;  
 }
