@@ -3919,6 +3919,7 @@ int util_write_configfile(void)
   if (textspeech_also_send_menu.v)            ADD_STRING_CONFIG,"--textspeechmenu");
   if (textspeech_timeout_no_enter)            ADD_STRING_CONFIG,"--textspeechtimeout %d",textspeech_timeout_no_enter);
 
+  if (accessibility_enable_gui_sounds.v)      ADD_STRING_CONFIG,"--accessibility-gui-sounds");
 
   if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
 

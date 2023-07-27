@@ -349,3 +349,5 @@ Así no hay que hacer diferentes semáforos
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
 aprovechando cosas como el frequency generator
+
+-desde input de historial (por ejemplo cambiar memptr y pulsar cursor abajo) no deja salir con ESC

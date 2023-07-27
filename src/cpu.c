@@ -1700,7 +1700,13 @@ void cpu_help_expert(void)
 		"--textspeechmenu           Also send text menu entries to Speech program\n"
 		"--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n"
         
+		"\n"
+		"\n"
+		"Accessibility - Others\n"
+		"------------------------------\n"
+		"\n"
 
+        "--accessibility-gui-sounds  Enable sounds for GUI events\n"
 
 
 		"\n"
@@ -7558,6 +7564,10 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--accessibility-gui-sounds")) {
+                accessibility_enable_gui_sounds.v=1;
+            }
 
 		else if (!strcmp(argv[puntero_parametro],"--textimageprogram")) {
 				siguiente_parametro_argumento();

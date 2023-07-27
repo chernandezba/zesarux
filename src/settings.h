@@ -148,5 +148,7 @@ extern z80_bit xanniversary_logo;
 
 extern z80_bit setting_process_switcher_immutable;
 
+extern z80_bit accessibility_enable_gui_sounds;
+
 #endif
 

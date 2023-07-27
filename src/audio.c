@@ -1230,6 +1230,24 @@ int get_mid_number_note(char *str)
 	return -1;
 }
 
+//convertir nombre nota en formato string a frecuencia
+//Si no coincide, retornar -1
+int get_frequency_note(char *str)
+{
+	//nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
+	const int offset_inicial=12;  //C0=12
+
+	//cadena vacia, -1
+	if (str[0]==0) return -1;
+
+	int i;
+	for (i=0;i<MAX_NOTAS_MUSICALES;i++) {
+		if (!strcasecmp(str,tabla_notas_musicales[i].nombre)) return tabla_notas_musicales[i].frecuencia;
+	}
+
+	return -1;
+}
+
 //devuelve nombre nota, segun su frecuencia se aproxime lo maximo
 char *get_note_name(int frecuencia)
 {
@@ -2867,6 +2885,90 @@ void audio_function_resample_1bit(char *p_valor_sonido_izquierdo,char *p_valor_s
 	
 }
 
+//Generador de tonos para el menu
+z80_bit audio_menu_tone_generator_active={0};
+int audio_menu_tone_generator_frequency=0;
+int audio_menu_tone_generator_last_output=0; //0 o 1
+int audio_menu_tone_generator_contador_frecuencia=0;
+int audio_menu_tone_generator_volume=20; 
+int audio_menu_tone_generator_duration=0; //En segundos*FRECUENCIA_CONSTANTE_NORMAL_SONIDO
+
+//Reproducir una frecuencia
+//Duracion en frames de video
+void audio_menu_tone_generator_play_freq(int frecuencia,int duracion)
+{
+    //Si está reproduciendose ya uno, no lanzar otro, tiene preferencia el que ya esta sonando
+    if (audio_menu_tone_generator_active.v) return;
+
+    audio_menu_tone_generator_frequency=frecuencia;
+    audio_menu_tone_generator_contador_frecuencia=0;
+    audio_menu_tone_generator_last_output=0;
+    audio_menu_tone_generator_duration=duracion*312;
+
+    audio_menu_tone_generator_active.v=1;
+
+}
+
+//Reproducir una nota
+//Duracion en frames de video
+void audio_menu_tone_generator_play_note(char *nota,int duracion)
+{
+    //printf("Play %s\n",nota);
+
+    int frecuencia=get_frequency_note(nota);
+    if (nota>=0) audio_menu_tone_generator_play_freq(frecuencia,duracion);
+}
+
+
+
+void audio_menu_tone_generator_stop(void)
+{
+    audio_menu_tone_generator_active.v=0;
+}
+
+//Llamar aqui cada 15600 Hz (al final de cada scanline)
+void audio_menu_tone_generator_timer_event(void)
+{
+    audio_menu_tone_generator_contador_frecuencia +=audio_menu_tone_generator_frequency;
+
+    if (audio_menu_tone_generator_contador_frecuencia >= FRECUENCIA_CONSTANTE_NORMAL_SONIDO / 2) {
+        audio_menu_tone_generator_contador_frecuencia -=FRECUENCIA_CONSTANTE_NORMAL_SONIDO / 2;
+        audio_menu_tone_generator_last_output ^=1;
+    }
+    //printf("%d\n",audio_menu_tone_generator_duration);
+
+    audio_menu_tone_generator_duration--;
+    if (audio_menu_tone_generator_duration<=0) {
+        audio_menu_tone_generator_active.v=0;    
+    }
+}
+
+void audio_menu_tone_generator_get_output(char *valor_sonido_izquierdo,char *valor_sonido_derecho)
+{
+    //Primero hacer las sumas con valores enteros
+    int izquierdo=*valor_sonido_izquierdo;
+    int derecho=*valor_sonido_derecho;
+
+    if (audio_menu_tone_generator_last_output) {
+        izquierdo +=audio_menu_tone_generator_volume;
+        derecho +=audio_menu_tone_generator_volume;
+    }
+
+    else {
+        izquierdo -=audio_menu_tone_generator_volume;
+        derecho -=audio_menu_tone_generator_volume;
+    }   
+
+    //Y /2 para mezclarlos adecuadamente
+    izquierdo /=2;
+    derecho /=2;
+
+    *valor_sonido_izquierdo=izquierdo;
+    *valor_sonido_derecho=derecho;
+
+    
+}
+
 //Para el detector de silencio en modo experimental, para el ay player
 //Si valores enviados son iguales al anterior, asumimos posible silencio
 
@@ -2888,6 +2990,12 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
 		//printf ("final %d\n",valor_sonido_izquierdo);
 		
 	}
+
+    //Mezclarlo con los tonos de menu
+    if (audio_menu_tone_generator_active.v) {
+        audio_menu_tone_generator_get_output(&valor_sonido_izquierdo,&valor_sonido_derecho);
+        audio_menu_tone_generator_timer_event();
+    }
 
 	audio_buffer[audio_buffer_indice]=valor_sonido_izquierdo;
 	audio_buffer[audio_buffer_indice+1]=valor_sonido_derecho;

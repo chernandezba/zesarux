@@ -9204,6 +9204,7 @@ void menu_dibuja_ventana(int x,int y,int ancho,int alto,char *titulo_original)
 
 		menu_dibuja_ventana_botones();
 
+        //zxvision_sound_event_new_window();
 
         char buffer_titulo[100];
         sprintf (buffer_titulo,"Window: %s",titulo);
@@ -10861,6 +10862,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 				menu_scanf_cursor_derecha(string,&pos_cursor_x,&offset_string,max_length_shown);
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
                 refrescar=1;
+
+                zxvision_sound_event_cursor_movement();
 		}			
 
 		//tecla borrar
@@ -10901,6 +10904,8 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
 				//printf ("offset_string %d pos_cursor %d\n",offset_string,pos_cursor_x);
 
                 refrescar=1;
+
+                zxvision_sound_event_cursor_movement();
 		}				
 
 		//tecla abajo. 
@@ -10908,6 +10913,7 @@ int zxvision_scanf(zxvision_window *ventana,char *string,unsigned int max_length
             if (volver_si_flecha_abajo) {
                 //Volver
 				//tecla=13;
+                zxvision_sound_event_cursor_movement();
             }
 
             else {
@@ -11619,6 +11625,8 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
             //abajo
             case 10:          
                 linea_a_speech=zxvision_generic_message_cursor_down(ventana);
+
+                zxvision_sound_event_cursor_movement();
                 
                 //Decir que se ha pulsado tecla para que no se relea
                 menu_speech_tecla_pulsada=1;
@@ -11628,6 +11636,8 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
             //arriba
             case 11:
                 linea_a_speech=zxvision_generic_message_cursor_up(ventana);
+
+                zxvision_sound_event_cursor_movement();
 
                 //Decir que se ha pulsado tecla para que no se relea
                 menu_speech_tecla_pulsada=1;
@@ -11639,11 +11649,13 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
             //izquierda
             case 8:
                 zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_sound_event_cursor_movement();
             break;
 
             //derecha
             case 9:
                 zxvision_handle_cursors_pgupdn(ventana,tecla);
+                zxvision_sound_event_cursor_movement();
             break;						
 
             //PgUp
@@ -11651,6 +11663,8 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
                 for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
                     zxvision_generic_message_cursor_up(ventana);
                 }
+                zxvision_sound_event_cursor_movement();
+
                 //Decir que no se ha pulsado tecla para que se relea
                 menu_speech_tecla_pulsada=0;
 
@@ -11663,6 +11677,7 @@ void zxvision_generic_message_tooltip(char *titulo, int return_after_print_text,
                 for (contador_pgdnup=0;contador_pgdnup<ventana->visible_height-2;contador_pgdnup++) {
                     zxvision_generic_message_cursor_down(ventana);
                 }
+                zxvision_sound_event_cursor_movement();
 
                 //Decir que no se ha pulsado tecla para que se relea
                 menu_speech_tecla_pulsada=0;
@@ -19488,6 +19503,7 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 
                 //Si es tabulado, seguira hasta la opcion '7'
 				(*opcion_inicial)=menu_dibuja_menu_cursor_arriba((*opcion_inicial),max_opciones,m);
+                zxvision_sound_event_cursor_movement();
 			break; 
 
 
@@ -19497,16 +19513,19 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				if (m->es_menu_tabulado==0) break;
 
 				(*opcion_inicial)=menu_dibuja_menu_cursor_abajo((*opcion_inicial),max_opciones,m);
+                zxvision_sound_event_cursor_movement();
 			break;
 
 			//Mover abajo
 			case '6':
 				(*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+                zxvision_sound_event_cursor_movement();
 			break;
 
 			//Mover arriba
 			case '7':
 				(*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+                zxvision_sound_event_cursor_movement();
 			break;			
 
 			//PgUp
@@ -19521,6 +19540,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				//si hay algun item como separador, se lo saltara, moviendo el cursor mas lineas de lo deseado
 				//printf ("lineas mover: %d\n",lineas_mover_pgup_dn);
 				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<lineas_mover_pgup_dn;conta_mover_pgup_dn++) (*opcion_inicial)=menu_dibuja_menu_cursor_arriba_common((*opcion_inicial),max_opciones,m);
+
+                zxvision_sound_event_cursor_movement();
 				
 			break;
 
@@ -19537,6 +19558,8 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 				//printf ("lineas mover: %d\n",lineas_mover_pgup_dn);
 				//int i;
 				for (conta_mover_pgup_dn=0;conta_mover_pgup_dn<lineas_mover_pgup_dn;conta_mover_pgup_dn++) (*opcion_inicial)=menu_dibuja_menu_cursor_abajo_common((*opcion_inicial),max_opciones,m);
+
+                zxvision_sound_event_cursor_movement();
 				
 			break;
 
@@ -20635,6 +20658,7 @@ void menu_warn_message(char *texto)
 
 void menu_error_message(char *texto)
 {
+    zxvision_sound_event_error_menu();
 	menu_generic_message_warn("ERROR",texto);
 
 }
@@ -22208,8 +22232,10 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
             //Cursor abajo
             if (tecla==10) {
                 zxvision_set_visible_cursor(&ventana);
+                
                 if (ventana.cursor_line<lineas_historial) {
                     zxvision_inc_cursor_line(&ventana);
+                    zxvision_sound_event_cursor_movement();
                 }
                 tecla=0;
             }
@@ -22218,6 +22244,7 @@ int zxvision_scanf_history(char *titulo,char *texto,int max_length,char **textos
             if (tecla==11) {
                 if (ventana.cursor_line>0) {
                    zxvision_dec_cursor_line(&ventana);
+                   zxvision_sound_event_cursor_movement();
 
                    if (ventana.cursor_line==0) {
                     zxvision_reset_visible_cursor(&ventana);
@@ -25731,4 +25758,26 @@ void add_window_to_restore(char *nombre_ventana)
         strcpy(restore_window_array[total_restore_window_array_elements++],nombre_ventana);
 
 	}
+}
+
+void zxvision_sound_event_aux(char *nota,int duracion)
+{
+    if (accessibility_enable_gui_sounds.v) audio_menu_tone_generator_play_note(nota,duracion);
+}
+
+void zxvision_sound_event_error_menu(void)
+{
+    zxvision_sound_event_aux("C2",50);
+}
+
+void zxvision_sound_event_cursor_movement(void)
+{
+    zxvision_sound_event_aux("C6",5);
+}
+
+//TODO: complicado saber cuando disparar este evento,
+//y que no sea por ejemplo cuando se restauran ventanas en startup por ejemplo
+void zxvision_sound_event_new_window(void)
+{
+    zxvision_sound_event_aux("C4",5);
 }

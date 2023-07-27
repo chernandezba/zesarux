@@ -377,3 +377,10 @@ char online_download_path[PATH_MAX]="";
 // Return de PCW/CPC es el return de pc
 // Enter de PCW/CPC es el enter del teclado numerico
 z80_bit keyboard_swap_enter_return={0};
+
+
+//
+// Accessibility Settings
+//
+
+z80_bit accessibility_enable_gui_sounds={0};

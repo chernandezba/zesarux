@@ -1413,6 +1413,10 @@ extern void menu_paste_clipboard_to_file(char *destination_file);
 
 extern void zxvision_copy_contents_to_clipboard(zxvision_window *ventana);
 
+extern void zxvision_sound_event_error_menu(void);
+extern void zxvision_sound_event_cursor_movement(void);
+extern void zxvision_sound_event_new_window(void);
+
 extern char *menu_get_string_language(char *texto);
 
 extern int timer_osd_keyboard_menu;

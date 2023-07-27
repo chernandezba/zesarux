@@ -16,6 +16,8 @@ Added Ascii Table window
 Added Creator Info to ZSF snapshots
 Added Joysticks support for PCW: Kempston, Cascade, DKTronics, OPQASpace
 
+Improved Accessibility: Added Sounds for GUI events
+
 Improved AY Player:
 - Added playlist
 - Added shuffle mode
