@@ -6213,11 +6213,17 @@ void *thread_remote_protocol_function(void *nada)
 
 		else {
 
+            int pid;
+
+            if ((pid=fork())<0) {
+                    debug_printf (VERBOSE_ERR,"Error running handling new ZRCP connection");
+            }
+
+            if (pid==0) {
+                    zrcp_handle_new_connection();
+            }
             
-            zrcp_handle_new_connection();
-
-
-
+            
 		} //Fin else
 
 		debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
