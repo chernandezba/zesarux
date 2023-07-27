@@ -68,6 +68,7 @@ Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc a
 Fixed Text Adventure Graphics rendering invalid characters
 Fixed getting GAC objects
 Fixed esxdos handler when using fopen flags: FA_READ + FA_WRITE + FA_OPEN_CREAT
+Fixed ZRCP bug when closing connection (socket descriptor was kept open)
 
 * As always, there are some other minor bugfixes and improvements
 

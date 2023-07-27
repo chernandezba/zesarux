@@ -6231,6 +6231,10 @@ void *zrcp_handle_new_connection(void *entrada)
   free(buffer_lectura_socket);
   free(buffer_lectura_socket_anterior);  
 
+  printf("Fin thread de cliente\n");
+  int retorno=close(sock_conectat);
+  printf("Retorno close: %d\n",retorno);
+
   return NULL;  
 }
 
