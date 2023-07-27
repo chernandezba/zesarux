@@ -108,7 +108,7 @@ int zrcp_command_close_all_menus=0;
 struct sockaddr_in adr;
 unsigned int long_adr;
 int sock_listen;
-int sock_conectat=-1;
+//int sock_conectat=-1;
 
 int remote_salir_conexion;
 
@@ -2093,16 +2093,15 @@ void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,in
 	char buf[30];
 
 
-	//De momento no se como hacer esto en Windows
 	//Hacer el socket que no se quede bloqueado si no hay datos.
 
 	if (datos_vuelve) {
 	#ifdef MINGW
 	  u_long on = 1;
-    ioctlsocket(sock_conectat, FIONBIO, &on);
+    ioctlsocket(misocket, FIONBIO, &on);
 	#else
-		int flags = fcntl(sock_conectat, F_GETFL, 0);
-		fcntl(sock_conectat, F_SETFL, flags | O_NONBLOCK);
+		int flags = fcntl(misocket, F_GETFL, 0);
+		fcntl(misocket, F_SETFL, flags | O_NONBLOCK);
 	#endif
 
 	}
@@ -2127,14 +2126,14 @@ void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,in
 		//Si se vuelve cuando hay datos en el socket. Con esto, usa mucha mas cpu (46% respecto a un 19% si no se esta mirando el socket)
 		if (datos_vuelve) {
 			#ifdef MINGW
-				int leidos=recv(sock_conectat,buf,30,0);
-				//int leidos = read(sock_conectat, buf, 30);
+				int leidos=recv(misocket,buf,30,0);
+				//int leidos = read(misocket, buf, 30);
 				if (leidos>0) {
 					salir=1;      	
 				}
 			#else
-				//int leidos = read(sock_conectat, buf, 30);
-				int leidos=recv(sock_conectat,buf,30,0);
+				//int leidos = read(misocket, buf, 30);
+				int leidos=recv(misocket,buf,30,0);
 				if (leidos>0) {
 					salir=1;      	
 				}
@@ -2158,10 +2157,10 @@ void remote_cpu_run_loop(int misocket,int verbose,int limite,int datos_vuelve,in
 	if (datos_vuelve) {
 	#ifdef MINGW
 		u_long on = 0;
-    	ioctlsocket(sock_conectat, FIONBIO, &on);
+    	ioctlsocket(misocket, FIONBIO, &on);
 	#else
-		int flags = fcntl(sock_conectat, F_GETFL, 0);
-		fcntl(sock_conectat, F_SETFL, flags ^ O_NONBLOCK);
+		int flags = fcntl(misocket, F_GETFL, 0);
+		fcntl(misocket, F_SETFL, flags ^ O_NONBLOCK);
 	#endif
 	}
 
@@ -3011,6 +3010,12 @@ char *find_space_or_end(char *s)
 void remote_cerrar_conexion(void)
 {
 
+    //TODO
+    //gestionar cada sock_conectat de cada conexion
+    return;
+
+
+/*
     //Solo hacer close de eso cuando habia una conexión activa
     if (sock_conectat>=0) {
 #ifdef MINGW
@@ -3025,6 +3030,7 @@ void remote_cerrar_conexion(void)
     }
 
     sock_conectat=-1;
+*/
 }
 
 //Parseo de parametros de comando.
@@ -4608,14 +4614,14 @@ void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_a
 		int inicio=parse_string_to_number(remote_command_argv[0]);
 		int longitud=parse_string_to_number(remote_command_argv[1]);
 
-        //temp
+        //temp simular un comando que va lento
         //sleep(10);
 
-        printf("Despues sleep\n");
+        //printf("Despues sleep\n");
 
 		remote_hexdump(misocket,inicio,longitud);
 
-        printf("Despues remote_hexdump\n");
+        //printf("Despues remote_hexdump\n");
 
 	}
 
@@ -6113,13 +6119,13 @@ void zrcp_sem_init(void)
 
 struct s_zrcp_new_connection_parms 
 {
-    int socket_conectado;
+    int sock_conectat;
 };
 
 void *zrcp_handle_new_connection(void *entrada)
 {
             
-    int socket_conectado=((struct s_zrcp_new_connection_parms *)entrada)->socket_conectado;
+    int sock_conectat=((struct s_zrcp_new_connection_parms *)entrada)->sock_conectat;
     //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
 
     //Asignar memoria para los buffers de recepcion
@@ -6138,10 +6144,10 @@ void *zrcp_handle_new_connection(void *entrada)
     debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
     
     //debugar direccion ip origen
-    remote_show_client_ip(socket_conectado);
+    remote_show_client_ip(sock_conectat);
 
     //Enviamos mensaje bienvenida
-    escribir_socket(socket_conectado,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
+    escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
     remote_salir_conexion=0;
@@ -6152,7 +6158,7 @@ void *zrcp_handle_new_connection(void *entrada)
         if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
         else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
-        if (escribir_socket(socket_conectado,prompt)<0) remote_salir_conexion=1;
+        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
 
         int indice_destino=0;
 
@@ -6162,7 +6168,7 @@ void *zrcp_handle_new_connection(void *entrada)
             int leidos;
             int salir_bucle=0;
             do {
-                leidos=leer_socket(socket_conectado, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+                leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
@@ -6206,11 +6212,12 @@ void *zrcp_handle_new_connection(void *entrada)
                 
 	//Adquirir lock
 	while(z_atomic_test_and_set(&zrcp_command_semaforo)) {
-        sleep(1);
+    //Pausa de 0.05 segundo
+    usleep(50000);
 		printf("Esperando a liberar lock en debug_printf\n");
 	}                
 
-                interpreta_comando(buffer_lectura_socket,socket_conectado,buffer_lectura_socket_anterior);
+                interpreta_comando(buffer_lectura_socket,sock_conectat,buffer_lectura_socket_anterior);
 
 	//Liberar lock
 	z_atomic_reset(&zrcp_command_semaforo);                
@@ -6222,7 +6229,9 @@ void *zrcp_handle_new_connection(void *entrada)
 
     //Liberar buffers de recepcion
   free(buffer_lectura_socket);
-  free(buffer_lectura_socket_anterior);    
+  free(buffer_lectura_socket_anterior);  
+
+  return NULL;  
 }
 
 void *thread_remote_protocol_function(void *nada)
@@ -6236,10 +6245,12 @@ void *thread_remote_protocol_function(void *nada)
 	{
 		long_adr=sizeof(adr);
 
+        int sock_conectat=-1;
 
 		if (!remote_protocol_ended.v) {
 			//printf ("ANTES accept\n");
 			sock_conectat=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
+            printf("sock_conectat: %d\n",sock_conectat);
 		}
 
 		else {
@@ -6274,7 +6285,7 @@ void *thread_remote_protocol_function(void *nada)
             */
 
 struct s_zrcp_new_connection_parms parametros_thread;
-    parametros_thread.socket_conectado=sock_conectat;
+    parametros_thread.sock_conectat=sock_conectat;
     //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
 
 

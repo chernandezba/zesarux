@@ -354,4 +354,4 @@ aprovechando cosas como el frequency generator
 
 -ZRCP:
 *array para guardar los threads que se van lanzando?
-*parametro sock_conectat no se deberia usar de manera global
+*parametro sock_conectat en cierre de conexiones
