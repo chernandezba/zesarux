@@ -6095,41 +6095,9 @@ struct sockaddr_in sockaddr_client;
 
 }
 
-void *thread_remote_protocol_function(void *nada)
+void zrcp_handle_new_connection(void)
 {
-
-	if (remote_initialize_port()) return NULL;
-
-	fflush(stdout);
-
-	while (1)
-	{
-		long_adr=sizeof(adr);
-
-
-		if (!remote_protocol_ended.v) {
-			//printf ("ANTES accept\n");
-			sock_conectat=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
-		}
-
-		else {
-			//Si ha finalizado, volver
-			return NULL;
-		}
-
-
-		if (sock_conectat<0) {
-			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept");
-			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
-			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
-			//como mucho lo mostramos en verbose debug
-
-			remote_salir_conexion=1;
-			sleep(1);
-		}
-
-
-		else {
+            
 
 			debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
 			
@@ -6207,6 +6175,48 @@ void *thread_remote_protocol_function(void *nada)
 				} //Fin if (!remote_salir_conexion)
 
 			} //Fin while (!remote_salir_conexion) 
+}
+
+void *thread_remote_protocol_function(void *nada)
+{
+
+	if (remote_initialize_port()) return NULL;
+
+	fflush(stdout);
+
+	while (1)
+	{
+		long_adr=sizeof(adr);
+
+
+		if (!remote_protocol_ended.v) {
+			//printf ("ANTES accept\n");
+			sock_conectat=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
+		}
+
+		else {
+			//Si ha finalizado, volver
+			return NULL;
+		}
+
+
+		if (sock_conectat<0) {
+			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept");
+			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
+			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
+			//como mucho lo mostramos en verbose debug
+
+			remote_salir_conexion=1;
+			sleep(1);
+		}
+
+
+		else {
+
+            
+            zrcp_handle_new_connection();
+
+
 
 		} //Fin else
 

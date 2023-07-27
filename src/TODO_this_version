@@ -351,4 +351,3 @@ Así no hay que hacer diferentes semáforos
 aprovechando cosas como el frequency generator
 -eventos: error, mover cursor
 
--desde input de historial (por ejemplo cambiar memptr y pulsar cursor abajo) no deja salir con ESC
