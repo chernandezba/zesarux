@@ -69,6 +69,7 @@
 #include "tape.h"
 #include "snap_ram.h"
 #include "mmc.h"
+#include "atomic.h"
 
 
 
@@ -4607,7 +4608,14 @@ void interpreta_comando(char *comando,int misocket)
 		int inicio=parse_string_to_number(remote_command_argv[0]);
 		int longitud=parse_string_to_number(remote_command_argv[1]);
 
+        //temp
+        //sleep(10);
+
+        printf("Despues sleep\n");
+
 		remote_hexdump(misocket,inicio,longitud);
+
+        printf("Despues remote_hexdump\n");
 
 	}
 
@@ -6095,7 +6103,15 @@ struct sockaddr_in sockaddr_client;
 
 }
 
-void zrcp_handle_new_connection(void)
+z_atomic_semaphore zrcp_command_semaforo;
+
+void zrcp_sem_init(void)
+{
+	z_atomic_reset(&zrcp_command_semaforo);
+}
+
+
+void *zrcp_handle_new_connection(void *nada)
 {
             
 
@@ -6168,8 +6184,16 @@ void zrcp_handle_new_connection(void)
                     debug_printf (VERBOSE_DEBUG,"Remote command. Read text: [%s]",buffer_lectura_socket);
                 }
                 
+	//Adquirir lock
+	while(z_atomic_test_and_set(&zrcp_command_semaforo)) {
+        sleep(1);
+		printf("Esperando a liberar lock en debug_printf\n");
+	}                
 
                 interpreta_comando(buffer_lectura_socket,sock_conectat);
+
+	//Liberar lock
+	z_atomic_reset(&zrcp_command_semaforo);                
             }
 
         } //Fin if (!remote_salir_conexion)
@@ -6213,6 +6237,7 @@ void *thread_remote_protocol_function(void *nada)
 
 		else {
 
+/*
             int pid;
 
             if ((pid=fork())<0) {
@@ -6222,7 +6247,15 @@ void *thread_remote_protocol_function(void *nada)
             if (pid==0) {
                     zrcp_handle_new_connection();
             }
-            
+            */
+
+
+pthread_t temp_thread;
+
+	if (pthread_create( &temp_thread, NULL, &zrcp_handle_new_connection, NULL) ) {
+		debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
+	}
+
             
 		} //Fin else
 
@@ -6243,169 +6276,6 @@ void *thread_remote_protocol_function(void *nada)
 }
 
 
-void *old_delete_thread_remote_protocol_function(void *nada)
-{
-        /*while (1) {
-                sleep(1);
-
-                printf ("aqui estoy en el pthread remote\n");
-
-        }*/
-
-        if (remote_initialize_port()) return NULL;
-
-				//printf ("Listening for connections in port %u\n",remote_protocol_port);
-
-				fflush(stdout);
-
-				while (1)
-				{
-				  long_adr=sizeof(adr);
-
-
-
-					if (!remote_protocol_ended.v) {
-						//printf ("ANTES accept\n");
-						sock_conectat=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
-					}
-
-					else {
-						//Si ha finalizado, volver
-						return NULL;
-					}
-
-
-					if (sock_conectat<0) {
-					  debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept");
-						//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
-						//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
-						//como mucho lo mostramos en verbose debug
-
-						remote_salir_conexion=1;
-						sleep(1);
-					}
-
-
-				else {
-
-					debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
-					
-					//debugar direccion ip origen
-					remote_show_client_ip(sock_conectat);
-
-				          //Enviamos mensaje bienvenida
-				          //char bienvenida[1024];
-				          //sprintf (bienvenida,"%s","Welcome to ZEsarUX remote protocol\n");
-				          //write(sock_conectat,bienvenida,strlen(bienvenida));
-                  escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
- 
-          //if ( (write(sock,buffer,longitut)) <0 ) return -1;
-
-					remote_salir_conexion=0;
-
-					while (!remote_salir_conexion) {
-
-						char prompt[1024];
-            if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"%s","\ncommand@cpu-step> ");
-						else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
-						else sprintf (prompt,"%s","\ncommand> ");
-						if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
-
-						int indice_destino=0;
-
-						if (!remote_salir_conexion) {
-
-							//Leer socket
-
-							//int leidos = read(sock_conectat, buffer_lectura_socket, 1023);
-							int leidos;
-							int salir_bucle=0;
-							do {
-								leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
-								debug_printf (VERBOSE_DEBUG,"Read block %d bytes index: %d",leidos,indice_destino);
-
-								/*
-								RETURN VALUES
-     These calls return the number of bytes received, or -1 if an error occurred.
-
-     For TCP sockets, the return value 0 means the peer has closed its half side of the connection.
-		 						*/
-
-								if (leidos==0) remote_salir_conexion=1;
-
-								//Controlar tambien si da <0 bytes al leer. En ese caso salir tambien
-								if (leidos<0) remote_salir_conexion=1;
-
-								if (leidos>0) {
-
-									//temp debug
-									/*int j;
-									for (j=0;j<leidos;j++) {
-										unsigned char letra=buffer_lectura_socket[indice_destino+j];
-										if (letra<32 || letra>127) printf ("%02XH\n",letra);
-										else printf ("%c\n",letra);
-									}*/
-
-									indice_destino +=leidos;
-									//Si acaba con final de string, salir
-
-
-
-									//printf ("%d %d %d %d\n",buffer_lectura_socket[0],buffer_lectura_socket[1],buffer_lectura_socket[2],buffer_lectura_socket[3]);
-
-									if (buffer_lectura_socket[indice_destino-1]=='\r' || buffer_lectura_socket[indice_destino-1]=='\n' || buffer_lectura_socket[indice_destino-1]==0) {
-										//printf ("salir\n");
-										salir_bucle=1;
-									}
-								}
-
-
-							} while (leidos>0 && salir_bucle==0);
-
-
-							//No hacer nada de esto si es <=0
-							if (leidos>0) {
-								buffer_lectura_socket[indice_destino]=0;
-								debug_printf (VERBOSE_DEBUG,"Remote command. Length Read text: %d",indice_destino);
-
-								//int j;
-								//for (j=0;buffer_lectura_socket[j];j++) printf ("%d %c\n",j,buffer_lectura_socket[j]);
-
-								//temp
-								//if (indice_destino> DEBUG_MAX_MESSAGE_LENGTH-100)verbose_level=0;
-
-								//Para que no pete el emulador si el verbose level esta al menos 3 y el comando recibido excede el maximo que puede mostrar debug_printf
-								
-								if (strlen(buffer_lectura_socket)<DEBUG_MAX_MESSAGE_LENGTH) {
-									debug_printf (VERBOSE_DEBUG,"Remote command. Read text: [%s]",buffer_lectura_socket);
-								}
-								
-
-								interpreta_comando(buffer_lectura_socket,sock_conectat);
-							}
-
-						}
-
-					}
-			  	}
-					//printf ("remote_salir_conexion: %d\n",remote_salir_conexion);
-					debug_printf (VERBOSE_DEBUG,"Remote command. Exiting connection");
-
-					//Salir del modo step si estaba activado
-					if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
-				}
-
-				//printf ("despues de bucle aqui no se llega nunca\n");
-
-
-
-        //para que no se queje el compilador de variable no usada
-        nada=0;
-        nada++;
-
-
-        return NULL;
-}
 
 void init_remote_protocol(void)
 {
@@ -6436,6 +6306,7 @@ void init_remote_protocol(void)
 	thread_remote_inicializado.v=1;
 	remote_protocol_ended.v=0;
 
+    zrcp_sem_init();
 
 }
 

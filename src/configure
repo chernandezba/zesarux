@@ -1450,7 +1450,7 @@ baseconf.o: baseconf.c baseconf.h cpu.h mem128.h debug.h contend.h zxvision.h sc
 prism.o: prism.c prism.h cpu.h timex.h mem128.h debug.h contend.h zxuno.h timex.h utils.h zxvision.h
 	\$(CC) \$(CFLAGS) -c prism.c
 
-remote.o: remote.c remote.h cpu.h debug.h utils.h compileoptions.h network.h ql.h disassemble.h zxvision.h menu_items.h audio.h timer.h screen.h ay38912.h charset.h diviface.h ula.h superupgrade.h tbblue.h zxevo.h tsconf.h baseconf.h operaciones.h snap.h kartusho.h ifrom.h settings.h datagear.h esxdos_handler.h assemble.h expression_parser.h joystick.h snap_zsf.h autoselectoptions.h zeng.h ql_qdos_handler.h tape.h snap_ram.h mmc.h menu_debug_cpu.h
+remote.o: remote.c remote.h cpu.h debug.h utils.h compileoptions.h network.h ql.h disassemble.h zxvision.h menu_items.h audio.h timer.h screen.h ay38912.h charset.h diviface.h ula.h superupgrade.h tbblue.h zxevo.h tsconf.h baseconf.h operaciones.h snap.h kartusho.h ifrom.h settings.h datagear.h esxdos_handler.h assemble.h expression_parser.h joystick.h snap_zsf.h autoselectoptions.h zeng.h ql_qdos_handler.h tape.h snap_ram.h mmc.h menu_debug_cpu.h atomic.h
 	\$(CC) \$(CFLAGS) -c remote.c
 
 network.o: network.c network.h cpu.h debug.h utils.h compileoptions.h chardevice.h atomic.h
