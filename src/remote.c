@@ -6099,82 +6099,82 @@ void zrcp_handle_new_connection(void)
 {
             
 
-			debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
-			
-			//debugar direccion ip origen
-			remote_show_client_ip(sock_conectat);
+    debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
+    
+    //debugar direccion ip origen
+    remote_show_client_ip(sock_conectat);
 
-			//Enviamos mensaje bienvenida
-			escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
-
-
-			remote_salir_conexion=0;
-
-			while (!remote_salir_conexion) {
-
-				char prompt[1024];
-				if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
-				else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
-				else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
-				if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
-
-				int indice_destino=0;
-
-				if (!remote_salir_conexion) {
-
-					//Leer socket
-					int leidos;
-					int salir_bucle=0;
-					do {
-						leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
-						debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
-
-						/*
-						RETURN VALUES
-						These calls return the number of bytes received, or -1 if an error occurred.
-
-						For TCP sockets, the return value 0 means the peer has closed its half side of the connection.
-						*/
-
-						if (leidos==0) remote_salir_conexion=1;
-
-						//Controlar tambien si da <0 bytes al leer. En ese caso salir tambien
-						//Nota: Esto lo he observado en Windows a veces (en un caso retornó -8)
-						if (leidos<0) remote_salir_conexion=1;
-
-						if (leidos>0) {
-
-							indice_destino +=leidos;
-							//Si acaba con final de string, salir
-
-							//printf ("%d %d %d %d\n",buffer_lectura_socket[0],buffer_lectura_socket[1],buffer_lectura_socket[2],buffer_lectura_socket[3]);
-
-							if (buffer_lectura_socket[indice_destino-1]=='\r' || buffer_lectura_socket[indice_destino-1]=='\n' || buffer_lectura_socket[indice_destino-1]==0) {
-								salir_bucle=1;
-							}
-						}
+    //Enviamos mensaje bienvenida
+    escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
-					} while (leidos>0 && salir_bucle==0);
+    remote_salir_conexion=0;
+
+    while (!remote_salir_conexion) {
+
+        char prompt[1024];
+        if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
+        else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
+        else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
+        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
+
+        int indice_destino=0;
+
+        if (!remote_salir_conexion) {
+
+            //Leer socket
+            int leidos;
+            int salir_bucle=0;
+            do {
+                leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+                debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
+
+                /*
+                RETURN VALUES
+                These calls return the number of bytes received, or -1 if an error occurred.
+
+                For TCP sockets, the return value 0 means the peer has closed its half side of the connection.
+                */
+
+                if (leidos==0) remote_salir_conexion=1;
+
+                //Controlar tambien si da <0 bytes al leer. En ese caso salir tambien
+                //Nota: Esto lo he observado en Windows a veces (en un caso retornó -8)
+                if (leidos<0) remote_salir_conexion=1;
+
+                if (leidos>0) {
+
+                    indice_destino +=leidos;
+                    //Si acaba con final de string, salir
+
+                    //printf ("%d %d %d %d\n",buffer_lectura_socket[0],buffer_lectura_socket[1],buffer_lectura_socket[2],buffer_lectura_socket[3]);
+
+                    if (buffer_lectura_socket[indice_destino-1]=='\r' || buffer_lectura_socket[indice_destino-1]=='\n' || buffer_lectura_socket[indice_destino-1]==0) {
+                        salir_bucle=1;
+                    }
+                }
 
 
-					//No hacer nada de esto si es <=0
-					if (leidos>0) {
-						buffer_lectura_socket[indice_destino]=0;
-						debug_printf (VERBOSE_DEBUG,"Remote command. Length Read text: %d",indice_destino);
+            } while (leidos>0 && salir_bucle==0);
 
-						//Para que no pete el emulador si el verbose level esta al menos 3 y el comando recibido excede el maximo que puede mostrar debug_printf				
-						if (strlen(buffer_lectura_socket)<DEBUG_MAX_MESSAGE_LENGTH) {
-							debug_printf (VERBOSE_DEBUG,"Remote command. Read text: [%s]",buffer_lectura_socket);
-						}
-						
 
-						interpreta_comando(buffer_lectura_socket,sock_conectat);
-					}
+            //No hacer nada de esto si es <=0
+            if (leidos>0) {
+                buffer_lectura_socket[indice_destino]=0;
+                debug_printf (VERBOSE_DEBUG,"Remote command. Length Read text: %d",indice_destino);
 
-				} //Fin if (!remote_salir_conexion)
+                //Para que no pete el emulador si el verbose level esta al menos 3 y el comando recibido excede el maximo que puede mostrar debug_printf				
+                if (strlen(buffer_lectura_socket)<DEBUG_MAX_MESSAGE_LENGTH) {
+                    debug_printf (VERBOSE_DEBUG,"Remote command. Read text: [%s]",buffer_lectura_socket);
+                }
+                
 
-			} //Fin while (!remote_salir_conexion) 
+                interpreta_comando(buffer_lectura_socket,sock_conectat);
+            }
+
+        } //Fin if (!remote_salir_conexion)
+
+    } //Fin while (!remote_salir_conexion) 
 }
 
 void *thread_remote_protocol_function(void *nada)
