@@ -355,3 +355,7 @@ aprovechando cosas como el frequency generator
 -ZRCP:
 *array para guardar los threads que se van lanzando?
 *parametro sock_conectat en cierre de conexiones
+*liberar socket al salir...? con estos dos simultaneos acaba fallando:
+while true; do (echo ; sleep 0.1 ; echo "set-machine 48k" ) | telnet localhost 10000 ; done
+while true; do (echo ; sleep 0.1 ; echo "set-machine zx81" ) | telnet localhost 10000 ; done
+creo que antes tampoco liberaba el socket al salir una conexion. quiza solo cuando se hacia quit
