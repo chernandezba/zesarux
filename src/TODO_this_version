@@ -361,3 +361,4 @@ while true; do (echo ; sleep 0.1 ; echo "set-machine zx81" ) | telnet localhost 
 creo que antes tampoco liberaba el socket al salir una conexion. quiza solo cuando se hacia quit
 
 -completar remote_cerrar_conexion
+-al entrar nueva conexion creo que desactiva cpu-step

@@ -57,12 +57,12 @@
 
 #ifdef COMPILE_COREAUDIO
 #include "audiocoreaudio.h"
-#endif 
+#endif
 
 //Para rutinas midi windows que hay aqui
 #ifdef MINGW
-#include <windows.h>   
-#include <mmsystem.h>  
+#include <windows.h>
+#include <mmsystem.h>
 #endif
 
 //Si se usa audio sdl2. para workaround con el detector de silencio, que genera zumbido con sdl2
@@ -81,7 +81,7 @@ char audio_buffer_two_assigned[AUDIO_BUFFER_SIZE*2];  //Doble porque es estereo
 //Renombro variable a _new_ para corregir un error de código
 char audio_new_driver_name[100];
 
-//Si el driver de audio soporta stereo. En teoria lo soportan todos, se pone de momento como transicion 
+//Si el driver de audio soporta stereo. En teoria lo soportan todos, se pone de momento como transicion
 //del sistema mono a stereo, hasta que no esten todos los drivers
 //z80_bit audio_driver_accepts_stereo={0};
 
@@ -301,7 +301,7 @@ z80_bit aofile_inserted;
 //este valor lo alteramos al simular sonido de carga del zx8081
 int amplitud_speaker_actual_zx8081=AMPLITUD_BEEPER;
 
-//msx 
+//msx
 int amplitud_speaker_actual_msx=AMPLITUD_BEEPER;
 
 
@@ -635,10 +635,10 @@ void aofile_send_frame(char *buffer)
 			canal_izq=*buffer;
 			buffer++;
 			canal_der=*buffer;
-			
+
 			int suma=(canal_izq+canal_der)/2;
 			char suma_byte=suma; //necesario???
-	
+
 			valor_unsigned=suma_byte;
 		}
 
@@ -759,7 +759,7 @@ void envio_audio(void)
 		if (audio_using_sdl2) silence_detection_counter=0; //workaround para que no salte detector con sdl2
 
 		if (silence_detector_setting.v==0) silence_detection_counter=0;
-        	
+
 		if (silence_detection_counter==SILENCE_DETECTION_MAX) debug_printf(VERBOSE_DEBUG,"Silence detected");
 	}
 
@@ -858,11 +858,11 @@ char beeper_get_last_value_send(void)
 
                 else if (MACHINE_IS_MSX) {
                         return da_amplitud_speaker_msx();
-                }				
+                }
 
                 else if (MACHINE_IS_SVI) {
                         return da_amplitud_speaker_svi();
-                }						
+                }
 
 		else if (MACHINE_IS_ACE) {
 			return da_amplitud_speaker_ace();
@@ -1095,8 +1095,8 @@ nota_musical tabla_notas_musicales[MAX_NOTAS_MUSICALES]={
 {"C#1",34},
 {"D1",36},
 {"D#1",38},
-{"E1",41}, 
-{"F1",43}, 
+{"E1",41},
+{"F1",43},
 {"F#1",46},
 {"G1",49},
 {"G#1",51},
@@ -1302,11 +1302,11 @@ int get_note_index_from_ql_pitch(int pitch)
                 if (valor_tabla==pitch) return i;
                 else return -1;
 
-              
+
             }
-   
+
         }
-		
+
 	}
 
     //TODO: valores que no se puedan sacar de la tabla, hacer un calculo estimado
@@ -1369,7 +1369,7 @@ char *get_note_name_by_index(int index)
 }
 
 
-//devuelve frecuencia nota, segun su indice 
+//devuelve frecuencia nota, segun su indice
 int get_note_frequency_by_index(int index)
 {
 	if (index<0 || index>=MAX_NOTAS_MUSICALES) return 1; //1-> frecuencia desconocida, para no retornar 0 y provocar posibles divisiones por 0
@@ -1384,7 +1384,7 @@ void get_note_values(char *texto,int *nota_final,int *si_sostenido,int *octava)
 	char *nota_string="cdefgab";
 
 	int i;
-	
+
 	*nota_final=-1;
 	*octava=0;
 	for (i=0;i<7;i++) {
@@ -1619,7 +1619,7 @@ char ay_player_second_footer[1024]="";
 //Retorna 0 si ok
 int audio_ay_player_load(char *filename)
 {
-    //Validar extension, si por error se carga otro archivo de diferente extension 
+    //Validar extension, si por error se carga otro archivo de diferente extension
     //(por ejemplo por error al seleccionar Recent Files), puede petar el emulador
 
     if (util_compare_file_extension(filename,"ay")) {
@@ -1678,12 +1678,12 @@ int audio_ay_player_load(char *filename)
 
 
     if (ay_player_show_info_console.v) {
-        printf("Playing AY file: %s\n",filename);      
+        printf("Playing AY file: %s\n",filename);
 	    printf ("Version: %d\n",file_version);
 	    printf ("Author: %s\n",&audio_ay_player_mem[indice_autor]);
 	    printf ("Misc: %s\n",&audio_ay_player_mem[indice_misc]);
 	    printf ("Total songs: %d\n",ay_player_total_songs() );
-	    printf ("First song: %d\n",ay_player_first_song() );        
+	    printf ("First song: %d\n",ay_player_first_song() );
     }
 
 
@@ -2085,7 +2085,7 @@ int audio_ay_player_play_song(z80_byte song)
 
     if (ay_player_show_info_console.v) {
         z80_byte minutos_total,segundos_total;
-			
+
         ay_player_get_duration_current_song(&minutos_total,&segundos_total);
 
         printf ("Playing song %d name: %s. Duration: %02d:%02d\n",song,&audio_ay_player_mem[indice_nombre],
@@ -2152,11 +2152,11 @@ void ay_player_playlist_add(char *archivo)
 
         else {
         //Agregarlo al ultimo
-        ay_player_playlist_item *last_item=ay_player_first_item_playlist;   
+        ay_player_playlist_item *last_item=ay_player_first_item_playlist;
 
         while (last_item->next_item!=NULL) {
             last_item=last_item->next_item;
-        }    
+        }
         last_item->next_item=new_item;
     }
 
@@ -2196,10 +2196,10 @@ void ay_player_playlist_remove(int position)
     }
 
     //Liberar memoria del current
-    free(item_to_delete);    
+    free(item_to_delete);
 
     ay_player_playlist_total_elements--;
-    
+
 }
 
 void ay_player_playlist_get_item(int position,char *nombre)
@@ -2233,7 +2233,7 @@ void ay_player_play_current_item(void)
     char nombre_archivo[PATH_MAX];
     ay_player_playlist_get_item(ay_player_playlist_item_actual,nombre_archivo);
 
-    ay_player_load_and_play(nombre_archivo);    
+    ay_player_load_and_play(nombre_archivo);
 }
 
 void ay_player_set_random_item(void)
@@ -2251,7 +2251,7 @@ void ay_player_set_random_item(void)
 
     //Por si acaso evitar división por cero
     if (total_elements==0) ay_player_playlist_item_actual=0;
-    else ay_player_playlist_item_actual=valor_random % total_elements;    
+    else ay_player_playlist_item_actual=valor_random % total_elements;
 }
 
 //El primero o es el 0 o random
@@ -2272,7 +2272,7 @@ void ay_player_play_this_item(int item)
     if (item>=ay_player_playlist_get_total_elements() || item<0) ay_player_stop_player();
     else {
         ay_player_playlist_item_actual=item;
-        ay_player_play_current_item();   
+        ay_player_play_current_item();
     }
 }
 
@@ -2287,7 +2287,7 @@ void ay_player_next_file(void)
 
         ay_player_play_current_item();
 
-    }    
+    }
 
     else {
         //Siguiente pista
@@ -2298,7 +2298,7 @@ void ay_player_next_file(void)
 
         //Llegado al final
         else {
-            ay_player_stop_player(); 
+            ay_player_stop_player();
 
             if (ay_player_exit_emulator_when_finish.v) end_emulator_autosave_snapshot();
         }
@@ -2311,7 +2311,7 @@ void ay_player_previous_file(void)
 
 
     if (ay_player_playlist_item_actual>0) {
-        ay_player_playlist_item_actual--;        
+        ay_player_playlist_item_actual--;
     }
 
     ay_player_play_current_item();
@@ -2326,17 +2326,17 @@ void ay_player_add_file(char *archivo)
 
     if (ay_player_playing.v==0) {
         //play el ultimo
-        int total_elements=ay_player_playlist_get_total_elements();    
-        ay_player_playlist_item_actual=total_elements-1;    
+        int total_elements=ay_player_playlist_get_total_elements();
+        ay_player_playlist_item_actual=total_elements-1;
         ay_player_play_current_item();
     }
 
 /*
 *al agregar a playlist:
   si reproduciendose, no hacer nada
-  si no reproduciendose, reproducir el siguiente    
+  si no reproduciendose, reproducir el siguiente
   */
- 
+
 }
 
 void ay_player_next_track(void)
@@ -2350,15 +2350,15 @@ void ay_player_next_track(void)
     }
 
 	else {
-		
 
-		
+
+
 			if (ay_player_repeat_file.v) ay_player_pista_actual=1;
 			else {
 				ay_player_next_file();
 				return;
 			}
-		
+
 	}
 
 	audio_ay_player_play_song(ay_player_pista_actual);
@@ -2400,10 +2400,10 @@ void ay_player_playing_timer(void)
         debug_printf(VERBOSE_INFO,"Jump to next track because there is silence");
         ay_player_next_track();
        }
-    }  
+    }
 
 	//Si es infinito, no saltar nunca a siguiente cancion
-	if (ay_song_length==0) return;          
+	if (ay_song_length==0) return;
 
 	//printf ("Contador cancion: %d limite: %d  (%d s)\n",ay_song_length_counter,ay_song_length,ay_song_length/50);
 
@@ -2507,7 +2507,7 @@ void ay_player_add_directory_playlist(char *directorio)
     int n;
 
     // Si unidad actual es la mmc montada
-    //if (fatfs_disk_zero_memory!=NULL) 
+    //if (fatfs_disk_zero_memory!=NULL)
     if (menu_current_drive_mmc_image.v)
     {
         //TODO: no he probado agregar una playlist que esté en imagen mmc
@@ -2554,7 +2554,7 @@ void ay_player_add_directory_playlist(char *directorio)
     }
 
     //Restaurar directorio
-    zvfs_chdir(directorio_actual);    
+    zvfs_chdir(directorio_actual);
 
 }
 
@@ -2600,7 +2600,7 @@ valor maximo
 valor minimo
 valor medio
 frecuencia aproximada
-volumen maximo 
+volumen maximo
 
 
 struct s_audiobuffer_stats
@@ -2668,7 +2668,7 @@ typedef struct s_audiobuffer_stats audiobuffer_stats;
 
 
         audiomedio /=AUDIO_BUFFER_SIZE;
-      
+
 
 
 
@@ -2754,12 +2754,12 @@ char old_audio_change_top_speed_sound(char sonido)
 
 
 
-	/*	
+	/*
 	//
 	//Dividir
 
 	//Evitar division por 0
-	
+
 	if (dividir==0) {
 		int signo=util_get_sign(valor_sonido);
 		valor_sonido=127;
@@ -2776,11 +2776,11 @@ char old_audio_change_top_speed_sound(char sonido)
 	}
 
 	*/
-	
-	
 
-	
-	 
+
+
+
+
 	//
 	// Multiplicar
 	valor_sonido=valor_sonido*dividir;
@@ -2788,8 +2788,8 @@ char old_audio_change_top_speed_sound(char sonido)
 
 	//Y bajamos un poco el volumen para que no sea tan molesto
 	valor_sonido /=2;
-	
-	
+
+
 
 	/*
 	//
@@ -2832,7 +2832,7 @@ void audio_function_resample_1bit(char *p_valor_sonido_izquierdo,char *p_valor_s
 	valor_sonido_izquierdo=*p_valor_sonido_izquierdo;
 	valor_sonido_derecho=*p_valor_sonido_derecho;
 
-	
+
 
 	int volumen_resample=64;
 
@@ -2845,7 +2845,7 @@ void audio_function_resample_1bit(char *p_valor_sonido_izquierdo,char *p_valor_s
 
 	//printf ("comparar %d %d\n",valor_sonido_izquierdo,left_channel_before_1bit_process);
 
-	
+
 
 	//Si la onda "sube", es +1
 	if (valor_sonido_izquierdo>left_channel_before_1bit_process) {
@@ -2876,13 +2876,13 @@ void audio_function_resample_1bit(char *p_valor_sonido_izquierdo,char *p_valor_s
 
 	//Guardamos valores post-procesado
 	left_channel_after_1bit_process=valor_sonido_izquierdo;
-	right_channel_after_1bit_process=valor_sonido_derecho;		
+	right_channel_after_1bit_process=valor_sonido_derecho;
 
 
 	//Guardamos los resultados en los punteros
 	*p_valor_sonido_izquierdo=valor_sonido_izquierdo;
-	*p_valor_sonido_derecho=valor_sonido_derecho;		
-	
+	*p_valor_sonido_derecho=valor_sonido_derecho;
+
 }
 
 //Generador de tonos para el menu
@@ -2890,7 +2890,7 @@ z80_bit audio_menu_tone_generator_active={0};
 int audio_menu_tone_generator_frequency=0;
 int audio_menu_tone_generator_last_output=0; //0 o 1
 int audio_menu_tone_generator_contador_frecuencia=0;
-int audio_menu_tone_generator_volume=20; 
+int audio_menu_tone_generator_volume=20;
 int audio_menu_tone_generator_duration=0; //En segundos*FRECUENCIA_CONSTANTE_NORMAL_SONIDO
 
 //Reproducir una frecuencia
@@ -2939,7 +2939,7 @@ void audio_menu_tone_generator_timer_event(void)
 
     audio_menu_tone_generator_duration--;
     if (audio_menu_tone_generator_duration<=0) {
-        audio_menu_tone_generator_active.v=0;    
+        audio_menu_tone_generator_active.v=0;
     }
 }
 
@@ -2957,7 +2957,7 @@ void audio_menu_tone_generator_get_output(char *valor_sonido_izquierdo,char *val
     else {
         izquierdo -=audio_menu_tone_generator_volume;
         derecho -=audio_menu_tone_generator_volume;
-    }   
+    }
 
     //Y /2 para mezclarlos adecuadamente
     izquierdo /=2;
@@ -2966,7 +2966,7 @@ void audio_menu_tone_generator_get_output(char *valor_sonido_izquierdo,char *val
     *valor_sonido_izquierdo=izquierdo;
     *valor_sonido_derecho=derecho;
 
-    
+
 }
 
 //Para el detector de silencio en modo experimental, para el ay player
@@ -2988,7 +2988,7 @@ void audio_send_stereo_sample(char valor_sonido_izquierdo,char valor_sonido_dere
 		audio_function_resample_1bit(&valor_sonido_izquierdo,&valor_sonido_derecho);
 
 		//printf ("final %d\n",valor_sonido_izquierdo);
-		
+
 	}
 
     //Mezclarlo con los tonos de menu
@@ -3088,7 +3088,7 @@ int mid_mete_cabecera(z80_byte *midi_file,int pistas,int division)
     //cabecera
     memcpy(midi_file,"MThd",4);
 
-    
+
 
     //Valor 6
     midi_file[4]=0;
@@ -3102,14 +3102,14 @@ int mid_mete_cabecera(z80_byte *midi_file,int pistas,int division)
 
     //Pistas. This is a 16-bit binary number, MSB first.
     midi_file[10]=(pistas>>8) & 0xFF;
-    midi_file[11]=pistas & 0xFF;   
+    midi_file[11]=pistas & 0xFF;
 
- 
+
     //Division. Ticks per quarter note (negra?)
     //int division=50; //96; //lo que dura la negra. hacemos 50 para 1/50s
 
     midi_file[12]=0x00;
-    midi_file[13]=division;   
+    midi_file[13]=division;
 
 	return 14;
 }
@@ -3164,7 +3164,7 @@ int mid_mete_inicio_pista(z80_byte *mem,int division)
 	int longitud_bloque=27+4;
 
     memcpy(&mem[indice],midi_zesarux_message,longitud_bloque);
-    indice +=longitud_bloque;	
+    indice +=longitud_bloque;
 
 	return indice;
 
@@ -3177,7 +3177,7 @@ int mid_mete_evento_final_pista(unsigned char *mem)
     int indice=0;
 
     //Evento al momento
-    mem[indice++]=0;    
+    mem[indice++]=0;
 
 
     mem[indice++]=0xFF;
@@ -3202,7 +3202,7 @@ void mid_mete_longitud_pista(z80_byte *mem,int longitud)
     mem[puntero_longitud_pista++]=(longitud_eventos>>24) & 0xFF;
     mem[puntero_longitud_pista++]=(longitud_eventos>>16) & 0xFF;
     mem[puntero_longitud_pista++]=(longitud_eventos>>8) & 0xFF;
-    mem[puntero_longitud_pista++]=(longitud_eventos  ) & 0xFF;    
+    mem[puntero_longitud_pista++]=(longitud_eventos  ) & 0xFF;
 }
 
 
@@ -3213,7 +3213,7 @@ int mid_mete_instrumento(z80_byte *mem,int silencio_anterior,int canal_midi,z80_
     int indice=0;
 
     indice +=util_int_variable_length(silencio_anterior,&mem[indice]);
-   
+
     mem[indice++]=0xC0 | (canal_midi & 0xf);
     mem[indice++]=instrumento;
     //mem[indice++]=0; //no usado
@@ -3235,7 +3235,7 @@ int mid_mete_nota(z80_byte *mem,int silencio_anterior,int duracion,int canal_mid
     //Evento note on. meter silencio anterior
     //mem[indice++]=0;
     indice +=util_int_variable_length(silencio_anterior,&mem[indice]);
-   
+
 
     //int canal_midi=0;
     unsigned char noteonevent=(128+16) | (canal_midi & 0xf);
@@ -3338,7 +3338,7 @@ int mid_max_buffer(void)
 
 	int total_canales;
 
-	total_canales=3*mid_chips_al_start; 
+	total_canales=3*mid_chips_al_start;
 
 	for (i=0;i<total_canales;i++) {
 		if (mid_indices_actuales[i]>maximo) maximo=mid_indices_actuales[i];
@@ -3355,7 +3355,7 @@ void mid_set_cambio_instrumento(void)
 	int total_pistas=3*mid_chips_al_start;
 
     int canal;
-    for (canal=0;canal<total_pistas;canal++) {    
+    for (canal=0;canal<total_pistas;canal++) {
         mid_cambiado_instrumento[canal]=0;
     }
 }
@@ -3365,7 +3365,7 @@ void mid_initialize_export(void)
 
 	mid_chips_al_start=ay_retorna_numero_chips();
 	mid_flush_finished_tracks.v=0;
-	mid_notes_recorded=0;	
+	mid_notes_recorded=0;
 
 	int total_pistas=3*mid_chips_al_start;
 
@@ -3392,7 +3392,7 @@ void mid_initialize_export(void)
 				}
 
 
-				//Inicio pista 
+				//Inicio pista
 				mid_inicio_pista[canal]=indice; //TODO: esto es 0 siempre
 
 				indice +=mid_mete_inicio_pista(&mid_memoria_export[canal][indice],mid_parm_division);
@@ -3408,7 +3408,7 @@ void mid_initialize_export(void)
 				//Decir que no ha sonado aun ninguna noda
 				//mid_record_at_least_one=0;
 
-				
+
 			}
 
     mid_set_cambio_instrumento();
@@ -3437,15 +3437,15 @@ void mid_export_put_cambio_instrumento(int canal)
                     canal,midi_instrument_list[mid_instrument]);
         //printf("indice antes: %d\n",indice);
         //En tiempo 0. simultaneamente con anterior evento (un note on)
-        indice +=mid_mete_instrumento(&mid_memoria_export[canal][indice],0,canal,mid_instrument); 
+        indice +=mid_mete_instrumento(&mid_memoria_export[canal][indice],0,canal,mid_instrument);
         //printf("indice despues: %d\n",indice);
         mid_cambiado_instrumento[canal]=1;
     }
 
 
-	//Guardar indice 
-	mid_indices_actuales[canal]=indice;	
-	
+	//Guardar indice
+	mid_indices_actuales[canal]=indice;
+
 }
 
 
@@ -3466,11 +3466,11 @@ void mid_export_put_note(int canal,char *nota,int duracion)
 			int total_pistas=3*mid_chips_al_start;
 
 			int canal;
-			for (canal=0;canal<total_pistas;canal++) {	
+			for (canal=0;canal<total_pistas;canal++) {
 				//Acumulados tienen que ser todos iguales
 				//printf ("acumulado %d\n",mid_silencios_acumulados[canal]);
 				mid_silencios_acumulados[canal]=0;
-			}	
+			}
 	}*/
 
 
@@ -3502,16 +3502,16 @@ void mid_export_put_note(int canal,char *nota,int duracion)
 
 
 	//Ya no hay silencio acumulado
-	mid_silencios_acumulados[canal]=0;	
+	mid_silencios_acumulados[canal]=0;
 
 
-	//Guardar indice 
-	mid_indices_actuales[canal]=indice;	
+	//Guardar indice
+	mid_indices_actuales[canal]=indice;
 
 
     //Y enviamos cambio de instrumento si conviene
     //mid_export_put_cambio_instrumento(canal);
-	
+
 }
 
 
@@ -3534,7 +3534,7 @@ void mid_flush_file(void)
 		mid_flush_finished_tracks.v=1;
 
 		for (canal=0;canal<3*mid_chips_al_start;canal++) {
-			int indice=mid_indices_actuales[canal];			
+			int indice=mid_indices_actuales[canal];
 			//Final de pista
 			indice +=mid_mete_evento_final_pista(&mid_memoria_export[canal][indice]);
 
@@ -3543,10 +3543,10 @@ void mid_flush_file(void)
 			//Indicar longitud de pista
 			int longitud_pista=indice-inicio_pista;
 
-			mid_mete_longitud_pista(&mid_memoria_export[canal][inicio_pista],longitud_pista);	
+			mid_mete_longitud_pista(&mid_memoria_export[canal][inicio_pista],longitud_pista);
 
-			//Guardar indice 
-			mid_indices_actuales[canal]=indice;			
+			//Guardar indice
+			mid_indices_actuales[canal]=indice;
 
 		}
 
@@ -3590,7 +3590,7 @@ FILE *ptr_midfile;
 	}
 
 
-      fclose(ptr_midfile);		
+      fclose(ptr_midfile);
 
 }
 
@@ -3620,8 +3620,8 @@ void mid_frame_event(void)
 
 				sprintf(nota,"%s",get_note_name(freq) );
 
-			
-				
+
+
 				//int reg_tono;
 
 				//Si canales no suenan como tono, o volumen 0 meter cadena vacia en nota
@@ -3630,12 +3630,12 @@ void mid_frame_event(void)
                 //tema de ruido solo con chip AY
                 if (ay_chip_present.v) {
 
-                        //TODO: no mirar tono aqui                                
+                        //TODO: no mirar tono aqui
                     //int reg_vol;
 
                     //reg_vol=8+canal;
 
-                    int mascara_mezclador=1|8; 
+                    int mascara_mezclador=1|8;
                     int valor_esperado_mezclador=8; //Esperamos por defecto no ruido (bit3 a 1) y tono (bit0 a 0)
 
                     int valor_esperado_mezclador_tonoruido=0; //Canal con tono y ruido (bit3 a 0) y tono (bit0 a 0)
@@ -3674,7 +3674,7 @@ void mid_frame_event(void)
                 else {
                     //Para el resto de chips asumimos que si hay sonido
                     suena_nota=1;
-                }                
+                }
 
 				//Pero si no hay volumen, no hay nota
 				//if (ay_3_8912_registros[chip][reg_vol]==0) suena_nota=0;
@@ -3683,13 +3683,13 @@ void mid_frame_event(void)
                 if (!audio_si_canal_tono(chip,canal)) {
                     //printf("audio to piano silencio canal %d\n",canal);
                     suena_nota=0;
-                }                
+                }
 
 				if (!suena_nota) nota[0]=0;
 
 
-				
-				
+
+
 
 				int canal_final=3*chip+canal;
 
@@ -3700,7 +3700,7 @@ void mid_frame_event(void)
 					//nota,mid_nota_sonando_duracion[canal]);
 				}
 				else {
-					
+
 					//printf ("nota diferente canal %d. anterior [%s] duracion %d\n",canal_final,mid_nota_sonando[canal_final],mid_nota_sonando_duracion[canal_final]);
 
 
@@ -3716,13 +3716,13 @@ void mid_frame_event(void)
 					strcpy(mid_nota_sonando[canal_final],nota);
 				}
 			}
-			
+
 		}
 
 	}
 
 
-	
+
 }
 
 
@@ -3796,7 +3796,7 @@ void audio_midi_raw_parse_value(z80_byte value)
 	if (value & 128) {
 		//printf ("audio_midi_raw_parse_value: is a status byte\n");
 
-		
+
 		switch (audio_midi_raw_parse_estado) {
 			//Si estamos en estado desconocido, pasar a MIDI_STATUS_RECEIVING_DATA
 			case MIDI_STATUS_UNKNOWN:
@@ -3812,7 +3812,7 @@ void audio_midi_raw_parse_value(z80_byte value)
 				//printf ("Received status byte while receiving data. Starting a new command. Previous command lenght: %d\n",audio_midi_raw_parse_indice);
 
 
-				/* 
+				/*
 				//Todo esto solo es debug
 				char buf_status_mensaje[MAX_MIDI_STATUS_COMMAND_TEXT];
 
@@ -3834,7 +3834,7 @@ void audio_midi_raw_parse_value(z80_byte value)
 
 				//Debug en el caso de noteon/off
 
-				if ( (audio_midi_raw_parse_array[0] & 0xF0) == 0x80 || 
+				if ( (audio_midi_raw_parse_array[0] & 0xF0) == 0x80 ||
 				     (audio_midi_raw_parse_array[0] & 0xF0) == 0x90
 					 ) {
 					int i;
@@ -3882,7 +3882,7 @@ void audio_midi_raw_parse_value(z80_byte value)
 			/*case MIDI_STATUS_RECEIVED_DATA:
 
 			break;*/
-		}		
+		}
 
 	}
 }
@@ -3895,11 +3895,11 @@ void audio_midi_output_raw(z80_byte value)
 
 	if (audio_midi_output_initialized==0) return;
 
-	
+
 
 #ifdef COMPILE_COREAUDIO
 		coreaudio_mid_raw_send(value);
-		
+
 #endif
 
 #ifdef COMPILE_ALSA
@@ -3917,7 +3917,7 @@ windows_midi_raw(value);
 audio_midi_raw_parse_value(value);
 #endif
 
-	
+
 
 
 }
@@ -3936,7 +3936,7 @@ int audio_midi_output_note_on(unsigned char channel, unsigned char note)
 
 	#ifdef MINGW
 	return windows_note_on(channel,note,127);
-	#endif		
+	#endif
 }
 
 int audio_midi_output_note_off(unsigned char channel, unsigned char note)
@@ -3948,11 +3948,11 @@ int audio_midi_output_note_off(unsigned char channel, unsigned char note)
 
 	#ifdef COMPILE_COREAUDIO
 	return coreaudio_note_off(channel,note,127);
-	#endif	
+	#endif
 
 	#ifdef MINGW
 	return windows_note_off(channel,note,127);
-	#endif		
+	#endif
 }
 
 
@@ -3966,11 +3966,11 @@ int audio_midi_set_instrument(unsigned char instrument)
 
 	#ifdef COMPILE_COREAUDIO
 	return coreaudio_change_instrument(instrument);
-	#endif	
+	#endif
 
 	#ifdef MINGW
 	return windows_change_instrument(instrument);
-	#endif		
+	#endif
 }
 
 
@@ -3983,7 +3983,7 @@ void audio_midi_output_flush_output(void)
 
 	#ifdef COMPILE_COREAUDIO
 	coreaudio_midi_output_flush_output();
-	#endif	
+	#endif
 
 	#ifdef MINGW
 	windows_midi_output_flush_output();
@@ -3999,11 +3999,11 @@ void audio_midi_output_reset(void)
 
 	#ifdef COMPILE_COREAUDIO
 	coreaudio_midi_output_reset();
-	#endif	
+	#endif
 
 	#ifdef MINGW
 	windows_midi_output_reset();
-	#endif	
+	#endif
 }
 
 //Notas anteriores sonando, 3 canales
@@ -4013,7 +4013,7 @@ char midi_output_nota_sonando[MAX_AY_CHIPS*3][4];
 int audio_midi_client=0;
 int audio_midi_port=0;
 //Client solo es usado por alsa
-//Port lo utilizan alsa y windows 
+//Port lo utilizan alsa y windows
 
 char audio_raw_midi_device_out[MAX_AUDIO_RAW_MIDI_DEVICE_OUT]="hw:0,0";
 
@@ -4034,7 +4034,7 @@ void audio_midi_output_finish(void)
 	debug_printf (VERBOSE_DEBUG,"Closing midi output");
 
 #ifdef COMPILE_ALSA
-     
+
 	alsa_mid_finish_all();
 
 #endif
@@ -4050,7 +4050,7 @@ void audio_midi_output_finish(void)
 
 	windows_mid_finish_all();
 
-#endif	
+#endif
 }
 
 //Dice si esta disponible midi, cuando es en windows, o con coreaudio compilado, o con alsa compilado
@@ -4067,7 +4067,7 @@ int audio_midi_available(void)
 
 #ifdef MINGW
 		return 1;
-#endif	
+#endif
 
 	//Cualquier otro caso, no disponible
 	return 0;
@@ -4086,7 +4086,7 @@ int audio_midi_output_init(void)
 	debug_printf (VERBOSE_DEBUG,"Initializing midi output");
 
 #ifdef COMPILE_ALSA
-     
+
 
 	if (alsa_mid_initialize_all()) {
 		return 1;
@@ -4182,7 +4182,7 @@ int audio_get_total_chips(void)
 int audio_retorna_frecuencia_canal(int canal,int chip)
 {
     int freq;
-    
+
     if (sn_chip_present.v) {
         freq=sn_retorna_frecuencia(canal);
     }
@@ -4192,11 +4192,11 @@ int audio_retorna_frecuencia_canal(int canal,int chip)
         if (canal==0) freq=ql_ipc_get_frecuency_sound_current_pitch();
         else freq=0;
 
-    }            
+    }
 
     else {
         freq=ay_retorna_frecuencia(canal,chip);
-    }    
+    }
 
     return freq;
 }
@@ -4219,7 +4219,7 @@ int audio_si_canal_tono(int chip,int canal)
         if (canal==2) {
             if ((sn_chip_registers[8] & 15)==15) return 0;
             else return 1;
-        }                
+        }
         //otra cosa, 0
         return 0;
 
@@ -4235,11 +4235,11 @@ int audio_si_canal_tono(int chip,int canal)
 
             }
         }
-        
-        //otra cosa, 0
-        return 0;        
 
-    }            
+        //otra cosa, 0
+        return 0;
+
+    }
 
     else {
         if (canal==0) {
@@ -4256,11 +4256,11 @@ int audio_si_canal_tono(int chip,int canal)
         }
 
         //otra cosa, 0
-        return 0;            
+        return 0;
     }
 
     //otra cosa, 0
-    return 0;        
+    return 0;
 }
 
 void audio_midi_output_frame_event(void)
@@ -4308,7 +4308,7 @@ void audio_midi_output_frame_event(void)
 
                     int valor_esperado_mezclador_tonoruido=0; //Canal con tono y ruido (bit3 a 0) y tono (bit0 a 0)
 
-        
+
 
                     /*
                     1xx1 -> no tono ni ruido
@@ -4355,12 +4355,12 @@ void audio_midi_output_frame_event(void)
                 }
 
 
-                //TODO: hacer que suene siempre con chip SN y QL. Mejorar esto!! 
+                //TODO: hacer que suene siempre con chip SN y QL. Mejorar esto!!
                 //if (sn_chip_present.v || i8049_chip_present) suena_nota=1;
 
 				if (!suena_nota) nota[0]=0;
 
-                //printf("nota despues filtro %s\n",nota);                
+                //printf("nota despues filtro %s\n",nota);
 
 				int canal_final=3*chip+canal;
 
@@ -4393,7 +4393,7 @@ void audio_midi_output_frame_event(void)
 					    if (nota_numero<0) {
 					        //Nota invalida. no se deberia llegar aqui nunca
 					        debug_printf (VERBOSE_DEBUG,"Invalid note %s",midi_output_nota_sonando[canal_final]);
-        				}	
+        				}
 						else audio_midi_output_note_off(canal_final,nota_numero);
 					}
 
@@ -4411,10 +4411,10 @@ void audio_midi_output_frame_event(void)
 
                             audio_midi_output_note_on(canal_final,nota_numero);
 
-                        }                            
+                        }
                     }
-	
-					
+
+
 
 
 					strcpy(midi_output_nota_sonando[canal_final],nota);
@@ -4427,7 +4427,7 @@ void audio_midi_output_frame_event(void)
 
 	//Y enviar todos los eventos
 	audio_midi_output_flush_output();
-		
+
 
 }
 
@@ -4448,18 +4448,18 @@ void audio_midi_output_frame_event(void)
 // Description:   The example program shows how to open MIDI output,
 //                send a MIDI message, and close MIDI output.
 //                When you press a key on the computer keyboard, a MIDI
-//     
+//
 
 HMIDIOUT windows_midi_device;
 //int windows_midi_midiport=0;
 
-typedef union 
-{ 
-    DWORD word; 
-	BYTE data[4]; 
+typedef union
+{
+    DWORD word;
+	BYTE data[4];
 
-    //unsigned int word; 
-	//unsigned char data[4]; 
+    //unsigned int word;
+	//unsigned char data[4];
 
 } windows_midi_message;
 
@@ -4488,7 +4488,7 @@ HMIDISTRM lphStream;
 
 void other_windows_mid_initialize_raw(void)
 {
-	
+
 	//LPHMIDISTRM lphStream;
 
 
@@ -4555,10 +4555,10 @@ void windows_midi_output_reset(void)
 
 
 				//Y envio a midi
-				windows_mid_add_note(mensaje);	
+				windows_mid_add_note(mensaje);
 
 
-	midiOutReset(windows_midi_device);				
+	midiOutReset(windows_midi_device);
 }
 
 void windows_mid_finish_all(void)
@@ -4567,7 +4567,7 @@ void windows_mid_finish_all(void)
    midiOutReset(windows_midi_device);
 
    // Remove any data in MIDI device and close the MIDI Output port
-   midiOutClose(windows_midi_device);	
+   midiOutClose(windows_midi_device);
 }
 
 void test_windows_midi_raw(z80_byte value)
@@ -4633,7 +4633,7 @@ void windows_midi_raw(z80_byte value)
 		enviar=1;
 		windows_midi_raw_multibyte=0;
 		//printf ("Es byte de status\n");
-	}	
+	}
 
 	///Enviar si hay al menos 3 bytes por enviar
 
@@ -4712,7 +4712,7 @@ void windows_midi_raw(z80_byte value)
 		  		mensaje.data[0]=audio_midi_raw_parse_array[i];
   				mensaje.data[1]=audio_midi_raw_parse_array[i+1];
   				mensaje.data[2]=0;
-  				mensaje.data[3]=0;	
+  				mensaje.data[3]=0;
 
 				//Y envio a midi
 				windows_mid_add_note(mensaje);
@@ -4789,7 +4789,7 @@ int windows_note_off(unsigned char channel, unsigned char note,unsigned char vel
   windows_mid_add_note(mensaje);
 
 
-  return 0;  
+  return 0;
 }
 
 int windows_change_instrument(unsigned char instrument)
@@ -4803,7 +4803,7 @@ int windows_change_instrument(unsigned char instrument)
     //El mensaje seria 0xC0 + canal
 
     int i;
-    for (i=0;i<16;i++) {  
+    for (i=0;i<16;i++) {
 
   mensaje.data[0]=0xC0+i;
   mensaje.data[1]=instrument & 127;
@@ -4816,7 +4816,7 @@ int windows_change_instrument(unsigned char instrument)
 
   return 0;
 
-    
+
 }
 
 
