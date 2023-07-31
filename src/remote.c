@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
+#include <errno.h>
 
 
 #include "cpu.h"
@@ -6033,6 +6034,8 @@ int remote_initialize_port(void)
 
 	sock_listen=crear_socket_TCP();
 
+	printf("sock_listen: %d\n",sock_listen);
+
 //#ifndef MINGW
   if (sock_listen<0) {
     debug_printf (VERBOSE_ERR,"Error creating socket TCP for remote command protocol");
@@ -6056,7 +6059,7 @@ int remote_initialize_port(void)
   }
 //#endif
 
-	result=listen(sock_listen,1);
+	result=listen(sock_listen,SOMAXCONN);
 
 //#ifndef MINGW
   if (result<0) {
@@ -6116,16 +6119,20 @@ void zrcp_sem_init(void)
 	z_atomic_reset(&zrcp_command_semaforo);
 }
 
-
+/*
 struct s_zrcp_new_connection_parms
 {
     int sock_conectat;
 };
+*/
 
 void *zrcp_handle_new_connection(void *entrada)
 {
 
-    int sock_conectat=((struct s_zrcp_new_connection_parms *)entrada)->sock_conectat;
+	//Ese puntero que nos llega es realmente el valor del numero de socket
+    int sock_conectat=(int)entrada;
+
+	printf("sock_conectat en zrcp_handle_new_connection: %d\n",sock_conectat);
     //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
 
     //Asignar memoria para los buffers de recepcion
@@ -6241,6 +6248,7 @@ void *zrcp_handle_new_connection(void *entrada)
 	//Se deberia hacer el WSACleanup al finalizar el emulador
 	//WSACleanup();
 #else
+	printf("Closing socket %d\n",sock_conectat);
     int retorno=close(sock_conectat);
     printf("Retorno close: %d\n",retorno);
 #endif
@@ -6252,8 +6260,11 @@ void *zrcp_handle_new_connection(void *entrada)
 
 void thread_remote_protocol_function_aux_new_conn(int sock_conectat)
 {
-    struct s_zrcp_new_connection_parms parametros_thread;
-    parametros_thread.sock_conectat=sock_conectat;
+    //struct s_zrcp_new_connection_parms parametros_thread;
+    //parametros_thread.sock_conectat=sock_conectat;
+
+	printf("sock_conectat en thread_remote_protocol_function_aux_new_conn: %d\n",
+		sock_conectat);
     //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
 
     //TODO: deberia llevar un control de cada thread que se crea?
@@ -6266,7 +6277,16 @@ void thread_remote_protocol_function_aux_new_conn(int sock_conectat)
 
     //pthread_t temp_thread;
 
-    if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)&parametros_thread) ) {
+	//Nota: al pasar el parametro de sock_conectat, o bien creo una estructura con un malloc, para cada conexion,
+	//que ademas deberia llevar yo un control para hacer su free correspondiente, o bien
+	//hago esto, en el que el valor del socket lo envio como si fuese un puntero,
+	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en entornos de 32 bits,
+	//un puntero tiene tamaño de 32 bits,
+	//y no podria enviar un valor de socket que excediese el rango de 32 bits (si intentase enviar un long de 64 bits por ejemplo)
+	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque 
+	//al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
+	//la memoria donde estaba, esta liberada y a saber entonces que lee...
+    if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_conectat) ) {
         debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
     }
 }
@@ -6297,7 +6317,8 @@ void *thread_remote_protocol_function(void *nada)
 
 
 		if (sock_conectat<0) {
-			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept");
+			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
+				sock_listen,strerror(errno));
 			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
 			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
 			//como mucho lo mostramos en verbose debug
