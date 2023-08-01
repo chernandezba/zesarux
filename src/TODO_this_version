@@ -362,7 +362,26 @@ creo que antes tampoco liberaba el socket al salir una conexion. quiza solo cuan
 
 -completar remote_cerrar_conexion
 -al entrar nueva conexion creo que desactiva cpu-step
+-referencias a remote_salir_conexion:
+*thread_remote_protocol_function, en:
+		if (sock_conectat<0) {
+			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
+				sock_listen,strerror(errno));
+			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
+			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
+			//como mucho lo mostramos en verbose debug
 
+			remote_salir_conexion=1;
+			sleep(1);
+		}
+
+*end_remote_protocol, en:
+	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
+
+	remote_salir_conexion=1;
+	remote_protocol_ended.v=1;
+
+	remote_cerrar_conexion();
 
 
 -revisar todo pase de parametros a thread, si son estructuras que estén en memoria fija y no en stack, o se

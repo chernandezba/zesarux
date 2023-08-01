@@ -111,7 +111,7 @@ unsigned int long_adr;
 int sock_listen;
 //int sock_conectat=-1;
 
-int remote_salir_conexion;
+//int remote_salir_conexion;
 
 z80_bit remote_protocol_ended={0};
 
@@ -3635,7 +3635,7 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 
 char *parametros;
 
-void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior)
+void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion)
 {
 
 	char buffer_retorno[2048];
@@ -5876,7 +5876,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
           if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step(misocket);
 
           escribir_socket (misocket,"Sayonara baby\n");
-					remote_salir_conexion=1;
+					*remote_salir_conexion=1;
 					sleep(1);
 
 					remote_cerrar_conexion();
@@ -6024,7 +6024,6 @@ else if (!strcmp(comando_sin_parametros,"write-port") ) {
 
 
 
-
 }
 
 //Retorna 0 si ok
@@ -6157,7 +6156,7 @@ void *zrcp_handle_new_connection(void *entrada)
     escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
-    remote_salir_conexion=0;
+    int remote_salir_conexion=0;
 
     while (!remote_salir_conexion) {
 
@@ -6224,7 +6223,8 @@ void *zrcp_handle_new_connection(void *entrada)
                     printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
                 }
 
-                interpreta_comando(buffer_lectura_socket,sock_conectat,buffer_lectura_socket_anterior);
+                interpreta_comando(buffer_lectura_socket,sock_conectat,
+					buffer_lectura_socket_anterior,&remote_salir_conexion);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
@@ -6323,7 +6323,7 @@ void *thread_remote_protocol_function(void *nada)
 			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
 			//como mucho lo mostramos en verbose debug
 
-			remote_salir_conexion=1;
+			//remote_salir_conexion=1;
 			sleep(1);
 		}
 
@@ -6403,7 +6403,7 @@ void end_remote_protocol(void)
 
 	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
 
-	remote_salir_conexion=1;
+	//remote_salir_conexion=1;
 	remote_protocol_ended.v=1;
 
 	remote_cerrar_conexion();
