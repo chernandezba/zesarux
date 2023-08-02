@@ -111,7 +111,7 @@ unsigned int long_adr;
 int sock_listen;
 //int sock_conectat=-1;
 
-//int remote_salir_conexion;
+//int remote_salir_conexion_cliente;
 
 z80_bit remote_protocol_ended={0};
 
@@ -3635,7 +3635,7 @@ void remote_visualmem_generic_compact(int misocket, z80_byte *buffer, int final_
 
 char *parametros;
 
-void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion)
+void interpreta_comando(char *comando,int misocket,char *buffer_lectura_socket_anterior,int *remote_salir_conexion_cliente)
 {
 
 	char buffer_retorno[2048];
@@ -5876,7 +5876,7 @@ else if (!strcmp(comando_sin_parametros,"smartload") || !strcmp(comando_sin_para
           if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step(misocket);
 
           escribir_socket (misocket,"Sayonara baby\n");
-					*remote_salir_conexion=1;
+					*remote_salir_conexion_cliente=1;
 					sleep(1);
 
 					remote_cerrar_conexion();
@@ -6156,19 +6156,19 @@ void *zrcp_handle_new_connection(void *entrada)
     escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
-    int remote_salir_conexion=0;
+    int remote_salir_conexion_cliente=0;
 
-    while (!remote_salir_conexion) {
+    while (!remote_salir_conexion_cliente) {
 
         char prompt[1024];
         if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
         else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
-        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion=1;
+        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion_cliente=1;
 
         int indice_destino=0;
 
-        if (!remote_salir_conexion) {
+        if (!remote_salir_conexion_cliente) {
 
             //Leer socket
             int leidos;
@@ -6184,11 +6184,11 @@ void *zrcp_handle_new_connection(void *entrada)
                 For TCP sockets, the return value 0 means the peer has closed its half side of the connection.
                 */
 
-                if (leidos==0) remote_salir_conexion=1;
+                if (leidos==0) remote_salir_conexion_cliente=1;
 
                 //Controlar tambien si da <0 bytes al leer. En ese caso salir tambien
                 //Nota: Esto lo he observado en Windows a veces (en un caso retornó -8)
-                if (leidos<0) remote_salir_conexion=1;
+                if (leidos<0) remote_salir_conexion_cliente=1;
 
                 if (leidos>0) {
 
@@ -6224,15 +6224,15 @@ void *zrcp_handle_new_connection(void *entrada)
                 }
 
                 interpreta_comando(buffer_lectura_socket,sock_conectat,
-					buffer_lectura_socket_anterior,&remote_salir_conexion);
+					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente);
 
                 //Liberar lock
                 z_atomic_reset(&zrcp_command_semaforo);
             }
 
-        } //Fin if (!remote_salir_conexion)
+        } //Fin if (!remote_salir_conexion_cliente)
 
-    } //Fin while (!remote_salir_conexion)
+    } //Fin while (!remote_salir_conexion_cliente)
 
     //Liberar buffers de recepcion
     free(buffer_lectura_socket);
@@ -6319,11 +6319,13 @@ void *thread_remote_protocol_function(void *nada)
 		if (sock_conectat<0) {
 			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
 				sock_listen,strerror(errno));
+			printf ("Remote command. Error running accept on socket %d. More info: %s\n",
+				sock_listen,strerror(errno));				
 			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
 			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
 			//como mucho lo mostramos en verbose debug
 
-			//remote_salir_conexion=1;
+			//remote_salir_conexion_cliente=1;
 			sleep(1);
 		}
 
@@ -6403,7 +6405,7 @@ void end_remote_protocol(void)
 
 	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
 
-	//remote_salir_conexion=1;
+	//remote_salir_conexion_cliente=1;
 	remote_protocol_ended.v=1;
 
 	remote_cerrar_conexion();
