@@ -339,11 +339,8 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 *1 solo master que pueda enviar snapshots a más de 1 slave. Fácil. Quizá las ips separadas por comas.
 Problema es que ahora hay un thread y un socket abierto con el slave. Habria que tener varios sockets abiertos y en ese thread,
 que vaya enviando snapshot uno a uno a cada slave
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves: estamos en ello
 
-*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
-Quizá el semáforo es para ejecución de comando ZRCP, así es mas simple:
--Al recibir un comando ZRCP: activamos/esperamos un semáforo y ejecutamos el comando correspondiente si está libre el semáforo. Liberar semáforo
-Así no hay que hacer diferentes semáforos
 
 -mejoras accesibilidad: 
 * https://www.w3.org/TR/low-vision-needs/
@@ -352,7 +349,11 @@ aprovechando cosas como el frequency generator
 -eventos: error, mover cursor
 
 
--ZRCP:
+---INICIO ZRCP
+*ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves. Aquí por una parte hay que tener semáforos (o no?) al actuar sobre según que partes de ZEsarUX y además lanzar threads aparte ( o fork? ) por cada conexión nueva de cliente ZRCP
+Quizá el semáforo es para ejecución de comando ZRCP, así es mas simple:
+-Al recibir un comando ZRCP: activamos/esperamos un semáforo y ejecutamos el comando correspondiente si está libre el semáforo. Liberar semáforo
+Así no hay que hacer diferentes semáforos
 *array para guardar los threads que se van lanzando?
 *parametro sock_conectat en cierre de conexiones
 ok? *liberar socket al salir...? con estos dos simultaneos acaba fallando:
@@ -382,7 +383,17 @@ ok ? *end_remote_protocol, en:
 	remote_protocol_ended.v=1;
 
 	remote_cerrar_conexion();
+-se deberia salir del modo cpu step al entrar un cliente? no deberia?
+
+-se deberia salir del modo cpu step al cerrar un cliente? quiza solo si es el ultimo cliente conectado
+
+		//Salir del modo step si estaba activado
+		if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
+
+---FIN ZRCP
 
 
 -revisar todo pase de parametros a thread, si son estructuras que estén en memoria fija y no en stack, o se
 perdera probablemente ese stack la llegar al thread
+
+
