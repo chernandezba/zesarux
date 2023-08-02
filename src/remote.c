@@ -109,7 +109,7 @@ int zrcp_command_close_all_menus=0;
 struct sockaddr_in adr;
 unsigned int long_adr;
 int sock_listen;
-//int sock_conectat=-1;
+//int sock_connected_client=-1;
 
 //int remote_salir_conexion_cliente;
 
@@ -3012,17 +3012,17 @@ void remote_cerrar_conexion(void)
 {
 
     //TODO
-    //gestionar cada sock_conectat de cada conexion
+    //gestionar cada sock_connected_client de cada conexion
     return;
 
 
 /*
     //Solo hacer close de eso cuando habia una conexión activa
-    if (sock_conectat>=0) {
+    if (sock_connected_client>=0) {
 #ifdef MINGW
-	closesocket(sock_conectat);
+	closesocket(sock_connected_client);
 #else
-	close(sock_conectat);
+	close(sock_connected_client);
 #endif
 
 	//#ifdef MINGW
@@ -3030,7 +3030,7 @@ void remote_cerrar_conexion(void)
 	//#endif
     }
 
-    sock_conectat=-1;
+    sock_connected_client=-1;
 */
 }
 
@@ -6121,7 +6121,7 @@ void zrcp_sem_init(void)
 /*
 struct s_zrcp_new_connection_parms
 {
-    int sock_conectat;
+    int sock_connected_client;
 };
 */
 
@@ -6129,9 +6129,9 @@ void *zrcp_handle_new_connection(void *entrada)
 {
 
 	//Ese puntero que nos llega es realmente el valor del numero de socket
-    int sock_conectat=(int)entrada;
+    int sock_connected_client=(int)entrada;
 
-	printf("sock_conectat en zrcp_handle_new_connection: %d\n",sock_conectat);
+	printf("sock_connected_client en zrcp_handle_new_connection: %d\n",sock_connected_client);
     //char *buffer_lectura_socket=((struct s_zrcp_new_connection_parms *)entrada)->buffer_lectura_socket;
 
     //Asignar memoria para los buffers de recepcion
@@ -6150,10 +6150,10 @@ void *zrcp_handle_new_connection(void *entrada)
     debug_printf (VERBOSE_DEBUG,"Received remote command connection petition");
 
     //debugar direccion ip origen
-    remote_show_client_ip(sock_conectat);
+    remote_show_client_ip(sock_connected_client);
 
     //Enviamos mensaje bienvenida
-    escribir_socket(sock_conectat,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
+    escribir_socket(sock_connected_client,"Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n");
 
 
     int remote_salir_conexion_cliente=0;
@@ -6164,7 +6164,7 @@ void *zrcp_handle_new_connection(void *entrada)
         if (menu_event_remote_protocol_enterstep.v) sprintf (prompt,"\n%s@cpu-step> ",remote_prompt_command_string);
         else if (remote_protocol_assembling.v) sprintf (prompt,"assemble at %XH> ",direccion_assembling);
         else sprintf (prompt,"\n%s> ",remote_prompt_command_string);
-        if (escribir_socket(sock_conectat,prompt)<0) remote_salir_conexion_cliente=1;
+        if (escribir_socket(sock_connected_client,prompt)<0) remote_salir_conexion_cliente=1;
 
         int indice_destino=0;
 
@@ -6174,7 +6174,7 @@ void *zrcp_handle_new_connection(void *entrada)
             int leidos;
             int salir_bucle=0;
             do {
-                leidos=leer_socket(sock_conectat, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
+                leidos=leer_socket(sock_connected_client, &buffer_lectura_socket[indice_destino], MAX_LENGTH_PROTOCOL_COMMAND-1);
                 debug_printf (VERBOSE_DEBUG,"ZRCP: Read block %d bytes index: %d",leidos,indice_destino);
 
                 /*
@@ -6223,7 +6223,7 @@ void *zrcp_handle_new_connection(void *entrada)
                     printf("Esperando a liberar lock en zrcp_handle_new_connection\n");
                 }
 
-                interpreta_comando(buffer_lectura_socket,sock_conectat,
+                interpreta_comando(buffer_lectura_socket,sock_connected_client,
 					buffer_lectura_socket_anterior,&remote_salir_conexion_cliente);
 
                 //Liberar lock
@@ -6242,14 +6242,14 @@ void *zrcp_handle_new_connection(void *entrada)
 
 
 #ifdef MINGW
-	closesocket(sock_conectat);
+	closesocket(sock_connected_client);
 	//desactivo esto ya que esto implica que no se va a usar mas los windows sockets, cosa no cierta (se pueden usar en zeng por ejemplo)
 	//ademas no estamos llamando a WSAStartup al inicio
 	//Se deberia hacer el WSACleanup al finalizar el emulador
 	//WSACleanup();
 #else
-	printf("Closing socket %d\n",sock_conectat);
-    int retorno=close(sock_conectat);
+	printf("Closing socket %d\n",sock_connected_client);
+    int retorno=close(sock_connected_client);
     printf("Retorno close: %d\n",retorno);
 #endif
 
@@ -6258,13 +6258,13 @@ void *zrcp_handle_new_connection(void *entrada)
 
 
 
-void thread_remote_protocol_function_aux_new_conn(int sock_conectat)
+void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
 {
     //struct s_zrcp_new_connection_parms parametros_thread;
-    //parametros_thread.sock_conectat=sock_conectat;
+    //parametros_thread.sock_connected_client=sock_connected_client;
 
-	printf("sock_conectat en thread_remote_protocol_function_aux_new_conn: %d\n",
-		sock_conectat);
+	printf("sock_connected_client en thread_remote_protocol_function_aux_new_conn: %d\n",
+		sock_connected_client);
     //parametros_thread.buffer_lectura_socket=buffer_lectura_socket;
 
     //TODO: deberia llevar un control de cada thread que se crea?
@@ -6277,7 +6277,7 @@ void thread_remote_protocol_function_aux_new_conn(int sock_conectat)
 
     //pthread_t temp_thread;
 
-	//Nota: al pasar el parametro de sock_conectat, o bien creo una estructura con un malloc, para cada conexion,
+	//Nota: al pasar el parametro de sock_connected_client, o bien creo una estructura con un malloc, para cada conexion,
 	//que ademas deberia llevar yo un control para hacer su free correspondiente, o bien
 	//hago esto, en el que el valor del socket lo envio como si fuese un puntero,
 	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en entornos de 32 bits,
@@ -6286,7 +6286,7 @@ void thread_remote_protocol_function_aux_new_conn(int sock_conectat)
 	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque 
 	//al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
 	//la memoria donde estaba, esta liberada y a saber entonces que lee...
-    if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_conectat) ) {
+    if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_connected_client) ) {
         debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
     }
 }
@@ -6302,12 +6302,12 @@ void *thread_remote_protocol_function(void *nada)
 	{
 		long_adr=sizeof(adr);
 
-        int sock_conectat=-1;
+        int sock_connected_client=-1;
 
 		if (!remote_protocol_ended.v) {
 			//printf ("ANTES accept\n");
-			sock_conectat=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
-            printf("sock_conectat: %d\n",sock_conectat);
+			sock_connected_client=accept(sock_listen,(struct sockaddr *)&adr,&long_adr);
+            printf("sock_connected_client: %d\n",sock_connected_client);
 		}
 
 		else {
@@ -6316,7 +6316,7 @@ void *thread_remote_protocol_function(void *nada)
 		}
 
 
-		if (sock_conectat<0) {
+		if (sock_connected_client<0) {
 			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
 				sock_listen,strerror(errno));
 			printf ("Remote command. Error running accept on socket %d. More info: %s\n",
@@ -6332,7 +6332,7 @@ void *thread_remote_protocol_function(void *nada)
 
 		else {
 
-            thread_remote_protocol_function_aux_new_conn(sock_conectat);
+            thread_remote_protocol_function_aux_new_conn(sock_connected_client);
 
 		}
 

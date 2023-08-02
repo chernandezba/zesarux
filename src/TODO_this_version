@@ -363,7 +363,7 @@ creo que antes tampoco liberaba el socket al salir una conexion. quiza solo cuan
 -completar remote_cerrar_conexion
 -al entrar nueva conexion creo que desactiva cpu-step
 -referencias a remote_salir_conexion:
-*thread_remote_protocol_function, en:
+ok ? *thread_remote_protocol_function, en:
 		if (sock_conectat<0) {
 			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
 				sock_listen,strerror(errno));
@@ -375,7 +375,7 @@ creo que antes tampoco liberaba el socket al salir una conexion. quiza solo cuan
 			sleep(1);
 		}
 
-*end_remote_protocol, en:
+ok ? *end_remote_protocol, en:
 	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
 
 	remote_salir_conexion=1;
