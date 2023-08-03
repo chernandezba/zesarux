@@ -23,6 +23,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+//temporal para uso de sleep
+#include <unistd.h>
+
 #include "cpu.h"
 #include "tbblue.h"
 #include "mem128.h"

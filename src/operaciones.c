@@ -2740,7 +2740,7 @@ IMMEDIATE
 
             if (offset<0) {
                 printf("Escribiendo en rom normal\n");
-                if (dir<4) sleep(1);
+                //if (dir<4) sleep(1);
                
                 z80_byte *puntero;
                 puntero=tbblue_return_segment_memory(dir);
@@ -2761,7 +2761,7 @@ IMMEDIATE
 	
             else {
                 printf("Escribiendo en no rom normal\n");
-                if (dir<4) sleep(1);
+                //if (dir<4) sleep(1);
 
                 altrompointer=&memoria_spectrum[offset+dir];
 			    *altrompointer=valor;

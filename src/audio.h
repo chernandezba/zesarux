@@ -64,7 +64,7 @@
 //Frecuencia teniendo en cuenta la velocidad de la cpu
 extern int frecuencia_sonido_variable;
 
-
+extern void audio_menu_tone_generator_play_note(char *nota,int duracion);
 
 //duracion en ms de un buffer de sonido, normalmente  (1000.0/((FRECUENCIA_SONIDO)/AUDIO_BUFFER_SIZE))
 //usado en audiodsp con phtreads
