@@ -402,3 +402,5 @@ perdera probablemente ese stack la llegar al thread
 
 
 -arreglar tecla ESC en curses: ni en mac ni en linux la lee
+
+-en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
