@@ -341,7 +341,9 @@ Problema es que ahora hay un thread y un socket abierto con el slave. Habria que
 que vaya enviando snapshot uno a uno a cada slave
 *ZRCP que permita más de 1 conexión a la vez, para recibir los eventos de envíos de teclas de los slaves: estamos en ello
 Pero un slave deberia enviar a todos los otros slaves tambien...
-O el master cuando recibe de un slave, tiene que reenviar mismo evento a los otros slaves
+O el master cuando recibe de un slave, tiene que reenviar mismo evento a los otros slaves (quiza en mismo bucle de recepcion)
+Como sabemos los otros slaves? pues lo sabemos porque tendremos que 1 master envia snapshot a todos los slaves
+Y con eso mismo, cuando recibimos un evento de teclado de un slave, lo tenemos que enviar al resto de slaves que ya sabemos por el punto anterior
 
 
 -mejoras accesibilidad: 
@@ -399,3 +401,4 @@ ok ? *end_remote_protocol, en:
 perdera probablemente ese stack la llegar al thread
 
 
+-arreglar tecla ESC en curses: ni en mac ni en linux la lee
