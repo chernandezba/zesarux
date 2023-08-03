@@ -2569,10 +2569,17 @@ void menu_debug_configuration_remoteproto_port(MENU_ITEM_PARAMETERS)
 								return;
 			}
 
+            //Si esta habilitado, reiniciamos ZRCP
+            if (remote_protocol_enabled.v) {
+                printf("Restart ZRCP\n");
+                end_remote_protocol();
+            }
 
-			end_remote_protocol();
-			remote_protocol_port=port;
-			init_remote_protocol();
+            remote_protocol_port=port;
+            
+            if (remote_protocol_enabled.v) {
+                init_remote_protocol();
+            }
 	}
 
 }
@@ -2990,7 +2997,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 		menu_add_item_menu_ayuda(array_menu_settings_debug,"Enables or disables ZEsarUX remote command protocol (ZRCP)");
 		menu_add_item_menu_shortcut(array_menu_settings_debug,'r');
 
-		if (remote_protocol_enabled.v) {
+		//if (remote_protocol_enabled.v) {
 			menu_add_item_menu_en_es_ca(array_menu_settings_debug,MENU_OPCION_NORMAL, menu_debug_configuration_remoteproto_port,NULL,
                 "ZRCP ~~port","~~Puerto ZRCP","~~Port ZRCP");
             menu_add_item_menu_prefijo_format(array_menu_settings_debug,"[%d] ",remote_protocol_port );
@@ -3006,7 +3013,7 @@ void menu_settings_debug(MENU_ITEM_PARAMETERS)
 			menu_add_item_menu_tooltip(array_menu_settings_debug,"Changes remote command protocol prompt");
 			menu_add_item_menu_ayuda(array_menu_settings_debug,"Changes remote command protocol prompt");
 			menu_add_item_menu_shortcut(array_menu_settings_debug,'m');            
-		}
+		//}
 
 #endif
 
