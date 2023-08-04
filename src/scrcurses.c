@@ -1735,7 +1735,11 @@ int scrcurses_init (void) {
 
 
 	wtimeout(mainwin,0);
-	notimeout(mainwin, TRUE);
+
+	//Por alguna razón que desconozco, esto se hacia en el pasado y hacía que pudiera leer tecla ESC (esperando 1 segundo)
+	//Pero en algún momento esto dejó de funcionar, de manera que si descomento el código, no puedo leer ESC nunca,
+	//no salta el timeout
+	//notimeout(mainwin, TRUE);
 
 	//enviar todas teclas y no gestionar ni CTRL+C 
 	raw();
