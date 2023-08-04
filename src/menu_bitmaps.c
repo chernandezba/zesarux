@@ -519,10 +519,10 @@ char *bitmap_button_ext_desktop_exit[EXT_DESKTOP_BUTTONS_ANCHO]={
 
 char *bitmap_button_ext_desktop_close_all_menus[EXT_DESKTOP_BUTTONS_ANCHO]={
     //01234567890123456789012345
-    "                  rryyggcc",     //0
-  	" xxx xx x  x x   rryyggcc ",      
-	" x x x   x xxx  rryyggcc  ",		
-	"               rryyggcc   ",		
+	"                rryyggcc  ",     //0
+	" xxx xx x  x x  rryyggcc  ",
+	" x x x   x xxx  rryyggcc  ",
+	"                rryyggcc  ",
 	"xxxxxxxxxxxxxxxxxxxxxxxxxx",	
 	"                          ",			
 	"      R                 R ",			
