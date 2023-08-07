@@ -335,18 +335,7 @@ Ejemplo: AY Player, pulsar Editar playlist, y ahí cerrar todos menus
 esto a nivel de estadística, permito saber en estadisticas web (enviando un parametro) que se han ejecutado instancias de testeo de docker
 
 
--Para ZENG con más de 2 pcs:
-*recibir mas de una conexion ZRCP. Hecho
-*poder enviar a mas de un host, ya sea master o slave. Hecho
-Hay que especificar en cada ZEsarUX, las ips de todos los otros hosts, separados por comas. Ejemplo con 3 hosts:
 
-192.168.1.139 Host A (master ZENG)
-192.168.1.191 Host B (slave ZENG)
-192.168.1.147 Host C (slave ZENG)
-
-On Host A, set hosts: 192.168.1.191,192.168.1.147. Set as master
-On Host B, set hosts: 192.168.1.139,192.168.1.147. Uncheck master
-On Host C, set hosts: 192.168.1.139,192.168.1.191. Uncheck master
 
 
 
@@ -417,3 +406,6 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 1.139 mac
 1.91 debian 32
 1.147 debian 64
+1. freebsd
+
+-zeng: operaciones a los diferentes nodos, en vez de ser secuencial, que genere un thread de envio

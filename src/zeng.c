@@ -65,7 +65,7 @@ zeng_key_presses zeng_key_presses_array[ZENG_FIFO_SIZE];
 //Antiguo indice a zsocket cuando se gestionaba solo 1 slave
 //int zeng_remote_socket=-1;
 
-int zeng_remote_sockets[ZENG_MAX_SLAVES];
+int zeng_remote_sockets[ZENG_MAX_REMOTE_HOSTS];
 
 int zeng_total_remotes=0;
 
@@ -374,7 +374,7 @@ int zeng_connect_remotes(void)
 			//Si somos master, que el remoto no lo sea tambien
 			int es_master_remoto=parse_string_to_number(buffer);
 			if (es_master_remoto) {
-				debug_printf (VERBOSE_ERR,"Local and remote ZEsarUX instances are both master. That is NOT recommended. Use at your own risk ;)");
+				debug_printf (VERBOSE_ERR,"There is one than one ZENG master. That is NOT recommended. Use at your own risk ;)");
 			}
 
 		}
@@ -389,6 +389,11 @@ int zeng_connect_remotes(void)
 
 
        zeng_remote_sockets[zeng_total_remotes++]=indice_socket;
+
+       if (zeng_total_remotes>ZENG_MAX_REMOTE_HOSTS) {
+            debug_printf(VERBOSE_ERR,"No more than %d remote hosts are allowed! Disabling ZENG",ZENG_MAX_REMOTE_HOSTS);
+            return 0;
+       }
 
     }
 

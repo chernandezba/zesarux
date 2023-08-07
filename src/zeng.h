@@ -36,7 +36,9 @@ typedef struct s_zeng_key_presses zeng_key_presses;
 //50 teclas en cola, que es una barbaridad
 #define ZENG_FIFO_SIZE 50
 
-#define ZENG_MAX_SLAVES 16
+//Total de hosts al que se conecta un hosts concreto
+//Por tanto el total de hosts interconectados entre ellos es este valor +1 (+1 por ser el mismo)
+#define ZENG_MAX_REMOTE_HOSTS 15
 
 extern int zeng_fifo_add_element(zeng_key_presses *elemento);
 
