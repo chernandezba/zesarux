@@ -570,8 +570,8 @@ z80_byte last_inves_low_ram_poke_menu=255;
 z80_bit inves_ula_bright_error={1};
 
 /*
-el valor del vector de interrupciones es I*256+FFh simplemente porque durante la INT, 
-la ULA siempre está generando el borde, por lo que el valor del bus flotante es "todo a alta impedancia" y eso, 
+el valor del vector de interrupciones es I*256+FFh simplemente porque durante la INT,
+la ULA siempre está generando el borde, por lo que el valor del bus flotante es "todo a alta impedancia" y eso,
 en el Spectrum significa "1"
 */
 z80_int get_im2_interrupt_vector(void)
@@ -751,19 +751,19 @@ void cpu_set_turbo_speed(void)
 
 	z80_bit antes_mutiface_enabled;
 	antes_mutiface_enabled.v=multiface_enabled.v;
-	
+
 	z80_bit antes_cpu_code_coverage_enabled;
 	antes_cpu_code_coverage_enabled.v=cpu_code_coverage_enabled.v;
-	
+
 	z80_bit antes_cpu_history_enabled;
 	antes_cpu_history_enabled.v=cpu_history_enabled.v;
-	
+
 	z80_bit antes_extended_stack_enabled;
 	antes_extended_stack_enabled.v=extended_stack_enabled.v;
-	
-	
+
+
 	do_not_run_init_z88_memory_slots=1;
-	
+
 
 	if (cpu_turbo_speed>MAX_CPU_TURBO_SPEED) {
 		debug_printf (VERBOSE_INFO,"Turbo mode higher than maximum. Setting to %d",MAX_CPU_TURBO_SPEED);
@@ -826,18 +826,18 @@ void cpu_set_turbo_speed(void)
 	if (antes_betadisk_enabled.v) betadisk_enable();
 
 	if (antes_mutiface_enabled.v) multiface_enable();
-	
-	
-	
+
+
+
 	if (antes_cpu_code_coverage_enabled.v) set_cpu_core_code_coverage_enable();
-	
-	
+
+
 	if (antes_cpu_history_enabled.v) set_cpu_core_history_enable();
-	
-	
+
+
 	if (antes_extended_stack_enabled.v) set_extended_stack();
-	
-	
+
+
 
 	cpu_turbo_speed_antes=cpu_turbo_speed;
 
@@ -848,21 +848,21 @@ void cpu_set_turbo_speed(void)
 --Metodo clasico de obtener tablas contend:
 
 	Con O0:
-cpu: X01 tiempo: 1611 us	
+cpu: X01 tiempo: 1611 us
 cpu: X08 tiempo: 4117 us
 
 	Con O2:
-cpu: X01 tiempo: 880 us	
-cpu: X08 tiempo: 1031 us	
+cpu: X01 tiempo: 880 us
+cpu: X08 tiempo: 1031 us
 
 
 
 	--Con rutina contend con memset:
 	Con O0:
-cpu: X08 tiempo: 863 us	
+cpu: X08 tiempo: 863 us
 
 	Con O2:
-cpu: X08 tiempo: 539 us	
+cpu: X08 tiempo: 539 us
 
 	-- Con tabla cacheada al cambiar speed:
 	Con O0:
@@ -880,7 +880,7 @@ cpu: X08 tiempo: 438 us
 void z80_no_ejecutado_block_opcodes(void)
 {
     z80_ejecutada_instruccion_bloque_ld_cp=0;
-    z80_ejecutada_instruccion_bloque_ot_in=0;    
+    z80_ejecutada_instruccion_bloque_ot_in=0;
 }
 
 void z80_adjust_flags_interrupt_block_opcode(void)
@@ -902,7 +902,7 @@ void z80_adjust_flags_interrupt_block_opcode(void)
         When INxR / OTxR is interrupted, the following flags are modified compared to the non-interrupted INx / OUTx:
 
 
-        YF (flag 5)= PC.13  
+        YF (flag 5)= PC.13
         XF (flag 3)= PC.11
         */
         Z80_FLAGS &=(255-FLAG_3-FLAG_5);
@@ -911,7 +911,7 @@ void z80_adjust_flags_interrupt_block_opcode(void)
         z80_byte final_35=high_pc & (8+32);
         Z80_FLAGS |=final_35;
 
-    }		
+    }
 
     if (z80_ejecutada_instruccion_bloque_ot_in) {
         /*
@@ -953,12 +953,12 @@ void z80_adjust_flags_interrupt_block_opcode(void)
             }
         } else {
             PF = PF ^ util_parity(reg_b & 0x7) ^ 1;
-        }        
+        }
 
         if (PF) Z80_FLAGS |=FLAG_PV;
         if (HF) Z80_FLAGS |=FLAG_H;
 
-    }	
+    }
 
 }
 
@@ -1241,25 +1241,25 @@ void reset_cpu(void)
 
 	if (MACHINE_IS_SVI) {
 		svi_reset();
-	}	
+	}
 
 	if (MACHINE_IS_COLECO) {
 		coleco_reset();
-	}	
+	}
 
 	if (MACHINE_IS_SG1000) {
 		sg1000_reset();
-	}	
+	}
 
 	if (MACHINE_IS_SMS) {
 		sms_reset();
-	}	  
+	}
 
     if (MACHINE_IS_PCW) {
         pcw_reset();
-    }  
+    }
 
-	vdp_9918a_reset();	
+	vdp_9918a_reset();
 
 	t_estados=0;
 	t_scanline=0;
@@ -1397,7 +1397,7 @@ util_stats_init();
 
 	if (transtape_enabled.v) {
 		transtape_reset();
-	}    
+	}
 
 	if (specmate_enabled.v) {
 		specmate_reset();
@@ -1405,7 +1405,7 @@ util_stats_init();
 
 	if (phoenix_enabled.v) {
 		phoenix_reset();
-	}  
+	}
 
 	if (defcon_enabled.v) {
 		defcon_reset();
@@ -1413,7 +1413,7 @@ util_stats_init();
 
 	if (ramjet_enabled.v) {
 		ramjet_reset();
-	}  
+	}
 
 	if (interface007_enabled.v) {
 		interface007_reset();
@@ -1421,7 +1421,7 @@ util_stats_init();
 
 	if (dinamid3_enabled.v) {
 		dinamid3_reset();
-	}                      
+	}
 
     if (pd765_enabled.v) {
         pd765_reset();
@@ -1453,7 +1453,7 @@ char *string_machines_list_description=
 
 							" P340     ZX Spectrum +3 (ROM v4.0)\n"
 							" P341     ZX Spectrum +3 (ROM v4.1)\n"
-							" P3S      ZX Spectrum +3 (Spanish)\n"							
+							" P3S      ZX Spectrum +3 (Spanish)\n"
 
                             " TC2048   Timex Computer 2048\n"
                             " TC2068   Timex Computer 2068\n"
@@ -1464,7 +1464,7 @@ char *string_machines_list_description=
 							" Inves    Inves Spectrum+\n"
                             " 48ks     ZX Spectrum+ 48k (Spanish)\n"
 							" 128ks    ZX Spectrum+ 128k (Spanish)\n"
-                     
+
 
                         " TK80     Microdigital TK80\n"
                         " TK82     Microdigital TK82\n"
@@ -1505,7 +1505,7 @@ char *string_machines_list_description=
                             " CPC6128  Amstrad CPC 6128\n"
                             " PCW8256  Amstrad PCW 8256\n"
                             " PCW8512  Amstrad PCW 8512\n"
-							
+
 							" MSX1     MSX1\n"
 							" Coleco   Colecovision\n"
 							" SG1000   Sega SG1000\n"
@@ -1678,7 +1678,7 @@ void cpu_help_expert(void)
     printf(
         "\n"
         "--chardetectignorenl       Ignore new line characters (13, 10) on char detection\n"
-        "--linewidth n              Print char line width\n"        
+        "--linewidth n              Print char line width\n"
 
         //estos dos settings tienen tambien opcion para desactivar el setting por cambios en valor por defecto a partir ZEsarUX 9.3
 		"--linewidthwaitspace       Text will be sent to speech when line is larger than line width and a space, comma or semicolon is detected\n"
@@ -1699,7 +1699,7 @@ void cpu_help_expert(void)
 		"--textspeechwait           Wait and pause the emulator until the Speech program returns\n"
 		"--textspeechmenu           Also send text menu entries to Speech program\n"
 		"--textspeechtimeout n      After some seconds the text will be sent to the Speech program when no new line is sent. Between 0 and 99. 0 means never\n"
-        
+
 		"\n"
 		"\n"
 		"Accessibility - Others\n"
@@ -1831,7 +1831,7 @@ printf (
 		"--spectrum-reduced-core     Use Spectrum reduced core. It uses less cpu, ideal for slow devices like Raspberry Pi One and Zero\n"
 		"                            The following features will NOT be available or will NOT be properly emulated when using this core:\n"
 		"                            Debug t-states, Char detection, +3 Disk, Save to tape, Divide, Divmmc, RZX, Raster interrupts, TBBlue Copper, Audio DAC, Video out to file\n"
-		"--no-spectrum-reduced-core  Do not use Spectrum reduced core\n"  
+		"--no-spectrum-reduced-core  Do not use Spectrum reduced core\n"
 
 
 		"\n"
@@ -1916,7 +1916,7 @@ printf (
         "--textadvmap-no-show-unvisited      Text adventure map: no not show unvisited rooms\n"
         "--textadvmap-no-show-objects        Text adventure map: no not show objects\n"
         "--textadvmap-no-show-pictures       Text adventure map: no not show pictures\n"
-  
+
 
 
 		"\n"
@@ -1955,11 +1955,11 @@ printf (
 	    "--disablearttext                       Disable artistic emulation for curses & stdout & simpletext\n"
 		"--allpixeltotext                       Enable all pixel to text mode\n"
 		"--allpixeltotext-scale n               All pixel to text mode scale\n"
-		"--allpixeltotext-invert                All pixel to text mode invert mode\n"		
+		"--allpixeltotext-invert                All pixel to text mode invert mode\n"
         "--allpixeltotext-width n               All pixel to text max width (in chars) (minimum 1, maximum 9999)\n"
         "--allpixeltotext-x-offset n            All pixel to text X-Offset (in chars) (minimum 0, maximum 9999)\n"
         "--allpixeltotext-height n              All pixel to text max height (in chars) (minimum 1, maximum 9999)\n"
-        "--allpixeltotext-y-offset n            All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"    
+        "--allpixeltotext-y-offset n            All pixel to text Y-Offset (in chars) (minimum 0, maximum 9999)\n"
 		"--text-keyboard-add text               Add a string to the Adventure Text OSD Keyboard. The first addition erases the default text keyboard.\n"
 		" You can use hotkeys by using double character ~~ just before the letter, for example:\n"
 		" --text-keyboard-add ~~north   --text-keyboard-add e~~xamine\n");
@@ -1970,7 +1970,7 @@ printf (
 		DEFAULT_ADV_KEYBOARD_KEY_LENGTH);
 
 printf (
-		"--text-keyboard-finalspc               Sends a space after every word on the Adventure Text OSD Keyboard\n"      
+		"--text-keyboard-finalspc               Sends a space after every word on the Adventure Text OSD Keyboard\n"
         "--textimageprogram p                   Specify a path to a program or script to be sent the emulator text shown to generate images\n"
         "--textimage-method-location s          Set the method to detect location text, one of: ");
 
@@ -2001,7 +2001,7 @@ printf("\n"
 
 		"--autoredrawstdout                     Enable automatic display redraw for stdout & simpletext drivers\n"
 		"--sendansi                             Sends ANSI terminal control escape sequences for stdout & simpletext drivers, to use colours and cursor control\n"
-		"--textfps n                            Sets FPS for stdout and simpletext text drivers\n"        
+		"--textfps n                            Sets FPS for stdout and simpletext text drivers\n"
 
 
 
@@ -2089,7 +2089,7 @@ printf("\n"
 		"--zoomx n                                      Horizontal Zoom Factor\n"
 		"--zoomy n                                      Vertical Zoom Factor\n"
         "--no-autochange-zoom-big-display               No autochange to zoom 1 when switching to machine with big display (Next, QL, CPC, ...)\n"
-		
+
 		"--reduce-075                                   Reduce display size 4/3 (divide by 4, multiply by 3)\n"
 		"--reduce-075-no-antialias                      Disable antialias for reduction, enabled by default\n"
 		"--reduce-075-offset-x n                        Destination offset x on reduced display\n"
@@ -2104,11 +2104,11 @@ printf("\n"
 		"--zxdesktop-disable-on-fullscreen              Disable ZX Desktop when going to full screen\n"
         "--zxdesktop-no-restore-win-after-fullscreen    Do not restore windows after disabling full screen, when --zxdesktop-disable-on-fullscreen setting is set\n"
 		"--disable-border-on-fullscreen                 Disable Border when going to full screen\n"
-        "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"           
-		"--disableborder                                Disable Border\n"   
-        "--disablefooter                                Disable window footer\n"             
-        "--ignoremouseclickopenmenu                     Ignore mouse clicking to open menu or ZX Desktop buttons\n" 
-        "--limitopenmenu                                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"               
+        "--disable-footer-on-fullscreen                 Disable Footer when going to full screen\n"
+		"--disableborder                                Disable Border\n"
+        "--disablefooter                                Disable window footer\n"
+        "--ignoremouseclickopenmenu                     Ignore mouse clicking to open menu or ZX Desktop buttons\n"
+        "--limitopenmenu                                Limit the action to open menu (F5 by default, joystick button). To open it, you must press the key 3 times in one second\n"
 		"--advancedmenus                                Show advanced menu items\n"
         "--language language                            Select alternate language for menu. Available languages: es (Spanish), ca (Catalan). Default language if not set: English\n"
         "--online-download-path p                       Where to download files from the speccy and zx81 online browser. If not set, they are download to a temporary folder\n"
@@ -2122,7 +2122,7 @@ printf("\n"
         "--nowelcomemessage                             Disable welcome message\n"
         "--enable-xanniversary-logo                     Enable X Anniversary logo (enabled by default on 10.10 version)\n"
         "--disable-xanniversary-logo                    Disable X Anniversary logo (enabled by default on 10.10 version)\n"
-        "--disablemenufileutils                         Disable File Utilities menu\n"  
+        "--disablemenufileutils                         Disable File Utilities menu\n"
 
 
 		"\n"
@@ -2167,7 +2167,7 @@ printf("\n"
 
 #ifdef USE_LINUXREALJOYSTICK
 		"--no-native-linux-realjoy  Do not use native linux real joystick support. Instead use the video driver joystick support (currently only SDL)\n"
-#endif		
+#endif
         "--joystickevent but evt     Set a joystick button or axis to an event (changes joystick to event table)\n"
         "                            If it's a button (not axis), must be specified with its number, without sign, for example: 2\n"
         "                            If it's axis, must be specified with its number and sign, for example: +2 or -2\n"
@@ -2228,7 +2228,7 @@ printf("\n"
 		"Network\n"
 		"-------\n"
 		"\n"
-		
+
 		"--zeng-remote-hostname s    ZENG last remote hostname\n"
 		"--zeng-remote-port n        ZENG last remote port\n"
 		"--zeng-snapshot-interval n  ZENG snapshot interval\n"
@@ -2256,11 +2256,11 @@ printf("\n"
 		"\n"
 		"Snapshot Settings\n"
 		"-----------------\n"
-		"\n"        
+		"\n"
 
 		"--smartloadpath path        Select initial smartload path\n"
 		"--addlastfile file          Add a file to the last files used\n"
-		"--quicksavepath path        Select path for quicksave & continous autosave\n" 
+		"--quicksavepath path        Select path for quicksave & continous autosave\n"
 		"--autoloadsnap              Load last snapshot on start\n"
 		"--autosavesnap              Save snapshot on exit\n"
 		"--autosnappath path         Folder to save/load automatic snapshots\n"
@@ -2279,7 +2279,7 @@ printf("\n"
 		"Statistics\n"
 		"----------\n"
 		"\n"
-		
+
 		"--total-minutes-use n                 Total minutes of use of ZEsarUX\n"
 		"--stats-send-already-asked            Do not ask to send statistics\n"
 		"--stats-send-enabled                  Enable send statistics\n"
@@ -2289,7 +2289,7 @@ printf("\n"
 		"--stats-last-avail-version s          ZEsarUX last available version to download\n"
 		"--stats-speccy-queries n              Total queries on the speccy online browser\n"
 		"--stats-zx81-queries n                Total queries on the zx81 online browser\n"
-		
+
 
 		"\n"
 		"\n"
@@ -2325,7 +2325,7 @@ printf("\n"
 		"Storage - Dandanator Settings\n"
 		"-----------------------------\n"
 		"\n"
-        
+
         "--dandanator-rom f              Set ZX Dandanator rom file\n"
         "--enable-dandanator             Enable ZX Dandanator emulation. Requires --dandanator-rom\n"
         "--dandanator-press-button       Simulates pressing button on ZX Dandanator. Requires --enable-dandanator\n"
@@ -2352,7 +2352,7 @@ printf("\n"
         "--hilow-file f                  Set HiLow Data Drive image file\n"
         "--enable-hilow                  Enable HiLow Data Drive. Usually requires --hilow-file\n"
 		"--hilow-write-protection        Enable HiLow Data Drive write protection\n"
-		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"     
+		"--hilow-no-persistent-writes    Disable HiLow Data Drive persistent writes\n"
 
 
 		"\n"
@@ -2364,7 +2364,7 @@ printf("\n"
 		"--ide-file f                    Set ide image file\n"
 		"--enable-ide                    Enable IDE emulation. Usually requires --ide-file\n"
 		"--ide-write-protection          Enable IDE write protection\n"
-		"--ide-no-persistent-writes      Disable IDE persistent writes\n"		
+		"--ide-no-persistent-writes      Disable IDE persistent writes\n"
 		"--enable-divide-ports           Enable DIVIDE emulation ports only, but not paging. Usually requires --enable-ide\n"
 		"--enable-divide-paging          Enable DIVIDE paging only\n"
 		"--enable-divide                 Enable DIVIDE emulation. Usually requires --enable-ide\n"
@@ -2409,7 +2409,7 @@ printf("\n"
             "the mmc image and syncs the changes. "
             "You can use that setting up to %d times. Destination must not include 0:/ prefix. mmc file is set with setting --mmc-file\n",
             MAX_COPY_FILES_TO_MMC);
-        
+
         printf(
 		"--enable-divmmc-ports           Enable DIVMMC emulation ports only, but not paging. Usually requires --enable-mmc\n"
 		"--enable-divmmc-paging          Enable DIVMMC paging only\n"
@@ -2422,7 +2422,7 @@ printf("\n"
 		"\n"
 		"Storage - QL MDV & FLP Settings\n"
 		"-------------------------------\n"
-		"\n"        
+		"\n"
 
 		"--enable-ql-mdv-flp             Enable QL Microdrive & Floppy emulation\n"
 		"--ql-mdv1-root-dir p            Set QL mdv1 root directory\n"
@@ -2510,7 +2510,7 @@ printf("\n"
 		"--changeslowparameters      Change some performance parameters (frameskip, realvideo, etc) "
 		"on slow machines like raspberry, etc\n"
 
-      
+
 
 		"\n"
 		"\n"
@@ -2531,8 +2531,8 @@ printf("\n"
 		"--zxdesktop-transparent-upper-buttons          Make ZX Desktop upper buttons transparent\n"
 		"--zxdesktop-transparent-lower-buttons          Make ZX Desktop lower buttons transparent\n"
         "--zxdesktop-disable-box-upper-buttons          Disable box around ZX Desktop upper buttons\n"
-        "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"  
-        "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"     
+        "--zxdesktop-disable-box-lower-buttons          Disable box around ZX Desktop lower buttons\n"
+        "--zxdesktop-disable-footer-switch              Disable ZX Desktop footer enlarge/reduce buttons\n"
         "--zxdesktop-disable-frame-emulated-display     Disable showing a frame around the emulated machine display\n"
         "--zxdesktop-scr-file f                         Set ZX Desktop SCR background file\n"
         "--zxdesktop-scr-enable                         Enable ZX Desktop SCR background file\n"
@@ -2545,11 +2545,11 @@ printf("\n"
         "--zxdesktop-empty-trash-on-exit                Empty Trash on exit ZEsarUX\n"
         "--zxdesktop-no-show-indicators-open-apps       Show icon indicators for open apps\n"
         "--zxdesktop-no-transparent-configurable-icons  Make ZX Desktop configurable icons non transparent\n"
-        "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"         
+        "--zxdesktop-no-configurable-icons-text-bg      Disable background on configurable icons text\n"
 
         "--zxdesktop-add-icon x y a n e s               Add icon to position x,y, to action a, icon name n, extra parameters e, status s. "
-          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");     
-     
+          "Icon name and extra parameters are mandatory, so if they are blank, just write it as \"\". status can be: exists or deleted. action can be: ");
+
 
         for (i=0;i<MAX_F_FUNCTIONS;i++) {
             printf ("%s ",defined_direct_functions_array[i].texto_funcion);
@@ -2568,7 +2568,7 @@ printf("\n"
 
 
 
-        printf("\n"        
+        printf("\n"
 
 
 		"\n"
@@ -2584,9 +2584,9 @@ printf("\n"
         "--menucharheight n                       Character size height for menus valid values: 8,7 or 6\n"
 		"--hidemousepointer                       Hide Mouse Pointer. Not all video drivers support this\n"
 		"--disablemenumouse                       Disable mouse on emulator menu\n"
-        
+
 		//"--overlayinfo              Overlay on screen some machine info, like when loading tape\n"
-	
+
 		"--disablemultitaskmenu                   When multitask is disabled, both emulation, background windows and other menu features are stopped when opening the menu\n"
 		//"--disablebw-no-multitask   Disable changing to black & white colours on the emulator machine when menu open and multitask is off\n"
         "--stopemulationmenu                      When multitask is enabled, you can disable emulation when opening the menu\n"
@@ -2606,7 +2606,7 @@ printf("\n"
 	printf (
 		"--menu-mix-method s                      How to mix menu and the layer below. s should be one of: ");
 
-		
+
 		for (i=0;i<MAX_MENU_MIX_METHODS;i++) {
 			printf ("%s ",screen_menu_mix_methods_strings[i]);
 		}
@@ -2619,10 +2619,10 @@ printf (
 
 		"--menu-transparency-perc n               Transparency percentage to apply to menu\n"
 		//"--menu-darken-when-open    Darken layer below menu when menu open\n"
-		"--menu-bw-multitask                      Grayscale layer below menu when menu opened and multitask is disabled\n"		
+		"--menu-bw-multitask                      Grayscale layer below menu when menu opened and multitask is disabled\n"
 		"--disabletooltips                        Disable tooltips on menu\n"
 		"--no-first-aid s                         Disable first aid message s. Do not throw any error if invalid\n"
-		"--disable-all-first-aid                  Disable all first aid messages\n" 
+		"--disable-all-first-aid                  Disable all first aid messages\n"
 		"--forcevisiblehotkeys                    Force always show hotkeys. By default it will only be shown after a timeout or wrong key pressed\n"
 		"--forceconfirmyes                        Force confirmation dialogs yes/no always to yes\n"
 		"--gui-style s                            Set GUI style. Available: ");
@@ -2644,7 +2644,7 @@ printf (
 		"--setmachinebyname                       Select machine by name instead of manufacturer\n"
 		"--disablemenu                            Disable menu\n"
 		"--disablemenuandexit                     Disable menu. Any event that opens the menu will exit the emulator\n"
-		
+
 		//"--text-keyboard-clear      Clear all entries of the Adventure Text Keyboard\n"
 
 		//"--windowgeometry s x y w h Set window geometry. Parameters: window name (s), x coord, y coord, width (w), height (h)\n"
@@ -2659,7 +2659,7 @@ printf (
 
 
 
-			
+
 		"\n"
 		"\n"
 		"Miscellaneous\n"
@@ -2675,8 +2675,8 @@ printf (
 		"--machinelist                            Get machines list names whitespace separated, and exit\n"
 		"--disablebetawarning text                Do not pause beta warning message on boot for version named as that parameter text\n"
 		"--tbblue-autoconfigure-sd-already-asked  Do not ask to autoconfigure tbblue initial SD image\n"
-		
-		//Esto no hace falta que lo vea un usuario, solo lo uso yo para probar partes del emulador 
+
+		//Esto no hace falta que lo vea un usuario, solo lo uso yo para probar partes del emulador
 		//"--codetests                Run develoment code tests\n"
 		"--tonegenerator n                        Enable tone generator. Possible values: 1: generate max, 2: generate min, 3: generate min/max at 50 Hz\n");
 
@@ -2693,7 +2693,7 @@ printf (
         printf("\n"
         "--sensor-set-abs position                Set widget type absolute instead of percentaje for menu View sensors. Position must be 0 to %d\n",MENU_VIEW_SENSORS_TOTAL_ELEMENTS-1);
 
- 
+
         printf(
         "--history-item-add-debugcpu-ptr s        Add string as history for debug cpu change pointer\n"
         "--history-item-add-hexeditor-ptr s       Add string as history for hexeditor change pointer\n"
@@ -2717,7 +2717,7 @@ printf (
         "--convert-pzx-tap source destination           Convert pzx source file to destination tap\n"
 
 
-        "\n\n"        
+        "\n\n"
 
 	);
 
@@ -2851,7 +2851,7 @@ int set_scrdriver_caca(void)
 
 
 
-int set_scrdriver_null(void) 
+int set_scrdriver_null(void)
 {
     scr_refresca_pantalla=scrnull_refresca_pantalla;
     scr_refresca_pantalla_solo_driver=scrnull_refresca_pantalla_solo_driver;
@@ -2866,7 +2866,7 @@ int set_scrdriver_null(void)
 
 #ifdef COMPILE_STDOUT
 
-int set_scrdriver_stdout(void) 
+int set_scrdriver_stdout(void)
 {
     scr_refresca_pantalla=scrstdout_refresca_pantalla;
     scr_refresca_pantalla_solo_driver=scrstdout_refresca_pantalla_solo_driver;
@@ -2883,7 +2883,7 @@ int set_scrdriver_stdout(void)
 
 #ifdef COMPILE_SIMPLETEXT
 
-int set_scrdriver_simpletext(void) 
+int set_scrdriver_simpletext(void)
 {
     scr_refresca_pantalla=scrsimpletext_refresca_pantalla;
     scr_refresca_pantalla_solo_driver=scrsimpletext_refresca_pantalla_solo_driver;
@@ -2900,7 +2900,7 @@ int set_scrdriver_simpletext(void)
 
 
 #ifdef COMPILE_DSP
-int set_audiodriver_dsp(void) 
+int set_audiodriver_dsp(void)
 {
     audio_init=audiodsp_init;
     audio_send_frame=audiodsp_send_frame;
@@ -2914,7 +2914,7 @@ int set_audiodriver_dsp(void)
 
 
 #ifdef COMPILE_ONEBITSPEAKER
-int set_audiodriver_onebitspeaker(void) 
+int set_audiodriver_onebitspeaker(void)
 {
     audio_init=audioonebitspeaker_init;
     audio_send_frame=audioonebitspeaker_send_frame;
@@ -2929,7 +2929,7 @@ int set_audiodriver_onebitspeaker(void)
 
 
 #ifdef COMPILE_SDL
-int set_audiodriver_sdl(void) 
+int set_audiodriver_sdl(void)
 {
     audio_init=audiosdl_init;
     audio_send_frame=audiosdl_send_frame;
@@ -2943,7 +2943,7 @@ int set_audiodriver_sdl(void)
 
 
 #ifdef COMPILE_ALSA
-int set_audiodriver_alsa(void) 
+int set_audiodriver_alsa(void)
 {
     audio_init=audioalsa_init;
     audio_send_frame=audioalsa_send_frame;
@@ -2956,7 +2956,7 @@ int set_audiodriver_alsa(void)
 #endif
 
 #ifdef COMPILE_PULSE
-int set_audiodriver_pulse(void) 
+int set_audiodriver_pulse(void)
 {
     audio_init=audiopulse_init;
     audio_send_frame=audiopulse_send_frame;
@@ -2970,7 +2970,7 @@ int set_audiodriver_pulse(void)
 
 
 #ifdef COMPILE_COREAUDIO
-int set_audiodriver_coreaudio(void) 
+int set_audiodriver_coreaudio(void)
 {
     audio_init=audiocoreaudio_init;
     audio_send_frame=audiocoreaudio_send_frame;
@@ -3469,7 +3469,7 @@ void malloc_mem_machine(void) {
 	else if (MACHINE_IS_CPC_6128) {
 
 		//48 kb rom
-		//128 kb ram. 
+		//128 kb ram.
 
                 malloc_machine(176*1024);
                 random_ram(memoria_spectrum,176*1024);
@@ -3478,7 +3478,7 @@ void malloc_mem_machine(void) {
                 cpc_set_memory_pages();
 
 
-        }  
+        }
 
 	else if (MACHINE_IS_CPC_664) {
 
@@ -3492,7 +3492,7 @@ void malloc_mem_machine(void) {
                 cpc_set_memory_pages();
 
 
-        }   
+        }
 
 	else if (MACHINE_IS_PCW_8256) {
 
@@ -3506,7 +3506,7 @@ void malloc_mem_machine(void) {
                 pcw_set_memory_pages();
 
 
-        }   
+        }
 
 	else if (MACHINE_IS_PCW_8512) {
 
@@ -3521,7 +3521,7 @@ void malloc_mem_machine(void) {
 
 
         }
-        
+
         else if (MACHINE_IS_MSX1) {
                 //total 64kb * 4
                 malloc_machine(65536*4);
@@ -3539,7 +3539,7 @@ void malloc_mem_machine(void) {
 
         else if (MACHINE_IS_SVI) {
 			//Total:  5 RAMS de 32 kb, 3 ROMS de 32 kb -> 5*32 + 3*32 = 160 + 96 = 256
-                
+
                 malloc_machine(256*1024);
                 random_ram(memoria_spectrum,256*1024);
 
@@ -3550,10 +3550,10 @@ void malloc_mem_machine(void) {
 
 				svi_init_memory_tables();
 
-        }		
+        }
 
         else if (MACHINE_IS_COLECO) {
-                //total 64kb 
+                //total 64kb
                 malloc_machine(65536);
                 random_ram(memoria_spectrum+32768,32768);
 
@@ -3564,10 +3564,10 @@ void malloc_mem_machine(void) {
 
 				coleco_init_memory_tables();
 
-        }		
+        }
 
         else if (MACHINE_IS_SG1000) {
-                //total 64kb 
+                //total 64kb
                 malloc_machine(65536);
                 random_ram(memoria_spectrum,65536);
 
@@ -3578,10 +3578,10 @@ void malloc_mem_machine(void) {
 
 				sg1000_init_memory_tables();
 
-        }			
+        }
 
         else if (MACHINE_IS_SMS) {
-                //total 1 MByte ROM + 8 kb RAM 
+                //total 1 MByte ROM + 8 kb RAM
                 malloc_machine(SMS_MAX_ROM_SIZE+8192);
                 random_ram(memoria_spectrum,SMS_MAX_ROM_SIZE+8192);
 
@@ -3592,7 +3592,7 @@ void malloc_mem_machine(void) {
 
 				sms_init_memory_tables();
 
-        }	        
+        }
 
 
 	else if (MACHINE_IS_Z88) {
@@ -3684,10 +3684,10 @@ void set_machine_params(void)
 128=Microdigital TK83
 129=Microdigital TK85
 130=z88 (old 30)
-140=amstrad cpc464 
-141=amstrad cpc4128 
+140=amstrad cpc464
+141=amstrad cpc4128
 142=amstrad cpc664
-143=amstrad cpc6128 
+143=amstrad cpc6128
 150=Sam Coupe (old 50)
 151-59 reservado para otros sam (old 51-59)
 160=QL Standard
@@ -3715,7 +3715,7 @@ void set_machine_params(void)
 
 		allow_write_rom.v=0;
 
-		
+
 
         //Ya que se inicializa la maquina, todas las rutinas de nested core se pierden y hay que desactivar los interfaces asociados
 		dandanator_enabled.v=0;
@@ -3769,7 +3769,7 @@ void set_machine_params(void)
 		cpu_duracion_pulso_interrupcion=32;
 
 
-		z80_cpu_current_type=Z80_TYPE_GENERIC;		
+		z80_cpu_current_type=Z80_TYPE_GENERIC;
 
 
 		//cpu_core_loop=cpu_core_loop_spectrum;
@@ -3791,7 +3791,7 @@ void set_machine_params(void)
 
 		else if (MACHINE_IS_PCW) {
 			cpu_core_loop_active=CPU_CORE_PCW;
-		}        
+		}
 
 		else if (MACHINE_IS_SAM) {
 			cpu_core_loop_active=CPU_CORE_SAM;
@@ -3807,23 +3807,23 @@ void set_machine_params(void)
 
 		else if (MACHINE_IS_MSX) {
 			cpu_core_loop_active=CPU_CORE_MSX;
-		}		
+		}
 
 		else if (MACHINE_IS_SVI) {
 			cpu_core_loop_active=CPU_CORE_SVI;
-		}			
+		}
 
 		else if (MACHINE_IS_COLECO) {
 			cpu_core_loop_active=CPU_CORE_COLECO;
-		}	
+		}
 
 		else if (MACHINE_IS_SG1000) {
 			cpu_core_loop_active=CPU_CORE_SG1000;
-		}		
+		}
 
 		else if (MACHINE_IS_SMS) {
 			cpu_core_loop_active=CPU_CORE_SMS;
-		}	        	
+		}
 
         //TODO: de momento core Spectrum
 		else if (MACHINE_IS_PCW) {
@@ -4092,14 +4092,14 @@ void set_machine_params(void)
 					        screen_testados_linea=224;
 
 
-		
+
 							screen_invisible_borde_superior	=32; //para que sumen 320
 							screen_borde_superior=48;
 
 							screen_total_borde_inferior=48;
 
 							/* Tiempos de tsconf:
-							Line, pixels: 
+							Line, pixels:
 blank - left border - pixels - right border
 256x192: 88-52-256-52
 320x200,
@@ -4123,10 +4123,10 @@ You don't need timings for H/V sync =)
                         	screen_total_borde_derecho=64;
                         	screen_invisible_borde_derecho=64;
 
-							z80_cpu_current_type=Z80_TYPE_CMOS;	
+							z80_cpu_current_type=Z80_TYPE_CMOS;
 
 
-							
+
 				}
 
 					else if (MACHINE_IS_BASECONF) {
@@ -4137,7 +4137,7 @@ You don't need timings for H/V sync =)
 				 			ula_contend_port_early=ula_contend_port_early_baseconf;
 				 			ula_contend_port_late=ula_contend_port_late_baseconf;
 
-							 z80_cpu_current_type=Z80_TYPE_CMOS;	
+							 z80_cpu_current_type=Z80_TYPE_CMOS;
 
                                         //Temp timings 128k
                         screen_testados_linea=228;
@@ -4145,7 +4145,7 @@ You don't need timings for H/V sync =)
                         screen_invisible_borde_derecho=104;
 
 
-							
+
 				}
 
                else if (MACHINE_IS_TIMEX_TS_TC_2068) {
@@ -4170,7 +4170,7 @@ You don't need timings for H/V sync =)
                         ula_contend_port_early=ula_contend_port_early_z88;
                         ula_contend_port_late=ula_contend_port_late_z88;
 
-						z80_cpu_current_type=Z80_TYPE_CMOS;		
+						z80_cpu_current_type=Z80_TYPE_CMOS;
 
 			//timer_sleep_machine=original_timer_sleep_machine=5000;
 			original_timer_sleep_machine=5000;
@@ -4194,7 +4194,7 @@ You don't need timings for H/V sync =)
 
                 }
 
-        
+
 		else if (MACHINE_IS_PCW) {
 			contend_read=contend_read_pcw;
 			contend_read_no_mreq=contend_read_no_mreq_pcw;
@@ -4205,7 +4205,7 @@ You don't need timings for H/V sync =)
 
             pd765_enable();
 
-		}        
+		}
 
 		else if (MACHINE_IS_MSX) {
 			contend_read=contend_read_msx1;
@@ -4215,7 +4215,7 @@ You don't need timings for H/V sync =)
 			ula_contend_port_early=ula_contend_port_early_msx1;
 			ula_contend_port_late=ula_contend_port_late_msx1;
 
-			
+
 			// 3579545 / 312 / 50
 			screen_testados_linea=229;
 
@@ -4226,7 +4226,7 @@ You don't need timings for H/V sync =)
             //z80_cpu_current_type=Z80_TYPE_CMOS;
             //Pero a falta de confirmar, de momento no lo toco
 
-		}		
+		}
 
 		else if (MACHINE_IS_SVI) {
 			contend_read=contend_read_svi;
@@ -4239,7 +4239,7 @@ You don't need timings for H/V sync =)
 
 			screen_testados_linea=228;
 
-		}			
+		}
 
 		else if (MACHINE_IS_COLECO) {
 			contend_read=contend_read_coleco;
@@ -4249,10 +4249,10 @@ You don't need timings for H/V sync =)
 			ula_contend_port_early=ula_contend_port_early_coleco;
 			ula_contend_port_late=ula_contend_port_late_coleco;
 
-			
+
 			screen_testados_linea=215;
 
-		}		
+		}
 
 		else if (MACHINE_IS_SG1000) {
 			contend_read=contend_read_sg1000;
@@ -4262,10 +4262,10 @@ You don't need timings for H/V sync =)
 			ula_contend_port_early=ula_contend_port_early_sg1000;
 			ula_contend_port_late=ula_contend_port_late_sg1000;
 
-			
+
 			screen_testados_linea=228;
 
-		}		
+		}
 
 		else if (MACHINE_IS_SMS) {
 			contend_read=contend_read_sms;
@@ -4275,10 +4275,10 @@ You don't need timings for H/V sync =)
 			ula_contend_port_early=ula_contend_port_early_sms;
 			ula_contend_port_late=ula_contend_port_late_sms;
 
-			
+
 			screen_testados_linea=228;
 
-		}	        				
+		}
 
 		else if (MACHINE_IS_SAM) {
 			contend_read=contend_read_sam;
@@ -4347,8 +4347,8 @@ You don't need timings for H/V sync =)
                 lee_puerto=lee_puerto_spectrum;
                 break;
 
-                
-              
+
+
                 case MACHINE_ID_SPECTRUM_128:
                 poke_byte=poke_byte_spectrum_128k;
                 peek_byte=peek_byte_spectrum_128k;
@@ -4398,7 +4398,7 @@ You don't need timings for H/V sync =)
                 ay_chip_present.v=1;
                 break;
 
-           
+
 
 
                 case MACHINE_ID_ZXUNO:
@@ -4481,7 +4481,7 @@ You don't need timings for H/V sync =)
 				multiface_type=MULTIFACE_TYPE_THREE;
 
 								//Si maquina destino es tbblue, forzar a activar border. De momento no se ve bien con border desactivado
-								border_enabled.v=1;				
+								border_enabled.v=1;
 
                 break;
 
@@ -4498,7 +4498,7 @@ You don't need timings for H/V sync =)
 
 
 				//en spectrum, 32. en pentagon, 36
-				cpu_duracion_pulso_interrupcion=36;				
+				cpu_duracion_pulso_interrupcion=36;
                 break;
 
 
@@ -4571,7 +4571,7 @@ You don't need timings for H/V sync =)
 				out_port=out_port_sms;
 				fetch_opcode=fetch_opcode_sms;
 				sn_chip_present.v=1;
-        break;        
+        break;
 
 		case MACHINE_ID_MSX1:
                 poke_byte=poke_byte_msx1;
@@ -4785,9 +4785,9 @@ You don't need timings for H/V sync =)
                 screen_testados_linea=256;
 
 
-        break;        
+        break;
 
-        
+
         case MACHINE_ID_PCW_8256:
 		poke_byte=poke_byte_pcw;
 		peek_byte=peek_byte_pcw;
@@ -4810,7 +4810,7 @@ You don't need timings for H/V sync =)
         ay_chip_present.v=1;
         fetch_opcode=fetch_opcode_pcw;
 
-		break;                        
+		break;
 
 		case 150:
                 poke_byte=poke_byte_sam;
@@ -4901,7 +4901,7 @@ void set_menu_gui_zoom(void)
 	//Realmente da igual mirar si driver video completo: como el menu gui zoom solo se usa en drivers
 	//completos, no hace falta testear. Ademas, aqui al iniciar el emulador se llama
 	//antes de iniciar el driver de video, por tanto el driver de video no existe aun y no retornaria que es completo
-	//esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2 
+	//esto provocaria que al iniciar tbblue por ejemplo, el gui zoom no fuera 2
 	//if (si_complete_video_driver() ) {
 		if (MACHINE_IS_QL || MACHINE_IS_TSCONF || MACHINE_IS_CPC || MACHINE_IS_PCW || MACHINE_IS_PRISM || MACHINE_IS_SAM || MACHINE_IS_TBBLUE) menu_gui_zoom=2;
 	//}
@@ -4955,16 +4955,16 @@ void post_set_machine_no_rom_load_reopen_window(void)
 		//printf ("Reopening window so current machine is different and may have different window size\n");
 		post_set_mach_reopen_screen();
 
-		//Rearrange de ventanas en segundo plano, por si la maquina actual es una ventana de ZEsarUX mas pequeña 
+		//Rearrange de ventanas en segundo plano, por si la maquina actual es una ventana de ZEsarUX mas pequeña
 		//y se saldrian las ventanas zxvision de rango
 		//debug_printf (VERBOSE_DEBUG,"Rearrange zxvision windows so current machine is different and may have different window size");
-		//zxvision_rearrange_background_windows(		
+		//zxvision_rearrange_background_windows(
 
 
         //printf("antes_ancho_total %d antes_alto_total %d ancho actual %d alto actual %d\n",last_ancho_ventana,last_alto_ventana,
         //    screen_get_total_width_window_plus_zxdesktop(),screen_get_total_height_window_no_footer_plus_zxdesktop() );
 
-        if (screen_get_total_width_window_plus_zxdesktop() < last_ancho_ventana || 
+        if (screen_get_total_width_window_plus_zxdesktop() < last_ancho_ventana ||
             screen_get_total_height_window_no_footer_plus_zxdesktop() < last_alto_ventana ||
             antes_menu_gui_zoom !=menu_gui_zoom
             ) {
@@ -4980,7 +4980,7 @@ void post_set_machine_no_rom_load_reopen_window(void)
     }
 
     set_last_dimensiones_ventana();
-        
+
 }
 
 
@@ -5000,7 +5000,7 @@ void post_set_machine_no_rom_load(void)
 		//printf ("antes init layers\n");
 		scr_init_layers_menu();
 		//printf ("despues init layers\n");
-		scr_clear_layer_menu();		
+		scr_clear_layer_menu();
 
 
 		last_machine_type=current_machine_type;
@@ -5177,16 +5177,16 @@ void rom_load(char *romfilename)
 
             case MACHINE_ID_COLECO:
             romfilename="coleco.rom";
-            break;	
+            break;
 
             case MACHINE_ID_SG1000:
-            romfilename="sg1000.rom"; 
-            break;		
+            romfilename="sg1000.rom";
+            break;
 
             case MACHINE_ID_SMS:
-            romfilename="sms.rom"; 
-            break;	                					
-            
+            romfilename="sms.rom";
+            break;
+
             case MACHINE_ID_MSX1:
             romfilename="msx.rom";
             break;
@@ -5194,7 +5194,7 @@ void rom_load(char *romfilename)
             case MACHINE_ID_SVI_318:
             case MACHINE_ID_SVI_328:
             romfilename="svi.rom";
-            break;				
+            break;
 
             case MACHINE_ID_CHROME:
             romfilename="chrome.rom";
@@ -5232,13 +5232,13 @@ void rom_load(char *romfilename)
 
             romfilename="ts1500.rom";
 
-		    break;      
+		    break;
 
             case MACHINE_ID_MICRODIGITAL_TK85:
 
             romfilename="tk85.rom";
 
-		    break;                      
+		    break;
 
             case 122:
 
@@ -5264,11 +5264,11 @@ void rom_load(char *romfilename)
 
             case MACHINE_ID_CPC_664:
             romfilename="cpc664.rom";
-            break;            
+            break;
 
             case MACHINE_ID_CPC_6128:
             romfilename="cpc6128.rom";
-            break;            		
+            break;
 
             case 150:
             if (atomlite_enabled.v) romfilename="atomlite.rom";
@@ -5292,7 +5292,7 @@ void rom_load(char *romfilename)
 
             case MACHINE_ID_PCW_8512:
             romfilename="pcw_boot.rom";
-            break;            
+            break;
 
             default:
             //printf ("ROM for Machine id %d not supported. Exiting\n",machine_type);
@@ -5425,17 +5425,17 @@ Total 20 pages=320 Kb
     }
 
     else if (MACHINE_IS_TBBLUE) {
-        
-        //Cargamos solo la rom de 48 4 veces 
+
+        //Cargamos solo la rom de 48 4 veces
         if (tbblue_fast_boot_mode.v) {
             leidos=fread(&memoria_spectrum[0],1,16384,ptr_romfile);
             memcpy(&memoria_spectrum[16384],&memoria_spectrum[0],16384);
             memcpy(&memoria_spectrum[32768],&memoria_spectrum[0],16384);
             memcpy(&memoria_spectrum[49152],&memoria_spectrum[0],16384);
-        
+
             if (leidos!=16384) {
                 debug_printf(VERBOSE_ERR,"Error loading ROM");
-            }				
+            }
         }
         else {
             leidos=fread(tbblue_fpga_rom,1,expected_rom_size,ptr_romfile);
@@ -5495,20 +5495,20 @@ Total 20 pages=320 Kb
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
-    }				
-                
+    }
+
     else if (MACHINE_IS_SG1000) {
             //no tiene rom. No cargamos nada, aunque mas arriba intenta siempre abrir un archivo de rom,
             //es por eso que es necesario que exista el archivo de rom, aunque no se cargue ni se use para nada
-        
-    }	
+
+    }
 
     else if (MACHINE_IS_SMS) {
         leidos=fread(memoria_spectrum,1,expected_rom_size,ptr_romfile);
         if (leidos!=expected_rom_size) {
             debug_printf(VERBOSE_ERR,"Error loading ROM. Expected size: %d Loaded: %d",expected_rom_size,leidos);
         }
-    }	        
+    }
 
     else if (MACHINE_IS_MSX1) {
         //msx 32 kb rom
@@ -5743,7 +5743,7 @@ void sigpipe_signal_handler(int sig)
 	//Saltara por ejemplo cuando se escribe en un socket que se ha cerrado
 	//para evitar warnings al compilar
 	sig++;
-	
+
 	debug_printf (VERBOSE_DEBUG,"Received signal sigpipe");
 
 
@@ -6070,7 +6070,7 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--configfile")) {
                                 //Este parametro aqui se ignora, solo se lee antes del parseo del archivo de configuracion
 					siguiente_parametro_argumento();
-                        }						
+                        }
 
 			else if (!strcmp(argv[puntero_parametro],"--saveconf-on-exit")) {
 				save_configuration_file_on_exit.v=1;
@@ -6078,7 +6078,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomx")) {
 				siguiente_parametro_argumento();
-				
+
                 int valor=atoi(argv[puntero_parametro]);
 
 				if (valor<1 || valor>9) {
@@ -6092,7 +6092,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zoomy")) {
 				siguiente_parametro_argumento();
-				
+
                 int valor=atoi(argv[puntero_parametro]);
 
 				if (valor<1 || valor>9) {
@@ -6142,7 +6142,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				zxdesktop_width=valor;
-			}		
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-height")) {
 				siguiente_parametro_argumento();
@@ -6153,7 +6153,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				zxdesktop_height=valor;
-			}	            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-type")) {
 				siguiente_parametro_argumento();
@@ -6164,12 +6164,12 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				menu_ext_desktop_fill=valor;
-			}		
+			}
 
 			//Deprecated --zxdesktop-fill-solid-color
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-solid-color") ||
 					!strcmp(argv[puntero_parametro],"--zxdesktop-fill-primary-color")
-			
+
 			) {
 				siguiente_parametro_argumento();
 				int valor=parse_string_to_number(argv[puntero_parametro]);
@@ -6179,7 +6179,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				menu_ext_desktop_fill_first_color=valor;
-			}		
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-secondary-color")) {
 				siguiente_parametro_argumento();
@@ -6190,7 +6190,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				menu_ext_desktop_fill_second_color=valor;
-			}						
+			}
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-fill-degraded-inverted")) {
                 menu_ext_desktop_degraded_inverted.v=1;
@@ -6202,7 +6202,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-buttons")) {
 				menu_zxdesktop_buttons_enabled.v=0;
-			} 
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-transparent-upper-buttons")) {
 				menu_ext_desktop_transparent_upper_icons.v=1;
@@ -6215,11 +6215,11 @@ int parse_cmdline_options(int desde_commandline) {
             //Esta opcion va al reves de otras de transparencia, porque por defecto estos iconos son transparentes
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-transparent-configurable-icons")) {
 				menu_ext_desktop_transparent_configurable_icons.v=0;
-			}   
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-configurable-icons-text-bg")) {
 				menu_ext_desktop_configurable_icons_text_background.v=0;
-			}                       
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-box-upper-buttons")) {
 				menu_ext_desktop_disable_box_upper_icons.v=1;
@@ -6239,15 +6239,15 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-restore-win-after-fullscreen")) {
 				zxdesktop_restore_windows_after_full_screen=0;
-			}      
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--disable-border-on-fullscreen")) {
 				disable_border_on_full_screen=1;
-			}    
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--disable-footer-on-fullscreen")) {
 				disable_footer_on_full_screen=1;
-			}                                  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-disable-frame-emulated-display")) {
 				zxdesktop_disable_show_frame_around_display=1;
@@ -6272,7 +6272,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-mixbackground")) {
 				zxdesktop_draw_scrfile_mix_background=1;
-			}            
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--zxdesktop-scr-scalefactor")) {
@@ -6301,8 +6301,8 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-no-show-indicators-open-apps")) {
                 zxdesktop_icon_show_app_open.v=0;
-            }            
-            
+            }
+
 
             else if (!strcmp(argv[puntero_parametro],"--zxdesktop-add-icon")) {
                 //get_defined_direct_functions
@@ -6341,8 +6341,8 @@ int parse_cmdline_options(int desde_commandline) {
                     exit(1);
                 }
 
-                
-                
+
+
                 int indice_icono=zxvision_add_configurable_icon_no_add_position(indice_funcion);
                 if (indice_icono<0) {
                     printf("Can not add more icons, limit reached: %d\n",MAX_ZXDESKTOP_CONFIGURABLE_ICONS);
@@ -6384,7 +6384,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				menu_char_height=valor;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zoom")) {
 				siguiente_parametro_argumento();
@@ -6423,7 +6423,7 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--no-frameskip-zxdesktop-back")) {
                 frameskip_draw_zxdesktop_background.v=0;
-            }            
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--disable-flash")) {
                 disable_change_flash.v=1;
@@ -6439,7 +6439,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--changeslowparameters")) {
 				cambio_parametros_maquinas_lentas.v=1;
-			}            
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--fullscreen")) {
@@ -6496,7 +6496,7 @@ int parse_cmdline_options(int desde_commandline) {
 
             else if (!strcmp(argv[puntero_parametro],"--verbose-always-console")) {
                 debug_always_show_messages_in_console.v=1;
-            }			
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--nodisableconsole")) {
 				//Parametro que solo es de Windows, pero lo admitimos en cualquier sistema
@@ -6527,7 +6527,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--denyturbotbbluerom")) {
 					tbblue_deny_turbo_rom.v=1;
-			}		
+			}
 
             //Contemplamos los dos setting de deny y allow para compatibilidad con versiones previas a ZEsarUX 9.3, donde antes
             //estaba permitido por defecto
@@ -6536,7 +6536,7 @@ int parse_cmdline_options(int desde_commandline) {
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--tbblue-max-turbo-rom")) {
-				
+
 				siguiente_parametro_argumento();
 				int valor=parse_string_to_number(argv[puntero_parametro]);
 
@@ -6544,12 +6544,12 @@ int parse_cmdline_options(int desde_commandline) {
 						printf ("Invalid value for tbblue-max-turbo-rom\n");
 						exit(1);
 				}
-				tbblue_deny_turbo_rom_max_allowed=valor;					
-			}					
+				tbblue_deny_turbo_rom_max_allowed=valor;
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--tbblue-fast-boot-mode")) {
 				tbblue_fast_boot_mode.v=1;
-			}  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--random-r-register")) {
 				cpu_random_r_register.v=1;
@@ -6613,7 +6613,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 					case 1024:
 						multiplicador=8;
-					break;					
+					break;
 
 
 					default:
@@ -6713,7 +6713,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 
-            }            
+            }
 
 
                         else if (!strcmp(argv[puntero_parametro],"--vo")) {
@@ -6885,11 +6885,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--advancedmenus")) {
 				menu_show_advanced_items.v=1;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--setmachinebyname")) {
 				setting_machine_selection_by_name.v=1;
-			}			
+			}
 
             //soportar opcion antigua tambien
 			else if (!strcmp(argv[puntero_parametro],"--hide-dirs") ||
@@ -6900,7 +6900,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--filebrowser-hide-size")) {
 				menu_filesel_hide_size.v=1;
-			}            
+			}
 
             else if (!strcmp(argv[puntero_parametro],"--filebrowser-allow-folder-delete")) {
                 menu_filesel_utils_allow_folder_delete.v=1;
@@ -6908,7 +6908,7 @@ int parse_cmdline_options(int desde_commandline) {
 
   			else if (!strcmp(argv[puntero_parametro],"--fileviewer-hex")) {
 				menu_file_viewer_always_hex.v=1;
-			}          
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--no-file-previews")) {
 				menu_filesel_show_previews.v=0;
@@ -6916,7 +6916,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--reduce-file-previews")) {
 				menu_filesel_show_previews_reduce.v=1;
-			}            
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--disablemenumouse")) {
@@ -6951,7 +6951,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 }
 						adventure_keyboard_key_length=valor;
 				}
-						
+
 				else if (!strcmp(argv[puntero_parametro],"--text-keyboard-finalspc")) {
 						adventure_keyboard_send_final_spc=1;
 
@@ -6973,7 +6973,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--stopemulationmenu")) {
                 menu_emulation_paused_on_menu=1;
             }
-		
+
 			else if (!strcmp(argv[puntero_parametro],"--disablebw-no-multitask")) {
 				//Obsoleto
             			//screen_bw_no_multitask_menu.v=0;
@@ -7021,7 +7021,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-invert")) {
 				screen_text_all_refresh_pixel_invert.v=1;
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-width")) {
                 siguiente_parametro_argumento();
@@ -7029,9 +7029,9 @@ int parse_cmdline_options(int desde_commandline) {
                 if (valor<1 || valor>9999) {
                                 printf ("Invalid --allpixeltotext-width value\n");
                                 exit(1);
-                        }				
+                        }
                 scr_refresca_pantalla_tsconf_text_max_ancho=valor;
-			}		
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-x-offset")) {
                 siguiente_parametro_argumento();
@@ -7039,9 +7039,9 @@ int parse_cmdline_options(int desde_commandline) {
                 if (valor<0 || valor>9999) {
                                 printf ("Invalid --allpixeltotext-x-offset value\n");
                                 exit(1);
-                        }				
+                        }
                 scr_refresca_pantalla_tsconf_text_offset_x=valor;
-			}	
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-height")) {
                 siguiente_parametro_argumento();
@@ -7049,9 +7049,9 @@ int parse_cmdline_options(int desde_commandline) {
                 if (valor<1 || valor>9999) {
                                 printf ("Invalid --allpixeltotext-height value\n");
                                 exit(1);
-                        }				
+                        }
                 scr_refresca_pantalla_tsconf_text_max_alto=valor;
-			}		
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--allpixeltotext-y-offset")) {
                 siguiente_parametro_argumento();
@@ -7059,9 +7059,9 @@ int parse_cmdline_options(int desde_commandline) {
                 if (valor<0 || valor>9999) {
                                 printf ("Invalid --allpixeltotext-y-offset value\n");
                                 exit(1);
-                        }				
+                        }
                 scr_refresca_pantalla_tsconf_text_offset_y=valor;
-			}	
+			}
 
 
 
@@ -7135,7 +7135,7 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--savebinarypath")) {
                                 siguiente_parametro_argumento();
                                 sprintf(binary_file_save,"%s/",argv[puntero_parametro]);
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--zxunospifile")) {
                                 siguiente_parametro_argumento();
@@ -7146,7 +7146,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 siguiente_parametro_argumento();
 				sprintf(zxuno_initial_64k_file,"%s",argv[puntero_parametro]);
                         }
-                       
+
 
 			else if (
 			         !strcmp(argv[puntero_parametro],"--zxunospi-persistent-writes")
@@ -7203,7 +7203,7 @@ int parse_cmdline_options(int desde_commandline) {
                 z88_cpc_keymap_type=valor;
 			}
 
-			
+
 
 			else if (!strcmp(argv[puntero_parametro],"--enablekempstonmouse")) {
 				kempston_mouse_emulation.v=1;
@@ -7278,11 +7278,11 @@ int parse_cmdline_options(int desde_commandline) {
 				}
 
 
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--def-button-function")) {
 				siguiente_parametro_argumento();
-	
+
 
 				int valor=parse_string_to_number(argv[puntero_parametro]);
 
@@ -7299,7 +7299,7 @@ int parse_cmdline_options(int desde_commandline) {
 				}
 
 
-			}            
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--autoloadsnap")) {
@@ -7390,7 +7390,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--curses-ext-utf")) {
 				use_scrcursesw.v=1;
-			}			
+			}
 
 
                         else if (!strcmp(argv[puntero_parametro],"--arttextthresold")) {
@@ -7476,15 +7476,15 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--linewidthnowaitspace")) {
 				chardetect_line_width_wait_space.v=0;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--linewidthwaitdot")) {
 				chardetect_line_width_wait_dot.v=1;
-			}           
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--linewidthnowaitdot")) {
 				chardetect_line_width_wait_dot.v=0;
-			}                  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--secondtrapsum32")) {
 				chardetect_second_trap_sum32.v=1;
@@ -7518,7 +7518,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			}
 
-	  
+
 
                         else if (!strcmp(argv[puntero_parametro],"--textspeechstopprogram")) {
                                 siguiente_parametro_argumento();
@@ -7599,7 +7599,7 @@ int parse_cmdline_options(int desde_commandline) {
 				    exit(1);
                 }
 
-			}      
+			}
 
 
 
@@ -7616,12 +7616,12 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--textimage-min-time-between-images")) {
                 siguiente_parametro_argumento();
 				textadv_location_desc_last_image_generated_min=parse_string_to_number(argv[puntero_parametro]);
-			}  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--textimage-min-no-char-time")) {
                 siguiente_parametro_argumento();
 				max_textadv_location_desc_no_char_counter=parse_string_to_number(argv[puntero_parametro]);
-			}  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--textimage-min-after-room-time")) {
                 siguiente_parametro_argumento();
@@ -7634,7 +7634,7 @@ int parse_cmdline_options(int desde_commandline) {
 				textadv_location_total_conversions=parse_string_to_number(argv[puntero_parametro]);
 			}
 
-                           
+
 
                         else if (!strcmp(argv[puntero_parametro],"--tool-sox-path")) {
                                 siguiente_parametro_argumento();
@@ -7707,7 +7707,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--dsk-persistent-writes")) {
 				dskplusthree_persistent_writes.v=1;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--dsk-pcw-no-boot-reinsert-previous-dsk")) {
 				pcw_boot_reinsert_previous_dsk.v=0;
@@ -7751,7 +7751,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--hilow-no-persistent-writes")) {
 				hilow_persistent_writes.v=0;
-			}                        
+			}
 
             else if (!strcmp(argv[puntero_parametro],"--load-source-code")) {
                     command_line_load_source_code.v=1;
@@ -7759,7 +7759,7 @@ int parse_cmdline_options(int desde_commandline) {
                     siguiente_parametro_argumento();
 
                     command_line_load_source_code_file=argv[puntero_parametro];
-            }                        
+            }
 
 			else if (!strcmp(argv[puntero_parametro],"--trd-file")) {
 				siguiente_parametro_argumento();
@@ -8172,7 +8172,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                         else if (!strcmp(argv[puntero_parametro],"--enable-ifrom")) {
                                 command_line_ifrom.v=1;
-                        }						
+                        }
 
                          else if (!strcmp(argv[puntero_parametro],"--enable-betadisk")) {
                                 command_line_betadisk.v=1;
@@ -8263,7 +8263,7 @@ int parse_cmdline_options(int desde_commandline) {
                                 autoselect_snaptape_options.v=0;
                         }
 
- 							
+
 
 
 			else if (!strcmp(argv[puntero_parametro],"--nosplash")) {
@@ -8277,16 +8277,16 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--no-cpu-usage")) {
 				screen_show_cpu_usage.v=0;
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--no-cpu-temp")) {
 				screen_show_cpu_temp.v=0;
-			}		
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--no-fps")) {
 				screen_show_fps.v=0;
-			}							
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--nowelcomemessage")) {
                                 opcion_no_welcome_message.v=1;
@@ -8310,11 +8310,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-maximize-button")) {
                                 menu_hide_maximize_button.v=1;
-			}  
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--show-menu-background-button")) {
                                 menu_hide_background_button_on_inactive.v=0;
-			}                      
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-submenu-indicator")) {
                 menu_hide_submenu_indicator.v=1;
@@ -8329,7 +8329,7 @@ int parse_cmdline_options(int desde_commandline) {
                 }
                 else if (!strcasecmp(argv[puntero_parametro],"ca")) {
                     gui_language=GUI_LANGUAGE_CATALAN;
-                }                
+                }
                 else {
                     printf("Invalid language\n");
                     exit(1);
@@ -8355,11 +8355,11 @@ int parse_cmdline_options(int desde_commandline) {
 				if (!encontrado) {
 						printf ("Invalid menu mix method\n");
 						exit (1);
-										
+
 				}
 			}
 
-			
+
 			else if (!strcmp(argv[puntero_parametro],"--menu-transparency-perc")) {
 
 			int valor;
@@ -8385,7 +8385,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--menu-bw-multitask")) {
 				screen_machine_bw_no_multitask.v=1;
-			}					
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--hide-menu-close-button")) {
@@ -8396,10 +8396,10 @@ int parse_cmdline_options(int desde_commandline) {
                                 menu_invert_mouse_scroll.v=1;
 			}
 
-            
+
 			else if (!strcmp(argv[puntero_parametro],"--right-mouse-esc")) {
                 menu_mouse_right_send_esc.v=1;
-			}     
+			}
 
             else if (!strcmp(argv[puntero_parametro],"--process-switcher-immutable")) {
                 setting_process_switcher_immutable.v=1;
@@ -8411,7 +8411,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--allow-background-windows-closed-menu")) {
                                 always_force_overlay_visible_when_menu_closed=1;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--realvideo")) {
 				enable_rainbow();
@@ -8431,7 +8431,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--tbblue-no-sprite-optimization")) {
 				tbblue_disable_optimized_sprites.v=1;
-			}            
+			}
 
 
 			/*else if (!strcmp(argv[puntero_parametro],"--tsconf-fast-render")) {
@@ -8449,11 +8449,11 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--enable16c")) {
 				command_line_16c.v=1;
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--enableinterlaced")) {
 				command_line_interlaced.v=1;
-			}						
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--enablespectra")) {
 				command_line_spectra.v=1;
@@ -8518,7 +8518,7 @@ int parse_cmdline_options(int desde_commandline) {
 						exit (1);
 					}
 				ay3_stereo_mode=valor;
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--ay-stereo-channel")) {
 				char canal;
@@ -8604,7 +8604,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-no-silence-detection")) {
                 ay_player_silence_detection.v=0;
             }
-            
+
             //Por compatibilidad con versiones < 10.10
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-no-repeat")) {
 				ay_player_repeat_file.v=0;
@@ -8612,7 +8612,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-end-repeat")) {
 				ay_player_repeat_file.v=1;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--ayplayer-inf-length")) {
 				siguiente_parametro_argumento();
@@ -8641,7 +8641,7 @@ int parse_cmdline_options(int desde_commandline) {
             else if (!strcmp(argv[puntero_parametro],"--ayplayer-show-info-console")) {
                 ay_player_show_info_console.v=1;
             }
-            
+
 			else if (!strcmp(argv[puntero_parametro],"--audiopiano-zoom")) {
 				siguiente_parametro_argumento();
 				int valor=parse_string_to_number(argv[puntero_parametro]);
@@ -8666,7 +8666,7 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				audio_midi_client=valor;
-			}			
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--midi-port")) {
 				siguiente_parametro_argumento();
@@ -8676,12 +8676,12 @@ int parse_cmdline_options(int desde_commandline) {
 					exit(1);
 				}
 				audio_midi_port=valor;
-			}	
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--midi-raw-device")) {
 				siguiente_parametro_argumento();
 				strcpy(audio_raw_midi_device_out,argv[puntero_parametro]);
-			}	
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--midi-allow-tone-noise")) {
 				midi_output_record_noisetone.v=1;
@@ -8754,11 +8754,11 @@ int parse_cmdline_options(int desde_commandline) {
                 if (valor!=TIPO_ALTAVOZ_ONEBITSPEAKER_PCSPEAKER && valor !=TIPO_ALTAVOZ_ONEBITSPEAKER_RPI_GPIO) {
                         printf ("Invalid value for --onebitspeaker-type\n");
                         exit(1);
-                }             
+                }
 
                 audioonebitspeaker_tipo_altavoz=valor;
             }
-			
+
 
 
 #ifdef COMPILE_ALSA
@@ -8864,12 +8864,12 @@ int parse_cmdline_options(int desde_commandline) {
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-new")) {
                 audiosdl_use_new_callback.v=1;
-            }      
+            }
 
             //Este setting lo permitimos siempre, aunque no se haya compilado driver sdl, pues es una variable global, aunque no se verá en la ayuda
             else if (!strcmp(argv[puntero_parametro],"--sdl-use-callback-old")) {
                 audiosdl_use_new_callback.v=0;
-            }      
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--no-fallbacktorealtape")) {
                 standard_to_real_tape_fallback.v=0;
@@ -8877,7 +8877,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--anyflagloading")) {
                                 tape_any_flag_loading.v=1;
-                        }			
+                        }
 
 			else if (!strcmp(argv[puntero_parametro],"--autorewind")) {
                 tape_auto_rewind.v=1;
@@ -8898,7 +8898,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                         else if (!strcmp(argv[puntero_parametro],"--realloadfast")) {
 							    accelerate_loaders.v=1;
-                        }						
+                        }
 
                         else if (!strcmp(argv[puntero_parametro],"--blue")) {
                                 screen_gray_mode |=1;
@@ -8962,7 +8962,7 @@ int parse_cmdline_options(int desde_commandline) {
 				}
 
                 estilo_gui_activo=indice;
-                set_charset_from_gui();                
+                set_charset_from_gui();
 
                 /*
 
@@ -8992,7 +8992,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 user_charset=indice;
                 set_user_charset();
-               
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--charset-customfile")) {
@@ -9025,7 +9025,7 @@ int parse_cmdline_options(int desde_commandline) {
                 }
 
                 input_file_keyboard_delay=valor;
-			 
+
             }
 
             else if (!strcmp(argv[puntero_parametro],"--keyboardspoolfile-nodelay")) {
@@ -9099,7 +9099,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			 debug_set_watch(valor,argv[puntero_parametro]);
 
-		 }		 
+		 }
 
 		 else if (!strcmp(argv[puntero_parametro],"--set-mem-breakpoint")) {
 			 siguiente_parametro_argumento();
@@ -9114,11 +9114,11 @@ int parse_cmdline_options(int desde_commandline) {
 			 if (valor<0 || valor>255) {
 				 printf("Type %d out of range setting memory breakpoint at address %04XH\n",valor,direccion);
 				 exit(1);
-			 }			
+			 }
 
 			 debug_set_mem_breakpoint(direccion,valor);
 
-		 }		 
+		 }
 
 
 		 else if (!strcmp(argv[puntero_parametro],"--set-breakpointaction")) {
@@ -9218,7 +9218,7 @@ int parse_cmdline_options(int desde_commandline) {
 
         else if (!strcmp(argv[puntero_parametro],"--textadvmap-no-show-pictures")) {
             menu_debug_textadventure_map_connections_show_pictures=0;
-        }        
+        }
 
 
         else if (!strcmp(argv[puntero_parametro],"--textadvmap-zoom")) {
@@ -9250,7 +9250,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int valor=parse_string_to_number(argv[puntero_parametro]);
 				if (valor<0 || valor>3) {
 					printf ("Invalid value %d for setting --joystickfirekey\n",valor);
-                    exit(1);				
+                    exit(1);
 				}
 				joystick_defined_key_fire=valor;
             }
@@ -9265,24 +9265,24 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--no-native-linux-realjoy")) {
 				no_native_linux_realjoystick.v=1;
 			}
-			
+
 			else if (!strcmp(argv[puntero_parametro],"--realjoystickpath")) {
 				siguiente_parametro_argumento();
 				strcpy(string_dev_joystick,argv[puntero_parametro]);
-				
+
 			}
 
 			else if (!strcmp(argv[puntero_parametro],"--realjoystickindex")) {
 				siguiente_parametro_argumento();
-                realjoystick_index=parse_string_to_number(argv[puntero_parametro]);	
-			}            
+                realjoystick_index=parse_string_to_number(argv[puntero_parametro]);
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--realjoystick-calibrate")) {
 				siguiente_parametro_argumento();
 				int valor=parse_string_to_number(argv[puntero_parametro]);
 				if (valor<0 || valor>32000) {
 					printf ("Invalid value %d for setting --realjoystick-calibrate\n",valor);
-                    exit(1);				
+                    exit(1);
 				}
 				realjoystick_autocalibrate_value=valor;
 			}
@@ -9418,9 +9418,9 @@ int parse_cmdline_options(int desde_commandline) {
 
         	else if (!strcmp(argv[puntero_parametro],"--total-minutes-use")) {
 				siguiente_parametro_argumento();
-				total_minutes_use=parse_string_to_number(argv[puntero_parametro]);	
+				total_minutes_use=parse_string_to_number(argv[puntero_parametro]);
 
-			}	    
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--stats-send-already-asked")) {
 				stats_asked.v=1;
@@ -9432,7 +9432,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--stats-send-enabled")) {
 				stats_enabled.v=1;
-			}		
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--stats-uuid")) {
 				siguiente_parametro_argumento();
@@ -9445,33 +9445,33 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--stats-disable-check-yesterday-users")) {
 				stats_check_yesterday_users_enabled.v=0;
-			}			
-	
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--stats-last-avail-version")) {
 				siguiente_parametro_argumento();
 				strcpy(stats_last_remote_version,argv[puntero_parametro]);
-			}			
-			
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--stats-speccy-queries")) {
 				siguiente_parametro_argumento();
 				stats_total_speccy_browser_queries=parse_string_to_number(argv[puntero_parametro]);
-			}	
-			
+			}
+
 			else if (!strcmp(argv[puntero_parametro],"--stats-zx81-queries")) {
 				siguiente_parametro_argumento();
 				stats_total_zx81_browser_queries=parse_string_to_number(argv[puntero_parametro]);
-			}	
-			
-			
-			
+			}
 
-                         
+
+
+
+
 			else if (!strcmp(argv[puntero_parametro],"--last-version-text")) {
 				siguiente_parametro_argumento();
 				strcpy(last_version_text_string,argv[puntero_parametro]);
-			}   			
-			
-			
+			}
+
+
 			else if (!strcmp(argv[puntero_parametro],"--last-version")) {
 				siguiente_parametro_argumento();
 				strcpy(last_version_string,argv[puntero_parametro]);
@@ -9485,7 +9485,7 @@ int parse_cmdline_options(int desde_commandline) {
                     zesarux_has_been_downgraded.v=1;
                     sleep(3);
                 }
-			}	
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--no-show-changelog")) {
 				do_no_show_changelog_when_update.v=1;
@@ -9494,7 +9494,7 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--disablebetawarning")) {
 				siguiente_parametro_argumento();
 				strcpy(parameter_disablebetawarning,argv[puntero_parametro]);
-			}	
+			}
 
             //Mantenido por compatibilidad con versiones antiguas
 			else if (!strcmp(argv[puntero_parametro],"--windowgeometry")) {
@@ -9523,7 +9523,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 				util_add_window_geometry(nombre,x,y,ancho,alto,0,0,ancho,alto);  //mantenido por compatibilidad minimizado=maximizado=0, ancho alto antes de minimizado
 
-			}	
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--windowgeometry-ext")) {
@@ -9580,7 +9580,7 @@ int parse_cmdline_options(int desde_commandline) {
 				ancho_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
 				siguiente_parametro_argumento();
-				alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);                
+				alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
 				if (x<0 || y<0 || ancho<0 || alto<0) {
 					printf ("Invalid window geometry\n");
@@ -9592,7 +9592,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,0,ancho_antes_minimized,alto_antes_minimized); //mantenido por compatibilidad
 
-			}            
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--window-geometry")) {
@@ -9618,7 +9618,7 @@ int parse_cmdline_options(int desde_commandline) {
 				ancho_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
 				siguiente_parametro_argumento();
-				alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);                
+				alto_antes_minimized=parse_string_to_number(argv[puntero_parametro]);
 
 				if (x<0 || y<0 || ancho<0 || alto<0) {
 					printf ("Invalid window geometry\n");
@@ -9627,13 +9627,13 @@ int parse_cmdline_options(int desde_commandline) {
 
 				siguiente_parametro_argumento();
 				is_minimized=parse_string_to_number(argv[puntero_parametro]);
-                
+
                 siguiente_parametro_argumento();
                 is_maximized=parse_string_to_number(argv[puntero_parametro]);
 
-				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized); 
+				util_add_window_geometry(nombre,x,y,ancho,alto,is_minimized,is_maximized,ancho_antes_minimized,alto_antes_minimized);
 
-			}              
+			}
 
 
 			else if (!strcmp(argv[puntero_parametro],"--clear-all-windowgeometry")) {
@@ -9650,7 +9650,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--restore-all-known-windows")) {
 				zxvision_add_all_windows_to_restore();
-			}            
+			}
 
             //Mantenida por compatibilidad hacia atras. esto es ahora por defecto desde version 10.2
 			else if (!strcmp(argv[puntero_parametro],"--enable-restore-windows")) {
@@ -9659,7 +9659,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 			else if (!strcmp(argv[puntero_parametro],"--disable-restore-windows")) {
 				menu_reopen_background_windows_on_start.v=0;
-			}            
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--tonegenerator")) {
 				siguiente_parametro_argumento();
@@ -9679,7 +9679,7 @@ int parse_cmdline_options(int desde_commandline) {
             //sensor-set position type
 			else if (!strcmp(argv[puntero_parametro],"--sensor-set")) {
 				siguiente_parametro_argumento();
-                int numero_sensor=parse_string_to_number(argv[puntero_parametro]); 
+                int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
                     printf ("Invalid value %d for setting --sensor-set\n",numero_sensor);
                     exit(1);
@@ -9691,7 +9691,7 @@ int parse_cmdline_options(int desde_commandline) {
                 int sensor_id=sensor_find(sensor_type);
                 if (sensor_id<0) {
                     printf ("Invalid sensor type %s for setting --sensor-set\n",sensor_type);
-                    exit(1);                    
+                    exit(1);
                 }
 
 				strcpy (menu_debug_view_sensors_list_sensors[numero_sensor].short_name,sensor_type);
@@ -9700,7 +9700,7 @@ int parse_cmdline_options(int desde_commandline) {
             //sensor-set-widget position type
 			else if (!strcmp(argv[puntero_parametro],"--sensor-set-widget")) {
 				siguiente_parametro_argumento();
-                int numero_sensor=parse_string_to_number(argv[puntero_parametro]); 
+                int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
                     printf ("Invalid value %d for setting --sensor-set-widget\n",numero_sensor);
                     exit(1);
@@ -9712,17 +9712,17 @@ int parse_cmdline_options(int desde_commandline) {
                 int widget_id=zxvision_widget_find_name_type(sensor_type);
                 if (widget_id<0) {
                     printf ("Invalid sensor widget type %s for setting --sensor-set-widget\n",sensor_type);
-                    exit(1);                    
+                    exit(1);
                 }
 
 				menu_debug_view_sensors_list_sensors[numero_sensor].tipo=widget_id;
-			}        
+			}
 
             //mostrar valor en vez de porcentaje
-           //sensor-set-abs position 
+           //sensor-set-abs position
 			else if (!strcmp(argv[puntero_parametro],"--sensor-set-abs")) {
 				siguiente_parametro_argumento();
-                int numero_sensor=parse_string_to_number(argv[puntero_parametro]); 
+                int numero_sensor=parse_string_to_number(argv[puntero_parametro]);
                 if (numero_sensor<0 || numero_sensor>=MENU_VIEW_SENSORS_TOTAL_ELEMENTS) {
                     printf ("Invalid value %d for setting --sensor-set-abs\n",numero_sensor);
                     exit(1);
@@ -9730,10 +9730,10 @@ int parse_cmdline_options(int desde_commandline) {
 
                 menu_debug_view_sensors_list_sensors[numero_sensor].valor_en_vez_de_perc=1;
 
-			}      
+			}
 
 
-            
+
 			else if (!strcmp(argv[puntero_parametro],"--history-item-add-debugcpu-ptr")) {
 				siguiente_parametro_argumento();
                 util_scanf_history_insert(menu_debug_registers_change_ptr_historial,argv[puntero_parametro]);
@@ -9747,7 +9747,7 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--history-item-add-sprites-ptr")) {
 				siguiente_parametro_argumento();
                 util_scanf_history_insert(menu_debug_sprites_change_ptr_historial,argv[puntero_parametro]);
-			}          
+			}
 
 			else if (!strcmp(argv[puntero_parametro],"--history-item-add-poke-ptr")) {
 				siguiente_parametro_argumento();
@@ -9758,7 +9758,7 @@ int parse_cmdline_options(int desde_commandline) {
 				siguiente_parametro_argumento();
                 util_scanf_history_insert(menu_debug_poke_value_historial,argv[puntero_parametro]);
 			}
-		
+
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx")) {
                 siguiente_parametro_argumento();
@@ -9792,7 +9792,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Conversion finished. Exiting\n");
                 exit(0);
-            }            
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-tzx-turbo-rg")) {
                 siguiente_parametro_argumento();
@@ -9809,7 +9809,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Conversion finished. Exiting\n");
                 exit(0);
-            }            
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tap-pzx")) {
                 siguiente_parametro_argumento();
@@ -9826,7 +9826,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Conversion finished. Exiting\n");
                 exit(0);
-            }            
+            }
 
             else if (!strcmp(argv[puntero_parametro],"--convert-tzx-tap")) {
                 siguiente_parametro_argumento();
@@ -9860,7 +9860,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 printf("Conversion finished. Exiting\n");
                 exit(0);
-            }            
+            }
 
 
 			//autodetectar que el parametro es un snap o cinta. Esto tiene que ser siempre el ultimo else if
@@ -9873,7 +9873,7 @@ int parse_cmdline_options(int desde_commandline) {
 
 
                 if (desde_commandline) {
-				    //parametro desconocido por linea de comandos, avisar con error 
+				    //parametro desconocido por linea de comandos, avisar con error
 				    debug_printf (VERBOSE_ERR,"Unknown parameter : %s . Stopping parsing the rest of parameters",argv[puntero_parametro]);
                     return 1;
                 }
@@ -9903,7 +9903,7 @@ int parse_cmdline_options(int desde_commandline) {
                             }
                             else {
                                 argc--;
-                                puntero_parametro++;    
+                                puntero_parametro++;
                             }
                         }
 
@@ -9911,7 +9911,7 @@ int parse_cmdline_options(int desde_commandline) {
 
                 }
 
-                
+
 
 			}
 
@@ -9936,7 +9936,7 @@ void emulator_main_loop(void)
     		}
 
 			//Nos quedamos aqui cerrados cuando se ha salido con ctrl-c, donde este
-			//thread aun sigue vivo, pero no hay que andar refrescando ya nada del emulador, para 
+			//thread aun sigue vivo, pero no hay que andar refrescando ya nada del emulador, para
 			//no generar segfault en cuanto se cierre el driver de video
 			while (ending_emulator_flag) {
 				//printf("Finalizando\n");
@@ -10023,7 +10023,7 @@ void check_christmas_mode(void)
     //printf("now: %d-%d-%d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 
     int dia=tm.tm_mday;
-    int mes=tm.tm_mon+1; 
+    int mes=tm.tm_mon+1;
 
     //printf("Mes: %d Dia: %d\n",mes,dia);
 
@@ -10091,14 +10091,14 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 
 	_NSGetExecutablePath(macos_path_to_executable, &bufsize);
 
-	if (macos_path_to_executable[0]!=0) { 
+	if (macos_path_to_executable[0]!=0) {
 
 			char dir[PATH_MAX];
 			util_get_dir(macos_path_to_executable,dir);
 
 			printf ("Changing to Mac App bundle directory: %s\n",dir);
 			chdir(dir);
-		
+
 	}
 	/*
 	Para testeo, para eliminar permisos de acceso en Catalina, ejecutar:
@@ -10110,7 +10110,7 @@ int zesarux_main (int main_argc,char *main_argv[]) {
 
 
 /*
-Note for developers: If you are doing modifications to ZEsarUX, you should follow the rules from GPL license, as well as 
+Note for developers: If you are doing modifications to ZEsarUX, you should follow the rules from GPL license, as well as
 the licenses that cover all the external modules
 Also, you should keep the following copyright message, beginning with "Begin Copyright message" and ending with "End Copyright message"
 */
@@ -10138,11 +10138,11 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	printf ("Please read the other licenses used in ZEsarUX, from the menu Help->Licenses or just open files from folder licenses/\n\n\n");
 
-		
+
 
     //printf ("ZEsarUX Version: " EMULATOR_VERSION " Date: " EMULATOR_DATE " - " EMULATOR_EDITION_NAME "\n"
     printf ("ZEsarUX v." EMULATOR_VERSION " - " EMULATOR_EDITION_NAME ". " EMULATOR_DATE  "\n"
-    
+
             "\n");
 
 
@@ -10315,10 +10315,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	poke_byte=poke_byte_vacio;
 	poke_byte_no_time=poke_byte_vacio;
 	peek_byte=peek_byte_vacio;
-	peek_byte_no_time=peek_byte_vacio;	
+	peek_byte_no_time=peek_byte_vacio;
 	lee_puerto=lee_puerto_vacio;
 	//lee_puerto_no_time=lee_puerto_vacio;
-	out_port=out_port_vacio;	
+	out_port=out_port_vacio;
 	fetch_opcode=fetch_opcode_vacio;
 	realjoystick_init=realjoystick_null_init;
 	realjoystick_main=realjoystick_null_main;
@@ -10540,7 +10540,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 		realjoystick_init=realjoystick_linux_init;
 		realjoystick_main=realjoystick_linux_main;
 	}
-#endif	
+#endif
 
 
 	TIMESENSOR_INIT();
@@ -10630,7 +10630,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	init_chip_sn();
 	ay_init_filters();
 	sn_init_filters();
-	
+
 	mid_reset_export_buffers();
 
 
@@ -10680,10 +10680,10 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//desactivado normalmente en versiones snapshot
 	signal(SIGFPE, floatingpoint_signal_handler);
 
-  //Capturar sigbus. 
+  //Capturar sigbus.
   //desactivado normalmente en versiones snapshot
-#ifndef MINGW	
-    signal(SIGBUS, sigbus_signal_handler);	
+#ifndef MINGW
+    signal(SIGBUS, sigbus_signal_handler);
 #endif
 
 	//Capturar segint (CTRL+C)
@@ -10692,9 +10692,9 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	//Capturar segterm
 	signal(SIGTERM, segterm_signal_handler);
 
-#ifndef MINGW	
+#ifndef MINGW
 	//Capturar sigpipe
-	signal(SIGPIPE, sigpipe_signal_handler);	
+	signal(SIGPIPE, sigpipe_signal_handler);
 #endif
 
 
@@ -10751,7 +10751,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 	if (command_line_16c.v) enable_16c_mode();
 
-	if (command_line_interlaced.v) enable_interlace();		
+	if (command_line_interlaced.v) enable_interlace();
 
 	if (command_line_timex_video.v) enable_timex_video();
 
@@ -10826,7 +10826,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 	if (command_line_kartusho.v) kartusho_enable();
 
 	//iFrom
-	if (command_line_ifrom.v) ifrom_enable();	
+	if (command_line_ifrom.v) ifrom_enable();
 
 	//Betadisk
 	if (command_line_betadisk.v) {
@@ -10851,7 +10851,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
         if (retorno) {
             debug_printf(VERBOSE_ERR,"Error loading source code from file %s",command_line_load_source_code_file);
         }
-    }    
+    }
 
 	if (command_line_set_breakpoints.v) {
 		if (debug_breakpoints_enabled.v==0) {
@@ -10887,7 +10887,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
     //Si la version actual es mas vieja, aviso del downgrade
     if (zesarux_has_been_downgraded.v) {
-       menu_set_menu_abierto(1); 
+       menu_set_menu_abierto(1);
     }
 
 	start_timer_thread();
@@ -10951,7 +10951,7 @@ Also, you should keep the following copyright message, beginning with "Begin Cop
 
 
 	//Restaurar ventanas, si conviene
-	//zxvision_restore_windows_on_startup();	
+	//zxvision_restore_windows_on_startup();
 
 	//printf("menu abierto: %d menu_overlay_activo: %d\n",menu_abierto,menu_overlay_activo);
 
@@ -11069,7 +11069,7 @@ void end_emulator_saveornot_config(int saveconfig)
 	//1 milisegundo mas que suficiente
 	usleep(1000);
 
-	
+
 
 	dump_ram_file_on_exit();
 
@@ -11089,7 +11089,7 @@ void end_emulator_saveornot_config(int saveconfig)
 
 	if (saveconfig && save_configuration_file_on_exit.v) {
 		int uptime_seconds=timer_get_uptime_seconds();
-  
+
   		total_minutes_use +=uptime_seconds/60;
 		util_write_configfile();
 	}
@@ -11109,7 +11109,7 @@ void end_emulator_saveornot_config(int saveconfig)
 	close_zxprinter_ocr_file();
 
 	//Flush write devices
-	zxuno_flush_flash_to_disk();	
+	zxuno_flush_flash_to_disk();
 	z88_flush_eprom_or_flash_to_disk();
 	mmc_flush_flash_to_disk();
 	ide_flush_flash_to_disk();

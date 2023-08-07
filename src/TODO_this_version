@@ -407,3 +407,9 @@ ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en 
 
 -icono de set machine, que el icono de maquina cambie segun parametro. Y que mantenga "flechita" que indica cambio de maquina
 Esto implica que el icono dibujaria dos realmente: uno primero con el icono de la maquina, y encima el de la flechita
+
+
+
+1.139 mac
+1.91 debian 32
+1.147 debian 64
