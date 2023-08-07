@@ -406,6 +406,9 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 1.139 mac
 1.91 debian 32
 1.147 debian 64
-1. freebsd
+1.99 freebsd
 
--zeng: operaciones a los diferentes nodos, en vez de ser secuencial, que genere un thread de envio
+-zeng: operaciones a los diferentes nodos, en vez de ser secuencial, que genere un thread de envio y se hagan los envios a todos los nodos
+de manera simultanea
+
+-opcion ZENG para solo enviar snapshots desde master, nada mas: int zeng_do_not_send_keys=1;falta menu y linea de comandos y config file

@@ -14401,7 +14401,7 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			}
 
 			if (zeng_enabled.v) {
-				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Send message");
+				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Broadcast message");
 			}
 
 
