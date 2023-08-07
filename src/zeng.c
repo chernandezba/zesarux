@@ -62,7 +62,12 @@ pthread_t zeng_thread_connect;
 
 zeng_key_presses zeng_key_presses_array[ZENG_FIFO_SIZE];
 
-int zeng_remote_socket=-1;
+//Antiguo indice a zsocket cuando se gestionaba solo 1 slave
+//int zeng_remote_socket=-1;
+
+int zeng_remote_sockets[ZENG_MAX_SLAVES];
+
+int zeng_total_remotes=0;
 
 
 //Tamanyo de la fifo
@@ -96,7 +101,7 @@ int pending_zeng_send_message_footer=0;
 
 int zeng_next_position(int pos)
 {
-	pos++; 
+	pos++;
 	if (pos==ZENG_FIFO_SIZE) pos=0;
 	return pos;
 }
@@ -206,13 +211,57 @@ void zeng_send_key_event(enum util_teclas tecla,int pressrelease)
 }
 
 //Devuelve 0 si no conectado
-int zeng_connect_remote(void)
+//Se conecta a los diferentes hosts separados por comas (si somos master y hay varios slaves)
+//No se permite conexion a varios master
+int zeng_connect_remotes(void)
 {
 
-		//Inicialmente desconectado
-		zeng_remote_socket=-1;
+    //Inicialmente desconectado
+    //zeng_remote_socket=-1;
 
-		int indice_socket=z_sock_open_connection(zeng_remote_hostname,zeng_remote_port,0,"");
+    //Almacenar aqui hostname hasta la ,
+    char buffer_hostname[MAX_ZENG_HOSTNAME];
+
+    //Almacenar aqui la copia del campo entero, para facilitar cortar
+    char copia_zeng_remote_hostname[MAX_ZENG_HOSTNAME];
+
+    strcpy(copia_zeng_remote_hostname,zeng_remote_hostname);
+
+
+    char *puntero_hostname=copia_zeng_remote_hostname;
+
+    zeng_total_remotes=0;
+
+    while (*puntero_hostname) {
+
+        //Obtener nombre hasta ","
+        char *existe=strstr(puntero_hostname,",");
+
+        if (existe!=NULL) {
+            *existe=0; //fijar fin de caracter
+        }
+
+        strcpy(buffer_hostname,puntero_hostname);
+
+        //Y siguiente iteración empezará despues
+        if (existe!=NULL) {
+            existe++;
+            puntero_hostname=existe;
+        }
+
+        else {
+            //puntero apunta al final
+            int longitud=strlen(puntero_hostname);
+            puntero_hostname=&puntero_hostname[longitud];
+        }
+
+
+
+        printf("Conectando a %s\n",buffer_hostname);
+
+
+
+		int indice_socket=z_sock_open_connection(buffer_hostname,zeng_remote_port,0,"");
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"%s",z_sock_get_error(indice_socket));
@@ -222,7 +271,7 @@ int zeng_connect_remote(void)
 		 int posicion_command;
 
 #define ZENG_BUFFER_INITIAL_CONNECT 199
-		
+
 		//Leer algo
 		char buffer[ZENG_BUFFER_INITIAL_CONNECT+1];
 
@@ -247,20 +296,20 @@ int zeng_connect_remote(void)
 
 		if (escritos<0) {
 			debug_printf(VERBOSE_ERR,"ERROR. Can't send get-version: %s",z_sock_get_error(escritos));
-			return 0;	
+			return 0;
 		}
 
- 
+
 		//reintentar
 		leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 		if (leidos>0) {
 			buffer[leidos]=0; //fin de texto
 			debug_printf(VERBOSE_DEBUG,"ZENG: Received text for get-version (length %d): \n[\n%s\n]",leidos,buffer);
-		}	
+		}
 
 		if (leidos<0) {
 			debug_printf(VERBOSE_ERR,"ERROR. Can't receive version: %s",z_sock_get_error(leidos));
-			return 0;	
+			return 0;
 		}
 
 		//1 mas para eliminar el salto de linea anterior a "command>"
@@ -274,10 +323,11 @@ int zeng_connect_remote(void)
 		}
 
 		//Comprobar que version remota sea como local
-		char myversion[30];
-		util_get_emulator_version(myversion);
-		if (strcasecmp(myversion,buffer)) {
+        char myversion[30];
+        util_get_emulator_version(myversion);
+        if (strcasecmp(myversion,buffer)) {
 			debug_printf (VERBOSE_ERR,"Local and remote ZEsarUX versions do not match");
+            printf("Local %s remote %s\n",myversion,buffer);
 			return 0;
 		}
 
@@ -295,20 +345,20 @@ int zeng_connect_remote(void)
 
 			if (escritos<0) {
 				debug_printf(VERBOSE_ERR,"ERROR. Can't send zeng-is-master: %s",z_sock_get_error(escritos));
-				return 0;	
+				return 0;
 			}
 
-	
+
 			//reintentar
 			leidos=zsock_read_all_until_command(indice_socket,(z80_byte *)buffer,ZENG_BUFFER_INITIAL_CONNECT,&posicion_command);
 			if (leidos>0) {
 				buffer[leidos]=0; //fin de texto
 				debug_printf(VERBOSE_DEBUG,"ZENG: Received text for zeng-is-master (length %d): \n[\n%s\n]",leidos,buffer);
-			}	
+			}
 
 			if (leidos<0) {
 				debug_printf(VERBOSE_ERR,"ERROR. Can't receive zeng-is-master: %s",z_sock_get_error(leidos));
-				return 0;	
+				return 0;
 			}
 
 			//1 mas para eliminar el salto de linea anterior a "command>"
@@ -335,7 +385,14 @@ int zeng_connect_remote(void)
 
 		//zsock_wait_until_command_prompt(indice_socket);
 
-	zeng_remote_socket=indice_socket;
+
+
+
+       zeng_remote_sockets[zeng_total_remotes++]=indice_socket;
+
+    }
+
+	//zeng_remote_socket=indice_socket;
 
 	return 1;
 }
@@ -343,7 +400,11 @@ int zeng_connect_remote(void)
 //Devuelve 0 si error
 int zeng_disconnect_remote(void)
 {
-	z_sock_close_connection(zeng_remote_socket);
+    int i;
+
+    for (i=0;i<zeng_total_remotes;i++) {
+	    z_sock_close_connection(zeng_remote_sockets[i]);
+    }
 	return 1;
 }
 
@@ -365,26 +426,25 @@ int zeng_send_snapshot(int socket)
 		int posicion_command;
 		int escritos,leidos;
 
-				
-			
+
+
 				//printf ("Sending put-snapshot\n");
                 //printf("before z_sock_write_string 1\n");
 				escritos=z_sock_write_string(socket,"put-snapshot ");
                 //printf("after z_sock_write_string 1\n");
 				if (escritos<0) return escritos;
-			
+
 
 				//TODO esto es ineficiente y que tiene que calcular la longitud. hacer otra z_sock_write sin tener que calcular
                 //printf("before z_sock_write_string 2\n");
 				escritos=z_sock_write_string(socket,zeng_send_snapshot_mem_hexa);
                 //printf("after z_sock_write_string 2\n");
 
-				free(zeng_send_snapshot_mem_hexa);
-				zeng_send_snapshot_mem_hexa=NULL;
+
 
 				if (escritos<0) return escritos;
 
-			
+
 
 				z80_byte buffer[200];
 				//Leer hasta prompt
@@ -393,24 +453,28 @@ int zeng_send_snapshot(int socket)
                 //printf("after zsock_read_all_until_command\n");
 				return leidos;
 
-		
+
 }
 
 //Retorna <0 si error
 int zeng_send_keys(zeng_key_presses *elemento)
 {
-				
+
+    int i;
+
+    for (i=0;i<zeng_total_remotes;i++) {
+
 				char buffer_comando[256];
 
 				sprintf(buffer_comando,"send-keys-event %d %d 1\n",elemento->tecla,elemento->pressrelease);
 				//el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
 
-				int escritos=z_sock_write_string(zeng_remote_socket,buffer_comando);
+				int escritos=z_sock_write_string(zeng_remote_sockets[i],buffer_comando);
 
 
 				//printf ("despues de enviar send-keys. escritos en write string: %d\n",escritos);
 
-				
+
 				//Si ha habido error al escribir en socket
 				if (escritos<0) return escritos;
 
@@ -423,15 +487,15 @@ int zeng_send_keys(zeng_key_presses *elemento)
 					int posicion_command;
 
 					//printf ("antes de leer hasta command prompt\n");
-					int leidos=zsock_read_all_until_command(zeng_remote_socket,buffer,199,&posicion_command);
+					int leidos=zsock_read_all_until_command(zeng_remote_sockets[i],buffer,199,&posicion_command);
 
 					//printf ("despues de leer hasta command prompt\n");
 
 					//Si ha habido error al leer de socket
 					if (leidos<0) return leidos;
 				}
+    }
 
-		
 
 	return 1;
 }
@@ -442,7 +506,11 @@ int zeng_send_message(void)
 
 	pending_zeng_send_message_footer=0;
 
-			int escritos=z_sock_write_string(zeng_remote_socket,zeng_send_message_footer);
+    int i;
+
+    for (i=0;i<zeng_total_remotes;i++) {
+
+			int escritos=z_sock_write_string(zeng_remote_sockets[i],zeng_send_message_footer);
 
 			//Si ha habido error al escribir en socket
 			if (escritos<0) return escritos;
@@ -451,14 +519,14 @@ int zeng_send_message(void)
 				//Leer hasta prompt
 				int posicion_command;
 				z80_byte buffer[200];
-				int leidos=zsock_read_all_until_command(zeng_remote_socket,buffer,199,&posicion_command);
-			
-				
+				int leidos=zsock_read_all_until_command(zeng_remote_sockets[i],buffer,199,&posicion_command);
+
+
 
 				//Si ha habido error al leer de socket
 				if (leidos<0) return leidos;
 			}
-
+    }
 
 	return 1;
 
@@ -470,7 +538,7 @@ int zeng_snapshots_not_sent=0;
 //Forzar a reconectar si llega a 3 failed snapshots
 z80_bit zeng_force_reconnect_failed_retries={0};
 
-//No mostrar error en thread send 
+//No mostrar error en thread send
 int zeng_thread_send_not_show_error=0;
 
 
@@ -489,13 +557,13 @@ Hilo de sincronización de juego:
 
 Dicha fifo hay que controlarla mediante semáforos
 Se mete elementos en fifo cuando se llama a util send press/release
-Se leen y envían eventos de la fifo desde este thread 
+Se leen y envían eventos de la fifo desde este thread
 
--dormir durante 5ms - cuarto de frame 
+-dormir durante 5ms - cuarto de frame
 
 Para las rutinas zsock también haría falta semáforos pero como no voy a llamarla desde dos sitios distintos a la vez pues..
 
-Poder enviar mensajes a otros jugadores 	
+Poder enviar mensajes a otros jugadores
 	 */
 
 
@@ -533,7 +601,7 @@ Poder enviar mensajes a otros jugadores
 
 			if (error<0) {
 				error_desconectar=1;
-				
+
 			}
 
 		}
@@ -543,14 +611,23 @@ Poder enviar mensajes a otros jugadores
 		//Si hay snapshot pendiente de enviar
 		if (zeng_i_am_master && !error_desconectar) {
 			if (zeng_send_snapshot_pending && zeng_send_snapshot_mem_hexa!=NULL) {
+                int i;
+
+                for (i=0;i<zeng_total_remotes;i++) {
+
                 //printf("before zeng_send_snapshot\n");
-				int error=zeng_send_snapshot(zeng_remote_socket);
+				int error=zeng_send_snapshot(zeng_remote_sockets[i]);
                 //printf("after zeng_send_snapshot\n");
 				zeng_send_snapshot_pending=0;
 
 				if (error<0) {
 					error_desconectar=1;
 				}
+
+                }
+				free(zeng_send_snapshot_mem_hexa);
+				zeng_send_snapshot_mem_hexa=NULL;
+
 			}
 		}
 
@@ -561,10 +638,10 @@ Poder enviar mensajes a otros jugadores
 			if (!zeng_thread_send_not_show_error) debug_printf (VERBOSE_ERR,"Error sending to socket. Disabling ZENG");
 
 			//Aqui cerramos el thread desde mismo dentro del thread
-			zeng_disable_forced();	
+			zeng_disable_forced();
 
 			//Parece que en Windows esto no es suficiente para salir del thread desde el mismo pthread. Hacemos un return
-			//Por si acaso dejamos el return siempre, si es Windows u otro sistema que no haga caso del pthread_cancel, 
+			//Por si acaso dejamos el return siempre, si es Windows u otro sistema que no haga caso del pthread_cancel,
 			//pues volvera. Y si no, no llegara aqui
 			//Y le damos un tiempo para que se cierre con cancel. Al menos asi en Mac no llegara aqui pues se cierra antes el pthread
 			sleep(1);
@@ -585,11 +662,11 @@ void zeng_force_reconnect(void)
     zeng_thread_send_not_show_error=1;
 
     zeng_disable_forced();
-    //Darle tiempo a que se cierre 
+    //Darle tiempo a que se cierre
 
     usleep(100000); //0.1 segundo
 
-    zeng_enable();    
+    zeng_enable();
 
     zeng_thread_send_not_show_error=0;
 }
@@ -635,16 +712,16 @@ void zeng_send_snapshot_if_needed(void)
 
 					int longitud;
 
-  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);	
+  					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
 
-								
+
 
 					zeng_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
 					int char_destino=0;
 
 					int i;
-		
+
 					for (i=0;i<longitud;i++,char_destino +=2) {
 						sprintf (&zeng_send_snapshot_mem_hexa[char_destino],"%02X",buffer_temp[i]);
 					}
@@ -672,7 +749,7 @@ int zeng_enable_thread_running=0;
 void *zeng_enable_thread_function(void *nada GCC_UNUSED)
 {
 
-	zeng_enable_thread_running=1; 
+	zeng_enable_thread_running=1;
 
 #ifdef USE_PTHREADS
 
@@ -683,9 +760,13 @@ void *zeng_enable_thread_function(void *nada GCC_UNUSED)
     zeng_snapshots_not_sent=0;
 
 	//Conectar a remoto
-	if (!zeng_connect_remote()) {
+	if (!zeng_connect_remotes()) {
 		//Desconectar solo si el socket estaba conectado
-		if (zeng_remote_socket>=0) zeng_disconnect_remote();
+
+		//if (zeng_remote_socket>=0)
+        //Desconectar los que esten conectados
+        zeng_disconnect_remote();
+
 		zeng_enable_thread_running=0;
 		return 0;
 	}
@@ -735,7 +816,7 @@ void zeng_enable(void)
 #ifdef USE_PTHREADS
 
 	//Inicializar thread
-	
+
 	if (pthread_create( &zeng_thread_connect, NULL, &zeng_enable_thread_function, NULL) ) {
 		debug_printf(VERBOSE_ERR,"Can not create zeng connect pthread");
 		return;
@@ -783,7 +864,10 @@ void zeng_disable_normal(int forced)
 	}
 	else {
 		//Liberar socket z_sock pero sin desconectarlo realmente
-		z_sock_free_connection(zeng_remote_socket);
+        int i;
+        for (i=0;i<zeng_total_remotes;i++) {
+		z_sock_free_connection(zeng_remote_sockets[i]);
+        }
 	}
 
 #else

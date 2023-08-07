@@ -1,4 +1,4 @@
-Para esta version: 
+Para esta version:
 
 --Errores
 
@@ -76,7 +76,7 @@ lecturas de plus3dos headers no van bien: Real length file SCREEN  .    read fro
 
 
 -Renombrar setting de background windows por multitask windows? O algo así
-Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez 
+Debe indicar que se puede dejar ventanas en background pero que también pueden haber múltiples ventanas a la vez
 
 
 -al abrir ventanas por primera vez, la coordenada y debe ser por debajo de los botones superiores
@@ -95,7 +95,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -En visor de disco (dsk) con archivos, que indique User number (UU) de cada archivo? Ver https://www.seasip.info/Cpm/format22.html
 -O incluso mejor un browser/viewer de formato CP/M, que indique:
 *extent number
-*date file 
+*date file
 *etc
 
 
@@ -112,7 +112,7 @@ Debe indicar que se puede dejar ventanas en background pero que también pueden 
 -quiza funcion que espera_no_tecla sin considerar movimiento raton, deberia ser la habitual, y solo en casos concretos
 usar la que si considera movimiento raton
 
- 
+
 - ajustar memory zones para zx81: rom deberia ser 8kb. revisar tambien zx80
 
 
@@ -123,7 +123,7 @@ usar la que si considera movimiento raton
 
 
 
--Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto 
+-Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
 
 
 
@@ -155,10 +155,10 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 -en rpi quiza compilar con onebitspeaker? o no? entiendo que pcspeaker no usara sino que intentara usar gpio
 
 
--Función joystick conmuta full screen 
--F función cualquiera Tecla F por joystick 
+-Función joystick conmuta full screen
+-F función cualquiera Tecla F por joystick
 
--Teclado en pantalla en gpi borra el input de debajo 
+-Teclado en pantalla en gpi borra el input de debajo
 -on screen keyboard, si se activa desde menu, luego no refresca adecuadamente las ventanas
 
 
@@ -249,7 +249,7 @@ todas zxvision_putpixel por zxvision_putpixel_direct, y la nueva llamarla tal cu
 -Nuevo concepto para ventanas:
 Buffer de pixel gestionado desde ventanas y renderizado desde draw window contents
 Ideal para help keyboard por ejemplo
-En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas 
+En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
 
 
 -lectura de audio de casette? SDL1 parece que no permite hacerlo
@@ -294,7 +294,7 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 -ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
 
--pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal. 
+-pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal.
 https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 
@@ -346,7 +346,7 @@ Como sabemos los otros slaves? pues lo sabemos porque tendremos que 1 master env
 Y con eso mismo, cuando recibimos un evento de teclado de un slave, lo tenemos que enviar al resto de slaves que ya sabemos por el punto anterior
 
 
--mejoras accesibilidad: 
+-mejoras accesibilidad:
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
 aprovechando cosas como el frequency generator
@@ -401,6 +401,9 @@ ok ? *end_remote_protocol, en:
 perdera probablemente ese stack la llegar al thread
 
 
--arreglar tecla ESC en curses: ni en mac ni en linux la lee
+ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en linux la lee
 
 -en linux, con "stop emulation on menu", raton no mueve opciones de menu, ni deja mover ventanas
+
+-icono de set machine, que el icono de maquina cambie segun parametro. Y que mantenga "flechita" que indica cambio de maquina
+Esto implica que el icono dibujaria dos realmente: uno primero con el icono de la maquina, y encima el de la flechita

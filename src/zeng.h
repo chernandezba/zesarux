@@ -36,6 +36,7 @@ typedef struct s_zeng_key_presses zeng_key_presses;
 //50 teclas en cola, que es una barbaridad
 #define ZENG_FIFO_SIZE 50
 
+#define ZENG_MAX_SLAVES 16
 
 extern int zeng_fifo_add_element(zeng_key_presses *elemento);
 
