@@ -56,6 +56,8 @@ Improved Process Management: allow to copy any windows contents to internal clip
 
 Improved ZRCP: Allow multiple simultaneous clients
 
+Improved ZENG: Allow to connect more than two hosts
+
 Improved ZX Spectrum Next emulation:
 - Allow to boot NextZXOS v2.07l
 - Updated machine id list
@@ -110,7 +112,7 @@ Added Sierpinsky Meter Type to View Sensors
 * Improvements:
 
 Improved Debug CPU:
-- switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows) 
+- switched function keys "m" and "o": now "x" change mode, and "m" change memptr (to be coherent with other similar windows)
 - added (hl), (de), (bc)
 - added (nn) when selecting an opcode like: ld reg,(nn) and ld (nn),reg
 - added (ix+d), (iy+d) when selecting an opcode like: ld reg,(IX+d), etc
@@ -119,7 +121,7 @@ Improved Debug CPU:
 - show B register on satisfy condition for DJNZ
 - added new functions OPMRV(e), OPMWV(e), OPMRA(e), OPMWA(e): these return 1 if the last opcode has set any of these variables to e.
 - added pseudoregister EPC to parser to match memory bank and offset for PC register
-- allow holding keys for quick cursor move, etc 
+- allow holding keys for quick cursor move, etc
 - watches now show numbers in hexadecimal format
 
 Improved Debug Console: better refresh, dynamic width
@@ -137,7 +139,7 @@ Improved DSK viewer:
 - show disk specification format
 - show where files are located on Visual Floppy
 
-Improved View Sprites: 
+Improved View Sprites:
 - sprite is no longer disabled when changing memory pointer
 - you can view sprites up to 1024x1024
 - show PCW common format screen
@@ -196,7 +198,7 @@ Fixed putting Text Adventure Map window on background
 
 * Misc Changes:
 
-Persistent writes on DSK files (+3/CPC/PCW disks) are now disabled by default 
+Persistent writes on DSK files (+3/CPC/PCW disks) are now disabled by default
 
 * As always, there are some other minor bugfixes and improvements
 
@@ -262,7 +264,7 @@ Improved Z88 emulation:
 -Z88 footer: show when writing a card in slot 3, colors follow style
 -Z88 device icons: different icons for slot 1,2,3, show when writing a card in slot 3, show when flap is open
 
-Improved File selector: 
+Improved File selector:
 -Allow to have a full screen preview if window is big enough
 -Better hotkeys explanation
 
@@ -277,7 +279,7 @@ Improved Debugging:
 -Warn on footer when step mode
 -Enlarge width of breakpoints list
 
-Improved SmartLoad & Drag-Drop: 
+Improved SmartLoad & Drag-Drop:
 -Allow to load a .rom file as a custom rom file for the current machine
 -Allow to Drag-Drop when menu open
 
@@ -331,7 +333,7 @@ Fixed Breakpoints actions: now are executed everywhere (even in the menu)
 Fixed pressing key c (continuous mode) on debug cpu (emulation was unpaused temporarily)
 Fixed TZX turbo files extract (including screen previews), convert & file info
 Fixed .Z80 and .ZSF screen previews when using 128k screen page 7
-Fixed .DSK extract 
+Fixed .DSK extract
 Fixed crash when saving .ZSF snapshots when a byte DD is found just before a byte is repeated more than 256 times
 Fixed Next MMC images download. Now you need SSL enabled on compilation
 
@@ -371,14 +373,14 @@ Improved Text Adventure Debugging:
 -Improved detection of some paws adventures (like superlopez and abracadabra)
 -Improved detection of some daad adventures (like jabato)
 
-Improved Debug CPU: 
+Improved Debug CPU:
 -Now it highlights which registers will be modified by the opcode at the cursor position
 -New address breakpoint expression FPEEK, that can read contents in the range of the total machine address space
 -Added t-states counter on default view
 -Allow to have a decimal view of opcode decoding using key m (mode)
 -Added breakpoints actions to start and stop cpu transaction log
 
-Improved Accessibility: 
+Improved Accessibility:
 -Added direct settings for inverse colours and gray mode
 -Added setting to disable Flash
 
@@ -403,7 +405,7 @@ Improved ZX Vision:
 -Added translation of menu items to Spanish and Catalan
 -Added shortcuts helper to see hotkeys pressed
 -Added button preview when customizing ZX Desktop buttons or F-keys
--Better detection of Spectrum screen file: any file size of 6912 bytes 
+-Better detection of Spectrum screen file: any file size of 6912 bytes
 -Show when a menu has submenus using the ">" character
 -Preserve minimized and maximized state on windows
 -Remember size before minimize and maximize window
@@ -411,7 +413,7 @@ Improved ZX Vision:
 -Window management window can run on background
 -ZX Desktop: footer buttons to enlarge or reduce ZX Desktop, not just enabling or disabling
 -ZX Desktop: allow to set a background SCR file
--ZX Desktop: added setting to disable ZX Desktop when going to full screen 
+-ZX Desktop: added setting to disable ZX Desktop when going to full screen
 
 Improved PC Speaker Driver: now there is a new driver "onebitspeaker" which can handle both PC Speaker and Raspberry PI GPIO speaker
 Improved PC Speaker audio driver: better sound quality and high frequency filter
@@ -468,7 +470,7 @@ There are lots of changes in this version, but some of them are remarkable:
 - "Time machine" features: Automatic Snapshots to RAM + Rewind feature, backwards debugging, backwards run
 - Realtime translation of text adventure games in a ZEsarUX window
 - Can render any image from a Speccy Text Adventure (supported parsers: Quill, Paws, Daad, Gac)
-- Added Visual Real Tape. Now you can have an audio render of your tape, see tape blocks and rewind or move forward the cassette player 
+- Added Visual Real Tape. Now you can have an audio render of your tape, see tape blocks and rewind or move forward the cassette player
 - Can now browse Basic variables on ZX Spectrum, ZX81 and ZX80
 - Allow customize upper buttons to actions
 - Added Window View Sensors to graph internal emulation sensors, performance, statistics, etc
@@ -499,7 +501,7 @@ Added ZRCP commands:
 -snapshot-inram-get-index: Returns index to a RAM snapshot position
 -snapshot-inram-load: Loads the RAM snapshot from position
 
-Added file converters: 
+Added file converters:
 -wav/rwa/smp to tap
 -wav/rwa/smp to p
 -wav/rwa/smp to o
@@ -550,7 +552,7 @@ Improved Next emulation:
 -ZSF snapshots include all info from port 123b (previous TBBlue .zsf snapshots are incompatible with this version, sorry!)
 -Added a splash message when changing Layer 2 modes
 
-Improved Text Aventure Features: 
+Improved Text Aventure Features:
 -Improved detection of Daad aventures on debugging
 -Now you can render any image from a Speccy Text Adventure (supported parsers: Quill, Paws, Daad, Gac)
 -Now you can use a text speech script which can translate text from the game and show the translated text on ZEsarUX window
@@ -603,7 +605,7 @@ Improved TBBlue emulation:
 -Added Sprites Debug memory zone
 -Optimize sprite rendering (saving 1% cpu on my computer)
 
-Improved CPC emulation: 
+Improved CPC emulation:
 -Added video scanlines rendering (A.K.A. Real Video)
 -Joystick emulation
 -Stereo emulation
@@ -632,11 +634,11 @@ Improved ZX Vision menu interface:
 -Added more utf-8 characters support
 -Added setting to show files in hexa+ascii using file viewer
 
-Improved all-to-pixel text rendering: 
+Improved all-to-pixel text rendering:
 -Allow 1:1 scale
 -Allow to set window size and offsets in characters
 
-Improved Speccy online browser: 
+Improved Speccy online browser:
 -now uses ZXinfo API V3
 -uses SSL SNI when downloading files
 
@@ -670,7 +672,7 @@ Fixed CPC bugs:
 
 Fixed IDE commands which affected almost all IDE firmwares: fatware, mdos, etc:
 -Fixed IDE command ECH Identify Drive
--Fixed IDE command 91H Initialize Drive Parameters 
+-Fixed IDE command 91H Initialize Drive Parameters
 
 Fixed annoying flickering in menu using XWindows video driver
 Fixed Mac OS retina display window
@@ -695,7 +697,7 @@ Added General Sound emulation
 Added compile setting to disable networking functions
 Added date & time field info to ZSF snapshots
 Added configuration & command line setting to save keymap type
-Added some file converters: from SNA, SP, Z80, P, ZSF to SCR 
+Added some file converters: from SNA, SP, Z80, P, ZSF to SCR
 
 
 Improved QL emulation:
@@ -710,7 +712,7 @@ Improved TBBlue emulation:
 -Added relative sprites emulation
 -Added sprite clipping emulation
 
-Improved ZX Desktop: 
+Improved ZX Desktop:
 -Added direct buttons, to access menu items
 -Added devices buttons/icons, to show device activity and device configuration
 -Added F-key to close all open menus
@@ -720,7 +722,7 @@ Improved ZX Desktop:
 -Improved input number windows: added buttons to increase/decrease values
 -Now backgrounded windows can be seen even with menu closed (added a setting and also a F-key)
 
-Improved ZRCP: 
+Improved ZRCP:
 -Added MMU information to cpu-history and get-registers commands
 -Added ZRCP command qdos-get-open-files: to get open files from QL QDOS
 
@@ -765,10 +767,10 @@ Some other minor bugfixes and improvements
 
 Version 9.0 - Turbo Esprit edition. 17 August 2020
 
-Added new emulated machines: 
--MSX1 
+Added new emulated machines:
+-MSX1
 -Spectravideo 318/328
--Colecovision 
+-Colecovision
 -Sega SG-1000
 
 Added new compiled version: FreeBSD
@@ -782,7 +784,7 @@ Added F key to toggle top cpu speed
 Added F key to pause/unpause tape
 Added setting to rotate output tape when selecting tape that already exists
 Added setting to resample audio output to 1 bit
-Added showing yesterday ZEsarUX users 
+Added showing yesterday ZEsarUX users
 
 
 Improved emulation: use a slightly less cpu on every scanline
@@ -809,15 +811,15 @@ Improved debugging:
 -Added breakpoint action "reset-tstatp"
 -Added SEG0, SEG1, ... SEG7 variables to match TBBlue MMU pages
 -Added IN() function to read a port in the breakpoint parser
--Added key to execute a RET 
+-Added key to execute a RET
 
 Improved ZRCP:
 -Allow to write commands in "". Not all commands support this
 -Added save-binary command, to save binary data to a file
 -Added save-screen command, to save machine screen to a file
 
-Improved Esxdos handler: 
--Added f_mkdir function 
+Improved Esxdos handler:
+-Added f_mkdir function
 -Added configuration setting to save local work directory
 
 Improved TBBlue emulation:
@@ -825,13 +827,13 @@ Improved TBBlue emulation:
 -Added 4bpp sprites
 -Enable Timex video by default
 -Legacy hi-res and border effects disabled by default. Reduces up to 13% cpu use or gain 17 FPS on my environment
--Reduced a bit cpu usage (2% cpu less on my environment) when rendering scanlines 
+-Reduced a bit cpu usage (2% cpu less on my environment) when rendering scanlines
 -Added altrom feature: now 48k and 128k mode works again
 -Emulate register 0x8E (142) => Spectrum 128K Memory Mapping
 -Allow to download a 512 MB TBBlue SD official card (allowed download sizes: 32MB, 128MB, 512MB, 2 GB)
 -Allow paths with backslashes on esxdos handler
 
-Improved Chloe emulation: 
+Improved Chloe emulation:
 -Supports CPU speed setting via the ZX-Uno SCANDBLCTRL register
 -Load unodos3.rom as the default divmmc firmware
 -Added chloehd.mmc in the extras package
@@ -857,7 +859,7 @@ Fixed ZRCP bugs:
 Fixed tbblue bugs:
 -Fixed 8 first lines of tiles on border not shown
 -Fixed text mode (1 bit tile)
--Fixed reading palette colours. That fixes returning from multiface nmi 
+-Fixed reading palette colours. That fixes returning from multiface nmi
 -Fixed reading clipping values
 -Fixed screensaver
 -Fixed tbblue memory priorities
@@ -877,7 +879,7 @@ Fixed starting the emulator on some Mac OS versions
 Version 8.1 - The Great Escape edition. 25 February 2020
 
 
-Added ZEsarUX Network Gaming protocol (ZENG), which allows you to play to any emulated game, using two ZEsarUX instances, 
+Added ZEsarUX Network Gaming protocol (ZENG), which allows you to play to any emulated game, using two ZEsarUX instances,
 located each one on any part of the world or in a local network. Games doesn't have to be modified, you can use any existing game
 
 Added Spectrum and ZX81 online game browser. You can search & play almost any game for these machines!
@@ -890,10 +892,10 @@ Added SNA saving support
 Added PZX tape file support
 Added SCR to TAP file converter
 
-Added total run time statistics 
+Added total run time statistics
 Added checking for updates
 Added sending anonymous statistics use
-Added setting --disablemenuandexit: it closes the emulator when the menu is going to be opened. 
+Added setting --disablemenuandexit: it closes the emulator when the menu is going to be opened.
  It's the same behaviour as previous --disablemenu. Now --disablemenu only disables the menu but does not close the emulator
 Added setting to disable looking for alternate character sets from sysvar 23606/7 on ocr functions
 Added DataDrive HiLow emulation (beta)
@@ -918,29 +920,29 @@ Improved TBBlue emulation:
 -optimized ula,lores render routines: 2% less cpu
 -added scroll x,y on ula layer
 -added 1-bit tile mode
--added tbblue register 63H: copper 16 bit write 
+-added tbblue register 63H: copper 16 bit write
 -added tbblue register 69H: display control 1 register
 -added tbblue registers 0x35-0x39, 0x75-0x79
 -added copper opcodes NOOP, HALT
 -increased tbblue.mmc MMC bundled image size to 64 MB
--updated to the latest tbblue SD distribution. 
+-updated to the latest tbblue SD distribution.
 -enable real video by default
 -added zsf snapshot support
 -supports setting Core ID to ZX Dos
 -supports changing Core version
 
-Improved Debugging: 
+Improved Debugging:
 -added setting to dump .zsf snapshot when a cpu panic is fired
 -debug CPU window: can now resize height and have more debug lines, legend keys expand as width increases, registers located at the most right position
 -cpu transaction log: faster when opening transaction log file
 -added key 'n' for "run" on debug cpu. Does the same as closing all menus and returning back to emulation
 -debug CPU window: show interrupt routine pointer on im2 mode
 
-Improved Hex editor: 
+Improved Hex editor:
 -can now copy to a different memory zone
 -shows the memory pointer when editing memory
 
-Improved menu: 
+Improved menu:
 -added more cyrillic characters support
 -can now use PgUp,PgDn to jump menu pages
 -added setting to disable File Utilities menu
@@ -960,7 +962,7 @@ Improved accurate Z80 timing: IM mode 0 is 1 t-state shorter than IM mode 1
 Improved real tape loading: acceleration is disabled by default, added setting to save configuration
 Improved cpu speed change: now it's a lot faster
 
-Improved accesibility: 
+Improved accesibility:
 -disabled menu items (the ones in red) are now called as "unavailable" instead of "disabled"
 -selected item menu is called now "Selected item" (was called "Active item" before)
 -say when a selected menu item is not available
@@ -1004,7 +1006,7 @@ Fixed tbblue emulation:
 -fixed RTC emulation
 -fixed autoload tape
 
-Fixed Accessibility bugs: 
+Fixed Accessibility bugs:
 -now menu settings (anything between square brackets []) are played at the end of the menu line
 -now menu settings ([ ] and [X]) are played as "enabled"/"disabled"
 
@@ -1052,7 +1054,7 @@ Added hdf support to MMC emulation
 Added ZRCP commands: ayplayer, cpu-transaction-log
 
 
-Improved breakpoint parser: 
+Improved breakpoint parser:
 -full expression parser: parenthesis, functions, sums, multiplications, etc. Can be used as a full calculator!
 -now it's a lot more faster. Up to 7 times faster, so it uses 7 times less cpu than the old version
 
@@ -1137,7 +1139,7 @@ Improved file selector:
 -Windows: now you can use up to 20000 files in the same directory
 -added drive selector (press shift-d). On Windows, allows you to change drive unit. On Linux and Mac, changes to /media or /Volumes folder
 
-Improved disassemble window: 
+Improved disassemble window:
 -now you can export the disassemble to text file
 -you can now see the full opcode when debugging Sinclair QL
 -you can now show/hide hexadecimal dump of every opcode
@@ -1193,7 +1195,7 @@ Added setting to deny turbo mode on TBBlue, useful on slow machines
 Added Beeper Piano Menu
 Added new Z80 TBBlue opcodes and deleted obsolete ones
 Added setting to change Kempston Mouse sensitivity
-Added menu item to create autoconfig files (.config) 
+Added menu item to create autoconfig files (.config)
 Added setting --random-r-register to generate random value for R register on every cold start, instead of the normal 0 value. Useful to avoid same R register in the start of games, when they use that register as a random value
 Added OSD Adventure Text Keyboard, useful for having typical words on Adventure Text Games (and of course any other kind of games and programs)
 Added tool to export vocabulary from a PAWS/QUILL/GAC game to a list of words in the OSD Adventure Text Keyboard
@@ -1215,7 +1217,7 @@ etc...
 *Optimized debugger so common conditions like PC=X, MRA=X or MWA=X use lots of less cpu than before
 *Added new kind of breakpoints, "memory breakpoints", which behave like MRA and MWA conditions but a lot faster than them
 *Added bitwise operators AND (&), OR (|), XOR (^) when using registers/variables breakpoints/watches
-*Breakpoints actions do not reset keyboard 
+*Breakpoints actions do not reset keyboard
 *New pseudo variables:
 **OUTFIRED: returns 1 if last Z80 opcode was an OUT operation
 **INFIRED: returns 1 if last Z80 opcode was an IN operation
@@ -1226,7 +1228,7 @@ Improved my Cursor Draw program: now you can use kempston mouse. Load cursordr_m
 Improved file converter: tzx to tap, tap to tzx
 Improved TBBlue video display cpu usage: 3% less cpu in my machine, on a compilation without optimization (O2)
 
-Improved menu: 
+Improved menu:
 * menu windows: now can have more lines than 22, doing scroll
 * now you can write any ascii character on the menu
 * added support to show some unicode (utf8) characters on menu
@@ -1256,7 +1258,7 @@ Fixed Multiface Three emulation
 Fixed text viewer, hex viewer showing some special characters ~ | ^
 Fixed some errors on sdl driver (windows, rpi affected by default)
 
-Updated to the last Next SD image TBBLUE V.1.0 "GOLD EDITION" 
+Updated to the last Next SD image TBBLUE V.1.0 "GOLD EDITION"
 
 Some other minor bugfixes and improvements
 
@@ -1289,11 +1291,11 @@ Improved debugging:
 * added cpu-step-over function on debug menu (was already available from ZRCP)
 * added function to write byte to file on ZEsarUX hardware debug ports
 
-Improved ZRCP: 
+Improved ZRCP:
 * run command is stopped by default when pressing a key (or sending data to the socket)
 * when a breakpoint is fired on cpu-step-mode, the breakpoint condition is shown on ZRCP
 
-Improved joystick support: 
+Improved joystick support:
 * added joystick test menu
 * buttons to events and buttons to joystick configuration are saved on configuration file
 
@@ -1301,11 +1303,11 @@ Improved OSD keyboard:
 * now you can press up to all 40 keys (on Spectrum/ZX80/ZX81) at the same time
 * now it can be opened from any place (needs multitask on)
 
-Improved QL emulation: 
+Improved QL emulation:
 * experimental support of LOAD, LRUN command
 * can now open qlay mdv microdrive image files
 
-Improved file viewer from file utilities: 
+Improved file viewer from file utilities:
 * specific file viewers for these kind of files: .tap, .zx, .zsf, .sp, .z80, .sna, .spg, .p, .o, .mmc/.ide (fat browser, plus3dos browser), .dsk, .trd, .tzx, .cdt, .flash (zxuno flash, z88 flash, superupgrade flash), .epr, .eprom
 * default hexadecimal file viewer for unknown files
 * conversion utility
@@ -1325,13 +1327,13 @@ Improved menu interface:
 * Smartload: now the cursor remembers last file loaded
 * added two more GUI styles: Clean and CleanInverse
 
-Improved sprite viewer: 
+Improved sprite viewer:
 * now can see sprites with speccy screen format
-* you can view sprites up to 512x192 
+* you can view sprites up to 512x192
 * you can see tsconf sprites
 * you can see pseudo hires zx81 screens
 
-Improved TBBlue emulation: 
+Improved TBBlue emulation:
 * Added clip window registers
 * Added Copper
 * Added almost all next extended opcodes
@@ -1351,7 +1353,7 @@ Improved configuration parsing: if unknown setting found on configuration file, 
 Improved rendering on text mode drivers: now realvideo mode can render directly to black&white text. Try TSConf with --vo stdout --realvideo --autoredrawstdout
 Improved Linux library dependencies: libssl is not enabled by default on compilation
 
-Fixed ZX-Uno emulation: 
+Fixed ZX-Uno emulation:
 * 128kb timings are the same as a Spectrum 128k. When port 1ffd enabled, port FF return FF
 * Kempston port returns 0 when no kempston selected. New BIOS can be used now
 
@@ -1441,7 +1443,7 @@ So, hard work, this is a Quantum Leap, so this is a new major version, 5.0!
 Complete changelog:
 
 Added Sinclair QL emulation
-Added remote command protocol. You can do enhanced debugging on ZEsarUX by using a telnet client. 
+Added remote command protocol. You can do enhanced debugging on ZEsarUX by using a telnet client.
   There are a lot of commands, even many commands exclusive to this protocol and not found on the GUI, like:
 * load-source-code
 * hexdump-internal
@@ -1455,9 +1457,9 @@ Added setting to write configuration file
 Added menu item to reload IDE and MMC contents from file. You can now modify a used file outside the emulator and reload its contents
 Added autosave snapshot at fixed interval
 Added hardware debug port to output ascii characters or numbers directly on host console
-Added two unused ports from the ZXI pool for some internal ZEsarUX features. See docs/zesarux_zxi_registers.txt 
+Added two unused ports from the ZXI pool for some internal ZEsarUX features. See docs/zesarux_zxi_registers.txt
 Added Hotswap from 128k to +2A, and +2A to 128k
-Added File Viewer 
+Added File Viewer
 Added support for drag&drop on Mac OS X, SDL2
 Added support for OpenGL rendering on Mac OS X Cocoa driver
 Added drawn piano for AY Piano menu setting (on all video drivers except text drivers)
@@ -1468,7 +1470,7 @@ Added setting to disable autoframeskip
 Added setting to set breakpoints from command line
 Added setting to deny changing turbo mode when booting ZX-Uno and on bios
 Added setting to disable beeper
-Improved Debug CPU Window: now you can switch between different views: 
+Improved Debug CPU Window: now you can switch between different views:
 1) 1 opcode, cpu registers, other internal registers
 2) 9 opcodes, other internal registers
 3) 15 opcodes
@@ -1507,7 +1509,7 @@ Added Setting to disable loading tape sound
 Added setting to change DivIDE/DivMMC RAM
 Added tape browser
 Added Z88 generic card browser
-Added Z88 card browser when copying from eprom/flash card 
+Added Z88 card browser when copying from eprom/flash card
 Fixed bug reading ports 2ffd and 3ffd and crashes running +2A/+3 ROMS with real video enabled
 Fixed Z80 cold start registers
 Fixed Z88 bug when smart loading all slots were ejected
@@ -1517,7 +1519,7 @@ Fixed divmmc/divide were disabled when doing smartload
 Fixed drawing of some menu items that refresh continuously: waveform, ay registers, cpu stats, debug cpu, visualmem
 Fixed ZXpand emulation on ZX80
 Improved menu. Now all settings are on a separate "Settings" menu
-Improved debugger: 
+Improved debugger:
 *Individual breakpoints can be disabled
 *Breakpoints are fired by default when condition changes from false to true. And they are only fired again when condition changes from true to false and false to true
 Improved scanlines drawing. Some demos with display page change (RAM 5&7) on a scanline run perfect
@@ -1530,15 +1532,15 @@ Some other minor bugfixes and improvements
 
 
 
-Version 4.1. 16 July 2016 - ZXSpectr edition 
+Version 4.1. 16 July 2016 - ZXSpectr edition
 
 Added Sam Coupe emulation
-Added TBBlue/ZX Spectrum Next emulation 
+Added TBBlue/ZX Spectrum Next emulation
 Added AtomLite emulation (Sam Coupe IDE interface)
 Added DivIDE emulation
 Added turbo modes: native support for ZX-Uno, Prism, Chloe and TBBlue, and manual for other machines
 Added Autoload Tape for Amstrad CPC
-Added Chloe keyboard 
+Added Chloe keyboard
 Added On Screen keyboard pressing F8 or a dedicated joystick button
 Added GUI themes: Default ZEsarUX, ZXSpectr style (to celebrate 20th anniversary of ZXSpectr), ZX80/81, Z88, CPC
 Added Top Speed setting
@@ -1555,7 +1557,7 @@ Improved ZEsarUX ULAPlus video modes. Now these modes are supported on a physica
 
 Improved debugger:
 *Added tstatesp counter: T-states partial. This is a counter that you can reset with key P
-*New pseudo variables: 
+*New pseudo variables:
 **MRV, MWV, MRA, MWA, PRV, PWV, PRA, PWA: Return the value or address read/written from memory or i/o port
 **TSTATES: t-states total in a frame
 **TSTATESL: t-states in a scanline
@@ -1579,14 +1581,14 @@ Some other minor bugfixes and improvements
 
 
 
-Version 4.0. 5th March 2016 - Rainbow islands edition 
+Version 4.0. 5th March 2016 - Rainbow islands edition
 
 New machines emulated:
 -Jupiter Ace
 -Chloe 140 SE
 -Chloe 280 SE
 -Timex TS 2068
--Prism 
+-Prism
 -Amstrad CPC 464 (experimental)
 
 So, ZEsarUX is the first and the unique emulator of Chloe 140/280, Prism and ZX-Uno.
@@ -1600,7 +1602,7 @@ Added Allow Write on ROM setting
 Added Turbo Setting to Input Spool File
 Added Redefine keys setting
 Added ULA early/late timings setting
-Changed .ZX snapshot to version 6, with: 
+Changed .ZX snapshot to version 6, with:
 *New machines on snapshot supported: ZX-Uno, Jupiter Ace, Chloe, Timex, Amstrad CPC 464, Prism
 *ULAplus state and palette
 *Timex registers status
@@ -1613,7 +1615,7 @@ Improved interlaced. Now it can be enabled with ULAplus, Timex or Spectra video 
 Improved Storage menus. All media: tapes, z88 file cards, zxuno spi flash, mmc cards, timex cards are located on new "Storage Settings" Menu
 Improved Machine Selection menu. Now it's classified by manufacturer
 
-Version 3.1. 2nd October 2015 - Jetpac edition 
+Version 3.1. 2nd October 2015 - Jetpac edition
 
 Accessibility support (Print char traps and Text to Speech program) are available for all video drivers, not only stdout. It makes possible for blind people to use text to speech programs to play text adventures. Available on all operating systems: Linux, Mac, Windows, Raspberry, etc.
 Added ZXMMC emulation
@@ -1628,7 +1630,7 @@ Added commandline setting to quick exit emulator --quickexit
 Fixed Inves ULA Colour Delay. It only affects bright
 Fixed blank directory listing error on some Windows machines
 Improved ULAplus. Now supports HAM modes (ULAplus palette change every scanline)
-Improved loader detection. Now a custom loader routine is detected and reinserted the tape as Real Tape 
+Improved loader detection. Now a custom loader routine is detected and reinserted the tape as Real Tape
 Improved Print char traps functions and filters
 Improved Snow Effect
 Improved listing on --experthelp
@@ -1752,7 +1754,7 @@ Fixed kempston joystick ports
 Version 1.2. 25th August 2014 - Agent Dan edition
 
 Added emulation of Spectrum snow effect
-Added Help menu 
+Added Help menu
 Added tooltips and help for menu options
 Added option to inverse video
 Added joystick emulation with cursors: Kempston, Sinclair 1&2, Cursor Joystick, Cursor & Shift, Fuller, Zebra, Mikro-Gen. Autofire function also
@@ -1777,7 +1779,7 @@ Some other minor bugfixes
 
 Version 1.1. 4th July 2014 - ID edition
 
-Added support for loading .z80 snapshots with unsupported machines like Spectrum +3, Pentagon. 
+Added support for loading .z80 snapshots with unsupported machines like Spectrum +3, Pentagon.
 Added support for zip,rar,tar & gz files on menu (uses external programs)
 Added loading support for ZX81 EightOne file format .z81
 Added fullscreen mode on xwindows driver
@@ -1789,15 +1791,15 @@ Added Poke function to menu
 Added option to autodetect realvideo programs
 Added option to simulate lost vsync on zx80/81
 Added aofile WAV format
-Improved vertical display synchronization on ZX80/81 
-Improved view cpu registers option with opcode dissassemble 
+Improved vertical display synchronization on ZX80/81
+Improved view cpu registers option with opcode dissassemble
 Fixed opcodes LD IX/IY(h/l),IX/IY(h/l)
 Fixed timing with some opcodes. Better display of rainbow (spectrum) and hi-res (zx80/81). Overscan demo is perfect on 128k mode (but not on 48k yet)
 Some other minor bugfixes
 
 
 
-Version 1.0.1. 27th May 2014 - Rainbow edition + 
+Version 1.0.1. 27th May 2014 - Rainbow edition +
 
 Fixed bug with AY Chip and channels with both tone & noise enabled. It's a bit annoying so these sounds are played louder
 Added parent folder to binary and source tar.gz
@@ -1854,7 +1856,7 @@ Added generating bintargz to build process
 Added autodetection of names of tapes/snapshots and setting emulation options
 Added real tape loading simulation (sound and loading stripes) for spectrum/zx80/81
 Changed behaviour on menu: some options, like Load Snapshot, exits automatically from the menu when selected
-Changed behaviour on fileselector: 
+Changed behaviour on fileselector:
 * hidden files/folders (starting with .) are hidden by default
 * last directory remembered when opening tapes and snapshots
 * opening install directory / app bundle by default when opening tapes and snapshots
@@ -1927,17 +1929,17 @@ Added extended keys emulation on xwindows: cursors, tab, caps lock, ","  "." "-"
 Added loading from TZX files (only standard load)
 Added alsa driver sound
 Added utilities and games made by me
-Added utilities smpatap sp_z80 tapabin 
+Added utilities smpatap sp_z80 tapabin
 
 
 Version 0.1. 24th September 2013
 
 Fixed CCF. You can now enter lines in BASIC
-Fixed RLD, RRD. Numbers are printed ok. Flags came from A result. No big numbers. No decimanl numbers->it DOES already work . My mistake was considering the opcodes RLCA/RRCA/RLA y RRA both 4 the same with RLC A,RRC A, RL A y RR A. The first ones dont modify flags S,Z,P and the last ones they do modify flags... Fixing it numbers are printed ok 
+Fixed RLD, RRD. Numbers are printed ok. Flags came from A result. No big numbers. No decimanl numbers->it DOES already work . My mistake was considering the opcodes RLCA/RRCA/RLA y RRA both 4 the same with RLC A,RRC A, RL A y RR A. The first ones dont modify flags S,Z,P and the last ones they do modify flags... Fixing it numbers are printed ok
 Using homepage.ntlworld.com/mark.woodmass/z80tests.tap I got the idea for rlc/rlca etc
 Programs in basic load & run, they do usr0 . If you do merge & run , they work->Fixing opcode LD IY/IX,(NN) it works
 Simple routine to load .TAP
-Working im0,im1, im2 
+Working im0,im1, im2
 Emulating cpi,cpd,cpdr,cpir, ini, ind,inir,ind. Partial for outi etc
 Emulating border for curses,xwindows
 X11 emulation with xshm faster. emulates all keys. it doesnt emulate rainbow

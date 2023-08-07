@@ -291,6 +291,27 @@ A: That breakpoint won't be fired just after booting ZEsarUX. The reason is that
 ----------------------------------------------------------------------------
 
 
+Network Gaming (ZENG)
+---------------------
+
+Q: How do I configure ZENG for more than two ZEsarUX instances?
+A: On every ZEsarUX instance, you must specify the hostname/ip of the other nodes, and remember to set only one master one. For example, consider the three node schema:
+
+192.168.1.139 Host A (master ZENG)
+192.168.1.191 Host B (slave ZENG)
+192.168.1.147 Host C (slave ZENG)
+
+So, you must configure on ZENG menu:
+
+- On Host A, set hosts: 192.168.1.191,192.168.1.147. Set as master
+- On Host B, set hosts: 192.168.1.139,192.168.1.147. Uncheck master
+- On Host C, set hosts: 192.168.1.139,192.168.1.191. Uncheck master
+
+Do not write whitespaces between the hosts
+
+----------------------------------------------------------------------------
+
+
 Windows
 -------
 
