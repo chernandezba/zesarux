@@ -38,6 +38,11 @@
 #define NAME_MAX MAX_PATH
 #endif
 
+//Por el uso de PATH_MAX en FreeBSD
+//Nota: no en todos mis .h que uso PATH_MAX tengo este include, es debido a que en algunos incluyo utils.h y en este utils.h se incluye a su vez limits.h
+#ifdef __FreeBSD__
+#include <limits.h>
+#endif
 
 
 //lineas de cada pantalla. al final de cada linea se guarda el bit a enviar al altavoz
