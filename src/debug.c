@@ -186,7 +186,7 @@ unsigned int debug_mmu_pwa=65536; //Port Write Address (direccion usada en out_p
 unsigned int debug_mmu_mra=65536; //Memory Read Addres (direccion usada peek)
 unsigned int debug_mmu_mwa=65536; //Memory Write Address (direccion usada en poke)
 
-//Anteriores valores para mra y mwa y mrv y mwv. 
+//Anteriores valores para mra y mwa y mrv y mwv.
 //Si es -1, no hay valor anterior
 unsigned int anterior_debug_mmu_mra=65536;
 unsigned int anterior_debug_mmu_mwa=65536;
@@ -223,7 +223,7 @@ Con memory breakpoint: 44% de cpu
 Mismo uso de cpu en los dos casos anteriores sin breakpoints, solo habilitando breakpoints: 44% cpu
 
 
-Con 10 mra en optimizado: 48% 
+Con 10 mra en optimizado: 48%
 Con 10 memory breakpoints: 44%
 
 */
@@ -349,7 +349,7 @@ char *zx80_rom_tokens[]={
 "RUN","STOP","CONTINUE","IF","GO SUB","LOAD",
 "CLEAR","REM","?"
 };
- 
+
 
 struct s_z88_basic_rom_tokens {
 	z80_byte index;
@@ -568,7 +568,7 @@ void clear_mem_breakpoints(void)
 	int i;
 
 	for (i=0;i<65536;i++) {
-		mem_breakpoint_array[i]=0;	
+		mem_breakpoint_array[i]=0;
 	}
 }
 
@@ -581,9 +581,9 @@ void init_breakpoints_table(void)
 	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 		//debug_breakpoints_conditions_array[i][0]=0;
 
-		
+
 		debug_breakpoints_conditions_array_tokens[i][0].tipo=TPT_FIN;
-		
+
 
 	    	debug_breakpoints_actions_array[i][0]=0;
 		debug_breakpoints_conditions_saltado[i]=0;
@@ -618,7 +618,7 @@ void init_watches_table(void)
 //Dibuja la pantalla de panico
 void screen_show_panic_screen(int xmax, int ymax)
 {
-    
+
     //int colores_rainbow[]={2+8,6+8,4+8,5+8,0};
 
 	int x,y;
@@ -647,10 +647,10 @@ void screen_show_panic_screen(int xmax, int ymax)
 //Compile with -g -rdynamic to show function names
 //In Mac, with -g
 //These functions on Mac OS X are available starting from Mac OS 10.5
-void debug_exec_show_backtrace(void) 
+void debug_exec_show_backtrace(void)
 {
 
-#if defined(linux) || defined(__APPLE__) 
+#if defined(linux) || defined(__APPLE__)
   int max_items=50;
   void *array[max_items];
   size_t size;
@@ -792,8 +792,8 @@ void cpu_panic(char *mensaje)
 			reset_welcome_message();
 
 
-			
-			
+
+
 			//no tiene sentido tener el menu overlay abierto... o si?
 
 			menu_overlay_activo=0;
@@ -842,8 +842,8 @@ void cpu_panic(char *mensaje)
 				printf ("Dumped cpu panic snapshot: %s on current directory\n",dump_snapshot_panic_name);
 			}
                                      //01234567890123456789012345678901
-            cpu_panic_printstring("\nHave a nice day ;)\n");            
-		
+            cpu_panic_printstring("\nHave a nice day ;)\n");
+
 
             int cuenta_atras;
 
@@ -963,7 +963,7 @@ void debug_unnamed_console_scroll(void)
     for (x=0;x<DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH;x++) {
         int offset_linea_actual=y*DEBUG_UNNAMED_CONSOLE_LIMIT_WIDTH+x;
         debug_unnamed_console_memory_pointer[offset_linea_actual]=' ';
-    }        
+    }
 }
 
 void debug_unnamed_console_new_line(void)
@@ -1147,7 +1147,7 @@ void debug_printf (int debuglevel, const char * format , ...)
 	//Adquirir lock
 	while(z_atomic_test_and_set(&debug_printf_semaforo)) {
 		//printf("Esperando a liberar lock en debug_printf\n");
-	} 
+	}
 
 
 
@@ -1166,7 +1166,7 @@ void debug_printf (int debuglevel, const char * format , ...)
     //Validar exclude/include y si hay que mostrar ese mensaje entonces
 
     //Clase de mensaje le llega dentro de debuglevel, si tiene mascara de bits a partir de valores 256
-    int mostrar_mensaje;    
+    int mostrar_mensaje;
     mostrar_mensaje=debug_printf_check_exclude_include(clase_mensaje);
 
     //Mensajes con VERBOSE_ERR, siempre se ven, independientemente de cual sea la class
@@ -1250,7 +1250,7 @@ void debug_printf (int debuglevel, const char * format , ...)
         	if (
 				//!strcmp(scr_new_driver_name,"stdout") ||
         		!strcmp(scr_new_driver_name,"simpletext") ||
-        		!strcmp(scr_new_driver_name,"null") 
+        		!strcmp(scr_new_driver_name,"null")
 			)
 			{
 				//nada
@@ -1275,7 +1275,7 @@ void debug_printf (int debuglevel, const char * format , ...)
 //igual que debug_printf pero mostrando nombre archivo fuente y linea
 //util para debug con modo debug o paranoid. mensajes de info o warn no tienen sentido mostrar archivo fuente
 //Usar con, ejemplo:
-//debug_printf_source (VERBOSE_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Probando mensaje"); 
+//debug_printf_source (VERBOSE_DEBUG, __FILE__, __LINE__, __FUNCTION__, "Probando mensaje");
 //o usando un macro que he definido:
 //debug_printf_source (VERBOSE_DEBUG_SOURCE, "Probando mensaje");
 void debug_printf_source (int debuglevel, char *archivo, int linea, const char *funcion, const char * format , ...)
@@ -1484,17 +1484,17 @@ void cpu_core_loop_debug_breakpoint(char *message)
         if (menu_event_remote_protocol_enterstep.v==0) {
             zxvision_open_menu_with_window("debugcpu");
         }
-        
+
     }
 
-    
+
     else {
         //Gestionar acciones. Se gestionan desde aqui mismo y ya no escalan a menu
-        
+
         //Gestion acciones
         //printf("Handling action %s\n",debug_breakpoints_actions_array[catch_breakpoint_index]);
         debug_run_action_breakpoint(debug_breakpoints_actions_array[catch_breakpoint_index]);
-    }    
+    }
 
 
 }
@@ -1528,7 +1528,7 @@ char *breakpoint_cond_operadores[BREAKPOINT_MAX_OPERADORES]={
 /*
 Sobre el parser optimizado y otras optimizaciones. Usos de cpu antes y ahora:
 
--hasta ayer. 
+-hasta ayer.
 --noconfigfile --set-breakpoint 1 bc=4444 ; 52 %  cpu
 
 -con nuevo parser que permite meter registros y valores en ambos lados del operador de comparación
@@ -1552,14 +1552,14 @@ Optimizando expresiones PC=XXXX, MRA=XXXX, MWA=XXXX, optimizado basado en lo com
 **1 breakpoint
 
 --noconfigfile --set-breakpoint 1 pc=4444
--con optimizado 
+-con optimizado
  43% cpu
 
--con parser anterior 
+-con parser anterior
 55%cpu
 
 
-** Con 10 breakpoints. 
+** Con 10 breakpoints.
 ./zesarux --noconfigfile --set-breakpoint 1 pc=40000 --set-breakpoint 2 pc=40001 --set-breakpoint 3 pc=40002 --set-breakpoint 4 pc=40003 --set-breakpoint 5 pc=40005 --set-breakpoint 6 pc=40006 --set-breakpoint 7 pc=40007 --set-breakpoint 8 pc=40008 --set-breakpoint 9 pc=40009 --set-breakpoint 10 pc=40010
 
 -con optimizado  45 %
@@ -1594,7 +1594,7 @@ int debug_breakpoint_condition_optimized(int indice)
 
 		case OPTIMIZED_BRK_TYPE_MWA:
 			valor_variable=debug_mmu_mwa;
-		break;		
+		break;
 
 		default:
 			return 0;
@@ -1615,7 +1615,7 @@ void debug_set_mem_breakpoint(z80_int dir,z80_byte brkp_type)
 {
 	mem_breakpoint_array[dir]=brkp_type;
 }
-	
+
 
 
 //Ver si salta breakpoint y teniendo en cuenta setting de saltar siempre o con cambio
@@ -1646,7 +1646,7 @@ int cpu_core_loop_debug_check_mem_brkp_aux(unsigned int dir, z80_byte tipo_masca
 void cpu_core_loop_debug_check_mem_breakpoints(void)
 {
 
-	
+
 //	mem_breakpoint_array
 //Ver si coincide mra o mwa
 /*
@@ -1670,7 +1670,7 @@ int anterior_debug_mmu_mwa=-1;
 		sprintf(buffer_mensaje,"Memory Breakpoint Read Address: %04XH",debug_mmu_mra);
                 cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
-		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a peek_debug y por tanto no 
+		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a peek_debug y por tanto no
 		//cambiaria esto. Aunque es absurdo porque al leer opcodes siempre esta cambiando MRA. por tanto lo comento, solo
 		//tiene sentido para mwa
 		//anterior_debug_mmu_mra=debug_mmu_mra;
@@ -1687,13 +1687,13 @@ int anterior_debug_mmu_mwa=-1;
 		sprintf(buffer_mensaje,"Memory Breakpoint Write Address: %04XH",debug_mmu_mwa);
                 cpu_core_loop_debug_breakpoint(buffer_mensaje);
 
-		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a poke_debug y por tanto no 
+		//Cambiar esto tambien aqui porque si no escribiera en los siguientes opcodes, no llamaria a poke_debug y por tanto no
 		//cambiaria esto
 		anterior_debug_mmu_mwa=debug_mmu_mwa;
 
         }
 
-	
+
 
 }
 
@@ -1706,18 +1706,18 @@ void debug_set_last_active_breakpoint(void)
 			//Esta activado, pero tiene contenido?
 
 
-			
+
 			if (debug_breakpoints_conditions_array_tokens[i][0].tipo!=TPT_FIN) {
 				last_active_breakpoint=i+1;
 				debug_printf (VERBOSE_DEBUG,"Last active breakpoint +1: %d",last_active_breakpoint);
-				return;				
+				return;
 			}
-					
-	
+
+
 
 
 		}
-		
+
 	}
 
 	last_active_breakpoint=0; //no hay breakpoints activos
@@ -1936,7 +1936,7 @@ void set_cpu_core_loop(void)
                         debug_printf(VERBOSE_INFO,"Setting PCW core");
                         cpu_core_loop=cpu_core_loop_pcw;
                         cpu_core_loop_name="PCW";
-                break;                
+                break;
 
                 case CPU_CORE_Z88:
                         debug_printf(VERBOSE_INFO,"Setting Z88 CPU core");
@@ -1966,31 +1966,31 @@ void set_cpu_core_loop(void)
       debug_printf(VERBOSE_INFO,"Setting MSX CPU core");
       cpu_core_loop=cpu_core_loop_msx;
       cpu_core_loop_name="MSX";
-    break;	
+    break;
 
     case CPU_CORE_COLECO:
       debug_printf(VERBOSE_INFO,"Setting COLECO CPU core");
       cpu_core_loop=cpu_core_loop_coleco;
       cpu_core_loop_name="COLECO";
-    break;		
+    break;
 
     case CPU_CORE_SG1000:
       debug_printf(VERBOSE_INFO,"Setting SG1000 CPU core");
       cpu_core_loop=cpu_core_loop_sg1000;
       cpu_core_loop_name="SG1000";
-    break;	
+    break;
 
     case CPU_CORE_SMS:
       debug_printf(VERBOSE_INFO,"Setting Master System CPU core");
       cpu_core_loop=cpu_core_loop_sms;
       cpu_core_loop_name="SMS";
-    break;    
+    break;
 
     case CPU_CORE_SVI:
       debug_printf(VERBOSE_INFO,"Setting SVI CPU core");
       cpu_core_loop=cpu_core_loop_svi;
       cpu_core_loop_name="SVI";
-    break;			
+    break;
 
 
                 default:
@@ -2121,7 +2121,7 @@ z80_byte *memory_zone_by_file_pointer;
 int memory_zone_by_file_size=0;
 
 //Si ultima instruccion era HALT. Para ignorar hasta lo que no sea HALT. Contar al menos 1
-//Usados en cpu transaction log y cpu-history 
+//Usados en cpu transaction log y cpu-history
 int cpu_trans_log_last_was_halt=0;
 
 //Si ultima instruccion era LDIR o LDDR. Para ignorar hasta lo que no sea LDIR o LDDR. Contar al menos 1
@@ -2155,7 +2155,7 @@ void transaction_log_rotate_files(int archivos)
 	//ren file.8 file.9
 	//ren file.7 file.8
 	//...
-	//ren file.1 file.2 
+	//ren file.1 file.2
 	//ren file file.1 esto a mano
 	int i;
 
@@ -2206,7 +2206,7 @@ void transaction_log_rotate_by_size(void)
 	//printf ("posicion: (tamanyo) %ld\n",tamanyo);
 
 	//Si hay que rotar
-	
+
 
 	long tamanyo_a_rotar=cpu_transaction_log_rotate_size;
 
@@ -2234,7 +2234,7 @@ void transaction_log_rotate_by_lines(void)
 	//printf ("posicion: (tamanyo) %ld\n",tamanyo);
 
 	//Si hay que rotar
-	
+
 
 	long tamanyo_a_rotar=cpu_transaction_log_rotate_lines;
 
@@ -2363,10 +2363,10 @@ z80_byte cpu_core_loop_transaction_log(z80_int dir GCC_UNUSED, z80_byte value GC
 					cpu_trans_log_last_was_halt=0;
 				}
 
-			}	
+			}
 			else {
 				cpu_trans_log_last_was_halt=0;
-			}	
+			}
 		}
 
 		if (cpu_transaction_log_store_registers.v) {
@@ -2403,7 +2403,7 @@ z80_byte cpu_core_loop_transaction_log(z80_int dir GCC_UNUSED, z80_byte value GC
 		transaction_log_rotate_by_size();
 
 		//Rotar log si conviene por lineas
-		transaction_log_rotate_by_lines();		
+		transaction_log_rotate_by_lines();
 
 	}
 
@@ -2420,21 +2420,21 @@ void transaction_log_close_file(void)
 	if (ptr_transaction_log!=NULL) {
 		fclose(ptr_transaction_log);
 		ptr_transaction_log=NULL;
-	}	
+	}
 }
 
 //Retorna 1 si error
 int transaction_log_open_file(void)
 {
 
-  transaction_log_tamanyo_escrito=0; 
+  transaction_log_tamanyo_escrito=0;
   transaction_log_tamanyo_lineas=0;
 
   //Si el archivo existia, inicializar tamanyo, no poner a 0
 
   if (si_existe_archivo(transaction_log_filename)) {
 	 transaction_log_tamanyo_escrito=get_file_size(transaction_log_filename);
-	 
+
 
 	 //tiempo antes
 	//char tiempo[200];
@@ -2457,7 +2457,7 @@ int transaction_log_open_file(void)
  		debug_printf (VERBOSE_ERR,"Unable to open Transaction log");
 		debug_nested_core_del(transaction_log_nested_id_core);
 		return 1;
-	}	
+	}
 
 
 
@@ -2470,7 +2470,7 @@ void transaction_log_truncate(void)
  	if (ptr_transaction_log) {
         transaction_log_close_file();
         util_truncate_file(transaction_log_filename);
-        transaction_log_open_file();    
+        transaction_log_open_file();
     }
     else {
         util_truncate_file(transaction_log_filename);
@@ -2482,13 +2482,13 @@ void transaction_log_truncate(void)
 void transaction_log_truncate_rotated(void)
 {
 
- 	
+
 
 	int archivos=cpu_transaction_log_rotated_files;
 	int i;
 
 	for (i=1;i<=archivos;i++) {
-		
+
 		char buffer_file_dest[PATH_MAX];
 
 		sprintf(buffer_file_dest,"%s.%d",transaction_log_filename,i);
@@ -2515,7 +2515,7 @@ void set_cpu_core_transaction_log(void)
 
 
 
-	cpu_transaction_log_enabled.v=1;																
+	cpu_transaction_log_enabled.v=1;
 
 }
 
@@ -2546,9 +2546,9 @@ z80_byte cpu_core_loop_code_coverage(z80_int dir GCC_UNUSED, z80_byte value GCC_
 
 	//hacer cosas antes...
 	//printf ("running cpu code coverage addr: %04XH\n",reg_pc);
-	
+
 	int indice=reg_pc & 0xffff;
-	
+
 	cpu_code_coverage_array[indice]=1;
 
 	//Llamar a core anterior
@@ -2577,8 +2577,8 @@ void set_cpu_core_code_coverage_enable(void)
 
 
 	cpu_code_coverage_enabled.v=1;
-	
-																
+
+
 
 }
 
@@ -2615,7 +2615,7 @@ void reset_cpu_core_code_coverage(void)
 #define EXTENDED_STACK_SIZE 65536
 struct s_extended_stack_item extended_stack_array_items[EXTENDED_STACK_SIZE];
 
-//Retornar el tipo de valor de extended stack 
+//Retornar el tipo de valor de extended stack
 char *extended_stack_get_string_type(z80_byte tipo)
 {
 
@@ -2715,7 +2715,7 @@ void cpu_history_regs_bin_to_string(z80_byte *p,char *destino)
     z80_byte valor1=p[53];
     char buffer_addr_1[32];
     sprintf(buffer_addr_1,"(%04X)=%X",direccion1,valor1);
-    
+
     z80_int direccion2=value_8_to_16(p[55],p[54]);
     z80_byte valor2=p[56];
     char buffer_addr_2[32];
@@ -2766,7 +2766,7 @@ void cpu_history_regs_bin_to_string(z80_byte *p,char *destino)
   //50: flags
   //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones
   //51-52: primera direccion modificada
-  //53: valor antes de modificar primera direccion 
+  //53: valor antes de modificar primera direccion
   //54-55: segunda direccion modificada
   //56: valor antes de modificar segunda direccion
 
@@ -2803,7 +2803,7 @@ void cpu_history_regs_to_bin_aux_exsp(z80_byte *p)
     //EX (SP),HL  , EX(SP),IX/IY
     z80_byte value1,value2;
 
-    z80_int puntero;    
+    z80_int puntero;
 
     puntero=reg_sp;
     value1=peek_byte_no_time_no_change_mra(puntero);
@@ -2814,9 +2814,9 @@ void cpu_history_regs_to_bin_aux_exsp(z80_byte *p)
     p[53]=value1;
     p[54]=value_16_to_8l(puntero+1);
     p[55]=value_16_to_8h(puntero+1);
-    p[56]=value2;           
+    p[56]=value2;
 
-    //printf("Storing on history %XH with value %02X%02XH coming from opcode type EX (SP),HL/IX/IY\n",puntero,value2,value1); 
+    //printf("Storing on history %XH with value %02X%02XH coming from opcode type EX (SP),HL/IX/IY\n",puntero,value2,value1);
 
 }
 
@@ -2832,7 +2832,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
 	p[3]=value_16_to_8h(reg_sp);
 
 	p[4]=Z80_FLAGS;
-	p[5]=reg_a;	
+	p[5]=reg_a;
 
 	p[6]=reg_c;
 	p[7]=reg_b;
@@ -2850,7 +2850,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
 	p[15]=value_16_to_8h(reg_iy);
 
 	p[16]=Z80_FLAGS_SHADOW;
-	p[17]=reg_a_shadow;	
+	p[17]=reg_a_shadow;
 
 	p[18]=reg_c_shadow;
 	p[19]=reg_b_shadow;
@@ -2879,15 +2879,15 @@ void cpu_history_regs_to_bin(z80_byte *p)
 
 	for (i=0;i<8;i++) {
 		//Low byte
-		p[34+i*2]=value_16_to_8l(debug_paginas_memoria_mapeadas[i]);		
+		p[34+i*2]=value_16_to_8l(debug_paginas_memoria_mapeadas[i]);
 		//High byte
-		p[34+i*2+1]=value_16_to_8h(debug_paginas_memoria_mapeadas[i]);		
-	}	
+		p[34+i*2+1]=value_16_to_8h(debug_paginas_memoria_mapeadas[i]);
+	}
 
   //50: flags
   //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones
   //51-52: primera direccion modificada
-  //53: valor antes de modificar primera direccion 
+  //53: valor antes de modificar primera direccion
   //54-55: segunda direccion modificada
   //56: valor antes de modificar segunda direccion
 
@@ -2906,9 +2906,9 @@ void cpu_history_regs_to_bin(z80_byte *p)
 
 
 	z80_byte *pref203_registro;
-	//z80_byte pref203_numerobit;   
+	//z80_byte pref203_numerobit;
 
-    z80_int *cual_registro_ixiy; 
+    z80_int *cual_registro_ixiy;
 
     z80_int desp16;
     z80_byte desp;
@@ -2935,7 +2935,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
             p[53]=value1;
             //printf("Storing on history %XH with value %XH coming from opcode %XH modifying (DE)\n",DE,value1,opcode);
 
-        break; 
+        break;
 
         case 34: //LD (NN),HL
             puntero=value_8_to_16(peek_byte_no_time_no_change_mra(reg_pc+2),peek_byte_no_time_no_change_mra(reg_pc+1));
@@ -2947,21 +2947,21 @@ void cpu_history_regs_to_bin(z80_byte *p)
             p[53]=value1;
             p[54]=value_16_to_8l(puntero+1);
             p[55]=value_16_to_8h(puntero+1);
-            p[56]=value2;            
-            //printf("Storing on history %XH with value %02X%02XH coming from opcode %XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode);        
+            p[56]=value2;
+            //printf("Storing on history %XH with value %02X%02XH coming from opcode %XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode);
         break;
 
-        case 50: //LD (NN),A 
+        case 50: //LD (NN),A
             puntero=value_8_to_16(peek_byte_no_time_no_change_mra(reg_pc+2),peek_byte_no_time_no_change_mra(reg_pc+1));
             value1=peek_byte_no_time_no_change_mra(puntero);
             p[50]=1;
             p[51]=value_16_to_8l(puntero);
             p[52]=value_16_to_8h(puntero);
             p[53]=value1;
-          
-            //printf("Storing on history %XH with value %02XH coming from opcode %XH modifying 8 bits (NN)\n",puntero,value1,opcode);    
+
+            //printf("Storing on history %XH with value %02XH coming from opcode %XH modifying 8 bits (NN)\n",puntero,value1,opcode);
         break;
-         
+
 
         case 52: //INC (HL)
         case 53: //DEC (HL)
@@ -2973,7 +2973,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
         case 116: //LD (HL),H
         case 117: //LD (HL),L
         case 119: //LD (HL),A
-            
+
             value1=peek_byte_no_time_no_change_mra(HL);
             p[50]=1;
             p[51]=reg_l;
@@ -2986,7 +2986,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
         case 227: //EX (SP),HL
 
             cpu_history_regs_to_bin_aux_exsp(p);
-        
+
 
         break;
 
@@ -2995,7 +2995,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
         //Funciones CALL con condicion, si la condicion no se cumple, no se llamara a la funcion y por tanto
         //no se modificaria stack. Pero lo guardamos igualmente, da igual, si no se modifica, al hacer backwards, se dejara tal cual ya estaba
         case 196: //CALL NZ,NN
-        case 197: //PUSH BC  
+        case 197: //PUSH BC
         case 199: //RST 0
 
         case 204: //CALL Z,NN
@@ -3021,7 +3021,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
         case 247: //RST 48
 
         case 252: //CALL M,NN
-        case 255: //RST 56      
+        case 255: //RST 56
 
             puntero=reg_sp-2;
             value1=peek_byte_no_time_no_change_mra(puntero);
@@ -3032,9 +3032,9 @@ void cpu_history_regs_to_bin(z80_byte *p)
             p[53]=value1;
             p[54]=value_16_to_8l(puntero+1);
             p[55]=value_16_to_8h(puntero+1);
-            p[56]=value2;           
+            p[56]=value2;
 
-            //printf("Storing on history %XH with value %02X%02XH coming from opcode %XH type PUSH/CALL/RST\n",puntero,value2,value1,opcode);          
+            //printf("Storing on history %XH with value %02X%02XH coming from opcode %XH type PUSH/CALL/RST\n",puntero,value2,value1,opcode);
         break;
 
 
@@ -3056,8 +3056,8 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     p[53]=value1;
                     p[54]=value_16_to_8l(puntero+1);
                     p[55]=value_16_to_8h(puntero+1);
-                    p[56]=value2;            
-                    //printf("Storing on history %XH with value %02X%02XH coming from opcode ED%XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode1);        
+                    p[56]=value2;
+                    //printf("Storing on history %XH with value %02X%02XH coming from opcode ED%XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode1);
                 break;
 
 
@@ -3068,7 +3068,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     p[51]=reg_l;
                     p[52]=reg_h;
                     p[53]=value1;
-                    //printf("Storing on history %XH with value %XH coming from opcode ED%XH type RRD/RLD\n",HL,value1,opcode1);                
+                    //printf("Storing on history %XH with value %XH coming from opcode ED%XH type RRD/RLD\n",HL,value1,opcode1);
 
                 break;
 
@@ -3084,9 +3084,9 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     p[52]=reg_d;
                     p[53]=value1;
                     //printf("Storing on history %XH with value %XH coming from opcode ED%XH type LDI/LDD\n",DE,value1,opcode1);
-                
+
                 break;
-                
+
                 case 162: //INI
                 case 170: //IND
                 case 178: //INIR
@@ -3098,13 +3098,13 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     p[52]=reg_h;
                     p[53]=value1;
                     //printf("Storing on history %XH with value %XH coming from opcode ED%XH type INI/IND\n",HL,value1,opcode1);
-                                
+
                 break;
 
             }
 
 
-            
+
         break;
 
         //Prefijo 203
@@ -3117,10 +3117,10 @@ void cpu_history_regs_to_bin(z80_byte *p)
 
                 case 128: //RES
                 case 192: //SET
-                    
+
                     pref203_registro=devuelve_reg_offset(opcode1 & 7);
                     //pref203_numerobit=(opcode1 >> 3) & 7;
-                    
+
                     //registro ficticio 0 indica (HL)
                     if (pref203_registro==0) {
                         value1=peek_byte_no_time_no_change_mra(HL);
@@ -3128,9 +3128,9 @@ void cpu_history_regs_to_bin(z80_byte *p)
                         p[51]=reg_l;
                         p[52]=reg_h;
                         p[53]=value1;
-                        //printf("Storing on history %XH with value %XH coming from opcode CB%XH type SET/RES (HL)\n",HL,value1,opcode1);                        
+                        //printf("Storing on history %XH with value %XH coming from opcode CB%XH type SET/RES (HL)\n",HL,value1,opcode1);
                     }
-                    
+
                 break;
 
                 default:
@@ -3153,18 +3153,18 @@ void cpu_history_regs_to_bin(z80_byte *p)
                             p[51]=reg_l;
                             p[52]=reg_h;
                             p[53]=value1;
-                            //printf("Storing on history %XH with value %XH coming from opcode CB%XH type ROTATION (HL)\n",HL,value1,opcode1);                        
-                        }                        
+                            //printf("Storing on history %XH with value %XH coming from opcode CB%XH type ROTATION (HL)\n",HL,value1,opcode1);
+                        }
 
 					break;
 
-					
+
 				}
-			break;                
+			break;
             }
-                
-     
-        break;      
+
+
+        break;
 
         //Prefijo 221, 253
         case 221:
@@ -3183,10 +3183,10 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     p[53]=value1;
                     p[54]=value_16_to_8l(puntero+1);
                     p[55]=value_16_to_8h(puntero+1);
-                    p[56]=value2;            
-                    //printf("Storing on history %XH with value %02X%02XH coming from opcode DD/FD%02XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode1);    
+                    p[56]=value2;
+                    //printf("Storing on history %XH with value %02X%02XH coming from opcode DD/FD%02XH modifying 16 bits (NN)\n",puntero,value2,value1,opcode1);
 
-                break; 
+                break;
 
                 case 52: //INC (IX+d)
                 case 53: //DEC (IX+d)
@@ -3197,7 +3197,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
                 case 115: //LD (IX+d),E
                 case 116: //LD (IX+d),H
                 case 117: //LD (IX+d),L
-                case 119: //LD (IX+d),A               
+                case 119: //LD (IX+d),A
 
                     desp=peek_byte_no_time_no_change_mra(reg_pc+2);
 
@@ -3219,7 +3219,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
                 case 227: //EX (SP),IX
 
                     cpu_history_regs_to_bin_aux_exsp(p);
-                                 
+
 
                 break;
 
@@ -3227,7 +3227,7 @@ void cpu_history_regs_to_bin(z80_byte *p)
                     //SET, RES, ROTACIONES... USANDO (IX/IY+d)
                     //Excepto instrucciones bit (del opcode 64 al 127), todas modifican (IX/IY+d)
                     //Formato DD/FB + CB + d + Opcode
-                    
+
                     opcode2=peek_byte_no_time_no_change_mra(reg_pc+3);
                     if (opcode2<64 || opcode2>127) {
 
@@ -3235,24 +3235,24 @@ void cpu_history_regs_to_bin(z80_byte *p)
                         desp16=desp8_to_16(desp);
                         puntero=*cual_registro_ixiy + desp16;
 
-                        value1=peek_byte_no_time_no_change_mra(puntero);      
+                        value1=peek_byte_no_time_no_change_mra(puntero);
 
                         p[50]=1;
                         p[51]=value_16_to_8l(puntero);
                         p[52]=value_16_to_8h(puntero);
                         p[53]=value1;
 
-                        //printf("Storing on history %XH with value %02XH coming from opcode DD/FD CB %02XH modifying 8 bits (IX+d)\n",puntero,value1,opcode2);                                  
+                        //printf("Storing on history %XH with value %02XH coming from opcode DD/FD CB %02XH modifying 8 bits (IX+d)\n",puntero,value1,opcode2);
                         }
                 break;
             }
 
 
 
-        break;    
-        
+        break;
+
     }
- 
+
 }
 
 
@@ -3265,7 +3265,7 @@ Historial se guarda como un ring buffer
 Tenemos indice que apunta a primer elemento en el ring. Esta inicializado a 0
 Tenemos contador de total elementos en el ring. Inicializado a 0
 Tenemos indice de siguiente posicion a insertar. Inicializado a 0
-*/ 
+*/
 
 int cpu_history_primer_elemento=0;
 int cpu_history_total_elementos=0;
@@ -3320,13 +3320,13 @@ void cpu_history_add_element(void)
 	//Obtener posicion en memoria
 	long long int offset_memoria;
 	offset_memoria=cpu_history_get_offset_index(cpu_history_siguiente_posicion);
-	
+
 	//printf ("Offset en memoria: %ld\n",offset_memoria);
 
 	//Meter registros en memoria
 	cpu_history_regs_to_bin(&cpu_history_memory_buffer[offset_memoria]);
 
-	
+
 	cpu_history_siguiente_posicion=cpu_history_increment_pointer(cpu_history_siguiente_posicion);
 
 	//Si total elementos es menor que maximo, incrementar
@@ -3335,7 +3335,7 @@ void cpu_history_add_element(void)
 	//Si total elementos es igual que maximo, no incrementar y aumentar posicion de indice del primer elemento. Si va mas alla del final, poner a 0
 	else {
 		cpu_history_primer_elemento=cpu_history_increment_pointer(cpu_history_primer_elemento);
-	} 
+	}
 
 	//temp_conta++;
 	//if (temp_conta==100) cpu_history_started.v=0;
@@ -3357,7 +3357,7 @@ int cpu_history_get_array_pos_element(int indice)
 		//Ha dado la vuelta.
 		int indice_final=cpu_history_primer_elemento+indice-cpu_history_max_elements;
 		return indice_final;
-		//Ejemplo: 
+		//Ejemplo:
 		//array de 3. primero es el 1 y pedimos el 2
 		//tiene que retornar el 0:
 		//1+2-3=0
@@ -3424,7 +3424,7 @@ void cpu_history_regs_bin_restore(int indice)
 		return;
 	}
 
-	
+
 
 	int posicion=cpu_history_get_array_pos_element(indice);
 
@@ -3447,7 +3447,7 @@ void cpu_history_regs_bin_restore(int indice)
   reg_sp=value_8_to_16(p[3],p[2]), 	//sp
 
   reg_a=p[5]; //af
-  Z80_FLAGS=p[4]; 	
+  Z80_FLAGS=p[4];
 
   reg_bc=value_8_to_16(p[7],p[6]); 	//bc
   reg_hl=value_8_to_16(p[9],p[8]); 	//hl
@@ -3456,17 +3456,17 @@ void cpu_history_regs_bin_restore(int indice)
   reg_iy=value_8_to_16(p[15],p[14]); 	//iy
 
   reg_a_shadow=p[17]; //af'
-  Z80_FLAGS_SHADOW=p[16]; 	
+  Z80_FLAGS_SHADOW=p[16];
 
   reg_b_shadow=p[19]; //bc'
-  reg_c_shadow=p[18]; 	
+  reg_c_shadow=p[18];
 
   reg_h_shadow=p[21]; //hl'
   reg_l_shadow=p[20];
 
 
   reg_d_shadow=p[23]; //de'
-  reg_e_shadow=p[22]; 	
+  reg_e_shadow=p[22];
 
   reg_i=p[24]; 		//I
   reg_r=p[25]; 		//R
@@ -3476,7 +3476,7 @@ void cpu_history_regs_bin_restore(int indice)
 
   iff1.v=p[27]&1;
   iff2.v=(p[27]>>1)&1;
-  
+
 
   /*
 
@@ -3496,7 +3496,7 @@ void cpu_history_regs_bin_restore(int indice)
   //50: flags
   //Bits 0-1: sobre direcciones modificadas: 0, ninguna, 1: una direccion, 2: dos direcciones
   //51-52: primera direccion modificada
-  //53: valor antes de modificar primera direccion 
+  //53: valor antes de modificar primera direccion
   //54-55: segunda direccion modificada
   //56: valor antes de modificar segunda direccion
   int flags_direcciones=p[50] & 3;
@@ -3515,9 +3515,9 @@ void cpu_history_regs_bin_restore(int indice)
       z80_byte valor=p[56];
       poke_byte_no_time(direccion,valor);
       //printf("modifying second address %X value %X\n",direccion,valor);
-  }   
+  }
 
-  
+
 }
 
 
@@ -3563,7 +3563,7 @@ z80_byte cpu_core_loop_history(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED
 		printf ("Legacy registers: %s\n",registros_string_legacgy);
 
 
-		//Guardar en binario y obtener de nuevo 
+		//Guardar en binario y obtener de nuevo
 		char registros_history_string[1024];
 		z80_byte registers_history_binary[CPU_HISTORY_REGISTERS_SIZE];
 
@@ -3612,7 +3612,7 @@ z80_byte cpu_core_loop_history(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED
 			else {
 					cpu_trans_log_last_was_ldxr=0;
 			}
-		}		
+		}
 
 		int ignorar=0;
 
@@ -3627,11 +3627,11 @@ z80_byte cpu_core_loop_history(z80_int dir GCC_UNUSED, z80_byte value GCC_UNUSED
 		if (cpu_trans_log_ignore_repeated_ldxr.v && cpu_trans_log_last_was_ldxr>1) {
 			//no hacer log
 			ignorar=1;
-		}		
+		}
 
 
 		if (!ignorar) {
-		
+
 		cpu_history_add_element();
 
 		}
@@ -3663,14 +3663,14 @@ void set_cpu_core_history_enable(void)
 		return;
 	}
 
-	
+
 
 	cpu_history_nested_id_core=debug_nested_core_add(cpu_core_loop_history,"CPU history Core");
 
 	cpu_history_enabled.v=1;
-	
-	
-																
+
+
+
 
 }
 
@@ -4558,7 +4558,7 @@ int debug_change_register(char *texto)
     }
 
 
-              
+
 
 
 		else if (!strcasecmp(texto_registro,"BC")) {
@@ -4601,7 +4601,7 @@ int debug_change_register(char *texto)
                 }
 
 
-      
+
 
 
 		else if (!strcasecmp(texto_registro,"A")) {
@@ -4709,7 +4709,7 @@ else if (!strcasecmp(texto_registro,"L'")) {
 		else if (!strcasecmp(texto_registro,"IFF2")) {
                     iff2.v=valor_registro;
                         return 0;
-                }				
+                }
 
 
 	}
@@ -4804,11 +4804,11 @@ void debug_set_breakpoint_optimized(int breakpoint_index,char *condicion)
 	if (condicion[i]==' ') {
 		debug_printf(VERBOSE_DEBUG,"set_breakpoint_optimized: Space after number. Not optimized");
 		return;
-    }		
+    }
 
 	//Ver si eso que hay a la derecha del igual es una variable
 	//int si_cond_opcode=0;
-	unsigned int valor; 
+	unsigned int valor;
 
     //old parser valor=cpu_core_loop_debug_registro(valor_comparar,&si_cond_opcode);
 	int final_numero;
@@ -4854,7 +4854,7 @@ int debug_set_breakpoint(int breakpoint_index,char *condicion)
       return 1;
     }
 
-	
+
 	int result=exp_par_exp_to_tokens(condicion,debug_breakpoints_conditions_array_tokens[breakpoint_index]);
 	if (result<0) {
 		debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
@@ -4864,7 +4864,7 @@ int debug_set_breakpoint(int breakpoint_index,char *condicion)
 
 	//Ver si se puede evaluar la expresion resultante. Aqui basicamente generara error
 	//cuando haya un parentesis sin cerrar
-	int error_evaluate; 
+	int error_evaluate;
 
 	//Si no es token vacio
 	if (debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo!=TPT_FIN) {
@@ -4873,9 +4873,9 @@ int debug_set_breakpoint(int breakpoint_index,char *condicion)
 			debug_breakpoints_conditions_array_tokens[breakpoint_index][0].tipo=TPT_FIN; //Inicializarlo vacio
 			debug_printf (VERBOSE_ERR,"Error adding breakpoint, can not be evaluated [%s]",condicion);
 			return 1;
-		}	
+		}
 	}
-	
+
 
 
   	debug_breakpoints_conditions_saltado[breakpoint_index]=0;
@@ -4900,7 +4900,7 @@ void debug_set_watch(int watch_index,char *condicion)
       return;
     }
 
-	
+
 	int result=exp_par_exp_to_tokens(condicion,debug_watches_array[watch_index]);
 	if (result<0) {
 		debug_watches_array[watch_index][0].tipo=TPT_FIN; //Inicializarlo vacio
@@ -4951,7 +4951,7 @@ void debug_delete_all_repeated_breakpoint(char *texto)
 //Nota: quiza tendria que haber otra funcion que detecte que existe pero si no esta activo, que solo lo active sin agregar otro repetido
 void debug_add_breakpoint_ifnot_exists(char *breakpoint_add)
 {
-	//Si no hay breakpoint ahi, ponerlo y 
+	//Si no hay breakpoint ahi, ponerlo y
 	int posicion=debug_find_breakpoint(breakpoint_add);
 	if (posicion<0) {
 
@@ -4962,7 +4962,7 @@ void debug_add_breakpoint_ifnot_exists(char *breakpoint_add)
     	}
 		debug_printf (VERBOSE_DEBUG,"Putting breakpoint [%s] at next free slot",breakpoint_add);
 
-		debug_add_breakpoint_free(breakpoint_add,""); 
+		debug_add_breakpoint_free(breakpoint_add,"");
 	}
 }
 
@@ -5248,7 +5248,7 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
   			sprintf (&results_buffer[index_buffer],"%5d ",numero_linea);
   			index_buffer +=6;
 
-  			
+
 	  		//asignamos ya siguiente direccion.
   			dir_inicio_linea=dir+longitud_linea;
 
@@ -5269,7 +5269,7 @@ void debug_view_z88_basic_from_memory(char *results_buffer,int dir_inicio_linea,
 					char buffer_token[20];
 					debug_view_z88_print_token(byte_leido,buffer_token);
 	  				sprintf (&results_buffer[index_buffer],"%s",buffer_token);
-  					index_buffer +=strlen(buffer_token);				  
+  					index_buffer +=strlen(buffer_token);
   					//lo_ultimo_es_un_token=1;
   				}
 
@@ -5459,8 +5459,8 @@ void debug_get_ioports(char *stats_buffer)
         int i;
         for (i=0;i<4;i++) {
             sprintf (buf_linea,"PCW port %02XH: %02X <- Bank for %04XH\n",0x80+i,pcw_bank_registers[i],i*16384);
-            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
-        }   
+            sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+        }
         sprintf (buf_linea,"PCW port F4H: %02X Lock: %s %s %s %s\n",pcw_port_f4_value,
             (pcw_port_f4_value & 0x80 ? "C000" : "    "),
             (pcw_port_f4_value & 0x40 ? "8000" : "    "),
@@ -5490,16 +5490,16 @@ void debug_get_ioports(char *stats_buffer)
 
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-        //b6: 1 line flyback, read twice in succession indicates frame flyback. b5: FDC interrupt. b4: indicates 32-line screen. 
-        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above). &FC-&FD	
-        z80_byte valor_f8=pcw_get_port_f8_value();     
+        //b6: 1 line flyback, read twice in succession indicates frame flyback. b5: FDC interrupt. b4: indicates 32-line screen.
+        //b3-0: 300Hz interrupt counter: stays at 1111 until reset by in a,(&F4) (see above). &FC-&FD
+        z80_byte valor_f8=pcw_get_port_f8_value();
         sprintf (buf_linea,"PCW port F8H: %02X %s %s %s INTCNT: %2d\n",valor_f8,
             (valor_f8 & 0x40 ? "(FFB)" : "     "),
             (valor_f8 & 0x20 ? "(FIN)" : "     "),
             (valor_f8 & 0x10 ? "(32L)" : "     "),
             valor_f8 & 0xF
         );
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         //sprintf (buf_linea,"PCW interrupt counter: %02X\n",pcw_interrupt_counter);
         //sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5520,7 +5520,7 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Main status register: %02XH\n",pd765_main_status_register);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"(%s %s %s %s %s %s %s %s)\n",
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_RQM_MASK ? "RQM" : "   "),
@@ -5532,10 +5532,10 @@ void debug_get_ioports(char *stats_buffer)
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D1B_MASK ? "D1B" : "   "),
             (pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_D0B_MASK ? "D0B" : "   ")
         );
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Pending interrupt: %s\n",(pd765_interrupt_pending ? "Yes" : "No"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
 /*
@@ -5545,17 +5545,17 @@ void debug_get_ioports(char *stats_buffer)
         //Chapuza. Cambiar esto por algo mejor, tipo "estado=reading data"
         sprintf (buf_linea,"Reading: %s\n",(
                  ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_READ_DATA) ? "Yes" : "No"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);    
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Writing: %s\n",(
                  ((pd765_main_status_register & PD765_MAIN_STATUS_REGISTER_EXM_MASK) && pd765_command_received==PD765_COMMAND_WRITE_DATA) ? "Yes" : "No"));
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);   
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
-*/        
+*/
 
         sprintf (buf_linea,"Current Track: %d\n",pd765_pcn);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-        
+
         sprintf (buf_linea,"Last Sector Read: %d\n",pd765_debug_last_sector_read);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
@@ -5565,7 +5565,7 @@ void debug_get_ioports(char *stats_buffer)
 
 
         sprintf (buf_linea,"Read Bytes/sec: %d\n",pd765_read_stats_bytes_sec);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"Write Bytes/sec: %d\n",pd765_write_stats_bytes_sec);
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5573,55 +5573,55 @@ void debug_get_ioports(char *stats_buffer)
 
         //Salto de linea final
         sprintf (buf_linea,"\n");
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
 	if (diviface_enabled.v) {
   		sprintf (buf_linea,"Diviface control port: %02X\n",diviface_control_register);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);		
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
   		sprintf (buf_linea,"Diviface automatic paging: %s\n",(diviface_paginacion_automatica_activa.v ? "Yes" : "No")  );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	          
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 	}
 
     if (ide_enabled.v) {
   		sprintf (buf_linea,"ATA Registers\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	 
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Data:          %02X\n",ide_get_data_register() );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	        
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Error:         %02X\n",ide_get_error_register() );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Sector Count:  %02X\n",ide_register_sector_count );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Sector Number: %02X\n",ide_register_sector_number );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Cylinder Low:  %02X\n",ide_register_cylinder_low );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Cylinder High: %02X\n",ide_register_cylinder_high );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Drive/Head:    %02X\n",ide_register_drive_head );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Status:        %02X\n",ide_status_register );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	                                                                        
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
     }
 
     if (mmc_enabled.v) {
   		sprintf (buf_linea,"MMC Registers\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	 
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," State:        %s\n",(mmc_r1&1 ? "Idle" : "Not Idle") );
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	        
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea," Last Command: %02X\n",mmc_last_command);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	             
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
     }
 
     if (superupgrade_enabled.v) {
@@ -5631,10 +5631,10 @@ void debug_get_ioports(char *stats_buffer)
 
   	if (MACHINE_IS_TBBLUE) {
 		sprintf (buf_linea,"\nTBBlue port 123b:   %02X\n",tbblue_port_123b);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 		sprintf (buf_linea,"TBBlue port 123b_2: %02X\n",tbblue_port_123b_second_byte);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);            
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   								sprintf (buf_linea,"TBBlue last register: %02X\n",tbblue_last_register);
   								sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5699,8 +5699,8 @@ void debug_get_ioports(char *stats_buffer)
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 			}
 
-  		
-  	}	  
+
+  	}
 
   	if (MACHINE_IS_Z88) {
   		sprintf (buf_linea,"Z88 Blink:\n\n");
@@ -5764,7 +5764,7 @@ void debug_get_ioports(char *stats_buffer)
 
 		//Registros DMA
   		sprintf (buf_linea,"\nZX-Uno DMA Registers:\n");
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"DMASRC:  %02X%02X\n",zxuno_dmareg[0][1],zxuno_dmareg[0][0]);
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5779,13 +5779,13 @@ void debug_get_ioports(char *stats_buffer)
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"DMAPROB: %02X%02X\n",zxuno_dmareg[4][1],zxuno_dmareg[4][0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"DMACTRL: %02X\n",zxuno_ports[0xa0]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);		  	  		  		  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"DMASTAT: %02X\n",zxuno_ports[0xa6]);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);			  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   	}
 
@@ -5802,8 +5802,8 @@ void debug_get_ioports(char *stats_buffer)
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"PPI Port C: %02X\n",msx_ppi_register_c);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);		  		  
-  	}	  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+  	}
 
   	if (MACHINE_IS_SVI) {
   		sprintf (buf_linea,"PPI Port A: %02X\n",svi_ppi_register_a);
@@ -5813,7 +5813,7 @@ void debug_get_ioports(char *stats_buffer)
   		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
   		sprintf (buf_linea,"PPI Port C: %02X\n",svi_ppi_register_c);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);		  		  
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
   	}
 
 	if (MACHINE_HAS_VDP_9918A) {
@@ -5825,8 +5825,8 @@ void debug_get_ioports(char *stats_buffer)
 			for (i=0;i<16;i++) {
 					sprintf (buf_linea,"%02X:  %02X\n",i,vdp_9918a_registers[i]);
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}		
-	}	 
+			}
+	}
 
 	if (MACHINE_IS_SMS) {
         sprintf (buf_linea,"\nMapper registers:\n");
@@ -5845,7 +5845,7 @@ void debug_get_ioports(char *stats_buffer)
         sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
     }
-	
+
 	if (MACHINE_IS_CPC) {
   			sprintf (buf_linea,"\nCRTC Registers:\n");
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
@@ -5855,36 +5855,36 @@ void debug_get_ioports(char *stats_buffer)
 			for (i=0;i<32;i++) {
 					sprintf (buf_linea,"%02X:  %02X\n",i,cpc_crtc_registers[i]);
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}		
-			
+			}
+
 			sprintf (buf_linea,"\nGate Registers:\n");
   			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
 
-			
+
 			for (i=0;i<4;i++) {
 					sprintf (buf_linea,"%02X:  %02X\n",i,cpc_gate_registers[i]);
 					sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
-			}	
+			}
 
 			sprintf (buf_linea,"\nPort DF: %02XH\n",cpc_port_df);
-  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);			
-			
-	}	 
-	
-	
+  			sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+
+	}
+
+
 
     if (MACHINE_IS_QL) {
         int value_rtc=(ql_zx8032_readbyte(0x18000)<<24) | (ql_zx8032_readbyte(0x18001)<<16) | (ql_zx8032_readbyte(0x18002)<<8) | ql_zx8032_readbyte(0x18003);
   		sprintf (buf_linea,"PC_CLOCK: %0d\n",value_rtc);
-  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	    
+  		sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"PC_INTR: %02X\n",ql_pc_intr);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);	    
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
 
         sprintf (buf_linea,"MC_STAT: %02X\n",ql_mc_stat);
-        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);        
-    } 	
+        sprintf (&stats_buffer[index_buffer],"%s",buf_linea); index_buffer +=strlen(buf_linea);
+    }
 
   	if (ay_chip_present.v && (MACHINE_IS_SPECTRUM || MACHINE_IS_ZX8081 || MACHINE_IS_MSX1 || MACHINE_IS_SVI || MACHINE_IS_CPC)) {
   		int chips=ay_retorna_numero_chips();
@@ -5901,7 +5901,7 @@ void debug_get_ioports(char *stats_buffer)
   	                }
 
   		}
-  	}      
+  	}
 
 
     stats_buffer[index_buffer]=0;
@@ -6004,7 +6004,7 @@ void debug_run_action_breakpoint(char *comando)
 
         debug_printf (VERBOSE_DEBUG,"Running write command address %d value %d",direccion,valor);
 
-        poke_byte_z80_moto(direccion,valor);              
+        poke_byte_z80_moto(direccion,valor);
 
       }
     }
@@ -6038,17 +6038,17 @@ void debug_run_action_breakpoint(char *comando)
 
         char string_direccion[10];
 
-        menu_debug_print_address_memory_zone(string_direccion, direccion);                                  
+        menu_debug_print_address_memory_zone(string_direccion, direccion);
 
         size_t longitud_opcode;
         char buffer[100];
 
 
-        debugger_disassemble(buffer,99,&longitud_opcode,direccion);    
+        debugger_disassemble(buffer,99,&longitud_opcode,direccion);
 
-        printf("%s %s\n",string_direccion,buffer);    
+        printf("%s %s\n",string_direccion,buffer);
 
-      
+
       }
     }
 
@@ -6123,7 +6123,7 @@ void debug_run_action_breakpoint(char *comando)
 		resultado=exp_par_evaluate_expression_to_number(parametros);
         debug_memory_zone_debug_write_value(resultado);
       }
-    }	
+    }
 
     else if (!strcmp(comando_sin_parametros,"reset-tstatp")) {
       debug_printf (VERBOSE_DEBUG,"Running reset-tstatp command");
@@ -6202,7 +6202,7 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"IB%d",ifrom_active_bank);
                 sprintf (texto_pagina,"iFrom Block %d",ifrom_active_bank);
                 return;
-        }		
+        }
 
         //Si es betadisk
         if (segmento==0 && betadisk_enabled.v && betadisk_active.v) {
@@ -6216,7 +6216,7 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"TRAN");
                 sprintf (texto_pagina,"Transtape MEM");
                 return;
-        }   
+        }
 
         //Si es specmate
         if (segmento==0 && specmate_enabled.v && specmate_mapped_rom_memory.v) {
@@ -6258,7 +6258,7 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"DIN3");
                 sprintf (texto_pagina,"Dinamid3 MEM");
                 return;
-        }                
+        }
 
 
         //Si es barbanegra
@@ -6266,7 +6266,7 @@ void debug_registers_get_mem_page_extended(z80_byte segmento,char *texto_pagina,
                 sprintf (texto_pagina_short,"BBN");
                 sprintf (texto_pagina,"Barbanegra MEM");
                 return;
-        }                        
+        }
 
 
         //Si es superupgrade
@@ -6499,7 +6499,7 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si ifrom y maquina 48kb
                         if (MACHINE_IS_SPECTRUM_16_48 && ifrom_enabled.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }						
+                        }
 
                         //Si betadisk y maquina 48kb
                         if (MACHINE_IS_SPECTRUM_16_48 && betadisk_enabled.v && betadisk_active.v) {
@@ -6509,7 +6509,7 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si transtape
                         if (MACHINE_IS_SPECTRUM && transtape_enabled.v && transtape_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }  
+                        }
 
                         //Si specmate
                         if (MACHINE_IS_SPECTRUM && specmate_enabled.v && specmate_mapped_rom_memory.v) {
@@ -6519,12 +6519,12 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si phoenix
                         if (MACHINE_IS_SPECTRUM && phoenix_enabled.v && phoenix_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        } 
+                        }
 
                         //Si defcon
                         if (MACHINE_IS_SPECTRUM && defcon_enabled.v && defcon_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        } 
+                        }
 
                         //Si ramjet
                         if (MACHINE_IS_SPECTRUM && ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
@@ -6539,12 +6539,12 @@ typedef struct s_debug_memory_segment debug_memory_segment;
                         //Si dinamid3
                         if (MACHINE_IS_SPECTRUM && dinamid3_enabled.v && dinamid3_mapped_rom_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }                                                
+                        }
 
                         //Si barbanegra
                         if (MACHINE_IS_SPECTRUM && hilow_bbn_enabled.v && hilow_bbn_mapped_memory.v) {
                                 debug_registers_get_mem_page_extended(0,segmentos[0].longname,segmentos[0].shortname);
-                        }                                               
+                        }
 
                         //Si multiface y maquina 48kb. TODO. Si esta dandanator y tambien multiface, muestra siempre dandanator
                         if (MACHINE_IS_SPECTRUM_16_48 && multiface_enabled.v && multiface_switched_on.v) {
@@ -6637,58 +6637,58 @@ typedef struct s_debug_memory_segment debug_memory_segment;
 PSG Port B Output
 
 Bit Name    Description
-1   /CART   Memory bank 11, ROM 0000-7FFF (Cartridge /CCS1, /CCS2)  
-2   /BK21   Memory bank 21, RAM 0000-7FFF                           
-3   /BK22   Memory bank 22, RAM 8000-FFFF                           
-4   /BK31   Memory bank 31, RAM 0000-7FFF                           
+1   /CART   Memory bank 11, ROM 0000-7FFF (Cartridge /CCS1, /CCS2)
+2   /BK21   Memory bank 21, RAM 0000-7FFF
+3   /BK22   Memory bank 22, RAM 8000-FFFF
+4   /BK31   Memory bank 31, RAM 0000-7FFF
 
-5   /BK32   Memory bank 32, RAM 8000-FFFF                           
+5   /BK32   Memory bank 32, RAM 8000-FFFF
 6   CAPS    Caps-Lock diod
-7   /ROMEN0 Memory bank 12, ROM 8000-BFFF* (Cartridge /CCS3)        
-8   /ROMEN1 Memory bank 12, ROM C000-FFFF* (Cartridge /CCS4)        
-*/	
+7   /ROMEN0 Memory bank 12, ROM 8000-BFFF* (Cartridge /CCS3)
+8   /ROMEN1 Memory bank 12, ROM C000-FFFF* (Cartridge /CCS4)
+*/
 
 
 				if (page_config!=0xFF) {
 
 					//Ver bits activos
-					//Memory bank 11, ROM 0000-7FFF (Cartridge /CCS1, /CCS2)  
+					//Memory bank 11, ROM 0000-7FFF (Cartridge /CCS1, /CCS2)
 					if ((page_config & 1)==0) {
 						low_number=11;
 					}
 
-					//Memory bank 21, RAM 0000-7FFF 
+					//Memory bank 21, RAM 0000-7FFF
 					if ((page_config & 2)==0) {
 						low_number=21;
 						low_type='A';
-					}    
+					}
 
-					//Memory bank 22, RAM 8000-FFFF 
+					//Memory bank 22, RAM 8000-FFFF
 					if ((page_config & 4)==0) {
 						high_number=22;
-					}    
+					}
 
 					//Memory bank 31, RAM 0000-7FFF
 					if ((page_config & 8)==0) {
 						low_number=31;
 						low_type='A';
-					}    
+					}
 
 					//Memory bank 32, RAM 8000-FFFF
 					if ((page_config & 16)==0) {
 						high_number=32;
-					}    
+					}
 
 					//TODO bits 6,7
-				}				
+				}
 
-				
-				
+
+
 				sprintf (segmentos[0].shortname,"R%c%02d",low_type,low_number);
 				sprintf (segmentos[0].longname,"R%cM %02d",low_type,low_number);
 
 				sprintf (segmentos[1].shortname,"R%c%02d",high_type,high_number);
-				sprintf (segmentos[1].longname,"R%cM %02d",high_type,high_number);					
+				sprintf (segmentos[1].longname,"R%cM %02d",high_type,high_number);
 
 
 				segmentos[0].length=32768;
@@ -6698,8 +6698,8 @@ Bit Name    Description
 				segmentos[1].start=32768;
 
 
-	
-  			}			  
+
+  			}
 
 			if (MACHINE_IS_COLECO) {
 				segmentos_totales=8;
@@ -6714,21 +6714,21 @@ Bit Name    Description
 				//0-3
 
 				strcpy (segmentos[0].shortname,"BIO");
-				strcpy (segmentos[0].longname,"BIOS ROM");	
+				strcpy (segmentos[0].longname,"BIOS ROM");
 
 				strcpy (segmentos[1].shortname,"EXP");
-				strcpy (segmentos[1].longname,"Expansion port");	
+				strcpy (segmentos[1].longname,"Expansion port");
 
 				strcpy (segmentos[2].shortname,"EXP");
-				strcpy (segmentos[2].longname,"Expansion port");	
+				strcpy (segmentos[2].longname,"Expansion port");
 
 				strcpy (segmentos[3].shortname,"RAM");
-				strcpy (segmentos[3].longname,"RAM (1 KB)");													
+				strcpy (segmentos[3].longname,"RAM (1 KB)");
 
 				//4-7
-				for (pagina=4;pagina<8;pagina++) {		
+				for (pagina=4;pagina<8;pagina++) {
 						strcpy (segmentos[pagina].shortname,"CR");
-						strcpy (segmentos[pagina].longname,"Cartridge ROM");						
+						strcpy (segmentos[pagina].longname,"Cartridge ROM");
 				}
 
 				/*
@@ -6736,10 +6736,10 @@ Bit Name    Description
 2000-3FFF = Expansion port
 4000-5FFF = Expansion port
 6000-7FFF = RAM (1K mapped into an 8K spot)
-8000-9FFF = Cart ROM 
-A000-BFFF = Cart ROM 
-C000-DFFF = Cart ROM      
-E000-FFFF = Cart ROM 
+8000-9FFF = Cart ROM
+A000-BFFF = Cart ROM
+C000-DFFF = Cart ROM
+E000-FFFF = Cart ROM
 				*/
 			}
 
@@ -6747,21 +6747,21 @@ E000-FFFF = Cart ROM
 				/*
 $0000-$bfff	Cartridge (ROM/RAM/etc)
 $c000-$c3ff	System RAM
-$c400-$ffff	System RAM (mirrored every 1KB)				
+$c400-$ffff	System RAM (mirrored every 1KB)
 				*/
 				segmentos_totales=2;
 
 				//0
 				segmentos[0].length=0xc000;
-				segmentos[0].start=0;	
+				segmentos[0].start=0;
 				strcpy (segmentos[0].shortname,"ROM");
-				strcpy (segmentos[0].longname,"Cartridge ROM");				
+				strcpy (segmentos[0].longname,"Cartridge ROM");
 
 				//1
 				segmentos[1].length=16384;
-				segmentos[1].start=0xc000;	
+				segmentos[1].start=0xc000;
 				strcpy (segmentos[1].shortname,"RAM");
-				strcpy (segmentos[1].longname,"RAM (1 KB)");								
+				strcpy (segmentos[1].longname,"RAM (1 KB)");
 			}
 
             //TODO SMS
@@ -6802,7 +6802,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
 
   			if (MACHINE_IS_PRISM) {
-  				segmentos_totales=8;        
+  				segmentos_totales=8;
   				//Si modo ram en rom
           			if (puerto_8189 & 1) {
 
@@ -6812,7 +6812,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                                   //char texto_paginas[8][4];
                                   		//char tipo_memoria[3];
   		                         int pagina;
-  		                        
+
 
   				   for (pagina=0;pagina<8;pagina++) {
                                                   sprintf (segmentos[pagina].shortname,"A%02d",debug_prism_paginas_memoria_mapeadas[pagina]);
@@ -6822,7 +6822,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 	                               		  segmentos[pagina].start=8192*pagina;
   				  }
 
-                                  
+
 
 
   				}
@@ -6908,7 +6908,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                                           //sprintf (texto_paginas[pagina],"%c%d",tipo_memoria,debug_prism_paginas_memoria_mapeadas[pagina]);
                                   }
 
-                              
+
 
 
           }
@@ -6916,7 +6916,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
   			  //Paginas RAM en TIMEX
                           if (MACHINE_IS_TIMEX_TS_TC_2068) {
-                          		segmentos_totales=8;        
+                          		segmentos_totales=8;
                                   //char texto_paginas[8][3];
                                   //char tipo_memoria;
                                   int pagina;
@@ -6944,7 +6944,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 	                               	 segmentos[pagina].start=8192*pagina;
                                   }
 
-                           
+
                           }
 
   			//Paginas RAM en CPC
@@ -6961,7 +6961,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                             if (debug_cpc_type_memory_paged_read[pagina]==CPC_MEMORY_TYPE_ROM) {
   								sprintf (segmentos[pagina].shortname,"ROM%d",debug_cpc_paginas_memoria_mapeadas_read[pagina]);
   								sprintf (segmentos[pagina].longname,"ROM %d",debug_cpc_paginas_memoria_mapeadas_read[pagina]);
-  					
+
   					   		}
 
                             if (debug_cpc_type_memory_paged_read[pagina]==CPC_MEMORY_TYPE_RAM) {
@@ -6980,7 +6980,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
         					if (pagina==0 && ifrom_enabled.v==1) {
                 				sprintf (segmentos[pagina].shortname,"IB%d",ifrom_active_bank);
                 				sprintf (segmentos[pagina].longname,"iFrom Block %d",ifrom_active_bank);
-							}							
+							}
 
 
   							segmentos[pagina].length=16384;
@@ -6991,20 +6991,20 @@ $c400-$ffff	System RAM (mirrored every 1KB)
             }
 
   			if (MACHINE_IS_PCW) {
-                
+
                 segmentos_totales=4;
                 int pagina;
                 for (pagina=0;pagina<4;pagina++) {
-            
+
                     sprintf (segmentos[pagina].shortname,"RAM%d",pcw_banks_paged_read[pagina]);
                     sprintf (segmentos[pagina].longname,"RAM %d",pcw_banks_paged_read[pagina]);
-    
+
                     segmentos[pagina].length=16384;
                     segmentos[pagina].start=16384*pagina;
 
                 }
 
-            }            
+            }
 
   			//Paginas RAM en SAM
   			if (MACHINE_IS_SAM) {
@@ -7027,7 +7027,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
                                   }
 
-                                 
+
                           }
 
                           if (MACHINE_IS_QL) {
@@ -7095,7 +7095,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                             	for (pagina=0;pagina<4;pagina++) {
 
                                    debug_registers_get_mem_page_tsconf_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
-                              
+
 
 					segmentos[pagina].length=16384;
                                 	segmentos[pagina].start=16384*pagina;
@@ -7112,7 +7112,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
                             	for (pagina=0;pagina<4;pagina++) {
 
                                    debug_registers_get_mem_page_baseconf_extended(pagina,segmentos[pagina].longname,segmentos[pagina].shortname);
-                              
+
 
 					segmentos[pagina].length=16384;
                                 	segmentos[pagina].start=16384*pagina;
@@ -7126,7 +7126,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 
 
       	//Caso divmmc
-      			
+
 
       	if (diviface_enabled.v) {
       		if ( !   ( (diviface_control_register&128)==0 && diviface_paginacion_automatica_activa.v==0) )  {
@@ -7144,7 +7144,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 			if (div_segment_zero) {
 
 	      			strcpy(segmentos[0].longname,"Diviface");
-				strcpy(segmentos[0].shortname,"DIV");	
+				strcpy(segmentos[0].shortname,"DIV");
 
 			}
 
@@ -7153,7 +7153,7 @@ $c400-$ffff	System RAM (mirrored every 1KB)
 				//En maquinas de 8 segmentos, bloque 1 es 8192-16383
 				if (segmentos_totales==8) {
 				      	strcpy(segmentos[1].longname,"Diviface");
-					strcpy(segmentos[1].shortname,"DIV");		
+					strcpy(segmentos[1].shortname,"DIV");
 				}
 
 			}
@@ -7317,11 +7317,11 @@ int debug_return_brk_pc_condition(int indice)
 	char *cond;
 
 	int i=indice;
-	
+
 		if (debug_breakpoints_conditions_enabled[i]) {
 			if (debug_breakpoints_actions_array[i][0]!=0) return 0;
 
-			
+
 			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 			cond=buffer_temp;
@@ -7329,7 +7329,7 @@ int debug_return_brk_pc_condition(int indice)
 
 			return debug_text_is_pc_condition(cond);
 		}
-	
+
 
 	return 0;
 }
@@ -7354,13 +7354,13 @@ int debug_return_brk_pc_dir_condition(menu_z80_moto_int direccion)
 			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 			cond=buffer_temp;
-			
+
 
 				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
 				if (valor==direccion) return i;
 			}
 	}
-						
+
 	return -1;
 }
 
@@ -7383,7 +7383,7 @@ int debug_return_brk_pc_dir_list(menu_z80_moto_int *lista)
 			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 			cond=buffer_temp;
-			
+
 
 				menu_z80_moto_int valor=parse_string_to_number(&cond[3]);
 				//printf("direccion: %d\n",valor);
@@ -7391,7 +7391,7 @@ int debug_return_brk_pc_dir_list(menu_z80_moto_int *lista)
                 total_breakpoints++;
 			}
 	}
-						
+
 	return total_breakpoints;
 }
 
@@ -7400,9 +7400,9 @@ int debug_find_free_breakpoint(void)
 {
 	int i;
 	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			
+
 			if (debug_breakpoints_conditions_array_tokens[i][0].tipo==TPT_FIN) return i;
-			
+
 	}
 
 	return -1;
@@ -7417,11 +7417,11 @@ int debug_find_breakpoint(char *to_find)
 	int i;
 	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
 		if (debug_breakpoints_conditions_enabled[i]) {
-			
+
 			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 			if  (!strcasecmp(buffer_temp,to_find)) return i;
-			
+
 		}
 	}
 
@@ -7434,14 +7434,14 @@ int debug_find_breakpoint_activeornot(char *to_find)
 
 	int i;
 	for (i=0;i<MAX_BREAKPOINTS_CONDITIONS;i++) {
-			
+
 			char buffer_temp[MAX_BREAKPOINT_CONDITION_LENGTH];
 			exp_par_tokens_to_exp(debug_breakpoints_conditions_array_tokens[i],buffer_temp,MAX_PARSER_TOKENS_NUM);
 
 			//printf ("%d temp: [%s] comp: [%s]\n",i,buffer_temp,to_find);
 
 			if (!strcasecmp(buffer_temp,to_find)) return i;
-			
+
 	}
 
 	return -1;
@@ -7506,7 +7506,7 @@ void debug_get_stack_values(int items, char *texto)
 			z80_int valor=debug_get_stack_z80_value(i);
 			sprintf(&texto[i*5],"%04X ",valor);
 		  }
-		  
+
 	}
 
 	if (CPU_IS_MOTOROLA) {
@@ -7521,9 +7521,9 @@ void debug_get_stack_values(int items, char *texto)
 //Retornar el user stack de motorola
 void debug_get_user_stack_values(int items, char *texto)
 {
-	
+
 	//Por si acaso, por defecto
-	texto[0]=0;	
+	texto[0]=0;
 
 	if (CPU_IS_MOTOROLA) {
 		//int i;
@@ -7579,7 +7579,7 @@ void debug_memory_zone_debug_write_value(z80_byte valor)
 //Retorna longitud del texto
 int debug_get_timestamp(char *destino)
 {
-	
+
 
 	struct timeval tv;
 	struct tm* ptm;
@@ -7604,8 +7604,8 @@ int debug_get_timestamp(char *destino)
 
 
 	return longitud_timestamp;
-			 
-        
+
+
 }
 
 
@@ -7703,16 +7703,16 @@ int remote_disassemble_find_label(unsigned int direccion)
     pos_source=remote_find_label_source_code(buffer_label);
 
     return pos_source;
-   
+
 }
 
 //expulsar/desactivar source code
 void load_source_code_eject(void)
 {
-    remote_tamanyo_archivo_raw_source_code=0;    
+    remote_tamanyo_archivo_raw_source_code=0;
 }
 
-	
+
 //Retorna 0 si no hay error
 int remote_load_source_code(char *archivo)
 {
@@ -7909,7 +7909,7 @@ void  debug_view_basic_variables_util_final_division(char *buffer,int exponente_
     int entero;
 
 
-    int decimales;    
+    int decimales;
 
     if (signo_exponente>0) {
 
@@ -7942,7 +7942,7 @@ void  debug_view_basic_variables_util_final_division(char *buffer,int exponente_
     //printf("entero: %d\n",entero);
 
     if (signo_valor_final<0) sprintf(buffer,"-%d.%04d",entero,decimales);
-    else sprintf(buffer,"%d.%04d",entero,decimales);    
+    else sprintf(buffer,"%d.%04d",entero,decimales);
 
 }
 
@@ -7952,12 +7952,12 @@ Funcion para mostrar el valor numérico en pantalla
 Toda la parte de coma flotante se puede mejorar y corregir mucho, he evitado usar variables tipo float de C,
 esta todo obtenido mediante enteros de 32 bits, trabajando con tablas de mantisa multiplicadas por 10000
 Además sólo tengo en cuenta 16 de los 32 bits posibles de la mantisa, por tanto los valores muchas veces son aproximados
-NO se debe tomar como una función perfecta sino como algo que nos da un indicativo del valor APROXIMADO de la variable en coma flotante 
+NO se debe tomar como una función perfecta sino como algo que nos da un indicativo del valor APROXIMADO de la variable en coma flotante
 y no da siempre un valor exacto
 */
 void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
 {
-    
+
     //Si es de 16 bits entera o ZX80, primer byte a 0
     z80_byte number_type=peek_byte_no_time(dir);
     if (number_type==0 || MACHINE_IS_ZX80_TYPE) {
@@ -7974,7 +7974,7 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         else {
 
             variable_value=peek_word_no_time(dir+2);
-        
+
             //negativo
             if (peek_byte_no_time(dir+1)==0xFF) {
                 variable_value=-(65536-variable_value);
@@ -7989,22 +7989,22 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
 
         //Aproximacion muy bruta
         int total_mantissa=5000;  //0.5
-        
+
         z80_byte mant1=peek_byte_no_time(dir+1);
 
         //total_mantissa valores multiplicados por 10000
 
         //Estos valores obtenidos desde el propio basic del Spectrum, manipulando los bytes de valores de variables
         //y viendo el valor que obtienen en pantalla
-        
-        
+
+
         if (mant1 & 128) signo_valor_final=-1;  //Valor negativo
 
         //                              0.0000
         if (mant1 & 64) total_mantissa += 2500;  //10000 * 0.25
         if (mant1 & 32) total_mantissa += 1250;  //10000 * 0.125
         if (mant1 & 16) total_mantissa +=  625;  //10000 * 0.0625
-        if (mant1 & 8)  total_mantissa +=  312;  //10000 * 0.03125 
+        if (mant1 & 8)  total_mantissa +=  312;  //10000 * 0.03125
         if (mant1 & 4)  total_mantissa +=  156;  //10000 * 0.015625
         if (mant1 & 2)  total_mantissa +=   78;  //10000 * 0.0078125
         if (mant1 & 1)  total_mantissa +=   39;  //10000 * 0.00390625
@@ -8046,14 +8046,14 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         //printf("exponente %d mantissa %d signo %d\n",exponente,total_mantissa,signo_valor_final);
         if (exponente>18) {
             if (signo_exponente>0) {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/10000",total_mantissa,exponente);    
-                else sprintf(buffer_linea,"(float)(%d X 2^%d)/10000",total_mantissa,exponente);    
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d X 2^%d)/10000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d X 2^%d)/10000",total_mantissa,exponente);
             }
             else {
-                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/10000",total_mantissa,exponente);    
-                else sprintf(buffer_linea,"(float)(%d / 2^%d)/10000",total_mantissa,exponente); 
+                if (signo_valor_final<0) sprintf(buffer_linea,"(float)(-%d / 2^%d)/10000",total_mantissa,exponente);
+                else sprintf(buffer_linea,"(float)(%d / 2^%d)/10000",total_mantissa,exponente);
             }
-            return;            
+            return;
         }
 
 
@@ -8081,8 +8081,8 @@ void debug_view_basic_variables_print_number(z80_int dir,char *buffer_linea)
         );*/
 
         sprintf(buffer_linea,"(float)%s",buffer_valor_total);
-        
-    }    
+
+    }
 }
 
 #define MAX_DEBUG_BASIC_VARIABLES_LINE_LENGTH 300
@@ -8095,7 +8095,7 @@ z80_byte debug_view_basic_variables_getchar(z80_byte caracter)
         else caracter=da_codigo_zx81_no_artistic(caracter);
     }
 
-    if (caracter<32 || caracter>126) caracter='.';    
+    if (caracter<32 || caracter>126) caracter='.';
 
     return caracter;
 }
@@ -8108,12 +8108,12 @@ z80_byte debug_view_basic_variables_letra_variable(z80_byte first_byte_letter)
 
     if (MACHINE_IS_ZX8081) {
         letra_variable=first_byte_letter+59;
-        if (letra_variable<'A' || letra_variable>'Z') letra_variable='?';  
+        if (letra_variable<'A' || letra_variable>'Z') letra_variable='?';
     }
 
     else {
         letra_variable=first_byte_letter+96;
-        if (letra_variable<'a' || letra_variable>'z') letra_variable='?';    
+        if (letra_variable<'a' || letra_variable>'z') letra_variable='?';
     }
 
     return letra_variable;
@@ -8124,7 +8124,7 @@ int debug_view_basic_variables_print_string(z80_int dir,int longitud_variable,ch
 
     char buffer_linea[MAX_DEBUG_BASIC_VARIABLES_LINE_LENGTH+1];
     sprintf (buffer_linea,"\"");
-    util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);    
+    util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
     int resultado=0;
 
@@ -8160,9 +8160,9 @@ int debug_view_basic_variables_print_string(z80_int dir,int longitud_variable,ch
     buffer_linea[i+1]='\n';
     buffer_linea[i+2]=0;
 
-    resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);  
+    resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
-    return resultado;    
+    return resultado;
 }
 
 int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int puntero,int total_dimensiones,
@@ -8185,7 +8185,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
     total_offset: indica el desplazamiento en memoria donde esta ubicada la letra que mostraremos en pantalla
     maxima_longitud_texto: maxima longitud que permite escribir en el string results_buffer
      */
-    
+
     int i;
 
     /*
@@ -8262,7 +8262,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
             util_concat_string(results_buffer,"(",maxima_longitud_texto);
             int j;
             for (j=0;j<total_dimensiones;j++) {
-                
+
                 char final_char=(j<total_dimensiones-1 ? ',' : ')');
                 //printf("%d%c",posicion_actual[j]+1,final_char);
 
@@ -8270,7 +8270,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
                 util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
             }
 
-            
+
             if (es_array_numero) {
                 util_concat_string(results_buffer,"=",maxima_longitud_texto);
                 int tamanyo_numero=5;
@@ -8298,7 +8298,7 @@ int debug_view_basic_variables_print_dim_alpha(char *results_buffer,z80_int punt
                 util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
             }
-            
+
             total_offset++;
         }
         //printf("\n");
@@ -8339,7 +8339,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
     if (MACHINE_IS_ZX81_TYPE) vars_pointer=16400;
     if (MACHINE_IS_ZX80_TYPE) vars_pointer=16392;
-    
+
 	z80_int dir;
 
   	dir=peek_word_no_time(vars_pointer);
@@ -8363,18 +8363,18 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
     z80_int longitud_variable;
 
     int dimensiones[256];
-    int posicion_actual[256];    
+    int posicion_actual[256];
 
-    int inicio_texto;    
+    int inicio_texto;
 
     char buf_numero[100];
-            
-
-    z80_byte total_dimensiones;   
 
 
-    z80_byte id_variable_alfanum=2; 
-    z80_byte id_variable_num=3;      
+    z80_byte total_dimensiones;
+
+
+    z80_byte id_variable_alfanum=2;
+    z80_byte id_variable_num=3;
     z80_byte id_matriz_num=4;
     z80_byte id_variable_num_mascar=5;
     z80_byte id_matriz_alfanum=6;
@@ -8391,14 +8391,14 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
         id_matriz_num=5;
         id_variable_num_mascar=2;
         //no hay matrices alfanum en zx80??
-    }      
+    }
 
-    
+
 
   	while (peek_byte_no_time(dir)!=128 && !salir) {
         z80_int dir_antes=dir;
         sprintf (buffer_linea,"%d: ",dir);
-        util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);        
+        util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
         z80_byte first_byte=peek_byte_no_time(dir++);
         z80_byte first_byte_letter=first_byte & 31;
@@ -8406,8 +8406,8 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
         //printf("dir: %d %d\n",dir,variable_type);
 
-        
-        
+
+
             if (variable_type==id_variable_alfanum) {
                 //Variable alfanumerica (p ej A$)
                 letra_variable=debug_view_basic_variables_letra_variable(first_byte_letter);
@@ -8423,7 +8423,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                         letra=debug_view_basic_variables_getchar(letra);
 
                         sprintf (buffer_linea,"%c",letra);
-                        util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);     
+                        util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
                     }
 
                     util_concat_string(results_buffer,"\"\n",maxima_longitud_texto);
@@ -8438,21 +8438,21 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
 
                     resultado=debug_view_basic_variables_print_string(dir,longitud_variable,results_buffer,maxima_longitud_texto);
-                
-                                   
+
+
 
                     //Siguiente variable
                     dir +=longitud_variable;
                 }
 
-                             
+
             }
 
             else if (variable_type==id_variable_num) {
                 //Variable numérica identificada con un solo caracter
                 letra_variable=debug_view_basic_variables_letra_variable(first_byte_letter);
-    
-                
+
+
                 debug_view_basic_variables_print_number(dir,buf_numero);
 
                 sprintf(buffer_linea,"%c=%s\n",letra_variable,buf_numero);
@@ -8460,7 +8460,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 if (MACHINE_IS_ZX80_TYPE) dir+=2;
                 else dir +=5;
 
-                resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);                
+                resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
 
             }
@@ -8504,26 +8504,26 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                         //2 ceros mas
                         //dir +=2;
                         inicio_texto=dir;
-                    }     
+                    }
 
                     sprintf (buffer_linea,"%d)",dimension);
-                    util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);  
-                    longitud_variable=dimension*2;                                 
+                    util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
+                    longitud_variable=dimension*2;
                 }
                 else {
                     longitud_variable=peek_word_no_time(dir);
 
-                    dir +=2;    
+                    dir +=2;
 
-                
+
                     total_dimensiones=peek_byte_no_time(dir);
                     //printf("total_dimensiones: %d\n",total_dimensiones);
-                
 
- 
+
+
                     total_tamanyo=1;
                     int salir_calculo_dimensiones=0;
-                    
+
                     for (i=0;i<total_dimensiones && !salir_calculo_dimensiones;i++) {
                         z80_int dimension=peek_word_no_time(dir+1+(i*2));
                         dimensiones[i]=dimension;
@@ -8541,7 +8541,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                         util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
                     }
                     //Y ahora imprimir cadenas de texto / valores numericos
-                    inicio_texto=dir+1+(i*2);                    
+                    inicio_texto=dir+1+(i*2);
                 }
 
 
@@ -8574,11 +8574,11 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 dir +=longitud_variable;
 
                 resultado=util_concat_string(results_buffer,"\n",maxima_longitud_texto);
- 
 
-            }  
 
-     
+            }
+
+
 
             else if (variable_type==id_variable_num_mascar) {
                 //Variable numérica identificada de mas de un solo caracter
@@ -8608,7 +8608,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 buf_nombre_variable[indice_nombre]=0;
 
-                
+
                 debug_view_basic_variables_print_number(dir,buf_numero);
 
                 sprintf(buffer_linea,"%s=%s\n",buf_nombre_variable,buf_numero);
@@ -8616,10 +8616,10 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 if (MACHINE_IS_ZX80_TYPE) dir+=2;
                 else dir +=5;
 
-                resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);                
+                resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
 
-            }           
+            }
 
             else if (variable_type==id_variable_fornext) {
                 //Iterador en bloque FOR/NEXT
@@ -8629,19 +8629,19 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 if (MACHINE_IS_ZX80_TYPE) tamanyo_numero=2;
 
-                //Inicio, final, step, linea, sentencia    
+                //Inicio, final, step, linea, sentencia
                 char buf_inicio[100];
                 debug_view_basic_variables_print_number(dir,buf_inicio);
                 dir +=tamanyo_numero;
 
                 char buf_final[100];
                 debug_view_basic_variables_print_number(dir,buf_final);
-                dir +=tamanyo_numero;                
+                dir +=tamanyo_numero;
 
                 char buf_step[100];
                 if (!MACHINE_IS_ZX80_TYPE) {
                     debug_view_basic_variables_print_number(dir,buf_step);
-                    dir +=tamanyo_numero;                
+                    dir +=tamanyo_numero;
                 }
 
                 z80_int linea=peek_word_no_time(dir);
@@ -8650,9 +8650,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 if (MACHINE_IS_ZX8081) {
                     //printf("FOR %c=%s TO %s STEP %s LINE %d\n",letra_variable,buf_inicio,buf_final,buf_step,linea);
                     if (MACHINE_IS_ZX80_TYPE) {
-                        sprintf(buffer_linea,"FOR %c=%s TO %s LINE %d\n",letra_variable,buf_inicio,buf_final,linea);                    
+                        sprintf(buffer_linea,"FOR %c=%s TO %s LINE %d\n",letra_variable,buf_inicio,buf_final,linea);
                     }
-                    else sprintf(buffer_linea,"FOR %c=%s TO %s STEP %s LINE %d\n",letra_variable,buf_inicio,buf_final,buf_step,linea);                    
+                    else sprintf(buffer_linea,"FOR %c=%s TO %s STEP %s LINE %d\n",letra_variable,buf_inicio,buf_final,buf_step,linea);
                 }
                 else {
                     z80_byte sentencia=peek_byte_no_time(dir);
@@ -8665,7 +8665,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 
                 resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
-               
+
             }
 
             else {
@@ -8673,9 +8673,9 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
                 resultado=util_concat_string(results_buffer,buffer_linea,maxima_longitud_texto);
 
             }
-        
 
-  		
+
+
         //controlar maximo
         if (resultado) {
             debug_printf(VERBOSE_ERR,"Reached maximum text size. Showing only allowed text");
@@ -8693,7 +8693,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
   	}
 
 
-    
+
 }
 
 //Para hacer peek de una direccion de todo el espacio de memoria de una maquina
@@ -8702,7 +8702,7 @@ void debug_view_basic_variables(char *results_buffer,int maxima_longitud_texto)
 z80_byte far_peek_byte(int dir)
 {
 
-    //Si esto entra antes de inicializar una maquina (al inicio del emulador), volver 
+    //Si esto entra antes de inicializar una maquina (al inicio del emulador), volver
 
     if (memoria_spectrum==NULL) return 0;
 
@@ -8715,7 +8715,7 @@ z80_byte far_peek_byte(int dir)
         //2 MB Maximo
         //ROMS, RAM... Esto es el espacio de memoria lineal tal cual de Spectrum Next. la SRAM
         int maximo=TBBLUE_TOTAL_RAM-1;
-        
+
         dir &=maximo;
         return memoria_spectrum[dir];
 	}
@@ -8732,7 +8732,7 @@ z80_byte far_peek_byte(int dir)
     }
 
     if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3) {
-        //Aunque sé que la ram asignada en estos casos empieza siempre en ram_mem_table[0] y podria 
+        //Aunque sé que la ram asignada en estos casos empieza siempre en ram_mem_table[0] y podria
         //ir desde ahi y sumarle simplemente dir, voy a hacer lo mas estandar y sacar el banco y el offset en el banco
         //para obtener la dirección, por si por alguna extraña razon, los bancos de memoria no estuvieran ordenados desde el 0 en adelante
         //(que actualmente lo están, pero si en un futuro me da por cambiarlo...)
@@ -8741,7 +8741,7 @@ z80_byte far_peek_byte(int dir)
         //Limitamos a 128kb
         int maximo=(128*1024)-1;
 
-        dir &=maximo;        
+        dir &=maximo;
 
         int ram_bank;
         z80_byte *puntero;
@@ -8751,7 +8751,7 @@ z80_byte far_peek_byte(int dir)
         puntero=ram_mem_table[ram_bank]+dir;
 
         //printf("banco: %d dir: %d\n",ram_bank,dir);
-        return *puntero;        
+        return *puntero;
     }
 
     //TODO: resto de maquinas con mas de 64 kb: TSConf, etc
