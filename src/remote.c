@@ -28,7 +28,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
-#include <errno.h>
+
+//con esto peta la compilacion en windows quejandose de winsock
+//#include <errno.h>
 
 
 #include "cpu.h"
@@ -6284,7 +6286,7 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
 	//y eso funciona, siempre considerando las limitaciones de un valor de un puntero, por ejemplo en entornos de 32 bits,
 	//un puntero tiene tamaño de 32 bits,
 	//y no podria enviar un valor de socket que excediese el rango de 32 bits (si intentase enviar un long de 64 bits por ejemplo)
-	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque 
+	//Nota 2: podrias pensar que serviria asignar una estructura en el stack , pero eso no vale, porque
 	//al finalizar esta funcion, el stack se libera , y cuando el thread vaya a mirar esa estructura,
 	//la memoria donde estaba, esta liberada y a saber entonces que lee...
     if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_connected_client) ) {
@@ -6318,10 +6320,10 @@ void *thread_remote_protocol_function(void *nada)
 
 
 		if (sock_connected_client<0) {
-			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
-				sock_listen,strerror(errno));
-			printf ("Remote command. Error running accept on socket %d. More info: %s\n",
-				sock_listen,strerror(errno));				
+			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d",
+				sock_listen);
+			//printf ("Remote command. Error running accept on socket %d. More info: %s\n",
+			//	sock_listen,strerror(errno));
 			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
 			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
 			//como mucho lo mostramos en verbose debug
