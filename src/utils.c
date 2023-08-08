@@ -592,14 +592,14 @@ char *array_fabricantes_hotkey[]={
         "Ascii C~~orp",
         "Cam~~bridge Computers",
         "~~Chloe Corporation",
-        "Coleco In~~dustries",  
+        "Coleco In~~dustries",
         "~~Investronica",
         "J~~upiter Cantab",
         "Ma~~rio Prato",
         "~~Microdigital Eletronica",
         "Miles Gordon Technolog~~y",
         "N~~edoPC",
-        "Ne~~w Horizons",   
+        "Ne~~w Horizons",
         "~~Pentagon",
         "Scie~~nce of Cambridge",
         "Se~~ga",
@@ -721,7 +721,7 @@ int *return_maquinas_fabricante(int fabricante)
 
 		case FABRICANTE_TIMEX_COMPUTERS:
 			return array_maquinas_timex_computers;
-		break;        
+		break;
 
 		case FABRICANTE_CAMBRIDGE_COMPUTERS:
 			return array_maquinas_cambridge_computers;
@@ -737,19 +737,19 @@ int *return_maquinas_fabricante(int fabricante)
 
 		case FABRICANTE_ASCII_CORP:
 			return array_maquinas_ascii_corp;
-		break;          
+		break;
 
 		case FABRICANTE_SPECTRAVIDEO_INTERNATIONAL:
 			return array_maquinas_spectravideo_international;
-		break;                         
+		break;
 
 		case FABRICANTE_COLECO_INDUSTRIES:
 			return array_maquinas_coleco_industries;
-		break;    
+		break;
 
 		case FABRICANTE_SEGA:
 			return array_maquinas_sega;
-		break;                  
+		break;
 
 		case FABRICANTE_AMSTRAD:
 			return array_maquinas_amstrad;
@@ -876,21 +876,21 @@ int return_fabricante_maquina(int maquina)
 
                 case MACHINE_ID_COLECO:
 			return FABRICANTE_COLECO_INDUSTRIES;
-		break;      
+		break;
 
         case MACHINE_ID_SG1000:
         case MACHINE_ID_SMS:
 			return FABRICANTE_SEGA;
-		break;                                
+		break;
 
                 case MACHINE_ID_MSX1:
 			return FABRICANTE_ASCII_CORP;
-		break;         
+		break;
 
                 case MACHINE_ID_SVI_318:
                 case MACHINE_ID_SVI_328:
 			return FABRICANTE_SPECTRAVIDEO_INTERNATIONAL;
-		break;                         
+		break;
 
 		case 122:
 			return FABRICANTE_JUPITER_CANTAB;
@@ -1071,7 +1071,7 @@ void util_get_file_extension(char *filename,char *extension)
 
         char caracter_carpeta='/';
 #ifdef MINGW
-        caracter_carpeta='\\';    
+        caracter_carpeta='\\';
 #endif
 
 
@@ -1161,7 +1161,7 @@ void util_get_dir(char *ruta,char *directorio)
         //Ubicarse en el primer caracter no /
         for (;i>=0;i--) {
                 if (ruta[i]!='/' && ruta[i]!='\\') break;
-        }        
+        }
 
         if (i>=0) {
 
@@ -1213,7 +1213,7 @@ void clear_symshift(void)
         else puerto_32766 |=2;
 
         //Desactivamos tecla symshift para menu
-        menu_symshift.v=0;        
+        menu_symshift.v=0;
 
 }
 
@@ -1334,7 +1334,7 @@ void open_sharedfile(char *archivo,FILE **f)
 	if (existe) {
 		*f=fopen(buffer_nombre,"rb");
 	}
- 
+
 	else *f=NULL;
 
 }
@@ -1454,7 +1454,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 						else {
 							msx_keyboard_table[6] |=1;
 						}
-					}           
+					}
 
 					if (MACHINE_IS_SVI) {
 						if (pressrelease) {
@@ -1463,7 +1463,7 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 						else {
 							svi_keyboard_table[6] |=1;
 						}
-					}                                                                          
+					}
 
 					if (MACHINE_IS_CPC) {
 						if (pressrelease) {
@@ -1477,12 +1477,12 @@ void ascii_to_keyboard_port_set_clear(unsigned tecla,int pressrelease)
 					if (MACHINE_IS_PCW) {
 						if (pressrelease) {
                             pcw_keyboard_table[2] |=32;
-							
+
 						}
 						else {
 							pcw_keyboard_table[2] &=255-32;
 						}
-					}                    
+					}
 
        	                                tecla=tecla+('a'-'A');
     }
@@ -3082,10 +3082,10 @@ void reset_keyboard_ports(void)
 	for (i=0;i<16;i++) cpc_keyboard_table[i]=255;
 
 	//De MSX
-	for (i=0;i<16;i++) msx_keyboard_table[i]=255;        
+	for (i=0;i<16;i++) msx_keyboard_table[i]=255;
 
 	//De Spectravideo
-	for (i=0;i<16;i++) svi_keyboard_table[i]=255;           
+	for (i=0;i<16;i++) svi_keyboard_table[i]=255;
 
 	//De QL
 	for (i=0;i<8;i++) ql_keyboard_table[i]=255;
@@ -3176,7 +3176,7 @@ int get_rom_size(int machine)
     else if (MACHINE_IS_TIMEX_TS_TC_2068)  rom_size=24576;
 
     else if (MACHINE_IS_COLECO)  rom_size=8192;
-                
+
     //else if (MACHINE_IS_SG1000) rom_size=
 
     else if (MACHINE_IS_SMS)  rom_size=8192;
@@ -3266,11 +3266,11 @@ int get_ram_size(void)
     //TODO: posibles cartuchos de RAM?
     else if (MACHINE_IS_MSX) {
         total_ram=128*1024;
-    }    
+    }
 
     else if (MACHINE_IS_CHROME) {
         total_ram=160*1024;
-    }    
+    }
 
     else if (MACHINE_IS_CHLOE_280SE) {
         total_ram=256*1024;
@@ -3298,7 +3298,7 @@ int get_ram_size(void)
 
     else if (MACHINE_IS_ZX8081) {
         total_ram=zx8081_get_total_ram_with_rampacks()*1024;
-    }    
+    }
 
     else if (MACHINE_IS_ACE) {
         total_ram=get_ram_ace()*1024;
@@ -3488,7 +3488,7 @@ void util_copy_path_delete_last_slash(char *origen, char *destino)
     strcpy(destino,origen);
     int i=strlen(destino);
     i--;
-    while (i>0 && 
+    while (i>0 &&
         (destino[i]=='/' || destino[i]=='\\')
         ) {
             destino[i]=0;
@@ -3525,8 +3525,8 @@ int util_write_configfile(void)
   int indice_string=0;
 
   int i;
-  
-  
+
+
 
 //Macro para no repetir tantas veces lo mismo
 #define ADD_STRING_CONFIG indice_string +=util_write_config_add_string(&config_settings[indice_string]
@@ -3539,7 +3539,7 @@ int util_write_configfile(void)
     //Ademas el --last-version-text antes
     ADD_STRING_CONFIG,"--last-version-text \"%s\"",EMULATOR_VERSION);
     ADD_STRING_CONFIG,"--last-version \"%s\"",BUILDNUMBER);
-                          
+
 
 
   //TODO: por que no estamos guardando zoom_x y zoom_y??
@@ -3562,14 +3562,14 @@ int util_write_configfile(void)
 						ADD_STRING_CONFIG,"--reduce-075-offset-y %d",screen_reduce_offset_y);
 
   if (screen_watermark_enabled.v)               ADD_STRING_CONFIG,"--enable-watermark");
-                                        
+
 
                                                 ADD_STRING_CONFIG,"--watermark-position %d",screen_watermark_position);
 
 
-  if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");   
-                                              ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);  
-                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",zxdesktop_height);  
+  if (screen_ext_desktop_enabled)             ADD_STRING_CONFIG,"--enable-zxdesktop");
+                                              ADD_STRING_CONFIG,"--zxdesktop-width %d",zxdesktop_width);
+                                              ADD_STRING_CONFIG,"--zxdesktop-height %d",zxdesktop_height);
 
 
 
@@ -3579,10 +3579,10 @@ int util_write_configfile(void)
 
     if (menu_ext_desktop_degraded_inverted.v)	  ADD_STRING_CONFIG,"--zxdesktop-fill-degraded-inverted");
 
-                          
-    if (screen_ext_desktop_place_menu)          ADD_STRING_CONFIG,"--zxdesktop-new-items");                   
 
-    if (menu_zxdesktop_buttons_enabled.v==0)    ADD_STRING_CONFIG,"--zxdesktop-disable-buttons");   
+    if (screen_ext_desktop_place_menu)          ADD_STRING_CONFIG,"--zxdesktop-new-items");
+
+    if (menu_zxdesktop_buttons_enabled.v==0)    ADD_STRING_CONFIG,"--zxdesktop-disable-buttons");
 
 
     if (menu_ext_desktop_transparent_upper_icons.v)   ADD_STRING_CONFIG,"--zxdesktop-transparent-upper-buttons");
@@ -3629,7 +3629,7 @@ int util_write_configfile(void)
     if (zxdesktop_empty_trash_on_exit.v)                ADD_STRING_CONFIG,"--zxdesktop-empty-trash-on-exit");
 
     if (zxdesktop_icon_show_app_open.v==0)              ADD_STRING_CONFIG,"--zxdesktop-no-show-indicators-open-apps");
-    
+
     if (zxdesktop_configurable_icons_enabled.v) {
         for (i=0;i<MAX_ZXDESKTOP_CONFIGURABLE_ICONS;i++) {
             if (zxdesktop_configurable_icons_list[i].status!=ZXDESKTOP_CUSTOM_ICON_NOT_EXISTS) {
@@ -3641,7 +3641,7 @@ int util_write_configfile(void)
                     strcpy(buffer_status,"deleted");
                 }
 
-                char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH]; 
+                char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH];
                 int indice_funcion=zxdesktop_configurable_icons_list[i].indice_funcion;
                 strcpy(texto_funcion,defined_direct_functions_array[indice_funcion].texto_funcion);
 
@@ -3673,7 +3673,7 @@ int util_write_configfile(void)
   if (frameskip_draw_zxdesktop_background.v==0)    ADD_STRING_CONFIG,"--no-frameskip-zxdesktop-back");
 
   if (disable_change_flash.v)                 ADD_STRING_CONFIG,"--disable-flash");
-                
+
   if (cambio_parametros_maquinas_lentas.v)    ADD_STRING_CONFIG,"--changeslowparameters");
   else                                        ADD_STRING_CONFIG,"--nochangeslowparameters");
   if (ventana_fullscreen)                     ADD_STRING_CONFIG,"--fullscreen");
@@ -3737,7 +3737,7 @@ int util_write_configfile(void)
   if (audioonebitspeaker_intensive_cpu_usage)     ADD_STRING_CONFIG,"--onebitspeaker-improved");
   if (audioonebitspeaker_agudo_filtro)            ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter");
                                               ADD_STRING_CONFIG,"--onebitspeaker-hifreq-filter-divider %d",audioonebitspeaker_agudo_filtro_limite);
-                                              ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);        
+                                              ADD_STRING_CONFIG,"--onebitspeaker-type %d",audioonebitspeaker_tipo_altavoz);
 
 
   if (border_enabled.v==0)                    ADD_STRING_CONFIG,"--disableborder");
@@ -3775,7 +3775,7 @@ int util_write_configfile(void)
   if (z88_hide_keys_shortcuts.v)                ADD_STRING_CONFIG,"--z88-hide-shortcuts");
 
   if (screen_text_all_refresh_pixel.v)        ADD_STRING_CONFIG,"--allpixeltotext");
-                                              
+
                                               ADD_STRING_CONFIG,"--allpixeltotext-scale %d",screen_text_all_refresh_pixel_scale);
 
   if (screen_text_all_refresh_pixel_invert.v) ADD_STRING_CONFIG,"--allpixeltotext-invert");
@@ -3813,7 +3813,7 @@ int util_write_configfile(void)
 
 
   if (snapshot_autosave_interval_quicksave_directory[0]!=0) {
-        //Rutas que son directorios, llamar a util_copy_path_delete_last_slash 
+        //Rutas que son directorios, llamar a util_copy_path_delete_last_slash
         //Rutas que apuntan a archivos (o directorios por linea de comandos pero que en menu almacenan archivos), llamar a util_get_dir
         //printf ("dir quicksave: %s\n",snapshot_autosave_interval_quicksave_directory);
         util_copy_path_delete_last_slash(snapshot_autosave_interval_quicksave_directory,buffer_temp);
@@ -3821,7 +3821,7 @@ int util_write_configfile(void)
 
  	ADD_STRING_CONFIG,"--quicksavepath \"%s\"",buffer_temp);
   }
-  
+
 
   if (binary_file_load[0]!=0) {
         //printf ("dir binary_file_load: %s\n",binary_file_load);
@@ -3833,7 +3833,7 @@ int util_write_configfile(void)
   if (binary_file_save[0]!=0) {
         util_get_dir(binary_file_save,buffer_temp);
  	ADD_STRING_CONFIG,"--savebinarypath \"%s\"",buffer_temp);
-  }  
+  }
 
   if (zxuno_flash_spi_name[0])                ADD_STRING_CONFIG,"--zxunospifile \"%s\"",zxuno_flash_spi_name);
   if (zxuno_flash_persistent_writes.v)     ADD_STRING_CONFIG,"--zxunospi-persistent-writes");
@@ -3924,7 +3924,7 @@ int util_write_configfile(void)
   if (textimage_filter_program[0])          ADD_STRING_CONFIG,"--textimageprogram \"%s\"",textimage_filter_program);
 
                                             ADD_STRING_CONFIG,"--textimage-method-location %s",
-                                                textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);                                     		
+                                                textadv_location_additional_room_change_method_strings[textadv_location_additional_room_change_method]);
                                             ADD_STRING_CONFIG,"--textimage-min-time-between-images %d",textadv_location_desc_last_image_generated_min);
                                             ADD_STRING_CONFIG,"--textimage-min-no-char-time %d",max_textadv_location_desc_no_char_counter);
                                             ADD_STRING_CONFIG,"--textimage-min-after-room-time %d",max_textadv_location_desc_counter);
@@ -3963,7 +3963,7 @@ int util_write_configfile(void)
   if (hilow_file_name[0]!=0)                    ADD_STRING_CONFIG,"--hilow-file \"%s\"",hilow_file_name);
   if (hilow_enabled.v)                          ADD_STRING_CONFIG,"--enable-hilow");
   if (hilow_write_protection.v)		            ADD_STRING_CONFIG,"--hilow-write-protection");
-  if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");  
+  if (hilow_persistent_writes.v==0)	            ADD_STRING_CONFIG,"--hilow-no-persistent-writes");
 
 
   if (ide_file_name[0]!=0)                    ADD_STRING_CONFIG,"--ide-file \"%s\"",ide_file_name);
@@ -4003,14 +4003,14 @@ int util_write_configfile(void)
   if (ql_device_mdv2_readonly)                ADD_STRING_CONFIG,"--ql-mdv2-read-only");
   if (ql_device_flp1_readonly)                ADD_STRING_CONFIG,"--ql-flp1-read-only");
 
-            
+
   if (dandanator_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--dandanator-rom \"%s\"",dandanator_rom_file_name);
   if (dandanator_enabled.v)                   ADD_STRING_CONFIG,"--enable-dandanator");
   if (kartusho_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--kartusho-rom \"%s\"",kartusho_rom_file_name);
   if (kartusho_enabled.v)                   ADD_STRING_CONFIG,"--enable-kartusho");
 
   if (ifrom_rom_file_name[0]!=0)         ADD_STRING_CONFIG,"--ifrom-rom \"%s\"",ifrom_rom_file_name);
-  if (ifrom_enabled.v)                   ADD_STRING_CONFIG,"--enable-ifrom");  
+  if (ifrom_enabled.v)                   ADD_STRING_CONFIG,"--enable-ifrom");
 
   if (betadisk_enabled.v)                   ADD_STRING_CONFIG,"--enable-betadisk");
 
@@ -4020,8 +4020,8 @@ int util_write_configfile(void)
   if (trd_persistent_writes.v==0)	      ADD_STRING_CONFIG,"--trd-no-persistent-writes");
 
 
- 
-  if (dskplusthree_file_name[0]!=0)           ADD_STRING_CONFIG,"--dsk-file \"%s\"",dskplusthree_file_name);		
+
+  if (dskplusthree_file_name[0]!=0)           ADD_STRING_CONFIG,"--dsk-file \"%s\"",dskplusthree_file_name);
   if (dskplusthree_emulation.v)               ADD_STRING_CONFIG,"--enable-dsk");
   if (dskplusthree_write_protection.v)	      ADD_STRING_CONFIG,"--dsk-write-protection");
 
@@ -4055,7 +4055,7 @@ int util_write_configfile(void)
 
   if (debug_view_basic_show_address.v)        ADD_STRING_CONFIG,"--show-basic-address");
 
-                                              ADD_STRING_CONFIG,"--cpu-history-max-items %d",cpu_history_max_elements); 
+                                              ADD_STRING_CONFIG,"--cpu-history-max-items %d",cpu_history_max_elements);
 
   if (remote_tamanyo_archivo_raw_source_code) ADD_STRING_CONFIG,"--load-source-code %s",last_source_code_file);
 
@@ -4093,12 +4093,12 @@ int util_write_configfile(void)
 
 	}
 
-  
+
 
   for (i=0;i<65536;i++) {
 		if (mem_breakpoint_array[i]!=0)
                                               ADD_STRING_CONFIG,"--set-mem-breakpoint %04XH %d",i,mem_breakpoint_array[i]);
-	}  
+	}
 
   if (hardware_debug_port.v)                  ADD_STRING_CONFIG,"--hardware-debug-ports");
   if (zesarux_zxi_hardware_debug_file[0]!=0)  ADD_STRING_CONFIG,"--hardware-debug-ports-byte-file \"%s\"",zesarux_zxi_hardware_debug_file);
@@ -4109,7 +4109,7 @@ int util_write_configfile(void)
   if (screen_show_splash_texts.v==0)          ADD_STRING_CONFIG,"--nosplash");
   if (screen_show_cpu_usage.v==0)             ADD_STRING_CONFIG,"--no-cpu-usage");
   if (screen_show_cpu_temp.v==0)              ADD_STRING_CONFIG,"--no-cpu-temp");
-  if (screen_show_fps.v==0)                   ADD_STRING_CONFIG,"--no-fps");  
+  if (screen_show_fps.v==0)                   ADD_STRING_CONFIG,"--no-fps");
   if (opcion_no_welcome_message.v)                     ADD_STRING_CONFIG,"--nowelcomemessage");
 
   if (menu_hide_vertical_percentaje_bar.v) ADD_STRING_CONFIG,"--hide-menu-percentage-bar");
@@ -4123,7 +4123,7 @@ int util_write_configfile(void)
 
   if (gui_language==GUI_LANGUAGE_SPANISH)   ADD_STRING_CONFIG,"--language es");
   if (gui_language==GUI_LANGUAGE_CATALAN)   ADD_STRING_CONFIG,"--language ca");
-  
+
   if (online_download_path[0]!=0)           ADD_STRING_CONFIG,"--online-download-path \"%s\"",online_download_path);
 
   if (menu_invert_mouse_scroll.v)             ADD_STRING_CONFIG,"--invert-menu-mouse-scroll");
@@ -4135,13 +4135,13 @@ int util_write_configfile(void)
   if (menu_allow_background_windows)          ADD_STRING_CONFIG,"--allow-background-windows");
 
   if (always_force_overlay_visible_when_menu_closed) ADD_STRING_CONFIG,"--allow-background-windows-closed-menu");
- 			         
+
                                               ADD_STRING_CONFIG,"--menu-mix-method \"%s\"",screen_menu_mix_methods_strings[screen_menu_mix_method]);
 
 
                                                 ADD_STRING_CONFIG,"--menu-transparency-perc %d",screen_menu_mix_transparency);
 
-	
+
 
   //lo desactivo. Esto da problemas con footer
   //if (screen_menu_reduce_bright_machine.v)   ADD_STRING_CONFIG,"--menu-darken-when-open");
@@ -4156,7 +4156,7 @@ int util_write_configfile(void)
 
   if (tbblue_store_scanlines.v)               ADD_STRING_CONFIG,"--tbblue-legacy-hicolor");
   if (tbblue_store_scanlines_border.v)        ADD_STRING_CONFIG,"--tbblue-legacy-border");
-  if (tbblue_disable_optimized_sprites.v)     ADD_STRING_CONFIG,"--tbblue-no-sprite-optimization");      
+  if (tbblue_disable_optimized_sprites.v)     ADD_STRING_CONFIG,"--tbblue-no-sprite-optimization");
 
   //if (tsconf_si_render_spritetile_rapido.v)   ADD_STRING_CONFIG,"--tsconf-fast-render");
 
@@ -4195,7 +4195,7 @@ int util_write_configfile(void)
   if (ay_player_limit_any_track!=0)           ADD_STRING_CONFIG,"--ayplayer-any-length %d",ay_player_limit_any_track/50);
   if (ay_player_cpc_mode.v)                   ADD_STRING_CONFIG,"--ayplayer-cpc");
   if (ay_player_show_info_console.v)          ADD_STRING_CONFIG,"--ayplayer-show-info-console");
-                
+
                                               ADD_STRING_CONFIG,"--audiopiano-zoom %d",audiochip_piano_zoom_x);
 
 
@@ -4205,9 +4205,9 @@ int util_write_configfile(void)
 
                                               ADD_STRING_CONFIG,"--midi-raw-device %s",audio_raw_midi_device_out);
   if (audio_midi_raw_mode==0)                 ADD_STRING_CONFIG,"--midi-no-raw-mode");
-		
 
-  if (midi_output_record_noisetone.v)         ADD_STRING_CONFIG,"--midi-allow-tone-noise");			
+
+  if (midi_output_record_noisetone.v)         ADD_STRING_CONFIG,"--midi-allow-tone-noise");
 
 
 
@@ -4224,13 +4224,13 @@ int util_write_configfile(void)
   if (standard_to_real_tape_fallback.v==0)    ADD_STRING_CONFIG,"--no-fallbacktorealtape");
   if (tape_any_flag_loading.v)                ADD_STRING_CONFIG,"--anyflagloading");
   if (tape_auto_rewind.v)                     ADD_STRING_CONFIG,"--autorewind");
-                                
+
   if (tape_loading_simulate.v)                ADD_STRING_CONFIG,"--simulaterealload");
   if (tape_loading_simulate_fast.v)           ADD_STRING_CONFIG,"--simulaterealloadfast");
   if (tzx_suppress_pause.v)                   ADD_STRING_CONFIG,"--deletetzxpauses");
 
   if (accelerate_loaders.v)                   ADD_STRING_CONFIG,"--realloadfast");
-		
+
 
   if (screen_gray_mode&1)                     ADD_STRING_CONFIG,"--blue");
   if (screen_gray_mode&2)                     ADD_STRING_CONFIG,"--green");
@@ -4250,7 +4250,7 @@ int util_write_configfile(void)
                 if (*opcion) ADD_STRING_CONFIG,"--no-first-aid %s",first_aid_list[i].config_name);
 	}
 
- 
+
   if (menu_limit_menu_open.v)                 ADD_STRING_CONFIG,"--limitopenmenu");
 
   if (menu_show_advanced_items.v)               ADD_STRING_CONFIG,"--advancedmenus");
@@ -4262,18 +4262,18 @@ int util_write_configfile(void)
   if (menu_filesel_hide_size.v)             ADD_STRING_CONFIG,"--filebrowser-hide-size");
 
   if (menu_filesel_utils_allow_folder_delete.v)      ADD_STRING_CONFIG,"--filebrowser-allow-folder-delete");
-			  
+
 
   if (menu_file_viewer_always_hex.v)            ADD_STRING_CONFIG,"--fileviewer-hex");
-				
+
   if (menu_filesel_show_previews.v==0)         ADD_STRING_CONFIG,"--no-file-previews");
 
   if (menu_filesel_show_previews_reduce.v)      ADD_STRING_CONFIG,"--reduce-file-previews");
-			
+
   if (menu_desactivado.v)                     ADD_STRING_CONFIG,"--disablemenu");
 
   if (menu_desactivado_andexit.v)              ADD_STRING_CONFIG,"--disablemenuandexit");
-			
+
 
   if (menu_desactivado_file_utilities.v)      ADD_STRING_CONFIG,"--disablemenufileutils");
 
@@ -4283,7 +4283,7 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--gui-style \"%s\"",definiciones_estilos_gui[estilo_gui_activo].nombre_estilo);
 
 
-  if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);       
+  if (user_charset>=0)                        ADD_STRING_CONFIG,"--charset \"%s\"",charset_list[user_charset].nombre);
 
   if (char_set_customfile_path[0]!=0)         ADD_STRING_CONFIG,"--charset-customfile \"%s\"",char_set_customfile_path);
 
@@ -4292,11 +4292,11 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);
                                               ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
   if (zeng_i_am_master)                       ADD_STRING_CONFIG,"--zeng-iam-master");
-		
 
 
-                                              
-                                              ADD_STRING_CONFIG,"--total-minutes-use %d",total_minutes_use);	
+
+
+                                              ADD_STRING_CONFIG,"--total-minutes-use %d",total_minutes_use);
 
 
   if (stats_asked.v)                          ADD_STRING_CONFIG,"--stats-send-already-asked");
@@ -4304,27 +4304,27 @@ int util_write_configfile(void)
 
   if (tbblue_autoconfigure_sd_asked.v)             ADD_STRING_CONFIG,"--tbblue-autoconfigure-sd-already-asked");
 
-          
+
 
   if (stats_uuid[0]!=0)                      ADD_STRING_CONFIG,"--stats-uuid %s",stats_uuid);
-  
+
   			ADD_STRING_CONFIG,"--stats-speccy-queries %d",stats_total_speccy_browser_queries);
-			
+
 			ADD_STRING_CONFIG,"--stats-zx81-queries %d",stats_total_zx81_browser_queries);
-			
-  
-  
-  
+
+
+
+
 
   if (stats_check_updates_enabled.v==0)                 ADD_STRING_CONFIG,"--stats-disable-check-updates");
 
   if (stats_check_yesterday_users_enabled.v==0)         ADD_STRING_CONFIG,"--stats-disable-check-yesterday-users");
 
-	
+
 
 
   if (stats_last_remote_version[0]!=0)       ADD_STRING_CONFIG,"--stats-last-avail-version %s",stats_last_remote_version);
-   
+
 
 
 
@@ -4343,7 +4343,7 @@ int util_write_configfile(void)
   }
 
   if (menu_reopen_background_windows_on_start.v==0) ADD_STRING_CONFIG,"--disable-restore-windows");
-			
+
 
   if (menu_allow_background_windows && menu_reopen_background_windows_on_start.v) {
         //Guardar lista de ventanas activas
@@ -4364,7 +4364,7 @@ int util_write_configfile(void)
 
 
                         ventana=ventana->next_window;
-                                        
+
                 }
         }
 
@@ -4459,7 +4459,7 @@ int util_write_configfile(void)
 
                                             ADD_STRING_CONFIG,"--joystickfirekey %d",joystick_defined_key_fire);
 
-            
+
   if (remote_protocol_enabled.v)                ADD_STRING_CONFIG,"--enable-remoteprotocol");
                                                 ADD_STRING_CONFIG,"--remoteprotocol-port %d",remote_protocol_port);
                                                 ADD_STRING_CONFIG,"--remoteprotocol-prompt \"%s\"",remote_prompt_command_string);
@@ -4469,11 +4469,11 @@ int util_write_configfile(void)
 
 
   if (realjoystick_index!=0)                ADD_STRING_CONFIG,"--realjoystickindex %d",realjoystick_index);
-	         
-  if (no_native_linux_realjoystick.v)          ADD_STRING_CONFIG,"--no-native-linux-realjoy");
-		  
 
-                  
+  if (no_native_linux_realjoystick.v)          ADD_STRING_CONFIG,"--no-native-linux-realjoy");
+
+
+
                           ADD_STRING_CONFIG,"--realjoystickpath %s",string_dev_joystick);
 
                         ADD_STRING_CONFIG,"--realjoystick-calibrate %d",realjoystick_autocalibrate_value);
@@ -4494,7 +4494,7 @@ int util_write_configfile(void)
   }
 
 
-		
+
 
 
   //real joystick buttons to keys
@@ -4506,7 +4506,7 @@ int util_write_configfile(void)
   		caracter=realjoystick_keys_array[i].caracter;
   		button_type=realjoystick_keys_array[i].button_type;
 
-		util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);	
+		util_write_config_aux_realjoystick(button_type, realjoystick_keys_array[i].button, texto_button);
 
   		ADD_STRING_CONFIG,"--joystickkeybt %s %d",texto_button,caracter);
   	}
@@ -4592,7 +4592,7 @@ int configfile_read(char *mem,int limite)
         int tamanyo_archivo=get_file_size(configfile);
 
         if (tamanyo_archivo>limite) {
-             cpu_panic("Configuration file larger than maximum allowed size. Exiting");  
+             cpu_panic("Configuration file larger than maximum allowed size. Exiting");
         }
 
 	return configfile_read_aux(configfile,mem);
@@ -4881,7 +4881,7 @@ void convert_numeros_letras_puerto_teclado_continue(z80_byte tecla,int pressrele
                        //Si sigue estando entre a-z y 0-9 enviar tal cual. Si no, llamar a util_set_reset_key
                        if (
                        	(tecla>='a' && tecla<='z') ||
-                       	(tecla>='0' && tecla<='9') 
+                       	(tecla>='0' && tecla<='9')
                        	)
                        {
                        	//Nada. Prefiero escribir la condicion asi que no poner un negado
@@ -4948,8 +4948,8 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                 if (pressrelease) *puerto |=mascara;
                 else *puerto &=255-mascara;
-                
-         }         
+
+         }
 
         if (MACHINE_IS_MSX) {
                 puerto=msx_tabla_teclado_letras[indice].puerto;
@@ -4957,7 +4957,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                 if (pressrelease) *puerto &=255-mascara;
                 else *puerto |=mascara;
-         }         
+         }
 
         if (MACHINE_IS_SVI) {
                 puerto=svi_tabla_teclado_letras[indice].puerto;
@@ -4965,7 +4965,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                 if (pressrelease) *puerto &=255-mascara;
                 else *puerto |=mascara;
-         }             
+         }
 
           if (MACHINE_IS_QL) {
             puerto=ql_tabla_teclado_letras[indice].puerto;
@@ -5098,8 +5098,8 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                                                 if (pressrelease) *puerto |=mascara;
                                                 else *puerto &=255-mascara;
-                                                
-  }  
+
+  }
 
 	if (MACHINE_IS_MSX) {
                                                 puerto=msx_tabla_teclado_numeros[indice].puerto;
@@ -5107,7 +5107,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                                                 if (pressrelease) *puerto &=255-mascara;
                                                 else *puerto |=mascara;
-  }  
+  }
 
 	if (MACHINE_IS_SVI) {
                                                 puerto=svi_tabla_teclado_numeros[indice].puerto;
@@ -5115,7 +5115,7 @@ void convert_numeros_letras_puerto_teclado_continue_after_recreated(z80_byte tec
 
                                                 if (pressrelease) *puerto &=255-mascara;
                                                 else *puerto |=mascara;
-  }    
+  }
 
   if (MACHINE_IS_QL) {
                                           puerto=ql_tabla_teclado_numeros[indice].puerto;
@@ -5417,10 +5417,10 @@ int quickload_continue(char *nombre) {
 
         debug_printf (VERBOSE_INFO,"Smartload. Guessing if standard pzx tape or real tape");
 
-        //Ver si la cinta es estandard 
+        //Ver si la cinta es estandard
         //o meterla como real tape
 
-        
+
 
         insert_tape_cmdline(nombre);
         tape_init();
@@ -5429,7 +5429,7 @@ int quickload_continue(char *nombre) {
 
         //expulsar cinta insertada
         eject_tape_load();
-        tapefile=NULL;        
+        tapefile=NULL;
 
 
         if (!es_cinta_estandard) {
@@ -5445,7 +5445,7 @@ int quickload_continue(char *nombre) {
         }
 
         return 0;
-    }    
+    }
 
 
 //cintas de spectrum, la mayoria (excepto rwa)
@@ -5463,7 +5463,7 @@ int quickload_continue(char *nombre) {
 //cintas de msx
     else if (
                 !util_compare_file_extension(nombre,"cas")
-            
+
 
     ) {
 
@@ -5476,13 +5476,13 @@ int quickload_continue(char *nombre) {
             set_machine_params();
 
             reset_cpu();
-        }                
+        }
 
         insert_tape_cmdline(nombre);
         tape_init();
 
         return 0;
-    }        
+    }
 
 
 //wav, smp y pzx suponemos real audio tape Spectrum
@@ -5586,19 +5586,19 @@ int quickload_continue(char *nombre) {
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
             reset_cpu();
-                      
-                       
+
+
         }
-                               
+
         betadisk_enable();
         trd_insert_disk(nombre);
 
 
 		return 0;
 
-	}        
-	
-	
+	}
+
+
 	//DSK
 	else if (
 		!util_compare_file_extension(nombre,"dsk")
@@ -5611,14 +5611,14 @@ int quickload_continue(char *nombre) {
             //establecer parametros por defecto. Incluido quitar slots de memoria
             set_machine_params();
             reset_cpu();
-                      
-                       
+
+
         }
 
         dskplusthree_disable();
         dsk_insert_disk(nombre);
         //strcpy(dskplusthree_file_name,nombre);
-                
+
         dskplusthree_enable();
 
         //Habilitar pd765 a no ser que los traps esten activados
@@ -5629,12 +5629,12 @@ int quickload_continue(char *nombre) {
             pd765_enable();
         }
 		//plus3dos_traps.v=1;
-		
-                               
+
+
 
 		return 0;
 
-	}        
+	}
 
 
     //Archivos ay
@@ -5684,7 +5684,7 @@ int quickload_continue(char *nombre) {
 	else if (
             !util_compare_file_extension(nombre,"rom")
         ) {
-		
+
 
         //En MSX o SVI, cargar la rom como un cartucho de juegos
         if (MACHINE_IS_MSX) msx_insert_rom_cartridge(nombre);
@@ -5699,7 +5699,7 @@ int quickload_continue(char *nombre) {
 
         return 0;
 
-    }        
+    }
 
 	//Cartuchos de Coleco
 	else if (
@@ -5721,7 +5721,7 @@ int quickload_continue(char *nombre) {
 
         return 0;
 
-    }           
+    }
 
 	//Cartuchos de SG1000
 	else if (
@@ -5744,13 +5744,13 @@ int quickload_continue(char *nombre) {
 
         return 0;
 
-    }      
+    }
 
     //Cartuchos de SMS
 	else if (
                 !util_compare_file_extension(nombre,"sms")
              || !util_compare_file_extension(nombre,"bin")
-             
+
         ) {
 		//Aqui el autoload da igual. cambiamos siempre a sms si conviene
         if (!MACHINE_IS_SMS) {
@@ -5768,7 +5768,7 @@ int quickload_continue(char *nombre) {
 
         return 0;
 
-    }           
+    }
 
 	//eprom cards de Z88
     else if (
@@ -5779,7 +5779,7 @@ int quickload_continue(char *nombre) {
         ) {
 
 		//Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
-       
+
         //Si no estamos en z88, cambiar maquina
         if (!(MACHINE_IS_Z88)) {
             current_machine_type=130;
@@ -5820,7 +5820,7 @@ int quickload_continue(char *nombre) {
         ) {
 
         //Aqui el autoload da igual. cambiamos siempre a Z88 si conviene
-              
+
         //Si no estamos en z88, cambiar maquina
         if (!(MACHINE_IS_Z88)) {
             current_machine_type=130;
@@ -5928,7 +5928,7 @@ int si_existe_archivo(char *nombre)
         }
 
         //desconocido
-        else return 0;        
+        else return 0;
     }
 
     else {
@@ -5971,7 +5971,7 @@ long long int get_size_human_friendly(long long int tamanyo,char *sufijo)
     if (tamanyo >= 1024) {
         tamanyo /= 1024;
         strcpy(sufijo,"TiB");
-    }    
+    }
 
     return tamanyo;
 }
@@ -6005,13 +6005,13 @@ long long int get_file_size(char *nombre)
 #if __MINGW32__
         //Para que funcione la llamada en windows 32 bit. Si no, trata tamanyos de archivos con enteros de 32 bits
         //y mostrara mal cualquier tamanyo mayor de 2 GB
-        struct __stat64 buf_stat; 
+        struct __stat64 buf_stat;
         if (_stat64(nombre, &buf_stat) != 0) {
 #else
 
         struct stat buf_stat;
         if (stat(nombre, &buf_stat)!=0) {
-#endif                    
+#endif
             debug_printf(VERBOSE_INFO,"Unable to get status of file %s",nombre);
             return 0;
         }
@@ -6076,8 +6076,8 @@ int get_file_lines(char *filename)
                 if (byte_leido=='\n') total_lineas++;
 
                 //if (leidos<5) printf ("leyendo de memoria\n");
-        } 
-                
+        }
+
         if (tamanyo_archivo>0) {
                 //printf ("liberando memoria\n");
                 free(buffer_memoria);
@@ -6573,7 +6573,7 @@ void util_set_reset_key_common_keymap(enum util_teclas_common_keymap tecla,int p
 
                                         pcw_keyboard_table[2] &=(255-64);
                                  }
-                        break;                        
+                        break;
 
         }
 }
@@ -6887,7 +6887,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
     case UTIL_MOUSE_RIGHT_BUTTON:
       if (pressrelease) {
         mouse_right=1;
-        //Si esta menu abierto, hace como ESC 
+        //Si esta menu abierto, hace como ESC
 
         if (si_menu_mouse_activado()) {
           //Si no esta menu abierto, hace accion de abrir menu, siempre que no este kempston
@@ -6935,7 +6935,7 @@ void util_set_reset_mouse(enum util_mouse_buttons boton,int pressrelease)
 
 void util_set_reset_key_handle_chloe_ascii(enum util_teclas tecla,int pressrelease)
 {
-        
+
                 //printf ("teclado es chloe. tecla=%d\n",tecla);
                 //tecla ascii
        //Tecla no es shift. comentario absurdo???
@@ -7175,7 +7175,7 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
 
   //printf ("tecla: %d pressrelease: %d menu_abierto: %d\n",tecla,pressrelease,menu_abierto);
 
-  //Aunque este el menu abierto, procesar estas teclas. Asi esto permite que la tecla de OSD aparezca 
+  //Aunque este el menu abierto, procesar estas teclas. Asi esto permite que la tecla de OSD aparezca
   //desde el menu
   //if (menu_abierto) return 0;
   //Ver si la tecla F esta asignada
@@ -7259,7 +7259,7 @@ int util_set_reset_key_continue_f_functions(enum util_teclas tecla,int pressrele
 
   //Abrir menu si funcion no es defecto y no es background window
   //if (accion!=F_FUNCION_DEFAULT && accion!=F_FUNCION_BACKGROUND_WINDOW) {
-  if (accion!=F_FUNCION_DEFAULT) {          
+  if (accion!=F_FUNCION_DEFAULT) {
     if (pressrelease) {
       //Activar funcion f en menu
       menu_button_f_function.v=1;
@@ -7518,7 +7518,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 if (pressrelease) {
                                         puerto_49150 &=255-1;
                                         blink_kbd_a8 &= (255-64);
-					                    
+
                                         ql_keyboard_table[1] &= (255-1);
                                         msx_keyboard_table[7] &= (255-128);
                                         svi_keyboard_table[6] &= (255-64);
@@ -7540,7 +7540,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 else {
                                         puerto_49150 |=1;
                                         blink_kbd_a8 |=64;
-					                    
+
                                         ql_keyboard_table[1] |= 1;
                                         msx_keyboard_table[7] |= 128;
                                         svi_keyboard_table[6] |= 64;
@@ -7577,7 +7577,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         //Home en cpc es copy
                                         cpc_keyboard_table[1] |=2;
                                 }
-                        break;                     
+                        break;
 
 
                         case UTIL_KEY_DEL:
@@ -7589,7 +7589,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         cpc_keyboard_table[9] &=(255-128);
 
                                         //En pcw tecla borrar hacia derecha
-                                        pcw_keyboard_table[2] |=1;                                        
+                                        pcw_keyboard_table[2] |=1;
                                 }
                                 else {
                                         //del en cpc es del
@@ -7598,8 +7598,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         pcw_keyboard_table[2] &=(255-1);
                                 }
                                 //printf("%d\n",cpc_keyboard_table[9]);
-                        break;  
-                                                    
+                        break;
+
 
                         case UTIL_KEY_SHIFT_L:
                         case UTIL_KEY_CAPS_SHIFT:
@@ -7753,7 +7753,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
         break;
 
 
-        case UTIL_KEY_CONTROL_L:                
+        case UTIL_KEY_CONTROL_L:
 
             util_press_menu_symshift(pressrelease);
 
@@ -7851,7 +7851,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                 }
             }
-        break;   
+        break;
 
         case UTIL_KEY_WINKEY_L:
             //printf("winkey L\n");
@@ -7861,8 +7861,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
             else {
                 pcw_keyboard_table[2] &=(255-128);
             }
-            
-        break;             
+
+        break;
 
         case UTIL_KEY_WINKEY_R:
             //printf("winkey R\n");
@@ -7872,8 +7872,8 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
             else {
                 pcw_keyboard_table[0xA] &=(255-8);
             }
-            
-        break;             
+
+        break;
 
 
                         //Teclas que generan doble pulsacion
@@ -7938,7 +7938,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         svi_keyboard_table[6] &=(255-128);
 
           // 1|   Ret   Left     Up    Esc  Right      \  Space   Down
-                                        ql_keyboard_table[1] &= (255-2);  
+                                        ql_keyboard_table[1] &= (255-2);
                                         pcw_keyboard_table[1] |=128;
                                 }
                                 else {
@@ -7974,7 +7974,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                         msx_keyboard_table[8] |=128;
                                         svi_keyboard_table[8] |=128;
                                         ql_keyboard_table[1] |= 16;
-                                        pcw_keyboard_table[0] &=(255-64);                                      
+                                        pcw_keyboard_table[0] &=(255-64);
                                 }
                         break;
 
@@ -8032,7 +8032,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         break;
 
 
-                        //las 5 son botones de joystick que vienen desde ZENG (entrade de comando por ZRCP) exclusivamente. 
+                        //las 5 son botones de joystick que vienen desde ZENG (entrade de comando por ZRCP) exclusivamente.
                         //Se diferencian de las anteriores en que no vuelven a generar evento ZENG de nuevo
                         case UTIL_KEY_JOY_FIRE:
                                 if (pressrelease) {
@@ -8117,7 +8117,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
                         case UTIL_KEY_TAB:
                                 if (pressrelease) {
-                                        menu_tab.v=1; 
+                                        menu_tab.v=1;
                                         //printf ("Pulsado TAB\n");
                                 }
                                 else {
@@ -8203,7 +8203,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 util_press_menu_symshift(pressrelease);
                                 //Nota: para tanto , como . hay un problema en zx80/81 con la tecla en el menu,
                                 //pues no genera sym +m y n como cabria esperar
-                                //en ese caso, hay que pulsar ctrl/alt + m o n          
+                                //en ese caso, hay que pulsar ctrl/alt + m o n
 				if (MACHINE_IS_ZX8081) {
 					if (pressrelease) {
 						puerto_32766 &=255-2;
@@ -8259,7 +8259,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     util_press_menu_symshift(pressrelease);
                                     //Nota: para tanto , como . hay un problema en zx80/81 con la tecla en el menu,
                                     //pues no genera sym +m y n como cabria esperar
-                                    //en ese caso, hay que pulsar ctrl/alt + m o n                                
+                                    //en ese caso, hay que pulsar ctrl/alt + m o n
                                     if (MACHINE_IS_ZX8081) {
                                             //para zx80/81
                                                     if (pressrelease) puerto_32766  &=255-2;
@@ -8453,7 +8453,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     menu_abierto=1;
                                     menu_button_osdkeyboard.v=1;
                                 }
-                               
+
                             }
 
                         break;
@@ -8617,7 +8617,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                 else {
                                     pcw_keyboard_table[0xA] &=(255-4);
                                 }
-                        break;            
+                        break;
 
 
                         case UTIL_KEY_KP_DIVIDE:
@@ -8627,7 +8627,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     }
                                     else {
                                         pcw_keyboard_table[1] &=(255-4);
-                                    }                                    
+                                    }
                                 }
 
                                 else {
@@ -8650,10 +8650,10 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     }
                                     else {
                                         pcw_keyboard_table[1] &=(255-8);
-                                    }                                    
+                                    }
                                 }
 
-                                else {                        
+                                else {
                                     if (pressrelease) {
                                             set_symshift();
                                             puerto_32766 &=255-16;
@@ -8663,7 +8663,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                             puerto_32766 |=16;
                                     }
                                 }
-                        break;                        
+                        break;
 
                         case UTIL_KEY_KP_MINUS:
                                 if (MACHINE_IS_PCW) {
@@ -8672,7 +8672,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                                     }
                                     else {
                                         pcw_keyboard_table[0] &=(255-8);
-                                    }                                    
+                                    }
                                 }
 
                                 else {
@@ -8852,7 +8852,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
                         pcw_keyboard_table[2] |=4;
                     }
                 }
-                                       
+
 
                 else {
                     if (keyboard_swap_enter_return.v==0) {
@@ -8874,7 +8874,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 			break;
 
 			//NO: Chapuza. Para gestion de z y b del teclado recreated
-			//La solucion elegante seria que para activar un puerto de tecla, se usase solo util_set_reset_keys, 
+			//La solucion elegante seria que para activar un puerto de tecla, se usase solo util_set_reset_keys,
 			//y nadie llamase a convert_numeros_letras_puerto_teclado . Para ello, todas las teclas fuera de lo ascii (ctrl, alt, etc)
 			//deben tener una numeracion fuera de lo ascii normal (128 en adelante?)
 			//Esta chapuza que hago tambien esta provocando que se llame a la funcion de recreated_zx_spectrum_keyboard_convert
@@ -8905,7 +8905,7 @@ void util_set_reset_key_continue_after_zeng(enum util_teclas tecla,int pressrele
 
 
 //Retorna numero parseado. Si acaba en H, se supone que es hexadecimal
-//Si acaba en 
+//Si acaba en
 //Si empieza por ' o "" es un caracter (1 solo caracter, no un string)
 //Valor de retorno unsigned de 32 bits
 //Da tipo valor segun:
@@ -8976,7 +8976,7 @@ unsigned int parse_string_to_number_get_type(char *texto,enum token_parser_forma
 
 
 //Retorna numero parseado. Si acaba en H, se supone que es hexadecimal
-//Si acaba en 
+//Si acaba en
 //Si empieza por ' o "" es un caracter (1 solo caracter, no un string)
 //Valor de retorno unsigned de 32 bits
 unsigned int parse_string_to_number(char *texto)
@@ -9406,7 +9406,7 @@ Each pulse is split into a 150us High period, and 150us Low period. The duration
         unsigned char leido;
 
 
-	//Si ZX81, metemos nombre al principio. 
+	//Si ZX81, metemos nombre al principio.
     //En los P no hay el nombre al principio. En el audio si lo hay
 	if (si_p) {
 
@@ -9725,18 +9725,18 @@ void convert_pzx_to_rwa_write_one_pulse(int valor_pulso,FILE *ptr_destino)
         if (valor_pulso) escrito=128+CONVERT_PZX_AMPLITUD_PULSE;
         else escrito=128-CONVERT_PZX_AMPLITUD_PULSE;
 
-	fwrite(&escrito,1,1,ptr_destino);   
+	fwrite(&escrito,1,1,ptr_destino);
 }
 
 void convert_pzx_to_rwa_write_pulses(int *p_t_estado_actual,int duracion_pulsos,int *p_valor_pulso_inicial,FILE *ptr_destino)
 {
-       
+
 
 
         //Usar los valores iniciales pasandolos a variables
         int t_estado_actual=*p_t_estado_actual;
         int valor_pulso_inicial=*p_valor_pulso_inicial;
-       
+
         t_estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;
 
         int final_final_estado=t_estado_actual+duracion_pulsos;
@@ -9753,15 +9753,15 @@ contador -=224
 )
 */
 
-  
+
         while (t_estado_actual<final_final_estado) {
-                //meter siguiente byte sample audio              
+                //meter siguiente byte sample audio
                 convert_pzx_to_rwa_write_one_pulse(valor_pulso_inicial,ptr_destino);
-                
+
                 t_estado_actual +=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;
         }
 
-      
+
 
 
        //Retornar los valores finales
@@ -9770,7 +9770,7 @@ contador -=224
 
 }
 
-//Nota: block_size entra como z80_long_int pero aqui tratamos con int con signo, para evitar que en 
+//Nota: block_size entra como z80_long_int pero aqui tratamos con int con signo, para evitar que en
 //el bucle while de abajo pueda irse a menor que 0 y nunca acabaria (esto pasaria en bloques corruptos)
 int convert_pzx_to_rwa_tag_pzxt(z80_byte *memoria,int block_size)
 {
@@ -9909,7 +9909,7 @@ implementor finds it convenient to do so.
 }
 
 
-//Nota: block_size entra como z80_long_int pero aqui tratamos con int con signo, para evitar que en 
+//Nota: block_size entra como z80_long_int pero aqui tratamos con int con signo, para evitar que en
 //el bucle while de abajo pueda irse a menor que 0 y nunca acabaria (esto pasaria en bloques corruptos)
 void convert_pzx_to_rwa_tag_puls(z80_byte *memoria,int block_size,FILE *ptr_destino,int *p_t_estado_actual)
 {
@@ -9926,7 +9926,7 @@ offset type   name      meaning
                         bit 15 repeat count present: 0 not present 1 present
 2      u16    duration1 bits 0-14 low/high (see bit 15) pulse duration bits
                         bit 15 duration encoding: 0 duration1 1 ((duration1<<16)+duration2)
-4      u16    duration2 optional low bits of pulse duration (see bit 15 of duration1) 
+4      u16    duration2 optional low bits of pulse duration (see bit 15 of duration1)
 6      ...    ...       ditto repeated until the end of the block
 
 This block is used to represent arbitrary sequence of pulses. The sequence
@@ -10036,13 +10036,13 @@ stick to this scheme.
                         valor_pulso_inicial=!valor_pulso_inicial;
 
                         //Truncar estados a multiple de scanline
-                        t_estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;       
+                        t_estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;
 
                 }
         }
 
         *p_t_estado_actual=t_estado_actual;
-        
+
 
 }
 
@@ -10124,7 +10124,7 @@ offset      type             name  meaning
 
         int initial_pulse;
 
-        z80_long_int count;   
+        z80_long_int count;
 
         int t_estado_actual=*p_t_estado_actual;
 
@@ -10142,7 +10142,7 @@ offset      type             name  meaning
                 (memoria[1]*256);
 
         memoria +=2;
-        
+
         z80_byte num_pulses_zero=*memoria;
         memoria++;
 
@@ -10168,7 +10168,7 @@ offset      type             name  meaning
                 memoria +=2;
         }
         debug_printf (VERBOSE_DEBUG,"PZX: count: %d initial_pulse %d tail %d num_pulses_0 %d num_pulses_1 %d",
-               count,initial_pulse,tail,num_pulses_zero,num_pulses_one); 
+               count,initial_pulse,tail,num_pulses_zero,num_pulses_one);
 
         /*printf ("Secuence 0: ");
         for (i=0;i<num_pulses_zero;i++) {
@@ -10190,7 +10190,7 @@ offset      type             name  meaning
         z80_int *sequence_bit;
         int longitud_sequence_bit;
 
-        z80_long_int total_bits_read;                   
+        z80_long_int total_bits_read;
 
         for (total_bits_read=0;total_bits_read<count;total_bits_read+=8) {
         //for (i=0;i<count;i+=8) {
@@ -10210,32 +10210,32 @@ offset      type             name  meaning
                                 longitud_sequence_bit=num_pulses_zero;
                         }
 
-                       
-                        int contador_seq=0; 
+
+                        int contador_seq=0;
                         while (longitud_sequence_bit) {
                                 z80_int duration=sequence_bit[contador_seq++];
-                                convert_pzx_to_rwa_write_pulses(&t_estado_actual,duration,&initial_pulse,ptr_destino); 
+                                convert_pzx_to_rwa_write_pulses(&t_estado_actual,duration,&initial_pulse,ptr_destino);
                                 longitud_sequence_bit--;
 
                                 //invertir pulso
-                                initial_pulse=!initial_pulse;  
+                                initial_pulse=!initial_pulse;
                         }
 
                         processing_byte=processing_byte<<1;
-                       
+
                 }
                 memoria++;
 
                 //Truncar estados a multiple de scanline
-                t_estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;       
+                t_estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;
 
         }
 
 
-        //Generar tail. 
-        convert_pzx_to_rwa_write_pulses(&t_estado_actual,tail,&initial_pulse,ptr_destino); 
+        //Generar tail.
+        convert_pzx_to_rwa_write_pulses(&t_estado_actual,tail,&initial_pulse,ptr_destino);
 
-        *p_t_estado_actual=t_estado_actual;        
+        *p_t_estado_actual=t_estado_actual;
 
 }
 
@@ -10265,7 +10265,7 @@ used properly.
 
         int initial_pulse;
 
-        z80_long_int count;   
+        z80_long_int count;
 
         int t_estado_actual=*p_t_estado_actual;
 
@@ -10282,8 +10282,8 @@ used properly.
         debug_printf(VERBOSE_DEBUG,"PZX: PAUS: count: %d",count);
         convert_pzx_to_rwa_write_pulses(&t_estado_actual,count,&initial_pulse,ptr_destino);
 
-        
-        *p_t_estado_actual=t_estado_actual;        
+
+        *p_t_estado_actual=t_estado_actual;
 
 }
 
@@ -10292,11 +10292,11 @@ used properly.
 //Convierte archivo pzx a rwa en destino indicado
 int convert_pzx_to_rwa(char *origen, char *destino)
 {
- 
+
 
         //Leemos archivo en memoria
         z80_byte *pzx_file_mem;
-        long long int bytes_to_load=get_file_size(origen); 
+        long long int bytes_to_load=get_file_size(origen);
 
         pzx_file_mem=malloc(bytes_to_load);
         if (pzx_file_mem==NULL) cpu_panic("Can not allocate memory for loading PZX file");
@@ -10343,16 +10343,16 @@ int convert_pzx_to_rwa(char *origen, char *destino)
                 tag_name[4]=0;
 
                 z80_long_int block_size;
-                
-             
+
+
 
                 block_size=pzx_file_mem[puntero_lectura]+
                           (pzx_file_mem[puntero_lectura+1]*256)+
                           (pzx_file_mem[puntero_lectura+2]*65536)+
-                          (pzx_file_mem[puntero_lectura+3]*16777216);   
-                puntero_lectura +=4;   
-                
-                                 
+                          (pzx_file_mem[puntero_lectura+3]*16777216);
+                puntero_lectura +=4;
+
+
 
                 //printf ("Block tag name: [%s] size: [%u]\n",tag_name,block_size);
 
@@ -10372,23 +10372,23 @@ int convert_pzx_to_rwa(char *origen, char *destino)
 
                 else if (!strcmp(tag_name,"DATA")) {
                       convert_pzx_to_rwa_tag_data(&pzx_file_mem[puntero_lectura],block_size,ptr_destino,&estado_actual);
-                }                
+                }
 
                 else if (!strcmp(tag_name,"PAUS")) {
                       convert_pzx_to_rwa_tag_paus(&pzx_file_mem[puntero_lectura],block_size,ptr_destino,&estado_actual);
-                }   
+                }
 
                 else {
                         debug_printf (VERBOSE_DEBUG,"PZX: Unknown block type: %02XH %02XH %02XH %02XH. Skipping it",
                         tag_name[0],tag_name[1],tag_name[2],tag_name[3]);
-                }             
+                }
 
 
                 //Y saltar al siguiente bloque
                 puntero_lectura +=block_size;
 
                 //Truncar estados a multiple de scanline
-                estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;                
+                estado_actual %=CONVERT_PZX_TSTATES_AUDIO_SAMPLE;
         }
 
 
@@ -10513,8 +10513,8 @@ void convert_scr_to_txt_printf (z80_byte c)
 
 int convert_scr_to_txt(char *origen, char *destino)
 {
-            
-        
+
+
     z80_byte *buffer_lectura;
     buffer_lectura=malloc(6912);
 
@@ -10547,8 +10547,8 @@ int convert_scr_to_tap(char *origen, char *destino)
         if (tamanyo_origen<0) {
                 debug_printf (VERBOSE_ERR,"Error getting size for %s",origen);
                 return 1;
-        }                
-        
+        }
+
         z80_byte *buffer_lectura;
         buffer_lectura=malloc(tamanyo_origen);
 
@@ -10566,14 +10566,14 @@ int convert_scr_to_tap(char *origen, char *destino)
         if (ptr_inputfile==NULL) {
                 debug_printf (VERBOSE_ERR,"Error opening %s",origen);
                 return 1;
-        } 
+        }
 
 
         leidos=fread(buffer_lectura,1,tamanyo_origen,ptr_inputfile);
 
         if (tamanyo_origen!=leidos) {
               debug_printf (VERBOSE_ERR,"Error reading %s",origen);
-                return 1;  
+                return 1;
         }
 
 
@@ -10629,17 +10629,17 @@ int convert_scr_to_tap(char *origen, char *destino)
         //flag 255
         z80_byte byte_flag=255;
         //Escribir esto
-        fwrite(&byte_flag,1,1,ptr_outputfile);      
+        fwrite(&byte_flag,1,1,ptr_outputfile);
 
         //Los datos propiamente
         fwrite(buffer_lectura,1,6912,ptr_outputfile);
 
         //Y meter crc. Calculamos. Tenemos que byte inicial es el de flag
         crc=get_memory_checksum_spectrum(byte_flag,buffer_lectura,6912);
- 
+
         //Escribir esto
-        fwrite(&crc,1,1,ptr_outputfile);           
-	
+        fwrite(&crc,1,1,ptr_outputfile);
+
 
         fclose(ptr_outputfile);
 
@@ -10739,18 +10739,18 @@ int convert_p_to_rwa_tmpdir(char *origen, char *destino)
 
 
 //Retorna 0 si ok
-//1 si error al abrir archivo 
+//1 si error al abrir archivo
 //Tiene en cuenta zonas de memoria
 int save_binary_file(char *filename,int valor_leido_direccion,int valor_leido_longitud)
 {
-	
+
 
 	menu_debug_set_memory_zone_attr();
 
         char zone_name[MACHINE_MAX_MEMORY_ZONE_NAME_LENGHT+1];
 	menu_get_current_memory_zone_name_number(zone_name);
 
-        if (valor_leido_longitud==0) valor_leido_longitud=menu_debug_memory_zone_size;		
+        if (valor_leido_longitud==0) valor_leido_longitud=menu_debug_memory_zone_size;
 
 
 	debug_printf(VERBOSE_INFO,"Saving %s file at %d address at zone %s with %d bytes",filename,valor_leido_direccion,zone_name,valor_leido_longitud);
@@ -10758,7 +10758,7 @@ int save_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 	FILE *ptr_binaryfile_save;
 	ptr_binaryfile_save=fopen(filename,"wb");
 	if (!ptr_binaryfile_save) {
-		
+
 		debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
 		return 1;
 	}
@@ -10796,7 +10796,7 @@ int load_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 
 	if (valor_leido_longitud==0) valor_leido_longitud=4194304; //4 MB max
 
-    
+
 	menu_debug_set_memory_zone_attr();
 
 
@@ -10809,7 +10809,7 @@ int load_binary_file(char *filename,int valor_leido_direccion,int valor_leido_lo
 	FILE *ptr_binaryfile_load;
 	ptr_binaryfile_load=fopen(filename,"rb");
 	if (!ptr_binaryfile_load) {
-                                
+
 		debug_printf (VERBOSE_ERR,"Unable to open Binary file %s",filename);
 		returncode=2;
 
@@ -10911,7 +10911,7 @@ void parse_customfile_options(void)
 
 	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
 
-			
+
 			disable_border();
 			screen_init_pantalla_and_others_and_realjoystick();
                         screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
@@ -10926,8 +10926,8 @@ void parse_customfile_options(void)
   void (*previous_function)(void);
   int menu_antes;
 
-	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);                                                
-                        
+	screen_end_pantalla_save_overlay(&previous_function,&menu_antes);
+
                         enable_border();
 			screen_init_pantalla_and_others_and_realjoystick();
                         screen_restart_pantalla_restore_overlay(previous_function,menu_antes);
@@ -11109,7 +11109,7 @@ void parse_customfile_options(void)
 				else if (!strcmp(argv[puntero_parametro],"--text-keyboard-finalspc")) {
 						adventure_keyboard_send_final_spc=1;
 
-				}                                
+				}
 
 		 else if (!strcmp(argv[puntero_parametro],"--machine")) {
                                 char *machine_name;
@@ -11535,7 +11535,7 @@ int si_ruta_absoluta(char *ruta)
 
 }
 
-//Retorna tipo de archivo 
+//Retorna tipo de archivo
 //0: desconocido
 //1: archivo normal (o symbolic link)
 //2: directorio
@@ -11717,7 +11717,7 @@ int get_file_type(char *nombre)
 
 
     //Si es archivo de la mmc
-    //if (util_path_is_prefix_mmc_fatfs(nombre)) {  
+    //if (util_path_is_prefix_mmc_fatfs(nombre)) {
     if (util_path_is_mmc_fatfs(nombre)) {
         //printf("f_stat for %s using FatFS\n",nombre);
         FRESULT fr;
@@ -11993,12 +11993,12 @@ int util_parse_pok_file(char *file,struct s_pokfile **tabla_pokes)
 {
 	char *mem;
 
-        int max_size=(MAX_LINEAS_POK_FILE*MAX_LENGTH_LINE_POKE_FILE)-1; //1 para el 0 del final 
-        
+        int max_size=(MAX_LINEAS_POK_FILE*MAX_LENGTH_LINE_POKE_FILE)-1; //1 para el 0 del final
+
 
         if (get_file_size(file) > max_size) {
                 debug_printf (VERBOSE_ERR,"File too large");
-                return 0;    
+                return 0;
         }
 
 	mem=malloc(max_size);
@@ -12372,7 +12372,7 @@ void util_tape_get_info_tapeblock_ace(z80_byte *tape,z80_byte flag,z80_int longi
 
                         cabecera_longitud=value_8_to_16(tape[12],tape[11]);
                         cabecera_inicio=value_8_to_16(tape[14],tape[13]);
-                        
+
 
 
 			//Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
@@ -12409,7 +12409,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 
                         cabecera_longitud=value_8_to_16(tape[12],tape[11]);
                         cabecera_inicio=value_8_to_16(tape[14],tape[13]);
-                        
+
 
 
 			//Evitar el uso del caracter ":" para evitar generar nombres (en el expansor de archivos) con ":" que pueden dar problemas en windows
@@ -12442,7 +12442,7 @@ void util_tape_get_info_tapeblock(z80_byte *tape,z80_byte flag,z80_int longitud,
 			}
 		}
 
-		else if (flag==0 && first_byte==3 && longitud==36) { 
+		else if (flag==0 && first_byte==3 && longitud==36) {
 			//Bloque de codigo fuente SPED
 			util_tape_get_name_header(&tape[1],buffer_nombre);
 
@@ -12499,15 +12499,15 @@ int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
             z80_byte buffer_temp[25];
             util_memcpy_protect_origin(buffer_temp, tape, 25, 0, 25);
 
-            //de momento 
+            //de momento
             util_tape_get_info_tapeblock_ace(buffer_temp,flag,longitud_aparente,texto);
 
-            
-        }        
+
+        }
     }
 
     else {
-	
+
         int flag=tape[2];
         tape+=3;
 
@@ -12520,7 +12520,7 @@ int util_tape_tap_get_info(z80_byte *tape,char *texto,int origin_tap)
             util_memcpy_protect_origin(buffer_temp, tape, 36, 0, 36);
             util_tape_get_info_tapeblock(buffer_temp,flag,longitud,texto);
 
-            
+
         }
 
     }
@@ -12692,7 +12692,7 @@ int util_parse_commands_argvc(char *texto, char *parm_argv[], int maximo)
 }
 
 
-//Separar comando con codigos 0 y rellenar array de parametros, parecido a 
+//Separar comando con codigos 0 y rellenar array de parametros, parecido a
 //util_parse_commands_argvc pero tienendo en cuenta si hay comillas
 int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maximo)
 {
@@ -12744,7 +12744,7 @@ int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maxim
                 if (comillas_algun_momento) {
                         //Se ha leido en algun momento. Quitar comillas iniciales y finales
                         //Lo que hacemos es cambiar el inicio de parametro a +1
-                        
+
                         //printf ("Ajustar parametro porque esta entre comillas\n");
 
                         char *inicio_parametro;
@@ -12759,10 +12759,10 @@ int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maxim
 
                         //printf ("Parametro ajustado sin comillas: [%s]\n",parm_argv[args-1]);
 
-                }                
+                }
 
                 if ( (*texto)==0) return args;
- 
+
 
 
                 *texto=0; //Separar cadena
@@ -12944,12 +12944,12 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_CPC_HAS_128K) {
         size=131072;
-      } 
+      }
 
       if (MACHINE_IS_PCW) {
         size=pcw_total_ram;
       }
- 
+
       if (MACHINE_IS_INVES) {
 	size=65536;
       }
@@ -12964,11 +12964,11 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_MSX) {
       	size=0; //Mostrar zona de memoria de 256kb en caso de msx
-      }      
- 
+      }
+
        if (MACHINE_IS_SVI) {
       	size=0; //Mostrar zona de memoria de 256kb en caso de msx
-      }     
+      }
 
       if (MACHINE_IS_SMS) {
           size=8192;
@@ -13024,11 +13024,11 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_CPC_4128) {
         size=32768;
-      } 
+      }
 
       if (MACHINE_IS_CPC_HAS_FLOPPY) {
         size=49152;
-      }      
+      }
 
 
       if (MACHINE_IS_SAM) {
@@ -13037,10 +13037,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
       if (MACHINE_IS_MSX) {
 	size=32768;
-      }      
+      }
       if (MACHINE_IS_SVI) {
 	size=32768;
-      }   
+      }
 
       if (MACHINE_IS_Z88) {
       	size=0; //Solo zona memoria de 4 mb en caso de z88
@@ -13088,7 +13088,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //kartusho
     case 6:
 	if (kartusho_enabled.v) {
-          *readwrite=1;      
+          *readwrite=1;
 	  size=KARTUSHO_SIZE;
 	}
     break;
@@ -13132,7 +13132,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     case 11:
     	if (betadisk_enabled.v) {
                 *readwrite=1;
-    		size=BETADISK_SIZE; 
+    		size=BETADISK_SIZE;
     	}
     break;
 
@@ -13159,7 +13159,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         *readwrite=3;
         size=TBBLUE_SPRITE_ARRAY_PATTERN_SIZE;
       }
-    break;    
+    break;
 
     //tsconf sprites
     case 15:
@@ -13167,7 +13167,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         *readwrite=3;
         size=4*1024*1024; //Puede ser toda la ram
       }
-    break;        
+    break;
 
 	//memory zone by file. 16
     case MEMORY_ZONE_NUM_FILE_ZONE:
@@ -13175,7 +13175,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         *readwrite=3;
         size=memory_zone_by_file_size;
       }
-    break;     
+    break;
 
     //tbblue copper
     case MEMORY_ZONE_NUM_TBBLUE_COPPER:
@@ -13183,7 +13183,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
         *readwrite=3;
         size=TBBLUE_COPPER_MEMORY;
       }
-    break;          
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
@@ -13194,7 +13194,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 	*readwrite=1;
 	size=65536;
       }
-    break;      
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
@@ -13205,7 +13205,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 	*readwrite=1;
 	size=65536;
       }
-    break;     
+    break;
 
 
         case MEMORY_ZONE_NUM_DAAD_CONDACTS:
@@ -13215,7 +13215,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
 
                 if (MACHINE_IS_CPC) {
                         if (util_daad_detect()) size=65536;
-                }                
+                }
 
         break;
 
@@ -13225,79 +13225,79 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
                 }
 
 
-        break;     
+        break;
 
         case MEMORY_ZONE_DEBUG:
                 if (memory_zone_current_size) {
                         size=memory_zone_current_size;
                 }
-        break;           
-	
+        break;
+
 
     //ifrom
     case MEMORY_ZONE_IFROM:
 	if (ifrom_enabled.v) {
-          *readwrite=1;      
+          *readwrite=1;
 	  size=IFROM_SIZE;
 	}
-    break;       
+    break;
 
 
     case MEMORY_ZONE_MSX_VRAM:
         if (MACHINE_IS_MSX) {
               *readwrite=3; //read+write
-              size=16384;  
+              size=16384;
         }
     break;
 
     case MEMORY_ZONE_MSX_ALL_MEM:
         if (MACHINE_IS_MSX) {
-              *readwrite=1; 
+              *readwrite=1;
               size=256*1024;  //Zona entera de los 256kb
         }
-    break;  
+    break;
 
 
     case MEMORY_ZONE_SVI_VRAM:
         if (MACHINE_IS_SVI) {
               *readwrite=3; //read+write
-              size=16384;  
+              size=16384;
         }
     break;
 
     case MEMORY_ZONE_SVI_ALL_MEM:
         if (MACHINE_IS_SVI) {
-              *readwrite=1; 
+              *readwrite=1;
               size=256*1024;  //Zona entera de los 256kb
         }
-    break;      
+    break;
 
     case MEMORY_ZONE_COLECO_VRAM:
         if (MACHINE_IS_COLECO) {
               *readwrite=3; //read+write
-              size=16384;  
+              size=16384;
         }
     break;
-    
+
 
     case MEMORY_ZONE_SG1000_VRAM:
         if (MACHINE_IS_SG1000) {
               *readwrite=3; //read+write
-              size=16384;  
+              size=16384;
         }
     break;
-    
+
     case MEMORY_ZONE_SMS_VRAM:
         if (MACHINE_IS_SMS) {
               *readwrite=3; //read+write
-              size=16384;  
+              size=16384;
         }
-    break;    
+    break;
 
     case MEMORY_ZONE_SAMRAM:
         if (samram_enabled.v) {
               *readwrite=3; //read+write
-              size=SAMRAM_SIZE;              
+              size=SAMRAM_SIZE;
         }
     break;
 
@@ -13311,10 +13311,10 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //hilow rom
     case MEMORY_ZONE_HILOW_ROM:
         if (hilow_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=HILOW_ROM_SIZE;
         }
-    break;      
+    break;
 
 
     //hilow ram
@@ -13323,7 +13323,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=HILOW_RAM_SIZE;
         }
-    break;    
+    break;
 
     //hilow device
     case MEMORY_ZONE_HILOW_DEVICE:
@@ -13331,23 +13331,23 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=HILOW_DEVICE_SIZE;
         }
-    break; 
+    break;
 
-    //hilow buffer intermedio de conversion 
+    //hilow buffer intermedio de conversion
     case MEMORY_ZONE_HILOW_CONVERT_READ:
         if (menu_hilow_convert_audio_has_been_opened) {
             *readwrite=3; //read+write
             size=HILOW_SECTOR_SIZE;
         }
-    break;    
+    break;
 
     //hilow barbanegra rom
     case MEMORY_ZONE_HILOW_BARBANEGRA_ROM:
         if (hilow_bbn_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=HILOW_BARBANEGRA_ROM_SIZE;
         }
-    break;         
+    break;
 
     //hilow barbanegra ram
     case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
@@ -13355,16 +13355,16 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=HILOW_BARBANEGRA_RAM_SIZE;
         }
-    break;    
+    break;
 
 
     //transtape rom
     case MEMORY_ZONE_TRANSTAPE_ROM:
         if (transtape_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=TRANSTAPE_ROM_SIZE;
         }
-    break;         
+    break;
 
     //transtape ram
     case MEMORY_ZONE_TRANSTAPE_RAM:
@@ -13372,27 +13372,27 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
             *readwrite=3; //read+write
             size=TRANSTAPE_RAM_SIZE;
         }
-    break;        
+    break;
 
     case MEMORY_ZONE_MHPOKEADOR_RAM:
         if (mhpokeador_enabled.v) {
             *readwrite=3; //read+write
             size=MHPOKEADOR_RAM_SIZE;
         }
-    break;  
+    break;
 
     //specmate rom
     case MEMORY_ZONE_SPECMATE_ROM:
         if (specmate_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=SPECMATE_ROM_SIZE;
         }
-    break; 
+    break;
 
     //phoenix rom
     case MEMORY_ZONE_PHOENIX_ROM:
         if (phoenix_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=PHOENIX_ROM_SIZE;
         }
     break;
@@ -13400,7 +13400,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //defcon rom
     case MEMORY_ZONE_DEFCON_ROM:
         if (defcon_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=DEFCON_ROM_SIZE;
         }
     break;
@@ -13408,7 +13408,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //ramjet rom
     case MEMORY_ZONE_RAMJET_ROM:
         if (ramjet_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=RAMJET_ROM_SIZE;
         }
     break;
@@ -13416,7 +13416,7 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //interface007 rom
     case MEMORY_ZONE_INTERFACE007_ROM:
         if (interface007_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=INTERFACE007_ROM_SIZE;
         }
     break;
@@ -13424,17 +13424,17 @@ unsigned int machine_get_memory_zone_attrib(int zone, int *readwrite)
     //dinamid3 rom
     case MEMORY_ZONE_DINAMID3_ROM:
         if (dinamid3_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=DINAMID3_ROM_SIZE;
         }
-    break;                          
+    break;
 
     case MEMORY_ZONE_DSK_SECTOR:
         if (dsk_memory_zone_dsk_sector_enabled.v) {
-            *readwrite=1;      
+            *readwrite=1;
             size=dsk_memory_zone_dsk_sector_size;
         }
-    break;    
+    break;
 
   }
 
@@ -13507,7 +13507,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
       if (MACHINE_IS_PCW) {
         z80_byte *start=pcw_ram_mem_table[0];
         p=&start[address];
-      }       
+      }
 
       if (MACHINE_IS_INVES) {
 	p=&memoria_spectrum[address];
@@ -13515,7 +13515,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
 
       if (MACHINE_IS_SAM) {
 	z80_byte *start=sam_ram_memory[0];
-        p=&start[address]; 
+        p=&start[address];
       }
 
       if (MACHINE_IS_SMS) {
@@ -13638,7 +13638,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         p=tbsprite_new_patterns;
         p=p+address;
       }
-    break;    
+    break;
 
 
     //tsconf sprites
@@ -13652,7 +13652,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         offset &=0x3FFFFF;
         p +=offset;
       }
-    break;           
+    break;
 
 	//memory zone by file. 16
 	case MEMORY_ZONE_NUM_FILE_ZONE:
@@ -13667,29 +13667,29 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
         p=tbblue_copper_memory;
         p=p+address;
       }
-    break;      
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
         z80_byte *start=timex_ex_rom_mem_table[0];
-        p=&start[address];              
+        p=&start[address];
       }
       if (MACHINE_IS_CHLOE_280SE) {
         z80_byte *start=chloe_ex_ram_mem_table[0];
-        p=&start[address];              
+        p=&start[address];
       }
-    break;      
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
         z80_byte *start=timex_dock_rom_mem_table[0];
-        p=&start[address];              
+        p=&start[address];
       }
       if (MACHINE_IS_CHLOE_280SE) {
         z80_byte *start=chloe_dock_ram_mem_table[0];
-        p=&start[address];              
+        p=&start[address];
       }
-    break;        
+    break;
 
         case MEMORY_ZONE_NUM_DAAD_CONDACTS:
                 if (MACHINE_IS_SPECTRUM) {
@@ -13697,7 +13697,7 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
                                 //La direccion está en la zona de memoria ram (zona 0)
                                 //No tiene sentido evaluar entre 0-16383. En ese caso sera igual que 16384-32767
                                 if (address<16384) address +=16384;
-                                z80_byte *start=machine_get_memory_zone_pointer(0,address-16384); 
+                                z80_byte *start=machine_get_memory_zone_pointer(0,address-16384);
                                 //Nota: la direccion dentro de la zona de memoria sera la misma que la direccion real en memoria mapeada
                                 //restamos 16384 pues la zona 0 de ram empieza a contar desde ahi
                                 p=start;
@@ -13707,13 +13707,13 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
                 if (MACHINE_IS_CPC) {
                         if (util_daad_detect()) {
                                 //La direccion está en la zona de memoria ram (zona 0)
-                                z80_byte *start=machine_get_memory_zone_pointer(0,address); 
+                                z80_byte *start=machine_get_memory_zone_pointer(0,address);
                                 p=start;
                         }
-                }                
+                }
 
         break;
-	    
+
 
         case MEMORY_ZONE_NUM_PAWS_CONDACTS:
                 if (MACHINE_IS_SPECTRUM) {
@@ -13721,14 +13721,14 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
                                 //La direccion está en la zona de memoria ram (zona 0)
                                 //No tiene sentido evaluar entre 0-16383. En ese caso sera igual que 16384-32767
                                 if (address<16384) address +=16384;
-                                z80_byte *start=machine_get_memory_zone_pointer(0,address-16384); 
+                                z80_byte *start=machine_get_memory_zone_pointer(0,address-16384);
                                 //Nota: la direccion dentro de la zona de memoria sera la misma que la direccion real en memoria mapeada
                                 //restamos 16384 pues la zona 0 de ram empieza a contar desde ahi
                                 p=start;
                         }
                 }
 
-          
+
 
         break;
 
@@ -13736,64 +13736,64 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
                 if (memory_zone_current_size) {
                         p=&memory_zone_debug_ptr[address];
                 }
-        break;    
+        break;
 
     //ifrom
     case MEMORY_ZONE_IFROM:
         if (ifrom_enabled.v) {
 	p=&ifrom_memory_pointer[address];
       }
-    break;   
+    break;
 
 
     case MEMORY_ZONE_MSX_VRAM:
         if (MACHINE_IS_MSX) {
                 p=&msx_vram_memory[address];
-        }        
+        }
     break;
 
     case MEMORY_ZONE_MSX_ALL_MEM:
         if (MACHINE_IS_MSX) {
                 p=&memoria_spectrum[address];
-        }        
+        }
     break;
 
 
     case MEMORY_ZONE_SVI_VRAM:
         if (MACHINE_IS_SVI) {
                 p=&svi_vram_memory[address];
-        }        
+        }
     break;
 
     case MEMORY_ZONE_SVI_ALL_MEM:
         if (MACHINE_IS_SVI) {
                 p=&memoria_spectrum[address];
-        }        
+        }
     break;
 
 
     case MEMORY_ZONE_COLECO_VRAM:
         if (MACHINE_IS_COLECO) {
                 p=&coleco_vram_memory[address];
-        }        
+        }
     break;
 
     case MEMORY_ZONE_SG1000_VRAM:
         if (MACHINE_IS_SG1000) {
                 p=&sg1000_vram_memory[address];
-        }        
-    break;    
+        }
+    break;
 
     case MEMORY_ZONE_SMS_VRAM:
         if (MACHINE_IS_SMS) {
                 p=&sms_vram_memory[address];
-        }        
-    break;     
+        }
+    break;
 
     case MEMORY_ZONE_SAMRAM:
         if (samram_enabled.v) {
-              p=&samram_memory_pointer[address];           
-        }    
+              p=&samram_memory_pointer[address];
+        }
     break;
 
     case MEMORY_ZONE_NUM_TBBLUE_SPRITES:
@@ -13808,125 +13808,125 @@ z80_byte *machine_get_memory_zone_pointer(int zone, int address)
             tbsprite_last_visible_sprite=TBBLUE_MAX_SPRITES-1;
 
         }
-    break; 
+    break;
 
     //hilow rom
     case MEMORY_ZONE_HILOW_ROM:
         if (hilow_enabled.v) {
-            p=&hilow_memory_pointer[address];             
+            p=&hilow_memory_pointer[address];
         }
-    break;      
+    break;
 
 
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:
         if (hilow_enabled.v) {
 	        //La RAM esta despues de los 8kb de rom
-            p=&hilow_memory_pointer[8192+address];             
+            p=&hilow_memory_pointer[8192+address];
         }
-    break;      
+    break;
 
     //hilow device
     case MEMORY_ZONE_HILOW_DEVICE:
         if (hilow_enabled.v) {
 	        //La RAM esta despues de los 8kb de rom
-            p=&hilow_device_buffer[address];             
+            p=&hilow_device_buffer[address];
         }
-    break;    
+    break;
 
-    //hilow buffer intermedio de conversion 
+    //hilow buffer intermedio de conversion
     case MEMORY_ZONE_HILOW_CONVERT_READ:
         if (menu_hilow_convert_audio_has_been_opened) {
             p=&hilow_read_audio_buffer_result[address+1]; //Saltar el primer byte del sector
         }
-    break;    
+    break;
 
 
     //hilow barbanegra rom
     case MEMORY_ZONE_HILOW_BARBANEGRA_ROM:
         if (hilow_bbn_enabled.v) {
-            p=&hilow_bbn_memory_pointer[address];             
+            p=&hilow_bbn_memory_pointer[address];
         }
-    break;      
+    break;
 
 
     //hilow barbanegra ram
     case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
         if (hilow_bbn_enabled.v) {
 	        //La RAM esta despues de los 8kb de rom
-            p=&hilow_bbn_memory_pointer[8192+address];             
+            p=&hilow_bbn_memory_pointer[8192+address];
         }
-    break;       
+    break;
 
     //transtape rom
     case MEMORY_ZONE_TRANSTAPE_ROM:
         if (transtape_enabled.v) {
-            p=&transtape_memory_pointer[address];             
+            p=&transtape_memory_pointer[address];
         }
-    break;      
+    break;
 
 
     //transtape ram
     case MEMORY_ZONE_TRANSTAPE_RAM:
         if (transtape_enabled.v) {
 	        //La RAM esta despues de los kb de rom
-            p=&transtape_memory_pointer[TRANSTAPE_ROM_SIZE+address];             
+            p=&transtape_memory_pointer[TRANSTAPE_ROM_SIZE+address];
         }
-    break; 
+    break;
 
     case MEMORY_ZONE_MHPOKEADOR_RAM:
         if (mhpokeador_enabled.v) {
-            p=&mhpokeador_memory_pointer[address];             
+            p=&mhpokeador_memory_pointer[address];
         }
-    break;    
+    break;
 
     //specmate rom
     case MEMORY_ZONE_SPECMATE_ROM:
         if (specmate_enabled.v) {
-            p=&specmate_memory_pointer[address];             
+            p=&specmate_memory_pointer[address];
         }
     break;
 
     //phoenix rom
     case MEMORY_ZONE_PHOENIX_ROM:
         if (phoenix_enabled.v) {
-            p=&phoenix_memory_pointer[address];             
+            p=&phoenix_memory_pointer[address];
         }
-    break; 
+    break;
 
     //defcon rom
     case MEMORY_ZONE_DEFCON_ROM:
         if (defcon_enabled.v) {
-            p=&defcon_memory_pointer[address];             
+            p=&defcon_memory_pointer[address];
         }
-    break;             
+    break;
 
     //ramjet rom
     case MEMORY_ZONE_RAMJET_ROM:
         if (ramjet_enabled.v) {
-            p=&ramjet_memory_pointer[address];             
+            p=&ramjet_memory_pointer[address];
         }
     break;
 
     //interface007 rom
     case MEMORY_ZONE_INTERFACE007_ROM:
         if (interface007_enabled.v) {
-            p=&interface007_memory_pointer[address];             
+            p=&interface007_memory_pointer[address];
         }
     break;
 
     //dinamid3 rom
     case MEMORY_ZONE_DINAMID3_ROM:
         if (dinamid3_enabled.v) {
-            p=&dinamid3_memory_pointer[address];             
+            p=&dinamid3_memory_pointer[address];
         }
-    break;  
+    break;
 
     case MEMORY_ZONE_DSK_SECTOR:
         if (dsk_memory_zone_dsk_sector_enabled.v) {
             p=&p3dsk_buffer_disco[dsk_memory_zone_dsk_sector_start+address];
         }
-    break;                
+    break;
 
   }
 
@@ -13973,7 +13973,7 @@ subzone_info subzone_info_tbblue[]={
     0x080000 – 0x0FFFFF (512K) => 1st Extra IC RAM (if present)
     0x100000 – 0x17FFFF (512K) => 2nd Extra IC RAM (if present)
     0x180000 – 0xFFFFFF (512K) => 3rd Extra IC RAM (if present)
-    */  
+    */
 };
 
 
@@ -13997,7 +13997,7 @@ int machine_seach_memory_subzone_name(subzone_info *tabla,int address)
 
         for (i=0;tabla[i].nombre[0]!=0;i++) if (address>=tabla[i].inicio && address<=tabla[i].fin) break;
 
-        return i; 
+        return i;
 }
 
 
@@ -14165,19 +14165,19 @@ void machine_get_memory_zone_name(int zone, char *name)
         }
     break;
 
-    
+
     //Multiface ram
     case 13:
     	if (multiface_enabled.v) {
     			   //123456789012345678901234567890
 		strcpy(name,"Multiface ram");
         }
-    break;   
+    break;
 
     case 14:
         if (MACHINE_IS_TBBLUE) {
           		   //123456789012345678901234567890
-		strcpy(name,"TBBlue patterns");          
+		strcpy(name,"TBBlue patterns");
         }
     break;
 
@@ -14185,15 +14185,15 @@ void machine_get_memory_zone_name(int zone, char *name)
     case 15:
       if (MACHINE_IS_TSCONF) {
           		   //123456789012345678901234567890
-		strcpy(name,"TSConf sprites");   
+		strcpy(name,"TSConf sprites");
       }
-        break;                   
+        break;
 
 	//memory zone by file. 16
 	case MEMORY_ZONE_NUM_FILE_ZONE:
 		if (memory_zone_by_file_size>0) {
           		   //123456789012345678901234567890
-		strcpy(name,"File zone");   
+		strcpy(name,"File zone");
 		}
 	break;
 
@@ -14201,29 +14201,29 @@ void machine_get_memory_zone_name(int zone, char *name)
     case MEMORY_ZONE_NUM_TBBLUE_COPPER:
       if (MACHINE_IS_TBBLUE) {
           		   //123456789012345678901234567890
-		strcpy(name,"TBBlue copper");   
+		strcpy(name,"TBBlue copper");
       }
-    break;   
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_EX:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
-        strcpy(name,"Timex EXROM");             
+        strcpy(name,"Timex EXROM");
       }
-	
+
       if (MACHINE_IS_CHLOE_280SE) {
-        strcpy(name,"Chloe EX");             
+        strcpy(name,"Chloe EX");
       }
-	
-    break;      
+
+    break;
 
     case MEMORY_ZONE_NUM_TIMEX_DOCK:
       if (MACHINE_IS_TIMEX_TS_TC_2068) {
-        strcpy(name,"Timex Dock");               
+        strcpy(name,"Timex Dock");
       }
       if (MACHINE_IS_CHLOE_280SE) {
-        strcpy(name,"Chloe Dock");             
+        strcpy(name,"Chloe Dock");
       }
-    break;    
+    break;
 
 
         case MEMORY_ZONE_NUM_DAAD_CONDACTS:
@@ -14233,18 +14233,18 @@ void machine_get_memory_zone_name(int zone, char *name)
 
                 if (MACHINE_IS_CPC) {
                         strcpy(name,"Daad Condacts");
-                }                
+                }
 
-        break;    
+        break;
 
 
         case MEMORY_ZONE_NUM_PAWS_CONDACTS:
                 //if (MACHINE_IS_SPECTRUM) {
                         strcpy(name,"Paws Condacts");
                 //}
-      
 
-        break;    
+
+        break;
 
 
         case MEMORY_ZONE_DEBUG:
@@ -14259,12 +14259,12 @@ void machine_get_memory_zone_name(int zone, char *name)
 		           //123456789012345678901234567890
 		strcpy(name,"iFrom rom");
 	}
-    break;       
+    break;
 
 
     case MEMORY_ZONE_MSX_VRAM:
         if (MACHINE_IS_MSX) {
-               strcpy(name,"MSX VRAM"); 
+               strcpy(name,"MSX VRAM");
         }
     break;
 
@@ -14272,13 +14272,13 @@ void machine_get_memory_zone_name(int zone, char *name)
     case MEMORY_ZONE_MSX_ALL_MEM:
         if (MACHINE_IS_MSX) {
                           //123456789012345678901234567890
-               strcpy(name,"MSX All Mem"); 
+               strcpy(name,"MSX All Mem");
         }
     break;
 
    case MEMORY_ZONE_SVI_VRAM:
         if (MACHINE_IS_SVI) {
-               strcpy(name,"SVI VRAM"); 
+               strcpy(name,"SVI VRAM");
         }
     break;
 
@@ -14286,67 +14286,67 @@ void machine_get_memory_zone_name(int zone, char *name)
     case MEMORY_ZONE_SVI_ALL_MEM:
         if (MACHINE_IS_SVI) {
                           //123456789012345678901234567890
-               strcpy(name,"SVI All Mem"); 
+               strcpy(name,"SVI All Mem");
         }
-    break;    
+    break;
 
     case MEMORY_ZONE_COLECO_VRAM:
         if (MACHINE_IS_COLECO) {
-               strcpy(name,"Coleco VRAM"); 
+               strcpy(name,"Coleco VRAM");
         }
-    break;    
+    break;
 
     case MEMORY_ZONE_SG1000_VRAM:
         if (MACHINE_IS_SG1000) {
-               strcpy(name,"SG1000 VRAM"); 
+               strcpy(name,"SG1000 VRAM");
         }
-    break;   
+    break;
 
     case MEMORY_ZONE_SMS_VRAM:
         if (MACHINE_IS_SMS) {
-               strcpy(name,"SMS VRAM"); 
+               strcpy(name,"SMS VRAM");
         }
-    break;      
+    break;
 
     case MEMORY_ZONE_SAMRAM:
         if (samram_enabled.v) {
-              strcpy(name,"SamRAM");    
-        }    
+              strcpy(name,"SamRAM");
+        }
     break;
 
     case MEMORY_ZONE_NUM_TBBLUE_SPRITES:
         if (MACHINE_IS_TBBLUE) {
-            strcpy(name,"TBBlue sprites");  
+            strcpy(name,"TBBlue sprites");
         }
-    break;   
+    break;
 
     //hilow rom
     case MEMORY_ZONE_HILOW_ROM:
         if (hilow_enabled.v) {
             strcpy(name,"HiLow ROM");
         }
-    break;         
+    break;
 
     //hilow ram
     case MEMORY_ZONE_HILOW_RAM:
         if (hilow_enabled.v) {
             strcpy(name,"HiLow RAM");
         }
-    break;      
+    break;
 
     //hilow ram
     case MEMORY_ZONE_HILOW_DEVICE:
         if (hilow_enabled.v) {
             strcpy(name,"HiLow Device");
         }
-    break;    
+    break;
 
-    //hilow buffer intermedio de conversion 
+    //hilow buffer intermedio de conversion
     case MEMORY_ZONE_HILOW_CONVERT_READ:
         if (menu_hilow_convert_audio_has_been_opened) {
             strcpy(name,"HiLow Convert");
         }
-    break;     
+    break;
 
 
     //hilow barbanegra rom
@@ -14355,7 +14355,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"HiLow Barbanegra ROM");
         }
-    break;         
+    break;
 
     //hilow barbanegra ram
     case MEMORY_ZONE_HILOW_BARBANEGRA_RAM:
@@ -14363,7 +14363,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"HiLow Barbanegra RAM");
         }
-    break;        
+    break;
 
     //transtape rom
     case MEMORY_ZONE_TRANSTAPE_ROM:
@@ -14371,7 +14371,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Transtape ROM");
         }
-    break;         
+    break;
 
     //transtape ram
     case MEMORY_ZONE_TRANSTAPE_RAM:
@@ -14386,7 +14386,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"MH Pokeador RAM");
         }
-    break;     
+    break;
 
     //specmate rom
     case MEMORY_ZONE_SPECMATE_ROM:
@@ -14394,7 +14394,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Spec-Mate ROM");
         }
-    break; 
+    break;
 
     //phoenix rom
     case MEMORY_ZONE_PHOENIX_ROM:
@@ -14402,7 +14402,7 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Phoenix ROM");
         }
-    break; 
+    break;
 
     //defcon rom
     case MEMORY_ZONE_DEFCON_ROM:
@@ -14434,14 +14434,14 @@ void machine_get_memory_zone_name(int zone, char *name)
                        //123456789012345678901234567890
             strcpy(name,"Dinamid3 ROM");
         }
-    break;  
+    break;
 
     case MEMORY_ZONE_DSK_SECTOR:
         if (dsk_memory_zone_dsk_sector_enabled.v) {
                        //123456789012345678901234567890
             strcpy(name,"DSK Sector");
         }
-    break;                               
+    break;
 
   }
 
@@ -14482,7 +14482,7 @@ z80_long_int util_crc32_calculation(z80_long_int crc, z80_byte *buf, size_t len)
         z80_byte octet;
         int i, j;
         z80_byte *p, *q;
- 
+
         /* This check is not thread safe; there is no mutex. */
         if (have_table == 0) {
                 /* Calculate CRC table. */
@@ -14499,7 +14499,7 @@ z80_long_int util_crc32_calculation(z80_long_int crc, z80_byte *buf, size_t len)
                 }
                 have_table = 1;
         }
- 
+
         crc = ~crc;
         q = buf + len;
         for (p = buf; p < q; p++) {
@@ -14556,13 +14556,13 @@ void util_save_file(z80_byte *origin, long long int tamanyo_origen, char *destin
     if (zvfs_fopen_write(destination_file,&in_fatfs,&ptr_destination_file,&fil)<0) {
         debug_printf (VERBOSE_ERR,"Can not open %s",destination_file);
         return;
-    }    
+    }
 
 
     zvfs_fwrite(in_fatfs,origin,tamanyo_origen,ptr_destination_file,&fil);
 
     zvfs_fclose(in_fatfs,ptr_destination_file,&fil);
-        
+
 
 }
 
@@ -14583,16 +14583,16 @@ int util_load_file_bytes(z80_byte *taperead,char *filename,int total_leer)
         return 0;
     }
 
-       
+
     int leidos=zvfs_fread(in_fatfs,taperead,total_leer,ptr_tapebrowser,&fil);
-        
+
 
 	if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
         return 0;
     }
 
-    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);    
+    zvfs_fclose(in_fatfs,ptr_tapebrowser,&fil);
 
     return leidos;
 }
@@ -14827,7 +14827,7 @@ int util_extract_hdf(char *hdfname, char *dest_dir)
                         debug_printf (VERBOSE_DEBUG,"Adding %d KB until normal image size (%d KB)",rellenar/1024,final_size/1024);
                         z80_byte byte_relleno=0xFF;
                         while (rellenar) {
-                            fwrite(&byte_relleno,1,1,ptr_outputfile);  
+                            fwrite(&byte_relleno,1,1,ptr_outputfile);
                             rellenar--;
                         }
                 }
@@ -14965,7 +14965,7 @@ void util_ascii_to_binary(int valor_origen,char *destino,int longitud_max)
                         *destino='1';
                         primer_uno=1;
                 }
-                
+
                 else {
                         if (primer_uno) *destino='0';
                 }
@@ -14999,10 +14999,10 @@ void util_ascii_to_binary(int valor_origen,char *destino,int longitud_max)
                                       debug_printf (VERBOSE_ERR,"Unable to open file %s",filename);
 
                                   }
-                                else {  
-                                        
+                                else {
+
                                         fwrite(puntero,1,tamanyo,ptr_filesave);
-                                                
+
                                   fclose(ptr_filesave);
 
 
@@ -15085,7 +15085,7 @@ Si no hay repeticiones, se retornan los bytes tal cual
 Retorna: longitud del bloque destino
 
 
-Considerar caso DD 00 00 00 00 00 ...  -> genera DD    DD DD 00 5 
+Considerar caso DD 00 00 00 00 00 ...  -> genera DD    DD DD 00 5
 Habria que ver al generar repeticion, si anterior era DD, hay que convertir el DD anterior en DD DD DD 01
 Debe generar:
 DD DD DD 01  DD DD 00 05
@@ -15116,7 +15116,7 @@ int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longit
 
 	int antes_es_magic_aislado=0; //Si el de antes era un byte magic (normalmente DD) asilado
 
-	while (longitud) {		
+	while (longitud) {
 		z80_byte byte_repetido;
 		int repeticiones=util_get_byte_repetitions(origen,longitud,&byte_repetido);
 		//printf ("Remaining size: %d Byte: %02X Repetitions: %d\n",longitud,byte_repetido,repeticiones);
@@ -15124,7 +15124,7 @@ int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longit
 
 		origen +=repeticiones;
 		longitud -=repeticiones;
-		
+
 		//Hay repeticiones
 		if (repeticiones>=5
 			||
@@ -15189,7 +15189,7 @@ int util_compress_data_repetitions(z80_byte *origen,z80_byte *destino,int longit
 	}
 
 	return longitud_destino;
-	
+
 }
 
 
@@ -15243,7 +15243,7 @@ int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,int long
             //printf("Antes de escribir en destino %p (memoria_spectrum: %p)\n",destino,memoria_spectrum);
 			*destino=*origen;
             //printf("Despues de escribir en destino\n");
-			
+
 			origen++;
 			longitud--;
 
@@ -15359,7 +15359,7 @@ int util_get_pixel_color_scr(z80_byte *scrfile,int x,int y)
     }
 
     //falta atributo
-    
+
     /*int byte_y=y>>3; //Divide entre 8
     //luego multiplica por 32
     int offset_y=byte_y*32;*/
@@ -15381,7 +15381,7 @@ int util_get_pixel_color_scr(z80_byte *scrfile,int x,int y)
 
     return color_pixel;
 
-    
+
 }
 
 //Devolver valor sin signo
@@ -15409,7 +15409,7 @@ int util_get_sign(int valor)
 int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg)
 {
 
-	
+
 	//tapefile
 	if (util_compare_file_extension(filename,"tap")!=0) {
 		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
@@ -15444,7 +15444,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
         if (!ptr_tapebrowser) {
 		debug_printf(VERBOSE_ERR,"Unable to open tape %s for extracting tap",filename);
-		return 1; 
+		return 1;
 	}
     */
 
@@ -15493,14 +15493,14 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
             else {
                 tape_write_tzx_header_ptr(ptr_tzxfile,in_fatfs_tzxfile,&fil_tzxfile);
             }
-        }        
+        }
 
 
         int leidos;
-        
+
 
          leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
-        
+
 
 	if (leidos==0) {
                 debug_printf(VERBOSE_ERR,"Error reading tape");
@@ -15520,7 +15520,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 	int filenumber=0;
 
 	int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
-	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior 
+	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
 	z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
 
     int remaining_file_size=total_file_size;
@@ -15572,7 +15572,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                 //Longitud segun cabecera
                                 longitud_segun_cabecera=value_8_to_16(util_get_byte_protect(taperead,total_file_size,nuevo_copia_puntero+15),
                                 util_get_byte_protect(taperead,total_file_size,nuevo_copia_puntero+14));
-                        
+
                         }
                         else {
                                 char extension_agregar[10];
@@ -15580,7 +15580,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
                                 int era_pantalla=0;
 
-                                //Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0	
+                                //Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0
                                 if (flag==255 && previo_flag==0 && previo_longitud_segun_cabecera==longitud_final) {
                                         //Corresponde. Agregar extensiones bas o scr segun el caso
                                         if (previo_tipo_bloque==0) {
@@ -15613,7 +15613,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
                                                 //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                                                 util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-                                        }                                
+                                        }
                                 }
                         }
 
@@ -15622,9 +15622,9 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                 //Generar bloque con datos, saltando los dos de cabecera y el flag
                                 //Generamos bloque temporal para evitar segfaults en archivos corruptos
 
-                                
+
                                 z80_byte *temp_save_mem;
-                                
+
                                 temp_save_mem=malloc(longitud_final);
                                 //printf("\nAsignando %d bytes\n",longitud_final);
                                 if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
@@ -15633,7 +15633,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                 //if (nuevo_copia_puntero+3+longitud_final>total_file_size) printf("POSIBLE ERROR\n");
 
                                 //printf("util_memcpy_protect_origin destino %p origen %p total_mem %d offset %d total_copiar %d\n",
-                                //       temp_save_mem,taperead,total_file_size,nuevo_copia_puntero+3,longitud_final); 
+                                //       temp_save_mem,taperead,total_file_size,nuevo_copia_puntero+3,longitud_final);
 
                                 util_memcpy_protect_origin(temp_save_mem,taperead,total_file_size,nuevo_copia_puntero+3,longitud_final);
 
@@ -15641,14 +15641,14 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
                                 free(temp_save_mem);
 
-                                
+
                         }
 
                         //Convertir a tzx o pzx
                         else {
 
                             if (es_pzx) {
-                                
+
 
 
                                 //Generamos bloque temporal para evitar segfaults en archivos corruptos
@@ -15656,7 +15656,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                 if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
                                 util_memcpy_protect_origin(temp_save_mem,taperead,total_file_size,nuevo_copia_puntero,longitud_bloque);
 
-                          
+
                                 z80_byte flag_bloque=temp_save_mem[2];
 
                                 int longitud_bloque_pzx=longitud_bloque-2; //saltar los 2 bytes iniciales que dicen longitud
@@ -15665,9 +15665,9 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                 //int longitud_bloque_pzx=longitud_bloque-2; //saltar los 2 bytes iniciales que dicen longitud
 
                                 zvfs_fwrite(in_fatfs_tzxfile,&temp_save_mem[2],longitud_bloque_pzx,ptr_tzxfile,&fil_tzxfile);
-                                
 
-                                free(temp_save_mem);                                
+
+                                free(temp_save_mem);
                             }
 
                             else {
@@ -15713,11 +15713,11 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                     if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
                                     util_memcpy_protect_origin(temp_save_mem,&taperead[2],total_file_size,nuevo_copia_puntero,longitud_bloque-2);
 
-                            
-                                    zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque-2,ptr_tzxfile,&fil_tzxfile);
-                                    
 
-                                    free(temp_save_mem);                                    
+                                    zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque-2,ptr_tzxfile,&fil_tzxfile);
+
+
+                                    free(temp_save_mem);
                                 }
 
                                 else {
@@ -15728,8 +15728,8 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                     buffer_tzx[2]=1;
 
                                     zvfs_fwrite(in_fatfs_tzxfile,buffer_tzx,3,ptr_tzxfile,&fil_tzxfile);
-                                
-                            
+
+
 
                                     //Meter datos tal cual de tap: longitud, flag, datos, crc
 
@@ -15741,9 +15741,9 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                                     if (temp_save_mem==NULL) cpu_panic("Can not allocate memory for file save");
                                     util_memcpy_protect_origin(temp_save_mem,taperead,total_file_size,nuevo_copia_puntero,longitud_bloque);
 
-                            
+
                                     zvfs_fwrite(in_fatfs_tzxfile,temp_save_mem,longitud_bloque,ptr_tzxfile,&fil_tzxfile);
-                                    
+
 
                                     free(temp_save_mem);
 
@@ -15752,7 +15752,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                             }
 
 
-                        }                
+                        }
 
                         filenumber++;
 
@@ -15760,7 +15760,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
                         previo_longitud_segun_cabecera=longitud_segun_cabecera;
                         previo_tipo_bloque=tipo_bloque;
 
-                }           
+                }
 	}
 
 
@@ -15768,7 +15768,7 @@ int util_extract_tap(char *filename,char *tempdir,char *tzxfile,int tzx_turbo_rg
 
         if (tzxfile!=NULL) {
             zvfs_fclose(in_fatfs_tzxfile,ptr_tzxfile,&fil_tzxfile);
-            //fclose(ptr_tzxfile);        
+            //fclose(ptr_tzxfile);
         }
 
 	return 0;
@@ -15808,12 +15808,12 @@ int util_extract_ddh(char *filename,char *tempdir)
 
 	taperead=util_malloc(total_file_size,"Can not allocate memory for expand ddh");
 
- 
+
     int leidos;
-        
+
 
     leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
-        
+
 
 	if (leidos==0) {
         debug_printf(VERBOSE_ERR,"Error reading tape");
@@ -15848,7 +15848,7 @@ int util_extract_ddh(char *filename,char *tempdir)
 
         hilow_util_get_file_name(sector,taperead,id_archivo,buffer_texto);
 
-    
+
         z80_int longitud=hilow_util_get_file_length(sector,taperead,id_archivo);
 
         //printf("nombre: %s longitud: %d\n",buffer_texto,longitud);
@@ -15881,7 +15881,7 @@ int util_extract_ddh(char *filename,char *tempdir)
 
             //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
             util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
-        }        
+        }
 
         free(mem_archivo);
     }
@@ -15899,12 +15899,12 @@ int util_extract_ddh(char *filename,char *tempdir)
 int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 {
 
-	
+
 	//tapefile
 	if (
         util_compare_file_extension(filename,"tzx")!=0 &&
         util_compare_file_extension(filename,"cdt")!=0
-    
+
     ) {
 		debug_printf(VERBOSE_ERR,"Tape expander not supported for this tape type");
 		return 1;
@@ -15937,7 +15937,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
         if (!ptr_tapebrowser) {
 		debug_printf(VERBOSE_ERR,"Unable to open tape for extracting tzx");
-		return 1; 
+		return 1;
 	}
     */
 
@@ -15982,7 +15982,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
         int leidos;
 
         leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
-        
+
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
 	if (leidos==0) {
@@ -16003,7 +16003,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 	int filenumber=0;
 
 	int previo_longitud_segun_cabecera=-1; //Almacena longitud de bloque justo anterior
-	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior 
+	z80_byte previo_flag=255; //Almacena flag de bloque justo anterior
 	z80_byte previo_tipo_bloque=255; //Almacena previo tipo bloque anterior (0, program, 3 bytes etc)
 
 	puntero_lectura +=10; //Saltar cabecera (version tzx etc)
@@ -16027,7 +16027,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
                 //ID 11 - Turbo Speed Data Block
 
                 if (tzx_id==0x11) {
-                        copia_puntero=puntero_lectura+16; 
+                        copia_puntero=puntero_lectura+16;
                         //copia_puntero hay que dejarlo justo donde quedan 2 bytes de la longitud y luego el siguiente es el flag
                         //realmente los de longitud no se leeran luego, el flag si. Esto es por compatibilidad con la gestion del bloque tipo 0x10
 
@@ -16054,7 +16054,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
                         longitud_bloque=util_tape_tap_get_info(puntero_lectura,buffer_texto,0);
                 }
 
-		
+
 		total_mem-=longitud_bloque;
 		puntero_lectura +=longitud_bloque;
 		//debug_printf (VERBOSE_DEBUG,"Tape browser. Block: %s",buffer_texto);
@@ -16087,7 +16087,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
 			//Longitud segun cabecera
 			longitud_segun_cabecera=value_8_to_16(copia_puntero[15],copia_puntero[14]);
-		
+
 		}
 		else {
 			char extension_agregar[10];
@@ -16095,7 +16095,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
                         int era_pantalla=0;
 
-			//Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0	
+			//Si bloque de flag 255, ver si corresponde al bloque anterior de flag 0
 			if (flag==255 && previo_flag==0 && previo_longitud_segun_cabecera==longitud_final) {
 				//Corresponde. Agregar extensiones bas o scr segun el caso
 				if (previo_tipo_bloque==0) {
@@ -16125,7 +16125,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
                                         char buff_preview_scr[PATH_MAX];
                                         sprintf(buff_preview_scr,"%s/%s",tempdirectory,MENU_SCR_INFO_FILE_NAME);
 
-                                        //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla 
+                                        //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                                         util_save_file((z80_byte *)buffer_temp_file,strlen(buffer_temp_file)+1,buff_preview_scr);
                                 }
                         }
@@ -16134,7 +16134,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
                 //Si expandir
                 if (tapfile==NULL) {
-		        //Generar bloque con datos, saltando los dos de cabecera y el flag                
+		        //Generar bloque con datos, saltando los dos de cabecera y el flag
 		        util_save_file(copia_puntero+3,longitud_final,buffer_temp_file);
                 }
 
@@ -16148,7 +16148,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
                         buffer_tap[1]=value_16_to_8h(longitud_cabecera_tap);
                         buffer_tap[2]=flag;
 
-             
+
 
                         zvfs_fwrite(in_fatfs_tapfile,buffer_tap,3,ptr_tapfile,&fil_tapfile);
 
@@ -16218,7 +16218,7 @@ int util_extract_tzx(char *filename,char *tempdirectory,char *tapfile)
 
                                 puntero_lectura+=2;
                                 puntero_lectura+=longitud_bloque;
-	
+
 				total_mem -=(longitud_bloque+2);
                         break;
 
@@ -16327,7 +16327,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
     //Soporte para FatFS
     FIL fil_tapfile;        /* File object */
- 
+
     int in_fatfs_tapfile;
 
 
@@ -16343,7 +16343,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
 
     int leidos;
-    
+
     leidos=zvfs_fread(in_fatfs,taperead,total_file_size,ptr_tapebrowser,&fil);
     //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
@@ -16375,7 +16375,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
     //z80_byte *copia_puntero;
     int copia_puntero;
 
-    int remaining_file_size=total_file_size;        
+    int remaining_file_size=total_file_size;
 
 	while(remaining_file_size>0 && !salir) {
 
@@ -16411,12 +16411,12 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                         (util_get_byte_protect(taperead,total_file_size,puntero_lectura+2)*65536)+
                         (util_get_byte_protect(taperead,total_file_size,puntero_lectura+3)*16777216);
             puntero_lectura +=4;
-            
-            remaining_file_size -=8; 
+
+            remaining_file_size -=8;
 
 
             //Tratar cada tag
-            
+
             if (!strcmp(tag_name,"DATA")) {
                         //convert_pzx_to_rwa_tag_data(&pzx_file_mem[puntero_lectura],block_size,ptr_destino,&estado_actual);
 
@@ -16427,7 +16427,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
                 //int initial_pulse;
 
-                z80_long_int count;   
+                z80_long_int count;
 
                 //int t_estado_actual=*p_t_estado_actual;
 
@@ -16435,7 +16435,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                 count=util_get_byte_protect(taperead,total_file_size,memoria_lectura+0)+
                         (util_get_byte_protect(taperead,total_file_size,memoria_lectura+1)*256)+
                         (util_get_byte_protect(taperead,total_file_size,memoria_lectura+2)*65536)+
-                        ((util_get_byte_protect(taperead,total_file_size,memoria_lectura+3)&127)*16777216); 
+                        ((util_get_byte_protect(taperead,total_file_size,memoria_lectura+3)&127)*16777216);
 
                 //initial_pulse=(util_get_byte_protect(taperead,total_file_size,memoria_lectura+3)&128)>>7;
 
@@ -16444,7 +16444,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                 //z80_int tail=memoria[0]+(memoria[1]*256);
 
                 memoria_lectura +=2;
-                
+
                 z80_byte num_pulses_zero=util_get_byte_protect(taperead,total_file_size,memoria_lectura);
                 memoria_lectura++;
 
@@ -16472,9 +16472,9 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                     memoria_lectura +=2;
                 }
 
-                        
 
-            
+
+
                 //Procesar el total de bits
                 //int bit_number=7;
                 //z80_byte processing_byte;
@@ -16482,34 +16482,34 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
                 //z80_int *sequence_bit;
                 //int longitud_sequence_bit;
 
-                //z80_long_int total_bits_read; 
+                //z80_long_int total_bits_read;
 
-            
+
 
                 //z80_byte *puntero_lectura_copia=memoria;
                 int memoria_lectura_copia=memoria_lectura;
 
                 //util_get_byte_protect(taperead,total_file_size,memoria_lectura_copia+
 
-                
+
                 //36 que suficiente por si da la casualidad de cabecera sped (34 bytes)
                 //TODO: esto son los primeros pasos para evitar un segfault al hacer un preview de un pzx corrupto
                 /*
-                
-    
+
+
                 longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto);
                 */
 
                 z80_byte buffer_temp[36];
                 util_memcpy_protect_origin(buffer_temp,taperead,total_file_size,puntero_lectura,36);
                 longitud_bloque=util_tape_tap_get_info(buffer_temp,buffer_texto,0);
-                
+
 
 
                 copia_puntero=memoria_lectura_copia-2;
                 longitud_bloque=count/8;
 
-        
+
 
                 char buffer_temp_file[PATH_MAX];
                 int longitud_final;
@@ -16637,7 +16637,7 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
                         //Agregar CRC
                         z80_byte byte_crc=util_get_byte_protect(taperead,total_file_size,copia_puntero+3+longitud_final);
-                
+
 
                         buffer_tap[0]=byte_crc;
                         zvfs_fwrite(in_fatfs_tapfile,buffer_tap,1,ptr_tapfile,&fil_tapfile);
@@ -16655,13 +16655,13 @@ int util_extract_pzx(char *filename,char *tempdirectory,char *tapfile)
 
                 }
 
-            }   
+            }
 
 
 
             //Y saltar al siguiente bloque
             puntero_lectura +=block_size;
-            
+
             remaining_file_size -=block_size;
 
 
@@ -16694,20 +16694,20 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
 
         int filesize=get_file_size(filename);
 
-       		
+
 
         if (filesize==49179 || filesize==131103 || filesize==147487) {
 
                 //Soporte para FatFS
                 FIL fil_origen;        /* File object */
-                
+
                 int in_fatfs_origen;
 
 
                 if (zvfs_fopen_read(filename,&in_fatfs_origen,&ptr_snafile,&fil_origen)<0) {
                         debug_printf(VERBOSE_ERR,"Error opening %s",filename);
                         return 1;
-                }            
+                }
 
                 //int leidos;
 
@@ -16724,7 +16724,7 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                 //leidos=zvfs_fread(in_fatfs_origen,sna_48k_header,SNA_48K_HEADER_SIZE,ptr_snafile,&fil_origen);
                 zvfs_fread(in_fatfs_origen,sna_48k_header,SNA_48K_HEADER_SIZE,ptr_snafile,&fil_origen);
                 //leidos=fread(sna_48k_header,1,SNA_48K_HEADER_SIZE,ptr_snafile);
-                
+
 
 
                 //Leer byte a byte y pasarlo a archivo destino
@@ -16732,13 +16732,13 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                 FILE *ptr_destination_file;
 
                 FIL fil_destino;        /* File object */
-  
+
                 int in_fatfs_destino;
 
                 if (zvfs_fopen_write(archivo_destino,&in_fatfs_destino,&ptr_destination_file,&fil_destino)<0) {
                     debug_printf (VERBOSE_ERR,"Can not open %s",archivo_destino);
                     return 1;
-                }                
+                }
 
                 /*
                 ptr_destination_file=fopen(archivo_destino,"wb");
@@ -16746,8 +16746,8 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                         if (!ptr_destination_file) {
                                 debug_printf (VERBOSE_ERR,"Can not open %s",archivo_destino);
                                 return 1;
-                } 
-                */     
+                }
+                */
 
                 int i;
 
@@ -16765,7 +16765,7 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
 
                         zvfs_fwrite(in_fatfs_destino,&byte_leido,1,ptr_destination_file,&fil_destino);
                         //fwrite(&byte_leido,1,1,ptr_destination_file);
-                }   
+                }
 
                 zvfs_fclose(in_fatfs_origen,ptr_snafile,&fil_origen);
                 //fclose(ptr_snafile);
@@ -16774,7 +16774,7 @@ int util_convert_sna_to_scr(char *filename,char *archivo_destino)
                 //fclose(ptr_destination_file);
         }
 
-        return 0; 
+        return 0;
 }
 
 
@@ -16797,12 +16797,12 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
         FIL fil;        /* File object */
         //FRESULT fr;     /* FatFs return code */
 
-        int in_fatfs;        
+        int in_fatfs;
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_spfile,&fil)<0) {
                 debug_printf(VERBOSE_ERR,"Error opening %s",filename);
                 return 1;
-        }        
+        }
 
         /*
         //Load File
@@ -16816,7 +16816,7 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
         //leidos=zvfs_fread(in_fatfs,sp_header,SP_HEADER_SIZE,ptr_spfile,&fil);
         zvfs_fread(in_fatfs,sp_header,SP_HEADER_SIZE,ptr_spfile,&fil);
         //leidos=fread(sp_header,1,SP_HEADER_SIZE,ptr_spfile);
-        
+
 
 
         //Leer byte a byte y pasarlo a archivo destino
@@ -16841,8 +16841,8 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
                 if (!ptr_destination_file) {
                         debug_printf (VERBOSE_ERR,"Can not open %s",archivo_destino);
                         return 1;
-        } 
-        */     
+        }
+        */
 
         int i;
 
@@ -16854,7 +16854,7 @@ int util_convert_sp_to_scr(char *filename,char *archivo_destino)
 
                 zvfs_fwrite(in_fatfs_destination,&byte_leido,1,ptr_destination_file,&fil_destination);
                 //fwrite(&byte_leido,1,1,ptr_destination_file);
-        }   
+        }
 
         zvfs_fclose(in_fatfs,ptr_spfile,&fil);
         //fclose(ptr_spfile);
@@ -16872,8 +16872,8 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     //Extraer imagen de cualquier archivo (cinta, snap, disco, etc) a scr
 
     //Extraer scr de esa cinta, snapshot, etc
-    
-    
+
+
 
     char tmpdir[PATH_MAX];
 
@@ -16887,26 +16887,26 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     int retorno;
 
     //Tipos de archivos que hay que extraer todos y buscar un archivo de pantalla
-    
-    if (!util_compare_file_extension(filename,"tap")) {    
+
+    if (!util_compare_file_extension(filename,"tap")) {
         retorno=util_extract_tap(filename,tmpdir,NULL,0);
     }
-    else if (!util_compare_file_extension(filename,"tzx")) {    
+    else if (!util_compare_file_extension(filename,"tzx")) {
         retorno=util_extract_tzx(filename,tmpdir,NULL);
-    } 
+    }
     else if (!util_compare_file_extension(filename,"pzx") ) {
             retorno=util_extract_pzx(filename,tmpdir,NULL);
-    }		
+    }
     else if (!util_compare_file_extension(filename,"trd") ) {
             retorno=util_extract_trd(filename,tmpdir);
-    }		
+    }
     else if (!util_compare_file_extension(filename,"ddh") ) {
             retorno=util_extract_ddh(filename,tmpdir);
-    }	            
+    }
     else if (!util_compare_file_extension(filename,"dsk") ) {
             //Ejemplos de DSK que muestran pantalla: CASTLE MASTER.DSK , Drazen Petrovic Basket.dsk
             retorno=util_extract_dsk(filename,tmpdir);
-    }       
+    }
 
     //Tipos de archivos en que es conversion directa
     else if (!util_compare_file_extension(filename,"zsf")) {
@@ -16919,29 +16919,29 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
 	else if (!util_compare_file_extension(filename,"sna")) {
         util_convert_sna_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
-        return 0;        
-	}	
+        return 0;
+	}
 
 	//Si es sp
 	else if (!util_compare_file_extension(filename,"sp")) {
         util_convert_sp_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
-        return 0;        
-	}	
+        return 0;
+	}
 
 	//Si es z80
 	else if (!util_compare_file_extension(filename,"z80")) {
 		util_convert_z80_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
-        return 0;        
-	}		
+        return 0;
+	}
 
 	//Si es P
 	else if (!util_compare_file_extension(filename,"p")) {
 		util_convert_p_to_scr(filename,archivo_destino);
         //No hay que buscar archivo de pantalla. ya lo extrae directo. volvemos
-        return 0;        
-	}		
+        return 0;
+	}
 
 
     else {
@@ -16956,7 +16956,7 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
     char buf_archivo_scr[PATH_MAX];
 
     if (si_existe_archivo(archivo_info_pantalla)) {
-        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);        
+        lee_archivo(archivo_info_pantalla,buf_archivo_scr,PATH_MAX-1);
 
         //strcpy(final_scrfile_name,buf_archivo_scr);
         //printf("Leyendo archivo scr %s\n",final_scrfile_name);
@@ -16971,9 +16971,9 @@ int util_convert_any_to_scr(char *filename,char *archivo_destino)
         debug_printf(VERBOSE_ERR,"File has no SCR screen");
 
         return 1;
-    }  
+    }
 
- 
+
 
     return 0;
 }
@@ -17016,7 +17016,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
 
     int leidos;
-    
+
     leidos=zvfs_fread(in_fatfs,(z80_byte *)buffer_magic_header,longitud_magic,ptr_zsf_file,&fil);
     //leidos=fread(buffer_magic_header,1,longitud_magic,ptr_zsf_file);
 
@@ -17047,9 +17047,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
     int salir=0;
 
     //La pagina habitual de pantalla
-    int pagina_pantalla=5;    
+    int pagina_pantalla=5;
 
-    
+
     while (!zvfs_feof(in_fatfs,ptr_zsf_file,&fil) && !salir) {
         //Read header block
         unsigned int leidos;
@@ -17097,14 +17097,14 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
             }
         }
 
-        
+
         z80_byte block_flags;
         z80_int block_start;
-        
-        int block_lenght;
-        
 
-        z80_byte ram_page;    
+        int block_lenght;
+
+
+        z80_byte ram_page;
 
         int longitud_original=block_lenght_zsf;
 
@@ -17118,7 +17118,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 Byte Fields:
                 0: Port 32765 contents
                 1: Port 8189 contents
-                2: Total memory multiplier: 1 for 128kb ram, 2 for 256 kb ram, 4 for 512 kb ram                
+                2: Total memory multiplier: 1 for 128kb ram, 2 for 256 kb ram, 4 for 512 kb ram
                     */
 
                 //Ver si usa pantalla en RAM 7
@@ -17134,7 +17134,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 /*
                 A ram binary block
                 Byte Fields:
-                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where 
+                0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
                 YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
                 1,2: Block start address
                 3,4: Block lenght (if 0, means 65536. Value 0 only used on Inves)
@@ -17148,7 +17148,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                 block_flags=block_data[i];
 
                 //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-                
+
 
                 i++;
                 block_start=value_8_to_16(block_data[i+1],block_data[i]);
@@ -17205,8 +17205,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
                 1,2: Block start address (currently unused)
                 3,4: Block lenght
-                5: ram block id 
-                6 and next bytes: data bytes   
+                5: ram block id
+                6 and next bytes: data bytes
 
                 -Block ID 14: ZSF_TSCONF_RAMBLOCK
                 A ram binary block for a tsconf
@@ -17215,9 +17215,9 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
                 1,2: Block start address (currently unused)
                 3,4: Block lenght
-                5: ram block id 
+                5: ram block id
                 6 and next bytes: data bytes
-                
+
 
                 -Block ID 49: ZSF_CHROME_RAMBLOCK
                 A ram binary block for a chrome
@@ -17226,8 +17226,8 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
                 1,2: Block start address (currently unused)
                 3,4: Block lenght
-                5: ram block id 
-                6 and next bytes: data bytes   
+                5: ram block id
+                6 and next bytes: data bytes
 
 
                 */
@@ -17235,7 +17235,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
 
                 //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-                
+
 
                 i=0;
                 block_flags=block_data[i];
@@ -17262,7 +17262,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     //Por si acaso, el doble de lo que en teoria se necesita
                     buffer_memoria=malloc(block_lenght*2);
 
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
+                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");
 
                     debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
 
@@ -17320,7 +17320,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     //Por si acaso, el doble de lo que en teoria se necesita
                     buffer_memoria=malloc(block_lenght*2);
 
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
+                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");
 
                     debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
 
@@ -17346,7 +17346,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
                 1,2: Block start address (currently unused)
                 3,4: Block lenght
-                5: ram block id 
+                5: ram block id
                 6 and next bytes: data bytes
 
                 */
@@ -17354,7 +17354,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
 
                 //longitud_original : tamanyo que ocupa todo el bloque con la cabecera de 5 bytes
-                
+
 
                 i=0;
                 block_flags=block_data[i];
@@ -17381,7 +17381,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
                     //Por si acaso, el doble de lo que en teoria se necesita
                     buffer_memoria=malloc(block_lenght*2);
 
-                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");                
+                    if (buffer_memoria==NULL) cpu_panic("Can not allocate memory for zsf convert");
 
                     debug_printf (VERBOSE_DEBUG,"Block ram_page: %d start: %d Length: %d Compressed: %s Length_source: %d",ram_page,block_start,block_lenght,(block_flags&1 ? "Yes" : "No"),longitud_original);
 
@@ -17398,7 +17398,7 @@ int util_convert_zsf_to_scr(char *filename,char *archivo_destino)
 
 
 
-            break;            
+            break;
 
 
         }
@@ -17443,7 +17443,7 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
         int scanline;
 
         int offset_caracter=caracter*8;
-        
+
 
         for (scanline=0;scanline<8;scanline++) {
                 //Validar origen
@@ -17465,7 +17465,7 @@ void util_convert_p_to_scr_putchar(z80_byte caracter,int x,int y,z80_byte *panta
                 //printf ("destino %d byte %d\n",direccion,byte_leido);
 
                 pantalla_destino[direccion]=byte_leido;
-        
+
 
                 direccion +=256;
 
@@ -17504,7 +17504,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_pfile,&fil)<0) {
                 debug_printf(VERBOSE_ERR,"Error opening %s",filename);
                 return 1;
-        }        
+        }
 
         //Load File
 
@@ -17519,7 +17519,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         //leidos=zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
         zvfs_fread(in_fatfs,buffer_lectura,bytes_to_load,ptr_pfile,&fil);
         //leidos=fread(buffer_lectura,1,bytes_to_load,ptr_pfile);
-        
+
 
         zvfs_fclose(in_fatfs,ptr_pfile,&fil);
         //fclose(ptr_pfile);
@@ -17560,7 +17560,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
 
         buffer_pantalla=malloc(6912);
 
-        if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");       
+        if (buffer_pantalla==NULL) cpu_panic("Can not allocate memory for snapshot reading");
 
         //Pixeles a 0. Atributos a papel 7, tinta 0, brillo 1
         int i;
@@ -17568,7 +17568,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
         for (i=0;i<6144;i++) {
                 buffer_pantalla[i]=0;
         }
-        
+
         for (;i<6912;i++) {
                 buffer_pantalla[i]=56+64;
         }
@@ -17595,7 +17595,7 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
                                 }*/
                                 y++;
 
-                          
+
 
                                 //printf ("\n");
 				//puntero_printchar_caracter('\n');
@@ -17606,13 +17606,13 @@ int util_convert_p_to_scr(char *filename,char *archivo_destino)
                 else {
                         //z80_bit inverse;
 
-			
-			
+
+
                         util_convert_p_to_scr_putchar(caracter,x,y,buffer_pantalla);
-                        
+
                         //caracter=da_codigo81(caracter,&inverse);
                         //printf ("%c",caracter);
-			
+
                         x++;
 
                         if (x==32) {
@@ -17657,7 +17657,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 	z80_byte z80_header[Z80_MAIN_HEADER_SIZE];
 
 	//Cabecera adicional
-	
+
 	z80_byte z80_header_adicional[Z80_AUX_HEADER_SIZE];
 
 	//Cabecera de cada bloque de datos en version 2 o 3
@@ -17704,7 +17704,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
     comprimido=(z80_header[12]>>5)&1;
 
     if (z80_header[6]==0 && z80_header[7]==0) {
-                
+
 
         //Z80 version 2 o 3
 
@@ -17716,17 +17716,17 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
                 debug_printf(VERBOSE_DEBUG,"Header with %d bytes unknown",long_cabecera_adicional);
                 //printf("Header with %d bytes unknown\n",long_cabecera_adicional);
                 return 1;
-                
-        }       
+
+        }
 
         else {
-                
+
 
             //leemos esa cabecera adicional
             debug_printf(VERBOSE_DEBUG,"Reading %d bytes of additional header",long_cabecera_adicional);
             leidos=zvfs_fread(in_fatfs,&z80_header_adicional[2],long_cabecera_adicional,ptr_z80file,&fil);
-            //leidos=fread(&z80_header_adicional[2],1,long_cabecera_adicional,ptr_z80file);                                
-            
+            //leidos=fread(&z80_header_adicional[2],1,long_cabecera_adicional,ptr_z80file);
+
             //Ver si snapshot de 128k y obtener pagina activa (5 o 7) de pantalla
             int es_128k=0;
             z80_byte snap_machine_type=z80_header_adicional[4];
@@ -17757,7 +17757,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 
             z80_byte numerobloque;
             //z80_byte valor_puerto_32765;
-            z80_int longitudbloque;                        
+            z80_int longitudbloque;
 
             do {
 
@@ -17777,7 +17777,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
                             comprimido=0;
                     }
 
-                    
+
                     debug_printf(VERBOSE_DEBUG,"Reading %d bytes of data block %d",longitudbloque,numerobloque);
                     leidos=zvfs_fread(in_fatfs,buffer_lectura,longitudbloque,ptr_z80file,&fil);
                     //leidos=fread(buffer_lectura,1,longitudbloque,ptr_z80file);
@@ -17809,7 +17809,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 
         direccion_destino=0;
 
-        load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);                
+        load_z80_snapshot_bytes(buffer_lectura,leidos,direccion_destino,comprimido,buffer_destino);
     }
 
 
@@ -17832,7 +17832,7 @@ int util_convert_z80_to_scr(char *filename,char *archivo_destino)
 int util_extract_p(char *filename,char *tempdir)
 {
 
-	
+
 	//tapefile
 	if (util_compare_file_extension(filename,"p")!=0) {
 		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
@@ -17859,7 +17859,7 @@ int util_extract_p(char *filename,char *tempdir)
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
             debug_printf(VERBOSE_ERR,"Unable to open file");
-            return 1; 
+            return 1;
         }
 
         /*
@@ -17868,7 +17868,7 @@ int util_extract_p(char *filename,char *tempdir)
 
         if (!ptr_tapebrowser) {
 		debug_printf(VERBOSE_ERR,"Unable to open file");
-		return 1; 
+		return 1;
 	}
         */
 
@@ -17877,7 +17877,7 @@ int util_extract_p(char *filename,char *tempdir)
 
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
@@ -17901,7 +17901,7 @@ int util_extract_p(char *filename,char *tempdir)
         int longitud_final=total_mem-offset;
 
         util_save_file(&taperead[offset],longitud_final,buffer_temp_file);
-        
+
 
         free(taperead);
 
@@ -17914,7 +17914,7 @@ int util_extract_p(char *filename,char *tempdir)
 int util_extract_o(char *filename,char *tempdir)
 {
 
-	
+
 	//tapefile
 	if (util_compare_file_extension(filename,"o")!=0) {
 		debug_printf(VERBOSE_ERR,"Expander not supported for this file type");
@@ -17940,7 +17940,7 @@ int util_extract_o(char *filename,char *tempdir)
 
         if (zvfs_fopen_read(filename,&in_fatfs,&ptr_tapebrowser,&fil)<0) {
             debug_printf(VERBOSE_ERR,"Unable to open file");
-            return 1; 
+            return 1;
         }
 
         /*
@@ -17949,7 +17949,7 @@ int util_extract_o(char *filename,char *tempdir)
 
         if (!ptr_tapebrowser) {
 		debug_printf(VERBOSE_ERR,"Unable to open file");
-		return 1; 
+		return 1;
 	}
     */
 
@@ -17958,7 +17958,7 @@ int util_extract_o(char *filename,char *tempdir)
 
 
         int leidos;
-        
+
         leidos=zvfs_fread(in_fatfs,taperead,total_mem,ptr_tapebrowser,&fil);
         //leidos=fread(taperead,1,total_mem,ptr_tapebrowser);
 
@@ -17983,7 +17983,7 @@ int util_extract_o(char *filename,char *tempdir)
         int longitud_final=total_mem-offset;
 
         util_save_file(&taperead[offset],longitud_final,buffer_temp_file);
-        
+
 
         free(taperead);
 
@@ -18019,7 +18019,7 @@ int util_extract_trd(char *filename,char *tempdir)
 		debug_printf(VERBOSE_ERR,"Unable to assign memory");
 		return 0;
 	}
-	
+
 	//Leemos cabecera archivo trd
     FILE *ptr_file_trd_browser;
 
@@ -18037,7 +18037,7 @@ int util_extract_trd(char *filename,char *tempdir)
 
 
     int leidos;
-    
+
     leidos=zvfs_fread(in_fatfs,trd_file_memory,bytes_to_load,ptr_file_trd_browser,&fil);
     //leidos=fread(trd_file_memory,1,bytes_to_load,ptr_file_trd_browser);
 
@@ -18049,7 +18049,7 @@ int util_extract_trd(char *filename,char *tempdir)
     zvfs_fclose(in_fatfs,ptr_file_trd_browser,&fil);
     //fclose(ptr_file_trd_browser);
 
-     
+
 
 
 	char buffer_texto[64]; //2 lineas, por si acaso
@@ -18124,11 +18124,11 @@ int util_extract_trd(char *filename,char *tempdir)
 		}
 
 
-		puntero +=tamanyo_trd_entry;	
+		puntero +=tamanyo_trd_entry;
 
 
 	}
-	
+
 
 	free(trd_file_memory);
 
@@ -18155,7 +18155,7 @@ sectores van alternados:
 1,6,2,7,3,8
 
 
-0 1 2 3 4 5 6 7 8  
+0 1 2 3 4 5 6 7 8
 0,5,1,6,2,7,3,8,4
 
 */
@@ -18188,7 +18188,7 @@ sectores van alternados:
 		iniciopista +=0x18;
 
 		for (sector=0;sector<sectores_en_pista;sector++) {
-			int offset_tabla_sector=sector*8; 
+			int offset_tabla_sector=sector*8;
 
 			//printf("before getting pista_id sumando %d %d\n",iniciopista,offset_tabla_sector);
 
@@ -18247,8 +18247,8 @@ sectores van alternados:
 
     //printf("Not found sector %d/%d\n",pista_buscar,sector_buscar);
 
-	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);	
-	
+	debug_printf(VERBOSE_DEBUG,"Not found sector %d/%d",pista_buscar,sector_buscar);
+
 	//retornamos offset fuera de rango
 	//printf("returning -1\n");
 	return -1;
@@ -18289,7 +18289,7 @@ void util_dsk_getsectors_block(z80_byte *dsk_file_memory,int longitud_dsk,int bl
 
 			sector_total++;
 			pista=sector_total/9; //9 sectores por pista
-			sector_en_pista=sector_total % 9;			
+			sector_en_pista=sector_total % 9;
 
 			//printf("before getting offset2\n");
             *pista2=pista;
@@ -18308,8 +18308,8 @@ int util_dsk_memcmp(z80_byte *dsk_file_memory,int longitud_dsk,int puntero1,int 
     int resta=0;
 
     for (i=0;i<11;i++) {
-        int byte1=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero1); 
-        int byte2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero2); 
+        int byte1=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero1);
+        int byte2=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero2);
 
 
 
@@ -18335,8 +18335,8 @@ int util_dsk_memcmp(z80_byte *dsk_file_memory,int longitud_dsk,int puntero1,int 
 //En array de bloques rellena los bloques
 int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z80_byte *bloques,int entrada_obtener)
 {
-    int pista_filesystem;    
-    int puntero=menu_dsk_get_start_filesystem(dsk_file_memory,longitud_dsk,&pista_filesystem);   
+    int pista_filesystem;
+    int puntero=menu_dsk_get_start_filesystem(dsk_file_memory,longitud_dsk,&pista_filesystem);
 
     //Saltar a la entrada indicada
     int saltar=32*entrada_obtener;
@@ -18369,14 +18369,14 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 
             bloques[total_bloques++]=block_id;
 
-            
+
 
             puntero_bloques++;
             //Cada record son de 128 bytes. Cada bloque son de 1024 bytes
             //Por tanto cada bloque son 8 records
 
             restantes_records_entry -=8;
-        } 
+        }
 
         puntero+=16;
 
@@ -18394,12 +18394,12 @@ int util_dsk_get_blocks_entry_file(z80_byte *dsk_file_memory,int longitud_dsk,z8
 void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoextension,int longitud)
 {
 	int i;
-	
+
 	for (i=0;i<longitud;i++) {
 		char caracter;
 		caracter=*origen;
 
-		
+
         origen++;
         if (caracter<32 || caracter>126) {
             //Primer caracter si fuera de rango siempre sera ?
@@ -18411,20 +18411,20 @@ void util_extract_dsk_get_filename(z80_byte *origen,char *destino,int sipuntoext
                 if (caracter==127) caracter=126;
 
                 if (caracter<32) caracter=32+caracter;
-                
+
             }
         }
 
-        
+
         *destino=caracter;
         destino++;
-    
+
         if (sipuntoextension && i==7) {
             *destino='.';
             destino++;
         }
-        
-		
+
+
 	}
 
 	*destino=0;
@@ -18452,7 +18452,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 	}
 
     int longitud_dsk=bytes_to_load;
-	
+
 	//Leemos archivo dsk
     FILE *ptr_file_dsk_browser;
 
@@ -18471,7 +18471,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 
 
     int leidos;
-        
+
     leidos=zvfs_fread(in_fatfs,dsk_file_memory,bytes_to_load,ptr_file_dsk_browser,&fil);
     //leidos=fread(dsk_file_memory,1,bytes_to_load,ptr_file_dsk_browser);
 
@@ -18485,7 +18485,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
     //fclose(ptr_file_dsk_browser);
 
 
-    
+
 
 	char buffer_texto[64]; //2 lineas, por si acaso
 
@@ -18542,7 +18542,7 @@ int util_extract_dsk(char *filename,char *tempdir)  {
 	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 	sprintf(buffer_texto,"Sides: %d",dsk_file_memory[0x31]);
-	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);	
+	indice_buffer +=util_add_string_newline(&texto_browser[indice_buffer],buffer_texto);
 
 
         sprintf(buffer_texto,"\nFirst PLUS3 entries:");
@@ -18555,9 +18555,9 @@ int util_extract_dsk(char *filename,char *tempdir)  {
     int pista_filesystem;
 
     int puntero=menu_dsk_get_start_filesystem(dsk_file_memory,bytes_to_load,&pista_filesystem);
-	
 
-	
+
+
 /*
 en teoria , el directorio empieza en pista 0 sector 0, aunque esta info dice otra cosa:
 
@@ -18598,14 +18598,14 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
     int pista_buscar;
 
     for (pista_buscar=1;pista_buscar<=2;pista_buscar++) {
-	
+
         printf("Pista: %d\n",pista_buscar);
 		//Si contiene e5 en el nombre, nos vamos a pista 1
         //O si segundo caracter no es ascii
 
         z80_byte byte_name=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+1);
 
-		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {        
+		if (byte_name==0xe5 || byte_name<32 || byte_name>127) {
 
             puntero=menu_dsk_getoff_track_sector(dsk_file_memory,total_pistas,pista_buscar,0,longitud_dsk);
 
@@ -18614,7 +18614,7 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
                 //no encontrado. probar con lo habitual
                 puntero=0x200;
 			}
-			
+
 		}
 
         else break;
@@ -18625,7 +18625,7 @@ TODO. supuestamente entradas del directorio pueden ocupar 4 sectores. Actualment
     */
 
 
-	
+
 	puntero++; //Saltar el primer byte en la entrada de filesystem
 
 /*
@@ -18637,7 +18637,7 @@ en que empieza en 1300H. Porque??
 
 	z80_byte *buffer_temp;
 	buffer_temp=malloc(80000);
-	
+
 
 	for (i=0;i<max_entradas_dsk;i++) {
 
@@ -18673,7 +18673,7 @@ en que empieza en 1300H. Porque??
 
                             //printf("puntero: %d\n",puntero);
 
-                //printf ("File %s\n",buffer_texto);                            
+                //printf ("File %s\n",buffer_texto);
 
                 z80_byte continuation_marker=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+12-1); //-1 porque empezamos el puntero en primera posicion
 
@@ -18684,7 +18684,7 @@ en que empieza en 1300H. Porque??
 
                 bloque=util_get_byte_protect(dsk_file_memory,longitud_dsk,puntero+15);
 
-                //printf ("Bloque %02XH\n",bloque);  
+                //printf ("Bloque %02XH\n",bloque);
 
                 //printf("after dsk_file_memory[puntero+15];\n");
 
@@ -18702,13 +18702,13 @@ en que empieza en 1300H. Porque??
                 int destino_en_buffer_temp=0;
 
                 do {
-                
+
                     int offset1,offset2;
 
                     //printf("before menu_dsk_getoff_block\n");
                     //Si filesystem ha empezado en pista 1, pista_buscar-1=0 por tanto no desplazamos nada
                     //Si filesystem ha empezado en pista 2, pista_buscar-1=1 por tanto desplazamos una pista
-                    
+
 
                     menu_dsk_getoff_block(dsk_file_memory,bytes_to_load,bloque,&offset1,&offset2,pista_filesystem);
 
@@ -18717,7 +18717,7 @@ en que empieza en 1300H. Porque??
 
                     if (offset1<0 || offset2<0) {
                         debug_printf(VERBOSE_DEBUG,"Error reading dsk offset block");
-                        return 0; //TODO: O retornar error? 
+                        return 0; //TODO: O retornar error?
                     }
 
                     //Sacar longitud real, de cabecera plus3dos. Solo el primer sector contiene cabecera plus3dos y la primera entrada del archivo,
@@ -18766,7 +18766,7 @@ en que empieza en 1300H. Porque??
                         //printf("after memcpy 2\n");
                     }
 
-                
+
                     //printf ("b:%02XH of:%XH %XH  ",bloque,offset1,offset2);
                     //Cada offset es un sector de 512 bytes
 
@@ -18821,13 +18821,13 @@ Byte 12
 
                         //Meter en archivo MENU_SCR_INFO_FILE_NAME la ruta al archivo de pantalla
                         util_save_file((z80_byte *)buffer_nombre_destino,strlen(buffer_nombre_destino)+1,buff_preview_scr);
-                    }                                
+                    }
 			    }
-			
+
                 else {
                     debug_printf (VERBOSE_DEBUG,"File entry is not the first. Adding %d bytes to the file %s",longitud_en_bloques,buffer_nombre_destino);
                     util_file_append(buffer_nombre_destino,buffer_temp,longitud_en_bloques);
-                    //TODO: al guardar entradas de archivo diferentes a la primera, 
+                    //TODO: al guardar entradas de archivo diferentes a la primera,
                     //se agregan siempre longitudes en bloques de 1kb
                     //por lo que el archivo acabará ocupando mas de lo que deberia
                 }
@@ -18838,7 +18838,7 @@ Byte 12
 		}
     }
 
-    puntero +=tamanyo_dsk_entry;	
+    puntero +=tamanyo_dsk_entry;
 
 
     /*
@@ -18946,7 +18946,7 @@ c800h/1024=32h
 
 		*/
 	}
-	
+
 
 
 
@@ -18958,9 +18958,9 @@ c800h/1024=32h
 
 
 
-int util_extract_z88_card(char *filename,char *tempdir)  
+int util_extract_z88_card(char *filename,char *tempdir)
 {
-      
+
         long long int bytes_to_load=get_file_size(filename);
 
         z80_byte *flash_file_memory;
@@ -18969,8 +18969,8 @@ int util_extract_z88_card(char *filename,char *tempdir)
                 debug_printf(VERBOSE_ERR,"Unable to assign memory");
                 return 1;
         }
-        
-        //Leemos archivo 
+
+        //Leemos archivo
         FILE *ptr_file_flash_browser;
         ptr_file_flash_browser=fopen(filename,"rb");
 
@@ -19010,7 +19010,7 @@ int util_extract_z88_card(char *filename,char *tempdir)
         char buffer_nombre[Z88_MAX_CARD_FILENAME+1];
 
         int retorno;
- 
+
 
         do {
                 z80_byte *dir_current;
@@ -19021,7 +19021,7 @@ int util_extract_z88_card(char *filename,char *tempdir)
                         z88_eprom_flash_get_file_name(&file,buffer_nombre);
 
 			if (buffer_nombre[0]=='.') buffer_nombre[0]='D'; //archivo borrado
-                 
+
                         z80_long_int tamanyo=file.size[0]+(file.size[1]*256)+(file.size[2]*65536)+(file.size[3]*16777216);
                         debug_printf (VERBOSE_INFO,"Name: %s size: %d",buffer_nombre,tamanyo);
 
@@ -19063,8 +19063,8 @@ int file_is_z88_basic(char *filename)
                 debug_printf(VERBOSE_ERR,"Unable to assign memory");
                 return 0;
         }
-        
-        //Leemos archivo 
+
+        //Leemos archivo
         FILE *ptr_file_flash_browser;
 
     //Soporte para FatFS
@@ -19095,7 +19095,7 @@ int file_is_z88_basic(char *filename)
 
         //leidos=zvfs_fread(in_fatfs,flash_file_memory,bytes_to_load,ptr_file_flash_browser,&fil);
         zvfs_fread(in_fatfs,flash_file_memory,bytes_to_load,ptr_file_flash_browser,&fil);
-        
+
         //leidos=fread(flash_file_memory,1,bytes_to_load,ptr_file_flash_browser);
 
         //if (leidos==0) {
@@ -19110,8 +19110,8 @@ int file_is_z88_basic(char *filename)
         int esbasic=0;
 
         if (bytes_to_load>3) {
-           if (flash_file_memory[bytes_to_load-3]==0x00 && 
-                flash_file_memory[bytes_to_load-2]==0xFF &&      
+           if (flash_file_memory[bytes_to_load-3]==0x00 &&
+                flash_file_memory[bytes_to_load-2]==0xFF &&
                 flash_file_memory[bytes_to_load-1]==0xFF) {
 
                 debug_printf (VERBOSE_INFO,"File is probably Z88 Basic");
@@ -19120,7 +19120,7 @@ int file_is_z88_basic(char *filename)
            }
         }
 
-        free(flash_file_memory);    
+        free(flash_file_memory);
 
         return esbasic;
 }
@@ -19167,31 +19167,31 @@ void util_save_game_config(char *filename)
         if (zx8081_vsync_sound.v)                   ADD_STRING_CONFIG,"--zx8081vsyncsound");
         if (ram_in_8192.v)                          ADD_STRING_CONFIG,"--zx8081ram8K2000");
         if (ram_in_32768.v)                         ADD_STRING_CONFIG,"--zx8081ram16K8000");
-        if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");  
+        if (ram_in_49152.v)                         ADD_STRING_CONFIG,"--zx8081ram16KC000");
         if (wrx_present.v)                          ADD_STRING_CONFIG,"--wrx");
         if (chroma81.v)                             ADD_STRING_CONFIG,"--chroma81");
-                                                    ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync); 
-        if (video_zx8081_estabilizador_imagen.v==0) ADD_STRING_CONFIG,"--no-horiz-stabilization"); 
-        if (video_zx8081_lnctr_adjust.v)            ADD_STRING_CONFIG,"--enablezx8081lnctradjust");        
+                                                    ADD_STRING_CONFIG,"--vsync-minimum-length %d",minimo_duracion_vsync);
+        if (video_zx8081_estabilizador_imagen.v==0) ADD_STRING_CONFIG,"--no-horiz-stabilization");
+        if (video_zx8081_lnctr_adjust.v)            ADD_STRING_CONFIG,"--enablezx8081lnctradjust");
   }
 
 
   if (rainbow_enabled.v)                      ADD_STRING_CONFIG,"--realvideo");
   if (video_interlaced_mode.v)                ADD_STRING_CONFIG,"--enableinterlaced");
 
-  
+
 
 
 //Estas solo si es Spectrum
   if (MACHINE_IS_SPECTRUM) {
-        if (snow_effect_enabled.v)                  ADD_STRING_CONFIG,"--snoweffect");    
+        if (snow_effect_enabled.v)                  ADD_STRING_CONFIG,"--snoweffect");
         if (ulaplus_presente.v)                     ADD_STRING_CONFIG,"--enableulaplus");
-        if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");  
+        if (spectra_enabled.v)                      ADD_STRING_CONFIG,"--enablespectra");
         if (timex_video_emulation.v)                ADD_STRING_CONFIG,"--enabletimexvideo");
   }
 
 
-  if (gigascreen_enabled.v)                   ADD_STRING_CONFIG,"--enablegigascreen");  
+  if (gigascreen_enabled.v)                   ADD_STRING_CONFIG,"--enablegigascreen");
 
 /*
 --redefinekey src dest
@@ -19205,7 +19205,7 @@ void util_save_game_config(char *filename)
                                         //y se establecen un poco mas abajo
                                         //en caso que no quisiera, que lo quite
 
-					ADD_STRING_CONFIG,"--cleareventlist"); 
+					ADD_STRING_CONFIG,"--cleareventlist");
 
 
 						ADD_STRING_CONFIG,"--joystickemulated \"%s\"",joystick_texto[joystick_emulation]);
@@ -19235,12 +19235,12 @@ void util_save_game_config(char *filename)
                 button_type=realjoystick_keys_array[i].button_type;
 
                 //Si hay evento en vez de numero de boton, meter --joystickkeyev
-                
+
                 //printf ("Buscando evento para boton %d tipo %d\n",realjoystick_keys_array[i].button,button_type);
                 int buscar_evento_index=realjoystick_buscar_evento_en_tabla(realjoystick_keys_array[i].button,button_type);
                 if (buscar_evento_index>=0) {
                         //printf ("Encontrado evento %d para boton %d tipo %d\n",buscar_evento_index,realjoystick_keys_array[i].button,button_type);
-                    ADD_STRING_CONFIG,"--joystickkeyev %s %d",realjoystick_event_names[buscar_evento_index],caracter);    
+                    ADD_STRING_CONFIG,"--joystickkeyev %s %d",realjoystick_event_names[buscar_evento_index],caracter);
                 }
 
                 else {
@@ -19304,7 +19304,7 @@ void util_clear_final_spaces(char *orig,char *destination)
         if (espacio_derecha>=0) {
             for (indice=0;indice<=espacio_derecha && orig[indice];indice++) {
                     destination[indice]=orig[indice];
-            }    
+            }
         }
 
         destination[indice]=0;
@@ -19330,7 +19330,7 @@ int util_get_available_drives(char *texto)
 	int bitmask_unidades=GetLogicalDrives(); //Mascara de bits. bit inferior si unidad A disponible, etc
 #else
 	int bitmask_unidades=0;
-#endif 
+#endif
 
 	int unidades_detectadas=0;
 
@@ -19349,7 +19349,7 @@ int util_get_available_drives(char *texto)
 
 	//y final de texto
 	texto[unidades_detectadas]=0;
-	
+
 
 	return unidades_detectadas;
 }
@@ -19457,7 +19457,7 @@ int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_
                         sustituir=1;
                         break;
                 }
-        }        
+        }
 
         if (!sustituir) {
                 if (total_config_window_geometry==MAX_CONFIG_WINDOW_GEOMETRY) {
@@ -19478,7 +19478,7 @@ int util_add_window_geometry(char *nombre,int x,int y,int ancho,int alto,int is_
         saved_config_window_geometry_array[destino].is_maximized=is_maximized;
         saved_config_window_geometry_array[destino].width_before_max_min_imize=width_before_max_min_imize;
         saved_config_window_geometry_array[destino].height_before_max_min_imize=height_before_max_min_imize;
-        
+
 
         if (!sustituir) total_config_window_geometry++;
 
@@ -19505,7 +19505,7 @@ void util_add_window_geometry_compact(zxvision_window *ventana)
 
 void util_clear_all_windows_geometry(void)
 {
-        total_config_window_geometry=0;        
+        total_config_window_geometry=0;
 }
 
 //Agregar una letra en el string en la posicion indicada
@@ -19524,7 +19524,7 @@ void util_str_add_char(char *texto,int posicion,char letra)
         if (posicion>longitud) {
                 //printf ("intentando escribir mas alla del 0 final\n");
                 posicion=longitud;
-        }        
+        }
 
         int i;
 
@@ -19555,7 +19555,7 @@ void util_str_del_char(char *texto,int posicion)
         if (posicion>=longitud) {
                 //printf ("intentando borrar mas alla del final\n");
                 posicion=longitud-1;
-        }        
+        }
 
         int i;
 
@@ -19586,12 +19586,12 @@ char *util_read_line(char *origen,char *destino,int size_orig,int max_size_dest,
 		if ( *origen=='\n' ) {
 			origen++;
             (*leidos)++;
-			break; 
+			break;
 		}
 		*destino=*origen;
 		destino++;
 		max_size_dest--;
-		
+
 	}
 	*destino=0;
 	return origen;
@@ -19612,7 +19612,7 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 
         retorno=zsock_http(hostname,url,&http_code,&mem,&total_leidos,&mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
 
-        
+
         if (http_code==302 && redirect_url[0]!=0) {
                 debug_printf (VERBOSE_DEBUG,"util_download_file: detected redirect to %s",redirect_url);
                 //TODO: solo gestiono 1 redirect
@@ -19640,23 +19640,23 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 
 	}
 
-                                
+
 	orig_mem=mem;
-	
+
 	if (mem_after_headers!=NULL && http_code==200) {
 		//temp limite
 		//mem_after_headers[10000]=0;
 		//menu_generic_message("Games",mem_after_headers);
 		//char texto_final[30000];
-		
+
 		//int indice_destino=0;
-		
+
 		int dif_header=mem_after_headers-mem;
 		total_leidos -=dif_header;
 		mem=mem_after_headers;
 		//grabar a disco
 		//todo usar funcion de utils comun, existe?
-		
+
 		FILE *ptr_destino;
                 ptr_destino=fopen(archivo,"wb");
 
@@ -19675,8 +19675,8 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
         }
 
         //Fin resultado http correcto
-        else {	
-                if (retorno<0) {	
+        else {
+                if (retorno<0) {
                         //printf ("Error: %d %s\n",retorno,z_sock_get_error(retorno));
                         return retorno;
                 }
@@ -19685,7 +19685,7 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
                         //de mostrar mensaje en ventana
                         debug_printf(VERBOSE_DEBUG,"Error downloading file. Return code: %d",http_code);
                 }
-        }	        
+        }
 
         return http_code;
 }
@@ -19715,11 +19715,11 @@ void util_normalize_query_http(char *orig,char *dest)
                         *dest=c;
 			dest++;
 		}
-                
-		
+
+
 		orig++;
 	}
-	
+
 	*dest=0;
 
 
@@ -19786,7 +19786,7 @@ void util_get_host_url(char *url, char *host)
 
         //Copiar hasta la primera / o final de string
         int i=0;
-        
+
         for (i=0;(*encontrado)!=0 && (*encontrado)!='/';i++,host++,encontrado++) {
                 *host=*encontrado;
         }
@@ -19808,7 +19808,7 @@ void util_get_url_no_host(char *url, char *url_no_host)
         }
         else encontrado=url;
 
-        //Buscar hasta la primera / o final de string 
+        //Buscar hasta la primera / o final de string
         for (;(*encontrado)!=0 && (*encontrado)!='/';encontrado++);
 
         //copiar desde ahi hasta final de string
@@ -19829,7 +19829,7 @@ char util_return_valid_ascii_char(char c)
 }
 
 
-//Retorna checksum de bloque igual que hace spectrum. Podemos indicar valor inicial distinto de 0 para empezar a calcular ya 
+//Retorna checksum de bloque igual que hace spectrum. Podemos indicar valor inicial distinto de 0 para empezar a calcular ya
 //con byte de flag calculado
 z80_byte get_memory_checksum_spectrum(z80_byte crc,z80_byte *origen,int longitud)
 {
@@ -19844,7 +19844,7 @@ z80_byte get_memory_checksum_spectrum(z80_byte crc,z80_byte *origen,int longitud
         return crc;
 }
 
-//Guardar valor de 16 bits en direccion de memoria 
+//Guardar valor de 16 bits en direccion de memoria
 void util_store_value_little_endian(z80_byte *destination,z80_int value)
 {
         destination[0]=value_16_to_8l(value);
@@ -19852,7 +19852,7 @@ void util_store_value_little_endian(z80_byte *destination,z80_int value)
 }
 
 
-//Recuperar valor de 16 bits de direccion de memoria 
+//Recuperar valor de 16 bits de direccion de memoria
 z80_int util_get_value_little_endian(z80_byte *origin)
 {
         return value_8_to_16(origin[1],origin[0]);
@@ -19910,7 +19910,7 @@ z80_byte *util_bmp_new(int ancho,int alto)
 {
 
         //http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm
-       
+
 
         int memoria_necesaria=(ancho*alto*3)+UTIL_BMP_HEADER_SIZE;
 
@@ -19936,7 +19936,7 @@ z80_byte *util_bmp_new(int ancho,int alto)
         file_size >>=8;
 
         puntero[5]=file_size & 0xFF;
-        file_size >>=8;                
+        file_size >>=8;
 
         //Unused
         puntero[6]=puntero[7]=puntero[8]=puntero[9];
@@ -19958,14 +19958,14 @@ z80_byte *util_bmp_new(int ancho,int alto)
         //Alto
         puntero[22]=value_16_to_8l(alto);
         puntero[23]=value_16_to_8h(alto);
-        puntero[24]=puntero[25]=0;    
+        puntero[24]=puntero[25]=0;
 
-        //Planes = 1   
-        puntero[26]=1; 
+        //Planes = 1
+        puntero[26]=1;
         puntero[27]=0;
 
-        //Bits per pixel -> 24 
-        puntero[28]=24; 
+        //Bits per pixel -> 24
+        puntero[28]=24;
         puntero[29]=0;
 
         //Compression -> 0 no compression
@@ -19973,21 +19973,21 @@ z80_byte *util_bmp_new(int ancho,int alto)
 
         //Image size. If compression -> 0
         puntero[34]=puntero[35]=puntero[36]=puntero[37]=0;
-        
+
         //horizontal resolution: Pixels/meter. 2835. valor de referencia de otro bmp
         puntero[38]=value_16_to_8l(2835);
         puntero[39]=value_16_to_8h(2835);
-        puntero[40]=puntero[41]=0;        
+        puntero[40]=puntero[41]=0;
 
-        
+
         //vertical resolution: Pixels/meter
         puntero[42]=value_16_to_8l(2835);
         puntero[43]=value_16_to_8h(2835);
-        puntero[44]=puntero[45]=0;   
+        puntero[44]=puntero[45]=0;
 
         //Number of actually used colors. For a 8-bit / pixel bitmap this will be 100h or 256.
         //-> 1 ^24
-        puntero[46]=puntero[47]=puntero[48]=0;        
+        puntero[46]=puntero[47]=puntero[48]=0;
         puntero[49]=1;
 
         //Number of important colors  0 = all
@@ -20006,7 +20006,7 @@ void util_bmp_putpixel(z80_byte *puntero,int x,int y,int r,int g,int b)
 
         int tamanyo_linea=ancho*3;
         int offset_x=x*3;
-//TODO: determinados anchos de imagen parece que el offset de linea no siempre es este        
+//TODO: determinados anchos de imagen parece que el offset de linea no siempre es este
         int offset=(yfinal*tamanyo_linea)+offset_x+UTIL_BMP_HEADER_SIZE;
 
         //Each 3-byte triplet in the bitmap array represents the relative intensities of blue, green, and red, respectively, for a pixel.
@@ -20030,7 +20030,7 @@ void util_write_screen_bmp(char *archivo)
 
 
         ancho=screen_get_emulated_display_width_no_zoom_border_en();
-        alto=screen_get_emulated_display_height_no_zoom_border_en();         
+        alto=screen_get_emulated_display_height_no_zoom_border_en();
 
 
         FILE *ptr_scrfile;
@@ -20038,14 +20038,14 @@ void util_write_screen_bmp(char *archivo)
         if (!ptr_scrfile) {
                 debug_printf (VERBOSE_ERR,"Unable to open Screen file");
         }
-                               
+
         else {
 
 
                 z80_byte *puntero_bitmap;
 
                 puntero_bitmap=util_bmp_new(ancho,alto);
-				
+
 
 //pixeles...
 
@@ -20063,7 +20063,7 @@ void util_write_screen_bmp(char *archivo)
 
                 int r,g,b;
 
-                int x,y; 
+                int x,y;
 
 
                 for (y=0;y<alto;y++) {
@@ -20080,9 +20080,9 @@ void util_write_screen_bmp(char *archivo)
 
 
                 int file_size=util_bmp_get_file_size(ancho,alto);
-					
+
                 fwrite(puntero_bitmap,1,file_size,ptr_scrfile);
-		              
+
 
 
 
@@ -20092,7 +20092,7 @@ void util_write_screen_bmp(char *archivo)
         }
 
 
-        
+
 
 }
 
@@ -20107,13 +20107,13 @@ void util_bmp_load_palette(z80_byte *mem,int indice_inicio_color)
 
 		//Cargar la paleta bmp. A partir del offset 36h??
 /*
-ColorTable	4 * NumColors bytes	0036h	present only if Info.BitsPerPixel less than 8   
+ColorTable	4 * NumColors bytes	0036h	present only if Info.BitsPerPixel less than 8
 colors should be ordered by importance
  		Red	1 byte	 	Red intensity
 Green	1 byte	 	Green intensity
 Blue	1 byte	 	Blue intensity
 reserved	1 byte	 	unused (=0)
-			
+
 */
 
     int i;
@@ -20137,7 +20137,7 @@ reserved	1 byte	 	unused (=0)
         int color=(red<<16) | (green<<8) | blue;
         debug_printf(VERBOSE_DEBUG,"Loading BMP palette. Index %d Value %06XH",i,color);
 
-                
+
         screen_set_colour_normal(indice_inicio_color+i,color);
 
         indice_paleta +=4;
@@ -20173,12 +20173,12 @@ z80_byte *util_load_bmp_file(char *archivo,int id_paleta)
     }
 
     fread(puntero,1,tamanyo,ptr_bmpfile);
-    fclose(ptr_bmpfile);		
+    fclose(ptr_bmpfile);
 
 
-    //Cargar la paleta bmp. 
+    //Cargar la paleta bmp.
     int paleta_destino=(id_paleta==0 ? BMP_INDEX_FIRST_COLOR : BMP_SECOND_INDEX_FIRST_COLOR);
-    util_bmp_load_palette(puntero,paleta_destino);    
+    util_bmp_load_palette(puntero,paleta_destino);
 
     return puntero;
 }
@@ -20228,7 +20228,7 @@ void util_rotate_file(char *filename,int archivos)
 
 
 
-//Convertir una string de origen a caracteres charset, sustituyendo graficos en cirilicos 
+//Convertir una string de origen a caracteres charset, sustituyendo graficos en cirilicos
 int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
 {
         int longitud_final=0;
@@ -20269,7 +20269,7 @@ int util_convert_utf_charset(char *origen,z80_byte *final,int longitud_texto)
             }
 
 
-        
+
 
         //if (x>=32) {
         //  printf ("Escribiendo caracter [%c] en x: %d\n",letra,x);
@@ -20308,7 +20308,7 @@ const char *spectrum_colour_names[16]={
         "BrightGreen",
         "BrightCyan",
         "BrightYellow",
-        "BrightWhite",        
+        "BrightWhite",
 };
 
 
@@ -20350,7 +20350,7 @@ int util_path_is_prefix_mmc_fatfs(char *dir)
 }
 
 //Dice si un archivo esta en una ruta de mmc fat fs o no , teniendo en cuenta la unidad actual
-int util_path_is_mmc_fatfs(char *dir) 
+int util_path_is_mmc_fatfs(char *dir)
 {
     /*
 Cambios de ruta al estilo unix:
@@ -20438,7 +20438,7 @@ int util_copy_files_to_mmc_addlist(char *source, char *destination)
     copy_files_to_mmc_total++;
 
     return 0;
-    
+
 }
 
 
@@ -20501,11 +20501,11 @@ void util_copy_files_to_mmc_doit(void)
     if (resultado!=FR_OK) {
         debug_printf(VERBOSE_ERR,"Error desmontando imagen : %d\n",resultado);
         return;
-    }   
+    }
 
 }
 //Solicitar lectura de memoria controlando si offset fuera de rango
-//para evitar segfaults con DSK protegidos con speedlock por ejemplo 
+//para evitar segfaults con DSK protegidos con speedlock por ejemplo
 //(Mercenary - Escape From Targ & The Second City (1988)(Novagen Software))
 //o DSK de MSX: (Pocky. Pokey (1989)(Pony Tail Soft)(ja)(Disk 1 of 3).dsk)
 z80_byte util_get_byte_protect(z80_byte *memoria,int total_size,int offset)
@@ -20686,7 +20686,7 @@ int util_get_acosine(int cosine)
         if (util_abs(cosine)>util_cosine_table[i]) {
             acosine=i-1;
             break;
-        }        
+        }
     }
 
     //Si negativo
@@ -20755,7 +20755,7 @@ z80_64bit util_sqrt(z80_64bit number,int *result_type)
         z80_64bit delta=final-inicio;
         //si hay dos o 1 numeros en nuestro conjunto, hay que optar por el primero o segundo, sin que exceda
         if (delta<=1) {
-            
+
             if (final*final==number) {
                 //printf("Exact result #2\n");  //creo que esta solucion nunca se da
                 *result_type=0;
@@ -20778,14 +20778,14 @@ z80_64bit util_sqrt(z80_64bit number,int *result_type)
         if (cuadrado>number) {
             //Nos quedamos con la parte izquierda
             //printf("izq\n");
-            final=medio;         
+            final=medio;
         }
 
         else {
             //cuadrado<number
             //Nos quedamos con la parte derecha
             //printf("der\n");
-            inicio=medio;               
+            inicio=medio;
         }
 
 
@@ -20797,7 +20797,7 @@ z80_64bit util_sqrt(z80_64bit number,int *result_type)
     return inicio;
 }
 
-//Dice si la direccion de memoria dir contiene los bytes de la lista. 
+//Dice si la direccion de memoria dir contiene los bytes de la lista.
 int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items)
 {
     int i;
@@ -20823,7 +20823,7 @@ int util_compare_bytes_address(menu_z80_moto_int dir,int *lista,int total_items)
 //segundo bloque: posicion XXX
 //etc...
 //Si no se quiere usar, indicar array_block_positions a NULL. Indice finaliza con -1
-void util_realtape_browser(char *filename, char *texto_browser,int maxima_longitud_texto,char *tap_output, 
+void util_realtape_browser(char *filename, char *texto_browser,int maxima_longitud_texto,char *tap_output,
                         long *array_block_positions,int max_array_block_positions,int *codigo_retorno)
 {
 
@@ -20845,13 +20845,13 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 
 
 
-    
+
     //Para que lo asigne la rutina main_spec_rwaatap
     spec_smp_memory=NULL;
 
 
 
-    
+
     if (texto_browser!=NULL) {
         //iniciar con cadena vacia pues lo que hace es concatenar strings
         texto_browser[0]=0;
@@ -20866,7 +20866,7 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
     char nombre_origen[NAME_MAX];
     util_get_file_no_directory(filename,nombre_origen);
 
-    
+
 
     char file_to_open[PATH_MAX];
     file_to_open[0]=0; //de momento
@@ -20882,7 +20882,7 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 			debug_printf(VERBOSE_ERR,"Error converting input file");
 			return;
 		}
-    }   
+    }
 
     //convertir
     if (!util_compare_file_extension(filename,"wav")) {
@@ -20890,9 +20890,9 @@ void util_realtape_browser(char *filename, char *texto_browser,int maxima_longit
 			debug_printf(VERBOSE_ERR,"Error converting input file");
 			return;
 		}
-    }   
+    }
 
-  
+
 
     if (file_to_open[0]==0) {
         debug_printf(VERBOSE_ERR,"Do not know how to browse this file");
@@ -20975,7 +20975,7 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
     char nombre_origen[NAME_MAX];
     util_get_file_no_directory(filename,nombre_origen);
 
-    
+
 
     char file_to_open[PATH_MAX];
     file_to_open[0]=0; //de momento
@@ -20991,7 +20991,7 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
 			debug_printf(VERBOSE_ERR,"Error converting input file");
 			return;
 		}
-    }   
+    }
 
     //convertir
     if (!util_compare_file_extension(filename,"wav")) {
@@ -20999,9 +20999,9 @@ void convert_realtape_to_po(char *filename, char *archivo_destino, char *texto_i
 			debug_printf(VERBOSE_ERR,"Error converting input file");
 			return;
 		}
-    }   
+    }
 
-  
+
 
     if (file_to_open[0]==0) {
         debug_printf(VERBOSE_ERR,"Do not know how to convert this file to P/O");
@@ -21057,7 +21057,7 @@ void *util_malloc(int total,char *mensaje_panic)
     memoria=malloc(total);
     if (memoria==NULL) {
         cpu_panic(mensaje_panic);
-    }        
+    }
 
     return memoria;
 }
@@ -21102,19 +21102,19 @@ void util_trunc_name_right(char *texto,int max_length,int char_buffer_size)
         texto[max_length-1]='.';
         texto[max_length-2]='.';
         texto[max_length-3]='.';
-    }    
+    }
 
     //Ejemplo:
     //1234567890 <-longitud
     //HOLA QUE TAL  <- texto
 
     //01234567890   <- indice array
-    //Cortar a 10 
+    //Cortar a 10
     //          0
     //         .
     //        .
     //       .
-}  
+}
 
 //Inicializar una string con un caracter y finalizarlo con 0
 //longitud es la cantidad de caracter a repetir, si se trata de llenar toda la string, deberia ser el tamaño del buffer-1
@@ -21174,7 +21174,7 @@ void util_drag_drop_file(char *filepath)
 
         //Pausa de 0.1 segundo
         usleep(100000);
-        
+
 
         if (enviar_esc) {
             //Liberar ESC
@@ -21185,22 +21185,22 @@ void util_drag_drop_file(char *filepath)
             //Liberar F6
             puerto_especial3 |=1;
         }
-        
+
 
         //Y cerrar de nuevo por si hay algun tooltip abierto
         if (enviar_esc) {
             //Pausa de 0.1 segundo
-            usleep(100000);    
+            usleep(100000);
 
             //Simular ESC
             salir_todos_menus=1;
-            puerto_especial1 &=(255-1); 
+            puerto_especial1 &=(255-1);
 
             //Pausa de 0.1 segundo
-            usleep(100000);      
+            usleep(100000);
 
             //Liberar ESC
-            puerto_especial1 |=1;                         
+            puerto_especial1 |=1;
         }
 
         menu_event_pending_drag_drop_menu_open.v=1;
@@ -21210,7 +21210,7 @@ void util_drag_drop_file(char *filepath)
     //printf("Decir de abrir menu para drag & drop\n");
 
     menu_set_menu_abierto(1);
-    menu_event_drag_drop.v=1;    
+    menu_event_drag_drop.v=1;
 }
 
 //Dice si un filesystem es de tipo plusidedos (los usados en roms de +3e)
@@ -21249,7 +21249,7 @@ int util_if_filesystem_fat16(z80_byte *memoria,int total_size)
 	//memcpy(filesystem,&mmc_file_memory[0x100036],5);
 
 	//filesystem[5]=0;
-	//if (!strcmp(filesystem,"FAT16")) {    
+	//if (!strcmp(filesystem,"FAT16")) {
 }
 
 //Retorna texto %Y-%m-%d-%H-%M-%S, usado en quicksave y en dump zsf on panic
@@ -21380,7 +21380,7 @@ void util_scanf_history_insert(char **textos_historial,char *texto)
         free(mem_to_free);
     }
     else {
-        lineas_historial++; 
+        lineas_historial++;
     }
 
     // hacer hueco desplazando todo hacia abajo. con el ejemplo de arriba, empezamos en 1
@@ -21403,7 +21403,7 @@ void util_scanf_history_insert(char **textos_historial,char *texto)
     for (i=0;i<=lineas_historial;i++) {
         debug_printf(VERBOSE_PARANOID,"util_scanf_history_insert: After insert. Position %d Pointer %p (%s)",
             i,textos_historial[i],(textos_historial[i]!=NULL ? textos_historial[i] : "NULL"));
-    }    
+    }
 }
 
 //Extraer preview de diferentes tipos de archivos que requieren expandir
@@ -21424,17 +21424,17 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
 			else if (!util_compare_file_extension(nombre,"pzx") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a pzx file");
 					retorno=util_extract_pzx(nombre,tmpdir,NULL);
-			}		
+			}
 
 			else if (!util_compare_file_extension(nombre,"trd") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a trd file");
 					retorno=util_extract_trd(nombre,tmpdir);
-			}		
+			}
 
 			else if (!util_compare_file_extension(nombre,"ddh") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a ddh file");
 					retorno=util_extract_ddh(nombre,tmpdir);
-			}	            
+			}
 
 			else if (!util_compare_file_extension(nombre,"dsk") ) {
 					debug_printf (VERBOSE_DEBUG,"Is a dsk file");
@@ -21442,13 +21442,13 @@ int util_extract_preview_file_expandable(char *nombre,char *tmpdir)
                     //printf("Before extract dsk\n");
 					retorno=util_extract_dsk(nombre,tmpdir);
                     //printf("After extract dsk\n");
-			}				
+			}
 
             //printf("if_pending_error_message: %d\n",if_pending_error_message);
             //Quitar posibles errores al preparar esta preview
             //no queremos alertar al usuario por archivos incorrectos
             //De todas maneras siempre se vería el error en la consola
-            if_pending_error_message=0;    
+            if_pending_error_message=0;
 
             return retorno;
 }
@@ -21482,7 +21482,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 
 
-	}	
+	}
 
 	//Si es sp
 	else if (!util_compare_file_extension(nombre,"sp")) {
@@ -21496,7 +21496,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 		}
 
 
-	}	
+	}
 
 	//Si es z80
 	else if (!util_compare_file_extension(nombre,"z80")) {
@@ -21511,7 +21511,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 
 
-	}		
+	}
 
 	//Si es P
 	else if (!util_compare_file_extension(nombre,"p")) {
@@ -21526,7 +21526,7 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 
 
-	}		
+	}
 
 	//Si es ZSF
 	else if (!util_compare_file_extension(nombre,"zsf")) {
@@ -21541,9 +21541,9 @@ void util_extract_preview_file_simple(char *nombre,char *tmpdir,char *tmpfile_sc
 
 
 
-	}	
+	}
 
-}	
+}
 
 //Retorna el tipo de archivo a extraer preview
 //0: no tiene preview
@@ -21556,11 +21556,11 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
 		!util_compare_file_extension(nombre,"pzx") ||
 		!util_compare_file_extension(nombre,"trd") ||
 		!util_compare_file_extension(nombre,"dsk") ||
-        !util_compare_file_extension(nombre,"ddh") 
-	
-	) {  
+        !util_compare_file_extension(nombre,"ddh")
+
+	) {
         return 1;
-    }      
+    }
 
 
     if (
@@ -21569,11 +21569,11 @@ int util_get_extract_preview_type_file(char *nombre,long long int file_size)
         !util_compare_file_extension(nombre,"sp") ||
         !util_compare_file_extension(nombre,"z80") ||
         !util_compare_file_extension(nombre,"p") ||
-        !util_compare_file_extension(nombre,"zsf") || 
+        !util_compare_file_extension(nombre,"zsf") ||
         file_size==6912
-    ) {    
+    ) {
         return 2;
-    }   
+    }
 
     return 0;
 }
@@ -21609,8 +21609,8 @@ void util_get_operating_system_release(char *destino,int maximo)
     buffer_temporal[1023]=0;
 
 
-    //leer linea a linea 
-    char buffer_linea[200]; 
+    //leer linea a linea
+    char buffer_linea[200];
 
     char *mem=buffer_temporal;
 
@@ -21618,7 +21618,7 @@ void util_get_operating_system_release(char *destino,int maximo)
     do {
         int leidos;
         char *next_mem;
-    
+
         next_mem=util_read_line(mem,buffer_linea,total_leidos,200,&leidos);
         debug_printf(VERBOSE_DEBUG,"Reading os-release file, line: [%s]\n",buffer_linea);
         total_leidos -=leidos;
@@ -21644,7 +21644,7 @@ void util_get_operating_system_release(char *destino,int maximo)
 
     } while (total_leidos>0);
 
-            
+
 }
 
 //Obtener versión del emulador
