@@ -649,6 +649,13 @@ int zeng_thread_send_not_show_error=0;
 //Indica que ha habido un error en ejecutar zeng_send_snapshot_uno_concreto
 int return_zeng_send_snapshot_uno_concreto;
 
+//Estructura para el pase de parametros de envio de threads de envio de snapshots
+struct s_zeng_send_snapshot_uno_concreto {
+    int finished;
+};
+
+struct s_zeng_send_snapshot_uno_concreto zeng_send_snapshot_uno_concreto_array[ZENG_MAX_REMOTE_HOSTS];
+
 void zeng_send_snapshot_uno_concreto(int indice_socket)
 {
     //printf("before zeng_send_snapshot\n");
@@ -659,6 +666,8 @@ void zeng_send_snapshot_uno_concreto(int indice_socket)
     if (error<0) {
         return_zeng_send_snapshot_uno_concreto=1;
     }
+
+    zeng_send_snapshot_uno_concreto_array[indice_socket].finished=1;
 }
 
 
@@ -738,6 +747,9 @@ Poder enviar mensajes a otros jugadores
                 for (i=0;i<zeng_total_remotes;i++) {
 
                     //printf("before zeng_send_snapshot\n");
+
+                    zeng_send_snapshot_uno_concreto_array[i].finished=0;
+
                     zeng_send_snapshot_uno_concreto(i);
 
                     //printf("after zeng_send_snapshot\n");
@@ -750,13 +762,32 @@ Poder enviar mensajes a otros jugadores
                     zeng_send_snapshot_pending=0;
 
                 }
+
+                //Esperar a que finalicen
+
+                int finished;
+
+                do {
+                    finished=1;
+                    for (i=0;i<zeng_total_remotes;i++) {
+                        printf("socket %d finished %d\n",i,zeng_send_snapshot_uno_concreto_array[i].finished);
+                        if (zeng_send_snapshot_uno_concreto_array[i].finished==0) finished=0;
+                        else {
+                            //Si tiene valor 2, es que ya esta enviada la accion de cancel
+                            //pthread_cancel(s_zeng_send_snapshot_uno_concreto_array[i].thread);
+                        }
+                    }
+                    if (!finished) usleep(1000); //dormir 1 ms
+                    printf("Finished: %d\n",finished);
+                } while (!finished);
+
+                printf("all snapshot sending finished\n");
+
 				free(zeng_send_snapshot_mem_hexa);
 				zeng_send_snapshot_mem_hexa=NULL;
 
 			}
 		}
-
-
 
 
 		if (error_desconectar) {
