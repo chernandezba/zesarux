@@ -802,7 +802,7 @@ Poder enviar mensajes a otros jugadores
                     printf("Finished: %d\n",finished);
                 } while (!finished && !error_desconectar);
 
-                printf("all snapshot sending finished\n\n");
+                printf("all snapshot sending finished. freeing snapshot memory\n\n");
 
 				free(zeng_send_snapshot_mem_hexa);
 				zeng_send_snapshot_mem_hexa=NULL;
