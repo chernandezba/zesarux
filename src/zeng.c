@@ -589,8 +589,12 @@ int zeng_send_keys(zeng_key_presses *elemento)
             printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
             if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
             else {
-                //Si tiene valor 2, es que ya esta enviada la accion de cancel
-                //pthread_cancel(zeng_send_keys_onehost_array[i].thread);
+                if (zeng_send_keys_onehost_array[i].finished!=2) {
+                        zeng_send_keys_onehost_array[i].finished=2;
+                        //liberar memoria
+                        printf("liberando memoria thread\n");
+                        pthread_join(zeng_send_keys_onehost_array[i].thread,NULL);
+                }
             }
         }
         if (!finished) usleep(1000); //dormir 1 ms
