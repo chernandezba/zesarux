@@ -93,7 +93,7 @@ int zeng_segundos_cada_snapshot=2;
 int zeng_i_am_master=0;
 
 //opcion para no enviar eventos de teclas
-int zeng_do_not_send_keys=0;
+int zeng_do_not_send_input_events=0;
 
 //Mensaje de envio a footer remoto
 //Con margen +100 de sobra para agregar el comando print-footer
@@ -468,7 +468,7 @@ int zeng_send_snapshot(int socket)
 int zeng_send_keys(zeng_key_presses *elemento)
 {
 
-    if (zeng_do_not_send_keys) return 1;
+    if (zeng_do_not_send_input_events) return 1;
 
     int i;
 

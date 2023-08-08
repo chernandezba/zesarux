@@ -14359,6 +14359,11 @@ void menu_zeng_snapshot_force_reconnect(MENU_ITEM_PARAMETERS)
     zeng_force_reconnect_failed_retries.v ^=1;
 }
 
+void menu_zeng_do_not_send_input_events(MENU_ITEM_PARAMETERS)
+{
+    zeng_do_not_send_input_events ^=1;
+}
+
 void menu_zeng(MENU_ITEM_PARAMETERS)
 {
         //Dado que es una variable local, siempre podemos usar este nombre array_menu_common
@@ -14399,6 +14404,11 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
                 menu_add_item_menu_tooltip(array_menu_common,"Force reconnect when sending snapshot fails 3 times");
                 menu_add_item_menu_ayuda(array_menu_common,"Force reconnect when sending snapshot fails 3 times");
 			}
+
+            menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_do_not_send_input_events,NULL,"[%c] Send input events",
+                (zeng_do_not_send_input_events ? ' ' : 'X'));
+            menu_add_item_menu_tooltip(array_menu_common,"Send input events (keyboard, joystick) to other hosts");
+            menu_add_item_menu_ayuda(array_menu_common,"Send input events (keyboard, joystick) to other hosts");
 
 			if (zeng_enabled.v) {
 				menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_send_message,menu_zeng_send_message_cond,"Broadcast message");

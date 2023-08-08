@@ -4292,6 +4292,7 @@ int util_write_configfile(void)
                                               ADD_STRING_CONFIG,"--zeng-remote-port %d",zeng_remote_port);
                                               ADD_STRING_CONFIG,"--zeng-snapshot-interval %d",zeng_segundos_cada_snapshot);
   if (zeng_i_am_master)                       ADD_STRING_CONFIG,"--zeng-iam-master");
+  if (zeng_do_not_send_input_events)          ADD_STRING_CONFIG,"--zeng-not-send-input-events");
 
 
 

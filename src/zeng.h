@@ -57,6 +57,8 @@ extern void zeng_send_snapshot_if_needed(void);
 
 extern char zeng_remote_hostname[];
 
+extern int zeng_do_not_send_input_events;
+
 //Puerto remoto
 extern int zeng_remote_port;
 extern int zeng_i_am_master;

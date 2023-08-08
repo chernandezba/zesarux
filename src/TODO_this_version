@@ -412,3 +412,4 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 de manera simultanea
 
 -opcion ZENG para solo enviar snapshots desde master, nada mas: int zeng_do_not_send_keys=1;falta menu y linea de comandos y config file
+-zeng: opcion sincronizar valor flash. quiza en snapshot ZRCP, que indique contador flash

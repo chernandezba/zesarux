@@ -2229,10 +2229,11 @@ printf("\n"
 		"-------\n"
 		"\n"
 
-		"--zeng-remote-hostname s    ZENG last remote hostname\n"
-		"--zeng-remote-port n        ZENG last remote port\n"
-		"--zeng-snapshot-interval n  ZENG snapshot interval\n"
-		"--zeng-iam-master           Tells this machine is a ZENG master\n"
+		"--zeng-remote-hostname s      ZENG last remote hostname\n"
+		"--zeng-remote-port n          ZENG last remote port\n"
+		"--zeng-snapshot-interval n    ZENG snapshot interval\n"
+		"--zeng-iam-master             Tells this machine is a ZENG master\n"
+        "--zeng-not-send-input-events  Do not send ZENG input events (keyboard, joystick) to other hosts\n"
 
 
 
@@ -9413,6 +9414,10 @@ int parse_cmdline_options(int desde_commandline) {
 			else if (!strcmp(argv[puntero_parametro],"--zeng-iam-master")) {
 				zeng_i_am_master=1;
 			}
+
+            else if (!strcmp(argv[puntero_parametro],"--zeng-not-send-input-events")) {
+                zeng_do_not_send_input_events=1;
+            }
 
 
 
