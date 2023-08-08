@@ -750,6 +750,12 @@ Text string with the creator (program) of this file, for example: "ZEsarUX v.10"
 0..: Creathor
 
 
+-Block ID 61: ZSF_FLASH_STATE
+Tells the current flash counter and the state (0 or 1). Specially useful on ZENG remote playing, so all instances are in flash sync
+Byte fields:
+0: Flash counter (1..16)
+1: Flash state (0 or 1)
+
 
 -Como codificar bloques de memoria para Spectrum 128k, zxuno, tbblue, tsconf, etc?
 Con un numero de bloque (0...255) pero... que tamaño de bloque? tbblue usa paginas de 8kb, tsconf usa paginas de 16kb
@@ -763,7 +769,7 @@ Por otra parte, tener bloques diferentes ayuda a saber mejor qué tipos de bloqu
 #define MAX_ZSF_BLOCK_ID_NAMELENGTH 30
 
 //Total de nombres sin contar el unknown final
-#define MAX_ZSF_BLOCK_ID_NAMES 60
+#define MAX_ZSF_BLOCK_ID_NAMES 61
 char *zsf_block_id_names[]={
  //123456789012345678901234567890
   "ZSF_NOOP",
@@ -827,6 +833,7 @@ char *zsf_block_id_names[]={
   "ZSF_PCW_RAMBLOCK",
   "ZSF_COMMON_ROMBLOCK",
   "ZSF_CREATOR",
+  "ZSF_FLASH_STATE",
 
   "Unknown"  //Este siempre al final
 };
@@ -1994,6 +2001,16 @@ void load_zsf_ula(z80_byte *header)
 
   //printf ("border: %d\n",out_254);
   modificado_border.v=1;
+
+}
+
+void load_ZSF_FLASH_STATE(z80_byte *header)
+{
+  contador_parpadeo=header[0];
+  estado_parpadeo.v=header[1] & 1;
+
+    //Por si acaso, valor no es 0 nunca
+    if (!contador_parpadeo) contador_parpadeo=1;
 
 }
 
@@ -3263,6 +3280,10 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         load_zsf_creator(block_data);
       break;
 
+      case ZSF_FLASH_STATE:
+        load_ZSF_FLASH_STATE(block_data);
+      break;
+
       default:
         debug_printf(VERBOSE_ERR,"Unknown ZSF Block ID: %u. Continue anyway",block_id);
       break;
@@ -3593,6 +3614,12 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, ulablock,ZSF_ULA, 1);
 
 
+    z80_byte flashstateblock[2];
+
+    flashstateblock[0]=contador_parpadeo;
+    flashstateblock[1]=estado_parpadeo.v;
+
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, flashstateblock,ZSF_FLASH_STATE, 2);
 
 
     z80_byte timexblock[2];
