@@ -470,6 +470,7 @@ struct s_zeng_send_keys_onehost {
     int tecla;
     int pressrelease;
     int finished;
+    pthread_t thread;
 };
 
 struct s_zeng_send_keys_onehost zeng_send_keys_onehost_array[ZENG_MAX_REMOTE_HOSTS];
@@ -478,8 +479,11 @@ struct s_zeng_send_keys_onehost zeng_send_keys_onehost_array[ZENG_MAX_REMOTE_HOS
 //Variable global que indica que la llamada a zeng_send_keys_onehost ha funcionado mal, si es <0
 int return_zeng_send_keys_onehost;
 
-void zeng_send_keys_onehost(int index_socket)
+void *thread_zeng_send_keys_onehost(void *p_index_socket)
 {
+
+    //Realmente el puntero no lo trato como tal, sino como el valor del indice
+    int index_socket=(int)p_index_socket;
 
     char buffer_comando[256];
 
@@ -499,7 +503,7 @@ void zeng_send_keys_onehost(int index_socket)
     if (escritos<0) {
         return_zeng_send_keys_onehost=escritos;
         zeng_send_keys_onehost_array[index_socket].finished=1;
-        return;
+        return NULL;
     }
 
 
@@ -519,11 +523,27 @@ void zeng_send_keys_onehost(int index_socket)
         if (leidos<0) {
             return_zeng_send_keys_onehost=leidos;
             zeng_send_keys_onehost_array[index_socket].finished=1;
-            return;
+            return NULL;
         }
     }
 
     zeng_send_keys_onehost_array[index_socket].finished=1;
+
+    return NULL;
+
+}
+
+void zeng_send_keys_onehost(int index_socket)
+{
+
+    //struct s_zeng_send_keys_onehost *parametros=&zeng_send_keys_onehost_array[index_socket];
+
+	if (pthread_create( &zeng_send_keys_onehost_array[index_socket].thread, NULL, &thread_zeng_send_keys_onehost, (void *) index_socket) ) {
+		debug_printf(VERBOSE_ERR,"Can not create thread_zeng_send_keys_onehost pthread");
+        zeng_send_keys_onehost_array[index_socket].finished=1;
+        return;
+	}
+
 
 }
 
@@ -548,16 +568,24 @@ int zeng_send_keys(zeng_key_presses *elemento)
     }
 
     //esperar a que finalicen
-    int finished=1;
+
 
     printf("\n");
 
+    int finished;
+
     do {
+        finished=1;
         for (i=0;i<zeng_total_remotes;i++) {
             printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
             if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
+            else {
+                //Si tiene valor 2, es que ya esta enviada la accion de cancel
+                //pthread_cancel(zeng_send_keys_onehost_array[i].thread);
+            }
         }
         usleep(1000); //dormir 1 ms
+        printf("Finished: %d\n",finished);
     } while (!finished);
 
     printf("all sockets finished\n");
