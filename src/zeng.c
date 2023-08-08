@@ -646,6 +646,21 @@ z80_bit zeng_force_reconnect_failed_retries={0};
 //No mostrar error en thread send
 int zeng_thread_send_not_show_error=0;
 
+//Indica que ha habido un error en ejecutar zeng_send_snapshot_uno_concreto
+int return_zeng_send_snapshot_uno_concreto;
+
+void zeng_send_snapshot_uno_concreto(int indice_socket)
+{
+    //printf("before zeng_send_snapshot\n");
+    int error=zeng_send_snapshot(zeng_remote_sockets[indice_socket]);
+    //printf("after zeng_send_snapshot\n");
+    zeng_send_snapshot_pending=0;
+
+    if (error<0) {
+        return_zeng_send_snapshot_uno_concreto=1;
+    }
+}
+
 
 void *thread_zeng_function(void *nada GCC_UNUSED)
 {
@@ -718,16 +733,21 @@ Poder enviar mensajes a otros jugadores
 			if (zeng_send_snapshot_pending && zeng_send_snapshot_mem_hexa!=NULL) {
                 int i;
 
+                return_zeng_send_snapshot_uno_concreto=0;
+
                 for (i=0;i<zeng_total_remotes;i++) {
 
-                //printf("before zeng_send_snapshot\n");
-				int error=zeng_send_snapshot(zeng_remote_sockets[i]);
-                //printf("after zeng_send_snapshot\n");
-				zeng_send_snapshot_pending=0;
+                    //printf("before zeng_send_snapshot\n");
+                    zeng_send_snapshot_uno_concreto(i);
 
-				if (error<0) {
-					error_desconectar=1;
-				}
+                    //printf("after zeng_send_snapshot\n");
+
+
+                    if (return_zeng_send_snapshot_uno_concreto) {
+                        error_desconectar=1;
+                    }
+
+                    zeng_send_snapshot_pending=0;
 
                 }
 				free(zeng_send_snapshot_mem_hexa);
