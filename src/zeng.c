@@ -547,6 +547,21 @@ int zeng_send_keys(zeng_key_presses *elemento)
 
     }
 
+    //esperar a que finalicen
+    int finished=1;
+
+    printf("\n");
+
+    do {
+        for (i=0;i<zeng_total_remotes;i++) {
+            printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
+            if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
+        }
+        usleep(1000); //dormir 1 ms
+    } while (!finished);
+
+    printf("all sockets finished\n");
+
     if (return_zeng_send_keys_onehost<0) return return_zeng_send_keys_onehost;
 
 
