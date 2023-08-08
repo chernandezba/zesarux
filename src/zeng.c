@@ -464,13 +464,27 @@ int zeng_send_snapshot(int socket)
 
 }
 
+//Estructura para el envio de parametros a cada hilo en zeng_send_keys_onehost
+
+struct s_zeng_send_keys_onehost {
+    int tecla;
+    int pressrelease;
+    int finished;
+};
+
+struct s_zeng_send_keys_onehost zeng_send_keys_onehost_array[ZENG_MAX_REMOTE_HOSTS];
+
+
 //Variable global que indica que la llamada a zeng_send_keys_onehost ha funcionado mal, si es <0
 int return_zeng_send_keys_onehost;
 
-void zeng_send_keys_onehost(int index_socket,int tecla,int pressrelease)
+void zeng_send_keys_onehost(int index_socket)
 {
 
     char buffer_comando[256];
+
+    int tecla=zeng_send_keys_onehost_array[index_socket].tecla;
+    int pressrelease=zeng_send_keys_onehost_array[index_socket].pressrelease;
 
     sprintf(buffer_comando,"send-keys-event %d %d 1\n",tecla,pressrelease);
     //el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
@@ -484,6 +498,7 @@ void zeng_send_keys_onehost(int index_socket,int tecla,int pressrelease)
     //Si ha habido error al escribir en socket
     if (escritos<0) {
         return_zeng_send_keys_onehost=escritos;
+        zeng_send_keys_onehost_array[index_socket].finished=1;
         return;
     }
 
@@ -503,9 +518,12 @@ void zeng_send_keys_onehost(int index_socket,int tecla,int pressrelease)
         //Si ha habido error al leer de socket
         if (leidos<0) {
             return_zeng_send_keys_onehost=leidos;
+            zeng_send_keys_onehost_array[index_socket].finished=1;
             return;
         }
     }
+
+    zeng_send_keys_onehost_array[index_socket].finished=1;
 
 }
 
@@ -521,7 +539,11 @@ int zeng_send_keys(zeng_key_presses *elemento)
 
     for (i=0;i<zeng_total_remotes;i++) {
 
-        zeng_send_keys_onehost(i,elemento->tecla,elemento->pressrelease);
+        zeng_send_keys_onehost_array[i].finished=0;
+        zeng_send_keys_onehost_array[i].tecla=elemento->tecla;
+        zeng_send_keys_onehost_array[i].pressrelease=elemento->pressrelease;
+
+        zeng_send_keys_onehost(i);
 
     }
 
