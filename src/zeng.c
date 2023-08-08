@@ -82,7 +82,7 @@ int zeng_fifo_read_position=0;
 //Si esta habilitado zeng
 z80_bit zeng_enabled={0};
 
-//Hostname remoto
+//Hostnames remoto
 char zeng_remote_hostname[MAX_ZENG_HOSTNAME]="";
 
 //Puerto remoto
@@ -235,6 +235,8 @@ int zeng_connect_remotes(void)
 
     zeng_total_remotes=0;
 
+    int puerto=zeng_remote_port;
+
     while (*puntero_hostname) {
 
         //Obtener nombre hasta ","
@@ -264,7 +266,8 @@ int zeng_connect_remotes(void)
 
 
 
-		int indice_socket=z_sock_open_connection(buffer_hostname,zeng_remote_port,0,"");
+
+		int indice_socket=z_sock_open_connection(buffer_hostname,puerto,0,"");
 
 		if (indice_socket<0) {
 			debug_printf(VERBOSE_ERR,"%s",z_sock_get_error(indice_socket));
@@ -397,6 +400,12 @@ int zeng_connect_remotes(void)
             debug_printf(VERBOSE_ERR,"No more than %d remote hosts are allowed! Disabling ZENG",ZENG_MAX_REMOTE_HOSTS);
             return 0;
        }
+
+       //Para testeo, si esta esta variable definida en entorno de compilacion, puerto se incrementa en cada host
+       //asi puedo arrancar varias instancias de ZEsarUX en puertos consecutivos
+#ifdef ZENG_TESTING_INCREMENT_PORT
+       puerto++;
+#endif
 
     }
 
@@ -584,7 +593,7 @@ int zeng_send_keys(zeng_key_presses *elemento)
                 //pthread_cancel(zeng_send_keys_onehost_array[i].thread);
             }
         }
-        usleep(1000); //dormir 1 ms
+        if (!finished) usleep(1000); //dormir 1 ms
         printf("Finished: %d\n",finished);
     } while (!finished);
 
