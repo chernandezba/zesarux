@@ -414,3 +414,4 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 
 
 -llamar a pthread_join en todos los pthreads que finalicen, para liberar memoria (10 MB aprox ocupa cada uno en Linux 32 bit)
+por ejemplo cada vez que uso el speccy browser, se pierden 10 MB
