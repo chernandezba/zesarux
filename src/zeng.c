@@ -590,10 +590,10 @@ int zeng_send_keys(zeng_key_presses *elemento)
             if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
             else {
                 if (zeng_send_keys_onehost_array[i].finished!=2) {
-                        zeng_send_keys_onehost_array[i].finished=2;
-                        //liberar memoria
-                        printf("liberando memoria thread\n");
-                        pthread_join(zeng_send_keys_onehost_array[i].thread,NULL);
+                    zeng_send_keys_onehost_array[i].finished=2;
+                    //liberar memoria
+                    printf("liberando memoria thread\n");
+                    pthread_join(zeng_send_keys_onehost_array[i].thread,NULL);
                 }
             }
         }

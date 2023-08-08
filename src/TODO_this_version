@@ -412,4 +412,5 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 --zeng-remote-port 10000
 
 
--master desde linux acaba petando en malloc Can not allocate memory for get-snapshot, en 32 bits, pasa de 2 GB
+
+-llamar a pthread_join en todos los pthreads que finalicen, para liberar memoria (10 MB aprox ocupa cada uno en Linux 32 bit)
