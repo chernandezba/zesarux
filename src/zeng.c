@@ -464,6 +464,51 @@ int zeng_send_snapshot(int socket)
 
 }
 
+//Variable global que indica que la llamada a zeng_send_keys_onehost ha funcionado mal, si es <0
+int return_zeng_send_keys_onehost;
+
+void zeng_send_keys_onehost(int index_socket,int tecla,int pressrelease)
+{
+
+    char buffer_comando[256];
+
+    sprintf(buffer_comando,"send-keys-event %d %d 1\n",tecla,pressrelease);
+    //el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
+
+    int escritos=z_sock_write_string(zeng_remote_sockets[index_socket],buffer_comando);
+
+
+    //printf ("despues de enviar send-keys. escritos en write string: %d\n",escritos);
+
+
+    //Si ha habido error al escribir en socket
+    if (escritos<0) {
+        return_zeng_send_keys_onehost=escritos;
+        return;
+    }
+
+
+    else {
+
+        z80_byte buffer[200];
+
+        //Leer hasta prompt
+        int posicion_command;
+
+        //printf ("antes de leer hasta command prompt\n");
+        int leidos=zsock_read_all_until_command(zeng_remote_sockets[index_socket],buffer,199,&posicion_command);
+
+        //printf ("despues de leer hasta command prompt\n");
+
+        //Si ha habido error al leer de socket
+        if (leidos<0) {
+            return_zeng_send_keys_onehost=leidos;
+            return;
+        }
+    }
+
+}
+
 //Retorna <0 si error
 int zeng_send_keys(zeng_key_presses *elemento)
 {
@@ -472,39 +517,15 @@ int zeng_send_keys(zeng_key_presses *elemento)
 
     int i;
 
+    return_zeng_send_keys_onehost=1;
+
     for (i=0;i<zeng_total_remotes;i++) {
 
-        char buffer_comando[256];
+        zeng_send_keys_onehost(i,elemento->tecla,elemento->pressrelease);
 
-        sprintf(buffer_comando,"send-keys-event %d %d 1\n",elemento->tecla,elemento->pressrelease);
-        //el 1 del final indica que no se envia la tecla si el menu en remoto esta abierto
-
-        int escritos=z_sock_write_string(zeng_remote_sockets[i],buffer_comando);
-
-
-        //printf ("despues de enviar send-keys. escritos en write string: %d\n",escritos);
-
-
-        //Si ha habido error al escribir en socket
-        if (escritos<0) return escritos;
-
-
-        else {
-
-            z80_byte buffer[200];
-
-            //Leer hasta prompt
-            int posicion_command;
-
-            //printf ("antes de leer hasta command prompt\n");
-            int leidos=zsock_read_all_until_command(zeng_remote_sockets[i],buffer,199,&posicion_command);
-
-            //printf ("despues de leer hasta command prompt\n");
-
-            //Si ha habido error al leer de socket
-            if (leidos<0) return leidos;
-        }
     }
+
+    if (return_zeng_send_keys_onehost<0) return return_zeng_send_keys_onehost;
 
 
 	return 1;
