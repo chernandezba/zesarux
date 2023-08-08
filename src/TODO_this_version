@@ -408,6 +408,8 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 1.147 debian 64
 1.99 freebsd
 
--zeng: operaciones a los diferentes nodos, en vez de ser secuencial, que genere un thread de envio y se hagan los envios a todos los nodos
-de manera simultanea
+--zeng-remote-hostname 192.168.1.91,192.168.1.147,192.168.1.99
+--zeng-remote-port 10000
 
+
+-master desde linux acaba petando en malloc Can not allocate memory for get-snapshot, en 32 bits, pasa de 2 GB
