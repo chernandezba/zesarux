@@ -595,7 +595,7 @@ int zeng_send_keys(zeng_key_presses *elemento)
         }
         if (!finished) usleep(1000); //dormir 1 ms
         printf("Finished: %d\n",finished);
-    } while (!finished);
+    } while (!finished && return_zeng_send_keys_onehost>=0);
 
     printf("all sockets finished\n");
 
@@ -652,22 +652,43 @@ int return_zeng_send_snapshot_uno_concreto;
 //Estructura para el pase de parametros de envio de threads de envio de snapshots
 struct s_zeng_send_snapshot_uno_concreto {
     int finished;
+    pthread_t thread;
 };
 
 struct s_zeng_send_snapshot_uno_concreto zeng_send_snapshot_uno_concreto_array[ZENG_MAX_REMOTE_HOSTS];
 
-void zeng_send_snapshot_uno_concreto(int indice_socket)
+void *thread_zeng_send_snapshot_uno_concreto(void *p_indice_socket)
 {
+
+    //Este puntero realmente para mi es un entero, le paso el indice
+    int indice_socket=(int) p_indice_socket;
+
     //printf("before zeng_send_snapshot\n");
     int error=zeng_send_snapshot(zeng_remote_sockets[indice_socket]);
     //printf("after zeng_send_snapshot\n");
-    zeng_send_snapshot_pending=0;
+
 
     if (error<0) {
         return_zeng_send_snapshot_uno_concreto=1;
     }
 
     zeng_send_snapshot_uno_concreto_array[indice_socket].finished=1;
+
+    return NULL;
+
+}
+
+void zeng_send_snapshot_uno_concreto(int indice_socket)
+{
+
+    if (pthread_create( &zeng_send_snapshot_uno_concreto_array[indice_socket].thread, NULL,
+            &thread_zeng_send_snapshot_uno_concreto, (void *) indice_socket) ) {
+        debug_printf(VERBOSE_ERR,"Can not create thread_zeng_send_snapshot_uno_concreto pthread");
+        zeng_send_snapshot_uno_concreto_array[indice_socket].finished=1;
+        return;
+    }
+
+
 }
 
 
@@ -779,9 +800,9 @@ Poder enviar mensajes a otros jugadores
                     }
                     if (!finished) usleep(1000); //dormir 1 ms
                     printf("Finished: %d\n",finished);
-                } while (!finished);
+                } while (!finished && !error_desconectar);
 
-                printf("all snapshot sending finished\n");
+                printf("all snapshot sending finished\n\n");
 
 				free(zeng_send_snapshot_mem_hexa);
 				zeng_send_snapshot_mem_hexa=NULL;
