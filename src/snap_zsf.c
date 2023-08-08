@@ -132,7 +132,7 @@ Motorola CPU Registers
 -Block ID 4: ZSF_RAMBLOCK
 A ram binary block
 Byte Fields:
-0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where 
+0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address
 3,4: Block lenght (if 0, means 65536. Value 0 only used on Inves)
@@ -185,7 +185,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -196,7 +196,7 @@ Byte fields:
 0: Last out to port FC3B
 1-256: 256 internal ZXUNO registers
 257: Flash SPI bus index
-258: Flash SPI next read byte   
+258: Flash SPI next read byte
 259: Flash SPI status register
 260-262: 24 bit value with last spi write address
 263-265: 24 bit value with last spi read address
@@ -206,14 +206,14 @@ Byte fields:
 -Block ID 12: ZSF_ZX8081_CONF
 Internal configuration and state of ZX80/81 machine
 Byte fields:
-0: Ram assigned to ZX80/81 (1..16), not counting ram packs on 2000H, 8000H or C000H 
+0: Ram assigned to ZX80/81 (1..16), not counting ram packs on 2000H, 8000H or C000H
 1: Flags1: Bits:
 
 *7-5: Reserved for future use
-*4: if 16k RAM block in C000H 
-*3: if 16k RAM block in 8000H 
-*2: if 8k RAM block in 2000H 
-*1: if hsync generator is active 
+*4: if 16k RAM block in C000H
+*3: if 16k RAM block in 8000H
+*2: if 8k RAM block in 2000H
+*1: if hsync generator is active
 *0: if nmi generator is active
 
 2: Flags2: Reserved for future use
@@ -232,7 +232,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -249,12 +249,12 @@ Byte fields:
 
 0: Memory size: Value of 2=32 kb, 3=64 kb, 4=128 kb, 5=256 kb, 6=512 kb
 1: Diviface control register
-2: Status bits: 
-  Bit 0=If entered automatic divmmc paging. 
+2: Status bits:
+  Bit 0=If entered automatic divmmc paging.
   Bit 1=If divmmc interface is enabled
   Bit 2=If divmmc ports are enabled
   Bit 3=If divide interface is enabled
-  Bit 4=If divide ports are enabled  
+  Bit 4=If divide ports are enabled
   Bits 5-7: unused by now
 
 -Block ID 17: ZSF_DIVIFACE_MEM
@@ -262,7 +262,7 @@ A ram binary block for diviface memory
 Byte Fields:
 0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
-1: ram block id 
+1: ram block id
 2 and next bytes: data bytes
 
 
@@ -273,7 +273,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -440,7 +440,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 -Block ID 35: ZSF_QL_CONF
@@ -485,7 +485,7 @@ CRAM colour palette
 Byte fields:
 0...31
 
--Block ID 40: ZSF_ACE_CONF 
+-Block ID 40: ZSF_ACE_CONF
 Byte fields:
 0 ((ramtop_ace-16383)/1024)+3;
 
@@ -512,10 +512,10 @@ Byte fields:
   Type can be:
 
   0: RAM
-  1: Hybrid RAM+EPROM 
+  1: Hybrid RAM+EPROM
   2: EPROM
   3: FLASH
-  Note: EPROM, Hybrid EPROM+RAM or FLASH on slot 3 are not saved on zsf snapshots, 
+  Note: EPROM, Hybrid EPROM+RAM or FLASH on slot 3 are not saved on zsf snapshots,
   but are indicated here to warn user that it must be inserted manually an eprom or flash
 
 3: Z88 Slot 1 size (divided by 16384)
@@ -570,7 +570,7 @@ Byte fields:
 -Block ID 43: ZSF_Z80_HALT_STATE
 Byte fields:
 0: z80_halt_signal.v;
-  
+
 
 -Block ID 44: ZSF_TIMEX_DOCK_ROM
 A rom dock for timex ts 2068
@@ -615,7 +615,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 -Block ID 49: ZSF_PRISM_CONF
@@ -639,7 +639,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 -Block ID 51: ZSF_PRISM_VRAMBLOCK
@@ -649,7 +649,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -660,7 +660,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 -Block ID 53: ZSF_CHLOE_EX_RAMBLOCK
@@ -670,7 +670,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -681,7 +681,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -709,7 +709,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -731,7 +731,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
 
 
@@ -742,7 +742,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: rom block id 
+5: rom block id
 6 and next bytes: data bytes
 
 -Block ID 60: ZSF_CREATOR
@@ -877,7 +877,7 @@ int zsf_write_block(FILE *ptr_zsf_file, z80_byte **destination_memory, int *long
     }
     else {
       memcpy(puntero_memoria,source,lenght);
-      puntero_memoria +=lenght;      
+      puntero_memoria +=lenght;
     }
   }
 
@@ -1064,10 +1064,10 @@ longitud_original: usado en bloques comprimidos (lo que ocupan los bloques compr
 */
 void load_zsf_snapshot_block_data_addr(z80_byte *block_data,z80_byte *destino,int block_lenght, int longitud_original,int si_comprimido)
 {
-  
+
   //printf ("load_zsf_snapshot_block_data_addr block_lenght: %d longitud_original: %d si_comprimido: %d\n",block_lenght,longitud_original,si_comprimido);
 
-  
+
   if (si_comprimido) {
     //Comprimido
     int longitud_descomprimido=util_uncompress_data_repetitions(block_data,destino,longitud_original,0xDD);
@@ -1594,7 +1594,7 @@ void load_zsf_sms_romblock_snapshot_block_data(z80_byte *block_data,int longitud
     //El tipo de mapper lo guardamos en bloque ZSF_SMS_CONF
     //sms_set_mapper_type_from_size();
 
-    sms_set_mapper_mask_bits();  
+    sms_set_mapper_mask_bits();
 
 }
 
@@ -1913,7 +1913,7 @@ void load_zsf_ql_snapshot_block_data(z80_byte *block_data,int longitud_original)
 void load_zsf_aychip(z80_byte *header)
 {
 
-  
+
   ay_chip_present.v=1;
 
   z80_byte header_aychip_number=header[0];
@@ -1943,10 +1943,10 @@ void load_zsf_aychip(z80_byte *header)
 
 
   ay_establece_frecuencias_todos_canales();
-  
+
 
 /*
-      
+
 -Block ID 7: ZSF_AYCHIP
 Byte fields:
 0: AY Chip number, starting at 0. A normal spectrum will be only the 0. A turbosound, 0 and 1, etc
@@ -1964,16 +1964,16 @@ Byte fields:
 void load_zsf_snchip(z80_byte *header)
 {
 
-  
+
   sn_chip_present.v=1;
 
 
       int j;
       for (j=0;j<16;j++) sn_chip_registers[j]=header[j];
-  
+
 
 /*
-      
+
 -Block ID 31: ZSF_SNCHIP
 Byte fields:
 0-15: AY Chip contents
@@ -2020,7 +2020,7 @@ Byte fields:
 */
 
 	ulaplus_presente.v=1;
-                        
+
 	ulaplus_mode=header[0];
 	if (ulaplus_mode) ulaplus_enabled.v=1;
 	else ulaplus_enabled.v=0;
@@ -2048,12 +2048,12 @@ Byte fields:
 
 0: Memory size: Value of 2=32 kb, 3=64 kb, 4=128 kb, 5=256 kb, 6=512 kb
 1: Diviface control register
-2: Status bits: 
-  Bit 0=If entered automatic divmmc paging. 
+2: Status bits:
+  Bit 0=If entered automatic divmmc paging.
   Bit 1=If divmmc interface is enabled
   Bit 2=If divmmc ports are enabled
   Bit 3=If divide interface is enabled
-  Bit 4=If divide ports are enabled  
+  Bit 4=If divide ports are enabled
   Bits 5-7: unused by now
 */
 
@@ -2101,14 +2101,14 @@ Byte fields:
 void load_zsf_zx8081_conf(z80_byte *header)
 {
 /*
-0: Ram assigned to ZX80/81 (1..16), not counting ram packs on 2000H, 8000H or C000H 
+0: Ram assigned to ZX80/81 (1..16), not counting ram packs on 2000H, 8000H or C000H
 1: Flags1: Bits:
 
 *7-5: Reserved for future use
-*4: if 16k RAM block in C000H 
-*3: if 16k RAM block in 8000H 
-*2: if 8k RAM block in 2000H 
-*1: if hsync generator is active 
+*4: if 16k RAM block in C000H
+*3: if 16k RAM block in 8000H
+*2: if 8k RAM block in 2000H
+*1: if hsync generator is active
 *0: if nmi generator is active
 
 2: Flags2: Reserved for future use
@@ -2145,7 +2145,7 @@ void load_zsf_zxevo_nvram(z80_byte *header)
 void load_zsf_pentagon_conf(z80_byte *header)
 {
 
-  
+
 
   //Puerto pentagon interno
   puerto_eff7=header[0];
@@ -2164,7 +2164,7 @@ Byte fields:
 0: Last out to port FC3B
 1-256: 256 internal ZXUNO registers
 257: Flash SPI bus index
-258: Flash SPI next read byte   
+258: Flash SPI next read byte
 259: Flash SPI status register
 260-262: 24 bit value with last spi write address
 263-265: 24 bit value with last spi read address
@@ -2185,7 +2185,7 @@ Byte fields:
 
   for (i=0;i<8;i++) zxuno_spi_bus[i]=header[266+i];
 
-  zxuno_set_memory_pages();    
+  zxuno_set_memory_pages();
 
 
 
@@ -2230,7 +2230,7 @@ Byte fields:
   for (i=0;i<16;i++) sam_palette[i]=header[5+i];
 
 
-  sam_set_memory_pages();    
+  sam_set_memory_pages();
 
 }
 
@@ -2450,7 +2450,7 @@ Byte fields:
 
 
 
- 
+
 }
 
 void load_zsf_sms_conf(z80_byte *header)
@@ -2480,7 +2480,7 @@ bit 0: Si sms_writing_cram
   index_sms_escritura_cram=header[6];
 
 
- 
+
 }
 
 void load_zsf_sms_cram(z80_byte *header)
@@ -2493,7 +2493,7 @@ void load_zsf_sms_cram(z80_byte *header)
     }
 
 
- 
+
 }
 
 void load_zsf_ace_conf(z80_byte *header)
@@ -2526,7 +2526,7 @@ Byte fields:
 
 
 
- 
+
 }
 
 void load_zsf_datetime(z80_byte *header)
@@ -2541,7 +2541,7 @@ void load_zsf_datetime(z80_byte *header)
 
       //printf("%s\n",buffer_fecha);
 
- 
+
 }
 
 void load_zsf_creator(z80_byte *header)
@@ -2549,7 +2549,7 @@ void load_zsf_creator(z80_byte *header)
 
     debug_printf(VERBOSE_INFO,"Creator: %s",header);
 
- 
+
 }
 
 
@@ -2625,26 +2625,26 @@ void load_zsf_tbblue_conf(z80_byte *header)
    tbblue_bootrom.v=header[257];
   tbblue_port_123b=header[258];
   tbblue_port_123b_second_byte=header[259];
- 
+
   load_zsf_diviface_conf(&header[260]);
 
   tbblue_copper_pc=value_8_to_16(header[264],header[263]);
   for (i=0;i<2048;i++) {
     tbblue_copper_memory[i]=header[265+i];
   }
-  
 
 
 
-  
- 
+
+
+
   //Final settings
   tbblue_set_emulator_setting_timing();
 
    tbblue_set_emulator_setting_reg_8();
 
 
-  tbblue_set_memory_pages();   
+  tbblue_set_memory_pages();
 
   //turbo despues de tbblue_set_emulator_setting_timing pues cambia timing
   tbblue_set_emulator_setting_turbo();
@@ -2717,17 +2717,17 @@ Byte fields:
     tbblue_palette_ula_second[i]=util_get_value_little_endian(&header[512+offs]);
 
     tbblue_palette_layer2_first[i]=util_get_value_little_endian(&header[1024+offs]);
-    tbblue_palette_layer2_second[i]=util_get_value_little_endian(&header[1536+offs]);    
+    tbblue_palette_layer2_second[i]=util_get_value_little_endian(&header[1536+offs]);
 
     tbblue_palette_sprite_first[i]=util_get_value_little_endian(&header[2048+offs]);
-    tbblue_palette_sprite_second[i]=util_get_value_little_endian(&header[2560+offs]);    
+    tbblue_palette_sprite_second[i]=util_get_value_little_endian(&header[2560+offs]);
 
     tbblue_palette_tilemap_first[i]=util_get_value_little_endian(&header[3072+offs]);
-    tbblue_palette_tilemap_second[i]=util_get_value_little_endian(&header[3584+offs]);      
-          
+    tbblue_palette_tilemap_second[i]=util_get_value_little_endian(&header[3584+offs]);
+
   }
 
-  
+
 
 }
 
@@ -2758,7 +2758,7 @@ Byte fields:
 
 
   cpc_border_color=header[56];
-  cpc_crtc_last_selected_register=header[57];                      
+  cpc_crtc_last_selected_register=header[57];
 
   cpc_set_memory_pages();
 
@@ -2816,8 +2816,8 @@ Byte fields:
 
   for (i=0;i<1024;i++) tsconf_fmaps[i]=header[i+256];
 
-  
-  tsconf_set_memory_pages();    
+
+  tsconf_set_memory_pages();
 
   //Sincronizar settings de emulador con los valores de puertos de tsconf
   tsconf_set_emulador_settings();
@@ -2858,7 +2858,7 @@ int load_zsf_eof(FILE *ptr_zsf_file,int longitud_memoria)
   }
   else {
     if (longitud_memoria>0) return 0;
-    else return 1; 
+    else return 1;
   }
 
 }
@@ -2883,7 +2883,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
   else {
     ptr_zsf_file=NULL;
   }
- 
+
 
   //Verificar que la cabecera inicial coincide
   //zsf_magic_header
@@ -2934,7 +2934,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
     else {
       if (longitud_memoria>0) {
         memcpy(block_header,origin_memory,6);
-        origin_memory +=6;      
+        origin_memory +=6;
         leidos=6;
         longitud_memoria -=6;
       }
@@ -2971,7 +2971,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         return;
       }
 
-      
+
 
 
       if (filename!=NULL) {
@@ -2981,7 +2981,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
       else {
         if (longitud_memoria>0) {
           memcpy(block_data,origin_memory,block_lenght);
-          origin_memory +=block_lenght;      
+          origin_memory +=block_lenght;
           leidos=block_lenght;
           longitud_memoria -=block_lenght;
         }
@@ -3019,7 +3019,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
         }
 
         //Si cambiamos a QL, resetear ipc, para que no se quede el buffer de teclado medio tonto, por ejemplo
-        //Lo ideal seria que toda la info de ipc viniera en el snapshot, incluido el sonido, pero 
+        //Lo ideal seria que toda la info de ipc viniera en el snapshot, incluido el sonido, pero
         //de momento esto corrige el problema del teclado (que se manifiesta sobretodo con ZENG)
         if (MACHINE_IS_QL) {
             ql_ipc_reset();
@@ -3032,15 +3032,15 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_MOTO_REGS_ID:
         load_zsf_snapshot_moto_regs(block_data);
-      break;    
+      break;
 
       case ZSF_MK14_REGS_ID:
         load_zsf_snapshot_mk14_regs(block_data);
-      break;     
+      break;
 
       case ZSF_MK14_LEDS:
         load_zsf_snapshot_mk14_leds(block_data);
-      break;             
+      break;
 
       case ZSF_RAMBLOCK:
         load_zsf_snapshot_block_data(block_data,block_lenght);
@@ -3077,11 +3077,11 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_ZX8081_CONF:
         load_zsf_zx8081_conf(block_data);
-      break;    
+      break;
 
       case ZSF_ZXEVO_NVRAM:
         load_zsf_zxevo_nvram(block_data);
-      break;  
+      break;
 
       case ZSF_TSCONF_RAMBLOCK:
         load_zsf_tsconf_snapshot_block_data(block_data,block_lenght);
@@ -3093,43 +3093,43 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_DIVIFACE_CONF:
         load_zsf_diviface_conf(block_data);
-      break;  
+      break;
 
       case ZSF_DIVIFACE_MEM:
         load_zsf_diviface_snapshot_block_data(block_data,block_lenght);
-      break;       
+      break;
 
       case ZSF_CPC_RAMBLOCK:
         load_zsf_cpc_snapshot_block_data(block_data,block_lenght);
-      break;   
+      break;
 
       case ZSF_CPC_CONF:
         load_zsf_cpc_conf(block_data);
-      break;     
+      break;
 
       case ZSF_PENTAGON_CONF:
         load_zsf_pentagon_conf(block_data);
-      break;        
+      break;
 
       case ZSF_TBBLUE_RAMBLOCK:
         load_zsf_tbblue_snapshot_block_data(block_data,block_lenght);
-      break;    
+      break;
 
       case ZSF_TBBLUE_CONF:
         load_zsf_tbblue_conf(block_data);
-      break;         
+      break;
 
       case ZSF_TBBLUE_PALETTES:
         load_zsf_tbblue_palettes(block_data);
-      break;      
+      break;
 
       case ZSF_TBBLUE_SPRITES:
         load_zsf_tbblue_sprites(block_data);
-      break; 
-      
+      break;
+
       case ZSF_TIMEX:
         load_zsf_timex(block_data);
-      break;      
+      break;
 
       case ZSF_MSX_MEMBLOCK:
         load_zsf_msx_snapshot_block_data(block_data,block_lenght);
@@ -3137,51 +3137,51 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_MSX_CONF:
         load_zsf_msx_conf(block_data);
-      break;   
+      break;
 
       case ZSF_VDP_9918A_VRAM:
         load_zsf_msx_snapshot_vram_data(block_data,block_lenght);
-      break;  
+      break;
 
       case ZSF_GENERIC_LINEAR_MEM:
         load_ZSF_GENERIC_LINEAR_MEM_snapshot_block_data(block_data,block_lenght);
-      break;  
+      break;
 
       case ZSF_VDP_9918A_CONF:
         load_zsf_vdp_9918a_conf(block_data);
-      break;    
+      break;
 
       case ZSF_SNCHIP:
         load_zsf_snchip(block_data);
-      break;     
+      break;
 
       case ZSF_SVI_CONF:
         load_zsf_svi_conf(block_data);
-      break;      
+      break;
 
       case ZSF_DATETIME:
         load_zsf_datetime(block_data);
-      break;        
+      break;
 
       case ZSF_QL_RAMBLOCK:
         load_zsf_ql_snapshot_block_data(block_data,block_lenght);
-      break;      
+      break;
 
       case ZSF_QL_CONF:
         load_zsf_ql_conf(block_data);
-      break;  
+      break;
 
       case ZSF_SMS_ROMBLOCK:
         load_zsf_sms_romblock_snapshot_block_data(block_data,block_lenght);
-      break;         
+      break;
 
       case ZSF_SMS_RAMBLOCK:
         load_zsf_sms_ramblock_snapshot_block_data(block_data,block_lenght);
-      break;      
+      break;
 
       case ZSF_SMS_CONF:
         load_zsf_sms_conf(block_data);
-      break;       
+      break;
 
       case ZSF_SMS_CRAM:
         load_zsf_sms_cram(block_data);
@@ -3193,7 +3193,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_Z88_MEMBLOCK:
         load_zsf_z88_snapshot_block_data(block_data,block_lenght);
-      break;      
+      break;
 
       case ZSF_Z88_CONF:
         load_zsf_z88_conf(block_data);
@@ -3209,7 +3209,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_MK14_MEMBLOCK:
         load_zsf_snapshot_mk14_block_data(block_data,block_lenght);
-      break;    
+      break;
 
       case ZSF_CHROME_RAMBLOCK:
         load_zsf_chrome_snapshot_block_data(block_data,block_lenght);
@@ -3225,7 +3225,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_PRISM_VRAMBLOCK:
         load_zsf_prism_snapshot_block_data_vram(block_data,block_lenght);
-      break;  
+      break;
 
       case ZSF_CHLOE_HOME_RAMBLOCK:
         load_zsf_chloe_snapshot_block_data_home(block_data,block_lenght);
@@ -3241,7 +3241,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_SAM_COUPE_CONF:
         load_zsf_sam_coupe_conf(block_data);
-      break; 
+      break;
 
       case ZSF_SAM_COUPE_RAMBLOCK:
         load_zsf_sam_coupe_snapshot_block_data(block_data,block_lenght);
@@ -3253,7 +3253,7 @@ void load_zsf_snapshot_file_mem(char *filename,z80_byte *origin_memory,int longi
 
       case ZSF_PCW_RAMBLOCK:
         load_zsf_pcw_snapshot_block_data(block_data,block_lenght);
-      break;      
+      break;
 
       case ZSF_COMMON_ROMBLOCK:
         load_zsf_common_rom_snapshot_block_data(block_data,block_lenght);
@@ -3302,7 +3302,7 @@ void save_zsf_snapshot_moto_cpuregs(FILE *ptr,z80_byte **destination_memory,int 
     z80_byte header[80];
 
     int i=0;
- 
+
     util_write_long_value(&header[i],m68k_get_reg(NULL, M68K_REG_PC));  i+=4;
     util_write_long_value(&header[i],m68k_get_reg(NULL, M68K_REG_SP));  i+=4;
     util_write_long_value(&header[i],m68k_get_reg(NULL, M68K_REG_USP)); i+=4;
@@ -3438,7 +3438,7 @@ void save_zsf_snapshot_z80_cpuregs(FILE *ptr,z80_byte **destination_memory,int *
 
 
 
-//Guarda en destino el bloque de memoria comprimido, siempre que salga a cuenta comprimirlo. 
+//Guarda en destino el bloque de memoria comprimido, siempre que salga a cuenta comprimirlo.
 //Si ocupa mas que el original, lo guardara comprimido
 //Retorna longitud en valor retorno, flag indicando si esta comprimido o no
 //Tener en cuenta que el destino sea al menos de tamanyo el doble que origen
@@ -3478,7 +3478,7 @@ Byte fields:
 
 23,24:  vdp_9918a_last_vram_position;
 
-*/    
+*/
 
 
     int i;
@@ -3496,7 +3496,7 @@ Byte fields:
     vdpconfblock[VDP_9918A_TOTAL_REGISTERS+7]=value_16_to_8l(vdp_9918a_last_vram_position);
     vdpconfblock[VDP_9918A_TOTAL_REGISTERS+8]=value_16_to_8h(vdp_9918a_last_vram_position);
 
- 
+
 }
 
 
@@ -3533,12 +3533,12 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     destination_memory +=longitud_zsf_magic_header;
     (*longitud_total) +=longitud_zsf_magic_header;
   }
-  
+
 
 
   //First save machine ID
   z80_byte save_machine_id=current_machine_type;
-  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, &save_machine_id,ZSF_MACHINEID, 1); 
+  zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, &save_machine_id,ZSF_MACHINEID, 1);
 
   //Save creator
   //Including 0 end byte
@@ -3566,7 +3566,7 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
 		datetime_buffer[4]=tm.tm_hour;
 		datetime_buffer[5]=tm.tm_min;
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, datetime_buffer,ZSF_DATETIME, 6); 
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, datetime_buffer,ZSF_DATETIME, 6);
 
 
 
@@ -3591,17 +3591,17 @@ void save_zsf_snapshot_file_mem(char *filename,z80_byte *destination_memory,int 
     ulablock[0]=out_254 & 7;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, ulablock,ZSF_ULA, 1);
-    
-    
-    
-    
+
+
+
+
     z80_byte timexblock[2];
 
     timexblock[0]=timex_port_f4;
     timexblock[1]=timex_port_ff;
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, timexblock,ZSF_TIMEX, 2);
-    
+
 
   }
 
@@ -3656,7 +3656,7 @@ if (zsf_snap_save_rom.v && MACHINE_IS_SPECTRUM_16_48_128_P2_P2A_P3) {
   //Paginas de memoria
   int longitud_rom=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_rom*2);
   if (compressed_ramblock==NULL) {
@@ -3708,9 +3708,9 @@ Byte Fields:
 
   free(compressed_ramblock);
 
-  
 
-  
+
+
 }
 
 
@@ -3739,7 +3739,7 @@ Byte Fields:
 		  inicio_ram=0;
 	  }
 
-    
+
     if (MACHINE_IS_ZX8081) {
       int final_ram=get_ramtop_with_rampacks()+1;
       if (ram_in_8192.v) inicio_ram=8192;
@@ -3757,7 +3757,7 @@ Byte Fields:
     if (compressed_ramblock==NULL) {
       debug_printf (VERBOSE_ERR,"Error allocating memory");
       return;
-    } 
+    }
 
     /*
     0: Flags. Currently: bit 0: if compressed
@@ -3795,7 +3795,7 @@ Byte Fields:
     if (compressed_ramblock==NULL) {
       debug_printf (VERBOSE_ERR,"Error allocating memory");
       return;
-    } 
+    }
 
     /*
     0: Flags. Currently: bit 0: if compressed
@@ -3835,13 +3835,13 @@ Byte Fields:
 
    int longitud_dock_rom=65536;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_romblock=malloc(longitud_dock_rom*2);
   if (compressed_romblock==NULL) {
     debug_printf (VERBOSE_ERR,"Error allocating memory");
     return;
-  }      
+  }
 
 /*
 -Block ID 44: ZSF_TIMEX_DOCK_ROM
@@ -3883,7 +3883,7 @@ Byte Fields:
 
 /*
   Maquinas Spectrum de 128kb (128, p2, p2a)
-  Permitir mas ram segun parametro 
+  Permitir mas ram segun parametro
   int mem128_multiplicador;
   Si hay mas de 128kb para maquinas tipo 128k y +2a
   Si vale 1, solo 128k
@@ -3900,7 +3900,7 @@ Byte Fields:
 
 
 */
-  if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO || MACHINE_IS_CHLOE || MACHINE_IS_PRISM || 
+  if (MACHINE_IS_SPECTRUM_128_P2_P2A_P3 || MACHINE_IS_ZXUNO || MACHINE_IS_CHLOE || MACHINE_IS_PRISM ||
   MACHINE_IS_TBBLUE || MACHINE_IS_PENTAGON || MACHINE_IS_CHROME || MACHINE_IS_ZXEVO) {
 /*
 -Block ID 5: ZSF_SPEC128_MEMCONF
@@ -3922,7 +3922,7 @@ Byte Fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -3939,7 +3939,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -3982,7 +3982,7 @@ if (MACHINE_IS_PRISM) {
 
    int longitud_ram=8192;
 
-  
+
    //Para el bloque comprimido y tambien para el bloque de ZSF_PRISM_CONF
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4040,7 +4040,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -4066,7 +4066,7 @@ Byte Fields:
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_PRISM_RAMBLOCK, longitud_bloque+6);
 
   }
-  
+
   /*
 
 -Block ID 51: ZSF_PRISM_VRAMBLOCK
@@ -4076,7 +4076,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -4117,8 +4117,8 @@ if (MACHINE_IS_CHLOE) {
 
    int longitud_ram=16384;
 
-  
-   //Para el bloque comprimido 
+
+   //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
     debug_printf (VERBOSE_ERR,"Error allocating memory");
@@ -4137,7 +4137,7 @@ Byte Fields:
 6 and next bytes: data bytes
 */
 
- 
+
 
   int paginas=CHLOE_HOME_RAM_TOTAL_PAGES;
   z80_byte ram_page;
@@ -4161,7 +4161,7 @@ Byte Fields:
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_CHLOE_HOME_RAMBLOCK, longitud_bloque+6);
 
   }
-  
+
 
 /*
 -Block ID 55: ZSF_CHLOE_EX_RAMBLOCK
@@ -4340,20 +4340,20 @@ Byte fields:
 0: Last out to port FC3B
 1-256: 256 internal ZXUNO registers
 257: Flash SPI bus index
-258: Flash SPI next read byte   
+258: Flash SPI next read byte
 259: Flash SPI status register
 260-262: 24 bit value with last spi write address
 263-265: 24 bit value with last spi read address
 266-273: 8 byte with spi bus contents
-*/    
+*/
 
     zxunoconfblock[0]=last_port_FC3B;
     int i;
     for (i=0;i<256;i++) zxunoconfblock[1+i]=zxuno_ports[i];
 
     zxunoconfblock[257]=zxuno_spi_bus_index;
-    zxunoconfblock[258]=next_spi_read_byte;  
-    zxunoconfblock[259]=zxuno_spi_status_register;  
+    zxunoconfblock[258]=next_spi_read_byte;
+    zxunoconfblock[259]=zxuno_spi_status_register;
 
 
     zxunoconfblock[260]=last_spi_write_address & 0xFF;
@@ -4374,7 +4374,7 @@ Byte fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4391,7 +4391,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -4445,7 +4445,7 @@ Byte fields:
 //Paleta de sam coupe
 5: sam_palette[16]
 21: end
-*/    
+*/
 
     samconfblock[0]=sam_vmpr;
     samconfblock[1]=sam_hmpr;
@@ -4466,7 +4466,7 @@ Byte fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4483,7 +4483,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -4521,7 +4521,7 @@ Byte Fields:
 
     z80_byte z88confblock[38];
 
-   
+
     z88confblock[0]=(z88_internal_rom_size+1)/16384;
     z88confblock[1]=(z88_internal_ram_size+1)/16384;
 
@@ -4598,7 +4598,7 @@ Byte Fields:
     z88confblock[36]=blink_umk;
 
     z88confblock[37]=blink_uit;
-	
+
 
     zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, z88confblock,ZSF_Z88_CONF, 38);
 
@@ -4606,7 +4606,7 @@ Byte Fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4630,7 +4630,7 @@ Byte Fields:
     //calculo numero de bancos
     z80_byte bancos_total=(z88_internal_rom_size+1)/16384;
 
-    
+
     for (i=0;i<bancos_total;i++) {
 
         z80_byte bank=i;
@@ -4728,7 +4728,7 @@ Byte fields:
 0: msx_ppi_register_a
 1: msx_ppi_register_b
 2: msx_ppi_register_c
-*/    
+*/
 
     msxconfblock[0]=msx_ppi_register_a;
     msxconfblock[1]=msx_ppi_register_b;
@@ -4744,15 +4744,15 @@ Byte fields:
 
     snap_aux_save_vdp_9918a_conf(vdpconfblock);
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);  
-    
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);
 
 
 
 
-   
+
+
 int longitud_ram=16384;
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4783,7 +4783,7 @@ Byte Fields:
 
         debug_printf(VERBOSE_DEBUG,"Saving ZSF_VDP_9918A_VRAM length: %d",longitud_bloque);
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_VDP_9918A_VRAM, longitud_bloque+5);
 
 
@@ -4841,10 +4841,10 @@ Byte Fields:
 
           debug_printf(VERBOSE_DEBUG,"Saving ZSF_MSX_MEMBLOCK slot: %d segment: %d length: %d",slot,segment,longitud_bloque);
 
-          
+
           zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_MSX_MEMBLOCK, longitud_bloque+8);
         }
-      } 
+      }
 
     }
   }
@@ -4867,7 +4867,7 @@ Byte fields:
 0: svi_ppi_register_a
 1: svi_ppi_register_b
 2: msx_ppi_register_c
-*/    
+*/
 
     sviconfblock[0]=svi_ppi_register_a;
     sviconfblock[1]=svi_ppi_register_b;
@@ -4882,15 +4882,15 @@ Byte fields:
 
     snap_aux_save_vdp_9918a_conf(vdpconfblock);
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);  
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);
 
 
 
 
 
-   
+
 int longitud_ram=16384;
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -4929,12 +4929,12 @@ Byte Fields:
 
 
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_VDP_9918A_VRAM, longitud_bloque+5);
 
 
 
-  
+
 /*
 
 -Block ID 29: ZSF_GENERIC_LINEAR_MEM
@@ -4950,7 +4950,7 @@ Byte Fields:
 
   int segment;
 
-  
+
   //No me complico mucho la vida. Guardo toda la memoria asignada de spectravideo en bloques de 16kb
     for (segment=0;segment<16;segment++) {
 
@@ -4973,19 +4973,19 @@ Byte Fields:
         debug_printf(VERBOSE_DEBUG,"Saving ZSF_GENERIC_LINEAR_MEM segment: %d length: %d offset: %d",segment,longitud_bloque,offset);
 
         //printf("Saving ZSF_GENERIC_LINEAR_MEM segment: %d length: %d offset: %d\n",segment,longitud_bloque,offset);
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_GENERIC_LINEAR_MEM, longitud_bloque+6);
-        
+
     }
 
 
 
- 
-  
+
+
   free(compressed_ramblock);
 
 
-  }    
+  }
 
 
 if (MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
@@ -4996,15 +4996,15 @@ if (MACHINE_IS_SG1000 || MACHINE_IS_COLECO) {
 
     snap_aux_save_vdp_9918a_conf(vdpconfblock);
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);  
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);
 
 
 
 
 
-   
+
 int longitud_ram=16384;
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5044,7 +5044,7 @@ Byte Fields:
 
 
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_VDP_9918A_VRAM, longitud_bloque+5);
 
 
@@ -5066,7 +5066,7 @@ Byte Fields:
 
   int segment;
 
-  
+
 
     for (segment=0;segment<4;segment++) {
 
@@ -5088,17 +5088,17 @@ Byte Fields:
 
         debug_printf(VERBOSE_DEBUG,"Saving ZSF_GENERIC_LINEAR_MEM segment: %d length: %d",segment,longitud_bloque);
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_GENERIC_LINEAR_MEM, longitud_bloque+6);
-        
-      
+
+
 
     }
-  
+
   free(compressed_ramblock);
 
 
-  }  
+  }
 
 
 if (MACHINE_IS_SMS) {
@@ -5117,7 +5117,7 @@ Byte fields:
 5 flags:
 bit 0: Si sms_writing_cram
 6: index_sms_escritura_cram
-*/    
+*/
 
     smsconfblock[0]=sms_mapper_type;
     smsconfblock[1]=sms_mapper_FFFC;
@@ -5139,15 +5139,15 @@ bit 0: Si sms_writing_cram
 
     snap_aux_save_vdp_9918a_conf(vdpconfblock);
 
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);   
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, vdpconfblock,ZSF_VDP_9918A_CONF, VDP_9918A_TOTAL_REGISTERS+9);
 
 
 
 
 
-   
+
 int longitud_ram=16384;
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5186,7 +5186,7 @@ Byte Fields:
 
 
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_VDP_9918A_VRAM, longitud_bloque+5);
 
 
@@ -5226,10 +5226,10 @@ Byte Fields:
 
         debug_printf(VERBOSE_DEBUG,"Saving ZSF_SMS_ROMBLOCK segment: %d length: %d",segment,longitud_bloque);
 
-        
+
         zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SMS_ROMBLOCK, longitud_bloque+6);
-        
-      
+
+
 
     }
 
@@ -5250,16 +5250,16 @@ Byte Fields:
 
     debug_printf(VERBOSE_DEBUG,"Saving ZSF_SMS_RAMBLOCK segment: %d length: %d",segment,longitud_bloque);
 
-    
-    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SMS_RAMBLOCK, longitud_bloque+6);
-        
-          
 
-  
+    zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, compressed_ramblock,ZSF_SMS_RAMBLOCK, longitud_bloque+6);
+
+
+
+
   free(compressed_ramblock);
 
 
-  }  
+  }
 
 
 if (MACHINE_IS_TBBLUE) {
@@ -5301,7 +5301,7 @@ if (MACHINE_IS_TBBLUE) {
 
 
 ....
-*/    
+*/
 
   tbblueconfblock[0]=tbblue_last_register;
   int i;
@@ -5313,7 +5313,7 @@ if (MACHINE_IS_TBBLUE) {
 
   tbblueconfblock[260+0]=diviface_current_ram_memory_bits;
   tbblueconfblock[260+1]=diviface_control_register;
-  tbblueconfblock[260+2]=diviface_paginacion_automatica_activa.v | (divmmc_diviface_enabled.v<<1) | (divmmc_mmc_ports_enabled.v<<2) | (divide_diviface_enabled.v<<3) | (divide_ide_ports_enabled.v<<4); 
+  tbblueconfblock[260+2]=diviface_paginacion_automatica_activa.v | (divmmc_diviface_enabled.v<<1) | (divmmc_mmc_ports_enabled.v<<2) | (divide_diviface_enabled.v<<3) | (divide_ide_ports_enabled.v<<4);
 
   tbblueconfblock[263]=value_16_to_8l(tbblue_copper_pc);
   tbblueconfblock[263+1]=value_16_to_8h(tbblue_copper_pc);
@@ -5422,13 +5422,13 @@ Byte fields:
     util_store_value_little_endian(&tbbluepalettesblock[512+offs],tbblue_palette_ula_second[i]);
 
     util_store_value_little_endian(&tbbluepalettesblock[1024+offs],tbblue_palette_layer2_first[i]);
-    util_store_value_little_endian(&tbbluepalettesblock[1536+offs],tbblue_palette_layer2_second[i]);    
+    util_store_value_little_endian(&tbbluepalettesblock[1536+offs],tbblue_palette_layer2_second[i]);
 
     util_store_value_little_endian(&tbbluepalettesblock[2048+offs],tbblue_palette_sprite_first[i]);
-    util_store_value_little_endian(&tbbluepalettesblock[2560+offs],tbblue_palette_sprite_second[i]);       
+    util_store_value_little_endian(&tbbluepalettesblock[2560+offs],tbblue_palette_sprite_second[i]);
 
     util_store_value_little_endian(&tbbluepalettesblock[3072+offs],tbblue_palette_tilemap_first[i]);
-    util_store_value_little_endian(&tbbluepalettesblock[3584+offs],tbblue_palette_tilemap_second[i]);        
+    util_store_value_little_endian(&tbbluepalettesblock[3584+offs],tbblue_palette_tilemap_second[i]);
   }
 
 
@@ -5444,9 +5444,9 @@ Byte fields:
 
    int longitud_ram=16384;
 
-   //Grabamos 
+   //Grabamos
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5467,7 +5467,7 @@ Byte Fields:
 6 and next bytes: data bytes
   */
 
-  int paginas=tbblue_get_current_ram()/16; //paginas de 16kb 
+  int paginas=tbblue_get_current_ram()/16; //paginas de 16kb
   z80_byte ram_page;
 
   for (ram_page=0;ram_page<paginas;ram_page++) {
@@ -5494,7 +5494,7 @@ Byte Fields:
   free(compressed_ramblock);
 
 
-  }  
+  }
 
 if (MACHINE_IS_CPC) {
   //Configuracion
@@ -5513,7 +5513,7 @@ Byte fields:
 56: Border color
 57: last crtc selected register
 
-*/    
+*/
 
 
   int i;
@@ -5534,7 +5534,7 @@ Byte fields:
   //Paginas de memoria
   int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5551,7 +5551,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -5581,7 +5581,7 @@ Byte Fields:
 
   free(compressed_ramblock);
 
-  
+
 }
 
 
@@ -5601,7 +5601,7 @@ Byte fields:
 7: pcw_port_f7_value
 8: pcw_port_f8_value
 
-*/    
+*/
 
 
 
@@ -5623,7 +5623,7 @@ Byte fields:
   //Paginas de memoria
   int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5640,7 +5640,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -5670,9 +5670,9 @@ Byte Fields:
 
   free(compressed_ramblock);
 
-  
 
-  
+
+
 }
 
 
@@ -5689,7 +5689,7 @@ Byte fields:
 0:255: tsconf_af_ports[256];
 256-1279: tsconf_fmaps
 
-*/    
+*/
 
     int i;
     for (i=0;i<256;i++) tsconfconfblock[i]=tsconf_af_ports[i];
@@ -5701,7 +5701,7 @@ Byte fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5718,7 +5718,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
@@ -5795,10 +5795,10 @@ Byte fields:
 
       zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, sncontents,ZSF_SNCHIP, 16);
     }
-  
+
 
  //DIVMMC/DIVIDE config
- //Solo si diviface esta habilitado 
+ //Solo si diviface esta habilitado
  //Esta parte tiene que estar despues de definir y cargar memoria de maquinas, sobre el final del archivo ZSF
 
  //TODO: no estoy seguro que esto no haga falta para tbblue . probablemente tendra que ver con la manera peculiar de paginar tbblue
@@ -5811,12 +5811,12 @@ Byte fields:
 
 0: Memory size: Value of 2=32 kb, 3=64 kb, 4=128 kb, 5=256 kb, 6=512 kb
 1: Diviface control register
-2: Status bits: 
-  Bit 0=If entered automatic divmmc paging. 
+2: Status bits:
+  Bit 0=If entered automatic divmmc paging.
   Bit 1=If divmmc interface is enabled
   Bit 2=If divmmc ports are enabled
   Bit 3=If divide interface is enabled
-  Bit 4=If divide ports are enabled  
+  Bit 4=If divide ports are enabled
   Bits 5-7: unused by now
 */
 
@@ -5824,11 +5824,11 @@ Byte fields:
 
   divifaceblock[0]=diviface_current_ram_memory_bits;
   divifaceblock[1]=diviface_control_register;
-  divifaceblock[2]=diviface_paginacion_automatica_activa.v | (divmmc_diviface_enabled.v<<1) | (divmmc_mmc_ports_enabled.v<<2) | (divide_diviface_enabled.v<<3) | (divide_ide_ports_enabled.v<<4); 
+  divifaceblock[2]=diviface_paginacion_automatica_activa.v | (divmmc_diviface_enabled.v<<1) | (divmmc_mmc_ports_enabled.v<<2) | (divide_diviface_enabled.v<<3) | (divide_ide_ports_enabled.v<<4);
 
   zsf_write_block(ptr_zsf_file,&destination_memory,longitud_total, divifaceblock,ZSF_DIVIFACE_CONF, 3);
 
-  //memoria divmmc solo en el caso que no sea ni zxuno, ni tbblue ni prism 
+  //memoria divmmc solo en el caso que no sea ni zxuno, ni tbblue ni prism
   if (!MACHINE_IS_ZXUNO && !MACHINE_IS_TBBLUE && !MACHINE_IS_PRISM) {
   /*
 
@@ -5837,7 +5837,7 @@ A ram binary block for diviface memory
 Byte Fields:
 0: Flags. Currently: bit 0: if compressed with repetition block DD DD YY ZZ, where
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
-1: ram block id 
+1: ram block id
 2 and next bytes: data bytes
   */
 
@@ -5878,7 +5878,7 @@ Byte Fields:
 
 
  }
- 
+
  //DIVMMC/DIVIDE memoria. En caso de maquinas que no son zxuno o tbblue o prism (dado que estas paginan memoria divmmc en su espacio de ram)
 
 
@@ -5894,7 +5894,7 @@ Byte fields:
 0: unsigned char ql_pc_intr;
 1: unsigned char ql_mc_stat;
 
-*/    
+*/
     qlconfblock[0]=ql_pc_intr;
     qlconfblock[1]=ql_mc_stat;
 
@@ -5908,7 +5908,7 @@ Byte fields:
 
    int longitud_ram=16384;
 
-  
+
    //Para el bloque comprimido
    z80_byte *compressed_ramblock=malloc(longitud_ram*2);
   if (compressed_ramblock==NULL) {
@@ -5925,7 +5925,7 @@ Byte Fields:
     YY is the byte to repeat and ZZ the number of repetitions (0 means 256)
 1,2: Block start address (currently unused)
 3,4: Block lenght
-5: ram block id 
+5: ram block id
 6 and next bytes: data bytes
   */
 
