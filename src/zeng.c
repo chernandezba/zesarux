@@ -796,8 +796,13 @@ Poder enviar mensajes a otros jugadores
                         printf("socket %d finished %d\n",i,zeng_send_snapshot_uno_concreto_array[i].finished);
                         if (zeng_send_snapshot_uno_concreto_array[i].finished==0) finished=0;
                         else {
-                            //Si tiene valor 2, es que ya esta enviada la accion de cancel
-                            //pthread_cancel(s_zeng_send_snapshot_uno_concreto_array[i].thread);
+                            //Si tiene valor 2, es que ya se ha liberado la memoria del thread
+                           if (zeng_send_snapshot_uno_concreto_array[i].finished!=2) {
+                                   zeng_send_snapshot_uno_concreto_array[i].finished=2;
+                                   //liberar memoria
+                                   printf("liberando memoria thread\n");
+                                   pthread_join(zeng_send_snapshot_uno_concreto_array[i].thread,NULL);
+                           }
                         }
                     }
                     if (!finished) usleep(1000); //dormir 1 ms
