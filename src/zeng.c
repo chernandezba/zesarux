@@ -691,6 +691,8 @@ void zeng_send_snapshot_uno_concreto(int indice_socket)
 
 }
 
+int temp_memoria_asignada=0;
+int temp_memoria_liberada=0;
 
 void *thread_zeng_function(void *nada GCC_UNUSED)
 {
@@ -804,8 +806,16 @@ Poder enviar mensajes a otros jugadores
 
                 printf("all snapshot sending finished. freeing snapshot memory\n\n");
 
-				free(zeng_send_snapshot_mem_hexa);
-				zeng_send_snapshot_mem_hexa=NULL;
+                //solo liberar memoria si no ha habido error, porque si no corremos el riesgo de liberar
+                //memoria que aun pueda estar usando algun thread de envio de snapshot
+                if (!error_desconectar) {
+                    free(zeng_send_snapshot_mem_hexa);
+                    zeng_send_snapshot_mem_hexa=NULL;
+
+                    temp_memoria_liberada++;
+                    printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+
+                }
 
 			}
 		}
@@ -849,6 +859,8 @@ void zeng_force_reconnect(void)
 }
 
 //Enviar estado actual de la maquina como snapshot a maquina remota
+
+
 void zeng_send_snapshot_if_needed(void)
 {
 
@@ -892,6 +904,8 @@ void zeng_send_snapshot_if_needed(void)
   					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
 
 
+                    temp_memoria_asignada++;
+                    printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
 
 					zeng_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 
