@@ -47,11 +47,11 @@ Improved ZX Vision
 - Allow to use your own charset file on ZX Vision
 - Allow to get charset from a game and use as your own charset file on ZX Vision
 - Allow to press ESC when selecting a line on a history items
-- Set machine icon now shows machine indicated by parameter + an arrow
 
 Improved ZX Desktop
 - When switching to full screen and disable ZX Desktop, windows are restored after disabling full screen
 - Allow to disable border and footer when switching to full screen
+- Set machine icon now is dynamic and shows machine icon indicated by parameter + an arrow
 
 Improved Process Management: allow to copy any windows contents to internal clipboard
 
