@@ -314,20 +314,29 @@ z80_int tbblue_layer_sprites[TBBLUE_LAYERS_PIXEL_WIDTH];
 
 z80_byte tbblue_machine_id=8;
 
+//Algunos de estos ID solo tienen sentido con core superior al que soporta ZEsarUX 10.10
 struct s_tbblue_machine_id_definition tbblue_machine_id_list[]=
 {
-	{1,               "DE-1"},
-	{2,               "DE-2"},
-	{5,               "FBLabs"},
-	{6,               "VTrucco"},
-	{7,               "WXEDA"},
-	{8,               "Emulators"},
-	{10,              "ZX Spectrum Next"},
-	{11,              "Multicore"},
-	{0xea,            "ZX DOS"},
-	{250,             "ZX Spectrum Next Antibrick"},
+    {1,               "DE-1"},
+    {2,               "DE-2"},
+    {5,               "FBLabs"},
+    {6,               "VTrucco"},
+    {7,               "WXEDA"},
+    {11,              "Multicore"},
 
- 	{255,""}
+    {8,               "Emulators"},
+
+    {10,              "ZX Spectrum Next"},
+    {0xfa,            "ZX Spectrum Next Antibrick"},
+
+    {0x9a,            "UnAmiga Reloaded"},
+    {0xaa,            "UnAmiga"},
+    {0xba,            "SiDi"},
+    {0xca,            "MIST"},
+    {0xda,            "MiSTer"},
+    {0xea,            "ZX-DOS"},
+
+    {255,""}
 };
 
 

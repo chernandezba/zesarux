@@ -62,7 +62,6 @@ Improved ZENG:
 - Sync flash state between instances
 
 Improved ZX Spectrum Next emulation:
-- Allow to boot NextZXOS v2.07l
 - Updated machine id list
 
 Fixed several memory leaks:
