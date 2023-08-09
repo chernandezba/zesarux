@@ -71,6 +71,8 @@ Fixed several memory leaks:
 - Using the Speccy online browser
 - Running the Hilow Audio Convert
 - Enabling ZRCP
+- Downloading ZEsarUX extras
+- Downloading ZX Spectrum Next MMC image
 
 Fixed ZX Vision relocation windows
 
