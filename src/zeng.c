@@ -1004,6 +1004,9 @@ void *zeng_enable_thread_function(void *nada GCC_UNUSED)
 		return 0;
 	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_zeng);
+
 
 	zeng_enabled.v=1;
 
@@ -1045,6 +1048,9 @@ void zeng_enable(void)
 		debug_printf(VERBOSE_ERR,"Can not create zeng connect pthread");
 		return;
 	}
+
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(zeng_thread_connect);
 
 #endif
 
