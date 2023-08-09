@@ -14908,6 +14908,9 @@ int menu_zsock_http(char *host, char *url,int *http_code,char **mem,int *t_leido
 		return -1;
 	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(menu_zsock_http_thread);
+
 #endif
 
 

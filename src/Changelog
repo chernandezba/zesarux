@@ -68,6 +68,7 @@ Improved ZX Spectrum Next emulation:
 Fixed ZX Vision relocation windows
 Fixed memory leak error when drawing Text Aventure Map
 Fixed memory leak when loading .Z80 snapshots
+Fixed memory leak when using the Speccy online browser
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
