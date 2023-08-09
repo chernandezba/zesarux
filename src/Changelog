@@ -73,6 +73,8 @@ Fixed several memory leaks:
 - Enabling ZRCP
 - Downloading ZEsarUX extras
 - Downloading ZX Spectrum Next MMC image
+- Syncing file image from File Utilities
+- Copying a folder from File Utilities
 
 Fixed ZX Vision relocation windows
 

@@ -2317,6 +2317,9 @@ void menu_filesel_copy_recursive_start(char *archivo,char *nombre_final,int simu
                 return;
         }
 
+        //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+        pthread_detach(menu_copying_recurse_progress_thread);
+
 
         contador_menu_copying_recurse_progress_print=0;
         zxvision_simple_progress_window("Copying", menu_copying_recurse_progress_cond,menu_copying_recurse_progress_print );
