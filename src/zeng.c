@@ -235,9 +235,11 @@ int zeng_connect_remotes(void)
 
     zeng_total_remotes=0;
 
-    int puerto=zeng_remote_port;
+
 
     while (*puntero_hostname) {
+
+        int puerto=zeng_remote_port;
 
         //Obtener nombre hasta ","
         char *existe=strstr(puntero_hostname,",");
@@ -261,8 +263,19 @@ int zeng_connect_remotes(void)
         }
 
 
+        //Ver si se indica puerto con ":"
+        char *existe_puerto=strstr(buffer_hostname,":");
 
-        printf("Conectando a %s\n",buffer_hostname);
+        if (existe_puerto!=NULL) {
+            *existe_puerto=0; //fijar fin de caracter
+
+            //Y leer puerto
+            existe_puerto++;
+            puerto=parse_string_to_number(existe_puerto);
+        }
+
+
+        printf("Conectando a %s:%d\n",buffer_hostname,puerto);
 
 
 
@@ -270,7 +283,9 @@ int zeng_connect_remotes(void)
 		int indice_socket=z_sock_open_connection(buffer_hostname,puerto,0,"");
 
 		if (indice_socket<0) {
-			debug_printf(VERBOSE_ERR,"%s",z_sock_get_error(indice_socket));
+			debug_printf(VERBOSE_ERR,"Error connecting to %s:%d. %s",
+                buffer_hostname,puerto,
+                z_sock_get_error(indice_socket));
 			return 0;
 		}
 

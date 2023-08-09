@@ -14388,7 +14388,9 @@ void menu_zeng(MENU_ITEM_PARAMETERS)
 			menu_tape_settings_trunc_name(zeng_remote_hostname,string_host_shown,16);
 			menu_add_item_menu_format(array_menu_common,MENU_OPCION_NORMAL,menu_zeng_host,menu_zeng_host_cond,"[%s] Remote ~~Hosts",string_host_shown);
             menu_add_item_menu_tooltip(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them");
-            menu_add_item_menu_ayuda(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them");
+            menu_add_item_menu_ayuda(array_menu_common,"You may specifify several hosts separated with comma (,) and no whitespace between them. "
+                "You can also specify a different port using format host:port"
+                );
 			menu_add_item_menu_shortcut(array_menu_common,'h');
 
 
