@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -35,6 +35,7 @@ extern char *bitmap_button_ext_desktop_smartload[];
 extern char *bitmap_button_ext_desktop_snapshot[];
 extern char *bitmap_button_ext_desktop_machine[];
 extern char *bitmap_button_ext_desktop_set_machine[];
+extern char *bitmap_button_ext_desktop_set_machine_only_arrow[];
 extern char *bitmap_button_ext_desktop_audio[];
 extern char *bitmap_button_ext_desktop_display[];
 extern char *bitmap_button_ext_desktop_storage[];

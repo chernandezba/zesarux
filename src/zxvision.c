@@ -5700,6 +5700,26 @@ void menu_ext_desktop_draw_configurable_icon(int index_icon,int pulsado)
         if (possible_bitmap!=NULL) bitmap=possible_bitmap;
     }
 
+    //Si icono es F_FUNCION_SET_MACHINE y tiene parametro de set machine, dibujamos el icono de la maquina y luego la "flechita"
+    if (defined_direct_functions_array[id_accion].id_funcion==F_FUNCION_SET_MACHINE) {
+
+
+        char *machine_name;
+        machine_name=zxdesktop_configurable_icons_list[index_icon].extra_info;
+
+        if (machine_name[0]) {
+
+            //Obtener bitmap en base al parametro
+            bitmap=get_machine_icon_by_name(machine_name);
+
+            menu_draw_ext_desktop_one_icon(x,y,bitmap);
+
+
+            bitmap=bitmap_button_ext_desktop_set_machine_only_arrow;
+        }
+
+    }
+
 
     menu_draw_ext_desktop_one_icon(x,y,bitmap);
 

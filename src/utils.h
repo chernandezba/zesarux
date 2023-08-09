@@ -266,7 +266,7 @@ enum util_teclas
 	UTIL_KEY_BACKSPACE,
 	UTIL_KEY_FIRE,
 	UTIL_KEY_LEFT,
-	UTIL_KEY_RIGHT,   
+	UTIL_KEY_RIGHT,
 	UTIL_KEY_DOWN,
 	UTIL_KEY_UP,
 	UTIL_KEY_TAB,
@@ -291,7 +291,7 @@ enum util_teclas
 	UTIL_KEY_ESC,
 	UTIL_KEY_PAGE_UP,
 	UTIL_KEY_PAGE_DOWN,
-	UTIL_KEY_KP_PLUS,    
+	UTIL_KEY_KP_PLUS,
     UTIL_KEY_KP_NUMLOCK,
     UTIL_KEY_KP_DIVIDE,
     UTIL_KEY_KP_MULTIPLY,
@@ -510,14 +510,14 @@ Amstrad
 Ascii Corp
 Cambridge Computers
 Chloe Corporation
-Coleco Industries  
+Coleco Industries
 Investronica
 Jupiter Cantab
 Mario Prato
 Microdigital Eletronica
 Miles Gordon Technology
 NedoPC
-New Horizons   
+New Horizons
 Pentagon
 Science of Cambridge
 Sega
@@ -590,7 +590,7 @@ typedef struct s_subzone_info subzone_info;
 
 
 //Tabla para guardar configuracion de geometria de ventanas
-struct s_saved_config_window_geometry 
+struct s_saved_config_window_geometry
 {
 	char nombre[MAX_NAME_WINDOW_GEOMETRY];
 	int x,y,ancho,alto,is_minimized,is_maximized,width_before_max_min_imize,height_before_max_min_imize;
@@ -670,6 +670,7 @@ extern int util_parse_commands_argvc(char *texto, char *parm_argv[], int maximo)
 extern int util_parse_commands_argvc_comillas(char *texto, char *parm_argv[], int maximo);
 
 extern int get_machine_id_by_name(char *machine_name);
+extern char **get_machine_icon_by_name(char *machine_name);
 extern void get_machine_list_whitespace(void);
 
 extern void util_truncate_file(char *filename);
@@ -830,7 +831,7 @@ extern void snapshot_get_date_time_string(char *texto);
 
 
 #define MEMORY_ZONE_NUM_FILE_ZONE 16
-#define MEMORY_ZONE_NUM_TBBLUE_COPPER 17 
+#define MEMORY_ZONE_NUM_TBBLUE_COPPER 17
 #define MEMORY_ZONE_NUM_TIMEX_EX 18
 #define MEMORY_ZONE_NUM_TIMEX_DOCK 19
 
@@ -848,7 +849,7 @@ extern void snapshot_get_date_time_string(char *texto);
 
 #define MEMORY_ZONE_SAMRAM 30
 
-#define MEMORY_ZONE_NUM_TBBLUE_SPRITES 31 
+#define MEMORY_ZONE_NUM_TBBLUE_SPRITES 31
 
 #define MEMORY_ZONE_SMS_VRAM 32
 
@@ -889,7 +890,7 @@ extern void util_normalize_query_http(char *orig,char *dest);
 extern int util_extract_scl(char *sclname, char *dest_dir);
 extern int util_extract_zip(char *zipname, char *dest_dir);
 
-extern void util_realtape_browser(char *filename, char *texto_browser,int maxima_longitud_texto,char *tap_output, 
+extern void util_realtape_browser(char *filename, char *texto_browser,int maxima_longitud_texto,char *tap_output,
                                     long *array_block_positions,int max_array_block_positions,int *codigo_retorno);
 
 extern void util_get_host_url(char *url, char *host);

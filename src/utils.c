@@ -153,6 +153,7 @@
 #include "dsk.h"
 #include "plus3dos_handler.h"
 #include "pcw.h"
+#include "menu_bitmaps.h"
 
 //Archivo usado para entrada de teclas
 FILE *ptr_input_file_keyboard;
@@ -11256,79 +11257,80 @@ void customconfig_help(void)
 	);
 }
 
-//Nombres cortos de maquinas y sus id
+//Nombres cortos de maquinas y sus id y su icono
 struct s_machines_short_names_id {
         char machine_name[32];
         int machine_id;
+        char **bitmap;
 };
 
 //Finaliza con machine_id -1
 struct s_machines_short_names_id machines_short_names_id[]={
-   {"16k",0},
-   {"48k",1},
-   {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG},
-   {"48ks",20},
-   {"Inves",2},
-   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X},
-   {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA},
-   {"TK95",MACHINE_ID_MICRODIGITAL_TK95},
-   {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA},
-   {"128k",6},
-   {"128ks",7},
-   {"P2",8},
-   {"P2F",9},
-   {"P2S",10},
+   {"16k",0,bitmap_button_ext_desktop_my_machine_gomas},
+   {"48k",1,bitmap_button_ext_desktop_my_machine_gomas},
+   {"48kp",MACHINE_ID_SPECTRUM_48_PLUS_ENG,bitmap_button_ext_desktop_my_machine_gomas},
+   {"48ks",20,bitmap_button_ext_desktop_my_machine_gomas},
+   {"Inves",2,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK90X",MACHINE_ID_MICRODIGITAL_TK90X,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK90XS",MACHINE_ID_MICRODIGITAL_TK90X_SPA,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK95",MACHINE_ID_MICRODIGITAL_TK95,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK95S",MACHINE_ID_MICRODIGITAL_TK95_SPA,bitmap_button_ext_desktop_my_machine_gomas},
+   {"128k",6,bitmap_button_ext_desktop_my_machine_gomas},
+   {"128ks",7,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P2",8,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P2F",9,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P2S",10,bitmap_button_ext_desktop_my_machine_gomas},
 
-   {"P2A40",11},
-   {"P2A41",12},
-   {"P2AS",13},
-   {"ZXUNO",14},
-   {"Chloe140",15},
-   {"Chloe280",16},
-   {"TC2048",MACHINE_ID_TIMEX_TC2048},
-   {"TC2068",MACHINE_ID_TIMEX_TC2068},
-   {"TS2068",MACHINE_ID_TIMEX_TS2068},
-   {"Prism",18},
-   {"TBBlue",19},
+   {"P2A40",11,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P2A41",12,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P2AS",13,bitmap_button_ext_desktop_my_machine_gomas},
+   {"ZXUNO",14,bitmap_button_ext_desktop_my_machine_gomas},
+   {"Chloe140",15,bitmap_button_ext_desktop_my_machine_gomas},
+   {"Chloe280",16,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TC2048",MACHINE_ID_TIMEX_TC2048,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TC2068",MACHINE_ID_TIMEX_TC2068,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TS2068",MACHINE_ID_TIMEX_TS2068,bitmap_button_ext_desktop_my_machine_gomas},
+   {"Prism",18,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TBBlue",19,bitmap_button_ext_desktop_my_machine_gomas},
 
-   {"Pentagon",21},
-   {"Chrome",MACHINE_ID_CHROME},
-   {"BaseConf",MACHINE_ID_BASECONF},
-   {"TSConf",MACHINE_ID_TSCONF},
-   {"P340",MACHINE_ID_SPECTRUM_P3_40},
-   {"P341",MACHINE_ID_SPECTRUM_P3_41},
-   {"P3S",MACHINE_ID_SPECTRUM_P3_SPA},
-   {"ZX80",MACHINE_ID_ZX80},
-   {"ZX81",121},
-   {"ACE",122},
-   {"TS1000",MACHINE_ID_TIMEX_TS1000},
-   {"TS1500",MACHINE_ID_TIMEX_TS1500},
-   {"TK80",MACHINE_ID_MICRODIGITAL_TK80},
-   {"TK82",MACHINE_ID_MICRODIGITAL_TK82},
-   {"TK82C",MACHINE_ID_MICRODIGITAL_TK82C},
-   {"TK83",MACHINE_ID_MICRODIGITAL_TK83},
-   {"TK85",MACHINE_ID_MICRODIGITAL_TK85},
+   {"Pentagon",21,bitmap_button_ext_desktop_my_machine_gomas},
+   {"Chrome",MACHINE_ID_CHROME,bitmap_button_ext_desktop_my_machine_gomas},
+   {"BaseConf",MACHINE_ID_BASECONF,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TSConf",MACHINE_ID_TSCONF,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P340",MACHINE_ID_SPECTRUM_P3_40,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P341",MACHINE_ID_SPECTRUM_P3_41,bitmap_button_ext_desktop_my_machine_gomas},
+   {"P3S",MACHINE_ID_SPECTRUM_P3_SPA,bitmap_button_ext_desktop_my_machine_gomas},
+   {"ZX80",MACHINE_ID_ZX80,bitmap_button_ext_desktop_my_machine_zx80},
+   {"ZX81",121,bitmap_button_ext_desktop_my_machine_zx81},
+   {"ACE",122,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TS1000",MACHINE_ID_TIMEX_TS1000,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TS1500",MACHINE_ID_TIMEX_TS1500,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK80",MACHINE_ID_MICRODIGITAL_TK80,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK82",MACHINE_ID_MICRODIGITAL_TK82,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK82C",MACHINE_ID_MICRODIGITAL_TK82C,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK83",MACHINE_ID_MICRODIGITAL_TK83,bitmap_button_ext_desktop_my_machine_gomas},
+   {"TK85",MACHINE_ID_MICRODIGITAL_TK85,bitmap_button_ext_desktop_my_machine_gomas},
 
-   {"Z88",130},
-   {"CPC464",MACHINE_ID_CPC_464},
-   {"CPC4128",MACHINE_ID_CPC_4128},
-   {"CPC664",MACHINE_ID_CPC_664},
-   {"CPC6128",MACHINE_ID_CPC_6128},
-   {"PCW8256",MACHINE_ID_PCW_8256},
-   {"PCW8512",MACHINE_ID_PCW_8512},
-   {"SAM",150},
-   {"QL",160},
-   {"MK14",MACHINE_ID_MK14_STANDARD},
+   {"Z88",130,bitmap_button_ext_desktop_my_machine_gomas},
+   {"CPC464",MACHINE_ID_CPC_464,bitmap_button_ext_desktop_my_machine_gomas},
+   {"CPC4128",MACHINE_ID_CPC_4128,bitmap_button_ext_desktop_my_machine_gomas},
+   {"CPC664",MACHINE_ID_CPC_664,bitmap_button_ext_desktop_my_machine_gomas},
+   {"CPC6128",MACHINE_ID_CPC_6128,bitmap_button_ext_desktop_my_machine_gomas},
+   {"PCW8256",MACHINE_ID_PCW_8256,bitmap_button_ext_desktop_my_machine_gomas},
+   {"PCW8512",MACHINE_ID_PCW_8512,bitmap_button_ext_desktop_my_machine_gomas},
+   {"SAM",150,bitmap_button_ext_desktop_my_machine_gomas},
+   {"QL",160,bitmap_button_ext_desktop_my_machine_gomas},
+   {"MK14",MACHINE_ID_MK14_STANDARD,bitmap_button_ext_desktop_my_machine_gomas},
 
-   {"MSX1",MACHINE_ID_MSX1},
-   {"COLECO",MACHINE_ID_COLECO},
-   {"SG1000",MACHINE_ID_SG1000},
-   {"SMS",MACHINE_ID_SMS},
-   {"SVI318",MACHINE_ID_SVI_318},
-   {"SVI328",MACHINE_ID_SVI_328},
+   {"MSX1",MACHINE_ID_MSX1,bitmap_button_ext_desktop_my_machine_gomas},
+   {"COLECO",MACHINE_ID_COLECO,bitmap_button_ext_desktop_my_machine_gomas},
+   {"SG1000",MACHINE_ID_SG1000,bitmap_button_ext_desktop_my_machine_gomas},
+   {"SMS",MACHINE_ID_SMS,bitmap_button_ext_desktop_my_machine_gomas},
+   {"SVI318",MACHINE_ID_SVI_318,bitmap_button_ext_desktop_my_machine_gomas},
+   {"SVI328",MACHINE_ID_SVI_328,bitmap_button_ext_desktop_my_machine_gomas},
 
    //Fin
-   {"",-1}
+   {"",-1,bitmap_button_ext_desktop_my_machine_gomas}
 };
 
 
@@ -11350,6 +11352,26 @@ int get_machine_id_by_name(char *machine_name)
         //no encontrado
         debug_printf (VERBOSE_ERR,"Unknown machine %s",machine_name);
         return -1;
+
+}
+
+char **get_machine_icon_by_name(char *machine_name)
+{
+
+        int i=0;
+
+        while (machines_short_names_id[i].machine_id>=0) {
+
+                if (!strcasecmp(machines_short_names_id[i].machine_name,machine_name)) {
+                        return machines_short_names_id[i].bitmap;
+                }
+
+                i++;
+        }
+
+        //no encontrado
+        debug_printf (VERBOSE_ERR,"Unknown machine %s",machine_name);
+        return bitmap_button_ext_desktop_my_machine_gomas;
 
 }
 
