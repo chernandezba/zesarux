@@ -6389,6 +6389,8 @@ void init_remote_protocol(void)
 		debug_printf(VERBOSE_ERR,"Can not create remote protocol pthread");
 	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(thread_remote_protocol);
 
 	thread_remote_inicializado.v=1;
 	remote_protocol_ended.v=0;
