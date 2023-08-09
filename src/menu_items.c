@@ -32532,7 +32532,7 @@ void menu_hilow_convert_audio_run_thread(void)
     }
 
 	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
-	pthread_detach(menu_zsock_http_thread);
+	pthread_detach(hilow_convert_audio_thread);
 }
 
 //Detener el thread
