@@ -3013,8 +3013,13 @@ char *find_space_or_end(char *s)
 void remote_cerrar_conexion(void)
 {
 
+    printf("Remote cerrar conexion\n");
+
     //TODO
     //gestionar cada sock_connected_client de cada conexion
+    //realmente para que? si ya se cierra la conexion porque se cierra el emulador...
+    //Esto por ejemplo si desactivamos ZRCP desde menu y hay conexiones activas, no se cierran si no hacemos nada aqui...
+    //Aqui se deberian cerrar tanto los sockets como finalizar los threads que los gestionan
     return;
 
 
