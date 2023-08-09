@@ -348,3 +348,6 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 -por que docker de fedora va con sdl2?
 
 -que juego o programa para esta edición?
+
+
+-completar tabla machines_short_names_id  desde old_menu_ext_desktop_draw_configurable_icon_return_machine_icon

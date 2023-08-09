@@ -5431,6 +5431,18 @@ void menu_draw_ext_desktop_one_configurable_icon_background(int xinicio,int yini
 
 char **menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
 {
+    char buffer_name[255];
+
+    get_machine_config_name_by_number(buffer_name,current_machine_type);
+
+    return get_machine_icon_by_name(buffer_name);
+
+}
+
+
+
+char **old_menu_ext_desktop_draw_configurable_icon_return_machine_icon(void)
+{
 
     char **bitmap;
 
