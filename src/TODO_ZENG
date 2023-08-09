@@ -26,9 +26,9 @@ target renegade se desfasa muy seguido
 
 
 -pruebas iniciales con gente remota:
-cliente remoto con Mac en Nueva Zelanda NZ, 200 Mbit/100 fibra, conectado por wifi, actuando como master
-cliente remoto con Linux en Spain (SP), 100 MBit simétrico fibra, conectado por ethernet, actuando como master
-mi imac Local, actuando como slave
+Un entorno con cliente remoto con Mac en Nueva Zelanda NZ, 200 Mbit/100 fibra, conectado por wifi, actuando como master
+Un entorno con cliente remoto con Linux en Spain (SP), 100 MBit simétrico fibra, conectado por ethernet, actuando como master
+En ambos entornos, mi imac Local, actuando como slave
 *international match day: SP va fina. NZ a veces fina y otras no (del estilo de no tener snapshot hasta al cabo de 20 segundos o mas)
 *target renegade: desfase en NZ, dificil jugar. En SP peta al enviar snapshot. Quiza problema buffer snapshot?
 *bubble bobble: algo de desfase en SP pero se puede jugar

@@ -553,6 +553,9 @@ void zeng_send_keys_onehost(int index_socket)
         return;
 	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(zeng_send_keys_onehost_array[index_socket].thread);
+
 
 }
 
@@ -589,12 +592,14 @@ int zeng_send_keys(zeng_key_presses *elemento)
             printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
             if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
             else {
+		    /*
                 if (zeng_send_keys_onehost_array[i].finished!=2) {
                     zeng_send_keys_onehost_array[i].finished=2;
                     //liberar memoria
                     printf("liberando memoria thread\n");
                     pthread_join(zeng_send_keys_onehost_array[i].thread,NULL);
                 }
+		*/
             }
         }
         if (!finished) usleep(1000); //dormir 1 ms
@@ -691,6 +696,8 @@ void zeng_send_snapshot_uno_concreto(int indice_socket)
         zeng_send_snapshot_uno_concreto_array[indice_socket].finished=1;
         return;
     }
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(zeng_send_snapshot_uno_concreto_array[indice_socket].thread);
 
 
 }
@@ -801,12 +808,14 @@ Poder enviar mensajes a otros jugadores
                         if (zeng_send_snapshot_uno_concreto_array[i].finished==0) finished=0;
                         else {
                             //Si tiene valor 2, es que ya se ha liberado la memoria del thread
+			    /*
                            if (zeng_send_snapshot_uno_concreto_array[i].finished!=2) {
                                    zeng_send_snapshot_uno_concreto_array[i].finished=2;
                                    //liberar memoria
                                    printf("liberando memoria thread\n");
                                    pthread_join(zeng_send_snapshot_uno_concreto_array[i].thread,NULL);
                            }
+			   */
                         }
                     }
                     if (!finished) usleep(1000); //dormir 1 ms
