@@ -4,10 +4,9 @@ This is a special edition. Version is called "X" (actually is 10.10)
 
 Added Docker support
 Added new compiled versions: Ubuntu and Fedora
-Added screen previews of directories and compressed files
-Added flash support on screen previews
+Added screen previews of directories and compressed files on File Selector
+Added flash support on screen previews on File Selector
 Added ZX Desktop icons for TSConf, Baseconf
-Added show current AY Player song playing on console <-- TODO fix this description
 Added PCW colour modes
 Added another toy ZXLife to a new menu Procrastinate
 Added compilation os release info, running os info
@@ -22,6 +21,7 @@ Improved AY Player:
 - Added playlist
 - Added shuffle mode
 - Added silence detection
+- Added show current AY Player song playing on console
 
 Improved Text Adventure features:
 - Added location description texto to image, using AI <-- TODO fix this description
@@ -76,7 +76,6 @@ Fixed several memory leaks:
 - Copying a folder from File Utilities
 
 Fixed ZX Vision relocation windows
-
 Fixed error when no permissions writing to mmc, ide, trd, dsk, hilow: disable persistent writes when it happens
 Fixed permissions when installing ZEsarUX on Linux: zxuno.flash and tbblue.mmc are now writable by anyone
 Fixed Text Adventure Graphics rendering invalid characters
