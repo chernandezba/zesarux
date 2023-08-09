@@ -19677,6 +19677,8 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 
         //Fin resultado http correcto
         else {
+            free(orig_mem);
+
                 if (retorno<0) {
                         //printf ("Error: %d %s\n",retorno,z_sock_get_error(retorno));
                         return retorno;

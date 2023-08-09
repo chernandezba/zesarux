@@ -417,3 +417,7 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 por ejemplo cada vez que uso el speccy browser, se pierden 10 MB
 
 -memory leak al descargar extras y si da 404
+
+-No uso pthread_detach en pthreads que solo se lanzan una vez, como send_stats_server. Aunque deberia hacerlo,
+pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
+"arriesgarme" a usarla mas alla de lo necesario
