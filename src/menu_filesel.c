@@ -3722,7 +3722,8 @@ void menu_filesel_mmc_sync(void)
                 return;
         }
 
-
+        //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+        pthread_detach(menu_syncing_mmc_progress_thread);
 
 
             contador_menu_syncing_mmc_progress_print=0;
