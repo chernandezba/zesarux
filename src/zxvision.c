@@ -10520,6 +10520,8 @@ void zxvision_destroy_window(zxvision_window *w)
 
     zxvision_redraw_all_windows();
 
+    zxvision_sound_event_close_window();
+
 }
 
 void zxvision_speech_read_current_window(void)
@@ -25773,9 +25775,19 @@ void zxvision_sound_event_error_menu(void)
     zxvision_sound_event_aux("C2",50);
 }
 
+
+//TODO: esto me gustaria que sonase como los botones de reloj Casio, que en teoria, la frecuencia se acerca a 8820 Hz
+//aunque como el sampleado de ZEsarUX es 15600, esto no tiene calidad suficiente
+//parece que ademas la onda va con un envolvente, no tiene siempre la misma amplitud
 void zxvision_sound_event_cursor_movement(void)
 {
     zxvision_sound_event_aux("C6",5);
+}
+
+//Y este estaria bien que fuese el del mismo boton de Casio pero cuando llegas a la pantalla inicial del reloj
+void zxvision_sound_event_close_window(void)
+{
+    zxvision_sound_event_aux("C7",5);
 }
 
 //TODO: complicado saber cuando disparar este evento,

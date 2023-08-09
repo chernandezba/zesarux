@@ -611,7 +611,7 @@ enum defined_f_function_ids {
 	F_FUNCION_QUICKSAVE,
     F_FUNCION_REWIND,
     F_FUNCION_FFW,
-	F_FUNCION_LOADBINARY, 
+	F_FUNCION_LOADBINARY,
 	F_FUNCION_SAVEBINARY,
     F_FUNCION_SETTINGS,
     F_FUNCION_WAVEFORM,
@@ -627,28 +627,28 @@ enum defined_f_function_ids {
     F_FUNCION_FILE_UTILITIES,
     F_FUNCION_ONLINE_SPECCY,
     F_FUNCION_ONLINE_ZX81,
-	F_FUNCION_ZENG_SENDMESSAGE, 
+	F_FUNCION_ZENG_SENDMESSAGE,
 	F_FUNCION_OSDKEYBOARD,
 	F_FUNCION_OSDTEXTKEYBOARD,
     F_FUNCION_SWITCHBORDER,
 	F_FUNCION_SWITCHFULLSCREEN,
-    F_FUNCION_SWITCHFOOTER, 
-	F_FUNCION_RELOADMMC, 
-	F_FUNCION_REINSERTSTDTAPE, 
+    F_FUNCION_SWITCHFOOTER,
+	F_FUNCION_RELOADMMC,
+	F_FUNCION_REINSERTSTDTAPE,
 	F_FUNCION_PAUSEUNPAUSEREALTAPE,
     F_FUNCION_REINSERTREALTAPE,
-    F_FUNCION_REWINDREALTAPE, 
+    F_FUNCION_REWINDREALTAPE,
     F_FUNCION_FFWDREALTAPE,
     F_FUNCION_VISUALREALTAPE,
     F_FUNCION_DEBUGCPU,
-	F_FUNCION_PAUSE,    
-	F_FUNCION_TOPSPEED,  
- 	F_FUNCION_EXITEMULATOR,   
-	F_FUNCION_BACKGROUND_WINDOW,  
+	F_FUNCION_PAUSE,
+	F_FUNCION_TOPSPEED,
+ 	F_FUNCION_EXITEMULATOR,
+	F_FUNCION_BACKGROUND_WINDOW,
 	F_FUNCION_OVERLAY_WINDOWS,
     F_FUNCION_CLOSE_ALL_MENUS,
     F_FUNCION_ZXUNO_PRISM,
-    F_FUNCION_LEFTRIGHT_JOY, 
+    F_FUNCION_LEFTRIGHT_JOY,
     F_FUNCION_DEBUGCPU_VIEW_ADVENTURE,
     F_FUNCION_TEXT_ADVENTURE_MAP,
     F_FUNCION_DESKTOP_TRASH,
@@ -668,7 +668,7 @@ enum defined_f_function_ids {
 #define MAX_DEFINED_F_FUNCION_NAME_LENGTH 30
 
 struct s_defined_f_function {
-	char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH]; 
+	char texto_funcion[MAX_DEFINED_F_FUNCION_NAME_LENGTH];
 	enum defined_f_function_ids id_funcion;
 
     char **bitmap_button;
@@ -702,7 +702,7 @@ struct s_zxdesktop_configurable_icon {
     //el id_funcion
 
     //Nombre del icono
-    char text_icon[MAX_LENGTH_TEXT_ICON];    
+    char text_icon[MAX_LENGTH_TEXT_ICON];
 
     //Por ejemplo para guardar información de la ruta a un snapshot en la funcion de F_FUNCION_DIRECT_SNAPSHOT
     char extra_info[PATH_MAX];
@@ -800,7 +800,7 @@ extern int menu_generic_message_aux_filter(char *texto,int inicio, int final);
 Como quedan los textos:
 
 01234567890123456789012345678901
-50 FPS 100% CPU 29.3C   -SPEECH- 
+50 FPS 100% CPU 29.3C   -SPEECH-
 
            -TAPE-
           -FLASH-
@@ -1116,7 +1116,7 @@ extern z80_bit menu_event_remote_protocol_enterstep;
 extern z80_bit menu_button_f_function;
 extern int menu_button_f_function_index;
 
-//numero maximo de entradas 
+//numero maximo de entradas
 #define MAX_OSD_ADV_KEYB_WORDS 1000
 //longitud maximo de cada entrada
 #define MAX_OSD_ADV_KEYB_TEXT_LENGTH 31
@@ -1202,7 +1202,7 @@ struct s_estilos_gui {
 
 
 	int papel_opcion_marcada; //Color para opcion marcada, de momento solo usado en osd keyboard
-	int tinta_opcion_marcada; 
+	int tinta_opcion_marcada;
 
 	z80_byte boton_cerrar; //caracter de cerrado de ventana
 
@@ -1415,6 +1415,7 @@ extern void zxvision_copy_contents_to_clipboard(zxvision_window *ventana);
 
 extern void zxvision_sound_event_error_menu(void);
 extern void zxvision_sound_event_cursor_movement(void);
+extern void zxvision_sound_event_close_window(void);
 extern void zxvision_sound_event_new_window(void);
 
 extern char *menu_get_string_language(char *texto);
@@ -1546,7 +1547,7 @@ extern int gamelife_timer_counter;
 struct s_zxdesktop_lowericons_info {
 	int (*is_visible)(void);
 	int (*is_active)(void);
-	void (*accion)(void);	
+	void (*accion)(void);
 	char **bitmap_active;
 	char **bitmap_inactive;
 	int *icon_is_inverse;
