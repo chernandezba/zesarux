@@ -16,8 +16,7 @@ Para esta version:
 -ZENG para msx se leen los cursores en destino
 -ZENG colecovision no va bien
 
--plus3doshandler: muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
-ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
+
 
 
 -revisar en menu_debug_change_registers(void),
@@ -123,8 +122,7 @@ usar la que si considera movimiento raton
 
 
 
--Texto fondo tiene que se carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
-
+-Texto fondo tiene que sea carácter 255 para que no se redibuje con espacios. O usar un flag de ventana que dice que no tiene que redibujar el texto
 
 
 
@@ -141,14 +139,14 @@ Seria: error message: igual que hay ahora. Y luego clases: 0001 out of memory. 0
 
 -Por determinar visibilidad de processswitcher. siempre visible si o no?
 
--tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
+
 
 -quiza obtener mas info en descargas speccy online: autor, tamaño archivo, etc
 
 
 -pid de ventana creo que deberia incrementarse siempre. ahora si cierras y abres una ventana continuamente, usa mismo pid, porque siempre busca el ultimo disponible. quiza al crearse una ventana deberia incrementarse en 1? o no?
 
--dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
+
 
 -texto speech en menu se oye antes que se empiece a mostrar filesel
 
@@ -183,61 +181,6 @@ Modo 3 (360x256x16): los mismos colores que el modo 2. Aquí tenemos píxeles cu
 
 -rutinas speech y kill speech se llaman aunque no haya nada pendiente. desde timer, llama a scrtextspeech_filter_run_pending
 
------tbblue:
-* carga nex falla. aunque tileeditor.nex funciona, tambien show512.nex
-* carga z80 falla
-* carga tap falla
-* carga sna falla
-* guide desde el menu principal falla
-* tape loaded desde menu principal falla
-* saltar a 48kb basic desde el menu principal funciona
-* saltar a 128kb basic desde el menu principal falla
-* tape loader desde menu no carga
-
-* carga Bas FUNCIONA
-* juegos zx81 FUNCIONA
-* juegos zx80 FUNCIONA
-* juegos zmachine FUNCIONA
-* dizzy.dsk FUNCIONA
-* .aky songs FUNCIONA
-* dot commands desde cli FUNCIONA. ejemplo .cowsay. PERO .mem peta
-
-
-*registro C0. lo pone a 8 en el boot
-
-0xC0 (192) => Interrupt Control
-(R/W) (soft reset = 0)
-  bits 7:5 = Programmable portion of im2 vector*
-  bit 4 = Reserved must be 0
-  bit 3 = Enable stackless nmi response**
-  bits 2:1 = Reserved must be 0
-  bit 0 = Maskable interrupt mode: pulse (0) or im2 (1)
-* In im2 mode the interrupt vector generated is:
-  bits 7:5 = nextreg 0xC0 bits 7:5
-  bits 4:1 = 0  line interrupt (highest priority)
-    = 1  uart0 Rx
-    = 2  uart1 Rx
-    = 3-10  ctc channels 0-7
-    = 11 ula
-    = 12 uart0 Tx
-    = 13 uart1 Tx (lowest priority)
-  bit 0 = 0
-* In im2 mode the expansion bus is the lowest priority interrupter
-  and if no vector is supplied externally then 0xFF is generated.
-** The return address pushed during an nmi acknowledge cycle will
-  be written to nextreg instead of memory (the stack pointer will
-  be decremented) and the first RETN after the acknowledge will
-  take its return address from nextreg instead of memory (the stack
-  pointer will be incremented).  If bit 3 = 0 and in other
-  circumstances, RETN functions normally.
-
-
--registros que se resetean con soft reset. tanto al escribir registro 2 como cpu reset de menu
--quiza soft reset no esté activando trap de divmmc (si es que se cumplen las condiciones)
-
--revisar altrompointer en poke_byte
----- fin tbblue
-
 
 
 
@@ -251,8 +194,6 @@ Buffer de pixel gestionado desde ventanas y renderizado desde draw window conten
 Ideal para help keyboard por ejemplo
 En draw window contents solo renderiza si se ha modificado o bien la capa de texto o de la de píxeles. Y en ese caso renderiza las dos capas
 
-
--lectura de audio de casette? SDL1 parece que no permite hacerlo
 
 
 -setting autorebobinado de cintas real tape?
@@ -291,11 +232,8 @@ ejemplo: poner el process switcher siempre visible, y pasar otra ventana por enc
 
 
 
-
 -ctrl/alt +qaop o wskl para mover ventana, en vez de shift, y hacer que todas las ventanas lo soporten (por ejemplo ahora solo va con ventanas que no tengan menu)
 
--pcw: soporte puerto FF para cambiar modo video, poder definir una zona en pantalla donde aplicar modo color o modo normal.
-https://github.com/MiSTer-devel/Amstrad-PCW_MiSTer
 
 
 -text adventure map: texto en mapa deberia seguir char filter. Pero char filter
@@ -304,10 +242,6 @@ esta pensado solo para print char y mostrarlo en consola. deberia haber una func
 -revisar pantalla completa en SDL, X11
 --en sdl1, con windows en maquina virtual, parece que pone una resolucion menor que la ventana de ZEsarUX, y el footer y la pantalla emulada quedan mezcladas
 
--custom rom
-*manera de seleccionar maquina +2e, que es +2a40 con rom "alternaterom_plus3e_mmcen3eE.rom"
-find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
-#define CUSTOM_MACHINE_2E_MMC_ROM_FILE "alternaterom_plus3e_mmcen3eE.rom"
 
 
 -cambio de maquina con full screen (16k a 48k) peta
@@ -336,14 +270,11 @@ esto a nivel de estadística, permito saber en estadisticas web (enviando un par
 
 
 
-
-
-
 -mejoras accesibilidad:
 * https://www.w3.org/TR/low-vision-needs/
 * eventos en menu con sonidos. metiendo sonido raw directamente en buffer de sonido? o quizá sonidos que sean frecuencias fijas (notas)
 aprovechando cosas como el frequency generator
--eventos: error, mover cursor
+-eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 
 
 ---ZRCP
@@ -408,3 +339,8 @@ Esto implica que el icono dibujaria dos realmente: uno primero con el icono de l
 -No uso pthread_detach en pthreads que solo se lanzan una vez, como send_stats_server. Aunque deberia hacerlo,
 pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir esa funcion pthread_detach, prefiero no
 "arriesgarme" a usarla mas alla de lo necesario
+
+
+-tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
+
+-dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
