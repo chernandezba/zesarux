@@ -10465,6 +10465,9 @@ void zxvision_fill_window_transparent(zxvision_window *w)
 		}
 }
 
+//Indica si en el siguiente evento de cierre de ventana no reproduce sonido de cierre de ventana
+int zxvision_next_do_not_play_close_window_sound=0;
+
 void zxvision_destroy_window(zxvision_window *w)
 {
 	zxvision_current_window=w->previous_window;
@@ -10520,7 +10523,9 @@ void zxvision_destroy_window(zxvision_window *w)
 
     zxvision_redraw_all_windows();
 
-    zxvision_sound_event_close_window();
+    if (!zxvision_next_do_not_play_close_window_sound) zxvision_sound_event_close_window();
+
+    zxvision_next_do_not_play_close_window_sound=0;
 
 }
 
@@ -19772,6 +19777,10 @@ int menu_dibuja_menu(int *opcion_inicial,menu_item *item_seleccionado,menu_item 
 	//En caso de menus tabulados, es responsabilidad de este de borrar con cls y liberar ventana
 	if (es_tabulado==0) {
 
+        //Decir que no haga el sonido de cierre de ventana, ese sonido
+        //solo deberia ser cuando son ventanas no de menu
+        zxvision_next_do_not_play_close_window_sound=1;
+
 		zxvision_destroy_window(ventana);
 	}
 
@@ -25785,6 +25794,8 @@ void zxvision_sound_event_cursor_movement(void)
 }
 
 //Y este estaria bien que fuese el del mismo boton de Casio pero cuando llegas a la pantalla inicial del reloj
+//Cierre de ventana, excepto para ventanas de tipo menu, porque si no, es confuso,
+//porque al moverse por menus, se iria escuchando el de cierre, aunque se van abriendo submenus
 void zxvision_sound_event_close_window(void)
 {
     zxvision_sound_event_aux("C7",5);
