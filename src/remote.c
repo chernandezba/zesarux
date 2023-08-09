@@ -6292,6 +6292,9 @@ void thread_remote_protocol_function_aux_new_conn(int sock_connected_client)
     if (pthread_create( temp_thread, NULL, &zrcp_handle_new_connection, (void *)sock_connected_client) ) {
         debug_printf(VERBOSE_ERR,"Error running handling new ZRCP connection");
     }
+
+    //y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(*temp_thread);
 }
 
 void *thread_remote_protocol_function(void *nada)
