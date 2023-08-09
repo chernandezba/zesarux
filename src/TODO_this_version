@@ -344,3 +344,7 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 -tecla Copy en CPC está asignada a tecla Home del teclado de pc. Quizá cambiar tecla a otra, o poder asignar otra. copy es tambien fire (Home) por defecto...
 
 -dandanator no va bien en cpc 664,6128. ejemplo bruce lee carga pantalla y luego se cuelga
+
+-por que docker de fedora va con sdl2?
+
+-que juego o programa para esta edición?
