@@ -23,9 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//temporal para uso de sleep
-#include <unistd.h>
-
 #include "cpu.h"
 #include "tbblue.h"
 #include "mem128.h"
@@ -117,9 +114,6 @@ int tbblue_deny_turbo_rom_max_allowed=2;
 
 //'bootrom' takes '1' on hard-reset and takes '0' if there is any writing on the i/o port 'config1'. It can not be read.
 z80_bit tbblue_bootrom={1};
-
-//Modo config. mismo comportamiento que variable nr_03_config_mode de vhdl
-z80_bit tbblue_nr_03_config_mode={1};
 
 //Copper
 z80_byte tbblue_copper_memory[TBBLUE_COPPER_MEMORY];
@@ -327,19 +321,11 @@ struct s_tbblue_machine_id_definition tbblue_machine_id_list[]=
 	{5,               "FBLabs"},
 	{6,               "VTrucco"},
 	{7,               "WXEDA"},
-    {11,              "Multicore"},
-
 	{8,               "Emulators"},
-
 	{10,              "ZX Spectrum Next"},
-    {0xfa,            "ZX Spectrum Next Antibrick"},
-	
-    {0x9a,            "UnAmiga Reloaded"},
-    {0xaa,            "UnAmiga"},
-    {0xba,            "SiDi"},
-    {0xca,            "MIST"},
-    {0xda,            "MiSTer"},
-	{0xea,            "ZX-DOS"},
+	{11,              "Multicore"},
+	{0xea,            "ZX DOS"},
+	{250,             "ZX Spectrum Next Antibrick"},
 
  	{255,""}
 };
@@ -2828,9 +2814,6 @@ void tbblue_set_rom_page_no_255(z80_byte segment)
 
 }
 
-//Usado para paginacion divmmc
-int tbblue_si_rom3_segmento_bajo=0;
-
 int tbblue_get_altrom(void)
 {
 /*
@@ -2939,28 +2922,15 @@ bit 4 = 1 to lock ROM0 (128K rom)
 altrom=0 -> ROM0
 altrom=1 -> ROM01
 */
-    z80_byte tbblue_maquina_config=tbblue_registers[3]&7;
-
-    printf("tbblue_get_altrom: machine type: %d\n",tbblue_maquina_config);
-
-    if (tbblue_maquina_config!=3) {
-        printf("No soportada en tbblue_get_altrom!!!\n");
-        sleep(20);
-    }
-
-    //tbblue_si_rom3_segmento_bajo=0;
 
     if ( (tbblue_registers[0x8c] & 32) == 32) {
-        printf ("tbblue_get_altrom: ROM1\n");
+        //printf ("ROM1\n");
         altrom=1;
-        //sleep(3);
-        //tbblue_si_rom3_segmento_bajo=1;
     }
     //128k rom
     else if ( (tbblue_registers[0x8c] & 16) == 16) {
         altrom=0;
-        printf ("tbblue_get_altrom: ROM0\n");
-        //sleep(3);
+        //printf ("ROM0\n");
     }
 
     //a 0 los dos . paginado +3.
@@ -2968,106 +2938,10 @@ altrom=1 -> ROM01
         
         z80_byte rom_entra=((puerto_32765>>4)&1);
         altrom=rom_entra;	
-
-
-        printf ("tbblue_get_altrom: alt rom segun 7ffd:          %d\n",altrom);
-
-		        	z80_byte rom1f=(puerto_8189>>1)&2;
-		        	z80_byte rom7f=(puerto_32765>>4)&1;
-
-				z80_byte rom_page=rom1f | rom7f;
-
-        printf ("tbblue_get_altrom: rom segun paginacion +2A/+3: %d\n",rom_page);       
-
-        if (rom_page!=altrom) {
-            //printf("No COINCIDEN!!!\n");
-            //sleep (10);
-        } 
-
-        //if (altrom==1) tbblue_si_rom3_segmento_bajo=1;
-
-        //sleep(3);
+        //printf ("alt rom segun 7ffd (%d)\n",altrom);
     }
-    /*
-       process (machine_type_48, machine_type_p3, nr_8c_altrom_lock_rom1, nr_8c_altrom_lock_rom0, port_1ffd_rom)
-   begin
-      if machine_type_48 = '1' then
-         sram_rom <= "00";
-         sram_rom3 <= '1';
-         sram_alt_128_n <= not ((not nr_8c_altrom_lock_rom1) and nr_8c_altrom_lock_rom0);
-      elsif machine_type_p3 = '1' then
-         if nr_8c_altrom_lock_rom1 = '1' or nr_8c_altrom_lock_rom0 = '1' then
-            sram_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0;
-            sram_rom3 <= nr_8c_altrom_lock_rom1 and nr_8c_altrom_lock_rom0;
-            sram_alt_128_n <= nr_8c_altrom_lock_rom1;
-         else
-            sram_rom <= port_1ffd_rom;
-            sram_rom3 <= port_1ffd_rom(1) and port_1ffd_rom(0);
-            sram_alt_128_n <= port_1ffd_rom(0);   -- behave like a 128k machine
-         end if;
-      else
-         if nr_8c_altrom_lock_rom1 = '1' or nr_8c_altrom_lock_rom0 = '1' then
-            sram_rom <= '0' & nr_8c_altrom_lock_rom1;
-            sram_rom3 <= nr_8c_altrom_lock_rom1;
-            sram_alt_128_n <= nr_8c_altrom_lock_rom1;
-         else
-            sram_rom <= '0' & port_1ffd_rom(0);
-            sram_rom3 <= port_1ffd_rom(0);
-            sram_alt_128_n <= port_1ffd_rom(0);
-         end if;
-      end if;
-   end process;
-
-
-   process (i_CLK_28)
-   begin
-      if rising_edge(i_CLK_28) then
-         if reset = '1' then
-            nr_8c_altrom(7 downto 4) <= nr_8c_altrom(3 downto 0);
-         elsif nr_8c_we = '1' then
-            nr_8c_altrom <= nr_wr_dat;
-         end if;
-      end if;
-   end process;
-
-   nr_8c_altrom_en <= nr_8c_altrom(7);
-   nr_8c_altrom_rw <= nr_8c_altrom(6);
-   nr_8c_altrom_lock_rom1 <= nr_8c_altrom(5);
-   nr_8c_altrom_lock_rom0 <= nr_8c_altrom(4);   
-    */
 
 	return altrom;
-}
-
-int new_tbblue_get_altrom(void)
-{
-    z80_byte tbblue_maquina_config=tbblue_registers[3]&7;
-
-    printf("tbblue_get_altrom: machine type: %d\n",tbblue_maquina_config);
-
-    if (tbblue_maquina_config!=3) {
-        printf("No soportada en tbblue_get_altrom!!!\n");
-        sleep(20);
-    }
-    /*
-            sram_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0;
-            sram_rom3 <= nr_8c_altrom_lock_rom1 and nr_8c_altrom_lock_rom0;
-            sram_alt_128_n <= nr_8c_altrom_lock_rom1;    
-    */
-
-    int altrom=(tbblue_registers[0x8c]>>4) &3;
-    if (altrom==1) {
-        tbblue_si_rom3_segmento_bajo=1;
-    }
-    else {
-        tbblue_si_rom3_segmento_bajo=0;
-    }
-
-    printf ("tbblue_get_altrom: alt rom: %d es_rom_3: %d Reg 8C=%02XH %d %d\n",altrom,tbblue_si_rom3_segmento_bajo,
-        tbblue_registers[0x8c],tbblue_registers[0x8c] & 16,tbblue_registers[0x8c] & 32);
-    //sleep(2);
-
-    return altrom;
 }
 
 
@@ -3089,98 +2963,10 @@ int tbblue_get_altrom_offset_dir(int altrom,z80_int dir)
 	return offset;
 }
 
-int tbblue_if_altrom_disabled_on_read(void)
-{
-    /*
-    altrom is disabled if:
-- bit 7 of nr 0x8c is 0
-OR
-- it's a memory read and bit 6 of nr 0x8c is 1
-OR
-- it's a memory write and bit 6 of nr 0x8c is 0    
-    */
-    if ( (tbblue_registers[0x8c] & 128) ==  0) return 1;
-
-    if ( (tbblue_registers[0x8c] & 64) ==  1) return 1;
-
-    return 1;
-
-}
-
-int tbblue_if_altrom_disabled_on_write(void)
-{
-    /*
-    altrom is disabled if:
-- bit 7 of nr 0x8c is 0
-OR
-- it's a memory read and bit 6 of nr 0x8c is 1
-OR
-- it's a memory write and bit 6 of nr 0x8c is 0    
-    */
-    if ( (tbblue_registers[0x8c] & 128) ==  0) return 1;
-
-    if ( (tbblue_registers[0x8c] & 64) ==  0) return 1;
-
-    return 0;
-
-}
-
-//es_read a 1, en caso contrario es write
-int new_tbblue_get_start_altrom_offset(int es_read)
-{
-    printf("Reg 8C=%02XH\n",tbblue_registers[0x8c]);
-
-    //For a +3 type machine, ie the Next, if both lock rom bits are zero (bits 5:4 of nr 0x8c), 
-    //then the rom selection is determined by ports 0x7ffd and 0x1ffd like normal
-    //Retornar -1 en este caso
-
-    if ( (tbblue_registers[0x8c] & 16)==0  && (tbblue_registers[0x8c] & 32)==0 ) {
-        printf("offset de 1ffd y 7ffd\n");
-        //timer_sleep(20);
-        return -1;
-    }
-
-    printf("bits 5 y 4 no cero los dos\n");
-    sleep(1);
-
-    //sram_active_rom <= nr_8c_altrom_lock_rom1 & nr_8c_altrom_lock_rom0; This is the two-bit rom number 1-3 selected 
-    //if the altrom is disabled. Note you can't lock rom 0.
-
-    int altrom_desactivado;
-
-    if (es_read) altrom_desactivado=tbblue_if_altrom_disabled_on_read();
-    else altrom_desactivado=tbblue_if_altrom_disabled_on_write();
-
-    if ( altrom_desactivado) {
-        int srom=(tbblue_registers[0x8c]>>4) &3;
-        printf("altrom desactivado srom=%d\n",srom);
-        sleep(1);
-
-        return srom*16384;
-    }
-
-    else {
-        //sram_alt_128 <= not nr_8c_altrom_lock_rom1; If 1 this selects the 128k altorm else the 48k altrom when altrom is enabled.
-        int altrom=(tbblue_registers[0x8c]>>5) &1;
-
-        printf("altrom activado altrom=%d\n",altrom);
-        sleep(1);        
-
-        return 0x18000+altrom*16384;
-
-    }
-
-
-}
-
-
 void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 {
 	z80_byte tbblue_register=80+segment;
 	z80_byte reg_value=tbblue_registers[tbblue_register];
-
-    //Por defecto
-    tbblue_si_rom3_segmento_bajo=0;
 
 	if (reg_value==255) {
 
@@ -3192,49 +2978,24 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 		//Si esta altrom en read
 		//Altrom.
 		//bit 6 =0 , only for read. bit 6=1, only for write
-		if (  
-            1 //(tbblue_registers[0x8c] & 192) ==128   
-            //( (tbblue_registers[0x8c] & 16)  || (tbblue_registers[0x8c] & 32) ) 
-           )
-        
-          {
-			//printf("Se cumple %d\n",(tbblue_registers[0x8c] & 16)  || (tbblue_registers[0x8c] & 32) );
+		if (  (tbblue_registers[0x8c] & 192) ==128)    {
+			
 			int altrom;
 
 			//TODO: tener en cuenta altrom si maquina es distinta de machine_type_p3,
 			//que es como en teoria lo estoy haciendo. Ver codigo vhdl para salir de dudas
-			//altrom=tbblue_get_altrom();
-            //sleep(5);
+			altrom=tbblue_get_altrom();
 
-            int offset=new_tbblue_get_start_altrom_offset(1);
-
-            if (offset<0) {
-                tbblue_si_rom3_segmento_bajo=0;
-
-                if (segment==0 && page==3*2) tbblue_si_rom3_segmento_bajo=1;
-                if (segment==1 && page==3*2+1) tbblue_si_rom3_segmento_bajo=1;
-
-                tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];                      
-            }
+			//printf ("Enabling alt rom on read. altrom=%d\n",altrom);
 
 
-            else {
-                //TODO tbblue_si_rom3_segmento_bajo
-                tbblue_memory_paged[segment]=&memoria_spectrum[offset+8192*segment];
-            }
+			int offset=tbblue_get_altrom_offset_dir(altrom,8192*segment);
+
+			tbblue_memory_paged[segment]=&memoria_spectrum[offset];
 
 		}
 
-		else {
-            //TODO: esto es un poco chapuza pero funciona.
-            //realmente tbblue_si_rom3_segmento_bajo quiza se deberia distinguir para el segmento de 2kb bajo y el alto,
-            //pues esto afecta a las paginaciones divmmc
-            //pero dado que con paginacion normal no se puede hacer este troceado de 2kb, esto funciona 
-            if (segment==0 && page==3*2) tbblue_si_rom3_segmento_bajo=1;
-            if (segment==1 && page==3*2+1) tbblue_si_rom3_segmento_bajo=1;
-
-            tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];
-        }
+		else tbblue_memory_paged[segment]=tbblue_rom_memory_pages[page];
 
 
 		
@@ -3242,9 +3003,6 @@ void tbblue_set_rom_page(z80_byte segment,z80_byte page)
 	else {
 		tbblue_set_rom_page_no_255(segment);
 	}
-
-    printf("After set_rom_page. tbblue_si_rom3_segmento_bajo=%d\n",tbblue_si_rom3_segmento_bajo);
-    //debug_exec_show_backtrace();
 }
 
 
@@ -3442,9 +3200,6 @@ z80_bit tbblue_was_in_p2a_ram_in_rom={0};
 
 void tbblue_set_memory_pages(void)
 {
-
-    printf("tbblue_set_memory_pages. puerto_8189: %04XH\n",puerto_8189);
-
 	//Mapeamos paginas de RAM segun config maquina
 	z80_byte maquina=(tbblue_registers[3])&7;
 
@@ -3700,33 +3455,13 @@ which allows you access to all SRAM.
 z80_byte tbblue_get_diviface_enabled(void)
 {
     /*
-    Antes
 (W)		06 => Peripheral 2 setting, only in bootrom or config mode:
 			bit 7 = Enable turbo mode (0 = disabled, 1 = enabled)
 			bit 6 = DAC chip mode (0 = I2S, 1 = JAP)
 			bit 5 = Enable Lightpen  (1 = enabled)
 			bit 4 = Enable DivMMC (1 = enabled) -> divmmc automatic paging. divmmc memory is supported using manual
-
-
-    Ahora
-0x0A (10) => Peripheral 5 Setting
-(R/W)
-  bit 7:6 = Multiface type (hard reset = 00) (config mode only)
-    00 = Multiface +3 (enable port 0x3F, disable port 0xBF)
-    01 = Multiface 128 v87.2 (enable port 0xBF, disable port 0x3F)
-    10 = Multiface 128 v87.12 (enable port 0x9F, disable port 0x1F)
-    11 = Multiface 1 (enable port 0x9F, disable port 0x1F)
-  bit 5 = Reserved, must be zero
-  bit 4 = Enable divmmc automap (hard reset = 0)
-  bit 3 = 1 to reverse left and right mouse buttons (hard reset = 0)
-  bit 2 = Reserved, must be zero
-  bits 1:0 = mouse dpi (hard reset = 01)
-    00 = low dpi
-    01 = default
-    10 = medium dpi
-    11 = high dpi    
 		*/
-    return tbblue_registers[10]&16;
+    return tbblue_registers[6]&16;    
 }
 
 void tbblue_set_emulator_setting_divmmc(void)
@@ -3738,14 +3473,14 @@ void tbblue_set_emulator_setting_divmmc(void)
     //printf ("Apply config2.divmmc change: %s\n",(diven ? "enabled" : "disabled") );
 
     if (diven) {
-        printf ("Activando diviface automatic paging desde tbblue_set_emulator_setting_divmmc\n");
+        //printf ("Activando diviface automatic paging\n");
         divmmc_diviface_enable();
         diviface_allow_automatic_paging.v=1;
     }
 
 
     else {
-        printf ("Desactivando diviface automatic paging desde tbblue_set_emulator_setting_divmmc\n");
+        //printf ("Desactivando diviface automatic paging\n");
         diviface_allow_automatic_paging.v=0;
         //Y hacer un page-out si hay alguna pagina activa
         diviface_paginacion_automatica_activa.v=0;
@@ -3982,10 +3717,6 @@ Bit	Function
 	clip_windows[TBBLUE_CLIP_WINDOW_TILEMAP][3]=255;
 
 
-    tbblue_registers[0xB8]=0x83;
-    tbblue_registers[0xB9]=0x01;
-    tbblue_registers[0xBA]=0x00;
-    tbblue_registers[0xBB]=0xCD;
 
 	tbblue_copper_pc=0;
 	
@@ -4076,7 +3807,6 @@ void tbblue_hard_reset(void)
 	tbblue_registers[7]=0;
 	tbblue_registers[8]=16;
 	tbblue_registers[9]=0;
-    tbblue_registers[10]=1;
 
 
 	tbblue_registers[0x8c]=0;
@@ -4123,7 +3853,6 @@ void tbblue_hard_reset(void)
 
 	else {
 		tbblue_bootrom.v=1;
-        tbblue_nr_03_config_mode.v=1;
 	//printf ("----setting bootrom to 1\n");
 		tbblue_set_memory_pages();
 		tbblue_set_emulator_setting_divmmc();
@@ -4619,96 +4348,6 @@ leaving I/O Mode is at most 64 scan lines.
 
 }
 
-                
-void tbblue_soft_reset_registers(void)
-{
-    tbblue_registers[0x06] |=0xA0;
-
-    tbblue_registers[0x07] &=0xF0;
-    tbblue_set_emulator_setting_turbo();
-
-    tbblue_registers[0x08] &=0xBF;
-    tbblue_registers[0x09] &=0xEF;
-
-    tbblue_registers[0x0B]=0x01;
-
-    tbblue_registers[0x12]=8;
-    tbblue_registers[0x13]=11;
-    tbblue_registers[0x14]=0xE3;
-    tbblue_registers[0x15]=0;
-    tbblue_registers[0x16]=0;
-    tbblue_registers[0x17]=0;
-
-    //TODO 0x18 hasta 0x1b
-
-    tbblue_registers[0x22]=0;
-    tbblue_registers[0x23]=0;
-    tbblue_registers[0x26]=0;
-    tbblue_registers[0x27]=0;
-
-    tbblue_registers[0x2C]=0x80;
-    tbblue_registers[0x2D]=0x80;
-    tbblue_registers[0x2E]=0x80;
-
-    //TODO 0x2F hasta 0x7f
-
-    tbblue_registers[0x80]=0xFF;
-    tbblue_registers[0x81]=0xFF;
-    tbblue_registers[0x82]=10;
-    tbblue_registers[0x83]=11;
-    tbblue_registers[0x84]=4;
-    tbblue_registers[0x85]=5;
-    tbblue_registers[0x86]=0;
-    tbblue_registers[0x87]=1;
-
-/*
-0x8C (140) => Alternate ROM
-(R/W) (hard reset = 0)
-IMMEDIATE
-  bit 7 = 1 to enable alt rom
-  bit 6 = 1 to make alt rom visible only during writes, otherwise replaces rom during reads
-  bit 5 = 1 to lock ROM1 (48K rom)
-  bit 4 = 1 to lock ROM0 (128K rom)
-AFTER SOFT RESET (copied into bits 7-4)
-  bit 3 = 1 to enable alt rom
-  bit 2 = 1 to make alt rom visible only during writes, otherwise replaces rom during reads
-  bit 1 = 1 to lock ROM1 (48K rom)
-  bit 0 = 1 to lock ROM0 (128K rom)
-*/
-    //Se copia parte baja en alta
-    z80_byte low_nibble=tbblue_registers[0x8C] & 0x0F;
-
-    //Quito parte alta
-    tbblue_registers[0x8C] &=0x0F;
-
-    //Roto parte baja en alta y OR
-    low_nibble=low_nibble << 4;
-
-    tbblue_registers[0x8C] |=low_nibble;
-
-
-    //TODO desde 0x88 hasta 0xB8
-
-
-    tbblue_registers[0xB9]=0x01;
-    tbblue_registers[0xBA]=0x00;
-    tbblue_registers[0xBB]=0xCD;
-
-    tbblue_registers[0xC0]=0x00;
-    tbblue_registers[0xC2]=0x00;
-    tbblue_registers[0xC3]=0x00;
-    tbblue_registers[0xC4]=0x81;
-    tbblue_registers[0xC5]=0x00;
-    tbblue_registers[0xC6]=0x00;
-
-    tbblue_registers[0xCC]=0x00;
-    tbblue_registers[0xCD]=0x00;
-    tbblue_registers[0xCE]=0x00;
-
-    tbblue_registers[0xD8]=0x00;
-
-    tbblue_set_memory_pages();
-}
 	
 //tbblue_last_register
 //void tbblue_set_value_port(z80_byte value)
@@ -4721,29 +4360,42 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 
 
-	printf ("register port %02XH value %02XH\n",index_position,value);
+	//printf ("register port %02XH value %02XH\n",index_position,value);
 
 	z80_byte last_register_5=tbblue_registers[5];
 	z80_byte last_register_6=tbblue_registers[6];
 	z80_byte last_register_7=tbblue_registers[7];
 	z80_byte last_register_8=tbblue_registers[8];
-    z80_byte last_register_10=tbblue_registers[10];
 	z80_byte last_register_17=tbblue_registers[17];
 	z80_byte last_register_21=tbblue_registers[21];
 	z80_byte last_register_66=tbblue_registers[66];
 	z80_byte last_register_67=tbblue_registers[67];
 	z80_byte last_register_99=tbblue_registers[99];
     z80_byte last_register_112=tbblue_registers[112];
-
-    if (index_position>=184 && index_position<=187) {
-        printf ("Change divmmc entry points: register %d(%02XH) value %02XH\n",index_position,index_position,value);
-    }    
 	
 	//z80_byte aux_divmmc;
 
     z80_byte previous_machine_type=tbblue_registers[3]&7;
 
+	if (index_position==3) {
 
+        //printf ("Cambiando registro tipo maquina 3: valor: %02XH\n",value);
+
+        //Controlar caso especial
+        //(W) 0x03 (03) => Set machine type, only in IPL or config mode
+        //   		bits 2-0 = Machine type:
+        //      		000 = Config mode
+        
+
+        if (!(previous_machine_type==0 || tbblue_bootrom.v)) {
+            debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode or non IPL mode",value);
+            //printf("Can not change machine type (to %02XH) while in non config mode or non IPL mode\n",value);
+
+            //Preservar bits de maquina
+            value &=(255-7);
+            value |=previous_machine_type;
+        }
+    }
 
 	if (index_position==28) {
         /*
@@ -4761,10 +4413,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
             return;
     }
 
-    //Registro 3 lo gestiono desde el switch
-    if (index_position!=3) {
-	    tbblue_registers[index_position]=value;
-    }
+	tbblue_registers[index_position]=value;
 
 
 	switch(index_position)
@@ -4774,31 +4423,22 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 		/*
 0x02 (02) => Reset
 (R)
-  bit 7 = 1 if the reset signal to the expansion bus and esp is asserted
-  bits 6:5 = Reserved
-  bit 4 = 1 if multiface nmi was generated by an i/o trap (experimental, see nextreg 0xda)
-  bit 3 = 1 if multiface nmi was generated by this nextreg
-  bit 2 = 1 if divmmc nmi was generated by this nextreg
-  bit 1 = 1 if the last reset was a hard reset
-  bit 0 = 1 if the last reset was a soft reset
+  bit 7 = Indicates the reset signal to the expansion bus and esp is asserted
+  bits 6:2 = Reserved
+  bit 1 = Indicates the last reset was a hard reset
+  bit 0 = Indicates the last reset was a soft reset
   * Only one of bits 1:0 will be set
 (W)
   bit 7 = Assert and hold reset to the expansion bus and the esp wifi (hard reset = 0)
-  bits 6:5 = Reserved must be zero
-  bit 4 = Clear i/o trap (write zero to clear) (experimental) **
-  bit 3 = Generate multiface nmi (write zero to clear) **
-  bit 2 = Generate divmmc nmi (write zero to clear) **
-  bit 1 = Generate a hard reset (reboot) *
-  bit 0 = Generate a soft reset *
+  bits 6:2 = Reserved, must be 0
+  bit 1 = Generate a hard reset (reboot)
+  bit 0 = Generate a soft reset
   * Hard reset has precedence
-  ** Neither the copper nor the dma can write these signals
-  ** These signals are ignored if the multiface, divmmc, dma or external nmi master is active
   
 					*/
             if (value&2) {
                 
                 tbblue_bootrom.v=1;
-                tbblue_nr_03_config_mode.v=1;
                 
                 tbblue_registers[3]=0;
                 
@@ -4808,34 +4448,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
             //Hard reset has precedence. Entonces esto es un else, si hay hard reset, no haremos soft reset
             else if (value&1) {
-                printf("Soft reset despues de %04XH\n",reg_pc);
-
-                printf("Register 8C before soft reset=%02XH\n",tbblue_registers[0x8C]);
-                //timer_sleep(500);
-
-                //temp
-                //if (reg_pc!=0x1c01)
-                
-//0xB9 (185) => Divmmc Entry Points Valid 0
-//(R/W) (soft reset = 0x01)
-//TODO: otros registros que cambian en soft reset
-                //tbblue_registers[185]=1;
-                tbblue_soft_reset_registers();
-
-                printf("Register 8C after soft reset=%02XH\n",tbblue_registers[0x8C]);
-                //sleep(10);
-//prueba
-//if (diviface_allow_automatic_paging.v) diviface_paginacion_automatica_activa.v=1;
                 reg_pc=0;
-
-                //temp
-                	//puerto_8189=0;
-		        	//puerto_32765=0;
-
-                    //tbblue_set_memory_pages();
-
-                //TODO: este reset??
-                //tbblue_reset();
             }
 
 
@@ -4846,108 +4459,42 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 3:
 		/*
-            0x03 (03) => Machine Type
-            (R)
-            bit 7 = nextreg 0x44 second byte indicator
-            bits 6:4 = Display timing
-            bit 3 = User lock on display timing applied
-            bits 2-0 = Machine type
-            (W)
-            A write to this register disables the bootrom
-            bit 7 = 1 to allow changes to bits 6:4
-            bits 6:4 = Selects display timing (VGA/RGB only)
-                affects port decoding
-                000 = Internal Use
-                001 = ZX 48K display timing
-                010 = ZX 128K/+2 display timing
-                011 = ZX +2A/+2B/+3 display timing
-                100 = Pentagon display timing 50 Hz only
-            bit 3 = 1 to toggle user lock on display timing (hard reset = 0)
-            bits 2:0 = Selects machine type (config mode only)
-                determines roms loaded
-                000 = Configuration mode
-                001 = ZX 48K
-                010 = ZX 128K/+2
-                011 = ZX +2A/+2B/+3
-                100 = Pentagon
+		(W) 0x03 (03) => Set machine type, only in IPL or config mode:
+   		A write in this register disables the IPL
+   		(0x0000-0x3FFF are mapped to the RAM instead of the internal ROM)
+   		bit 7 = lock timing
+   		bits 6-4 = Timing:
+      		000 or 001 = ZX 48K
+      		010 = ZX 128K
+      		011 = ZX +2/+3e
+      		100 = Pentagon 128K
+   		bit 3 = Reserved, must be 0
+   		bits 2-0 = Machine type:
+      		000 = Config mode
+      		001 = ZX 48K
+      		010 = ZX 128K
+      		011 = ZX +2/+3e
+      		100 = Pentagon 128K
       		*/
 
-        printf("Trying to change machine to %XH\n",value&7);
+        
+            if (previous_machine_type==0 || tbblue_bootrom.v) {
+                //printf("Changing machine to %XH\n",value&7);
 
-        //bootrom_en <= '0';
-        tbblue_bootrom.v=0;
+                //Pentagon not supported yet. TODO
+                //last_value=tbblue_config1;
+                tbblue_bootrom.v=0;
+                //printf ("----setting bootrom to 0\n");
 
-        z80_byte original_value=value;
+                //printf ("Writing register 3 value %02XH\n",value);
 
-        /*
-                  if nr_03_config_mode = '1' then
-                     case nr_wr_dat(2 downto 0) is
-                        when "001"  => nr_03_machine_type <= "001";
-                        when "010"  => nr_03_machine_type <= "010";
-                        when "011"  => nr_03_machine_type <= "011";
-                        when "100"  => nr_03_machine_type <= "100";
-                        when others => nr_03_machine_type <= "000";
-                     end case;
-                  end if;        
-        */
-
-            if (tbblue_nr_03_config_mode.v) {
-                printf("Changing machine to %XH\n",value&7);
-
-
-                switch (value&7) {
-                   case 1:
-                   case 2:
-                   case 3:
-                   case 4:
-                   break;
-
-                   default:
-                        value &=(255-7);
-                    break;
-                }
-
-
-
-            }
-
-            else {
-                //Preservar bits de maquina
-                debug_printf(VERBOSE_DEBUG,"Can not change machine type (to %02XH) while in non config mode",value);
-                printf("Can not change machine type (to %02XH) while in non config mode\n",value);
-                value &=(255-7);
-                value |=previous_machine_type;
-            }
-
-            //Guardar el registro
-            tbblue_registers[index_position]=value;
-
-            /*
-                  if nr_wr_dat(2 downto 0) = "111" then
-                     nr_03_config_mode <= '1';
-                  elsif nr_wr_dat(2 downto 0) /= "000" then
-                     nr_03_config_mode <= '0';
-                  end if;            
-            */
-
-           if ((original_value&7) == 7) tbblue_nr_03_config_mode.v=1;
-           if ((original_value&7) != 0) tbblue_nr_03_config_mode.v=0;
-
-
-            //Reconfigurar maquina solo cuando hay cambio
-            if (previous_machine_type!=(value & 7)) {
-                printf("Reconfigurando maquina a %d\n",value&7);
                 tbblue_set_memory_pages();
+
+
+                //Solo cuando hay cambio
+                //if ( last_register_3 != value )
                 tbblue_set_emulator_setting_timing();
             }
-            else {
-                printf("No reconfigurando maquina porque es la misma que habia\n");
-            }
-
-
-            printf ("bootrom: %d tbblue_nr_03_config_mode: %d\n",tbblue_bootrom.v,tbblue_nr_03_config_mode.v);
-            //sleep(5);
-
 		break;
 
 
@@ -4990,24 +4537,18 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 
 		case 6:
 
+			//Bit 7 no me afecta, solo afecta a cambios por teclado en maquina real
+			//bit 7 = Enable turbo mode (0 = disabled, 1 = enabled)(0 after a PoR or Hard-reset)
 
-			
-                //tbblue_set_emulator_setting_divmmc();
+			//Si hay cambio en DivMMC
+			/*
+			(W)		06 => Peripheral 2 setting, only in bootrom or config mode:
 
-                //Este registro ya no funciona asi. Ahora es:
-                /*
-0x06 (06) => Peripheral 2 Setting
-(R/W)
-  bit 7 = Enable F8 cpu speed hotkey (soft reset = 1)
-  bit 6 = Divert BEEP only to internal speaker (hard reset = 0)
-  bit 5 = Enable F3 50/60 Hz hotkey (soft reset = 1)
-  bit 4 = Enable divmmc nmi by DRIVE button (hard reset = 0)
-  bit 3 = Enable multiface nmi by M1 button (hard reset = 0)
-  bit 2 = PS/2 mode (0 = keyboard primary, 1 = mouse primary; config mode only)
-  bits 1-0 = Audio chip mode (00 = YM, 01 = AY, 11 = Hold all AY in reset)             
-                */
-            
-
+						bit 4 = Enable DivMMC (1 = enabled)
+						bit 3 = Enable Multiface (1 = enabled)(0 after a PoR or Hard-reset)
+					*/
+			if ( (last_register_6&16) != (value&16)) tbblue_set_emulator_setting_divmmc();
+			//if ( (last_register_6&8) != (value&8)) tbblue_set_emulator_setting_multiface();
 		break;
 
 
@@ -5059,7 +4600,7 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
 */		
 			
 			if (value & 8) {   
-				printf("Reset divmmc mapram bit\n");
+				
                 diviface_control_register &=(255-64);
 				
 				
@@ -5068,30 +4609,6 @@ void tbblue_set_value_port_position(z80_byte index_position,z80_byte value)
    		
 			//printf ("out reg 9: %02XH\n",value);
 		break;
-
-        case 10:
-        //bit 4 = Enable divmmc automap (hard reset = 0)
-
-            if ( (last_register_10&16) != (value&16)) {
-                //tbblue_set_emulator_setting_divmmc();
-
-                if (value & 16) {
-                    printf ("Activando diviface automatic paging mediante cambio registro 10\n");
-                    divmmc_diviface_enable();
-                    diviface_allow_automatic_paging.v=1;
-                }
-
-
-                else {
-                    printf ("Desactivando diviface automatic paging mediante cambio registro 10\n");
-                    diviface_allow_automatic_paging.v=0;
-                    //Y hacer un page-out si hay alguna pagina activa
-                    diviface_paginacion_automatica_activa.v=0;
-                }
-
-
-                printf("Cambio diviface_allow_automatic_paging.v = %d en set reg 10\n",diviface_allow_automatic_paging.v);
-            }        
 
 
 		case 17:
@@ -5329,9 +4846,8 @@ Bit	Function
 
 
 		case 140:
-			printf ("Write to Alternate ROM 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
+			//printf ("Write to 140 (8c) register value: %02XH PC=%X\n",value,reg_pc);
 			tbblue_set_memory_pages();
-            sleep(1);
 		break;
 
 
@@ -7771,7 +7287,7 @@ void tbblue_out_port_8189(z80_byte value)
     //Puerto tipicamente 8189
     // the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
 
-    printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
+    //printf ("TBBLUE changing port 8189 value=0x%02XH\n",value);
     puerto_8189=value;
 
     //En rom entra la pagina habitual de modo 128k, evitando lo que diga la mmu
@@ -7844,491 +7360,4 @@ z80_byte tbblue_uartbridge_readstatus(void)
 	if (status & CHDEV_ST_RD_AVAIL_DATA) status_retorno |= TBBLUE_UART_STATUS_DATA_READY;
 
 	return status_retorno;
-}
-
-int tbblue_get_mask_divmmc_entry_point(z80_int direccion)
-{
-    /*
-    Retorna para la direccion, la mascara de bit
-    Por ejemplo, si direccion 0x18, retornara mascara de bit 3 (0x08)
-
-   0xB8 (184) => Divmmc Entry Points 0
-(R/W) (soft reset = 0x83)
-  bit 7 = 1 to enable automap on address 0x0038 (instruction fetch)
-  bit 6 = 1 to enable automap on address 0x0030 (instruction fetch)
-  bit 5 = 1 to enable automap on address 0x0028 (instruction fetch)
-  bit 4 = 1 to enable automap on address 0x0020 (instruction fetch)
-  bit 3 = 1 to enable automap on address 0x0018 (instruction fetch)
-  bit 2 = 1 to enable automap on address 0x0010 (instruction fetch)
-  bit 1 = 1 to enable automap on address 0x0008 (instruction fetch)
-  bit 0 = 1 to enable automap on address 0x0000 (instruction fetch)
-  */
-
-    int numero_bit=direccion/8;
-
-    int mascara=1;
-
-    if (numero_bit) mascara=1<<numero_bit;
-
-    return mascara;
-}
-
-int tbblue_if_automap_address(z80_int direccion)
-{
-    //Primero ver mascara segun registro 184
-    int mascara_reg_184_5=tbblue_get_mask_divmmc_entry_point(direccion);
-
-    //Ver si registro 184 dice que hay automap
-    int hay_automap=tbblue_registers[0xB8] & mascara_reg_184_5;
-
-    //Ver si dice que sea valido (registro 185)
-    int es_valid=tbblue_registers[0xB9] & mascara_reg_184_5;
-
-    //Si es_valid es 0, depende de si rom 3 esta presente
-    if (es_valid==0) {
-        //ver si rom 3 presente en esa zona
-        es_valid=tbblue_si_rom3_segmento_bajo;
-    }
-
-    if (hay_automap && es_valid) return 1;
-    else return 0;
-}
-
-int tbblue_diviface_salta_trap_antes=0;
-int tbblue_diviface_salta_trap_despues=0;
-int tbblue_diviface_salta_trap_despaginacion_despues=0;
-
-
-//Core de cpu loop para hacer traps de cpu
-void diviface_pre_opcode_fetch_tbblue(void)
-{
-
-/*
-Memory mapping could be invoked manually (by setting CONMEM), or automatically
-(CPU has fetched opcode form an entry-point). Automatic mapping is active
-only if EPROM/EEPROM is present (jumper EPROM is closed) or bit MAPRAM is set.
-Automatic mapping occurs at the begining of refresh cycle after fetching
-opcodes (M1 cycle) from 0000h, 0008h, 0038h, 0066h, 04c6h and 0562h. It's
-also mapped instantly (100ns after /MREQ of that fetch is falling down) after
-executing opcode from area 3d00..3dffh. Memory is automatically disconnected in
-refresh cycle of the instruction fetch from so called off-area, which is
-1ff8-1fffh.
-*/
-
-
-
-	tbblue_diviface_salta_trap_antes=0;
-	tbblue_diviface_salta_trap_despues=0;
-	tbblue_diviface_salta_trap_despaginacion_despues=0;
-
-
-
-    //temp parche para tbblue
-    /*
-    if (reg_pc==0x3d00) {
-        printf("PARCHE tbblue 3d00. diviface_allow_automatic_paging.v=%d\n",diviface_allow_automatic_paging.v);
-        tbblue_diviface_salta_trap_antes=1;
-    }
-
-    //temp parche para tbblue
-       //Traps que despaginan memoria antes de leer instruccion
-       if (reg_pc>=0x1ff8 && reg_pc<=0x1fff) {
-            printf ("PARCHE tbblue Saltado trap de despaginacion pc actual: %d. diviface_allow_automatic_paging.v=%d\n",reg_pc,diviface_allow_automatic_paging.v);
-
-               tbblue_diviface_salta_trap_despaginacion_despues=1;
-    }
-    */
-    
-
-
-	if (diviface_allow_automatic_paging.v) {
-        //Traps que paginan memoria y saltan despues de leer instruccion
-        switch (reg_pc) {
-            case 0x0000:
-            case 0x0008:
-            case 0x0010:
-            case 0x0018:
-            case 0x0020:
-            case 0x0028:
-            case 0x0030:
-            case 0x0038:
-                if (tbblue_if_automap_address(reg_pc)) {
-                    printf("Saltara paginacion en %04XH\n",reg_pc);
-                    if (diviface_paginacion_automatica_activa.v==0) {
-                        //Antes o despues del fetch?
-                        int es_antes;
-
-                        int mascara=tbblue_get_mask_divmmc_entry_point(reg_pc);
-
-                        es_antes=tbblue_registers[0xBA] & mascara;
-/*
-0xBA (186) => Divmmc Entry Points Timing 0
-(R/W) (soft reset = 0x00)
-  bit 7 = 1 for instant mapping else delayed (0x0038)
-  bit 6 = 1 for instant mapping else delayed (0x0030)
-  bit 5 = 1 for instant mapping else delayed (0x0028)
-  bit 4 = 1 for instant mapping else delayed (0x0020)
-  bit 3 = 1 for instant mapping else delayed (0x0018)
-  bit 2 = 1 for instant mapping else delayed (0x0010)
-  bit 1 = 1 for instant mapping else delayed (0x0008)
-  bit 0 = 1 for instant mapping else delayed (0x0000)
-*/                        
-
-                        if (es_antes) tbblue_diviface_salta_trap_antes=1;
-                        else tbblue_diviface_salta_trap_despues=1;
-                    }
-                }
-            break;
-
-    
-    /*
-    0xBB (187) => Divmmc Entry Points 1
-    (R/W) (soft reset = 0xCD)
-    bit 7 = 1 to enable automap on addresses 0x3DXX (instruction fetch, instant, ROM3) > TRDOS
-    bit 6 = 1 to disable automap on addresses 0x1FF8-0x1FFF (instruction fetch, delayed)
-    bit 5 = 1 to enable automap on address 0x056A (instruction fetch, delayed, ROM3)   \ tape traps
-    bit 4 = 1 to enable automap on address 0x04D7 (instruction fetch, delayed, ROM3)   / nextzxos (better compatibility)
-    bit 3 = 1 to enable automap on address 0x0562 (instruction fetch, delayed, ROM3)   \ tape traps
-    bit 2 = 1 to enable automap on address 0x04C6 (instruction fetch, delayed, ROM3)   / esxdos + original divmmc
-    bit 1 = 1 to enable automap on address 0x0066 (instruction fetch + button, instant)
-    bit 0 = 1 to enable automap on address 0x0066 (instruction fetch + button, delayed)
-    */
-            //TODO case 0x0066:
-            
-
-            case 0x056A:
-                if ((tbblue_registers[0xBB] & 0x20) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
-            break;            
-
-            case 0x04D7:
-                if ((tbblue_registers[0xBB] & 0x10) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
-            break;
-
-
-            case 0x0562:
-                if ((tbblue_registers[0xBB] & 0x08) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
-            break;
-
-            case 0x04C6:
-                if ((tbblue_registers[0xBB] & 0x04) && diviface_paginacion_automatica_activa.v==0 && tbblue_si_rom3_segmento_bajo) tbblue_diviface_salta_trap_despues=1;
-            break;            
-        }
-
-
-        //Traps que paginan memoria y saltan antes de leer instruccion
-        if ((tbblue_registers[0xBB] & 0x80) && reg_pc>=0x3d00 && reg_pc<=0x3dff && tbblue_si_rom3_segmento_bajo) {
-            //printf ("Saltado tbblue_diviface_salta_trap_antes pc actual: %04XH\n",reg_pc);
-            tbblue_diviface_salta_trap_antes=1;
-        }
-
-        //Traps que despaginan memoria antes de leer instruccion
-        if ((tbblue_registers[0xBB] & 0x40) && reg_pc>=0x1ff8 && reg_pc<=0x1fff && diviface_paginacion_automatica_activa.v) {
-            //printf ("Saltado trap de despaginacion pc actual: %04XH\n",reg_pc);
-            tbblue_diviface_salta_trap_despaginacion_despues=1;
-        }
-
-
-	}
-
-
-	if (tbblue_diviface_salta_trap_antes && diviface_paginacion_automatica_activa.v==0) {
-	    printf ("Saltado trap de paginacion antes pc actual: %04XH\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=1;
-        //menu_set_menu_abierto(1);
-    }
-}
-
-
-
-void diviface_post_opcode_fetch_tbblue(void)
-{
-
-
-	if (tbblue_diviface_salta_trap_despues) {
-		printf ("Saltado trap de paginacion despues. pc actual: %04XH\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=1;
-	}
-
-	if (tbblue_diviface_salta_trap_despaginacion_despues) {
-		printf ("Saltado trap de despaginacion despues. pc actual: %04XH\n",reg_pc);
-		diviface_paginacion_automatica_activa.v=0;
-	}
-
-
-}
-//Retorna puntero a direccion apuntada por dir, en caso de paginacion diviface activa y dir <4000h
-z80_byte *diviface_tbblue_return_memory_paged_pointer(z80_int dir)
-{
-/*
-
-
-    7        6     5  4  3  2   1       0
-[ CONMEM , MAPRAM, X, X, X, X, BANK1, BANK0 ]
-
-So, when CONMEM is set, there is:
-0000-1fffh - EEPROM/EPROM/NOTHING(if empty socket), and this area is
-	     flash-writable if EPROM jumper is open.
-2000-3fffh - 8k bank, selected by BANK 0..1 bits, always writable.
-
-When MAPRAM is set, but CONMEM is zero, and entrypoint was reached:
-0000-1fffh - Bank No.3, read-only
-2000-3fffh - 8k bank, selected by BANK 0..1. If it's different from Bank No.3,
-	     it's writable.
-
-When MAPRAM is zero, CONMEM is zero, EPROM jumper is closed and entrypoint was
-reached:
-0000-1fffh - EEPROM/EPROM/NOTHING(if empty socket, so open jumper in this case),
-	     read-only.
-2000-3fffh - 8k bank, selected by BANK 0..1, always writable.
-*/
-
-
-	//De momento facil
-	if (dir<=0x1fff) {
-
-		if (diviface_conmem_enabled() ) {
-			//Devolver eprom
-			return &diviface_memory_pointer[dir];
-		}
-
-		else {
-
-            //Para que funcione mapram, paginacion automatica debe estar activa tambien
-            if (diviface_mapram_enabled() && diviface_paginacion_automatica_activa.v) {
-                //printf ("Retornando direccion %04XH cuando MAPRAM activo\n",dir);
-				//pagina ram 3.
-				int pagina=3;
-				//int offset=DIVIFACE_FIRMWARE_ALLOCATED_KB*1024;
-				int offset=0;
-				offset +=dir;
-				offset +=pagina*8192;
-				return &diviface_ram_memory_pointer[offset];
-			}
-
-			else {
-				//Devolver eprom
-				return &diviface_memory_pointer[dir];
-			}
-		}
-	}
-
-	else {
-		//de 2000h a 3fffh
-		//Devolver pagina de memoria ram
-		int pagina=diviface_control_register&get_diviface_ram_mask();
-
-		int offset=0;
-
-		//Nos ubicamos en la pagina
-		offset +=pagina*8192;
-
-		//Nos ubicamos en la direccion
-		offset +=(dir-0x2000);
-		return &diviface_ram_memory_pointer[offset];
-	}
-
-}
-
-//Si hay que hacer poke a memoria interna.
-//Retorna 0 si no ha escrito en divmmc memoria. Cualquier cosa diferente de 0, es que ha escrito
-//Nota: El valor de retorno solo se usa en chloe, para decirle que si ha escrito en memoria divmmc/ide no escriba en la memoria que haya por debajo,
-//pues desde chloe mete memoria RAM dock en el segmento 0000-3fffh y provocaria escritura ahí, cuando no debe hacerlo si esta encima la divmmc
-int diviface_tbblue_poke_byte_to_internal_memory(z80_int dir,z80_byte valor)
-{
-
-
-    //No escribir cuando mapram activo y segmento 0 o banco 3 en segmento 1 
-    if (dir<16384 && !diviface_conmem_enabled() && diviface_mapram_enabled() && diviface_paginacion_automatica_activa.v) {
-        
-//CONMEM clear, MAPRAM set, entrypoint executed:
-
-//0000h-1FFFh - Bank 3, read-only
-//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.        
-        
-        if (dir<0x2000) return 0;
-
-
-        int pagina=diviface_control_register&get_diviface_ram_mask();
-        if (pagina==3) return 0;
-    
-    }
-
-	//Dado que en tbblue, divmmc tiene prioridad sobre layer2 en tbblue, no hay caso especial para layer2
-	
-
-	if (!diviface_conmem_enabled() && diviface_paginacion_automatica_activa.v==0) {
-		return 0;
-	}	
-
-	else {
-
-	
-	/*
-
-Prioridades Next. Divmmc encima de mmu. Por tanto no hay caso especial
-
-
--- memory decode order
-   --
-   -- 0-16k:
-   --   1. bootrom
-   --   2. machine config mapping
-   --   3. multiface
-   --   4. divmmc
-   --   5. layer 2 mapping
-   --   6. mmu
-   --   7. romcs expansion bus
-   --   8. rom
-   --
-   -- 16k-48k:
-   --   1. layer 2 mapping
-   --   2. mmu
-   --
-   -- 48k-64k:
-   --   1. mmu
-
-
-*/
-	
-		//Si poke a eprom o ram 3 read only.
-
-		if (dir<8192) {
-
-				//Si poke a eprom cuando conmem=1
-				if (diviface_conmem_enabled() && diviface_eprom_write_jumper.v) {
-					debug_printf (VERBOSE_DEBUG,"Diviface eprom writing address: %04XH value: %02XH",dir,valor);
-					//Escribir en eprom siempre que jumper eprom está permitiendolo
-					z80_byte *puntero=diviface_tbblue_return_memory_paged_pointer(dir);
-					*puntero=valor;
-					return 1;
-				}
-
-				//No escribir
-				return 0;
-			}
-
-		if (dir<16384) {
-			z80_byte *puntero=diviface_tbblue_return_memory_paged_pointer(dir);
-				*puntero=valor;
-				return 1;
-		}
-		return 0;
-
-	}
-
-}
-
-z80_byte diviface_tbblue_poke_byte_no_time(z80_int dir,z80_byte valor)
-{
-	diviface_tbblue_poke_byte_to_internal_memory(dir,valor);
-
-	debug_nested_poke_byte_no_time_call_previous(diviface_nested_id_poke_byte_no_time,dir,valor);
-
-	//Para que no se queje el compilador
-	return 0;
-}
-
-z80_byte diviface_tbblue_poke_byte(z80_int dir,z80_byte valor)
-{
-	diviface_tbblue_poke_byte_to_internal_memory(dir,valor);
-
-	debug_nested_poke_byte_call_previous(diviface_nested_id_poke_byte,dir,valor);
-
-	//Para que no se queje el compilador
-	return 0;
-}
-
-
-z80_byte diviface_tbblue_peek_byte_to_internal_memory(z80_int dir)
-{
-	//printf ("returning diviface internal memory address from diviface_peek_byte_no_time %XH\n",dir);
-	z80_byte *puntero=diviface_tbblue_return_memory_paged_pointer(dir);
-		
-		
-//
-/*
-
-Prioridades Next. Divmmc encima de mmu. Por tanto no hay caso especial
-
-
--- memory decode order
-   --
-   -- 0-16k:
-   --   1. bootrom
-   --   2. machine config mapping
-   --   3. multiface
-   --   4. divmmc
-   --   5. layer 2 mapping
-   --   6. mmu
-   --   7. romcs expansion bus
-   --   8. rom
-   --
-   -- 16k-48k:
-   --   1. layer 2 mapping
-   --   2. mmu
-   --
-   -- 48k-64k:
-   --   1. mmu
-
-
-*/
-		
-
-	return *puntero;
-}
-
-z80_byte diviface_tbblue_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED)
-{
-	z80_byte valor_leido=debug_nested_peek_byte_no_time_call_previous(diviface_nested_id_peek_byte_no_time,dir);
-
-    
-    //if (dir<16384 && !diviface_conmem_enabled() && diviface_mapram_enabled() && diviface_paginacion_automatica_activa.v) {
-        
-//CONMEM clear, MAPRAM set, entrypoint executed:
-
-//0000h-1FFFh - Bank 3, read-only
-//2000h-3FFFh - 8K RAM selected by BANK bits. Writable, unless bank 3.        
-        
-    //    return diviface_peek_byte_to_internal_memory(dir);
-    //}
-    
-
-	if (!diviface_conmem_enabled() && diviface_paginacion_automatica_activa.v==0) {
-		//printf ("returning NON diviface internal memory address from diviface_peek_byte_no_time %XH\n",dir);
-		return valor_leido;
-	}
-	else {
-
-		if (dir<16384) {
-			return diviface_tbblue_peek_byte_to_internal_memory(dir);
-			//printf ("returning diviface internal memory address from diviface_peek_byte_no_time %XH\n",dir);
-      //z80_byte *puntero=diviface_return_memory_paged_pointer(dir);
-      //return *puntero;
-    }
-
-		else return valor_leido;
-
-	}
-}
-
-z80_byte diviface_tbblue_peek_byte(z80_int dir,z80_byte value GCC_UNUSED)
-{
-	z80_byte valor_leido=debug_nested_peek_byte_call_previous(diviface_nested_id_peek_byte,dir);
-
-  if (!diviface_conmem_enabled() && diviface_paginacion_automatica_activa.v==0) {
-	  //printf ("returning NON diviface internal memory address from diviface_peek_byte %XH\n",dir);
-    return valor_leido;
-  }
-
-	else {
-  	if (dir<16384) {
-		return diviface_tbblue_peek_byte_to_internal_memory(dir);
-		//printf ("returning diviface internal memory address from diviface_peek_byte %XH\n",dir);
-      //z80_byte *puntero=diviface_return_memory_paged_pointer(dir);
-      //return *puntero;
-    }
-
-		else return valor_leido;
-  }
-
 }

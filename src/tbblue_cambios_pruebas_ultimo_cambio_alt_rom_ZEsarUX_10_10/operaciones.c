@@ -91,6 +91,7 @@
 #include "plus3dos_handler.h"
 #include "pcw.h"
 #include "dsk.h"
+#include "utils_text_adventure.h"
 
 
 void (*poke_byte)(z80_int dir,z80_byte valor);
@@ -101,7 +102,7 @@ z80_byte (*lee_puerto)(z80_byte puerto_h,z80_byte puerto_l);
 void (*out_port)(z80_int puerto,z80_byte value);
 z80_byte (*fetch_opcode)(void);
 
-void (*push_valor)(z80_int valor,z80_byte tipo);
+void (*push_valor)(z80_int valor,z80_byte tipo); 
 
 z80_byte lee_puerto_teclado(z80_byte puerto_h);
 z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l);
@@ -1242,7 +1243,7 @@ z80_byte fetch_opcode_zx81(void)
 		else {
 			caracter=op;
 			op=0;
-		}
+		}        
 
 
 		//Si no esta el modo real zx8081, no hacer esto
@@ -1800,14 +1801,14 @@ void poke_byte_no_time_msx1(z80_int dir,z80_byte valor)
 	if (tipo!=MSX_SLOT_MEMORY_TYPE_RAM) return;
 
 	else {
-
+			
 #ifdef EMULATE_VISUALMEM
 
 		set_visualmembuffer(dir);
 
 #endif
 
-		*puntero_memoria=valor;
+		*puntero_memoria=valor;	
 
 	}
 
@@ -1891,14 +1892,14 @@ void poke_byte_no_time_svi(z80_int dir,z80_byte valor)
 	if (tipo!=SVI_SLOT_MEMORY_TYPE_RAM) return;
 
 	else {
-
+			
 #ifdef EMULATE_VISUALMEM
 
 		set_visualmembuffer(dir);
 
 #endif
 
-		*puntero_memoria=valor;
+		*puntero_memoria=valor;	
 
 	}
 
@@ -1986,14 +1987,14 @@ void poke_byte_no_time_coleco(z80_int dir,z80_byte valor)
 	if (tipo!=COLECO_SLOT_MEMORY_TYPE_RAM) return;
 
 	else {
-
+			
 #ifdef EMULATE_VISUALMEM
 
 		set_visualmembuffer(dir);
 
 #endif
 
-		*puntero_memoria=valor;
+		*puntero_memoria=valor;	
 
 	}
 
@@ -2077,14 +2078,14 @@ void poke_byte_no_time_sg1000(z80_int dir,z80_byte valor)
 	if (tipo!=SG1000_SLOT_MEMORY_TYPE_RAM) return;
 
 	else {
-
+			
 #ifdef EMULATE_VISUALMEM
 
 		set_visualmembuffer(dir);
 
 #endif
 
-		*puntero_memoria=valor;
+		*puntero_memoria=valor;	
 
 	}
 
@@ -2184,7 +2185,7 @@ void poke_byte_no_time_sms(z80_int dir,z80_byte valor)
                 break;
 
 
-            }
+            } 
         }
     }
 
@@ -2205,9 +2206,9 @@ void poke_byte_no_time_sms(z80_int dir,z80_byte valor)
             break;
 
 
-        }
+        } 
 
-    }
+    }    
 
 	puntero_memoria=sms_return_segment_address(dir,&tipo);
 
@@ -2215,14 +2216,14 @@ void poke_byte_no_time_sms(z80_int dir,z80_byte valor)
 	if (tipo!=SMS_SLOT_MEMORY_TYPE_RAM) return;
 
 	else {
-
+			
 #ifdef EMULATE_VISUALMEM
 
 		set_visualmembuffer(dir);
 
 #endif
 
-		*puntero_memoria=valor;
+		*puntero_memoria=valor;	
 
 	}
 
@@ -2259,7 +2260,7 @@ z80_byte peek_byte_no_time_sms(z80_int dir)
     //Si actua sobre mappers sega
     if (sms_mapper_type==SMS_MAPPER_TYPE_SEGA) {
         if (dir>=0xFFFC) {
-            //printf("Reading from sms mapper %X\n",dir);
+            //printf("Reading from sms mapper %X\n",dir);        
 
             switch (dir) {
                 case 0xFFFC:
@@ -2279,7 +2280,7 @@ z80_byte peek_byte_no_time_sms(z80_int dir)
                 break;
 
 
-            }
+            } 
 
         }
     }
@@ -2652,22 +2653,22 @@ IMMEDIATE
 
 int tbblue_get_total_offset_layer2(void)
 {
-    int offset=tbblue_get_offset_start_layer2();
+    int offset=tbblue_get_offset_start_layer2();     
 
-
-
+    
+        
         //Bit 2-0	16ki bank relative offset (+0 .. +7) applied to Layer 2 memory mapping
         z80_byte offset_16k=tbblue_port_123b_second_byte&7;
         //printf("offset: %d\n",offset_16k);
         offset +=offset_16k*16384;
         //printf("offset: %d\n",offset);
+    
 
-
-
+        
 
         //printf("tbblue: %d\n",tbblue_port_123b);
 
-
+        
 
         z80_byte region=tbblue_port_123b&(64+128);
         switch (region) {
@@ -2680,7 +2681,7 @@ int tbblue_get_total_offset_layer2(void)
             break;
         }
 
-
+    
 
 
     return offset;
@@ -2696,7 +2697,13 @@ set_visualmembuffer(dir);
 #endif
 
 	//Altrom. Si escribe en espacio de memoria de rom 0-3fffh
-	if (dir<16384 && (  (tbblue_registers[0x8c] & 192) ==192)   ) {
+	if (dir<16384 && (  !tbblue_if_altrom_disabled_on_write())   ) {
+
+
+        
+    //if (dir<16384 && (  (tbblue_registers[0x8c] & 192) ==192)   ) {
+
+
 		/*
 		0x8C (140) => Alternate ROM
 (R/W) (hard reset = 0)
@@ -2714,7 +2721,7 @@ IMMEDIATE
 		int escribir=1;
 
 		if (! (
-				(diviface_control_register&128)==0 && diviface_paginacion_automatica_activa.v==0)
+				(diviface_control_register&128)==0 && diviface_paginacion_automatica_activa.v==0) 
 		      )
 		{
 			escribir=0;
@@ -2725,15 +2732,16 @@ IMMEDIATE
 		//Y escribimos
 		if (escribir) {
 			z80_byte *altrompointer;
-            printf ("Escribiendo en rom: %04XH\n",dir);
+            printf ("Escribiendo en rom: %04XH valor: %02XH\n",dir,valor);
             //sleep(1);
-            altrompointer=tbblue_get_altrom_dir(dir);
-
-                        //si los dos bits de lock son cero, ignorar esto
-            if (0/* (tbblue_registers[0x8c] & 16)==0  && (tbblue_registers[0x8c] & 32)==0*/ ) {
-                printf("Ignoring altrom. writing to normal rom instead?\n");
 
 
+            int offset=new_tbblue_get_start_altrom_offset(0);
+
+            if (offset<0) {
+                printf("Escribiendo en rom normal\n");
+                //if (dir<4) sleep(1);
+               
                 z80_byte *puntero;
                 puntero=tbblue_return_segment_memory(dir);
 
@@ -2745,12 +2753,18 @@ IMMEDIATE
                 //printf ("Returning tbblue memory value %X\n",*puntero);
 
                 *puntero=valor;
+                //sleep(1);
+
+
 
             }
-
+	
             else {
+                printf("Escribiendo en no rom normal\n");
+                //if (dir<4) sleep(1);
 
-			*altrompointer=valor;
+                altrompointer=&memoria_spectrum[offset+dir];
+			    *altrompointer=valor;
             }
 		}
 	}
@@ -2778,20 +2792,20 @@ IMMEDIATE
 
         int escribir=1;
 
-
+    
         if (tbblue_layer2_size_mapped()==16384) {
             if ((diviface_control_register&128) || diviface_paginacion_automatica_activa.v==1) {
                 //printf("no escribir pues divmmc activo. dir: %d\n",dir);
                 escribir=0;
             }
         }
-
-
+            
+        
 
         if (escribir) {
 
             int offset=tbblue_get_total_offset_layer2();
-
+            
 
             offset +=dir;
             memoria_spectrum[offset]=valor;
@@ -2853,7 +2867,7 @@ z80_byte peek_byte_no_time_tbblue(z80_int dir)
     //Si esta layer2 visible para lectura
     if (dir<tbblue_layer2_size_mapped() && tbblue_read_on_layer2() ) {
         int offset=tbblue_get_total_offset_layer2();
-
+        
         offset +=dir;
         return memoria_spectrum[offset];
     }
@@ -3116,7 +3130,7 @@ void poke_byte_no_time_tsconf(z80_int dir,z80_byte valor)
 
 				tsconf_write_fmaps(tsconf_fmaps_offset,valor);
 
-
+				
 
 
 			}
@@ -3453,11 +3467,11 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
     Port FB7Fh - FDC 765 Data Register (read/write)
     */
     if (MACHINE_IS_CPC_HAS_FLOPPY) {
-        //Puertos disco
+        //Puertos disco 
         if (pd765_enabled.v) {
             if (puerto==0xFB7E) return pd765_read_status_register();
 
-
+            
             if (puerto==0xFB7F) return pd765_read();
         }
 
@@ -3465,7 +3479,7 @@ z80_byte lee_puerto_cpc_no_time(z80_byte puerto_h,z80_byte puerto_l GCC_UNUSED)
         else {
             if (puerto==0xFB7E) return 255;
 
-
+            
             if (puerto==0xFB7F) return 255;
         }
     }
@@ -3511,8 +3525,8 @@ The recommended I/O port address is &7Fxx.
 
 	//Puerto CRTC
 /*
-The 6845 is selected when bit 14 of the I/O port address is set to "0".
-Bit 9 and 8 of the I/O port address define the function to access.
+The 6845 is selected when bit 14 of the I/O port address is set to "0". 
+Bit 9 and 8 of the I/O port address define the function to access. 
 The remaining bits can be any value, but it is adviseable to set these to "1" to avoid conflict with other devices in the system.
 */
 
@@ -3548,7 +3562,7 @@ The remaining bits can be any value, but it is adviseable to set these to "1" to
 
         if (puerto==0xFB7F) {
             pd765_out_port_data_register(value);
-        }
+        }        
    }
 
 	//printf ("fin out_port_cpc_no_time\n");
@@ -3870,7 +3884,7 @@ void out_port_sam_no_time(z80_int puerto,z80_byte value)
 	}
 
 	if (puerto==0x00ff) {
-		saa_simul_write_data(value);
+		saa_simul_write_data(value); 
 	}
 
 }
@@ -3896,7 +3910,7 @@ void poke_byte_no_time_pcw(z80_int dir,z80_byte valor)
     puntero=pcw_get_memory_offset_write(dir);
 
     *puntero=valor;
-
+       
 
 
 /*#ifdef EMULATE_VISUALMEM
@@ -3904,7 +3918,7 @@ void poke_byte_no_time_pcw(z80_int dir,z80_byte valor)
 set_visualmembuffer(dir);
 
 #endif*/
-
+	
 }
 
 void poke_byte_pcw(z80_int dir,z80_byte valor)
@@ -3958,7 +3972,7 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
 
     if (puerto_l==0xF7) {
         pcw_out_port_f7(value);
-    }
+    }        
 
     if (puerto_l==0xF8) {
         pcw_out_port_f8(value);
@@ -3982,17 +3996,17 @@ void out_port_pcw_no_time(z80_int puerto,z80_byte value)
    Abadia del Crimen
    Head Over Heels
    */
-
+    
     if (puerto_l==0xAA && ay_chip_present.v) out_port_ay(65533,value);
     if (puerto_l==0xAB && ay_chip_present.v) out_port_ay(49149,value);
-
+    
 
 
     if (puerto_l!=0x01 && puerto_l!=0xF4 && puerto_l!=0xf8 && puerto_l!=0xAA && puerto_l!=0xAB && (puerto_l<0xf0 || puerto_l>0xf8)) {
         //printf("Out port UNKNOWN %02XH value %02XH\n",puerto_l,value);
         //sleep(3);
-    }
-
+    }    
+   
 }
 
 
@@ -4028,7 +4042,7 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
     if (puerto_l==0xF8) {
         return pcw_in_port_f8();
 
-
+        
     }
 
     if (puerto_l==0xFD) {
@@ -4037,9 +4051,23 @@ z80_byte lee_puerto_pcw_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
     if (ay_chip_present.v) {
         if (puerto_l==0xA9) {
+
+            //Registro 14, dktronics joystick
+            if ( (ay_3_8912_registro_sel[ay_chip_selected] & 15) == 14) { 		
+                return pcw_in_port_dktronics_joystick();
+    		}
+
             return in_port_ay(0xFF);
         }
     }
+
+    if (puerto_l==0x9f) {
+        return pcw_in_port_9f();
+    }
+
+    if (puerto_l==0xe0) {
+        return pcw_in_port_e0();
+    }    
 
 
     //printf ("In Port %x unknown asked, PC after=0x%x\n",puerto_l+256*puerto_h,reg_pc);
@@ -4063,7 +4091,7 @@ z80_byte lee_puerto_pcw(z80_byte puerto_h,z80_byte puerto_l)
 
 z80_byte peek_byte_no_time_pcw(z80_int dir)
 {
-/*
+/*    
 #ifdef EMULATE_VISUALMEM
 	set_visualmemreadbuffer(dir);
 #endif
@@ -4076,7 +4104,7 @@ z80_byte peek_byte_no_time_pcw(z80_int dir)
         if (pcw_banks_paged_read[segmento]==3) {
             return pcw_read_keyboard(offset);
         }
-
+        
     }
 
 
@@ -4394,11 +4422,11 @@ char *push_value_types_strings[TOTAL_PUSH_VALUE_TYPES]={
 //El tipo realmente sera un valor en el rango del enum de push_value_type
 //lo pongo como z80_byte y no como enum porque luego al activar extended_stack, las funciones de nested
 //requieren que ese parametro sea z80_byte
-void push_valor_default(z80_int valor,z80_byte tipo GCC_UNUSED)
-{
-        reg_sp -=2;
-        poke_word(reg_sp,valor);
-}
+void push_valor_default(z80_int valor,z80_byte tipo GCC_UNUSED) 
+{ 
+        reg_sp -=2; 
+        poke_word(reg_sp,valor); 
+} 
 
 
 
@@ -5685,7 +5713,7 @@ z80_byte envia_jload_pp_spectrum(z80_byte puerto_h)
 				//Cursor arriba una vez y enter dos veces para NextOS
 				return envia_load_spectrum_nextos(puerto_h);
 
-			}
+			}			
 
 
                         if (initial_tap_sequence>SEQUENCE_ENTER1_MIN && initial_tap_sequence<SEQUENCE_ENTER1_MAX && puerto_h==191)  {
@@ -5880,7 +5908,7 @@ z80_byte envia_load_spectrum_nextos(z80_byte puerto_h)
 
                         if (initial_tap_sequence>SEQUENCE3_ENTER2_MIN && initial_tap_sequence<SEQUENCE3_ENTER2_MAX && puerto_h==191)  {
                                 return 255-1; //ENTER
-                        }
+                        }						
 
 
                         if (initial_tap_sequence<SEQUENCE3_ENTER2_MAX) initial_tap_sequence++;
@@ -6274,12 +6302,12 @@ z80_byte idle_bus_port_atribute_aux(void)
 
     https://web.archive.org/web/20080509193736/http://www.ramsoft.bbk.org/floatingbus.html
 
-    The ULA reads a whole row of pixels and attributes using 16 x 8T cycles, the first of which starts at 14368
-    on the 128K and 14347 on the 48K. The screen bytes are fetched during the first 4T of each cycle
-    (order: bitmap, attribute, bitmap+1, attribute+1), while in the last 4T the bus is idle (0xFF).
-    After that 128T, the ULA is busy drawing the border and it does not read the video memory,
-    so it leaves the bus idle for the remaining 228-128 = 100T (or 224-128 = 96T on the 48K).
-    Then, the second row of pixels is started to be read at 14368+228 = 14596T (or 14347+224 = 14571T on the 48K)
+    The ULA reads a whole row of pixels and attributes using 16 x 8T cycles, the first of which starts at 14368 
+    on the 128K and 14347 on the 48K. The screen bytes are fetched during the first 4T of each cycle 
+    (order: bitmap, attribute, bitmap+1, attribute+1), while in the last 4T the bus is idle (0xFF). 
+    After that 128T, the ULA is busy drawing the border and it does not read the video memory, 
+    so it leaves the bus idle for the remaining 228-128 = 100T (or 224-128 = 96T on the 48K). 
+    Then, the second row of pixels is started to be read at 14368+228 = 14596T (or 14347+224 = 14571T on the 48K) 
     with the same scheme, and so on until the 192th row is finished.
 
 
@@ -6335,8 +6363,8 @@ z80_byte idle_bus_port(z80_int puerto)
         //cuando el puerto 1FFD está operativo, el puerto FF devuelve FF
         z80_byte devcontrol=zxuno_ports[0x0E];
         //DISD  ENMMU   DIROMSEL1F  DIROMSEL7F  DI1FFD  DI7FFD  DITAY   DIAY
-        //DI1FFD: a 1 para deshabilitar el sistema de paginación compatible con +2A/+3.
-        //Deshabilitando esta interfaz se libera el puerto $1FFD en escritura.
+        //DI1FFD: a 1 para deshabilitar el sistema de paginación compatible con +2A/+3. 
+        //Deshabilitando esta interfaz se libera el puerto $1FFD en escritura. 
         //Tenga en cuenta que la decodificación del puerto $7FFD, si está activa, es diferente dependiendo de si el puerto $1FFD está activo o no.
         if (devcontrol&8) { //A 1, esta deshabilitado puerto 1ffd
             z80_byte valor_idle=idle_bus_port_atribute();
@@ -6509,10 +6537,10 @@ z80_byte teclado_return_valor_fila(z80_byte fila)
 }
 
 /*
-Lo que ocurre exactamente es lo siguiente: cuando se pulsan dos teclas que pertenecen a distintas filas,
-pero que pertenecen a la misma columna (como la A y la G en el ejemplo), las filas de ambas teclas adquieren
-el potencial de 0 voltios, así que aunque nosotros hayamos seleccionado un fila para leer, en realidad se
-están seleccionando dos filas para leer. Si en la fila que no pretendíamos leer hay más de una tecla pulsada (la I),
+Lo que ocurre exactamente es lo siguiente: cuando se pulsan dos teclas que pertenecen a distintas filas, 
+pero que pertenecen a la misma columna (como la A y la G en el ejemplo), las filas de ambas teclas adquieren 
+el potencial de 0 voltios, así que aunque nosotros hayamos seleccionado un fila para leer, en realidad se 
+están seleccionando dos filas para leer. Si en la fila que no pretendíamos leer hay más de una tecla pulsada (la I), 
 ésta obviamente aparecerá en la línea de salida.
 */
 
@@ -6562,7 +6590,7 @@ z80_byte teclado_matrix_puerto_final(z80_byte puerto_h)
     if (MACHINE_IS_SPECTRUM && keyboard_matrix_error.v) {
 
         //char puerto_binario[9];
-
+        
         //util_byte_to_binary(puerto_h,puerto_binario);
         //printf ("Port to read: %02XH (%s) ",puerto_h,puerto_binario);
 
@@ -6622,10 +6650,10 @@ z80_byte lee_puerto_teclado(z80_byte puerto_h)
 
     puerto_h=teclado_matrix_puerto_final(puerto_h);
 
-    //A zero in one of the five lowest bits means that the corresponding key is pressed.
-    //If more than one address line is made low, the result is the logical AND of all single inputs,
-    //so a zero in a bit means that at least one of the appropriate keys is pressed.
-    //For example, only if each of the five lowest bits of the result from reading from Port 00FE
+    //A zero in one of the five lowest bits means that the corresponding key is pressed. 
+    //If more than one address line is made low, the result is the logical AND of all single inputs, 
+    //so a zero in a bit means that at least one of the appropriate keys is pressed. 
+    //For example, only if each of the five lowest bits of the result from reading from Port 00FE 
     //(for instance by XOR A/IN A,(FE)) is one, no key is pressed
 
     //puerto_65278   db    255  ; V    C    X    Z    Sh    ;0
@@ -6835,6 +6863,10 @@ z80_byte get_kempston_value(void)
 z80_byte lee_puerto_spectrum_ula(z80_byte puerto_h)
 {
 
+    //Si deteccion de localidades activa
+    textadv_location_desc_read_keyboard_port();
+
+
                 z80_byte valor;
                 valor=lee_puerto_teclado(puerto_h);
                 //teclado issue 2 o 3
@@ -6961,7 +6993,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
             //Bit Request for Master
 			if (puerto_h==0x2F) return 0x80;
 
-			if (puerto_h==0x3F) return 255;
+			if (puerto_h==0x3F) return 255;            
         }
 
 		else {
@@ -6981,7 +7013,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
            if (puerto_l==0xFF) {
                return_value=255;
                //debug_printf (VERBOSE_DEBUG,"Reading port betadisk %02X%02XH Beta Disk Status PC=%04XH return=%02XH",puerto_h,puerto_l,reg_pc,return_value);
-
+               
                return return_value;
           }
 
@@ -6989,21 +7021,21 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
                 betadisk_temp_puerto_1f ^=2;
                 return_value=betadisk_temp_puerto_1f;
                 //debug_printf (VERBOSE_DEBUG,"Reading port betadisk %02X%02XH Beta Disk FDC Status PC=%04XH return=%02XH",puerto_h,puerto_l,reg_pc,return_value);
-
+              
               return return_value; //Parece que al conmutar bit 1 al menos detecta que hay disco, aunque luego da error
           }
 
          if (puerto_l==0x3f) {
                return_value=betadisk_temp_puerto_3f;
                //debug_printf (VERBOSE_DEBUG,"Reading port betadisk %02X%02XH Beta Disk FDC Track PC=%04XH return=%02XH",puerto_h,puerto_l,reg_pc,return_value);
-
+               
                return return_value;
          }
 
          if (puerto_l==0x5f) {
                return_value=betadisk_temp_puerto_5f;
                //debug_printf (VERBOSE_DEBUG,"Reading port betadisk %02X%02XH Beta Disk FDC Sector PC=%04XH return=%02XH",puerto_h,puerto_l,reg_pc,return_value);
-
+               
                return return_value;
          }
 
@@ -7011,7 +7043,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
          if (puerto_l==0x7f) {
                 return_value=betadisk_temp_puerto_7f;
                 //debug_printf (VERBOSE_DEBUG,"Reading port betadisk %02X%02XH Beta Disk FDC Data PC=%04XH return=%02XH",puerto_h,puerto_l,reg_pc,return_value);
-
+                
                return return_value;
          }
      }
@@ -7210,7 +7242,7 @@ z80_byte lee_puerto_spectrum_no_time(z80_byte puerto_h,z80_byte puerto_l)
 			if (mouse_left) acumulado &=(255-2);
                         //right button
                         if (mouse_right) acumulado &=(255-1);
-
+                        
                         //en Next, bits altos se usan para wheel, como no los emulamos, a 0
                         //https://specnext.dev/wiki/Kempston_Mouse_Buttons
                         if (MACHINE_IS_TBBLUE) acumulado &=0x0F;
@@ -7460,12 +7492,12 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 					if (puerto==0xeff7) return puerto_eff7;
 
 
-				}
+				}	
 
     if (gs_enabled.v) {
         if (puerto_l==0xBB) return gs_read_port_bb_from_speccy();
         if (puerto_l==0xB3) return gs_read_port_b3_from_speccy();
-    }
+    }                
 
 	if (MACHINE_IS_TSCONF) {
 
@@ -7478,8 +7510,8 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 		//Puertos ZIFI
 		if (puerto==TSCONF_ZIFI_ERROR_REG) return tsconf_zifi_read_error_reg();
 		if (puerto==TSCONF_ZIFI_DATA_REG) return tsconf_zifi_read_data_reg();
-		if (puerto==TSCONF_ZIFI_INPUT_FIFO_STATUS) return tsconf_zifi_read_input_fifo_status();
-		if (puerto==TSCONF_ZIFI_OUTPUT_FIFO_STATUS) return tsconf_zifi_read_output_fifo_status();
+		if (puerto==TSCONF_ZIFI_INPUT_FIFO_STATUS) return tsconf_zifi_read_input_fifo_status(); 
+		if (puerto==TSCONF_ZIFI_OUTPUT_FIFO_STATUS) return tsconf_zifi_read_output_fifo_status(); 
 
 		//Puerto desconocido pero que usa la demo zifi. Tambien lo usa en escritura pero no se como va
 		if (puerto==0x57) return tsconf_read_port_57();
@@ -7508,7 +7540,7 @@ Bit 5 If set disable Chrome features ( reading/writing to port 1FFDh, reading fr
 
         if ( (puerto&0x00FF)==0xBF ) {
                return baseconf_last_port_bf;
-        }
+        }        
 
 
 
@@ -7638,7 +7670,7 @@ void cpi_cpd_common(void)
 void out_port_ace_no_time(z80_int puerto,z80_byte value)
 {
 	debug_fired_out=1;
-
+	
 
         z80_byte puerto_l=puerto&0xFF;
         //z80_byte puerto_h=(puerto>>8)&0xFF;
@@ -7904,8 +7936,8 @@ void out_port_msx1_no_time(z80_int puerto,z80_byte value)
 	}
 
 	if (puerto_l==0x99) {
-		//printf ("VDP Command and status register\n");
-		msx_out_port_vdp_command_status(value);
+		//printf ("VDP Command and status register\n");	
+		msx_out_port_vdp_command_status(value);  
 	}
 
 	if (puerto_l>=0x9A && puerto_l<0xA0) {
@@ -7914,7 +7946,7 @@ void out_port_msx1_no_time(z80_int puerto,z80_byte value)
 
 	if (puerto_l>=0xA0 && puerto_l<=0xA7) {
 		msx_out_port_psg(puerto_l,value);
-	}
+	}	
 
 	if (puerto_l>=0xA8 && puerto_l<=0xAB) {
 		msx_out_port_ppi(puerto_l,value);
@@ -7947,28 +7979,28 @@ z80_byte lee_puerto_msx1_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 	//printf ("Lee puerto msx %04XH PC=%04XH\n",puerto,reg_pc);
 
 	//if (puerto_l==0x98) printf ("VDP Video Ram Data\n");
-	//if (puerto_l==0x99) printf ("VDP Command and status register\n");
+	//if (puerto_l==0x99) printf ("VDP Command and status register\n");	
 
 
-	//A8.
+	//A8. 
 	//if (puerto==0xa8) return 0x50; //temporal
 
 	if (puerto_l==0x98) {
 		//printf ("VDP Video Ram Data IN\n");
 		return msx_in_port_vdp_data();
-	}
+	}	
 
 	if (puerto_l==0x99) {
 		//printf ("VDP Status IN\n");
 		return msx_in_port_vdp_status();
-	}
+	}		
 
 	if (puerto_l>=0xA8 && puerto_l<=0xAB) {
 		return msx_in_port_ppi(puerto_l);
 	}
 
 
-	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) {
+	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) { 
 	if (puerto_l==0xA2) {
 		//printf ("reading from psg\n");
         return msx_read_psg();
@@ -7976,8 +8008,8 @@ z80_byte lee_puerto_msx1_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
 
 	return 255;
-
-
+ 
+	
 }
 
 z80_byte lee_puerto_msx1(z80_byte puerto_h,z80_byte puerto_l)
@@ -8026,8 +8058,8 @@ void out_port_svi_no_time(z80_int puerto,z80_byte value)
 	}
 
 	if (puerto_l==0x81) {
-		//printf ("VDP Command and status register\n");
-		svi_out_port_vdp_command_status(value);
+		//printf ("VDP Command and status register\n");	
+		svi_out_port_vdp_command_status(value);  
 	}
 
 	if (puerto_l>=0x9A && puerto_l<0xA0) {
@@ -8036,7 +8068,7 @@ void out_port_svi_no_time(z80_int puerto,z80_byte value)
 
 	if (puerto_l==0x88 || puerto_l==0x8c) {
 		svi_out_port_psg(puerto_l,value);
-	}
+	}	
 
 	if (puerto_l>=0x96 && puerto_l<=0x99) {
 		svi_out_port_ppi(puerto_l,value);
@@ -8067,36 +8099,36 @@ z80_byte lee_puerto_svi_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 	//printf ("Lee puerto svi %04XH PC=%04XH\n",puerto,reg_pc);
 
 	//if (puerto_l==0x98) printf ("VDP Video Ram Data\n");
-	//if (puerto_l==0x99) printf ("VDP Command and status register\n");
+	//if (puerto_l==0x99) printf ("VDP Command and status register\n");	
 
 
-	//A8.
+	//A8. 
 	//if (puerto==0xa8) return 0x50; //temporal
 
 	if (puerto_l==0x84) {
 		//printf ("VDP Video Ram Data IN\n");
 		return svi_in_port_vdp_data();
-	}
+	}	
 
 	if (puerto_l==0x81) {
 		//printf ("VDP Status IN\n");
 		return svi_in_port_vdp_status();
-	}
+	}		
 
 	if (puerto_l==0x96 || puerto_l==0x98 || puerto_l==0x99 || puerto_l==0x9a) {
 		return svi_in_port_ppi(puerto_l);
 	}
 
 
-	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) {
+	//if (puerto_l==0xA0 && ay_3_8912_registro_sel[0]==14) { 
 	if (puerto_l==0x90) {
         return svi_read_psg();
 	}
 
 
 	return 255;
-
-
+ 
+	
 }
 
 z80_byte lee_puerto_svi(z80_byte puerto_h,z80_byte puerto_l)
@@ -8142,7 +8174,7 @@ void out_port_coleco_no_time(z80_int puerto,z80_byte value)
 	//if (puerto_l==0x98) printf ("%c",
 	//  (value>=32 && value<=126 ? value : '?') );
 
-
+   
        if (puerto_l==0xBE) {
               //printf ("VDP Video Ram Data\n");
                coleco_out_port_vdp_data(value);
@@ -8159,15 +8191,15 @@ void out_port_coleco_no_time(z80_int puerto,z80_byte value)
 	   }
 
 	if (puerto_l >=0x80 && puerto_l <=0x9F) {
-		//printf ("Out coleco port: Controls _ Set to keypad mode %04XH value: %02XH char: %c\n",puerto,value,(value>=32 && value<=126 ? value : '?') );
+		//printf ("Out coleco port: Controls _ Set to keypad mode %04XH value: %02XH char: %c\n",puerto,value,(value>=32 && value<=126 ? value : '?') );	 
 
-		coleco_set_keypad_mode();
-	}
+		coleco_set_keypad_mode();  
+	}	   
 
 	if (puerto_l >=0xC0 && puerto_l <=0xDF) {
-		//printf ("Out coleco port: Controls _ Set to joystick mode %04XH value: %02XH char: %c\n",puerto,value,(value>=32 && value<=126 ? value : '?') );
+		//printf ("Out coleco port: Controls _ Set to joystick mode %04XH value: %02XH char: %c\n",puerto,value,(value>=32 && value<=126 ? value : '?') );	 
 
-		coleco_set_joystick_mode();
+		coleco_set_joystick_mode();   
 	}
 
 }
@@ -8195,10 +8227,10 @@ z80_byte lee_puerto_coleco_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_
 	//printf ("Lee puerto coleco %04XH PC=%04XH\n",puerto,reg_pc);
 
 	//if (puerto_l==0x98) printf ("VDP Video Ram Data\n");
-	//if (puerto_l==0x99) printf ("VDP Command and status register\n");
+	//if (puerto_l==0x99) printf ("VDP Command and status register\n");	
 
 
-	//A8.
+	//A8. 
 	//if (puerto==0xa8) return 0x50; //temporal
 
        //temp coleco
@@ -8221,7 +8253,7 @@ z80_byte lee_puerto_coleco_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_
                return coleco_get_controller_a();
        }
 
-//FF- Reading this one gives the status of controller #2. (closest to front)
+//FF- Reading this one gives the status of controller #2. (closest to front)	   
        if (puerto_l==0xFF) {
 		   //printf ("In coleco controller B\n");
                return coleco_get_controller_b();
@@ -8230,8 +8262,8 @@ z80_byte lee_puerto_coleco_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_
 //printf ("In port : %04XH\n",puerto);
 
 	return 255;
-
-
+ 
+	
 }
 
 z80_byte lee_puerto_coleco(z80_byte puerto_h,z80_byte puerto_l)
@@ -8268,9 +8300,9 @@ void out_port_sg1000_no_time(z80_int puerto,z80_byte value)
 		   if (puerto_l==0x7F) {
 		   //printf ("Puerto sonido %04XH valor %02XH\n",puerto,value);
 		   sn_out_port_sound(value);
-	   }
+	   }    
 
-
+   
        if (puerto_l==0xBE) {
               //printf ("VDP Video Ram Data\n");
                sg1000_out_port_vdp_data(value);
@@ -8308,13 +8340,13 @@ z80_byte lee_puerto_sg1000_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_
 	//printf ("Lee puerto sg1000 %04XH PC=%04XH\n",puerto,reg_pc);
 
 	//if (puerto_l==0x98) printf ("VDP Video Ram Data\n");
-	//if (puerto_l==0x99) printf ("VDP Command and status register\n");
+	//if (puerto_l==0x99) printf ("VDP Command and status register\n");	
 
 
-	//A8.
+	//A8. 
 	//if (puerto==0xa8) return 0x50; //temporal
 
-
+       
        //printf ("In port : %04XH\n",puerto);
        if (puerto_l==0xBE) {
                //printf ("VDP Video Ram Data IN\n");
@@ -8336,7 +8368,7 @@ z80_byte lee_puerto_sg1000_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_
 
 				//345 67890
                return (puerto_61438 & 31) | ((puerto_63486<<3) & (128+64+32) );
-
+             
        }*/
 	   /*
 	   Lee puerto sg1000 04DCH PC=1D7AH
@@ -8350,7 +8382,7 @@ Lee puerto sg1000 02DEH PC=1DBFH
        if ((puerto_l & 193) == 192 ) {
 		   return sg1000_get_joypad_a();
 
-
+             
        }
 
 
@@ -8358,8 +8390,8 @@ Lee puerto sg1000 02DEH PC=1DBFH
        if ((puerto_l & 193) == 193) {
 		   return sg1000_get_joypad_b();
 
-
-       }
+             
+       }	   
 
 
 
@@ -8368,8 +8400,8 @@ Lee puerto sg1000 02DEH PC=1DBFH
 
 
 	return 255;
-
-
+ 
+	
 }
 
 z80_byte lee_puerto_sg1000(z80_byte puerto_h,z80_byte puerto_l)
@@ -8400,8 +8432,8 @@ void out_port_sms_no_time(z80_int puerto,z80_byte value)
 
     z80_byte puerto_escrito_efectivo=puerto_l & 0xC1;
 
-    switch (puerto_escrito_efectivo) {
-
+    switch (puerto_escrito_efectivo) {   
+     
         case 0x40:
         case 0x41:
             /*
@@ -8414,7 +8446,7 @@ void out_port_sms_no_time(z80_int puerto,z80_byte value)
             sn_out_port_sound(value);
         break;
 
-
+    
         case 0x80:
             //BEH & 193 = 0x80
             //printf ("VDP Video Ram Data\n");
@@ -8459,7 +8491,7 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
     switch (puerto_leido_efectivo) {
 
-
+       
         //printf ("In port : %04XH\n",puerto);
 
         case 0x40:
@@ -8492,7 +8524,7 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
             is primarily used to initialize the flag to zero after it has been modified
             unpredictably, such as after an interrupt routine has executed.
 
-            */
+            */               
             vdp_9918a_last_command_status_bytes_counter=0;
             return sms_in_port_vdp_data();
         break;
@@ -8514,7 +8546,7 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
             return sms_in_port_vdp_status();
         break;
-
+       
 
         case 0xC0:
             //tipicamente DC
@@ -8534,7 +8566,7 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
         default:
             //printf("Unhandled in port %04XH (effective %02XH)\n",puerto,puerto_leido_efectivo);
-        break;
+        break;        
 
     }
 
@@ -8542,8 +8574,8 @@ z80_byte lee_puerto_sms_no_time(z80_byte puerto_h GCC_UNUSED,z80_byte puerto_l)
 
 
 	return 255;
-
-
+ 
+	
 }
 
 z80_byte lee_puerto_sms(z80_byte puerto_h,z80_byte puerto_l)
@@ -8602,7 +8634,7 @@ void set_value_beeper (int v)
 			value_beeper=( v ? output_beep_filter_volume : -output_beep_filter_volume);
 		}
 
-
+	
 
   }
 
@@ -8615,7 +8647,7 @@ void set_value_beeper (int v)
 	//temp normal en fuse
 	value_beeper = -beeper_ampl[3] + beeper_ampl[v]*2;
 
-
+	
 
   }
 
@@ -8703,6 +8735,8 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
                 silence_detection_counter=0;
 		beeper_silence_detection_counter=0;
 
+        //ay_player_silence_detection_counter=0;
+
 		out_254_original_value=value;
 
 		//printf ("valor mic y ear: %d\n",value&(8+16));
@@ -8769,7 +8803,7 @@ void out_port_spectrum_border(z80_int puerto,z80_byte value)
 
 						else {
 							//Maquinas no pentagon, pero de 128k
-							//esto hace que se vea bien la ula128 y scroll2017
+							//esto hace que se vea bien la ula128 y scroll2017							
 							if (MACHINE_IS_SPECTRUM_128_P2) i+=2;
 						}
 
@@ -8893,7 +8927,7 @@ Port: 10-- ---- ---- --0-
 		if (ay_chip_present.v==1) out_port_ay(puerto_final,value);
 
 	}
-
+	
 	//samram
 	if (MACHINE_IS_SPECTRUM_48 && puerto_l==31 && samram_enabled.v) {
 	  samram_write_port(value);
@@ -9030,7 +9064,7 @@ Port: 10-- ---- ---- --0-
         	        if ( (puerto & 49154) == 16384 ) {
                 	        zxuno_p2a_write_page_port(puerto,value);
 
-
+	                        
         	        }
 
 	                //Puerto tipicamente 8189
@@ -9038,7 +9072,7 @@ Port: 10-- ---- ---- --0-
         	        // the hardware will respond to all port addresses with bit 1 reset, bit 12 set and bits 13, 14 and 15 reset).
 	                if ( (puerto & 61442 )== 4096) {
         	                zxuno_p2a_write_page_port(puerto,value);
-
+	                        
         	        }
 
 
@@ -9057,7 +9091,7 @@ Port: 10-- ---- ---- --0-
                                 //zxuno_p2a_write_page_port(puerto,value);
 				//printf ("Paginacion 32765 con bootm activo\n");
 
-
+                               
                         }
 
                         //Puerto tipicamente 8189
@@ -9208,9 +9242,9 @@ After the 3rd value has been written, the colour selected for redefinition incre
 /*
 antiguo: 0x9E3B (write) - ULA2's 256 colour BORDER
 
-The border is set to this colour when the "BORDER 0" command has been issued
-(BORDER 1, BORDER 2 etc all work as expected on a normal Spectrum).
-This register defaults to '0' so Spectrum software setting a black border
+The border is set to this colour when the "BORDER 0" command has been issued 
+(BORDER 1, BORDER 2 etc all work as expected on a normal Spectrum). 
+This register defaults to '0' so Spectrum software setting a black border 
 acts as expected unless this registe is explicitly changed by the user/software.
 */
 
@@ -9228,9 +9262,9 @@ acts as expected unless this registe is explicitly changed by the user/software.
 
 	                               prism_ula2_border_colour_buffer[i]=value;
 
-
+					
         	                }
-
+                        
 
 
 
@@ -9274,7 +9308,7 @@ acts as expected unless this registe is explicitly changed by the user/software.
 					if (puerto==0xeff7) {
 						z80_byte estado_antes=puerto_eff7 & 1;
 						puerto_eff7=value;
-
+						
 						//splash si el modo esta disponible
 						if (pentagon_16c_mode_available.v) {
 
@@ -9286,13 +9320,13 @@ acts as expected unless this registe is explicitly changed by the user/software.
 					}
 
 
-
+              
 				}
 
                 if (gs_enabled.v) {
                     if (puerto_l==0xBB) gs_write_port_bb_from_speccy(value);
                     if (puerto_l==0xB3) gs_write_port_b3_from_speccy(value);
-                }
+                }                      
 
 
 				//Puertos de Paginacion
@@ -9449,7 +9483,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 		//Puerto tipicamente 32765
 		// the hardware will respond only to those port addresses with
 		//bit 1 reset, bit 14 set and bit 15 reset (as opposed to just bits 1 and 15 reset on the 128K/+2).
-        if ( (puerto & 49154) == 16384 ) tbblue_out_port_32765(value);
+        if ( (puerto & 49154) == 16384 ) tbblue_out_port_32765(value);			
 
 
 		//Puerto tipicamente 8189
@@ -9470,7 +9504,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
 		if (puerto==DS1307_PORT_CLOCK) ds1307_write_port_clock(value);
 		if (puerto==DS1307_PORT_DATA) ds1307_write_port_data(value);
 
-		if (puerto==TBBLUE_UART_TX_PORT) tbblue_uartbridge_writedata(value);
+		if (puerto==TBBLUE_UART_TX_PORT) tbblue_uartbridge_writedata(value);				
 
 
 	}
@@ -9631,7 +9665,7 @@ Allowed to read / write port # xx57 teams INIR and OTIR. Example of reading the 
     //a7 a 0. a11=a15=1
     if (ramjet_enabled.v && (puerto & 0x8880) == 0x8800) {
         ramjet_write_port(value);
-    }
+    }    
 
     //Puertos transtape
     if (transtape_enabled.v) {

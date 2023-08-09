@@ -104,15 +104,18 @@ int get_diviface_total_ram(void)
 
 
 
-        int diviface_salta_trap_antes=0;
-        int diviface_salta_trap_despues=0;
-	int diviface_salta_trap_despaginacion_despues=0;
+int diviface_salta_trap_antes=0;
+int diviface_salta_trap_despues=0;
+int diviface_salta_trap_despaginacion_despues=0;
 
 
 //Core de cpu loop para hacer traps de cpu
 void diviface_pre_opcode_fetch(void)
 {
-
+    if (MACHINE_IS_TBBLUE) {
+        diviface_pre_opcode_fetch_tbblue();
+        return;
+    }
 /*
 Memory mapping could be invoked manually (by setting CONMEM), or automatically
 (CPU has fetched opcode form an entry-point). Automatic mapping is active
@@ -193,6 +196,11 @@ refresh cycle of the instruction fetch from so called off-area, which is
 
 void diviface_post_opcode_fetch(void)
 {
+    if (MACHINE_IS_TBBLUE) {
+        diviface_post_opcode_fetch_tbblue();
+        return;
+    }
+
 
 	if (diviface_salta_trap_despues) {
 		//printf ("Saltado trap de paginacion despues. pc actual: %d\n",reg_pc);
@@ -469,6 +477,7 @@ z80_byte diviface_chloe_poke_byte(z80_int dir,z80_byte valor)
 	return 0;
 }
 
+/*
 z80_byte *diviface_return_tbblue_memory_pointer(z80_int dir)
 {
 	z80_byte *puntero;
@@ -479,6 +488,7 @@ z80_byte *diviface_return_tbblue_memory_pointer(z80_int dir)
 
 	return puntero;
 }
+*/
 
 z80_byte diviface_peek_byte_to_internal_memory(z80_int dir)
 {
@@ -605,14 +615,28 @@ void diviface_set_peek_poke_functions(void)
         	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_chloe_poke_byte_no_time,"Diviface poke_byte_no_time");
 				}
 
+				else if (MACHINE_IS_TBBLUE) {
+        	diviface_nested_id_poke_byte=debug_nested_poke_byte_add(diviface_tbblue_poke_byte,"Diviface poke_byte");
+        	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_tbblue_poke_byte_no_time,"Diviface poke_byte_no_time");
+				}                
+
 				else {
         	diviface_nested_id_poke_byte=debug_nested_poke_byte_add(diviface_poke_byte,"Diviface poke_byte");
         	diviface_nested_id_poke_byte_no_time=debug_nested_poke_byte_no_time_add(diviface_poke_byte_no_time,"Diviface poke_byte_no_time");
 				}
 
 
+        if (MACHINE_IS_TBBLUE) {
+            diviface_nested_id_peek_byte=debug_nested_peek_byte_add(diviface_tbblue_peek_byte,"Diviface peek_byte");
+            diviface_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(diviface_tbblue_peek_byte_no_time,"Diviface peek_byte_no_time");            
+        }
+
+        else {
+
         diviface_nested_id_peek_byte=debug_nested_peek_byte_add(diviface_peek_byte,"Diviface peek_byte");
         diviface_nested_id_peek_byte_no_time=debug_nested_peek_byte_no_time_add(diviface_peek_byte_no_time,"Diviface peek_byte_no_time");
+
+        }
 
 	}
 }

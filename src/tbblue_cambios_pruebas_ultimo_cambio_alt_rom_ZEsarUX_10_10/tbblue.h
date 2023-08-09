@@ -89,6 +89,9 @@ extern void tbblue_set_timing_48k(void);
 extern int tbblue_get_altrom_offset_dir(int altrom,z80_int dir);
 extern int tbblue_get_altrom(void);
 
+extern int tbblue_if_altrom_disabled_on_write(void);
+extern int new_tbblue_get_start_altrom_offset(int es_read);
+
 extern void tbblue_set_emulator_setting_timing(void);
 extern void tbblue_set_emulator_setting_reg_8(void);
 extern void tbblue_set_emulator_setting_divmmc(void);
@@ -350,6 +353,15 @@ extern z80_byte tbblue_uartbridge_readstatus(void);
 extern int tbblue_tiles_are_monocrome(void);
 
 extern z80_byte tbblue_get_diviface_enabled(void);
+
+extern void diviface_pre_opcode_fetch_tbblue(void);
+extern void diviface_post_opcode_fetch_tbblue(void);
+extern int tbblue_get_mask_divmmc_entry_point(z80_int direccion);
+
+extern z80_byte diviface_tbblue_poke_byte_no_time(z80_int dir,z80_byte valor);
+extern z80_byte diviface_tbblue_poke_byte(z80_int dir,z80_byte valor);
+extern z80_byte diviface_tbblue_peek_byte_no_time(z80_int dir,z80_byte value GCC_UNUSED);
+extern z80_byte diviface_tbblue_peek_byte(z80_int dir,z80_byte value GCC_UNUSED);
 
 extern int debug_tbblue_sprite_visibility[];
 

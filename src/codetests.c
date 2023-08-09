@@ -134,7 +134,7 @@ void coretests_compress_repetitions(void)
 
 #define MAX_COMP_REP_ARRAY 2048
 
-	z80_byte repetitions[MAX_COMP_REP_ARRAY]; 
+	z80_byte repetitions[MAX_COMP_REP_ARRAY];
 
 	z80_byte compressed_data[MAX_COMP_REP_ARRAY*2];
 
@@ -165,7 +165,7 @@ void coretests_compress_repetitions(void)
 		}
 
 		printf ("Initializing with 1 from the right\n");
-		//Meter valores "1" al final 
+		//Meter valores "1" al final
 		for (j=0;j<=i;j++) {
 			coretests_compress_repetitions_write_arr(repetitions,max_array-1-j,1,MAX_COMP_REP_ARRAY);
 			//repetitions[max_array-1-j]=1;
@@ -193,7 +193,7 @@ void coretests_compress_repetitions(void)
 		//A partir de 33 con magic_byte=0xDD falla el calculo porque hay:
 		//D8 D9 DA DB DC DD 1 1 1 1 1 1 1 1 ....... Ese DD aislado hay que escaparlo como 1 sola repeticion
 		//que se traduce en:
-		//D8 D9 DA DB DC DD DD DD 01 DD DD 01 22 
+		//D8 D9 DA DB DC DD DD DD 01 DD DD 01 22
 
 		if (i<limite) {
 			//Validacion solo de longitud comprimida. El contenido, hacer una validacion manual
@@ -311,7 +311,7 @@ extern int util_uncompress_data_repetitions(z80_byte *origen,z80_byte *destino,i
 			exit(1);
 		}
 	}
-	
+
 
 	if (error) {
 		exit(1);
@@ -417,7 +417,7 @@ void codetests_assemble_opcode(char *instruccion,z80_byte *destino)
 void codetests_assembler(void)
 {
 	//void asm_return_op_ops(char *origen,char *opcode,char *primer_op,char *segundo_op)
-	/* 
+	/*
 	char buf_opcode[100];
 	char buf_primer_op[100];
 	char buf_segundo_op[100];
@@ -507,19 +507,19 @@ void codetests_assembler(void)
 		if (paso_prefijo==4) {
 			disassemble_array[inicio_array]=203;
 			inicio_array++;
-		}		
+		}
 
 		if (paso_prefijo==5) {
 			disassemble_array[inicio_array]=221;
 			disassemble_array[inicio_array+1]=203;
 			inicio_array+=2;
-		}	
+		}
 
 		if (paso_prefijo==6) {
 			disassemble_array[inicio_array]=253;
 			disassemble_array[inicio_array+1]=203;
 			inicio_array+=2;
-		}					
+		}
 
 
 
@@ -527,7 +527,7 @@ void codetests_assembler(void)
 			disassemble_array[inicio_array]=0; //desplazamiento
 			disassemble_array[inicio_array+1]=i; //instruccion
 			disassemble_array[inicio_array+2]=0; //0x6e;
-			disassemble_array[inicio_array+3]=0; //0xab;			
+			disassemble_array[inicio_array+3]=0; //0xab;
 		}
 
 		else {
@@ -547,36 +547,36 @@ void codetests_assembler(void)
 		//Evitar nop con prefijo
 		if (paso_prefijo && !strcasecmp(texto_desensamblado,"NOP")) continue;
 		//Evitar nop con prefijo
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"NOPD")) continue;	
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"NOPD")) continue;
 
 		//Evitar segundo y demas neg
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"NEG") && i>=76) continue;		
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"NEG") && i>=76) continue;
 
 		//Evitar segundo im0
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 0") && i==78) continue;	
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 0") && i==78) continue;
 
 		//Evitar segundo retn y demas
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"RETN") && i>=85) continue;	
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"RETN") && i>=85) continue;
 
-		//Evitar segundo LD (NN),HL	
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"LD (NNNN),HL") && i==99) continue;		
+		//Evitar segundo LD (NN),HL
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"LD (NNNN),HL") && i==99) continue;
 
 		//Evitar instruccion sin IX o IY (Ejemplo: DD + LD BC,NNNNN)
 		if (paso_prefijo && paso_prefijo<=2 && !strstr(texto_desensamblado,"IX") && !strstr(texto_desensamblado,"IY")) continue;
 
 		//Evitar im0,1,2 >=102, que estan repetidos
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 0") && (i==102 || i==110)) continue;		
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 1") && (i==118)) continue;		
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 2") && (i==126)) continue;		
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 0") && (i==102 || i==110)) continue;
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 1") && (i==118)) continue;
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"IM 2") && (i==126)) continue;
 
 		//Evitar segundo LD HL,(NN)
-		if (paso_prefijo && !strcasecmp(texto_desensamblado,"LD HL,(NNNN)") && i==107) continue;		
+		if (paso_prefijo && !strcasecmp(texto_desensamblado,"LD HL,(NNNN)") && i==107) continue;
 
-		//Evitar de momento instrucciones "raras" dd/fd+203 < 64		
-		//if ( (paso_prefijo==5 || paso_prefijo==6) && i<255) continue;	
+		//Evitar de momento instrucciones "raras" dd/fd+203 < 64
+		//if ( (paso_prefijo==5 || paso_prefijo==6) && i<255) continue;
 
 		//Las otras raras de DD/FD+CB. Solo las que tienen 3 bits mas bajos a 6
-		if (paso_prefijo==5 || paso_prefijo==6) {	
+		if (paso_prefijo==5 || paso_prefijo==6) {
 			//printf ("%d\n",i&7);
 			if ((i&7)!=6) continue;
 		}
@@ -597,38 +597,38 @@ void codetests_assembler(void)
 		if (!strcmp(texto_desensamblado,"JR NNNN")) {
 			disassemble_array[inicio_array+1]=256-4;
 			strcpy(texto_desensamblado,"JR 16382"); //16384+2-4;
-		}		
+		}
 
 		if (!strcmp(texto_desensamblado,"JR NZ,NNNN")) {
 			disassemble_array[inicio_array+1]=256-4;
 			strcpy(texto_desensamblado,"JR NZ,16382"); //16384+2-4;
-		}		
+		}
 
 		if (!strcmp(texto_desensamblado,"JR Z,NNNN")) {
 			disassemble_array[inicio_array+1]=256-4;
 			strcpy(texto_desensamblado,"JR Z,16382"); //16384+2-4;
-		}				
+		}
 
 		if (!strcmp(texto_desensamblado,"JR NC,NNNN")) {
 			disassemble_array[inicio_array+1]=3;
 			strcpy(texto_desensamblado,"JR NC,16389"); //16384+2+3;
-		}		
+		}
 
 		if (!strcmp(texto_desensamblado,"JR C,NNNN")) {
 			disassemble_array[inicio_array+1]=3;
 			strcpy(texto_desensamblado,"JR C,16389"); //16384+2+3;
-		}				
+		}
 
 		if (!strcmp(texto_desensamblado,"LD (NNNN),HL")) {
 			disassemble_array[inicio_array+1]=4;
 			disassemble_array[inicio_array+2]=64;
-			strcpy(texto_desensamblado,"LD (16388),HL"); 
-		}	
+			strcpy(texto_desensamblado,"LD (16388),HL");
+		}
 
 		if (strstr(texto_desensamblado,"RST")) { //al desensamblar lo mete como valor hexadecimal (RST 16->RST 10)
 			int rstvalor=((i>>3) & 7)*8;
 			sprintf(texto_desensamblado,"RST %d",rstvalor);
-		}		
+		}
 
 		int longitud_destino=assemble_opcode(direccion_destino,texto_desensamblado,destino_ensamblado);
 
@@ -656,14 +656,14 @@ void codetests_assembler(void)
 
 			printf ("\n");
 		}
-		
+
 
 		//usleep(50000);
 	}
 	}
 
 	printf ("Assemble tests OK\n");
-		
+
 
 }
 
@@ -675,7 +675,7 @@ int codetests_expression_parser_print_tokens(token_parser *tokens)
 	char buffer_destino[1024];
 
 	exp_par_tokens_to_exp(tokens,buffer_destino,MAX_PARSER_TOKENS_NUM);
-	printf ("[%s]\n\n",buffer_destino);	
+	printf ("[%s]\n\n",buffer_destino);
 
 	printf ("Resultado expresion tokens\n");
 	int error_code;
@@ -697,18 +697,18 @@ void codetests_expression_parser_expect(char *string,int expected_value)
 	printf ("\nText to token: %s\n",string);
 	result=exp_par_exp_to_tokens(string,tokens);
 	printf ("result token: %d\n",result);
-	if (result>=0) resultado_evaluar=codetests_expression_parser_print_tokens(tokens);		
+	if (result>=0) resultado_evaluar=codetests_expression_parser_print_tokens(tokens);
 	else {
 		printf ("ERROR!\n");
 		exit(1);
 	}
 
 	if (resultado_evaluar!=expected_value) {
-		printf ("*****ERROR text [%s] is NOT [%d]. IS [%d]\n",string,expected_value,resultado_evaluar);	
+		printf ("*****ERROR text [%s] is NOT [%d]. IS [%d]\n",string,expected_value,resultado_evaluar);
 		exit(1);
 	}
 	else {
-		printf ("*****OK text [%s] is [%d]\n",string,expected_value);	
+		printf ("*****OK text [%s] is [%d]\n",string,expected_value);
 	}
 
 
@@ -740,7 +740,7 @@ void codetests_expression_parser(void)
 	codetests_expression_parser_expect("1%",1);
 
 	codetests_expression_parser_expect("0H",0);
-	codetests_expression_parser_expect("1H",1);		
+	codetests_expression_parser_expect("1H",1);
 
 	codetests_expression_parser_expect("101%",5);
 	codetests_expression_parser_expect("AAB0H",0xaab0);
@@ -749,7 +749,7 @@ void codetests_expression_parser(void)
 
 	codetests_expression_parser_expect("1111111111111111111111111111111%",2147483647);
 
-	codetests_expression_parser_expect("11111111111111111111111111111111%",(unsigned int)4294967295); 
+	codetests_expression_parser_expect("11111111111111111111111111111111%",(unsigned int)4294967295);
 
 	codetests_expression_parser_expect("110%+AAH+'c'+33",6+0xaa+'c'+33);
 
@@ -774,11 +774,11 @@ void codetests_expression_parser(void)
 
 	//esta sintacticamente no deberia ser posible, pero lo es
 	codetests_expression_parser_expect("10++3",13);
-	
-	codetests_expression_parser_expect("10+3",13);	
+
+	codetests_expression_parser_expect("10+3",13);
 
 
-	
+
 	//Sumas, restas, multiplicaciones y divisiones
 	codetests_expression_parser_expect("1+1",2);
 	codetests_expression_parser_expect("2*3",6);
@@ -795,7 +795,7 @@ void codetests_expression_parser(void)
 	codetests_expression_parser_expect("20>1",1);
 
 	codetests_expression_parser_expect("1<=2",1);
-	codetests_expression_parser_expect("20>=1",1);	
+	codetests_expression_parser_expect("20>=1",1);
 
 	codetests_expression_parser_expect("20>=20",1);
 	codetests_expression_parser_expect("20<=20",1);
@@ -811,7 +811,7 @@ void codetests_expression_parser(void)
 
 
 	codetests_expression_parser_expect("(10-1)-1",8);
-	
+
 	//Operaciones mas complejas
 	codetests_expression_parser_expect("3*(6+7)",39);
 	codetests_expression_parser_expect("3*(6+7)+4",43);
@@ -828,7 +828,7 @@ void codetests_expression_parser(void)
 
 	//Este no lo pasa, debido a que acaba calculando:   6    -    20+2  -> 6-22 -> -16
     //codetests_expression_parser_expect(" 2*3 - 4*5 + 6/3 ",-12);
-    
+
 
 	codetests_expression_parser_expect("( 2*3 - 4*5  ) + 6/3 ",-12);
 
@@ -862,7 +862,7 @@ void codetests_expression_parser(void)
 
 
 	codetests_expression_parser_expect("3  * ( (  BC +  DE ) &  FFFFH  )",3*4464);
-	
+
 	codetests_expression_parser_expect("3*((BC+DE)&FFFFH)=(999999+1)*((BC+DE)&FFFFH) OR (bc=de+10000)",1);
 	codetests_expression_parser_expect("3*((BC+DE)&FFFFH)=(999999+1)*((BC+DE)&FFFFH) OR (bc=de+9999)",0);
 
@@ -896,7 +896,7 @@ void codetests_expression_parser(void)
 	codetests_expression_parser_expect("(99*(A*BC+3)) & FFFFH",7913);
 
 	printf ("\nOK ALL expression parser TESTS OK\n");
-	
+
 }
 
 
@@ -978,7 +978,7 @@ FILE *ptr_midfile;
     fwrite(midi_buffer, 1, indice, ptr_midfile);
 
 
-      fclose(ptr_midfile);	
+      fclose(ptr_midfile);
 }
 
 void codetests_zeng(void)
@@ -1020,7 +1020,7 @@ void codetests_zeng(void)
 		}
 
 		printf ("Element %d tecla %d pressrelease %d\n",i,elemento.tecla,elemento.pressrelease);
-	}	
+	}
 
 	//Agregar dos
 	elemento.tecla=100;
@@ -1029,7 +1029,7 @@ void codetests_zeng(void)
 
 	elemento.tecla=200;
 	elemento.pressrelease=1;
-	zeng_fifo_add_element(&elemento);	
+	zeng_fifo_add_element(&elemento);
 
 	//Leer elementos
 	for (i=0;i<2;i++) {
@@ -1041,7 +1041,7 @@ void codetests_zeng(void)
 		}
 
 		printf ("Element %d tecla %d pressrelease %d\n",i,elemento.tecla,elemento.pressrelease);
-	}		
+	}
 
 }
 
@@ -1067,9 +1067,9 @@ void codetests_https()
 	}
 
 	orig_mem=mem;
-	
+
 	if (retorno==0 && mem!=NULL) printf ("Response\n%s\n",mem);
-	
+
 	//leer linea a linea hasta fin cabecera
 	char buffer_linea[1024];
 	int i=0;
@@ -1087,7 +1087,7 @@ void codetests_https()
 		else {
 			next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
 			total_leidos -=leidos;
-		
+
 			if (buffer_linea[0]==0) {
 				salir=1;
 				printf ("salir con linea vacia final\n");
@@ -1098,23 +1098,23 @@ void codetests_https()
 				i++;
 				mem=next_mem;
 			}
-		
+
 			if (total_leidos<=0) salir=1;
 		}
 	} while (!salir);
-	
+
 	printf ("respuesta despues cabeceras:\n%s\n",mem);
-	
-	
+
+
 	if (orig_mem!=NULL) free (orig_mem);
-	
+
 	//peticion saltando cabeceras
 	//printf ("Request skipping headers\n");
 	//retorno=zsock_http("www.google.es","/",&http_code,&mem,&total_leidos,&mem_after_headers,1,"",1);
 	//if (mem_after_headers!=NULL) printf ("Answer after headers:\n%s\n",mem_after_headers);
-	
+
 	//if (mem!=NULL) free (mem);
-	
+
 }
 
 
@@ -1139,9 +1139,9 @@ void codetests_https_sni()
 	}
 
 	orig_mem=mem;
-	
+
 	if (retorno==0 && mem!=NULL) printf ("Response\n%s\n",mem);
-	
+
 	//leer linea a linea hasta fin cabecera
 	char buffer_linea[1024];
 	int i=0;
@@ -1159,7 +1159,7 @@ void codetests_https_sni()
 		else {
 			next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
 			total_leidos -=leidos;
-		
+
 			if (buffer_linea[0]==0) {
 				salir=1;
 				printf ("salir con linea vacia final\n");
@@ -1170,23 +1170,23 @@ void codetests_https_sni()
 				i++;
 				mem=next_mem;
 			}
-		
+
 			if (total_leidos<=0) salir=1;
 		}
 	} while (!salir);
-	
+
 	printf ("respuesta despues cabeceras:\n%s\n",mem);
-	
-	
+
+
 	if (orig_mem!=NULL) free (orig_mem);
-	
+
 	//peticion saltando cabeceras
 	//printf ("Request skipping headers\n");
 	//retorno=zsock_http("www.google.es","/",&http_code,&mem,&total_leidos,&mem_after_headers,1,"",1);
 	//if (mem_after_headers!=NULL) printf ("Answer after headers:\n%s\n",mem_after_headers);
-	
+
 	//if (mem!=NULL) free (mem);
-	
+
 }
 
 
@@ -1201,9 +1201,9 @@ void codetests_http()
 	char redirect_url[NETWORK_MAX_URL];
 	int retorno=zsock_http("www.zx81.nl","/files.html",&http_code,&mem,&total_leidos,&mem_after_headers,0,"",0,redirect_url,0,"");
 	orig_mem=mem;
-	
+
 	if (retorno==0 && mem!=NULL) printf ("Response\n%s\n",mem);
-	
+
 	//leer linea a linea hasta fin cabecera
 	char buffer_linea[1024];
 	int i=0;
@@ -1221,7 +1221,7 @@ void codetests_http()
 		else {
 			next_mem=util_read_line(mem,buffer_linea,total_leidos,1024,&leidos);
 			total_leidos -=leidos;
-		
+
 			if (buffer_linea[0]==0) {
 				salir=1;
 				printf ("salir con linea vacia final\n");
@@ -1232,24 +1232,24 @@ void codetests_http()
 				i++;
 				mem=next_mem;
 			}
-		
+
 			if (total_leidos<=0) salir=1;
 		}
 	} while (!salir);
-	
+
 	printf ("respuesta despues cabeceras:\n%s\n",mem);
-	
-	
+
+
 	if (orig_mem!=NULL) free (orig_mem);
-	
+
 	//peticion saltando cabeceras
 	printf ("Request skipping headers\n");
 
 	retorno=zsock_http("www.zx81.nl","/files.html",&http_code,&mem,&total_leidos,&mem_after_headers,1,"",0,redirect_url,0,"");
 	if (mem_after_headers!=NULL) printf ("Answer after headers:\n%s\n",mem_after_headers);
-	
+
 	if (mem!=NULL) free (mem);
-	
+
 }
 
 void codetests_messages_debug(char *s)
@@ -1305,7 +1305,7 @@ void *thread_codetests_function(void *nada GCC_UNUSED)
 
 
 		//Pausa de test
-		usleep(1000);		
+		usleep(1000);
 	}
 }
 
@@ -1347,7 +1347,7 @@ void codetests_atomic(void)
 
 		//Pausa de test
 		usleep(1000);
-	}	
+	}
 
 }
 
@@ -1413,7 +1413,7 @@ void codetests_network_atomic(void)
 			fflush(stdout);
 		}
 
-	}	
+	}
 
 }
 
@@ -1439,7 +1439,7 @@ void codetests_open_sockets_infinite(void)
 void codetests_get_background_f_key(void)
 {
 
-  
+
 	int i;
 
 	for (i=1;i<=10;i++) {
@@ -1468,7 +1468,7 @@ void codetests_tbblue_set_ram_blocks(void)
 	}
 
 }
- 
+
 
 /*
 extern float aproximate_frequency_from_ql_pitch(int pitch);
@@ -1501,7 +1501,7 @@ void codetests_get_note_table_ql(void)
         }
         else {
             printf ("%d,",frecuencia);
-        }            
+        }
 
             columna++;
 
@@ -1528,7 +1528,7 @@ void codetests_cosine_table(void)
 
     for (i=0;i<360;i++) {
         printf ("sine %3d %5d\n",i,util_get_sine(i));
-    }    
+    }
 }
 
 
@@ -1564,7 +1564,7 @@ void codetests_get_pixel_color_scr(void)
 
 char *codetests_scanf_history_array[UTIL_SCANF_HISTORY_MAX_LINES]={
     NULL
-};  
+};
 
 
 void codetests_scanf_history(void)
@@ -1605,7 +1605,7 @@ void codetests_scanf_history(void)
     if (strcmp(codetests_scanf_history_array[0],"4444")) {
         printf ("error. first element is not what expected\n");
         exit(1);
-    }    
+    }
 }
 
 int codetests_sqrt_aux(int valor)
@@ -1613,7 +1613,7 @@ int codetests_sqrt_aux(int valor)
     int result_type;
 
     int square=util_sqrt(valor,&result_type);
-    printf("Square of %d is %d\n",valor,square);  
+    printf("Square of %d is %d\n",valor,square);
 
     //Tipo resultado: 0 exacto, 1 aproximado, -1 valor negativo
     if (result_type==0) printf("Exact\n");
@@ -1641,41 +1641,41 @@ void codetests_sqrt(void)
     square=codetests_sqrt_aux(25);
     if (square!=5) {
         printf ("error calculating square root\n");
-        exit(1);        
+        exit(1);
     }
 
     square=codetests_sqrt_aux(144);
     if (square!=12) {
         printf ("error calculating square root\n");
-        exit(1);        
-    }   
+        exit(1);
+    }
 
     square=codetests_sqrt_aux(1089);
     if (square!=33) {
         printf ("error calculating square root\n");
-        exit(1);        
-    }     
+        exit(1);
+    }
 
     //Y una prueba sin parametro de tipo resultado
     square=util_sqrt(10000,NULL);
-    printf("Square of 10000 is %d\n",square);  
+    printf("Square of 10000 is %d\n",square);
     if (square!=100) {
         printf ("error calculating square root\n");
-        exit(1);        
-    } 
-    printf("\n");       
+        exit(1);
+    }
+    printf("\n");
 
     //Y prueba con valor negativo
     int result_type;
     square=util_sqrt(-1,&result_type);
-    printf("Square of -1 is %d\n",square);  
+    printf("Square of -1 is %d\n",square);
     if (result_type==-1) {
         printf("Ok negative no result\n");
     }
     else {
         printf ("error returning negative square root\n");
-        exit(1);        
-    }       
+        exit(1);
+    }
 
 
 }
@@ -1690,26 +1690,26 @@ void codetests_acosine(void)
 
     if (util_get_acosine(8660)!=30) {
         printf ("error calculating acosine\n");
-        exit(1);         
+        exit(1);
     }
 
     if (util_get_acosine(-349)!=92) {
         printf ("error calculating acosine\n");
-        exit(1);         
+        exit(1);
     }
-    
+
 }
 
 void codetests_debug_printf_exclude_include(void)
 {
 
     //Preservar settings de filtros
-    
+
     int antes_debug_mascara_modo_exclude_include=debug_mascara_modo_exclude_include;
 
     int antes_debug_mascara_clase_exclude=debug_mascara_clase_exclude;
-    
-    int antes_debug_mascara_clase_include=debug_mascara_clase_include;     
+
+    int antes_debug_mascara_clase_include=debug_mascara_clase_include;
 
 
     //Probar exclusiones primero
@@ -1735,7 +1735,7 @@ void codetests_debug_printf_exclude_include(void)
     if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==1) {
         printf("error exclude class dsk when mask=dsk\n");
         exit(1);
-    }    
+    }
 
     //Probar inclusiones
     debug_mascara_modo_exclude_include=VERBOSE_MASK_CLASS_TYPE_INCLUDE;
@@ -1760,13 +1760,13 @@ void codetests_debug_printf_exclude_include(void)
     if (debug_printf_check_exclude_include(VERBOSE_CLASS_DSK)==0) {
         printf("error include class dsk when mask=dsk\n");
         exit(1);
-    }    
+    }
 
     //Dejamos luego settings iniciales
     debug_mascara_modo_exclude_include=antes_debug_mascara_modo_exclude_include;
 
     debug_mascara_clase_exclude=antes_debug_mascara_clase_exclude;
-    
+
     debug_mascara_clase_include=antes_debug_mascara_clase_include;
 
 }
@@ -1774,10 +1774,11 @@ void codetests_debug_printf_exclude_include(void)
 void codetests_tbblue_divmmc_masks(void)
 {
 
+    /*
     int i;
 
     for (i=0;i<8;i++) {
-        
+
         int direccion=8*i;
         int mascara=tbblue_get_mask_divmmc_entry_point(direccion);
         printf("dir %04XH mask: %02XH\n",direccion,mascara);
@@ -1818,8 +1819,10 @@ void codetests_tbblue_divmmc_masks(void)
 
         }
     }
+
+    */
 }
-    
+
 
 void codetests_ay_playlist(void)
 {
@@ -1854,7 +1857,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     ay_player_playlist_get_item(1,buffer_temp);
 
@@ -1863,7 +1866,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }  
+    }
 
     //Add and check three
     ay_player_playlist_add(CODETESTS_AY_PLAYLIST_ARCHIVO3);
@@ -1875,7 +1878,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     ay_player_playlist_get_item(1,buffer_temp);
 
@@ -1884,7 +1887,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     ay_player_playlist_get_item(2,buffer_temp);
 
@@ -1893,7 +1896,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO3)) {
         printf("Error\n");
         exit(1);
-    }   
+    }
 
 
     //Add and check four
@@ -1906,7 +1909,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO1)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     ay_player_playlist_get_item(1,buffer_temp);
 
@@ -1915,7 +1918,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     ay_player_playlist_get_item(2,buffer_temp);
 
@@ -1924,7 +1927,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO3)) {
         printf("Error\n");
         exit(1);
-    }      
+    }
 
     ay_player_playlist_get_item(3,buffer_temp);
 
@@ -1933,7 +1936,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO4)) {
         printf("Error\n");
         exit(1);
-    }     
+    }
 
 
     //Delete first
@@ -1948,7 +1951,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }    
+    }
 
     //Delete second
     printf("Delete pos 1\n");
@@ -1962,7 +1965,7 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }       
+    }
 
     //El segundo pasara a ser el cuarto
     ay_player_playlist_get_item(1,buffer_temp);
@@ -1973,11 +1976,11 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO4)) {
         printf("Error\n");
         exit(1);
-    }     
+    }
 
     //Delete second (and the last)
     printf("Delete pos 1\n");
-    ay_player_playlist_remove(1);  
+    ay_player_playlist_remove(1);
 
     //El primero era el mismo de antes
     ay_player_playlist_get_item(0,buffer_temp);
@@ -1987,11 +1990,11 @@ void codetests_ay_playlist(void)
     if (strcmp(buffer_temp,CODETESTS_AY_PLAYLIST_ARCHIVO2)) {
         printf("Error\n");
         exit(1);
-    }         
+    }
 
 
     printf("Delete pos 0\n");
-    ay_player_playlist_remove(0);  
+    ay_player_playlist_remove(0);
 
     int total=ay_player_playlist_get_total_elements();
 
@@ -1999,7 +2002,7 @@ void codetests_ay_playlist(void)
 
     if (total!=0) {
         printf("Error getting total\n");
-        exit(1);        
+        exit(1);
     }
 
     //Agregar 10000 en bucle y comprobarlos
@@ -2022,7 +2025,7 @@ void codetests_ay_playlist(void)
             printf("Items do not match\n");
             exit(1);
         }
-    }    
+    }
 
     //Deleting 10000
     printf("Deleting 10000...\n");
@@ -2036,8 +2039,8 @@ void codetests_ay_playlist(void)
 
     if (total!=0) {
         printf("Error getting total\n");
-        exit(1);        
-    }    
+        exit(1);
+    }
 }
 
 
@@ -2052,14 +2055,14 @@ void codetests_main(int main_argc,char *main_argv[])
 
 	scr_messages_debug=codetests_messages_debug;
 	verbose_level=VERBOSE_PARANOID;
-	scr_set_driver_name("");	
+	scr_set_driver_name("");
 
 	printf ("\nRunning expression parser tests\n");
 	codetests_expression_parser();
 
 
 	//printf ("\nRunning mid tests\n");
-	//codetests_mid_test();	
+	//codetests_mid_test();
 
 
 	//int lineas=get_file_lines("pruebatrans.log.1x");
@@ -2077,18 +2080,18 @@ void codetests_main(int main_argc,char *main_argv[])
 	printf ("\nRunning zeng tests\n");
 	init_network_tables();
 	codetests_zeng();
-	
+
 	//printf ("error: %s\n",z_sock_get_error(Z_ERR_NUM_READ_SOCKET));
 
 	//codetests_open_sockets_infinite();
-	
+
 	//printf ("\nRunning zsock http tests\n");
 	//init_network_tables();
 	//codetests_http();
 
 	//printf ("\nRunning zsock https tests\n");
 	//init_network_tables();
-	//codetests_https();	
+	//codetests_https();
 
     //codetests_https_sni();
 
