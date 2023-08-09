@@ -15019,6 +15019,9 @@ int menu_download_file(char *host,char *url,char *archivo_temp,int ssl_use,int e
 		return -1;
 	}
 
+	//y pthread en estado detached asi liberara su memoria asociada a thread al finalizar, sin tener que hacer un pthread_join
+	pthread_detach(download_wos_thread);
+
 #endif
 
 
