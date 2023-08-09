@@ -19607,37 +19607,37 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 	char *mem_after_headers;
 	int total_leidos;
 	int retorno;
-        char redirect_url[NETWORK_MAX_URL];
+    char redirect_url[NETWORK_MAX_URL];
 
 
 
-        retorno=zsock_http(hostname,url,&http_code,&mem,&total_leidos,&mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
+    retorno=zsock_http(hostname,url,&http_code,&mem,&total_leidos,&mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
 
 
-        if (http_code==302 && redirect_url[0]!=0) {
-                debug_printf (VERBOSE_DEBUG,"util_download_file: detected redirect to %s",redirect_url);
-                //TODO: solo gestiono 1 redirect
+    if (http_code==302 && redirect_url[0]!=0) {
+        debug_printf (VERBOSE_DEBUG,"util_download_file: detected redirect to %s",redirect_url);
+        //TODO: solo gestiono 1 redirect
 
-                //obtener protocolo
-                use_ssl=util_url_is_https(redirect_url);
+        //obtener protocolo
+        use_ssl=util_url_is_https(redirect_url);
 
-                //obtener host
-                char nuevo_host[NETWORK_MAX_URL];
-                util_get_host_url(redirect_url,nuevo_host);
+        //obtener host
+        char nuevo_host[NETWORK_MAX_URL];
+        util_get_host_url(redirect_url,nuevo_host);
 
-                //obtener nueva url (sin host)
-                char nueva_url[NETWORK_MAX_URL];
-                util_get_url_no_host(redirect_url,nueva_url);
+        //obtener nueva url (sin host)
+        char nueva_url[NETWORK_MAX_URL];
+        util_get_url_no_host(redirect_url,nueva_url);
 
-                //liberar memoria anterior
-                if (mem!=NULL) free(mem);
+        //liberar memoria anterior
+        if (mem!=NULL) free(mem);
 
-                debug_printf (VERBOSE_DEBUG,"util_download_file: querying again host %s (SSL=%d) url %s",nuevo_host,use_ssl,nueva_url);
+        debug_printf (VERBOSE_DEBUG,"util_download_file: querying again host %s (SSL=%d) url %s",nuevo_host,use_ssl,nueva_url);
 
-                //El redirect sucede con las url a archive.org
+        //El redirect sucede con las url a archive.org
 
-                retorno=zsock_http(nuevo_host,nueva_url,&http_code,&mem,&total_leidos,
-                        &mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
+        retorno=zsock_http(nuevo_host,nueva_url,&http_code,&mem,&total_leidos,
+                &mem_after_headers,1,"",use_ssl,redirect_url,estimated_maximum_size,ssl_sni_host_name);
 
 	}
 
@@ -19659,38 +19659,38 @@ int util_download_file(char *hostname,char *url,char *archivo,int use_ssl,int es
 		//todo usar funcion de utils comun, existe?
 
 		FILE *ptr_destino;
-                ptr_destino=fopen(archivo,"wb");
+        ptr_destino=fopen(archivo,"wb");
 
-                if (ptr_destino==NULL) {
-                        debug_printf (VERBOSE_ERR,"Error writing output file");
-                        return -1;
-                }
-
-
-
-  	        fwrite(mem_after_headers,1,total_leidos,ptr_destino);
-
-
-                fclose(ptr_destino);
-                free(orig_mem);
+        if (ptr_destino==NULL) {
+                debug_printf (VERBOSE_ERR,"Error writing output file");
+                return -1;
         }
 
-        //Fin resultado http correcto
+
+
+        fwrite(mem_after_headers,1,total_leidos,ptr_destino);
+
+
+        fclose(ptr_destino);
+        free(orig_mem);
+    }
+
+    //Fin resultado http correcto
+    else {
+        free(orig_mem);
+
+        if (retorno<0) {
+                //printf ("Error: %d %s\n",retorno,z_sock_get_error(retorno));
+                return retorno;
+        }
         else {
-            free(orig_mem);
-
-                if (retorno<0) {
-                        //printf ("Error: %d %s\n",retorno,z_sock_get_error(retorno));
-                        return retorno;
-                }
-                else {
-                        //No hacemos VERBOSE_ERR porque sera responsabilidad del que llame a la funcion util_download_file
-                        //de mostrar mensaje en ventana
-                        debug_printf(VERBOSE_DEBUG,"Error downloading file. Return code: %d",http_code);
-                }
+                //No hacemos VERBOSE_ERR porque sera responsabilidad del que llame a la funcion util_download_file
+                //de mostrar mensaje en ventana
+                debug_printf(VERBOSE_DEBUG,"Error downloading file. Return code: %d",http_code);
         }
+    }
 
-        return http_code;
+    return http_code;
 }
 
 void util_normalize_name(char *texto)
