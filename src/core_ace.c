@@ -45,6 +45,7 @@
 #include "chardetect.h"
 #include "ula.h"
 #include "settings.h"
+#include "zeng.h"
 
 
 
@@ -381,6 +382,8 @@ void cpu_core_loop_ace(void)
 					esperando_tiempo_final_t_estados.v=0;
 				}
 
+                core_end_frame_check_zrcp_zeng_snap.v=1;
+
                                 //Final de instrucciones ejecutadas en un frame de pantalla
                                 if (iff1.v==1) {
                                         interrupcion_maskable_generada.v=1;
@@ -433,6 +436,13 @@ void cpu_core_loop_ace(void)
 
             core_ace_handle_interrupts();
 
+        }
+
+        //Aplicar snapshot pendiente de ZRCP y ZENG envio snapshots. Despues de haber gestionado interrupciones
+        if (core_end_frame_check_zrcp_zeng_snap.v) {
+            core_end_frame_check_zrcp_zeng_snap.v=0;
+            check_pending_zrcp_put_snapshot();
+            zeng_send_snapshot_if_needed();
         }
 
         debug_get_t_stados_parcial_post();
