@@ -72,6 +72,7 @@ Improved ZENG:
 - Allow to connect more than two hosts
 - Allow to disable sending input events (keyboard, joystick)
 - Sync flash state between instances
+- Added ZENG support for Jupiter Ace
 
 Improved ZX Spectrum Next emulation:
 - Updated machine id list
