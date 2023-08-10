@@ -311,3 +311,4 @@ pero el impacto de no liberar esos pthreads es minimo, y como acabo de descubrir
 -logo salamanquesa que cambie por otra si hago click simple?
 
 ok -Si se mueve ratón a zona redimensionado ventana, que la ventana cambie la esquina inferior derecha
+quiza otras acciones sobre ventana que hagan cambiar el color del marco en determinados eventos al mover el raton?
