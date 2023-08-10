@@ -186,7 +186,7 @@ void core_spectrum_store_rainbow_current_atributes(void)
 {
 
 	//No hacer esto en tbblue
-	if (MACHINE_IS_TBBLUE && tbblue_store_scanlines.v==0) return;	
+	if (MACHINE_IS_TBBLUE && tbblue_store_scanlines.v==0) return;
 
 	//En maquina prism, no hacer esto
 	if (MACHINE_IS_PRISM) return;
@@ -377,7 +377,7 @@ void core_spectrum_fin_frame_pantalla(void)
             debug_printf (VERBOSE_PARANOID,"Losing last interrupt because last opcode lasts 32 t-states or more: %d tstates: %d ",duracion_ultimo_opcode,t_estados);
             interrupcion_maskable_generada.v=0;
         }*/
-        
+
 
         //en el Spectrum la INT comienza en el scanline 248, 0T
         //Pero en Pentagon la interrupción debe dispararse en el scanline 239 (contando desde 0), y 320 pixel clocks (o 160 T estados) tras comenzar dicho scanline
@@ -388,7 +388,7 @@ void core_spectrum_fin_frame_pantalla(void)
     }
 
     //Final de frame. Permitir de nuevo interrupciones pentagon
-    disparada_int_pentagon=0;				
+    disparada_int_pentagon=0;
 
     cpu_loop_refresca_pantalla();
     //temp_xx_veces++;
@@ -459,7 +459,7 @@ void core_spectrum_fin_scanline(void)
                 beeper_new_line();
             }
 
-            
+
         }
 
         if (audiodac_enabled.v) {
@@ -522,7 +522,7 @@ void core_spectrum_fin_scanline(void)
             tsconf_handle_line_interrupts();
 
             //y reseteo de esto, que es para interrupciones frame
-            tsconf_handle_frame_interrupts_prev_horiz=9999; 
+            tsconf_handle_frame_interrupts_prev_horiz=9999;
         }
 
     }
@@ -574,7 +574,7 @@ void core_spectrum_fin_scanline(void)
         }
 
         TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_fin_frame_pantalla);
-    } 
+    }
     //Fin bloque final de pantalla
 
 
@@ -595,8 +595,8 @@ void core_spectrum_handle_interrupts(void)
     //ver si estaba en halt el copper
     //if (MACHINE_IS_TBBLUE) tbblue_if_copper_halt();
 
-    
-    
+
+
 
     if (interrupcion_non_maskable_generada.v) {
         debug_anota_retorno_step_nmi();
@@ -607,7 +607,7 @@ void core_spectrum_handle_interrupts(void)
         //NMI wait 14 estados
         t_estados += 14;
 
-   
+
 
         push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
@@ -636,7 +636,7 @@ void core_spectrum_handle_interrupts(void)
             superupgrade_set_memory_pages();
         }
 
-        
+
         //Al recibir nmi tiene que poner paginacion normal. Luego ya saltara por autotrap de diviface
         if (diviface_enabled.v) {
             //diviface_paginacion_manual_activa.v=0;
@@ -649,8 +649,8 @@ void core_spectrum_handle_interrupts(void)
 
     }
 
-                
-								
+
+
 
     //Si el pulso de interrupcion ya ha pasado
     //Pero si no tenemos dma activa, pues la dma esta modificando t_estados, y en una operacion de lectura/escritura larga,
@@ -692,12 +692,12 @@ void core_spectrum_handle_interrupts(void)
             //rzx_next_frame_recording();
         //}
 
-        
+
         push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
 
         reg_r++;
 
-        
+
 
         //Caso Inves. Hacer poke (I*256+R) con 255
         if (MACHINE_IS_INVES) {
@@ -736,17 +736,17 @@ void core_spectrum_handle_interrupts(void)
         }
 
     }
-				
 
 
-			
+
+
 }
 
 
 void core_spectrum_handle_interrupts_pentagon(void)
 {
     if (!disparada_int_pentagon) {
-        
+
         int linea=t_estados/screen_testados_linea;
         if (linea==319) {
             //en el Spectrum la INT comienza en el scanline 248, 0T
@@ -755,13 +755,13 @@ void core_spectrum_handle_interrupts_pentagon(void)
             int t_est_linea=t_estados % screen_testados_linea;
             if (t_est_linea>=pentagon_inicio_interrupt) {
                 //printf ("Int Pentagon\n");
-                //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);			
+                //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
 
                 disparada_int_pentagon=1;
                 if (iff1.v==1) {
                     //printf ("Generated pentagon interrupt\n");
                     //printf ("scanline %d t_estados %d\n",t_estados/screen_testados_linea,t_estados);
-                    interrupcion_maskable_generada.v=1;		
+                    interrupcion_maskable_generada.v=1;
 
                     testados_desde_inicio_pulso_interrupcion=0;
 
@@ -804,7 +804,7 @@ void core_spectrum_ciclo_fetch(void)
             //Dado que esto se activa despues de lanzar nmi y antes de leer opcode, aqui saltara cuando PC=66H
             //debug_printf (VERBOSE_DEBUG,"Handling nmi mapping pre opcode fetch at %04XH",reg_pc);
             nmi_handle_pending_prepost_fetch();
-    }				
+    }
 
 
     int t_estados_antes_opcode=t_estados;
@@ -836,31 +836,31 @@ void core_spectrum_ciclo_fetch(void)
 				util_stats_increment_counter(stats_codsinpr,byte_leido_core_spectrum);
 #endif
 
-                
+
     //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
     if (z80_halt_signal.v) {
-        byte_leido_core_spectrum=0;              
+        byte_leido_core_spectrum=0;
     }
     else {
         reg_pc++;
     }
 
 
-    //Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode 
+    //Nota: agregar estos dos if de nmi_pending_pre_opcode y nmi_pending_post_opcode
     //supone un 0.2 % de uso mas en mi iMac: pasa de usar 5.4% cpu a 5.6% cpu en --vo null y --ao null
     //Es muy poco...
     if (nmi_pending_post_opcode) {
         //Dado que esto se activa despues de lanzar nmi y leer opcode, aqui saltara cuando PC=67H
         //debug_printf (VERBOSE_DEBUG,"Handling nmi mapping post opcode fetch at %04XH",reg_pc);
-        nmi_handle_pending_prepost_fetch(); 
-    }				
+        nmi_handle_pending_prepost_fetch();
+    }
 
     reg_r++;
 
     rzx_in_fetch_counter_til_next_int_counter++;
 
 
-#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS	
+#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
     //Guardar antes F
     scf_ccf_undoc_flags_before=Z80_FLAGS;
 #endif
@@ -869,10 +869,10 @@ void core_spectrum_ciclo_fetch(void)
     codsinpr[byte_leido_core_spectrum]  () ;
 
 
-#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS	
+#ifdef EMULATE_SCF_CCF_UNDOC_FLAGS
     //Para saber si se ha modificado
     scf_ccf_undoc_flags_after_changed=(Z80_FLAGS  == scf_ccf_undoc_flags_before ? 0 : 1);
-#endif				
+#endif
 
     int delta_t_estados=t_estados-t_estados_antes_opcode;
 
@@ -898,7 +898,7 @@ void core_spectrum_ciclo_fetch(void)
     if (MACHINE_IS_ZXUNO && zxuno_dma_disabled.v==0) zxuno_handle_dma();
 
     //Soporte Datagear/TBBlue DMA
-    if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) datagear_handle_dma(); 
+    if (datagear_dma_emulation.v && datagear_dma_is_disabled.v==0) datagear_handle_dma();
 
     //Soporte TBBlue copper y otras...
     if (MACHINE_IS_TBBLUE) {
@@ -913,18 +913,18 @@ void core_spectrum_ciclo_fetch(void)
                 27A9 C9     RET
                 27AA 37     SCF
                 27AB C9     RET
-            */						
+            */
                 if (
                     peek_byte_no_time(reg_pc)==0xC9 &&
                     peek_byte_no_time(reg_pc+1)==0x37 &&
-                    peek_byte_no_time(reg_pc+2)==0xC9 
+                    peek_byte_no_time(reg_pc+2)==0xC9
                 )
                 tbblue_trap_return_rtc();
             }
 
         }
 
-    
+
     }
 
 }
@@ -1013,16 +1013,16 @@ void cpu_core_loop_spectrum(void)
     }
 
 
-    //A final de cada scanline 
+    //A final de cada scanline
     if ( (t_estados/screen_testados_linea)>t_scanline  ) {
         TIMESENSOR_ENTRY_PRE(TIMESENSOR_ID_core_spectrum_fin_scanline);
-        core_spectrum_fin_scanline();			
+        core_spectrum_fin_scanline();
         TIMESENSOR_ENTRY_POST(TIMESENSOR_ID_core_spectrum_fin_scanline);
     }
-    
+
 
     //Ya hemos leido duracion ultimo opcode. Resetearla a 0 si no hay que hacer refetch
-    //if (!core_refetch) duracion_ultimo_opcode=0;		
+    //if (!core_refetch) duracion_ultimo_opcode=0;
 
 
 
@@ -1082,7 +1082,7 @@ void cpu_core_loop_spectrum(void)
     if (core_end_frame_check_zrcp_zeng_snap.v) {
         core_end_frame_check_zrcp_zeng_snap.v=0;
         check_pending_zrcp_put_snapshot();
-        zeng_send_snapshot_if_needed();			
+        zeng_send_snapshot_if_needed();
     }
 
 
