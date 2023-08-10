@@ -1,5 +1,5 @@
 /*
-    ZEsarUX  ZX Second-Emulator And Released for UniX 
+    ZEsarUX  ZX Second-Emulator And Released for UniX
     Copyright (C) 2013 Cesar Hernandez Bano
 
     This file is part of ZEsarUX.
@@ -55,7 +55,7 @@ z80_byte byte_leido_core_ace;
 //bucle principal de ejecucion de la cpu de jupiter ace
 void cpu_core_loop_ace(void)
 {
-  
+
                 debug_get_t_stados_parcial_pre();
 
 
@@ -84,15 +84,15 @@ void cpu_core_loop_ace(void)
 		                /*if (reg_pc==0xXXXXX) {
         		                debug_printf (VERBOSE_INFO,"Autoload tape");
                 		        initial_tap_sequence=1;
-		                }		
+		                }
 				*/
 
 
 			}
 		}
 
-		
-		
+
+
 
 			if (tap_load_detect_ace()) {
 				audio_playing.v=0;
@@ -118,7 +118,7 @@ void cpu_core_loop_ace(void)
 	                        	timer_reset();
 
         	        }
-	
+
 
 		else {
 			if (esperando_tiempo_final_t_estados.v==0) {
@@ -132,18 +132,18 @@ void cpu_core_loop_ace(void)
                                 util_stats_increment_counter(stats_codsinpr,byte_leido_core_ace);
 #endif
 
-				
-				
+
+
                 //Si la cpu está detenida por señal HALT, reemplazar opcode por NOP
                 if (z80_halt_signal.v) {
-                    byte_leido_core_ace=0;             
+                    byte_leido_core_ace=0;
                 }
                 else {
                     reg_pc++;
                 }
 
 				//reg_r_antes_zx8081=reg_r;
-				
+
 				reg_r++;
 
                         z80_no_ejecutado_block_opcodes();
@@ -152,13 +152,13 @@ void cpu_core_loop_ace(void)
 
 
 				/*
-				if (iff1.v==1) {	
-	
+				if (iff1.v==1) {
+
 					//solo cuando cambia de 1 a 0
 					if ( (reg_r_antes_zx8081 & 64)==64 && (reg_r & 64)==0 ) {
 
 						interrupcion_maskable_generada.v=1;
-						
+
 					}
 				}
 				*/
@@ -242,7 +242,7 @@ void cpu_core_loop_ace(void)
 
                                 //Parche para maquinas que no generan 312 lineas, porque si enviamos menos sonido se escuchara un click al final
                                 //Es necesario que cada frame de pantalla contenga 312 bytes de sonido
-				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar 
+				//Igualmente en la rutina de envio_audio se vuelve a comprobar que todo el sonido a enviar
 				//este completo; esto es necesario para Z88
 
                                 int linea_estados=t_estados/screen_testados_linea;
@@ -292,12 +292,12 @@ void cpu_core_loop_ace(void)
                                 }
 
 
-			
+
 			}
 
 
-			
-		}		
+
+		}
 
 		if (esperando_tiempo_final_t_estados.v) {
 			timer_pause_waiting_end_frame();
@@ -328,12 +328,12 @@ void cpu_core_loop_ace(void)
                         //printf ("%d\n",interlaced_numero_frame);
 
 					//Para calcular lo que se tarda en ejecutar todo un frame
-					timer_get_elapsed_core_frame_pre();						
+					timer_get_elapsed_core_frame_pre();
                 }
 
 
 
-		//Interrupcion de cpu. gestion im0/1/2. 
+		//Interrupcion de cpu. gestion im0/1/2.
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
 			debug_fired_interrupt=1;
@@ -358,12 +358,12 @@ void cpu_core_loop_ace(void)
 						t_estados += 14;
 
 
-                                            
 
-						//3 estados	
-                                                
+
 						//3 estados
-                                         
+
+						//3 estados
+
 
 												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
 
@@ -382,13 +382,13 @@ void cpu_core_loop_ace(void)
 
 						t_estados -=15;
 
-						
+
 					}
 
 					//else {
 					if (1==1) {
 
-						
+
 					//justo despues de EI no debe generar interrupcion
 					//e interrupcion nmi tiene prioridad
 						if (interrupcion_maskable_generada.v && byte_leido_core_ace!=251) {
@@ -401,10 +401,10 @@ void cpu_core_loop_ace(void)
 
 						interrupcion_maskable_generada.v=0;
 
-						
+
 
 						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-						
+
 						reg_r++;
 
 						iff1.v=iff2.v=0;
@@ -419,7 +419,7 @@ void cpu_core_loop_ace(void)
 						//IM 2.
 
 							z80_int temp_i;
-							z80_byte dir_l,dir_h;	
+							z80_byte dir_l,dir_h;
 							temp_i=get_im2_interrupt_vector();
 							dir_l=peek_byte(temp_i++);
 							dir_h=peek_byte(temp_i);
