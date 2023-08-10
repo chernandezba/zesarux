@@ -52,6 +52,101 @@
 z80_byte byte_leido_core_ace;
 
 
+void core_ace_handle_interrupts(void)
+{
+
+    debug_fired_interrupt=1;
+
+    z80_adjust_flags_interrupt_block_opcode();
+
+    //ver si esta en HALT
+    if (z80_halt_signal.v) {
+        z80_halt_signal.v=0;
+        //reg_pc++;
+
+    }
+
+
+    if (interrupcion_non_maskable_generada.v) {
+        debug_anota_retorno_step_nmi();
+        interrupcion_non_maskable_generada.v=0;
+
+
+        //NMI wait 14 estados
+        t_estados += 14;
+
+
+        //3 estados
+
+        //3 estados
+
+
+        push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
+
+
+        reg_r++;
+        iff1.v=0;
+        //printf ("Calling NMI with pc=0x%x\n",reg_pc);
+
+        //Otros 6 estados
+        t_estados += 6;
+
+        //Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
+        reg_pc= 0x66;
+
+        //temp
+
+        t_estados -=15;
+
+
+    }
+
+
+
+    //justo despues de EI no debe generar interrupcion
+    //e interrupcion nmi tiene prioridad
+    if (interrupcion_maskable_generada.v && byte_leido_core_ace!=251) {
+        debug_anota_retorno_step_maskable();
+        //Tratar interrupciones maskable
+
+
+        //INT wait 10 estados. Valor de pruebas
+        t_estados += 10;
+
+        interrupcion_maskable_generada.v=0;
+
+
+
+        push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
+
+        reg_r++;
+
+        iff1.v=iff2.v=0;
+
+
+
+        //IM0/1
+        if (im_mode==0 || im_mode==1) {
+            cpu_common_jump_im01();
+        }
+        else {
+        //IM 2.
+
+            z80_int temp_i;
+            z80_byte dir_l,dir_h;
+            temp_i=get_im2_interrupt_vector();
+            dir_l=peek_byte(temp_i++);
+            dir_h=peek_byte(temp_i);
+            reg_pc=value_8_to_16(dir_h,dir_l);
+            t_estados += 7 ;
+
+        }
+
+    }
+
+
+}
+
 //bucle principal de ejecucion de la cpu de jupiter ace
 void cpu_core_loop_ace(void)
 {
@@ -336,107 +431,11 @@ void cpu_core_loop_ace(void)
 		//Interrupcion de cpu. gestion im0/1/2.
 		if (interrupcion_maskable_generada.v || interrupcion_non_maskable_generada.v) {
 
-			debug_fired_interrupt=1;
+            core_ace_handle_interrupts();
 
-            z80_adjust_flags_interrupt_block_opcode();
+        }
 
-                        //ver si esta en HALT
-                        if (z80_halt_signal.v) {
-                                        z80_halt_signal.v=0;
-                                        //reg_pc++;
-
-                        }
-
-			if (1==1) {
-
-					if (interrupcion_non_maskable_generada.v) {
-						debug_anota_retorno_step_nmi();
-						interrupcion_non_maskable_generada.v=0;
-
-
-						//NMI wait 14 estados
-						t_estados += 14;
-
-
-
-
-						//3 estados
-
-						//3 estados
-
-
-												push_valor(reg_pc,PUSH_VALUE_TYPE_NON_MASKABLE_INTERRUPT);
-
-
-						reg_r++;
-						iff1.v=0;
-						//printf ("Calling NMI with pc=0x%x\n",reg_pc);
-
-						//Otros 6 estados
-						t_estados += 6;
-
-						//Total NMI: NMI WAIT 14 estados + NMI CALL 12 estados
-						reg_pc= 0x66;
-
-						//temp
-
-						t_estados -=15;
-
-
-					}
-
-					//else {
-					if (1==1) {
-
-
-					//justo despues de EI no debe generar interrupcion
-					//e interrupcion nmi tiene prioridad
-						if (interrupcion_maskable_generada.v && byte_leido_core_ace!=251) {
-						debug_anota_retorno_step_maskable();
-						//Tratar interrupciones maskable
-
-
-                                                //INT wait 10 estados. Valor de pruebas
-                                                t_estados += 10;
-
-						interrupcion_maskable_generada.v=0;
-
-
-
-						push_valor(reg_pc,PUSH_VALUE_TYPE_MASKABLE_INTERRUPT);
-
-						reg_r++;
-
-						iff1.v=iff2.v=0;
-
-
-
-						//IM0/1
-						if (im_mode==0 || im_mode==1) {
-							cpu_common_jump_im01();
-						}
-						else {
-						//IM 2.
-
-							z80_int temp_i;
-							z80_byte dir_l,dir_h;
-							temp_i=get_im2_interrupt_vector();
-							dir_l=peek_byte(temp_i++);
-							dir_h=peek_byte(temp_i);
-							reg_pc=value_8_to_16(dir_h,dir_l);
-							t_estados += 7 ;
-
-						}
-
-					}
-				}
-
-
-			}
-
-                }
-
-                debug_get_t_stados_parcial_post();
+        debug_get_t_stados_parcial_post();
 
 }
 
