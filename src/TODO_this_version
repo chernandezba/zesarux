@@ -277,41 +277,6 @@ aprovechando cosas como el frequency generator
 -eventos: error, mover cursor, cerrar ventana (ventana no de menu)
 
 
----ZRCP
-*array para guardar los threads que se van lanzando?
-*parametro sock_conectat en cierre de conexiones
-
-
--completar remote_cerrar_conexion
--al entrar nueva conexion creo que desactiva cpu-step
--referencias a remote_salir_conexion:
-ok ? *thread_remote_protocol_function, en:
-		if (sock_conectat<0) {
-			debug_printf (VERBOSE_DEBUG,"Remote command. Error running accept on socket %d. More info: %s",
-				sock_listen,strerror(errno));
-			//Esto se dispara cuando desactivamos el protocolo desde el menu, y no queremos que salte error
-			//Aunque tambien se puede dar en otros momentos por culpa de fallos de conexion, no queremos que moleste al usuario
-			//como mucho lo mostramos en verbose debug
-
-			remote_salir_conexion=1;
-			sleep(1);
-		}
-
-ok ? *end_remote_protocol, en:
-	debug_printf(VERBOSE_INFO,"Ending remote command protocol listener");
-
-	remote_salir_conexion=1;
-	remote_protocol_ended.v=1;
-
-	remote_cerrar_conexion();
--se deberia salir del modo cpu step al entrar un cliente? no deberia?
-
--se deberia salir del modo cpu step al cerrar un cliente? quiza solo si es el ultimo cliente conectado
-
-		//Salir del modo step si estaba activado
-		if (menu_event_remote_protocol_enterstep.v) remote_cpu_exit_step_continue();
-
----FIN ZRCP
 
 
 -revisar todo pase de parametros a thread, si son estructuras que estén en memoria fija y no en stack, o se
@@ -326,7 +291,7 @@ ok, aunque con retraso como antes-arreglar tecla ESC en curses: ni en mac ni en 
 Esto implica que el icono dibujaria dos realmente: uno primero con el icono de la maquina, y encima el de la flechita
 
 
-
+Pruebas ZENG
 1.139 mac
 1.91 debian 32
 1.147 debian 64

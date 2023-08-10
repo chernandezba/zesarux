@@ -275,7 +275,7 @@ int zeng_connect_remotes(void)
         }
 
 
-        printf("Conectando a %s:%d\n",buffer_hostname,puerto);
+        //printf("Conectando a %s:%d\n",buffer_hostname,puerto);
 
 
 
@@ -348,7 +348,7 @@ int zeng_connect_remotes(void)
         util_get_emulator_version(myversion);
         if (strcasecmp(myversion,buffer)) {
 			debug_printf (VERBOSE_ERR,"Local and remote ZEsarUX versions do not match");
-            printf("Local %s remote %s\n",myversion,buffer);
+            //printf("Local %s remote %s\n",myversion,buffer);
 			return 0;
 		}
 
@@ -597,31 +597,30 @@ int zeng_send_keys(zeng_key_presses *elemento)
     //esperar a que finalicen
 
 
-    printf("\n");
+    //printf("\n");
 
     int finished;
 
     do {
         finished=1;
         for (i=0;i<zeng_total_remotes;i++) {
-            printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
+            //printf("socket %d finished %d\n",i,zeng_send_keys_onehost_array[i].finished);
             if (zeng_send_keys_onehost_array[i].finished==0) finished=0;
             else {
 		    /*
                 if (zeng_send_keys_onehost_array[i].finished!=2) {
                     zeng_send_keys_onehost_array[i].finished=2;
                     //liberar memoria
-                    printf("liberando memoria thread\n");
                     pthread_join(zeng_send_keys_onehost_array[i].thread,NULL);
                 }
 		*/
             }
         }
         if (!finished) usleep(1000); //dormir 1 ms
-        printf("Finished: %d\n",finished);
+        //printf("Finished: %d\n",finished);
     } while (!finished && return_zeng_send_keys_onehost>=0);
 
-    printf("all sockets finished\n");
+    //printf("all sockets finished\n");
 
     if (return_zeng_send_keys_onehost<0) return return_zeng_send_keys_onehost;
 
@@ -717,8 +716,8 @@ void zeng_send_snapshot_uno_concreto(int indice_socket)
 
 }
 
-int temp_memoria_asignada=0;
-int temp_memoria_liberada=0;
+//int temp_memoria_asignada=0;
+//int temp_memoria_liberada=0;
 
 void *thread_zeng_function(void *nada GCC_UNUSED)
 {
@@ -819,7 +818,7 @@ Poder enviar mensajes a otros jugadores
                 do {
                     finished=1;
                     for (i=0;i<zeng_total_remotes;i++) {
-                        printf("socket %d finished %d\n",i,zeng_send_snapshot_uno_concreto_array[i].finished);
+                        //printf("socket %d finished %d\n",i,zeng_send_snapshot_uno_concreto_array[i].finished);
                         if (zeng_send_snapshot_uno_concreto_array[i].finished==0) finished=0;
                         else {
                             //Si tiene valor 2, es que ya se ha liberado la memoria del thread
@@ -827,17 +826,16 @@ Poder enviar mensajes a otros jugadores
                            if (zeng_send_snapshot_uno_concreto_array[i].finished!=2) {
                                    zeng_send_snapshot_uno_concreto_array[i].finished=2;
                                    //liberar memoria
-                                   printf("liberando memoria thread\n");
                                    pthread_join(zeng_send_snapshot_uno_concreto_array[i].thread,NULL);
                            }
 			   */
                         }
                     }
                     if (!finished) usleep(1000); //dormir 1 ms
-                    printf("Finished: %d\n",finished);
+                    //printf("Finished: %d\n",finished);
                 } while (!finished && !error_desconectar);
 
-                printf("all snapshot sending finished. freeing snapshot memory\n\n");
+                //printf("all snapshot sending finished. freeing snapshot memory\n\n");
 
                 //solo liberar memoria si no ha habido error, porque si no corremos el riesgo de liberar
                 //memoria que aun pueda estar usando algun thread de envio de snapshot
@@ -845,8 +843,8 @@ Poder enviar mensajes a otros jugadores
                     free(zeng_send_snapshot_mem_hexa);
                     zeng_send_snapshot_mem_hexa=NULL;
 
-                    temp_memoria_liberada++;
-                    printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+                    //temp_memoria_liberada++;
+                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
 
                 }
 
@@ -937,8 +935,8 @@ void zeng_send_snapshot_if_needed(void)
   					save_zsf_snapshot_file_mem(NULL,buffer_temp,&longitud);
 
 
-                    temp_memoria_asignada++;
-                    printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
+                    //temp_memoria_asignada++;
+                    //printf("Asignada: %d liberada: %d\n",temp_memoria_asignada,temp_memoria_liberada);
 
 					zeng_send_snapshot_mem_hexa=malloc(ZRCP_GET_PUT_SNAPSHOT_MEM*2); //16 MB es mas que suficiente
 

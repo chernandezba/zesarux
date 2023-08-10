@@ -73,3 +73,7 @@ find_sharedfile(CUSTOM_MACHINE_2E_MMC_ROM_FILE,custom_romfile);
 
 -plus3doshandler: se necesita muchas revisiones para que funcione correctamente, algunas llamadas al leer sector que se va a leer puertos,
 ejemplo badlands.dsk y rutina en la 2114h que esta en los traps
+
+---ZRCP
+*array para guardar los threads que se van lanzando?
+-completar remote_cerrar_conexion para que cierre todas las conexiones de cliente que puedan haber
