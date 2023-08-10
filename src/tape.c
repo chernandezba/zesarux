@@ -166,7 +166,7 @@ void draw_realtape_icon_activity(void)
     lowericon_realtape_frame++;
     if (lowericon_realtape_frame==4) lowericon_realtape_frame=0;
 
-    if (realtape_playing.v) menu_draw_ext_desktop();      
+    if (realtape_playing.v) menu_draw_ext_desktop();
 }
 
 void draw_tape_text(void)
@@ -310,13 +310,13 @@ void tape_init(void)
 
                         else if (!util_compare_file_extension(tapefile,"pzx") ) {
                                         debug_printf (VERBOSE_INFO,"PZX file detected");
-                                        tape_block_open=tape_block_pzx_open; 
-                                        tape_block_read=tape_block_pzx_read; 
-                                        tape_block_readlength=tape_block_pzx_readlength; 
-                                        tape_block_seek=tape_block_pzx_seek; 
-                                        tape_block_feof=tape_block_pzx_feof; 
-                                        tape_block_rewindbegin=tape_block_pzx_rewindbegin; 
-                                }                                
+                                        tape_block_open=tape_block_pzx_open;
+                                        tape_block_read=tape_block_pzx_read;
+                                        tape_block_readlength=tape_block_pzx_readlength;
+                                        tape_block_seek=tape_block_pzx_seek;
+                                        tape_block_feof=tape_block_pzx_feof;
+                                        tape_block_rewindbegin=tape_block_pzx_rewindbegin;
+                                }
 
 
                         else if (!util_compare_file_extension(tapefile,"o") || !util_compare_file_extension(tapefile,"80") ) {
@@ -399,16 +399,16 @@ if (tape_out_file!=0) {
 
                         else if (!util_compare_file_extension(tape_out_file,"pzx") ) {
 
-                                       
 
-                                        
+
+
                                         debug_printf (VERBOSE_INFO,"Out PZX file detected");
                                         tape_out_block_open=tape_out_block_pzx_open;
                                         tape_out_block_close=tape_out_block_pzx_close;
                                         tape_block_save=tape_block_pzx_save;
                                         tape_block_begin_save=tape_block_pzx_begin_save;
                                         tape_out_inserted_is_pzx=1;
-                                        
+
 
                                        /*
                                        Problema: las funciones de save están pensadas para formatos tap y tzx binarios,
@@ -416,14 +416,14 @@ if (tape_out_file!=0) {
                                        luego el flag, luego los datos y luego el checksum, usando siempre funcion tape_block_save
                                        Esto para tzx y tap va perfecto. Para pzx no, dado que la longitud del bloque no viene
                                        exactamente antes de los datos en sí
-                                       Ya he modificado la funcion tape_block_begin_save para permitir enviar longitud, antes del bloque 
+                                       Ya he modificado la funcion tape_block_begin_save para permitir enviar longitud, antes del bloque
                                        en si
-                                       
+
                                        Todo esto se corrige usando variable tape_out_inserted_is_pzx
 
-                                       
+
                                        */
-                                }                                
+                                }
 
                         else if (!util_compare_file_extension(tape_out_file,"o") ) {
                                         debug_printf (VERBOSE_INFO,"Out .O file detected");
@@ -473,7 +473,7 @@ int tap_open(void)
 
 
         //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
-        if (noautoload.v==0) { 
+        if (noautoload.v==0) {
             debug_printf (VERBOSE_INFO,"Restarting autoload");
             initial_tap_load.v=1;
             initial_tap_sequence=0;
@@ -554,7 +554,7 @@ void tap_save_ace(void)
         if (tape_block_save==tape_block_tzx_save) {
             debug_printf(VERBOSE_INFO,"Adding Flag as we are saving to TZX");
             longitud++;
-        }        
+        }
 
 
         if (tape_block_save(&longitud, 2)!=2) {
@@ -577,10 +577,10 @@ void tap_save_ace(void)
                     tape_out_block_close();
                     return;
             }
-            longitud--;            
+            longitud--;
         }
 
-		
+
 
         //Escribimos bytes
         longitud-=1;
@@ -694,7 +694,7 @@ void tap_load_ace(void)
         z80_byte flag_no_usado;
         tape_block_read(&flag_no_usado,1);
         cinta_longitud--;
-    }    
+    }
 
 
     debug_printf(VERBOSE_INFO,"load start=%d length asked=%d length tape=%d (0x%04X) flag_asked=%d",
@@ -831,7 +831,7 @@ void tap_load(void)
                     if (tape_block_feof()) {
                         debug_printf(VERBOSE_INFO,"End of tape and autorewind enabled. Rewind tape");
                         tape_block_rewindbegin();
-                        
+
                         cinta_longitud=tape_block_readlength();
 
                         if (cinta_longitud!=0) retornar_error=0;
@@ -1040,7 +1040,7 @@ void tap_save(void)
         longitud+=2;
 
 	//Avisamos que vamos a escribir un bloque... en tzx se usa para meter el id correspondiente
-	tape_block_begin_save(longitud,flag);        
+	tape_block_begin_save(longitud,flag);
 
 
         //Solo hacer esto si no es un archivo tipo PZX
@@ -1144,7 +1144,7 @@ int tap_load_detect(void)
 
 		else if (MACHINE_IS_TSCONF) {
 			if (reg_pc!=1378) return 0;
-		}                
+		}
 
 		else if (MACHINE_IS_TBBLUE) {
                         if (reg_pc!=1378) return 0;
@@ -1163,7 +1163,7 @@ int tap_load_detect(void)
         //Transtape se entra desde 3817h, en modo carga sin menu
         else if (transtape_enabled.v && transtape_mapped_rom_memory.v) {
             if (reg_pc!=0x3823) return 0;
-        }          
+        }
 
                 else if (reg_pc!=1378) return 0;
 
@@ -1241,7 +1241,7 @@ int tap_load_detect(void)
 
 				return 1;
 
-		}                
+		}
 
 		//Para TBBlue, detectar como zxuno. Por PC y por instrucciones
                 //no mirar rom porque no sabemos que rom estamos leyendo (si la rom 3 de carga en un +2a, si la rom 1 en un 128k, etc)
@@ -1339,7 +1339,7 @@ int tap_save_detect(void)
     /*
     rom normal
     4c2h       ld hl,053dh
-    4c5h(1221) push hl  
+    4c5h(1221) push hl
     4c6h(1222) ld hl,1f80h
 
     rom hilow barbanegra
@@ -1355,7 +1355,7 @@ int tap_save_detect(void)
     //Transtape se entra desde 3800h, en modo grabacion sin menu
     else if (transtape_enabled.v && transtape_mapped_rom_memory.v) {
         if (reg_pc!=0x3804) return 0;
-    }   
+    }
 
     //Specmate
     else if (specmate_enabled.v && specmate_mapped_rom_memory.v) {
@@ -1380,7 +1380,7 @@ int tap_save_detect(void)
     //Dinamid3. Esto es zona de rom normal, simplemente llama mas adelante de lo habitual
     else if (dinamid3_enabled.v && dinamid3_mapped_rom_memory.v) {
         if (reg_pc!=0x04d0) return 0;
-    }                
+    }
 
     else if (reg_pc!=1222) return 0;
 
@@ -1443,7 +1443,7 @@ int tap_save_detect(void)
                     //maquina +2A con ramjet
                     if (ramjet_enabled.v && ramjet_mapped_rom_memory.v) {
                         if (ramjet_save_detect()) return 1;
-                    }                     
+                    }
 
     }
 
@@ -1458,7 +1458,7 @@ int tap_save_detect(void)
                             //Sea cual sea la rom, si reg_pc coincide e instruccion es la indicada antes
                             return 1;
     }
-	
+
     if (MACHINE_IS_TSCONF) {
     //Como maquina +2A
     //Ver que instruccion sea ld hl,1f80
@@ -1763,7 +1763,7 @@ void gestionar_autoload_spectrum(void)
 				}
 				break;
 
-			
+
 
 
 			case MACHINE_ID_TIMEX_TS2068:
@@ -1803,8 +1803,8 @@ void gestionar_autoload_spectrum(void)
 			case 19:
 				//Para TBBlue. Pasa como Prism
 				        //Para 128k, +2, +2a enviar enter
-                        //Siempre que no este en la rom de arranque, 
-                        //pues acaba creyendose 
+                        //Siempre que no este en la rom de arranque,
+                        //pues acaba creyendose
                                 //que esta en la rom del basic pues entra en reg_pc==0x12a9
                                 if (tbblue_fast_boot_mode.v==0) {
                                         if (!tbblue_bootrom.v) {
@@ -1822,7 +1822,7 @@ void gestionar_autoload_spectrum(void)
                                                 gestionar_autoload_spectrum_48kmode();
                                 }
 
-                                
+
 
           break;
 
@@ -2049,7 +2049,7 @@ void realtape_print_footer(void)
 	menu_putstring_footer(0,2,buffer_texto,WINDOW_FOOTER_PAPER,WINDOW_FOOTER_INK);
 
     //Y poner icono de cinta en inverso
-    draw_realtape_icon_activity();        
+    draw_realtape_icon_activity();
 }
 
 //comun para ambos. si accion=1, es avanzar
@@ -2059,7 +2059,7 @@ void realtape_rewind_ffwd_common(int accion,int porcentaje)
         debug_printf(VERBOSE_ERR,"No real tape inserted");
         return;
     }
-    
+
     long long int total=realtape_file_size;
     long long int transcurrido=realtape_file_size_counter;
 
@@ -2073,7 +2073,7 @@ void realtape_rewind_ffwd_common(int accion,int porcentaje)
     }
     else {
         //rebobinar
-        transcurrido -=offset;        
+        transcurrido -=offset;
     }
 
     if (transcurrido>=total) transcurrido=total-1;
@@ -2081,7 +2081,7 @@ void realtape_rewind_ffwd_common(int accion,int porcentaje)
 
     realtape_file_size_counter=transcurrido;
 
-    fseek(ptr_realtape, transcurrido, SEEK_SET);    
+    fseek(ptr_realtape, transcurrido, SEEK_SET);
 }
 
 //Rebobinar al principio la cinta
@@ -2097,7 +2097,7 @@ void realtape_rewind_begin(void)
 
     realtape_file_size_counter=transcurrido;
 
-    fseek(ptr_realtape, transcurrido, SEEK_SET);    
+    fseek(ptr_realtape, transcurrido, SEEK_SET);
 }
 
 //rebobina 5%
@@ -2132,7 +2132,7 @@ void realtape_delete_footer(void)
 
 
         //Quitar footer y icono en inverso
-        delete_generic_footertext();  
+        delete_generic_footertext();
 }
 
 void realtape_get_byte(void)
@@ -2166,7 +2166,7 @@ void init_visual_real_tape(void)
     int i;
     for (i=0;i<REALTAPE_VISUAL_MAX_SIZE*2;i++) {
         realtape_visual_data[i][0]=realtape_visual_data[i][1]=128;
-    }    
+    }
 
     //Inicializar array de posiciones
     visual_realtape_array_positions[0]=-1;
@@ -2242,10 +2242,10 @@ void realtape_load_visuals(char *filename)
         }
     }
 
-    
+
 
     fclose(ptr_visual);
-    
+
 }
 
 void realtape_insert(void)
@@ -2352,7 +2352,7 @@ void realtape_insert(void)
                 realtape_file_size=get_file_size(realtape_name_rwa);
         }
 
-    
+
 
         else if (!util_compare_file_extension(realtape_name,"tap")) {
                 debug_printf (VERBOSE_INFO,"Detected TAP file");
@@ -2388,7 +2388,7 @@ void realtape_insert(void)
 
                 ptr_realtape=fopen(realtape_name_rwa,"rb");
                 realtape_file_size=get_file_size(realtape_name_rwa);
-        }    
+        }
 
 
 
@@ -2420,7 +2420,7 @@ void realtape_insert(void)
     //precargar posiciones de cada bloque en cinta para luego mostrar en Visual Real Tape
     realtape_visual_detected_tape_type=0; //de momento tipo desconocido
     int codigo_retorno;
-    util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL, 
+    util_realtape_browser(name_to_use, visual_realtape_textbrowse,MAX_TEXTO_BROWSER,NULL,
         visual_realtape_array_positions, VISUAL_REALTAPE_MAX_POSITIONS,&codigo_retorno);
 
     if (codigo_retorno) {
@@ -2432,7 +2432,7 @@ void realtape_insert(void)
         //printf("Intentamos conversion ZX80/81\n");
         //Intentamos con conversión ZX80/81
 
-        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80 
+        //TODO: no autodetectara cintas de ZX80, hay que seleccionar maquina ZX80 como actual para que el conversor asuma ZX80
         convert_realtape_to_po(name_to_use, NULL, visual_realtape_textbrowse,0);
         //printf("texto: %s\n",visual_realtape_textbrowse);
         //array de posiciones con un solo bloque
@@ -2445,7 +2445,7 @@ void realtape_insert(void)
             visual_realtape_textbrowse[1]=='X' &&
             visual_realtape_textbrowse[2]=='8' &&
             visual_realtape_textbrowse[3]=='0') {
-             
+
             realtape_visual_detected_tape_type=2;
         }
 
@@ -2454,9 +2454,9 @@ void realtape_insert(void)
             visual_realtape_textbrowse[1]=='X' &&
             visual_realtape_textbrowse[2]=='8' &&
             visual_realtape_textbrowse[3]=='1') {
-             
+
             realtape_visual_detected_tape_type=3;
-        }        
+        }
 
     }
 
@@ -2466,7 +2466,7 @@ void realtape_insert(void)
     }
 
 
-    
+
 
 
 	//Activamos realvideo para que:
@@ -2483,7 +2483,7 @@ void realtape_insert(void)
 
 
     //if (noautoload.v==0 && !MACHINE_IS_TBBLUE) { //TODO: desactivamos autoload en TBBLUE
-    if (noautoload.v==0) { 
+    if (noautoload.v==0) {
         debug_printf (VERBOSE_INFO,"Restarting autoload");
         initial_tap_load.v=1;
         initial_tap_sequence=0;
@@ -2498,7 +2498,7 @@ void realtape_insert(void)
 		//Activamos top speed si conviene
 		if (fast_autoload.v) {
             debug_printf (VERBOSE_INFO,"Set top speed from Realtape insert");
-            top_speed_timer.v=1;                
+            top_speed_timer.v=1;
         }
 
     }
@@ -2516,7 +2516,7 @@ void realtape_eject(void)
 			fclose (ptr_realtape);
 			ptr_realtape=NULL;
 		}
-        
+
         realtape_delete_footer();
 	}
 }
@@ -3004,7 +3004,7 @@ int realtape_algorithm_new_noise_reduction=0;
 //Retorna el siguiente bit de cinta realtape, si es 1 o 0
 int realtape_get_current_bit_playing(void)
 {
-    
+
     if (realtape_algorithm_new.v) {
 
         //acevaders no carga con este metodo a no ser que se tenga noise reduction a 20 o algo mas
@@ -3022,7 +3022,7 @@ int realtape_get_current_bit_playing(void)
         //Si la onda esta mas o menos igual, damos valor anterior
         if (diferencia<=realtape_algorithm_new_noise_reduction) {
             //printf("igual\n");
-            return_value=realtape_previous_return_value;            
+            return_value=realtape_previous_return_value;
         }
 
         else {
@@ -3057,7 +3057,7 @@ int realtape_get_current_bit_playing(void)
     }
 
     else {
-                 
+
         //Por ejemplo, al grabar con spectrum con audio to file, y no activar el "rom save filter", no carga con este algorimo,
         //pues la onda no está centrada en 0
 
@@ -3065,12 +3065,12 @@ int realtape_get_current_bit_playing(void)
         if (realtape_last_value>=realtape_volumen) {
             //printf ("1 \n");
             return 1;
-            
+
         }
         else {
             //printf ("0 \n");
             return 0;
         }
     }
-                
+
 }
